@@ -1,136 +1,111 @@
-Return-Path: <stable+bounces-93003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3FE9C8A04
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 13:33:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D910F9C8957
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 12:57:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F3B82851C7
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 12:33:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 446A8B225C9
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E731FA259;
-	Thu, 14 Nov 2024 12:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB1A1F940C;
+	Thu, 14 Nov 2024 11:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="cBk25v32"
+	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="LqHtwD0N"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6F41F9EDE;
-	Thu, 14 Nov 2024 12:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C7B18B49F;
+	Thu, 14 Nov 2024 11:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731587581; cv=none; b=WaMQzTXV74MhaYu/d0sBCoI5rqgIYGkjNg443xdoezA+UNsDJ6gAAu9jT3atrXyJpSo/AUi/Y+zjf1gY4yfZLLqwtZYs8lc8a5AMkEH0Ejs31/YcZ4kxvSt2e4vZWglid9isMfRh6JrJ4TOLYdH03sF1Y/iIG7LNx+98TnQlODk=
+	t=1731584797; cv=none; b=dTeSmExfCO5yB9BjHgTGRKDh+0mHCVRAIH/N6+JusmK8cC4FzL7VYxsxe2Ddvi/CoO7067TXW8/96jthyOvKAatsYgZ0VWX1qZmET6hR0MPzHWzImFuaUE1IxmhxGI8fh6gQLKFeBKJeiXAckY5eklpEqj9Pb0cKePjWDo1clh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731587581; c=relaxed/simple;
-	bh=zqeC9y2px9I6WSvOgH/ULmpWsBmb4ZskjipqsxauY9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z4mJn3sdDPxqTrY6+hvpilgsnAK0WHas7mdXpq1hRVrBvIWCK+wfw6cz41l3gNpjxpocc6ralbNPLqg7MXeH4ozPD+olYQdM4SXRaZWyt9chKVSxbKxilW1+zQ5GpJXOHSVN07sp1shBV+9qOz/CKaDXJyQOOs4E8YfTMgpuX2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=cBk25v32; arc=none smtp.client-ip=217.72.192.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1731587572; x=1732192372; i=christian@heusel.eu;
-	bh=wbFEtVUMX5z5xYJLpgfAgGu0jKXNwIXTeb7vtea1FmY=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cBk25v32DGiesSN2KskPysWGd0knYBocIQ58fqBFd3KTNV2awSAsXTMzt6JyJkfD
-	 CH3ZxLTegIcPCiViqrUvaAWNUzLLUj0wp0UA9JG0Gfzxnmt6qY9BWyE16VuVwLs8J
-	 C6vhqp7E69E2/VcPYwyZYlhG70vVhwHlPxt6cGXpZn5zQ4APwWBRq66UVv9g1gX5W
-	 s4+iux4vHA1ZnepxTgGFYXF5nHSK3USQSJ7hZJdz3xkl9uKs8237Tke38v/wLH3tP
-	 2vseKaJnoNeKPpgCyIYh9m+sfxL8t0py7FNjM7rdn98W5YK2qDh3mQr4BL/tpHKQM
-	 QIVZqcDfTE34ixRnAQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([93.196.138.62]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1M5x9B-1t9eTz0JWF-00Gus7; Thu, 14 Nov 2024 12:45:52 +0100
-Date: Thu, 14 Nov 2024 12:45:50 +0100
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.11 000/184] 6.11.8-rc1 review
-Message-ID: <f2be671c-172b-484e-89ee-e48d98778193@heusel.eu>
-References: <20241112101900.865487674@linuxfoundation.org>
+	s=arc-20240116; t=1731584797; c=relaxed/simple;
+	bh=kBpLdhEGc7zOKzxVLXAaaIEWbOCpClUn8A3oGq7aZ/Q=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ajDDP5LO5kTFkPZH/1iSB0II4g2YAtj3LZTysuBaFxuyS14ftCCYRSqBkhbIzTeHHd2cW5LFmklFmImA8FoHfSVA1HiwSNHADE7h3LxQkABjqwvPceVfP4KepnZ7FFh31KU8A2HGvVkfgfJoeUe3Ai/1zEILwS/qc8K49yjsLY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=LqHtwD0N; arc=none smtp.client-ip=148.6.0.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.kfki.hu (Postfix) with ESMTP id 413B232E01C3;
+	Thu, 14 Nov 2024 12:46:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	blackhole.kfki.hu; h=mime-version:references:message-id
+	:in-reply-to:from:from:date:date:received:received:received
+	:received; s=20151130; t=1731584790; x=1733399191; bh=3iF6OqcXdH
+	l2rv+0knV1DhJxbA/YKrtu8gEBD1nHGzA=; b=LqHtwD0NEHf0eKewieiDI6yJlG
+	SqOjJTIkGlyTd7VX5TKu12/tCP0SuZr/7h6heOTaFaM1pRZgqgW/X2oBse2DN0B2
+	RYmPsiH/Gdjn1qjp7GayjPb1ISbi4fJEEDdo+g/a2Czy9dsOQq813cya6FdCrHcY
+	e7fSFHEuRZhSS3+xI=
+X-Virus-Scanned: Debian amavis at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+ by localhost (smtp2.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id FufRpJMCKJMn; Thu, 14 Nov 2024 12:46:30 +0100 (CET)
+Received: from mentat.rmki.kfki.hu (254C26AF.nat.pool.telekom.hu [37.76.38.175])
+	(Authenticated sender: kadlecsik.jozsef@wigner.hu)
+	by smtp2.kfki.hu (Postfix) with ESMTPSA id 268C632E01B7;
+	Thu, 14 Nov 2024 12:46:30 +0100 (CET)
+Received: by mentat.rmki.kfki.hu (Postfix, from userid 1000)
+	id 8B28A1428CC; Thu, 14 Nov 2024 12:46:29 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by mentat.rmki.kfki.hu (Postfix) with ESMTP id 87F9E142175;
+	Thu, 14 Nov 2024 12:46:29 +0100 (CET)
+Date: Thu, 14 Nov 2024 12:46:29 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+cc: Paolo Abeni <pabeni@redhat.com>, Jeongjun Park <aha310510@gmail.com>, 
+    davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+    horms@kernel.org, kaber@trash.net, netfilter-devel@vger.kernel.org, 
+    coreteam@netfilter.org, netdev@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+    syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v2] netfilter: ipset: add missing range check in
+ bitmap_ip_uadt
+In-Reply-To: <ZzXfDDNSeO0vh1US@calendula>
+Message-ID: <759eccdd-f75b-f3a7-8686-d4c49c72df41@blackhole.kfki.hu>
+References: <20241113130209.22376-1-aha310510@gmail.com> <ff1c1622-a57c-471e-b41f-8fb4cb2f233d@redhat.com> <ZzXfDDNSeO0vh1US@calendula>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3j56jyl3jhuku4vn"
-Content-Disposition: inline
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-X-Provags-ID: V03:K1:3YapffhT9LGBvelwX0YrG8wKzO6z8qCqgntwHXwBmJ4OEbPeoBG
- QARTnXmiTXwXXGpMDrUlFj16avERa3gQH0esRM5gUiUo+Y1/EU8a5J0WLTTWvtv8AtLR+6m
- rJ5iEYIR54/HYoey0Yc0j/RiCpTVa64hvkXPtd8LCSC75JO36AWt2km3A1Rt91z01hPMyI9
- OgRULIBspsQD8x++HSO5Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yTOlNCkeJ58=;VIcS5qhR8P2yELB6Ac9AzeB6P3x
- jsDMDs2WxDBb5uqW9ZNlnICwdF4RKiqVCz8xGW/846jlNCWpyhQgAYO2u+oyG9ib0iXNEpoHN
- 71MlAZ5OP34eRK3ubpuLBAXdHU0TN5+r0grqc+2/7GJFvKKuVsG8giYbSYfXWMaiGc1fichfo
- bE10qzFkgVGSuZT8W6dirxVh7ybDAFl+OscLLdbMlsMJ7YyLkOcTKMjnk0gZCmv9KiDq8WVZT
- ckfK264WFpATtQ4xSaT6gobESqaPsptQspbYBqIyWfbp47/htuUO6S6gk3j+/V4QxChEWzOHi
- DjKdsitwFBdPOKk8m0ytawLB+r0QxuuzAHSyvwqG77khglCEkggN1Ye0x1eM36eMlI2ocasSe
- DhfVB0yliqSx5CAT1wFlIUM1ICYk2luHshM7sdqTc+C2jJaNK1xQWcKPkAcTbl2uCnbTaq9z8
- ZnBKTRWjRC3hUqJ9uEhYd1Sag4xqC85nSfpa3/ojTN74ogf3B9SsYDRWoC/G9JwWEQy9aoJc1
- 029vCQc0l7GdKo+skn8oDjP3w05kFeKjkNiMWwu7PUsaL64mbnXePewI+9mZcbjauGiTlEUl+
- ko8G8Zzq5JaiqF1c+62HNaQuwI9kgE8N4qh6La70Zvq7m7h+9Bh6LQJkCV10jilmHI6w368ny
- emXoSmC47W3RT8QHTEe29U8amt9iNsOe4/IkqD3UpUSSdYnqdmgPWx8CL+cBrkfC9jMX6Fe3U
- uEc0QaMdBCYDfsMKTvpZuVqCvxwAOHZdg4ZyR71jWbg7eEzWSKXTfMmfRu7Hq9/Itdr4dTY04
- hgdVbgGzObahYxhs0R3REyaGrP86x3Z1cMnfNj8CDL+iJ7m5CtVSY3LuDVHB+9MbSm
+Content-Type: text/plain; charset=US-ASCII
+X-deepspam: maybeham 2%
 
+On Thu, 14 Nov 2024, Pablo Neira Ayuso wrote:
 
---3j56jyl3jhuku4vn
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.11 000/184] 6.11.8-rc1 review
-MIME-Version: 1.0
+> On Thu, Nov 14, 2024 at 12:10:05PM +0100, Paolo Abeni wrote:
+> > On 11/13/24 14:02, Jeongjun Park wrote:
+> > > When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+> > > the values of ip and ip_to are slightly swapped. Therefore, the range check
+> > > for ip should be done later, but this part is missing and it seems that the
+> > > vulnerability occurs.
+> > > 
+> > > So we should add missing range checks and remove unnecessary range checks.
+> > > 
+> > > Cc: <stable@vger.kernel.org>
+> > > Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+> > > Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+> > > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > 
+> > @Pablo, @Jozsef: despite the subj prefix, I guess this should go via
+> > your tree. Please LMK if you prefer otherwise.
+> 
+> Patch LGTM. I am waiting for Jozsef to acknowledge this fix.
 
-On 24/11/12 11:19AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.8 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Thu, 14 Nov 2024 10:18:19 +0000.
-> Anything received after that time might be too late.
->=20
+Sorry for the delay at acking the patch. Please apply it to the stable 
+branches too because those are affected as well.
 
-Tested-by: Christian Heusel <christian@heusel.eu>
-
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant)
-
---3j56jyl3jhuku4vn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmc14uYACgkQwEfU8yi1
-JYUamhAAvGMYObqyuRVdGRd147yOR8mnZRw/Cqs7/gSoo7+m8RkP7UtaJtmd3Ehx
-aEDfnqswCncUFAHz/zS1hXpQSAytkEBKsqczOTOe8GsAcKJWLKS67RlgIWcr4LEk
-VvLe+MmIwdT8nsH3WiRMhFXuHoSAtTuFE0Vr0S7rXvUNVLy8dR27Rz6kF6AFjBhc
-UeYE4rN8FPp53Bia5LYmA3VWH4dUgud0JaRCbEIfA8ITHXQSjG3XUVXPJAgsGFfa
-4iEKNKXFQJakYIm4heA0z3Up8guK7cGACH7zoKvCARlDrt+NPbCcMfhx8T1BRh7q
-frNor7r1yBKN0gb6W1y8mX6KF6Gtu8nP424D2qKVt04AP8CZQ4OT0aze8s2+AFBq
-tikBXfdQkaiKKkW3ILlxbIZgqRGTj1CuTRU2dkEvXF8fCpBSFJJffmOjpGfXuU2d
-7GQT6ZF53Xq+Vdw+o7raIxtnOFFIlgaDzpGiGhTBR9M2qNSDPf01zo4EBYCXm6zm
-agV/6GNqEJPk8RBlBJs0LkP/VHI1Jr+7S5LLM8NO02Pz4heGF4AZ0nKmkOIjyfTt
-JlrChJU/6C+GpF1MhPvaYgqVxB5zzFj57r8vffsRHhgqBXoLkXrGTl+hVNLfEG+Q
-MtmTc8eY4WxEmJTQsdarmDKjd+11MofFz170wKTvKURAtPq2+Kc=
-=WzVF
------END PGP SIGNATURE-----
-
---3j56jyl3jhuku4vn--
+Best regards,
+Jozsef
+-- 
+E-mail : kadlec@netfilter.org, kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+Address: Wigner Research Centre for Physics
+         H-1525 Budapest 114, POB. 49, Hungary
 
