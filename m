@@ -1,172 +1,167 @@
-Return-Path: <stable+bounces-92964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADF79C7EF9
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 00:55:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA589C7F43
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 01:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC862845CF
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 23:55:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECD54B24DB0
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 00:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFEC18C935;
-	Wed, 13 Nov 2024 23:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7DEB667;
+	Thu, 14 Nov 2024 00:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MeqaBM03"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9Dq0PQ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CA618A6A0;
-	Wed, 13 Nov 2024 23:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C13A954;
+	Thu, 14 Nov 2024 00:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731542137; cv=none; b=BCcJ4qVW63HQOXxKI5bmjSfV9owBbVx3WC0Ui+OJ6VNN7nwyrPZUT68daIV5a1bZPNW738XXmSU4kP6cEq/2kK71V7gM7GNh33sB/lTStWLmTec+DubBwekqMohHxDs5CH+PjOiRCx24DQSq3Eg/U0z3ecIRW5yBqYqph1X6dsY=
+	t=1731543470; cv=none; b=tFCgI1RESQZrrlx4ivR8LydLw8sEczgmZ/cB8ugO/Yncq9XMkzoZfhQi1FJCCJHWxF6E3aQqcT4EJGsFs2Qg4Ob1hiyCyjLbh2WqTpOWzmQ54V7dHFv0KlFxDqO5mLANAibVfBAeSXNGfUet9zkO01PqGNsNtmfTMb6LW1TDL/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731542137; c=relaxed/simple;
-	bh=ItMqY/DQc5+bQ9nVL1ka+v2Fou18KSYRXrIlxeLivYg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Vue2cNBug643bKiDs50C+fcjQeuM9fi8gqxs4A0OHruYgXsM0evIYaDHMyXf6660ttoeH8SQLOyzviFT3GtyRVgQsOtBrOcJaLmhC/BrjVRKcdxq0ag+YkGlhWbv63711Jm2cGbmsWGMRAPtksvFq7+PTEihckB6FTVLGihs3eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MeqaBM03; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ADH1QC5015403;
-	Wed, 13 Nov 2024 23:55:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=Nyfj0bDUA/i5
-	CMGSuns1LVirTkcJuSpcYXzxbyy+MjE=; b=MeqaBM03xfYRu0LN1gBmLA/HyvPj
-	0aU44TZ+PEfTRcu2AhOhVIFxkdaRZ/qlyFLUrScvcR8jrlGxbMyjYbDscJV8EHmP
-	SusBqGyhgtHnWpL5X+NM9gvdlBATnb2LoBzQmga0xzkltF636ULg5riI9B26MTkc
-	n4T9ZJnFJf+0rwJOgWX9hMTQqX/P/WoUTNazvps5lzOQLASnSw310RudUZ1thtZ+
-	RuIoIdGUsb61izRQwbeLjR4lypbwkf9Jq1qS/3HN7u9IaNx2uYZG16dPYq6IivOa
-	dDKseluzoQBmydCF2NxOWxC5IorPSFHStTOPPU0xJqxEw6FiPUrs0UlUzg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42vsf32559-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 23:55:30 +0000 (GMT)
-Received: from pps.filterd (NALASPPMTA03.qualcomm.com [127.0.0.1])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 4ADNtTVO003188;
-	Wed, 13 Nov 2024 23:55:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by NALASPPMTA03.qualcomm.com (PPS) with ESMTP id 42vwj4khsx-1;
-	Wed, 13 Nov 2024 23:55:29 +0000
-Received: from NALASPPMTA03.qualcomm.com (NALASPPMTA03.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4ADNtTBk003183;
-	Wed, 13 Nov 2024 23:55:29 GMT
-Received: from hu-devc-lv-u18-c.qualcomm.com (hu-eserrao-lv.qualcomm.com [10.47.235.27])
-	by NALASPPMTA03.qualcomm.com (PPS) with ESMTP id 4ADNtT5H003182;
-	Wed, 13 Nov 2024 23:55:29 +0000
-Received: by hu-devc-lv-u18-c.qualcomm.com (Postfix, from userid 464172)
-	id CA8A850016F; Wed, 13 Nov 2024 15:55:28 -0800 (PST)
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
-To: gregkh@linuxfoundation.org, peter@korsgaard.com,
-        michal.vrastil@hidglobal.com, michal.vodicka@hidglobal.com
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Elson Roy Serrao <quic_eserrao@quicinc.com>
-Subject: [PATCH v2] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
-Date: Wed, 13 Nov 2024 15:54:33 -0800
-Message-Id: <20241113235433.20244-1-quic_eserrao@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jG3x1PpwfQOLRWJVSj_Rjzg2vvmbNKv0
-X-Proofpoint-GUID: jG3x1PpwfQOLRWJVSj_Rjzg2vvmbNKv0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- bulkscore=0 phishscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- clxscore=1011 mlxscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411130192
+	s=arc-20240116; t=1731543470; c=relaxed/simple;
+	bh=iqUC+n3p293+BnFyEtc64ehpG3kOk0AV51k+pH0YVwc=;
+	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
+	 References:Content-Type; b=rfiDTUXZH9XForTPI6amsNySSmS58Tw/0uZdSPvYaZ+edZyopptFjUJOmDH1GkmyBiYK2yepvK1qrsjCvZiJhxGaBfy2KzgKyeYMVnL8r8o61igOxVDJ7P40lGBzZ34OTProFZnE/3RHzJqLPLHQMBKT6DHQcHVRQ6zudyKt/KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9Dq0PQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B19C4CEC3;
+	Thu, 14 Nov 2024 00:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731543469;
+	bh=iqUC+n3p293+BnFyEtc64ehpG3kOk0AV51k+pH0YVwc=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=M9Dq0PQ8fNdaEdTTy5ouvfv7WPAYwSfQQ3y0ODCS6XZzIZX3YRK6WJfSk/ZVqD9xm
+	 KgpmZHHueem0SCXerRf0wKm6TfnOhSqONap/ONpksDdUVZurDv6ZCHJzkYIRmqgYaC
+	 dhXfKbo4ObdhYV/omj+Hwf6NgR8k7uTjFCVi8cSr//3AwOtXVzjCRBmhpW6fUdYvB0
+	 N6+3KrJwWBB+ItCpMr6phjzJcPVA1WL9lUAGZkOC7xTqw4x00+0Rj1DozrH3DJgTjj
+	 7rCCBmqWcajZo2rakkWF9H6XpWsUBeinZ7wv4yss855ZT//EYPGU9ppq9YVl5r2UtX
+	 Zzn82HUtHiLRQ==
+Date: Wed, 13 Nov 2024 16:17:48 -0800
+Subject: [GIT PULL 01/10] xfs: convert perag to use xarrays
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: cem@kernel.org, djwong@kernel.org
+Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Message-ID: <173154341879.1140548.17168724047038023840.stg-ugh@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <20241114001637.GL9438@frogsfrogsfrogs>
+References: <20241114001637.GL9438@frogsfrogsfrogs>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Michal Vrastil <michal.vrastil@hidglobal.com>
+Hi Carlos,
 
-This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
+Please pull this branch with changes for xfs for 6.13-rc1.
 
-Fix installation of WinUSB driver using OS descriptors. Without the
-fix the drivers are not installed correctly and the property
-'DeviceInterfaceGUID' is missing on host side.
+As usual, I did a test-merge with the main upstream branch as of a few
+minutes ago, and didn't see any conflicts.  Please let me know if you
+encounter any problems.
 
-The original change was based on the assumption that the interface
-number is in the high byte of wValue but it is in the low byte,
-instead. Unfortunately, the fix is based on MS documentation which is
-also wrong.
+--D
 
-The actual USB request for OS descriptors (using USB analyzer) looks
-like:
+The following changes since commit 59b723cd2adbac2a34fc8e12c74ae26ae45bf230:
 
-Offset  0   1   2   3   4   5   6   7
-0x000   C1  A1  02  00  05  00  0A  00
+Linux 6.12-rc6 (2024-11-03 14:05:52 -1000)
 
-C1: bmRequestType (device to host, vendor, interface)
-A1: nas magic number
-0002: wValue (2: nas interface)
-0005: wIndex (5: get extended property i.e. nas interface GUID)
-008E: wLength (142)
+are available in the Git repository at:
 
-The fix was tested on Windows 10 and Windows 11.
+https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/perag-xarray-6.13_2024-11-13
 
-Cc: stable@vger.kernel.org
-Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
-Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
----
-Changes in v2:
- - Added comments to explain wValue byte ordering discrepancy in MS OS
-   Descriptor Spec.
- - Link to v1: https://lore.kernel.org/all/9918669c-3bfd-4d42-93c4-218e9364b7cc@quicinc.com/T/
+for you to fetch changes up to ab2d77da259c91c00940f7638a33af57f82af0f6:
 
- drivers/usb/gadget/composite.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+xfs: insert the pag structures into the xarray later (2024-11-13 16:05:20 -0800)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 0e151b54aae8..9225c21d1184 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2111,8 +2111,20 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
- 			memset(buf, 0, w_length);
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
-+			/*
-+			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
-+			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
-+			 * HighByte of wValue is the InterfaceNumber and the LowByte is
-+			 * the PageNumber. This high/low byte ordering is incorrectly
-+			 * documented in the Spec. USB analyzer output on the below
-+			 * request packets show the high/low byte inverted i.e LowByte
-+			 * is the InterfaceNumber and the HighByte is the PageNumber.
-+			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
-+			 * PageNumber is set to 0. Hence verify that the HighByte is 0
-+			 * for below two cases.
-+			 */
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value & 0xff))
-+				if (w_index != 0x4 || (w_value >> 8))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -2128,9 +2140,9 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value & 0xff))
-+				if (w_index != 0x5 || (w_value >> 8))
- 					break;
--				interface = w_value >> 8;
-+				interface = w_value & 0xFF;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
--- 
-2.17.1
+----------------------------------------------------------------
+xfs: convert perag to use xarrays [v5.6 01/10]
+
+Convert the xfs_mount perag tree to use an xarray instead of a radix
+tree.  There should be no functional changes here.
+
+With a bit of luck, this should all go splendidly.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+
+----------------------------------------------------------------
+Christoph Hellwig (22):
+xfs: fix superfluous clearing of info->low in __xfs_getfsmap_datadev
+xfs: remove the unused pagb_count field in struct xfs_perag
+xfs: remove the unused pag_active_wq field in struct xfs_perag
+xfs: pass a pag to xfs_difree_inode_chunk
+xfs: remove the agno argument to xfs_free_ag_extent
+xfs: add xfs_agbno_to_fsb and xfs_agbno_to_daddr helpers
+xfs: add a xfs_agino_to_ino helper
+xfs: pass a pag to xfs_extent_busy_{search,reuse}
+xfs: keep a reference to the pag for busy extents
+xfs: remove the mount field from struct xfs_busy_extents
+xfs: remove the unused trace_xfs_iwalk_ag trace point
+xfs: remove the unused xrep_bmap_walk_rmap trace point
+xfs: constify pag arguments to trace points
+xfs: pass a perag structure to the xfs_ag_resv_init_error trace point
+xfs: pass objects to the xfs_irec_merge_{pre,post} trace points
+xfs: pass the iunlink item to the xfs_iunlink_update_dinode trace point
+xfs: pass objects to the xrep_ibt_walk_rmap tracepoint
+xfs: pass the pag to the trace_xrep_calc_ag_resblks{,_btsize} trace points
+xfs: pass the pag to the xrep_newbt_extent_class tracepoints
+xfs: convert remaining trace points to pass pag structures
+xfs: split xfs_initialize_perag
+xfs: insert the pag structures into the xarray later
+
+Darrick J. Wong (1):
+xfs: fix simplify extent lookup in xfs_can_free_eofblocks
+
+fs/xfs/libxfs/xfs_ag.c             | 135 ++++++++++++++------------
+fs/xfs/libxfs/xfs_ag.h             |  30 +++++-
+fs/xfs/libxfs/xfs_ag_resv.c        |   3 +-
+fs/xfs/libxfs/xfs_alloc.c          |  32 +++----
+fs/xfs/libxfs/xfs_alloc.h          |   5 +-
+fs/xfs/libxfs/xfs_alloc_btree.c    |   2 +-
+fs/xfs/libxfs/xfs_btree.c          |   7 +-
+fs/xfs/libxfs/xfs_ialloc.c         |  67 ++++++-------
+fs/xfs/libxfs/xfs_ialloc_btree.c   |   2 +-
+fs/xfs/libxfs/xfs_inode_util.c     |   4 +-
+fs/xfs/libxfs/xfs_refcount.c       |  11 +--
+fs/xfs/libxfs/xfs_refcount_btree.c |   3 +-
+fs/xfs/libxfs/xfs_rmap_btree.c     |   2 +-
+fs/xfs/scrub/agheader_repair.c     |  16 +---
+fs/xfs/scrub/alloc_repair.c        |  10 +-
+fs/xfs/scrub/bmap.c                |   5 +-
+fs/xfs/scrub/bmap_repair.c         |   4 +-
+fs/xfs/scrub/common.c              |   2 +-
+fs/xfs/scrub/cow_repair.c          |  18 ++--
+fs/xfs/scrub/ialloc.c              |   8 +-
+fs/xfs/scrub/ialloc_repair.c       |  25 ++---
+fs/xfs/scrub/newbt.c               |  46 ++++-----
+fs/xfs/scrub/reap.c                |   8 +-
+fs/xfs/scrub/refcount_repair.c     |   5 +-
+fs/xfs/scrub/repair.c              |  13 ++-
+fs/xfs/scrub/rmap_repair.c         |   9 +-
+fs/xfs/scrub/trace.h               | 161 +++++++++++++++----------------
+fs/xfs/xfs_bmap_util.c             |   8 +-
+fs/xfs/xfs_buf_item_recover.c      |   5 +-
+fs/xfs/xfs_discard.c               |  20 ++--
+fs/xfs/xfs_extent_busy.c           |  31 +++---
+fs/xfs/xfs_extent_busy.h           |  14 ++-
+fs/xfs/xfs_extfree_item.c          |   4 +-
+fs/xfs/xfs_filestream.c            |   5 +-
+fs/xfs/xfs_fsmap.c                 |  25 ++---
+fs/xfs/xfs_health.c                |   8 +-
+fs/xfs/xfs_inode.c                 |   5 +-
+fs/xfs/xfs_iunlink_item.c          |  13 ++-
+fs/xfs/xfs_iwalk.c                 |  17 ++--
+fs/xfs/xfs_log_cil.c               |   3 +-
+fs/xfs/xfs_log_recover.c           |   5 +-
+fs/xfs/xfs_trace.c                 |   1 +
+fs/xfs/xfs_trace.h                 | 191 ++++++++++++++++---------------------
+fs/xfs/xfs_trans.c                 |   2 +-
+44 files changed, 459 insertions(+), 531 deletions(-)
 
 
