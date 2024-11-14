@@ -1,198 +1,109 @@
-Return-Path: <stable+bounces-92979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A579C84A1
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 09:11:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04EE9C862F
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43AE81F23219
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 08:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74B7C284CD9
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 09:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302EF1F7060;
-	Thu, 14 Nov 2024 08:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="fn2+HGiN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943501F76AB;
+	Thu, 14 Nov 2024 09:30:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97581F6671
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 08:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C601DD54C
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 09:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731571894; cv=none; b=mZuBcK7NfFZF4FMP/eo03osL6YNYGZn2gypYfjAIT+dZIRArGJHP4Q0l3Khrc9koZ3yhFuz8mR2m9HwZfUxgW6zSVkHk4+Mr89ZKysS9bTOf4T7fY3GONkMQtHilCSYCSQxWj/+eaztesZhD7Sg0p7ciBTpAQ89KdF268xm/DVc=
+	t=1731576656; cv=none; b=kjGVLfzIVQBvDdbBvb7ZYyET/cDYs30g6GteDsd1OBcMgpiq8WgQUsb1v/BLycM68e2bWQ/ZjLubIbPmfxbPEb/CTHvMArasLqXdii3AfEyFF7tJ5/RG8/iK5muTZ787lP8ZANocQFAukCm6boTI3latP9+cq6MzsjNp//FJN9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731571894; c=relaxed/simple;
-	bh=Dak7zVPoLqnhTV81XfL68498x/xktW2DL9spdvnsLQg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SiwliAEi5GE77aiziH9pjR0ELWYQfV7aAIbWn88YQYbxQHXNzJt7f4qCHfgn9BQ4woPsRgNA7NqTkopKreLV+whKDAYHRyml75zg/CKysjoqjfxEiVOzLCacdqb52JKaeX3bZivbGPQ3d6BOUPfpPc5D0r+hAxe+8IH9HnOaQvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=fn2+HGiN; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4319399a411so3292165e9.2
-        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 00:11:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1731571891; x=1732176691; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BtK7Koq5plsXkaoeepNkxSJgKDlZH5uwXtI9Rumwzq0=;
-        b=fn2+HGiNc8jvO6VW3mCTV+zv+fIXozZh0EHlGIjXTNb94zdqz0fSwIrEUUkP9Sh+FG
-         WisFiBkpPTyvH+c04psi3TrdL3pYRoYT7H7QHUjlpf/Y5813MucTAvz2aXQlvnOg/C2/
-         Oc7wKu4Ibmgxcukyy61mMZ6H/18B7hH47HZNkXBjL6H3sLEbHN/+Ac2ORRTj29ktGfJC
-         z3XmEpO5knKBzshHw6u4uJHrU56dz7dK0uTEsgTwm1kds3ZAZfEPZMGRpkN5FMWbSfPZ
-         pUPfGpWRGMNdDLYIk1w1GS+qoQC6jtC8pUvWSr3LJso0aUCTcvRy78KLMyPs6A99cqeZ
-         WKvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731571891; x=1732176691;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BtK7Koq5plsXkaoeepNkxSJgKDlZH5uwXtI9Rumwzq0=;
-        b=G+OwYv7NjJDjgqZS9TWg8QOyusyGj2yb9NR36U3ROKf3GTtzTBSMzmY8nNBdZIXpVk
-         QhYITu58u45fabCi5n2i7kFsm0B41SLmF27rSCrByfPXaTO5kB56jvu4ZGyRTYDVkTlw
-         k74cxYepsOcMOiMxPRed8o7A9uILYd9j3Mw9Oc6HwS0/mHcjjvoBicAVgU6A+q80P7wI
-         e1wruasuz633E27zTLVb1TBA6yHPa0durYiu1PlATdmW6lFWac+k1I8BEUNQFfDjyivb
-         Sn1yHhs/0mImNXbvfG4FicN3wJ89VuYf/886FFmVelDZauD+wE8jIGq2+ZxkX4LUw6ee
-         6hrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXWTVWlpNdCS5DujzRCdk7I7VqAJbtDaH1igfkt+rjnj+/Gq+/TAXy9NYiLl5cIDjN6ADQxkrc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyniFmsJfHRu4Ad5rKYVshOXxoshKmZfsRDzsqyj7o3dPlvDQWb
-	LJ08vNrTombPV4jzjxMwhpN0piCi9JFMgBtQsv86YZCdKOOYydki6h79rATBydg=
-X-Google-Smtp-Source: AGHT+IGQwL97xGZDE67jemb32d4K5FWvWjN8w39M98m1r+VimY0ubTvizw1TQfZpwlKMc9NeHCwreA==
-X-Received: by 2002:a05:600c:3b82:b0:42c:bb10:7292 with SMTP id 5b1f17b1804b1-432b74fc98cmr197271285e9.1.1731571890834;
-        Thu, 14 Nov 2024 00:11:30 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da2982fasm14730395e9.36.2024.11.14.00.11.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 00:11:30 -0800 (PST)
-Message-ID: <20138ae9-ce35-40a5-be10-d0c6da23f5d1@tuxon.dev>
-Date: Thu, 14 Nov 2024 10:11:27 +0200
+	s=arc-20240116; t=1731576656; c=relaxed/simple;
+	bh=AoN5subEhD5ph6GECCMk9G3jg73z1JEEzAH0q0kFPVE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T/p+bJnGT4BlW5hKMq+4h4aX3xHOkCjOHI0JevgkU6yVLIzlc3K/eVJ1DKFv7rbpjKINUfnlDZ4h4kQSfwucxuEwvMBCZE70XerzmDT+jdtgzJbCMVO0q8s4E74J/FDwUoOjgT3XQK79Iz7D7Jw4ZkubY4nZR1J2cjH+2J/B85o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AE8e1X5028941;
+	Thu, 14 Nov 2024 01:30:47 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42uwpmkm3a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 14 Nov 2024 01:30:46 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Thu, 14 Nov 2024 01:30:46 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Thu, 14 Nov 2024 01:30:45 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+Subject: [PATCH 6.1] fs/ntfs3: Fix general protection fault in run_is_mapped_full
+Date: Thu, 14 Nov 2024 17:31:07 +0800
+Message-ID: <20241114093107.1092295-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] serial: sh-sci: Check if TX data was written to
- device in .tx_empty()
-Content-Language: en-US
-To: Jiri Slaby <jirislaby@kernel.org>, geert+renesas@glider.be,
- magnus.damm@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
- gregkh@linuxfoundation.org, p.zabel@pengutronix.de, g.liakhovetski@gmx.de,
- lethal@linux-sh.org
-Cc: linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-serial@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20241108100513.2814957-1-claudiu.beznea.uj@bp.renesas.com>
- <20241108100513.2814957-3-claudiu.beznea.uj@bp.renesas.com>
- <530f4a8e-b71a-4db1-a2cc-df1fcfa132ec@kernel.org>
- <3711546e-a551-4cc9-a378-17aab5b426ef@tuxon.dev>
- <b3f67cd7-056a-43c2-98dc-e983649124ed@kernel.org>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <b3f67cd7-056a-43c2-98dc-e983649124ed@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 1f4WUb_K2Xvo8rAm_mZ39LfyaeCymh3C
+X-Authority-Analysis: v=2.4 cv=ZdlPNdVA c=1 sm=1 tr=0 ts=6735c347 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=GFCt93a2AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8 a=xcN3r6YJb35t5HIqOz4A:9 a=0UNspqPZPZo5crgNHNjb:22
+ a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: 1f4WUb_K2Xvo8rAm_mZ39LfyaeCymh3C
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-14_03,2024-11-13_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ adultscore=0 mlxlogscore=999 clxscore=1011 impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411140073
 
-Hi, Jiri,
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-On 14.11.2024 08:26, Jiri Slaby wrote:
-> Hi,
-> 
-> On 08. 11. 24, 13:19, Claudiu Beznea wrote:
->> On 08.11.2024 12:57, Jiri Slaby wrote:
->>> On 08. 11. 24, 11:05, Claudiu wrote:
-> ...
->>>> --- a/drivers/tty/serial/sh-sci.c
->>>> +++ b/drivers/tty/serial/sh-sci.c
->>>> @@ -157,6 +157,7 @@ struct sci_port {
->>>>          bool has_rtscts;
->>>>        bool autorts;
->>>> +    bool first_time_tx;
->>>
->>> This is a misnomer. It suggests to be set only during the first TX.
->>
->> I chose this naming as this was the scenario I discovered it didn't work.
->> Reproducible though these steps:
->>
->> 1/ open the serial device (w/o running any TX/RX)
->> 2/ call tx_empty()
->>
->> What
->>> about ::did_tx, ::performed_tx, ::transmitted, or alike?
->>
->> I have nothing against any of these. Can you please let me know if you have
->> a preferred one?
-> 
-> No, you choose, or invent even better one :). Or let AI do it for you.
-> 
->>>> @@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
->>>>            }
->>>>              sci_serial_out(port, SCxTDR, c);
->>>> +        s->first_time_tx = true;
->>>>              port->icount.tx++;
->>>>        } while (--count > 0);
->>>> @@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
->>>>        if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
->>>>            uart_write_wakeup(port);
->>>>    +    s->first_time_tx = true;
->>>
->>> This is too late IMO. The first in-flight dma won't be accounted in
->>> sci_tx_empty(). From DMA submit up to now.
->>
->> If it's in-flight we can't determine it's status anyway with one variable.
->> We can set this variable later but it wouldn't tell the truth as the TX
->> might be in progress anyway or may have been finished?
->>
->> The hardware might help with this though the TEND bit. According to the HW
->> manual, the TEND bit has the following meaning:
->>
->> 0: Transmission is in the waiting state or in progress.
->> 1: Transmission is completed.
->>
->> But the problem, from my point of view, is that the 0 has double meaning.
->>
->> I noticed the tx_empty() is called in kernel multiple times before
->> declaring TX is empty or not. E.g., uart_suspend_port() call it 3 times,
->> uart_wait_until_sent() call it in a while () look with a timeout. There is
->> the uart_ioctl() which calls it though uart_get_lsr_info() only one time
->> but I presumed the user space might implement the same multiple trials
->> approach before declaring it empty.
->>
->> Because of this I considered it wouldn't be harmful for the scenario you
->> described "The first in-flight dma won't be accounted in sci_tx_empty()"
->> as the user may try again later to check the status. For this reason I also
->> chose to have no extra locking around this variable.
-> 
-> What about the below?
-> 
->>>> @@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port
->>>> *port)
->>>>    {
->>>>        unsigned short status = sci_serial_in(port, SCxSR);
->>>>        unsigned short in_tx_fifo = sci_txfill(port);
->>>> +    struct sci_port *s = to_sci_port(port);
->>>> +
->>>> +    if (!s->first_time_tx)
->>>> +        return TIOCSER_TEMT;
->>>
->>> So perhaps check if there is a TX DMA running here too?
-> 
-> This ^^^? Like dmaengine_tx_status()?
+[ Upstream commit a33fb016e49e37aafab18dc3c8314d6399cb4727 ]
 
-I missed that I can use this ^. Thanks for pointing it.
+Fixed deleating of a non-resident attribute in ntfs_create_inode()
+rollback.
 
-Claudiu
+Reported-by: syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+---
+ fs/ntfs3/inode.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> 
->>>
->>>>          return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT
->>>> : 0;
->>>>    }
->>>
->>> thanks,
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 026ed43c0670..8d1cfa0fc13f 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1646,6 +1646,15 @@ struct inode *ntfs_create_inode(struct user_namespace *mnt_userns,
+ 			  le16_to_cpu(new_de->key_size), sbi);
+ 	/* ni_unlock(dir_ni); will be called later. */
+ out6:
++	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
++	if (attr && attr->non_res) {
++		/* Delete ATTR_EA, if non-resident. */
++		struct runs_tree run;
++		run_init(&run);
++		attr_set_size(ni, ATTR_EA, NULL, 0, &run, 0, NULL, false, NULL);
++		run_close(&run);
++	}
++	
+ 	if (rp_inserted)
+ 		ntfs_remove_reparse(sbi, IO_REPARSE_TAG_SYMLINK, &new_de->ref);
+ 
+-- 
+2.43.0
+
 
