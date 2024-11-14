@@ -1,84 +1,96 @@
-Return-Path: <stable+bounces-92983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006099C86B9
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:01:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7AD9C8768
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9CEE282EDD
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62CA71F220A9
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4591F80BA;
-	Thu, 14 Nov 2024 10:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E871FAC40;
+	Thu, 14 Nov 2024 10:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLDtWjW+"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="WrFg+zw1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1467C1F80BD;
-	Thu, 14 Nov 2024 10:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAA11FA247
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 10:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731578405; cv=none; b=in5ehDZujdhv/sYJTc0ePsZR5bWcOL1t3OBzYXqltvhlQwojilwshEgL3J9NsdSD4/AdUs8ifKV2imSmzTjMvTikqI1/Z21YnPQOkdYQKs0F9elnzb94U3GiXyNsABoS6PrJfEorasm2jfsfisphKSngVoE4neaZ+jnNj6CdoZ4=
+	t=1731579265; cv=none; b=qQT7i10Cn2LLMP1cCvgEqZzRUTM1ijPKO4ChD1OiIkGJztY0247PE0G+f3Pc5pv96nKLNbDaS/BEynbO18Z3K6LMQEv+cn9sYEG3RHRHtD5uC3WrdiZgDjPFzy2V5MDTfDap1j4E/gf2H9XrEk0r+FMCqwIeZwf7wThVY3XZDRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731578405; c=relaxed/simple;
-	bh=p4PwUaQX9xPS7DX7xJqkjYPk43uSlAXQyomQh9aFQJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aSOkAMqU0AppBKUsTlQ6sBry4yhDdkyilA09A6/JEC7hZJEQN3z7DS1+5HATrSfi6znF+j5QS5TzsK4jgDzLqVAF4lyAyAf07e3vLa5pgnygxVXkq/jU/MbAfmijnLeSGIemBiphi6xXMipmS4TD7VnSHQGf8NnoDyDfcAPQ2Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLDtWjW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13668C4CECD;
-	Thu, 14 Nov 2024 10:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731578404;
-	bh=p4PwUaQX9xPS7DX7xJqkjYPk43uSlAXQyomQh9aFQJg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QLDtWjW++p4wrmcNrJ0h+UpBSWEl5s+UuOTwkPsIasZqWJvghZGxdYJTlYUy2TrSg
-	 PXQ2iuQYVnR1dko5P0p49A6KzP7+y6kK47dS828XDKlvw884N9qZUVNkGVT23FF1Lp
-	 +ERmxokQKo3GGZN5CCctmtNx9mnVRJ9rxVT3V7tAw/m3GPLzoTFUgZ4nAcY5RaPXKC
-	 qhHgTvLfACYnlHEttf40q01iewpI08loEFlU4JAA1FE9V+tlQpzeThlXH/SjtdODSC
-	 yRPhi5kJMQn3euLAvhxEJMYIp0Rxeiq/eRvt3MCDeRstLUtfM3HD9D8Yy4gZvDvQe7
-	 gzuf717LG3Jcw==
-Date: Thu, 14 Nov 2024 09:59:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jeroen de Borst <jeroendb@google.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, stable@vger.kernel.org, pabeni@redhat.com,
-	pkaligineedi@google.com, shailend@google.com, andrew+netdev@lunn.ch,
-	willemb@google.com, hramamurthy@google.com, ziweixiao@google.com
-Subject: Re: [PATCH net V2] gve: Flow steering trigger reset only for timeout
- error
-Message-ID: <20241114095959.GA1062410@kernel.org>
-References: <20241113175930.2585680-1-jeroendb@google.com>
+	s=arc-20240116; t=1731579265; c=relaxed/simple;
+	bh=687xpeUGJEdLVnXDJDz30jphuzPVzal+qNm2J6rqObk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uhalrINfy6NO5PFOzZ01sXujXc90r3S3R6hiNzPQlLzEzbVwCgkE8MntLCpCsbzCFOkt1k8hTrJ3FNk5B7YkQgNQis3Yzs4xk4OoaPPa8nvHpKLit0bdxC8gvx663FUanvmelesqxm+OzR+1o5+w0oUOQRrzDZKzW2EeBar+EJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=WrFg+zw1; arc=none smtp.client-ip=185.136.64.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20241114101413f9d423d74c3acbd68f
+        for <stable@vger.kernel.org>;
+        Thu, 14 Nov 2024 11:14:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=VE9hYTociBf8ZRiio0kTSwD9q1GDVXYKjidfYnajdcQ=;
+ b=WrFg+zw13YIAjDzQ0ei/3KaRAlicoMwHI61Emppa6sd/3iOPAkfb/xjg2DXFKA5x2tyABd
+ 3w6nLrLvjMr++eyB2KlcVlr7y651jZtQMU4blZA/cGIsdjzFXXyEIYc0PX56nh7o8aAG0tMj
+ XNu9bD2CobdCT1akFciX3g3hI/wB3viYUW4TTwaEfflq0TiW27LBcILa5oQ5NSK5Q3uAnIQZ
+ kP8IhU1NVf794vWc2afHnSPYlHPZslmXvQ/BGsF3iAbtZW1iNK0LHzJl1a0RzNZdEI63AhFm
+ mP9z0Bq6mKmRW5k8X8MOuKVwBBPHmWaLoJ3ExCatDaHK6auixz3vc2AQ==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-leds@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Dan Murphy <dmurphy@ti.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] leds: lp8860: Write full EEPROM, not only half of it
+Date: Thu, 14 Nov 2024 11:13:59 +0100
+Message-ID: <20241114101402.2562878-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241113175930.2585680-1-jeroendb@google.com>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Wed, Nov 13, 2024 at 09:59:30AM -0800, Jeroen de Borst wrote:
-> From: Ziwei Xiao <ziweixiao@google.com>
-> 
-> When configuring flow steering rules, the driver is currently going
-> through a reset for all errors from the device. Instead, the driver
-> should only reset when there's a timeout error from the device.
-> 
-> Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-> Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-> ---
-> v2: Added missing Signed-off-by
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Thanks for the update.
+I struggle to explain dividing an ARRAY_SIZE() by the size of an element
+once again. As the latter equals to 2, only the half of EEPROM was ever
+written. Drop the unexplainable division and write full ARRAY_SIZE().
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7a8685accb95 ("leds: lp8860: Introduce TI lp8860 4 channel LED driver")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+This is based on code review only, I don't have LP8860 to test.
+
+ drivers/leds/leds-lp8860.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
+index 7a136fd817206..06196d851ade7 100644
+--- a/drivers/leds/leds-lp8860.c
++++ b/drivers/leds/leds-lp8860.c
+@@ -265,7 +265,7 @@ static int lp8860_init(struct lp8860_led *led)
+ 		goto out;
+ 	}
+ 
+-	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs) / sizeof(lp8860_eeprom_disp_regs[0]);
++	reg_count = ARRAY_SIZE(lp8860_eeprom_disp_regs);
+ 	for (i = 0; i < reg_count; i++) {
+ 		ret = regmap_write(led->eeprom_regmap,
+ 				lp8860_eeprom_disp_regs[i].reg,
+-- 
+2.47.0
 
 
