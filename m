@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5EE9CDA73
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 09:27:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A286E9CDA74
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 09:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB0611F22DD5
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D242839F1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF23F189F30;
-	Fri, 15 Nov 2024 08:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D20188714;
+	Fri, 15 Nov 2024 08:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js/Hrrux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1W+gRBa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD741714A5
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 08:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739972B9B7;
+	Fri, 15 Nov 2024 08:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731659265; cv=none; b=KOC3toIqHlLm49/6565ymE48BfO2dbEezWPt/upblLD8KeggjUy3vAMkDWHbNM4SHx2N0nwlgCO94KXcXt2PW5II32fOv6OWZTcGzecIeT22GAfeRfBH/CD1CkuaVX65LmkmOOyPEnGPJz80DWepP0J+CLzrP8kHbu6jN2qlJfw=
+	t=1731659327; cv=none; b=qc9t65L5yS/VBk3zzgGpkkFCTdBr68hr2JyXl0vRqTuvr0y8A1bRPzzeOOb8huCOyPbaA9QTtg1kz52dqNX0V8uZjqW3Be9/oB8oS82JKawd14M9eSvQVZh6uP03gauOT2VF7YuQd6nnEettauLDl6wiIrt+IcP3/tZH1riwk3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731659265; c=relaxed/simple;
-	bh=4Ry5Psezo1yn2X8p9bnhmmsWyZ8qt+7OD75hZWEEiC8=;
+	s=arc-20240116; t=1731659327; c=relaxed/simple;
+	bh=UBcYi9Cvt3kn9l4SJ9MgYJD51gDlG3rba00d44agRBY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtGaZkX6GFTaMRl3idzQrZCzGQK43mZh6KOiY8KjgrbWltRFqBlqTRNtqxns33s6Ne0QElm/upoyibDL2jep8wmunZ3rlvfjZc3gPMJdVzitjn8/ESvUnOW8JKi+Au+ZIza3YC66XQy3EjrtitPpE9uHQTarkP6yIJcDG6IMy0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js/Hrrux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92683C4CECF;
-	Fri, 15 Nov 2024 08:27:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=slPRaxUuFPwpTmIZ90liw/hFgOYojFYZprX4ZENfT4UbwZJlEUMvasr7J85pJF2I1fTnjlq+WsFxvSBctSYDJv/nSGSXM0TuGTFN1O93gAnpx24hMk92PUryY6oqe/pYLxd9KrUAPa96rUJSifv01clIHN7Lxcpu8A3jGM+Mm8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1W+gRBa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A050CC4CECF;
+	Fri, 15 Nov 2024 08:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731659265;
-	bh=4Ry5Psezo1yn2X8p9bnhmmsWyZ8qt+7OD75hZWEEiC8=;
+	s=korg; t=1731659327;
+	bh=UBcYi9Cvt3kn9l4SJ9MgYJD51gDlG3rba00d44agRBY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Js/HrruxurPq9u8vKBUiDrbrMkecfkHfsb3s4gqNqvDuItTXceDOS7XYwgnynfyU0
-	 NKxzHINbKJ/exoqbtOvXZOREIR+FSvvGVhDaM+MQuKADDwXo8POMnIQs8DYzWLdBc/
-	 R/yoU/V7ZgDkByv0nK50qq6WiaXno9sFwQOjZhv0=
-Date: Fri, 15 Nov 2024 09:27:22 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
-	stable <stable@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH 6.6.y] mm: refactor map_deny_write_exec()
-Message-ID: <2024111520-freemason-boil-f2de@gregkh>
-References: <2024111110-dubbed-hydration-c1be@gregkh>
- <20241114183615.849150-1-lorenzo.stoakes@oracle.com>
- <2024111540-vegan-discard-a481@gregkh>
- <bb420574-76ab-430e-838f-18690196b175@lucifer.local>
+	b=1W+gRBa++wPAI+b3QT5zqutxK5uAuWVL8Mptpwq3s/UuxYtNg5pt0jq29NEnZgGnJ
+	 gcI38oJjmh3K1rjM3DhHrx27RgREphCNlbzyW2QRy5SvOjxDb0DsIWsafs0i+ZBU+Y
+	 kC2iBOKbS/OMSieoK9WtyR/q+NPgeER3uxgunuxw=
+Date: Fri, 15 Nov 2024 09:28:24 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	WANG Wenhu <wenhu.wang@vivo.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 5.4 62/66] mm: clarify a confusing comment for
+ remap_pfn_range()
+Message-ID: <2024111556-exterior-catapult-9306@gregkh>
+References: <20241115063722.834793938@linuxfoundation.org>
+ <20241115063725.079065062@linuxfoundation.org>
+ <4537b145-3026-4203-8cc4-6a4a063f4d96@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,74 +59,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bb420574-76ab-430e-838f-18690196b175@lucifer.local>
+In-Reply-To: <4537b145-3026-4203-8cc4-6a4a063f4d96@oracle.com>
 
-On Fri, Nov 15, 2024 at 07:52:26AM +0000, Lorenzo Stoakes wrote:
-> On Fri, Nov 15, 2024 at 05:02:29AM +0100, Greg KH wrote:
-> > On Thu, Nov 14, 2024 at 06:36:15PM +0000, Lorenzo Stoakes wrote:
-> > > Refactor the map_deny_write_exec() to not unnecessarily require a VMA
-> > > parameter but rather to accept VMA flags parameters, which allows us to use
-> > > this function early in mmap_region() in a subsequent commit.
-> > >
-> > > While we're here, we refactor the function to be more readable and add some
-> > > additional documentation.
-> > >
-> > > Reported-by: Jann Horn <jannh@google.com>
-> > > Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
-> > > Cc: stable <stable@kernel.org>
-> > > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> > > Reviewed-by: Jann Horn <jannh@google.com>
-> > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > ---
-> > >  include/linux/mman.h | 21 ++++++++++++++++++---
-> > >  mm/mmap.c            |  2 +-
-> > >  mm/mprotect.c        |  2 +-
-> > >  3 files changed, 20 insertions(+), 5 deletions(-)
-> >
-> > There's no clue here as to what the upstream git id is :(
+On Fri, Nov 15, 2024 at 12:30:47PM +0530, Harshvardhan Jha wrote:
+> Hi Greg,
 > 
-> It's in-reply-to a mail that literally contains the upstream git id,
-> following the instructions you explicitly gave.
+> The patch series is fine but I missed one final patch of the patch
+> series. I'd like to send a v2 if it's possible. The series is missing
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=35770ca6180caa24a2b258c99a87bd437a1ee10f
+> unfortunately which is the fix itself. These patches were required to
+> get a clean pick when backporting this patch but I forgot to send the
+> final patch itself. Sorry for the inconvenience caused.
 
-The instructions explicitly give you commands that say to use 'git
-cherry-pick -x' which adds the commit id :)
-
-> > Also, you sent lots of patches for each branch, but not as a series, so
-> > we have no idea what order these go in :(
-> 
-> I did wonder how you'd sort out ordering, but again, I was following your
-> explicit instructions.
-> 
-> >
-> > Can you resend all of these, with the upstream git id in it, and as a
-> > patch series, so we know to apply them correctly?
-> 
-> I'll do this, but... I do have to say, Greg, each of these patches are in
-> reply to a mail stating something like, for instance this one:
-> 
-> 	The patch below does not apply to the 6.6-stable tree.
-> 	If someone wants it applied there, or to any other stable or longterm
-> 	tree, then please email the backport, including the original git commit
-> 	id to <stable@vger.kernel.org>.
-> 
-> (I note the above hand waves mention of including original git commit, but
-> it's unwise to then immediately list explicit commands none of which
-> mention this...)
-> 
-> 	To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> 	git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> 	git checkout FETCH_HEAD
-> 	git cherry-pick -x 0fb4a7ad270b3b209e510eb9dc5b07bf02b7edaf
-
-See, -x, I think you forgot that :)
-
-Anyway, this normally works just fine, as whole series of commits that
-fail are odd and rare.  I can guess at ordering, like I do when I take
-them from Linus's tree (going by original commit dates), but for when
-you resend a bunch of them, it's much tricker as the original "FAILED"
-message doesn't show that order.
+So can I just cherry-pick that one commit now?  Or just send it on and I
+can add it to the end of this series and do a -rc2 with it, which ever
+works.
 
 thanks,
 
