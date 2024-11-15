@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B207F9CD824
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91919CD7F0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5324CB241E8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856191F21C18
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E5418734F;
-	Fri, 15 Nov 2024 06:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41DF17E015;
+	Fri, 15 Nov 2024 06:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB4AfJGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxFfaE49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD62BB1B;
-	Fri, 15 Nov 2024 06:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2556EAD0;
+	Fri, 15 Nov 2024 06:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653276; cv=none; b=T0jQaKl2cgbcMEsE7f6wyF6h2YKr7aHNfPPVhuIgRvTf9YquJkPOUxCM4kpnWDXgWA5mVzw+YQ8WgOyIEUqt2rxzGDowLDTZtBUAuryndSNHTlkvJkbvBFLMqBRKokNnRby373C5lpSIbvWXQHUbrfKIo4hAB1iEpShAKKrIIa4=
+	t=1731653161; cv=none; b=h8pFJbAhJNcTSwHhlJmH9pP8849rbvHPXeY/uZAa2MF7wXgB0r1Ng3QD3E6jNvR8xgNKOKVvexKwITF8Ld6S3CJS39vms1bwK/4wmKeiP2x/NiQOsoA3MU6QQgH2NX9of0XrHlNOU6FgOnl7iuSzMp0VKD6DXzFuV4ksN8lzMuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653276; c=relaxed/simple;
-	bh=2isIp9lXkCibkXHz3ULOCrIXnwtQ5COGOaKBV6ot6Js=;
+	s=arc-20240116; t=1731653161; c=relaxed/simple;
+	bh=xRsR3zdT6ISIB9j8qHmrvVtWi/Bvsywd2zgMiT/y0pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqNoXlwoO/zc33FirRunbSQ5GwNnK9vlXUs3UJpu6Hz1pQ8zyAYOPUQakwwz6jrz+MElvMoYqKK1sCaIRuFhMeUX28Ki1qpLmHUVwIhBy2bb98FNWrDmVoHXJ0f2B/l8zwuPc+s2+c/aZw7g3EkxSUwA5kYgQqqQ8dgGdoD4sCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB4AfJGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84586C4CECF;
-	Fri, 15 Nov 2024 06:47:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qp2FLavCEe7EwZac6OzIS9QfOZd2418xWIQj/MVdIPvgzkxLCqB2Q5yyQqX90pMA/MD+fpzXvJY17e00kgbKqm677Y0bzTtLbPSoK1QJ2NY6xwzWA1cxln7NMmniqU++4PAnL2bA/U6rV4UlSqD3vq+vj28YZY41SLyl/HIhXuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxFfaE49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EEDC4CECF;
+	Fri, 15 Nov 2024 06:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653275;
-	bh=2isIp9lXkCibkXHz3ULOCrIXnwtQ5COGOaKBV6ot6Js=;
+	s=korg; t=1731653161;
+	bh=xRsR3zdT6ISIB9j8qHmrvVtWi/Bvsywd2zgMiT/y0pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TB4AfJGTt33qicGGrO5VEKXM22Re1kFNI0DZiP4FKY61cKERQwdZAY/NdRv1vGR53
-	 mKMbwnXHwA01qyaayPDJMRQkt+AEFJEb6RyhxrIIGEXFffpYrq6W/TP8/WWl6rywOt
-	 IHEhUUIQlh6f8CV2s62oaoepv5IvIrw0+3qO6jlk=
+	b=PxFfaE49ZgMlVeUz5KZIbrwJgYAESEvXMXQPXwz0Jx81hCtJzcY6NRmAnPe2rYnV8
+	 DVgxZRMvwQPQOJ8LlpFTEl9EExQuZ3fCcmF1K/UBfnVz8kWmi8ruHupP57w7oQJp5A
+	 EafHCtB8V81MMUvZxDslF8V90lPBxcnQSePydgHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 39/63] ASoC: codecs: Fix error handling in aw_dev_get_dsp_status function
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 53/66] ALSA: usb-audio: Add endianness annotations
 Date: Fri, 15 Nov 2024 07:38:02 +0100
-Message-ID: <20241115063727.327002762@linuxfoundation.org>
+Message-ID: <20241115063724.755473817@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Jan Schär <jan@jschaer.ch>
 
-[ Upstream commit 251ce34a446ef0e1d6acd65cf5947abd5d10b8b6 ]
+commit 61c606a43b6c74556e35acc645c7a1b6a67c2af9 upstream.
 
-Added proper error handling for register value check that
-return -EPERM when register value does not meet expected condition
-
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20241009073938.7472-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4b8ea38fabab ("ALSA: usb-audio: Support jack detection on Dell dock")
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/202207051932.qUilU0am-lkp@intel.com
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Link: https://lore.kernel.org/r/20220705135746.13713-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/aw88399.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/aw88399.c b/sound/soc/codecs/aw88399.c
-index 8dc2b8aa6832d..bba59885242d0 100644
---- a/sound/soc/codecs/aw88399.c
-+++ b/sound/soc/codecs/aw88399.c
-@@ -656,7 +656,7 @@ static int aw_dev_get_dsp_status(struct aw_device *aw_dev)
- 	if (ret)
- 		return ret;
- 	if (!(reg_val & (~AW88399_WDT_CNT_MASK)))
--		ret = -EPERM;
-+		return -EPERM;
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1823,7 +1823,7 @@ static int snd_soundblaster_e1_switch_cr
+ static int realtek_hda_set(struct snd_usb_audio *chip, u32 cmd)
+ {
+ 	struct usb_device *dev = chip->dev;
+-	u32 buf = cpu_to_be32(cmd);
++	__be32 buf = cpu_to_be32(cmd);
  
- 	return 0;
- }
--- 
-2.43.0
-
+ 	return snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_SET,
+ 			       USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
+@@ -1834,7 +1834,7 @@ static int realtek_hda_get(struct snd_us
+ {
+ 	struct usb_device *dev = chip->dev;
+ 	int err;
+-	u32 buf = cpu_to_be32(cmd);
++	__be32 buf = cpu_to_be32(cmd);
+ 
+ 	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_GET_OUT,
+ 			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
 
 
 
