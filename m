@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-93376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66A99CD8ED
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C4B9CD7CA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FF3E1F213FE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2AEE280E7E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B491898E9;
-	Fri, 15 Nov 2024 06:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D8F188917;
+	Fri, 15 Nov 2024 06:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njy0Btv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlW7clsE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4258E15FD13;
-	Fri, 15 Nov 2024 06:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7A185924;
+	Fri, 15 Nov 2024 06:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653716; cv=none; b=RKz5KnIoUipyqJj+vIQmM3BjBwTMv7kWGyJBiChPIFUjgVPgGUSe9zI4TAOvx3nxVjkPgxLlv715cKwWaEj+dvRVZcspRrbpBAc6qh/HKRRswcT/wwMEwCqC23RNhfqAx/nEsiREqoFmCgWsPhEMFTRlsiHcbuuJw+fycVckPh8=
+	t=1731653072; cv=none; b=qjRsxY9zTo7QBDIDSkKprbCwzC94qTu1JLnW0Ca+QuFnzy+f4nbd2ejGVNiH2l0eRrMyFxAMn4Z4MIgrxLqd75Uf5G8gfKx2C6tJR0rUkILB3DqmbRDMCBU3S5glYQ+dZTg4sWzx/5fmd200Bsan8AhVJ/kM7moVNPgepINdtZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653716; c=relaxed/simple;
-	bh=Pi/oCAd5f/4jxvSoSSy486TrUS+dGv+h/eYO5jzZWq8=;
+	s=arc-20240116; t=1731653072; c=relaxed/simple;
+	bh=LHkHVIC1mwx1qY7nLskkhW4wgKlzODxHlJhoK0KB29I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rb8gRrDzptH44sG8onYPRRBANIovXib99hOn5zyidJxDW8+SE+FHNJxGEi1rFmYwcfrwkBvGuE5kL34VmHqOtzDHOocrkwZ9x00eeKu4cKMNsabFK5lJEt4/yrig+J6AXyAmrYX0K25KGd8mwJAFtWLyKdePIVfypqI0KXeveqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njy0Btv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23FEC4CED0;
-	Fri, 15 Nov 2024 06:55:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iuWC+q+zskMgGJ+sL9ZUU60XTZlHEWsaXQqS17CJZuDt8k30z/CHcCuoeArBqIZaegGqvqKVLgJ2kcVH+EJLbZKSOvZJp7b0yktdtLIP/LAr7+Dsv3NmLzn218MPt2sgalVldVyBs88Ri0Qe92D+CnuqqnU7uR84mIR+x/4Qk1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlW7clsE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4522CC4CECF;
+	Fri, 15 Nov 2024 06:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653716;
-	bh=Pi/oCAd5f/4jxvSoSSy486TrUS+dGv+h/eYO5jzZWq8=;
+	s=korg; t=1731653072;
+	bh=LHkHVIC1mwx1qY7nLskkhW4wgKlzODxHlJhoK0KB29I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njy0Btv/p171Scmq2auJ4aAHYSELOE5KRT9+erpmaIvE3ofSDUJ7Nc3GbwsbWb/zI
-	 jB4CR6HgmU91zFpthTDXLPj3aRLtN21+NVusfE39Qsh98HeGTBgIIWlE57+ba4bTBF
-	 c9OOQIszz4QvDc4hb9Ou6LJ/zslrN/htL+PzQPA0=
+	b=WlW7clsEp+OQXAYSipSiIwj0vR93GyXOTQ7yxI1N9fXnRJjjqorjcD7f9zkJQJXaY
+	 2Wzf97CJHK9lKZsoir/oVyvP+ZH6nucm+alVfZhynK4hfxU+Ra/eOFRQGzo9QiqKki
+	 BSd/F8Na2kboGMZkqcrMBJKtBr/JOjD86Zh7ss5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/82] net: hns3: fix kernel crash when uninstalling driver
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 44/66] USB: serial: option: add Quectel RG650V
 Date: Fri, 15 Nov 2024 07:37:53 +0100
-Message-ID: <20241115063726.149438947@linuxfoundation.org>
+Message-ID: <20241115063724.435202409@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit df3dff8ab6d79edc942464999d06fbaedf8cdd18 ]
+commit 3b05949ba39f305b585452d0e177470607842165 upstream.
 
-When the driver is uninstalled and the VF is disabled concurrently, a
-kernel crash occurs. The reason is that the two actions call function
-pci_disable_sriov(). The num_VFs is checked to determine whether to
-release the corresponding resources. During the second calling, num_VFs
-is not 0 and the resource release function is called. However, the
-corresponding resource has been released during the first invoking.
-Therefore, the problem occurs:
+Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
+The composition is DIAG / NMEA / AT / AT / QMI.
 
-[15277.839633][T50670] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-...
-[15278.131557][T50670] Call trace:
-[15278.134686][T50670]  klist_put+0x28/0x12c
-[15278.138682][T50670]  klist_del+0x14/0x20
-[15278.142592][T50670]  device_del+0xbc/0x3c0
-[15278.146676][T50670]  pci_remove_bus_device+0x84/0x120
-[15278.151714][T50670]  pci_stop_and_remove_bus_device+0x6c/0x80
-[15278.157447][T50670]  pci_iov_remove_virtfn+0xb4/0x12c
-[15278.162485][T50670]  sriov_disable+0x50/0x11c
-[15278.166829][T50670]  pci_disable_sriov+0x24/0x30
-[15278.171433][T50670]  hnae3_unregister_ae_algo_prepare+0x60/0x90 [hnae3]
-[15278.178039][T50670]  hclge_exit+0x28/0xd0 [hclge]
-[15278.182730][T50670]  __se_sys_delete_module.isra.0+0x164/0x230
-[15278.188550][T50670]  __arm64_sys_delete_module+0x1c/0x30
-[15278.193848][T50670]  invoke_syscall+0x50/0x11c
-[15278.198278][T50670]  el0_svc_common.constprop.0+0x158/0x164
-[15278.203837][T50670]  do_el0_svc+0x34/0xcc
-[15278.207834][T50670]  el0_svc+0x20/0x30
+T:  Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0122 Rev=05.15
+S:  Manufacturer=Quectel
+S:  Product=RG650V-EU
+S:  SerialNumber=xxxxxxx
+C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
 
-For details, see the following figure.
-
-     rmmod hclge              disable VFs
-----------------------------------------------------
-hclge_exit()            sriov_numvfs_store()
-  ...                     device_lock()
-  pci_disable_sriov()     hns3_pci_sriov_configure()
-                            pci_disable_sriov()
-                              sriov_disable()
-    sriov_disable()             if !num_VFs :
-      if !num_VFs :               return;
-        return;                 sriov_del_vfs()
-      sriov_del_vfs()             ...
-        ...                       klist_put()
-        klist_put()               ...
-        ...                     num_VFs = 0;
-      num_VFs = 0;        device_unlock();
-
-In this patch, when driver is removing, we get the device_lock()
-to protect num_VFs, just like sriov_numvfs_store().
-
-Fixes: 0dd8a25f355b ("net: hns3: disable sriov before unload hclge layer")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241101091507.3644584-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.c b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-index 67b0bf310daaa..9a63fbc694083 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-@@ -25,8 +25,11 @@ void hnae3_unregister_ae_algo_prepare(struct hnae3_ae_algo *ae_algo)
- 		pci_id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
- 		if (!pci_id)
- 			continue;
--		if (IS_ENABLED(CONFIG_PCI_IOV))
-+		if (IS_ENABLED(CONFIG_PCI_IOV)) {
-+			device_lock(&ae_dev->pdev->dev);
- 			pci_disable_sriov(ae_dev->pdev);
-+			device_unlock(&ae_dev->pdev->dev);
-+		}
- 	}
- }
- EXPORT_SYMBOL(hnae3_unregister_ae_algo_prepare);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -251,6 +251,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_VENDOR_ID			0x2c7c
+ /* These Quectel products use Quectel's vendor ID */
+ #define QUECTEL_PRODUCT_EC21			0x0121
++#define QUECTEL_PRODUCT_RG650V			0x0122
+ #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
+ #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
+ #define QUECTEL_PRODUCT_EC25			0x0125
+@@ -1273,6 +1274,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
+ 
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
 
 
 
