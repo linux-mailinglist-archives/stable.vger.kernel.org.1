@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652C39CD7AE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150019CD755
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A8A6281672
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94D4DB251F0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EF2126C17;
-	Fri, 15 Nov 2024 06:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20CF18871D;
+	Fri, 15 Nov 2024 06:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iihTPETX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frqOoTk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0044D18893C;
-	Fri, 15 Nov 2024 06:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D12818786A;
+	Fri, 15 Nov 2024 06:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653014; cv=none; b=eu4cRsWv7hHYh2p7wRGzcDhnwVbTvtkGurX8GjGkOy+6bqEjUZzCWXd5BIo5C58BZZDp3uSYjAB2st0YfA3sF7hXj4husIK3HHKbM2tDpwmmOCZfVcpVRutruDHHcdkNqLpL6fm6/EGf217d4nvLUsyO2sv4Q76J7qfziSSrc9o=
+	t=1731652824; cv=none; b=AQ3rtE1HvGzdTkjlDzeIy1hqaXwmBlyp7Tn5epPRdWiy6xqNIyDilK2dv83Yf9+6LaR4Bt5VexBBZu7vMZ5+R3qX4eP5m6b8vmgDCAHMHKb6TcjDMu/lgonp+Hr+dQVIwMMeT6atbzrzN6oINKP5GEG4S8KKHmMneIgANXdyZOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653014; c=relaxed/simple;
-	bh=iptLyuJ6nMekJ/P5zDbSIi+1YCrFQNS/KNuAuxoNH54=;
+	s=arc-20240116; t=1731652824; c=relaxed/simple;
+	bh=BVH3oS+/RTQzV2gnSfkaNgZyK08qJiRoFaB5ID9w+lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNURpkKe+lXszKlVlIJQHMqoybKXCobgu9kpenUat4kYZyI5Hba9hS8FbnS24T1n/7gCPD7VcUB2SfpKJwnDVWtUskuA0Jhzm+c8R9bpACzMe2fJ10VZcT0EnD9rf8giZ9eu5OI/llOJBLp2OuuSITZu2+st4XDhuAUh4XBUtN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iihTPETX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6037AC4CECF;
-	Fri, 15 Nov 2024 06:43:33 +0000 (UTC)
+	 MIME-Version; b=n1BUljcrvuYx2hgFL3o5Ylj5ZIC7aSFoPo0aVrWwAQuCqCMjbWLP9x31s0+rdsTrxQ0Q1mxdoiMhoCDx0oYsXPWQi9PlZz94WnKl3XcYGEI8UNhNZ2wV75o82HBS7GBkpNpwOYyGwp6Y1e5Fvw4vgzorOvPt69r+HgLLQb1Ux3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frqOoTk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9132C4CECF;
+	Fri, 15 Nov 2024 06:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653013;
-	bh=iptLyuJ6nMekJ/P5zDbSIi+1YCrFQNS/KNuAuxoNH54=;
+	s=korg; t=1731652824;
+	bh=BVH3oS+/RTQzV2gnSfkaNgZyK08qJiRoFaB5ID9w+lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iihTPETXVwDLjpi8jBMve6CV3WmhjvYz1hcfr0ZdS2QyRlmk66yM8FBRJ0glP7HpM
-	 10zg0AEbvKKTNkIYk6GvTQBlwcKB2tc5+bNv4p6bVH5n+prq+u7L4r2IG4xh2IESsS
-	 Qzlwh9H1joJE2em7CK1vW9YSSD6IvaXFjZIq66nk=
+	b=frqOoTk2VF0YQOCfd7k61TBLaQ1/EKGtYBAy+AA0Sl4IBTU0Gxq7y96ZNRAmYyo5q
+	 Zk+zU+JUBLxoZYEXdiGrM0NrThUlGfOT57BAqgdCog2/7D9dMb81fOkhrJ6GODbG5V
+	 Syw9tSTbyGQMqTXTPTwzALwZ1hHM7xYwR8oizryg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.4 29/66] dm cache: optimize dirty bit checking with find_next_bit when resizing
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 4.19 25/52] nfs: Fix KMSAN warning in decode_getfattr_attrs()
 Date: Fri, 15 Nov 2024 07:37:38 +0100
-Message-ID: <20241115063723.894340994@linuxfoundation.org>
+Message-ID: <20241115063723.765590435@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit f484697e619a83ecc370443a34746379ad99d204 upstream.
+commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
 
-When shrinking the fast device, dm-cache iteratively searches for a
-dirty bit among the cache blocks to be dropped, which is less efficient.
-Use find_next_bit instead, as it is twice as fast as the iterative
-approach with test_bit.
+Fix the following KMSAN warning:
 
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
+Tainted: [B]=BAD_PAGE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+=====================================================
+=====================================================
+BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_generic+0x806/0xb00
+ nfs4_xdr_dec_getattr+0x1de/0x240
+ rpcauth_unwrap_resp_decode+0xab/0x100
+ rpcauth_unwrap_resp+0x95/0xc0
+ call_decode+0x4ff/0xb50
+ __rpc_execute+0x57b/0x19d0
+ rpc_execute+0x368/0x5e0
+ rpc_run_task+0xcfe/0xee0
+ nfs4_proc_getattr+0x5b5/0x990
+ __nfs_revalidate_inode+0x477/0xd00
+ nfs_access_get_cached+0x1021/0x1cc0
+ nfs_do_access+0x9f/0xae0
+ nfs_permission+0x1e4/0x8c0
+ inode_permission+0x356/0x6c0
+ link_path_walk+0x958/0x1330
+ path_lookupat+0xce/0x6b0
+ filename_lookup+0x23e/0x770
+ vfs_statx+0xe7/0x970
+ vfs_fstatat+0x1f2/0x2c0
+ __se_sys_newfstatat+0x67/0x880
+ __x64_sys_newfstatat+0xbd/0x120
+ x64_sys_call+0x1826/0x3cf0
+ do_syscall_64+0xd0/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
+decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
+initialized.
+
+Fix the issue by initializing fattr->mdsthreshold to NULL in
+nfs_fattr_init().
+
+Cc: stable@vger.kernel.org # v3.5.x
+Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/nfs/inode.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -3009,14 +3009,14 @@ static bool can_resize(struct cache *cac
- 	/*
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
--	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		if (is_dirty(cache, new_size)) {
--			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--			      cache_device_name(cache),
--			      (unsigned long long) from_cblock(new_size));
--			return false;
--		}
--		new_size = to_cblock(from_cblock(new_size) + 1);
-+	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+					   from_cblock(cache->cache_size),
-+					   from_cblock(new_size)));
-+	if (new_size != cache->cache_size) {
-+		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+		      cache_device_name(cache),
-+		      (unsigned long long) from_cblock(new_size));
-+		return false;
- 	}
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1483,6 +1483,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
+ 	fattr->gencount = nfs_inc_attr_generation_counter();
+ 	fattr->owner_name = NULL;
+ 	fattr->group_name = NULL;
++	fattr->mdsthreshold = NULL;
+ }
+ EXPORT_SYMBOL_GPL(nfs_fattr_init);
  
- 	return true;
 
 
 
