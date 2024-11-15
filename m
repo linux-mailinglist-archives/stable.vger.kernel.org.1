@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-93403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C61D9CD912
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C529CD843
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1090B2779C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB752B24E67
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BAA188015;
-	Fri, 15 Nov 2024 06:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182F018785C;
+	Fri, 15 Nov 2024 06:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjeVevep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3v6ZQU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F3017DFFD;
-	Fri, 15 Nov 2024 06:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867A2BB1B;
+	Fri, 15 Nov 2024 06:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653806; cv=none; b=Cmtqa3S3fYT+y4IQ/WTNsJmzWnqN0BnSEhtuYshKNcSZ74TppE2Oq/A5f/uX2a5FHXAeZg5ZlKZfyV+1gx6YStC1Hnfm1IkqjnfnAqAnnEQljDQ4hL7jyfFbmZN9izpmdoAvvbQIKvnUpzAY5g6qQ2txm1qjlCKNC3qJ9eS2P6E=
+	t=1731653339; cv=none; b=R1MNTG4MxARlMl14j73GwKWMb7FM7CuPhzM6oXmy0d85cU5iviIUlCdpykFUNkZURX7rpLzR9R+71Jt9pRInKKh9G0Qv2OgyZcKtVTN5C8+Nta2vPSbPMG/P1X+zVNceG+K3qRQkmaU5tH1ZjcYYFiP46qwi6XvKUE6iyeoigqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653806; c=relaxed/simple;
-	bh=7qtLGnPaMS/oucIfoeB8PxE9UTSDOCjrLhrHZZq4HyM=;
+	s=arc-20240116; t=1731653339; c=relaxed/simple;
+	bh=wQG0VW6v/0Dr54xvykwlRPG22nki01XYYFh3kqjBIL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LewWqmzVkxd/OuUEqxoEv+yZpsaL03G1/ZHFhfgTD0YRde2T7VMOvaSNJOnOvaZO3Z1P1BRyDeK0ePOPjxxKOoaFHZlpaHa01rD4EW9jYU940ojAoD98/nW69OidpdjVhVCv0KlvqtNISv2H2+up6gyVu2EjwXeTyETEKGpjuP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjeVevep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E79C4CECF;
-	Fri, 15 Nov 2024 06:56:45 +0000 (UTC)
+	 MIME-Version; b=cGmLbDrp7cDeLznHUcrstExWQP9514Aue+Pas0OWEHvcmcE5lQQsvdGz3NauKWFWjUOforNs5tI1HSv4t92VH+zC8Vd4SZZPMsK1HfpiPAWRFgbWzVoGOFVtwQUb8zgw1DZ4JCYD1R4n/4ofEiSjKAJxl1vTlE/+6SxWovk3klk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3v6ZQU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35363C4CECF;
+	Fri, 15 Nov 2024 06:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653805;
-	bh=7qtLGnPaMS/oucIfoeB8PxE9UTSDOCjrLhrHZZq4HyM=;
+	s=korg; t=1731653339;
+	bh=wQG0VW6v/0Dr54xvykwlRPG22nki01XYYFh3kqjBIL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjeVevepotEYaMhvD1Y2JWzdve/vyI7p11zwPWJ1JsAd/eLNOff2xOFj+H7uDLLJr
-	 NhzSxIRAFT1a24CZ/XQrMrRlKPV6FpNPqRna9xk7M0l+OX1S/UXXbKa+ujmbb1mplQ
-	 Cq2UFqbBFzmZwkVLnSAovN8hlys+U76ijBMbZFDE=
+	b=B3v6ZQU0AX4OlMwbFh+p3TESMSHoa0Cs4a2bHsBbGEzY1iAdDJL5hZXFUBYnpb0PH
+	 wh0UXPZX3YN4bpM/PMnnrua7G2O6wuZeWqtFp3BbWf9fB7tdI2YSdiSfxFnWUfCwr3
+	 m1ZKtYAV8Xk87qEziYKA666ukEvrY+zEst2/EUqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 42/82] fs: create kiocb_{start,end}_write() helpers
+Subject: [PATCH 6.11 56/63] bpf: Check validity of link->type in bpf_link_show_fdinfo()
 Date: Fri, 15 Nov 2024 07:38:19 +0100
-Message-ID: <20241115063727.075441626@linuxfoundation.org>
+Message-ID: <20241115063727.930162831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-Commit ed0360bbab72b829437b67ebb2f9cfac19f59dfe upstream.
+[ Upstream commit 8421d4c8762bd022cb491f2f0f7019ef51b4f0a7 ]
 
-aio, io_uring, cachefiles and overlayfs, all open code an ugly variant
-of file_{start,end}_write() to silence lockdep warnings.
+If a newly-added link type doesn't invoke BPF_LINK_TYPE(), accessing
+bpf_link_type_strs[link->type] may result in an out-of-bounds access.
 
-Create helpers for this lockdep dance so we can use the helpers in all
-the callers.
+To spot such missed invocations early in the future, checking the
+validity of link->type in bpf_link_show_fdinfo() and emitting a warning
+when such invocations are missed.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Message-Id: <20230817141337.1025891-4-amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241024013558.1135167-3-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fs.h | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ kernel/bpf/syscall.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index a7d839b196069..4e475ded5cf58 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1797,6 +1797,41 @@ static inline bool sb_start_intwrite_trylock(struct super_block *sb)
- 	return __sb_start_write_trylock(sb, SB_FREEZE_FS);
- }
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 19b590b5aaec9..b282ed1250358 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3136,13 +3136,17 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
+ {
+ 	const struct bpf_link *link = filp->private_data;
+ 	const struct bpf_prog *prog = link->prog;
++	enum bpf_link_type type = link->type;
+ 	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
  
-+/**
-+ * kiocb_start_write - get write access to a superblock for async file io
-+ * @iocb: the io context we want to submit the write with
-+ *
-+ * This is a variant of sb_start_write() for async io submission.
-+ * Should be matched with a call to kiocb_end_write().
-+ */
-+static inline void kiocb_start_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
+-	seq_printf(m,
+-		   "link_type:\t%s\n"
+-		   "link_id:\t%u\n",
+-		   bpf_link_type_strs[link->type],
+-		   link->id);
++	if (type < ARRAY_SIZE(bpf_link_type_strs) && bpf_link_type_strs[type]) {
++		seq_printf(m, "link_type:\t%s\n", bpf_link_type_strs[type]);
++	} else {
++		WARN_ONCE(1, "missing BPF_LINK_TYPE(...) for link type %u\n", type);
++		seq_printf(m, "link_type:\t<%u>\n", type);
++	}
++	seq_printf(m, "link_id:\t%u\n", link->id);
 +
-+	sb_start_write(inode->i_sb);
-+	/*
-+	 * Fool lockdep by telling it the lock got released so that it
-+	 * doesn't complain about the held lock when we return to userspace.
-+	 */
-+	__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
-+}
-+
-+/**
-+ * kiocb_end_write - drop write access to a superblock after async file io
-+ * @iocb: the io context we sumbitted the write with
-+ *
-+ * Should be matched with a call to kiocb_start_write().
-+ */
-+static inline void kiocb_end_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	/*
-+	 * Tell lockdep we inherited freeze protection from submission thread.
-+	 */
-+	__sb_writers_acquired(inode->i_sb, SB_FREEZE_WRITE);
-+	sb_end_write(inode->i_sb);
-+}
- 
- extern bool inode_owner_or_capable(const struct inode *inode);
- 
+ 	if (prog) {
+ 		bin2hex(prog_tag, prog->tag, sizeof(prog->tag));
+ 		seq_printf(m,
 -- 
 2.43.0
 
