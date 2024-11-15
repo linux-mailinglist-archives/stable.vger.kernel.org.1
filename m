@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-93197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C825D9CD7DF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89CB9CD935
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A27EB2674F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FAA21F22305
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C941885AA;
-	Fri, 15 Nov 2024 06:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA871885BF;
+	Fri, 15 Nov 2024 06:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ed8VSVJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDTAk/l8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E21339A4;
-	Fri, 15 Nov 2024 06:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD967185924;
+	Fri, 15 Nov 2024 06:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653114; cv=none; b=u7FsZ14CWOh42OkQLWw4Zlp2xkTEl23rKiaElXKOOygCZIqJJaD8qi0b9dAnwtdT+zFk7G/iRk4LqmhwFWbMvmiEukHpjohneBYg3J/aem908YV1Hb1xJOGNNi8/tzMOPXdO40JLyWue1fc2pK+tOzxMmnw6+3VeDS0cOWjaWs8=
+	t=1731653886; cv=none; b=kmqzBxP8d3n/cmkheV2y+OCpZ8ymw3YvfsCxLoJy5LHiZVas0mH+F4UWnXw7yhJ/M5Ro3R2X/y73DE4IHG7r7uOtMOd/F85psjbIjHmWBhw96oPa7i5D3KxgPDSAX789ETa9QGFKyF13tL1Ly2loQWGkfSv5MA8+2NTlpcvy9io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653114; c=relaxed/simple;
-	bh=G49gid9y6XkhmY9d4qPJ/Y6r0vNAtVIyu9A/g4Ov+pE=;
+	s=arc-20240116; t=1731653886; c=relaxed/simple;
+	bh=N3tDIAVgXV+6lUo4ixu33LI3zNwfM+Sum/A10oSxkGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOUgg+ESMVivVgXoE9j5q7n7yZaXIKQk9usj2rlGwE3ThmsSo8kvP+MvZ5X4IbkVxfhsMXDjKgyZQzr1cX5kBY47d7VkTlvs6j3EUaA8gqPBMJPm4mvq9vK9OvM15SLUDGraSZMgs1xKGWCKwcu6D5eo+FUyhCXMj/vcaNcGEwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ed8VSVJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F09C4CECF;
-	Fri, 15 Nov 2024 06:45:13 +0000 (UTC)
+	 MIME-Version; b=mBAeDZbCpw7AZ1t3ixad36StHleLteFKMlb2woo98hU3MHE5g2wahRi3QACntiu/ljHrgCKZCuzyMfKmHgQUBOarpDwo6UJpjZ84QkZWyIl+0XqvjZOVA5jQ9+/WjuhYrf8yNsP1nq6uusRFYJO6wqAhAkHwD8U/xyFx1/ZJqH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDTAk/l8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AA5C4CECF;
+	Fri, 15 Nov 2024 06:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653113;
-	bh=G49gid9y6XkhmY9d4qPJ/Y6r0vNAtVIyu9A/g4Ov+pE=;
+	s=korg; t=1731653885;
+	bh=N3tDIAVgXV+6lUo4ixu33LI3zNwfM+Sum/A10oSxkGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed8VSVJRrGpjIABlYmM3/Co1LsRHmIsBBdLaZA9K5IGM2PAyMvt/fxF05KDru2mud
-	 BBquLxNCPyPWQlBkgy17CciSkM+AehelAsdquyEPTxg95/WbYbapZlZT7XMt25W9CX
-	 1K4eq2H908562QIl3n37kS2foQIVV2aO312JE1LY=
+	b=EDTAk/l8gDn1p8sHnk/ophT5+lefb2Rn2tHwt0uW5u1K916Rq52KlWWGU+GFkhye+
+	 uLI52WYDyakTOB3hT3sMQLAdi74j/8H00l0NowVM73I5k8hfYlEaW+5dMZtNVjd+f9
+	 0QuhtpBGGfG0swgbrbXhOpvEKnS14h1iPWCkmNDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	2639161967 <2639161967@qq.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 58/66] powerpc/powernv: Free name on error in opal_event_init()
-Date: Fri, 15 Nov 2024 07:38:07 +0100
-Message-ID: <20241115063724.935439061@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.10 31/82] media: pulse8-cec: fix data timestamp at pulse8_setup()
+Date: Fri, 15 Nov 2024 07:38:08 +0100
+Message-ID: <20241115063726.685009417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
+commit ba9cf6b430433e57bfc8072364e944b7c0eca2a4 upstream.
 
-In opal_event_init() if request_irq() fails name is not freed, leading
-to a memory leak. The code only runs at boot time, there's no way for a
-user to trigger it, so there's no security impact.
+As pointed by Coverity, there is a hidden overflow condition there.
+As date is signed and u8 is unsigned, doing:
 
-Fix the leak by freeing name in the error path.
+	date = (data[0] << 24)
 
-Reported-by: 2639161967 <2639161967@qq.com>
-Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With a value bigger than 07f will make all upper bits of date
+0xffffffff. This can be demonstrated with this small code:
+
+<code>
+typedef int64_t time64_t;
+typedef uint8_t u8;
+
+int main(void)
+{
+	u8 data[] = { 0xde ,0xad , 0xbe, 0xef };
+	time64_t date;
+
+	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+	printf("Invalid data = 0x%08lx\n", date);
+
+	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+	printf("Expected data = 0x%08lx\n", date);
+
+	return 0;
+}
+</code>
+
+Fix it by converting the upper bit calculation to unsigned.
+
+Fixes: cea28e7a55e7 ("media: pulse8-cec: reorganize function order")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/cec/usb/pulse8/pulse8-cec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index dcec0f760c8f8..522bda391179a 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -285,6 +285,7 @@ int __init opal_event_init(void)
- 				 name, NULL);
- 		if (rc) {
- 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
-+			kfree(name);
- 			continue;
- 		}
- 	}
+diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+index ba67587bd43e..171366fe3544 100644
+--- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
++++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+@@ -685,7 +685,7 @@ static int pulse8_setup(struct pulse8 *pulse8, struct serio *serio,
+ 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
+ 	if (err)
+ 		return err;
+-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
++	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+ 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
+ 
+ 	dev_dbg(pulse8->dev, "Persistent config:\n");
 -- 
-2.43.0
+2.47.0
 
 
 
