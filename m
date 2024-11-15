@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-93206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECE49CD7E9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B214D9CD83A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC377B25B6E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 786A5283A16
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D4418734F;
-	Fri, 15 Nov 2024 06:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A613618785C;
+	Fri, 15 Nov 2024 06:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUz53xTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl9/Nlue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E954EAD0;
-	Fri, 15 Nov 2024 06:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66218186294;
+	Fri, 15 Nov 2024 06:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653144; cv=none; b=H+3QLJZXBHa8k8yHth/SEZrDCXrHyZ7d2R02WrGd8TcUln2GWCqnYCZ28IC/0gBEB5DzeSgsaBfVcyDaueSTGXtvDNjPpU6j79NnP16sa/AYmOR/4Gw1UsjcJWpxEW8q0bVEDFU6NJSjkBgpqODwfVBNEl7GbwOxDZopcCzOvx0=
+	t=1731653322; cv=none; b=AJx+6C5GJDMKUDjZSm66VVoiGoctx+w2fatP4BQ687f+XJdnFdBr2lcWTwIhHhoa8XeHJRguCmQ9Set4nQTA9S25LIMIE9Y6pZ6twiKUNoVxQEY1U9ZRJvRIzFVdbJEFDDvlCkhFQU/Yi3p3mNJo5eRSYfDemvkvcAWtb19Z0oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653144; c=relaxed/simple;
-	bh=tgG797msYoN74wgraK9s4WKonhCtafz/AzEE5KPcYVI=;
+	s=arc-20240116; t=1731653322; c=relaxed/simple;
+	bh=s4S8x/v5Y8vAVJMTfRP3BftDpM5zKNbn7dOak2WRv3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvvQ+05ziyVrpzEmF0scEQhc3XxmO1+f0FgpuvgFMGv+35WFhV4lEVVqj6aWZy3Kdsv4+OcNpRlbRoTqfZmKVGdCpKHAUZRYbydm04RfPrVHjSaQeIOkNmesHZGC4txptgY8fhUdF6o2CfcJojniDQY67XrTO6huXFymBOIEMYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUz53xTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E20C4CECF;
-	Fri, 15 Nov 2024 06:45:43 +0000 (UTC)
+	 MIME-Version; b=hT0FqHMXj/WVbucRZB8m7i8xycdXx5X+lifeKYi4M6TO8meCNXGt/S9xpMbUeAv+uAJTSLQsHFZonjAfJkZW9dUKuQSMoy5mQ0Ra5GfgV59Sd4D/fR++W2X2WaS4oM1t3iMtMzzMruBzwWp9g6jmwIzvl6YsSpwvFXp0eR0d92A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl9/Nlue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAABC4CECF;
+	Fri, 15 Nov 2024 06:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653144;
-	bh=tgG797msYoN74wgraK9s4WKonhCtafz/AzEE5KPcYVI=;
+	s=korg; t=1731653322;
+	bh=s4S8x/v5Y8vAVJMTfRP3BftDpM5zKNbn7dOak2WRv3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUz53xTYhLnVGmb9pMkv1z3KRaGem+jzie4a1r8NCbx56ZA+hDbnL7YNrnmIoZeGk
-	 YsgYeYdURGeWI1IOeR+5Y4W8l4ymj+Oc5FpiIHXE3E+FOuBU1EYYogh3dyx620vFn9
-	 S2Eyo4Wem+ibr0xwXKwFxQHc4iEw9fSbYlH+dLyo=
+	b=Kl9/NluezdmoUzx2MRMpwWr6R9oOHEcTu49MNTkGnKv/tGp+DsaAr/cz8U4gh2PCz
+	 c20Uj5mSoiUzvFEhln/BDNkrqlZzxjGoATYAumNTye9h86H9zYgy27hDubDHmoQBBo
+	 Z+K8q21h13zOHk6iK82UhNit6Gpw6O9/30PyoFrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Omar Sandoval <osandov@fb.com>
-Subject: [PATCH 5.4 66/66] 9p: fix slab cache name creation for real
+	Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 52/63] LoongArch: Use "Exception return address" to comment ERA
 Date: Fri, 15 Nov 2024 07:38:15 +0100
-Message-ID: <20241115063725.221391282@linuxfoundation.org>
+Message-ID: <20241115063727.790066555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Yanteng Si <siyanteng@cqsoftware.com.cn>
 
-commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
+[ Upstream commit b69269c870ece1bc7d2e3e39ca76f4602f2cb0dd ]
 
-This was attempted by using the dev_name in the slab cache name, but as
-Omar Sandoval pointed out, that can be an arbitrary string, eg something
-like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
-if a filename contains a slash.
+The information contained in the comment for LOONGARCH_CSR_ERA is even
+less informative than the macro itself, which can cause confusion for
+junior developers. Let's use the full English term.
 
-So just make it use a sequence counter, and make it an atomic_t to avoid
-any possible races or locking issues.
-
-Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
-Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
-Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/include/asm/loongarch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1001,6 +1001,7 @@ error:
- struct p9_client *p9_client_create(const char *dev_name, char *options)
- {
- 	int err;
-+	static atomic_t seqno = ATOMIC_INIT(0);
- 	struct p9_client *clnt;
- 	char *client_id;
- 	char *cache_name;
-@@ -1056,7 +1057,8 @@ struct p9_client *p9_client_create(const
- 	if (err)
- 		goto close_trans;
+diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
+index 04a78010fc725..ab6985d9e49f0 100644
+--- a/arch/loongarch/include/asm/loongarch.h
++++ b/arch/loongarch/include/asm/loongarch.h
+@@ -256,7 +256,7 @@
+ #define  CSR_ESTAT_IS_WIDTH		14
+ #define  CSR_ESTAT_IS			(_ULCAST_(0x3fff) << CSR_ESTAT_IS_SHIFT)
  
--	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	cache_name = kasprintf(GFP_KERNEL,
-+		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
- 	if (!cache_name) {
- 		err = -ENOMEM;
- 		goto close_trans;
+-#define LOONGARCH_CSR_ERA		0x6	/* ERA */
++#define LOONGARCH_CSR_ERA		0x6	/* Exception return address */
+ 
+ #define LOONGARCH_CSR_BADV		0x7	/* Bad virtual address */
+ 
+-- 
+2.43.0
+
 
 
 
