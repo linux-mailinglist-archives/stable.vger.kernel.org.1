@@ -1,223 +1,128 @@
-Return-Path: <stable+bounces-93570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF8E9CF2A3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 18:17:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7962D9CF2D0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 18:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F317A28AAE0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D9CB291470
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968341D63FE;
-	Fri, 15 Nov 2024 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF87C1D619D;
+	Fri, 15 Nov 2024 17:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ElRaawZC";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="cz1IQV29";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="cvDKSh+/";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kywAq8i+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcXaPIm6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB215573A;
-	Fri, 15 Nov 2024 17:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879CD84D02;
+	Fri, 15 Nov 2024 17:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731691044; cv=none; b=iaR//kcfSJb52+XhOqX0KcHU1SDUwXI4qG6zSYvEvhWwN5SsbwON8VNzzy1SwL+vX5sdac+dtOM+23h46rHwlvQ39f/9Z+cCDFpObocBGUSK7ATtIU2Z4gTZPjAksWUDcNG8cOQZmi4zFMsZu0eIFuCxQx/L95cf1u8Ok1D9TR8=
+	t=1731691538; cv=none; b=h6SFhldbPj5i8ggZs0+V2tjhEDS1Am+mZt0HCDPFs+dph/XKHQ8C1d2x5wkzFAr18l5lTuD2/L1GgA2g/2m5m66DkUwHonmlUKU6uMNefc8uvSOJyJNR5Xe1erYLZg7JgSe7jHKoqRFXcisAgrcxoyNuPgBa5xMxx9kKsUg7ILM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731691044; c=relaxed/simple;
-	bh=Corilu2k2CmaQbvTHiOarAKIfUM9CEyFn15X1vUWQ4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uowASclBS2O9/rridkD+zH2BfYVniXvOnckGvkuzNfEnxKMwzSITsbaDr8sxMDms3Si25LJzVKYpio6rCRNvJepNHGpz7IaMy9E4mxc6vKK7C4e7A6/2d6Sy7g0sdWrD1aSPBo5jLZGgVfvjxDx+YWrWGw4bN+ypEQwobraQ+G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ElRaawZC; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=cz1IQV29; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=cvDKSh+/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kywAq8i+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1FDA82119F;
-	Fri, 15 Nov 2024 17:17:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731691040; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
-	b=ElRaawZC9Yy8VlMMtbcpdsxywhfSrwT0Wb+eWQzhVvNeqt5PmITyLHQbRRQhs4CtIBBVrS
-	6yKEe8bEakEAl9rTvcKoEF9BoEyO01up3Odmuw2tp6Ijv2ceFyup+Gq216uAzCgalGJ/lD
-	Sy9y0WF3cuzkj9qIXhw/f/73JISVL24=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731691040;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
-	b=cz1IQV291zJGFfouKAX3J76r84N2XM3eUhwfyCxhmgwaLH922eZhXf8ao6k8435OApejMi
-	FY47dXtzj00k7fDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731691039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
-	b=cvDKSh+/kc9z5R5ElaOvLoXRUMa6ucFPNEmc3ldasVAtHo1Qaqnb1UfzHVvqPtynCjGxlN
-	mNGTqhM4VA5MvTTPtdC3yi12DF0hAEqZ9lQIVxzyCg7VtyDLMCIxcXXp8+Bzrj+n6KiBXB
-	HbNS+Zogvqi19M2OV+70rNeg4TTkDQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731691039;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
-	b=kywAq8i+YvYtHRQ3IDMk0Qnyx2swLxjkcvjC3/ZZ1vJbC3PdvuLJyTCoBNbns5VULqwYiV
-	XFs1s+R+9PH+NbDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F21D313485;
-	Fri, 15 Nov 2024 17:17:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C72zOh6CN2fBXQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 15 Nov 2024 17:17:18 +0000
-Message-ID: <cee4e74b-3d27-4c78-acea-788fff2bc3c2@suse.cz>
-Date: Fri, 15 Nov 2024 18:17:18 +0100
+	s=arc-20240116; t=1731691538; c=relaxed/simple;
+	bh=B5HD6FNYjbwvelKHX9O/ZdMyYIKdSlEvRVWHBFf74j8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IhoWxrCvGUMEc9oMLP/lCgnvFt4dAPy7peiGQ2E4w7qlQTxGqTxVaL17GTAxa7hoF6l2FB+WZFwRoD/Emr/xu1ElQ3S0iPkHKrfNl21CMcjJ+KR7o0L1Nuw4Spd7wAwNTv6tCVSRtcwIb7yyZP6soP6HTtdVxXWlgLO8TRt4n6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcXaPIm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7167C4CECF;
+	Fri, 15 Nov 2024 17:25:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731691537;
+	bh=B5HD6FNYjbwvelKHX9O/ZdMyYIKdSlEvRVWHBFf74j8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=WcXaPIm6WdUXfZSjMdG+JVztfyMit+f2yPV6YeN1NZzQXkpO0wmt1PgI3au1RF50R
+	 LHUBGZ0Cvt86wCrxygPt98TmAcFHPzMWjkT3D1CDHcOtALCHGLjhUqBMq2esM83LRq
+	 dC66w/GliM5szwN6wE+X7c/6i3JYnQuI/lnIZY+ygQMmilIqVDGWBQ0s7jdMYZPnhZ
+	 LGzZEKSxuQVpXUUyDg6A0Nff5ZAb+Z2yKW0E2cNDRAc4xifpGzAGBPW56dlr5j/X/S
+	 hRyM4fl66Rjw6Ohf2wPWaNZLQ3guLNCoFS6Dfkw4CK7FEwjGTwli+8n9i49ABjNtR7
+	 cN9Lq0wdTNFLw==
+Date: Fri, 15 Nov 2024 11:25:34 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Andrea della Porta <andrea.porta@suse.com>,
+	Rob Herring <robh@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczynski <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Saravana Kannan <saravanak@google.com>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: of_property: Assign PCI instead of CPU bus address
+ to dynamic PCI nodes
+Message-ID: <20241115172534.GA2044163@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y 0/5] fix error handling in mmap_region() and
- refactor (hotfixes)
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, stable@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Linus Torvalds <torvalds@linux-foundation.org>, Peter Xu
- <peterx@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
- "David S . Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>
-References: <cover.1731672733.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <cover.1731672733.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,oracle.com,google.com,vger.kernel.org,kvack.org,redhat.com,arm.com,kernel.org,davemloft.net,gaisler.com,HansenPartnership.com,gmx.de];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241108094256.28933-1-andrea.porta@suse.com>
 
-On 11/15/24 13:41, Lorenzo Stoakes wrote:
-> Critical fixes for mmap_region(), backported to 6.6.y.
+On Fri, Nov 08, 2024 at 10:42:56AM +0100, Andrea della Porta wrote:
+> When populating "ranges" property for a PCI bridge or endpoint,
+> of_pci_prop_ranges() incorrectly use the CPU bus address of the resource.
+> In such PCI nodes, the window should instead be in PCI address space. Call
+> pci_bus_address() on the resource in order to obtain the PCI bus
+> address.
 > 
-> Some notes on differences from upstream:
-> 
-> * In this kernel is_shared_maywrite() does not exist and the code uses
->   VM_SHARED to determine whether mapping_map_writable() /
->   mapping_unmap_writable() should be invoked. This backport therefore
->   follows suit.
-> 
-> * Each version of these series is confronted by a slightly different
->   mmap_region(), so we must adapt the change for each stable version. The
->   approach remains the same throughout, however, and we correctly avoid
->   closing the VMA part way through any __mmap_region() operation.
-> 
-> Lorenzo Stoakes (5):
->   mm: avoid unsafe VMA hook invocation when error arises on mmap hook
->   mm: unconditionally close VMAs on error
->   mm: refactor map_deny_write_exec()
->   mm: refactor arch_calc_vm_flag_bits() and arm64 MTE handling
->   mm: resolve faulty mmap_region() error path behaviour
+> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Herve Codina <herve.codina@bootlin.com>
 
-I don't know if review tags are actually applied to stable backports on top
-of the original reviews, but I've checked so FTR:
+I picked this up on pci/of for v6.13, thanks!  Rob, let me know if
+you'd prefer to take it or ack/review it.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
->  arch/arm64/include/asm/mman.h  |  10 ++-
->  arch/parisc/include/asm/mman.h |   5 +-
->  include/linux/mman.h           |  28 ++++++--
->  mm/internal.h                  |  45 ++++++++++++
->  mm/mmap.c                      | 128 ++++++++++++++++++---------------
->  mm/mprotect.c                  |   2 +-
->  mm/nommu.c                     |   9 ++-
->  mm/shmem.c                     |   3 -
->  8 files changed, 153 insertions(+), 77 deletions(-)
+> ---
+> This patch, originally preparatory for a bigger patchset (see [1]), has
+> been splitted in a standalone one for better management and because it
+> contains a bugfix which is probably of interest to stable branch.
 > 
-> --
-> 2.47.0
-
+>  drivers/pci/of_property.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
+> index 5a0b98e69795..886c236e5de6 100644
+> --- a/drivers/pci/of_property.c
+> +++ b/drivers/pci/of_property.c
+> @@ -126,7 +126,7 @@ static int of_pci_prop_ranges(struct pci_dev *pdev, struct of_changeset *ocs,
+>  		if (of_pci_get_addr_flags(&res[j], &flags))
+>  			continue;
+>  
+> -		val64 = res[j].start;
+> +		val64 = pci_bus_address(pdev, &res[j] - pdev->resource);
+>  		of_pci_set_address(pdev, rp[i].parent_addr, val64, 0, flags,
+>  				   false);
+>  		if (pci_is_bridge(pdev)) {
+> -- 
+> 2.35.3
+> 
 
