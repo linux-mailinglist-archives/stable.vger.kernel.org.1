@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3DB9CD797
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B4D9CD768
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC710B23B7C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3078FB259BE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C601885AA;
-	Fri, 15 Nov 2024 06:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C5B18871E;
+	Fri, 15 Nov 2024 06:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx3J9GpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjmIyW1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C963BBEB;
-	Fri, 15 Nov 2024 06:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC8518785C;
+	Fri, 15 Nov 2024 06:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652973; cv=none; b=hCCKO2gchgtcVBWV47Tyn84awIJVrSpACZvFM5/H6h0m5HUbNuDJUzKuIF3DGFC7th798cqRxEESnXqXMO5hiIUxZKFjhWkksm+7bpD+VtM8iH3yiiADF8W4GMORQz8Ah5E8bFuPlOSjCA1b5hbhTFp264CthfHlxIfCGWrd5Mc=
+	t=1731652859; cv=none; b=iHf9VebhYx74FDbN7NLKusach2L6ur4rWN6d+UN/eAaRToBbUFz8bamZcv28Sdcj+25cO7EB77dziKRUSP+4rqRQ3S4a1mHSaHG7By6kMXhIhpREQDsyKVDl9sAr5LnEyGQSHY/LF3Kbuqv57MFXq9tPtYdz/ivj2RuPTTyXdyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652973; c=relaxed/simple;
-	bh=jGKA14LnH6KPx7pF4KiFBWiIIG0wkbdv+6PDEJIEPk8=;
+	s=arc-20240116; t=1731652859; c=relaxed/simple;
+	bh=aOZnyFqc06QlEIkc4ijEj/qAY17Oa/fOqGf6TPbJJ1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X4ZBxIwu1KjPW9t4bMgRbnwiRAg5IxZs7o9b3ha1e4PVMHqnUqXBZAZ/Rqedr/mmMlmWpK3TBGKfnCNz8Ghsv6uP4ih4VZFL64rR5VZ/KtfSYqJG22mqWfeVGo/+Fd8IZGlH4gf1E4naKjNxiVSjXYaq45nhsOO1mIt4inMje5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx3J9GpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B4AC4CECF;
-	Fri, 15 Nov 2024 06:42:52 +0000 (UTC)
+	 MIME-Version; b=KUGz6sufeTx9KlKXokqT4rizkzqEG8wJgrdRwsBlwsDsXHD+mkAG2zf3JkG6NZi/AP7qkVyAbIdWnQJYuzQ8F1TbEYOUcSCAKX35L3yMyK+XdLhjUxFq+TLaWHzeHWBmilmGV79gH3UzCJh4Dq4P+wizgrB9Um1tHMgid+B0JIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjmIyW1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574CAC4CECF;
+	Fri, 15 Nov 2024 06:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652973;
-	bh=jGKA14LnH6KPx7pF4KiFBWiIIG0wkbdv+6PDEJIEPk8=;
+	s=korg; t=1731652858;
+	bh=aOZnyFqc06QlEIkc4ijEj/qAY17Oa/fOqGf6TPbJJ1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sx3J9GpN7FtyBW5yTEnF4k+WHt8FTMLBw1fveU26k7HPmzRzLmf9zHBvmcgbfobEK
-	 6WULpgCbkZY+xdYdBhpLKkKttnzxr1PMfjTfZo+yLf/SkDsC9kw7KkxfLTzOdrbHc0
-	 qJOUW8fqJf2fHGP8w7cE35aJ/95WDeEc/vqZfWFE=
+	b=YjmIyW1B4QSlRuiK9HjCg3QM8d0hmEOvzN0zV4V+qfZorfN4HfVIZbarEkZMA3RUF
+	 oGj/5skn69t0zFiCmrdPWlmhDPMxYy4sj1LfIMhuKoZzfjAgy4CMA7LaiPWQ0d+FKm
+	 jA0q7xVDjk17vp/o98X4kC4KAaBfpM+txdy92Nko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com,
+	Chen Ridong <chenridong@huawei.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/66] HID: core: zero-initialize the report buffer
-Date: Fri, 15 Nov 2024 07:37:18 +0100
-Message-ID: <20241115063723.177865856@linuxfoundation.org>
+Subject: [PATCH 4.19 06/52] security/keys: fix slab-out-of-bounds in key_task_permission
+Date: Fri, 15 Nov 2024 07:37:19 +0100
+Message-ID: <20241115063723.083829420@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
+[ Upstream commit 4a74da044ec9ec8679e6beccc4306b936b62873f ]
 
-Since the report buffer is used by all kinds of drivers in various ways, let's
-zero-initialize it during allocation to make sure that it can't be ever used
-to leak kernel memory via specially-crafted report.
+KASAN reports an out of bounds read:
+BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
+BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
+BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
+security/keys/permission.c:54
+Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
 
-Fixes: 27ce405039bf ("HID: fix data access in implement()")
-Reported-by: Benoît Sevens <bsevens@google.com>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
+Call Trace:
+ __dump_stack lib/dump_stack.c:82 [inline]
+ dump_stack+0x107/0x167 lib/dump_stack.c:123
+ print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
+ __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
+ kasan_report+0x3a/0x50 mm/kasan/report.c:585
+ __kuid_val include/linux/uidgid.h:36 [inline]
+ uid_eq include/linux/uidgid.h:63 [inline]
+ key_task_permission+0x394/0x410 security/keys/permission.c:54
+ search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
+
+This issue was also reported by syzbot.
+
+It can be reproduced by following these steps(more details [1]):
+1. Obtain more than 32 inputs that have similar hashes, which ends with the
+   pattern '0xxxxxxxe6'.
+2. Reboot and add the keys obtained in step 1.
+
+The reproducer demonstrates how this issue happened:
+1. In the search_nested_keyrings function, when it iterates through the
+   slots in a node(below tag ascend_to_node), if the slot pointer is meta
+   and node->back_pointer != NULL(it means a root), it will proceed to
+   descend_to_node. However, there is an exception. If node is the root,
+   and one of the slots points to a shortcut, it will be treated as a
+   keyring.
+2. Whether the ptr is keyring decided by keyring_ptr_is_keyring function.
+   However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as
+   ASSOC_ARRAY_PTR_SUBTYPE_MASK.
+3. When 32 keys with the similar hashes are added to the tree, the ROOT
+   has keys with hashes that are not similar (e.g. slot 0) and it splits
+   NODE A without using a shortcut. When NODE A is filled with keys that
+   all hashes are xxe6, the keys are similar, NODE A will split with a
+   shortcut. Finally, it forms the tree as shown below, where slot 6 points
+   to a shortcut.
+
+                      NODE A
+              +------>+---+
+      ROOT    |       | 0 | xxe6
+      +---+   |       +---+
+ xxxx | 0 | shortcut  :   : xxe6
+      +---+   |       +---+
+ xxe6 :   :   |       |   | xxe6
+      +---+   |       +---+
+      | 6 |---+       :   : xxe6
+      +---+           +---+
+ xxe6 :   :           | f | xxe6
+      +---+           +---+
+ xxe6 | f |
+      +---+
+
+4. As mentioned above, If a slot(slot 6) of the root points to a shortcut,
+   it may be mistakenly transferred to a key*, leading to a read
+   out-of-bounds read.
+
+To fix this issue, one should jump to descend_to_node if the ptr is a
+shortcut, regardless of whether the node is root or not.
+
+[1] https://lore.kernel.org/linux-kernel/1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com/
+
+[jarkko: tweaked the commit message a bit to have an appropriate closes
+ tag.]
+Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+Reported-by: syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000cbb7860611f61147@google.com/T/
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/keyring.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 2462be8c4ae65..10ee4d3269b96 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1657,7 +1657,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
+diff --git a/security/keys/keyring.c b/security/keys/keyring.c
+index e8f2366021ea3..0f414a114729a 100644
+--- a/security/keys/keyring.c
++++ b/security/keys/keyring.c
+@@ -739,8 +739,11 @@ static bool search_nested_keyrings(struct key *keyring,
+ 	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
+ 		ptr = READ_ONCE(node->slots[slot]);
  
- 	u32 len = hid_report_len(report) + 7;
+-		if (assoc_array_ptr_is_meta(ptr) && node->back_pointer)
+-			goto descend_to_node;
++		if (assoc_array_ptr_is_meta(ptr)) {
++			if (node->back_pointer ||
++			    assoc_array_ptr_is_shortcut(ptr))
++				goto descend_to_node;
++		}
  
--	return kmalloc(len, flags);
-+	return kzalloc(len, flags);
- }
- EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
- 
+ 		if (!keyring_ptr_is_keyring(ptr))
+ 			continue;
 -- 
 2.43.0
 
