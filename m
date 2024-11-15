@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0539CD756
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD33B9CD7B5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D906283892
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E1DCB22F33
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4900A189BA2;
-	Fri, 15 Nov 2024 06:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A45E1898FB;
+	Fri, 15 Nov 2024 06:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvwFZKqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5DrtZZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045C818873F;
-	Fri, 15 Nov 2024 06:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AF7188701;
+	Fri, 15 Nov 2024 06:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652828; cv=none; b=WNk/LrJzltv0iqTyFFOJ8yTXJlb9tviHwe/6vcQNsjDRU7HQwSOmk46US5M6lo4ftFu+mrGKbG/e6cRTgtTzeezpHGAAnQlKMg+SmBbcCRASBiHh5PihzuplDIT9hpFwjOrGQ65nxHm3VZwSYAViJvUrZoUeaiOYl2GQK7Zknhs=
+	t=1731653021; cv=none; b=bfAUm4dQmfzjDz8wBvMZjGd/ecvZYKjRkaOM78X67yFFrmfwxj37wcuqp4CgFAcPsIkrzAd2LjqURRgHtrADJjUMAnwiIVXf87lA6hIf4GfIB2Sd/gfECjbmsLgm1SKrLshdufUytLsUsGWdLOnX0TnWE0sRKET61xfZsIs/p1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652828; c=relaxed/simple;
-	bh=wjLw7lHdUhDujAycCyKq/pXl9QrC0ez9gjpyQLkos2M=;
+	s=arc-20240116; t=1731653021; c=relaxed/simple;
+	bh=3z8B5whbJWT3HzUiowcsj5y/tTu1sXIqWI07qw90w8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPaNz6aebfnlzGgLEF+NfUpODzFpbMWDyZE2Zp+vDaOkeKnwaaH8RWQtkIS8lYmH3Y9dNACmEXJ3PTrhnwaW2ivYwagEw8g7TPs3LcutEp6S3Mmawn50Dvhu3NU0d6EZAOUzQ83GeydMiCeKB5kbI9DT93PnVTYGdCFMafSyioM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvwFZKqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACDDC4CECF;
-	Fri, 15 Nov 2024 06:40:27 +0000 (UTC)
+	 MIME-Version; b=NVcAURYbge2vSe3xGz77O1Q2kUhx9xRQWwHAmicvAw8DSJ7VJrEdWDEEwY0ZaNQUWYzUXq6V+rMm0FnTOclbr5KJycg5p6nLW3QUgzgMxlp0towOggVRpG2fhlShXr/uZAv+meOdIC1sHGSYEcsGDnyzcfXv5B3AAeu5DRuhHtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5DrtZZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5831AC4CECF;
+	Fri, 15 Nov 2024 06:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652827;
-	bh=wjLw7lHdUhDujAycCyKq/pXl9QrC0ez9gjpyQLkos2M=;
+	s=korg; t=1731653020;
+	bh=3z8B5whbJWT3HzUiowcsj5y/tTu1sXIqWI07qw90w8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvwFZKqNflNq0z7AAD9jmP7O6wiU+kF7LQIRUTFBY0RU3LaEnoo17Xxca/ilsBvSg
-	 emUJZgmVChroxFYz+Xlybj1aCqxaeWdTAcNC6Y4REF3rhYVS2PRKxkNCizZLvu49xb
-	 /LyUOuESKk5pa2eKWhBCfYfKfztQav08JFxsTcOw=
+	b=B5DrtZZb9flhLv5Ft9kJI7DkC4lO3VLrdC+od3gO8CuO80UnqgIMeDv3fSnC7WRNV
+	 9zj5ZPVV0/ZsuyP/2xwItnDma30rJFQMsS+76JyU6t61wWEzEb+P5e9Mj9GF/0GWyc
+	 FPv/tv097qXbp6lkAPUWJgAFvyhpMiivGcCHPEi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.19 26/52] btrfs: reinitialize delayed ref list after deleting it from the list
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 5.4 30/66] dm cache: fix potential out-of-bounds access on the first resume
 Date: Fri, 15 Nov 2024 07:37:39 +0100
-Message-ID: <20241115063723.802210236@linuxfoundation.org>
+Message-ID: <20241115063723.930548107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
+commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
 
-At insert_delayed_ref() if we need to update the action of an existing
-ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
-ref_add_list using list_del(), which leaves the ref's add_list member
-not reinitialized, as list_del() sets the next and prev members of the
-list to LIST_POISON1 and LIST_POISON2, respectively.
+Out-of-bounds access occurs if the fast device is expanded unexpectedly
+before the first-time resume of the cache table. This happens because
+expanding the fast device requires reloading the cache table for
+cache_create to allocate new in-core data structures that fit the new
+size, and the check in cache_preresume is not performed during the
+first resume, leading to the issue.
 
-If later we end up calling drop_delayed_ref() against the ref, which can
-happen during merging or when destroying delayed refs due to a transaction
-abort, we can trigger a crash since at drop_delayed_ref() we call
-list_empty() against the ref's add_list, which returns false since
-the list was not reinitialized after the list_del() and as a consequence
-we call list_del() again at drop_delayed_ref(). This results in an
-invalid list access since the next and prev members are set to poison
-pointers, resulting in a splat if CONFIG_LIST_HARDENED and
-CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
-otherwise.
+Reproduce steps:
 
-So fix this by deleting from the list with list_del_init() instead.
+1. prepare component devices:
 
-Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+
+2. load a cache table of 512 cache blocks, and deliberately expand the
+   fast device before resuming the cache, making the in-core data
+   structures inadequate.
+
+dmsetup create cache --notable
+dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+3. suspend the cache to write out the in-core dirty bitset and hint
+   array, leading to out-of-bounds access to the dirty bitset at offset
+   0x40:
+
+dmsetup suspend cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
+  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc90000085000, ffffc90000087000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
+                                             ^
+   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by checking the size change on the first resume.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-ref.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -426,7 +426,7 @@ static int insert_delayed_ref(struct btr
- 					      &href->ref_add_list);
- 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
- 				ASSERT(!list_empty(&exist->add_list));
--				list_del(&exist->add_list);
-+				list_del_init(&exist->add_list);
- 			} else {
- 				ASSERT(0);
- 			}
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2999,24 +2999,24 @@ static dm_cblock_t get_cache_dev_size(st
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+-		if (cache->sized) {
+-			DMERR("%s: unable to extend cache due to missing cache table reload",
+-			      cache_device_name(cache));
+-			return false;
+-		}
++		DMERR("%s: unable to extend cache due to missing cache table reload",
++		      cache_device_name(cache));
++		return false;
+ 	}
+ 
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
+-					   from_cblock(cache->cache_size),
+-					   from_cblock(new_size)));
+-	if (new_size != cache->cache_size) {
+-		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-		      cache_device_name(cache),
+-		      (unsigned long long) from_cblock(new_size));
+-		return false;
++	if (cache->loaded_mappings) {
++		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++						   from_cblock(cache->cache_size),
++						   from_cblock(new_size)));
++		if (new_size != cache->cache_size) {
++			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++			      cache_device_name(cache),
++			      (unsigned long long) from_cblock(new_size));
++			return false;
++		}
+ 	}
+ 
+ 	return true;
+@@ -3047,20 +3047,15 @@ static int cache_preresume(struct dm_tar
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
+-	if (!cache->sized) {
+-		r = resize_cache_dev(cache, csize);
+-		if (r)
+-			return r;
+-
+-		cache->sized = true;
+-
+-	} else if (csize != cache->cache_size) {
++	if (!cache->sized || csize != cache->cache_size) {
+ 		if (!can_resize(cache, csize))
+ 			return -EINVAL;
+ 
+ 		r = resize_cache_dev(cache, csize);
+ 		if (r)
+ 			return r;
++
++		cache->sized = true;
+ 	}
+ 
+ 	if (!cache->loaded_mappings) {
 
 
 
