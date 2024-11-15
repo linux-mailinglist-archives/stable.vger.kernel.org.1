@@ -1,93 +1,94 @@
-Return-Path: <stable+bounces-93546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D097B9CDFF6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 14:30:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1DE9CE021
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 14:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967272814EA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BFEC1F227B4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B8C7082C;
-	Fri, 15 Nov 2024 13:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F170C1C4A05;
+	Fri, 15 Nov 2024 13:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="Ju0FtaIW"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="HCXdOAuq"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992232629D;
-	Fri, 15 Nov 2024 13:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0EC1CDFA4
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 13:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677446; cv=none; b=IgEj2Lr+lVq0nZ3/Up0I3EVqAxhcIVutzAF7yxifcBrY/kvKTXQqkOnCc3m00blv5woBIY+hBdDsbNVF9mdKPZuevL/QN8qRrPUB61TuSMmcK+u9lXbDaRABEFU7zCYwh52r4sPgL6KXAfuIVlXKK7+VR/OS1RmRLEpOkjTWqDw=
+	t=1731677668; cv=none; b=col/gOpG7VCDwQtcyCsl6BdC0TuMMq8wVvesJPFBzwSaKeH5ixmeTD4s0gKOJANVTMIlixWwi/xR264pBXHIVtVTBg3OhC9w1bkDs82ac01dXQdTALhHvJTs8jCifmx8B5Q/5pA2TfMXhKkp5OqfBT+tnppiid3HvjllBIf84WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677446; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Rcnv7zADxs4xGJG25anpywD1H0f+Mshu42TdyWBTRjjYjIRTX5su18zcmov0rkDcFTkOCuzLAZpXlJQw2tTw/7XusI11DCMyx7CY4FHaNcFqfY6jNZEnyQ2CbpwUiwefOFwrSFlzsULPxLMV+AOJ32/urJWFWtoo4w5uGjIGatM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=Ju0FtaIW; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1731677441; x=1732282241; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Ju0FtaIWlnmG0olK1NzERif08z2Grvw/jbSThVFSFZgnKGApetcB/aNDsD5Wsx2a
-	 y6vuoN8KHSz/74n4PbRqvZDJCKHIhMjRt05KVCnvwcLbamp79K5OHVxJYPTIkhfp2
-	 PKkGt0AfsGrQtIaTFxvtoAhhPs0DE4eUVKrav5VxalJR9tsnDX+miCbfsR5ynmXut
-	 fsBhDZHYCN/eoBDpR7nb17y3HWtSFr4kiR1lh1r06Fxzpr1g22I8oKDCnIw54U9nf
-	 Xa9rKn/MSzQ8K7qVJbuqcMevzRxl9EaGXINf+pw306kGBYTTbKjBGTuuah+qw8TBd
-	 FL8k5oF2TA4omIpctQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([87.122.67.115]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mel81-1tjteG0E1F-00ceBv; Fri, 15
- Nov 2024 14:30:41 +0100
-Message-ID: <2f29472e-9764-4ea9-81e4-a0bcb176401f@gmx.de>
-Date: Fri, 15 Nov 2024 14:30:40 +0100
+	s=arc-20240116; t=1731677668; c=relaxed/simple;
+	bh=gLbDLLFaCm+pneJ0ecZSsUz4EzSQvHIor0UF/fLR+1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rG3jIjU1mrRDnJhkiy70HJ1G8lNF4irtSUUPWSuUJF6gQutoPtl+yPtMXUl9uv2VH2ErV9+VIqehzGcf5InGtW8Xeje8Hm0xxT2RpgFmCungQnTP8D3TOMwKsdy44wCugVPa8cWRyZ5G9GrpACXzYi4I3R9L3w0q0EPZqNXVVtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=HCXdOAuq; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-119-105.bstnma.fios.verizon.net [173.48.119.105])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4AFDY7rU014540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Nov 2024 08:34:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1731677650; bh=YXeu00rAkkBMx+jCW+Umq2TqKt3Mm3W0qM6ehUOiUGQ=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=HCXdOAuqIff8JiBA+SBbi/24u8UbEcsuWvhHECXJwMtaea6XMUhQ8BpksgSVVUNQE
+	 +t4yP0l/T+Wd/bWC9xsdiSG+q+njib6F70qvRObkSyD712Noh6FDprtJHFOGY2uSN+
+	 ccagrW96Jv0F6FwCkVeIceLRjkC3U3ZYGHvN8vnyHZMw75gXLw+DP9YpcCyNWJUNwG
+	 JrEBYBqbyN9mev6VkIti12/P5edZh61O8RQHD293ZsJTmRfcK22b4M5oz3j5NCuMFF
+	 o8ba5W1WHo4d8S/rSXmfsdEF1turAm1X/L/lq3PBJwsq71kY9MnacCYFhM3QDd47pt
+	 9X0xI88FotM5A==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id CB07215C0317; Fri, 15 Nov 2024 08:34:07 -0500 (EST)
+Date: Fri, 15 Nov 2024 08:34:07 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linux Filesystem Development List <linux-fsdevel@vger.kernel.org>,
+        fstests@vger.kernel.org, stable@vger.kernel.org,
+        Leah Rumancik <leah.rumancik@gmail.com>,
+        "Darrick J. Wong" <djwong@kernel.org>
+Subject: Re: generic/645 failing on ext4, xfs (probably others) on all LTS
+ kernels
+Message-ID: <20241115133407.GB582565@mit.edu>
+References: <20241110180533.GA200429@mit.edu>
+ <20241111-tragik-busfahren-483825df1c00@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.11 00/63] 6.11.9-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:dMoPA1t64mbDo/GClrleI3JhbzyZVxxKUdnm/RmJS0IP727RrZA
- gVm7tWN9fPwfF47klC7sUzAuC5aHOa+gjC6YTXVvLIuogyUFJGBEDMRp6uTlKl2qd6H6lMY
- UZcyczfbeLfEyFNyqI9A/Fd3a+qu0UXnNQT0jk+jA7X/VijoMiAMSK3tezpAoiN5ohBZJiv
- oU/1zfvw+hwE7WmItAHdw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ZSZN+sE6uxE=;m81qZEj2PKTXKj+LCBPJ6DXaexP
- ZCHjf2w+snG1Mgrl6PY+WYZUoXXS6ptCfyndmvkEu9fgQDJsLGGFbBkJxL/QJ64FmTcv/cNSF
- ieF5meU7dmHpikouya739l2yM6xHcpMoCLH+hn6BA3e1/GIDXCsQEn4cc6Bqblql8dYSQubQg
- IdSh7puwpOiCDFk4vmJjT/wgLBCcy2Up56ll+kODk4vDIRghgHK83VDvKcUS/BQZQiM/6Go0j
- wXn/ZIX2l0ja1CIJtrLE+yOxgoCdB1I0cmZyp2FhgFqBnT5p20DrkJKC3oHMdPKI1j4WbdNGg
- qJMmSfOTejSjVulRz6t+WlAB8toZocppIZMdNcPfGbD1gYLueMxoyAutGmh5Fv5gj5zR7UTyt
- YHn2/Jb0ngCz6uK+221eQP2R2TsF5TUsQ8lJOwOn61m2at37oepssbkxy4etou2KSR6aUVCzo
- Qu4FJNMCVrI7CRwaa5h3zZFP6+rmiZIZ1u3y88tc58LvYNwqGQ9w4ZB5ge5w66YUSmPmVgjbN
- QhwHiqAM57LLeAjq3psG69cOvGtHI+ip/aEgxUGcsDS7Hedail0kzMu5KL4MNxXo6sNhSyPVy
- EQjDUe/i4G1zO/q0PdokwsOfcH7ctjdG/3t6PaW/TaXuNjfY418jmzKle6LSKHZwRTCOM64u/
- COJF7Dedgp3ihEjmm+9Q/cnAPcy3DK0N/LZsyxIn7qUWTFYr0FquIt8XEI61mUBRJB3Xy3sIB
- /0Bql2SfsVwXimWJKAm8f363jkoApHyGNCcHXr4jjVQ2i3/w/Q0fwRqMVjq/+rxy8evacM33b
- xVhLBIMlwOybZiVNqS8W1oMzoXWaRO+d36IJFyjN/XMwm+8nN68BfUdQXLu0O4Ej/Wd1RokwP
- ipOuozTGa2ztAsgboG3b6hbHQ3VNkdm9W0ZYoeg7Gc8Jc77RQgwVqG+8z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241111-tragik-busfahren-483825df1c00@brauner>
 
-Hi Greg
+On Mon, Nov 11, 2024 at 09:52:07AM +0100, Christian Brauner wrote:
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+> behavior would be well-specified so the patch changed that quite some
+> time ago.
+> 
+> Backporting this to older LTS kernels isn't difficult. We just need
+> custom patches for the LTS kernels but they should all be very simple.
+> 
+> Alternatively, you can just ignore the test on older kernels.
 
-Thanks
+Well, what the custom patch to look like wasn't obvious to me, but
+that's because I'm not sufficiently familiar with the id mapping code.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+So I'll just ignore the test on older kernels.  If someone wants to
+create the custom patch, I'll revert the versioned exclude for
+{kvm,gce}-xfsteests.
+
+Thanks,
+
+						- Ted
+
 
