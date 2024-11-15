@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-93385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD01D9CD8F8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CB09CD77B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C4F1F21DFD
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06B21F230AE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62243185924;
-	Fri, 15 Nov 2024 06:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8618B189520;
+	Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VND56YT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wq3UM2H3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070615FD13;
-	Fri, 15 Nov 2024 06:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43075188CB1;
+	Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653744; cv=none; b=LrPsLI5OP/9eSajkWzP8OgPR489YyJvt6OOmrBWGIGGnCN10KRnImk4eKjzuX0fisuBHwzyqB9IQO5yhANbYe7awgOtu6QjDLOa9T+7CXIIWHMXGaDig585+BEgxh78tHnchmZjtAvhGFOujRovzP4emWScvPM6b/UoCoymet4Y=
+	t=1731652896; cv=none; b=VyD7lRS4UxQdIjVuljbiQrjBZFsBb90KAgF7FPVhQnbiKYiQNuY1MQ3UVRghABAVIwCEqNkHfaV7pwnJRyldjhXTfk5GfrGY+v0lazrPE9hC1UBAr4qeU8EnpCFEUbkXFIosmZlwDPlhuRzrTOpvpL06NKH6boD9UTC0pcK0OPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653744; c=relaxed/simple;
-	bh=z65Q/lWE2HljslBeKzvmvdkEeuERFscCoVsKvKzMSqs=;
+	s=arc-20240116; t=1731652896; c=relaxed/simple;
+	bh=ODjttWztDbOPmlkHGoG+2DYmR5tfvKEH7LNIIGzPhMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhlkeysnllvwy4TLyxgS0nKQY9qKokeGQVS5Yp8qAJ4QBMfpt1iNkgJ1a2wTuDruLplEoyPHviibShMUgMeOBABuSrZP0Pem+vxSGMfES6P3tUm7tUTHHo2aNquF2VoqUG1vJkVRvWg8J8gI9kCkzxHHkjHLmwXouoCYGZ4j6ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VND56YT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01753C4CECF;
-	Fri, 15 Nov 2024 06:55:42 +0000 (UTC)
+	 MIME-Version; b=gcIiZBpfcrkf/iM0OnWnEsk7siLI7Ve1HilTHrpRN2zKf1htyVuS4DWAqL0yvnT4ehPEAZWWwPx0R+UxWyT6VxfBqn/gvPl/c2ee9vSOc2V4KnybNm52WGNw6bglcgmEcCSCg7KaFrGVuG7wZCdlSsY4L2lAWBgaq1X2nE/wR8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wq3UM2H3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684EFC4CECF;
+	Fri, 15 Nov 2024 06:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653743;
-	bh=z65Q/lWE2HljslBeKzvmvdkEeuERFscCoVsKvKzMSqs=;
+	s=korg; t=1731652895;
+	bh=ODjttWztDbOPmlkHGoG+2DYmR5tfvKEH7LNIIGzPhMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VND56YTg4k9KuoDC9Lkcz/nv9We+3U5OyJvSq2C4bXjMyuoJi7XDH04tNUd406ud
-	 Bql1BeBXzVDE1o/50kMDUj9LQDbpUZi2XXQfuuOozV3X+GoQtkMz9LYLD3SUH4XQZl
-	 P5ON0VS6cp4MfL5y/xheJCcsWf+rtPYr4yL+ociI=
+	b=wq3UM2H3yFdlKtWHy7UnMplWQdC8uDwlO/ptWWXgwIW2k7ZH0xtruHU004m9CCVDt
+	 OUtrbltUvTczcRY/KRZdUaLs8NrTgfpkvEaOixi79TZx40oDc18liEnSHvVgvTR0xa
+	 31QMQdHbwdyqXdGrrAiTP06qJ6T/wMfnaKq1C/ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/82] media: dvbdev: prevent the risk of out of memory access
+Subject: [PATCH 4.19 47/52] bpf: use kvzmalloc to allocate BPF verifier environment
 Date: Fri, 15 Nov 2024 07:38:00 +0100
-Message-ID: <20241115063726.400128429@linuxfoundation.org>
+Message-ID: <20241115063724.550767845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
+[ Upstream commit 434247637c66e1be2bc71a9987d4c3f0d8672387 ]
 
-The dvbdev contains a static variable used to store dvb minors.
+The kzmalloc call in bpf_check can fail when memory is very fragmented,
+which in turn can lead to an OOM kill.
 
-The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
-or not. When not set, dvb_register_device() won't check for
-boundaries, as it will rely that a previous call to
-dvb_register_adapter() would already be enforcing it.
+Use kvzmalloc to fall back to vmalloc when memory is too fragmented to
+allocate an order 3 sized bpf verifier environment.
 
-On a similar way, dvb_device_open() uses the assumption
-that the register functions already did the needed checks.
+Admittedly this is not a very common case, and only happens on systems
+where memory has already been squeezed close to the limit, but this does
+not seem like much of a hot path, and it's a simple enough fix.
 
-This can be fragile if some device ends using different
-calls. This also generate warnings on static check analysers
-like Coverity.
-
-So, add explicit guards to prevent potential risk of OOM issues.
-
-Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/r/20241008170735.16766766@imladris.surriel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 661588fc64f6a..71344ae26fea7 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -96,10 +96,15 @@ static DECLARE_RWSEM(minor_rwsem);
- static int dvb_device_open(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev;
-+	unsigned int minor = iminor(inode);
-+
-+	if (minor >= MAX_DVB_MINORS)
-+		return -ENODEV;
- 
- 	mutex_lock(&dvbdev_mutex);
- 	down_read(&minor_rwsem);
--	dvbdev = dvb_minors[iminor(inode)];
-+
-+	dvbdev = dvb_minors[minor];
- 
- 	if (dvbdev && dvbdev->fops) {
- 		int err = 0;
-@@ -539,7 +544,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
- 		if (dvb_minors[minor] == NULL)
- 			break;
--	if (minor == MAX_DVB_MINORS) {
-+	if (minor >= MAX_DVB_MINORS) {
- 		if (new_node) {
- 			list_del (&new_node->list_head);
- 			kfree(dvbdevfops);
-@@ -554,6 +559,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	}
- #else
- 	minor = nums2minor(adap->num, type, id);
-+	if (minor >= MAX_DVB_MINORS) {
-+		dvb_media_device_free(dvbdev);
-+		list_del(&dvbdev->list_head);
-+		kfree(dvbdev);
-+		*pdvbdev = NULL;
-+		mutex_unlock(&dvbdev_register_lock);
-+		return ret;
-+	}
- #endif
- 	dvbdev->minor = minor;
- 	dvb_minors[minor] = dvb_device_get(dvbdev);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a48de55f5630e..de0926cff8352 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6446,7 +6446,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
+ 	/* 'struct bpf_verifier_env' can be global, but since it's not small,
+ 	 * allocate/free it every time bpf_check() is called
+ 	 */
+-	env = kzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
++	env = kvzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
+ 	if (!env)
+ 		return -ENOMEM;
+ 	log = &env->log;
+@@ -6573,6 +6573,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
+ 	mutex_unlock(&bpf_verifier_lock);
+ 	vfree(env->insn_aux_data);
+ err_free_env:
+-	kfree(env);
++	kvfree(env);
+ 	return ret;
+ }
 -- 
 2.43.0
 
