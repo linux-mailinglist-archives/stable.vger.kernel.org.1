@@ -1,81 +1,57 @@
-Return-Path: <stable+bounces-93378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE28E9CD8EF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3549CD84D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D29EB26BD1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ADF1B22363
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080BC1898FB;
-	Fri, 15 Nov 2024 06:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF654186294;
+	Fri, 15 Nov 2024 06:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCmuTGmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYic/7yt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B727818873F;
-	Fri, 15 Nov 2024 06:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF23EAD0;
+	Fri, 15 Nov 2024 06:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653719; cv=none; b=eVQxXjKqHNyIjxkRq0H7nSxLXDQHdQYk+5S+hgMYaFE5O+ZJ8njZf4eZWT2yBW4Yy2QiTKkpcLBdT27oX+d01AQRQTvN2+JqkGDYZPOGU8AIWKGLmOt6o9MoRSIkG0DO6YUff8LRyu474HvFXYZ4/RQV7DjCoPslmXhWQnU3nkQ=
+	t=1731653363; cv=none; b=g3MsHxB6YoctXODmGvqYCJxIJ07UqIjq9lhX6kO/hDgbd8R8pHC1hNxHs0yliSbSOfwJYbVWyxWF3pdVqBCPsRTx2w/d78EHbkeAbDp9P3i2CR/WNdJeWl6k4LIxrBAnM0CW8lC2V1ONTH7DIZY7iagh1HfJpUnebScOsY3yMQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653719; c=relaxed/simple;
-	bh=wZvdsX5+m1ZcDBdhGUO3HYnWdveM/2AVsZKUu27+IvU=;
+	s=arc-20240116; t=1731653363; c=relaxed/simple;
+	bh=/j7oANDh/28SnyK0KQ05ah6F3aZ3dOVZk2uUEja1hmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYg/jgq26LSUqE+KFvKMulojX0ZavNCvEUabyLIjLwho9YDqewQZjFa5SAhl8X0tIZvyEYmYfeuhOYmcLKjg3kFk5Jz2Bdslhfe5gZZdhOT8IAy3RNwKiuJ/6NPZ/KtaFJaW69Jy9EsFWDhkED7+sI0FjLAUWvfN6GetNiiFvis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCmuTGmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B431FC4CECF;
-	Fri, 15 Nov 2024 06:55:18 +0000 (UTC)
+	 MIME-Version; b=KhFahB4Ke7PadWybxCvXB5IuOoWH5/dsJVAEgTwX/7a0n8PLlM9qmidGs0Nz7frMlFwacOqo+lovuRfkl8lAdh5QJNLgEDlIQdTh3nWnOAbcEy0pVQNpc0Z/6XiPAuLcxZHYbIkzwuSy1zZVwGL6W8RsbUBarKMronqYrmgfGNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYic/7yt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A2BC4CECF;
+	Fri, 15 Nov 2024 06:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653719;
-	bh=wZvdsX5+m1ZcDBdhGUO3HYnWdveM/2AVsZKUu27+IvU=;
+	s=korg; t=1731653363;
+	bh=/j7oANDh/28SnyK0KQ05ah6F3aZ3dOVZk2uUEja1hmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCmuTGmutQ2l4LIM3EwCdUG6QZAq+d8LmbOoHWF1dpbP3h6AEjkTdSMRFSRokHCXP
-	 x4aG874oi39G2kgN2WazzmUXl57zAtqRhYnyNZ18b3F9ewj7CcN9U4CSUhYfpo/Shq
-	 qYBJAZ4fAMoPvPbaaDszO9ZPdh1UnJgZ5xKpw4ak=
+	b=RYic/7ytgnh83TmngBI6jqhwkxwGevpuBFSOMjBXQCLfVWMkIkmeGXjih0UXUu4fQ
+	 sA4gvHz2Qsxj3ek4q/dBYjg2gYpe+1Su670bIebt3UcaqIwjnt+Szt313R9NlsthAK
+	 ddIRjTz3BSFR56VYk4Nw/LsrbiGjVkXbHujRbWuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Ardelean <alexandru.ardelean@analog.com>,
-	Andre Edich <andre.edich@microchip.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Christophe Leroy <christophe.leroy@c-s.fr>,
-	Dan Murphy <dmurphy@ti.com>,
-	Divya Koppera <Divya.Koppera@microchip.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Kavya Sree Kotagiri <kavyasree.kotagiri@microchip.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Marek Vasut <marex@denx.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mathias Kresin <dev@kresin.me>,
-	Maxim Kochetkov <fido_max@inbox.ru>,
-	Michael Walle <michael@walle.cc>,
-	Neil Armstrong <narmstrong@baylibre.com>,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Philippe Schenker <philippe.schenker@toradex.com>,
-	Willy Liu <willy.liu@realtek.com>,
-	Yuiko Oshino <yuiko.oshino@microchip.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/82] net: phy: export phy_error and phy_trigger_machine
+Subject: [PATCH 6.11 31/63] nvme-loop: flush off pending I/O while shutting down loop controller
 Date: Fri, 15 Nov 2024 07:37:54 +0100
-Message-ID: <20241115063726.184846596@linuxfoundation.org>
+Message-ID: <20241115063727.043335695@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -87,102 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit 293e9a3d950dfebc76d9fa6931e6f91ef856b9ab ]
+[ Upstream commit c199fac88fe7c749f88a0653e9f621b9f5a71cf1 ]
 
-These functions are currently used by phy_interrupt() to either signal
-an error condition or to trigger the link state machine. In an attempt
-to actually support shared PHY IRQs, export these two functions so that
-the actual PHY drivers can use them.
+While shutting down loop controller, we first quiesce the admin/IO queue,
+delete the admin/IO tag-set and then at last destroy the admin/IO queue.
+However it's quite possible that during the window between quiescing and
+destroying of the admin/IO queue, some admin/IO request might sneak in
+and if that happens then we could potentially encounter a hung task
+because shutdown operation can't forward progress until any pending I/O
+is flushed off.
 
-Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc: Andre Edich <andre.edich@microchip.com>
-Cc: Antoine Tenart <atenart@kernel.org>
-Cc: Baruch Siach <baruch@tkos.co.il>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Dan Murphy <dmurphy@ti.com>
-Cc: Divya Koppera <Divya.Koppera@microchip.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Kavya Sree Kotagiri <kavyasree.kotagiri@microchip.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Marek Vasut <marex@denx.de>
-Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: Mathias Kresin <dev@kresin.me>
-Cc: Maxim Kochetkov <fido_max@inbox.ru>
-Cc: Michael Walle <michael@walle.cc>
-Cc: Neil Armstrong <narmstrong@baylibre.com>
-Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Philippe Schenker <philippe.schenker@toradex.com>
-Cc: Willy Liu <willy.liu@realtek.com>
-Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 256748d5480b ("net: phy: ti: add PHY_RST_AFTER_CLK_EN flag")
+This commit helps ensure that before destroying the admin/IO queue, we
+unquiesce the admin/IO queue so that any outstanding requests, which are
+added after the admin/IO queue is quiesced, are now flushed to its
+completion.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy.c | 6 ++++--
- include/linux/phy.h   | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/nvme/target/loop.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index f3e606b6617e9..eb0f2e11cc216 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -461,10 +461,11 @@ EXPORT_SYMBOL(phy_queue_state_machine);
-  *
-  * @phydev: the phy_device struct
-  */
--static void phy_trigger_machine(struct phy_device *phydev)
-+void phy_trigger_machine(struct phy_device *phydev)
+diff --git a/drivers/nvme/target/loop.c b/drivers/nvme/target/loop.c
+index e32790d8fc260..a9d112d34d4f4 100644
+--- a/drivers/nvme/target/loop.c
++++ b/drivers/nvme/target/loop.c
+@@ -265,6 +265,13 @@ static void nvme_loop_destroy_admin_queue(struct nvme_loop_ctrl *ctrl)
  {
- 	phy_queue_state_machine(phydev, 0);
+ 	if (!test_and_clear_bit(NVME_LOOP_Q_LIVE, &ctrl->queues[0].flags))
+ 		return;
++	/*
++	 * It's possible that some requests might have been added
++	 * after admin queue is stopped/quiesced. So now start the
++	 * queue to flush these requests to the completion.
++	 */
++	nvme_unquiesce_admin_queue(&ctrl->ctrl);
++
+ 	nvmet_sq_destroy(&ctrl->queues[0].nvme_sq);
+ 	nvme_remove_admin_tag_set(&ctrl->ctrl);
  }
-+EXPORT_SYMBOL(phy_trigger_machine);
- 
- static void phy_abort_cable_test(struct phy_device *phydev)
- {
-@@ -970,7 +971,7 @@ void phy_stop_machine(struct phy_device *phydev)
-  * Must not be called from interrupt context, or while the
-  * phydev->lock is held.
-  */
--static void phy_error(struct phy_device *phydev)
-+void phy_error(struct phy_device *phydev)
- {
- 	WARN_ON(1);
- 
-@@ -980,6 +981,7 @@ static void phy_error(struct phy_device *phydev)
- 
- 	phy_trigger_machine(phydev);
+@@ -297,6 +304,12 @@ static void nvme_loop_destroy_io_queues(struct nvme_loop_ctrl *ctrl)
+ 		nvmet_sq_destroy(&ctrl->queues[i].nvme_sq);
+ 	}
+ 	ctrl->ctrl.queue_count = 1;
++	/*
++	 * It's possible that some requests might have been added
++	 * after io queue is stopped/quiesced. So now start the
++	 * queue to flush these requests to the completion.
++	 */
++	nvme_unquiesce_io_queues(&ctrl->ctrl);
  }
-+EXPORT_SYMBOL(phy_error);
  
- /**
-  * phy_disable_interrupts - Disable the PHY interrupts from the PHY side
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 08725a262f320..203d53ea19d1b 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1542,8 +1542,10 @@ void phy_drivers_unregister(struct phy_driver *drv, int n);
- int phy_driver_register(struct phy_driver *new_driver, struct module *owner);
- int phy_drivers_register(struct phy_driver *new_driver, int n,
- 			 struct module *owner);
-+void phy_error(struct phy_device *phydev);
- void phy_state_machine(struct work_struct *work);
- void phy_queue_state_machine(struct phy_device *phydev, unsigned long jiffies);
-+void phy_trigger_machine(struct phy_device *phydev);
- void phy_mac_interrupt(struct phy_device *phydev);
- void phy_start_machine(struct phy_device *phydev);
- void phy_stop_machine(struct phy_device *phydev);
+ static int nvme_loop_init_io_queues(struct nvme_loop_ctrl *ctrl)
 -- 
 2.43.0
 
