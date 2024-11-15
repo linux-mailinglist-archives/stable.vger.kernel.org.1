@@ -1,116 +1,125 @@
-Return-Path: <stable+bounces-93068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD289CCFAE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 01:34:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C8F9CD4FC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 02:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1482D28220E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 00:34:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80462B23531
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 01:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AD7383BF;
-	Fri, 15 Nov 2024 00:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327BE44375;
+	Fri, 15 Nov 2024 01:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WAirH+7v"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="G/AphG99"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AE1E4A9;
-	Fri, 15 Nov 2024 00:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803F92D7BF
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 01:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731630855; cv=none; b=tLsdRRTOmosKivr5jHvIROcD6QVeWDJ6rQk8p4xOucArwxoxAk+PNedOfbJqtI1GFDYlOy30YxRBtQA3QPXMOU/sch6woAlQvL0NmBKWpFCtIasbC7WGAOQp8Du0Eojghi1EXZvdB4bG51h84RuC9mNe4Uz0sIWdZFQdNGNVA9Y=
+	t=1731633656; cv=none; b=pxjwDJKJVFEM/zJip5EW+7jHX2NocD9EycqtFgH9+8CU5AMcmHErqperSxmZNKHFbebnI+lpWe3LkqY1hDUJ23iieBHlDKi6e4HGxGl8vkF3S5j1Aa8Zp/fTtCqQXM+TfBjk7ZlW6REZDnulgiPn+4HX7Zz6fxJ1f/2p3I9bBsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731630855; c=relaxed/simple;
-	bh=rBoI67vQ1EQnkFX0pf9Pdh59absDICM5ehoSjvK93Yo=;
+	s=arc-20240116; t=1731633656; c=relaxed/simple;
+	bh=xFupdPanBMLI+ABKya55+UjriRVNgH8ZIVix4PbWMgw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfZTe6hKdvbbtUgBtz64jVGldBD7n4dMAQo5Jth77f4gYxy8/uEbQQ2wMkicJ+znoQKLrgtrWWY9esK3vm55UciwJ1zfSNB94a5xwpq9hfRV+uwE5JJjK2cmCQI4x/ePKnL/GqVZ1L48v1Ccx2J+n2dSIe1TR7uRxCQB5aBiyjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WAirH+7v; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C3225502;
-	Fri, 15 Nov 2024 01:33:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1731630838;
-	bh=rBoI67vQ1EQnkFX0pf9Pdh59absDICM5ehoSjvK93Yo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WAirH+7vP92sL8PRYkVG6wUSgeP3KVGSVpbQ4DLNOPFYelz2l5oB53V32hemL6Psg
-	 8qg15DRTZrHvlCQgybLTO4I8OheDcpfN3eKDAj7Y+hCuiBC5sDZ1yBLEst4ga/5OYV
-	 68hpwfNPcrcSyOiDx+44GNnAECxHMcMsPOyCX6g4=
-Date: Fri, 15 Nov 2024 02:34:03 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
-Message-ID: <20241115003403.GP26171@pendragon.ideasonboard.com>
-References: <20241114-uvc-fix-event-v1-1-6c580ccf0766@chromium.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J+Mr2pV0gq0qqXpWQ68QdVkDXcExmpbohtSNjWqk/y7BoBEeb9TI6DRD2wWM06euQTJWLauQFyLP+RJXWu4T33lsQF3MecPxVE7GokvAccvzZCTPeRAnW0T9RVgPxxW69oWjWDY8x3l2psQn8tSzV1YX/h+BiJXNtprvPS/xLAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=G/AphG99; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-71817c40110so667258a34.1
+        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 17:20:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1731633653; x=1732238453; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2O2T+qVNNUEKkj7Tqgh2CcsQdUVXnIL4zFWqjYgwwmY=;
+        b=G/AphG993JqWh2gEevkwILgBJpsYaFQmwS+365XUSqVCfO5GIKnNs8y8Y2H20yymzz
+         rlstd17WRXi1DC2C71SpTiHCKpi6Hw4skhGaQZeedCRNR0Ol11yeMwZ5AEdV8p2uxNAt
+         ZVhjQXUvP3BOxJOzhbU9j/wN2AR/r1L6tUET8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731633653; x=1732238453;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2O2T+qVNNUEKkj7Tqgh2CcsQdUVXnIL4zFWqjYgwwmY=;
+        b=uaMASBzMRB67ftIqg1UfuAyxlBZMCuNVTvpgASjBWP0dfQJfIgf5dnDqwSx/5TwZMC
+         IUd/81fDoGfZrBxhmhuxN+shlGY2gxeYdmSMh5DOWtXbpDlkLJ7bW37DbamAzEk1VSKF
+         4QDb2W+foji4qUpL3l2Y3bmKdBeZMCvCxXTOQfQcn1bHUksN2vDcLRa4kv7OtQNIEvTr
+         d/6+8MuMfhm2/jCxRZVsE8JNSn5s0wtzqqq5olvQUviersbM/YKyXGvIKdLJEmnMmJRK
+         tug9WdXAqtlblNxq7OHvh+27Sw/CmyQmSPlnjpDHIJxLJ7VCXqLVok4CpxF7t9Dlk3aJ
+         WA/g==
+X-Forwarded-Encrypted: i=1; AJvYcCX1TmnvDmuOyWcNYhmVR0wRWCL6qCmu2h9O8Xj9OilQbfj/yNDTkWtp70SphADTHtu6cGGh/8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZpKUek2GDbZfhAUQ6GB8MR9SYK/KukjFraD7U1O2/E7akzqL1
+	RWArWff2lf7ClXccIkScnp6e7upQAQDVW7y9CoDRE2r8jHRBxkqnlwvCIcMLKA==
+X-Google-Smtp-Source: AGHT+IGirkxddJ67bwjyV5yqtTRTNRwP6Jl33D77JprOQQfPM28upKVhV1Mcl5w+rVeXg7rv+U3Xew==
+X-Received: by 2002:a05:6830:4708:b0:718:83f7:9df4 with SMTP id 46e09a7af769-71a779e3720mr1017143a34.23.1731633653545;
+        Thu, 14 Nov 2024 17:20:53 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:f2ec:a79f:1362:3ac3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f8c1ddbca3sm258701a12.84.2024.11.14.17.20.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 17:20:53 -0800 (PST)
+Date: Fri, 15 Nov 2024 10:20:48 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 5.15] udf: Allocate name buffer in directory iterator on
+ heap
+Message-ID: <20241115012048.GK1458936@google.com>
+References: <20241113043050.1975303-1-senozhatsky@chromium.org>
+ <ZzZB9-DX7IWbfSXs@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241114-uvc-fix-event-v1-1-6c580ccf0766@chromium.org>
+In-Reply-To: <ZzZB9-DX7IWbfSXs@sashalap>
 
-Hi Ricardo,
-
-Thank you for the patch.
-
-On Thu, Nov 14, 2024 at 12:17:51PM +0000, Ricardo Ribalda wrote:
-> If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
-> the following events will have that flag, regardless if they need it or
-> not.
+On (24/11/14 13:31), Sasha Levin wrote:
+> On Wed, Nov 13, 2024 at 01:30:35PM +0900, Sergey Senozhatsky wrote:
+> > From: Jan Kara <jack@suse.cz>
+> > 
+> > [ Upstream commit 0aba4860b0d0216a1a300484ff536171894d49d8 ]
+> > 
+> > Currently we allocate name buffer in directory iterators (struct
+> > udf_fileident_iter) on stack. These structures are relatively large
+> > (some 360 bytes on 64-bit architectures). For udf_rename() which needs
+> > to keep three of these structures in parallel the stack usage becomes
+> > rather heavy - 1536 bytes in total. Allocate the name buffer in the
+> > iterator from heap to avoid excessive stack usage.
+> > 
+> > Link: https://lore.kernel.org/all/202212200558.lK9x1KW0-lkp@intel.com
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Signed-off-by: Jan Kara <jack@suse.cz>
 > 
-> This is because we keep using the same variable all the time and we do
-> not reset its original value.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> Your S-O-B is missing, but also it doesn't build:
 
-Good catch.
+OK, didn't know that I need to add my SoB.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> fs/udf/directory.c: In function 'udf_fiiter_init':
+> fs/udf/directory.c:251:25: error: implicit declaration of function 'kmalloc'; did you mean 'kvmalloc'? [-Werror=implicit-function-declaration]
+>   251 |         iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
+>       |                         ^~~~~~~
+>       |                         kvmalloc
+> fs/udf/directory.c:251:23: warning: assignment to 'uint8_t *' {aka 'unsigned char *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+>   251 |         iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
+>       |                       ^
+> fs/udf/directory.c: In function 'udf_fiiter_release':
+> fs/udf/directory.c:315:9: error: implicit declaration of function 'kfree'; did you mean 'kvfree'? [-Werror=implicit-function-declaration]
+>   315 |         kfree(iter->namebuf);
+>       |         ^~~~~
+>       |         kvfree
 
-> ---
->  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> index e59a463c2761..5314e7864c49 100644
-> --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> @@ -1626,13 +1626,13 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
->  {
->  	struct uvc_control_mapping *mapping;
->  	struct uvc_control *ctrl;
-> -	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
->  	unsigned int i;
->  	unsigned int j;
->  
->  	for (i = 0; i < xctrls_count; ++i) {
-> -		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-> +		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
->  
-> +		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
->  		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
->  			/* Notification will be sent from an Interrupt event. */
->  			continue;
-> 
-> ---
-> base-commit: b14257abe7057def6127f6fb2f14f9adc8acabdb
-> change-id: 20241114-uvc-fix-event-272df1585bb3
-
--- 
-Regards,
-
-Laurent Pinchart
+Hmm.  Upstream fs/udf/directory.c doesn't include slab.h and 5.15
+with this patch applied "builds on my computer".  So I can amend
+Jan's patch to include slab.h, I guess?  Is that okay?
 
