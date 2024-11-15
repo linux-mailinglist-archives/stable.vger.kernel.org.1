@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-93356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D039CD8C6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF5F9CD908
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C7B283D51
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32A4C2826C3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D11C187FE8;
-	Fri, 15 Nov 2024 06:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937E41885BF;
+	Fri, 15 Nov 2024 06:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daMk3M93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gosh4umh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFDA14EC77;
-	Fri, 15 Nov 2024 06:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7511885AA;
+	Fri, 15 Nov 2024 06:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653648; cv=none; b=b5j2K8n4/OOQ+caVm0HbITEVTVPWrkci5rvh73cf56qEzAuYdA6jawoEWweCpej2LzcLVwClDS/2z4hvN57N+5rJcx35XrimeeYEI1SrXQmJBz0D1cdX9tfYvbIERNCoA99vNnW7ADivgUPsDUbs2IJ5TCtx/D2guPBlpFWUbCM=
+	t=1731653779; cv=none; b=ceCaYuIn5UIfl1jpG8j3kkC9CbF8LoAaZhaG5ALi5FKPf/sZfXrTEuACUjfRrauUWZqFoEw0G3I1NMrrDalKypVrTNQ/KU+iOmb6TnXzIAYTJbHrm6LPRF4EGnqhakQlOT94oEJJl/UU0aKaKeMkhw3+jdLlogvaiEWVzniFF8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653648; c=relaxed/simple;
-	bh=595+sw3wV3aiAXI3Ro+1RgxaIVM8F4vT7Istjuch5nw=;
+	s=arc-20240116; t=1731653779; c=relaxed/simple;
+	bh=95+PnBtSyLTqpx4fi9kDEAadli6MSJJito0RPEZhu4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iid+alE0t/+/MVPzxfSLzxDtwrxUU3XbRHxC4peEa7ZmKFCOTBm0w8FtOgntFYhqQlhy4QFL1IbvOvT9COEVk37mnLfx06Q2B5st33Eb3yQAyU/1pxe0mml8N9fx90EIwQiV2GhU1BTFyHMhA5OpIXVOG7JuF41wyLT/9t/SBVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daMk3M93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E46AC4CECF;
-	Fri, 15 Nov 2024 06:54:06 +0000 (UTC)
+	 MIME-Version; b=Nv2Kc90X+O1ztlqWgDyL+WNr3NWH7+BoSbRRRlche9VxRHCoQn55EJKNuQ+HeneoS1bgUG+pf4I4Y9syFAbsH5ze4pLJfBXNqMNGGbz73fsbIO0GsX+WctyqbzSS0DzFc7Lvy32pog32Xde43Yb+zBChs3mW49DYNrvbZbGIHiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gosh4umh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E208DC4CECF;
+	Fri, 15 Nov 2024 06:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653647;
-	bh=595+sw3wV3aiAXI3Ro+1RgxaIVM8F4vT7Istjuch5nw=;
+	s=korg; t=1731653778;
+	bh=95+PnBtSyLTqpx4fi9kDEAadli6MSJJito0RPEZhu4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daMk3M93x6HUDl5Y0LZUEyQzVgRTuaPyjonLMU/OXZYXqB64hMwta2AnvRhqV7NEz
-	 K7mW2vcxcdSQNTU/A2Y3FJJPGYNfIaAk8NS4c7GwKn0TQXqwuFt+aWkgJTNTEAF7mt
-	 cT9NV9N2P308uTrc4sDUzZhSNGm0f3DhGNKwjI4Y=
+	b=Gosh4umhv3eKfKo4TPX5eIdfJRE2fbOA7iMggah9alJ/bKM9THjsDuu6U3zsh6YF1
+	 mNGsTBFNoY/FY85wJ0IGjnwxAoY+O8OG8J1t9BeNaLOP31GHpq7pwg4SfUu5Cnm1h+
+	 zeGrV6OkPd7A98vatsEdf2fZ1ChZfCzbCaacAZu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jeremy=20Lain=C3=A9?= <jeremy.laine@m4x.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Mike <user.service2016@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/39] Revert "Bluetooth: fix use-after-free in accessing skb after sending it"
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 34/82] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
 Date: Fri, 15 Nov 2024 07:38:11 +0100
-Message-ID: <20241115063722.657868624@linuxfoundation.org>
+Message-ID: <20241115063726.793698917@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-This reverts commit 715264ad09fd4004e347cdb79fa58a4f2344f13f which is
-commit 947ec0d002dce8577b655793dcc6fc78d67b7cb6 upstream.
+commit 4d75b9468021c73108b4439794d69e892b1d24e3 upstream.
 
-It is reported to cause regressions in the 6.1.y tree, so revert it for
-now.
+Avoid a possible buffer overflow if size is larger than 4K.
 
-Link: https://lore.kernel.org/all/CADRbXaDqx6S+7tzdDPPEpRu9eDLrHQkqoWTTGfKJSRxY=hT5MQ@mail.gmail.com/
-Reported-by: Jeremy Lainé <jeremy.laine@m4x.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Mike <user.service2016@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Pauli Virtanen <pav@iki.fi>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f5d873f5825b40d886d03bd2aede91d4cf002434)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4146,7 +4146,7 @@ static void hci_send_cmd_sync(struct hci
- 	if (hci_req_status_pend(hdev) &&
- 	    !hci_dev_test_and_set_flag(hdev, HCI_CMD_PENDING)) {
- 		kfree_skb(hdev->req_skb);
--		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
-+		hdev->req_skb = skb_clone(skb, GFP_KERNEL);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -396,7 +396,7 @@ static ssize_t amdgpu_debugfs_regs_pcie_
+ 	ssize_t result = 0;
+ 	int r;
  
- 	atomic_dec(&hdev->cmd_cnt);
+-	if (size & 0x3 || *pos & 0x3)
++	if (size > 4096 || size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+ 
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
 
 
 
