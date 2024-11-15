@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69CC9CD7B8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895C29CD760
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BED6280ED1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4D5281648
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC919154C00;
-	Fri, 15 Nov 2024 06:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EE018BB9C;
+	Fri, 15 Nov 2024 06:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMlmsND+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvJUn0P1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE7118734F;
-	Fri, 15 Nov 2024 06:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1298189520;
+	Fri, 15 Nov 2024 06:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653031; cv=none; b=FARoRVnRzTdzWmjDzRGNoQhYCFZv5unWWNcHzgVWpDAhHQnPVjdXaM8BNyKt3bDfGoyu8RIstlBCRT38ugJrjSkT3sju5mOQtTPc4zpr6aQ4xJYH8pGSymqt9jA0XyEG97zIGv+GKDMZ1M8+b9aR+fhAlHAMCt5n2BSu/glRKJc=
+	t=1731652839; cv=none; b=e6N3E6iBZBywuaaLk/rg0PXn8al+2G9cO5s94aY12dbaOpD1xI0zHRB6xc3aCSs08AcVS7NSnnqBBDkeLnYEn9vYwQ9F/201dLj57aO6T4vP8Br2UMFX8L6KKgDgpkki0gNP8xMqGRVWn7X6+qE16CcfTrQTZwPxrCi3fjP2/+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653031; c=relaxed/simple;
-	bh=NMzQ3qZhGrfySwaPWq/6qLKJiVaeoHNhvGObuETrlOc=;
+	s=arc-20240116; t=1731652839; c=relaxed/simple;
+	bh=gZd3COP8hZZR06w8bsATO0UiGpKWhmvT2a4QJvAh0m0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHa/xNiG4l7sAaM+JNFb6hSKXMreq/TnXesONkrIWzWUbkAJZYIaOGCCcU6jCcHLmpRWvpyO7OLe2VNG1vOcXJ8ADvW7nj42UMT6IbLp9VMex5iZEHzZgCsBDXbysGrl+/oKcbQ/KX+xlDfcgN7VoUbWT2O5KU/u8dY6xjP06h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMlmsND+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928C2C4CECF;
-	Fri, 15 Nov 2024 06:43:50 +0000 (UTC)
+	 MIME-Version; b=GNyHmrbx92wZZm+kGOQr4q4aYF3/2Dv6pEfLrwP4xLcM/C3umxCTNFknMtdMCs5NSMiX03ZHeY2vmK+gPAB6m8vZawImu8YUV0PCZ8bDQ26jszwu5sPl3+23XXq49AyRpidhPJKcPcclKaZZUk9lHHKRicvxui4TlOfolGQFyzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvJUn0P1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1D4C4CED4;
+	Fri, 15 Nov 2024 06:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653031;
-	bh=NMzQ3qZhGrfySwaPWq/6qLKJiVaeoHNhvGObuETrlOc=;
+	s=korg; t=1731652838;
+	bh=gZd3COP8hZZR06w8bsATO0UiGpKWhmvT2a4QJvAh0m0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMlmsND+AirYJy1btQ/bylQW8T+Rz1ay2x55nT0DkykpSnZIWd+pQ81RpxK8iuqsF
-	 ighx+B6F07tUJAKREtdnRoBfPWKtLXCz6l+RsdMlPr+/4QxnhGM6cXGh9pUw+0nEoc
-	 qrEqQ6g3dH/GjcCfW1UjGZOLA56bSsSUrO4igq9U=
+	b=IvJUn0P1KqdJGR58LdUmYdibV6kPxoSh29iFnjxmcngYiGfHmEcCuk6I7+bnEpDcO
+	 iC3Di4mjfywhg+hU7oThYA+nj8mJ+5LtTYc7A+aEwKBgIvBCLzZOinGav88v/LYyIZ
+	 63Mo2Vr+Kxn2ATORaZR990kTV5BvN8rQ07f0w3Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 33/66] btrfs: reinitialize delayed ref list after deleting it from the list
+	Benoit Sevens <bsevens@google.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 4.19 29/52] media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
 Date: Fri, 15 Nov 2024 07:37:42 +0100
-Message-ID: <20241115063724.038497162@linuxfoundation.org>
+Message-ID: <20241115063723.911093665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Benoit Sevens <bsevens@google.com>
 
-commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
+commit ecf2b43018da9579842c774b7f35dbe11b5c38dd upstream.
 
-At insert_delayed_ref() if we need to update the action of an existing
-ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
-ref_add_list using list_del(), which leaves the ref's add_list member
-not reinitialized, as list_del() sets the next and prev members of the
-list to LIST_POISON1 and LIST_POISON2, respectively.
+This can lead to out of bounds writes since frames of this type were not
+taken into account when calculating the size of the frames buffer in
+uvc_parse_streaming.
 
-If later we end up calling drop_delayed_ref() against the ref, which can
-happen during merging or when destroying delayed refs due to a transaction
-abort, we can trigger a crash since at drop_delayed_ref() we call
-list_empty() against the ref's add_list, which returns false since
-the list was not reinitialized after the list_del() and as a consequence
-we call list_del() again at drop_delayed_ref(). This results in an
-invalid list access since the next and prev members are set to poison
-pointers, resulting in a splat if CONFIG_LIST_HARDENED and
-CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
-otherwise.
-
-So fix this by deleting from the list with list_del_init() instead.
-
-Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Signed-off-by: Benoit Sevens <bsevens@google.com>
+Cc: stable@vger.kernel.org
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-ref.c |    2 +-
+ drivers/media/usb/uvc/uvc_driver.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -621,7 +621,7 @@ static int insert_delayed_ref(struct btr
- 					      &href->ref_add_list);
- 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
- 				ASSERT(!list_empty(&exist->add_list));
--				list_del(&exist->add_list);
-+				list_del_init(&exist->add_list);
- 			} else {
- 				ASSERT(0);
- 			}
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -575,7 +575,7 @@ static int uvc_parse_format(struct uvc_d
+ 	/* Parse the frame descriptors. Only uncompressed, MJPEG and frame
+ 	 * based formats have frame descriptors.
+ 	 */
+-	while (buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
++	while (ftype && buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
+ 	       buffer[2] == ftype) {
+ 		frame = &format->frame[format->nframes];
+ 		if (ftype != UVC_VS_FRAME_FRAME_BASED)
 
 
 
