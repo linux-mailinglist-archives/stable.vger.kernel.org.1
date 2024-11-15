@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723B59CD8F1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3601A9CD84F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE58B26CC3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8977B2274B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA8718873F;
-	Fri, 15 Nov 2024 06:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541DC184520;
+	Fri, 15 Nov 2024 06:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJSWNxBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odbSv1SB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D82153800;
-	Fri, 15 Nov 2024 06:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11059EAD0;
+	Fri, 15 Nov 2024 06:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653723; cv=none; b=D4liSIBZwyq8wYCgmWZNV9jgLYyQcGGceK+UIQ0AJWL9SPqGvVIhz/WDwbLRbO4QQtqcr/cnam22SOK7KetONVR7FPTJNgfXCqQ+zlQEaU8BmUFswdz7Bh4zF8omlKnjbJX4d9jJC8oQKZHNlMkMKl3LoC4k05nVBzHDurAusb0=
+	t=1731653367; cv=none; b=TBgSCM+IZ0yIStYtQO6/1V2s66noDozdLTC7Rmjb0AGhbOOF91D2S3NH6XMXoXltWwpkf0Q2NOZI+ASQ9ddHSzcjG1sm6BWJLRfQ5WIe6Ig29z1D9f5SmCQiNrOlQg0bB/+awvyFfv0SixTU8uRMqOn2jMXrElIbF/NXy+TCnPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653723; c=relaxed/simple;
-	bh=7IKq3kVhTuHrduhMTYKGr4BmdCOmsVDOgdYLNiziMjQ=;
+	s=arc-20240116; t=1731653367; c=relaxed/simple;
+	bh=t9n6BP9XsSEjeTEAIlCGxoMtbAQHAMMpTOliuJd6nBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEcrQ54ErxgrzCDHrIkfycfDkdvBW4fREUtmC5JxbepPklKEEnz/P096cno5eI6XELROwvF3LhhCYWfLHnT2hikMHAgmftDq7kHTD5sq1rDh6z+aH5dzXXyPnp+s7xm8ysp5Q5/7sUQIKczmFQNIAPapli/IQBUreRCpQYuVU54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJSWNxBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A89DC4CED2;
-	Fri, 15 Nov 2024 06:55:22 +0000 (UTC)
+	 MIME-Version; b=NccOKrptUcxSzGmaUvclGc2vK1tbRlq4yI6WqQjHJ11dJkvs7Deqm6NLXH9/xX/6zKUfLLDa05uklCGx3Y0KoOlTdX3FruPlqTSs+Zowh5h1woTEK1+HpgC6lFdHav9Baq/uJ0vkFN7B5PF5z91jVRvv0nd/bqUTphITFut9IYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odbSv1SB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75425C4CECF;
+	Fri, 15 Nov 2024 06:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653723;
-	bh=7IKq3kVhTuHrduhMTYKGr4BmdCOmsVDOgdYLNiziMjQ=;
+	s=korg; t=1731653366;
+	bh=t9n6BP9XsSEjeTEAIlCGxoMtbAQHAMMpTOliuJd6nBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJSWNxBAjn4b7wydScOPcIztk1CFt/tyjCGLnd8CJQQaNABEih3lpuaCleUjgzpKS
-	 f5W7WgR95AvwcyFR8Y8oXw+lqzhy6GtfFSvVePUKo/V5FRTe41qWNuAzebHyl/anFL
-	 wOYUA0wSSrMLZ10J6SivyHv2y0gzYtMYBZs83I+I=
+	b=odbSv1SBhyrndZvK1a4Jg5sqtK8VB1KqnNYshXALo4sWKax7F6wyOpZZyudGuMuHn
+	 MvD85XTHF4q8la/1A8IuoM7iZX+pgg17jGQPaN1KdMVCNo4VQ8qKAy1nrCfH+J9hcp
+	 F90PS75GDm032SYAIde7/zX2wgt2BnUlH1B3Jp3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Murphy <dmurphy@ti.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/82] net: phy: ti: implement generic .handle_interrupt() callback
+Subject: [PATCH 6.11 32/63] nvme: make keep-alive synchronous operation
 Date: Fri, 15 Nov 2024 07:37:55 +0100
-Message-ID: <20241115063726.222860587@linuxfoundation.org>
+Message-ID: <20241115063727.078749284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,356 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit 1d1ae3c6ca3ff49843d73852bb2a8153ce16f432 ]
+[ Upstream commit d06923670b5a5f609603d4a9fee4dec02d38de9c ]
 
-In an attempt to actually support shared IRQs in phylib, we now move the
-responsibility of triggering the phylib state machine or just returning
-IRQ_NONE, based on the IRQ status register, to the PHY driver. Having
-3 different IRQ handling callbacks (.handle_interrupt(),
-.did_interrupt() and .ack_interrupt() ) is confusing so let the PHY
-driver implement directly an IRQ handler like any other device driver.
-Make this driver follow the new convention.
+The nvme keep-alive operation, which executes at a periodic interval,
+could potentially sneak in while shutting down a fabric controller.
+This may lead to a race between the fabric controller admin queue
+destroy code path (invoked while shutting down controller) and hw/hctx
+queue dispatcher called from the nvme keep-alive async request queuing
+operation. This race could lead to the kernel crash shown below:
 
-Cc: Dan Murphy <dmurphy@ti.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 256748d5480b ("net: phy: ti: add PHY_RST_AFTER_CLK_EN flag")
+Call Trace:
+    autoremove_wake_function+0x0/0xbc (unreliable)
+    __blk_mq_sched_dispatch_requests+0x114/0x24c
+    blk_mq_sched_dispatch_requests+0x44/0x84
+    blk_mq_run_hw_queue+0x140/0x220
+    nvme_keep_alive_work+0xc8/0x19c [nvme_core]
+    process_one_work+0x200/0x4e0
+    worker_thread+0x340/0x504
+    kthread+0x138/0x140
+    start_kernel_thread+0x14/0x18
+
+While shutting down fabric controller, if nvme keep-alive request sneaks
+in then it would be flushed off. The nvme_keep_alive_end_io function is
+then invoked to handle the end of the keep-alive operation which
+decrements the admin->q_usage_counter and assuming this is the last/only
+request in the admin queue then the admin->q_usage_counter becomes zero.
+If that happens then blk-mq destroy queue operation (blk_mq_destroy_
+queue()) which could be potentially running simultaneously on another
+cpu (as this is the controller shutdown code path) would forward
+progress and deletes the admin queue. So, now from this point onward
+we are not supposed to access the admin queue resources. However the
+issue here's that the nvme keep-alive thread running hw/hctx queue
+dispatch operation hasn't yet finished its work and so it could still
+potentially access the admin queue resource while the admin queue had
+been already deleted and that causes the above crash.
+
+This fix helps avoid the observed crash by implementing keep-alive as a
+synchronous operation so that we decrement admin->q_usage_counter only
+after keep-alive command finished its execution and returns the command
+status back up to its caller (blk_execute_rq()). This would ensure that
+fabric shutdown code path doesn't destroy the fabric admin queue until
+keep-alive request finished execution and also keep-alive thread is not
+running hw/hctx queue dispatch operation.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83640.c   | 27 +++++++++++++++++++++++
- drivers/net/phy/dp83822.c   | 37 +++++++++++++++++++++++++++++++
- drivers/net/phy/dp83848.c   | 33 ++++++++++++++++++++++++++++
- drivers/net/phy/dp83867.c   | 25 +++++++++++++++++++++
- drivers/net/phy/dp83869.c   | 25 +++++++++++++++++++++
- drivers/net/phy/dp83tc811.c | 44 +++++++++++++++++++++++++++++++++++++
- 6 files changed, 191 insertions(+)
+ drivers/nvme/host/core.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/phy/dp83640.c b/drivers/net/phy/dp83640.c
-index f2caccaf4408f..89577f1d35766 100644
---- a/drivers/net/phy/dp83640.c
-+++ b/drivers/net/phy/dp83640.c
-@@ -50,6 +50,14 @@
- #define MII_DP83640_MISR_LINK_INT_EN 0x20
- #define MII_DP83640_MISR_ED_INT_EN 0x40
- #define MII_DP83640_MISR_LQ_INT_EN 0x80
-+#define MII_DP83640_MISR_ANC_INT 0x400
-+#define MII_DP83640_MISR_DUP_INT 0x800
-+#define MII_DP83640_MISR_SPD_INT 0x1000
-+#define MII_DP83640_MISR_LINK_INT 0x2000
-+#define MII_DP83640_MISR_INT_MASK (MII_DP83640_MISR_ANC_INT |\
-+				   MII_DP83640_MISR_DUP_INT |\
-+				   MII_DP83640_MISR_SPD_INT |\
-+				   MII_DP83640_MISR_LINK_INT)
- 
- /* phyter seems to miss the mark by 16 ns */
- #define ADJTIME_FIX	16
-@@ -1193,6 +1201,24 @@ static int dp83640_config_intr(struct phy_device *phydev)
- 	}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 7dac71cce3ebe..128932c849a1a 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1302,10 +1302,9 @@ static void nvme_queue_keep_alive_work(struct nvme_ctrl *ctrl)
+ 	queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
  }
  
-+static irqreturn_t dp83640_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, MII_DP83640_MISR);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (!(irq_status & MII_DP83640_MISR_INT_MASK))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp83640_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
+-static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+-						 blk_status_t status)
++static void nvme_keep_alive_finish(struct request *rq,
++		blk_status_t status, struct nvme_ctrl *ctrl)
  {
- 	struct dp83640_private *dp83640 =
-@@ -1517,6 +1543,7 @@ static struct phy_driver dp83640_driver = {
- 	.config_init	= dp83640_config_init,
- 	.ack_interrupt  = dp83640_ack_interrupt,
- 	.config_intr    = dp83640_config_intr,
-+	.handle_interrupt = dp83640_handle_interrupt,
- };
- 
- static int __init dp83640_init(void)
-diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
-index c3828beccbad8..45fbb65085f96 100644
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -303,6 +303,41 @@ static int dp83822_config_intr(struct phy_device *phydev)
- 	return phy_write(phydev, MII_DP83822_PHYSCR, physcr_status);
- }
- 
-+static irqreturn_t dp83822_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	/* The MISR1 and MISR2 registers are holding the interrupt status in
-+	 * the upper half (15:8), while the lower half (7:0) is used for
-+	 * controlling the interrupt enable state of those individual interrupt
-+	 * sources. To determine the possible interrupt sources, just read the
-+	 * MISR* register and use it directly to know which interrupts have
-+	 * been enabled previously or not.
-+	 */
-+	irq_status = phy_read(phydev, MII_DP83822_MISR1);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+	if (irq_status & ((irq_status & GENMASK(7, 0)) << 8))
-+		goto trigger_machine;
-+
-+	irq_status = phy_read(phydev, MII_DP83822_MISR2);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+	if (irq_status & ((irq_status & GENMASK(7, 0)) << 8))
-+		goto trigger_machine;
-+
-+	return IRQ_NONE;
-+
-+trigger_machine:
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp8382x_disable_wol(struct phy_device *phydev)
- {
- 	return phy_clear_bits_mmd(phydev, DP83822_DEVADDR, MII_DP83822_WOL_CFG,
-@@ -586,6 +621,7 @@ static int dp83822_resume(struct phy_device *phydev)
- 		.set_wol = dp83822_set_wol,			\
- 		.ack_interrupt = dp83822_ack_interrupt,		\
- 		.config_intr = dp83822_config_intr,		\
-+		.handle_interrupt = dp83822_handle_interrupt,	\
- 		.suspend = dp83822_suspend,			\
- 		.resume = dp83822_resume,			\
- 	}
-@@ -601,6 +637,7 @@ static int dp83822_resume(struct phy_device *phydev)
- 		.set_wol = dp83822_set_wol,			\
- 		.ack_interrupt = dp83822_ack_interrupt,		\
- 		.config_intr = dp83822_config_intr,		\
-+		.handle_interrupt = dp83822_handle_interrupt,	\
- 		.suspend = dp83822_suspend,			\
- 		.resume = dp83822_resume,			\
- 	}
-diff --git a/drivers/net/phy/dp83848.c b/drivers/net/phy/dp83848.c
-index 54c7c1b44e4d0..b707a9b278471 100644
---- a/drivers/net/phy/dp83848.c
-+++ b/drivers/net/phy/dp83848.c
-@@ -37,6 +37,20 @@
- 	 DP83848_MISR_SPD_INT_EN |	\
- 	 DP83848_MISR_LINK_INT_EN)
- 
-+#define DP83848_MISR_RHF_INT		BIT(8)
-+#define DP83848_MISR_FHF_INT		BIT(9)
-+#define DP83848_MISR_ANC_INT		BIT(10)
-+#define DP83848_MISR_DUP_INT		BIT(11)
-+#define DP83848_MISR_SPD_INT		BIT(12)
-+#define DP83848_MISR_LINK_INT		BIT(13)
-+#define DP83848_MISR_ED_INT		BIT(14)
-+
-+#define DP83848_INT_MASK		\
-+	(DP83848_MISR_ANC_INT |	\
-+	 DP83848_MISR_DUP_INT |	\
-+	 DP83848_MISR_SPD_INT |	\
-+	 DP83848_MISR_LINK_INT)
-+
- static int dp83848_ack_interrupt(struct phy_device *phydev)
- {
- 	int err = phy_read(phydev, DP83848_MISR);
-@@ -66,6 +80,24 @@ static int dp83848_config_intr(struct phy_device *phydev)
- 	return phy_write(phydev, DP83848_MICR, control);
- }
- 
-+static irqreturn_t dp83848_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, DP83848_MISR);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (!(irq_status & DP83848_INT_MASK))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp83848_config_init(struct phy_device *phydev)
- {
- 	int val;
-@@ -104,6 +136,7 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
- 		/* IRQ related */				\
- 		.ack_interrupt	= dp83848_ack_interrupt,	\
- 		.config_intr	= dp83848_config_intr,		\
-+		.handle_interrupt = dp83848_handle_interrupt,	\
+-	struct nvme_ctrl *ctrl = rq->end_io_data;
+ 	unsigned long flags;
+ 	bool startka = false;
+ 	unsigned long rtt = jiffies - (rq->deadline - rq->timeout);
+@@ -1323,13 +1322,11 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 		delay = 0;
  	}
  
- static struct phy_driver dp83848_driver[] = {
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 834bf63dc2009..0cb24bfbfa237 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -312,6 +312,30 @@ static int dp83867_config_intr(struct phy_device *phydev)
- 	return phy_write(phydev, MII_DP83867_MICR, micr_status);
+-	blk_mq_free_request(rq);
+-
+ 	if (status) {
+ 		dev_err(ctrl->device,
+ 			"failed nvme_keep_alive_end_io error=%d\n",
+ 				status);
+-		return RQ_END_IO_NONE;
++		return;
+ 	}
+ 
+ 	ctrl->ka_last_check_time = jiffies;
+@@ -1341,7 +1338,6 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 	spin_unlock_irqrestore(&ctrl->lock, flags);
+ 	if (startka)
+ 		queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
+-	return RQ_END_IO_NONE;
  }
  
-+static irqreturn_t dp83867_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status, irq_enabled;
-+
-+	irq_status = phy_read(phydev, MII_DP83867_ISR);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	irq_enabled = phy_read(phydev, MII_DP83867_MICR);
-+	if (irq_enabled < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (!(irq_status & irq_enabled))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp83867_read_status(struct phy_device *phydev)
- {
- 	int status = phy_read(phydev, MII_DP83867_PHYSTS);
-@@ -878,6 +902,7 @@ static struct phy_driver dp83867_driver[] = {
- 		/* IRQ related */
- 		.ack_interrupt	= dp83867_ack_interrupt,
- 		.config_intr	= dp83867_config_intr,
-+		.handle_interrupt = dp83867_handle_interrupt,
+ static void nvme_keep_alive_work(struct work_struct *work)
+@@ -1350,6 +1346,7 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 			struct nvme_ctrl, ka_work);
+ 	bool comp_seen = ctrl->comp_seen;
+ 	struct request *rq;
++	blk_status_t status;
  
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index 01b593e0bb4a1..e2fe89c8059ea 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -207,6 +207,30 @@ static int dp83869_config_intr(struct phy_device *phydev)
- 	return phy_write(phydev, MII_DP83869_MICR, micr_status);
+ 	ctrl->ka_last_check_time = jiffies;
+ 
+@@ -1372,9 +1369,9 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 	nvme_init_request(rq, &ctrl->ka_cmd);
+ 
+ 	rq->timeout = ctrl->kato * HZ;
+-	rq->end_io = nvme_keep_alive_end_io;
+-	rq->end_io_data = ctrl;
+-	blk_execute_rq_nowait(rq, false);
++	status = blk_execute_rq(rq, false);
++	nvme_keep_alive_finish(rq, status, ctrl);
++	blk_mq_free_request(rq);
  }
  
-+static irqreturn_t dp83869_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status, irq_enabled;
-+
-+	irq_status = phy_read(phydev, MII_DP83869_ISR);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	irq_enabled = phy_read(phydev, MII_DP83869_MICR);
-+	if (irq_enabled < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (!(irq_status & irq_enabled))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp83869_set_wol(struct phy_device *phydev,
- 			   struct ethtool_wolinfo *wol)
- {
-@@ -853,6 +877,7 @@ static struct phy_driver dp83869_driver[] = {
- 		/* IRQ related */
- 		.ack_interrupt	= dp83869_ack_interrupt,
- 		.config_intr	= dp83869_config_intr,
-+		.handle_interrupt = dp83869_handle_interrupt,
- 		.read_status	= dp83869_read_status,
- 
- 		.get_tunable	= dp83869_get_tunable,
-diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
-index d73725312c7c3..a93c64ac76a39 100644
---- a/drivers/net/phy/dp83tc811.c
-+++ b/drivers/net/phy/dp83tc811.c
-@@ -254,6 +254,49 @@ static int dp83811_config_intr(struct phy_device *phydev)
- 	return err;
- }
- 
-+static irqreturn_t dp83811_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	/* The INT_STAT registers 1, 2 and 3 are holding the interrupt status
-+	 * in the upper half (15:8), while the lower half (7:0) is used for
-+	 * controlling the interrupt enable state of those individual interrupt
-+	 * sources. To determine the possible interrupt sources, just read the
-+	 * INT_STAT* register and use it directly to know which interrupts have
-+	 * been enabled previously or not.
-+	 */
-+	irq_status = phy_read(phydev, MII_DP83811_INT_STAT1);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+	if (irq_status & ((irq_status & GENMASK(7, 0)) << 8))
-+		goto trigger_machine;
-+
-+	irq_status = phy_read(phydev, MII_DP83811_INT_STAT2);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+	if (irq_status & ((irq_status & GENMASK(7, 0)) << 8))
-+		goto trigger_machine;
-+
-+	irq_status = phy_read(phydev, MII_DP83811_INT_STAT3);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+	if (irq_status & ((irq_status & GENMASK(7, 0)) << 8))
-+		goto trigger_machine;
-+
-+	return IRQ_NONE;
-+
-+trigger_machine:
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dp83811_config_aneg(struct phy_device *phydev)
- {
- 	int value, err;
-@@ -345,6 +388,7 @@ static struct phy_driver dp83811_driver[] = {
- 		.set_wol = dp83811_set_wol,
- 		.ack_interrupt = dp83811_ack_interrupt,
- 		.config_intr = dp83811_config_intr,
-+		.handle_interrupt = dp83811_handle_interrupt,
- 		.suspend = dp83811_suspend,
- 		.resume = dp83811_resume,
- 	 },
+ static void nvme_start_keep_alive(struct nvme_ctrl *ctrl)
 -- 
 2.43.0
 
