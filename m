@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-93373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE4A9CD8E7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80599CD784
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340151F218EB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E6D72812D1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7DE2BB1B;
-	Fri, 15 Nov 2024 06:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C46A188734;
+	Fri, 15 Nov 2024 06:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2aFbK49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEZddyNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF31A187FE8;
-	Fri, 15 Nov 2024 06:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF7E154C00;
+	Fri, 15 Nov 2024 06:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653705; cv=none; b=Ymlt1fMaMNwmgvQ4k/9JT68JwNQ4IMN4RfIdvBs7ios1M+PbkBq3AChlDQFQyq/3IxnfBgRppBHMW7CD6QjjmnZu8te0NtPfdfOa2TcXZC40y90riYJkyZvlJPnf295DU+4tzOcjMjOrwDjKGwN5t1YoNfOdoINjeG5lxeu1WJQ=
+	t=1731652926; cv=none; b=nh6WyV5FN2TokabwWWBhvElW/kDL4cO3ZkH0A7cYKHoeukYgcZ8lZmxukP10W8tiz6h6GiXeD5XHHlXPFFmMTR37mfZDtFxzBGEkGbFO17raYOgsKjfxTrCy7AKNZGqx9hKisWbdravdmedV+26xzdQd2veti0HXU/4Uw3C6Y6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653705; c=relaxed/simple;
-	bh=6cKPY95IF8B8SKTabtL8zMPBRlUqUXeVup8vwpzv67c=;
+	s=arc-20240116; t=1731652926; c=relaxed/simple;
+	bh=+RsfeFzNcAGnmTHKT4LYZVhpRwF+/jxI3Evr77RkZAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W753Fbw1ZQw0OABSN5aQDcYuLbcE7FPTmcL6lhR3btaCF4gOsE5w9x+kYKxNtxxOTrFUvpjiTspBiXLsTr7Oqj9aEoyS8ysNRo4zkKfbSyPE34Bw/6jP+NlTEdN3j/6ec21LTRggNfnCzEYGFDZrGSsiBaWDg2nwg3Kj6sUHZmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2aFbK49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A70C4CECF;
-	Fri, 15 Nov 2024 06:55:05 +0000 (UTC)
+	 MIME-Version; b=kRAeGViAvMz95pj3RYt7j0TgRdd891F9Y0JjTEVuHaMefuEIuJO8npdax46TFuQSBLfqvQcOVMJSpuc+C1kSQBgRsPs+9Zd9VLnspfF6s3oicZvZXRmF9HVkBz9MO46GYfg567fczlkIvCQG8KJ5huvBaFt2YB2YENs3yOs19FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEZddyNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D958C4CECF;
+	Fri, 15 Nov 2024 06:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653705;
-	bh=6cKPY95IF8B8SKTabtL8zMPBRlUqUXeVup8vwpzv67c=;
+	s=korg; t=1731652926;
+	bh=+RsfeFzNcAGnmTHKT4LYZVhpRwF+/jxI3Evr77RkZAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2aFbK492yJx6yv1o1rli4Uyu8XvctfxwF5XrqYG4q6v8Kse7bOCIkh7KJ+uJl7bs
-	 ky1rynkZSs1MnirUri07baR+JZwVgLk6x+i9H+w4Rm4Dx5+RMjuY/CKD9zRXLmiNK+
-	 uRGNxwxqMsY3i9/ztrLfFUrlbC03TqR/kox4xzOY=
+	b=DEZddyNoxfUV/I80wXMCwJ+VKhbhZg27mwNPw0UbsxfKNiSL9bWe+EYZr91jqI3wU
+	 lL0p0QvXFzpLnwCFzX7EwjTw/uBjMHTmwYR4SEAIG8d7ZXvpyvaZSYmGv5zG/W/ZPb
+	 RU5ZL4H37W/DfW5Va01zAXzAQ4iTOmDArIxXouCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/82] net: enetc: set MAC address to the VF net_device
+	Andrew Kanner <andrew.kanner@gmail.com>,
+	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 37/52] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
 Date: Fri, 15 Nov 2024 07:37:50 +0100
-Message-ID: <20241115063726.044116746@linuxfoundation.org>
+Message-ID: <20241115063724.197218355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-[ Upstream commit badccd49b93bb945bf4e5cc8707db67cdc5e27e5 ]
+commit 0b63c0e01fba40e3992bc627272ec7b618ccaef7 upstream.
 
-The MAC address of VF can be configured through the mailbox mechanism of
-ENETC, but the previous implementation forgot to set the MAC address in
-net_device, resulting in the SMAC of the sent frames still being the old
-MAC address. Since the MAC address in the hardware has been changed, Rx
-cannot receive frames with the DMAC address as the new MAC address. The
-most obvious phenomenon is that after changing the MAC address, we can
-see that the MAC address of eno0vf0 has not changed through the "ifconfig
-eno0vf0" command and the IP address cannot be obtained .
+Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
 
-root@ls1028ardb:~# ifconfig eno0vf0 down
-root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
-root@ls1028ardb:~# ifconfig eno0vf0
-eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
-        RX packets 794  bytes 69239 (69.2 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 11  bytes 2226 (2.2 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
+[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
+[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
+[...]
+[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[...]
+[   57.331328] Call Trace:
+[   57.331477]  <TASK>
+[...]
+[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
+[   57.333778]  ? exc_page_fault+0x70/0x170
+[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
+[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
+[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
+[   57.335164]  ocfs2_xa_set+0x704/0xcf0
+[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
+[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
+[   57.335915]  ? trace_preempt_on+0x1e/0x70
+[   57.336153]  ? start_this_handle+0x16c/0x500
+[   57.336410]  ? preempt_count_sub+0x50/0x80
+[   57.336656]  ? _raw_read_unlock+0x20/0x40
+[   57.336906]  ? start_this_handle+0x16c/0x500
+[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
+[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
+[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
+[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
+[   57.338207]  ? dput+0x46/0x1c0
+[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338948]  __vfs_removexattr+0x92/0xc0
+[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
+[   57.339456]  ? preempt_count_sub+0x50/0x80
+[   57.339705]  vfs_removexattr+0x5f/0x100
+[...]
 
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20241029090406.841836-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
+ocfs2_xa_value_truncate() with -ENOMEM.
+
+In this case the comment mentions that we can return 0 if
+ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
+anyway. But the following 'rc' check is wrong and execution flow do
+'ocfs2_xa_remove_entry(loc);' twice:
+* 1st: in ocfs2_xa_cleanup_value_truncate();
+* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
+
+Fix this by skipping the 2nd removal of the same entry and making
+syzkaller repro happy.
+
+Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
+Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
+Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-index 5ce3e2593bdde..1b0d0ef20562b 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	struct sockaddr *saddr = addr;
-+	int err;
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -2050,8 +2050,7 @@ static int ocfs2_xa_remove(struct ocfs2_
+ 				rc = 0;
+ 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
+ 							orig_clusters);
+-			if (rc)
+-				goto out;
++			goto out;
+ 		}
+ 	}
  
- 	if (!is_valid_ether_addr(saddr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
--	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	if (err)
-+		return err;
-+
-+	eth_hw_addr_set(ndev, saddr->sa_data);
-+
-+	return 0;
- }
- 
- static int enetc_vf_set_features(struct net_device *ndev,
--- 
-2.43.0
-
 
 
 
