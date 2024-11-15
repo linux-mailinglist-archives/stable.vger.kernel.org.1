@@ -1,50 +1,54 @@
-Return-Path: <stable+bounces-93078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1340A9CD67C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:10:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5EB9CD682
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:12:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68567B23C9A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 05:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00726281FA2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 05:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41811632E4;
-	Fri, 15 Nov 2024 05:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795371632E4;
+	Fri, 15 Nov 2024 05:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXnKXNFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOl5+z/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719C12F26
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 05:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4612F26
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 05:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731647430; cv=none; b=E0ZKdRtWMczKgr56O7D8ZlJZc5F2COhXeTNUuAZ5ok8qQ7Gv6mBZjHPvYh6Oq0JxtFdBUPzufGd7FyjAZdp7No6fVaqX33gS151gyZ3Jnp5QFZ18vAS5tvlr/+H/0bjWK3fAQRpHR941L0ipinqsAPwruECI3zpi9SS7bqpELpU=
+	t=1731647537; cv=none; b=Bo0t69SIdAGjMrPNH9bnVyOmVxIOCLtnyqY8LOzjlfXaybmk6+01JtfRuXvWyk7H5GOcQBWXyhVG2BnZc8vtrWe3+NIDdUJHaIE5c4le4l3AklEdwwmAEm1SHvNRNZeX+dmkb2mdBh0ZEeLdVoq77/0XbUfBPiMDaOWbYLfMqM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731647430; c=relaxed/simple;
-	bh=yHobQhJ6p5k/iTrVJX1lY859oiSqaPZhziA77hGJ+U4=;
+	s=arc-20240116; t=1731647537; c=relaxed/simple;
+	bh=Pyh6bxGuZ5BU/+B6al9gbNw5ar/BdJLgCZEA2mgQtkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=crD+yoXJ3tUwzFXDUAEeFSpF7KnJLwPw36QTktQjlhQ9XheFVsRN5kvzTcE229OGnHIzVhJn4iv4/0TKtmZtK3mFKgw39oSyKLRyn//soXZpebNKgZfgcco0ymsiWe1C33FmiyzWNW6Jmbvu/jipAEQWIQ0b2ztj/Y9Q48K3pCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXnKXNFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE4EC4CECF;
-	Fri, 15 Nov 2024 05:10:29 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5tYzRXG8wMPyMBcoMs5T+/+lWIyaoZPdLWhn55aEGqryIIsAlOyz9R/rVTHfFVTT571QAL9PiJEIgUE8Vu+OGjKSA/l/o8kPjPaRoQZ8aFJ8y+kHhTWswtYEJhAjqU20iVLrCJen4UcOnidZ2WkFJ25g8L/s18rmyEl5CB6uCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOl5+z/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55209C4CECF;
+	Fri, 15 Nov 2024 05:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731647429;
-	bh=yHobQhJ6p5k/iTrVJX1lY859oiSqaPZhziA77hGJ+U4=;
+	s=korg; t=1731647536;
+	bh=Pyh6bxGuZ5BU/+B6al9gbNw5ar/BdJLgCZEA2mgQtkc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iXnKXNFqVkElKwXmHsfJmFOvi081hbbeXQrN2wScxOQZN8z2PpXANy4oRK7T3b4Tg
-	 0CYBJQv83jyFyiXOeb6sKQuptlOz8w4eg1hyFQmNYNZqO50RyI+J7OkkpOcX0XjEHR
-	 7sdy/8V2KCUSZduD7UFGjQz0ZpIKhYpyCKgEpMxg=
-Date: Fri, 15 Nov 2024 06:10:26 +0100
+	b=rOl5+z/MBoQFXqooINYva7arR2VvWQ2zNgvErypL3N5UY3wMGK+0teti0hF/j4R9z
+	 UD4i1TdLpTH/nIZLKGTOahDStg5NzhmzPBkrm5oHImVv+u1ogcN4/vGTQFEbaGpBPb
+	 7tXA4e0hFcWVzrWrA39XELG1DVnEtkwQRXo7rAHk=
+Date: Fri, 15 Nov 2024 06:12:14 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Backport request
-Message-ID: <2024111518-glove-sports-a349@gregkh>
-References: <F7DEAB0E-AFE7-487E-9472-7675D9A75747@amazon.de>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Hagar Hemdan <hagarhem@amazon.com>, stable@vger.kernel.org,
+	Maximilian Heyne <mheyne@amazon.de>
+Subject: Re: [PATCH 6.1] io_uring: fix possible deadlock in
+ io_register_iowq_max_workers()
+Message-ID: <2024111508-june-badge-f5bc@gregkh>
+References: <20241112083006.19917-1-hagarhem@amazon.com>
+ <2024111200-glimpse-refill-3204@gregkh>
+ <2f03db3f-b6cb-466f-8ab0-0ce73d31e46a@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,35 +57,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <F7DEAB0E-AFE7-487E-9472-7675D9A75747@amazon.de>
+In-Reply-To: <2f03db3f-b6cb-466f-8ab0-0ce73d31e46a@kernel.dk>
 
-On Tue, Nov 12, 2024 at 10:31:12AM +0000, Hemdan, Hagar Gamal Halim wrote:
->  Hi,
+On Tue, Nov 12, 2024 at 07:56:45AM -0700, Jens Axboe wrote:
+> On 11/12/24 1:39 AM, Greg KH wrote:
+> > On Tue, Nov 12, 2024 at 08:30:06AM +0000, Hagar Hemdan wrote:
+> >> commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
+> >>
+> >> The io_register_iowq_max_workers() function calls io_put_sq_data(),
+> >> which acquires the sqd->lock without releasing the uring_lock.
+> >> Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+> >> before acquiring sqd->lock"), this can lead to a potential deadlock
+> >> situation.
+> >>
+> >> To resolve this issue, the uring_lock is released before calling
+> >> io_put_sq_data(), and then it is re-acquired after the function call.
+> >>
+> >> This change ensures that the locks are acquired in the correct
+> >> order, preventing the possibility of a deadlock.
+> >>
+> >> Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+> >> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+> >> Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+> >> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> >> [Hagar: Modified to apply on v6.1]
+> >> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+> >> ---
+> >>  io_uring/io_uring.c | 5 +++++
+> >>  1 file changed, 5 insertions(+)
+> > 
+> > What about 6.6.y?  We can't just take patches for older branches and not
+> > newer ones, you know this :)
 > 
-> Please backport commit:
-> 
-> 59f8f0b54c8f ("md/raid10: improve code of mrdev in raid10_sync_request")
-> 
-> to stable trees 5.4.y, 5.10.y, 5.15.y, 6.1.y. This commit fixes Dereference after
-> null check of "&mrdev->nr_pending" in raid10_sync_request().
-> 
-> This bug was discovered and resolved using Coverity Static Analysis
-> Security Testing (SAST) by Synopsys, Inc.
-> 
-> 
-> 
-> 
-> 
-> 
-> Amazon Web Services Development Center Germany GmbH
-> Krausenstr. 38
-> 10117 Berlin
-> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-> Sitz: Berlin
-> Ust-ID: DE 365 538 597
+> Hagar, thanks for doing the other ones too. Greg, they look fine to me.
 
-Now queued up, thanks.
+Thanks, all now queued up.
 
 greg k-h
 
