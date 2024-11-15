@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B369CD83E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232879CD874
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3F01F2309D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A61BBB23577
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83429186294;
-	Fri, 15 Nov 2024 06:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B4C188015;
+	Fri, 15 Nov 2024 06:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfCIHk75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKk3HaFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414ED17E015;
-	Fri, 15 Nov 2024 06:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70E7185B5B;
+	Fri, 15 Nov 2024 06:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653329; cv=none; b=sZ3ZU6IoFdf6oxyY0cLHS/54RigQJHJQgYCwv4Oxc9YG2H32DJQiRcFyVpgz0NxfyiNG6Cd36IukbyIzsPo0zlBGIWJBHqsLB8XXAnSPlFs/bdl+YuTJ2w2lqmWF5w9/CKWp04RcrI5lS4CedNUrUYgvJ8ICU6D6jOOWq1nu4/s=
+	t=1731653460; cv=none; b=A7PbWJhI3amPRcf7bmplCCYgwrsF8pZ73kIYzJHGXPCZDjrJilPJWXl2pcppkKFIo1qYHY9x/FR8SeqsmVet/CtdbnVs9UeKDj1xYe0vLU0XaBTqfQgbwBqdN0GiiD+Ez+uopQ1lJUobRLkDDSkxMOcB/MwH3oukaw7hoMn0K7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653329; c=relaxed/simple;
-	bh=f+bEM/hYf8t30vwV0ZDCysL83ozuDkpLDYHH36iL6g8=;
+	s=arc-20240116; t=1731653460; c=relaxed/simple;
+	bh=1fr3EtsOkHDI9IQaT/448iiex5sU9ypI9iHJvov0HEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWCbmOGRqvOLEnp8bYOmKnvWIsb1Pq4WYj+P+jVUWqirhURFxQFm6duRegytoyijmwzMvSYHdz1F1zHW+DWXu45x7sHebcZvQcfZUAXT17fsDe/A9o/U4t1RyDcqdq4nLk17RT5rLY1FZu1vNZoAUQg23oHAt37kXWuYC2BIw9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfCIHk75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B3BC4CECF;
-	Fri, 15 Nov 2024 06:48:48 +0000 (UTC)
+	 MIME-Version; b=E20C+3o+lSf0rv2zA6n67fkNUzRMNm+cotuPDHjCrYTSYDjy65yGj8xINTSLUxWJQTptvNL5lsVTFJ//HakPNf4HuWsNvPOt+yw4HxOdcRiacWaXlj6ctf/dOY/31aeoOLSbq2QHA4codjAPXKU5oBBdxSPldnG7AI3OjLYrR/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKk3HaFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B4FC4CED0;
+	Fri, 15 Nov 2024 06:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653329;
-	bh=f+bEM/hYf8t30vwV0ZDCysL83ozuDkpLDYHH36iL6g8=;
+	s=korg; t=1731653459;
+	bh=1fr3EtsOkHDI9IQaT/448iiex5sU9ypI9iHJvov0HEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfCIHk75kPLNQ8jWZvIZufKsivKcrG6Rv6YDoCit00cdUkHi4jY7Ui/QwOe9LYi8o
-	 NGJgsJX7V+oN5fiOidi4xgEcYgoRuCHi4czrhk8h378qZVcws+NmRncsYcBojUvFTC
-	 LATC9U38FVEtDggvI/7hu4q0tqfYwwCG5gyNMOjM=
+	b=zKk3HaFpAa5K/1hSW7VGgTFu+s/0Pyd3mddym8El3cJsg/3+MX7vra6B3eM3RpKwn
+	 XACeeelLXPBUGR6RQXunTaRvG7krfdOE7LW5sK85VLcbkfyVPndZp0CoTKP9q7KdbQ
+	 CW64YHoMgAG2qete1ZAGR45P8hOgP4RiHMavPtls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Jiawei Ye <jiawei.ye@foxmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 54/63] LoongArch: KVM: Mark hrtimer to expire in hard interrupt context
+Subject: [PATCH 6.6 28/48] bpf: Fix mismatched RCU unlock flavour in bpf_out_neigh_v6
 Date: Fri, 15 Nov 2024 07:38:17 +0100
-Message-ID: <20241115063727.860350366@linuxfoundation.org>
+Message-ID: <20241115063723.980603900@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jiawei Ye <jiawei.ye@foxmail.com>
 
-[ Upstream commit 73adbd92f3223dc0c3506822b71c6b259d5d537b ]
+[ Upstream commit fb86c42a2a5d44e849ddfbc98b8d2f4f40d36ee3 ]
 
-Like commit 2c0d278f3293f ("KVM: LAPIC: Mark hrtimer to expire in hard
-interrupt context") and commit 9090825fa9974 ("KVM: arm/arm64: Let the
-timer expire in hardirq context on RT"), On PREEMPT_RT enabled kernels
-unmarked hrtimers are moved into soft interrupt expiry mode by default.
-Then the timers are canceled from an preempt-notifier which is invoked
-with disabled preemption which is not allowed on PREEMPT_RT.
+In the bpf_out_neigh_v6 function, rcu_read_lock() is used to begin an RCU
+read-side critical section. However, when unlocking, one branch
+incorrectly uses a different RCU unlock flavour rcu_read_unlock_bh()
+instead of rcu_read_unlock(). This mismatch in RCU locking flavours can
+lead to unexpected behavior and potential concurrency issues.
 
-The timer callback is short so in could be invoked in hard-IRQ context.
-So let the timer expire on hard-IRQ context even on -RT.
+This possible bug was identified using a static analysis tool developed
+by myself, specifically designed to detect RCU-related issues.
 
-This fix a "scheduling while atomic" bug for PREEMPT_RT enabled kernels:
+This patch corrects the mismatched unlock flavour by replacing the
+incorrect rcu_read_unlock_bh() with the appropriate rcu_read_unlock(),
+ensuring that the RCU critical section is properly exited. This change
+prevents potential synchronization issues and aligns with proper RCU
+usage patterns.
 
- BUG: scheduling while atomic: qemu-system-loo/1011/0x00000002
- Modules linked in: amdgpu rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat ns
- CPU: 1 UID: 0 PID: 1011 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc2+ #1774
- Tainted: [W]=WARN
- Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
- Stack : ffffffffffffffff 0000000000000000 9000000004e3ea38 9000000116744000
-         90000001167475a0 0000000000000000 90000001167475a8 9000000005644830
-         90000000058dc000 90000000058dbff8 9000000116747420 0000000000000001
-         0000000000000001 6a613fc938313980 000000000790c000 90000001001c1140
-         00000000000003fe 0000000000000001 000000000000000d 0000000000000003
-         0000000000000030 00000000000003f3 000000000790c000 9000000116747830
-         90000000057ef000 0000000000000000 9000000005644830 0000000000000004
-         0000000000000000 90000000057f4b58 0000000000000001 9000000116747868
-         900000000451b600 9000000005644830 9000000003a13998 0000000010000020
-         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<9000000003a13998>] show_stack+0x38/0x180
- [<9000000004e3ea34>] dump_stack_lvl+0x84/0xc0
- [<9000000003a71708>] __schedule_bug+0x48/0x60
- [<9000000004e45734>] __schedule+0x1114/0x1660
- [<9000000004e46040>] schedule_rtlock+0x20/0x60
- [<9000000004e4e330>] rtlock_slowlock_locked+0x3f0/0x10a0
- [<9000000004e4f038>] rt_spin_lock+0x58/0x80
- [<9000000003b02d68>] hrtimer_cancel_wait_running+0x68/0xc0
- [<9000000003b02e30>] hrtimer_cancel+0x70/0x80
- [<ffff80000235eb70>] kvm_restore_timer+0x50/0x1a0 [kvm]
- [<ffff8000023616c8>] kvm_arch_vcpu_load+0x68/0x2a0 [kvm]
- [<ffff80000234c2d4>] kvm_sched_in+0x34/0x60 [kvm]
- [<9000000003a749a0>] finish_task_switch.isra.0+0x140/0x2e0
- [<9000000004e44a70>] __schedule+0x450/0x1660
- [<9000000004e45cb0>] schedule+0x30/0x180
- [<ffff800002354c70>] kvm_vcpu_block+0x70/0x120 [kvm]
- [<ffff800002354d80>] kvm_vcpu_halt+0x60/0x3e0 [kvm]
- [<ffff80000235b194>] kvm_handle_gspr+0x3f4/0x4e0 [kvm]
- [<ffff80000235f548>] kvm_handle_exit+0x1c8/0x260 [kvm]
-
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
+Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/tencent_CFD3D1C3D68B45EA9F52D8EC76D2C4134306@qq.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/timer.c | 7 ++++---
- arch/loongarch/kvm/vcpu.c  | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ net/core/filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-index 74a4b5c272d60..32dc213374bea 100644
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -161,10 +161,11 @@ static void _kvm_save_timer(struct kvm_vcpu *vcpu)
- 	if (kvm_vcpu_is_blocking(vcpu)) {
- 
- 		/*
--		 * HRTIMER_MODE_PINNED is suggested since vcpu may run in
--		 * the same physical cpu in next time
-+		 * HRTIMER_MODE_PINNED_HARD is suggested since vcpu may run in
-+		 * the same physical cpu in next time, and the timer should run
-+		 * in hardirq context even in the PREEMPT_RT case.
- 		 */
--		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED);
-+		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED_HARD);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index a2467a7c01f9e..f9d05eff80b17 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2233,7 +2233,7 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
+ 		rcu_read_unlock();
+ 		return ret;
  	}
- }
- 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 6905283f535b9..9218fc521c22d 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1144,7 +1144,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	vcpu->arch.vpid = 0;
- 	vcpu->arch.flush_gpa = INVALID_GPA;
- 
--	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
-+	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
- 	vcpu->arch.swtimer.function = kvm_swtimer_wakeup;
- 
- 	vcpu->arch.handle_exit = kvm_handle_exit;
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	if (dst)
+ 		IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
+ out_drop:
 -- 
 2.43.0
 
