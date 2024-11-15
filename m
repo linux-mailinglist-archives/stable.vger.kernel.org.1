@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-93429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6409CD93C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833699CD7EF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 493941F2107E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AAD21F21028
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C4B1885BF;
-	Fri, 15 Nov 2024 06:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C647C1339A4;
+	Fri, 15 Nov 2024 06:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrTBrP6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCeCPuJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF6215FD13;
-	Fri, 15 Nov 2024 06:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EF329A9;
+	Fri, 15 Nov 2024 06:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653895; cv=none; b=XSQ7fBAdVob4VbQecloyOtYCvZ6/OhoUXsPTQ4NIfgbBxdjEt/Q6Uz1x1Qo2qq2j09VFE4da18pCxoBR8ueVwR0gfQSpB621gJSF+dFJ5UVHkUoLpr7ZQU864U3apZCgirqSYm18icbwNFOyc2swfiMVsMBuhGNFjU0YZoCR+e0=
+	t=1731653158; cv=none; b=ibCyvSeXK98H1zI+vxvCjGs8bPfLfSBHzHQj2P2Rz4iY8ti9rPfPR2iPXeRRyY1KrGH+Puz4/YYcHlXOV8i2h8mm1GxlRLMk4hDtUUq9dBcmChMVZEU8GY5GJC01GtL2921D3jkOYB0+2PU4vahu1IJtuIOgw5mMz25MqIybHBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653895; c=relaxed/simple;
-	bh=za9oGLypB2cNlL25tNMmiO273REKIdidwMlhvnfoh5A=;
+	s=arc-20240116; t=1731653158; c=relaxed/simple;
+	bh=4W+OLwYHSkVwABBpIK7LTEBhpKl0waVeqwVfUINpMBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtOmpr6lRCzsQNQKD2V89w/PnJafO2IRRx7UHV0iYeiNQQ4A7y3798+PlF39LBuXKBewB2bQ/rjI0x4zW4/0RVvRkVgxQukqkAXsNdjAFUvpINLutK1eBTpzB9WHVzvPMk44oUDrlpO1iU393O+Vcpj5JSc1Rl/A0MPRubiSszA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrTBrP6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C56C4CECF;
-	Fri, 15 Nov 2024 06:58:14 +0000 (UTC)
+	 MIME-Version; b=gGb0nyf6Q7v9LdYNsXi1IijRp/ffIsfNp37fXkVEYYQ686zz2F5nXlYuqq635GJTaiflFvSenQQ1kiDD8VbFhYASzFXX+bRNPbehonKM/os+Au59uCjwVfybBZHpbDtI7kpEunjOEYBQOl1rDGS9bKfZeU2EP2VzVpipZ7XcL+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCeCPuJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6337C4CECF;
+	Fri, 15 Nov 2024 06:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653895;
-	bh=za9oGLypB2cNlL25tNMmiO273REKIdidwMlhvnfoh5A=;
+	s=korg; t=1731653158;
+	bh=4W+OLwYHSkVwABBpIK7LTEBhpKl0waVeqwVfUINpMBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrTBrP6PocwJa0jmkCrRxU2N6AJiuq/7y118MyWmYiHHgKlKuRxuv3M0hmc1CJERI
-	 bpVYvUI9+2QOgc8hhEhQucu2qJQiyKVttz1eVX34l9OjGJsfVtq/2e2ymDdG0Qt61k
-	 PLAfrhs5ISC5xEHAZ2oqlXSvSq+Z82WaUEQbjmIc=
+	b=wCeCPuJuCNFfvgAYEWtJaHfnkhN+D8RQy0MXeACw3WqQlXDRtE5b9rBwoGXG3UZGe
+	 Cz5xxJTvn/2x+w+JjkOjgzgkfKRikeZiPJ5qiyiBnswJPb5fnFCFUVKO2iR/7AHocS
+	 qGwxgFE3TgJ2m/0lXyYEF0xbRWW3IjWGUIwj+5zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 24/82] media: dvb_frontend: dont play tricks with underflow values
+	stable <stable@kernel.org>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Wongi Lee <qwerty@theori.io>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 5.4 52/66] vsock/virtio: Initialization of the dangling pointer occurring in vsk->trans
 Date: Fri, 15 Nov 2024 07:38:01 +0100
-Message-ID: <20241115063726.435345799@linuxfoundation.org>
+Message-ID: <20241115063724.719504232@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 9883a4d41aba7612644e9bb807b971247cea9b9d ]
+commit 6ca575374dd9a507cdd16dfa0e78c2e9e20bd05f upstream.
 
-fepriv->auto_sub_step is unsigned. Setting it to -1 is just a
-trick to avoid calling continue, as reported by Coverity.
+During loopback communication, a dangling pointer can be created in
+vsk->trans, potentially leading to a Use-After-Free condition.  This
+issue is resolved by initializing vsk->trans to NULL.
 
-It relies to have this code just afterwards:
-
-	if (!ready) fepriv->auto_sub_step++;
-
-Simplify the code by simply setting it to zero and use
-continue to return to the while loop.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Wongi Lee <qwerty@theori.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-Id: <2024102245-strive-crib-c8d3@gregkh>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index ad3e42a4eaf73..01efb4bd260d9 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -442,8 +442,8 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -680,6 +680,7 @@ void virtio_transport_destruct(struct vs
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
  
- 		default:
- 			fepriv->auto_step++;
--			fepriv->auto_sub_step = -1; /* it'll be incremented to 0 in a moment */
--			break;
-+			fepriv->auto_sub_step = 0;
-+			continue;
- 		}
+ 	kfree(vvs);
++	vsk->trans = NULL;
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_destruct);
  
- 		if (!ready) fepriv->auto_sub_step++;
--- 
-2.43.0
-
 
 
 
