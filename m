@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-93127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CB09CD77B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A59E9CD85B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06B21F230AE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E42F2283BF7
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8618B189520;
-	Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101D8185924;
+	Fri, 15 Nov 2024 06:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wq3UM2H3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/E2YVdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43075188CB1;
-	Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FFA153800;
+	Fri, 15 Nov 2024 06:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652896; cv=none; b=VyD7lRS4UxQdIjVuljbiQrjBZFsBb90KAgF7FPVhQnbiKYiQNuY1MQ3UVRghABAVIwCEqNkHfaV7pwnJRyldjhXTfk5GfrGY+v0lazrPE9hC1UBAr4qeU8EnpCFEUbkXFIosmZlwDPlhuRzrTOpvpL06NKH6boD9UTC0pcK0OPI=
+	t=1731653397; cv=none; b=glViqUUMC1wh1KV1XOu+R7/ZVQj2Ui5QUZGMCKUk1ZscTOFUh+ZIO31CckgVpMOjTJbuO4XPPvJLvEREzkox820B8zzh4Tl8Wh+ZoekCkssGHfaWutGg2uNwlwTdH0i4EX7G3JycGHG9J4EmaO55LJPEJGgMVXICW94zHnKZYfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652896; c=relaxed/simple;
-	bh=ODjttWztDbOPmlkHGoG+2DYmR5tfvKEH7LNIIGzPhMs=;
+	s=arc-20240116; t=1731653397; c=relaxed/simple;
+	bh=bff7fT8gCg60q5GDyot6teOO5ISc32H1FTwv22RLrZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcIiZBpfcrkf/iM0OnWnEsk7siLI7Ve1HilTHrpRN2zKf1htyVuS4DWAqL0yvnT4ehPEAZWWwPx0R+UxWyT6VxfBqn/gvPl/c2ee9vSOc2V4KnybNm52WGNw6bglcgmEcCSCg7KaFrGVuG7wZCdlSsY4L2lAWBgaq1X2nE/wR8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wq3UM2H3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684EFC4CECF;
-	Fri, 15 Nov 2024 06:41:35 +0000 (UTC)
+	 MIME-Version; b=LxRzZcNR8nCIqM8ZeN3s+eCHudLLmG9GNqctute+iO6kZ84XYG+2QGSsQB0Yui4pBoeMj8LeTHFfq4uYlxhW9vsegyp/K5KsrcSnnG+BVXKofDwSe4d/sr1C3umPqDziYmmHg3eACuhaXvVjcodXDoMCPg9y63nMru6pHxJtzQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/E2YVdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0ECC4CECF;
+	Fri, 15 Nov 2024 06:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652895;
-	bh=ODjttWztDbOPmlkHGoG+2DYmR5tfvKEH7LNIIGzPhMs=;
+	s=korg; t=1731653397;
+	bh=bff7fT8gCg60q5GDyot6teOO5ISc32H1FTwv22RLrZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wq3UM2H3yFdlKtWHy7UnMplWQdC8uDwlO/ptWWXgwIW2k7ZH0xtruHU004m9CCVDt
-	 OUtrbltUvTczcRY/KRZdUaLs8NrTgfpkvEaOixi79TZx40oDc18liEnSHvVgvTR0xa
-	 31QMQdHbwdyqXdGrrAiTP06qJ6T/wMfnaKq1C/ek=
+	b=J/E2YVduEBHIhS5eI/RcwLNV+nHcwGf4xzgFp9Q4byh2bb7lNcRHMeuXrPkWwRoTA
+	 ddX8B7iSpY/58pYflgdnjOr3aC5qboy+S6Qab4hLkKj0vzJo640SvjWLu20JG6175n
+	 fNCHrjbN4lIrw6FeqsW7yQ/4+LbCPZFdQz/+FOv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 47/52] bpf: use kvzmalloc to allocate BPF verifier environment
+Subject: [PATCH 6.6 11/48] bpf: use kvzmalloc to allocate BPF verifier environment
 Date: Fri, 15 Nov 2024 07:38:00 +0100
-Message-ID: <20241115063724.550767845@linuxfoundation.org>
+Message-ID: <20241115063723.371127393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a48de55f5630e..de0926cff8352 100644
+index 67eb55a354bcc..4f19a091571bb 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -6446,7 +6446,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
+@@ -20230,7 +20230,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
  	/* 'struct bpf_verifier_env' can be global, but since it's not small,
  	 * allocate/free it every time bpf_check() is called
  	 */
@@ -102,9 +102,9 @@ index a48de55f5630e..de0926cff8352 100644
 +	env = kvzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
  	if (!env)
  		return -ENOMEM;
- 	log = &env->log;
-@@ -6573,6 +6573,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
- 	mutex_unlock(&bpf_verifier_lock);
+ 
+@@ -20450,6 +20450,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
+ 		mutex_unlock(&bpf_verifier_lock);
  	vfree(env->insn_aux_data);
  err_free_env:
 -	kfree(env);
