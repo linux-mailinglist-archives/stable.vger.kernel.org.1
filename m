@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-93112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36F39CD761
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BD99CD8FF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D9131F225AF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15136B248E4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62610126C17;
-	Fri, 15 Nov 2024 06:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CB7187FE8;
+	Fri, 15 Nov 2024 06:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPRLrM4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIH3IzUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7A187FE8;
-	Fri, 15 Nov 2024 06:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B282BB1B;
+	Fri, 15 Nov 2024 06:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652845; cv=none; b=DEsd4ZVZ6hUwrcAjv9kIO7jGg0/hlf5oUeQqYHrO8uNstLbhTmjpeh60/FD6HYVrlaN8FqUcU48eY5pWx/lAObujB/+E39wuKWLHV+jwShFsRt/4cFJBfM1nVAIH4QRl5kmngK6UbvZ0HqY0UR7zGRz5WaeoxhxkFHAiE19RZBw=
+	t=1731653761; cv=none; b=S+YhXIaB1BgYIO6lXFaiezi6XQbTPWV70mCADQ44OrlIl0hmpDANk66LFez6cAnVTKZkjfYTTW7d0Jfh/5+SOeqFoGWC0n1Tt3qH6/Pz+yWA93jC270YQBrGoWXcwU5xex7AMFnp1Cb4PxdCmrlA5oSEEwdpI+QPlLqtEfi4VkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652845; c=relaxed/simple;
-	bh=SAFYGPtrnWTNg/d4tl+Y0Wzo6Pvz6yV4HvWOY8zYVP4=;
+	s=arc-20240116; t=1731653761; c=relaxed/simple;
+	bh=lQGT3uyp1fRUbtnpDUmbw1ZkmOFCMnGjVaOOjeClDdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiOGPmN2VXWy6XrHmt5CAdVtTgzAZu8W8CsqB1bTXAgMYw2ctPcCJIbWIJovZX/DpgqF9BiWoC+C2gjyDPN6IZ1j+9PtB70BMJsu4+PF5FyvX3IIxbSGyjakovKvhhRuDxVou+susrT9B7b/Aj/AZZymdZDeoGsRxW8udUfqs2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPRLrM4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F70C4CECF;
-	Fri, 15 Nov 2024 06:40:44 +0000 (UTC)
+	 MIME-Version; b=DMzSD1Mth72QWRxw/DV10p0gmIQpxNlwC9d/z3VWE+5IVAVF+DHY9wC8Vu0G8WRmkWVQwAeaJoJviyiMEZ4B6t5SoR8BCObZR/p2VwOTq2uTu5ywhnuPvDDGiCJqzQBYMSaUhzz837QE7xqUjTtaPE6dUK5Yvv6sJ4/4mdMY17U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIH3IzUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8813C4CED0;
+	Fri, 15 Nov 2024 06:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652845;
-	bh=SAFYGPtrnWTNg/d4tl+Y0Wzo6Pvz6yV4HvWOY8zYVP4=;
+	s=korg; t=1731653761;
+	bh=lQGT3uyp1fRUbtnpDUmbw1ZkmOFCMnGjVaOOjeClDdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPRLrM4EpB7droFahfUSiN2MdnnZhAU658Jts1sVgzWy0lWCvGCxbJQm8127P6eEd
-	 9l3dGBqChHrcZWnGbiqc3a6JHFkh5j+ZOETCW6xCQ/ujtIzF+zlDzydnVT0BjqtZJJ
-	 dR/xxBW4PgKjcHxLDJIXYls3Y/tiWzEq250BC3OU=
+	b=PIH3IzUBH78JqlKazTTXspEd3pfy2950ms/LmhXCzn+qX0bZr9l05y2f0QLwlDCuW
+	 9xOKqR7FKFVw4pjoQl2c4eLoIlcnDYxyWtkv1jMQqziDA282GvCMGLcZwNq32W0A3J
+	 XzKo1sDPlapTsA+WjCFynQOebXTwuoSgOuXNsaJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Xi <xiqi2@huawei.com>,
-	kernel test robot <lkp@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Wang ShaoBo <bobo.shaobowang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 30/52] fs/proc: fix compile warning about variable vmcore_mmap_ops
-Date: Fri, 15 Nov 2024 07:37:43 +0100
-Message-ID: <20241115063723.946739262@linuxfoundation.org>
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 07/82] ARM: dts: rockchip: fix rk3036 acodec node
+Date: Fri, 15 Nov 2024 07:37:44 +0100
+Message-ID: <20241115063725.831263756@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,63 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Xi <xiqi2@huawei.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-commit b8ee299855f08539e04d6c1a6acb3dc9e5423c00 upstream.
+[ Upstream commit c7206853cd7d31c52575fb1dc7616b4398f3bc8f ]
 
-When build with !CONFIG_MMU, the variable 'vmcore_mmap_ops'
-is defined but not used:
+The acodec node is not conformant to the binding.
 
->> fs/proc/vmcore.c:458:42: warning: unused variable 'vmcore_mmap_ops'
-     458 | static const struct vm_operations_struct vmcore_mmap_ops = {
+Set the correct nodename, use the correct compatible, add the needed
+#sound-dai-cells and sort the rockchip,grf below clocks properties
+as expected.
 
-Fix this by only defining it when CONFIG_MMU is enabled.
-
-Link: https://lkml.kernel.org/r/20241101034803.9298-1-xiqi2@huawei.com
-Fixes: 9cb218131de1 ("vmcore: introduce remap_oldmem_pfn_range()")
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/lkml/202410301936.GcE8yUos-lkp@intel.com/
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: faea098e1808 ("ARM: dts: rockchip: add core rk3036 dtsi")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-12-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/vmcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/rk3036.dtsi | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -431,10 +431,6 @@ static vm_fault_t mmap_vmcore_fault(stru
- #endif
- }
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index 5f47b638f5327..4dabcb9cd4b8c 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -316,12 +316,13 @@
+ 		};
+ 	};
  
--static const struct vm_operations_struct vmcore_mmap_ops = {
--	.fault = mmap_vmcore_fault,
--};
--
- /**
-  * vmcore_alloc_buf - allocate buffer in vmalloc memory
-  * @sizez: size of buffer
-@@ -462,6 +458,11 @@ static inline char *vmcore_alloc_buf(siz
-  * virtually contiguous user-space in ELF layout.
-  */
- #ifdef CONFIG_MMU
-+
-+static const struct vm_operations_struct vmcore_mmap_ops = {
-+	.fault = mmap_vmcore_fault,
-+};
-+
- /*
-  * remap_oldmem_pfn_checked - do remap_oldmem_pfn_range replacing all pages
-  * reported as not being ram with the zero page.
+-	acodec: acodec-ana@20030000 {
+-		compatible = "rk3036-codec";
++	acodec: audio-codec@20030000 {
++		compatible = "rockchip,rk3036-codec";
+ 		reg = <0x20030000 0x4000>;
+-		rockchip,grf = <&grf>;
+ 		clock-names = "acodec_pclk";
+ 		clocks = <&cru PCLK_ACODEC>;
++		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
+-- 
+2.43.0
+
 
 
 
