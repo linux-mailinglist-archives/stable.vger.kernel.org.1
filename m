@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-93147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71589CD791
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681FA9CD762
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E96B1F23126
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC7C2B259B8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC8B1885BE;
-	Fri, 15 Nov 2024 06:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1146318A92D;
+	Fri, 15 Nov 2024 06:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1rzLWN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkt9QOmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C167C154C00;
-	Fri, 15 Nov 2024 06:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2054189528;
+	Fri, 15 Nov 2024 06:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652962; cv=none; b=jm9whuJuWELaSi7qmnVErdaDBtybUs+s5QNkM9D2KYheVLVxfclO58rx7rRu3RZjBHajti+Mx5AMX03p/b07OucAVXtSnNUSkjrAyz6mmRuTUy9x/NWX4KiqqcPshqOuBYmcvOs5mxJpclUEXtD0NQrpXsXIH27TGn8jq1TDAOU=
+	t=1731652841; cv=none; b=NkAaNBKiTGZkILvi6Jbo8xMB7Es1YPoEGR7ZHHhFxPlkU4vlyNbVstFO3eJGspnSxDyUaeE+tSMj1FEfRVYsRML2rW62mmoZcB3/F2XWHbHq4Vilb1cZGs/Pn4F/B7JJmeEuXtS9RrvIQfNaR4PjL7qI6Cels3pHTROAlthrEqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652962; c=relaxed/simple;
-	bh=+JakNv1EF51vA6BFC1yz8i+or+QAA0rd3EOsglG1aXQ=;
+	s=arc-20240116; t=1731652841; c=relaxed/simple;
+	bh=egZM142mbwDCiMZsECbq+iSg1+/gWhfHVQE+J1+m5wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWbDrwnOzOuobrmVVYP0s0tgIF3JlyQUP2I/is98gVk5+qu8QLf1RLrrQWNRmDrZdf4jkMUt9aTEL2mO/gXLPDCxHffBJIDDi94y3kAzaa3uy3e6tGXn5TsKu1Xyn3JkvEgUcyG8h5m9GoRu6FUwxOPTpcGq7rOmael+e/ntlOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1rzLWN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AE4C4CECF;
-	Fri, 15 Nov 2024 06:42:41 +0000 (UTC)
+	 MIME-Version; b=mSip+/wtLmZ6nJRF8dMRfibvyFkdX09/st5iVURPEXUYutCRanelSdg3jV7Q7WABu5qo+zYlyk20KeSqT5vQ7oAyEyuZ3G4lrquB0hWseu3ISab+dDrQvRY204yBT4PxbzvrMk9rKN9RU9iveAtWswhb9z5e9tSiCe1COjoNn54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkt9QOmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268B8C4CECF;
+	Fri, 15 Nov 2024 06:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652962;
-	bh=+JakNv1EF51vA6BFC1yz8i+or+QAA0rd3EOsglG1aXQ=;
+	s=korg; t=1731652841;
+	bh=egZM142mbwDCiMZsECbq+iSg1+/gWhfHVQE+J1+m5wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1rzLWN+9cWri299BhAFAcCPrjWkswTa7llEVMwYunzAOIk2Bh0UG1zRyZgeGJv4q
-	 hyzwSduGJjLFrJ+aw9s6pB+Dw/dLkuzyBy0dN6ZtAFbc5s01MbbAdctO21+aCwj2f3
-	 nW/cosd/3ezWlBLoglWEMsIXBy78byKe5fulqQEc=
+	b=rkt9QOmWj2Fc4o6eMEPRaN23imLO9zWJ6LcYhAAwK0a92513Q3mUUzvenhEGM9CCK
+	 E8XNf1qBFVMqf15UjkvuLaDrI98gT33tvN5A6Q5j7HtjRAn8woQMo1hV8vKgAfl2AG
+	 itnxS0KJXKiPOeX13bBJ53K1VntpZ9+4Wijcfxwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/66] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
-Date: Fri, 15 Nov 2024 07:37:15 +0100
-Message-ID: <20241115063723.069803182@linuxfoundation.org>
+Subject: [PATCH 4.19 03/52] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
+Date: Fri, 15 Nov 2024 07:37:16 +0100
+Message-ID: <20241115063722.975246420@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index 69ca841d57e75..7c031260186db 100644
+index f7b5853aeb79f..9e30c726b7082 100644
 --- a/arch/arm/boot/dts/rk3036.dtsi
 +++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -333,7 +333,6 @@
+@@ -332,7 +332,6 @@
  		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
  		clocks = <&cru  PCLK_HDMI>;
  		clock-names = "pclk";
