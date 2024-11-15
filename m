@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB2A9CD7D7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C969CD766
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FFE0B25863
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AFD51F21F93
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977EC18785C;
-	Fri, 15 Nov 2024 06:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484B718872A;
+	Fri, 15 Nov 2024 06:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+O5HtpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YXvnC3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B71D126C17;
-	Fri, 15 Nov 2024 06:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032F8188724;
+	Fri, 15 Nov 2024 06:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653100; cv=none; b=Uur3a3LavgABUlBM/4DyPy2hlFz7n6uKqQjHc5nQrFFIMuj58N/KnfUzVX3oKc6d0A5otT3glYCHFCyQnPlXTgzzH0z8428675H/f6EzHjak4fZ0v8iKCQvOUg0SoB9gtSDcuzgjaQKjZi33X+EEJSH83/AdRdZe6Y3o2NknsDw=
+	t=1731652862; cv=none; b=uHq25OymQUGIKXi4t5k8DZV7Lis+PjpQjywn9FJmThxvsa459/JeKPyPdDLVc7yvbsH5MI6bsCR1r88kLNDPrZXGz8f0p/AxtZV5ociD7U1OHnlkBqEQRz8RqBE+LRHWMOaSA8QfIXkAP4XGKRSCdAvTRRdayV95STYrBU6b7WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653100; c=relaxed/simple;
-	bh=8uWpb6ICf8nkQBmDb6jzAXUPx6yDtPQKAd1BkaZLPYY=;
+	s=arc-20240116; t=1731652862; c=relaxed/simple;
+	bh=Cnr8FMJMwNBZejGaM1d1aUyUHThXq4ACqGv7ggJlgbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzbsTEYcRhGMi3777lmciEfE518ghhOTHbcZ+JRoeHIYCVoveFYxFz/86SLSLZRF63IbGCYZmqkje9mvYqIW20WLbmaV6GTKSGMUfWqEM55dEG8VAyIs0kv/Wjgtau9VDzs4WqiSou10RMHK7aNulexk/rJD3jXXrMDadU4b/dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+O5HtpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF648C4CECF;
-	Fri, 15 Nov 2024 06:44:59 +0000 (UTC)
+	 MIME-Version; b=WuDXnfzQ2TmOc1G5wVkcY1Z4tz+/lge0rG05VoEMvtEqwp4mBXRaGMZgbEduJoUbYcNXqpdYVjfsR3KPnSpibfYo/6dPMOxFYsXpkrZPRXY6+6VuBmAh12F1Fq39L9EIvnpYg8jpOW9SrmjuyVKjiKMCITGGD4NYoHF3d+9ttlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YXvnC3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CFDC4CECF;
+	Fri, 15 Nov 2024 06:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653100;
-	bh=8uWpb6ICf8nkQBmDb6jzAXUPx6yDtPQKAd1BkaZLPYY=;
+	s=korg; t=1731652861;
+	bh=Cnr8FMJMwNBZejGaM1d1aUyUHThXq4ACqGv7ggJlgbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+O5HtpIg8r6cCWVLx0GOlJ+e1qnP6w6fW/Z5uqG8j5Vj4O5fJnsjlWlu1Wp43+g8
-	 ytkzLYw7KusN4T5k1rWLe/tFbEaThAdYYjonnoLqwQUsADPDAdtjgCKh3ZBpZzbvo0
-	 Rj1Gx77118tPxNTErYfxhHzuE5FnodM0dDRRv7oY=
+	b=2YXvnC3GINjPPiKcbN9+1ZRXOy3yKB7mInJZVf1NJ64zWWWlWb9G4Y9wrD+kueoi1
+	 qoRK135jQKGdtR5185wBhO1v8imtCbBP0SyAPLxUTfrlFRVeYYdwXHElvfi2Oh/Msr
+	 1BTNZE3rrM1ZOrIz4/PEcm60VZ0QxqHI8t9aKumU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com,
-	Chen Ridong <chenridong@huawei.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/66] security/keys: fix slab-out-of-bounds in key_task_permission
-Date: Fri, 15 Nov 2024 07:37:19 +0100
-Message-ID: <20241115063723.214326698@linuxfoundation.org>
+Subject: [PATCH 4.19 07/52] sctp: properly validate chunk size in sctp_sf_ootb()
+Date: Fri, 15 Nov 2024 07:37:20 +0100
+Message-ID: <20241115063723.118837222@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 4a74da044ec9ec8679e6beccc4306b936b62873f ]
+[ Upstream commit 0ead60804b64f5bd6999eec88e503c6a1a242d41 ]
 
-KASAN reports an out of bounds read:
-BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
-BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
-BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
-security/keys/permission.c:54
-Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
+A size validation fix similar to that in Commit 50619dbf8db7 ("sctp: add
+size validation when walking chunks") is also required in sctp_sf_ootb()
+to address a crash reported by syzbot:
 
-CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0x107/0x167 lib/dump_stack.c:123
- print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- __kuid_val include/linux/uidgid.h:36 [inline]
- uid_eq include/linux/uidgid.h:63 [inline]
- key_task_permission+0x394/0x410 security/keys/permission.c:54
- search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
+  BUG: KMSAN: uninit-value in sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
+  sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
+  sctp_do_sm+0x181/0x93d0 net/sctp/sm_sideeffect.c:1166
+  sctp_endpoint_bh_rcv+0xc38/0xf90 net/sctp/endpointola.c:407
+  sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+  sctp_rcv+0x3831/0x3b20 net/sctp/input.c:243
+  sctp4_rcv+0x42/0x50 net/sctp/protocol.c:1159
+  ip_protocol_deliver_rcu+0xb51/0x13d0 net/ipv4/ip_input.c:205
+  ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
 
-This issue was also reported by syzbot.
-
-It can be reproduced by following these steps(more details [1]):
-1. Obtain more than 32 inputs that have similar hashes, which ends with the
-   pattern '0xxxxxxxe6'.
-2. Reboot and add the keys obtained in step 1.
-
-The reproducer demonstrates how this issue happened:
-1. In the search_nested_keyrings function, when it iterates through the
-   slots in a node(below tag ascend_to_node), if the slot pointer is meta
-   and node->back_pointer != NULL(it means a root), it will proceed to
-   descend_to_node. However, there is an exception. If node is the root,
-   and one of the slots points to a shortcut, it will be treated as a
-   keyring.
-2. Whether the ptr is keyring decided by keyring_ptr_is_keyring function.
-   However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as
-   ASSOC_ARRAY_PTR_SUBTYPE_MASK.
-3. When 32 keys with the similar hashes are added to the tree, the ROOT
-   has keys with hashes that are not similar (e.g. slot 0) and it splits
-   NODE A without using a shortcut. When NODE A is filled with keys that
-   all hashes are xxe6, the keys are similar, NODE A will split with a
-   shortcut. Finally, it forms the tree as shown below, where slot 6 points
-   to a shortcut.
-
-                      NODE A
-              +------>+---+
-      ROOT    |       | 0 | xxe6
-      +---+   |       +---+
- xxxx | 0 | shortcut  :   : xxe6
-      +---+   |       +---+
- xxe6 :   :   |       |   | xxe6
-      +---+   |       +---+
-      | 6 |---+       :   : xxe6
-      +---+           +---+
- xxe6 :   :           | f | xxe6
-      +---+           +---+
- xxe6 | f |
-      +---+
-
-4. As mentioned above, If a slot(slot 6) of the root points to a shortcut,
-   it may be mistakenly transferred to a key*, leading to a read
-   out-of-bounds read.
-
-To fix this issue, one should jump to descend_to_node if the ptr is a
-shortcut, regardless of whether the node is root or not.
-
-[1] https://lore.kernel.org/linux-kernel/1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com/
-
-[jarkko: tweaked the commit message a bit to have an appropriate closes
- tag.]
-Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-Reported-by: syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000cbb7860611f61147@google.com/T/
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reported-by: syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/a29ebb6d8b9f8affd0f9abb296faafafe10c17d8.1730223981.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/keyring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/sctp/sm_statefuns.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 5ca620d31cd30..5ec89db5a7c1b 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -772,8 +772,11 @@ static bool search_nested_keyrings(struct key *keyring,
- 	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
- 		ptr = READ_ONCE(node->slots[slot]);
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 8298f27e8de0d..0b44ad00dbb69 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -3652,7 +3652,7 @@ enum sctp_disposition sctp_sf_ootb(struct net *net,
+ 		}
  
--		if (assoc_array_ptr_is_meta(ptr) && node->back_pointer)
--			goto descend_to_node;
-+		if (assoc_array_ptr_is_meta(ptr)) {
-+			if (node->back_pointer ||
-+			    assoc_array_ptr_is_shortcut(ptr))
-+				goto descend_to_node;
-+		}
+ 		ch = (struct sctp_chunkhdr *)ch_end;
+-	} while (ch_end < skb_tail_pointer(skb));
++	} while (ch_end + sizeof(*ch) < skb_tail_pointer(skb));
  
- 		if (!keyring_ptr_is_keyring(ptr))
- 			continue;
+ 	if (ootb_shut_ack)
+ 		return sctp_sf_shut_8_4_5(net, ep, asoc, type, arg, commands);
 -- 
 2.43.0
 
