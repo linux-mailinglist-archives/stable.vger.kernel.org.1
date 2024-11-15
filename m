@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-93122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148A69CD771
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA689CD7F5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F25CB25F33
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5413C1F21DEE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6332518A6D2;
-	Fri, 15 Nov 2024 06:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBB92BB1B;
+	Fri, 15 Nov 2024 06:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJu0xKV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToqoSnmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA7C189BAC;
-	Fri, 15 Nov 2024 06:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC2D17E015;
+	Fri, 15 Nov 2024 06:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652879; cv=none; b=VKoHDm1oe5DO0n++2ol5WX2r4dTHW5JSpmpT5A4S7xtLbwA0uFeGYU+TwD3/m0jV/LBiSsl2fCK42xL2Ee2TZJDqh/wjxI3K3G5xrEOnBEHEd7/aQygB7dQ2/+EeCyAoA3jZq9ijP8WaNhkMF3j2RHpbBTLNg1YrjaKAKF/pqSY=
+	t=1731653171; cv=none; b=Gsrg55tFKEHZqCF+Ftdek8aDQ+0tu9812mn3AIWP0xTyMhS23EliTx3ki97SVZSLxVIVcwAOgLXlarvXNAntO5IujdBoSPfRA+CN18+5GZI3wE1sGb14iNYvHNAPNsHLSNysyv0Y76vK81Jrh93UeEtwbqHpmY5sqKs6wuUWznA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652879; c=relaxed/simple;
-	bh=mI2zIaVScuaMAHnNZfcI8LQulejFZDutd2ZkPypUz6o=;
+	s=arc-20240116; t=1731653171; c=relaxed/simple;
+	bh=OHwzFwYPVx/KSjGAlcOMOnPmOCi4G2cdcqumJQWP8bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4pf0hzAGlZqk3WOWoLQ/c10TxcWcw1GRAgMjAvDjOaykW/I3ZMRXXIQ85w5dwydt1Timuig31vDHTzKZG+S6JXvGl2lrMQHaaiNduyaSWHwCBniz7QLyg9Q+qxiBoLRVqCPY+6CAkBnKAxHNZFcscvB9IUwmOiHP9l948xF1c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJu0xKV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5027AC4CED7;
-	Fri, 15 Nov 2024 06:41:18 +0000 (UTC)
+	 MIME-Version; b=pa1r9/nelJ7kHJKg64TW6E0enPH+iQwVoD48kYEfDzfQvRJ26CpBqPBMfi3hqwCFdR+sR7kCX8TmOgKfHlwWNSmeLuyExa7dJp1fuUckXaBL/024PsdSrTYDJCcN5mS9UyLpNBXzIA4PCGqlFHUxvZ4SouUzFUjJG/hsnbIfnnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToqoSnmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3065BC4CECF;
+	Fri, 15 Nov 2024 06:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652878;
-	bh=mI2zIaVScuaMAHnNZfcI8LQulejFZDutd2ZkPypUz6o=;
+	s=korg; t=1731653171;
+	bh=OHwzFwYPVx/KSjGAlcOMOnPmOCi4G2cdcqumJQWP8bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJu0xKV2E6sUyuAppeZeijOtUdt0SHvp0MSZ7qBROEZBWtVIsnTC0PJTLvWbpdkGU
-	 xT5RFqqrLQ0z0Z3npr3s5sUTy6lVxJx9pLPaslJKTc96DJLzancDWcjeYCzwuGHCH3
-	 LluLum9WAQts/qqMTGFTqwTVF4m3zJEjmX+4IKZY=
+	b=ToqoSnmED38SktYkte0guG2WbqaNYdZ4DY2ooPzdaigbei4E1xialh11CT6Y+pqOP
+	 nKPt3K+uNI2RO/XG+vfW/bP1WEHn9dpK553mgIn9OP/O0/G6WLLVjoCbv00Ljhh2hp
+	 d//zK1H3/1JjcuQ00y/XIBp4wI9bYB0iaOjUWiOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 42/52] hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+	Andrew Kanner <andrew.kanner@gmail.com>,
+	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 46/66] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
 Date: Fri, 15 Nov 2024 07:37:55 +0100
-Message-ID: <20241115063724.374487696@linuxfoundation.org>
+Message-ID: <20241115063724.505306272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-commit e629295bd60abf4da1db85b82819ca6a4f6c1e79 upstream.
+commit 0b63c0e01fba40e3992bc627272ec7b618ccaef7 upstream.
 
-When hvs is released, there is a possibility that vsk->trans may not
-be initialized to NULL, which could lead to a dangling pointer.
-This issue is resolved by initializing vsk->trans to NULL.
+Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
 
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
+[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
+[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
+[...]
+[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[...]
+[   57.331328] Call Trace:
+[   57.331477]  <TASK>
+[...]
+[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
+[   57.333778]  ? exc_page_fault+0x70/0x170
+[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
+[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
+[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
+[   57.335164]  ocfs2_xa_set+0x704/0xcf0
+[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
+[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
+[   57.335915]  ? trace_preempt_on+0x1e/0x70
+[   57.336153]  ? start_this_handle+0x16c/0x500
+[   57.336410]  ? preempt_count_sub+0x50/0x80
+[   57.336656]  ? _raw_read_unlock+0x20/0x40
+[   57.336906]  ? start_this_handle+0x16c/0x500
+[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
+[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
+[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
+[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
+[   57.338207]  ? dput+0x46/0x1c0
+[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338948]  __vfs_removexattr+0x92/0xc0
+[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
+[   57.339456]  ? preempt_count_sub+0x50/0x80
+[   57.339705]  vfs_removexattr+0x5f/0x100
+[...]
+
+Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
+ocfs2_xa_value_truncate() with -ENOMEM.
+
+In this case the comment mentions that we can return 0 if
+ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
+anyway. But the following 'rc' check is wrong and execution flow do
+'ocfs2_xa_remove_entry(loc);' twice:
+* 1st: in ocfs2_xa_cleanup_value_truncate();
+* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
+
+Fix this by skipping the 2nd removal of the same entry and making
+syzkaller repro happy.
+
+Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
+Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
+Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/xattr.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -510,6 +510,7 @@ static void hvs_destruct(struct vsock_so
- 		vmbus_hvsock_device_unregister(chan);
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -2042,8 +2042,7 @@ static int ocfs2_xa_remove(struct ocfs2_
+ 				rc = 0;
+ 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
+ 							orig_clusters);
+-			if (rc)
+-				goto out;
++			goto out;
+ 		}
+ 	}
  
- 	kfree(hvs);
-+	vsk->trans = NULL;
- }
- 
- static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
 
 
 
