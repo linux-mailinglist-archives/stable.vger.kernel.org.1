@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A051C9CD899
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F7D9CD8AE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 447651F23458
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112DA1F2344F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F531885BF;
-	Fri, 15 Nov 2024 06:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C531885AA;
+	Fri, 15 Nov 2024 06:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfZS5eNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfhAU7SA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9C7185924;
-	Fri, 15 Nov 2024 06:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D264C18859F;
+	Fri, 15 Nov 2024 06:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653544; cv=none; b=Dg+mZvRtOPOVRs71BO64CEUgeUOPiYJ2j3VHT5tGaC16pjEd8cedbltLaTlm+haPsHCOvz3gc/aQ8umNEsYkpUR2vH5VtNkTB05Ow5z2QX2PfU2Om1nQmRkSIQLLJ92V3WQOSIUSPM6WrJmiDgltdVAHFZpzfge9+etHP3LSgfc=
+	t=1731653580; cv=none; b=lT6PUcT0t+6LKaWTKE+WVfob3XnOamlp5KW4buKkTZdGE5XaqwgxwybWlG0HO8atiebf4dgkN3vG3Lz6hQTnfL6f0546oy18C4rVJjNSC5EO/y2/CJ4NmSj0zz5y1Xld6kEUCJrFOjdkTxvvVEK0Tr7d0+vJOL2esug5+73Q6rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653544; c=relaxed/simple;
-	bh=FnoiFPD5ly6G0BKct9r6XpmB065JuIDIA1nxzigmx5Q=;
+	s=arc-20240116; t=1731653580; c=relaxed/simple;
+	bh=6Rkt1LzLJB22ff5lqtZAuuVIRcbSCLWHhMZHWLGOoG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olZE5kMkAwP7bGGvAzBCNbRmgLPVdLlUc8OHxg0n2aPv+b0JuohgWy3R9/pK5YlmzrR1B9TCikiW/H9VrR6TFHfpqnnrxPHSttKoMljBjT6kqTVx2cvidEaeBiOqR3OCCDei1G1c7Lvtc6bbWJEpUAeFt7Xr9eb15WmWxMUaaXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfZS5eNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C3AC4CECF;
-	Fri, 15 Nov 2024 06:52:23 +0000 (UTC)
+	 MIME-Version; b=mrAkYYbo0PRXP9DiGhijq6H2psjwzaQjkEDRf5YB1htZrkqq5nGS7bGhWzcOaMoYmg28DFf84xUUzpYXrN8q7HsLxl9QHayCszCzJi3wafDKAnKcIttDUfycWmDb02eJ20qJp1wIk6YNrcTNtzN1qnZNU7jJQsqV4FBmwhmEZqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfhAU7SA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467D2C4CECF;
+	Fri, 15 Nov 2024 06:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653544;
-	bh=FnoiFPD5ly6G0BKct9r6XpmB065JuIDIA1nxzigmx5Q=;
+	s=korg; t=1731653580;
+	bh=6Rkt1LzLJB22ff5lqtZAuuVIRcbSCLWHhMZHWLGOoG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfZS5eNH+6b7yES426P65P9nHrHRvDjeM6YhM+lu4E8Arr1+jJimU3qdmwokzd3Ao
-	 57QMzfT7PR7rwnuoOnuXcmm6f0olVSetwW5sPVv6pe9Mz2WjOxbXh9qaaj4xaVlyNH
-	 6EWPASbssHHIntsqZqC5hrmSN66sqLQK7Jkwq6fY=
+	b=QfhAU7SA6iYmeV2aRLJ3GP4+dEj1zYYvx0bAzoq/Os3t0nh911KeM6C6rh/BgUO29
+	 w61AveZarWmiFxXZMF2DXgNM3hR9NUM8dX4Ng5dcTk17RBCXy7CxSYIeBRu3j7uV0z
+	 rqU3C9MOBtzbkI0I5kFtbK9rxCBL+5leobO0mpus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Julian Vetter <jvetter@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 37/48] ASoC: fsl_micfil: Add sample rate constraint
+Subject: [PATCH 6.1 16/39] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
 Date: Fri, 15 Nov 2024 07:38:26 +0100
-Message-ID: <20241115063724.304219545@linuxfoundation.org>
+Message-ID: <20241115063723.195848308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-[ Upstream commit b9a8ecf81066e01e8a3de35517481bc5aa0439e5 ]
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-On some platforms, for example i.MX93, there is only one
-audio PLL source, so some sample rate can't be supported.
-If the PLL source is used for 8kHz series rates, then 11kHz
-series rates can't be supported.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
-So add constraints according to the frequency of available
-clock sources, then alsa-lib will help to convert the
-unsupported rate for the driver.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1728884313-6778-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 9407179af5d57..8478a4ac59f9d 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -28,6 +28,13 @@
- 
- #define MICFIL_OSR_DEFAULT	16
- 
-+#define MICFIL_NUM_RATES	7
-+#define MICFIL_CLK_SRC_NUM	3
-+/* clock source ids */
-+#define MICFIL_AUDIO_PLL1	0
-+#define MICFIL_AUDIO_PLL2	1
-+#define MICFIL_CLK_EXT3		2
-+
- enum quality {
- 	QUALITY_HIGH,
- 	QUALITY_MEDIUM,
-@@ -45,9 +52,12 @@ struct fsl_micfil {
- 	struct clk *mclk;
- 	struct clk *pll8k_clk;
- 	struct clk *pll11k_clk;
-+	struct clk *clk_src[MICFIL_CLK_SRC_NUM];
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
- 	struct sdma_peripheral_config sdmacfg;
- 	struct snd_soc_card *card;
-+	struct snd_pcm_hw_constraint_list constraint_rates;
-+	unsigned int constraint_rates_list[MICFIL_NUM_RATES];
- 	unsigned int dataline;
- 	char name[32];
- 	int irq[MICFIL_IRQ_LINES];
-@@ -475,12 +485,34 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
- 			      struct snd_soc_dai *dai)
- {
- 	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
-+	unsigned int rates[MICFIL_NUM_RATES] = {8000, 11025, 16000, 22050, 32000, 44100, 48000};
-+	int i, j, k = 0;
-+	u64 clk_rate;
- 
- 	if (!micfil) {
- 		dev_err(dai->dev, "micfil dai priv_data not set\n");
- 		return -EINVAL;
- 	}
- 
-+	micfil->constraint_rates.list = micfil->constraint_rates_list;
-+	micfil->constraint_rates.count = 0;
-+
-+	for (j = 0; j < MICFIL_NUM_RATES; j++) {
-+		for (i = 0; i < MICFIL_CLK_SRC_NUM; i++) {
-+			clk_rate = clk_get_rate(micfil->clk_src[i]);
-+			if (clk_rate != 0 && do_div(clk_rate, rates[j]) == 0) {
-+				micfil->constraint_rates_list[k++] = rates[j];
-+				micfil->constraint_rates.count++;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (micfil->constraint_rates.count > 0)
-+		snd_pcm_hw_constraint_list(substream->runtime, 0,
-+					   SNDRV_PCM_HW_PARAM_RATE,
-+					   &micfil->constraint_rates);
-+
- 	return 0;
- }
- 
-@@ -1165,6 +1197,12 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	fsl_asoc_get_pll_clocks(&pdev->dev, &micfil->pll8k_clk,
- 				&micfil->pll11k_clk);
- 
-+	micfil->clk_src[MICFIL_AUDIO_PLL1] = micfil->pll8k_clk;
-+	micfil->clk_src[MICFIL_AUDIO_PLL2] = micfil->pll11k_clk;
-+	micfil->clk_src[MICFIL_CLK_EXT3] = devm_clk_get(&pdev->dev, "clkext3");
-+	if (IS_ERR(micfil->clk_src[MICFIL_CLK_EXT3]))
-+		micfil->clk_src[MICFIL_CLK_EXT3] = NULL;
-+
- 	/* init regmap */
- 	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(regs))
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 1903c35d799e1..5848eedcc3c9f 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
 -- 
 2.43.0
 
