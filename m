@@ -1,193 +1,183 @@
-Return-Path: <stable+bounces-93087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755AB9CD6CE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E4E9CD6F0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2D1DB21A99
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:05:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76B5AB24CF6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E681632E4;
-	Fri, 15 Nov 2024 06:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8E188920;
+	Fri, 15 Nov 2024 06:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ACr0ydcQ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FE636C
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 06:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7F418872A
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 06:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731650712; cv=none; b=Sd1GnfHhlAM4sGM5fKgjilDbDa9760v7rCQowX1lvLJ5Nie0tqpVxAd3xKe54HhbRV/o522hKUwLeNHImB+1S1rRSVpNrl9e2mzqa26/OgrIbnLUkq9PeajmxCaSFkEHciBSr/FFzsXjQRUjC9UnzPGqRJ4Q2cWu+GvvXjXZbZE=
+	t=1731651004; cv=none; b=Y3KCHNlXKC1wi0VpN7CzruapPSjnU1YXnPO7g+lhSlpqiOasFWSWzr2+x/WRezicDWvMlC2YPayDJv+D93mVYyknDH6ZI2WDhpeJ/mKPUCC36dnWzxEZrFl5wDUa1oodZjMU6YmMkzsLvfOSIny3aHLNzITz0B2i//fJYMFwjPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731650712; c=relaxed/simple;
-	bh=YjUnOxl+IzvJFbGxZEq09+Wx3/gE8WU7Ws0HaRHj57w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sEFT0laV15ki2/B83gi1Dc8ewv4QjP9a2wA8EITPzLWEqEZhS6YhYTnbitADfbqZxlq6/vTRMPqORx6WAWgqneKEH5f9SHbXjqPV9pMbIJDmAJ4KiNZPQKTLeD/eqKvIz55JuHAuYExrkEAbmZxOO++BFK0NTxY2E+pK8AsmB6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 903091476;
-	Thu, 14 Nov 2024 22:05:38 -0800 (PST)
-Received: from [10.163.45.151] (unknown [10.163.45.151])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7555C3F66E;
-	Thu, 14 Nov 2024 22:05:04 -0800 (PST)
-Message-ID: <ea124997-8dee-457c-bef1-d5d829c84da3@arm.com>
-Date: Fri, 15 Nov 2024 11:35:00 +0530
+	s=arc-20240116; t=1731651004; c=relaxed/simple;
+	bh=4Js0j3dEAXVPgmPNSWcoJsDJFN6YRI9vWNB59uQKGHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P35DprTVrvkO/YrOWh23Ql2oSh4meVhr3hRznX/Ikhy1TXguXddq/llq0zEhSEXJtu17Sa3TOwQcSWRVFgP71RceE8TdMDZ9J9gKPc8xej+OgipTtwCCtggSDmL6B9ZZvOHFCyJKfIIps2U+VLjmZVBr7YdyLlW2IEA8QEKUi3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ACr0ydcQ; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20c805a0753so14827225ad.0
+        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 22:10:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1731651002; x=1732255802; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sfiS9F6Hcq/jOnOhJuAuLR9CMW5tSMbCI2yp2GqSd5k=;
+        b=ACr0ydcQN2jH20BOhxmFV5E5w5m46tQ0R90RQB59oAwPFCk3LHcUe3JjKp4Yvp/lV/
+         wHAC5CiBu2SoIT7BS7VQMHdr/5R8RJomdoQT8O62NWRNnFJ6afiBpq6qpL8Q+Cc46oxS
+         PVQcX/29u3BR9UXUil9pJBuITPww6BksxP32w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731651002; x=1732255802;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sfiS9F6Hcq/jOnOhJuAuLR9CMW5tSMbCI2yp2GqSd5k=;
+        b=MyD7DOv69Bh7qNd03YXWFS+3MqQ1YjdEBj2ohnznUMkH1mT+ShZ4KtarR0c6WEezy4
+         lzRptWFBYy8UpBilvXu4svij9oyt6qg06lehVoky0+l65YfmNDChBzaVVQTWDRQvBDQj
+         UrunTsaazXky4f7GxnKepAynWq3CiUN3RJZ1lKj/Nuo/H4juWsSX33vbnYgcRR30yNp1
+         Y9VNZrouTK+vhwu0hVSVpjJHd3pRNZNOzxzZnoKJCRo6UtBKhWrufRGM9tbdsAf7bbUd
+         KLCxKraFmNBxdi2bOadcbALUaN6/QbPw6sw0tHqD5uvw4llk0r7JfI6SElNHJpEIVlPq
+         XjQg==
+X-Gm-Message-State: AOJu0YzKmeRMcXouyAGQCbcTy2iTnhsxSbR+yZysOKRd3BYonB5VrQKs
+	AW7eTu9ft/luzvASx9LvOP8I6BSSuwx5LtqVkVWOTfMAuTJTrZPKGQwuPiePYlrzeuSayDD891g
+	=
+X-Google-Smtp-Source: AGHT+IG3MgzXr+sGffv4+81XM+WNGMDpl8O4NITOvbxUBE45iPRqhS4W1V0XRk1A0H8HYEiWMnQR3w==
+X-Received: by 2002:a17:902:e54b:b0:20c:d578:d72d with SMTP id d9443c01a7336-211d0d62b4amr19545335ad.7.1731651001787;
+        Thu, 14 Nov 2024 22:10:01 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:142f:6cb4:e895:7127])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-211d0dc5c94sm5721815ad.17.2024.11.14.22.10.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 22:10:01 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: stable@vger.kernel.org
+Cc: Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCHv2 5.15] udf: Allocate name buffer in directory iterator on heap
+Date: Fri, 15 Nov 2024 15:08:48 +0900
+Message-ID: <20241115060859.2453211-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] arm64/mm: Override PARange for !LPA2 and use it
- consistently
-To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Kees Cook <keescook@chromium.org>,
- stable@vger.kernel.org
-References: <20241111083544.1845845-8-ardb+git@google.com>
- <20241111083544.1845845-10-ardb+git@google.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20241111083544.1845845-10-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/11/24 14:05, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> When FEAT_LPA{,2} are not implemented, the ID_AA64MMFR0_EL1.PARange and
-> TCR.IPS values corresponding with 52-bit physical addressing are
-> reserved.
-> 
-> Setting the TCR.IPS field to 0b110 (52-bit physical addressing) has side
-> effects, such as how the TTBRn_ELx.BADDR fields are interpreted, and so
-> it is important that disabling FEAT_LPA2 (by overriding the
-> ID_AA64MMFR0.TGran fields) also presents a PARange field consistent with
-> that.
-> 
-> So limit the field to 48 bits unless LPA2 is enabled, and update
-> existing references to use the override consistently.
-> 
-> Fixes: 352b0395b505 ("arm64: Enable 52-bit virtual addressing for 4k and 16k granule configs")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/arm64/include/asm/assembler.h    | 5 +++++
->  arch/arm64/kernel/cpufeature.c        | 2 +-
->  arch/arm64/kernel/pi/idreg-override.c | 9 +++++++++
->  arch/arm64/kernel/pi/map_kernel.c     | 6 ++++++
->  arch/arm64/mm/init.c                  | 2 +-
->  5 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-> index 3d8d534a7a77..ad63457a05c5 100644
-> --- a/arch/arm64/include/asm/assembler.h
-> +++ b/arch/arm64/include/asm/assembler.h
-> @@ -343,6 +343,11 @@ alternative_cb_end
->  	// Narrow PARange to fit the PS field in TCR_ELx
->  	ubfx	\tmp0, \tmp0, #ID_AA64MMFR0_EL1_PARANGE_SHIFT, #3
->  	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_MAX
-> +#ifdef CONFIG_ARM64_LPA2
-> +alternative_if_not ARM64_HAS_VA52
-> +	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_48
-> +alternative_else_nop_endif
-> +#endif
+From: Jan Kara <jack@suse.cz>
 
-I guess this will only take effect after cpu features have been finalized
-but will not be applicable for __cpu_setup() during primary and secondary
-cpu bring up during boot.
+[ Upstream commit 0aba4860b0d0216a1a300484ff536171894d49d8 ]
 
->  	cmp	\tmp0, \tmp1
->  	csel	\tmp0, \tmp1, \tmp0, hi
->  	bfi	\tcr, \tmp0, \pos, #3
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 37e4c02e0272..6f5137040ff6 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -3399,7 +3399,7 @@ static void verify_hyp_capabilities(void)
->  		return;
->  
->  	safe_mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
-> -	mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
-> +	mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+Currently we allocate name buffer in directory iterators (struct
+udf_fileident_iter) on stack. These structures are relatively large
+(some 360 bytes on 64-bit architectures). For udf_rename() which needs
+to keep three of these structures in parallel the stack usage becomes
+rather heavy - 1536 bytes in total. Allocate the name buffer in the
+iterator from heap to avoid excessive stack usage.
 
-Small nit, should be renamed as safe_mmfr0 to be consistent with safe_mmfr1 ?
+Link: https://lore.kernel.org/all/202212200558.lK9x1KW0-lkp@intel.com
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+[ senozhatsky: explicitly include slab.h to address build
+  failure reported by sashal@ ]
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ fs/udf/directory.c | 24 ++++++++++++++++--------
+ fs/udf/udfdecl.h   |  2 +-
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
->  	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
->  
->  	/* Verify VMID bits */
-> diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
-> index 22159251eb3a..c6b185b885f7 100644
-> --- a/arch/arm64/kernel/pi/idreg-override.c
-> +++ b/arch/arm64/kernel/pi/idreg-override.c
-> @@ -83,6 +83,15 @@ static bool __init mmfr2_varange_filter(u64 val)
->  		id_aa64mmfr0_override.val |=
->  			(ID_AA64MMFR0_EL1_TGRAN_LPA2 - 1) << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
->  		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
-> +
-> +		/*
-> +		 * Override PARange to 48 bits - the override will just be
-> +		 * ignored if the actual PARange is smaller, but this is
-> +		 * unlikely to be the case for LPA2 capable silicon.
-> +		 */
-> +		id_aa64mmfr0_override.val |=
-> +			ID_AA64MMFR0_EL1_PARANGE_48 << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
-> +		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
-Could these be used instead ? 
+diff --git a/fs/udf/directory.c b/fs/udf/directory.c
+index e97ffae07833..a30898debdd1 100644
+--- a/fs/udf/directory.c
++++ b/fs/udf/directory.c
+@@ -19,6 +19,7 @@
+ #include <linux/bio.h>
+ #include <linux/crc-itu-t.h>
+ #include <linux/iversion.h>
++#include <linux/slab.h>
+ 
+ static int udf_verify_fi(struct udf_fileident_iter *iter)
+ {
+@@ -248,9 +249,14 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
+ 	iter->elen = 0;
+ 	iter->epos.bh = NULL;
+ 	iter->name = NULL;
++	iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
++	if (!iter->namebuf)
++		return -ENOMEM;
+ 
+-	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
+-		return udf_copy_fi(iter);
++	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
++		err = udf_copy_fi(iter);
++		goto out;
++	}
+ 
+ 	if (inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
+ 		       &iter->eloc, &iter->elen, &iter->loffset) !=
+@@ -260,17 +266,17 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
+ 		udf_err(dir->i_sb,
+ 			"position %llu not allocated in directory (ino %lu)\n",
+ 			(unsigned long long)pos, dir->i_ino);
+-		return -EFSCORRUPTED;
++		err = -EFSCORRUPTED;
++		goto out;
+ 	}
+ 	err = udf_fiiter_load_bhs(iter);
+ 	if (err < 0)
+-		return err;
++		goto out;
+ 	err = udf_copy_fi(iter);
+-	if (err < 0) {
++out:
++	if (err < 0)
+ 		udf_fiiter_release(iter);
+-		return err;
+-	}
+-	return 0;
++	return err;
+ }
+ 
+ int udf_fiiter_advance(struct udf_fileident_iter *iter)
+@@ -307,6 +313,8 @@ void udf_fiiter_release(struct udf_fileident_iter *iter)
+ 	brelse(iter->bh[0]);
+ 	brelse(iter->bh[1]);
+ 	iter->bh[0] = iter->bh[1] = NULL;
++	kfree(iter->namebuf);
++	iter->namebuf = NULL;
+ }
+ 
+ static void udf_copy_to_bufs(void *buf1, int len1, void *buf2, int len2,
+diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
+index f764b4d15094..d35aa42bb577 100644
+--- a/fs/udf/udfdecl.h
++++ b/fs/udf/udfdecl.h
+@@ -99,7 +99,7 @@ struct udf_fileident_iter {
+ 	struct extent_position epos;	/* Position after the above extent */
+ 	struct fileIdentDesc fi;	/* Copied directory entry */
+ 	uint8_t *name;			/* Pointer to entry name */
+-	uint8_t namebuf[UDF_NAME_LEN_CS0]; /* Storage for entry name in case
++	uint8_t *namebuf;		/* Storage for entry name in case
+ 					 * the name is split between two blocks
+ 					 */
+ };
+-- 
+2.47.0.338.g60cca15819-goog
 
-SYS_FIELD_PREP_ENUM(ID_AA64MMFR0_EL1, PARANGE, 48)
-ID_AA64MMFR0_EL1_PARANGE_MASK ?
-
-
->  	}
->  #endif
->  	return true;
-> diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
-> index f374a3e5a5fe..e57b043f324b 100644
-> --- a/arch/arm64/kernel/pi/map_kernel.c
-> +++ b/arch/arm64/kernel/pi/map_kernel.c
-> @@ -136,6 +136,12 @@ static void noinline __section(".idmap.text") set_ttbr0_for_lpa2(u64 ttbr)
->  {
->  	u64 sctlr = read_sysreg(sctlr_el1);
->  	u64 tcr = read_sysreg(tcr_el1) | TCR_DS;
-> +	u64 mmfr0 = read_sysreg(id_aa64mmfr0_el1);
-> +	u64 parange = cpuid_feature_extract_unsigned_field(mmfr0,
-> +							   ID_AA64MMFR0_EL1_PARANGE_SHIFT);
-> +
-> +	tcr &= ~TCR_IPS_MASK;
-
-Could there be a different IPS value in TCR ? OR is this just a normal
-clean up instead.
-
-> +	tcr |= parange << TCR_IPS_SHIFT;
-
-Wondering if FIELD_PREP() could be used here.
-
->  
->  	asm("	msr	sctlr_el1, %0		;"
->  	    "	isb				;"
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index d21f67d67cf5..4db9887b2aef 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -280,7 +280,7 @@ void __init arm64_memblock_init(void)
->  
->  	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
->  		extern u16 memstart_offset_seed;
-> -		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
-> +		u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
-
-Could this have a comment explaining the need for sanitized value ?
-
->  		int parange = cpuid_feature_extract_unsigned_field(
->  					mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
->  		s64 range = linear_region_size -
-
-Otherwise LGTM.
 
