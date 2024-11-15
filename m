@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-93431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7FF9CD93F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063E59CD98C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3339A282241
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB364283F09
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F96B188CCA;
-	Fri, 15 Nov 2024 06:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4DC189913;
+	Fri, 15 Nov 2024 07:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q66ZLVrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBIuJXuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A1C18873F;
-	Fri, 15 Nov 2024 06:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968C1DFFD;
+	Fri, 15 Nov 2024 07:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653902; cv=none; b=j/ZJYWJeH6nFE2TNAgOQwUPuLUQBhqecW+ZSLAKWeX4D5of/flCv9qAGlpTpcBfsiO5Cl10pETOLUrK9zzeB394S6i/KSO3NeKbfHV/FfWHrvjOdwXQ/bop+e7yTtr4v6Na2e/QLIgO51XFRlZcVVe2Cv8wFH6DOOydlDnCmUz4=
+	t=1731654054; cv=none; b=gaQ1CrtE9jrWbh+20UmS+nk8G95BfAtcRP94XbDls2AH3xzkcZ0E0FU98pfwZINPUl5zlIwxjLb8lSFeKVwZP2EDFVRXaNHSpynh7vXSFxp43+15xHXEEtBpNeZIBmj6GXVBR9suIyzBtaJZnXZ19tMFFUGL8VuIki2C/x3I5kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653902; c=relaxed/simple;
-	bh=5GIbT6hagRxlGPfvdCQ9RbsT32DM1qlmwTOlEWyi+FE=;
+	s=arc-20240116; t=1731654054; c=relaxed/simple;
+	bh=u+ihKTzTWAKp/o46Y+Niyb5N+sb8GrgldaqleHaUfJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XddfS23hhgWejEbw625ZD1NcGGoQ22GMGtWHUFbOWYuS4ZMpEdNZfVDs3O6DG6grmrzEKAmrhgfZeb7OYlgCtULrfrZONLxF0XfuCmHHrPlimDzM6/+6wGmwt2cBhGKpI0JnnGtYle/8/5O0zLbNM653g/V8LuKUdTmWs95Dd/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q66ZLVrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3EAC4CED0;
-	Fri, 15 Nov 2024 06:58:21 +0000 (UTC)
+	 MIME-Version; b=tB3hMj9Xl5FUgKypEn1xE3598+SpXI3/c0h7PkXZro4VtYd42a7BRLPEYkFP+JNcD3H0ddS6rTJRFSaUsv10mOfDBsUdmuA2x+VsgHJw8CbME5odHE7c/qQUEPPVn357dierPeJ7B3Ub7A/QXOmHH2+IKQflgojZYVDRE7T0jCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBIuJXuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8389C4CED2;
+	Fri, 15 Nov 2024 07:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653901;
-	bh=5GIbT6hagRxlGPfvdCQ9RbsT32DM1qlmwTOlEWyi+FE=;
+	s=korg; t=1731654054;
+	bh=u+ihKTzTWAKp/o46Y+Niyb5N+sb8GrgldaqleHaUfJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q66ZLVrxqXwK5Gs9fbSAUSauWsp0gmU6YVMWzNqtzE0mk+wAgKLHgacRi0GqRpupU
-	 BTaLlsUAEXHxcLRt4A2IvO2m9mJgLpEH9aSC8865CBsGWlzpStBaVcniOC/gpgNncU
-	 hoAdvpYAgso24VUgYr6B0YVR5su72AOmTqU0jfPg=
+	b=sBIuJXuo09F4Rdl/R1o5/2O/6xvvPTtnpgdaUTUYZ4yZlU0RQjzJwdyNqaBROGYW2
+	 lDMrzLzxvbyqskpRviWKqdnNybBn3nfICiDjzE/YeFxcQsrNldRJrgdByzo6BnKOSh
+	 6GGHJRur0OAZz+YShwY/QS6yuVvKmd8N4r+LpBR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 70/82] 9p: Avoid creating multiple slab caches with the same name
+Subject: [PATCH 5.15 01/22] 9p: Avoid creating multiple slab caches with the same name
 Date: Fri, 15 Nov 2024 07:38:47 +0100
-Message-ID: <20241115063728.073397195@linuxfoundation.org>
+Message-ID: <20241115063721.227517461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,18 +86,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/net/9p/client.c b/net/9p/client.c
-index 0fa324e8b2451..2668a1a67c8a8 100644
+index bf29462c919bb..03fb36d938c70 100644
 --- a/net/9p/client.c
 +++ b/net/9p/client.c
-@@ -1006,6 +1006,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+@@ -1005,6 +1005,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
  	int err;
  	struct p9_client *clnt;
  	char *client_id;
 +	char *cache_name;
  
  	err = 0;
- 	clnt = kmalloc(sizeof(struct p9_client), GFP_KERNEL);
-@@ -1058,15 +1059,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
+@@ -1057,15 +1058,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
  	if (err)
  		goto close_trans;
  
