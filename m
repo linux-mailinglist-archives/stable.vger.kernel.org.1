@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDD89CD94F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6361E9CD973
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B1701F2063B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280C0283E20
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE571891A9;
-	Fri, 15 Nov 2024 06:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571FA189B8D;
+	Fri, 15 Nov 2024 06:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwGUpLYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq1DmxTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A846185924;
-	Fri, 15 Nov 2024 06:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145E42BB1B;
+	Fri, 15 Nov 2024 06:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653939; cv=none; b=NP3ZFEria1fNNVttt6hhfJPW/twmvlXlKfz4qUtrQgiRZhpCZhsKMFF+8YYiAU9lD0tQ1zaBHnhnfCsUGaSz52gtbgX8ejyUmwhAGUnq+9d6arSkkzAqtzWoDObRr/Bq7UqT19vKdik+kO4yG1ZBTudgF7aqw6JpDLZRNvMVBH8=
+	t=1731653985; cv=none; b=LYJxF8QFFgYMAGo81ACeOvaCEvDXOYUdLw8vd9s8raivqlyPEIkMXzqvzarQPdQkqya2onGbEDYHDeNm5gp0d/mb2t215ue0raFw9znVLj36/Ssvc+HBSuOKROsBSwBffD6o5dj9YxNAUawP0krQAAizlrnakJf6HsZzZuKWIew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653939; c=relaxed/simple;
-	bh=ErOCJBN4pZxq8sJm+hVjEkhuQ0SelYqDjJF4aPv+uQk=;
+	s=arc-20240116; t=1731653985; c=relaxed/simple;
+	bh=7ExGWzR7BWZA+jGs1YMnm/XvyASV9PL/S58qgnxa2bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sk+sYoKs3xsDRigPBpyU51EilxRekfDR8N1oT2Vzjg1+MjS1IBypcKeCocTbnUUnODoSkH7sok3mnRNunY4KXCAAcNFg/I2IPjmBd61j9n8r1MRl2CrJBiktyX0xQO1VWkzngaEvnSvNd1f47Sk6cE6YT5KwaMnA0p+Wy745QIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwGUpLYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BB0C4CECF;
-	Fri, 15 Nov 2024 06:58:58 +0000 (UTC)
+	 MIME-Version; b=rIgdLRDqMHaaxQnUImKyboNcga6w3wv04uqEMKEFmAYR+nrSFKGFOsVMu1gccassGraBweAPkBeccaAvY6fqQy9oxdePRa4XBvTrN9xF5vtOewjQNZRSndAjG46daSibHoqiypkx/m7LK1IAeUilzshpWU3lYcrbJZmHXbDieOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq1DmxTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400FEC4CECF;
+	Fri, 15 Nov 2024 06:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653939;
-	bh=ErOCJBN4pZxq8sJm+hVjEkhuQ0SelYqDjJF4aPv+uQk=;
+	s=korg; t=1731653984;
+	bh=7ExGWzR7BWZA+jGs1YMnm/XvyASV9PL/S58qgnxa2bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwGUpLYJsAUTbwTR5n9Fj0ssy/n1413UndBgfP+oHnFHFhP7GAmIz5SIv1OHF/Hd9
-	 Rj5zniiSCHoERll1o+zLD1lgqNvdWbFzlIKFTZy2zh5wn/ZZ07CqonGI4ZzNeWxSFW
-	 u95xpq/WDLxu/Wn0ilQI6pwHnIa1GFk2MKqjSUwI=
+	b=cq1DmxTPBDjRpJDvS5GomC4BJ8/NLvPe6Yh8+7VQ7oTQ2zg7gHOsr5XKH+exXg+rO
+	 JjNM0OpQVsSKQ3uicOlfEVe/f9BBMNfGJ+KB3H1p4242lJTlQysKkZyALVCj3MTQ2Y
+	 1ig0vOAElr1ZNtc8TgCREKOT4guinhT11z182aFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 80/82] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+	Yuan Can <yuancan@huawei.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Zhu Lingshan <lingshan.zhu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 11/22] vDPA/ifcvf: Fix pci_read_config_byte() return code handling
 Date: Fri, 15 Nov 2024 07:38:57 +0100
-Message-ID: <20241115063728.427662850@linuxfoundation.org>
+Message-ID: <20241115063721.582255183@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
+[ Upstream commit 7f8825b2a78ac392d3fbb3a2e65e56d9e39d75e9 ]
 
-The io_register_iowq_max_workers() function calls io_put_sq_data(),
-which acquires the sqd->lock without releasing the uring_lock.
-Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
-before acquiring sqd->lock"), this can lead to a potential deadlock
-situation.
+ifcvf_init_hw() uses pci_read_config_byte() that returns
+PCIBIOS_* codes. The error handling, however, assumes the codes are
+normal errnos because it checks for < 0.
+Convert the error check to plain non-zero check.
 
-To resolve this issue, the uring_lock is released before calling
-io_put_sq_data(), and then it is re-acquired after the function call.
-
-This change ensures that the locks are acquired in the correct
-order, preventing the possibility of a deadlock.
-
-Suggested-by: Maximilian Heyne <mheyne@amazon.de>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a2414bc454e ("virtio: Intel IFC VF driver for VDPA")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Message-Id: <20241017013812.129952-1-yuancan@huawei.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Zhu Lingshan <lingshan.zhu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vdpa/ifcvf/ifcvf_base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -10653,8 +10653,10 @@ static int io_register_iowq_max_workers(
- 	}
+diff --git a/drivers/vdpa/ifcvf/ifcvf_base.c b/drivers/vdpa/ifcvf/ifcvf_base.c
+index 5091ff9d6c93f..bdadc5714e0e4 100644
+--- a/drivers/vdpa/ifcvf/ifcvf_base.c
++++ b/drivers/vdpa/ifcvf/ifcvf_base.c
+@@ -105,7 +105,7 @@ int ifcvf_init_hw(struct ifcvf_hw *hw, struct pci_dev *pdev)
+ 	u32 i;
  
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
+ 	ret = pci_read_config_byte(pdev, PCI_CAPABILITY_LIST, &pos);
+-	if (ret < 0) {
++	if (ret) {
+ 		IFCVF_ERR(pdev, "Failed to read PCI capability list\n");
+ 		return -EIO;
  	}
- 
- 	if (copy_to_user(arg, new_count, sizeof(new_count)))
-@@ -10679,8 +10681,11 @@ static int io_register_iowq_max_workers(
- 	return 0;
- err:
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
-+
- 	}
- 	return ret;
- }
+-- 
+2.43.0
+
 
 
 
