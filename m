@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2CE9CD839
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064FB9CD86F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D5C1F22B8B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2ABA1F22F5E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793B6185B5B;
-	Fri, 15 Nov 2024 06:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAAB187FE8;
+	Fri, 15 Nov 2024 06:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr5oCvnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmXtJf65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375DEEAD0;
-	Fri, 15 Nov 2024 06:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9E8185924;
+	Fri, 15 Nov 2024 06:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653320; cv=none; b=oGyZb6gVggm01pHl3V8bl0fN1ls6iyZ9MqL3R5kBKrveM5zwjbyo154Z0bMdogWClgGR9gJ8Yk04+4SWzY/p41MeHRvDRBTXRL53lxDQlG0W3MWlwO9wCDEk0Izyq3ljr6XMRn1H7lhZAiE4Gjal3W8g4u4kYcd5iNmu/lM74G4=
+	t=1731653449; cv=none; b=m6EzvVghmuFw0Lp0zVgZrdQ9QkfYNP/u3e3TI5oizLzCisGnmN/EE4wZRdpQ7cmj1cKNJX5uOd+4s1F8sVTpH6c5dP141X8IDoXXbeVjmpxio4TX024+dINbVTCq16b1bvbcym0NIi0tQHpfwIarDAC6kikBH99cDTNxrs86JNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653320; c=relaxed/simple;
-	bh=QoJHdl3hx+vbDSXRR/9qkCt8IsrinXlLP/s6CmwWzfs=;
+	s=arc-20240116; t=1731653449; c=relaxed/simple;
+	bh=mhP9OY50//nqTXaMky5smWCJTOZVNn1Mey6N/qvmAmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1EUSmC2/V4M/GI0h+XzcV092fM0ho7zUVyS8P+amSKA/m+spcZzIia/jF6zvWycfT1hJe1LkI3zK8KK5J4w8bsG00jYLJMxP/nAIf5Sa+maWD7WrJjEWfGMQDbN7wemBhOO+abSak0UvQeKg5ZJlSh6L34D61MtpXRoyU77TwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr5oCvnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D55AC4CECF;
-	Fri, 15 Nov 2024 06:48:38 +0000 (UTC)
+	 MIME-Version; b=J9vvY+3mpUb4Pl2lwk0M2zLai19nyMCRHU2WCgEr52Mgs9kLTkd2dpqe3WanQOiCElFExZtHNf/7jn1hTf8OZJvIGjP3WFY3dUAQYGSHDYO92Q0XlcwEQCEPskFBgzerJ6x5mNBYSafxobU8M0OHUK4vZbvpOWekDr6hjABHL5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmXtJf65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE46C4CECF;
+	Fri, 15 Nov 2024 06:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653318;
-	bh=QoJHdl3hx+vbDSXRR/9qkCt8IsrinXlLP/s6CmwWzfs=;
+	s=korg; t=1731653449;
+	bh=mhP9OY50//nqTXaMky5smWCJTOZVNn1Mey6N/qvmAmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qr5oCvnByMMkwBjfXNJhfoi6KspiVDhgYLLXT0P6cXbef63nt0kbN4ceMO9YMiuWA
-	 rx5bVPg6vdY/ARtz4x6S2Azat8upX4Kaxm3pk8klOJoP1wvlFXpp7N4ixXfffh48it
-	 rawOcasmR+YhSmWLQyrHLSLF177zAYpolB6tFHbg=
+	b=fmXtJf65Ux3iUsvlHEGSfsTJp9qsf6yaHCwWMMbfP2Rm64SNIh6MyId2E0O63dpbK
+	 5Zs+d6zEEzWYvVPWmFgDN4ZU3Iw3Cjg/yT0X6e4Mbddm+P5+q1hs2quPSeGXYx4sYb
+	 y4VfW8LegZNjhAjhJYQpK2r6HW+5xwX/8LRGjW4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 51/63] ASoC: rt722-sdca: increase clk_stop_timeout to fix clock stop issue
+Subject: [PATCH 6.6 25/48] nvme/host: Fix RCU list traversal to use SRCU primitive
 Date: Fri, 15 Nov 2024 07:38:14 +0100
-Message-ID: <20241115063727.752754589@linuxfoundation.org>
+Message-ID: <20241115063723.872360048@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 038fa6ddf5d22694f61ff7a7a53c8887c6b08c45 ]
+[ Upstream commit 6d1c69945ce63a9fba22a4abf646cf960d878782 ]
 
-clk_stop_timeout should be increased to 900ms to fix clock stop issue.
+The code currently uses list_for_each_entry_rcu() while holding an SRCU
+lock, triggering false positive warnings with CONFIG_PROVE_RCU=y
+enabled:
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://patch.msgid.link/cd26275d9fc54374a18dc016755cb72d@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  drivers/nvme/host/core.c:3770 RCU-list traversed in non-reader section!!
+
+While the list is properly protected by SRCU lock, the code uses the wrong
+list traversal primitive. Replace list_for_each_entry_rcu() with
+list_for_each_entry_srcu() to correctly indicate SRCU-based protection
+and eliminate the false warning.
+
+Fixes: be647e2c76b2 ("nvme: use srcu for iterating namespace list")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca-sdw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
-index 87354bb1564e8..d5c985ff5ac55 100644
---- a/sound/soc/codecs/rt722-sdca-sdw.c
-+++ b/sound/soc/codecs/rt722-sdca-sdw.c
-@@ -253,7 +253,7 @@ static int rt722_sdca_read_prop(struct sdw_slave *slave)
- 	}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index b3c5460c6d768..965ca7d7a3de2 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3544,7 +3544,8 @@ struct nvme_ns *nvme_find_get_ns(struct nvme_ctrl *ctrl, unsigned nsid)
+ 	int srcu_idx;
  
- 	/* set the timeout values */
--	prop->clk_stop_timeout = 200;
-+	prop->clk_stop_timeout = 900;
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu)) {
+ 		if (ns->head->ns_id == nsid) {
+ 			if (!nvme_get_ns(ns))
+ 				continue;
+@@ -4555,7 +4556,8 @@ void nvme_mark_namespaces_dead(struct nvme_ctrl *ctrl)
+ 	int srcu_idx;
  
- 	/* wake-up event */
- 	prop->wake_capable = 1;
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu))
+ 		blk_mark_disk_dead(ns->disk);
+ 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
+ }
+@@ -4567,7 +4569,8 @@ void nvme_unfreeze(struct nvme_ctrl *ctrl)
+ 	int srcu_idx;
+ 
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu))
+ 		blk_mq_unfreeze_queue(ns->queue);
+ 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
+ 	clear_bit(NVME_CTRL_FROZEN, &ctrl->flags);
+@@ -4580,7 +4583,8 @@ int nvme_wait_freeze_timeout(struct nvme_ctrl *ctrl, long timeout)
+ 	int srcu_idx;
+ 
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu)) {
+ 		timeout = blk_mq_freeze_queue_wait_timeout(ns->queue, timeout);
+ 		if (timeout <= 0)
+ 			break;
+@@ -4596,7 +4600,8 @@ void nvme_wait_freeze(struct nvme_ctrl *ctrl)
+ 	int srcu_idx;
+ 
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu))
+ 		blk_mq_freeze_queue_wait(ns->queue);
+ 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
+ }
+@@ -4609,7 +4614,8 @@ void nvme_start_freeze(struct nvme_ctrl *ctrl)
+ 
+ 	set_bit(NVME_CTRL_FROZEN, &ctrl->flags);
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu))
+ 		blk_freeze_queue_start(ns->queue);
+ 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
+ }
+@@ -4657,7 +4663,8 @@ void nvme_sync_io_queues(struct nvme_ctrl *ctrl)
+ 	int srcu_idx;
+ 
+ 	srcu_idx = srcu_read_lock(&ctrl->srcu);
+-	list_for_each_entry_rcu(ns, &ctrl->namespaces, list)
++	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
++				 srcu_read_lock_held(&ctrl->srcu))
+ 		blk_sync_queue(ns->queue);
+ 	srcu_read_unlock(&ctrl->srcu, srcu_idx);
+ }
 -- 
 2.43.0
 
