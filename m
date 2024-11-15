@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51639CD73B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:39:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCF59CD813
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA24A2836F1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:39:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D8D7B26403
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF04018786A;
-	Fri, 15 Nov 2024 06:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF84187848;
+	Fri, 15 Nov 2024 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqZxDU1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQRnZHR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994BB3BBEB;
-	Fri, 15 Nov 2024 06:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49644187FE8;
+	Fri, 15 Nov 2024 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652783; cv=none; b=IV58TTIUTj5mLXGUbPhe3QhTBzcq96d3EvP1Zwp2YtW2WfyMrQEO8QLTox9lgS9uK0APFnqixmNGLsYMGah984dLcydjE/RWV5gwyJd/5m68snrzUAq683lLXGinw8XG5/bmhh3yUlj7MNjQijE7yUOFR44WSxJl7RPb3O+xQ/c=
+	t=1731653236; cv=none; b=CsI7xHOr0Ay63oeU+6fmBSVQD8/1b6zIFyo/lXKw5V7CmnL4PjuiD0n1zWvEJ/puKN93f3CIjJAVhvMqRA1jPCqRf9eCuHw0gNp9oRWQayPKtoPgw4uk8Hc6R39d/u60k8dnQoUtMUF6cKV96MC5Xr2e5Rw5FbyFARdqZw7ArIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652783; c=relaxed/simple;
-	bh=/BxEGFN9Qqirb+uLuVg15bd2DRN6MSCCBiuJC939JAk=;
+	s=arc-20240116; t=1731653236; c=relaxed/simple;
+	bh=EuiCE3dMBRJtUdjjnL+3Cb5zJs8yDKglclt2ncj7mII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4/hD1LOqZoN8DEJRvW99cY3pRN0SNxnQeR9ajnj0vru3oyNoDQHBdad5NPIg2rhzAvPiqK9wqEdCeBp2IXw1DzvRef0PRJ0IY8vjQ9flPQcc42plLTnLm1NQhZ+erx0OBjwK7cDWUTTbfKvEzHu4SQFfIPKVG9py1acnDwAQAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqZxDU1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5230C4CED0;
-	Fri, 15 Nov 2024 06:39:42 +0000 (UTC)
+	 MIME-Version; b=kztvCrnsHLEYy8G+4VkJ7+JLpQ9O1mpC1F4jafr+ffkAD8eI36ZgpsMJ9rbAck6f8nBxdhbEjVPDkT8gUtz5WbRCOxGCpY8tPNELe4BA3kuVYVx7RVIoDMcuM/lBSWW9ljyxBWviA/6uCV12tP1SN5eBimOmZCwfPNkZMu42EJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQRnZHR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC50BC4CECF;
+	Fri, 15 Nov 2024 06:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652783;
-	bh=/BxEGFN9Qqirb+uLuVg15bd2DRN6MSCCBiuJC939JAk=;
+	s=korg; t=1731653236;
+	bh=EuiCE3dMBRJtUdjjnL+3Cb5zJs8yDKglclt2ncj7mII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqZxDU1Uj3+Qtui7RKpPg2SrHDNduVZtoxMXdO5/GJ+wF3v1k0Po/j6JDkU3p+UC9
-	 sZIm/ir+zGBDJX2GWDIgpiRiUIimueN7pxn6nbXTzqHB9GRXKROjoqRljh0vykE88p
-	 6+4nfXmoHgokR+SPyHZqbmnZpukhGmqP3yU6Malg=
+	b=DQRnZHR3EKQouRMMVTUVyDeY3QcU7e95mz/tDBQLw5jU8pKmhDkdANNG3X72wsNK8
+	 v0YF15nKIWwg37s9/0lcwsq0B3gI0AK/MYf78rEXHaBPqwqK043isCEbfs0l9btHcY
+	 s65aQpihxFAN8fQyf3uwFxDboMUS77n6Qef5z5ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Pedro Falcato <pedro.falcato@gmail.com>,
+	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/52] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+Subject: [PATCH 6.11 04/63] 9p: Avoid creating multiple slab caches with the same name
 Date: Fri, 15 Nov 2024 07:37:27 +0100
-Message-ID: <20241115063723.369606903@linuxfoundation.org>
+Message-ID: <20241115063726.054840245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Pedro Falcato <pedro.falcato@gmail.com>
 
-[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
+[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
 
-If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
-though it's supposed to return error code, which is checked inside
-init_stream() in file tascam-stream.c.
+In the spirit of [1], avoid creating multiple slab caches with the same
+name. Instead, add the dev_name into the mix.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
 
-Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
+Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
+Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
+Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/amdtp-tascam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/9p/client.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
-index ab482423c1654..726cf659133b2 100644
---- a/sound/firewire/tascam/amdtp-tascam.c
-+++ b/sound/firewire/tascam/amdtp-tascam.c
-@@ -172,7 +172,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
- 				CIP_NONBLOCKING | CIP_SKIP_DBC_ZERO_CHECK, fmt,
- 				process_data_blocks, sizeof(struct amdtp_tscm));
- 	if (err < 0)
--		return 0;
-+		return err;
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 5cd94721d974f..9e7b9151816d6 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -979,6 +979,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ 	int err;
+ 	struct p9_client *clnt;
+ 	char *client_id;
++	char *cache_name;
  
- 	/* Use fixed value for FDF field. */
- 	s->fdf = 0x00;
+ 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
+ 	if (!clnt)
+@@ -1035,15 +1036,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ 	if (err)
+ 		goto close_trans;
+ 
++	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	if (!cache_name) {
++		err = -ENOMEM;
++		goto close_trans;
++	}
++
+ 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
+ 	 * followed by data accessed from userspace by read
+ 	 */
+ 	clnt->fcall_cache =
+-		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
++		kmem_cache_create_usercopy(cache_name, clnt->msize,
+ 					   0, 0, P9_HDRSZ + 4,
+ 					   clnt->msize - (P9_HDRSZ + 4),
+ 					   NULL);
+ 
++	kfree(cache_name);
+ 	return clnt;
+ 
+ close_trans:
 -- 
 2.43.0
 
