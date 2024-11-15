@@ -1,264 +1,223 @@
-Return-Path: <stable+bounces-93569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAC09CF23D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:58:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF8E9CF2A3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 18:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677391F21291
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 16:58:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F317A28AAE0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CC91D54D1;
-	Fri, 15 Nov 2024 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968341D63FE;
+	Fri, 15 Nov 2024 17:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exh8cdkB"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ElRaawZC";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="cz1IQV29";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="cvDKSh+/";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kywAq8i+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C32D847C;
-	Fri, 15 Nov 2024 16:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB215573A;
+	Fri, 15 Nov 2024 17:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731689911; cv=none; b=LlQe3UU7HUZpSyAdQXz9EoT16RFBp2mcWwURzoUDByIGeEhv5Q1vvNYTrk/iFJkL6a9vq3y2QdoTr5m6jDb7Pt9RoY3zsBwDG7NuKUBhNjHk0PgYyGuWQmHzCL6Fg72P3eWm4GL7zEHRx3tf6xcq4XiGJL9Vr45fGvsiAnM9uF4=
+	t=1731691044; cv=none; b=iaR//kcfSJb52+XhOqX0KcHU1SDUwXI4qG6zSYvEvhWwN5SsbwON8VNzzy1SwL+vX5sdac+dtOM+23h46rHwlvQ39f/9Z+cCDFpObocBGUSK7ATtIU2Z4gTZPjAksWUDcNG8cOQZmi4zFMsZu0eIFuCxQx/L95cf1u8Ok1D9TR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731689911; c=relaxed/simple;
-	bh=+diPlS6drHYTTbEBscxwjk98t3Tr5UjD7fLgAqRxsFY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sC3lzoWMmWYlnhBozCKLV82x6Cf6R+sCRBOjs2gh7NhXV0iTyorBFnQMIlz/n4d1cGXE4ruOUeDH88z0YFnuAj5Lte2p8W3ZVnoRVdenpQAf3srvkMG6Orzys+qHEKVAaNL6S4PB5ocwqdYHpiaEz0/1xWdDkqezl4Zxi45Px1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exh8cdkB; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e5a0177531so1679448a91.2;
-        Fri, 15 Nov 2024 08:58:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731689909; x=1732294709; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CpNGtLDGMDR9feWtepju5qrqLCKQ8PwkgbQnookjB1M=;
-        b=exh8cdkBYgnX5m0EoKu2dR4o99WoL8Od7k4S6xdH1KFdsA1j1uQ03e9cXIqOAcQ3Dz
-         pgzyVNO6/gRpYXw6vs2CUqYJFNWvt6KzAMCUcKqyJ8yTRs9fQZOkd8Fn634wvmb2bgW+
-         5cJHZ+9jwcsx0UM/v50LFVNB2QJ5gwg22HNOrtx1sihSA8T5bkmwzr8YP77eFTcpZstU
-         QlPaCfqTaWKn7JH+8yFxxV+nT2yQStpz05MuGm91rq16jDvco8wcIqmef6HLom7wlGAk
-         kUjzFQdocBBLDzNdW5VhAmK4ICcAy00L/hFF0uws0hOOKQnyPGXQRtHdJ4csK/XZTmwW
-         gi3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731689909; x=1732294709;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CpNGtLDGMDR9feWtepju5qrqLCKQ8PwkgbQnookjB1M=;
-        b=dFelKbzEgeIHnl84Qpg0b1IvTe/mbIK3fX1l6d4MxD5HiIdcIEWnj9ZC3pq29wRxzq
-         Yr8dqgp56hlt+njrZ5hSpCHPv5NtC3kDNigodPNln9kv5jOMOT1G66J2XjI/9Bhr6YIg
-         1eM2d53XxpCJV9LR77dWTekbuUVeuismRSCOcWwbLwUwPIk1YYprNxCdZKZKWVrluUAz
-         pgumdu0miV9hzTodDUjBn5MicguPGnPK07lm41e7OZDHo+bjyxarHJX1uKU15/oBuUX4
-         THt2Gpn4tFWBOmHrlZtKjcqk25kjM32UBYfdUlq0j8Ouft0KMZXrBB/K34Tb6vm2aJO8
-         C8WA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbDQwnHmePGuQihjlqAc5ADG3ZHkCyRJcKplC1tFhQNByBQz6qyqPd9FyLKFhsHmZn7dZygHpl@vger.kernel.org, AJvYcCX5KARTu0zWv1iSkyFkwziirTqqJ/FHtxF7lK/JKOuXcRWVH/mzzWXaZSNSVfJZNr3ZL5ZfKHm0shA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzRwnASMopFtmKxdC89f59j1RzKCh8ZUlfGxbhx47z+0CykBdV
-	XK3duEc9CM7lm2Vs8C4bXwlAXawDwWcSx4Fp2To8Da/qgo9O12L6VsGnB8ec4YISK/Q1vOKLHOv
-	StL6h29w98Yp6VVemtgGxDS9MzyhUzyQ8BAk=
-X-Google-Smtp-Source: AGHT+IGe/R9bUVI3bNg2/fNPfBs74Nk+DV6SSIg8JJE7gAmbz+OwtjrcXhiCgVaEjiLNzNi5VoxGkOxgRBd/sMxPlaE=
-X-Received: by 2002:a17:90b:48d1:b0:2ea:10de:1ceb with SMTP id
- 98e67ed59e1d1-2ea15589e04mr3806636a91.25.1731689908784; Fri, 15 Nov 2024
- 08:58:28 -0800 (PST)
+	s=arc-20240116; t=1731691044; c=relaxed/simple;
+	bh=Corilu2k2CmaQbvTHiOarAKIfUM9CEyFn15X1vUWQ4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uowASclBS2O9/rridkD+zH2BfYVniXvOnckGvkuzNfEnxKMwzSITsbaDr8sxMDms3Si25LJzVKYpio6rCRNvJepNHGpz7IaMy9E4mxc6vKK7C4e7A6/2d6Sy7g0sdWrD1aSPBo5jLZGgVfvjxDx+YWrWGw4bN+ypEQwobraQ+G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ElRaawZC; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=cz1IQV29; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=cvDKSh+/; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kywAq8i+; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1FDA82119F;
+	Fri, 15 Nov 2024 17:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1731691040; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
+	b=ElRaawZC9Yy8VlMMtbcpdsxywhfSrwT0Wb+eWQzhVvNeqt5PmITyLHQbRRQhs4CtIBBVrS
+	6yKEe8bEakEAl9rTvcKoEF9BoEyO01up3Odmuw2tp6Ijv2ceFyup+Gq216uAzCgalGJ/lD
+	Sy9y0WF3cuzkj9qIXhw/f/73JISVL24=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1731691040;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
+	b=cz1IQV291zJGFfouKAX3J76r84N2XM3eUhwfyCxhmgwaLH922eZhXf8ao6k8435OApejMi
+	FY47dXtzj00k7fDg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1731691039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
+	b=cvDKSh+/kc9z5R5ElaOvLoXRUMa6ucFPNEmc3ldasVAtHo1Qaqnb1UfzHVvqPtynCjGxlN
+	mNGTqhM4VA5MvTTPtdC3yi12DF0hAEqZ9lQIVxzyCg7VtyDLMCIxcXXp8+Bzrj+n6KiBXB
+	HbNS+Zogvqi19M2OV+70rNeg4TTkDQE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1731691039;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4O3ZATnD+0Lggt5a/FcfBK/FnPfFyvxiux0g2X5aJaw=;
+	b=kywAq8i+YvYtHRQ3IDMk0Qnyx2swLxjkcvjC3/ZZ1vJbC3PdvuLJyTCoBNbns5VULqwYiV
+	XFs1s+R+9PH+NbDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F21D313485;
+	Fri, 15 Nov 2024 17:17:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id C72zOh6CN2fBXQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 15 Nov 2024 17:17:18 +0000
+Message-ID: <cee4e74b-3d27-4c78-acea-788fff2bc3c2@suse.cz>
+Date: Fri, 15 Nov 2024 18:17:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZzdxKF39VEmXSSyN@tissot.1015granger.net> <Zzd12OGPDnZTMZ6t@tissot.1015granger.net>
- <CAO9qdTGLn6QWJg71Ad2xcobiTHE5ovoUxSqvrDDrE_i1+uqUQw@mail.gmail.com> <Zzd5YaI99+hieQV+@tissot.1015granger.net>
-In-Reply-To: <Zzd5YaI99+hieQV+@tissot.1015granger.net>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Sat, 16 Nov 2024 01:58:17 +0900
-Message-ID: <CAO9qdTEaYa639ebHX8Qd0_FqOZUZLc_JvYNyxepUthGyDqw_Bw@mail.gmail.com>
-Subject: Re: tmpfs hang after v6.12-rc6
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: akpm@linux-foundation.org, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-nfs@vger.kernel.org, hughd@google.com, 
-	yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y 0/5] fix error handling in mmap_region() and
+ refactor (hotfixes)
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, Peter Xu
+ <peterx@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>
+References: <cover.1731672733.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <cover.1731672733.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,oracle.com,google.com,vger.kernel.org,kvack.org,redhat.com,arm.com,kernel.org,davemloft.net,gaisler.com,HansenPartnership.com,gmx.de];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Chuck Lever <chuck.lever@oracle.com> wrote:
->
-> On Sat, Nov 16, 2024 at 01:33:19AM +0900, Jeongjun Park wrote:
-> > 2024=EB=85=84 11=EC=9B=94 16=EC=9D=BC (=ED=86=A0) =EC=98=A4=EC=A0=84 1:=
-25, Chuck Lever <chuck.lever@oracle.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=
-=B1:
-> > >
-> > > On Fri, Nov 15, 2024 at 11:04:56AM -0500, Chuck Lever wrote:
-> > > > I've found that NFS access to an exported tmpfs file system hangs
-> > > > indefinitely when the client first performs a GETATTR. The hanging
-> > > > nfsd thread is waiting for the inode lock in shmem_getattr():
-> > > >
-> > > > task:nfsd            state:D stack:0     pid:1775  tgid:1775  ppid:=
-2      flags:0x00004000
-> > > > Call Trace:
-> > > >  <TASK>
-> > > >  __schedule+0x770/0x7b0
-> > > >  schedule+0x33/0x50
-> > > >  schedule_preempt_disabled+0x19/0x30
-> > > >  rwsem_down_read_slowpath+0x206/0x230
-> > > >  down_read+0x3f/0x60
-> > > >  shmem_getattr+0x84/0xf0
-> > > >  vfs_getattr_nosec+0x9e/0xc0
-> > > >  vfs_getattr+0x49/0x50
-> > > >  fh_getattr+0x43/0x50 [nfsd]
-> > > >  fh_fill_pre_attrs+0x4e/0xd0 [nfsd]
-> > > >  nfsd4_open+0x51f/0x910 [nfsd]
-> > > >  nfsd4_proc_compound+0x492/0x5d0 [nfsd]
-> > > >  nfsd_dispatch+0x117/0x1f0 [nfsd]
-> > > >  svc_process_common+0x3b2/0x5e0 [sunrpc]
-> > > >  ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
-> > > >  svc_process+0xcf/0x130 [sunrpc]
-> > > >  svc_recv+0x64e/0x750 [sunrpc]
-> > > >  ? __wake_up_bit+0x4b/0x60
-> > > >  ? __pfx_nfsd+0x10/0x10 [nfsd]
-> > > >  nfsd+0xc6/0xf0 [nfsd]
-> > > >  kthread+0xed/0x100
-> > > >  ? __pfx_kthread+0x10/0x10
-> > > >  ret_from_fork+0x2e/0x50
-> > > >  ? __pfx_kthread+0x10/0x10
-> > > >  ret_from_fork_asm+0x1a/0x30
-> > > >  </TASK>
-> > > >
-> > > > I bisected the problem to:
-> > > >
-> > > > d949d1d14fa281ace388b1de978e8f2cd52875cf is the first bad commit
-> > > > commit d949d1d14fa281ace388b1de978e8f2cd52875cf
-> > > > Author:     Jeongjun Park <aha310510@gmail.com>
-> > > > AuthorDate: Mon Sep 9 21:35:58 2024 +0900
-> > > > Commit:     Andrew Morton <akpm@linux-foundation.org>
-> > > > CommitDate: Mon Oct 28 21:40:39 2024 -0700
-> > > >
-> > > >     mm: shmem: fix data-race in shmem_getattr()
-> > > >
-> > > > ...
-> > > >
-> > > >     Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha31051=
-0@gmail.com
-> > > >     Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat"=
-)
-> > > >     Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> > > >     Reported-by: syzbot <syzkaller@googlegroup.com>
-> > > >     Cc: Hugh Dickins <hughd@google.com>
-> > > >     Cc: Yu Zhao <yuzhao@google.com>
-> > > >     Cc: <stable@vger.kernel.org>
-> > > >     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > > >
-> > > > which first appeared in v6.12-rc6, and adds the line that is waitin=
-g
-> > > > on the inode lock when my NFS server hangs.
-> > > >
-> > > > I haven't yet found the process that is holding the inode lock for
-> > > > this inode.
-> > >
-> > > It is likely that the caller (nfsd4_open()-> fh_fill_pre_attrs()) is
-> > > already holding the inode semaphore in this case.
-> >
-> > Thanks for letting me know!
-> >
-> > It seems that the previous patch I wrote was wrong in how to prevent da=
-ta-race.
-> > It seems that the problem occurs in nfsd because nfsd4_create_file() al=
-ready
-> > holds the inode_lock.
-> >
-> > After further analysis, I found that this data-race mainly occurs when
-> > vfs_statx_path does not acquire the inode_lock, and in other filesystem=
-s,
-> > it is confirmed that inode_lock is acquired in many cases, so I will se=
-nd a
-> > new patch that fixes this problem right away.
->
-> Thanks for your quick response!
->
-> My brief sample of file system ->getattr methods shows that these
-> functions do not grab the inode semaphore at all when calling
-> generic_fillattr(). Likely they expect the method's caller to take
-> it.
->
-> I strongly prefer to see this commit reverted for v6.12-rc first,
-> and then the new fix should be merged via a normal merge window to
-> permit a lengthy period of testing.
->
+On 11/15/24 13:41, Lorenzo Stoakes wrote:
+> Critical fixes for mmap_region(), backported to 6.6.y.
+> 
+> Some notes on differences from upstream:
+> 
+> * In this kernel is_shared_maywrite() does not exist and the code uses
+>   VM_SHARED to determine whether mapping_map_writable() /
+>   mapping_unmap_writable() should be invoked. This backport therefore
+>   follows suit.
+> 
+> * Each version of these series is confronted by a slightly different
+>   mmap_region(), so we must adapt the change for each stable version. The
+>   approach remains the same throughout, however, and we correctly avoid
+>   closing the VMA part way through any __mmap_region() operation.
+> 
+> Lorenzo Stoakes (5):
+>   mm: avoid unsafe VMA hook invocation when error arises on mmap hook
+>   mm: unconditionally close VMAs on error
+>   mm: refactor map_deny_write_exec()
+>   mm: refactor arch_calc_vm_flag_bits() and arm64 MTE handling
+>   mm: resolve faulty mmap_region() error path behaviour
 
-Hmm... Of course, revert this patch is not a bad idea, but I think that
-patching it like below can effectively prevent data-race without causing
-recursive locking:
+I don't know if review tags are actually applied to stable backports on top
+of the original reviews, but I've checked so FTR:
 
----
- mm/shmem.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e87f5d6799a7..d061f8b34d49 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1153,6 +1153,12 @@ static int shmem_getattr(struct mnt_idmap *idmap,
- {
-    struct inode *inode =3D path->dentry->d_inode;
-    struct shmem_inode_info *info =3D SHMEM_I(inode);
-+   bool inode_locked =3D NULL;
-+
-+   if (!inode_is_locked(inode)) {
-+       inode_lock_shared(inode);
-+       inode_locked =3D true;
-+   }
-
-    if (info->alloced - info->swapped !=3D inode->i_mapping->nrpages)
-        shmem_recalc_inode(inode, 0, 0);
-@@ -1166,9 +1172,7 @@ static int shmem_getattr(struct mnt_idmap *idmap,
-    stat->attributes_mask |=3D (STATX_ATTR_APPEND |
-            STATX_ATTR_IMMUTABLE |
-            STATX_ATTR_NODUMP);
--   inode_lock_shared(inode);
-    generic_fillattr(idmap, request_mask, inode, stat);
--   inode_unlock_shared(inode);
-
-    if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
-        stat->blksize =3D HPAGE_PMD_SIZE;
-@@ -1179,6 +1183,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
-        stat->btime.tv_nsec =3D info->i_crtime.tv_nsec;
-    }
-
-+   if (inode_locked)
-+       inode_unlock_shared(inode);
-+
-    return 0;
- }
-
---
-
-What do you think?
-
-Regards,
-
-Jeongjun Park
-
->
-> > > > Because this commit addresses only a KCSAN splat that has been
-> > > > present since v4.3, and does not address a reported behavioral
-> > > > issue, I respectfully request that this commit be reverted
-> > > > immediately so that it does not appear in v6.12 final.
-> > > > Troubleshooting and testing should continue until a fix to the KCSA=
-N
-> > > > issue can be found that does not deadlock NFS exports of tmpfs.
-> > > >
-> > > >
-> > > > --
-> > > > Chuck Lever
-> > > >
-> > >
-> > > --
-> > > Chuck Lever
->
+>  arch/arm64/include/asm/mman.h  |  10 ++-
+>  arch/parisc/include/asm/mman.h |   5 +-
+>  include/linux/mman.h           |  28 ++++++--
+>  mm/internal.h                  |  45 ++++++++++++
+>  mm/mmap.c                      | 128 ++++++++++++++++++---------------
+>  mm/mprotect.c                  |   2 +-
+>  mm/nommu.c                     |   9 ++-
+>  mm/shmem.c                     |   3 -
+>  8 files changed, 153 insertions(+), 77 deletions(-)
+> 
 > --
-> Chuck Lever
+> 2.47.0
+
 
