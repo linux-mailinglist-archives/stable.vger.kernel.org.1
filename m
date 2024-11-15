@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD7B9CD835
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7999CD93A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65637281C4E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8D31F23131
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C585186294;
-	Fri, 15 Nov 2024 06:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85949189520;
+	Fri, 15 Nov 2024 06:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV2hDEwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jKWNXeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D01185B5B;
-	Fri, 15 Nov 2024 06:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4213B1891A8;
+	Fri, 15 Nov 2024 06:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653308; cv=none; b=flxWjhIi/8lwsK43lfMMCDrqFjGbOaDqW8m0Zs/NSvhaRBvKzqNebu1dE52TMaAVuBsdW3wnOTjxqSCeRkaMHlk14OabaY1Ri/F7bJ7Z4Q6RXvbyoFB8so/V3EzKkq1X3PDLfyA8o1MWe+91no1opwidR6oq+BlWgiGHm2C8OhQ=
+	t=1731653892; cv=none; b=D4lluMyAB9YKvNVhrIK9M1hWgh4zl9l5ReD6xkWk4SSU8wrkRD9o0bILhoVteWhLdxmFfi3pvh9CAtk0qCBzvuOEZiAfJYW/v02gWTjDMJrpV5Wcr8axF0zamgNdKFkHGESaS3YNrwmFf3Gepc/cbqHVPJiaB0RhZGJOnASlxow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653308; c=relaxed/simple;
-	bh=GARmRt1KsD2PL9Mf+1+locIZ7/0Ob/eIJpUPn9hyoSA=;
+	s=arc-20240116; t=1731653892; c=relaxed/simple;
+	bh=UEigPPN3yfWJ1xcutWJWcVZu3QZpHlB+nbT+hunoedA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWSIKn7dYHf0Ts3GP9eEuJFK0O6Jy+BVH/+AKsdOq+D09RlTBgYcIFy0uMEtkbBgGTCSuFDBcAfqCTrvbC99qAWDFV6tGH/iaa7RjuYcFggSfYsKFZ7cPi42WJChHA81atZeJh9ApmH5dzr32fEEGGMH0uK/pPh25xHYppfSu/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV2hDEwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD658C4CECF;
-	Fri, 15 Nov 2024 06:48:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pjWy+9G0kSRUy5kkaXp3fwWZ+D57JS+9AVlOCdC/0Z56DU1gd+qgg49vBUjqNyp/TdReiPDZxT5Khvo7ky61Ql8Tfz/3TMnnU4xTVOHDqQS+Uo8N63WRAy/w3pMj9vgGk1lWb+zbU6R0ceMoEszVRHPaoltqD+QIE1VdaN2+dWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jKWNXeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F7BC4CED2;
+	Fri, 15 Nov 2024 06:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653305;
-	bh=GARmRt1KsD2PL9Mf+1+locIZ7/0Ob/eIJpUPn9hyoSA=;
+	s=korg; t=1731653892;
+	bh=UEigPPN3yfWJ1xcutWJWcVZu3QZpHlB+nbT+hunoedA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UV2hDEwBoBusNylhYTlcv3GNIUmJrs+UnlhBNizNTmHQ8aK4/jbNM0lDxvs9kbW9b
-	 CNUaGaocDUGWVayal7z4cv4Efep8T60qJq8/8sjkx9nrq3C4MLwTsdqx9Uiq08jRi1
-	 /4NSCt6ctfe6rFMz7SLjGBVhBzLzoRpWNlQmlYuY=
+	b=0jKWNXeJi6JhDGuyyaayCM1TRpjLQ/KMSPt5SPPUUF3MpLpdWHRRMpixdJKFaCaeh
+	 MFZm5JuY6eKfXpaYTiVnj+mRs8u73SLOko2xqRCrz/e3RYhx+VScFkKHhjLF893FFO
+	 ektJD4JSJj4jcAoxYMh/aZSs+k+1Ty72NVc3wMC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Albanowski <kenalba@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 47/63] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.10 33/82] pwm: imx-tpm: Use correct MODULO value for EPWM mode
 Date: Fri, 15 Nov 2024 07:38:10 +0100
-Message-ID: <20241115063727.610053832@linuxfoundation.org>
+Message-ID: <20241115063726.757780152@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Albanowski <kenalba@chromium.org>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
+commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
 
-The Logitech Casa Touchpad does not reliably send touch release signals
-when communicating through the Logitech Bolt wireless-to-USB receiver.
+The modulo register defines the period of the edge-aligned PWM mode
+(which is the only mode implemented). The reference manual states:
+"The EPWM period is determined by (MOD + 0001h) ..." So the value that
+is written to the MOD register must therefore be one less than the
+calculated period length. Return -EINVAL if the calculated length is
+already zero.
+A correct MODULO value is particularly relevant if the PWM has to output
+a high frequency due to a low period value.
 
-Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
-sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
-needed, but harmless.
-
-Linux does not have information on which devices are connected to the
-Bolt receiver, so we have to enable this for the entire device.
-
-Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/pwm/pwm-imx-tpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 25f96494700d8..92cff3f2658cf 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -869,6 +869,7 @@
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
-+#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
- #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
- #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
- #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 871d7417824b8..24da739647635 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2137,6 +2137,10 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
- 			USB_VENDOR_ID_LOGITECH,
- 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_LOGITECH,
-+			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -106,7 +106,9 @@ static int pwm_imx_tpm_round_state(struc
+ 	p->prescale = prescale;
  
- 	/* MosArt panels */
- 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
--- 
-2.43.0
-
+ 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
+-	p->mod = period_count;
++	if (period_count == 0)
++		return -EINVAL;
++	p->mod = period_count - 1;
+ 
+ 	/* calculate real period HW can support */
+ 	tmp = (u64)period_count << prescale;
 
 
 
