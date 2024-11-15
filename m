@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-93265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554CC9CD844
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09639CD913
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8E89B24685
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D3D31F22612
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771E9185924;
-	Fri, 15 Nov 2024 06:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FDC11885B3;
+	Fri, 15 Nov 2024 06:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRR37g/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz6xS2bG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E09EAD0;
-	Fri, 15 Nov 2024 06:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AB617DFFD;
+	Fri, 15 Nov 2024 06:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653343; cv=none; b=M9wE8d1DWLMkjqJ9swwDaZmTiJ7aCqdUy4fNEamk8zLs0qSYkZx3QemJMYlBwBqyy3RsqUSVSKnhETXoKllR9JH8GoeyxWz87pYhD6NxA8zAu+IHNyazA850WuMS5lrNTMO8dsqTSbvJAS+4lVg+eUlvOL7NKYsiuW4wrDPLzfk=
+	t=1731653809; cv=none; b=EkqwAbc6YKNSa7Gxr2GMUKvt5Du8yrlts2BOXHh2qgZehYk9q05c2WpJ34p/3ZgdwXv8uaAL1Gw1bfdcY7PuUEEv8h8cpaq7DMq8dr9AvDm9gEaxFnplzzgadIutvljx0dOdiFbhfbO9kBQE1XVyg8balMTCL4d5O3Da05vveTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653343; c=relaxed/simple;
-	bh=Qjb5lbN5dAOcMqvO3ApEkvxJ15U4wNcEsofQvZq7kUw=;
+	s=arc-20240116; t=1731653809; c=relaxed/simple;
+	bh=cN7JSKkBcokG4CEuoCpTTMGoBS9zplLOrY9SxXTgXKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsiMCssSoYvxdKU8bZPn20V163ErJI490QGNPky6STBWKWsCA2IVJfIhE/MN0O7ntuYKKgYgC89Tm+/GFTMjxaAGlOJS+OuGObFNWxe3/AFBCU6jvW5tZAS2ICLRlEjYxSJ3elCKK7Geitm8P0OYi5ce2SKDS757L84dFDafeQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRR37g/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963EAC4CECF;
-	Fri, 15 Nov 2024 06:49:02 +0000 (UTC)
+	 MIME-Version; b=JjmiQcPauGPSIft3hethOqx6dii8MQYN3oBDERVfIXdDKfQONlXpwYGwpOYcBt0745SvHqJy7b5NWryhctfF3BAi+Ev14SuuZt5fUw/RrvDo+MKWXv9+2Avp3WfQ/5/qRkgbhbjbWAT28bRIq+TBPTCut1v87hWNFrqYOcwtLhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz6xS2bG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF761C4CECF;
+	Fri, 15 Nov 2024 06:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653343;
-	bh=Qjb5lbN5dAOcMqvO3ApEkvxJ15U4wNcEsofQvZq7kUw=;
+	s=korg; t=1731653809;
+	bh=cN7JSKkBcokG4CEuoCpTTMGoBS9zplLOrY9SxXTgXKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRR37g/B5WUYTgUveOefk/IQlY2UuIvMQ8eleNrZ3agI5ovjyUk0r5HPyvxJ+Qbh/
-	 oidVdFIb99JBqIkpJmkZstYp+moQO+TZt5BoclEtZ150WLZdWbDSWBx86WbcI37s+/
-	 CJoO11TiGQ0yYVlKZoXIGLI4DMeJcxjrr+rxrZdg=
+	b=Uz6xS2bGyaLyOf/fSjSfMpV6sKFbG6zD+KBmsyvSR4YS+BfFCZ6MC8qWFnQgLB6Mc
+	 1qLA1cdZ+z4kcWmqSHWRh0nOsOYClS3XJqoW3//Roy523LML60z3JsHxA/cLDgLHzU
+	 CLxzQueDRMTaGmo1tEijJTfPlYLlb7PeHYg5jK/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Yao <jia.yao@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Zongyao Bai <zongyao.bai@intel.com>,
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 57/63] drm/xe: Enlarge the invalidation timeout from 150 to 500
+Subject: [PATCH 5.10 43/82] io_uring: use kiocb_{start,end}_write() helpers
 Date: Fri, 15 Nov 2024 07:38:20 +0100
-Message-ID: <20241115063727.965591739@linuxfoundation.org>
+Message-ID: <20241115063727.110711185@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,63 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit c8fb95e7a54315460b45090f0968167a332e1657 ]
+Commit e484fd73f4bdcb00c2188100c2d84e9f3f5c9f7d upstream.
 
-There are error messages like below that are occurring during stress
-testing: "[   31.004009] xe 0000:03:00.0: [drm] ERROR GT0: Global
-invalidation timeout". Previously it was hitting this 3 out of 1000
-executions of warm reboot.  After raising it to 500, 1000 warm reboot
-executions passed and it didn't fail.
+Use helpers instead of the open coded dance to silence lockdep warnings.
 
-Due to the way xe_mmio_wait32() is implemented, the timeout is able to
-expire early when the register matches the expected value due to the
-wait increments starting small. So, the larger timeout value should have
-no effect during normal use cases.
-
-v2 (Jonathan):
-  - rework the commit message
-v3 (Lucas):
-  - add conclusive message for the fail rate and test case
-v4:
-  - add suggested-by
-
-Suggested-by: Jia Yao <jia.yao@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Tested-by: Zongyao Bai <zongyao.bai@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241015161207.1373401-1-shuicheng.lin@intel.com
-(cherry picked from commit 2eb460ab9f4bc5b575f52568d17936da0af681d8)
-[ Fix conflict with gt->mmio ]
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Message-Id: <20230817141337.1025891-5-amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index fb394189d9e23..13213f39e52f9 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -870,7 +870,7 @@ void xe_device_l2_flush(struct xe_device *xe)
- 	spin_lock(&gt->global_invl_lock);
- 	xe_mmio_write32(gt, XE2_GLOBAL_INVAL, 0x1);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index ec55f2788ac64..a6afdea5cfd8e 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2669,15 +2669,10 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
  
--	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 150, NULL, true))
-+	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 500, NULL, true))
- 		xe_gt_err_once(gt, "Global invalidation timeout\n");
- 	spin_unlock(&gt->global_invl_lock);
+ static void io_req_end_write(struct io_kiocb *req)
+ {
+-	/*
+-	 * Tell lockdep we inherited freeze protection from submission
+-	 * thread.
+-	 */
+ 	if (req->flags & REQ_F_ISREG) {
+-		struct super_block *sb = file_inode(req->file)->i_sb;
++		struct io_rw *rw = &req->rw;
  
+-		__sb_writers_acquired(sb, SB_FREEZE_WRITE);
+-		sb_end_write(sb);
++		kiocb_end_write(&rw->kiocb);
+ 	}
+ }
+ 
+@@ -3770,18 +3765,8 @@ static int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (unlikely(ret))
+ 		goto out_free;
+ 
+-	/*
+-	 * Open-code file_start_write here to grab freeze protection,
+-	 * which will be released by another thread in
+-	 * io_complete_rw().  Fool lockdep by telling it the lock got
+-	 * released so that it doesn't complain about the held lock when
+-	 * we return to userspace.
+-	 */
+-	if (req->flags & REQ_F_ISREG) {
+-		sb_start_write(file_inode(req->file)->i_sb);
+-		__sb_writers_release(file_inode(req->file)->i_sb,
+-					SB_FREEZE_WRITE);
+-	}
++	if (req->flags & REQ_F_ISREG)
++		kiocb_start_write(kiocb);
+ 	kiocb->ki_flags |= IOCB_WRITE;
+ 
+ 	if (req->file->f_op->write_iter)
 -- 
 2.43.0
 
