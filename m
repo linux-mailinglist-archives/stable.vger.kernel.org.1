@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-93427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C209CD937
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486549CD869
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E80B22FC4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E900D1F213AC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75343185949;
-	Fri, 15 Nov 2024 06:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADD6186294;
+	Fri, 15 Nov 2024 06:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKm15kMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sdpnmei1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3281C17DFFD;
-	Fri, 15 Nov 2024 06:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD27FEAD0;
+	Fri, 15 Nov 2024 06:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653889; cv=none; b=rm7l/T4zbYCoXlNAHJ6swK3WMzMvSdnoq1yUrtmGFBY7mOBJR2Cf8eWIdjJnjf1++blprTwU9aTeyx23kzogE2kh0BqVzHkL+slKkX520/kEA9HmlC1geTbTBTw/tdTknWvHfX6M7RH1AFYW8FVKBIx9ozLR2ENHeWwWIDBH9OM=
+	t=1731653433; cv=none; b=NOIKePBuhVfAZU4DABeA7ErQPkgSF1tgmWgVCj6i0/cGfROwrcqLo3XdLV+uMG2WGIA5IaIaCy2YhrN0EoGlM0tsJbMj3WAPoYH8Hol9En5LSaC36sE6t6yBrREgQfkSoyZ46kjvo4nQpv+ncsbGR+FPC6DbjbbcWN+F5V48VXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653889; c=relaxed/simple;
-	bh=RKWhtQKZOvP0+wEvJwGFG57PA0T/xId+WvIyZO6a95Q=;
+	s=arc-20240116; t=1731653433; c=relaxed/simple;
+	bh=0Rkfer+V2V2wTI+IJQpKTYqUeu4Ga8ivha+TEStgodI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEXRidLIYDeZxku3FGLVKCw1mlK+eIvWlvMSOfVf+OCK222pFujbFtzP1Qxfs/srKef/LkiugASoG0x/s9mlPzBt3b4PMsu8a4+2mxp3dpVWetL01heb7/fQN1AdFDO39KZYEPtIm5GufnoMcSZ5j3hrPoDUk5iM66l8Kl9t6nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKm15kMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97391C4CECF;
-	Fri, 15 Nov 2024 06:58:08 +0000 (UTC)
+	 MIME-Version; b=NPoBNCI0bCeaCn4+KmBFAYlapDZ7akgZPlJTpsaOxGNVr6R1RZrgxNAOf5mKck+hGpE9UE2da09hrE6cqIy5SAMgm+z9sktnTtfLL6TO/6IUgt1N/hnbTRdmdg3nXiGjUpbivv4Q5qDKKUQ4ZTn0ZpcS0cueUyTzdEs3ORgbSnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sdpnmei1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE8EC4CECF;
+	Fri, 15 Nov 2024 06:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653889;
-	bh=RKWhtQKZOvP0+wEvJwGFG57PA0T/xId+WvIyZO6a95Q=;
+	s=korg; t=1731653432;
+	bh=0Rkfer+V2V2wTI+IJQpKTYqUeu4Ga8ivha+TEStgodI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKm15kMNdJpcjsr9EqJTMCgCcfkCdziEcRyHxXSWIkuifn1kV20ghppQP2HbKSWpa
-	 bUeudsZXCbT+9Cc/eSNFxlVuXMecozpIg/tDK5nX/pVpNhsX36PPlEtKgwSA+hIcLl
-	 1EZ8FfYj022TZpL8c9lGRZNOlacW60F/iPUeCIok=
+	b=Sdpnmei15P46zj1caHESvtJcMGPzv4BAsCN7hl1OS7Fbwolo6RHsqu9rkFrYzirqZ
+	 uwBvI1EaXGO0YG1/wNHrc0JjWy9WVrmJoN6rqAnkgdhziROFIk3ZLxNy/+s4HeN/qb
+	 HWl8x/HWvjoJCqmiGibvrqaPjGCBOoUFqwFhGyUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 32/82] media: v4l2-tpg: prevent the risk of a division by zero
+	2639161967 <2639161967@qq.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 20/48] powerpc/powernv: Free name on error in opal_event_init()
 Date: Fri, 15 Nov 2024 07:38:09 +0100
-Message-ID: <20241115063726.722301964@linuxfoundation.org>
+Message-ID: <20241115063723.694077222@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
+[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
 
-As reported by Coverity, the logic at tpg_precalculate_line()
-blindly rescales the buffer even when scaled_witdh is equal to
-zero. If this ever happens, this will cause a division by zero.
+In opal_event_init() if request_irq() fails name is not freed, leading
+to a memory leak. The code only runs at boot time, there's no way for a
+user to trigger it, so there's no security impact.
 
-Instead, add a WARN_ON_ONCE() to trigger such cases and return
-without doing any precalculation.
+Fix the leak by freeing name in the error path.
 
-Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: 2639161967 <2639161967@qq.com>
+Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-+++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-@@ -1789,6 +1789,9 @@ static void tpg_precalculate_line(struct
- 	unsigned p;
- 	unsigned x;
- 
-+	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
-+		return;
-+
- 	switch (tpg->pattern) {
- 	case TPG_PAT_GREEN:
- 		contrast = TPG_COLOR_100_RED;
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index 56a1f7ce78d2c..d92759c21fae9 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -282,6 +282,7 @@ int __init opal_event_init(void)
+ 				 name, NULL);
+ 		if (rc) {
+ 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
++			kfree(name);
+ 			continue;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
