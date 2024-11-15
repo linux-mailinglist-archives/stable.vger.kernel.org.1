@@ -1,235 +1,197 @@
-Return-Path: <stable+bounces-93574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51F79CF36E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 18:57:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B73F9CF39A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 19:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AC461F20F28
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:57:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA0C282B86
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 18:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8361E1DDA0E;
-	Fri, 15 Nov 2024 17:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6631D8DF9;
+	Fri, 15 Nov 2024 18:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IBjDCOGx"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YuFmqSmT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2075.outbound.protection.outlook.com [40.107.95.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB31D63FB;
-	Fri, 15 Nov 2024 17:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731693418; cv=none; b=D/9ql+Y+vZs33uDp2ga7jVn1qOLuEyR462S6sYvXEriLmEFaxLqG+HcFRI+JcvY6tMKInYI1Ws9uGl2DTjkvS/rofIlJauv8G7DUUesROkaPuavDlstdxYUB9VwcNk3OapAw585i435weCTDsK6ceAOTjLJD2NuZ/YCx3DelZVQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731693418; c=relaxed/simple;
-	bh=8G1eQwpfLzzrbWLE731gSlaI/3BoTdKQ9z7j3rLVNJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nXEGOdM0S3sNlTJHAeS62Dz7P5Y9CRjgNCETvUxQ0LdK77IqIJ+AJv4shG6SkMok8nuBE//aWH4s2SwIR0IY8tdLuB0yKyS33XLLzTA62FtLFk8HNhFMco8Ql+kqL5jBGZjBSYAiiMBwdktDWbv2qkdS7bbF+SzyuIZUm3Yt+hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IBjDCOGx; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cf8ef104a8so1424560a12.2;
-        Fri, 15 Nov 2024 09:56:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731693414; x=1732298214; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yszZ/13xovLyV8+6Bm3HMI1O+tb18eMjfobAQVjAREg=;
-        b=IBjDCOGxQHiVNivBpHA0QCdBEu5/drI9ZeiqUo1sjCOopJcI2mmg8Re3axrcz0GRS5
-         GBlHxLf5J6zq2VYd/Y8z+WLqYd1G78L2XJU5iDELliF5StPi3fVfeqet2n7YiW94Fr0o
-         /FAQhYr7cc+PiE+9L30lJu0ARMi7oGNl075S5SYbWee1rzbRY7/87CCctbw6i8xspODM
-         qeKJ5tzTA5HgAVer61xZb0TOgWhUQX7cSH30M1XM4qaavj2JyovN+B2MgOT7PN3w8djm
-         L7A2fieVPeVAESa1F3nKYD508PINpMZy4DCkdPHHQqzbekORwqRGoFrsTgdF/r1DyPUp
-         POJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731693414; x=1732298214;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yszZ/13xovLyV8+6Bm3HMI1O+tb18eMjfobAQVjAREg=;
-        b=KTLfwrrM8dtsZHDbBBeySv97tCSxwxL3GQOYQbvqoCF6h7C9buDHXoqFLMvzdgBJ3w
-         PwSKnszi45/YaG7G3Eajuq9ustwf9mt1j/NZVFIa6GZEusnbjA/qdL8JGpzXBkEJBtSF
-         I8FAANeNSq83weZKPTGAwDQgum1vc1PZ0uXq5oDiDRFDxuIMZ4gKFK3UdwKl3wQjfd/y
-         Qbtw02CPnUkTc5146/InEcGPlRrGhvsDyNCES8J3pz9o8wyeqGWJQrySFRrXHIZ+ZGyb
-         1p3FiLqiS5APhR4P/Kn1E98io6yy9XNEx2MdeyZ/x2DxtdXh0AvLXfiHFI/deHIq41el
-         8mkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZi3CY3Sd5KEZed72ujDCS2Z4o2I4Y2w43EEis3wub1WRaERiV4CdCcVVJ6/inDzyV6trX7Vy/@vger.kernel.org, AJvYcCXmBXmdn6LYZaAdAZQEzL7agEnmosV6F8mjz4W8MRfxyleW8OalY8Oe23JAhianHQDTCXmMvt9yzmckegHpFYM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzKt1oMdfu/6/uyBd5XCJVCJTo2/Zf67d4il9oqia6+lCFBG+k
-	hJjuATSFREM/spRwpr7+WxJGiKiyPpOWG89gdrkX+8LnIH4miLlY
-X-Google-Smtp-Source: AGHT+IEfFnEwON+HSzkjwOoBuLCF6zULusBXwx1m/nRkf/7DvatVsNMnOVXjMlCBXNRhwhP6OcMSug==
-X-Received: by 2002:a05:6402:280d:b0:5cf:479a:d8a0 with SMTP id 4fb4d7f45d1cf-5cf8fd2faa8mr2727792a12.26.1731693414322;
-        Fri, 15 Nov 2024 09:56:54 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf9566be44sm538792a12.40.2024.11.15.09.56.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 09:56:53 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 227FABE2EE7; Fri, 15 Nov 2024 18:56:52 +0100 (CET)
-Date: Fri, 15 Nov 2024 18:56:52 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Mike <user.service2016@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy =?iso-8859-1?Q?Lain=E9?= <jeremy.laine@m4x.org>,
-	Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
-Message-ID: <ZzeLZHFWYCT6C8VI@eldamar.lan>
-References: <ab5e25d8-3381-452e-ad13-5d65c0e12306@leemhuis.info>
- <CABBYNZKQAJGzA8th8A7Foiy7YaSFZDpLvLZqDFsVJ3Yzn8C_5g@mail.gmail.com>
- <Zypwz65wRM-FMXte@eldamar.lan>
- <2024110652-blooming-deck-f0d9@gregkh>
- <Zysdc3wJy0jAYHzA@eldamar.lan>
- <CABBYNZKz_5bnBxrBC3SoaGc1MTXXYsgdOXB42B0x+2dcPRkJyw@mail.gmail.com>
- <2024110703-subsoil-jasmine-fcaa@gregkh>
- <4f8542be-5175-4cf1-9c39-1809a899601c@leemhuis.info>
- <2024111225-regulate-ruckus-1a46@gregkh>
- <2024111358-catching-unclog-31f3@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596E1D5ABF;
+	Fri, 15 Nov 2024 18:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731694100; cv=fail; b=JfM8ohE8Vxe69qF/goEvjWihQauQBaVJ9b4AGnNvoN/yqi2iPGgvI9Rhj+ZzdOF77TrdOCPfyLdGUVrXhNXZEUfUdoLC+nqMDBLmva50XS4APm3zPpWQaKtZLgw7e/MQhmjQQCNKZs4tOECCUQjH0xXxE52TaT2JRD1hzpcOcZg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731694100; c=relaxed/simple;
+	bh=jtP1UmmD3FKl2w8ES3KkAUeYhf7j3zsdwaA6huJ0DiM=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=dhirK5x8tUFb1YLtiI4vxyzJNcC2Chef7U2rHWiWasJfaCG951LP3mEX+Mu/xpgmDGyDifWWAZg61CmIkDAjBgtQPt5l8qpuCTUIkEmVLziW/pWuxw8kt7kFWJ0LpH66CT8oTigBIT0v3NDmooZ4wesfuC8Fi3CFfIUvwsxhYyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YuFmqSmT; arc=fail smtp.client-ip=40.107.95.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BIUFS7W682IXduJ7B5LnVexleFCNkh9aJ9TU1KLixVoN0rNmo7UlreQljgmJkADKRfusX6Fxrn00w7U47s4EhgVxq1B7418gRw7P5+2BSZGvazbxR7mQQdoCLsCXBh/4WdT2OQJMCLY85RmvlRwJvNWTe6bzr35wbr0b88ERrR92b8RHkYKN7/1HIYXVw5FrEHAaRJIrqNMSee+J/YDVGLb326PM6ny7kjhfEXHR/xpHO21iekM1rTkDd1jW6LV1wK44j6VuZbjCw602UgRWqNK2G6Usts/Kxbe63JHHnuNtGOCh7ZyizaaNmerojgqGpmdcFAhTmqhG4fXwVc5imQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MowJyq28tS1YjveUjVviUmXnD1WPG4aKusmmbhRRLwE=;
+ b=UiD8jy+44EVn5A2MJ1DMiBdTfOHbls4yM5k6zegWsXwmfFJAheX5LP9p0CAc60D25WrHBJ2rZO2BnZcx9Xca9Kn1wUW1fGGLIwRtLPUBuNvyWjf5CjbHPlUwVM3Yu7W5TQyJreWEfyBRGLAuicJhs3kkwQcm+RInQXQ3ROPhHakacaflReAdIEKN4rdDtUIEtEm7QfsLUuOx7KnJe/o/kXOUtMyw19fP5Blx2M66tjO8a6Y5UIea/IbJTZWZs04gYeG5+DvFEIBTM0WLUivXqyqnPc4C7jHF44Up51+mPsDDeYW3qHweh/+WK0DrdksksiyMLKz86Voo56Ny/zQZHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MowJyq28tS1YjveUjVviUmXnD1WPG4aKusmmbhRRLwE=;
+ b=YuFmqSmT2AXxXDh6m0t2VuxqaMlKscLEV5MI5QiOxvMsfkJYXkbU+XGdjBxY5WSscq/HFml1IkPzT0PEzmVKyw3qc5JieLA4VCIpSKEEAXMGlgmVBeDTgewxJca8HedpDDi/3XwbEBgk/xETo9x3pndJBGjmlmucpgfV4V+mIEAhCXzeVIcBW7/HMO7BIXIz29zuXUIQEYUFlHmAHgXLuXkXhZ2QjHQTDK+7sm9/PfjnuZGOb/Cl9mWw7k5cdTEqfT22flUQTCKhilZ2wSeFm0vnnVSn84LGTcXnPr56miRYDpLXIR6Ws2fwTlzvllkFSTDs+fqV4LXvmnRytNFRCg==
+Received: from CH0PR03CA0373.namprd03.prod.outlook.com (2603:10b6:610:119::7)
+ by CY5PR12MB6202.namprd12.prod.outlook.com (2603:10b6:930:25::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18; Fri, 15 Nov
+ 2024 18:08:13 +0000
+Received: from CH2PEPF0000009A.namprd02.prod.outlook.com
+ (2603:10b6:610:119:cafe::f3) by CH0PR03CA0373.outlook.office365.com
+ (2603:10b6:610:119::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17 via Frontend
+ Transport; Fri, 15 Nov 2024 18:08:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH2PEPF0000009A.mail.protection.outlook.com (10.167.244.22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8158.14 via Frontend Transport; Fri, 15 Nov 2024 18:08:13 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 15 Nov
+ 2024 10:07:55 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 15 Nov
+ 2024 10:07:54 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Fri, 15 Nov 2024 10:07:54 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 00/67] 5.4.286-rc2 review
+In-Reply-To: <20241115120451.517948500@linuxfoundation.org>
+References: <20241115120451.517948500@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024111358-catching-unclog-31f3@gregkh>
+Message-ID: <6407ca9a-354d-4a8d-9d53-175ada57688b@rnnvmail201.nvidia.com>
+Date: Fri, 15 Nov 2024 10:07:54 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009A:EE_|CY5PR12MB6202:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81fa26f9-0ef6-48f5-e5a0-08dd05a0789c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WXB2eit3WmpLcnJmRTcxaEN0VXBpTTR5bmVLMmZwY1JVcjFKTXdIRHF3M3Rm?=
+ =?utf-8?B?K09IdGZiUldjM2ljalZLL2VzQzlrN3Q3QS9SbHE4a1RZZjFOSGNNVWIrSy9H?=
+ =?utf-8?B?QTFoNms5Zmx4Y3VaVWRZb1lkMVlPZ1NtY0VMRURuZ1RaSzdHRHFEbHZnSkha?=
+ =?utf-8?B?QzNqY3hjbFB0WnRwSjNaNnFBb0lCWEtvdTRUbkZ4cEluYlJxZnd5bjhtanRU?=
+ =?utf-8?B?TklkNzZaSFUrei9wS09HV0J2KzRwc2pqVVc5dXBhem1Nekh1VlVGbzk2TUQx?=
+ =?utf-8?B?cGJDT3IwRUVtN0RMa1k2ZndQNTVxTHVEMTRCeUtLaENxSUxXc0tvdXkxRFF0?=
+ =?utf-8?B?YmJYT3hwZXQvOHl3N2lzdWlGWG5MR3dpWUxTQXNFNHZVQzE2cjBmZHFiOXpL?=
+ =?utf-8?B?c2hvVkNiY3JET0w2STc1VDhWOWFvWHRiR2MxSGk4NUNsbytRenZkQ2QrNWQ4?=
+ =?utf-8?B?SGZoTEdxeDlxeVZlaGVzaTVWRDdDRG4yeHdWcHpwMnRhaDhoREUrS3hMU2Fv?=
+ =?utf-8?B?K0k3S0hXako1WlR0MkVWMFhySDY1ajVNNS84WlBjSHlhTXY0WlhiUCsyc3NE?=
+ =?utf-8?B?YVJXZUQxYzloRmxsdEkyUEsxQzBydnplOWthYzYwRXNjSFU2VGFBcFh0b2s2?=
+ =?utf-8?B?SWpiRk42RHdFODAwdzdBVkw4UFhraXRhdGErT0cvbmg0VkVML0RaYW1nZlFE?=
+ =?utf-8?B?RWF1enp6c0Y4dVZCRi9TNWNpTDBheDdleTUza3M2MjNaRnBKS0tLaW1lTXNG?=
+ =?utf-8?B?RDZRaXQ1UjFrZTBHSTNhRi94VDN3RFRvMzl0UzdZS3lWQVFZTDhJbm9xQnkx?=
+ =?utf-8?B?SkhsVGdBdUk5WEtmUjE0WDhZSEE0cGlQNjdvVVlvQ0c2WHp6c2dtTmZWUXNB?=
+ =?utf-8?B?N2pQUDVncVhQWlBTc3BrNkxmeFJvS3lJY2ZnMDlhcGdWWXRPWGxkOExrTkpK?=
+ =?utf-8?B?K0E0Y3k5TjNRQU5ER0F6T3NQTnBtTGZ2RC9lWTh2NDRYS1hibFU1WUJBeDUv?=
+ =?utf-8?B?RVUyYk9HWW1KN0ZvMm5wYk5LZmNSaUJZT1NGQkVwUHFvcllFY1d1bTgzVStO?=
+ =?utf-8?B?NiswR3k0R1Ntek93TTBqcTRGUXI5SnZ5TGpxYktDT2kxWlBDZG9lZk5MMDJO?=
+ =?utf-8?B?Qm1vVUlpRWw4OXZ0M1hOcHpnRVFnako2SGZlMWZoOXlCLzdLeHhXRnZvRDNO?=
+ =?utf-8?B?U0RDNmwzRnd3eXlQNHdSVVB2YkpTSTZhcERHUTc5UW9OaFlEdmVKdFZlN2l3?=
+ =?utf-8?B?YVhQbXVDNUdCL3VPZ1hHU3QwN1YwZURUY3RWdTQ5REIxZFBFQUZNalg1S1Ru?=
+ =?utf-8?B?aGdqL1JIRTJ3Qk51a2VvVmU0MUkwNU1WNWFlc0VyclY1L0wxR2NkZjFJOWpy?=
+ =?utf-8?B?dXJEKzFNQ29qcWJ6aS9vRTQ1eWxrUEJpVnM3bUNIZHhkQVo2QVpieFZwWVli?=
+ =?utf-8?B?Nlh0a3ZNM3lDTlpZeUtpbEQ5OFh0K0Z0REdVRzRFQkd4bjQxUlpiTk1RMUts?=
+ =?utf-8?B?TFFMMFIwZXJoak5EbUZvR3JWM0Z2bmh1T0VqZ3o0ZmJnTTVwRkw3a3YzTmNN?=
+ =?utf-8?B?eU8yVHRnQTZnenhjTFluWExLcUFqYW9MdWtOa1A1Y0JhMUdNTzZRU3FidlV3?=
+ =?utf-8?B?dEUxTlVhdlp5citvOUlDVTQ5QXZFM0pyMmVUeUswRzBOd2dFVHI4N2x1UGs4?=
+ =?utf-8?B?VDlYL0lVWGxZU0p5MHMyNWlObWRYdmhmQXJJSHp6c3orTmhXSE5IclUxTzVh?=
+ =?utf-8?B?NDIzMUdVRm9rUnBQU3g2OVFTVUxqVmx3b21nNmgvblNwWi8wUWVUeEdKMmdF?=
+ =?utf-8?B?R2Nqanc2ZnFVdVBSSnZTWnNsS0ZpSFRuV0tQNUFqSiszWktmbTByVzUwTU5O?=
+ =?utf-8?B?SmFLeUgzdk1CSXhybjJsd01VTEtNRFd4T08rd3pTdW5QSWc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 18:08:13.1214
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81fa26f9-0ef6-48f5-e5a0-08dd05a0789c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6202
 
-Hi Greg,
-
-On Wed, Nov 13, 2024 at 04:10:23PM +0100, Greg KH wrote:
-> On Tue, Nov 12, 2024 at 01:04:03PM +0100, Greg KH wrote:
-> > On Tue, Nov 12, 2024 at 12:54:46PM +0100, Thorsten Leemhuis wrote:
-> > > On 07.11.24 05:38, Greg KH wrote:
-> > > > On Wed, Nov 06, 2024 at 10:02:40AM -0500, Luiz Augusto von Dentz wrote:
-> > > >> On Wed, Nov 6, 2024 at 2:40 AM Salvatore Bonaccorso <carnil@debian.org> wrote:
-> > > >>> On Wed, Nov 06, 2024 at 08:26:05AM +0100, Greg KH wrote:
-> > > >>>> On Tue, Nov 05, 2024 at 08:23:59PM +0100, Salvatore Bonaccorso wrote:
-> > > >>>>> On Tue, Nov 05, 2024 at 12:53:50PM -0500, Luiz Augusto von Dentz wrote:
-> > > >>>>>> On Tue, Nov 5, 2024 at 12:29 PM Thorsten Leemhuis
-> > > >>>>>> <regressions@leemhuis.info> wrote:
-> > > >>>>>>> On 31.10.24 07:33, Salvatore Bonaccorso wrote:
-> > > >>>>>>>> On Tue, Jun 18, 2024 at 12:30:18PM +0200, Thorsten Leemhuis wrote:
-> > > >>>>>>>>> On 12.06.24 14:04, Greg KH wrote:
-> > > >>>>>>>>>> On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
-> > > >>>>>>>>>>> On 03.06.24 22:03, Mike wrote:
-> > > >>>>>>>>>>>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
-> > > >>>>>>>>>>>> [...]
-> > > >>>>>>>>>>>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
-> > > >>>>>>>>>>>> time to be
-> > > >>>>>>>>>>>> included in Debian stable, so having a patch for 6.1.x will be much
-> > > >>>>>>>>>>>> appreciated.
-> > > >>>>>>>>>>>> I do not have the time to follow the vanilla (latest) release as is
-> > > >>>>>>>>>>>> likely the case for
-> > > >>>>>>>>>>>> many other Linux users.
-> > > >>>>>>>>>>>>
-> > > >>>>>>>>>>> Still no reaction from the bluetooth developers. Guess they are busy
-> > > >>>>>>>>>>> and/or do not care about 6.1.y. In that case:
-> > > >>>>>>>>>>>
-> > > >>>>>>>>>>> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
-> > > >>>>>>>>>>> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
-> > > >>>>>>>>>>> cause this or if it's missing some per-requisite? If not I wonder if
-> > > >>>>>>>>>>> reverting that patch from 6.1.y might be the best move to resolve this
-> > > >>>>>>>>>>> regression. Mike earlier in
-> > > >>>>>>>>>>> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
-> > > >>>>>>>>>>> confirmed that this fixed the problem in tests. Jeremy (who started the
-> > > >>>>>>>>>>> thread and afaics has the same problem) did not reply.
-> > > >>>>>>>>>>
-> > > >>>>>>>>>> How was this reverted?  I get a bunch of conflicts as this commit was
-> > > >>>>>>>>>> added as a dependency of a patch later in the series.
-> > > >>>>>>>>>>
-> > > >>>>>>>>>> So if this wants to be reverted from 6.1.y, can someone send me the
-> > > >>>>>>>>>> revert that has been tested to work?
-> > > >>>>>>>>>
-> > > >>>>>>>>> Mike, can you help out here, as you apparently managed a revert earlier?
-> > > >>>>>>>>> Without you or someone else submitting a revert I fear this won't be
-> > > >>>>>>>>> resolved...
-> > > >>>>>>>>
-> > > >>>>>>>> Trying to reboostrap this, as people running 6.1.112 based kernel
-> > > >>>>>>>> seems still hitting the issue, but have not asked yet if it happens as
-> > > >>>>>>>> well for 6.114.
-> > > >>>>>>>>
-> > > >>>>>>>> https://bugs.debian.org/1086447
-> > > >>>>>>>>
-> > > >>>>>>>> Mike, since I guess you are still as well affected as well, does the
-> > > >>>>>>>> issue trigger on 6.1.114 for you and does reverting changes from
-> > > >>>>>>>> a13f316e90fdb1 still fix the issue? Can you send your
-> > > >>>>>>>> backport/changes?
-> > > >>>>>>>
-> > > >>>>>>> Hmmm, no reply. Is there maybe someone in that bug that could create and
-> > > >>>>>>> test a new revert to finally get this resolved upstream? Seem we
-> > > >>>>>>> otherwise are kinda stuck here.
-> > > >>>>>>
-> > > >>>>>> Looks like we didn't tag things like 5af1f84ed13a ("Bluetooth:
-> > > >>>>>> hci_sync: Fix UAF on hci_abort_conn_sync") and a239110ee8e0
-> > > >>>>>> ("Bluetooth: hci_sync: always check if connection is alive before
-> > > >>>>>> deleting") that are actually fixes to a13f316e90fdb1.
-> > > >>>>>
-> > > >>>>> Ah good I see :). None of those were yet applied to the 6.1.y series
-> > > >>>>> were the issue is still presend. Would you be up to provide the needed
-> > > >>>>> changes to the stable team?  That would be very much appreciated for
-> > > >>>>> those affected running the 6.1.y series.
-> > > >>>>
-> > > >>>> We would need backports for these as they do not apply cleanly :(
-> > > >>>
-> > > >>> Looks our mails overlapped, yes came to the same conclusion as I tried
-> > > >>> to apply them on top of 6.1.y. I hope Luiz can help here.
-> > > >>>
-> > > >>> We have defintively users in Debian affected by this, and two
-> > > >>> confirmed that using a newer kernel which contains naturally those
-> > > >>> fixes do not expose the problem. If we have backports I might be able
-> > > >>> to convice those affected users to test our 6.1.115-1 + patches to
-> > > >>> verify the issue is gone.
-> > > >>
-> > > >> Then perhaps it is easier to just revert that change?
-> > > > 
-> > > > Please send a revert then.
-> > > 
-> > > We afaics are kinda stuck here .
-> > > 
-> > > Seems Mike (who apparently had a local revert that worked) does not care
-> > > anymore.
-> > > 
-> > > It looks like Luiz does not care about 6.1.y either, which is fine, as
-> > > participation in stable is optional.
-> > > 
-> > > And looks like nobody else cares enough and has the skills to
-> > > prepare and submit a revert.
-> > > 
-> > > In the end the one that asked for the changes to be included in the
-> > > 6.1.y series thus submit one. Not sure who that is, though, a very quick
-> > > search on Lore gave no answer. :-/
-> > > 
-> > > There is also still the question "might a revert now cause another
-> > > regression for users of the 6.1.y series, as the change might improved
-> > > things for other users".
-> > > 
-> > > :-(
-> > 
-> > I care as this affects Debian, which is the largest user of Linux
-> > outside of Android.  I'll try to do a local version of the revert to
-> > unstick this...
+On Fri, 15 Nov 2024 13:05:13 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.286 release.
+> There are 67 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Ok, I have a series of reverts that seems to build properly for 6.1.y
-> that I'll queue up after this round of stable releases goes out
-> tomorrrow to hopefully resolve this.
+> Responses should be made by Sun, 17 Nov 2024 12:04:36 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.286-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Thanks. I have asked affected users which did report the issue in
-Debian if they can test the reverts (hope to get feedback in time
-before the actual 6.1.118 release).
+All tests passing for Tegra ...
 
-Regards,
-Salvatore
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
+
+Linux version:	5.4.286-rc2-gc655052e5fd8
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
