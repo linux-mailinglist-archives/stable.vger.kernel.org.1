@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-93183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C4B9CD7CA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC45A9CD877
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2AEE280E7E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64EFB1F21E71
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D8F188917;
-	Fri, 15 Nov 2024 06:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117DF18734F;
+	Fri, 15 Nov 2024 06:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlW7clsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h0pXGeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7A185924;
-	Fri, 15 Nov 2024 06:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27A4186294;
+	Fri, 15 Nov 2024 06:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653072; cv=none; b=qjRsxY9zTo7QBDIDSkKprbCwzC94qTu1JLnW0Ca+QuFnzy+f4nbd2ejGVNiH2l0eRrMyFxAMn4Z4MIgrxLqd75Uf5G8gfKx2C6tJR0rUkILB3DqmbRDMCBU3S5glYQ+dZTg4sWzx/5fmd200Bsan8AhVJ/kM7moVNPgepINdtZI=
+	t=1731653470; cv=none; b=l5hfYeNqcKX7eKzN26D0nusKXBjBHfk3ojszZH3cs/ezuYFh7sXBKJZQOcKCJ3ggHXTszgiIWCuk6Gc9T9izudaqeuzkRgEBoxpBajWSYXJWisJ0wQ8aA9IbzoAda2OQa48lscgCNtnc6fu61c4a8DPL8v27p0OSvnWD6QRY/sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653072; c=relaxed/simple;
-	bh=LHkHVIC1mwx1qY7nLskkhW4wgKlzODxHlJhoK0KB29I=;
+	s=arc-20240116; t=1731653470; c=relaxed/simple;
+	bh=Dv3if9JP2LPoJNVqJzgBKrZAd8vsNOdt6ReWyH4Cm2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iuWC+q+zskMgGJ+sL9ZUU60XTZlHEWsaXQqS17CJZuDt8k30z/CHcCuoeArBqIZaegGqvqKVLgJ2kcVH+EJLbZKSOvZJp7b0yktdtLIP/LAr7+Dsv3NmLzn218MPt2sgalVldVyBs88Ri0Qe92D+CnuqqnU7uR84mIR+x/4Qk1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlW7clsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4522CC4CECF;
-	Fri, 15 Nov 2024 06:44:32 +0000 (UTC)
+	 MIME-Version; b=mFDlv4vZunTF3L24mOfcWkwfxOIWHqiQ1h8R6iYntdcvUbJM4y3WOSaznftL/qxMysUi5ARut2xU8zCmrUn4ArNOji1hoLPNZPF7QhTNO4ERZR9HoVfc5DAZth6c3D68+7Bk0y7yXUfPEN6SOrDaNO8xasJ5amqIFfnMJr+YDFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h0pXGeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CC5C4CECF;
+	Fri, 15 Nov 2024 06:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653072;
-	bh=LHkHVIC1mwx1qY7nLskkhW4wgKlzODxHlJhoK0KB29I=;
+	s=korg; t=1731653470;
+	bh=Dv3if9JP2LPoJNVqJzgBKrZAd8vsNOdt6ReWyH4Cm2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlW7clsEp+OQXAYSipSiIwj0vR93GyXOTQ7yxI1N9fXnRJjjqorjcD7f9zkJQJXaY
-	 2Wzf97CJHK9lKZsoir/oVyvP+ZH6nucm+alVfZhynK4hfxU+Ra/eOFRQGzo9QiqKki
-	 BSd/F8Na2kboGMZkqcrMBJKtBr/JOjD86Zh7ss5c=
+	b=2h0pXGeSwZkWuSS5wBG4ncKB2r2HMwKbVgcLCs44iIBg1oH5a76N08RfPNnTrkWSs
+	 f2dHgW/zhvmAilQFe910P2fvQA7KNYvNzyH3Abmau8Xphs7VPRinKmyOgl7t8HksIc
+	 nXJ+0aLUSIH0Ns8yOo+dOcJwlIVjxBvilKGqZfzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 44/66] USB: serial: option: add Quectel RG650V
+	Sergey Matsievskiy <matsievskiysv@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 04/48] irqchip/ocelot: Fix trigger register address
 Date: Fri, 15 Nov 2024 07:37:53 +0100
-Message-ID: <20241115063724.435202409@linuxfoundation.org>
+Message-ID: <20241115063723.123696090@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Sergey Matsievskiy <matsievskiysv@gmail.com>
 
-commit 3b05949ba39f305b585452d0e177470607842165 upstream.
+[ Upstream commit 9e9c4666abb5bb444dac37e2d7eb5250c8d52a45 ]
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+Controllers, supported by this driver, have two sets of registers:
 
-T:  Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0122 Rev=05.15
-S:  Manufacturer=Quectel
-S:  Product=RG650V-EU
-S:  SerialNumber=xxxxxxx
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
+ * (main) interrupt registers control peripheral interrupt sources.
 
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ * device interrupt registers configure per-device (network interface)
+   interrupts and act as an extra stage before the main interrupt
+   registers.
+
+In the driver unmask code, device trigger registers are used in the mask
+calculation of the main interrupt sticky register, mixing two kinds of
+registers.
+
+Use the main interrupt trigger register instead.
+
+Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240925184416.54204-2-matsievskiysv@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-mscc-ocelot.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_VENDOR_ID			0x2c7c
- /* These Quectel products use Quectel's vendor ID */
- #define QUECTEL_PRODUCT_EC21			0x0121
-+#define QUECTEL_PRODUCT_RG650V			0x0122
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-@@ -1273,6 +1274,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
+diff --git a/drivers/irqchip/irq-mscc-ocelot.c b/drivers/irqchip/irq-mscc-ocelot.c
+index 4d0c3532dbe73..c19ab379e8c5e 100644
+--- a/drivers/irqchip/irq-mscc-ocelot.c
++++ b/drivers/irqchip/irq-mscc-ocelot.c
+@@ -37,7 +37,7 @@ static struct chip_props ocelot_props = {
+ 	.reg_off_ena_clr	= 0x1c,
+ 	.reg_off_ena_set	= 0x20,
+ 	.reg_off_ident		= 0x38,
+-	.reg_off_trigger	= 0x5c,
++	.reg_off_trigger	= 0x4,
+ 	.n_irq			= 24,
+ };
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+@@ -70,7 +70,7 @@ static struct chip_props jaguar2_props = {
+ 	.reg_off_ena_clr	= 0x1c,
+ 	.reg_off_ena_set	= 0x20,
+ 	.reg_off_ident		= 0x38,
+-	.reg_off_trigger	= 0x5c,
++	.reg_off_trigger	= 0x4,
+ 	.n_irq			= 29,
+ };
+ 
+-- 
+2.43.0
+
 
 
 
