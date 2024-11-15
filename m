@@ -1,174 +1,174 @@
-Return-Path: <stable+bounces-93514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F0B9CDD0B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 11:53:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57369CDD93
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 12:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32E3DB2200A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 10:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AFF7280C44
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 11:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985E11B5EDC;
-	Fri, 15 Nov 2024 10:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LxD2iVQS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B3D1B4F1C;
+	Fri, 15 Nov 2024 11:37:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555851B392B
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 10:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D74018622;
+	Fri, 15 Nov 2024 11:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731668027; cv=none; b=XiVGjeNu3y+Sy/uTIZ4t5vASW9PqCrG7bQAc9Yo3ZsnaE5onYxnLnLW1v5CgAR67pc/sjBrgKwterZkk+9UGsPwNDv5oDmomns/HgyqYVcffux43IjvBG57uZsj+2D4b0Hcpb0ryjmVVhmHZPAZa3fOZ3TU4YRRwsBa2cPtXwxE=
+	t=1731670651; cv=none; b=N3uRhMlv0hzbzP/Z1g5hRAkEDF97Qkx7u8r8q9H4pT5dVeLawWKVyzw2L3V9rb0hUMoJSFZcC+mCLYy0aHh/G8g/H9rDTO03CYjJbKHytix9MhXFEh9Q7Px6YYv+fM/KL8nRfSFlRAnnrRdUqdzkMdGz0wsgPWY7RCaGQu2OwZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731668027; c=relaxed/simple;
-	bh=Aze8ubsJfw20CCAheENnV0TxOaVpLIudKLyqB1mUmWs=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ki8INDZGV3q+Mff1mRFvB/8zLJ2eENjRj+jdym2aV2rLgvN92ox7SUOY2ubJiUZIm0zQsl0vPIr+wwKbnWbge6FiI4ES2tZKpnmsDqcBYTBY+SqugNL4mUUbTLSJrn2hqRn86llgNWZ/wA2Jy/F9qxUcl/UBbuWN5vgyquFNMdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LxD2iVQS; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb5111747cso5629161fa.2
-        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 02:53:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1731668023; x=1732272823; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kqEZZaXWIaNRK9OLE5Wx827F0bUtvaOZcgVtTnimPxg=;
-        b=LxD2iVQSWDliHa7Qm3U3T/EF+DEPxdk9Ry8F7GTgz3VvaNne5Bk1xmuxG6LqbmMXDz
-         5rlp5x3XY53Lq88fHFqXPax4sm/eWCl63dMf8NDRiPHsqBmsRNFtnIaJS9g7oygJahmr
-         yOXnNQlESkzsmaTIhRvy97jxtpiq4j8KaBGB/cREmFctrM/vwQzXRsKMoMV9q46oy8gz
-         miY6W2t5FL5k1Xzc6cQ1NVZEzOOn17TiwTYFlTubfSdjVbzgWUPzhfMeXCOLE2ULq2HA
-         WyCXiqEGTDgOU277xMcpAN87RLgbLg5KBgZ6NI90hAMsIuBXhXrWI9+t7wkIVZ9nBY0y
-         sgZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731668023; x=1732272823;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kqEZZaXWIaNRK9OLE5Wx827F0bUtvaOZcgVtTnimPxg=;
-        b=ffZXVdMxoB2o7X1hO6iujyThMnvaskNue6L8U+XzPsAcmJsEelp6/dng9IBZq5DEas
-         j2fpZrCMom2uMfuOlU4wHtQBdKcAB3fO3Z1lG7GpmYTHAoahAl7z0w3apiGdXkX93Cx3
-         ez2QxNnvUKfQMJY91NXGZiusKIueHy6OtwuQHbczLoIxQV9rbnu6tNAuz3ZISaikOH4H
-         9srPfGmgtO6yTRNwYb3Z94RSac0Xhk4XW5QahBLxAbCYBKaSekGmjo/BOfF5wP4vb8Uf
-         sr8u2RoebADl5z47gUbENJMsFGd3mzId0uoKB4my2f0dJexXdLaFMHXH3UxzQhMYZaZ9
-         FZ6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUDyfG4ERXooIbwLb5ldYw2hT7BGnebRwF8o6S8rvEx0gMGEtVn7BZmEHnfENK6W9lAPK9JLwY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqqeB7ZhY3JLwSBYyACPlp2m+0W2QbuvF6tBgg7ntVoQjBPrUr
-	tSbdCxICOxMdXHJa7Nt9Up6kEzzE3KtqWZS61kxKvZY0xc+VRrxN62zF1q26ozw=
-X-Google-Smtp-Source: AGHT+IFHVLZ9JHkGOvekL5vmiZxKEfDLHTUYv8vjzg0FSLM0sIjZA/dYE3eiUJZBbLbHkNSDwDDmVw==
-X-Received: by 2002:a05:651c:245:b0:2fa:c59d:1af3 with SMTP id 38308e7fff4ca-2ff606933a3mr12846531fa.20.1731668023447;
-        Fri, 15 Nov 2024 02:53:43 -0800 (PST)
-Received: from localhost (host-79-19-144-50.retail.telecomitalia.it. [79.19.144.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf9010b12bsm531260a12.41.2024.11.15.02.53.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 02:53:43 -0800 (PST)
-From: Andrea della Porta <andrea.porta@suse.com>
-X-Google-Original-From: Andrea della Porta <aporta@suse.de>
-Date: Fri, 15 Nov 2024 11:54:11 +0100
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Andrea della Porta <andrea.porta@suse.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczynski <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] of: address: Preserve the flags portion on 1:1
- dma-ranges mapping
-Message-ID: <ZzcoU8ckE7wXWC8w@apocalypse>
-References: <ae3363eb212b356d526e9cfa7775c6dfea33e372.1731060031.git.andrea.porta@suse.com>
- <20241108165654.GA1665761@bhelgaas>
+	s=arc-20240116; t=1731670651; c=relaxed/simple;
+	bh=dOalgTtg/bwqmLEZLE2g2dxJ45h6yNkggGcJMwBqGTI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PHlfDYF/9q86abYjXxOkiWjxudG8ms6BCjxeEBBKoZJoTbkMt6m7IQLuu2iM6DaJE9v5iatlGSEHKnyt456vhPeKLu5l/twQImQsHcqbOWhMdgaCT7l7pZQ0mvUxmNXSf29cc4Yj0wA47dNMCDKk1gqtctroLuCjpUP5mGBs0xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XqZk81n4tz6LCyH;
+	Fri, 15 Nov 2024 19:37:04 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id F11D1140A46;
+	Fri, 15 Nov 2024 19:37:19 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 15 Nov
+ 2024 12:37:19 +0100
+Date: Fri, 15 Nov 2024 11:37:18 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Li Huafei <lihuafei1@huawei.com>
+CC: <gregkh@linuxfoundation.org>, <tiantao6@hisilicon.com>,
+	<rafael@kernel.org>, <baohua@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH v2] topology: Keep the cpumask unchanged when printing
+ cpumap
+Message-ID: <20241115113718.00000c31@huawei.com>
+In-Reply-To: <20241114110141.94725-1-lihuafei1@huawei.com>
+References: <20241114110141.94725-1-lihuafei1@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241108165654.GA1665761@bhelgaas>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Bjorn,
+On Thu, 14 Nov 2024 19:01:41 +0800
+Li Huafei <lihuafei1@huawei.com> wrote:
 
-On 10:56 Fri 08 Nov     , Bjorn Helgaas wrote:
-> On Fri, Nov 08, 2024 at 11:39:21AM +0100, Andrea della Porta wrote:
-> > A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
-> > translations. In this specific case, the current behaviour is to zero out
-> > the entire specifier so that the translation could be carried on as an
-> > offset from zero.  This includes address specifier that has flags (e.g.
-> > PCI ranges).
-> > Once the flags portion has been zeroed, the translation chain is broken
-> > since the mapping functions will check the upcoming address specifier
-> > against mismatching flags, always failing the 1:1 mapping and its entire
-> > purpose of always succeeding.
-> > Set to zero only the address portion while passing the flags through.
+> During fuzz testing, the following warning was discovered:
 > 
-> Add blank lines between paragraphs.
-
-Ack.
-
+>  different return values (15 and 11) from vsnprintf("%*pbl
+>  ", ...)
 > 
-> > Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-> > Tested-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  drivers/of/address.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/of/address.c b/drivers/of/address.c
-> > index 286f0c161e33..72b6accff21c 100644
-> > --- a/drivers/of/address.c
-> > +++ b/drivers/of/address.c
-> > @@ -455,7 +455,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
-> >  	}
-> >  	if (ranges == NULL || rlen == 0) {
-> >  		offset = of_read_number(addr, na);
-> > -		memset(addr, 0, pna * 4);
-> > +		/* copy the address while preserving the flags */
+>  test:keyward is WARNING in kvasprintf
+>  WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
+>  Call Trace:
+>   kvasprintf+0x121/0x130
+>   kasprintf+0xa6/0xe0
+>   bitmap_print_to_buf+0x89/0x100
+>   core_siblings_list_read+0x7e/0xb0
+>   kernfs_file_read_iter+0x15b/0x270
+>   new_sync_read+0x153/0x260
+>   vfs_read+0x215/0x290
+>   ksys_read+0xb9/0x160
+>   do_syscall_64+0x56/0x100
+>   entry_SYSCALL_64_after_hwframe+0x78/0xe2
 > 
-> Not knowing the surrounding code, it seems strange to say "copy the
-> address" when the memset() fills with zero and does no copying.
+> The call trace shows that kvasprintf() reported this warning during the
+> printing of core_siblings_list. kvasprintf() has several steps:
 > 
-> The commit log says "set address to zero, pass flags through," and I
-> could believe *that* matches the memset().
-
-Ack.
-
-Many thanks,
-Andrea
-
+>  (1) First, calculate the length of the resulting formatted string.
 > 
-> > +		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
-> >  		pr_debug("empty ranges; 1:1 translation\n");
-> >  		goto finish;
-> >  	}
-> > -- 
-> > 2.35.3
-> > 
+>  (2) Allocate a buffer based on the returned length.
+> 
+>  (3) Then, perform the actual string formatting.
+> 
+>  (4) Check whether the lengths of the formatted strings returned in
+>      steps (1) and (2) are consistent.
+> 
+> If the core_cpumask is modified between steps (1) and (3), the lengths
+> obtained in these two steps may not match. Indeed our test includes cpu
+> hotplugging, which should modify core_cpumask while printing.
+> 
+> To fix this issue, cache the cpumask into a temporary variable before
+> calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
+> during the printing process.
+> 
+> Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Makes sense. Trivial comment inline.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+> Changes in v2:
+>  - Return an error when calling alloc_cpumask_var() fails instead of
+>    returning a size of 0. 
+>  - Add Cc (to stable) tag.
+> ---
+>  drivers/base/topology.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/base/topology.c b/drivers/base/topology.c
+> index 89f98be5c5b9..d293cbd253e4 100644
+> --- a/drivers/base/topology.c
+> +++ b/drivers/base/topology.c
+> @@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *file, struct kobject *kobj,		\
+>  			   loff_t off, size_t count)				\
+>  {										\
+>  	struct device *dev = kobj_to_dev(kobj);                                 \
+> +	cpumask_var_t mask;							\
+> +	ssize_t n;								\
+>  										\
+> -	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
+> -					   off, count);                         \
+> +	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
+> +		return -ENOMEM;							\
+Good catch.
+Could use __free(free_cpumask_var) but that is a bit messy given it's not a conventional
+allocation that returns a pointer.  So probably not worth doing just to save a single
+manual free call.
+
+
+> +										\
+> +	cpumask_copy(mask, topology_##mask(dev->id));				\
+> +	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
+> +	free_cpumask_var(mask);							\
+> +										\
+> +	return n;								\
+>  }										\
+>  										\
+>  static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
+> @@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
+>  				loff_t off, size_t count)			\
+>  {										\
+>  	struct device *dev = kobj_to_dev(kobj);					\
+> +	cpumask_var_t mask;							\
+> +	ssize_t n;								\
+> +										\
+> +	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
+> +		return -ENOMEM;							\
+> +										\
+> +	cpumask_copy(mask, topology_##mask(dev->id));				\
+> +	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
+> +	free_cpumask_var(mask);							\
+>  										\
+> -	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
+> -					off, count);				\
+> +	return n;								\
+>  }
+>  
+>  define_id_show_func(physical_package_id, "%d");
+
 
