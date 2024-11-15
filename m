@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727F89CD975
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F5B9CD951
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281F11F2165B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF9EB280CC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417461885BF;
-	Fri, 15 Nov 2024 06:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EBD18872A;
+	Fri, 15 Nov 2024 06:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MwBUBhO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEG9W3b6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8E22BB1B;
-	Fri, 15 Nov 2024 06:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72FC187FE8;
+	Fri, 15 Nov 2024 06:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653992; cv=none; b=lWq23VY/L109iKM/1dVEBUoHr6FxDFcNE1bKH8hPV0G3D1Vy1+rzsEy15Iv9webF4DsDcg/hwocXAVlS4RWH5W8TEl+HPmVMU3ZHaK/9cOA1fmhUQbBzkeb1XZXl3X2gsMvM23n5Q/IROjJK1jRpR/Sm7OVoXBySa1i16X+f7xc=
+	t=1731653946; cv=none; b=elqaME1g7+5FRRa0IcTPjiajFKIBW7uHB2XPH3c9q521PmRQaySdkolp3ceDj52fA2ms4OhlVG4M5bHLNUjGZ+OmhZ4NlQyoTZoVIa8aH8g+/BoOt/u3SMSXKTgesrN9iMHGh1XFlrufxixopKol5qsZgqVvef1msXC7Ifk7lZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653992; c=relaxed/simple;
-	bh=lro1TU82qnxltnkOd+ezsKF3QMunMzZf/UKzGPs1mTI=;
+	s=arc-20240116; t=1731653946; c=relaxed/simple;
+	bh=cKUazjlMGfOKjT4nYI29YulVq8LoK8RYklJPgm/N1f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qc0aMs4X6g7+PYZ/D18TPyrhs3S7zCbZvJa0ZPD1yUT/08yYnvtwJHP9ZQena7wczg17lSfLZGbpGZ9c1ZtCnlov6eLEKCz0CRFLQzzJ2eZb737f3d6FgY2zSwM3TZq4yUkzk0Cu5s+pzEbeoDQ19lWAoU1gsA6R0Jzg9hBg/zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MwBUBhO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FFFC4CED0;
-	Fri, 15 Nov 2024 06:59:50 +0000 (UTC)
+	 MIME-Version; b=G8pVhVv3NX0gLNXaSPxdl089i5DOhP5qlTpzxtGfMV8YYCAF4tgmBznZflwbV//HaZV3TsDY3mcCSKtUYaHwuJaLznOLCsVhaJP49wba8d0vBJvbFaDx2nVg5hXGSgZZPVXNKIr7E7KV7ugSCpFmogmyISB7307tPsulrS+hfmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEG9W3b6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563C4C4CECF;
+	Fri, 15 Nov 2024 06:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653991;
-	bh=lro1TU82qnxltnkOd+ezsKF3QMunMzZf/UKzGPs1mTI=;
+	s=korg; t=1731653945;
+	bh=cKUazjlMGfOKjT4nYI29YulVq8LoK8RYklJPgm/N1f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MwBUBhOCgCV/NwYEgQ5VK6Uu7Zo+y1xMSkrX7EOUr4hnm/p7BkWj2vscmanoh+6s
-	 JT62LTiLwNq5Bi5m78oyTGojMDh7IwCqw708FuXuEQkzMw8v2vrds0piNjePb9rMJd
-	 2mGkuZJOHvbL2h5eDKPAJePBiK9DeZPpPmLMckHY=
+	b=FEG9W3b6gNwqPL2s0hsS7muc5UJRsFmsqPmWbX25SAuEp4wzXWvIIXYFOM+qzp0D5
+	 dkDiDXobI6slPEDrqB/10bcz/hGrrGxDFNkuGfwXT+CFnXVKW/9B1V4unka3ZOeO+a
+	 R727qUx9LMpPBxdVsLK0nZmCYCB+CfxAiQz4xR70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Albanowski <kenalba@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/22] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Omar Sandoval <osandov@fb.com>
+Subject: [PATCH 5.10 82/82] 9p: fix slab cache name creation for real
 Date: Fri, 15 Nov 2024 07:38:59 +0100
-Message-ID: <20241115063721.654448111@linuxfoundation.org>
+Message-ID: <20241115063728.498056759@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Albanowski <kenalba@chromium.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
+commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
 
-The Logitech Casa Touchpad does not reliably send touch release signals
-when communicating through the Logitech Bolt wireless-to-USB receiver.
+This was attempted by using the dev_name in the slab cache name, but as
+Omar Sandoval pointed out, that can be an arbitrary string, eg something
+like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
+if a filename contains a slash.
 
-Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
-sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
-needed, but harmless.
+So just make it use a sequence counter, and make it an atomic_t to avoid
+any possible races or locking issues.
 
-Linux does not have information on which devices are connected to the
-Bolt receiver, so we have to enable this for the entire device.
-
-Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
+Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
+Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ net/9p/client.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 110c59622a2d8..81db294dda408 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -831,6 +831,7 @@
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
-+#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
- #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
- #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
- #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 8f6e410af7016..57e4ff1ab275d 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2134,6 +2134,10 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
- 			USB_VENDOR_ID_LOGITECH,
- 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_LOGITECH,
-+			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1004,6 +1004,7 @@ error:
+ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ {
+ 	int err;
++	static atomic_t seqno = ATOMIC_INIT(0);
+ 	struct p9_client *clnt;
+ 	char *client_id;
+ 	char *cache_name;
+@@ -1059,7 +1060,8 @@ struct p9_client *p9_client_create(const
+ 	if (err)
+ 		goto close_trans;
  
- 	/* MosArt panels */
- 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
--- 
-2.43.0
-
+-	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	cache_name = kasprintf(GFP_KERNEL,
++		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
+ 	if (!cache_name) {
+ 		err = -ENOMEM;
+ 		goto close_trans;
 
 
 
