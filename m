@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512219CD8C2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCA49CD90E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F158A1F231ED
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE521F23134
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61611188015;
-	Fri, 15 Nov 2024 06:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA52185924;
+	Fri, 15 Nov 2024 06:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkaGd7Xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrMcavnC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBFC185949;
-	Fri, 15 Nov 2024 06:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E511187848;
+	Fri, 15 Nov 2024 06:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653634; cv=none; b=Pgxheo3P3DgchWFUTDyY+JEprG5iq9Nh6V4FHA/62c7P/+VHRblYV/gdYAR92fMvvk2nZXVum+Y5D1kOhazU2MaAhJZCZdhQq5VCMxJ4vbZZ+Q/JiXukrgrSvDPmLbTQNNC80+C/HFsxjkmrAhh64O+WL4r6uvu2wf//2lKzhI8=
+	t=1731653799; cv=none; b=G4tmOa+VjrjVXFWZr8MnhgWkJs8PQGnoFcmKN14Ep6Lpoqp0+ce2nRIvguVm9TG9fz1xiChvkZW7pn45cWLHMS0uvWie7n5MSCnjKZuT9GD3zDFK7biu3BPOKUn0TbmpjhjpXzxIMVcwPDhjn9mZoC893y/AAGndGENoDrEqV7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653634; c=relaxed/simple;
-	bh=9u3Q7eVjnHy8Y72KxZIpTXS1/sDHPUy+eD/QEAgn2OM=;
+	s=arc-20240116; t=1731653799; c=relaxed/simple;
+	bh=4mIY4vrzvplSx0u41L2N6wA7XVvApybPk+vy6/LhkFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKYSS8wjhnROOOmcytom/CD+j07X7HNx+HxxrU0C3hrd/K/dyHpXZwsbCALXWgytp+uKVVgHukTkMEh3FHSPUHBBRT4QGSIPmhKsKwa7Q1REboneWwpk2hd5TrJFH+//PEo+p+tw5phizDINfpPwvFS2bC8mWUatOLgQZN6qfT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkaGd7Xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8492AC4CECF;
-	Fri, 15 Nov 2024 06:53:53 +0000 (UTC)
+	 MIME-Version; b=aPw/regAvAOwrIM18n7pyoKjT/AO5lIIqt8sU7IqhMra0bfVRxP9lDt0r9uG/kZssdEhaizn65VpIlvR7wZaeMp/VQXmVVNPQTH6nal0Xu+OfqJ27TA/O6F4gtv80Ot3as3fxIXd2/XMUn+H1bZrYM9pW4u/FWo5MkwvKtzJK1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrMcavnC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496D8C4CECF;
+	Fri, 15 Nov 2024 06:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653634;
-	bh=9u3Q7eVjnHy8Y72KxZIpTXS1/sDHPUy+eD/QEAgn2OM=;
+	s=korg; t=1731653798;
+	bh=4mIY4vrzvplSx0u41L2N6wA7XVvApybPk+vy6/LhkFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkaGd7XvEZXASijH6+59WTIlArBwpnPMbgUk8/hQf3hu6lKhhruNMSqJjHED+jPhY
-	 IrHtRzNcNaAn8YkKsMfdp0GXbEMLHFIbg/8rKzIBUny++xiriBf6hwp82+tnhtFJyr
-	 yPNbfMXrDPqpKnUQBchjjtO4eomz5pf7veGfSkbw=
+	b=IrMcavnCcPQ4IarKvNFh647VbBAOWEgSfrjAWyB6+O1lUB0vlzMAtVT7VHsxtSS2N
+	 s7JyS8fDlNLUtqOKi14pz2mqZM4Py6XAc16lQvqlJTgRv0KHYB9ZLOLkQ3BHTL55lI
+	 FUzai8vNBbNjYLEuchEebRgpZNiaV42E2VU/qmuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Matsievskiy <matsievskiysv@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/39] irqchip/ocelot: Fix trigger register address
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.10 40/82] dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
 Date: Fri, 15 Nov 2024 07:38:17 +0100
-Message-ID: <20241115063722.875508362@linuxfoundation.org>
+Message-ID: <20241115063727.004769567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Matsievskiy <matsievskiysv@gmail.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 9e9c4666abb5bb444dac37e2d7eb5250c8d52a45 ]
+commit 5a4510c762fc04c74cff264cd4d9e9f5bf364bae upstream.
 
-Controllers, supported by this driver, have two sets of registers:
+This was found by a static analyzer.
+There may be a potential integer overflow issue in
+unstripe_ctr(). uc->unstripe_offset and uc->unstripe_width are
+defined as "sector_t"(uint64_t), while uc->unstripe,
+uc->chunk_size and uc->stripes are all defined as "uint32_t".
+The result of the calculation will be limited to "uint32_t"
+without correct casting.
+So, we recommend adding an extra cast to prevent potential
+integer overflow.
 
- * (main) interrupt registers control peripheral interrupt sources.
-
- * device interrupt registers configure per-device (network interface)
-   interrupts and act as an extra stage before the main interrupt
-   registers.
-
-In the driver unmask code, device trigger registers are used in the mask
-calculation of the main interrupt sticky register, mixing two kinds of
-registers.
-
-Use the main interrupt trigger register instead.
-
-Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240925184416.54204-2-matsievskiysv@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18a5bf270532 ("dm: add unstriped target")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-mscc-ocelot.c | 4 ++--
+ drivers/md/dm-unstripe.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mscc-ocelot.c b/drivers/irqchip/irq-mscc-ocelot.c
-index 4d0c3532dbe73..c19ab379e8c5e 100644
---- a/drivers/irqchip/irq-mscc-ocelot.c
-+++ b/drivers/irqchip/irq-mscc-ocelot.c
-@@ -37,7 +37,7 @@ static struct chip_props ocelot_props = {
- 	.reg_off_ena_clr	= 0x1c,
- 	.reg_off_ena_set	= 0x20,
- 	.reg_off_ident		= 0x38,
--	.reg_off_trigger	= 0x5c,
-+	.reg_off_trigger	= 0x4,
- 	.n_irq			= 24,
- };
+--- a/drivers/md/dm-unstripe.c
++++ b/drivers/md/dm-unstripe.c
+@@ -84,8 +84,8 @@ static int unstripe_ctr(struct dm_target
+ 	}
+ 	uc->physical_start = start;
  
-@@ -70,7 +70,7 @@ static struct chip_props jaguar2_props = {
- 	.reg_off_ena_clr	= 0x1c,
- 	.reg_off_ena_set	= 0x20,
- 	.reg_off_ident		= 0x38,
--	.reg_off_trigger	= 0x5c,
-+	.reg_off_trigger	= 0x4,
- 	.n_irq			= 29,
- };
+-	uc->unstripe_offset = uc->unstripe * uc->chunk_size;
+-	uc->unstripe_width = (uc->stripes - 1) * uc->chunk_size;
++	uc->unstripe_offset = (sector_t)uc->unstripe * uc->chunk_size;
++	uc->unstripe_width = (sector_t)(uc->stripes - 1) * uc->chunk_size;
+ 	uc->chunk_shift = is_power_of_2(uc->chunk_size) ? fls(uc->chunk_size) - 1 : 0;
  
--- 
-2.43.0
-
+ 	tmp_len = ti->len;
 
 
 
