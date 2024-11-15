@@ -1,191 +1,126 @@
-Return-Path: <stable+bounces-93566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEA39CF1A3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:38:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75919CF1DC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A06CB34DB6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 16:33:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B44F1F22A29
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 16:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0717818E047;
-	Fri, 15 Nov 2024 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F091D5172;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MPyuO8dL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kODFfmSE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681531CF7AF;
-	Fri, 15 Nov 2024 16:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425131D61A3;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731688412; cv=none; b=h4nLnCJvYjpdLk0fwfJolRle4NS6eBzukYYcpoVE0LVeOiyt0yvgdlbBwgPdMthd2QGanOWBLL4YrVbMkB2+BncIcyMwLXovJQogXVQRYpurz6NVuRlwOPyUgF2OHNQnz+ROHYD2tEBhFwVs58rpwgknL0/l2G5uiikLgVSizrs=
+	t=1731688798; cv=none; b=sDb8DzWyFIXEvj91Gctkpz4qQw3jHvSjurgA5bkiq0ajalEcZmtgUezJcixAg85W/9u+SUxEh8QHQYU1fHiIU/rFzCdE1rrhkxz+Vc0g+fb0427QtKWjpuImubBl9zUw5wAIiFZu4qziizgU3s+4Ws5KQghTNUdK5CJeJnQR+7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731688412; c=relaxed/simple;
-	bh=6kg6AxmG1h0NKv0onN/itgPve8q9yXIYSjbA1PYl+ac=;
+	s=arc-20240116; t=1731688798; c=relaxed/simple;
+	bh=t1mHSIeHwWXgRLmkrrmBgqlQYmk5zzZwd34nRRtso6o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ow4HV07GtjVEnlAEBSulz8u5pKg8Boh3M3rQpPox91Q4GnDSEeooAN9BM3Ie6jZIAIOwG3dUPk8jwS2qANNvCH7VOvrDfvOPHx2qw9WRE/MlsItx4GRUlpn7JSmLKKyIlbGQwRJ0tJQlvlM8S7HOAkmLpQApRXLgGqW2MTANq48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MPyuO8dL; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e9b4a4182dso1515625a91.0;
-        Fri, 15 Nov 2024 08:33:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731688411; x=1732293211; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8U8himfTzTS7djfc3WTmNDyMXUIp/NKYV3qaKrTSk5k=;
-        b=MPyuO8dLyL0PBdw9H9VZrlBreqjSdrtcp1K+xwMytTzoI+PAe+Tg5GIvb4IZP6mrqo
-         IMEgZaGg+9HH6iM9Hj8kMauzvyg7qjQGWYeRAH9fJmwK19E1/UdVaz/srRdFAiYBLarc
-         HS/mSQpeEHXi4dJz3HY3TSIg/ksAzc9U0fpbWhHRsbtUqKJEe8vcTOeFohQKV41jXNDQ
-         9JyhTSezP/qsV7qtB/EyEB0JXRTluMcKiT4Vq8pIE0WApXugxHRnIKLodumHQylCpj0S
-         zLM8T2vYP1JUvZW3lNk5GW7sO0idrVU678zKODAecMKR5YPfR7E28WLQJZgx3dLJhtEk
-         eFOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731688411; x=1732293211;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8U8himfTzTS7djfc3WTmNDyMXUIp/NKYV3qaKrTSk5k=;
-        b=aZXeD9kgP1zH0R2QIUklOCWMC4Rj9Mr6ukPlEKDg1S0mst8zg4FOhlrnGPZ67glgVL
-         DrsSnMPzgXGvfVa+ozZQs0082xrxP+zcq75MpKBT7Be2GuixMoPjARNAq3h6Ic7Ova02
-         5508ZCLNh/byDwOohpKWqn+Nc72WCRg+ey2m0RiLMTJ+mqZBlS/9TkpDz6KVd51GYxXi
-         day4pAvn4bcpjz34rRkRSkwSfawR7em3ue2VD3CLx/gFEfXF5/uPnA/4I1gFIh6rrH4t
-         JNPTfnkMOTm/BuDv2lOfpbc9zHlgUScBTcajc1NpcnN4p85gmB3PYuW3pP1FaoZu6Tc2
-         IT0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUwyrvPEKFsc3Tone9H4hCULrMjK3GUj3ECSRuhatECsMuVbJ0kItBFN5uPNfHBd80T4q2HbR8u@vger.kernel.org, AJvYcCXidn48+/S3+MrskJUn4fNsYAolII0iCjtKAXEXz5YZTemIDjBM5n1TlN0z1bD+EaD/isxX3hnF4cI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQOXQ1bWiTN/sIMRw28yhgM1ZrMUnm8+qT4B8dvCt2/LbY99bN
-	DstpiGJSX5tJ7Ek6E0Vw3Ta7Dy4+cf9poT+8Kb8n/vISzfq9+S6UfSn0H/MYkYmiwgK3jTnU6yA
-	svwMQ6IUd0rhA7wpUfYknxM1SDW+un/Scw9M=
-X-Google-Smtp-Source: AGHT+IGkRZ3xRw0xtYeD55DnQArjKqX9xmOVQ0Ef1ludGjMKCJX0VwfKnX5tijUwSPrt/LyqqiiHSrklYowXrLscRS4=
-X-Received: by 2002:a17:90b:1e03:b0:2d8:a744:a81c with SMTP id
- 98e67ed59e1d1-2e9fe61200emr11880844a91.1.1731688410478; Fri, 15 Nov 2024
- 08:33:30 -0800 (PST)
+	 To:Cc:Content-Type; b=pc/vBjne8z/LtG01oxVxYxS8/2ktkobVWj6XFUQKdE//KxWneBL+LhnwOGc/qTEofQjscp2IVsJQZFf40Es9cngs2CU8m0xphC1xmlm29BG/c/XlQPhOCxzmR2mpg+Fs1dVb6pEs4X6XckWb/buxpnrk4hs3c36EPuD2LPcnk2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kODFfmSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E77C4CED5;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731688798;
+	bh=t1mHSIeHwWXgRLmkrrmBgqlQYmk5zzZwd34nRRtso6o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kODFfmSEDCffQECaHSSMMg50IhTVq8FxxtH+YcScfmllBgDrqQVxS8dKrV1crrlUP
+	 Fmrc9StfUxoQ33m4RcZDFamAbzMJT9pacgugwYQYydD5fGcRXTgMJ50U7rl6r/nLWz
+	 5N5PXhs1+qsL/f+r5jOLtU+iaRXZM9Z4JBG7RK2ZQDs7iYiwLN6xM5GlTCbKO74U9/
+	 L/IIDsHcvouGBokmAYgRxxi/zP47uWxrj+znvYKyfI0lw8etxD1gZSIU/ayMc9CdGT
+	 OJ4/02Ww6N5awcEDmoUbSvvfAk4V3IpMzI9PD9qXJelbHNvnYHevrKm662M+wkP2M7
+	 VApSEY43o0FBA==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53da5a27771so2352942e87.2;
+        Fri, 15 Nov 2024 08:39:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUIZAnbEIqZGGLnYujafiCEtRn4ctkY6MbUKKTbVoYF8GzRYfj8zhuWen3MKTbmqZFagzvynMJifa9gN2aZ@vger.kernel.org, AJvYcCV8sKgmjm4haVuN16JjH7IlZoXKIGb2zZsJtVwczUo+Q2v2WJvHok5ca2uBzJHnpq3KJAylYufiN4U=@vger.kernel.org, AJvYcCWiNJZuDoYJeS/4tswCCm6p1Yn73vxHwPH2T03gpMItMOT0TUM5dtmQeEHlVmmWIDGQIf6RsTav@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvXR9y3lE6Xa9zUt4tlag35j0wPreVfFzg/j80KECnwXl5X2X/
+	TSWP8612dmgPew5sjqCSGM9vmB8DkGYEK0U4k2bx/RQa+mKKECPFKpnpzsz9BYs6Vk5MBOoRnSd
+	gNk/aBAGMfyr1LzCX/o+hoDpOyhY=
+X-Google-Smtp-Source: AGHT+IFLsie8pokR3jzGTAZqEFIhmQehBwU5ZZj22RDpZvJo+/+0M2kyNHP4E9apz6b9Okiyf78iEXFW/nZqzt0La7g=
+X-Received: by 2002:a05:6512:398f:b0:539:f827:2fbc with SMTP id
+ 2adb3069b0e04-53dab2a21dcmr1494682e87.26.1731688796514; Fri, 15 Nov 2024
+ 08:39:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZzdxKF39VEmXSSyN@tissot.1015granger.net> <Zzd12OGPDnZTMZ6t@tissot.1015granger.net>
-In-Reply-To: <Zzd12OGPDnZTMZ6t@tissot.1015granger.net>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Sat, 16 Nov 2024 01:33:19 +0900
-Message-ID: <CAO9qdTGLn6QWJg71Ad2xcobiTHE5ovoUxSqvrDDrE_i1+uqUQw@mail.gmail.com>
-Subject: Re: tmpfs hang after v6.12-rc6
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: akpm@linux-foundation.org, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-nfs@vger.kernel.org, hughd@google.com, 
-	yuzhao@google.com
+References: <20241112185217.48792-1-nsaenz@amazon.com> <20241112185217.48792-2-nsaenz@amazon.com>
+In-Reply-To: <20241112185217.48792-2-nsaenz@amazon.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 15 Nov 2024 17:39:45 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+Message-ID: <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Matt Fleming <matt@codeblueprint.co.uk>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stanspas@amazon.de, nh-open-source@amazon.com, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-2024=EB=85=84 11=EC=9B=94 16=EC=9D=BC (=ED=86=A0) =EC=98=A4=EC=A0=84 1:25, =
-Chuck Lever <chuck.lever@oracle.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+On Tue, 12 Nov 2024 at 19:53, Nicolas Saenz Julienne <nsaenz@amazon.com> wrote:
 >
-> On Fri, Nov 15, 2024 at 11:04:56AM -0500, Chuck Lever wrote:
-> > I've found that NFS access to an exported tmpfs file system hangs
-> > indefinitely when the client first performs a GETATTR. The hanging
-> > nfsd thread is waiting for the inode lock in shmem_getattr():
-> >
-> > task:nfsd            state:D stack:0     pid:1775  tgid:1775  ppid:2   =
-   flags:0x00004000
-> > Call Trace:
-> >  <TASK>
-> >  __schedule+0x770/0x7b0
-> >  schedule+0x33/0x50
-> >  schedule_preempt_disabled+0x19/0x30
-> >  rwsem_down_read_slowpath+0x206/0x230
-> >  down_read+0x3f/0x60
-> >  shmem_getattr+0x84/0xf0
-> >  vfs_getattr_nosec+0x9e/0xc0
-> >  vfs_getattr+0x49/0x50
-> >  fh_getattr+0x43/0x50 [nfsd]
-> >  fh_fill_pre_attrs+0x4e/0xd0 [nfsd]
-> >  nfsd4_open+0x51f/0x910 [nfsd]
-> >  nfsd4_proc_compound+0x492/0x5d0 [nfsd]
-> >  nfsd_dispatch+0x117/0x1f0 [nfsd]
-> >  svc_process_common+0x3b2/0x5e0 [sunrpc]
-> >  ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
-> >  svc_process+0xcf/0x130 [sunrpc]
-> >  svc_recv+0x64e/0x750 [sunrpc]
-> >  ? __wake_up_bit+0x4b/0x60
-> >  ? __pfx_nfsd+0x10/0x10 [nfsd]
-> >  nfsd+0xc6/0xf0 [nfsd]
-> >  kthread+0xed/0x100
-> >  ? __pfx_kthread+0x10/0x10
-> >  ret_from_fork+0x2e/0x50
-> >  ? __pfx_kthread+0x10/0x10
-> >  ret_from_fork_asm+0x1a/0x30
-> >  </TASK>
-> >
-> > I bisected the problem to:
-> >
-> > d949d1d14fa281ace388b1de978e8f2cd52875cf is the first bad commit
-> > commit d949d1d14fa281ace388b1de978e8f2cd52875cf
-> > Author:     Jeongjun Park <aha310510@gmail.com>
-> > AuthorDate: Mon Sep 9 21:35:58 2024 +0900
-> > Commit:     Andrew Morton <akpm@linux-foundation.org>
-> > CommitDate: Mon Oct 28 21:40:39 2024 -0700
-> >
-> >     mm: shmem: fix data-race in shmem_getattr()
-> >
-> > ...
-> >
-> >     Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gm=
-ail.com
-> >     Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
-> >     Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> >     Reported-by: syzbot <syzkaller@googlegroup.com>
-> >     Cc: Hugh Dickins <hughd@google.com>
-> >     Cc: Yu Zhao <yuzhao@google.com>
-> >     Cc: <stable@vger.kernel.org>
-> >     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> >
-> > which first appeared in v6.12-rc6, and adds the line that is waiting
-> > on the inode lock when my NFS server hangs.
-> >
-> > I haven't yet found the process that is holding the inode lock for
-> > this inode.
+> Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+> routine, kexec_enter_virtual_mode(), which replays the mappings made by
+> the original kernel. Unfortunately, that function fails to reinstate
+> EFI's memory attributes, which would've otherwise been set after
+> entering virtual mode. Remediate this by calling
+> efi_runtime_update_mappings() within kexec's routine.
 >
-> It is likely that the caller (nfsd4_open()-> fh_fill_pre_attrs()) is
-> already holding the inode semaphore in this case.
-
-Thanks for letting me know!
-
-It seems that the previous patch I wrote was wrong in how to prevent data-r=
-ace.
-It seems that the problem occurs in nfsd because nfsd4_create_file() alread=
-y
-holds the inode_lock.
-
-After further analysis, I found that this data-race mainly occurs when
-vfs_statx_path does not acquire the inode_lock, and in other filesystems,
-it is confirmed that inode_lock is acquired in many cases, so I will send a
-new patch that fixes this problem right away.
-
-Regards,
-
-Jeongjun Park
-
+> Cc: stable@vger.kernel.org
+> Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TABLE")
+> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 >
+> ---
 >
-> > Because this commit addresses only a KCSAN splat that has been
-> > present since v4.3, and does not address a reported behavioral
-> > issue, I respectfully request that this commit be reverted
-> > immediately so that it does not appear in v6.12 final.
-> > Troubleshooting and testing should continue until a fix to the KCSAN
-> > issue can be found that does not deadlock NFS exports of tmpfs.
-> >
-> >
-> > --
-> > Chuck Lever
-> >
+> Notes:
+> - Tested with QEMU/OVMF.
+>
+
+
+I'll queue these up, but I am going drop the cc stable: the memory
+attributes table is an overlay of the EFI memory map with restricted
+permissions for EFI runtime services regions, which are only mapped
+while a EFI runtime call is in progress.
+
+So if the table is not taken into account after kexec, the runtime
+code and data mappings will all be RWX but I think this is a situation
+we can live with. If nothing breaks, we can always revisit this later
+if there is an actual need.
+
+Thanks,
+
+
+>  arch/x86/platform/efi/efi.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 375ebd78296a..a7ff189421c3 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -765,6 +765,7 @@ static void __init kexec_enter_virtual_mode(void)
+>
+>         efi_sync_low_kernel_mappings();
+>         efi_native_runtime_setup();
+> +       efi_runtime_update_mappings();
+>  #endif
+>  }
 >
 > --
-> Chuck Lever
+> 2.40.1
+>
 
