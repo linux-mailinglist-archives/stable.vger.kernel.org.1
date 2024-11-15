@@ -1,137 +1,110 @@
-Return-Path: <stable+bounces-93543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2888A9CDEBF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:55:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1711C9CDF96
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 14:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C832E1F220B7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 12:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0336283D69
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B159B1BDA97;
-	Fri, 15 Nov 2024 12:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286DD1BD9CD;
+	Fri, 15 Nov 2024 13:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gK6MerwE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OeR7N49F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C346D1BC073
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 12:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5592F1B6CF9
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 13:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731675330; cv=none; b=Uv/Q9Ww0LTJ5DJJLkglJ/5NT40ixBbi7Gez7KojOipR9FDIfH3WDn//aBNvBFq+ep4F0jTZzzJAwdYjBpUK6Iww7Qt98+LP/97FUjxZUUl6t10XEo5zbvLt7RR2u7h4ai3LI9DYHkLrEEF9CWvVGIFF4tTG1GCYwaABN4qQgNRU=
+	t=1731676060; cv=none; b=qhvm7aUrRdavdn8PGuKfJUaDBnqIiVpYsRYJFy1HO9FkyAzu//iPwhF9bcrWRW0W6JlUhiUlhaekkqjlD3DRdh+iO+kHr35mg6R3A8HBGqpuVxa1QBdy77kHIwuPiI7DNQe8MJjPE3BClkMdeJKmtkNZ0wWfTcEOVHqHnw3sdWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731675330; c=relaxed/simple;
-	bh=CCI27rlvVRosezWzuY/2E3AP29V/IuLh6N24eCBmC9I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mPmTTE5hb4vjRLidCeYpOVR0XgIlQOwJWNdCPPP0tp1eB/0oG8Pq5G7M0u75n3UT60yrszX6UAKHc2BWgh2QOkEkFd17brKx+zrGNPsciZ+VTu//tEjA0IP44pV943yrWHPFoEeHxTMg0Ypxenvx6Neya+0jBbT/+sfOCEKxm20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gK6MerwE; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1731676060; c=relaxed/simple;
+	bh=dEY4bMcfjN2jDnrT5hwQmo7mPSnSCSRep4/jww4nqDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGhThStthGS0E0iT36Q19QaDGHPkZY8GdyAGaWPEhqKv/9oE91yEDCoDfD4YBxwDSBkiKXnL+NfQ3bU/8smHDDaq8ld1L3vS063GEcuF9DBKLnKi3flOBmj8HNqcDvXXQfmnEiW2VgPLcfnFwXTw+97dAeVyELm34uSgN+SgbR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OeR7N49F; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4315df7b43fso14887565e9.0
-        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 04:55:25 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-432d9bb168cso11171165e9.1
+        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 05:07:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731675324; x=1732280124; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CZze3yn24TXviwcT7N4kjvraoXCM6pscw+3oqLD8HvY=;
-        b=gK6MerwEa/Cg/PTunyjr5GbAvw7A4y2cLBGlWTaykMNTpwYkDLbdMytxaf2sR9YRKh
-         d8IPKQtZT6WgAIvAZb+LAbFdWmm6WKWWqR8UvDJYvmpzBfVNubsMpf10shFQSQG/7VOj
-         BAyC99VVGMW6S7Fc1dPD8sJTrcmAGyXgMzd6UBJpLkra4A4TjInU8AZeM3f2DOwkuc1w
-         Q/fTaoNuvdz2GkSm7LmPtyu6U4RmBBot4T9n99I9hRkYtSQk0gQgYkb7Y41T8m2caulj
-         Vf0W+LJUsbbFyqrnJwz5QCVJrV/IpfjCiaX3kYBtxBXIMQ5dyFI3b30Gs478yQGXyjMI
-         SiHA==
+        d=linaro.org; s=google; t=1731676058; x=1732280858; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZiAfY0lvd8epGAfG9vNvMumF0065glHRGxW52XCXbkY=;
+        b=OeR7N49FEZcEypjrT2B5wTO9I0SN3XO19ljXjY1GToDAbiwQtlcD3w86yI+MpGbKex
+         G5D7T8Y9KKY9bXAEDXwYdQCCN9Oq9mchRtSPp5bdUkaNKpADhVkRIX7+nSXQJYicmUCq
+         YZSUK0CB+cQRz0V1k/mdDKqHgrkpEU5Ospsp70McnQruzWO12wovDQ5hH5ofJ8lVGlwY
+         HGNH9IiDTspUNqHrYVjogxryBXOGHgLVCsUEpsQuHeidNTd9kgapVSj4dH+YSfwjwsJr
+         bcl/pfyC7Ox3HJUHiJm9fpmDWc+DfrCQkluNlmUMSC6FqRLEZkYHPV4A7oEnSkVI5tNH
+         M/8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731675324; x=1732280124;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CZze3yn24TXviwcT7N4kjvraoXCM6pscw+3oqLD8HvY=;
-        b=J/eG3gEa+IXRapEipjILOWLjieezm0J1CntyN+cPXSgNmZeOiLEJKO81LeaqXaJTrU
-         5ACklh0UCmfLFrmpvBiAQ7l+OBXSK647ng2NeW9ba40mJcu1wAZbegbnaQytp5zHRrPY
-         ouBEYU9HdLzzQb+Tm+N88UKgjjGY0FG/8MV5pvu3mBdu4zBsCNBp2ToBEK5O0y80QuQl
-         qKg/oXND1RMXZUf9Ja1DbF98wC625ejcIt04eT8rXdW6/fsnV0pI7PxTJiJqYKlSA8b+
-         PNhYxsLuLlUDP4kqx7ThoD1mKUT+3bH1PawTEYc9N5mk+a+6bueYfDxmsGMWNj+td9Pm
-         /IvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzwlvM9JBmIt7yG/hu3uY8hJTxvGqpjUam4iKU11lP3sSnkW6/x6xlnJqvvTF8Lim50BI4wLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLQuhEzdIKBf1WpH/dz7LCgQ88gZ8Z4hBdwHQOL70dtg0Nz0No
-	TuVGJw4TVhu/3rvLAcY+zSkV1JpQsPMNt+4JpSdQ47qZS0/YsDiQN99TYpWDNdw=
-X-Google-Smtp-Source: AGHT+IFCxeXdFwVvRfx+K9CW5GOw9LM/hVZhe41k/tOelfCV9iTkGBsMWti9JMRBfFAiS/C37CDtfA==
-X-Received: by 2002:a05:6000:70e:b0:37d:492c:4f54 with SMTP id ffacd0b85a97d-3822590b9aemr1876457f8f.3.1731675324056;
-        Fri, 15 Nov 2024 04:55:24 -0800 (PST)
-Received: from [127.0.0.2] ([2a02:2454:ff21:ef40:f4fb:dc44:5c32:eaef])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae31083sm4285582f8f.103.2024.11.15.04.55.23
+        d=1e100.net; s=20230601; t=1731676058; x=1732280858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZiAfY0lvd8epGAfG9vNvMumF0065glHRGxW52XCXbkY=;
+        b=bzrH/E6DZA7ZpTuChOZijW/y2r+Uy85bOuQIRNSdpTem0Tws3mKDBkh2SHo7EytLf9
+         66tUPBaIfDXs4wjETFwHhTN1raPv/b24KBmnLV70AbOGORIgY+YeUnx7lLRglvUZDiGA
+         Noin2Q1TXmxj5cKapPYrnJe7piAAGsjaaLhcTTP9rHCr9NU2ZEl1wl22KEy9kZt6bWwb
+         iIE8LsPPP9e6tL5n8YgmXoQuRMLXUExJ3AqAhuVPuW+80iSBoxzHzTnhoJX1Y6v0WBar
+         VV2r8hbaSYKotokZXeGjgfU4zfHJeWoniW8KlTESbU+IVIR9DPTf3J7sLseD0xiq03CM
+         QNQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVz4egln+c6E41FzHyoSubx1mx7jvyoEqoVQc+ajW/fQ7o1oQ03kszvHN8PgSKBORYo1B2xX/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxmBrsSW39xNJZyhYEVgm/eA2pgBn1JLsd8+p62WsIO6tayDFQ
+	UiqbLB0Hb7oKo/T1XvLl5LUYYnG4Jd7/2ssW3yn1PxxJExORccjzPr1ixJ+zLGs=
+X-Google-Smtp-Source: AGHT+IFLypSUXKMXZQokl7jiW1yVHZc6DmXrur69Qui95mFW1vmj5vxRjJRCT3fWilyBKdsvE8W84w==
+X-Received: by 2002:a05:600c:1c95:b0:431:416e:2603 with SMTP id 5b1f17b1804b1-432d9726874mr70098235e9.3.1731676057729;
+        Fri, 15 Nov 2024 05:07:37 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab7878esm54044435e9.14.2024.11.15.05.07.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 04:55:23 -0800 (PST)
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-Date: Fri, 15 Nov 2024 13:55:13 +0100
-Subject: [PATCH] drm/msm/dpu: fix x1e80100 intf_6 underrun/vsync interrupt
+        Fri, 15 Nov 2024 05:07:37 -0800 (PST)
+Date: Fri, 15 Nov 2024 16:07:33 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Kernel Selftests <linux-kselftest@vger.kernel.org>,
+	Netdev <netdev@vger.kernel.org>,
+	Linux Kernel <linux-kernel@vger.kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>, stable@vger.kernel.org
+Subject: Re: LKFT CI: improving Networking selftests results when validating
+ stable kernels
+Message-ID: <226bc28f-d720-4bf9-90c9-ebdd4e711079@stanley.mountain>
+References: <ff870428-6375-4125-83bd-fc960b3c109b@kernel.org>
+ <1bda012e-817a-45be-82e2-03ac78c58034@stanley.mountain>
+ <c4ed1f88-e43b-4b12-bffc-faf27879042c@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-x1e80100-dp2-fix-v1-1-727b9fe6f390@linaro.org>
-X-B4-Tracking: v=1; b=H4sIALBEN2cC/x2MQQqAIBAAvyJ7bsGViuor0cF0q71YKIQg/j3pO
- AMzBRJH4QSLKhD5lSR3aECdAnfZcDKKbwxGm56IBszEkyat0T8GD8m4807Gjd5ZN0PLnshN/8t
- 1q/UD7WkMTGIAAAA=
-To: Rob Clark <robdclark@gmail.com>, 
- Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4ed1f88-e43b-4b12-bffc-faf27879042c@kernel.org>
 
-The IRQ indexes for the intf_6 underrun/vsync interrupts are swapped.
-DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16) is the actual underrun interrupt and
-DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17) is the vsync interrupt.
+On Fri, Nov 15, 2024 at 01:43:14PM +0100, Matthieu Baerts wrote:
+> Regarding the other questions from my previous email -- skipped tests
+> (e.g. I think Netfilter tests are no longer validated), KVM,
+> notifications -- do you know who at Linaro could eventually look at them?
+> 
 
-This causes timeout errors when using the DP2 controller, e.g.
-  [dpu error]enc37 frame done timeout
-  *ERROR* irq timeout id=37, intf_mode=INTF_MODE_VIDEO intf=6 wb=-1, pp=2, intr=0
-  *ERROR* wait disable failed: id:37 intf:6 ret:-110
+The skip tests were because they lead to hangs.  We're going to look at those
+again to see if they're still an issue.  And we're also going to try enable the
+other tests you mentioned.
 
-Correct them to fix these errors and make DP2 work properly.
-
-Cc: stable@vger.kernel.org
-Fixes: e3b1f369db5a ("drm/msm/dpu: Add X1E80100 support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
----
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
-index a3e60ac70689..d61895bb396f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h
-@@ -389,8 +389,8 @@ static const struct dpu_intf_cfg x1e80100_intf[] = {
- 		.type = INTF_DP,
- 		.controller_id = MSM_DP_CONTROLLER_2,
- 		.prog_fetch_lines_worst_case = 24,
--		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17),
--		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16),
-+		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16),
-+		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17),
- 	}, {
- 		.name = "intf_7", .id = INTF_7,
- 		.base = 0x3b000, .len = 0x280,
-
----
-base-commit: 744cf71b8bdfcdd77aaf58395e068b7457634b2c
-change-id: 20241115-x1e80100-dp2-fix-beb12c6dcac9
-
-Best regards,
--- 
-Stephan Gerhold <stephan.gerhold@linaro.org>
+regards,
+dan carpenter
 
 
