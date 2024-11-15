@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-93209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7069CD7EE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167FB9CD85C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEC12B25C9E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79FE6B266C2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55536186294;
-	Fri, 15 Nov 2024 06:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A24B188015;
+	Fri, 15 Nov 2024 06:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hsb4gyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D8vrLdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1256814EC77;
-	Fri, 15 Nov 2024 06:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415DB433C4;
+	Fri, 15 Nov 2024 06:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653155; cv=none; b=bcgMObr2V7VUc1zH+LLN9hwvB5761unjrIbi0vcsJ2/EuHZEAD+FcDi83rOK7PPrBtOoeiiI2mJJ/EpZ2kYkdIG6ZvosFC6PzZ8S2nm4oR5EgpDhg8EqL5KoS5UugHrnNNj/PoRY+8OAykJ8SqsaGa2mWCDWJELxzgtZ0sOxuP4=
+	t=1731653401; cv=none; b=ASJboh17ELfHYJUICLwcIiwM2w7nuu0OF4S1CkNFsSDKGmiaKpsUXM9eBBt7kksAAPXNmZC+F6FdGVl8UdYe8Fh6M79XfG1DXeg1MUTl9Fr7jstivhMTmke5HN7VJLyyF3V0QAy70Ugje7F0b/2auxqQZba6GhSPtAzN4p0SNvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653155; c=relaxed/simple;
-	bh=5eNn9dDsBWsYQWTZM8PUa1L++znggBKDS7y7HlGMPbI=;
+	s=arc-20240116; t=1731653401; c=relaxed/simple;
+	bh=MyrvLfySPPGl7kMXkxm5rYFISf6RM6WAfV09LaB3hNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Egm0TuykT42Tfk/tCyU0pGNL2p7dmHVraWcsdvPEg2xJS4ATKJ1+s0dfLbkvaX+Gh3PV2xscnOKJ+0eHi07241OfY+5iVWzg844cLkZBPUOq9CLNWPAprAbCgEU4vtB4uIwIlmpmMgIGcu4Zheq97PiQIukXTZlLvdXrvejS9B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hsb4gyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30671C4CECF;
-	Fri, 15 Nov 2024 06:45:53 +0000 (UTC)
+	 MIME-Version; b=QmN0w56d+2JvBLBEWjjInVOr2X8UI+PjarkDUaZTH5EihlU5cT9OZSMonxRqDzqroQpdGMgafy1KE0MDV933XkusOddRdfISbJUv1jmPEIBUyyebcDKZ8hbQRQMN0wcIN86qG/GL7hAlLoggSYggxJ/uPf5RR7Gd/zNha99zl8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D8vrLdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D5FC4CECF;
+	Fri, 15 Nov 2024 06:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653154;
-	bh=5eNn9dDsBWsYQWTZM8PUa1L++znggBKDS7y7HlGMPbI=;
+	s=korg; t=1731653401;
+	bh=MyrvLfySPPGl7kMXkxm5rYFISf6RM6WAfV09LaB3hNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Hsb4gyIsqv+bTWwMWsvjuiSvEmE3DvliFzPpMEdgab12CqxnSEAo4XXTp1q4902u
-	 +I8TPB7t030AO8EoCcR8Ygj91IrQChCaRurSWE/Acyblsx9EWNiukm+u6G3wgYjZg2
-	 QDZZ1UiLa5y3v64QqRbUpmvkgIvJBlGrvyYkiCBs=
+	b=1D8vrLdF4K38CvDxVQieuAK2va3VgXL8nJNVD8P1J4pnj1aHWbfrphLRNQUPvHl8g
+	 v2e/LwQDJ0oRE5uPcee526w9eh5on45bWqhmiZ0CMUXTazmRqNIJVXTFSMNom493vN
+	 ynfygr7ZWaYHKqQc0ACxw4q+e+C02rzbmJy7gQ9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 51/66] hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
-Date: Fri, 15 Nov 2024 07:38:00 +0100
-Message-ID: <20241115063724.683844585@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 12/48] crypto: api - Fix liveliness check in crypto_alg_tested
+Date: Fri, 15 Nov 2024 07:38:01 +0100
+Message-ID: <20241115063723.406848990@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit e629295bd60abf4da1db85b82819ca6a4f6c1e79 upstream.
+[ Upstream commit b81e286ba154a4e0f01a94d99179a97f4ba3e396 ]
 
-When hvs is released, there is a possibility that vsk->trans may not
-be initialized to NULL, which could lead to a dangling pointer.
-This issue is resolved by initializing vsk->trans to NULL.
+As algorithm testing is carried out without holding the main crypto
+lock, it is always possible for the algorithm to go away during the
+test.
 
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So before crypto_alg_tested updates the status of the tested alg,
+it checks whether it's still on the list of all algorithms.  This
+is inaccurate because it may be off the main list but still on the
+list of algorithms to be removed.
+
+Updating the algorithm status is safe per se as the larval still
+holds a reference to it.  However, killing spawns of other algorithms
+that are of lower priority is clearly a deficiency as it adds
+unnecessary churn.
+
+Fix the test by checking whether the algorithm is dead.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ crypto/algapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -531,6 +531,7 @@ static void hvs_destruct(struct vsock_so
- 		vmbus_hvsock_device_unregister(chan);
+diff --git a/crypto/algapi.c b/crypto/algapi.c
+index 85bc279b4233f..b3a6086042530 100644
+--- a/crypto/algapi.c
++++ b/crypto/algapi.c
+@@ -396,7 +396,7 @@ void crypto_alg_tested(const char *name, int err)
+ 	q->cra_flags |= CRYPTO_ALG_DEAD;
+ 	alg = test->adult;
  
- 	kfree(hvs);
-+	vsk->trans = NULL;
- }
+-	if (list_empty(&alg->cra_list))
++	if (crypto_is_dead(alg))
+ 		goto complete;
  
- static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
+ 	if (err == -ECANCELED)
+-- 
+2.43.0
+
 
 
 
