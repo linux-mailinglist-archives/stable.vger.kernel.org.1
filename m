@@ -1,71 +1,56 @@
-Return-Path: <stable+bounces-93313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A122A9CD888
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9CB39CD928
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10DC3B25700
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8015B2818FD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326E5185924;
-	Fri, 15 Nov 2024 06:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1C6188CA9;
+	Fri, 15 Nov 2024 06:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU1+unNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7GnUJuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D2C18871E;
-	Fri, 15 Nov 2024 06:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A38E1885B3;
+	Fri, 15 Nov 2024 06:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653505; cv=none; b=Lp75W3x4XWFy9Pob+L3JYpOw5fiIry+toqh5AVkinjXLOOMFGVsODwKoevIXE/ykQG0+FPDrR8zy0vP6qdyEQQMqvdM2Ih8GVqE2C0M5EKqbH8tFYODc+lIvTQ0+bdcotCU9z5JrEpTERH+eyL9ifffPSsig/kdDYo+fKeXYa14=
+	t=1731653857; cv=none; b=GdIm/wJRw2AEKDFz3dQ7s/ZaijR2MCLjK0Dt8CwRrVipG/LzFB7LGJsEjsDyZXpW6br6gIenKSAj9dKnsHGyj2aU67xbM48DyoaTffi6J4orD/PIQbLM1f/sU/PQ+dkoAl3l+ln1UN5yDE8/qcfcoz5ZsMp3NowFHQOszjV4VOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653505; c=relaxed/simple;
-	bh=PjbOU4Gb+yzzbdTFGBPyvHMGUvgNC4Cm62srRpbK8Eg=;
+	s=arc-20240116; t=1731653857; c=relaxed/simple;
+	bh=RDin7BcIE/G6pCsGT+jE+JR3l+gxO0KpMYF0PZCwwz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYo7iFYt7K89FN0EkvmP4yP5YBm25wzGn28ujf+ZiiMTlAcn7sEIFqGRAxgL1aLwzwZ61IvM6Icv+/MN4BYKcrDIG6dKDjyRHPs3aGXvRMn7z7Ob9ylX4KBP2Nyf2Q4oKqLTOZZpaVqDv+tVitGEIG4bMD6lU72ayOTqe6jJP50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU1+unNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33321C4CECF;
-	Fri, 15 Nov 2024 06:51:44 +0000 (UTC)
+	 MIME-Version; b=qvrwT9fyV0sYPU/4Hv3TWgxW1fEu3YurZbmwt283QpnxQc+AV9PKLwUdCpqSBlGF0e+Yc0cOR/Mdt2EIVRe7XMxoqJ1C/07/oZIf2E83hYAocAI2EW/bc8akNQPlqjO8h5MgF3BWqPZiZzMmojXSCt6Cn61SPsXOV+9zWBqvV3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7GnUJuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA3DC4CECF;
+	Fri, 15 Nov 2024 06:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653504;
-	bh=PjbOU4Gb+yzzbdTFGBPyvHMGUvgNC4Cm62srRpbK8Eg=;
+	s=korg; t=1731653856;
+	bh=RDin7BcIE/G6pCsGT+jE+JR3l+gxO0KpMYF0PZCwwz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uU1+unNQ+6bIO9naekgJOqoWwXCt8JozHbkbPydNAgbg30CL0ex0X4n+6eL5D3c7G
-	 IaKNerBkyfd61Ujtys1/rFY9rL9bdOxzrk5jW3uQRilT15E52Qo10L4H8evEiHQE6B
-	 upZF3sfKDHdbSoNqXKTKkQCOLI2Lrv/TiTTR2v5A=
+	b=D7GnUJuZ3pwmktwEJGTG4GnGFZZssmke0NbL0EvkFuD5Ndkrzf6dBK06t8j03O128
+	 1KuBF5NL+t+BcD2iIpqmfFasNWG6UVULqribK2Vyl5SvDPk9eFFeMLrjeWe15Lq9Uw
+	 +LRNZb3TA45D6tBlRDLvj2PTk4bsYQSVmWOL/BgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Christoph Lameter <cl@linux.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun heo <tj@kernel.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 42/48] mm: add page_rmappable_folio() wrapper
+	Benoit Sevens <bsevens@google.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 54/82] media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
 Date: Fri, 15 Nov 2024 07:38:31 +0100
-Message-ID: <20241115063724.480624722@linuxfoundation.org>
+Message-ID: <20241115063727.507533982@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,121 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Benoit Sevens <bsevens@google.com>
 
-commit 23e4883248f0472d806c8b3422ba6257e67bf1a5 upstream.
+commit ecf2b43018da9579842c774b7f35dbe11b5c38dd upstream.
 
-folio_prep_large_rmappable() is being used repeatedly along with a
-conversion from page to folio, a check non-NULL, a check order > 1: wrap
-it all up into struct folio *page_rmappable_folio(struct page *).
+This can lead to out of bounds writes since frames of this type were not
+taken into account when calculating the size of the frames buffer in
+uvc_parse_streaming.
 
-Link: https://lkml.kernel.org/r/8d92c6cf-eebe-748-e29c-c8ab224c741@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun heo <tj@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Signed-off-by: Benoit Sevens <bsevens@google.com>
+Cc: stable@vger.kernel.org
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/internal.h   |    9 +++++++++
- mm/mempolicy.c  |   17 +++--------------
- mm/page_alloc.c |    8 ++------
- 3 files changed, 14 insertions(+), 20 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -415,6 +415,15 @@ static inline void folio_set_order(struc
- 
- void folio_undo_large_rmappable(struct folio *folio);
- 
-+static inline struct folio *page_rmappable_folio(struct page *page)
-+{
-+	struct folio *folio = (struct folio *)page;
-+
-+	if (folio && folio_order(folio) > 1)
-+		folio_prep_large_rmappable(folio);
-+	return folio;
-+}
-+
- static inline void prep_compound_head(struct page *page, unsigned int order)
- {
- 	struct folio *folio = (struct folio *)page;
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2200,10 +2200,7 @@ struct folio *vma_alloc_folio(gfp_t gfp,
- 		mpol_cond_put(pol);
- 		gfp |= __GFP_COMP;
- 		page = alloc_page_interleave(gfp, order, nid);
--		folio = (struct folio *)page;
--		if (folio && order > 1)
--			folio_prep_large_rmappable(folio);
--		goto out;
-+		return page_rmappable_folio(page);
- 	}
- 
- 	if (pol->mode == MPOL_PREFERRED_MANY) {
-@@ -2213,10 +2210,7 @@ struct folio *vma_alloc_folio(gfp_t gfp,
- 		gfp |= __GFP_COMP;
- 		page = alloc_pages_preferred_many(gfp, order, node, pol);
- 		mpol_cond_put(pol);
--		folio = (struct folio *)page;
--		if (folio && order > 1)
--			folio_prep_large_rmappable(folio);
--		goto out;
-+		return page_rmappable_folio(page);
- 	}
- 
- 	if (unlikely(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && hugepage)) {
-@@ -2310,12 +2304,7 @@ EXPORT_SYMBOL(alloc_pages);
- 
- struct folio *folio_alloc(gfp_t gfp, unsigned order)
- {
--	struct page *page = alloc_pages(gfp | __GFP_COMP, order);
--	struct folio *folio = (struct folio *)page;
--
--	if (folio && order > 1)
--		folio_prep_large_rmappable(folio);
--	return folio;
-+	return page_rmappable_folio(alloc_pages(gfp | __GFP_COMP, order));
- }
- EXPORT_SYMBOL(folio_alloc);
- 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4464,12 +4464,8 @@ struct folio *__folio_alloc(gfp_t gfp, u
- 		nodemask_t *nodemask)
- {
- 	struct page *page = __alloc_pages(gfp | __GFP_COMP, order,
--			preferred_nid, nodemask);
--	struct folio *folio = (struct folio *)page;
--
--	if (folio && order > 1)
--		folio_prep_large_rmappable(folio);
--	return folio;
-+					preferred_nid, nodemask);
-+	return page_rmappable_folio(page);
- }
- EXPORT_SYMBOL(__folio_alloc);
- 
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -661,7 +661,7 @@ static int uvc_parse_format(struct uvc_d
+ 	/* Parse the frame descriptors. Only uncompressed, MJPEG and frame
+ 	 * based formats have frame descriptors.
+ 	 */
+-	while (buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
++	while (ftype && buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
+ 	       buffer[2] == ftype) {
+ 		frame = &format->frame[format->nframes];
+ 		if (ftype != UVC_VS_FRAME_FRAME_BASED)
 
 
 
