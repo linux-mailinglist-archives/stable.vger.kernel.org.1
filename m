@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1242E9CD80E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5979CD78C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB09D282382
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09717B263FA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72748188015;
-	Fri, 15 Nov 2024 06:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D576188920;
+	Fri, 15 Nov 2024 06:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rV6TeflF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGjtUQZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D8618950A;
-	Fri, 15 Nov 2024 06:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29059188015;
+	Fri, 15 Nov 2024 06:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653223; cv=none; b=ew96dGSPThNAadDb+mF7PUpcoMhVn2U6+TSOak9Y9qb7hk/8LEGJJEDFsga2mqkDpc+tnKc10pZQ9G5l4C9OHmOv3EHpxTnQHbUu/A8cU3QF0x+stgHCYdrNPDpsa00kgrEuaUcfhMQWx4vf756GU0rM78AbNg94xIU7UNadIGk=
+	t=1731652943; cv=none; b=VhI8P1xiwUOzWXixxL4hSW3V/RZjE4P/MXCQ+C8C23NsAn9VqLopsj7MFLCCSXqy5OMQKKMMDAzuuw9iJG5ULW7kkSDTrfYPjEYbZKDF/lQZywJNfPXJzrRHEAknfnkF02WBu8NDIyv2HOaCPyx/HTWvIwpXhI/qTau3LVhAyZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653223; c=relaxed/simple;
-	bh=E5Cw4wEink+gVeZNypTjqJRTZqBswjHWrUsOy0E/bro=;
+	s=arc-20240116; t=1731652943; c=relaxed/simple;
+	bh=iatkBtDm6nuzS5d0HkpuDKnakc+BKO3rUcQB20cngHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDAZHY/ndbR6SHSnMai1/gxSzwlHHQ5KTZ8Ao+cvwNDSp9GiioTwIc35cNMXvy5GByUHoKWjnAj57kxtNr235aZW+Cx591KQNCc3sbpeGkxgKjwmPPknw3Ao+zy5VfZqQqFbTWt5EGWsKq28j+Lgrm2a+XMXy/d61uCPh/xQ/ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rV6TeflF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2CDC4CED7;
-	Fri, 15 Nov 2024 06:47:02 +0000 (UTC)
+	 MIME-Version; b=gtO4VYVheZWF9LSjcFDsr1qTvFkkqFeh8l8NLK0IA+4n1/NX2eTjxYnbYtV2IQDZO0miYGG1oXgucjY1w1r3YyDiwkIyljY8E0gWsAwUTmBvvnfTRCEWBbdGhVkdmI+e/z2uLXt17DTWz+6Knj+plx/qWE6o5SoltTFRmYQiqZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGjtUQZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B964C4CED0;
+	Fri, 15 Nov 2024 06:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653223;
-	bh=E5Cw4wEink+gVeZNypTjqJRTZqBswjHWrUsOy0E/bro=;
+	s=korg; t=1731652943;
+	bh=iatkBtDm6nuzS5d0HkpuDKnakc+BKO3rUcQB20cngHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rV6TeflF+F5+KV4VnqMpe/myqsP5QkcESQejoL110hORLUK80nkIYTJw+TOIl4nv4
-	 UBl2dPr+B+TGHGuI0+fI4byHq2piWcC5ITB384pGZ/hURXnPp9dLsZHPHMPIUd221P
-	 32lPTGCoe37Tm000JfGWoq3pZ4eIWeKOeQQMQUG0=
+	b=zGjtUQZXXQ1akRe7MpR2197wSoXAF5qtPpbAnDAGE59DZnmMr3sa1Rd78DgRcnlNz
+	 2TMJA1zOhwknSpR7KnGpjL9isQI4x8dztcB8f5o2E6ZfuCsoGT4fhcn9z968dEnTeL
+	 3VhiJIy1L197bqNfsCIZllwicyF5qfZMvKyGC5m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyrone Wu <wudevelops@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 22/63] selftests/bpf: Assert link info uprobe_multi count & path_size if unset
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 32/52] USB: serial: io_edgeport: fix use after free in debug printk
 Date: Fri, 15 Nov 2024 07:37:45 +0100
-Message-ID: <20241115063726.721733187@linuxfoundation.org>
+Message-ID: <20241115063724.018943719@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyrone Wu <wudevelops@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b836cbdf3b81a4a22b3452186efa2e5105a77e10 ]
+commit 37bb5628379295c1254c113a407cab03a0f4d0b4 upstream.
 
-Add assertions in `bpf_link_info.uprobe_multi` test to verify that
-`count` and `path_size` fields are correctly populated when the fields
-are unset.
+The "dev_dbg(&urb->dev->dev, ..." which happens after usb_free_urb(urb)
+is a use after free of the "urb" pointer.  Store the "dev" pointer at the
+start of the function to avoid this issue.
 
-This tests a previous bug where the `path_size` field was not populated
-when `path` and `path_size` were unset.
-
-Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241011000803.681190-2-wudevelops@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 984f68683298 ("USB: serial: io_edgeport.c: remove dbg() usage")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/fill_link_info.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/serial/io_edgeport.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-index 745c5ada4c4bf..d50cbd8040d45 100644
---- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-@@ -420,6 +420,15 @@ verify_umulti_link_info(int fd, bool retprobe, __u64 *offsets,
- 	if (!ASSERT_NEQ(err, -1, "readlink"))
- 		return -1;
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
+@@ -846,11 +846,12 @@ static void edge_bulk_out_data_callback(
+ static void edge_bulk_out_cmd_callback(struct urb *urb)
+ {
+ 	struct edgeport_port *edge_port = urb->context;
++	struct device *dev = &urb->dev->dev;
+ 	int status = urb->status;
  
-+	memset(&info, 0, sizeof(info));
-+	err = bpf_link_get_info_by_fd(fd, &info, &len);
-+	if (!ASSERT_OK(err, "bpf_link_get_info_by_fd"))
-+		return -1;
-+
-+	ASSERT_EQ(info.uprobe_multi.count, 3, "info.uprobe_multi.count");
-+	ASSERT_EQ(info.uprobe_multi.path_size, strlen(path) + 1,
-+		  "info.uprobe_multi.path_size");
-+
- 	for (bit = 0; bit < 8; bit++) {
- 		memset(&info, 0, sizeof(info));
- 		info.uprobe_multi.path = ptr_to_u64(path_buf);
--- 
-2.43.0
-
+ 	atomic_dec(&CmdUrbs);
+-	dev_dbg(&urb->dev->dev, "%s - FREE URB %p (outstanding %d)\n",
+-		__func__, urb, atomic_read(&CmdUrbs));
++	dev_dbg(dev, "%s - FREE URB %p (outstanding %d)\n", __func__, urb,
++		atomic_read(&CmdUrbs));
+ 
+ 
+ 	/* clean up the transfer buffer */
+@@ -860,8 +861,7 @@ static void edge_bulk_out_cmd_callback(s
+ 	usb_free_urb(urb);
+ 
+ 	if (status) {
+-		dev_dbg(&urb->dev->dev,
+-			"%s - nonzero write bulk status received: %d\n",
++		dev_dbg(dev, "%s - nonzero write bulk status received: %d\n",
+ 			__func__, status);
+ 		return;
+ 	}
 
 
 
