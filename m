@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B0D9CD8AB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A6B9CD856
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C470283CC4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBA2EB234D2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FB9189902;
-	Fri, 15 Nov 2024 06:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698A617E015;
+	Fri, 15 Nov 2024 06:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSbynUkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Scd0ATLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA13B188713;
-	Fri, 15 Nov 2024 06:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274BE153800;
+	Fri, 15 Nov 2024 06:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653577; cv=none; b=t4hP9XVVxqMcTDx6wA7SZ1wbpkj3/abBFHVo8YtA79ZT2z85i2J/oNKUopJY+l8M4S1Hqqn9X8Smwc+8YyNpiHzz4+ztAlgNg62NxptNeSb5LjHBg01UyhhKZuFhJrafdeN1rgrO9/DBUvC71RJKkDB+jXTWgD3M2no3GmCMy6A=
+	t=1731653384; cv=none; b=Q9oX/PKYqjspMIrcYBmxd4k8gHR3ssfC7+/vtNUeaOOU/aUY61Fq6L8AtC4qSgmUFHEt4BEl0NBrgFfz5ow77JEte105EuCd/nUMYX9Zdm5qbSHbKV6ZtkJzdBjInxcCD7zxOcPTBScGQXiVZsNIjJ+jYsuYyfnP1NTlYsvNDpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653577; c=relaxed/simple;
-	bh=YrO8srDjrU+zRjajnU6zYLWk4Yv59Cr2UIypjjyg3HM=;
+	s=arc-20240116; t=1731653384; c=relaxed/simple;
+	bh=mAJhRzJKIDw1Bh9nSc0j5ghuw8/8UKGTN62mXQtgaT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihMnYG9m+gD3KEGszanMC554XY9GK3bWwXziWdZDF8QlC8v93tXJeS/kJIz5OXGcsBw7fEiwrMvDaf5gmAyXajhrKGedUelwLMGroXQbQPotXm1qWcoXPCQBvb+GqBK9d9aflF7Cq1x8kVtWIRuMepaw/kb7TenlvpuS1GTEVaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSbynUkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03112C4CECF;
-	Fri, 15 Nov 2024 06:52:56 +0000 (UTC)
+	 MIME-Version; b=tzh0+khYJIH6OWFyq2dweyawFskRLhPVWVwoZ1pFOgLJMjgjlckGmjXnicL6mzazNcaCQAPV6DBgPsRbBQfOED5qlmfBo8CpKrPaSyjsaeLw7kR7yWb0YgRN5mciGyZNvqf5GGm4LnKKA9n3MTzAf/b2fUV8QGPghEoJdkL3330=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Scd0ATLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC7EC4CECF;
+	Fri, 15 Nov 2024 06:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653577;
-	bh=YrO8srDjrU+zRjajnU6zYLWk4Yv59Cr2UIypjjyg3HM=;
+	s=korg; t=1731653384;
+	bh=mAJhRzJKIDw1Bh9nSc0j5ghuw8/8UKGTN62mXQtgaT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSbynUklfq1vO5p5ChZeVFdumrr6k3DciEpxisy49cEkJiIjEUkNjjws00SR0m9oT
-	 kqjk19FC4KPa1udge+gsykckdcYzo2rA3TMXU0mnUw1s8ShtyTWQ/NtLyxvbXpXXUj
-	 UUOyaPDSD1b1cOlqC4hgo2G//HAd/MWv97M87OTQ=
+	b=Scd0ATLj0U3WD6cqXvrc9YldKGSEn75vZsKppuy46VkU9iJAw/pMMXGUOua+05FUU
+	 yMLLr2nB4xVWDDIE01HxCxCoNsajBlLurOPqtNpWvPChcMYUw5/8O8djuyXfxnynUX
+	 yHHyEdYiMXgbaq0TGHHXJjNjgiceGSOpAZaa7ZvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/39] crypto: marvell/cesa - Disable hash algorithms
-Date: Fri, 15 Nov 2024 07:38:25 +0100
-Message-ID: <20241115063723.160872737@linuxfoundation.org>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Omar Sandoval <osandov@fb.com>
+Subject: [PATCH 6.11 63/63] 9p: fix slab cache name creation for real
+Date: Fri, 15 Nov 2024 07:38:26 +0100
+Message-ID: <20241115063728.177536463@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
+commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
 
-Disable cesa hash algorithms by lowering the priority because they
-appear to be broken when invoked in parallel.  This allows them to
-still be tested for debugging purposes.
+This was attempted by using the dev_name in the slab cache name, but as
+Omar Sandoval pointed out, that can be an arbitrary string, eg something
+like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
+if a filename contains a slash.
 
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So just make it use a sequence counter, and make it an atomic_t to avoid
+any possible races or locking issues.
+
+Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
+Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
+Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/9p/client.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index c72b0672fc710..84c1065092796 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -947,7 +947,7 @@ struct ahash_alg mv_md5_alg = {
- 		.base = {
- 			.cra_name = "md5",
- 			.cra_driver_name = "mv-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1018,7 +1018,7 @@ struct ahash_alg mv_sha1_alg = {
- 		.base = {
- 			.cra_name = "sha1",
- 			.cra_driver_name = "mv-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1092,7 +1092,7 @@ struct ahash_alg mv_sha256_alg = {
- 		.base = {
- 			.cra_name = "sha256",
- 			.cra_driver_name = "mv-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1327,7 +1327,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
- 		.base = {
- 			.cra_name = "hmac(md5)",
- 			.cra_driver_name = "mv-hmac-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1398,7 +1398,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha1)",
- 			.cra_driver_name = "mv-hmac-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1469,7 +1469,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha256)",
- 			.cra_driver_name = "mv-hmac-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
--- 
-2.43.0
-
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -977,6 +977,7 @@ error:
+ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ {
+ 	int err;
++	static atomic_t seqno = ATOMIC_INIT(0);
+ 	struct p9_client *clnt;
+ 	char *client_id;
+ 	char *cache_name;
+@@ -1036,7 +1037,8 @@ struct p9_client *p9_client_create(const
+ 	if (err)
+ 		goto close_trans;
+ 
+-	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	cache_name = kasprintf(GFP_KERNEL,
++		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
+ 	if (!cache_name) {
+ 		err = -ENOMEM;
+ 		goto close_trans;
 
 
 
