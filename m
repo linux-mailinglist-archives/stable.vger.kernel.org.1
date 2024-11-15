@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-93157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6509CD7A5
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7A89CD747
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E412B26758
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61F41F2203A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2E5188917;
-	Fri, 15 Nov 2024 06:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50026185924;
+	Fri, 15 Nov 2024 06:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg+6ofMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZDcp6eK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF7A17E015;
-	Fri, 15 Nov 2024 06:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB0A1632DA;
+	Fri, 15 Nov 2024 06:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652997; cv=none; b=b6WazzbPNugYNPe84YDgAo24HEIIAzt0r+ShEN2Ytmz5f3QB7oa8RsVwI90uH29PM0Mmfh8ZYvCtYDNKAyWQQLFIXn8bgcc+c21DZsyUkpKmiQGy+RjcwyVVz9UTRt5KYUGtVQct7x+d+qLIvww0jNSnqI+cX2S7ADScJl2T2BY=
+	t=1731652808; cv=none; b=emBvZlFJK98lPg/LS6G0rLnNv2YezcF6aN47D/0je76nms3aAwfDTmPWQoh84vUEvBwU0hIXpZ2CSJJXviewZxC2JMSJhY494NavJYpp5cv8uUjq2Kujl3+Iu5o4yl9cKsNfjq4RSCOem889K9qiw/Y/8bAWeIVZzCihceQSrEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652997; c=relaxed/simple;
-	bh=uWgYDsMG3ZjXxcov9F9hXnswd/4YrXwp3h4zwCGN8io=;
+	s=arc-20240116; t=1731652808; c=relaxed/simple;
+	bh=9tVDK8LZvf5QKDYZt0hIrpsxhyGP/GKxH9XfILGHkg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gLEyqGzxTMxqQiAU4bc7t2GMHfF9pfqtZBONSDKzgeSSJPOvGoNiv7LwZYPlC6eWVT+jFWGIKHBRL39fFlOEtRD64I/6N+Ykhhpmu2u07VdWn9ftFcbIXWJB6bN3jQidaZzqddkljOfQ9bXqsIUI1UM07TxjmCtXqbJfE5vXPGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg+6ofMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609D4C4CECF;
-	Fri, 15 Nov 2024 06:43:16 +0000 (UTC)
+	 MIME-Version; b=VorXr6q0GoZiIoY+DDWOCWxHLoxNTlANvsLJPKYiaYkYvoFc2Rh9iESpfLNTAsZeGjbo1p+sqLOfnq62dHswLq2KzYsL1Y1Ud5opQ3kZpg2CJ+gLW1LrqOr4MsMd97Ic9nEKh8aAChOV1LyymIse3Cttv1Tof8WywbxWy1qwMXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZDcp6eK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7317EC4CED0;
+	Fri, 15 Nov 2024 06:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652996;
-	bh=uWgYDsMG3ZjXxcov9F9hXnswd/4YrXwp3h4zwCGN8io=;
+	s=korg; t=1731652807;
+	bh=9tVDK8LZvf5QKDYZt0hIrpsxhyGP/GKxH9XfILGHkg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mg+6ofMNnoxxsNWVi+oXOYBusPisLvpcFtccC8ED4SiOnJ7EFXeTNAPqqOVNWnBWj
-	 pJ2DbM+EN/FTJsuYDm4D/9PaVQwah/4901iR5sDReGzUgGt/YOVJbphcBEVSF8YiVN
-	 xrVr11S9uymjTIniCYjFeTw4Bs9c+8w3sQbAKxvw=
+	b=NZDcp6eKwGajCG9QxOUQ0p5xJlMRMkyfW2UJ1CT5Ro0UWZCH5u66AgL+Vp5stJwBk
+	 z2RkMXXK8mUF59fe5T23+pmgWcVljHj2VNYPGyAgL9SZgeGmq3FgF6zZ0w8WDa3CwA
+	 4xTGJ3xu81K80BXGHouczF3Gf5s/9oqS60mnG3D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.4 24/66] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 4.19 20/52] dm cache: correct the number of origin blocks to match the target length
 Date: Fri, 15 Nov 2024 07:37:33 +0100
-Message-ID: <20241115063723.716287258@linuxfoundation.org>
+Message-ID: <20241115063723.585755001@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
+commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
 
-The modulo register defines the period of the edge-aligned PWM mode
-(which is the only mode implemented). The reference manual states:
-"The EPWM period is determined by (MOD + 0001h) ..." So the value that
-is written to the MOD register must therefore be one less than the
-calculated period length. Return -EINVAL if the calculated length is
-already zero.
-A correct MODULO value is particularly relevant if the PWM has to output
-a high frequency due to a low period value.
+When creating a cache device, the actual size of the cache origin might
+be greater than the specified cache target length. In such case, the
+number of origin blocks should match the cache target length, not the
+full size of the origin device, since access beyond the cache target is
+not possible. This issue occurs when reducing the origin device size
+using lvm, as lvreduce preloads the new cache table before resuming the
+cache origin, which can result in incorrect sizes for the discard bitset
+and smq hotspot blocks.
 
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Reproduce steps:
+
+1. create a cache device consists of 4096 origin blocks
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
+
+dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup suspend cache
+dmsetup suspend corig
+dmsetup suspend cdata
+dmsetup suspend cmeta
+dmsetup resume corig
+dmsetup resume cdata
+dmsetup resume cmeta
+dmsetup resume cache
+
+3. shutdown the cache, and check the number of discard blocks in
+   superblock. The value is expected to be 2048, but actually is 4096.
+
+dmsetup remove cache corig cdata cmeta
+dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
+
+Fix by correcting the origin_blocks initialization in cache_create and
+removing the unused origin_sectors from struct cache_args accordingly.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: c6b4fcbad044 ("dm: add cache target")
 Cc: stable@vger.kernel.org
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -108,7 +108,9 @@ static int pwm_imx_tpm_round_state(struc
- 	p->prescale = prescale;
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2080,7 +2080,6 @@ struct cache_args {
+ 	sector_t cache_sectors;
  
- 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
--	p->mod = period_count;
-+	if (period_count == 0)
-+		return -EINVAL;
-+	p->mod = period_count - 1;
+ 	struct dm_dev *origin_dev;
+-	sector_t origin_sectors;
  
- 	/* calculate real period HW can support */
- 	tmp = (u64)period_count << prescale;
+ 	uint32_t block_size;
+ 
+@@ -2162,6 +2161,7 @@ static int parse_cache_dev(struct cache_
+ static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
+ 			    char **error)
+ {
++	sector_t origin_sectors;
+ 	int r;
+ 
+ 	if (!at_least_one_arg(as, error))
+@@ -2174,8 +2174,8 @@ static int parse_origin_dev(struct cache
+ 		return r;
+ 	}
+ 
+-	ca->origin_sectors = get_dev_size(ca->origin_dev);
+-	if (ca->ti->len > ca->origin_sectors) {
++	origin_sectors = get_dev_size(ca->origin_dev);
++	if (ca->ti->len > origin_sectors) {
+ 		*error = "Device size larger than cached device";
+ 		return -EINVAL;
+ 	}
+@@ -2498,7 +2498,7 @@ static int cache_create(struct cache_arg
+ 
+ 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
+ 
+-	origin_blocks = cache->origin_sectors = ca->origin_sectors;
++	origin_blocks = cache->origin_sectors = ti->len;
+ 	origin_blocks = block_div(origin_blocks, ca->block_size);
+ 	cache->origin_blocks = to_oblock(origin_blocks);
+ 
 
 
 
