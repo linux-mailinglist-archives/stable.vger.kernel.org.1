@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-93119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD669CD76B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050249CD7C1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E742B25C1C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3BF4B252FF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC1B188904;
-	Fri, 15 Nov 2024 06:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB21188CA9;
+	Fri, 15 Nov 2024 06:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/135pbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfjiuD3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7018734F;
-	Fri, 15 Nov 2024 06:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1B9188A18;
+	Fri, 15 Nov 2024 06:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652869; cv=none; b=mV82LTEXeUEXEfVx8reKrnY1o7I5ME2dsZJqUjVNLUzdxdUAdXg22Kt4whZ707S4GkF8GWwFRQAWkde0VmUQJ9+c6xpSJK8UWAtVPC2czlEiM9TD3zpiQAcX9w/pkdePXutK9VgHdnkmuMbDeSuGxMFryFQLe9nHSoEX6USTw0U=
+	t=1731653055; cv=none; b=KyGoq3Kp1pIdZvjfHevHo+po7WoVf9HEAhtweMZYD35xfY2lfqMRo+w3S2N8iNzXObrWmMAe9jrCcQlkCTVNIzJ/RlOsCqX/sMk/qJhOjQ6fBVWsosCbNvD/9gq0UD3ucd+oYGkDC7EvjMhe38KNkfuLEH/EWMfFuQ5PcJ/ZXco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652869; c=relaxed/simple;
-	bh=fnHbPYytqZ0zpNFclZAu5vka/3Zsvg0X/8Lx2Ku84yA=;
+	s=arc-20240116; t=1731653055; c=relaxed/simple;
+	bh=5RmG8YwQN25fGfdsFIESKorNL/a6Demz+sJPUFbGkJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8C7b9214aqCgl1qEiBgnQKHPITJyDFiC52ByLuVJ4oT6vm2HB5ugF1kKk1hWqyeCd4PvG4aRkhZlhCEGW0OiPMdskndgGsJKHCFTgezvzBK/30poTeBdRJ+c+7hGk5m9rXiq28IsZz+nBXsP7orRVCROGt1L5heAGzWJLHXtH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/135pbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297C7C4CECF;
-	Fri, 15 Nov 2024 06:41:07 +0000 (UTC)
+	 MIME-Version; b=M62DknLInPuy6zDZaF5EH5TNPOD79yWaxKpBR/RGD5v5l0czSuagzSDD+8PwOWFr2zIjnBetNodxNyPzXm3QWQ0+CrfKVD77o0OyDjZ5VPe2dJ2uaulZuRNxG38djVYYMFR5MvTguBtWtfruMVJC8Nyi1TVyO21HVCkFd29JkrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfjiuD3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8421AC4CED0;
+	Fri, 15 Nov 2024 06:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652868;
-	bh=fnHbPYytqZ0zpNFclZAu5vka/3Zsvg0X/8Lx2Ku84yA=;
+	s=korg; t=1731653055;
+	bh=5RmG8YwQN25fGfdsFIESKorNL/a6Demz+sJPUFbGkJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/135pbUQnW7sp7XVGEcjvy1SECQW5Aa2qIqdD50s+MPrinxfjFROYkDajMzy7Tnk
-	 SHppaFMdQNPhHsdPmr83C5vFykKVIzh5lVjVeTNAR1TlxuEo5UBy/WArkXf+gwQ6zx
-	 ShFAa2GNz8rCb4BOrLBnwFxIOCrcz9k2ev6yxSo4=
+	b=MfjiuD3tDDwVajmQ+MWbQQsn2x/8sapmj6+9izmCujPMIk7veuHC6U70+j431pitH
+	 SdhFBQ453ditad80IC8lJbndcJvP+/bNtNEKrPCuq9fzGJekz/ZQinbhMvc4PzZuPM
+	 JEPU3AxUIL/FTTNdb1XeLb7oSnZQWnkN878cboi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/52] net: hns3: fix kernel crash when uninstalling driver
+Subject: [PATCH 5.4 13/66] sctp: properly validate chunk size in sctp_sf_ootb()
 Date: Fri, 15 Nov 2024 07:37:22 +0100
-Message-ID: <20241115063723.189769358@linuxfoundation.org>
+Message-ID: <20241115063723.321937404@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit df3dff8ab6d79edc942464999d06fbaedf8cdd18 ]
+[ Upstream commit 0ead60804b64f5bd6999eec88e503c6a1a242d41 ]
 
-When the driver is uninstalled and the VF is disabled concurrently, a
-kernel crash occurs. The reason is that the two actions call function
-pci_disable_sriov(). The num_VFs is checked to determine whether to
-release the corresponding resources. During the second calling, num_VFs
-is not 0 and the resource release function is called. However, the
-corresponding resource has been released during the first invoking.
-Therefore, the problem occurs:
+A size validation fix similar to that in Commit 50619dbf8db7 ("sctp: add
+size validation when walking chunks") is also required in sctp_sf_ootb()
+to address a crash reported by syzbot:
 
-[15277.839633][T50670] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-...
-[15278.131557][T50670] Call trace:
-[15278.134686][T50670]  klist_put+0x28/0x12c
-[15278.138682][T50670]  klist_del+0x14/0x20
-[15278.142592][T50670]  device_del+0xbc/0x3c0
-[15278.146676][T50670]  pci_remove_bus_device+0x84/0x120
-[15278.151714][T50670]  pci_stop_and_remove_bus_device+0x6c/0x80
-[15278.157447][T50670]  pci_iov_remove_virtfn+0xb4/0x12c
-[15278.162485][T50670]  sriov_disable+0x50/0x11c
-[15278.166829][T50670]  pci_disable_sriov+0x24/0x30
-[15278.171433][T50670]  hnae3_unregister_ae_algo_prepare+0x60/0x90 [hnae3]
-[15278.178039][T50670]  hclge_exit+0x28/0xd0 [hclge]
-[15278.182730][T50670]  __se_sys_delete_module.isra.0+0x164/0x230
-[15278.188550][T50670]  __arm64_sys_delete_module+0x1c/0x30
-[15278.193848][T50670]  invoke_syscall+0x50/0x11c
-[15278.198278][T50670]  el0_svc_common.constprop.0+0x158/0x164
-[15278.203837][T50670]  do_el0_svc+0x34/0xcc
-[15278.207834][T50670]  el0_svc+0x20/0x30
+  BUG: KMSAN: uninit-value in sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
+  sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
+  sctp_do_sm+0x181/0x93d0 net/sctp/sm_sideeffect.c:1166
+  sctp_endpoint_bh_rcv+0xc38/0xf90 net/sctp/endpointola.c:407
+  sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+  sctp_rcv+0x3831/0x3b20 net/sctp/input.c:243
+  sctp4_rcv+0x42/0x50 net/sctp/protocol.c:1159
+  ip_protocol_deliver_rcu+0xb51/0x13d0 net/ipv4/ip_input.c:205
+  ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
 
-For details, see the following figure.
-
-     rmmod hclge              disable VFs
-----------------------------------------------------
-hclge_exit()            sriov_numvfs_store()
-  ...                     device_lock()
-  pci_disable_sriov()     hns3_pci_sriov_configure()
-                            pci_disable_sriov()
-                              sriov_disable()
-    sriov_disable()             if !num_VFs :
-      if !num_VFs :               return;
-        return;                 sriov_del_vfs()
-      sriov_del_vfs()             ...
-        ...                       klist_put()
-        klist_put()               ...
-        ...                     num_VFs = 0;
-      num_VFs = 0;        device_unlock();
-
-In this patch, when driver is removing, we get the device_lock()
-to protect num_VFs, just like sriov_numvfs_store().
-
-Fixes: 0dd8a25f355b ("net: hns3: disable sriov before unload hclge layer")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241101091507.3644584-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/a29ebb6d8b9f8affd0f9abb296faafafe10c17d8.1730223981.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sctp/sm_statefuns.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.c b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-index b250d0fe9ac50..1265010f063fe 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
-@@ -25,8 +25,11 @@ void hnae3_unregister_ae_algo_prepare(struct hnae3_ae_algo *ae_algo)
- 		pci_id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
- 		if (!pci_id)
- 			continue;
--		if (IS_ENABLED(CONFIG_PCI_IOV))
-+		if (IS_ENABLED(CONFIG_PCI_IOV)) {
-+			device_lock(&ae_dev->pdev->dev);
- 			pci_disable_sriov(ae_dev->pdev);
-+			device_unlock(&ae_dev->pdev->dev);
-+		}
- 	}
- }
- EXPORT_SYMBOL(hnae3_unregister_ae_algo_prepare);
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 67df4022853ba..6b613569372a0 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -3637,7 +3637,7 @@ enum sctp_disposition sctp_sf_ootb(struct net *net,
+ 		}
+ 
+ 		ch = (struct sctp_chunkhdr *)ch_end;
+-	} while (ch_end < skb_tail_pointer(skb));
++	} while (ch_end + sizeof(*ch) < skb_tail_pointer(skb));
+ 
+ 	if (ootb_shut_ack)
+ 		return sctp_sf_shut_8_4_5(net, ep, asoc, type, arg, commands);
 -- 
 2.43.0
 
