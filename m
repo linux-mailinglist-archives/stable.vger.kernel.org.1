@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C469CD92D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928D49CD8BA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA266B27E18
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F532B25E8F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8642E187FE8;
-	Fri, 15 Nov 2024 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C2F1885AA;
+	Fri, 15 Nov 2024 06:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="En8bKxkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYf4d5Bl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4547A15FD13;
-	Fri, 15 Nov 2024 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436F514EC77;
+	Fri, 15 Nov 2024 06:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653866; cv=none; b=fDuI0DNytDqWHhtsKzWQlgyjaS/EEDVdn/q0RwWDwkfcZT8gXcrSU2kT5QgS0bkisIGnUxtR5GFPIFJCwsoPeK9JYN8wa2ePlPJFxYINsNOdSlS/WfqPjwKc0SMTFF3hks4qkKmcHCoXKgCTv+O55o3POjX5EPAbn5XJsVKXRSs=
+	t=1731653610; cv=none; b=V4XiOu26ioVsf0ngpNA/R8ccn2Ea3PfDHD9S5p6YV6XqqEUfRtCKL+xvT/DYs/If2xosdqDNHfFSPeq2EA6GJOQLIbfYoAKz+a3MPxWfC3vZPjMpaIZgs+0QUASUfsax0E5iLnZYArCh0PRnt5F1WFNQYSpZt+tr+j5GcyELoaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653866; c=relaxed/simple;
-	bh=Z1DRaXAdBbEDhrQA6Z4GzNwtDmLod+0fmGjz5exRBmY=;
+	s=arc-20240116; t=1731653610; c=relaxed/simple;
+	bh=Cbqo1j+aweMVFjAF2H5aM5WBBnnN2QrJF4bsYCLR5E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWHgML2ZQyKCNzb3jGdJX5z0tbMK0brCAYOai0bRcHGn/sZGtQrggabHU/5CaiCq6OJiY5wbvH+y6ZtyPgBD6Ajts6YtlF3mrlnCzfUQ0Tas+AR9r4VUpmuLs6ScOztjnEGG+OuPhPEi9apjIU5U02qpamZj3BsuCu58yCei7YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=En8bKxkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCE3C4CECF;
-	Fri, 15 Nov 2024 06:57:45 +0000 (UTC)
+	 MIME-Version; b=QwVlqFMLTkOXSgU/keWIHudA4jmhyku9fYC5eYHnmqlqTMJg/Lx1Wpm2xiy7nP9kw2396/mC1uC0ZqZm/qKEHZz8Y+CWBoETxvuarfr9wqffM4oZCTAjXgTN/MiqqCQqEFI6Y1sYXHuLYUrlC+Gq7NPXhD0MbnSc51nZT9jvjWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYf4d5Bl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5800C4CECF;
+	Fri, 15 Nov 2024 06:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653866;
-	bh=Z1DRaXAdBbEDhrQA6Z4GzNwtDmLod+0fmGjz5exRBmY=;
+	s=korg; t=1731653610;
+	bh=Cbqo1j+aweMVFjAF2H5aM5WBBnnN2QrJF4bsYCLR5E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=En8bKxkqHTAUAciCs070g0AeCNEKYqv0dS5zDqjGTWkLrADFa3WKblPZ6AWfcnJgP
-	 niIzUwkSGilrnq2reJPby3H4QEN2NcgH0ymVgPxDQ/c8tORLs9iukEZ7PmAadB4SUL
-	 GA8z+s2PMZLBQ7QnVVe0Lp6VL7nl6bRu7WzLM7uI=
+	b=AYf4d5BlH78r+UcZtJgzWr58LmJSODWFVVRb1GrJP4hxeArR1d0kIqWIr/XIZ0C6r
+	 5QbyIIPknFpWmi4SSJbWbcCiCZ7dfmzMv59uqtVwCZWsjZHkmkrHwnYMk6t23w3AnJ
+	 5M1Zha0On6wdA5B04iBbIdREWrbZLNpcU+Jjq6oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 57/82] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 24/39] fs: Fix uninitialized value issue in from_kuid and from_kgid
 Date: Fri, 15 Nov 2024 07:38:34 +0100
-Message-ID: <20241115063727.612709295@linuxfoundation.org>
+Message-ID: <20241115063723.483028742@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-commit 7dd08a0b4193087976db6b3ee7807de7e8316f96 upstream.
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-The "*cmd" variable can be controlled by the user via debugfs.  That means
-"new_cam" can be as high as 255 while the size of the uc->updated[] array
-is UCSI_MAX_ALTMODES (30).
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-The call tree is:
-ucsi_cmd() // val comes from simple_attr_write_xsigned()
--> ucsi_send_command()
-   -> ucsi_send_command_common()
-      -> ucsi_run_command() // calls ucsi->ops->sync_control()
-         -> ucsi_ccg_sync_control()
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
 
-Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/325102b3-eaa8-4918-a947-22aca1146586@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -436,6 +436,8 @@ static void ucsi_ccg_update_set_new_cam_
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index ea7c79e8ce429..e96b947c3f5dd 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1129,9 +1129,12 @@ int ocfs2_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
  
- 	port = uc->orig;
- 	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
-+	if (new_cam >= ARRAY_SIZE(uc->updated))
-+		return;
- 	new_port = &uc->updated[new_cam];
- 	cam = new_port->linked_idx;
- 	enter_new_mode = UCSI_SET_NEW_CAM_ENTER(*cmd);
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
+-- 
+2.43.0
+
 
 
 
