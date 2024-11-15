@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-93349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDE49CD8BD
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0DD9CD90C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461991F233D4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF744282C49
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79F5187848;
-	Fri, 15 Nov 2024 06:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBA31891A8;
+	Fri, 15 Nov 2024 06:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOQmoQNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqLwPDYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63FB153800;
-	Fri, 15 Nov 2024 06:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE1A187848;
+	Fri, 15 Nov 2024 06:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653623; cv=none; b=kChsMnl+HF5LG8qgcYmIIGAwRAaBI4sOz0l+hZM6XVYKws/nHvH2iSwmcG61yax3q9IV32Qk/602wSWnOTBEKmQrKJocJe17u16effeYOuEdHGZCw6vv3Mvq8Sc06D/VMqmoERzO+kdFkrQ090FdS+Q9h8c0dooKu2LDedeeohA=
+	t=1731653792; cv=none; b=TUEX6qDvwmj2PcpB9k8dXJcmyv2U83f4ttNppEQv9U9Hd1FdcRE2gcBo90joGaEAnMMNaH0cUtJlZp4uCjbwLj80Ep/+RxVFMSC9aEK/paTdRVf/XkU4cx6FIblOZZaw/9mtQgrWLfOBu74ZKnUrN7LtlQN+9k9xybXMlIxWAyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653623; c=relaxed/simple;
-	bh=Px8ypQM53Oqb6ypvHuL8gwdV/2oC/orHxIttAzcwCNg=;
+	s=arc-20240116; t=1731653792; c=relaxed/simple;
+	bh=t80FascOsLnZVZZJBzIXJ2HrOU0hPB6WJosiuT/SFa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lxvGl06fj4jSsB4BLb74Ng41fnXf7Odou0/esEemmLm0Fp93GAFtQXqf+EUrbSRnMsWiZIkzJIvXAsymgXH4EOuWoNr8uO0OJV0qPMHJMwt1o035U0N0wxOT7fqrPkZtfcd1YvL+wrxRuYl9+lJf2j0QCxrz7Ixs8zScSSFriCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOQmoQNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170D2C4CED2;
-	Fri, 15 Nov 2024 06:53:42 +0000 (UTC)
+	 MIME-Version; b=JYNmrSHyTAqWN+Aozb8qaEgaVl9XK6mCNcFfvr7NC/DaFdDGzH/T1RjtFGUTaJ7Sp5SHnIY2EFOqKkcy9n98SeXrQibuYOKXng1t3KxJdQ5r4QHbjFz6z0MDArpoNfNdiI2E2ONuIiTA/LGe5caYJJAcV3U+zZeE3SNWG80ArT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqLwPDYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A92C4CECF;
+	Fri, 15 Nov 2024 06:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653623;
-	bh=Px8ypQM53Oqb6ypvHuL8gwdV/2oC/orHxIttAzcwCNg=;
+	s=korg; t=1731653792;
+	bh=t80FascOsLnZVZZJBzIXJ2HrOU0hPB6WJosiuT/SFa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOQmoQNX4tce1D2J92+PzAkCdTkkZNUIVIVKEm7H8I8OHo0uIVSYsNGcbehacGVby
-	 mduxsBEla5ilWPZMn/pYBlOQBgN/CeZoWbMqi/xv8vqS60NhJ9hfii9uOwSSH9UEff
-	 G6qdcc29LDxWq/Nh+saYsZMSgJeSLbaJTKPxhYTA=
+	b=NqLwPDYwSTpqmwBszGJZRfAr598Pqa6ulKcPPH9eUuCTP/tVMM9+zZOFsmZWHEfPs
+	 6SmiPVzj5YAqm+IsOWhvhxljO0HdghuYyvwAPy6hnCqbQlkNE445DZ8wm+4AAn2lmg
+	 IV1YgTtJFeNi/jRXgEW5CiIX7o7JRDzYQkTv2lXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jeremy=20Lain=C3=A9?= <jeremy.laine@m4x.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Mike <user.service2016@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/39] Revert "Bluetooth: hci_core: Fix possible buffer overflow"
-Date: Fri, 15 Nov 2024 07:38:14 +0100
-Message-ID: <20241115063722.766718123@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 5.10 38/82] dm cache: optimize dirty bit checking with find_next_bit when resizing
+Date: Fri, 15 Nov 2024 07:38:15 +0100
+Message-ID: <20241115063726.934520347@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-This reverts commit 68644bf5ec6baaff40fc39b3529c874bfda709bd which is
-commit 81137162bfaa7278785b24c1fd2e9e74f082e8e4 upstream.
+commit f484697e619a83ecc370443a34746379ad99d204 upstream.
 
-It is reported to cause regressions in the 6.1.y tree, so revert it for
-now.
+When shrinking the fast device, dm-cache iteratively searches for a
+dirty bit among the cache blocks to be dropped, which is less efficient.
+Use find_next_bit instead, as it is twice as fast as the iterative
+approach with test_bit.
 
-Link: https://lore.kernel.org/all/CADRbXaDqx6S+7tzdDPPEpRu9eDLrHQkqoWTTGfKJSRxY=hT5MQ@mail.gmail.com/
-Reported-by: Jeremy Lainé <jeremy.laine@m4x.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Mike <user.service2016@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Pauli Virtanen <pav@iki.fi>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -869,7 +869,7 @@ int hci_get_dev_info(void __user *arg)
- 	else
- 		flags = hdev->flags;
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2965,14 +2965,14 @@ static bool can_resize(struct cache *cac
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		if (is_dirty(cache, new_size)) {
+-			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-			      cache_device_name(cache),
+-			      (unsigned long long) from_cblock(new_size));
+-			return false;
+-		}
+-		new_size = to_cblock(from_cblock(new_size) + 1);
++	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++					   from_cblock(cache->cache_size),
++					   from_cblock(new_size)));
++	if (new_size != cache->cache_size) {
++		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++		      cache_device_name(cache),
++		      (unsigned long long) from_cblock(new_size));
++		return false;
+ 	}
  
--	strscpy(di.name, hdev->name, sizeof(di.name));
-+	strcpy(di.name, hdev->name);
- 	di.bdaddr   = hdev->bdaddr;
- 	di.type     = (hdev->bus & 0x0f) | ((hdev->dev_type & 0x03) << 4);
- 	di.flags    = flags;
+ 	return true;
 
 
 
