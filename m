@@ -1,83 +1,58 @@
-Return-Path: <stable+bounces-93413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07ED9CD922
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A279CD8B1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91C2028219D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01726B25D3F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507FA1891A8;
-	Fri, 15 Nov 2024 06:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A20D188015;
+	Fri, 15 Nov 2024 06:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iL4rtzs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbE51Av5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E85E2BB1B;
-	Fri, 15 Nov 2024 06:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB32BB1B;
+	Fri, 15 Nov 2024 06:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653844; cv=none; b=CeOR4DDMCRC5FPJ0t1BB6yLtFHZgNVLpt6iry0hqSNK6ZzULkCnKWEpqm2wc8MtfqH13HEVSlvlceAS41aTcFbG0mTSt/XLeXCV20/pVbrwlXFh6lBuClTc4CNjEl7JEVmviZKRehbVvW6zXJWPrnQBlktHNPijlD+seWIu7NuQ=
+	t=1731653587; cv=none; b=H+2yqPyUhjv7MGFf5k/tup8aA5Q1UvhQri+5AQJ5VUc/RFPOydeNKGsXox3kvDq/AvkN2RzlhTee9qDFb9Ngtg9BvCLkFOkDtGoXDVFIcsrGCYGPfPl1Zu/kpDihIctW1qRZJDHOfquAzuUSEQQ7IvZFm8NMcbyUCzWEuFLkl/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653844; c=relaxed/simple;
-	bh=hNSwvdI3GQevt28ntCCnCr0MF2uSm+DSonau+cMToGA=;
+	s=arc-20240116; t=1731653587; c=relaxed/simple;
+	bh=OIF9sR0hzMx7ZfPn+9PyJrEPW2dCQ+zk7/73CW9nuXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLlREQ0iBOvT8NSimAOv2GJTGwG1G8YoX0s/w3JcUIpFGmC4wDt/mqtcGnB/fKhyn/MfMTiQBUg5Hak81ObuZLLiwcpYTIdMx7Xz5jgPEdjuZf+VmGCgFUdSrrzwPmF4/NkFWyMSzEBwTY9b8VksiqctbYX42yK1VeUDsw9okVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iL4rtzs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4636C4CECF;
-	Fri, 15 Nov 2024 06:57:22 +0000 (UTC)
+	 MIME-Version; b=QH7V+NDY55ncD3xA/ftTL1uWNQ0HDuJQyGDDpOF5DgGKdWTCRRvuP41osk77V1PBI7Cg7OUT6A6t/JisjQO0Ib4qO3FtL8f5z96r7JTdPWaNpGVRtWK1kJOjYeBBExETrZGykn8K+2EmS9tCjcJlFkXxSsNfKQfdPbHZ1vz7Rzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbE51Av5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8CEC4CECF;
+	Fri, 15 Nov 2024 06:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653843;
-	bh=hNSwvdI3GQevt28ntCCnCr0MF2uSm+DSonau+cMToGA=;
+	s=korg; t=1731653587;
+	bh=OIF9sR0hzMx7ZfPn+9PyJrEPW2dCQ+zk7/73CW9nuXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iL4rtzs9FnaSNL65IdQW/CHzj1rkK5VamNy6Iz8vNxYiXTogu55zSZln+HDR00llf
-	 18COkcxf9JQf++FZWQiBTqMdMisbqGS41czP6EUWAKlxqHUL0IWDk/rFATBUHaSx8R
-	 UXrqSXq2Ghtin1ki2SzrF+OG3WgaLu5pmg3cHnlE=
+	b=RbE51Av55x48MEsXFbKvQMz9EhNAZKQr6lxaCYQOaxGY8tymjvOhllcVDNRe2iyWu
+	 sJXTQh+xbhxDuLpng/Q2rVFRfaAL/S4I+jgUs55CdEL4W41sJOQIrKrAJJ863JpWuK
+	 EYfEASeFrnnbPjKT26lKosTjtxId+2Hebh+TsObc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	German Gomez <german.gomez@arm.com>,
-	James Clark <james.clark@arm.com>,
-	Nick Terrell <terrelln@fb.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Changbin Du <changbin.du@huawei.com>,
-	liuwenyu <liuwenyu7@huawei.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Leo Yan <leo.yan@linaro.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: [PATCH 5.10 51/82] Revert "perf hist: Add missing puts to hist__account_cycles"
+	syzbot+908886656a02769af987@syzkaller.appspotmail.com,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 18/39] kasan: Disable Software Tag-Based KASAN with GCC
 Date: Fri, 15 Nov 2024 07:38:28 +0100
-Message-ID: <20241115063727.397985268@linuxfoundation.org>
+Message-ID: <20241115063723.266970553@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -89,110 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Will Deacon <will@kernel.org>
 
-Revert "perf hist: Add missing puts to hist__account_cycles"
+[ Upstream commit 7aed6a2c51ffc97a126e0ea0c270fab7af97ae18 ]
 
-This reverts commit a83fc293acd5c5050a4828eced4a71d2b2fffdd3.
+Syzbot reports a KASAN failure early during boot on arm64 when building
+with GCC 12.2.0 and using the Software Tag-Based KASAN mode:
 
-On x86 platform, kernel v5.10.228, perf-report command aborts due to "free():
-invalid pointer" when perf-record command is run with taken branch stack
-sampling enabled. This regression can be reproduced with the following steps:
+  | BUG: KASAN: invalid-access in smp_build_mpidr_hash arch/arm64/kernel/setup.c:133 [inline]
+  | BUG: KASAN: invalid-access in setup_arch+0x984/0xd60 arch/arm64/kernel/setup.c:356
+  | Write of size 4 at addr 03ff800086867e00 by task swapper/0
+  | Pointer tag: [03], memory tag: [fe]
 
-	- sudo perf record -b
-	- sudo perf report
+Initial triage indicates that the report is a false positive and a
+thorough investigation of the crash by Mark Rutland revealed the root
+cause to be a bug in GCC:
 
-The root cause is that bi[i].to.ms.maps does not always point to thread->maps,
-which is a buffer dynamically allocated by maps_new(). Instead, it may point to
-&machine->kmaps, while kmaps is not a pointer but a variable. The original
-upstream commit c1149037f65b ("perf hist: Add missing puts to
-hist__account_cycles") worked well because machine->kmaps had been refactored to
-a pointer by the previous commit 1a97cee604dc ("perf maps: Use a pointer for
-kmaps").
+  > When GCC is passed `-fsanitize=hwaddress` or
+  > `-fsanitize=kernel-hwaddress` it ignores
+  > `__attribute__((no_sanitize_address))`, and instruments functions
+  > we require are not instrumented.
+  >
+  > [...]
+  >
+  > All versions [of GCC] I tried were broken, from 11.3.0 to 14.2.0
+  > inclusive.
+  >
+  > I think we have to disable KASAN_SW_TAGS with GCC until this is
+  > fixed
 
-To this end, just revert commit a83fc293acd5c5050a4828eced4a71d2b2fffdd3.
+Disable Software Tag-Based KASAN when building with GCC by making
+CC_HAS_KASAN_SW_TAGS depend on !CC_IS_GCC.
 
-It is worth noting that the memory leak issue, which the reverted patch intended
-to fix, has been solved by commit cf96b8e45a9b ("perf session: Add missing
-evlist__delete when deleting a session"). The root cause is that the evlist is
-not being deleted on exit in perf-report, perf-script, and perf-data.
-Consequently, the reference count of the thread increased by thread__get() in
-hist_entry__init() is not decremented in hist_entry__delete(). As a result,
-thread->maps is not properly freed.
-
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Nick Terrell <terrelln@fb.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: liuwenyu <liuwenyu7@huawei.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: stable@vger.kernel.org # 5.10.228
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Suggested-by: Mark Rutland <mark.rutland@arm.com>
+Reported-by: syzbot+908886656a02769af987@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/000000000000f362e80620e27859@google.com
+Link: https://lore.kernel.org/r/ZvFGwKfoC4yVjN_X@J2N7QTR9R3
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218854
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20241014161100.18034-1-will@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ lib/Kconfig.kasan | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -2624,6 +2624,8 @@ void hist__account_cycles(struct branch_
+diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+index ca09b1cf8ee9d..34420eb1cbfe1 100644
+--- a/lib/Kconfig.kasan
++++ b/lib/Kconfig.kasan
+@@ -22,8 +22,11 @@ config ARCH_DISABLE_KASAN_INLINE
+ config CC_HAS_KASAN_GENERIC
+ 	def_bool $(cc-option, -fsanitize=kernel-address)
  
- 	/* If we have branch cycles always annotate them. */
- 	if (bs && bs->nr && entries[0].flags.cycles) {
-+		int i;
-+
- 		bi = sample__resolve_bstack(sample, al);
- 		if (bi) {
- 			struct addr_map_symbol *prev = NULL;
-@@ -2638,7 +2640,7 @@ void hist__account_cycles(struct branch_
- 			 * Note that perf stores branches reversed from
- 			 * program order!
- 			 */
--			for (int i = bs->nr - 1; i >= 0; i--) {
-+			for (i = bs->nr - 1; i >= 0; i--) {
- 				addr_map_symbol__account_cycles(&bi[i].from,
- 					nonany_branch_mode ? NULL : prev,
- 					bi[i].flags.cycles);
-@@ -2647,12 +2649,6 @@ void hist__account_cycles(struct branch_
- 				if (total_cycles)
- 					*total_cycles += bi[i].flags.cycles;
- 			}
--			for (unsigned int i = 0; i < bs->nr; i++) {
--				map__put(bi[i].to.ms.map);
--				maps__put(bi[i].to.ms.maps);
--				map__put(bi[i].from.ms.map);
--				maps__put(bi[i].from.ms.maps);
--			}
- 			free(bi);
- 		}
- 	}
++# GCC appears to ignore no_sanitize_address when -fsanitize=kernel-hwaddress
++# is passed. See https://bugzilla.kernel.org/show_bug.cgi?id=218854 (and
++# the linked LKML thread) for more details.
+ config CC_HAS_KASAN_SW_TAGS
+-	def_bool $(cc-option, -fsanitize=kernel-hwaddress)
++	def_bool !CC_IS_GCC && $(cc-option, -fsanitize=kernel-hwaddress)
+ 
+ # This option is only required for software KASAN modes.
+ # Old GCC versions do not have proper support for no_sanitize_address.
+@@ -91,7 +94,7 @@ config KASAN_SW_TAGS
+ 	help
+ 	  Enables Software Tag-Based KASAN.
+ 
+-	  Requires GCC 11+ or Clang.
++	  Requires Clang.
+ 
+ 	  Supported only on arm64 CPUs and relies on Top Byte Ignore.
+ 
+-- 
+2.43.0
+
 
 
 
