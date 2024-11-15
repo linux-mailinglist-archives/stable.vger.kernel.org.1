@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7629CD875
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1119CD90F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0A328160A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44898281DCC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6AD18734F;
-	Fri, 15 Nov 2024 06:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45B815FD13;
+	Fri, 15 Nov 2024 06:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toV0tpEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCopJMmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C26EEAD0;
-	Fri, 15 Nov 2024 06:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9013C1885B3;
+	Fri, 15 Nov 2024 06:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653463; cv=none; b=YIpnsGNQ9F9vpasydaqmWi2Es4pLkexYipBJUFWP3C9771pfTRMCMoop2gDwUmEUizJd22fnP2Fco60belcr0xvkvgO/oQq8KjP2jMuEqwoB3m4RROonL4bHw8foXN8hzc/JWpEjLAo0hw2+I7WSiWjtuqF5TVYhUQi/xKj0KuM=
+	t=1731653802; cv=none; b=pYIqGNJQZ0w2Km9bVGyW6odRcD/ZK+FREQ+Fuabpk50oCAjf8J3arpkWnNG6YrO5hgVjr1nYzc7/hHVmxyrykVpNF1/GA6+XJU2v3jHpegwQDVrtc8XzxXClXFocyThl4EmutFCfGmBepIJy5kQHFkX5ChCE92n/DfzS6n0RSSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653463; c=relaxed/simple;
-	bh=cDU3964Ng2z3tmsonpoyjI0gfIdyDDzPw6Wtuaz/Gl8=;
+	s=arc-20240116; t=1731653802; c=relaxed/simple;
+	bh=wviWTF6oL+yq8ZZckWiA7IV7fs8ujjM1FXXHvcSbhvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wiy7OISvtsHiC3xFJpvqqkSnOeX6V+u9nM58Fdf/azb6z6tIkivF/cDZxxMGSOo6En51Dwda1xRO6SaAIwNKtkQEcct1WH1nAsTewqPSO3xHN7/pk/Ue48MBRdHO5lv4yEY1qvMQCpw1QcveNC/SLR6z7/cA4sq1aO7te0pzBfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toV0tpEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B51C4CECF;
-	Fri, 15 Nov 2024 06:51:02 +0000 (UTC)
+	 MIME-Version; b=eaLK0ZIl0hSdWHIse6WCHccfKRjRR8GpNwEAGPWmrO/3+32gtWuJWlGZkb+/hxWmO/hys53DtZPtLEhOyEUySZlnQygXVKoUvdk4N7YBKPlgcEdZPiFRNU3nNbBj2qA6cq6to6bCDO+lghO1Wr4MXfEqyZy9nhW+hxt61yjJwk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCopJMmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C026EC4CECF;
+	Fri, 15 Nov 2024 06:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653463;
-	bh=cDU3964Ng2z3tmsonpoyjI0gfIdyDDzPw6Wtuaz/Gl8=;
+	s=korg; t=1731653802;
+	bh=wviWTF6oL+yq8ZZckWiA7IV7fs8ujjM1FXXHvcSbhvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toV0tpEuKcWSJwUsqnZ7r4hgnPgXDoGXB+vBL6fWdQFdrgRt3adGZjgjfCyJ1iiRB
-	 hEUlaOBNbrpcm68XLJDlK4Q1km2BQRSlnqMnpw35HsUQ1GX802mgS6teyF/wmjHYc5
-	 FntzVdFMssenl8vjLzigIE8HDNcrbnpsjPZcJUY4=
+	b=dCopJMmXvxjGlDGuJOByeEgwYekAjjdVRhTBTYwuC9kxZDQVVN+p2aUwgOmOwCngx
+	 01WA4jRbnjqJzI0lsMWPiuldn/oWqq187+mGWefJbyrrnvzJSTESZWxE/DyXS6YP4S
+	 ejeDinGGOr1kTIBv688bFJ+QScUwxlbQk/40As68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	Mark Brown <broonie@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 29/48] ASoC: amd: yc: Add quirk for ASUS Vivobook S15 M3502RA
+Subject: [PATCH 5.10 41/82] io_uring: rename kiocb_end_write() local helper
 Date: Fri, 15 Nov 2024 07:38:18 +0100
-Message-ID: <20241115063724.016482056@linuxfoundation.org>
+Message-ID: <20241115063727.039990798@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 182fff3a2aafe4e7f3717a0be9df2fe2ed1a77de ]
+Commit a370167fe526123637965f60859a9f1f3e1a58b7 upstream.
 
-As reported the builtin microphone doesn't work on the ASUS Vivobook
-model S15 OLED M3502RA. Therefore add a quirk for it to make it work.
+This helper does not take a kiocb as input and we want to create a
+common helper by that name that takes a kiocb as input.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219345
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://patch.msgid.link/20241010-bugzilla-219345-asus-vivobook-v1-1-3bb24834e2c3@heusel.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Message-Id: <20230817141337.1025891-2-amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/io_uring.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index e027bc1d35f4f..2d766d988eb2e 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index da07fba75827c..ec55f2788ac64 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2667,7 +2667,7 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
+ 	return ret;
+ }
+ 
+-static void kiocb_end_write(struct io_kiocb *req)
++static void io_req_end_write(struct io_kiocb *req)
+ {
+ 	/*
+ 	 * Tell lockdep we inherited freeze protection from submission
+@@ -2737,7 +2737,7 @@ static void io_req_io_end(struct io_kiocb *req)
+ 	struct io_rw *rw = &req->rw;
+ 
+ 	if (rw->kiocb.ki_flags & IOCB_WRITE) {
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 		fsnotify_modify(req->file);
+ 	} else {
+ 		fsnotify_access(req->file);
+@@ -2817,7 +2817,7 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res, long res2)
+ 	struct io_kiocb *req = container_of(kiocb, struct io_kiocb, rw.kiocb);
+ 
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 	if (unlikely(res != req->result)) {
+ 		if (res == -EAGAIN && io_rw_should_reissue(req)) {
+ 			req->flags |= REQ_F_REISSUE;
+@@ -3817,7 +3817,7 @@ static int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 		ret = io_setup_async_rw(req, iovec, inline_vecs, iter, false);
+ 		if (!ret) {
+ 			if (kiocb->ki_flags & IOCB_WRITE)
+-				kiocb_end_write(req);
++				io_req_end_write(req);
+ 			return -EAGAIN;
  		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M3502RA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+ 		return ret;
 -- 
 2.43.0
 
