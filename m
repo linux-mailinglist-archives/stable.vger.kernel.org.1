@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-93156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DCE9CD7A4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6509CD7A5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DAD281F17
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E412B26758
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7431898E9;
-	Fri, 15 Nov 2024 06:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2E5188917;
+	Fri, 15 Nov 2024 06:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6Vx6Jkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg+6ofMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC680189528;
-	Fri, 15 Nov 2024 06:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF7A17E015;
+	Fri, 15 Nov 2024 06:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652994; cv=none; b=OhdMiu9wI/2VWs3Qe1Upfr05GqgtMIpuJEdywirY2umt9FV2F5fomylVPXfgbVbCBn2/zeBhyhf/nnrS+5y4oTJwGcIj00DyIzfR6JiMLMj4wSODsD60zLrdS/B/+lNawh9cgoGk2yhQMGgiurRzl1xy5TkcG1vQEVh5gz2HJUQ=
+	t=1731652997; cv=none; b=b6WazzbPNugYNPe84YDgAo24HEIIAzt0r+ShEN2Ytmz5f3QB7oa8RsVwI90uH29PM0Mmfh8ZYvCtYDNKAyWQQLFIXn8bgcc+c21DZsyUkpKmiQGy+RjcwyVVz9UTRt5KYUGtVQct7x+d+qLIvww0jNSnqI+cX2S7ADScJl2T2BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652994; c=relaxed/simple;
-	bh=MjEFB7KvfUnppRRJK/5FJ3uH1izvucOa/aYfRlPgOzA=;
+	s=arc-20240116; t=1731652997; c=relaxed/simple;
+	bh=uWgYDsMG3ZjXxcov9F9hXnswd/4YrXwp3h4zwCGN8io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKTJbAF/nFLuJkOIQ+2h7ttlZbY8ghR0l+TtAuu2UXnu0P6Ug/ZkznqUqAmCdQ3K2dNjffV7IZ6lqFDO1iwAif85wCNCHxRCzl8ZxJeHho9UlzPMw9FXw1T5YNL1g915TiwWARsXqbMdNUIGI1btodpqNF7mpIi3zVM1M579zhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6Vx6Jkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037B1C4CED0;
-	Fri, 15 Nov 2024 06:43:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gLEyqGzxTMxqQiAU4bc7t2GMHfF9pfqtZBONSDKzgeSSJPOvGoNiv7LwZYPlC6eWVT+jFWGIKHBRL39fFlOEtRD64I/6N+Ykhhpmu2u07VdWn9ftFcbIXWJB6bN3jQidaZzqddkljOfQ9bXqsIUI1UM07TxjmCtXqbJfE5vXPGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg+6ofMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609D4C4CECF;
+	Fri, 15 Nov 2024 06:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652993;
-	bh=MjEFB7KvfUnppRRJK/5FJ3uH1izvucOa/aYfRlPgOzA=;
+	s=korg; t=1731652996;
+	bh=uWgYDsMG3ZjXxcov9F9hXnswd/4YrXwp3h4zwCGN8io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6Vx6JkjAs75Xox48czR4f1FHP2Ikc31nG/1eQEbh50wgbA78UXRTjx/3ZIN3470D
-	 AdA1eulq/qGiJI5uGPWkZI9DI4fcqbsHoocDFrQcHiIAzA35f6hPurQZRgZyiQu9wl
-	 miCwMcbhzSWDJZEacA5QanTx6SAKX5VstMc6vWuM=
+	b=Mg+6ofMNnoxxsNWVi+oXOYBusPisLvpcFtccC8ED4SiOnJ7EFXeTNAPqqOVNWnBWj
+	 pJ2DbM+EN/FTJsuYDm4D/9PaVQwah/4901iR5sDReGzUgGt/YOVJbphcBEVSF8YiVN
+	 xrVr11S9uymjTIniCYjFeTw4Bs9c+8w3sQbAKxvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.4 23/66] media: v4l2-tpg: prevent the risk of a division by zero
-Date: Fri, 15 Nov 2024 07:37:32 +0100
-Message-ID: <20241115063723.680549871@linuxfoundation.org>
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.4 24/66] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+Date: Fri, 15 Nov 2024 07:37:33 +0100
+Message-ID: <20241115063723.716287258@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
 References: <20241115063722.834793938@linuxfoundation.org>
@@ -58,43 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
+commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
 
-As reported by Coverity, the logic at tpg_precalculate_line()
-blindly rescales the buffer even when scaled_witdh is equal to
-zero. If this ever happens, this will cause a division by zero.
+The modulo register defines the period of the edge-aligned PWM mode
+(which is the only mode implemented). The reference manual states:
+"The EPWM period is determined by (MOD + 0001h) ..." So the value that
+is written to the MOD register must therefore be one less than the
+calculated period length. Return -EINVAL if the calculated length is
+already zero.
+A correct MODULO value is particularly relevant if the PWM has to output
+a high frequency due to a low period value.
 
-Instead, add a WARN_ON_ONCE() to trigger such cases and return
-without doing any precalculation.
-
-Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pwm/pwm-imx-tpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-+++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-@@ -1789,6 +1789,9 @@ static void tpg_precalculate_line(struct
- 	unsigned p;
- 	unsigned x;
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -108,7 +108,9 @@ static int pwm_imx_tpm_round_state(struc
+ 	p->prescale = prescale;
  
-+	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
-+		return;
-+
- 	switch (tpg->pattern) {
- 	case TPG_PAT_GREEN:
- 		contrast = TPG_COLOR_100_RED;
+ 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
+-	p->mod = period_count;
++	if (period_count == 0)
++		return -EINVAL;
++	p->mod = period_count - 1;
+ 
+ 	/* calculate real period HW can support */
+ 	tmp = (u64)period_count << prescale;
 
 
 
