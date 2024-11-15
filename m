@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-93116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B4D9CD768
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB2A9CD7D7
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3078FB259BE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FFE0B25863
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C5B18871E;
-	Fri, 15 Nov 2024 06:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977EC18785C;
+	Fri, 15 Nov 2024 06:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjmIyW1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+O5HtpI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC8518785C;
-	Fri, 15 Nov 2024 06:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B71D126C17;
+	Fri, 15 Nov 2024 06:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652859; cv=none; b=iHf9VebhYx74FDbN7NLKusach2L6ur4rWN6d+UN/eAaRToBbUFz8bamZcv28Sdcj+25cO7EB77dziKRUSP+4rqRQ3S4a1mHSaHG7By6kMXhIhpREQDsyKVDl9sAr5LnEyGQSHY/LF3Kbuqv57MFXq9tPtYdz/ivj2RuPTTyXdyA=
+	t=1731653100; cv=none; b=Uur3a3LavgABUlBM/4DyPy2hlFz7n6uKqQjHc5nQrFFIMuj58N/KnfUzVX3oKc6d0A5otT3glYCHFCyQnPlXTgzzH0z8428675H/f6EzHjak4fZ0v8iKCQvOUg0SoB9gtSDcuzgjaQKjZi33X+EEJSH83/AdRdZe6Y3o2NknsDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652859; c=relaxed/simple;
-	bh=aOZnyFqc06QlEIkc4ijEj/qAY17Oa/fOqGf6TPbJJ1Q=;
+	s=arc-20240116; t=1731653100; c=relaxed/simple;
+	bh=8uWpb6ICf8nkQBmDb6jzAXUPx6yDtPQKAd1BkaZLPYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUGz6sufeTx9KlKXokqT4rizkzqEG8wJgrdRwsBlwsDsXHD+mkAG2zf3JkG6NZi/AP7qkVyAbIdWnQJYuzQ8F1TbEYOUcSCAKX35L3yMyK+XdLhjUxFq+TLaWHzeHWBmilmGV79gH3UzCJh4Dq4P+wizgrB9Um1tHMgid+B0JIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjmIyW1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574CAC4CECF;
-	Fri, 15 Nov 2024 06:40:58 +0000 (UTC)
+	 MIME-Version; b=hzbsTEYcRhGMi3777lmciEfE518ghhOTHbcZ+JRoeHIYCVoveFYxFz/86SLSLZRF63IbGCYZmqkje9mvYqIW20WLbmaV6GTKSGMUfWqEM55dEG8VAyIs0kv/Wjgtau9VDzs4WqiSou10RMHK7aNulexk/rJD3jXXrMDadU4b/dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+O5HtpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF648C4CECF;
+	Fri, 15 Nov 2024 06:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652858;
-	bh=aOZnyFqc06QlEIkc4ijEj/qAY17Oa/fOqGf6TPbJJ1Q=;
+	s=korg; t=1731653100;
+	bh=8uWpb6ICf8nkQBmDb6jzAXUPx6yDtPQKAd1BkaZLPYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjmIyW1B4QSlRuiK9HjCg3QM8d0hmEOvzN0zV4V+qfZorfN4HfVIZbarEkZMA3RUF
-	 oGj/5skn69t0zFiCmrdPWlmhDPMxYy4sj1LfIMhuKoZzfjAgy4CMA7LaiPWQ0d+FKm
-	 jA0q7xVDjk17vp/o98X4kC4KAaBfpM+txdy92Nko=
+	b=B+O5HtpIg8r6cCWVLx0GOlJ+e1qnP6w6fW/Z5uqG8j5Vj4O5fJnsjlWlu1Wp43+g8
+	 ytkzLYw7KusN4T5k1rWLe/tFbEaThAdYYjonnoLqwQUsADPDAdtjgCKh3ZBpZzbvo0
+	 Rj1Gx77118tPxNTErYfxhHzuE5FnodM0dDRRv7oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chen Ridong <chenridong@huawei.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/52] security/keys: fix slab-out-of-bounds in key_task_permission
+Subject: [PATCH 5.4 10/66] security/keys: fix slab-out-of-bounds in key_task_permission
 Date: Fri, 15 Nov 2024 07:37:19 +0100
-Message-ID: <20241115063723.083829420@linuxfoundation.org>
+Message-ID: <20241115063723.214326698@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -152,10 +152,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index e8f2366021ea3..0f414a114729a 100644
+index 5ca620d31cd30..5ec89db5a7c1b 100644
 --- a/security/keys/keyring.c
 +++ b/security/keys/keyring.c
-@@ -739,8 +739,11 @@ static bool search_nested_keyrings(struct key *keyring,
+@@ -772,8 +772,11 @@ static bool search_nested_keyrings(struct key *keyring,
  	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
  		ptr = READ_ONCE(node->slots[slot]);
  
