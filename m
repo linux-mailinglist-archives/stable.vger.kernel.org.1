@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-93387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566A09CD8FA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62159CD7B6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C528FB26D16
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 525DE1F22F89
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D9185949;
-	Fri, 15 Nov 2024 06:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8C31891A8;
+	Fri, 15 Nov 2024 06:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enogW9Zq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcR9t8aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429B2BB1B;
-	Fri, 15 Nov 2024 06:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95E918785C;
+	Fri, 15 Nov 2024 06:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653750; cv=none; b=u+xP5JA80HWTMTR90HTWdBwfYWLOtE6FKJpJ/rc9ujJYBWrkbEfj7fkulNmCaSCDccX95NISVBUZ7Ylq4uvi+PCsgXq6RnfKNksx5u1/GjYqX0BcNCc7rD0CvfLkPEMhca+0d9o2LhzxSP7YuvYLnSsQgRPA7Gwk1yuwsRqyb8M=
+	t=1731653027; cv=none; b=bVzfuTqznkSyLzrm19OKywxkSHSog6tqZxxIktZpQlMS5SYeKYbSWmDmRlA8x5IjjWXPd4Q5ZES8FgAhCQzDPTin1oFoCLjLn8I7yF6Q+0YJj6w/C9mykLP/ptZkgCGntePFkbcdmF+QaTCazclU5quDh5M/Svq9N6iGog/FB7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653750; c=relaxed/simple;
-	bh=DFDG3ATqfU/BfIYpJQ1xI97BcbS5PiWN+0ZIUU98r3U=;
+	s=arc-20240116; t=1731653027; c=relaxed/simple;
+	bh=aE2yc7O4MQgHJkjdyjrGmE1PC6YiekhHx9H8piupe+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJ5r7O6/j6SYLPrvqyrPzqcG+Qwyy9J2xW5LIuQ1TKYFJkSvExRaO/xJGkZArhpcNYGu7LxlJuH6lmukVqYqJGjSgrFnSGkPY36+BGQcVrSqlaoTuC/6MP6RoamZ+KmG6sutfd1/PE1m3eBQzXd7fWF5wX42iQdZLYLJJwnGL8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enogW9Zq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E66C4CECF;
-	Fri, 15 Nov 2024 06:55:50 +0000 (UTC)
+	 MIME-Version; b=pAoMcow7CiBPaB0eGw0ErvqMQc4xSRRuMyQafBxCnmePpW4TcXdE0sFfzJ+bux7Gn3jFH47Q2cBom3D6SA0L+wVD5jRNnOrtMfsYbC68CVX0hArQKmbw8+ZHvTgoZdDyLuLKfd46CzSi4YlgDf+qGUY8JI5qql292ZwaAZ43km0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcR9t8aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D225C4CECF;
+	Fri, 15 Nov 2024 06:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653750;
-	bh=DFDG3ATqfU/BfIYpJQ1xI97BcbS5PiWN+0ZIUU98r3U=;
+	s=korg; t=1731653027;
+	bh=aE2yc7O4MQgHJkjdyjrGmE1PC6YiekhHx9H8piupe+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enogW9ZqLKWWyLohAoxz9uSMbs3P6kCNELRhBVVmCSIzHieO39fXRGA0LmaEqfG37
-	 CMF4co3Qd3YfBrUW6YOvHpGseAD2gtp25YOvnwGOu3JX3WotTeOoR5RREUqeCQ0nnB
-	 aM8hOTNOSS0poeRyEp/2RV1KhzwcX9wZ+l2zqu4I=
+	b=TcR9t8aZ0iquXg2MINBNM44sLYqg5V7LwGnf4+Ynkb4TI0IjsabfAQ1bB0ug6bz0s
+	 ZhuV/zRyuVzGXDLcSKucVN9iN0BUsxMNp6WtHqIKQxFgklhycpOuHx2WTf/8bWDThO
+	 jOhBKpQWURQ0WeH4SNrm2DqHCq0ZIvct7npAWpgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Klaus Goger <klaus.goger@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/82] arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 5.4 32/66] nfs: Fix KMSAN warning in decode_getfattr_attrs()
 Date: Fri, 15 Nov 2024 07:37:41 +0100
-Message-ID: <20241115063725.724080527@linuxfoundation.org>
+Message-ID: <20241115063724.001569823@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 5ed96580568c4f79a0aff11a67f10b3e9229ba86 ]
+commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
 
-All Theobroma boards use a ti,amc6821 as fan controller.
-It normally runs in an automatically controlled way and while it may be
-possible to use it as part of a dt-based thermal management, this is
-not yet specified in the binding, nor implemented in any kernel.
+Fix the following KMSAN warning:
 
-Newer boards already don't contain that #cooling-cells property, but
-older ones do. So remove them for now, they can be re-added if thermal
-integration gets implemented in the future.
+CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
+Tainted: [B]=BAD_PAGE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+=====================================================
+=====================================================
+BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_generic+0x806/0xb00
+ nfs4_xdr_dec_getattr+0x1de/0x240
+ rpcauth_unwrap_resp_decode+0xab/0x100
+ rpcauth_unwrap_resp+0x95/0xc0
+ call_decode+0x4ff/0xb50
+ __rpc_execute+0x57b/0x19d0
+ rpc_execute+0x368/0x5e0
+ rpc_run_task+0xcfe/0xee0
+ nfs4_proc_getattr+0x5b5/0x990
+ __nfs_revalidate_inode+0x477/0xd00
+ nfs_access_get_cached+0x1021/0x1cc0
+ nfs_do_access+0x9f/0xae0
+ nfs_permission+0x1e4/0x8c0
+ inode_permission+0x356/0x6c0
+ link_path_walk+0x958/0x1330
+ path_lookupat+0xce/0x6b0
+ filename_lookup+0x23e/0x770
+ vfs_statx+0xe7/0x970
+ vfs_fstatat+0x1f2/0x2c0
+ __se_sys_newfstatat+0x67/0x880
+ __x64_sys_newfstatat+0xbd/0x120
+ x64_sys_call+0x1826/0x3cf0
+ do_syscall_64+0xd0/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-There are two further occurences in v6.12-rc in px30-ringneck and
-rk3399-puma, but those already get removed by the i2c-mux conversion
-scheduled for 6.13 . As the undocumented property is in the kernel so
-long, I opted for not causing extra merge conflicts between 6.12 and 6.13
+The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
+decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
+initialized.
 
-Fixes: d99a02bcfa81 ("arm64: dts: rockchip: add RK3368-uQ7 (Lion) SoM")
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Cc: Klaus Goger <klaus.goger@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-7-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the issue by initializing fattr->mdsthreshold to NULL in
+nfs_fattr_init().
+
+Cc: stable@vger.kernel.org # v3.5.x
+Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ fs/nfs/inode.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-index 24d28be4736cf..843988ecaf91d 100644
---- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-@@ -56,7 +56,6 @@
- 			fan: fan@18 {
- 				compatible = "ti,amc6821";
- 				reg = <0x18>;
--				#cooling-cells = <2>;
- 			};
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1494,6 +1494,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
+ 	fattr->gencount = nfs_inc_attr_generation_counter();
+ 	fattr->owner_name = NULL;
+ 	fattr->group_name = NULL;
++	fattr->mdsthreshold = NULL;
+ }
+ EXPORT_SYMBOL_GPL(nfs_fattr_init);
  
- 			rtc_twi: rtc@6f {
--- 
-2.43.0
-
 
 
 
