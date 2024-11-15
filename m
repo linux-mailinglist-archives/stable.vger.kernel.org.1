@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-93270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB399CD84B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66A99CD8ED
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12BB7283AAD
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FF3E1F213FE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4023181334;
-	Fri, 15 Nov 2024 06:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B491898E9;
+	Fri, 15 Nov 2024 06:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/UT+FNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njy0Btv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6264329A9;
-	Fri, 15 Nov 2024 06:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4258E15FD13;
+	Fri, 15 Nov 2024 06:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653360; cv=none; b=iqeQMGZTB2/xYc90LmT/0rgIc8vvxCuCA1Iyh86WZ2CQfMvWejSzUHI9zxc20cu9CcSlVoYAzV07wwfYlfckuS+3llPz/gIs66gQpFDXYFRuroSl9fUbHMYNJjO9fBzxcGWrKV4yi3lIDq9JcQg07atqlC4jXzwmwyUtCZEp5m0=
+	t=1731653716; cv=none; b=RKz5KnIoUipyqJj+vIQmM3BjBwTMv7kWGyJBiChPIFUjgVPgGUSe9zI4TAOvx3nxVjkPgxLlv715cKwWaEj+dvRVZcspRrbpBAc6qh/HKRRswcT/wwMEwCqC23RNhfqAx/nEsiREqoFmCgWsPhEMFTRlsiHcbuuJw+fycVckPh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653360; c=relaxed/simple;
-	bh=n8HWbi/wLacv5dymCVE8HftwRikYKwTpKuSRxAMxlp0=;
+	s=arc-20240116; t=1731653716; c=relaxed/simple;
+	bh=Pi/oCAd5f/4jxvSoSSy486TrUS+dGv+h/eYO5jzZWq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ful9ZUnrGr5MA5ADMYNRQPJdja5kt8Ww/1XpBf6GrERzBN47PpHnaLqrU1mY69HVXcyec6+X5h012+oBN4n1DgwJikLJ+MAVkEq0UykgXHjpU4ABRQaE2lwfYWSsvUYnMVVuKhRLnr3N7nxmz5lJkOtHdtlzSPdY0fcRg0KIW60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/UT+FNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D4AC4CECF;
-	Fri, 15 Nov 2024 06:49:19 +0000 (UTC)
+	 MIME-Version; b=rb8gRrDzptH44sG8onYPRRBANIovXib99hOn5zyidJxDW8+SE+FHNJxGEi1rFmYwcfrwkBvGuE5kL34VmHqOtzDHOocrkwZ9x00eeKu4cKMNsabFK5lJEt4/yrig+J6AXyAmrYX0K25KGd8mwJAFtWLyKdePIVfypqI0KXeveqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njy0Btv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23FEC4CED0;
+	Fri, 15 Nov 2024 06:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653360;
-	bh=n8HWbi/wLacv5dymCVE8HftwRikYKwTpKuSRxAMxlp0=;
+	s=korg; t=1731653716;
+	bh=Pi/oCAd5f/4jxvSoSSy486TrUS+dGv+h/eYO5jzZWq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/UT+FNvppPo3qMGvGIaan2d9G6crsREXGuV9pJELRDsELpbOuoDhi2Clbg2kJv8K
-	 9XeeZwscMkgaCj1acHhtR3XhoiZa5OmRZ1wYir2dwxZBMKQUfF32b/NPg0O1NEnwwI
-	 esrPqrOS/jvCMmeEZieE45h0MwRRBp0SAHPnLiB8=
+	b=njy0Btv/p171Scmq2auJ4aAHYSELOE5KRT9+erpmaIvE3ofSDUJ7Nc3GbwsbWb/zI
+	 jB4CR6HgmU91zFpthTDXLPj3aRLtN21+NVusfE39Qsh98HeGTBgIIWlE57+ba4bTBF
+	 c9OOQIszz4QvDc4hb9Ou6LJ/zslrN/htL+PzQPA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Szymon Morek <szymon.morek@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 30/63] drm/xe/query: Increase timestamp width
+Subject: [PATCH 5.10 16/82] net: hns3: fix kernel crash when uninstalling driver
 Date: Fri, 15 Nov 2024 07:37:53 +0100
-Message-ID: <20241115063727.007442130@linuxfoundation.org>
+Message-ID: <20241115063726.149438947@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit 477d665e9b6a1369968383f50c688d56b692a155 ]
+[ Upstream commit df3dff8ab6d79edc942464999d06fbaedf8cdd18 ]
 
-Starting with Xe2 the timestamp is a full 64 bit counter, contrary to
-the 36 bit that was available before. Although 36 should be sufficient
-for any reasonable delta calculation (for Xe2, of about 30min), it's
-surprising to userspace to get something truncated. Also if the
-timestamp being compared to is coming from the GPU and the application
-is not careful enough to apply the width there, a delta calculation
-would be wrong.
+When the driver is uninstalled and the VF is disabled concurrently, a
+kernel crash occurs. The reason is that the two actions call function
+pci_disable_sriov(). The num_VFs is checked to determine whether to
+release the corresponding resources. During the second calling, num_VFs
+is not 0 and the resource release function is called. However, the
+corresponding resource has been released during the first invoking.
+Therefore, the problem occurs:
 
-Extend it to full 64-bits starting with Xe2.
+[15277.839633][T50670] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+...
+[15278.131557][T50670] Call trace:
+[15278.134686][T50670]  klist_put+0x28/0x12c
+[15278.138682][T50670]  klist_del+0x14/0x20
+[15278.142592][T50670]  device_del+0xbc/0x3c0
+[15278.146676][T50670]  pci_remove_bus_device+0x84/0x120
+[15278.151714][T50670]  pci_stop_and_remove_bus_device+0x6c/0x80
+[15278.157447][T50670]  pci_iov_remove_virtfn+0xb4/0x12c
+[15278.162485][T50670]  sriov_disable+0x50/0x11c
+[15278.166829][T50670]  pci_disable_sriov+0x24/0x30
+[15278.171433][T50670]  hnae3_unregister_ae_algo_prepare+0x60/0x90 [hnae3]
+[15278.178039][T50670]  hclge_exit+0x28/0xd0 [hclge]
+[15278.182730][T50670]  __se_sys_delete_module.isra.0+0x164/0x230
+[15278.188550][T50670]  __arm64_sys_delete_module+0x1c/0x30
+[15278.193848][T50670]  invoke_syscall+0x50/0x11c
+[15278.198278][T50670]  el0_svc_common.constprop.0+0x158/0x164
+[15278.203837][T50670]  do_el0_svc+0x34/0xcc
+[15278.207834][T50670]  el0_svc+0x20/0x30
 
-v2: Expand width=64 to media gt, as it's just a wrong tagging in the
-spec - empirical tests show it goes beyond 36 bits and match the engines
-for the main gt
+For details, see the following figure.
 
-Bspec: 60411
-Cc: Szymon Morek <szymon.morek@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241011035618.1057602-1-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 9d559cdcb21f42188d4c3ff3b4fe42b240f4af5d)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+     rmmod hclge              disable VFs
+----------------------------------------------------
+hclge_exit()            sriov_numvfs_store()
+  ...                     device_lock()
+  pci_disable_sriov()     hns3_pci_sriov_configure()
+                            pci_disable_sriov()
+                              sriov_disable()
+    sriov_disable()             if !num_VFs :
+      if !num_VFs :               return;
+        return;                 sriov_del_vfs()
+      sriov_del_vfs()             ...
+        ...                       klist_put()
+        klist_put()               ...
+        ...                     num_VFs = 0;
+      num_VFs = 0;        device_unlock();
+
+In this patch, when driver is removing, we get the device_lock()
+to protect num_VFs, just like sriov_numvfs_store().
+
+Fixes: 0dd8a25f355b ("net: hns3: disable sriov before unload hclge layer")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241101091507.3644584-1-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_query.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hnae3.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
-index 4e01df6b1b7a1..3a30b12e22521 100644
---- a/drivers/gpu/drm/xe/xe_query.c
-+++ b/drivers/gpu/drm/xe/xe_query.c
-@@ -161,7 +161,11 @@ query_engine_cycles(struct xe_device *xe,
- 			  cpu_clock);
- 
- 	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
--	resp.width = 36;
-+
-+	if (GRAPHICS_VER(xe) >= 20)
-+		resp.width = 64;
-+	else
-+		resp.width = 36;
- 
- 	/* Only write to the output fields of user query */
- 	if (put_user(resp.cpu_timestamp, &query_ptr->cpu_timestamp))
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.c b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+index 67b0bf310daaa..9a63fbc694083 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hnae3.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+@@ -25,8 +25,11 @@ void hnae3_unregister_ae_algo_prepare(struct hnae3_ae_algo *ae_algo)
+ 		pci_id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
+ 		if (!pci_id)
+ 			continue;
+-		if (IS_ENABLED(CONFIG_PCI_IOV))
++		if (IS_ENABLED(CONFIG_PCI_IOV)) {
++			device_lock(&ae_dev->pdev->dev);
+ 			pci_disable_sriov(ae_dev->pdev);
++			device_unlock(&ae_dev->pdev->dev);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(hnae3_unregister_ae_algo_prepare);
 -- 
 2.43.0
 
