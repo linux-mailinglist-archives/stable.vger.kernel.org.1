@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70E99CD980
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC5C9CD8CB
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CCAD283E7B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1BB6B22920
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BA7187FE8;
-	Fri, 15 Nov 2024 07:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E152187848;
+	Fri, 15 Nov 2024 06:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j69kq6me"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jw0coeDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C55185949;
-	Fri, 15 Nov 2024 07:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CCF2BB1B;
+	Fri, 15 Nov 2024 06:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654019; cv=none; b=LrbjNmT5+lTVk0vdx4SgyIYY9+D0GbrJ8jZmCIXLG59cHWLxpdTqrgh/Nc04BdNXo55LVvQxKi0ePMZxFpZV1YsNgOnb1rRT1GhZ5SddYjT6pAV9TFx9YsT4N+1Uj6aN0uyEOWZWPBatufEupm1hDJvhlBnkAae0cBNAPotT7vM=
+	t=1731653658; cv=none; b=gLBxVyk7USU2bwtey3oM4Y6YNHCS+CA74HuD0/Gs/TPto15ckppoIVHCkQmioXYOK6i97IntII6SgN02735TwwLht9s5q2kp7rJp41aCEsaqwnYsPIKgog+GEZrt+3nTEH+EI7tqZl72/a33Lqip496b06cDp16koOyom+5c7+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654019; c=relaxed/simple;
-	bh=0m6mV5T+uKav4jseUtG2ikeMIfZyyJzj/Y115fc3tMo=;
+	s=arc-20240116; t=1731653658; c=relaxed/simple;
+	bh=Uxr+JFCWmfQJuP+9pIwQfQS/s+15YDdQnsWhRlUQXEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yd6+ZaXYKmY0nnD7awCDr6/dQWxyxHl6T4IJ/xTk7J0xx9ZLAbBjgJu5VtRor0SWn3qlEjcI5SBRx1KtCqwunNF/VbWMEbcng7uG3uxHubctHbW0BnZE7w9ElA8qTWFVeO7wOkTS+UNTDVbwyp8serDVQuKaUBl3hcfnKD1uco4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j69kq6me; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE07DC4CECF;
-	Fri, 15 Nov 2024 07:00:18 +0000 (UTC)
+	 MIME-Version; b=FOy+aOFKGk0w2CfMSgRVDz6VJjv2Zsxf+IPxVISHA5V5Y+93tc4tjgNYsozQig7Id02SJfrsIlGpqIj7O2ameLfL4lZZIINnwhEKuhWj8CNE+ugpR+B0DbUufxSoHLulTb9v/XbrHHyN94mUmgAzDiYA7WbSe8V5XLKWjt4+07A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jw0coeDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489FAC4CECF;
+	Fri, 15 Nov 2024 06:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654019;
-	bh=0m6mV5T+uKav4jseUtG2ikeMIfZyyJzj/Y115fc3tMo=;
+	s=korg; t=1731653657;
+	bh=Uxr+JFCWmfQJuP+9pIwQfQS/s+15YDdQnsWhRlUQXEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j69kq6mecjlFMwL+L0ZUEark4wzKhikOSE3zzPsthe6RME/hzhJ2Sq3BZMy3n+ulM
-	 LNaL7nncDgpCHOjTRhqCD1b+HQtoY1OvmivQ8yWfYQc5jcl29vCF9OX7fDLFXdfaPg
-	 nrsJD3gFHSwHt5rTSys2zb97YXBp8Qj53st5y6fA=
+	b=jw0coeDAQ7uV/pCNaJABHluAfuwZHBOrkgAi0Fsx6LNxyPTybvzFNgU8GsAe3s9H5
+	 todgK5VSkE+47lYOXVzYgvRxyMKgwhNWRH23gi+cWNhrkCPVnhcw/DMoyNHh5NFGR2
+	 av0dCnmnmmimX+UX7wxZ+2Vw0RwF2cviYwla0HiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SurajSonawane2415 <surajsonawane0215@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/22] block: Fix elevator_get_default() checking for NULL q->tag_set
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Omar Sandoval <osandov@fb.com>
+Subject: [PATCH 6.1 39/39] 9p: fix slab cache name creation for real
 Date: Fri, 15 Nov 2024 07:38:49 +0100
-Message-ID: <20241115063721.298354328@linuxfoundation.org>
+Message-ID: <20241115063724.016298017@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SurajSonawane2415 <surajsonawane0215@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit b402328a24ee7193a8ab84277c0c90ae16768126 ]
+commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
 
-elevator_get_default() and elv_support_iosched() both check for whether
-or not q->tag_set is non-NULL, however it's not possible for them to be
-NULL. This messes up some static checkers, as the checking of tag_set
-isn't consistent.
+This was attempted by using the dev_name in the slab cache name, but as
+Omar Sandoval pointed out, that can be an arbitrary string, eg something
+like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
+if a filename contains a slash.
 
-Remove the checks, which both simplifies the logic and avoids checker
-errors.
+So just make it use a sequence counter, and make it an atomic_t to avoid
+any possible races or locking issues.
 
-Signed-off-by: SurajSonawane2415 <surajsonawane0215@gmail.com>
-Link: https://lore.kernel.org/r/20241007111416.13814-1-surajsonawane0215@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
+Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
+Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/elevator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/9p/client.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/block/elevator.c b/block/elevator.c
-index 1b5e57f6115f3..a98e8356f1b87 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -620,7 +620,7 @@ int elevator_switch_mq(struct request_queue *q,
- static inline bool elv_support_iosched(struct request_queue *q)
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -967,6 +967,7 @@ error:
+ struct p9_client *p9_client_create(const char *dev_name, char *options)
  {
- 	if (!queue_is_mq(q) ||
--	    (q->tag_set && (q->tag_set->flags & BLK_MQ_F_NO_SCHED)))
-+	    (q->tag_set->flags & BLK_MQ_F_NO_SCHED))
- 		return false;
- 	return true;
- }
-@@ -631,7 +631,7 @@ static inline bool elv_support_iosched(struct request_queue *q)
-  */
- static struct elevator_type *elevator_get_default(struct request_queue *q)
- {
--	if (q->tag_set && q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
-+	if (q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
- 		return NULL;
+ 	int err;
++	static atomic_t seqno = ATOMIC_INIT(0);
+ 	struct p9_client *clnt;
+ 	char *client_id;
+ 	char *cache_name;
+@@ -1027,7 +1028,8 @@ struct p9_client *p9_client_create(const
+ 	if (err)
+ 		goto close_trans;
  
- 	if (q->nr_hw_queues != 1 &&
--- 
-2.43.0
-
+-	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	cache_name = kasprintf(GFP_KERNEL,
++		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
+ 	if (!cache_name) {
+ 		err = -ENOMEM;
+ 		goto close_trans;
 
 
 
