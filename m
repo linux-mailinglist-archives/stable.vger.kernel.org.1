@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0509CD8CA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89349CD940
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 371E8B2289A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808F21F2348C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2AE18734F;
-	Fri, 15 Nov 2024 06:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878901891A8;
+	Fri, 15 Nov 2024 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gwldn6UC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/yiYJMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E6A14EC77;
-	Fri, 15 Nov 2024 06:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4641317DFFD;
+	Fri, 15 Nov 2024 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653654; cv=none; b=GwrIlwwhXpaRvzscnT1nG0BOtngxb0N1h7u6L26TAZYyYMIaWuF9Pb4aFdEGwct5fotAPTDfIVSV0vkLcyQQ82AsJsY3x9ejxRrRBZUotokRSxkviHLKxhasG4rnBl2VIP8O7QMJmQLz/w2TDRZPYPGNEfkF/CHOuXIJnt7dwms=
+	t=1731653905; cv=none; b=bSzJY5lTfzY3zvCNq1hB/e5wwjfTyxnLb0zkNVAr1KldN5qwPNaIWsCJOFoB86/OjKZ9h9dMfFoqLNeDslPj3uMDoyW9V5J9N4gIa351KomfYuJM///RA2SheNEefzljk7aRKZUunTvQOjGGI481hxnEL/9iSFtekOmPLyhneJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653654; c=relaxed/simple;
-	bh=H5YW22/ZRxJvQIFmsV//dXRWeTy8T0wMEqDJltULYyI=;
+	s=arc-20240116; t=1731653905; c=relaxed/simple;
+	bh=D24Z1Sy2AEAWJrWnh+LEY4R3vv7RAPm+EBSvTwFyeyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ax40BgjjKtyGIE/xtJRKSzX7EvLyvNm5rUjMaPAabvSXt9cULZFI2VuIYCOkxAUv67fXhyRWotViEUeRj0zRx3/6RbJUCpmLvK3Y5sw5RwQoqMp/P271WsACbaWAa5XR8xVqqvIE6e1CqDSKks0SBI4toXJXEs1NPYiCNZ2q2uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gwldn6UC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC75C4CECF;
-	Fri, 15 Nov 2024 06:54:13 +0000 (UTC)
+	 MIME-Version; b=tJdiP3JvfykiQvYNROhuo7eUUu0VSOI+e9DOEHVrYBsEkmIi8nsCnKRZGezTeRtZItSek89/AA+klrXCZdrspv8S17+Yi3uh06Vu5hT8WJNUCPql32vZbItY32Q2tXRwKZjaOmxW3FCQtKd5wlaXo7cxwcvdjME0zjbCi2RMU0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/yiYJMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA489C4CECF;
+	Fri, 15 Nov 2024 06:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653654;
-	bh=H5YW22/ZRxJvQIFmsV//dXRWeTy8T0wMEqDJltULYyI=;
+	s=korg; t=1731653905;
+	bh=D24Z1Sy2AEAWJrWnh+LEY4R3vv7RAPm+EBSvTwFyeyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gwldn6UCmILnnDP+Qo+OOx8uugd/RqKkO5BwBN9J7FmPTCTmjKeiEDsBY84Jhmw+D
-	 kpU+qSrK+HDJulbElcsANA8dFTWoTGqdIeET7jl23O25jxyI92dhwku3XDgFBHIdtN
-	 LEW1+mMOl198uFQgsFQy7zyKhQy7uRqVV4Xfqa+I=
+	b=J/yiYJMFSH6rQabO9ExnzgvcYYJPA6wa21M1ADfjJS+VjsTVuDzbI8VUXvPvd1mp9
+	 X+0Ba8NIvxd2qvkgpNgGGoh7AoTU/tfGhuYRXoeSrm35wggK7vbKcVadSJpIsn33hL
+	 gX/1umbFpWUZOUPqrpL1xyzdecAOunzOC0qmF2yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 38/39] fs/ntfs3: Fix general protection fault in run_is_mapped_full
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 71/82] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
 Date: Fri, 15 Nov 2024 07:38:48 +0100
-Message-ID: <20241115063723.980833158@linuxfoundation.org>
+Message-ID: <20241115063728.108743953@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit a33fb016e49e37aafab18dc3c8314d6399cb4727 upstream.
+[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
 
-Fixed deleating of a non-resident attribute in ntfs_create_inode()
-rollback.
+The behavior of HONOR MagicBook Art 14 touchpad is not consistent
+after reboots, as sometimes it reports itself as a touchpad, and
+sometimes as a mouse.
 
-Reported-by: syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
+workaround to force set feature in mt_set_input_mode() for such special touchpad
+device.
+
+[jkosina@suse.com: reword changelog a little bit]
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1646,6 +1646,15 @@ out7:
- 			  le16_to_cpu(new_de->key_size), sbi);
- 	/* ni_unlock(dir_ni); will be called later. */
- out6:
-+	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
-+	if (attr && attr->non_res) {
-+		/* Delete ATTR_EA, if non-resident. */
-+		struct runs_tree run;
-+		run_init(&run);
-+		attr_set_size(ni, ATTR_EA, NULL, 0, &run, 0, NULL, false, NULL);
-+		run_close(&run);
-+	}
-+
- 	if (rp_inserted)
- 		ntfs_remove_reparse(sbi, IO_REPARSE_TAG_SYMLINK, &new_de->ref);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e7b047421f3d9..f36ddcb4e2ef2 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1967,6 +1967,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			0x347d, 0x7853) },
  
++	/* HONOR MagicBook Art 14 touchpad */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x35cc, 0x0104) },
++
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+-- 
+2.43.0
+
 
 
 
