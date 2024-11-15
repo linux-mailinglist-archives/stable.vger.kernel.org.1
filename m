@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B4F9CD90B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4559CD838
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D44C7B276FC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D78B71F213DC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84595188CA9;
-	Fri, 15 Nov 2024 06:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BCDEAD0;
+	Fri, 15 Nov 2024 06:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLwTGsHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB2Ca4q5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D02188015;
-	Fri, 15 Nov 2024 06:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C7B153800;
+	Fri, 15 Nov 2024 06:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653785; cv=none; b=DK5c2fqsOlG9NLR/yW5BxdNtQwdG7wZUm60TI/15HI1PuPARR0RuyL5/2wsdTMEI9Dwqii1UNGUBUWkAOuqPLB9TpxEeFhFD9nh2HTlgSub06SO/Sqc5kOqYrp+DzTEhfL1fM1b10T/CC9V8SLOrMJWhoSGMxnbqJ4sAZRaly2U=
+	t=1731653315; cv=none; b=kozjZz0AJkBq1BxjgkVHLRDM5Trh7wLMg2/FAki4zk/+7xETbS9aq/5QB2lq9qdYiqtqsv9zlK0ozQPmdk/nFIgyRAajbndCrV0y+Kh4SxEmSsurP3tyY/+0htBfWdE5iMQ70hOsImya8IZwcwzeC/kVkR+25JLIW8sbrzuxV5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653785; c=relaxed/simple;
-	bh=WGeNGJZShgQTRJ3xNCxfGWqAmaf29I7zer13DV3GHDg=;
+	s=arc-20240116; t=1731653315; c=relaxed/simple;
+	bh=P+gYs0SVcDlR5PBAW7tXIDXCsH4Okj95AuqJuKBlbwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhXWeCb5kRQxM497/O9xhpgHWduaMyrnQOBE6x8P9pRyi774d2uo8LjmQA06vn9M50m+6gLR87jqbR6OsJeDnrEZJuhLFwVhJjoAi0Xe/m4sae/x1/eyjfRXU1f/fKfqOyWFGIfoHIDcI4vdeaLpN+26D2mSbzp0Upm7Pkkdu18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLwTGsHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27B3C4CECF;
-	Fri, 15 Nov 2024 06:56:24 +0000 (UTC)
+	 MIME-Version; b=nMGiTLfQbn0LgqMLV3fereJjSdDFBSdpjYiKLVxQ1OUtvjx4axCkaw+xIMbB4ytX9/YtjIGMk525Mg341RVZFgoy7piccV/9UjKQ4N0DVhZ1ptWXd4HQ+1Wp7R+z5TcppVMRVWhpf7pYvPk41azFhnMrlwUbnW03FUcEmW6jJew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB2Ca4q5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE02C4CECF;
+	Fri, 15 Nov 2024 06:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653785;
-	bh=WGeNGJZShgQTRJ3xNCxfGWqAmaf29I7zer13DV3GHDg=;
+	s=korg; t=1731653315;
+	bh=P+gYs0SVcDlR5PBAW7tXIDXCsH4Okj95AuqJuKBlbwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLwTGsHBwpXiZqxIjWXofKvCVYSsFlXqQ/Ggs5v55t3CPKReYyZ4IpdF41DBUZA91
-	 lvXUEblDHN9yVPvbAokLbDFzjfVPY033YsZITMcdaLNSfX0J4tjK6sbYmzHLKlm3lT
-	 XkQoyGStX1T6HlfD2XvMimNythETrtZrJbx7ZWis=
+	b=JB2Ca4q5nnFf+ExCBNePfrjlDMulVCh+Ri0wkD4hoxsVqaJncYAtPDg8nb8Ts9XOP
+	 jDacUaNDj0dxPSwFZtvSErxwQosG/qvTUodXbm3nsKyjscDciJB5Yh7w8mZu+yV7lO
+	 M531NhMtW5a3vlZcYHmHq61gGQDqWcu6wcAZsoGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.10 36/82] dm cache: correct the number of origin blocks to match the target length
+	Cyan Yang <cyan.yang@sifive.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 50/63] RISCV: KVM: use raw_spinlock for critical section in imsic
 Date: Fri, 15 Nov 2024 07:38:13 +0100
-Message-ID: <20241115063726.863793388@linuxfoundation.org>
+Message-ID: <20241115063727.717640319@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Cyan Yang <cyan.yang@sifive.com>
 
-commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
+[ Upstream commit 3ec4350d4efb5ccb6bd0e11d9cf7f2be4f47297d ]
 
-When creating a cache device, the actual size of the cache origin might
-be greater than the specified cache target length. In such case, the
-number of origin blocks should match the cache target length, not the
-full size of the origin device, since access beyond the cache target is
-not possible. This issue occurs when reducing the origin device size
-using lvm, as lvreduce preloads the new cache table before resuming the
-cache origin, which can result in incorrect sizes for the discard bitset
-and smq hotspot blocks.
+For the external interrupt updating procedure in imsic, there was a
+spinlock to protect it already. But since it should not be preempted in
+any cases, we should turn to use raw_spinlock to prevent any preemption
+in case PREEMPT_RT was enabled.
 
-Reproduce steps:
-
-1. create a cache device consists of 4096 origin blocks
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
-
-dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup suspend cache
-dmsetup suspend corig
-dmsetup suspend cdata
-dmsetup suspend cmeta
-dmsetup resume corig
-dmsetup resume cdata
-dmsetup resume cmeta
-dmsetup resume cache
-
-3. shutdown the cache, and check the number of discard blocks in
-   superblock. The value is expected to be 2048, but actually is 4096.
-
-dmsetup remove cache corig cdata cmeta
-dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
-
-Fix by correcting the origin_blocks initialization in cache_create and
-removing the unused origin_sectors from struct cache_args accordingly.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: c6b4fcbad044 ("dm: add cache target")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
+Reviewed-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Message-ID: <20240919160126.44487-1-cyan.yang@sifive.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |    8 ++++----
+ arch/riscv/kvm/aia_imsic.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2058,7 +2058,6 @@ struct cache_args {
- 	sector_t cache_sectors;
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index 0a1e859323b45..a8085cd8215e3 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -55,7 +55,7 @@ struct imsic {
+ 	/* IMSIC SW-file */
+ 	struct imsic_mrif *swfile;
+ 	phys_addr_t swfile_pa;
+-	spinlock_t swfile_extirq_lock;
++	raw_spinlock_t swfile_extirq_lock;
+ };
  
- 	struct dm_dev *origin_dev;
--	sector_t origin_sectors;
+ #define imsic_vs_csr_read(__c)			\
+@@ -622,7 +622,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+ 	 * interruptions between reading topei and updating pending status.
+ 	 */
  
- 	uint32_t block_size;
+-	spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
++	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
  
-@@ -2140,6 +2139,7 @@ static int parse_cache_dev(struct cache_
- static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
- 			    char **error)
- {
-+	sector_t origin_sectors;
- 	int r;
+ 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
+ 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
+@@ -630,7 +630,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+ 	else
+ 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
  
- 	if (!at_least_one_arg(as, error))
-@@ -2152,8 +2152,8 @@ static int parse_origin_dev(struct cache
- 		return r;
+-	spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
+ }
+ 
+ static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
+@@ -1051,7 +1051,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
  	}
+ 	imsic->swfile = page_to_virt(swfile_page);
+ 	imsic->swfile_pa = page_to_phys(swfile_page);
+-	spin_lock_init(&imsic->swfile_extirq_lock);
++	raw_spin_lock_init(&imsic->swfile_extirq_lock);
  
--	ca->origin_sectors = get_dev_size(ca->origin_dev);
--	if (ca->ti->len > ca->origin_sectors) {
-+	origin_sectors = get_dev_size(ca->origin_dev);
-+	if (ca->ti->len > origin_sectors) {
- 		*error = "Device size larger than cached device";
- 		return -EINVAL;
- 	}
-@@ -2462,7 +2462,7 @@ static int cache_create(struct cache_arg
- 
- 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
- 
--	origin_blocks = cache->origin_sectors = ca->origin_sectors;
-+	origin_blocks = cache->origin_sectors = ti->len;
- 	origin_blocks = block_div(origin_blocks, ca->block_size);
- 	cache->origin_blocks = to_oblock(origin_blocks);
- 
+ 	/* Setup IO device */
+ 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);
+-- 
+2.43.0
+
 
 
 
