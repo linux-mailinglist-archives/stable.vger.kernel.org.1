@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-93114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EDD9CD763
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865349CD793
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E3B428233F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDE92804D0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756E3188591;
-	Fri, 15 Nov 2024 06:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D33188722;
+	Fri, 15 Nov 2024 06:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/YnoOYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYrB1MSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7EE185924;
-	Fri, 15 Nov 2024 06:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760318734F;
+	Fri, 15 Nov 2024 06:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652852; cv=none; b=hbDCrx7HODqeMtXKac5uENfWgsIHAeka/z83w+NIkX0THMlddhfYRJ1VI9Bfa0kq2gYORFKpQxA7WnfCbgINXqnmnwLXY2687dbQb8EdLvw4Fn8WFlRB1dboawUTWw1/+PJud89YCZg+xBwJGsN5TxvTJy584wKD17QF/01IDTM=
+	t=1731652969; cv=none; b=ElWs/ygdC5I0URHMGSjhbJTc5SsnkDuLFyiWn5KyMntXtwai11Zex+a7hWU8DuL6SSTQOjOuAkPd7ME9fMtZKMmAlPxe5EHBkyOrkXR/SpBWOIfS6gD8Rio1RJrzK0OCAWX2ZylyutpWbxZ/0NT7yljq1TboCtviDMRpqIaLW4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652852; c=relaxed/simple;
-	bh=Ct+/DZ6qgM3eMythkataEdhWQmLNMEIj8YDQbNN0VxY=;
+	s=arc-20240116; t=1731652969; c=relaxed/simple;
+	bh=s6kvVdLLZu5obgnBPKvIMmVE9FLm3lcWz7o1E3PVfy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yj0F5Wndl74LzGimiS2VpCCGVdqeqj2/qQdELd4ycYInRvnN7OtX6C8WQpnnmtPWCFH2rL5ILhBrSBe0YySGQFQ1gi0JChXM4GFDmCeB3xhR9zaIA5dMlHY/8OVGTT1Fd2bBLqX4y7+tmF62IN3Hr9AyAZFe9WVPO8uh3K7dLGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/YnoOYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BFCC4CECF;
-	Fri, 15 Nov 2024 06:40:51 +0000 (UTC)
+	 MIME-Version; b=aQ8j2bjCxDjhWck1RNZdEfELyw+LWQ+7+VN7r/3joiiJfqCyfxR06YRuBdlrQmC/NuPnlNKFeQaAu2QsTeyT19KqP5RkfL4B+TIJdiD8ZjlHRv28XL+HxS+PaAYSulC/aAXLaP0VpQtAQH0H/vUWBSIYM2sASm5gJ9/d8BNejzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYrB1MSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26839C4CECF;
+	Fri, 15 Nov 2024 06:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652852;
-	bh=Ct+/DZ6qgM3eMythkataEdhWQmLNMEIj8YDQbNN0VxY=;
+	s=korg; t=1731652969;
+	bh=s6kvVdLLZu5obgnBPKvIMmVE9FLm3lcWz7o1E3PVfy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/YnoOYQIDXahZKRYpODXay+r9zgcAA/FQhhOZZo65Uuz4boctzwF0hm20WebwSPx
-	 PDkCZWvVsimMqhtTx6vhXWfXf5lm2aG9OvXq31DZES2gXmHwJAJdbdnwSKO83xeST3
-	 pe9AeqxOpTIzAQIWn+x2nUaYmDn2Zhhjxe+irSU8=
+	b=NYrB1MSKq0yZVwrUyJD6nDWFXcAInlk/V+HsXDdPDpnYhBeKnXnuzSuNCBQkk+l+D
+	 pq+nyW4av+YEJaTFG2ugmd49dDoGjMoBM0XUWCh7edDM7bMY7See7kWpQ/q3cmEG11
+	 O5b343tk6PPvL79V1Qc7I2JgeMhrjlUYPJ46xXjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/52] ARM: dts: rockchip: Fix the realtek audio codec on rk3036-kylin
+Subject: [PATCH 5.4 08/66] ARM: dts: rockchip: Fix the realtek audio codec on rk3036-kylin
 Date: Fri, 15 Nov 2024 07:37:17 +0100
-Message-ID: <20241115063723.011324514@linuxfoundation.org>
+Message-ID: <20241115063723.142246348@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/boot/dts/rk3036-kylin.dts b/arch/arm/boot/dts/rk3036-kylin.dts
-index cd109aebb7831..c7fda457e5a81 100644
+index 2ef47ebeb0cbe..e5bee30b35581 100644
 --- a/arch/arm/boot/dts/rk3036-kylin.dts
 +++ b/arch/arm/boot/dts/rk3036-kylin.dts
 @@ -300,8 +300,8 @@
