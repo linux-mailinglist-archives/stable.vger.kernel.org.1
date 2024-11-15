@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-93182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F859CD7CB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3419CD7CD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3CE5B252C6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47C928029E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0758118872A;
-	Fri, 15 Nov 2024 06:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6751D126C17;
+	Fri, 15 Nov 2024 06:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KqQPsrnv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oC0bLO+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B6418870B;
-	Fri, 15 Nov 2024 06:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21106188904;
+	Fri, 15 Nov 2024 06:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653069; cv=none; b=fcwWatKawRSkBRGs2cSQv3TxHkOMMmBcsTOdwkSfwzMdolwRQnJWxjUkgoOEXdyk0fVovQxKragFdQ1hTBhgb/yR4ENBPQTh1fDWP02JJcjcAoEZgLlgLlpoajfjyyf7mhwD0EssDgSEdDiNjZKYSluu/tCxEBz4+YynqH2IOa8=
+	t=1731653080; cv=none; b=tcEqah6vVh4fm18hJFKE6X7pCu9wGuThu4VgnIE4FiZ2t+qkC1H03FdxIz2okXWtLxpgKg03v3q+5ewC7v2BFximFc4i5n4Zp3lDPemBYQeSb58H7iL7UMog3aEwRKVRP0+IC5CmwaBZf8YpvIkwXWZHG5DsXxLJrgSyROyFNRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653069; c=relaxed/simple;
-	bh=YssBCgzRINyCv0Zx4Vcsm+bAmx7GOtdCJT7XEG6l8hs=;
-	h=Date:To:From:Subject:Message-Id; b=bG4w2eICAESqw+zqk9rOq7dcyhBkeaUgE2MtGtLVcvz/PAMlbdMiRljIcL6hkVd+OZsrgdyuZPzz+6ZkYfjqDvfYUmVRaRmUGpLtbHuv+wreSGyy7Y2oE8cPXJKbsvEVbIw0eLmah+VG//m46hYCb89Rg8WkSCZBIGhpsPxAsHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KqQPsrnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F82C4CED2;
-	Fri, 15 Nov 2024 06:44:28 +0000 (UTC)
+	s=arc-20240116; t=1731653080; c=relaxed/simple;
+	bh=3j/jlY5NFzGdjz4E1DpM/UlsSNW3iAECaKqzO0hsitQ=;
+	h=Date:To:From:Subject:Message-Id; b=Roq9wUWyx7kAnrwjoZeNzo0qJ1sHdfIcHiRGDOH8OIS2VJMbRBrem8+u3sh5QhRoU3XyGHiaOIBmyMjazuqrg4bd1+ofVv65iyNUJ0Ig2Mlh/guqNRX9iN513tkvqAn1JKlUi6/0eUvpQuM3BE6A0df/zW48O5QMOQWJkVvRAbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oC0bLO+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F84C4CED0;
+	Fri, 15 Nov 2024 06:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731653069;
-	bh=YssBCgzRINyCv0Zx4Vcsm+bAmx7GOtdCJT7XEG6l8hs=;
+	s=korg; t=1731653079;
+	bh=3j/jlY5NFzGdjz4E1DpM/UlsSNW3iAECaKqzO0hsitQ=;
 	h=Date:To:From:Subject:From;
-	b=KqQPsrnvZzYHVXbl7HjKTsUhR4Iga29IqNyAImhk1uSTdqsRJlu9I3mHtmpXNWkws
-	 ob45WL1bDAZS1+kuHEqRDoN+Zce2Czx6dJBg2syxdapYBvAaTyzKAH0KnMNcJV/u6f
-	 ug99FbZr35fa21iFT+wPSEoC2JBPsaFcBkVNTlNM=
-Date: Thu, 14 Nov 2024 22:44:25 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,ryan.roberts@arm.com,peterx@redhat.com,osalvador@suse.de,mirq-linux@rere.qmqm.pl,david@redhat.com,avagin@google.com,arnd@arndb.de,andrii@kernel.org,dan.carpenter@linaro.org,akpm@linux-foundation.org
+	b=oC0bLO+PpXqYQv8iIzOXDL2EiSIcxYh6/ADtTgMRXFRS0D8xKPmcr/Rky3YlqtRuE
+	 Ydw7jn01538x7vH3IF3HiUD53Y7Gh3xje87er0Tqs/R9mc7Pi7POdjucsUDY63N/rt
+	 p5KczYKk8e3mFA3N6dp0dIZPvMMa6jwmroCgKoKc=
+Date: Thu, 14 Nov 2024 22:44:35 -0800
+To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,vbabka@suse.cz,sunnanyong@huawei.com,stable@vger.kernel.org,mgorman@techsingularity.net,david@redhat.com,alobakin@pm.me,tujinjiang@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] fs-proc-task_mmu-prevent-integer-overflow-in-pagemap_scan_get_args.patch removed from -mm tree
-Message-Id: <20241115064428.F3F82C4CED2@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch removed from -mm tree
+Message-Id: <20241115064439.49F84C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,63 +50,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: fs/proc/task_mmu: prevent integer overflow in pagemap_scan_get_args()
+     Subject: mm: fix NULL pointer dereference in alloc_pages_bulk_noprof
 has been removed from the -mm tree.  Its filename was
-     fs-proc-task_mmu-prevent-integer-overflow-in-pagemap_scan_get_args.patch
+     mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Dan Carpenter <dan.carpenter@linaro.org>
-Subject: fs/proc/task_mmu: prevent integer overflow in pagemap_scan_get_args()
-Date: Thu, 14 Nov 2024 11:59:32 +0300
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm: fix NULL pointer dereference in alloc_pages_bulk_noprof
+Date: Wed, 13 Nov 2024 16:32:35 +0800
 
-The "arg->vec_len" variable is a u64 that comes from the user at the start
-of the function.  The "arg->vec_len * sizeof(struct page_region))"
-multiplication can lead to integer wrapping.  Use size_mul() to avoid
-that.
+We triggered a NULL pointer dereference for ac.preferred_zoneref->zone in
+alloc_pages_bulk_noprof() when the task is migrated between cpusets.
 
-Also the size_add/mul() functions work on unsigned long so for 32bit
-systems we need to ensure that "arg->vec_len" fits in an unsigned long.
+When cpuset is enabled, in prepare_alloc_pages(), ac->nodemask may be
+&current->mems_allowed.  when first_zones_zonelist() is called to find
+preferred_zoneref, the ac->nodemask may be modified concurrently if the
+task is migrated between different cpusets.  Assuming we have 2 NUMA Node,
+when traversing Node1 in ac->zonelist, the nodemask is 2, and when
+traversing Node2 in ac->zonelist, the nodemask is 1.  As a result, the
+ac->preferred_zoneref points to NULL zone.
 
-Link: https://lkml.kernel.org/r/39d41335-dd4d-48ed-8a7f-402c57d8ea84@stanley.mountain
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
+In alloc_pages_bulk_noprof(), for_each_zone_zonelist_nodemask() finds a
+allowable zone and calls zonelist_node_idx(ac.preferred_zoneref), leading
+to NULL pointer dereference.
+
+__alloc_pages_noprof() fixes this issue by checking NULL pointer in commit
+ea57485af8f4 ("mm, page_alloc: fix check for NULL preferred_zone") and
+commit df76cee6bbeb ("mm, page_alloc: remove redundant checks from alloc
+fastpath").
+
+To fix it, check NULL pointer for preferred_zoneref->zone.
+
+Link: https://lkml.kernel.org/r/20241113083235.166798-1-tujinjiang@huawei.com
+Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Alexander Lobakin <alobakin@pm.me>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/proc/task_mmu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/page_alloc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-prevent-integer-overflow-in-pagemap_scan_get_args
-+++ a/fs/proc/task_mmu.c
-@@ -2665,8 +2665,10 @@ static int pagemap_scan_get_args(struct
- 		return -EFAULT;
- 	if (!arg->vec && arg->vec_len)
- 		return -EINVAL;
-+	if (UINT_MAX == SIZE_MAX && arg->vec_len > SIZE_MAX)
-+		return -EINVAL;
- 	if (arg->vec && !access_ok((void __user *)(long)arg->vec,
--			      arg->vec_len * sizeof(struct page_region)))
-+				   size_mul(arg->vec_len, sizeof(struct page_region))))
- 		return -EFAULT;
+--- a/mm/page_alloc.c~mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof
++++ a/mm/page_alloc.c
+@@ -4607,7 +4607,8 @@ unsigned long alloc_pages_bulk_noprof(gf
+ 	gfp = alloc_gfp;
  
- 	/* Fixup default values */
+ 	/* Find an allowed local zone that meets the low watermark. */
+-	for_each_zone_zonelist_nodemask(zone, z, ac.zonelist, ac.highest_zoneidx, ac.nodemask) {
++	z = ac.preferred_zoneref;
++	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+ 		unsigned long mark;
+ 
+ 		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
 _
 
-Patches currently in -mm which might be from dan.carpenter@linaro.org are
+Patches currently in -mm which might be from tujinjiang@huawei.com are
 
 
 
