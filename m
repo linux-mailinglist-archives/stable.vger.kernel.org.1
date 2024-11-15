@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A35A9CD987
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B99CD949
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2676A1F2230E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 086D7B267D2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B70D1885A1;
-	Fri, 15 Nov 2024 07:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3721891A9;
+	Fri, 15 Nov 2024 06:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXuwl/b/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLIf/pQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5874052F9E;
-	Fri, 15 Nov 2024 07:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEC118873F;
+	Fri, 15 Nov 2024 06:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654040; cv=none; b=CTYm6cyYCO/AcW3ZCHFW+rAmOM0RyD2DqmrbFS6tfZGkxR5QKGLJn7InLYm8PNke5iTmhj5IaW7UR7u01Z+lVSJBVe1EM//Msej9WYHxLSgX2CUkctQrtNzIMncsvQidI3X/dLmV1Pp4flrpGavkP+2BfVF7/OeOp3m0/kbT21M=
+	t=1731653925; cv=none; b=TPViBQ74e6gtMmJoBvxTsU70RsRwcN+j6hU4wCunqbHFDuKu2K1eVtF7YEsyQCnbW+x1+rD129ax4I/7/TOWZCzjpok3znPdwcJyqtygGQAMxPSOTPasBtwczq6v9FxT+BsNmZUSEbC1c+V2URqwmUvWh2YhSilmBlSr08butmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654040; c=relaxed/simple;
-	bh=hb4JLX3w0T1QIR/7m6mKsDWV2FFUERhHtmXweanODdU=;
+	s=arc-20240116; t=1731653925; c=relaxed/simple;
+	bh=vZaOxsu4SMqGncjxGWKNZOF1rwHRYutsM5OJbdzUBVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNOgf3SpFl5L+d9J1Ogji4XeHIBrugsfZCrMHyCvEEjYjBANwZ1OkZM9bYfqhtti6jlRnxKEtQTmdVIh5JAWNO7FQmVquvLEhRk2NTIVIdNe4UsvrNkvWZICv+u/GmusupDunmnM0jiW7p/MygMqgKekEhiCErl0pWjzB91RCSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXuwl/b/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA08DC4CECF;
-	Fri, 15 Nov 2024 07:00:39 +0000 (UTC)
+	 MIME-Version; b=GQJeJPnBa+qxJWO777DUVl8yjdhykFTXIxwBx9psvzxa1YzRsYHMjPDOMTOIIPagNE7hcWWj0aUVMxQpe2p0xxBpIlChUEj7fdp0G3LI10JQCSUWkAyAtDa7OkWUH4UQ8xT31dtZ89Qad2DAPWoAE4m1QFJF/x5y33A4iCqN7yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLIf/pQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1CC4CECF;
+	Fri, 15 Nov 2024 06:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654040;
-	bh=hb4JLX3w0T1QIR/7m6mKsDWV2FFUERhHtmXweanODdU=;
+	s=korg; t=1731653925;
+	bh=vZaOxsu4SMqGncjxGWKNZOF1rwHRYutsM5OJbdzUBVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXuwl/b/6Vt7j+t2BdYVHEH6vsQkJwY37BmgqmPWlIhB/9qzeyyb4PUonidqNcgje
-	 KqZm7EsOFsiG3izF/iqw3claMbUysh9UA4/cqd/wI8KljN8cmYGkBc4myoWNY6UZzy
-	 teC950y2qfsSWYmwRLlkkTriWusxuDkWr4BWQL4A=
+	b=bLIf/pQkLK7G4hJFt7KwAlVI+FFU2+SxzksiZxor4i60hQsb3PmmI9XXqHPMZ7ywe
+	 TfFb70ryd1dMf5fYYRU4Y+ADkRr1f07DXpAWMin8OcJWFgwLfbzzhyTu6HH5tod9iA
+	 dOmzCD1uTJNQzKZYGS3O2TKJ4rBQN7OC79ZrYyvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/22] crypto: marvell/cesa - Disable hash algorithms
-Date: Fri, 15 Nov 2024 07:38:53 +0100
-Message-ID: <20241115063721.439786594@linuxfoundation.org>
+Subject: [PATCH 5.10 77/82] fs: Fix uninitialized value issue in from_kuid and from_kgid
+Date: Fri, 15 Nov 2024 07:38:54 +0100
+Message-ID: <20241115063728.323145952@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-Disable cesa hash algorithms by lowering the priority because they
-appear to be broken when invoked in parallel.  This allows them to
-still be tested for debugging purposes.
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index c72b0672fc710..84c1065092796 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -947,7 +947,7 @@ struct ahash_alg mv_md5_alg = {
- 		.base = {
- 			.cra_name = "md5",
- 			.cra_driver_name = "mv-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1018,7 +1018,7 @@ struct ahash_alg mv_sha1_alg = {
- 		.base = {
- 			.cra_name = "sha1",
- 			.cra_driver_name = "mv-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1092,7 +1092,7 @@ struct ahash_alg mv_sha256_alg = {
- 		.base = {
- 			.cra_name = "sha256",
- 			.cra_driver_name = "mv-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1327,7 +1327,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
- 		.base = {
- 			.cra_name = "hmac(md5)",
- 			.cra_driver_name = "mv-hmac-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1398,7 +1398,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha1)",
- 			.cra_driver_name = "mv-hmac-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1469,7 +1469,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha256)",
- 			.cra_driver_name = "mv-hmac-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 09a62539ab74d..224ced997d64b 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1133,9 +1133,12 @@ int ocfs2_setattr(struct dentry *dentry, struct iattr *attr)
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
+ 
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
 -- 
 2.43.0
 
