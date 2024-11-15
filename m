@@ -1,125 +1,193 @@
-Return-Path: <stable+bounces-93086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3EE9CD69F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755AB9CD6CE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 466C6B23B6A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 05:43:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2D1DB21A99
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D887317C7CA;
-	Fri, 15 Nov 2024 05:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4BTtfDo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E681632E4;
+	Fri, 15 Nov 2024 06:05:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f196.google.com (mail-qt1-f196.google.com [209.85.160.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A88661FEB;
-	Fri, 15 Nov 2024 05:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.196
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FE636C
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 06:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731649428; cv=none; b=ed9Tl8FhtTlyuHfRINkdbcG6mz/v2Bvyqv+PF3i8DCIBxwsocaH0TZHUoyniqwnPftUBjSytyiHFIXWXoXPIoIOi312ljJ+QTuPm8uJYbs8hMsKy9fVy3GNnDbp+J5WO08m7eZPwEU5+dygSVSn2+b7g4F/WXMs0BFPQCJtIXro=
+	t=1731650712; cv=none; b=Sd1GnfHhlAM4sGM5fKgjilDbDa9760v7rCQowX1lvLJ5Nie0tqpVxAd3xKe54HhbRV/o522hKUwLeNHImB+1S1rRSVpNrl9e2mzqa26/OgrIbnLUkq9PeajmxCaSFkEHciBSr/FFzsXjQRUjC9UnzPGqRJ4Q2cWu+GvvXjXZbZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731649428; c=relaxed/simple;
-	bh=3ByWw0uZzeWU6sQuLd7KUVUeRoLijI8eX6T8FD/VPLs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J1+hpFwzYwBNuRGj+7+RQQkkTNt5PhQIKlHYURV1/Lu9hJeUfQyUWHZ9qWAoWAB3+90WPXzox3xOfDu8WbgoZGvHTa57s5ianvjyse8mieVK6WVjdBv51aKZCmXGvmQs3vWvZ3vZMBHY3xfeIquNbjTt5i+p/M1nv98hMjYO8uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4BTtfDo; arc=none smtp.client-ip=209.85.160.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f196.google.com with SMTP id d75a77b69052e-460af1a1154so2530981cf.0;
-        Thu, 14 Nov 2024 21:43:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731649426; x=1732254226; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e5OyuY9iIrcaxMF1N8H4QFXUlmBkIEkyE1LHwMV8vrE=;
-        b=i4BTtfDoA3jA+RiUusqieHrAoUPZrqpaW0PxlMuPNAZdti/6XQ7rPEgv8F8067y7SY
-         ByW0hAjpLQupoccLHaA+MaHNRL5B1rwQNwm1BXVgvIN+5ncj2WmiSnUSFmVl+bEgEEMN
-         a8ohAixb0qvWKeXY84n3xPZLGN76EMp5smrfIDAMlCv9G7tLuTrsphSwNHEOrl+qymSG
-         YNBj7PaBw3Bb66ItthUhmxtgq1+Y+CoOdiRNDnsuFLQcgdbIvmE6+mfa2PzbrfHZtCDk
-         a2LNYq2fHtpt0ko6lgKf2ep+yALlBZMunUdHWCgva6X/uqZ6v+K7F18Wbhg0B41PEr4V
-         jtBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731649426; x=1732254226;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e5OyuY9iIrcaxMF1N8H4QFXUlmBkIEkyE1LHwMV8vrE=;
-        b=MECylehTsgcgnnfalKmtZDaFkemueg3ciQfXv17xo4u3svNIIwwgJN0Jk5ztfYOZFo
-         wCaKmi3pg4jTrW/uCLdpmN9QC4IikUO18xWVz+bbNkPNOwiyCS2KWqZrasiie92r65uc
-         sHFJFtf6I8eFqwrWmkWFQwKppkQwUZdRsiqKP2RqR7l1gx6l8oCF4qxMqjTVVsfu0L6F
-         nZ7WHr9u20Sg9hzxGMAN5MXlTQnkjCF5ZYc/rkIDmCIhta+XFLZxAws5FUnSS3qypxVg
-         QDUmGyuV0rUDliexAcJcxprqpxKqdgj5f59wJ6uVuQXPZmEZT9FViGIWPdRntWpOEoGO
-         yx4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXDvtX0J0YpyayG1uqvaA13hOImcfL8l3EcdzUFN8ZSiDcmkJCy32rQiuNlZN1micu3AH6DO/Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2uvWWpbuuc96mwmKg1XrZFFBeqMcS6Dp2Ncba6F9FuUN0d0RP
-	nVlvm2vTOVmOsQO+XHotwMhBSQ5SRaqwQfokPg9TF6LtkOvJqimT
-X-Google-Smtp-Source: AGHT+IFAKLPkZQIiegJHxrs865nk7E/YbQ+RWexoKdKdk+xlx7iWEH5fr4i3vshDgns1OwWzk3LndQ==
-X-Received: by 2002:a05:622a:a0e:b0:462:ac16:e72f with SMTP id d75a77b69052e-46363de90e1mr18699631cf.8.1731649426010;
-        Thu, 14 Nov 2024 21:43:46 -0800 (PST)
-Received: from localhost.localdomain (host-36-26.ilcul54.champaign.il.us.clients.pavlovmedia.net. [68.180.36.26])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4635ab24e2dsm15092001cf.60.2024.11.14.21.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 21:43:44 -0800 (PST)
-From: Gax-c <zichenxie0106@gmail.com>
-To: brendan.higgins@linux.dev,
-	davidgow@google.com,
-	rmoar@google.com,
-	mripard@kernel.org,
-	mazziesaccount@gmail.com,
-	gregkh@linuxfoundation.org,
-	skhan@linuxfoundation.org
-Cc: linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	chenyuan0y@gmail.com,
-	zzjas98@gmail.com,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] kunit: Fix potential null dereference in kunit_device_driver_test()
-Date: Thu, 14 Nov 2024 23:43:36 -0600
-Message-Id: <20241115054335.21673-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1731650712; c=relaxed/simple;
+	bh=YjUnOxl+IzvJFbGxZEq09+Wx3/gE8WU7Ws0HaRHj57w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sEFT0laV15ki2/B83gi1Dc8ewv4QjP9a2wA8EITPzLWEqEZhS6YhYTnbitADfbqZxlq6/vTRMPqORx6WAWgqneKEH5f9SHbXjqPV9pMbIJDmAJ4KiNZPQKTLeD/eqKvIz55JuHAuYExrkEAbmZxOO++BFK0NTxY2E+pK8AsmB6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 903091476;
+	Thu, 14 Nov 2024 22:05:38 -0800 (PST)
+Received: from [10.163.45.151] (unknown [10.163.45.151])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7555C3F66E;
+	Thu, 14 Nov 2024 22:05:04 -0800 (PST)
+Message-ID: <ea124997-8dee-457c-bef1-d5d829c84da3@arm.com>
+Date: Fri, 15 Nov 2024 11:35:00 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] arm64/mm: Override PARange for !LPA2 and use it
+ consistently
+To: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Kees Cook <keescook@chromium.org>,
+ stable@vger.kernel.org
+References: <20241111083544.1845845-8-ardb+git@google.com>
+ <20241111083544.1845845-10-ardb+git@google.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20241111083544.1845845-10-ardb+git@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+On 11/11/24 14:05, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> When FEAT_LPA{,2} are not implemented, the ID_AA64MMFR0_EL1.PARange and
+> TCR.IPS values corresponding with 52-bit physical addressing are
+> reserved.
+> 
+> Setting the TCR.IPS field to 0b110 (52-bit physical addressing) has side
+> effects, such as how the TTBRn_ELx.BADDR fields are interpreted, and so
+> it is important that disabling FEAT_LPA2 (by overriding the
+> ID_AA64MMFR0.TGran fields) also presents a PARange field consistent with
+> that.
+> 
+> So limit the field to 48 bits unless LPA2 is enabled, and update
+> existing references to use the override consistently.
+> 
+> Fixes: 352b0395b505 ("arm64: Enable 52-bit virtual addressing for 4k and 16k granule configs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/include/asm/assembler.h    | 5 +++++
+>  arch/arm64/kernel/cpufeature.c        | 2 +-
+>  arch/arm64/kernel/pi/idreg-override.c | 9 +++++++++
+>  arch/arm64/kernel/pi/map_kernel.c     | 6 ++++++
+>  arch/arm64/mm/init.c                  | 2 +-
+>  5 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
+> index 3d8d534a7a77..ad63457a05c5 100644
+> --- a/arch/arm64/include/asm/assembler.h
+> +++ b/arch/arm64/include/asm/assembler.h
+> @@ -343,6 +343,11 @@ alternative_cb_end
+>  	// Narrow PARange to fit the PS field in TCR_ELx
+>  	ubfx	\tmp0, \tmp0, #ID_AA64MMFR0_EL1_PARANGE_SHIFT, #3
+>  	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_MAX
+> +#ifdef CONFIG_ARM64_LPA2
+> +alternative_if_not ARM64_HAS_VA52
+> +	mov	\tmp1, #ID_AA64MMFR0_EL1_PARANGE_48
+> +alternative_else_nop_endif
+> +#endif
 
-kunit_kzalloc() may return a NULL pointer, dereferencing it without
-NULL check may lead to NULL dereference.
-Add a NULL check for test_state.
+I guess this will only take effect after cpu features have been finalized
+but will not be applicable for __cpu_setup() during primary and secondary
+cpu bring up during boot.
 
-Fixes: d03c720e03bd ("kunit: Add APIs for managing devices")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
----
-v2: Add Cc tag.
----
- lib/kunit/kunit-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+>  	cmp	\tmp0, \tmp1
+>  	csel	\tmp0, \tmp1, \tmp0, hi
+>  	bfi	\tcr, \tmp0, \pos, #3
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 37e4c02e0272..6f5137040ff6 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -3399,7 +3399,7 @@ static void verify_hyp_capabilities(void)
+>  		return;
+>  
+>  	safe_mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
+> -	mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
+> +	mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
 
-diff --git a/lib/kunit/kunit-test.c b/lib/kunit/kunit-test.c
-index 37e02be1e710..d9c781c859fd 100644
---- a/lib/kunit/kunit-test.c
-+++ b/lib/kunit/kunit-test.c
-@@ -805,6 +805,8 @@ static void kunit_device_driver_test(struct kunit *test)
- 	struct device *test_device;
- 	struct driver_test_state *test_state = kunit_kzalloc(test, sizeof(*test_state), GFP_KERNEL);
- 
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, test_state);
-+
- 	test->priv = test_state;
- 	test_driver = kunit_driver_create(test, "my_driver");
- 
--- 
-2.34.1
+Small nit, should be renamed as safe_mmfr0 to be consistent with safe_mmfr1 ?
 
+>  	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
+>  
+>  	/* Verify VMID bits */
+> diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
+> index 22159251eb3a..c6b185b885f7 100644
+> --- a/arch/arm64/kernel/pi/idreg-override.c
+> +++ b/arch/arm64/kernel/pi/idreg-override.c
+> @@ -83,6 +83,15 @@ static bool __init mmfr2_varange_filter(u64 val)
+>  		id_aa64mmfr0_override.val |=
+>  			(ID_AA64MMFR0_EL1_TGRAN_LPA2 - 1) << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
+>  		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_TGRAN_SHIFT;
+> +
+> +		/*
+> +		 * Override PARange to 48 bits - the override will just be
+> +		 * ignored if the actual PARange is smaller, but this is
+> +		 * unlikely to be the case for LPA2 capable silicon.
+> +		 */
+> +		id_aa64mmfr0_override.val |=
+> +			ID_AA64MMFR0_EL1_PARANGE_48 << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
+> +		id_aa64mmfr0_override.mask |= 0xfU << ID_AA64MMFR0_EL1_PARANGE_SHIFT;
+Could these be used instead ? 
+
+SYS_FIELD_PREP_ENUM(ID_AA64MMFR0_EL1, PARANGE, 48)
+ID_AA64MMFR0_EL1_PARANGE_MASK ?
+
+
+>  	}
+>  #endif
+>  	return true;
+> diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
+> index f374a3e5a5fe..e57b043f324b 100644
+> --- a/arch/arm64/kernel/pi/map_kernel.c
+> +++ b/arch/arm64/kernel/pi/map_kernel.c
+> @@ -136,6 +136,12 @@ static void noinline __section(".idmap.text") set_ttbr0_for_lpa2(u64 ttbr)
+>  {
+>  	u64 sctlr = read_sysreg(sctlr_el1);
+>  	u64 tcr = read_sysreg(tcr_el1) | TCR_DS;
+> +	u64 mmfr0 = read_sysreg(id_aa64mmfr0_el1);
+> +	u64 parange = cpuid_feature_extract_unsigned_field(mmfr0,
+> +							   ID_AA64MMFR0_EL1_PARANGE_SHIFT);
+> +
+> +	tcr &= ~TCR_IPS_MASK;
+
+Could there be a different IPS value in TCR ? OR is this just a normal
+clean up instead.
+
+> +	tcr |= parange << TCR_IPS_SHIFT;
+
+Wondering if FIELD_PREP() could be used here.
+
+>  
+>  	asm("	msr	sctlr_el1, %0		;"
+>  	    "	isb				;"
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index d21f67d67cf5..4db9887b2aef 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -280,7 +280,7 @@ void __init arm64_memblock_init(void)
+>  
+>  	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+>  		extern u16 memstart_offset_seed;
+> -		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
+> +		u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
+
+Could this have a comment explaining the need for sanitized value ?
+
+>  		int parange = cpuid_feature_extract_unsigned_field(
+>  					mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
+>  		s64 range = linear_region_size -
+
+Otherwise LGTM.
 
