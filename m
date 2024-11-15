@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-93408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6EE9CD918
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571CF9CD855
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E331F231C0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BFE5283ADE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35D1885AA;
-	Fri, 15 Nov 2024 06:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C624D185B5B;
+	Fri, 15 Nov 2024 06:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nq0M1GML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fF2GiP9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587F0185949;
-	Fri, 15 Nov 2024 06:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BAEEAD0;
+	Fri, 15 Nov 2024 06:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653823; cv=none; b=P/f9EbQtRTi5zARPOkfQ97fP/bO4A3REGPSbB2VryM7ymx0hxS4SEvV5yC87R501Dsfkm+IomrM2p9p3Ojpm1vHcGxYBP6q95/fic8hsw+iJ+H98tujRrUESybCBh/pdIc9zFmBJfTcFdXub490owCh+AmwgiKfCkSpfnxo0umA=
+	t=1731653387; cv=none; b=UlE+38FcI8d4pGawPjbBfLmi84SxW7HcR0fadFBxU0eaiwWPP2jxt3p1JoDzH6ZQCCe+CkUY5p0PMujtfxSdoRldDX3rVxteLtuOmKhe6a14xAiu9fOMWLrFBweyZJvgWPNDuIQrmN1i2P02TUcjwx0he3q6z5gDB1VI3ctPw8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653823; c=relaxed/simple;
-	bh=IPYUZ4+Q028Vb8T6u9/zlMmqh0t+cjX+Iktwjf/j6KM=;
+	s=arc-20240116; t=1731653387; c=relaxed/simple;
+	bh=mthixM7rAc5K5RhYiL0cBSvo7+fn3xEHUVxYeVttAeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koMloqBsdMIKMrIscTSKyYGkHoTiOMPO/yuR+KCxEf1aXuoc9k03NAVhNub3xGJK0s6LJS8ZnfJT82vVwWk/6wiWhJK118V3vSqWxgr3p1ZNmGcUool+gRajwQCzbcqxLyVSsbCT4+efz4n8AcsO3on3ZT4OGK2bIRcoWuMsHSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nq0M1GML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F3C4CECF;
-	Fri, 15 Nov 2024 06:57:02 +0000 (UTC)
+	 MIME-Version; b=UTQhlLIRX5FGDVT3QAdPR24bfciiUZ/e+G4lRALoGr5T+2BXyqPMyn5zNcDE3hA0iegX8MJAFjGiu6ZVzzfTYt3q9/YjHbz8kaoM9pAFaskHsuvWmj7v/ngzkxWxmEGYC60bVKKmLzgxgC/kTY0jy4l6FyVKxW97DmM5fLLMvBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fF2GiP9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DA2C4CECF;
+	Fri, 15 Nov 2024 06:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653823;
-	bh=IPYUZ4+Q028Vb8T6u9/zlMmqh0t+cjX+Iktwjf/j6KM=;
+	s=korg; t=1731653387;
+	bh=mthixM7rAc5K5RhYiL0cBSvo7+fn3xEHUVxYeVttAeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nq0M1GMLBWnOdSJdDCShz4H3BO950aTHc63pvJiPzjZ7P1lXpyCz3b0Egw4wlS2RU
-	 hGUihdUqOyaBp7FRYgibPals+UJZ2qyK8uAPH+jjMNVgF/aXkbIc4oSHjGwuIF2Toj
-	 +2TrJHZflQi2M+HBbLTY0wXn16Z3CNojzgXOk0Kg=
+	b=fF2GiP9YzOFLbZugUwaLEELt4xRea77TdJql3pkHtlRPBtsmO8rMOwXY3pChcoNkY
+	 TT5Lg0up9NdNTMN/XufUjy6g6FkZ4iiNsPcp8AYYLJ9GHpTQ4nL4+pM5z/OlnirmAQ
+	 fv5A3XuXV3zmmA115O4Z9CaoobLSyOWQFVh+O89g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 46/82] btrfs: reinitialize delayed ref list after deleting it from the list
-Date: Fri, 15 Nov 2024 07:38:23 +0100
-Message-ID: <20241115063727.219182777@linuxfoundation.org>
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 61/63] drm/xe: Dont restart parallel queues multiple times on GT reset
+Date: Fri, 15 Nov 2024 07:38:24 +0100
+Message-ID: <20241115063728.107624071@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
+[ Upstream commit cdc21021f0351226a4845715564afd5dc50ed44b ]
 
-At insert_delayed_ref() if we need to update the action of an existing
-ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
-ref_add_list using list_del(), which leaves the ref's add_list member
-not reinitialized, as list_del() sets the next and prev members of the
-list to LIST_POISON1 and LIST_POISON2, respectively.
+In case of parallel submissions multiple GuC id will point to the
+same exec queue and on GT reset such exec queues will get restarted
+multiple times which is not desirable.
 
-If later we end up calling drop_delayed_ref() against the ref, which can
-happen during merging or when destroying delayed refs due to a transaction
-abort, we can trigger a crash since at drop_delayed_ref() we call
-list_empty() against the ref's add_list, which returns false since
-the list was not reinitialized after the list_del() and as a consequence
-we call list_del() again at drop_delayed_ref(). This results in an
-invalid list access since the next and prev members are set to poison
-pointers, resulting in a splat if CONFIG_LIST_HARDENED and
-CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
-otherwise.
+v2: don't use exec_queue_enabled() which could race,
+    do the same for xe_guc_submit_stop (Matt B)
 
-So fix this by deleting from the list with list_del_init() instead.
-
-Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2295
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241022103555.731557-1-nirmoy.das@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+(cherry picked from commit c8b0acd6d8745fd7e6450f5acc38f0227bd253b3)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-ref.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -620,7 +620,7 @@ static int insert_delayed_ref(struct btr
- 					      &href->ref_add_list);
- 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
- 				ASSERT(!list_empty(&exist->add_list));
--				list_del(&exist->add_list);
-+				list_del_init(&exist->add_list);
- 			} else {
- 				ASSERT(0);
- 			}
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index cbdd44567d107..792024c28da86 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1771,8 +1771,13 @@ void xe_guc_submit_stop(struct xe_guc *guc)
+ 
+ 	mutex_lock(&guc->submission_state.lock);
+ 
+-	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
++	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
++		/* Prevent redundant attempts to stop parallel queues */
++		if (q->guc->id != index)
++			continue;
++
+ 		guc_exec_queue_stop(guc, q);
++	}
+ 
+ 	mutex_unlock(&guc->submission_state.lock);
+ 
+@@ -1810,8 +1815,13 @@ int xe_guc_submit_start(struct xe_guc *guc)
+ 
+ 	mutex_lock(&guc->submission_state.lock);
+ 	atomic_dec(&guc->submission_state.stopped);
+-	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
++	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
++		/* Prevent redundant attempts to start parallel queues */
++		if (q->guc->id != index)
++			continue;
++
+ 		guc_exec_queue_start(q);
++	}
+ 	mutex_unlock(&guc->submission_state.lock);
+ 
+ 	wake_up_all(&guc->ct.wq);
+-- 
+2.43.0
+
 
 
 
