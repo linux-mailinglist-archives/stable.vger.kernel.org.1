@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-93398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A649CD90A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DB29CD7E8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3822835DF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC05CB25B53
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03911891AA;
-	Fri, 15 Nov 2024 06:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28879185924;
+	Fri, 15 Nov 2024 06:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLZ/8TVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6WvkU12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A007A185924;
-	Fri, 15 Nov 2024 06:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B4014EC77;
+	Fri, 15 Nov 2024 06:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653788; cv=none; b=TKDQzU/I0Rv/ZWKQybDAoLbOen6Sn/c2lzsc7X1c9UgZJKsBlKX/bC+6kYQeDMbpRCxPmLgsQoHb7CKWI4xqOKNMH3XpABaFLsjhIxrwMISHaNZAmVz4qV/4riThKn7Jmpgy0deaukl0c27ULjkT9lKGxqP3iHlAz59U/zatvto=
+	t=1731653137; cv=none; b=LFdzlMfgPz8N2n4wveYkZ6FVvKHYhZEOpYUUZBEtWeYsQPyVTX1Q9k4Nkxhw1qUCita/YnRZ9PTphFaM/YSxsDoQP37arTMhRDV1jdTwfhCzbZ8FO+Us8vL6VvFYxZHIIqyUc3H8ahuRw5hHBtiv3zbs2NfJeRimpe3dSnOUpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653788; c=relaxed/simple;
-	bh=Q4YxaaSuw7+wTSZLcExBzraSy+Bhw0ylWgtT0r3AQEM=;
+	s=arc-20240116; t=1731653137; c=relaxed/simple;
+	bh=pvKyAKK4+AWsShctkLE3IN3Yf27c4NcPm+2wE92F4eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDYzWxp7UN7DOm09oT1l/fg9oeIHrBWdGMyFHUH92zDEIdlxA1wc4lebHl2tpYR0X0LRlflbRaLsBiv5Z1pLC13hLa80L1H5i1bYe/fGA+O5IiTeZ0MMUWvwuwOu6LKdx/5oX8V65jqlzt+jvBTgb4zCXxJmgy9ViE9nx+FuJbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLZ/8TVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E992C4CECF;
-	Fri, 15 Nov 2024 06:56:27 +0000 (UTC)
+	 MIME-Version; b=PHj9eNrmZHNsA364CwhxR/H9fVaI1SR+FSv4DRqK6aeRXU4Q1+LoOhZgZ4GX3NgRgL4AGivCP+Jh6d6gMLzaT2tZf4E3KYCYsw4Dvk6y3K6RWQD2oEPPFdaEY4o5AUxCDAGfjyiEFvGVjoYrPjZgsQS6L6BqLooo1wEzxJquOYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6WvkU12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3203FC4CECF;
+	Fri, 15 Nov 2024 06:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653788;
-	bh=Q4YxaaSuw7+wTSZLcExBzraSy+Bhw0ylWgtT0r3AQEM=;
+	s=korg; t=1731653137;
+	bh=pvKyAKK4+AWsShctkLE3IN3Yf27c4NcPm+2wE92F4eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLZ/8TVOrUP2bMJ5qdNH/0XyOYAoMFtJzsFVTf0ocMWkFIrHgg2vIAPToyME1d7Yj
-	 k4IWhErpI1VWtA5hy193WrHVTlZ2PR1CnFIBy9QZHTj/cl6kvzwGe1YikzzOVhoL8M
-	 ypHT5oEsRkHDQ8O2Rzw5mny5OpuNZo2chvhEoWc8=
+	b=H6WvkU12mTckU89apXeiPnuexOMh20Di5iUfgm2VjNuZ+5ptgRjdrLMjtsDijDoZo
+	 Ftcm5UEIkNUiydTzenmV0Vs3b3HR4W8xZR3+Ec8OM7Pev8VETfCmwVXRLnrwJFYjJA
+	 LTT5EwwKCzKwATrgIJOrzSm42lsI2Md16RCnUiBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.10 37/82] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 65/66] mm: add remap_pfn_range_notrack
 Date: Fri, 15 Nov 2024 07:38:14 +0100
-Message-ID: <20241115063726.899207417@linuxfoundation.org>
+Message-ID: <20241115063725.185551046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +69,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 792227719725497ce10a8039803bec13f89f8910 upstream.
+commit 74ffa5a3e68504dd289135b1cf0422c19ffb3f2e upstream.
 
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access.
+Patch series "add remap_pfn_range_notrack instead of reinventing it in i915", v2.
 
-Reproduce steps:
+i915 has some reason to want to avoid the track_pfn_remap overhead in
+remap_pfn_range.  Add a function to the core VM to do just that rather
+than reinventing the functionality poorly in the driver.
 
-1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+Note that the remap_io_sg path does get exercises when using Xorg on my
+Thinkpad X1, so this should be considered lightly tested, I've not managed
+to hit the remap_io_mapping path at all.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+This patch (of 4):
 
-2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
-   access to the dirty bitset (offset 0x80)
+Add a version of remap_pfn_range that does not call track_pfn_range.  This
+will be used to fix horrible abuses of VM internals in the i915 driver.
 
-dmsetup suspend cache
-dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
-  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc900000f3000, ffffc900000f5000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                     ^
-   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by making the index post-incremented.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Link: https://lkml.kernel.org/r/20210326055505.1424432-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20210326055505.1424432-2-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+(cherry picked from commit 69d4e1ce9087c8767f2fe9b9426fa2755c8e9072)
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mm.h |    2 ++
+ mm/memory.c        |   51 +++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 33 insertions(+), 20 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2966,13 +2966,13 @@ static bool can_resize(struct cache *cac
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
- 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		new_size = to_cblock(from_cblock(new_size) + 1);
- 		if (is_dirty(cache, new_size)) {
- 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
- 			      cache_device_name(cache),
- 			      (unsigned long long) from_cblock(new_size));
- 			return false;
- 		}
-+		new_size = to_cblock(from_cblock(new_size) + 1);
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2566,6 +2566,8 @@ unsigned long change_prot_numa(struct vm
+ struct vm_area_struct *find_extend_vma(struct mm_struct *, unsigned long addr);
+ int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
+ 			unsigned long pfn, unsigned long size, pgprot_t);
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot);
+ int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
+ int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
+ 				unsigned long num);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1917,26 +1917,17 @@ static inline int remap_p4d_range(struct
+ 	return 0;
+ }
+ 
+-/**
+- * remap_pfn_range - remap kernel memory to userspace
+- * @vma: user vma to map to
+- * @addr: target page aligned user address to start at
+- * @pfn: page frame number of kernel physical memory address
+- * @size: size of mapping area
+- * @prot: page protection flags for this mapping
+- *
+- * Note: this is only safe if the mm semaphore is held when called.
+- *
+- * Return: %0 on success, negative error code otherwise.
++/*
++ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
++ * must have pre-validated the caching bits of the pgprot_t.
+  */
+-int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+-		    unsigned long pfn, unsigned long size, pgprot_t prot)
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	pgd_t *pgd;
+ 	unsigned long next;
+ 	unsigned long end = addr + PAGE_ALIGN(size);
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long remap_pfn = pfn;
+ 	int err;
+ 
+ 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
+@@ -1966,10 +1957,6 @@ int remap_pfn_range(struct vm_area_struc
+ 		vma->vm_pgoff = pfn;
  	}
  
- 	return true;
+-	err = track_pfn_remap(vma, &prot, remap_pfn, addr, PAGE_ALIGN(size));
+-	if (err)
+-		return -EINVAL;
+-
+ 	vma->vm_flags |= VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
+ 
+ 	BUG_ON(addr >= end);
+@@ -1981,12 +1968,36 @@ int remap_pfn_range(struct vm_area_struc
+ 		err = remap_p4d_range(mm, pgd, addr, next,
+ 				pfn + (addr >> PAGE_SHIFT), prot);
+ 		if (err)
+-			break;
++			return err;
+ 	} while (pgd++, addr = next, addr != end);
+ 
++	return 0;
++}
++
++/**
++ * remap_pfn_range - remap kernel memory to userspace
++ * @vma: user vma to map to
++ * @addr: target page aligned user address to start at
++ * @pfn: page frame number of kernel physical memory address
++ * @size: size of mapping area
++ * @prot: page protection flags for this mapping
++ *
++ * Note: this is only safe if the mm semaphore is held when called.
++ *
++ * Return: %0 on success, negative error code otherwise.
++ */
++int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int err;
++
++	err = track_pfn_remap(vma, &prot, pfn, addr, PAGE_ALIGN(size));
+ 	if (err)
+-		untrack_pfn(vma, remap_pfn, PAGE_ALIGN(size));
++		return -EINVAL;
+ 
++	err = remap_pfn_range_notrack(vma, addr, pfn, size, prot);
++	if (err)
++		untrack_pfn(vma, pfn, PAGE_ALIGN(size));
+ 	return err;
+ }
+ EXPORT_SYMBOL(remap_pfn_range);
 
 
 
