@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C529CD843
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026729CD8C4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB752B24E67
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5D7283D0D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182F018785C;
-	Fri, 15 Nov 2024 06:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E30318734F;
+	Fri, 15 Nov 2024 06:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3v6ZQU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyongdxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867A2BB1B;
-	Fri, 15 Nov 2024 06:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB2D2BB1B;
+	Fri, 15 Nov 2024 06:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653339; cv=none; b=R1MNTG4MxARlMl14j73GwKWMb7FM7CuPhzM6oXmy0d85cU5iviIUlCdpykFUNkZURX7rpLzR9R+71Jt9pRInKKh9G0Qv2OgyZcKtVTN5C8+Nta2vPSbPMG/P1X+zVNceG+K3qRQkmaU5tH1ZjcYYFiP46qwi6XvKUE6iyeoigqI=
+	t=1731653641; cv=none; b=QUle5OXX34aWTiB0e2ZAzvxm2u/Y5uvERPd+4SGKc5w5+RsjOUXHZGAQBxjwrq4MdFb6AxuI6NhTA3cympk1FMC7lk0RJwiv+JX6iIyZs1uCDzWAl+j7yV0ZbcJZXRCuRaEnPvTMk3ctS19Vr4KsMFh1XWIKF8oljAw4UgY1yI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653339; c=relaxed/simple;
-	bh=wQG0VW6v/0Dr54xvykwlRPG22nki01XYYFh3kqjBIL0=;
+	s=arc-20240116; t=1731653641; c=relaxed/simple;
+	bh=xtprLsi/yXI6LUoWwP4DPli6tZQOkdHyO4WTJVwgXOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGmLbDrp7cDeLznHUcrstExWQP9514Aue+Pas0OWEHvcmcE5lQQsvdGz3NauKWFWjUOforNs5tI1HSv4t92VH+zC8Vd4SZZPMsK1HfpiPAWRFgbWzVoGOFVtwQUb8zgw1DZ4JCYD1R4n/4ofEiSjKAJxl1vTlE/+6SxWovk3klk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3v6ZQU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35363C4CECF;
-	Fri, 15 Nov 2024 06:48:59 +0000 (UTC)
+	 MIME-Version; b=SRctiCSmDeFG00YEHLwX/itfgvFjnUhmIccLR64SdzXPE0Z5svyynPf2LNTlRV+aJDPbqLO1lIKYuXIgnSzct0cGjqtYt24Jp6bV7+xvvc9QRup8zQbP8e75A4Qdj0WvVKgzBTfM0jHPWx38EQdgNw3qMikDWINa6FtViPNzobw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyongdxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611FCC4CECF;
+	Fri, 15 Nov 2024 06:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653339;
-	bh=wQG0VW6v/0Dr54xvykwlRPG22nki01XYYFh3kqjBIL0=;
+	s=korg; t=1731653640;
+	bh=xtprLsi/yXI6LUoWwP4DPli6tZQOkdHyO4WTJVwgXOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3v6ZQU0AX4OlMwbFh+p3TESMSHoa0Cs4a2bHsBbGEzY1iAdDJL5hZXFUBYnpb0PH
-	 wh0UXPZX3YN4bpM/PMnnrua7G2O6wuZeWqtFp3BbWf9fB7tdI2YSdiSfxFnWUfCwr3
-	 m1ZKtYAV8Xk87qEziYKA666ukEvrY+zEst2/EUqo=
+	b=DyongdxyLg6uDKGmJpQb0sEFYe22MNSWGnUHGPEEmto5iLJ3YkSacG7L38u0wLQOp
+	 lYoikRlIrZQLIcVvQIoip7aMx040++toDOJ6ZptFKLPdQ4wudq5szqjiGMxC2khwKZ
+	 /NszteMyX7IbwGBJBMNZy0TNZ3XysHcSbNDt6ojE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	SurajSonawane2415 <surajsonawane0215@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 56/63] bpf: Check validity of link->type in bpf_link_show_fdinfo()
+Subject: [PATCH 6.1 09/39] block: Fix elevator_get_default() checking for NULL q->tag_set
 Date: Fri, 15 Nov 2024 07:38:19 +0100
-Message-ID: <20241115063727.930162831@linuxfoundation.org>
+Message-ID: <20241115063722.946337169@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: SurajSonawane2415 <surajsonawane0215@gmail.com>
 
-[ Upstream commit 8421d4c8762bd022cb491f2f0f7019ef51b4f0a7 ]
+[ Upstream commit b402328a24ee7193a8ab84277c0c90ae16768126 ]
 
-If a newly-added link type doesn't invoke BPF_LINK_TYPE(), accessing
-bpf_link_type_strs[link->type] may result in an out-of-bounds access.
+elevator_get_default() and elv_support_iosched() both check for whether
+or not q->tag_set is non-NULL, however it's not possible for them to be
+NULL. This messes up some static checkers, as the checking of tag_set
+isn't consistent.
 
-To spot such missed invocations early in the future, checking the
-validity of link->type in bpf_link_show_fdinfo() and emitting a warning
-when such invocations are missed.
+Remove the checks, which both simplifies the logic and avoids checker
+errors.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241024013558.1135167-3-houtao@huaweicloud.com
+Signed-off-by: SurajSonawane2415 <surajsonawane0215@gmail.com>
+Link: https://lore.kernel.org/r/20241007111416.13814-1-surajsonawane0215@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ block/elevator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 19b590b5aaec9..b282ed1250358 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -3136,13 +3136,17 @@ static void bpf_link_show_fdinfo(struct seq_file *m, struct file *filp)
+diff --git a/block/elevator.c b/block/elevator.c
+index bd71f0fc4e4b6..06288117e2dd6 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -624,7 +624,7 @@ static int elevator_switch_mq(struct request_queue *q,
+ static inline bool elv_support_iosched(struct request_queue *q)
  {
- 	const struct bpf_link *link = filp->private_data;
- 	const struct bpf_prog *prog = link->prog;
-+	enum bpf_link_type type = link->type;
- 	char prog_tag[sizeof(prog->tag) * 2 + 1] = { };
+ 	if (!queue_is_mq(q) ||
+-	    (q->tag_set && (q->tag_set->flags & BLK_MQ_F_NO_SCHED)))
++	    (q->tag_set->flags & BLK_MQ_F_NO_SCHED))
+ 		return false;
+ 	return true;
+ }
+@@ -635,7 +635,7 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
+-	if (q->tag_set && q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
++	if (q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
+ 		return NULL;
  
--	seq_printf(m,
--		   "link_type:\t%s\n"
--		   "link_id:\t%u\n",
--		   bpf_link_type_strs[link->type],
--		   link->id);
-+	if (type < ARRAY_SIZE(bpf_link_type_strs) && bpf_link_type_strs[type]) {
-+		seq_printf(m, "link_type:\t%s\n", bpf_link_type_strs[type]);
-+	} else {
-+		WARN_ONCE(1, "missing BPF_LINK_TYPE(...) for link type %u\n", type);
-+		seq_printf(m, "link_type:\t<%u>\n", type);
-+	}
-+	seq_printf(m, "link_id:\t%u\n", link->id);
-+
- 	if (prog) {
- 		bin2hex(prog_tag, prog->tag, sizeof(prog->tag));
- 		seq_printf(m,
+ 	if (q->nr_hw_queues != 1 &&
 -- 
 2.43.0
 
