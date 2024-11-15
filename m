@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6BD9CD94D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61959CD98A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6BD283A97
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B786283E36
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C0A188CCA;
-	Fri, 15 Nov 2024 06:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126EC189520;
+	Fri, 15 Nov 2024 07:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jD0+xSfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvX1+hSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6561E18873E;
-	Fri, 15 Nov 2024 06:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C3752F9E;
+	Fri, 15 Nov 2024 07:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653932; cv=none; b=suepEwgJLZJ6jHxRkbUqQxlPo3rHBdAu07VtjufI7ylSIZhPlyZqvdtKntrTqI0QQRTzeMb+wMsxmuEypjaB/obtnSD+gD6UE3gEcIWg5+NUqM57C61md4Vd3bpVLK4ziKkB3s466IYYQTMN65FTjEK4kPGC0Cd1XOKDE2nf1Tw=
+	t=1731654050; cv=none; b=Bn7p2stdkhxret8KBSUuL9SHIwm5SxuXg5IKpZWyKvh7L0T+6podZueZHyTdLvoeZKuuZcycibRXbe8LH4z7KHNsN9VzUsqZYyv/eLO8A9Dp/LeO/py5eahO6eg3wZ2it7IRENiWJIIYqSWptvKOvm93G4slklM4Fn+SeaGrVxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653932; c=relaxed/simple;
-	bh=1vYns9+5ZupdtkZSsYe7KvxONS/YzzpLHiMD1WeFI5c=;
+	s=arc-20240116; t=1731654050; c=relaxed/simple;
+	bh=PcWvCDkoVRyquqmSeDe4L9cMPbC0GGuSHP4+AxA2UMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZ5Il+DV920HbeSeGc9qWWpcoNU60uVnT7JHPmceMbevHyGu+XxNZJRV/CGLmRh7r6KfzCJ8BVeC3UuT2Cgr5IqG+rI9frEE/0PEcO/R+1sQRM7qNCUH0Wj9Pw2Tizs1FFVeLmnsfH414yZUT+g7YfPJev+Q4SNlSOg0EcsECNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jD0+xSfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5C9C4CECF;
-	Fri, 15 Nov 2024 06:58:51 +0000 (UTC)
+	 MIME-Version; b=nzlAbGoq+I3DCkXwKFsol7TS3vTyL2mvcDsOIlloyNqTYfoePV3fRjVOrLS+7E0yV6KFtLCKHMoaO9u+GSnx7au56mtXzW3yZjh004euimqKutDHkX6ZG9/bA38s36ncotQWniJ4K31eDSb3syKK5FKjYHPmZFQnkPi/5rigBZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvX1+hSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3371EC4CECF;
+	Fri, 15 Nov 2024 07:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653932;
-	bh=1vYns9+5ZupdtkZSsYe7KvxONS/YzzpLHiMD1WeFI5c=;
+	s=korg; t=1731654050;
+	bh=PcWvCDkoVRyquqmSeDe4L9cMPbC0GGuSHP4+AxA2UMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jD0+xSfS4pBGkPt2HCzP7gUsxqsaITdBuQOwTwXtaTDh57O43Q1KQ6Uyw9S/Y7GGn
-	 2PYfMnrSlu2TNAT3+DbeukjaJZ7GoZdB26idqGzHbFDke3nTnj3o392/mZ/XgbVmla
-	 sAYBq+7p+pd1HCzVLEjtgogaud9uNiXy25q9TKb8=
+	b=QvX1+hSPch43WJVhi5mO+wb2t9My5YotqHIEwoq9jV1XVs2R3GaeQOs0r9qVU2LMs
+	 XlVqwObwceGJdBhHEeabnbHliUPHoZN6Iafwp/slxs4Hn1q2gJKxj13E1DkY+LTc1y
+	 dFs83g8PRTCi3bgu+KZPvrAW2/+KRci8a3bk60Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Hagar Gamal Halim <hagarhem@amazon.de>
-Subject: [PATCH 5.10 79/82] md/raid10: improve code of mrdev in raid10_sync_request
+	2639161967 <2639161967@qq.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 10/22] powerpc/powernv: Free name on error in opal_event_init()
 Date: Fri, 15 Nov 2024 07:38:56 +0100
-Message-ID: <20241115063728.392812347@linuxfoundation.org>
+Message-ID: <20241115063721.546784435@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 59f8f0b54c8ffb4521f6bbd1cb6f4dfa5022e75e upstream.
+[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
 
-'need_recover' and 'mrdev' are equivalent in raid10_sync_request(), and
-inc mrdev->nr_pending is unreasonable if don't need recovery. Replace
-'need_recover' with 'mrdev', and only inc nr_pending when needed.
+In opal_event_init() if request_irq() fails name is not freed, leading
+to a memory leak. The code only runs at boot time, there's no way for a
+user to trigger it, so there's no security impact.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230527072218.2365857-3-linan666@huaweicloud.com
-Cc: Hagar Gamal Halim <hagarhem@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the leak by freeing name in the error path.
+
+Reported-by: 2639161967 <2639161967@qq.com>
+Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3052,7 +3052,6 @@ static sector_t raid10_sync_request(stru
- 			sector_t sect;
- 			int must_sync;
- 			int any_working;
--			int need_recover = 0;
- 			struct raid10_info *mirror = &conf->mirrors[i];
- 			struct md_rdev *mrdev, *mreplace;
- 
-@@ -3060,14 +3059,13 @@ static sector_t raid10_sync_request(stru
- 			mrdev = rcu_dereference(mirror->rdev);
- 			mreplace = rcu_dereference(mirror->replacement);
- 
--			if (mrdev != NULL &&
--			    !test_bit(Faulty, &mrdev->flags) &&
--			    !test_bit(In_sync, &mrdev->flags))
--				need_recover = 1;
-+			if (mrdev && (test_bit(Faulty, &mrdev->flags) ||
-+			    test_bit(In_sync, &mrdev->flags)))
-+				mrdev = NULL;
- 			if (mreplace && test_bit(Faulty, &mreplace->flags))
- 				mreplace = NULL;
- 
--			if (!need_recover && !mreplace) {
-+			if (!mrdev && !mreplace) {
- 				rcu_read_unlock();
- 				continue;
- 			}
-@@ -3101,7 +3099,8 @@ static sector_t raid10_sync_request(stru
- 				rcu_read_unlock();
- 				continue;
- 			}
--			atomic_inc(&mrdev->nr_pending);
-+			if (mrdev)
-+				atomic_inc(&mrdev->nr_pending);
- 			if (mreplace)
- 				atomic_inc(&mreplace->nr_pending);
- 			rcu_read_unlock();
-@@ -3188,7 +3187,7 @@ static sector_t raid10_sync_request(stru
- 				r10_bio->devs[1].devnum = i;
- 				r10_bio->devs[1].addr = to_addr;
- 
--				if (need_recover) {
-+				if (mrdev) {
- 					bio = r10_bio->devs[1].bio;
- 					bio->bi_next = biolist;
- 					biolist = bio;
-@@ -3233,7 +3232,7 @@ static sector_t raid10_sync_request(stru
- 					for (k = 0; k < conf->copies; k++)
- 						if (r10_bio->devs[k].devnum == i)
- 							break;
--					if (!test_bit(In_sync,
-+					if (mrdev && !test_bit(In_sync,
- 						      &mrdev->flags)
- 					    && !rdev_set_badblocks(
- 						    mrdev,
-@@ -3259,12 +3258,14 @@ static sector_t raid10_sync_request(stru
- 				if (rb2)
- 					atomic_dec(&rb2->remaining);
- 				r10_bio = rb2;
--				rdev_dec_pending(mrdev, mddev);
-+				if (mrdev)
-+					rdev_dec_pending(mrdev, mddev);
- 				if (mreplace)
- 					rdev_dec_pending(mreplace, mddev);
- 				break;
- 			}
--			rdev_dec_pending(mrdev, mddev);
-+			if (mrdev)
-+				rdev_dec_pending(mrdev, mddev);
- 			if (mreplace)
- 				rdev_dec_pending(mreplace, mddev);
- 			if (r10_bio->devs[0].bio->bi_opf & MD_FAILFAST) {
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index 391f505352007..e9849d70aee4a 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -282,6 +282,7 @@ int __init opal_event_init(void)
+ 				 name, NULL);
+ 		if (rc) {
+ 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
++			kfree(name);
+ 			continue;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
