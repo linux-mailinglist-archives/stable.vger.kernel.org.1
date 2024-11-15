@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-93189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8668B9CD7D1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D669CD739
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3194D1F231AA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAB002836A5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F37188015;
-	Fri, 15 Nov 2024 06:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A6A185B5B;
+	Fri, 15 Nov 2024 06:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDzgC15Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8OXEHKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4F217E015;
-	Fri, 15 Nov 2024 06:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122703BBEB;
+	Fri, 15 Nov 2024 06:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653086; cv=none; b=Cy1CIuf8RyBER2MYEYxsEUCTD8NPwvQwObS6gRgIaGJUnXtTg6NpTV5swsM97RCKVaFTZyX5cWkAWdwZwbXpkA0o+6gpDfDa2KpvW/f+kVQGB4Z9TVoB3mC6MoUByYZe1AbRYLailgG/xHBlEb36qdw85vBgS4ZjTmOwI8yi4bU=
+	t=1731652777; cv=none; b=EoWU/bYfrDEHR+Aa7pHlmnFTzHrZyzLnSXIOKjcUDYGWukPyQ8RbBSy7ejMBamfpmefRGccbtfA92RwyIOHbgi5RoW2MB+NyDLBaRFDZlZAAeV1YYrwPERHXAP2QxL9tZEYrs9a4dPE9ByZL4BLVLHqv/cYgHA4A14z7kkO+moY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653086; c=relaxed/simple;
-	bh=tcaeUOVMUUReSH9zXJI9wrxcQnUZnx1xU7B3+c6R1Sw=;
+	s=arc-20240116; t=1731652777; c=relaxed/simple;
+	bh=CJn03oE6x6/JZZrWq6LdeZWyyifEbJJtPf7F5Sm9NOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ynj7EoNoE7S7NtXQaKx96pCmWEq1emQ2hD1pB1rpIu75pr9mLbFmPv+XaCUK3SKY5WOo4BikCFdgh5Z4kKfZAtMJO4O7BYe+iY3tXIcMYTbvG6v8b2mUYa8VgxkyT/WxhkPY1ec35us9d8YeTT/PJylvXnymBbtwGeoNc+mb3+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDzgC15Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3321DC4CECF;
-	Fri, 15 Nov 2024 06:44:46 +0000 (UTC)
+	 MIME-Version; b=Q0Gajx1NqVrDIHSPMvMEmO33vJYWm++FwJ1po3gmDPjhlMDatoOuhP1E8/Fy1pVTYprkiKU94k/0TtlbRFy4MDhCXQ9puxniX/r0EWj9Hh3AOMalELDOte9fBFyWq/kwdx6CgnOVkojxg1xpR0IasS3+kaxowY1NI+af9E8CeIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8OXEHKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAB2C4CECF;
+	Fri, 15 Nov 2024 06:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653086;
-	bh=tcaeUOVMUUReSH9zXJI9wrxcQnUZnx1xU7B3+c6R1Sw=;
+	s=korg; t=1731652776;
+	bh=CJn03oE6x6/JZZrWq6LdeZWyyifEbJJtPf7F5Sm9NOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDzgC15YIxf2Oj5p5fC5neCuTQBw9p4rqQ2v/Oa6ILxh2Fsm2AEz50KSVtHJrvLL8
-	 t0fzZ7u2BkMLZZj51q0Uz66wMy0FRNX0/dHQjHuOFZ+OoNa775lcZMHPhcQNhizrTH
-	 XfEX/eVloTlflChYRhf4Nx1Kyzv8OOVPT2b70DVM=
+	b=F8OXEHKyliQP7nT1OyeCS3KIyNBLKZmwcnMAsY2p7xHjvq5Yz4wVebVoE296ZWVwl
+	 hlm+FXLTe+iGU3xucJGKgpIzKRe0CzXgGPrw8OMvT+ujboWudxHxsWfAO3pRZBDvah
+	 KPv6RHEXuusglBEG/FW39pY5CKIxuoRsCNIHmJzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.4 16/66] media: stb0899_algo: initialize cfr before using it
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 12/52] media: dvb_frontend: dont play tricks with underflow values
 Date: Fri, 15 Nov 2024 07:37:25 +0100
-Message-ID: <20241115063723.430006039@linuxfoundation.org>
+Message-ID: <20241115063723.296057793@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 2d861977e7314f00bf27d0db17c11ff5e85e609a upstream.
+[ Upstream commit 9883a4d41aba7612644e9bb807b971247cea9b9d ]
 
-The loop at stb0899_search_carrier() starts with a random
-value for cfr, as reported by Coverity.
+fepriv->auto_sub_step is unsigned. Setting it to -1 is just a
+trick to avoid calling continue, as reported by Coverity.
 
-Initialize it to zero, just like stb0899_dvbs_algo() to ensure
-that carrier search won't bail out.
+It relies to have this code just afterwards:
 
-Fixes: 8bd135bab91f ("V4L/DVB (9375): Add STB0899 support")
-Cc: stable@vger.kernel.org
+	if (!ready) fepriv->auto_sub_step++;
+
+Simplify the code by simply setting it to zero and use
+continue to return to the while loop.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/stb0899_algo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-core/dvb_frontend.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/dvb-frontends/stb0899_algo.c
-+++ b/drivers/media/dvb-frontends/stb0899_algo.c
-@@ -269,7 +269,7 @@ static enum stb0899_status stb0899_searc
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index 90acf52cc253c..6082a8019c151 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -454,8 +454,8 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
  
- 	short int derot_freq = 0, last_derot_freq = 0, derot_limit, next_loop = 3;
- 	int index = 0;
--	u8 cfr[2];
-+	u8 cfr[2] = {0};
- 	u8 reg;
+ 		default:
+ 			fepriv->auto_step++;
+-			fepriv->auto_sub_step = -1; /* it'll be incremented to 0 in a moment */
+-			break;
++			fepriv->auto_sub_step = 0;
++			continue;
+ 		}
  
- 	internal->status = NOCARRIER;
+ 		if (!ready) fepriv->auto_sub_step++;
+-- 
+2.43.0
+
 
 
 
