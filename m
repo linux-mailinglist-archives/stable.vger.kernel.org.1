@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-93126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B15B9CD77A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532069CD85A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418ED1F230D8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DB61F232C9
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197A9188CDB;
-	Fri, 15 Nov 2024 06:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E44F18734F;
+	Fri, 15 Nov 2024 06:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgbNasSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrlFntCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C490B188CD8;
-	Fri, 15 Nov 2024 06:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB2BEAD0;
+	Fri, 15 Nov 2024 06:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652892; cv=none; b=TW45c27rxNC6M9IJpywZA57mjiUPgOS5eYiYit2816kaAwvqprVOP2JcK31PCOC8VhNbgcipGc9xT5bcaEUGmooBsQffu0vnab2ol3E/0vNZKRrqLUMADTDVWPlwpzShlTupWZEziNcWoL6o1BaCpED2FxP+TSbBO1M8tYasNQQ=
+	t=1731653394; cv=none; b=sLeKeFeKUQ0ReDcCHwexaZQLE2W07MUmPExeXdUbGCMMk+wlF4AdWoY9+QDE0rPEP6t/40hyCr3L0KIPMxW0RNgqAomrckpP1FyZ542/D3UQPg6Gx61avGoyYdVOQyKLUt3qExkAw22WiBrxI6VrUJtv/KtywwzkQumH2kw4RZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652892; c=relaxed/simple;
-	bh=2ereHhU6Sp6uUJP2ycpGYOUruerx79VJrPVd0kbbwaQ=;
+	s=arc-20240116; t=1731653394; c=relaxed/simple;
+	bh=YlV28u13sf3Jigw7jPugYpM9uh0IKb78Yq4h7s9SZHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfFB62q5T+xVIlUxfWj/qIcopNwLNy61C1zmlEK/vGJlwK/K6dM4hX5dP9MPZupFZxdI4eZMQR95/REDMGqcozZ7ZPHYXZRfFyuR3/xu1gIt3S+7zG55p8+Z7SDj33qYt3i9fIhroitfFu/xiGQ9E1IpRGpl1FqwYJIrZIXj5TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgbNasSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8067C4CECF;
-	Fri, 15 Nov 2024 06:41:31 +0000 (UTC)
+	 MIME-Version; b=Z9EadWgnWktDGA4ebp9NDd2Kb0Oz3kYZjszc99DNgCj+hTEEdl3xEqi4LhN9UrDfx3qnC6uSrl3m1bnSRUqIMwZGjCTBWhRCN1jDRXahO4Yu+aU8Mdhgr2nXwRpxsusa610CPnHUUs8cDMrTZDFAMm1fEpzdddrm1zNitm3rrqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrlFntCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE622C4CECF;
+	Fri, 15 Nov 2024 06:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652892;
-	bh=2ereHhU6Sp6uUJP2ycpGYOUruerx79VJrPVd0kbbwaQ=;
+	s=korg; t=1731653394;
+	bh=YlV28u13sf3Jigw7jPugYpM9uh0IKb78Yq4h7s9SZHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgbNasSpFH4aT3Di0jvVyRDViJZVfFgnA5K2rw58i1ajnfTs+E21p8GCeKiuHCzZW
-	 x6BVI+wcjWYqKBRxJvgb15gIiYX9yw4NV5lYJ8x42SFGWZ5l+Hfi+DcrimHLt0zA1q
-	 qmPJHaA0yp+GnMnB9qcsDGFGQ0FkItg7NB1cWIQM=
+	b=IrlFntCWkRyexTKuYuKKUvc/itq2yHH2YSE/bX1RRRhoE/NakxFgy9Patnq2PNb8Y
+	 uKld/4SefSV2bnLiP4K5QckZ7LQhYOjoadrLXPRNyvwpj8Bb2KDFdX72il+MqCtGiu
+	 ysRy76mGcOhgFrimNP6eiRo8Gw8HMuAxhBL6Ka80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Greg Joyce <gjoyce@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 46/52] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
+Subject: [PATCH 6.6 10/48] nvme: disable CC.CRIME (NVME_CC_CRIME)
 Date: Fri, 15 Nov 2024 07:37:59 +0100
-Message-ID: <20241115063724.515028358@linuxfoundation.org>
+Message-ID: <20241115063723.335041499@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Greg Joyce <gjoyce@linux.ibm.com>
 
-[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
+[ Upstream commit 0ce96a6708f34280a536263ee5c67e20c433dcce ]
 
-The behavior of HONOR MagicBook Art 14 touchpad is not consistent
-after reboots, as sometimes it reports itself as a touchpad, and
-sometimes as a mouse.
+Disable NVME_CC_CRIME so that CSTS.RDY indicates that the media
+is ready and able to handle commands without returning
+NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY.
 
-Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
-workaround to force set feature in mt_set_input_mode() for such special touchpad
-device.
-
-[jkosina@suse.com: reword changelog a little bit]
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Joyce <gjoyce@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 14dc5ec9edc69..6e975d639c36b 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1986,6 +1986,11 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
- 			0x347d, 0x7853) },
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 82509f3679373..e25206c7de80c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2250,8 +2250,13 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
+ 	else
+ 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
  
-+	/* HONOR MagicBook Art 14 touchpad */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x35cc, 0x0104) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+-	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
+-		ctrl->ctrl_config |= NVME_CC_CRIME;
++	/*
++	 * Setting CRIME results in CSTS.RDY before the media is ready. This
++	 * makes it possible for media related commands to return the error
++	 * NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY. Until the driver is
++	 * restructured to handle retries, disable CC.CRIME.
++	 */
++	ctrl->ctrl_config &= ~NVME_CC_CRIME;
+ 
+ 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
+ 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
+@@ -2286,10 +2291,7 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
+ 		 * devices are known to get this wrong. Use the larger of the
+ 		 * two values.
+ 		 */
+-		if (ctrl->ctrl_config & NVME_CC_CRIME)
+-			ready_timeout = NVME_CRTO_CRIMT(crto);
+-		else
+-			ready_timeout = NVME_CRTO_CRWMT(crto);
++		ready_timeout = NVME_CRTO_CRWMT(crto);
+ 
+ 		if (ready_timeout < timeout)
+ 			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
 -- 
 2.43.0
 
