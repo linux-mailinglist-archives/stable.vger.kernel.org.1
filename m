@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-93341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC939CD8B5
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A649CD90A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C15BB25E88
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3822835DF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD04186294;
-	Fri, 15 Nov 2024 06:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03911891AA;
+	Fri, 15 Nov 2024 06:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHAgTPdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLZ/8TVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDF718871E;
-	Fri, 15 Nov 2024 06:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A007A185924;
+	Fri, 15 Nov 2024 06:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653597; cv=none; b=IofU/ZWzg5DDevVEwvNbAhj7/uxUEcO4zHUeGRfELqLfCMbRJD6vOYeFNk/f/XVGzsXKfrzkik6KzepQBpTourdm2jF0ohlF/0NhCsjNCqkUxGXfu5Lde71h07nD+49unRslexrnEPi7owW1j/LSdB4eNfuhw4rCvcfaySgN22o=
+	t=1731653788; cv=none; b=TKDQzU/I0Rv/ZWKQybDAoLbOen6Sn/c2lzsc7X1c9UgZJKsBlKX/bC+6kYQeDMbpRCxPmLgsQoHb7CKWI4xqOKNMH3XpABaFLsjhIxrwMISHaNZAmVz4qV/4riThKn7Jmpgy0deaukl0c27ULjkT9lKGxqP3iHlAz59U/zatvto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653597; c=relaxed/simple;
-	bh=IEAHIgSMcha41/KF3IEThxfwz+92adAKFcmY9kUR5fo=;
+	s=arc-20240116; t=1731653788; c=relaxed/simple;
+	bh=Q4YxaaSuw7+wTSZLcExBzraSy+Bhw0ylWgtT0r3AQEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IxsEhUQI1v0o+M0YVVFEvJ+hx6Oi/WfXLTyBiQg1GbEJuK2QVyGNiDFnFFpjOX+f5oSt2DcMZ/ESKmAQ1ieLOO/RfHpgada7Lz2eQDaHVl9BsmvFHxsvMuU/WqR5odmvNzDxN2W1LuvAyVGDFBgP/D3pnKDVV3qz4CUPL8pi7bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHAgTPdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737E0C4CECF;
-	Fri, 15 Nov 2024 06:53:16 +0000 (UTC)
+	 MIME-Version; b=LDYzWxp7UN7DOm09oT1l/fg9oeIHrBWdGMyFHUH92zDEIdlxA1wc4lebHl2tpYR0X0LRlflbRaLsBiv5Z1pLC13hLa80L1H5i1bYe/fGA+O5IiTeZ0MMUWvwuwOu6LKdx/5oX8V65jqlzt+jvBTgb4zCXxJmgy9ViE9nx+FuJbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLZ/8TVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E992C4CECF;
+	Fri, 15 Nov 2024 06:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653596;
-	bh=IEAHIgSMcha41/KF3IEThxfwz+92adAKFcmY9kUR5fo=;
+	s=korg; t=1731653788;
+	bh=Q4YxaaSuw7+wTSZLcExBzraSy+Bhw0ylWgtT0r3AQEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHAgTPdxCumNWT4Smc/lwHCz125FXUiZv33SJerk9QM+pmTxut2nza10J6FuiCJKw
-	 3NNKeoUZu2KsWQ9FFIvyCa1fd95NyKHaCZXsVfPWoksBx2hmigH3GrDZSL0p4Zk49Y
-	 +sPSyZEnT3w3K/8fEkYjbyC0Zu7vUdy2fLXMQpu0=
+	b=PLZ/8TVOrUP2bMJ5qdNH/0XyOYAoMFtJzsFVTf0ocMWkFIrHgg2vIAPToyME1d7Yj
+	 k4IWhErpI1VWtA5hy193WrHVTlZ2PR1CnFIBy9QZHTj/cl6kvzwGe1YikzzOVhoL8M
+	 ypHT5oEsRkHDQ8O2Rzw5mny5OpuNZo2chvhEoWc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jeremy=20Lain=C3=A9?= <jeremy.laine@m4x.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Mike <user.service2016@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/39] Revert "Bluetooth: af_bluetooth: Fix deadlock"
-Date: Fri, 15 Nov 2024 07:38:13 +0100
-Message-ID: <20241115063722.730295581@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 5.10 37/82] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+Date: Fri, 15 Nov 2024 07:38:14 +0100
+Message-ID: <20241115063726.899207417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-This reverts commit cb8adca52f306563d958a863bb0cbae9c184d1ae which is
-commit f7b94bdc1ec107c92262716b073b3e816d4784fb upstream.
+commit 792227719725497ce10a8039803bec13f89f8910 upstream.
 
-It is reported to cause regressions in the 6.1.y tree, so revert it for
-now.
+dm-cache checks the dirty bits of the cache blocks to be dropped when
+shrinking the fast device, but an index bug in bitset iteration causes
+out-of-bounds access.
 
-Link: https://lore.kernel.org/all/CADRbXaDqx6S+7tzdDPPEpRu9eDLrHQkqoWTTGfKJSRxY=hT5MQ@mail.gmail.com/
-Reported-by: Jeremy Lainé <jeremy.laine@m4x.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Mike <user.service2016@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Pauli Virtanen <pav@iki.fi>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Sasha Levin <sashal@kernel.org>
+Reproduce steps:
+
+1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
+   access to the dirty bitset (offset 0x80)
+
+dmsetup suspend cache
+dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
+  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc900000f3000, ffffc900000f5000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                     ^
+   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by making the index post-incremented.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/md/dm-cache-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -307,11 +307,14 @@ int bt_sock_recvmsg(struct socket *sock,
- 	if (flags & MSG_OOB)
- 		return -EOPNOTSUPP;
- 
-+	lock_sock(sk);
-+
- 	skb = skb_recv_datagram(sk, flags, &err);
- 	if (!skb) {
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
- 			err = 0;
- 
-+		release_sock(sk);
- 		return err;
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2966,13 +2966,13 @@ static bool can_resize(struct cache *cac
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+ 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		new_size = to_cblock(from_cblock(new_size) + 1);
+ 		if (is_dirty(cache, new_size)) {
+ 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+ 			      cache_device_name(cache),
+ 			      (unsigned long long) from_cblock(new_size));
+ 			return false;
+ 		}
++		new_size = to_cblock(from_cblock(new_size) + 1);
  	}
  
-@@ -337,6 +340,8 @@ int bt_sock_recvmsg(struct socket *sock,
- 
- 	skb_free_datagram(sk, skb);
- 
-+	release_sock(sk);
-+
- 	if (flags & MSG_TRUNC)
- 		copied = skblen;
- 
-@@ -559,11 +564,10 @@ int bt_sock_ioctl(struct socket *sock, u
- 		if (sk->sk_state == BT_LISTEN)
- 			return -EINVAL;
- 
--		spin_lock(&sk->sk_receive_queue.lock);
-+		lock_sock(sk);
- 		skb = skb_peek(&sk->sk_receive_queue);
- 		amount = skb ? skb->len : 0;
--		spin_unlock(&sk->sk_receive_queue.lock);
--
-+		release_sock(sk);
- 		err = put_user(amount, (int __user *)arg);
- 		break;
- 
+ 	return true;
 
 
 
