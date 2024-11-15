@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7829CD7A6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 295F29CD7FA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1484E282115
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51231F21914
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F2E154C00;
-	Fri, 15 Nov 2024 06:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764C17E015;
+	Fri, 15 Nov 2024 06:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/ODhOv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuakKEje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86785126C17;
-	Fri, 15 Nov 2024 06:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA10B29A9;
+	Fri, 15 Nov 2024 06:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653003; cv=none; b=WWJbrf2D6YF1uSE55H16l2FzvPNTko+9WFHaqpirQbj1H17T1SaYnGCMl7CtVVBZiJzShQnxqcrMlj6RHyfz76+QGVh/Gwf2dM9jqdzvjgHKvoyENLmWGETf0AsUKau79MoCkH3IK+ik4+4iiPfRwu18tGdU4iWwBxN4gUEdBVU=
+	t=1731653185; cv=none; b=NpJUZ9Uc7ns9zbqKEnvSOdYzn0QGW7uZ43sWZW8lCCMbIAu0UaSBMdj1Dp7sZs38P4Hful2JGa1wDT+tC/v6beBWN4/W9hNfAQ1VS21FQ5q4TYd3tVbqMsbrY+cJ+jaON3PRDVu0JjGC4fSKItPr7wh608P2BRMCWlJhKxN8T7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653003; c=relaxed/simple;
-	bh=FpZEgnoeupIpr/jDxSFN7GVZJJVRIrfly40g6V3joUc=;
+	s=arc-20240116; t=1731653185; c=relaxed/simple;
+	bh=fMnUJaMLZFYhASe2iZbB/OWTGPJsXh/JE1AQkaevASM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq7TFF/R/kxN1oC9PKLyTEvX5QNi2WcfRadTQnpsfEIF9Y0MVCGd3ILMYonYoyxUfNkvEpXmOKYEaGsUTOwKFDOVL8LB4kKQ3uwy4zJPizpeNJZ+WfPqnLKkDbl5UZVIAX2rMr2gAENE70hkAfLp6jOx3vqvfQLylztzuKA3txw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/ODhOv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010A3C4CECF;
-	Fri, 15 Nov 2024 06:43:22 +0000 (UTC)
+	 MIME-Version; b=enGvK78dUTzeMhu5jMsVEm/irmHU8l3rS0y/IHHKScDhm4tIfwEFxKEl2aEBYUU50cgAgRYlbD3X3ImyaELXWqP0Gc0xR3YRQXwXCuXBQoffwl3ihOCwNc3HLwnoITq7nUXGs0f7+tdKvH5ri18JK43yVcaAJK/X7usXDCZlg3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuakKEje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39019C4CECF;
+	Fri, 15 Nov 2024 06:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653003;
-	bh=FpZEgnoeupIpr/jDxSFN7GVZJJVRIrfly40g6V3joUc=;
+	s=korg; t=1731653185;
+	bh=fMnUJaMLZFYhASe2iZbB/OWTGPJsXh/JE1AQkaevASM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/ODhOv5dqe11hc7Al9hlgFt1AW6702LqqZAq0imiH8O7bQkjspG+DjDXEaioGuJ1
-	 v3nG5q1+K4gOpEv6THI3asuQvQ+Ov4BeMqWDT93VWTv7MnaV8Apf3gNsZE6+ZrwG25
-	 ggy9DzZ7Pxvao4FfqKu8XzUVvKD6KiG6TlVIePXU=
+	b=JuakKEjexEzMHjxhnIZFGfQ0XJVQmjZZaa8WrZg7F5a+vEXfvevFqcqO8IWlWVG7j
+	 HmXZVU4g+rmPVtOS0k24sWGbLuZiMH2DvkpzqvxHfFUQ29VHLpEj5kibjwuNTOZzw9
+	 P0QT1K5L+KO+2zPRQA4Lh2w1r6oqKUCz/rKDPkj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 26/66] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+	Stefan Blum <stefan.blum@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 12/63] HID: multitouch: Add support for B2402FVA track point
 Date: Fri, 15 Nov 2024 07:37:35 +0100
-Message-ID: <20241115063723.787195324@linuxfoundation.org>
+Message-ID: <20241115063726.339855052@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Stefan Blum <stefanblum2004@gmail.com>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+By default the track point does not work on the Asus Expertbook B2402FVA.
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
+>From libinput record i got the ID of the track point device:
+  evdev:
+    # Name: ASUE1201:00 04F3:32AE
+    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
 
-Bail out also when status is AE_NOT_FOUND.
+I found that the track point is functional, when i set the
+MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
-
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -110,8 +110,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 847462650549e..86ca25b637809 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2017,6 +2017,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_ELAN, 0x3148) },
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_ELAN, 0x32ae) },
++
+ 	/* Elitegroup panel */
+ 	{ .driver_data = MT_CLS_SERIAL,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
+-- 
+2.43.0
+
 
 
 
