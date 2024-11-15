@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-93113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DBC9CD764
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7299CD7BA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D08D7B25B07
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD82280ED1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97B11632DA;
-	Fri, 15 Nov 2024 06:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951751885B8;
+	Fri, 15 Nov 2024 06:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAMji8us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHP0oqS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850FF18785C;
-	Fri, 15 Nov 2024 06:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524BA17E015;
+	Fri, 15 Nov 2024 06:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652848; cv=none; b=ryagdjHte0he9FATdfxpvqy9b+8dD2AkvTjtGHlgxHl08j4lXaC3Pl9ofXngULrvB1JHJJDXMS7z5kQiAjp3+aWqFtHceftUcyO9lI90+ACfJagWb8phvNfMZJg0WIUpkdGoDQPh2zAW+yV+s3XWpyEcf3FT7OZUeNRyNsQLbwc=
+	t=1731653038; cv=none; b=RNAz+vV7cORSOfMqGzYyhxEqvyA6JSU4qGz3mPIXjvSWjjQyqPmbZ7HUyOHxyB/Ao6QuLFiWq+cCCprjzMzgClNlhNtoBTBAVerHQ9R1dG7iKuWGYBIL1SuxDjSKqzZRRHf9xLsqPEY0ULjl3xZvNvTtb9wdxTF+FYpLz1LIR/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652848; c=relaxed/simple;
-	bh=nNk+64xjZ6HpHKnWrucrqCPse7bfSWOXXz3JqdGkwe0=;
+	s=arc-20240116; t=1731653038; c=relaxed/simple;
+	bh=syXHNysSx+S3L+Ft6dGK1EhvoaX/v9eJmW9AMTvj8wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikqmMb8jG7B8Cq0gqknE2djh5zBHwvkeo/ALyFy+zMmZmRAVWE16Y0ORCDAnyqyTdtykmkYDiVWiNp/DPIXJlvf/3rQATwqJDNg+QBtuBVWvMh4bdGOKRROn4G2rKrn1iIpy+xRvuOZDyJp83TdLawh5QZKKsDct1nmbz9BxruI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAMji8us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF003C4CECF;
-	Fri, 15 Nov 2024 06:40:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kxoq+Vo/BhUF5fWQqeCJvTKPCdNvJKeY7kVlyr1JH/yBc7Kr11jMyOyWql4QTSNtJGD3+o/e4xiek4FMmGZ56xqfTbpdoWdsrscD98jnUpibtwUUxTOMZVaSHkRvjj7usnsXfKwZufyOrR4z05RzevI1KgjoFw47z7BZHfTDAuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHP0oqS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA48C4CECF;
+	Fri, 15 Nov 2024 06:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652848;
-	bh=nNk+64xjZ6HpHKnWrucrqCPse7bfSWOXXz3JqdGkwe0=;
+	s=korg; t=1731653038;
+	bh=syXHNysSx+S3L+Ft6dGK1EhvoaX/v9eJmW9AMTvj8wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAMji8usCCXV5KxBoUBMMHzE/5UV8Q+WFIzIBpH/pw3W1RscWvohLlfCKx30K2Wf+
-	 LSgU2L3KxR69bE6l3XYciRxC4RZHAlK1vw5XeWtDTNFe/oEuzVVckOfQq91CIoyeSN
-	 zGOgxLSe5Sw6zvgogl+9aIegK4KViUyXWn02dQX8=
+	b=oHP0oqS4IeqGKsUoJIZS4yAgqw+mJo9aY4TffSQgQDh2CIADZyWWJXgmvcXK0/IMC
+	 w128KZgWbDYHIi8XMfo8Ox3Er2IIC5P1p4cBqM8b1yEHFTfMPgh2vDQ0dayneIzxlF
+	 QyE/ypnjmZfNFm6ApGVlBeDvhI/gghvJfKtJX4/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 4.19 31/52] usb: musb: sunxi: Fix accessing an released usb phy
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Hardik Gohil <hgohil@mvista.com>
+Subject: [PATCH 5.4 35/66] spi: Fix deadlock when adding SPI controllers on SPI buses
 Date: Fri, 15 Nov 2024 07:37:44 +0100
-Message-ID: <20241115063723.983598490@linuxfoundation.org>
+Message-ID: <20241115063724.112494538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,57 +60,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 498dbd9aea205db9da674994b74c7bf8e18448bd upstream.
+commit 6098475d4cb48d821bdf453c61118c56e26294f0 upstream.
 
-Commit 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on
-exit") will cause that usb phy @glue->xceiv is accessed after released.
+Currently we have a global spi_add_lock which we take when adding new
+devices so that we can check that we're not trying to reuse a chip
+select that's already controlled.  This means that if the SPI device is
+itself a SPI controller and triggers the instantiation of further SPI
+devices we trigger a deadlock as we try to register and instantiate
+those devices while in the process of doing so for the parent controller
+and hence already holding the global spi_add_lock.  Since we only care
+about concurrency within a single SPI bus move the lock to be per
+controller, avoiding the deadlock.
 
-1) register platform driver @sunxi_musb_driver
-// get the usb phy @glue->xceiv
-sunxi_musb_probe() -> devm_usb_get_phy().
+This can be easily triggered in the case of spi-mux.
 
-2) register and unregister platform driver @musb_driver
-musb_probe() -> sunxi_musb_init()
-use the phy here
-//the phy is released here
-musb_remove() -> sunxi_musb_exit() -> devm_usb_put_phy()
-
-3) register @musb_driver again
-musb_probe() -> sunxi_musb_init()
-use the phy here but the phy has been released at 2).
-...
-
-Fixed by reverting the commit, namely, removing devm_usb_put_phy()
-from sunxi_musb_exit().
-
-Fixes: 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on exit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241029-sunxi_fix-v1-1-9431ed2ab826@quicinc.com
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hardik Gohil <hgohil@mvista.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/sunxi.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi.c       |   15 +++++----------
+ include/linux/spi/spi.h |    3 +++
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/musb/sunxi.c
-+++ b/drivers/usb/musb/sunxi.c
-@@ -286,8 +286,6 @@ static int sunxi_musb_exit(struct musb *
- 	if (test_bit(SUNXI_MUSB_FL_HAS_SRAM, &glue->flags))
- 		sunxi_sram_release(musb->controller->parent);
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -472,12 +472,6 @@ static LIST_HEAD(spi_controller_list);
+  */
+ static DEFINE_MUTEX(board_lock);
  
--	devm_usb_put_phy(glue->dev, glue->xceiv);
+-/*
+- * Prevents addition of devices with same chip select and
+- * addition of devices below an unregistering controller.
+- */
+-static DEFINE_MUTEX(spi_add_lock);
 -
- 	return 0;
- }
+ /**
+  * spi_alloc_device - Allocate a new SPI device
+  * @ctlr: Controller to which device is connected
+@@ -580,7 +574,7 @@ int spi_add_device(struct spi_device *sp
+ 	 * chipselect **BEFORE** we call setup(), else we'll trash
+ 	 * its configuration.  Lock against concurrent add() calls.
+ 	 */
+-	mutex_lock(&spi_add_lock);
++	mutex_lock(&ctlr->add_lock);
  
+ 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
+ 	if (status) {
+@@ -624,7 +618,7 @@ int spi_add_device(struct spi_device *sp
+ 	}
+ 
+ done:
+-	mutex_unlock(&spi_add_lock);
++	mutex_unlock(&ctlr->add_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(spi_add_device);
+@@ -2512,6 +2506,7 @@ int spi_register_controller(struct spi_c
+ 	spin_lock_init(&ctlr->bus_lock_spinlock);
+ 	mutex_init(&ctlr->bus_lock_mutex);
+ 	mutex_init(&ctlr->io_mutex);
++	mutex_init(&ctlr->add_lock);
+ 	ctlr->bus_lock_flag = 0;
+ 	init_completion(&ctlr->xfer_completion);
+ 	if (!ctlr->max_dma_len)
+@@ -2657,7 +2652,7 @@ void spi_unregister_controller(struct sp
+ 
+ 	/* Prevent addition of new devices, unregister existing ones */
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_lock(&spi_add_lock);
++		mutex_lock(&ctlr->add_lock);
+ 
+ 	device_for_each_child(&ctlr->dev, NULL, __unregister);
+ 
+@@ -2688,7 +2683,7 @@ void spi_unregister_controller(struct sp
+ 	mutex_unlock(&board_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_unlock(&spi_add_lock);
++		mutex_unlock(&ctlr->add_lock);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
+ 
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -483,6 +483,9 @@ struct spi_controller {
+ 	/* I/O mutex */
+ 	struct mutex		io_mutex;
+ 
++	/* Used to avoid adding the same CS twice */
++	struct mutex		add_lock;
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
 
 
 
