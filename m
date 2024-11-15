@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5D89CD836
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FDD9CD7E1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA05E1F23192
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3740D1F20F0A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810E3188015;
-	Fri, 15 Nov 2024 06:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C969818734F;
+	Fri, 15 Nov 2024 06:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCcYUug+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QmdPVlQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE43185B5B;
-	Fri, 15 Nov 2024 06:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8572A185B5B;
+	Fri, 15 Nov 2024 06:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653309; cv=none; b=VPZeSEASuTmxWmJ82LQuCa7N3mXNzLwVB0cT/3/CjBi+mzFY0Vv/6uoWWkySaeCZcFS5GI9bVGXJ+j/T7GXulNW5xyyVwXjXfTWoP4dNoymeYliYNajoKfpXlf3i/1mfLl9ZIrTb3ajHlVtipyXUaq+/I9aUtfWNY3f/o6WB2gI=
+	t=1731653127; cv=none; b=cbh36+G0LZzttEZxT2ddwAF3SLd3Q4o5xYZTT9uFwobofaSAwk8OplSxw6mcDVYkWSwccPT8iykK1gEjVpr28D58lsme/gsi7aGWgnajCBjiozen6lTGCJZcHMqUWnIkRu+5epQnz4W/xhPLOMj3F6BsNqHmoC2wcvkktrSK49E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653309; c=relaxed/simple;
-	bh=bgWEJBzxz1SolrXFvOy2b3fHJ3K/6nImlA6aLCm1Rao=;
+	s=arc-20240116; t=1731653127; c=relaxed/simple;
+	bh=O0ChvaqJZJf4ZlRLy0wVRqEyjz17kVAGRg/Wrbfqb84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uL3hvp+0Xd+dDar9lZcx9NIHVx7WFfAwN5Z+vy0vWrPjDs4pPB2Ff98HrMceWTFYsnVa9vtr25ulgROXeICQUvpcDtHf5+JHvK4raS/NmN82gRjfCLDlpXXDd/YFtr2pG2EcPHZaJU+8af8RUPfhKtgo+x54QHrV86dNgCufrJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCcYUug+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9734DC4CECF;
-	Fri, 15 Nov 2024 06:48:28 +0000 (UTC)
+	 MIME-Version; b=riiz0ZnDrtvADimMCSYgVOxXMsoqBXaeFEzlK01iWZl/0ELsJR+VVWsMgRHDEqJ7nGGtmjMekMhBDu6KlLNSGhXZWsaFr46CVvlPp61QiLPgG7Vc7w9KOxweuVMxYYwfTmgrTPo4BMGa0IbPl3Sf2FO5j/Ns/wXUysxYFvVAtJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QmdPVlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD04C4CECF;
+	Fri, 15 Nov 2024 06:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653309;
-	bh=bgWEJBzxz1SolrXFvOy2b3fHJ3K/6nImlA6aLCm1Rao=;
+	s=korg; t=1731653127;
+	bh=O0ChvaqJZJf4ZlRLy0wVRqEyjz17kVAGRg/Wrbfqb84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCcYUug+xL3tkQ8+nhqs2L+VHj4oC1LywTYRmD1rXWXSPjQLx5+dvkyjOqjgCpqVR
-	 vPDCpv3z7Y3gNPAbMvP5XnegUILYi7Olvk09LiwwxbJd5aSjGxgzlJfU01AwMJzyPz
-	 hBHYc0dorjKAxZjlKPliQmB2FzattzOmO4OjPozw=
+	b=1QmdPVlQ9QJqbNvi7doMzecZae8EGSg7PUuNb6NTLp9LtG873wDSH3TVUIP/PlE2i
+	 0yUom2iq/BTxtV75GiHMOiXN/H6UzuRmM60NRnZ37/QX953gEFKRNj05DBglxwK2At
+	 dsRK3iIijgfPAwDYpCT0sn9Fd3KkHX4XmjGWLXZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Izhar Firdaus <izhar@fedoraproject.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 48/63] HID: lenovo: Add support for Thinkpad X1 Tablet Gen 3 keyboard
+	WANG Wenhu <wenhu.wang@vivo.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 62/66] mm: clarify a confusing comment for remap_pfn_range()
 Date: Fri, 15 Nov 2024 07:38:11 +0100
-Message-ID: <20241115063727.646170436@linuxfoundation.org>
+Message-ID: <20241115063725.079065062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: WANG Wenhu <wenhu.wang@vivo.com>
 
-[ Upstream commit 51268879eb2bfc563a91cdce69362d9dbf707e7e ]
+commit 86a76331d94c4cfa72fe1831dbe4b492f66fdb81 upstream.
 
-The Thinkpad X1 Tablet Gen 3 keyboard has the same Lenovo specific quirks
-as the original  Thinkpad X1 Tablet keyboard.
+It really made me scratch my head.  Replace the comment with an accurate
+and consistent description.
 
-Add the PID for the "Thinkpad X1 Tablet Gen 3 keyboard" to the hid-lenovo
-driver to fix the FnLock, Mute and media buttons not working.
+The parameter pfn actually refers to the page frame number which is
+right-shifted by PAGE_SHIFT from the physical address.
 
-Suggested-by: Izhar Firdaus <izhar@fedoraproject.org>
-Closes https://bugzilla.redhat.com/show_bug.cgi?id=2315395
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: WANG Wenhu <wenhu.wang@vivo.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Link: http://lkml.kernel.org/r/20200310073955.43415-1-wenhu.wang@vivo.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-lenovo.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index e5e72aa5260a9..24654c7ecb04e 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -473,6 +473,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
- 		return 0;
-@@ -583,6 +584,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
- 			return ret;
-@@ -776,6 +778,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
- 		return 0;
-@@ -1056,6 +1059,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
- 	}
-@@ -1286,6 +1290,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
- 	default:
-@@ -1372,6 +1377,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
- 	}
-@@ -1421,6 +1427,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
- };
- 
--- 
-2.43.0
-
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1921,7 +1921,7 @@ static inline int remap_p4d_range(struct
+  * remap_pfn_range - remap kernel memory to userspace
+  * @vma: user vma to map to
+  * @addr: target user address to start at
+- * @pfn: physical address of kernel memory
++ * @pfn: page frame number of kernel physical memory address
+  * @size: size of map area
+  * @prot: page protection flags for this mapping
+  *
 
 
 
