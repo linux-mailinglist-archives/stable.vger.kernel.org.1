@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-93449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E709CD958
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE6E9CD8D5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2741F21B71
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B9931F23520
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35D2188015;
-	Fri, 15 Nov 2024 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478BD18871E;
+	Fri, 15 Nov 2024 06:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRjSsltV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiggZYJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AE9185924;
-	Fri, 15 Nov 2024 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C4185924;
+	Fri, 15 Nov 2024 06:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653963; cv=none; b=tgVzgIn7Zk2fZn2Q+rxiTi6T0jbchDOjThFLvv/BtO8W0dr1OuCeZXu9GY+pAMUdUJXsoNCsxY8mlWN7PQTZvcyfKTG8e/BY4qGLikOwdE4Z2forS7c7vhdvrUSstD6cFY56pU0ROCtUdR5AsCnYTIivfJCcGkVZq6GN2CmmPgs=
+	t=1731653675; cv=none; b=qC+tXkzCBuYIzDekx8jWCANB3Zc1VcXkrViH8T3a9E9j+cAx92KvJKYBbDgChj00MiASxJb+78+3urKABarXWlEyMLGk/pimUEATDQXpi8RRi0hZ8u8l95VC7LaxNgPSHp697EkvYIqGgZ63mDfddQK2YTaKm1MIfhPg5VCLhTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653963; c=relaxed/simple;
-	bh=AGsepUgWyWwc07lfhjJEx0beKwbM53BfQaL+Aa2gzjM=;
+	s=arc-20240116; t=1731653675; c=relaxed/simple;
+	bh=4AmwZWPeyAmPepwUeBC3RvHfmewhmHBogXNySoOPFT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUxaqMXrafSwso97Wa8hJLWniMgpL8J5v9FcxmdHcLYJ1STduKjQXxnPS/zsxshNiWfXpk/zo/deQ7H3K0dF/ZldJKi9OG+caTh0JTPd64EmCNPy3ZoaHYLWf6QQBum5mlOoAi2E7xtCyRqsdiHmAYc2XTiF6XlnO/s5IYDE71c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRjSsltV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B897AC4CECF;
-	Fri, 15 Nov 2024 06:59:22 +0000 (UTC)
+	 MIME-Version; b=EVPsd9jAEf3Slw1VhdzNp/UqpdFYuOYVh9ZQTtZ/TMKWdee2F+lhogBWbzFhmQfYO8IT9T4qOGAr4ivBJttZKHqpJ27p8HA5fZzFRGUrCLx6BfYyYPBwv2M9fQJlxdXq+UZbd7RPIVhZNIpV81XYXkMSpFEjD4hidwUU+SQ2vJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiggZYJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6171DC4CECF;
+	Fri, 15 Nov 2024 06:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653963;
-	bh=AGsepUgWyWwc07lfhjJEx0beKwbM53BfQaL+Aa2gzjM=;
+	s=korg; t=1731653674;
+	bh=4AmwZWPeyAmPepwUeBC3RvHfmewhmHBogXNySoOPFT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRjSsltVrWkDWsPJ7EUiUELWDjETmdHbMgg86i0FxuS/TjBYGdcWE63C6ehWw0OIk
-	 rAFXagb/5AVnzarKG75GN/Z0CqxVJZuPZ2Lm/LJruKwdAsYCg8bjAuXpltv6aI34ac
-	 AzRZts++ULZr6jLauUYzY+Riqs5UiNQFSRrn9lHs=
+	b=aiggZYJVWaFRoUF9euP367YWgeF/iMb7pahvMQvwpgfifDRjpMMP/uWEp/L7WwcFP
+	 1sSiQ7iN4rPvGJv9/3YdhJMaBKzGLqYoMQBtLldgKFxWr6TdjkD687Ibxs2CEk/vfT
+	 9/mH4ywgn+NLZLiTv3k0qaaVIMvdgmaF8PNOPNR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Wongi Lee <qwerty@theori.io>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 5.10 67/82] vsock/virtio: Initialization of the dangling pointer occurring in vsk->trans
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 34/39] ext4: fix timer use-after-free on failed mount
 Date: Fri, 15 Nov 2024 07:38:44 +0100
-Message-ID: <20241115063727.966139356@linuxfoundation.org>
+Message-ID: <20241115063723.838050061@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit 6ca575374dd9a507cdd16dfa0e78c2e9e20bd05f upstream.
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-During loopback communication, a dangling pointer can be created in
-vsk->trans, potentially leading to a Use-After-Free condition.  This
-issue is resolved by initializing vsk->trans to NULL.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-Cc: stable <stable@kernel.org>
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Wongi Lee <qwerty@theori.io>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Message-Id: <2024102245-strive-crib-c8d3@gregkh>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
+
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
+
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -687,6 +687,7 @@ void virtio_transport_destruct(struct vs
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 
- 	kfree(vvs);
-+	vsk->trans = NULL;
- }
- EXPORT_SYMBOL_GPL(virtio_transport_destruct);
- 
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5617,8 +5617,8 @@ failed_mount3a:
+ failed_mount3:
+ 	/* flush s_error_work before sbi destroy */
+ 	flush_work(&sbi->s_error_work);
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ 	ext4_group_desc_free(sbi);
+ failed_mount:
+ 	if (sbi->s_chksum_driver)
 
 
 
