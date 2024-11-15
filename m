@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347709CD950
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727F89CD975
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6366B20F23
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281F11F2165B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1771891A8;
-	Fri, 15 Nov 2024 06:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417461885BF;
+	Fri, 15 Nov 2024 06:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grAxtEt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MwBUBhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DE9187FE8;
-	Fri, 15 Nov 2024 06:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8E22BB1B;
+	Fri, 15 Nov 2024 06:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653943; cv=none; b=qVSNKDGpg8UcqXl/VbHNoh8GfNAg7L7cOlpnMQxoo2sl0geuRPRl3+eS+VuuC8hdIAKWW74jlsllLTIgxX3zaR5rez4bTZFcRZni/76G8xX3E47Fs1lWfIpuXoYftdAbngbrRuj6ggH8y6BeRRMyXX4ewasm7ui5VdqdZPXCaig=
+	t=1731653992; cv=none; b=lWq23VY/L109iKM/1dVEBUoHr6FxDFcNE1bKH8hPV0G3D1Vy1+rzsEy15Iv9webF4DsDcg/hwocXAVlS4RWH5W8TEl+HPmVMU3ZHaK/9cOA1fmhUQbBzkeb1XZXl3X2gsMvM23n5Q/IROjJK1jRpR/Sm7OVoXBySa1i16X+f7xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653943; c=relaxed/simple;
-	bh=TAtJenMngUhjTbK2SH3fL6E30vxkIGQ6Y0RlZxWr8Lk=;
+	s=arc-20240116; t=1731653992; c=relaxed/simple;
+	bh=lro1TU82qnxltnkOd+ezsKF3QMunMzZf/UKzGPs1mTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVapYuA03zgPLGiulOBvukKcnxmbOIPuO0v7X/L+73WCKAyE70C75rhJg+7StkgnN2/VLs4f30ORcWhoUJUqYITWwMuDUQB2m5dR/MvckMQI06q0fDYkSrh0eE/JvtISvrXYILFvY3BodZ8gtoj09UxsxRAifVipOpRcndxbLqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grAxtEt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBCEC4CECF;
-	Fri, 15 Nov 2024 06:59:01 +0000 (UTC)
+	 MIME-Version; b=qc0aMs4X6g7+PYZ/D18TPyrhs3S7zCbZvJa0ZPD1yUT/08yYnvtwJHP9ZQena7wczg17lSfLZGbpGZ9c1ZtCnlov6eLEKCz0CRFLQzzJ2eZb737f3d6FgY2zSwM3TZq4yUkzk0Cu5s+pzEbeoDQ19lWAoU1gsA6R0Jzg9hBg/zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MwBUBhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FFFC4CED0;
+	Fri, 15 Nov 2024 06:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653942;
-	bh=TAtJenMngUhjTbK2SH3fL6E30vxkIGQ6Y0RlZxWr8Lk=;
+	s=korg; t=1731653991;
+	bh=lro1TU82qnxltnkOd+ezsKF3QMunMzZf/UKzGPs1mTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grAxtEt0sUNnX80SzPpMzb2SSM0we/6Re98yce8tHpGwAKV2Sk/z9NRyfsGSjoVLJ
-	 Q/qvRFZ0U5PydnG01znECr9TfHOoLckj7Nm+FkI+PJkVJKc3DsKOkE/m6x1hqPGJcA
-	 IHaX5wtgoSoU8DsLR1eu1e6JOHKNjfh1cX8XH71o=
+	b=0MwBUBhOCgCV/NwYEgQ5VK6Uu7Zo+y1xMSkrX7EOUr4hnm/p7BkWj2vscmanoh+6s
+	 JT62LTiLwNq5Bi5m78oyTGojMDh7IwCqw708FuXuEQkzMw8v2vrds0piNjePb9rMJd
+	 2mGkuZJOHvbL2h5eDKPAJePBiK9DeZPpPmLMckHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 5.10 81/82] mm: krealloc: Fix MTE false alarm in __do_krealloc
-Date: Fri, 15 Nov 2024 07:38:58 +0100
-Message-ID: <20241115063728.463019988@linuxfoundation.org>
+	Kenneth Albanowski <kenalba@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/22] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
+Date: Fri, 15 Nov 2024 07:38:59 +0100
+Message-ID: <20241115063721.654448111@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+From: Kenneth Albanowski <kenalba@chromium.org>
 
-commit 704573851b51808b45dae2d62059d1d8189138a2 upstream.
+[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
 
-This patch addresses an issue introduced by commit 1a83a716ec233 ("mm:
-krealloc: consider spare memory for __GFP_ZERO") which causes MTE
-(Memory Tagging Extension) to falsely report a slab-out-of-bounds error.
+The Logitech Casa Touchpad does not reliably send touch release signals
+when communicating through the Logitech Bolt wireless-to-USB receiver.
 
-The problem occurs when zeroing out spare memory in __do_krealloc. The
-original code only considered software-based KASAN and did not account
-for MTE. It does not reset the KASAN tag before calling memset, leading
-to a mismatch between the pointer tag and the memory tag, resulting
-in a false positive.
+Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
+sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
+needed, but harmless.
 
-Example of the error:
-==================================================================
-swapper/0: BUG: KASAN: slab-out-of-bounds in __memset+0x84/0x188
-swapper/0: Write at addr f4ffff8005f0fdf0 by task swapper/0/1
-swapper/0: Pointer tag: [f4], memory tag: [fe]
-swapper/0:
-swapper/0: CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.
-swapper/0: Hardware name: MT6991(ENG) (DT)
-swapper/0: Call trace:
-swapper/0:  dump_backtrace+0xfc/0x17c
-swapper/0:  show_stack+0x18/0x28
-swapper/0:  dump_stack_lvl+0x40/0xa0
-swapper/0:  print_report+0x1b8/0x71c
-swapper/0:  kasan_report+0xec/0x14c
-swapper/0:  __do_kernel_fault+0x60/0x29c
-swapper/0:  do_bad_area+0x30/0xdc
-swapper/0:  do_tag_check_fault+0x20/0x34
-swapper/0:  do_mem_abort+0x58/0x104
-swapper/0:  el1_abort+0x3c/0x5c
-swapper/0:  el1h_64_sync_handler+0x80/0xcc
-swapper/0:  el1h_64_sync+0x68/0x6c
-swapper/0:  __memset+0x84/0x188
-swapper/0:  btf_populate_kfunc_set+0x280/0x3d8
-swapper/0:  __register_btf_kfunc_id_set+0x43c/0x468
-swapper/0:  register_btf_kfunc_id_set+0x48/0x60
-swapper/0:  register_nf_nat_bpf+0x1c/0x40
-swapper/0:  nf_nat_init+0xc0/0x128
-swapper/0:  do_one_initcall+0x184/0x464
-swapper/0:  do_initcall_level+0xdc/0x1b0
-swapper/0:  do_initcalls+0x70/0xc0
-swapper/0:  do_basic_setup+0x1c/0x28
-swapper/0:  kernel_init_freeable+0x144/0x1b8
-swapper/0:  kernel_init+0x20/0x1a8
-swapper/0:  ret_from_fork+0x10/0x20
-==================================================================
+Linux does not have information on which devices are connected to the
+Bolt receiver, so we have to enable this for the entire device.
 
-Fixes: 1a83a716ec233 ("mm: krealloc: consider spare memory for __GFP_ZERO")
-Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slab_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1075,7 +1075,7 @@ static __always_inline void *__do_kreall
- 		/* Zero out spare memory. */
- 		if (want_init_on_alloc(flags)) {
- 			kasan_disable_current();
--			memset((void *)p + new_size, 0, ks - new_size);
-+			memset(kasan_reset_tag(p) + new_size, 0, ks - new_size);
- 			kasan_enable_current();
- 		}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 110c59622a2d8..81db294dda408 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -831,6 +831,7 @@
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
++#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
+ #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
+ #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
+ #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 8f6e410af7016..57e4ff1ab275d 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2134,6 +2134,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_LOGITECH,
+ 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
  
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
+-- 
+2.43.0
+
 
 
 
