@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCF69CD932
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5659CD862
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2478B22657
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E16283B70
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EC41885BF;
-	Fri, 15 Nov 2024 06:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB6C185B5B;
+	Fri, 15 Nov 2024 06:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGgiLsgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpnP5Vwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F363D2BB1B;
-	Fri, 15 Nov 2024 06:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80EAEAD0;
+	Fri, 15 Nov 2024 06:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653876; cv=none; b=La0YhCd2+EQOJrvsSt3k/sHVGxN7SssHRhM8mK+I30SZXWoMMXIe4Q4Zbb7gB5s9YEN2syrfuoHGvSPgUxlBeq9y6p5rfvhAM86hcVPRrF8ZK4MG0X3UUgPCLA5XaF+hGyLcQWganjFivpVmZ8iXl1raSrmG3Y959zS9+NixrBM=
+	t=1731653414; cv=none; b=bfrX1w50ayOFbMKqO79po2Rac1+jZiRFYPioKKg07u8vhiEsQtWmMfbD5d58GRY1apUq9Mj9gM6P6lfQoglGY40iYPDq5U5AN+WOi6532IpnMWo/9YnIzHnUna8wVkb+yXhZG7OE2gumFd8WlZLlRH9Dh3zLK/9Xi0rStKRIFMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653876; c=relaxed/simple;
-	bh=GYGj9J8/rqSZ3bHaBOp0Tf6k1Q6i6YG+UUbgz68m5oI=;
+	s=arc-20240116; t=1731653414; c=relaxed/simple;
+	bh=JDeEe+bsXO+Gg22a4Z6eJnVSwTSMAKaDjrJTbqzlcJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNyYevSyt69vAbRwD40qqaSxpC3UOfZUnv76zqgkF+iG01ZGGkrClJfIUSZD7VtgrzZogApTydT8uQK8kC7J3lJpGZmbeYbJtgeedmly8IqX0v7auqXLetl1e2cS8k4Rb0U2CE9/TrgeaTexgT0z29h4pRBFBimoeLHp6JBR6Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGgiLsgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77044C4CECF;
-	Fri, 15 Nov 2024 06:57:55 +0000 (UTC)
+	 MIME-Version; b=RN0F6UmDGup14vJd37zMgZyzjmTwI08I9c026qfgGE8dYqA93Zg11MQ7PpNsugosu4hytDOvNaZWxoK0jqjr7T/1q66QheOREjVaeLtX8azVnNk8ZoCqIQU8+VDwnuU5uxzwMSXUIFndeu9l3xeZB8oiZvmelBpbPQPeyrmsEC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpnP5Vwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169C5C4CECF;
+	Fri, 15 Nov 2024 06:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653875;
-	bh=GYGj9J8/rqSZ3bHaBOp0Tf6k1Q6i6YG+UUbgz68m5oI=;
+	s=korg; t=1731653414;
+	bh=JDeEe+bsXO+Gg22a4Z6eJnVSwTSMAKaDjrJTbqzlcJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGgiLsgWtxH/4yy5r70iPokWcS/k4Ox8fKogsvo4h+4YWSLXcVNsTLVMGTUpRfFgo
-	 1Z1dnF8J4JsdkLLrYDczYvrw04uBgeH1C3SjFvB0t9EAf7CkThCA10cpl+tdG5Wx5z
-	 SghpsuusV5aMQjkyXKkR7c7kWx04Zg6BBpU/NUIU=
+	b=NpnP5Vwtg3up6upC6GK7ydqeYQc+BTsVR/salD+1bWLPokpGdGikPbBpgpDO79IxW
+	 Jy8lbY0KDCKJgiE2pGmZZ4oFvu8jeXnlp0Q42Wno05USrthqzQKY8j6WeAJy32CpCR
+	 CNCltkbW9bTkMo2epejeulNBuHqs6xPOO9N6Vxp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Showrya M N <showrya@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/82] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
+Subject: [PATCH 6.6 16/48] RDMA/siw: Add sendpage_ok() check to disable MSG_SPLICE_PAGES
 Date: Fri, 15 Nov 2024 07:38:05 +0100
-Message-ID: <20241115063726.579261538@linuxfoundation.org>
+Message-ID: <20241115063723.551147146@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Showrya M N <showrya@chelsio.com>
 
-[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
+[ Upstream commit 4e1e3dd88a4cedd5ccc1a3fc3d71e03b70a7a791 ]
 
-In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
-null. So the release of the dma channel leads to the following issue:
-[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
-dma_request_slave_channel error -19
-[    4.888975] Unable to handle kernel NULL pointer dereference
-at virtual address 000000000000003d
-[...]
-[    5.096577] Call trace:
-[    5.099099]  dma_release_channel+0x24/0x100
-[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
-[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
+While running ISER over SIW, the initiator machine encounters a warning
+from skb_splice_from_iter() indicating that a slab page is being used in
+send_page. To address this, it is better to add a sendpage_ok() check
+within the driver itself, and if it returns 0, then MSG_SPLICE_PAGES flag
+should be disabled before entering the network stack.
 
-To avoid this issue, release channel only if the pointer is valid.
+A similar issue has been discussed for NVMe in this thread:
+https://lore.kernel.org/all/20240530142417.146696-1-ofir.gal@volumez.com/
 
-Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  WARNING: CPU: 0 PID: 5342 at net/core/skbuff.c:7140 skb_splice_from_iter+0x173/0x320
+  Call Trace:
+   tcp_sendmsg_locked+0x368/0xe40
+   siw_tx_hdt+0x695/0xa40 [siw]
+   siw_qp_sq_process+0x102/0xb00 [siw]
+   siw_sq_resume+0x39/0x110 [siw]
+   siw_run_sq+0x74/0x160 [siw]
+   kthread+0xd2/0x100
+   ret_from_fork+0x34/0x40
+   ret_from_fork_asm+0x1a/0x30
+
+Link: https://patch.msgid.link/r/20241007125835.89942-1-showrya@chelsio.com
+Signed-off-by: Showrya M N <showrya@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_spdifrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/siw/siw_qp_tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
-index 1bfa3b2ba9744..ef518cff84f28 100644
---- a/sound/soc/stm/stm32_spdifrx.c
-+++ b/sound/soc/stm/stm32_spdifrx.c
-@@ -948,7 +948,7 @@ static int stm32_spdifrx_remove(struct platform_device *pdev)
- {
- 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
+diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
+index 60b6a41359611..feae920784be8 100644
+--- a/drivers/infiniband/sw/siw/siw_qp_tx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+@@ -337,6 +337,8 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+ 			msg.msg_flags &= ~MSG_MORE;
  
--	if (spdifrx->ctrl_chan)
-+	if (!IS_ERR(spdifrx->ctrl_chan))
- 		dma_release_channel(spdifrx->ctrl_chan);
+ 		tcp_rate_check_app_limited(sk);
++		if (!sendpage_ok(page[i]))
++			msg.msg_flags &= ~MSG_SPLICE_PAGES;
+ 		bvec_set_page(&bvec, page[i], bytes, offset);
+ 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
  
- 	if (spdifrx->dmab)
 -- 
 2.43.0
 
