@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808C9CD833
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13659CD7E0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F25FE281FC6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 329DCB25A9F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAD18872A;
-	Fri, 15 Nov 2024 06:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D349153800;
+	Fri, 15 Nov 2024 06:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opdIht4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUBkqzb/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463A82BB1B;
-	Fri, 15 Nov 2024 06:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39722185924;
+	Fri, 15 Nov 2024 06:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653302; cv=none; b=a+ISCmqvQEcFffu3YR5Sju5SdAvumpNWA2Pd/U5xDdSoWapyLcOd46O4/3qTJfNKhB8oZPKhbqYv7QA6JZaCnu2DCn+z1F7FGwvmAhOmrnzOv57n7IO0/XIlJwyvoHsXnlLiPp2Mvc3Jsbk87s+OpAhGzMZRGVE7rbV/38tUlJ4=
+	t=1731653122; cv=none; b=F2CA14KpRQn0BPtsJjqv+1bcB38o2kpP7DEoWXrNwHsDGYNQDXlaoyjW/Kc82Rq2woYlOAYBDiToq8qAcNUOVHlJJlI0bJfKy31RseZyTOVktGUtelyK2gP3hhBxN7rNs3/LNSjJjT01ZXTC6szQfTQH78X+1bA3NJ9tFA7mZDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653302; c=relaxed/simple;
-	bh=nQ2RuCg/jHbQJlFAFLh8a21CaGg7soj8ouXs5WcEGlg=;
+	s=arc-20240116; t=1731653122; c=relaxed/simple;
+	bh=OzhMVNhLEesYjEhRXHXmjcE65d1yc5elnO3t7Swx01k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bCuP7VK17Qrptda/42dZiAEbfWmImAJc5rj+9jzTa9H05C7cjlTNgX7aT/O7NKgj68yeJN1TRZSavq4Q3zyWDfadIIO3HXw+AcT291rasWHZxaoL6qf91qJliGHe/jDYW1J0Ww0YMwOg3wx/2xbEg1OGXITcxQU4qbcMtcf4Li8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opdIht4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E75AC4CECF;
-	Fri, 15 Nov 2024 06:48:21 +0000 (UTC)
+	 MIME-Version; b=iVuRhw4nGSq1/oh6+6fegqc/FTCf1u1yojQJ1k7Sm5406ivObgEVGExev/VZnkJKZ7n97T6NGqEaUYGTNZKoXPa08tqLiYtS7OSyDEmHpoIzZxmYX+Ts3MpAhfgPIyWrvpL85E4EvE+k+FCUWFnh2PbdCwO7pBN7s/1oTZOcNII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUBkqzb/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3112BC4CECF;
+	Fri, 15 Nov 2024 06:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653302;
-	bh=nQ2RuCg/jHbQJlFAFLh8a21CaGg7soj8ouXs5WcEGlg=;
+	s=korg; t=1731653120;
+	bh=OzhMVNhLEesYjEhRXHXmjcE65d1yc5elnO3t7Swx01k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opdIht4u1UnQGFytto4Cy57g+mxOwSc3++ak05P/LbCBr9ZPZuC2nLW1yp4mq3aoO
-	 pyLE++261ZrxoXWCB2jhkwZGUAX05UltZWqaNzGTYRhKSZddmQa7IQVBTT7OZUh2CM
-	 sm4aCcvRoHoZxRsHpeaiNWzq3j/yA8w/fg4KVv6c=
+	b=OUBkqzb/KIlSAWqOePCPf6H7stMkJSHISEVTrX4Qr+8ULLPJAQWDGbt2HyqTDxwRo
+	 oq8VISxturld4kInNv+P+ylnoejqUZPUlCJtiFK7++V1zKMZzjsusnbXfv2I2VJ6G6
+	 +0w1Hm7fCeNmXqIqoxYX8pICChudTkijqBj447D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bart=C5=82omiej=20Mary=C5=84czak?= <marynczakbartlomiej@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 46/63] HID: i2c-hid: Delayed i2c resume wakeup for 0x0d42 Goodix touchpad
+Subject: [PATCH 5.4 60/66] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
 Date: Fri, 15 Nov 2024 07:38:09 +0100
-Message-ID: <20241115063727.574560864@linuxfoundation.org>
+Message-ID: <20241115063725.007624629@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartłomiej Maryńczak <marynczakbartlomiej@gmail.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit 293c485cbac2607595fdaae2b1fb390fc7b2d014 ]
+[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
 
-Patch for Goodix 27c6:0d42 touchpads found in Inspiron 5515 laptops.
+Add Fibocom FG132 0x0112 composition:
 
-After resume from suspend, one can communicate with this device just fine.
-We can read data from it or request a reset,
-but for some reason the interrupt line will not go up
-when new events are available.
-(it can correctly respond to a reset with an interrupt tho)
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-The only way I found to wake this device up
-is to send anything to it after ~1.5s mark,
-for example a simple read request, or power mode change.
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 
-In this patch, I simply delay the resume steps with msleep,
-this will cause the set_power request to happen after
-the ~1.5s barrier causing the device to resume its event interrupts.
-
-Sleep was used rather than delayed_work
-to make this workaround as non-invasive as possible.
-
-[jkosina@suse.com: shortlog update]
-Signed-off-by: Bartłomiej Maryńczak <marynczakbartlomiej@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h              |  1 +
- drivers/hid/i2c-hid/i2c-hid-core.c | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 8a991b30e3c6d..25f96494700d8 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -509,6 +509,7 @@
- #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
- #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
-+#define I2C_DEVICE_ID_GOODIX_0D42	0x0d42
- 
- #define USB_VENDOR_ID_GOODTOUCH		0x1aad
- #define USB_DEVICE_ID_GOODTOUCH_000f	0x000f
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 2f8a9d3f1e861..8914c7db94718 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -50,6 +50,7 @@
- #define I2C_HID_QUIRK_BAD_INPUT_SIZE		BIT(3)
- #define I2C_HID_QUIRK_NO_WAKEUP_AFTER_RESET	BIT(4)
- #define I2C_HID_QUIRK_NO_SLEEP_ON_SUSPEND	BIT(5)
-+#define I2C_HID_QUIRK_DELAY_WAKEUP_AFTER_RESUME BIT(6)
- 
- /* Command opcodes */
- #define I2C_HID_OPCODE_RESET			0x01
-@@ -140,6 +141,8 @@ static const struct i2c_hid_quirks {
- 	{ USB_VENDOR_ID_ELAN, HID_ANY_ID,
- 		 I2C_HID_QUIRK_NO_WAKEUP_AFTER_RESET |
- 		 I2C_HID_QUIRK_BOGUS_IRQ },
-+	{ I2C_VENDOR_ID_GOODIX, I2C_DEVICE_ID_GOODIX_0D42,
-+		 I2C_HID_QUIRK_DELAY_WAKEUP_AFTER_RESUME },
- 	{ 0, 0 }
- };
- 
-@@ -981,6 +984,13 @@ static int i2c_hid_core_resume(struct i2c_hid *ihid)
- 		return -ENXIO;
- 	}
- 
-+	/* On Goodix 27c6:0d42 wait extra time before device wakeup.
-+	 * It's not clear why but if we send wakeup too early, the device will
-+	 * never trigger input interrupts.
-+	 */
-+	if (ihid->quirks & I2C_HID_QUIRK_DELAY_WAKEUP_AFTER_RESUME)
-+		msleep(1500);
-+
- 	/* Instead of resetting device, simply powers the device on. This
- 	 * solves "incomplete reports" on Raydium devices 2386:3118 and
- 	 * 2386:4B33 and fixes various SIS touchscreens no longer sending
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index cce5ee84d29d3..db52090bb27be 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1382,6 +1382,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
++	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
 -- 
 2.43.0
 
