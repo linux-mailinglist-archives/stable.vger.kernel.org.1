@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-93289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736FA9CD864
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68BF9CD933
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB7D1F21A23
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C16728393C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD26218734F;
-	Fri, 15 Nov 2024 06:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E142F188015;
+	Fri, 15 Nov 2024 06:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOby+qNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTgkw7KF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C416EAD0;
-	Fri, 15 Nov 2024 06:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC3E2BB1B;
+	Fri, 15 Nov 2024 06:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653422; cv=none; b=CQWNpK6UtTCF5z4yBgkdsk+r8aN+fe9u9LVt0P+h85varFL7vVAYoOvJ4tA2QaABEN1ozrIMtZGXLpetMvtxchAIMt/8nu7AGq4bhz4ppGkc8n8arRe1/DsDWtVJ4GMnXUf0OMv1VFyFyOoSrQ2OreBg8zuuthNBEDaTwelXQH8=
+	t=1731653882; cv=none; b=XwZoUVDc3s3Dg8XrLgNTFTvCprhFHbANwHL9calZa3p0slDqPXEmnvBJlUAU6PspLlQ0lnwfCghCfx9pfLYCUCSabIzgKEZqjbiF1gATK7UCmSLTTCsX8jlEBBXkAZDy52SKlkNUM3NJEYg8LsNpdwDTFn1Lu5I/qDBQQ8thaCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653422; c=relaxed/simple;
-	bh=it5nsr6uh6OoXlvjZo4B1z4fHnt5yXyj6hO8LJvZyZ4=;
+	s=arc-20240116; t=1731653882; c=relaxed/simple;
+	bh=BrYjxwXZUME6GbBdEgZxb24SLTqw82z6qG3ue9+D3Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikiKZiASxsi/rogBfP8laY6M/HVcUl4XMDy05hsMuQK0WprSNj2aWTZYiboN3mKR1jlRLZEanQvSqLArXg82y8frvM3gx/TsurPlRQ8/E3iHV8Dvxvif/Dkuf9wDbRXMbNLiJLN0on4/y4mJ6P748p9heFlCjd58BuxadOtEV3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOby+qNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED72AC4CECF;
-	Fri, 15 Nov 2024 06:50:21 +0000 (UTC)
+	 MIME-Version; b=QAR5hKd9HwS/Zy2TSbxBbQOYmFecSBx0DbE82wK3espOLYuWVmwPhJwjQ4GDl6CsYx0ijfUUtUEOBGxFDYmz0JRs0MURiQdNeVid9AUupV8It88UGtI/k1aCalxeKOdSmzLx0pKEbQT87CSTE3YEFfY/wMl6YmvY4Hde8nEBtKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTgkw7KF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2953FC4CECF;
+	Fri, 15 Nov 2024 06:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653422;
-	bh=it5nsr6uh6OoXlvjZo4B1z4fHnt5yXyj6hO8LJvZyZ4=;
+	s=korg; t=1731653882;
+	bh=BrYjxwXZUME6GbBdEgZxb24SLTqw82z6qG3ue9+D3Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOby+qNIoGEBKwBVjdpqrsNFDFm/y787BTon7xWHzIo+5K6q6vwNGNQU0iozzw2Yl
-	 WzY7nqfws05OimHQtIVIz9klYevVCvb23TpGhI5cDk6UdmCfpPfIWpHk1kEUZrYW2c
-	 YYiaHf1PPypiq3m1RTqR+GUE7Af1QK1VaJedkdq8=
+	b=nTgkw7KF1ZeimaFd8FUXR3iZACV78b5hLeFmU7nlyMkmoU0WNToiwS00pAyEqVOx2
+	 2K+BXA2UQ+6An0D5yVDpdfP5kpJTBGC8okzw4Bc6mAYfMXJegt3UgqyrznfHbsm/kh
+	 lYMD8olKhGSEzcyhO527dhSLMse4blr9TV2WcJBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/48] nvme-multipath: defer partition scanning
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.10 30/82] media: cx24116: prevent overflows on SNR calculus
 Date: Fri, 15 Nov 2024 07:38:07 +0100
-Message-ID: <20241115063723.621886625@linuxfoundation.org>
+Message-ID: <20241115063726.649969656@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 1f021341eef41e77a633186e9be5223de2ce5d48 ]
+commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
 
-We need to suppress the partition scan from occuring within the
-controller's scan_work context. If a path error occurs here, the IO will
-wait until a path becomes available or all paths are torn down, but that
-action also occurs within scan_work, so it would deadlock. Defer the
-partion scan to a different context that does not block scan_work.
+as reported by Coverity, if reading SNR registers fail, a negative
+number will be returned, causing an underflow when reading SNR
+registers.
 
-Reported-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prevent that.
+
+Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/multipath.c | 33 +++++++++++++++++++++++++++++++++
- drivers/nvme/host/nvme.h      |  1 +
- 2 files changed, 34 insertions(+)
+ drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 37ea0fa421da8..ede2a14dad8be 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -499,6 +499,20 @@ static int nvme_add_ns_head_cdev(struct nvme_ns_head *head)
- 	return ret;
- }
- 
-+static void nvme_partition_scan_work(struct work_struct *work)
-+{
-+	struct nvme_ns_head *head =
-+		container_of(work, struct nvme_ns_head, partition_scan_work);
-+
-+	if (WARN_ON_ONCE(!test_and_clear_bit(GD_SUPPRESS_PART_SCAN,
-+					     &head->disk->state)))
-+		return;
-+
-+	mutex_lock(&head->disk->open_mutex);
-+	bdev_disk_changed(head->disk, false);
-+	mutex_unlock(&head->disk->open_mutex);
-+}
-+
- static void nvme_requeue_work(struct work_struct *work)
+--- a/drivers/media/dvb-frontends/cx24116.c
++++ b/drivers/media/dvb-frontends/cx24116.c
+@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
  {
- 	struct nvme_ns_head *head =
-@@ -525,6 +539,7 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
- 	bio_list_init(&head->requeue_list);
- 	spin_lock_init(&head->requeue_lock);
- 	INIT_WORK(&head->requeue_work, nvme_requeue_work);
-+	INIT_WORK(&head->partition_scan_work, nvme_partition_scan_work);
+ 	struct cx24116_state *state = fe->demodulator_priv;
+ 	u8 snr_reading;
++	int ret;
+ 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
+ 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
+ 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
+@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
  
- 	/*
- 	 * Add a multipath node if the subsystems supports multiple controllers.
-@@ -540,6 +555,16 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
- 		return -ENOMEM;
- 	head->disk->fops = &nvme_ns_head_ops;
- 	head->disk->private_data = head;
+ 	dprintk("%s()\n", __func__);
+ 
+-	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	if (ret  < 0)
++		return ret;
 +
-+	/*
-+	 * We need to suppress the partition scan from occuring within the
-+	 * controller's scan_work context. If a path error occurs here, the IO
-+	 * will wait until a path becomes available or all paths are torn down,
-+	 * but that action also occurs within scan_work, so it would deadlock.
-+	 * Defer the partion scan to a different context that does not block
-+	 * scan_work.
-+	 */
-+	set_bit(GD_SUPPRESS_PART_SCAN, &head->disk->state);
- 	sprintf(head->disk->disk_name, "nvme%dn%d",
- 			ctrl->subsys->instance, head->instance);
++	snr_reading = ret;
  
-@@ -589,6 +614,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 			return;
- 		}
- 		nvme_add_ns_head_cdev(head);
-+		kblockd_schedule_work(&head->partition_scan_work);
- 	}
- 
- 	mutex_lock(&head->lock);
-@@ -889,6 +915,12 @@ void nvme_mpath_shutdown_disk(struct nvme_ns_head *head)
- 	kblockd_schedule_work(&head->requeue_work);
- 	if (test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
- 		nvme_cdev_del(&head->cdev, &head->cdev_device);
-+		/*
-+		 * requeue I/O after NVME_NSHEAD_DISK_LIVE has been cleared
-+		 * to allow multipath to fail all I/O.
-+		 */
-+		synchronize_srcu(&head->srcu);
-+		kblockd_schedule_work(&head->requeue_work);
- 		del_gendisk(head->disk);
- 	}
- }
-@@ -900,6 +932,7 @@ void nvme_mpath_remove_disk(struct nvme_ns_head *head)
- 	/* make sure all pending bios are cleaned up */
- 	kblockd_schedule_work(&head->requeue_work);
- 	flush_work(&head->requeue_work);
-+	flush_work(&head->partition_scan_work);
- 	put_disk(head->disk);
- }
- 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 799f8a2bb0b4f..14a867245c29f 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -476,6 +476,7 @@ struct nvme_ns_head {
- 	struct bio_list		requeue_list;
- 	spinlock_t		requeue_lock;
- 	struct work_struct	requeue_work;
-+	struct work_struct	partition_scan_work;
- 	struct mutex		lock;
- 	unsigned long		flags;
- #define NVME_NSHEAD_DISK_LIVE	0
--- 
-2.43.0
-
+ 	if (snr_reading >= 0xa0 /* 100% */)
+ 		*snr = 0xffff;
 
 
 
