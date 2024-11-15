@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C019F9CD7E3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2289CD909
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 853E4281D5E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AAF92835DF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8758E185924;
-	Fri, 15 Nov 2024 06:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294FC18873E;
+	Fri, 15 Nov 2024 06:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpG0NA62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZfHcedi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E24429A9;
-	Fri, 15 Nov 2024 06:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4ED185924;
+	Fri, 15 Nov 2024 06:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653132; cv=none; b=ZytWFQFr3CGK2I6gO+L3YBSfjJ8yvmO+XNrm6LaiW3QP38nbsNWNSY+er4GlA8F7vWJgOaXPQm/mEOZ25IYQA6Vb4tRo/TPAmTr2Z6vMNkohd2w4kls1ip32PlNTr6g/3RvLLcDPmWrYwDk+ghNTtzWJaHf21Lye3/AHGwpxybg=
+	t=1731653781; cv=none; b=POtXFz+1pt/lI49KaXXfIJyWwUgG73b/VpA+NOfE9hwEKOTWIDOlt6B5YL985DHtFd6pRtkzjP8ZiY0tevkCiLcm45lHmZcz/dkuauuO6y3O+PcAbU+g5xKik/vNZjdWZk+diLLmi7xCAj8rV4Qb8U3386fTa3Mwb63DgnMJxKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653132; c=relaxed/simple;
-	bh=gLVB+4VXcIqclV/Km/6GhJLCrqgPtZalv5iRW9a760w=;
+	s=arc-20240116; t=1731653781; c=relaxed/simple;
+	bh=7JyS90hg3daOyp05mz/kzBIenEtgRjBENIu7eAsezwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rR2qw1zr6wZJzmPBewbJjuaeNdSy8dcttHGAYSTPEM8e0sHOyBnvAlV0C8d7L0TzmWQHSob/zTavG68wIFS4e5fSmIa4ZCcy4jGzroiHgWWTeQ7BtcV0FvNucSVlrJjXNUFPsCUiwkAFetkl+hVy7RBdSwG9yfOykarj1+5egYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpG0NA62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5366DC4CECF;
-	Fri, 15 Nov 2024 06:45:30 +0000 (UTC)
+	 MIME-Version; b=oZgXX3iWRuBxP1hKJIw0MNkooUdwch93LYos0LP9kwh+NK9eXeq9BvwifBNs53s0rrl0JmYyaXSbNLZ4PxonU6qfssdYED8q9g44LuO8vBPYIJmFDg7qZAKkFbp4G0MPyQeoYzDCi0HQ+BXZjGNe0gyMJ3f7zkOpG1f7+MwiFnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZfHcedi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B67C4CECF;
+	Fri, 15 Nov 2024 06:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653130;
-	bh=gLVB+4VXcIqclV/Km/6GhJLCrqgPtZalv5iRW9a760w=;
+	s=korg; t=1731653781;
+	bh=7JyS90hg3daOyp05mz/kzBIenEtgRjBENIu7eAsezwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpG0NA62dsel4V7PxUALP/+G8L7uDNBvQ7onmICpC88AA20KZJs5aSQaA4lELIbYD
-	 xja4A4kgvS0FppNDdeOD/BCQLfKt9HQ1gOVobev4eWr79eWjZcTBayScdp2CWrzhSa
-	 CklwZWt+UOO80Q/zNpX5K6a0pLCbAA1+CoRrkBnY=
+	b=AZfHcediI/eHcvaitrFTYE6AmXZNO2BH57jPy4l4XQrOoldjeo16VI+A8o8/2gh1D
+	 5/Z7/bRVUEpj5K19ICwHnGu4JFMGi3YOeWQ0fQANPF3jalycFpG/LqKXnpE8ywn2S8
+	 BCIEU4RJ2aWAVOQfimpNA5mqQebXBfw9Qf3/Y5W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenqiwu <chenqiwu@xiaomi.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.4 63/66] mm: fix ambiguous comments for better code readability
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 35/82] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
 Date: Fri, 15 Nov 2024 07:38:12 +0100
-Message-ID: <20241115063725.114883568@linuxfoundation.org>
+Message-ID: <20241115063726.828761618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenqiwu <chenqiwu@xiaomi.com>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-commit 552657b7b3343851916fde7e4fd6bfb6516d2bcb upstream.
+commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
 
-The parameter of remap_pfn_range() @pfn passed from the caller is actually
-a page-frame number converted by corresponding physical address of kernel
-memory, the original comment is ambiguous that may mislead the users.
+acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
+would result in dereferencing buffer.pointer (obj) while being NULL.
 
-Meanwhile, there is an ambiguous typo "VMM" in the comment of
-vm_area_struct.  So fixing them will make the code more readable.
+Although this case may be unrealistic for the current code, it is
+still better to protect against possible bugs.
 
-Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Link: http://lkml.kernel.org/r/1583026921-15279-1-git-send-email-qiwuchen55@gmail.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Bail out also when status is AE_NOT_FOUND.
+
+This fixes 1 FORWARD_NULL issue reported by Coverity
+Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
+
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm_types.h |    4 ++--
- mm/memory.c              |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -284,8 +284,8 @@ struct vm_userfaultfd_ctx {};
- #endif /* CONFIG_USERFAULTFD */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -112,8 +112,8 @@ static union acpi_object *amdgpu_atif_ca
+ 				      &buffer);
+ 	obj = (union acpi_object *)buffer.pointer;
  
- /*
-- * This struct defines a memory VMM memory area. There is one of these
-- * per VM-area/task.  A VM area is any part of the process virtual memory
-+ * This struct describes a virtual memory area. There is one of these
-+ * per VM-area/task. A VM area is any part of the process virtual memory
-  * space that has a special rule for the page-fault handlers (ie a shared
-  * library, the executable area etc).
-  */
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1922,7 +1922,7 @@ static inline int remap_p4d_range(struct
-  * @vma: user vma to map to
-  * @addr: target user address to start at
-  * @pfn: page frame number of kernel physical memory address
-- * @size: size of map area
-+ * @size: size of mapping area
-  * @prot: page protection flags for this mapping
-  *
-  * Note: this is only safe if the mm semaphore is held when called.
+-	/* Fail if calling the method fails and ATIF is supported */
+-	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
++	/* Fail if calling the method fails */
++	if (ACPI_FAILURE(status)) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+ 		kfree(obj);
 
 
 
