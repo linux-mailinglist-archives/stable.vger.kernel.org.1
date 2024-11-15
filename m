@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7299CD7BA
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E989CD808
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD82280ED1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB45E28174E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951751885B8;
-	Fri, 15 Nov 2024 06:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9A718734F;
+	Fri, 15 Nov 2024 06:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHP0oqS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3X9kh6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524BA17E015;
-	Fri, 15 Nov 2024 06:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1878C187848;
+	Fri, 15 Nov 2024 06:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653038; cv=none; b=RNAz+vV7cORSOfMqGzYyhxEqvyA6JSU4qGz3mPIXjvSWjjQyqPmbZ7HUyOHxyB/Ao6QuLFiWq+cCCprjzMzgClNlhNtoBTBAVerHQ9R1dG7iKuWGYBIL1SuxDjSKqzZRRHf9xLsqPEY0ULjl3xZvNvTtb9wdxTF+FYpLz1LIR/A=
+	t=1731653220; cv=none; b=m5/tsuk9wR5AQzRwMT75EcSl2DX6H+Q1VejBupMdvJkuRV0TAKv58AGNCtUehi+ljFxWZGPy/TLPJtidJuP43t+fec0eSJqk/+UJtiqW0gQK5VeLonIS5Av0nayqIeEemEctzd6AKkm93/neoJRA8YB3eS0lW1VhNt7ryMNl5lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653038; c=relaxed/simple;
-	bh=syXHNysSx+S3L+Ft6dGK1EhvoaX/v9eJmW9AMTvj8wc=;
+	s=arc-20240116; t=1731653220; c=relaxed/simple;
+	bh=ddfafmdY9a+IwxvDN6W7D8N8zeleA5PYu32Ee/vovfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxoq+Vo/BhUF5fWQqeCJvTKPCdNvJKeY7kVlyr1JH/yBc7Kr11jMyOyWql4QTSNtJGD3+o/e4xiek4FMmGZ56xqfTbpdoWdsrscD98jnUpibtwUUxTOMZVaSHkRvjj7usnsXfKwZufyOrR4z05RzevI1KgjoFw47z7BZHfTDAuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHP0oqS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA48C4CECF;
-	Fri, 15 Nov 2024 06:43:57 +0000 (UTC)
+	 MIME-Version; b=mAhuTsSezGce+G62gQtnV9T9d1NsBdq4Gu5WeEisME0eh2MSdmU9jf6bPE9jp1U0RuJd8ShrLTZeB9ae9NFvVe1i6CvMgD1C9LfIUv8t3/FdZQUmgC8adpX4zRjFX/Q3Z/kaApbJk+/2yvOnC3h3464dQaPCKGAAvXT+9MwAa7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3X9kh6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72678C4CED8;
+	Fri, 15 Nov 2024 06:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653038;
-	bh=syXHNysSx+S3L+Ft6dGK1EhvoaX/v9eJmW9AMTvj8wc=;
+	s=korg; t=1731653219;
+	bh=ddfafmdY9a+IwxvDN6W7D8N8zeleA5PYu32Ee/vovfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHP0oqS4IeqGKsUoJIZS4yAgqw+mJo9aY4TffSQgQDh2CIADZyWWJXgmvcXK0/IMC
-	 w128KZgWbDYHIi8XMfo8Ox3Er2IIC5P1p4cBqM8b1yEHFTfMPgh2vDQ0dayneIzxlF
-	 QyE/ypnjmZfNFm6ApGVlBeDvhI/gghvJfKtJX4/I=
+	b=W3X9kh6FP6d8dA20zp1D7fmwlmeZwz0LON6nDnq9MywAH2tFJhP9c14usriA1fySP
+	 ZtQt96uxTCW0Hnzsq5gYoodTulAfgFlwuyAL5z7DFZa+KoAvoza4zZzI9q6frBl+VG
+	 +aKABivCnPX1hjczhln2RhD34HltASiQPtZxspJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Hardik Gohil <hgohil@mvista.com>
-Subject: [PATCH 5.4 35/66] spi: Fix deadlock when adding SPI controllers on SPI buses
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 21/63] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
 Date: Fri, 15 Nov 2024 07:37:44 +0100
-Message-ID: <20241115063724.112494538@linuxfoundation.org>
+Message-ID: <20241115063726.685439934@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,109 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 6098475d4cb48d821bdf453c61118c56e26294f0 upstream.
+[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
 
-Currently we have a global spi_add_lock which we take when adding new
-devices so that we can check that we're not trying to reuse a chip
-select that's already controlled.  This means that if the SPI device is
-itself a SPI controller and triggers the instantiation of further SPI
-devices we trigger a deadlock as we try to register and instantiate
-those devices while in the process of doing so for the parent controller
-and hence already holding the global spi_add_lock.  Since we only care
-about concurrency within a single SPI bus move the lock to be per
-controller, avoiding the deadlock.
+Currently the array size is only limited by the largest kmalloc size which
+is incorrect. This change will also return a more specific error message
+than ENOMEM to userspace.
 
-This can be easily triggered in the case of spi-mux.
-
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Hardik Gohil <hgohil@mvista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c       |   15 +++++----------
- include/linux/spi/spi.h |    3 +++
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -472,12 +472,6 @@ static LIST_HEAD(spi_controller_list);
-  */
- static DEFINE_MUTEX(board_lock);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index 3f4719b3c2681..4e2807f5f94cf 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -62,7 +62,7 @@
+ #define VMWGFX_DRIVER_MINOR 20
+ #define VMWGFX_DRIVER_PATCHLEVEL 0
+ #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
+-#define VMWGFX_MAX_DISPLAYS 16
++#define VMWGFX_NUM_DISPLAY_UNITS 8
+ #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
  
--/*
-- * Prevents addition of devices with same chip select and
-- * addition of devices below an unregistering controller.
-- */
--static DEFINE_MUTEX(spi_add_lock);
--
- /**
-  * spi_alloc_device - Allocate a new SPI device
-  * @ctlr: Controller to which device is connected
-@@ -580,7 +574,7 @@ int spi_add_device(struct spi_device *sp
- 	 * chipselect **BEFORE** we call setup(), else we'll trash
- 	 * its configuration.  Lock against concurrent add() calls.
- 	 */
--	mutex_lock(&spi_add_lock);
-+	mutex_lock(&ctlr->add_lock);
- 
- 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
- 	if (status) {
-@@ -624,7 +618,7 @@ int spi_add_device(struct spi_device *sp
+ #define VMWGFX_MIN_INITIAL_WIDTH 1280
+@@ -82,7 +82,7 @@
+ #define VMWGFX_NUM_GB_CONTEXT 256
+ #define VMWGFX_NUM_GB_SHADER 20000
+ #define VMWGFX_NUM_GB_SURFACE 32768
+-#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
++#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
+ #define VMWGFX_NUM_DXCONTEXT 256
+ #define VMWGFX_NUM_DXQUERY 512
+ #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index aec624196d6ea..63b8d7591253c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2197,7 +2197,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 	struct drm_mode_config *mode_config = &dev->mode_config;
+ 	struct drm_vmw_update_layout_arg *arg =
+ 		(struct drm_vmw_update_layout_arg *)data;
+-	void __user *user_rects;
++	const void __user *user_rects;
+ 	struct drm_vmw_rect *rects;
+ 	struct drm_rect *drm_rects;
+ 	unsigned rects_size;
+@@ -2209,6 +2209,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 					    VMWGFX_MIN_INITIAL_HEIGHT};
+ 		vmw_du_update_layout(dev_priv, 1, &def_rect);
+ 		return 0;
++	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
++		return -E2BIG;
  	}
  
- done:
--	mutex_unlock(&spi_add_lock);
-+	mutex_unlock(&ctlr->add_lock);
- 	return status;
- }
- EXPORT_SYMBOL_GPL(spi_add_device);
-@@ -2512,6 +2506,7 @@ int spi_register_controller(struct spi_c
- 	spin_lock_init(&ctlr->bus_lock_spinlock);
- 	mutex_init(&ctlr->bus_lock_mutex);
- 	mutex_init(&ctlr->io_mutex);
-+	mutex_init(&ctlr->add_lock);
- 	ctlr->bus_lock_flag = 0;
- 	init_completion(&ctlr->xfer_completion);
- 	if (!ctlr->max_dma_len)
-@@ -2657,7 +2652,7 @@ void spi_unregister_controller(struct sp
+ 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 6141fadf81efe..2a6c6d6581e02 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
+ 	s32 unit_y2;
+ };
  
- 	/* Prevent addition of new devices, unregister existing ones */
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
--		mutex_lock(&spi_add_lock);
-+		mutex_lock(&ctlr->add_lock);
- 
- 	device_for_each_child(&ctlr->dev, NULL, __unregister);
- 
-@@ -2688,7 +2683,7 @@ void spi_unregister_controller(struct sp
- 	mutex_unlock(&board_lock);
- 
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
--		mutex_unlock(&spi_add_lock);
-+		mutex_unlock(&ctlr->add_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
- 
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -483,6 +483,9 @@ struct spi_controller {
- 	/* I/O mutex */
- 	struct mutex		io_mutex;
- 
-+	/* Used to avoid adding the same CS twice */
-+	struct mutex		add_lock;
-+
- 	/* lock and mutex for SPI bus locking */
- 	spinlock_t		bus_lock_spinlock;
- 	struct mutex		bus_lock_mutex;
+-#define VMWGFX_NUM_DISPLAY_UNITS 8
+-
+-
+ #define vmw_framebuffer_to_vfb(x) \
+ 	container_of(x, struct vmw_framebuffer, base)
+ #define vmw_framebuffer_to_vfbs(x) \
+-- 
+2.43.0
+
 
 
 
