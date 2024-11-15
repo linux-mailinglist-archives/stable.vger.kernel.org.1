@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-93208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26CD9CD7ED
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD01D9CD8F8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DA57B258D7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C4F1F21DFD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A30B153800;
-	Fri, 15 Nov 2024 06:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62243185924;
+	Fri, 15 Nov 2024 06:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLe0i7WY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VND56YT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C950F29A9;
-	Fri, 15 Nov 2024 06:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070615FD13;
+	Fri, 15 Nov 2024 06:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653151; cv=none; b=h5GWEo/RTOzWddEgIFwc/V10c/gamoQnJCoanlq73WkBYbg/DkUqz1MtgXotQB16ioekMOtySYYb3MYypTRlbtm2FJVtJG5jnqhaX5Jf2W+qWwDQv84VG6mASmlcDaa2Riy0dpOKW4qHp8yYWmxBTxZw6ibebt7PXr2HHQMBAz0=
+	t=1731653744; cv=none; b=LrPsLI5OP/9eSajkWzP8OgPR489YyJvt6OOmrBWGIGGnCN10KRnImk4eKjzuX0fisuBHwzyqB9IQO5yhANbYe7awgOtu6QjDLOa9T+7CXIIWHMXGaDig585+BEgxh78tHnchmZjtAvhGFOujRovzP4emWScvPM6b/UoCoymet4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653151; c=relaxed/simple;
-	bh=5XodOKaLVCr94qH/ZD89pJjco8QeVhdOHMQSP6+0MzY=;
+	s=arc-20240116; t=1731653744; c=relaxed/simple;
+	bh=z65Q/lWE2HljslBeKzvmvdkEeuERFscCoVsKvKzMSqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcuq2OHWFWdGuvNhs5XZcOAnJIFlY5M0wBz7SaxcYX6gHAgGi3bkOCKgU6jH0r6lvNvOcxFTzgs8QZKqQg57l7cuHW/t9aL7igYdP5jZ2eIsiI6bHX1RcgVLbqSNPIaTpS/pqB9zmS9Rx7rPpptcfWiQKjw/0T0oIJnazOrrdzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLe0i7WY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8F5C4CECF;
-	Fri, 15 Nov 2024 06:45:50 +0000 (UTC)
+	 MIME-Version; b=bhlkeysnllvwy4TLyxgS0nKQY9qKokeGQVS5Yp8qAJ4QBMfpt1iNkgJ1a2wTuDruLplEoyPHviibShMUgMeOBABuSrZP0Pem+vxSGMfES6P3tUm7tUTHHo2aNquF2VoqUG1vJkVRvWg8J8gI9kCkzxHHkjHLmwXouoCYGZ4j6ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VND56YT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01753C4CECF;
+	Fri, 15 Nov 2024 06:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653151;
-	bh=5XodOKaLVCr94qH/ZD89pJjco8QeVhdOHMQSP6+0MzY=;
+	s=korg; t=1731653743;
+	bh=z65Q/lWE2HljslBeKzvmvdkEeuERFscCoVsKvKzMSqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLe0i7WY6YM0fWORJSvYKrPjKzY4XGzCw0b0aHIsN+ZePor4i4l70eE0X1M/WBHky
-	 BSW9M0t9D4urx2gZb0zt+D30gMkwSLxqy9DPiTzLhIgGjKROtITkGjdqEyhelhHKqA
-	 bS6CXxK7ke4TF1gAL3CcV/lZZORFHiVSCrfr49Fs=
+	b=0VND56YTg4k9KuoDC9Lkcz/nv9We+3U5OyJvSq2C4bXjMyuoJi7XDH04tNUd406ud
+	 Bql1BeBXzVDE1o/50kMDUj9LQDbpUZi2XXQfuuOozV3X+GoQtkMz9LYLD3SUH4XQZl
+	 P5ON0VS6cp4MfL5y/xheJCcsWf+rtPYr4yL+ociI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mhiramat@kernel.org,
-	mark.rutland@arm.com,
-	mathieu.desnoyers@efficios.com,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4 50/66] ftrace: Fix possible use-after-free issue in ftrace_location()
-Date: Fri, 15 Nov 2024 07:37:59 +0100
-Message-ID: <20241115063724.648039829@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 23/82] media: dvbdev: prevent the risk of out of memory access
+Date: Fri, 15 Nov 2024 07:38:00 +0100
+Message-ID: <20241115063726.400128429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,155 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit e60b613df8b6253def41215402f72986fee3fc8d upstream.
+[ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
 
-KASAN reports a bug:
+The dvbdev contains a static variable used to store dvb minors.
 
-  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
-  Read of size 8 at addr ffff888141d40010 by task insmod/424
-  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+
-  [...]
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x68/0xa0
-   print_report+0xcf/0x610
-   kasan_report+0xb5/0xe0
-   ftrace_location+0x90/0x120
-   register_kprobe+0x14b/0xa40
-   kprobe_init+0x2d/0xff0 [kprobe_example]
-   do_one_initcall+0x8f/0x2d0
-   do_init_module+0x13a/0x3c0
-   load_module+0x3082/0x33d0
-   init_module_from_file+0xd2/0x130
-   __x64_sys_finit_module+0x306/0x440
-   do_syscall_64+0x68/0x140
-   entry_SYSCALL_64_after_hwframe+0x71/0x79
+The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
+or not. When not set, dvb_register_device() won't check for
+boundaries, as it will rely that a previous call to
+dvb_register_adapter() would already be enforcing it.
 
-The root cause is that, in lookup_rec(), ftrace record of some address
-is being searched in ftrace pages of some module, but those ftrace pages
-at the same time is being freed in ftrace_release_mod() as the
-corresponding module is being deleted:
+On a similar way, dvb_device_open() uses the assumption
+that the register functions already did the needed checks.
 
-           CPU1                       |      CPU2
-  register_kprobes() {                | delete_module() {
-    check_kprobe_address_safe() {     |
-      arch_check_ftrace_location() {  |
-        ftrace_location() {           |
-          lookup_rec() // USE!        |   ftrace_release_mod() // Free!
+This can be fragile if some device ends using different
+calls. This also generate warnings on static check analysers
+like Coverity.
 
-To fix this issue:
-  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();
-  2. Use ftrace_location_range() instead of lookup_rec() in
-     ftrace_location();
-  3. Call synchronize_rcu() before freeing any ftrace pages both in
-     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().
+So, add explicit guards to prevent potential risk of OOM issues.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240509192859.1273558-1-zhengyejian1@huawei.com
-
-Cc: stable@vger.kernel.org
-Cc: <mhiramat@kernel.org>
-Cc: <mark.rutland@arm.com>
-Cc: <mathieu.desnoyers@efficios.com>
-Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[Hagar: Modified to apply on v5.4.y]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1552,7 +1552,9 @@ unsigned long ftrace_location_range(unsi
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
- 	struct dyn_ftrace key;
-+	unsigned long ip = 0;
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 661588fc64f6a..71344ae26fea7 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -96,10 +96,15 @@ static DECLARE_RWSEM(minor_rwsem);
+ static int dvb_device_open(struct inode *inode, struct file *file)
+ {
+ 	struct dvb_device *dvbdev;
++	unsigned int minor = iminor(inode);
++
++	if (minor >= MAX_DVB_MINORS)
++		return -ENODEV;
  
-+	rcu_read_lock();
- 	key.ip = start;
- 	key.flags = end;	/* overload flags, as it is unsigned long */
+ 	mutex_lock(&dvbdev_mutex);
+ 	down_read(&minor_rwsem);
+-	dvbdev = dvb_minors[iminor(inode)];
++
++	dvbdev = dvb_minors[minor];
  
-@@ -1565,10 +1567,13 @@ unsigned long ftrace_location_range(unsi
- 			      sizeof(struct dyn_ftrace),
- 			      ftrace_cmp_recs);
- 		if (rec)
--			return rec->ip;
-+		{
-+			ip = rec->ip;
-+			break;
-+		}
+ 	if (dvbdev && dvbdev->fops) {
+ 		int err = 0;
+@@ -539,7 +544,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+ 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
+ 		if (dvb_minors[minor] == NULL)
+ 			break;
+-	if (minor == MAX_DVB_MINORS) {
++	if (minor >= MAX_DVB_MINORS) {
+ 		if (new_node) {
+ 			list_del (&new_node->list_head);
+ 			kfree(dvbdevfops);
+@@ -554,6 +559,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
  	}
--
--	return 0;
-+	rcu_read_unlock();
-+	return ip;
- }
- 
- /**
-@@ -5736,6 +5741,8 @@ static int ftrace_process_locs(struct mo
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
- 		WARN_ON(!skipped);
-+		/* Need to synchronize with ftrace_location_range() */
-+		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
- 	}
- 	return ret;
-@@ -5889,6 +5896,9 @@ void ftrace_release_mod(struct module *m
-  out_unlock:
- 	mutex_unlock(&ftrace_lock);
- 
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page)
-+		synchronize_rcu();
- 	for (pg = tmp_page; pg; pg = tmp_page) {
- 
- 		/* Needs to be called outside of ftrace_lock */
-@@ -6196,6 +6206,7 @@ void ftrace_free_mem(struct module *mod,
- 	unsigned long start = (unsigned long)(start_ptr);
- 	unsigned long end = (unsigned long)(end_ptr);
- 	struct ftrace_page **last_pg = &ftrace_pages_start;
-+	struct ftrace_page *tmp_page = NULL;
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
- 	struct dyn_ftrace key;
-@@ -6239,12 +6250,8 @@ void ftrace_free_mem(struct module *mod,
- 		ftrace_update_tot_cnt--;
- 		if (!pg->index) {
- 			*last_pg = pg->next;
--			if (pg->records) {
--				free_pages((unsigned long)pg->records, pg->order);
--				ftrace_number_of_pages -= 1 << pg->order;
--			}
--			ftrace_number_of_groups--;
--			kfree(pg);
-+			pg->next = tmp_page;
-+			tmp_page = pg;
- 			pg = container_of(last_pg, struct ftrace_page, next);
- 			if (!(*last_pg))
- 				ftrace_pages = pg;
-@@ -6261,6 +6268,11 @@ void ftrace_free_mem(struct module *mod,
- 		clear_func_from_hashes(func);
- 		kfree(func);
- 	}
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page) {
-+		synchronize_rcu();
-+		ftrace_free_pages(tmp_page);
+ #else
+ 	minor = nums2minor(adap->num, type, id);
++	if (minor >= MAX_DVB_MINORS) {
++		dvb_media_device_free(dvbdev);
++		list_del(&dvbdev->list_head);
++		kfree(dvbdev);
++		*pdvbdev = NULL;
++		mutex_unlock(&dvbdev_register_lock);
++		return ret;
 +	}
- }
- 
- void __init ftrace_free_init_mem(void)
+ #endif
+ 	dvbdev->minor = minor;
+ 	dvb_minors[minor] = dvb_device_get(dvbdev);
+-- 
+2.43.0
+
 
 
 
