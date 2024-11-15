@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-93249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882959CD82C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736FA9CD864
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05F88B26CD3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB7D1F21A23
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259211885BF;
-	Fri, 15 Nov 2024 06:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD26218734F;
+	Fri, 15 Nov 2024 06:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KakwhxgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOby+qNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B20185924;
-	Fri, 15 Nov 2024 06:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C416EAD0;
+	Fri, 15 Nov 2024 06:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653289; cv=none; b=tLbMG9DFd9ITTVANdEGLaAnUJEbCSQKCPwLZCJV1465W+/V8C0c+qqJ8S6nn3K4uUOfu6cwn3ykECrPIa5Y3fWx3QGFhSZ6bbLzdOzzAbWj4Bjik2xy6pjh59wOLOd60bUcKkiWIklDM60RER0Pmcg20PT9op/voUa2RlJrPClw=
+	t=1731653422; cv=none; b=CQWNpK6UtTCF5z4yBgkdsk+r8aN+fe9u9LVt0P+h85varFL7vVAYoOvJ4tA2QaABEN1ozrIMtZGXLpetMvtxchAIMt/8nu7AGq4bhz4ppGkc8n8arRe1/DsDWtVJ4GMnXUf0OMv1VFyFyOoSrQ2OreBg8zuuthNBEDaTwelXQH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653289; c=relaxed/simple;
-	bh=zakHiXayz7SY1jBhcUhQzU+JONzAKDRAo+HlUYF2IG4=;
+	s=arc-20240116; t=1731653422; c=relaxed/simple;
+	bh=it5nsr6uh6OoXlvjZo4B1z4fHnt5yXyj6hO8LJvZyZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWpRt1p19H2ZBgpCW/AgsSQ63dM+hMT0dYOO7aoctqFSEvNrPR1fvaodXkMuiA5PJ7hu4M4ON8bSET5AVFkVcqpkd0l4Ay+sIu+HZEt6CELZwnOl+87eZmcLfDun6X3QvnCLc8xh0Vgx9ld9LA6H/hzkThp1Px7eVHBnfkD0jdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KakwhxgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2930C4CECF;
-	Fri, 15 Nov 2024 06:48:08 +0000 (UTC)
+	 MIME-Version; b=ikiKZiASxsi/rogBfP8laY6M/HVcUl4XMDy05hsMuQK0WprSNj2aWTZYiboN3mKR1jlRLZEanQvSqLArXg82y8frvM3gx/TsurPlRQ8/E3iHV8Dvxvif/Dkuf9wDbRXMbNLiJLN0on4/y4mJ6P748p9heFlCjd58BuxadOtEV3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOby+qNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED72AC4CECF;
+	Fri, 15 Nov 2024 06:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653289;
-	bh=zakHiXayz7SY1jBhcUhQzU+JONzAKDRAo+HlUYF2IG4=;
+	s=korg; t=1731653422;
+	bh=it5nsr6uh6OoXlvjZo4B1z4fHnt5yXyj6hO8LJvZyZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KakwhxgEMiiEj8EoCeF2MovKQ2iMqLxkH7LfuwYoHDFWFGkYU8BSmQhq8gFwVs+tQ
-	 stcsqn/E3dHjgKMjhRvmvSbk7u44zDuJsxyBhMYRdExaylL8ahs0qJl6ilZnWTTFeE
-	 4df1ZD6KSPqvkkGZzekrLZcjYJedkyrlNTVm5+FM=
+	b=wOby+qNIoGEBKwBVjdpqrsNFDFm/y787BTon7xWHzIo+5K6q6vwNGNQU0iozzw2Yl
+	 WzY7nqfws05OimHQtIVIz9klYevVCvb23TpGhI5cDk6UdmCfpPfIWpHk1kEUZrYW2c
+	 YYiaHf1PPypiq3m1RTqR+GUE7Af1QK1VaJedkdq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 43/63] netfs: Downgrade i_rwsem for a buffered write
-Date: Fri, 15 Nov 2024 07:38:06 +0100
-Message-ID: <20241115063727.469260672@linuxfoundation.org>
+Subject: [PATCH 6.6 18/48] nvme-multipath: defer partition scanning
+Date: Fri, 15 Nov 2024 07:38:07 +0100
+Message-ID: <20241115063723.621886625@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,65 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit d6a77668a708f0b5ca6713b39c178c9d9563c35b ]
+[ Upstream commit 1f021341eef41e77a633186e9be5223de2ce5d48 ]
 
-In the I/O locking code borrowed from NFS into netfslib, i_rwsem is held
-locked across a buffered write - but this causes a performance regression
-in cifs as it excludes buffered reads for the duration (cifs didn't use any
-locking for buffered reads).
+We need to suppress the partition scan from occuring within the
+controller's scan_work context. If a path error occurs here, the IO will
+wait until a path becomes available or all paths are torn down, but that
+action also occurs within scan_work, so it would deadlock. Defer the
+partion scan to a different context that does not block scan_work.
 
-Mitigate this somewhat by downgrading the i_rwsem to a read lock across the
-buffered write.  This at least allows parallel reads to occur whilst
-excluding other writes, DIO, truncate and setattr.
-
-Note that this shouldn't be a problem for a buffered write as a read
-through an mmap can circumvent i_rwsem anyway.
-
-Also note that we might want to make this change in NFS also.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/1317958.1729096113@warthog.procyon.org.uk
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Trond Myklebust <trondmy@kernel.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/locking.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/host/multipath.c | 33 +++++++++++++++++++++++++++++++++
+ drivers/nvme/host/nvme.h      |  1 +
+ 2 files changed, 34 insertions(+)
 
-diff --git a/fs/netfs/locking.c b/fs/netfs/locking.c
-index 75dc52a49b3a4..709a6aa101028 100644
---- a/fs/netfs/locking.c
-+++ b/fs/netfs/locking.c
-@@ -121,6 +121,7 @@ int netfs_start_io_write(struct inode *inode)
- 		up_write(&inode->i_rwsem);
- 		return -ERESTARTSYS;
- 	}
-+	downgrade_write(&inode->i_rwsem);
- 	return 0;
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 37ea0fa421da8..ede2a14dad8be 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -499,6 +499,20 @@ static int nvme_add_ns_head_cdev(struct nvme_ns_head *head)
+ 	return ret;
  }
- EXPORT_SYMBOL(netfs_start_io_write);
-@@ -135,7 +136,7 @@ EXPORT_SYMBOL(netfs_start_io_write);
- void netfs_end_io_write(struct inode *inode)
- 	__releases(inode->i_rwsem)
- {
--	up_write(&inode->i_rwsem);
-+	up_read(&inode->i_rwsem);
- }
- EXPORT_SYMBOL(netfs_end_io_write);
  
++static void nvme_partition_scan_work(struct work_struct *work)
++{
++	struct nvme_ns_head *head =
++		container_of(work, struct nvme_ns_head, partition_scan_work);
++
++	if (WARN_ON_ONCE(!test_and_clear_bit(GD_SUPPRESS_PART_SCAN,
++					     &head->disk->state)))
++		return;
++
++	mutex_lock(&head->disk->open_mutex);
++	bdev_disk_changed(head->disk, false);
++	mutex_unlock(&head->disk->open_mutex);
++}
++
+ static void nvme_requeue_work(struct work_struct *work)
+ {
+ 	struct nvme_ns_head *head =
+@@ -525,6 +539,7 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
+ 	bio_list_init(&head->requeue_list);
+ 	spin_lock_init(&head->requeue_lock);
+ 	INIT_WORK(&head->requeue_work, nvme_requeue_work);
++	INIT_WORK(&head->partition_scan_work, nvme_partition_scan_work);
+ 
+ 	/*
+ 	 * Add a multipath node if the subsystems supports multiple controllers.
+@@ -540,6 +555,16 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
+ 		return -ENOMEM;
+ 	head->disk->fops = &nvme_ns_head_ops;
+ 	head->disk->private_data = head;
++
++	/*
++	 * We need to suppress the partition scan from occuring within the
++	 * controller's scan_work context. If a path error occurs here, the IO
++	 * will wait until a path becomes available or all paths are torn down,
++	 * but that action also occurs within scan_work, so it would deadlock.
++	 * Defer the partion scan to a different context that does not block
++	 * scan_work.
++	 */
++	set_bit(GD_SUPPRESS_PART_SCAN, &head->disk->state);
+ 	sprintf(head->disk->disk_name, "nvme%dn%d",
+ 			ctrl->subsys->instance, head->instance);
+ 
+@@ -589,6 +614,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
++		kblockd_schedule_work(&head->partition_scan_work);
+ 	}
+ 
+ 	mutex_lock(&head->lock);
+@@ -889,6 +915,12 @@ void nvme_mpath_shutdown_disk(struct nvme_ns_head *head)
+ 	kblockd_schedule_work(&head->requeue_work);
+ 	if (test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
+ 		nvme_cdev_del(&head->cdev, &head->cdev_device);
++		/*
++		 * requeue I/O after NVME_NSHEAD_DISK_LIVE has been cleared
++		 * to allow multipath to fail all I/O.
++		 */
++		synchronize_srcu(&head->srcu);
++		kblockd_schedule_work(&head->requeue_work);
+ 		del_gendisk(head->disk);
+ 	}
+ }
+@@ -900,6 +932,7 @@ void nvme_mpath_remove_disk(struct nvme_ns_head *head)
+ 	/* make sure all pending bios are cleaned up */
+ 	kblockd_schedule_work(&head->requeue_work);
+ 	flush_work(&head->requeue_work);
++	flush_work(&head->partition_scan_work);
+ 	put_disk(head->disk);
+ }
+ 
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 799f8a2bb0b4f..14a867245c29f 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -476,6 +476,7 @@ struct nvme_ns_head {
+ 	struct bio_list		requeue_list;
+ 	spinlock_t		requeue_lock;
+ 	struct work_struct	requeue_work;
++	struct work_struct	partition_scan_work;
+ 	struct mutex		lock;
+ 	unsigned long		flags;
+ #define NVME_NSHEAD_DISK_LIVE	0
 -- 
 2.43.0
 
