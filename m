@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-93430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC999CD93D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0ED9CD8C7
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B246D283B8C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7711F23432
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB46188737;
-	Fri, 15 Nov 2024 06:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD309188015;
+	Fri, 15 Nov 2024 06:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjUb0dJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frfBx37f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A452BB1B;
-	Fri, 15 Nov 2024 06:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891B814EC77;
+	Fri, 15 Nov 2024 06:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653898; cv=none; b=nsUncTpiIvyP22XzvnvwAL9gKPQxWo+N5vI5EiuHklL0NfLfg4fV6xDFipYYB3/ZTuJPwcy9rdMe+Rutve93ts4A33bwNkiV9FWuTCW2UJio5erZs+Oj/PPbWzH55EfnVkYj2gjinBO6CQTDIjtc2fAGFAy4cwYvgKNneRRgrnA=
+	t=1731653651; cv=none; b=fOt9SGJqnT6fQI/bpkJjzJkZq8poHkUZlPxjGxxIPC4VxrmesLHbn2BilQLvjl+NaGIPz8SXnuLl8ZPkHiaaRg/J/qMt5+Mv7BgWYUGxuL1QRxs1fSnWfVRsNxaacx4eTobBVV+FrkKtZEb/MqdGtzXZEEaTbpEMWAQuytO4Vas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653898; c=relaxed/simple;
-	bh=4hnSSUgJI68EwVPAgQSuFuNQXWQ1THk4qflJjX9WZaU=;
+	s=arc-20240116; t=1731653651; c=relaxed/simple;
+	bh=jr9hKccuR71kVU5k5RF0pT1lAvqa3ysgbEdaqtxxwiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nTkU33HG0ZSAWBmnVP16WnUln0UyX0HhIWGfsbmmZds52PXBsAzgZehDboxEwNyD4YMy2qi3oqjwaheciHey85ODG9ZgyfhJn1q/7ghZej3CJS4ocpeif+FjcyruvJ8limNuPdBN0y/KavBuqnh/7L4fAZl35Kq+Scx7XYeMhgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjUb0dJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C7BC4CED2;
-	Fri, 15 Nov 2024 06:58:17 +0000 (UTC)
+	 MIME-Version; b=RWDwvZKuWikD5c4mNI0k0ozZGCIm02g2yxNg2AbER2mLDn3UgD9au32muCnbYtXPaJF2gDASLXbzh1ZBpFJCHlB7rXoY8DAFJM6s0YfY6fyHAtsob10PtwNK4XVXrvDnkY42MKzPCtognraf5IsmXrgStDW7QZAFvrTanwMVMIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frfBx37f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575DC4CECF;
+	Fri, 15 Nov 2024 06:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653898;
-	bh=4hnSSUgJI68EwVPAgQSuFuNQXWQ1THk4qflJjX9WZaU=;
+	s=korg; t=1731653651;
+	bh=jr9hKccuR71kVU5k5RF0pT1lAvqa3ysgbEdaqtxxwiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjUb0dJ9Zkxa79lVd02ZPJMmLGRj9vuh6vLOayuumFaAe9/z3tAvdSP57gmW3r4r4
-	 CzYtFRpgkG3hUFZb8Ppo8KK5unoH3WYuv2Ib9LE3sh8nvaXAjY9eISqMOIG+8Ls1Ks
-	 WWIxvjAKi1Mljla5kvuyJScYLRc3aDbqYZoRID24=
+	b=frfBx37flpH94YOKcznohVBBJKATRVwlJQfQ2goXcrNRpxQPn8CUDRFXwSWnRei5/
+	 pbNfLMgSepbPj8LHgtCuwdSz40kvZbNDW1/e6+JLMshtIf+aOzIvGYUTuuj5Z27/aX
+	 UlFvjkJL50Ahbnlgn7mhsmQAd5S1UWbYZtHJMlng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 61/82] USB: serial: option: add Quectel RG650V
-Date: Fri, 15 Nov 2024 07:38:38 +0100
-Message-ID: <20241115063727.753616884@linuxfoundation.org>
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Hagar Gamal Halim <hagarhem@amazon.de>
+Subject: [PATCH 6.1 29/39] md/raid10: improve code of mrdev in raid10_sync_request
+Date: Fri, 15 Nov 2024 07:38:39 +0100
+Message-ID: <20241115063723.659085662@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Li Nan <linan122@huawei.com>
 
-commit 3b05949ba39f305b585452d0e177470607842165 upstream.
+commit 59f8f0b54c8ffb4521f6bbd1cb6f4dfa5022e75e upstream.
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+'need_recover' and 'mrdev' are equivalent in raid10_sync_request(), and
+inc mrdev->nr_pending is unreasonable if don't need recovery. Replace
+'need_recover' with 'mrdev', and only inc nr_pending when needed.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0122 Rev=05.15
-S:  Manufacturer=Quectel
-S:  Product=RG650V-EU
-S:  SerialNumber=xxxxxxx
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
-
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230527072218.2365857-3-linan666@huaweicloud.com
+Cc: Hagar Gamal Halim <hagarhem@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/raid10.c |   23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_VENDOR_ID			0x2c7c
- /* These Quectel products use Quectel's vendor ID */
- #define QUECTEL_PRODUCT_EC21			0x0121
-+#define QUECTEL_PRODUCT_RG650V			0x0122
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-@@ -1273,6 +1274,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -3432,7 +3432,6 @@ static sector_t raid10_sync_request(stru
+ 			sector_t sect;
+ 			int must_sync;
+ 			int any_working;
+-			int need_recover = 0;
+ 			struct raid10_info *mirror = &conf->mirrors[i];
+ 			struct md_rdev *mrdev, *mreplace;
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+@@ -3440,14 +3439,13 @@ static sector_t raid10_sync_request(stru
+ 			mrdev = rcu_dereference(mirror->rdev);
+ 			mreplace = rcu_dereference(mirror->replacement);
+ 
+-			if (mrdev != NULL &&
+-			    !test_bit(Faulty, &mrdev->flags) &&
+-			    !test_bit(In_sync, &mrdev->flags))
+-				need_recover = 1;
++			if (mrdev && (test_bit(Faulty, &mrdev->flags) ||
++			    test_bit(In_sync, &mrdev->flags)))
++				mrdev = NULL;
+ 			if (mreplace && test_bit(Faulty, &mreplace->flags))
+ 				mreplace = NULL;
+ 
+-			if (!need_recover && !mreplace) {
++			if (!mrdev && !mreplace) {
+ 				rcu_read_unlock();
+ 				continue;
+ 			}
+@@ -3481,7 +3479,8 @@ static sector_t raid10_sync_request(stru
+ 				rcu_read_unlock();
+ 				continue;
+ 			}
+-			atomic_inc(&mrdev->nr_pending);
++			if (mrdev)
++				atomic_inc(&mrdev->nr_pending);
+ 			if (mreplace)
+ 				atomic_inc(&mreplace->nr_pending);
+ 			rcu_read_unlock();
+@@ -3568,7 +3567,7 @@ static sector_t raid10_sync_request(stru
+ 				r10_bio->devs[1].devnum = i;
+ 				r10_bio->devs[1].addr = to_addr;
+ 
+-				if (need_recover) {
++				if (mrdev) {
+ 					bio = r10_bio->devs[1].bio;
+ 					bio->bi_next = biolist;
+ 					biolist = bio;
+@@ -3613,7 +3612,7 @@ static sector_t raid10_sync_request(stru
+ 					for (k = 0; k < conf->copies; k++)
+ 						if (r10_bio->devs[k].devnum == i)
+ 							break;
+-					if (!test_bit(In_sync,
++					if (mrdev && !test_bit(In_sync,
+ 						      &mrdev->flags)
+ 					    && !rdev_set_badblocks(
+ 						    mrdev,
+@@ -3639,12 +3638,14 @@ static sector_t raid10_sync_request(stru
+ 				if (rb2)
+ 					atomic_dec(&rb2->remaining);
+ 				r10_bio = rb2;
+-				rdev_dec_pending(mrdev, mddev);
++				if (mrdev)
++					rdev_dec_pending(mrdev, mddev);
+ 				if (mreplace)
+ 					rdev_dec_pending(mreplace, mddev);
+ 				break;
+ 			}
+-			rdev_dec_pending(mrdev, mddev);
++			if (mrdev)
++				rdev_dec_pending(mrdev, mddev);
+ 			if (mreplace)
+ 				rdev_dec_pending(mreplace, mddev);
+ 			if (r10_bio->devs[0].bio->bi_opf & MD_FAILFAST) {
 
 
 
