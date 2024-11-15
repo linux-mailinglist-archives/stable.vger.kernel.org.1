@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F70C9CD7B7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DA69CD801
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A15B22600
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C19F2823EA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77608189520;
-	Fri, 15 Nov 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F19918734F;
+	Fri, 15 Nov 2024 06:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XV8pvCPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6mFbkfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36327188701;
-	Fri, 15 Nov 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEE829A9;
+	Fri, 15 Nov 2024 06:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653024; cv=none; b=CsJXVBbOeOTCUfiN+nvsua/gFATndgoK4iHqEZtnxh6xt4xUmE4ydJ6XQwHjvVYjwWb5i+HG7FB2sl1/J296KQxVWWY6DWOSEzNS4ZO1PtuY+0p55geOwsJqAFAi3ywqi1I1uL1JwBR8jsmhoxwxy03cbzLi++lhn6ewfA9StdI=
+	t=1731653204; cv=none; b=La23fskU0NgI6WJSYXuhZMm810vfoQ4H2hZo7J8dOGA12JcgKnGQhBhEi37DUiw8VGDVYr9NKnwIBOCmn/APXlM1dREH5WCjvCR7UTsPeSlazdpUWQXYZeohdzDAdTWsMB7hhDmCpme790VAb6d0qixVVIeFT7HYSh+nfFlzTNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653024; c=relaxed/simple;
-	bh=oKAPjPwbgxXM9R0sQF1uD1+nLokmFH5t430inA9VAYs=;
+	s=arc-20240116; t=1731653204; c=relaxed/simple;
+	bh=Uq8hhrHYfJcm5YC0GTEEJog/vs8fW6o7jVU8Dc0NmQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAXOAYW+84/JDjH0qWFRGfEY2Og2eR7/8AyTKKwECAnz48hDBhAgBpdQms+1eb8QVWJRwvX4kUPsSIKTFXhjl2UhhtJoFGeFy9Gc8MObh/8p1DHtUnmKh/Al30hLAMDskcscr8Y7M7m//aFe1BkuW3WwmA0OcIwzkidpvn8KXqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XV8pvCPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4456C4CECF;
-	Fri, 15 Nov 2024 06:43:43 +0000 (UTC)
+	 MIME-Version; b=crK3xa7ZrIvlqRvMH7bBFlEAr8+3rVyFlHlnY9HLDMsFTZUeNN/Kft2q3mVLB7FoKmjmhlJyNfyDRReapfPFAXdWYdNT2zWzIYQfxGyHwCJmsiIDx6+h4/SGAEzK7te3R4qBQiQiKVIYshDqZNgKQzcdjrnwBTdEnzR7tIpVNcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6mFbkfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBB0C4CECF;
+	Fri, 15 Nov 2024 06:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653024;
-	bh=oKAPjPwbgxXM9R0sQF1uD1+nLokmFH5t430inA9VAYs=;
+	s=korg; t=1731653203;
+	bh=Uq8hhrHYfJcm5YC0GTEEJog/vs8fW6o7jVU8Dc0NmQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XV8pvCPzfcMe7pz6VMFuVu2fMmE9STFQieMMWpF4nQWoYIHMHajlDP3UZ9zlx8Cfn
-	 42gPrLUQEbv0UcrsqsvVrq7Pg3OPQtVnM/k1K4tBwdszvKydVrVe8LMEI6ohLXCdoM
-	 XrMhcydKIlA1K6w6pkkcG117ntyO1depcdKNG+74=
+	b=J6mFbkfWGD/q7+XvKZeP5fyXd0Dmsb2y+vR/UrbxOHXODu3lmryBhbUKEVG/5favJ
+	 zSi05/pq/WpU96v5la4uksRNeiHq2BCre4ezGmOKvRoRuMv7C17mXoPwytO0cnDIjF
+	 CNysFtuL0ACqcy9ngneIqdO2XH6OvyfwxTIaRW+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.4 31/66] dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 17/63] crypto: api - Fix liveliness check in crypto_alg_tested
 Date: Fri, 15 Nov 2024 07:37:40 +0100
-Message-ID: <20241115063723.966048965@linuxfoundation.org>
+Message-ID: <20241115063726.543014915@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 5a4510c762fc04c74cff264cd4d9e9f5bf364bae upstream.
+[ Upstream commit b81e286ba154a4e0f01a94d99179a97f4ba3e396 ]
 
-This was found by a static analyzer.
-There may be a potential integer overflow issue in
-unstripe_ctr(). uc->unstripe_offset and uc->unstripe_width are
-defined as "sector_t"(uint64_t), while uc->unstripe,
-uc->chunk_size and uc->stripes are all defined as "uint32_t".
-The result of the calculation will be limited to "uint32_t"
-without correct casting.
-So, we recommend adding an extra cast to prevent potential
-integer overflow.
+As algorithm testing is carried out without holding the main crypto
+lock, it is always possible for the algorithm to go away during the
+test.
 
-Fixes: 18a5bf270532 ("dm: add unstriped target")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So before crypto_alg_tested updates the status of the tested alg,
+it checks whether it's still on the list of all algorithms.  This
+is inaccurate because it may be off the main list but still on the
+list of algorithms to be removed.
+
+Updating the algorithm status is safe per se as the larval still
+holds a reference to it.  However, killing spawns of other algorithms
+that are of lower priority is clearly a deficiency as it adds
+unnecessary churn.
+
+Fix the test by checking whether the algorithm is dead.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-unstripe.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/algapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-unstripe.c
-+++ b/drivers/md/dm-unstripe.c
-@@ -84,8 +84,8 @@ static int unstripe_ctr(struct dm_target
- 	}
- 	uc->physical_start = start;
+diff --git a/crypto/algapi.c b/crypto/algapi.c
+index 122cd910c4e1c..192ea14d64ce6 100644
+--- a/crypto/algapi.c
++++ b/crypto/algapi.c
+@@ -396,7 +396,7 @@ void crypto_alg_tested(const char *name, int err)
+ 	q->cra_flags |= CRYPTO_ALG_DEAD;
+ 	alg = test->adult;
  
--	uc->unstripe_offset = uc->unstripe * uc->chunk_size;
--	uc->unstripe_width = (uc->stripes - 1) * uc->chunk_size;
-+	uc->unstripe_offset = (sector_t)uc->unstripe * uc->chunk_size;
-+	uc->unstripe_width = (sector_t)(uc->stripes - 1) * uc->chunk_size;
- 	uc->chunk_shift = is_power_of_2(uc->chunk_size) ? fls(uc->chunk_size) - 1 : 0;
+-	if (list_empty(&alg->cra_list))
++	if (crypto_is_dead(alg))
+ 		goto complete;
  
- 	tmp_len = ti->len;
+ 	if (err == -ECANCELED)
+-- 
+2.43.0
+
 
 
 
