@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A7C9CD8F9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073189CD802
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8681F2167A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C13A728146B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB67A187FE8;
-	Fri, 15 Nov 2024 06:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772D6185B5B;
+	Fri, 15 Nov 2024 06:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJzqSXjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijUCM0Sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685312BB1B;
-	Fri, 15 Nov 2024 06:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F9F29A9;
+	Fri, 15 Nov 2024 06:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653747; cv=none; b=hHC/w6JClyNsmb3FMfQtuKTqtTfSLvfxXnRM5EAHHISoyodYL1hJKpFJlE5lcFZpY6BbbN8PdCHOhzn9RD/+d5cZQw9HTJRrD1sh4JJ2GaLiN/b92Lim57zyCam1yyf1uDO5Pw2bRVtuaHOi83RKfH4ADpVeSJAd5cowC0QTlWk=
+	t=1731653207; cv=none; b=aESFK5Z/5U6GFjV06MTapbnylevRnDEiQ1ovRT2do4yFonVIo8KpmCt3A+iN1kUF+lPrccKeR8ZsgrwPmDxh5pcP20P2huqvAYZ8n4XhSSZhlaL1EaeJ2ttU0jwI6OUX4PxKZUB8sO+Y52dsQ1PbDGVJFCFZCSo3gxYLGT23oSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653747; c=relaxed/simple;
-	bh=A3GgDCHYHBwB7urUhxMroi0jub7RGBbcSl38VPeMsmg=;
+	s=arc-20240116; t=1731653207; c=relaxed/simple;
+	bh=7fakC3FhczB6VErpQPCGfCeKEf5ezGDcDjET/49HZNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLiDcEJI8oYs7tCzxwC5XcqyXBJtH1tSA6Cv18cgss4vRBCMHQfhWSUm7zUVvsPNE4GhypTBakhOdotW0GYJIDe667TKtyfcDZJkcEoB86xi9ViDua7Op3OEDX9pFNPCAxT0t4H+o+4wR1DtJJ69eEUxIZ9HPy+rYz6Wsm34ouk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJzqSXjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA844C4CECF;
-	Fri, 15 Nov 2024 06:55:46 +0000 (UTC)
+	 MIME-Version; b=IGCl6udNOd/Hr6XCRrM4VfndnWqmnMJTRsADZp/JDl5lyK+a/BZo/D9clzGSY3Nze2F47ZwVQDIwsLw9E6fhdTw3Hgzke4j1NTm0lAUtCCJfICQTg2eVLBb0hBt4XzhMXE2tUjiM8LtoX7xprh/eW79qx/ulyar033rIQFpKErU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijUCM0Sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E3EC4CECF;
+	Fri, 15 Nov 2024 06:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653747;
-	bh=A3GgDCHYHBwB7urUhxMroi0jub7RGBbcSl38VPeMsmg=;
+	s=korg; t=1731653207;
+	bh=7fakC3FhczB6VErpQPCGfCeKEf5ezGDcDjET/49HZNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJzqSXjfgvvZscnqrYdD76W1DePJYdLj1Uwqzjx+5QSRBmuXfCKvN+NYgsV1kPHUY
-	 sGd2ZhcDFyr5bB9yWdE1dCo4Mg+SJBqS0sfIYPMp5utmtO8MhUL2bGU43pCqBmWCP1
-	 NWD53PBLSFqr9wYwxRF7k8jpJdppOv6CAjDcuAnk=
+	b=ijUCM0SkIhhjJGF47r0vdc4Hig5mDocI8D13eUQDGdzgXNd43+l8dlpW3zUidLO6u
+	 o+xU+QkxO/i3a2b/QDm76jgwYfRTA8QnfH5xV8U9TU1pK+AuNuKD+RFo0TMyDOnXHf
+	 PNvaNVbSPIyDc0OkrOBVn9jxXkbHAared+1VrjRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 03/82] arm64: dts: rockchip: Fix bluetooth properties on Rock960 boards
-Date: Fri, 15 Nov 2024 07:37:40 +0100
-Message-ID: <20241115063725.688292641@linuxfoundation.org>
+Subject: [PATCH 6.11 18/63] crypto: marvell/cesa - Disable hash algorithms
+Date: Fri, 15 Nov 2024 07:37:41 +0100
+Message-ID: <20241115063726.577868737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit ea74528aaea5a1dfc8e3de09ef2af37530eca526 ]
+[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
 
-The expected clock-name is different, and extclk also is deprecated
-in favor of txco for clocks that are not crystals.
+Disable cesa hash algorithms by lowering the priority because they
+appear to be broken when invoked in parallel.  This allows them to
+still be tested for debugging purposes.
 
-So fix it to match the binding.
-
-Fixes: c72235c288c8 ("arm64: dts: rockchip: Add on-board WiFi/BT support for Rock960 boards")
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-5-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-index 5e3ac589bc54a..6fa94cb4d5f79 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-@@ -568,7 +568,7 @@
- 	bluetooth {
- 		compatible = "brcm,bcm43438-bt";
- 		clocks = <&rk808 1>;
--		clock-names = "ext_clock";
-+		clock-names = "txco";
- 		device-wakeup-gpios = <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
- 		host-wakeup-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
- 		shutdown-gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index 8d84ad45571c7..f150861ceaf69 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -947,7 +947,7 @@ struct ahash_alg mv_md5_alg = {
+ 		.base = {
+ 			.cra_name = "md5",
+ 			.cra_driver_name = "mv-md5",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1018,7 +1018,7 @@ struct ahash_alg mv_sha1_alg = {
+ 		.base = {
+ 			.cra_name = "sha1",
+ 			.cra_driver_name = "mv-sha1",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1092,7 +1092,7 @@ struct ahash_alg mv_sha256_alg = {
+ 		.base = {
+ 			.cra_name = "sha256",
+ 			.cra_driver_name = "mv-sha256",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1302,7 +1302,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(md5)",
+ 			.cra_driver_name = "mv-hmac-md5",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1373,7 +1373,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(sha1)",
+ 			.cra_driver_name = "mv-hmac-sha1",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1444,7 +1444,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(sha256)",
+ 			.cra_driver_name = "mv-hmac-sha256",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
 -- 
 2.43.0
 
