@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-93310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455249CD883
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 554CC9CD844
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3094B25372
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8E89B24685
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F8B18950A;
-	Fri, 15 Nov 2024 06:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771E9185924;
+	Fri, 15 Nov 2024 06:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACeMkv7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRR37g/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5CA188CDB;
-	Fri, 15 Nov 2024 06:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E09EAD0;
+	Fri, 15 Nov 2024 06:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653494; cv=none; b=pNOEZJIQGCjBrW67ifEFf2EpNvdSFAU17uhyYNp2HjVMOs4iSE8pfZkyhoEkSbFheKWA+2Mw8WAzdH9EAFd48TfmlFow15cDy2lNsIvgj4C8+q5wcc761Gi8dmK1+zZYePlRoFh2wjs6rxA0riCs7mFhSteqwc46KHBCC939zdo=
+	t=1731653343; cv=none; b=M9wE8d1DWLMkjqJ9swwDaZmTiJ7aCqdUy4fNEamk8zLs0qSYkZx3QemJMYlBwBqyy3RsqUSVSKnhETXoKllR9JH8GoeyxWz87pYhD6NxA8zAu+IHNyazA850WuMS5lrNTMO8dsqTSbvJAS+4lVg+eUlvOL7NKYsiuW4wrDPLzfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653494; c=relaxed/simple;
-	bh=+rzZsOoegnrOI0BmdpMG3dt6yM0AHwwglx/LNCpjnPw=;
+	s=arc-20240116; t=1731653343; c=relaxed/simple;
+	bh=Qjb5lbN5dAOcMqvO3ApEkvxJ15U4wNcEsofQvZq7kUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KujVng9vzYmYUxMPIO3Ah/GhV9+J8j4yh3tSOerRSfyURmV91ls/EymEGEgOAqYMstZBzX4S5mGzBXHb8vpIWDMJbBv/AbrrS70oq6ikP9DeVLjM3HMfdYpSmPi3tGCt1J6P1/BclfC4q+HGQaOeBbTYA3pPFnCzy+vlPHSrC9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACeMkv7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1042FC4CECF;
-	Fri, 15 Nov 2024 06:51:33 +0000 (UTC)
+	 MIME-Version; b=FsiMCssSoYvxdKU8bZPn20V163ErJI490QGNPky6STBWKWsCA2IVJfIhE/MN0O7ntuYKKgYgC89Tm+/GFTMjxaAGlOJS+OuGObFNWxe3/AFBCU6jvW5tZAS2ICLRlEjYxSJ3elCKK7Geitm8P0OYi5ce2SKDS757L84dFDafeQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRR37g/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963EAC4CECF;
+	Fri, 15 Nov 2024 06:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653494;
-	bh=+rzZsOoegnrOI0BmdpMG3dt6yM0AHwwglx/LNCpjnPw=;
+	s=korg; t=1731653343;
+	bh=Qjb5lbN5dAOcMqvO3ApEkvxJ15U4wNcEsofQvZq7kUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACeMkv7iJ6HQBtadaaiQTuToy2cxyiXcmsyvVAALTVmSAZsS//D1BbZAak1RVDU9s
-	 B1gq04GYl8ThC/NjHaN+0Fz/3zo1DYBXaPBw1cgajNbu3e56prUKFgEvAy9u2ilMc2
-	 LUpsG8o9ojqt1HPvc7qhZstnAzo5Iav+avIO4A7g=
+	b=XRR37g/B5WUYTgUveOefk/IQlY2UuIvMQ8eleNrZ3agI5ovjyUk0r5HPyvxJ+Qbh/
+	 oidVdFIb99JBqIkpJmkZstYp+moQO+TZt5BoclEtZ150WLZdWbDSWBx86WbcI37s+/
+	 CJoO11TiGQ0yYVlKZoXIGLI4DMeJcxjrr+rxrZdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
-	Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Jia Yao <jia.yao@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Zongyao Bai <zongyao.bai@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/48] fs: Fix uninitialized value issue in from_kuid and from_kgid
+Subject: [PATCH 6.11 57/63] drm/xe: Enlarge the invalidation timeout from 150 to 500
 Date: Fri, 15 Nov 2024 07:38:20 +0100
-Message-ID: <20241115063724.088038198@linuxfoundation.org>
+Message-ID: <20241115063727.965591739@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +67,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
+[ Upstream commit c8fb95e7a54315460b45090f0968167a332e1657 ]
 
-ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
-a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
+There are error messages like below that are occurring during stress
+testing: "[   31.004009] xe 0000:03:00.0: [drm] ERROR GT0: Global
+invalidation timeout". Previously it was hitting this 3 out of 1000
+executions of warm reboot.  After raising it to 500, 1000 warm reboot
+executions passed and it didn't fail.
 
-Initialize all fields of newattrs to avoid uninitialized variables, by
-checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+Due to the way xe_mmio_wait32() is implemented, the timeout is able to
+expire early when the register matches the expected value due to the
+wait increments starting small. So, the larger timeout value should have
+no effect during normal use cases.
 
-Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+v2 (Jonathan):
+  - rework the commit message
+v3 (Lucas):
+  - add conclusive message for the fail rate and test case
+v4:
+  - add suggested-by
+
+Suggested-by: Jia Yao <jia.yao@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Tested-by: Zongyao Bai <zongyao.bai@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241015161207.1373401-1-shuicheng.lin@intel.com
+(cherry picked from commit 2eb460ab9f4bc5b575f52568d17936da0af681d8)
+[ Fix conflict with gt->mmio ]
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index aa39d5d2d94f1..e4acb795d1190 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1128,9 +1128,12 @@ int ocfs2_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	trace_ocfs2_setattr(inode, dentry,
- 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
- 			    dentry->d_name.len, dentry->d_name.name,
--			    attr->ia_valid, attr->ia_mode,
--			    from_kuid(&init_user_ns, attr->ia_uid),
--			    from_kgid(&init_user_ns, attr->ia_gid));
-+			    attr->ia_valid,
-+				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
-+				attr->ia_valid & ATTR_UID ?
-+					from_kuid(&init_user_ns, attr->ia_uid) : 0,
-+				attr->ia_valid & ATTR_GID ?
-+					from_kgid(&init_user_ns, attr->ia_gid) : 0);
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index fb394189d9e23..13213f39e52f9 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -870,7 +870,7 @@ void xe_device_l2_flush(struct xe_device *xe)
+ 	spin_lock(&gt->global_invl_lock);
+ 	xe_mmio_write32(gt, XE2_GLOBAL_INVAL, 0x1);
  
- 	/* ensuring we don't even attempt to truncate a symlink */
- 	if (S_ISLNK(inode->i_mode))
+-	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 150, NULL, true))
++	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 500, NULL, true))
+ 		xe_gt_err_once(gt, "Global invalidation timeout\n");
+ 	spin_unlock(&gt->global_invl_lock);
+ 
 -- 
 2.43.0
 
