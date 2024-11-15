@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E289CD94E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2C69CD8CC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1824283A94
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBD11F233D4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B3518873F;
-	Fri, 15 Nov 2024 06:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B1B18734F;
+	Fri, 15 Nov 2024 06:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZUfUzRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8oYzv+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9EF188015;
-	Fri, 15 Nov 2024 06:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D5C2BB1B;
+	Fri, 15 Nov 2024 06:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653935; cv=none; b=ggt93dQyLnFTtqmPwFcf1/1G1d25/ZxDaxQJQFlbn93dMiLQiO3g9oY5Pnij1o+t9G/+sffJQns3U5gJ56gCqdBXDczlczWz9xZtWRIxvo7HKuEsIcD+nEoxnQAAdmzcylCXbUYPUHNMJD9gQXN2khr2d22+rhaEHKx5xq+0/V0=
+	t=1731653661; cv=none; b=hqJxFAuDDAMHjh9Ne/k/9HtG1S2g+rEY1iJaMfvCBtu5Sl6e04vH9/Br00AaHIhzXNEV6gMrYyz5dOobjhXD4l5DKCRzr0Ll6ebvc6QXbu7lVwSZRjcAg4PsY8yLLQ0qpEcMqTBwKyQKbUjScNCRwjo2rrVY+9z2aF/a0143+EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653935; c=relaxed/simple;
-	bh=U1KYRfAFM36X/NuoHaKTmdoRzR+aQ4LFDPG96qAIUUc=;
+	s=arc-20240116; t=1731653661; c=relaxed/simple;
+	bh=OOLxeObIzpNSzzFSy587DmuGZ1yFgjzxOHT5lut/0og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHkhcRQqgZdYD6Hk68muZZTDnmbKMK4We6tIG+PIdlYBxVc2y7fNsbWKVGa/pTJ6kq23zpVOxdjX+Smk/ximIs6mKyFFp4tbluIb3lER5EYCNRC/S181zwqjeL0IackpWjCW2apyuuzE+12wqRUBRJS2wVL0H68fxF2OwgORgPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZUfUzRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A01EC4CECF;
-	Fri, 15 Nov 2024 06:58:54 +0000 (UTC)
+	 MIME-Version; b=L+r5j6VUXUjbVAPZ606N5SF5T/A9rePlqNwu3ob1vm9zs/J3utvoZgdC8eMPjFOGR6f9yTLtSslBaPWXUIqBpe5HNftK9D+Ot3XR0lcKQ2M8O8i1GsCyKbzVpMVxRJ+4AT7tYCmYnkDl6+M3OqkmTgXGxZxI24gVn4fhbO8EOQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8oYzv+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C0C4CECF;
+	Fri, 15 Nov 2024 06:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653935;
-	bh=U1KYRfAFM36X/NuoHaKTmdoRzR+aQ4LFDPG96qAIUUc=;
+	s=korg; t=1731653661;
+	bh=OOLxeObIzpNSzzFSy587DmuGZ1yFgjzxOHT5lut/0og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZUfUzRnDazODfz2SpiL5257nixRt6dK6bujeAU5UlO8A3ETELbxmdeWqLPTVNa83
-	 b2tU9O8dm+zFx5hWQymo0qF56tqe5zfhXdFxhpmyi2Q3ULU3AI+LwSt87HXJqRyz/r
-	 3clvqMz8JJtS4DvniGZiE5DsYJIKVdakahBQyrAQ=
+	b=V8oYzv+qa3PfEqd2gR0/rI5uFWpK8mfReODJyP+d6g9gPq5SmVvh2e8qCyofU8FJv
+	 nm9tKke2Ex6FUJquz5v/4vP8y9t8qj082rBL16EGkm/yFLZqHv30XFr/DBm/YILW/4
+	 Yehp82vgJf7XkmpWKai0mOopcN7DqUx5yeUya9eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 62/82] irqchip/gic-v3: Force propagation of the active state with a read-back
-Date: Fri, 15 Nov 2024 07:38:39 +0100
-Message-ID: <20241115063727.788785294@linuxfoundation.org>
+	Maximilian Heyne <mheyne@amazon.de>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 30/39] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+Date: Fri, 15 Nov 2024 07:38:40 +0100
+Message-ID: <20241115063723.695032276@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
+commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
 
-Christoffer reports that on some implementations, writing to
-GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
-issuing a deactivation of that interrupt via the system register interface.
+The io_register_iowq_max_workers() function calls io_put_sq_data(),
+which acquires the sqd->lock without releasing the uring_lock.
+Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+before acquiring sqd->lock"), this can lead to a potential deadlock
+situation.
 
-There are multiple reasons to this:
+To resolve this issue, the uring_lock is released before calling
+io_put_sq_data(), and then it is re-acquired after the function call.
 
- - this uses an early write-acknoledgement memory type (nGnRE), meaning
-   that the write may only have made it as far as some interconnect
-   by the time the store is considered "done"
+This change ensures that the locks are acquired in the correct
+order, preventing the possibility of a deadlock.
 
- - the GIC itself is allowed to buffer the write until it decides to
-   take it into account (as long as it is in finite time)
-
-The effects are that the activation may not have taken effect by the time
-the kernel enters the guest, forcing an immediate exit, or that a guest
-deactivation occurs before the interrupt is active, doing nothing.
-
-In order to guarantee that the write to the ISACTIVER register has taken
-effect, read back from it, forcing the interconnect to propagate the write,
-and the GIC to process the write before returning the read.
-
-Reported-by: Christoffer Dall <christoffer.dall@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Christoffer Dall <christoffer.dall@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/io_uring.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -429,6 +429,13 @@ static int gic_irq_set_irqchip_state(str
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3921,8 +3921,10 @@ static __cold int io_register_iowq_max_w
  	}
  
- 	gic_poke_irq(d, reg);
-+
-+	/*
-+	 * Force read-back to guarantee that the active state has taken
-+	 * effect, and won't race with a guest-driven deactivation.
-+	 */
-+	if (reg == GICD_ISACTIVER)
-+		gic_peek_irq(d, reg);
- 	return 0;
- }
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
+ 	}
  
+ 	if (copy_to_user(arg, new_count, sizeof(new_count)))
+@@ -3947,8 +3949,11 @@ static __cold int io_register_iowq_max_w
+ 	return 0;
+ err:
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
++
+ 	}
+ 	return ret;
+ }
 
 
 
