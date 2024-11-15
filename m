@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-93464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801519CD97F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5613A9CD981
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D38E1F21212
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF5F1F210AD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6677C169397;
-	Fri, 15 Nov 2024 07:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737F8370;
+	Fri, 15 Nov 2024 07:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrcHF8Mr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnHyYPkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229C017555;
-	Fri, 15 Nov 2024 07:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD10185924;
+	Fri, 15 Nov 2024 07:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654016; cv=none; b=rv2qtJoVx4CTenMR4ljP+kMoMoeeR2oQmi2KAM99IsM7NWoFPZot6625QVpxWb5suLeUrt7ht/ip2fjYvltw6AonWAbdTkxCo2GyUtZvOKj8hjZTVpeRGn6sTtcfLx9Mospt99rD4heyo1709b7EDVTEZsUy8BHVimrLESszHIA=
+	t=1731654023; cv=none; b=ob9ZBRhNm1lED3GwoWF0gidWUx/VQr8QLNHphXzzMY9zM0NikoIM4x87sr4Y/7liaTNKwsy6ySHPG6Sfm0MdvZduRMqiiRlu3+sHT5eIJ8YeH4tQ0Iy+anMU/3FEtFw0Qd1VHD8F41SoNLXUmjz0vtnKmwLQeJu/xcJODacNnQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654016; c=relaxed/simple;
-	bh=p/TFXp4SuN7bTklec4jHzEd1GLqi9XLnabz5k7d6Ews=;
+	s=arc-20240116; t=1731654023; c=relaxed/simple;
+	bh=R87tCKYKDXaehAlone5EF8p2OlGf0vArfKRIAhe3JMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFf6fefvAiNWmVqoaiuoLLstkJWp6Wj/5n0Q0dIAt4X/YsB55z5LJM+Fixuhgg6/hKkkDX+56V5avdpZxh+NL94rcD2UH4PilNk7OwHPL3H9AZg9sDoDPbAPwc9KmRtZuBz5jhnhnnxitrM66h3GNhV+8LPNCq8xbtRVfcyVrQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrcHF8Mr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F79C4CECF;
-	Fri, 15 Nov 2024 07:00:15 +0000 (UTC)
+	 MIME-Version; b=IiMg6rNOdp1L6PX8OBXdbBT/K01hBF+CPMvqd/5pz+MMHGgkEBkIN1IknhbBbw7rwg4p7Nsnuvn28JtjSNdskQP3PKbyiXomNjVTQDCb8SXABCM7GlouKmCwe3D7PlU/tHU0aXxbQHzlBNq1TGUO8XkRk1WAVOQwVmMDJwbRZMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnHyYPkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF84C4CED0;
+	Fri, 15 Nov 2024 07:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654015;
-	bh=p/TFXp4SuN7bTklec4jHzEd1GLqi9XLnabz5k7d6Ews=;
+	s=korg; t=1731654022;
+	bh=R87tCKYKDXaehAlone5EF8p2OlGf0vArfKRIAhe3JMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrcHF8Mr7MmFRm8aOBFKfa8yJl92HywB0NlAQpK1zZQ5kjrGiossW2iC4N7hngkgb
-	 tSFnGuQxtVOsIbqjDxz35F0Xb0vwxvWg4pAMXTnCsXWQqmLAY8Qwi7nHy65mby/c/c
-	 GA9vNOyG5IY45KoOL8ZCo9BKmoqQSNc3nVhplAM8=
+	b=OnHyYPknn7Ciou6HWo09dmvUfVLb94BVtKwwrocmNHPsnHwrwijSUoOc//HgDAPJc
+	 RM9Via897n1IZXzYdCk65Azc5HqiFunoowKPR+AVBv2S2blsUF3N5xZytGevNVj1bQ
+	 j2r4RXD6L5NIOX6my1k09Bv7X38/885hFFQVkpJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	syzbot+111eaa994ff74f8d440f@syzkaller.appspotmail.com,
 	Jan Kara <jack@suse.cz>,
 	Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 5.15 20/22] udf: Allocate name buffer in directory iterator on heap
-Date: Fri, 15 Nov 2024 07:39:06 +0100
-Message-ID: <20241115063721.907012691@linuxfoundation.org>
+Subject: [PATCH 5.15 21/22] udf: Avoid directory type conversion failure due to ENOMEM
+Date: Fri, 15 Nov 2024 07:39:07 +0100
+Message-ID: <20241115063721.942844477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
 References: <20241115063721.172791419@linuxfoundation.org>
@@ -68,97 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Jan Kara <jack@suse.cz>
 
-commit 0aba4860b0d0216a1a300484ff536171894d49d8 upstream.
+commit df97f64dfa317a5485daf247b6c043a584ef95f9 upstream.
 
-Currently we allocate name buffer in directory iterators (struct
-udf_fileident_iter) on stack. These structures are relatively large
-(some 360 bytes on 64-bit architectures). For udf_rename() which needs
-to keep three of these structures in parallel the stack usage becomes
-rather heavy - 1536 bytes in total. Allocate the name buffer in the
-iterator from heap to avoid excessive stack usage.
+When converting directory from in-ICB to normal format, the last
+iteration through the directory fixing up directory enteries can fail
+due to ENOMEM. We do not expect this iteration to fail since the
+directory is already verified to be correct and it is difficult to undo
+the conversion at this point. So just use GFP_NOFAIL to make sure the
+small allocation cannot fail.
 
-Link: https://lore.kernel.org/all/202212200558.lK9x1KW0-lkp@intel.com
-Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: syzbot+111eaa994ff74f8d440f@syzkaller.appspotmail.com
+Fixes: 0aba4860b0d0 ("udf: Allocate name buffer in directory iterator on heap")
 Signed-off-by: Jan Kara <jack@suse.cz>
-[Add extra include linux/slab.h]
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/directory.c |   24 ++++++++++++++++--------
- fs/udf/udfdecl.h   |    2 +-
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ fs/udf/directory.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 --- a/fs/udf/directory.c
 +++ b/fs/udf/directory.c
-@@ -19,6 +19,7 @@
- #include <linux/bio.h>
- #include <linux/crc-itu-t.h>
- #include <linux/iversion.h>
-+#include <linux/slab.h>
- 
- static int udf_verify_fi(struct udf_fileident_iter *iter)
- {
-@@ -248,9 +249,14 @@ int udf_fiiter_init(struct udf_fileident
+@@ -249,9 +249,12 @@ int udf_fiiter_init(struct udf_fileident
  	iter->elen = 0;
  	iter->epos.bh = NULL;
  	iter->name = NULL;
-+	iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
-+	if (!iter->namebuf)
-+		return -ENOMEM;
+-	iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
+-	if (!iter->namebuf)
+-		return -ENOMEM;
++	/*
++	 * When directory is verified, we don't expect directory iteration to
++	 * fail and it can be difficult to undo without corrupting filesystem.
++	 * So just do not allow memory allocation failures here.
++	 */
++	iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL | __GFP_NOFAIL);
  
--	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
--		return udf_copy_fi(iter);
-+	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		err = udf_copy_fi(iter);
-+		goto out;
-+	}
- 
- 	if (inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
- 		       &iter->eloc, &iter->elen, &iter->loffset) !=
-@@ -260,17 +266,17 @@ int udf_fiiter_init(struct udf_fileident
- 		udf_err(dir->i_sb,
- 			"position %llu not allocated in directory (ino %lu)\n",
- 			(unsigned long long)pos, dir->i_ino);
--		return -EFSCORRUPTED;
-+		err = -EFSCORRUPTED;
-+		goto out;
- 	}
- 	err = udf_fiiter_load_bhs(iter);
- 	if (err < 0)
--		return err;
-+		goto out;
- 	err = udf_copy_fi(iter);
--	if (err < 0) {
-+out:
-+	if (err < 0)
- 		udf_fiiter_release(iter);
--		return err;
--	}
--	return 0;
-+	return err;
- }
- 
- int udf_fiiter_advance(struct udf_fileident_iter *iter)
-@@ -307,6 +313,8 @@ void udf_fiiter_release(struct udf_filei
- 	brelse(iter->bh[0]);
- 	brelse(iter->bh[1]);
- 	iter->bh[0] = iter->bh[1] = NULL;
-+	kfree(iter->namebuf);
-+	iter->namebuf = NULL;
- }
- 
- static void udf_copy_to_bufs(void *buf1, int len1, void *buf2, int len2,
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -99,7 +99,7 @@ struct udf_fileident_iter {
- 	struct extent_position epos;	/* Position after the above extent */
- 	struct fileIdentDesc fi;	/* Copied directory entry */
- 	uint8_t *name;			/* Pointer to entry name */
--	uint8_t namebuf[UDF_NAME_LEN_CS0]; /* Storage for entry name in case
-+	uint8_t *namebuf;		/* Storage for entry name in case
- 					 * the name is split between two blocks
- 					 */
- };
+ 	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
+ 		err = udf_copy_fi(iter);
 
 
 
