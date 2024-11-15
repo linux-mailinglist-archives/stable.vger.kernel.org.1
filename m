@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-93361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016FE9CD8CE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B28289CD953
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 751FAB23D53
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36333B22D09
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060631885BF;
-	Fri, 15 Nov 2024 06:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD06185924;
+	Fri, 15 Nov 2024 06:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Drg4wFMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia/jO4J3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B892E14EC77;
-	Fri, 15 Nov 2024 06:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE39187FE8;
+	Fri, 15 Nov 2024 06:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653664; cv=none; b=pEXwMjjDzL2WpBHyKmnzisru30lNOfzJ0sZC0gn210hW77XLwMLTNyaYM6X1mAGAfgHKBpXIQdeQKWdqnR5V+ffNR2uCdm7mOBuFlFeAlAPQHB7qsYYPpnjHjBCFrMandiARZxqikG5jF2KRPzLYQXuYnsy9vOT2IsTl/7IhIuk=
+	t=1731653953; cv=none; b=V45H3NeUvtkXQDsbb/FkN0XDaYTX+JTI320TAbCz6phr4Iwn48pFzeI00X2736zpxDQv2JLWvdrg/qDaHn5SsP2g9yd5wtErx31kBjYiUSmbArU66A0cj6A0d9dW4ZOt+y/YDD7e4RPBh+8G/w4hYNTxNN2LqkyVSGWztzVOuLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653664; c=relaxed/simple;
-	bh=aD1ofXg8tDXF8U3wKjjI74PWaZZF5pn+x0M/I7FR3+Y=;
+	s=arc-20240116; t=1731653953; c=relaxed/simple;
+	bh=hYznJcgUr0V9UYJl6siuLbl1z7vmcy9GPQ6o/EgBzDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dISkcLwn/+Z5w6Ig4M+axx5Vg+RJCfvcUduCfI8sPVAtvY3rCyS8PCQ3LqJoizQoqmJNcHYsUzcZnLCU2q9hoHY6EOKXWZaRr8e/kJZjaMi1Oc6CrBquJ8jv5u3+/Ov5L/uUYblKoHGnWYJGjmM7wn6gTnwLH7R+HvXSfVbPAPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Drg4wFMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233B7C4CED7;
-	Fri, 15 Nov 2024 06:54:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GO7L/0Qmgu0wEob76WJ/L8A1mFU60tt1dVoq5O4bZMZqUT/9UZz9QRPIANfCVC4PZk1ynvwRgmXKmvsqfFFDkPT2yA/EuyO+9DjWWXrrVu0oLd02Q4ClWAPvarS9N4RajzOk5WKSrTFdIZ9WEJ62jUBRlQ7mvkcoadsHsl37pns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia/jO4J3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E513C4CECF;
+	Fri, 15 Nov 2024 06:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653664;
-	bh=aD1ofXg8tDXF8U3wKjjI74PWaZZF5pn+x0M/I7FR3+Y=;
+	s=korg; t=1731653953;
+	bh=hYznJcgUr0V9UYJl6siuLbl1z7vmcy9GPQ6o/EgBzDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Drg4wFMsHkWa7LXK/l4gNyz24T1lV8Fes1PlScUzKBDh9P4nPkWmA70SQFT8YCbi/
-	 2LV9d6hVU70y+/cKsdbifV9QOk4xhvracA2n1yGFUUh08BRmGj5D324/6iO+xve+YL
-	 WNEIG6yulbgr+jtBZE4W81pxLINXS6Q7z7utv4AM=
+	b=ia/jO4J3q7u6DGCh8Q+vFO3gk61SYNb9/dL1YzZa/thb2HJwPeXOvUgCRIrX9u72D
+	 UGjZSSswpN16tdKD4LQnDFr3IOoC6XXUr8KAYwTWolUyHpaCRQlC8MKDA3qTGouh0w
+	 122fijmyIHZLvks6+YIImGTffjt0GAr60ZdOwZqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH 6.1 31/39] uprobes: encapsulate preparation of uprobe args buffer
+	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 64/82] ALSA: usb-audio: Support jack detection on Dell dock
 Date: Fri, 15 Nov 2024 07:38:41 +0100
-Message-ID: <20241115063723.731582037@linuxfoundation.org>
+Message-ID: <20241115063727.859530671@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,261 +60,238 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Jan Schär <jan@jschaer.ch>
 
-commit 3eaea21b4d27cff0017c20549aeb53034c58fc23 upstream.
+[ Upstream commit 4b8ea38fabab45ad911a32a336416062553dfe9c ]
 
-Move the logic of fetching temporary per-CPU uprobe buffer and storing
-uprobes args into it to a new helper function. Store data size as part
-of this buffer, simplifying interfaces a bit, as now we only pass single
-uprobe_cpu_buffer reference around, instead of pointer + dsize.
+The Dell WD15 dock has a headset and a line out port. Add support for
+detecting if a jack is inserted into one of these ports.
+For the headset jack, additionally determine if a mic is present.
 
-This logic was duplicated across uprobe_dispatcher and uretprobe_dispatcher,
-and now will be centralized. All this is also in preparation to make
-this uprobe_cpu_buffer handling logic optional in the next patch.
+The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
+from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
+detection. Instead, jack detection works by sending HD Audio commands over
+vendor-type USB messages.
 
-Link: https://lore.kernel.org/all/20240318181728.2795838-2-andrii@kernel.org/
-[Masami: update for v6.9-rc3 kernel]
+I found out how it works by looking at USB captures on Windows.
+The audio codec is very similar to the one supported by
+sound/soc/codecs/rt298.c / rt298.h, some constant names and the mic
+detection are adapted from there. The realtek_add_jack function is adapted
+from build_connector_control in sound/usb/mixer.c.
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
+I tested this on a WD15 dock with the latest firmware.
+
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Link: https://lore.kernel.org/r/20220627171855.42338-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 4413665dd6c5 ("ALSA: usb-audio: Add quirks for Dell WD19 dock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_uprobe.c |   79 ++++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 38 deletions(-)
+ sound/usb/mixer_quirks.c | 167 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 167 insertions(+)
 
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -858,6 +858,7 @@ static const struct file_operations upro
- struct uprobe_cpu_buffer {
- 	struct mutex mutex;
- 	void *buf;
-+	int dsize;
- };
- static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
- static int uprobe_buffer_refcnt;
-@@ -947,9 +948,26 @@ static void uprobe_buffer_put(struct upr
- 	mutex_unlock(&ucb->mutex);
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 99f2203bf51f1..750a386b9c177 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -24,6 +24,7 @@
+ #include <sound/asoundef.h>
+ #include <sound/core.h>
+ #include <sound/control.h>
++#include <sound/hda_verbs.h>
+ #include <sound/hwdep.h>
+ #include <sound/info.h>
+ #include <sound/tlv.h>
+@@ -1793,6 +1794,169 @@ static int snd_soundblaster_e1_switch_create(struct usb_mixer_interface *mixer)
+ 					  NULL);
  }
  
-+static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
-+						       struct pt_regs *regs)
++/*
++ * Dell WD15 dock jack detection
++ *
++ * The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
++ * from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
++ * detection. Instead, jack detection works by sending HD Audio commands over
++ * vendor-type USB messages.
++ */
++
++#define HDA_VERB_CMD(V, N, D) (((N) << 20) | ((V) << 8) | (D))
++
++#define REALTEK_HDA_VALUE 0x0038
++
++#define REALTEK_HDA_SET		62
++#define REALTEK_HDA_GET_OUT	88
++#define REALTEK_HDA_GET_IN	89
++
++#define REALTEK_LINE1			0x1a
++#define REALTEK_VENDOR_REGISTERS	0x20
++#define REALTEK_HP_OUT			0x21
++
++#define REALTEK_CBJ_CTRL2 0x50
++
++#define REALTEK_JACK_INTERRUPT_NODE 5
++
++#define REALTEK_MIC_FLAG 0x100
++
++static int realtek_hda_set(struct snd_usb_audio *chip, u32 cmd)
 +{
-+	struct uprobe_cpu_buffer *ucb;
-+	int dsize, esize;
++	struct usb_device *dev = chip->dev;
++	u32 buf = cpu_to_be32(cmd);
 +
-+	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
-+	dsize = __get_data_size(&tu->tp, regs);
-+
-+	ucb = uprobe_buffer_get();
-+	ucb->dsize = tu->tp.size + dsize;
-+
-+	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
-+
-+	return ucb;
++	return snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_SET,
++			       USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
++			       REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
 +}
 +
- static void __uprobe_trace_func(struct trace_uprobe *tu,
- 				unsigned long func, struct pt_regs *regs,
--				struct uprobe_cpu_buffer *ucb, int dsize,
-+				struct uprobe_cpu_buffer *ucb,
- 				struct trace_event_file *trace_file)
++static int realtek_hda_get(struct snd_usb_audio *chip, u32 cmd, u32 *value)
++{
++	struct usb_device *dev = chip->dev;
++	int err;
++	u32 buf = cpu_to_be32(cmd);
++
++	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_GET_OUT,
++			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
++			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
++	if (err < 0)
++		return err;
++	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), REALTEK_HDA_GET_IN,
++			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_IN,
++			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
++	if (err < 0)
++		return err;
++
++	*value = be32_to_cpu(buf);
++	return 0;
++}
++
++static int realtek_ctl_connector_get(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	struct usb_mixer_elem_info *cval = kcontrol->private_data;
++	struct snd_usb_audio *chip = cval->head.mixer->chip;
++	u32 pv = kcontrol->private_value;
++	u32 node_id = pv & 0xff;
++	u32 sense;
++	u32 cbj_ctrl2;
++	bool presence;
++	int err;
++
++	err = snd_usb_lock_shutdown(chip);
++	if (err < 0)
++		return err;
++	err = realtek_hda_get(chip,
++			      HDA_VERB_CMD(AC_VERB_GET_PIN_SENSE, node_id, 0),
++			      &sense);
++	if (err < 0)
++		goto err;
++	if (pv & REALTEK_MIC_FLAG) {
++		err = realtek_hda_set(chip,
++				      HDA_VERB_CMD(AC_VERB_SET_COEF_INDEX,
++						   REALTEK_VENDOR_REGISTERS,
++						   REALTEK_CBJ_CTRL2));
++		if (err < 0)
++			goto err;
++		err = realtek_hda_get(chip,
++				      HDA_VERB_CMD(AC_VERB_GET_PROC_COEF,
++						   REALTEK_VENDOR_REGISTERS, 0),
++				      &cbj_ctrl2);
++		if (err < 0)
++			goto err;
++	}
++err:
++	snd_usb_unlock_shutdown(chip);
++	if (err < 0)
++		return err;
++
++	presence = sense & AC_PINSENSE_PRESENCE;
++	if (pv & REALTEK_MIC_FLAG)
++		presence = presence && (cbj_ctrl2 & 0x0070) == 0x0070;
++	ucontrol->value.integer.value[0] = presence;
++	return 0;
++}
++
++static const struct snd_kcontrol_new realtek_connector_ctl_ro = {
++	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
++	.name = "", /* will be filled later manually */
++	.access = SNDRV_CTL_ELEM_ACCESS_READ,
++	.info = snd_ctl_boolean_mono_info,
++	.get = realtek_ctl_connector_get,
++};
++
++static int realtek_resume_jack(struct usb_mixer_elem_list *list)
++{
++	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
++		       &list->kctl->id);
++	return 0;
++}
++
++static int realtek_add_jack(struct usb_mixer_interface *mixer,
++			    char *name, u32 val)
++{
++	struct usb_mixer_elem_info *cval;
++	struct snd_kcontrol *kctl;
++
++	cval = kzalloc(sizeof(*cval), GFP_KERNEL);
++	if (!cval)
++		return -ENOMEM;
++	snd_usb_mixer_elem_init_std(&cval->head, mixer,
++				    REALTEK_JACK_INTERRUPT_NODE);
++	cval->head.resume = realtek_resume_jack;
++	cval->val_type = USB_MIXER_BOOLEAN;
++	cval->channels = 1;
++	cval->min = 0;
++	cval->max = 1;
++	kctl = snd_ctl_new1(&realtek_connector_ctl_ro, cval);
++	if (!kctl) {
++		kfree(cval);
++		return -ENOMEM;
++	}
++	kctl->private_value = val;
++	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
++	kctl->private_free = snd_usb_mixer_elem_free;
++	return snd_usb_mixer_add_control(&cval->head, kctl);
++}
++
++static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
++{
++	int err;
++
++	err = realtek_add_jack(mixer, "Line Out Jack", REALTEK_LINE1);
++	if (err < 0)
++		return err;
++	err = realtek_add_jack(mixer, "Headphone Jack", REALTEK_HP_OUT);
++	if (err < 0)
++		return err;
++	err = realtek_add_jack(mixer, "Headset Mic Jack",
++			       REALTEK_HP_OUT | REALTEK_MIC_FLAG);
++	if (err < 0)
++		return err;
++	return 0;
++}
++
+ static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
  {
- 	struct uprobe_trace_entry_head *entry;
-@@ -960,14 +978,14 @@ static void __uprobe_trace_func(struct t
+ 	u16 buf = 0;
+@@ -3024,6 +3188,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 		err = snd_soundblaster_e1_switch_create(mixer);
+ 		break;
+ 	case USB_ID(0x0bda, 0x4014): /* Dell WD15 dock */
++		err = dell_dock_mixer_create(mixer);
++		if (err < 0)
++			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
  
- 	WARN_ON(call != trace_file->event_call);
- 
--	if (WARN_ON_ONCE(tu->tp.size + dsize > PAGE_SIZE))
-+	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
- 		return;
- 
- 	if (trace_trigger_soft_disabled(trace_file))
- 		return;
- 
- 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
--	size = esize + tu->tp.size + dsize;
-+	size = esize + ucb->dsize;
- 	entry = trace_event_buffer_reserve(&fbuffer, trace_file, size);
- 	if (!entry)
- 		return;
-@@ -981,14 +999,14 @@ static void __uprobe_trace_func(struct t
- 		data = DATAOF_TRACE_ENTRY(entry, false);
- 	}
- 
--	memcpy(data, ucb->buf, tu->tp.size + dsize);
-+	memcpy(data, ucb->buf, ucb->dsize);
- 
- 	trace_event_buffer_commit(&fbuffer);
- }
- 
- /* uprobe handler */
- static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
--			     struct uprobe_cpu_buffer *ucb, int dsize)
-+			     struct uprobe_cpu_buffer *ucb)
- {
- 	struct event_file_link *link;
- 
-@@ -997,7 +1015,7 @@ static int uprobe_trace_func(struct trac
- 
- 	rcu_read_lock();
- 	trace_probe_for_each_link_rcu(link, &tu->tp)
--		__uprobe_trace_func(tu, 0, regs, ucb, dsize, link->file);
-+		__uprobe_trace_func(tu, 0, regs, ucb, link->file);
- 	rcu_read_unlock();
- 
- 	return 0;
-@@ -1005,13 +1023,13 @@ static int uprobe_trace_func(struct trac
- 
- static void uretprobe_trace_func(struct trace_uprobe *tu, unsigned long func,
- 				 struct pt_regs *regs,
--				 struct uprobe_cpu_buffer *ucb, int dsize)
-+				 struct uprobe_cpu_buffer *ucb)
- {
- 	struct event_file_link *link;
- 
- 	rcu_read_lock();
- 	trace_probe_for_each_link_rcu(link, &tu->tp)
--		__uprobe_trace_func(tu, func, regs, ucb, dsize, link->file);
-+		__uprobe_trace_func(tu, func, regs, ucb, link->file);
- 	rcu_read_unlock();
- }
- 
-@@ -1339,7 +1357,7 @@ static bool uprobe_perf_filter(struct up
- 
- static void __uprobe_perf_func(struct trace_uprobe *tu,
- 			       unsigned long func, struct pt_regs *regs,
--			       struct uprobe_cpu_buffer *ucb, int dsize)
-+			       struct uprobe_cpu_buffer *ucb)
- {
- 	struct trace_event_call *call = trace_probe_event_call(&tu->tp);
- 	struct uprobe_trace_entry_head *entry;
-@@ -1360,7 +1378,7 @@ static void __uprobe_perf_func(struct tr
- 
- 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
- 
--	size = esize + tu->tp.size + dsize;
-+	size = esize + ucb->dsize;
- 	size = ALIGN(size + sizeof(u32), sizeof(u64)) - sizeof(u32);
- 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE, "profile buffer not large enough"))
- 		return;
-@@ -1383,13 +1401,10 @@ static void __uprobe_perf_func(struct tr
- 		data = DATAOF_TRACE_ENTRY(entry, false);
- 	}
- 
--	memcpy(data, ucb->buf, tu->tp.size + dsize);
--
--	if (size - esize > tu->tp.size + dsize) {
--		int len = tu->tp.size + dsize;
-+	memcpy(data, ucb->buf, ucb->dsize);
- 
--		memset(data + len, 0, size - esize - len);
--	}
-+	if (size - esize > ucb->dsize)
-+		memset(data + ucb->dsize, 0, size - esize - ucb->dsize);
- 
- 	perf_trace_buf_submit(entry, size, rctx, call->event.type, 1, regs,
- 			      head, NULL);
-@@ -1399,21 +1414,21 @@ static void __uprobe_perf_func(struct tr
- 
- /* uprobe profile handler */
- static int uprobe_perf_func(struct trace_uprobe *tu, struct pt_regs *regs,
--			    struct uprobe_cpu_buffer *ucb, int dsize)
-+			    struct uprobe_cpu_buffer *ucb)
- {
- 	if (!uprobe_perf_filter(&tu->consumer, 0, current->mm))
- 		return UPROBE_HANDLER_REMOVE;
- 
- 	if (!is_ret_probe(tu))
--		__uprobe_perf_func(tu, 0, regs, ucb, dsize);
-+		__uprobe_perf_func(tu, 0, regs, ucb);
- 	return 0;
- }
- 
- static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
- 				struct pt_regs *regs,
--				struct uprobe_cpu_buffer *ucb, int dsize)
-+				struct uprobe_cpu_buffer *ucb)
- {
--	__uprobe_perf_func(tu, func, regs, ucb, dsize);
-+	__uprobe_perf_func(tu, func, regs, ucb);
- }
- 
- int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
-@@ -1479,10 +1494,8 @@ static int uprobe_dispatcher(struct upro
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
--	int dsize, esize;
- 	int ret = 0;
- 
--
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 	tu->nhit++;
- 
-@@ -1494,18 +1507,14 @@ static int uprobe_dispatcher(struct upro
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	dsize = __get_data_size(&tu->tp, regs);
--	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
--
--	ucb = uprobe_buffer_get();
--	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
-+	ucb = prepare_uprobe_buffer(tu, regs);
- 
- 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
--		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
-+		ret |= uprobe_trace_func(tu, regs, ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
- 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
--		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
-+		ret |= uprobe_perf_func(tu, regs, ucb);
- #endif
- 	uprobe_buffer_put(ucb);
- 	return ret;
-@@ -1517,7 +1526,6 @@ static int uretprobe_dispatcher(struct u
- 	struct trace_uprobe *tu;
- 	struct uprobe_dispatch_data udd;
- 	struct uprobe_cpu_buffer *ucb;
--	int dsize, esize;
- 
- 	tu = container_of(con, struct trace_uprobe, consumer);
- 
-@@ -1529,18 +1537,13 @@ static int uretprobe_dispatcher(struct u
- 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
- 		return 0;
- 
--	dsize = __get_data_size(&tu->tp, regs);
--	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
--
--	ucb = uprobe_buffer_get();
--	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
--
-+	ucb = prepare_uprobe_buffer(tu, regs);
- 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
--		uretprobe_trace_func(tu, func, regs, ucb, dsize);
-+		uretprobe_trace_func(tu, func, regs, ucb);
- 
- #ifdef CONFIG_PERF_EVENTS
- 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
--		uretprobe_perf_func(tu, func, regs, ucb, dsize);
-+		uretprobe_perf_func(tu, func, regs, ucb);
- #endif
- 	uprobe_buffer_put(ucb);
- 	return 0;
+-- 
+2.43.0
+
 
 
 
