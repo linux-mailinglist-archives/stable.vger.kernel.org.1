@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-93396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2289CD909
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB559CD837
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AAF92835DF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C57E1F231F5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294FC18873E;
-	Fri, 15 Nov 2024 06:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9CF18734F;
+	Fri, 15 Nov 2024 06:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZfHcedi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW46pn9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4ED185924;
-	Fri, 15 Nov 2024 06:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5937017E015;
+	Fri, 15 Nov 2024 06:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653781; cv=none; b=POtXFz+1pt/lI49KaXXfIJyWwUgG73b/VpA+NOfE9hwEKOTWIDOlt6B5YL985DHtFd6pRtkzjP8ZiY0tevkCiLcm45lHmZcz/dkuauuO6y3O+PcAbU+g5xKik/vNZjdWZk+diLLmi7xCAj8rV4Qb8U3386fTa3Mwb63DgnMJxKs=
+	t=1731653312; cv=none; b=XqWn7A13t5xzH22PkFychns3QKOB3Fed96YJ5o3F1oTy+nbrWKT8rxqF7dAqlkUj0mL+h6GZSyKCZucO5YCSMNjkFDAjrDYGAAlM+UsyXGJ2zK+BEGJccRglkV8nFeA7y+Hr7nrxpMkmOWDyu2O2qFBntT0DQIXpVwmJcJpA0NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653781; c=relaxed/simple;
-	bh=7JyS90hg3daOyp05mz/kzBIenEtgRjBENIu7eAsezwU=;
+	s=arc-20240116; t=1731653312; c=relaxed/simple;
+	bh=5LuGLIEuMDP+ox0G9FWAlNaS4kyMRps8Z4Ysgkuaav8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZgXX3iWRuBxP1hKJIw0MNkooUdwch93LYos0LP9kwh+NK9eXeq9BvwifBNs53s0rrl0JmYyaXSbNLZ4PxonU6qfssdYED8q9g44LuO8vBPYIJmFDg7qZAKkFbp4G0MPyQeoYzDCi0HQ+BXZjGNe0gyMJ3f7zkOpG1f7+MwiFnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZfHcedi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B67C4CECF;
-	Fri, 15 Nov 2024 06:56:21 +0000 (UTC)
+	 MIME-Version; b=uTQI3PZGiGguQhQgPzjjPpOecOsdJwSYs7ou3yxnno5YZ0UMylMsp97JT9vgFB3CAi3y0PRLSadYaC7ZbpR+dpsSOEtD7MqjFzmLyERwCkz/bqrATRCu/IeyRA7HSCACpyZvEH4G3GWm3xN0bcShixuWmcyNQDBheGwAeZuA8CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW46pn9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14F5C4CECF;
+	Fri, 15 Nov 2024 06:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653781;
-	bh=7JyS90hg3daOyp05mz/kzBIenEtgRjBENIu7eAsezwU=;
+	s=korg; t=1731653312;
+	bh=5LuGLIEuMDP+ox0G9FWAlNaS4kyMRps8Z4Ysgkuaav8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZfHcediI/eHcvaitrFTYE6AmXZNO2BH57jPy4l4XQrOoldjeo16VI+A8o8/2gh1D
-	 5/Z7/bRVUEpj5K19ICwHnGu4JFMGi3YOeWQ0fQANPF3jalycFpG/LqKXnpE8ywn2S8
-	 BCIEU4RJ2aWAVOQfimpNA5mqQebXBfw9Qf3/Y5W8=
+	b=eW46pn9JBHbetbVMgddyT56LvHfUkcoOFkRg8xO+7rdmpUA+s4zdswey+zBU9QUcj
+	 9Teb6zejDgAlJisQ547GvOTdENB6v2/ONBJtILlaxXRAC95fwYrfmmoORA4jDG0LkS
+	 XXj3rs9ztOazlW7eq7WuQCxu+ioCf//n1YjPymj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 35/82] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 49/63] ASoC: codecs: lpass-rx-macro: fix RXn(rx,n) macro for DSM_CTL and SEC7 regs
 Date: Fri, 15 Nov 2024 07:38:12 +0100
-Message-ID: <20241115063726.828761618@linuxfoundation.org>
+Message-ID: <20241115063727.681709474@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+[ Upstream commit 9fc9ef05727ccb45fd881770f2aa5c3774b2e8e2 ]
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+Turns out some registers of pre-2.5 version of rxmacro codecs are not
+located at the expected offsets but 0xc further away in memory. So far
+the detected registers are CDC_RX_RX2_RX_PATH_SEC7 and
+CDC_RX_RX2_RX_PATH_DSM_CTL.
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
+CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n) macro incorrectly generates the address
+0x540 for RX2 but it should be 0x54C and it also overwrites
+CDC_RX_RX2_RX_PATH_SEC7 which is located at 0x540.
+The same goes for CDC_RX_RXn_RX_PATH_SEC7(rx, n).
 
-Bail out also when status is AE_NOT_FOUND.
+Fix this by introducing additional rxn_reg_stride2 offset. For 2.5 version
+and above this offset will be equal to 0.
+With such change the corresponding RXn() macros will generate the same
+values for 2.5 codec version for all RX paths and the same old values
+for pre-2.5 version for RX0 and RX1. However for the latter case with
+RX2 path it will also add rxn_reg_stride2 on top.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
+While at this, also remove specific if-check for INTERP_AUX from
+rx_macro_digital_mute() and rx_macro_enable_interp_clk(). These if-check
+was used to handle such special offset for AUX interpolator but since
+CDC_RX_RXn_RX_PATH_SEC7(rx, n) and CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)
+macros will generate the correst addresses of dsm register, they are no
+longer needed.
 
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patch.msgid.link/20241016221049.1145101-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/lpass-rx-macro.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -112,8 +112,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
+index ac759f4a880d0..3be83c74d4099 100644
+--- a/sound/soc/codecs/lpass-rx-macro.c
++++ b/sound/soc/codecs/lpass-rx-macro.c
+@@ -202,12 +202,14 @@
+ #define CDC_RX_RXn_RX_PATH_SEC3(rx, n)	(0x042c  + rx->rxn_reg_stride * n)
+ #define CDC_RX_RX0_RX_PATH_SEC4		(0x0430)
+ #define CDC_RX_RX0_RX_PATH_SEC7		(0x0434)
+-#define CDC_RX_RXn_RX_PATH_SEC7(rx, n)	(0x0434  + rx->rxn_reg_stride * n)
++#define CDC_RX_RXn_RX_PATH_SEC7(rx, n)		\
++	(0x0434 + (rx->rxn_reg_stride * n) + ((n > 1) ? rx->rxn_reg_stride2 : 0))
+ #define CDC_RX_DSM_OUT_DELAY_SEL_MASK	GENMASK(2, 0)
+ #define CDC_RX_DSM_OUT_DELAY_TWO_SAMPLE	0x2
+ #define CDC_RX_RX0_RX_PATH_MIX_SEC0	(0x0438)
+ #define CDC_RX_RX0_RX_PATH_MIX_SEC1	(0x043C)
+-#define CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)	(0x0440  + rx->rxn_reg_stride * n)
++#define CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)	\
++	(0x0440 + (rx->rxn_reg_stride * n) + ((n > 1) ? rx->rxn_reg_stride2 : 0))
+ #define CDC_RX_RXn_DSM_CLK_EN_MASK	BIT(0)
+ #define CDC_RX_RX0_RX_PATH_DSM_CTL	(0x0440)
+ #define CDC_RX_RX0_RX_PATH_DSM_DATA1	(0x0444)
+@@ -645,6 +647,7 @@ struct rx_macro {
+ 	int rx_mclk_cnt;
+ 	enum lpass_codec_version codec_version;
+ 	int rxn_reg_stride;
++	int rxn_reg_stride2;
+ 	bool is_ear_mode_on;
+ 	bool hph_pwr_mode;
+ 	bool hph_hd2_mode;
+@@ -1929,9 +1932,6 @@ static int rx_macro_digital_mute(struct snd_soc_dai *dai, int mute, int stream)
+ 							      CDC_RX_PATH_PGA_MUTE_MASK, 0x0);
+ 			}
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
+-			if (j == INTERP_AUX)
+-				dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, 2);
+-
+ 			int_mux_cfg0 = CDC_RX_INP_MUX_RX_INT0_CFG0 + j * 8;
+ 			int_mux_cfg1 = int_mux_cfg0 + 4;
+ 			int_mux_cfg0_val = snd_soc_component_read(component, int_mux_cfg0);
+@@ -2702,9 +2702,6 @@ static int rx_macro_enable_interp_clk(struct snd_soc_component *component,
+ 
+ 	main_reg = CDC_RX_RXn_RX_PATH_CTL(rx, interp_idx);
+ 	dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, interp_idx);
+-	if (interp_idx == INTERP_AUX)
+-		dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, 2);
+-
+ 	rx_cfg2_reg = CDC_RX_RXn_RX_PATH_CFG2(rx, interp_idx);
+ 
+ 	if (SND_SOC_DAPM_EVENT_ON(event)) {
+@@ -3821,6 +3818,7 @@ static int rx_macro_probe(struct platform_device *pdev)
+ 	case LPASS_CODEC_VERSION_2_0:
+ 	case LPASS_CODEC_VERSION_2_1:
+ 		rx->rxn_reg_stride = 0x80;
++		rx->rxn_reg_stride2 = 0xc;
+ 		def_count = ARRAY_SIZE(rx_defaults) + ARRAY_SIZE(rx_pre_2_5_defaults);
+ 		reg_defaults = kmalloc_array(def_count, sizeof(struct reg_default), GFP_KERNEL);
+ 		if (!reg_defaults)
+@@ -3834,6 +3832,7 @@ static int rx_macro_probe(struct platform_device *pdev)
+ 	case LPASS_CODEC_VERSION_2_7:
+ 	case LPASS_CODEC_VERSION_2_8:
+ 		rx->rxn_reg_stride = 0xc0;
++		rx->rxn_reg_stride2 = 0x0;
+ 		def_count = ARRAY_SIZE(rx_defaults) + ARRAY_SIZE(rx_2_5_defaults);
+ 		reg_defaults = kmalloc_array(def_count, sizeof(struct reg_default), GFP_KERNEL);
+ 		if (!reg_defaults)
+-- 
+2.43.0
+
 
 
 
