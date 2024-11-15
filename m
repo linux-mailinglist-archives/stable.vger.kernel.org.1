@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-93181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D769CD7C6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F341A9CD849
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD86D1F23155
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0BC21F22F5E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A708188012;
-	Fri, 15 Nov 2024 06:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C38A186294;
+	Fri, 15 Nov 2024 06:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euAkyfBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp+jT4s/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48ACF154C00;
-	Fri, 15 Nov 2024 06:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EBC17E015;
+	Fri, 15 Nov 2024 06:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653069; cv=none; b=lsMRNsrffxNuG5O5qwYbrRYQsxraBJbz6m4iQTclQckLDJnM/Q/PHqybv/N3e7S58QuLzJc5guBU4J32A578+WIN+Bizg6BqZdxLQYbl5czeRbWK6HasQBkIKmdxZUo7UPYc99xjKBc7KXaRu3wEL+BA/khilIk9OR9B68GTov4=
+	t=1731653357; cv=none; b=IumsthUeFd/Pk6Y4kOl4UqAsB9zXl3GORCoQVW6GhGu7BdWNvmC4HYoROoG62NC80Nn7UH1RVz/AQ5If9o21ZDcv++gJhaXcwE0RuH7X1opvEdE9mgsFNWN1iYMgR/NtWfYs2G71vnnoYONEE3ZTv2n0gg2jFQKUa6P6hIpdUbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653069; c=relaxed/simple;
-	bh=vKUOTKJSGtzxCtg49qPi5Qkz07wRgrRrWNbWuM57qLw=;
+	s=arc-20240116; t=1731653357; c=relaxed/simple;
+	bh=YNsg6eVFundoB/EOS62FU6SnZIqbG1C+qiAQezhf6Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhqLDhClIxB+J1a9S5o+GWDfor9uMXCaYIOH9yaZpOfsPAg02BylPLfGDF+8/klqbe6JPL/WDD4QwBVZfxj7fBgd4PSz9u6azsHZnHE1KzBtlBOLqQTm6OYscOZXzyRQBcJVqZhOizeEw3lfLHVVvMHewu5PIM0j7w85oHLT4EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euAkyfBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB113C4CECF;
-	Fri, 15 Nov 2024 06:44:28 +0000 (UTC)
+	 MIME-Version; b=mKHDm8RJq19r1913iNHDNmcxSi6WJWMweLy/x8672B57ehEQ7X3rc1EA7MnbLL1+3+xziQX5h1w6zLB3gfGWerPo52XUXkRCVRLEdcLCc9vKIsAhgPltRmqXikidZKgbelpLwgDKio6fJhdrc9zdXZJco5mFFd8wvZJaip0MTYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp+jT4s/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8DEC4CECF;
+	Fri, 15 Nov 2024 06:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653069;
-	bh=vKUOTKJSGtzxCtg49qPi5Qkz07wRgrRrWNbWuM57qLw=;
+	s=korg; t=1731653356;
+	bh=YNsg6eVFundoB/EOS62FU6SnZIqbG1C+qiAQezhf6Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euAkyfBZQ6Reszt5jDkWkxU64y+lZNYIisDZ7wKw1krfDiur/HFCP+uOL43PSHZjK
-	 BrDmT1nFpxp/QsRFZ18K1Tx4odJfP+qqKYrrgEkyuRB/hnBuH/UcKKTlfhC7oMIk4K
-	 lLH34RrziEGsmn1zqWIeh9KN7SWTVgkupLLJZ5yY=
+	b=Gp+jT4s/DGBQ/aGSQgVLTy/Xvam/FgfMfIOuuQArm/k78ZdoaIHwjIv5/1qpxcky3
+	 q9/tfuehZjmcQUfKpvWPuCt89FrhhxYdraOUQCBCJ6kxF/YnbFSAlZyWT24KbgiDCi
+	 ia2sAhUQkQSdX62ib95U05boI2oxnPIJ8vkSQQ9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 43/66] USB: serial: option: add Fibocom FG132 0x0112 composition
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 29/63] net: phy: mdio-bcm-unimac: Add BCM6846 support
 Date: Fri, 15 Nov 2024 07:37:52 +0100
-Message-ID: <20241115063724.399122565@linuxfoundation.org>
+Message-ID: <20241115063726.972542748@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 393c74ccbd847bacf18865a01b422586fc7341cf upstream.
+[ Upstream commit 906b77ca91c7e9833b4e47bedb6bec76be71d497 ]
 
-Add Fibocom FG132 0x0112 composition:
+Add Unimac mdio compatible string for the special BCM6846
+variant.
 
-T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+This variant has a few extra registers compared to other
+versions.
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/linux-devicetree/b542b2e8-115c-4234-a464-e73aa6bece5c@broadcom.com/
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patch.msgid.link/20241012-bcm6846-mdio-v1-2-c703ca83e962@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/mdio/mdio-bcm-unimac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2320,6 +2320,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x30) },	/* Fibocom FG132 Diag */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x40) },	/* Fibocom FG132 AT */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0, 0) },		/* Fibocom FG132 NMEA */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
+index f40eb50bb978d..b7bc70586ee0a 100644
+--- a/drivers/net/mdio/mdio-bcm-unimac.c
++++ b/drivers/net/mdio/mdio-bcm-unimac.c
+@@ -337,6 +337,7 @@ static const struct of_device_id unimac_mdio_ids[] = {
+ 	{ .compatible = "brcm,asp-v2.2-mdio", },
+ 	{ .compatible = "brcm,asp-v2.1-mdio", },
+ 	{ .compatible = "brcm,asp-v2.0-mdio", },
++	{ .compatible = "brcm,bcm6846-mdio", },
+ 	{ .compatible = "brcm,genet-mdio-v5", },
+ 	{ .compatible = "brcm,genet-mdio-v4", },
+ 	{ .compatible = "brcm,genet-mdio-v3", },
+-- 
+2.43.0
+
 
 
 
