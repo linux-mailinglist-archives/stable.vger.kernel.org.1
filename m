@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A509CD923
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38839CD89A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3178EB27CE9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF801F2130D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DF71885BF;
-	Fri, 15 Nov 2024 06:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B86186294;
+	Fri, 15 Nov 2024 06:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAubJD8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmqEQVAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB0615FD13;
-	Fri, 15 Nov 2024 06:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C378D153800;
+	Fri, 15 Nov 2024 06:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653840; cv=none; b=FbcD7Up83BXjo3ZrlDTo2zAxK62iHG6wUkuse85bc8NxC9NUr7TvPKr8G7X2hDKWuEPzY8EGzAjguKwmOt/zoHR1FQakqaWgT20VnN2cpaiQOaYhdxk/l7vOpD0sZu2W+yE6CgT8gMeIA5VACH5zYvrVRJe/kI9ANHg7am3eRjY=
+	t=1731653547; cv=none; b=rFMbLaFL+6VCBpeQKdVVJhUqjORl1grSV0WVdxFVOFL1F9S6QacYc0cHjvdPj6pOdvWXWTSYXpO/VsFgt8lnUYVAgtGmeoL5GNTx8bqEKxkZ39pp71MclgFKb6nGxtTns7FRfApbNE3tjcEmN3fvolNwtHDWdwKJhS54dAzaICA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653840; c=relaxed/simple;
-	bh=ARR9RtuJvzUWzgW4qp1seEzEa3iZY/uiOl8I24x6pck=;
+	s=arc-20240116; t=1731653547; c=relaxed/simple;
+	bh=wEpxkGD1UeVeR2MwA7r4yvCn1PvEJj28vNf8xoSmT1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQjIp4Xycx9wzxDRGRAmOhMDsROsWmbRD3V1iBJLDdH8j0dk37ecgmKKmoDO9wYi/UR+W8LhmsCrFp8wAWkhNIqNnvPATfcPBtqGpgKbs5eCUy1XH1Vz4CElmK43N3WC9MQH+ES2wgcIVh0mbPDsejZpZuD4sYQbYxXit3DGMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAubJD8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73496C4CECF;
-	Fri, 15 Nov 2024 06:57:19 +0000 (UTC)
+	 MIME-Version; b=pRZ+8WfCRfyTzblcSu/iiRelYSdTAKSuwQdBJW8uzAjytQtq3UA9L3tlHvHZq6CJ10RT4BFfCZEU0owNKcGLfwHQWio8ZQOTaSQpWde8zJ0mEVbpsrLsbsUD3a7uhvw0i9lGwEXCGeGhp5MKBCjmRUE4m/ve3YWrciguhProh0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmqEQVAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02847C4CECF;
+	Fri, 15 Nov 2024 06:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653839;
-	bh=ARR9RtuJvzUWzgW4qp1seEzEa3iZY/uiOl8I24x6pck=;
+	s=korg; t=1731653547;
+	bh=wEpxkGD1UeVeR2MwA7r4yvCn1PvEJj28vNf8xoSmT1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAubJD8IIUpwTqr4QNEg0qyn/EGbzhMvLCHNMtm54wdTrw+Y5rAJ9HmbVTrJeBtwz
-	 ozDFEYc4F+KpUmk2op8dpJvsyprU5+NhNWwpy45sVmRG57T9NZt5dvKMc5Rk6/T5OS
-	 RVDFgQ/gotdrgyV/wOqesSMeNEG78aclnOvj/Mxk=
+	b=AmqEQVADp743/bbH47CH1ILhWyRDGjt2ILpBhRbUV0zJxl1jbZ020psUmis5S35WM
+	 TNYN20Whd/yig07d4w0UCerW5T+jqduKqIxAHPAt9o68Xghue6vzdZbtAFjpRhdhwx
+	 oW0LYhBXZUFIpCCjE02kF1IBMqdnN8k48jX1fHnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Randy MacLeod <Randy.MacLeod@windriver.com>
-Subject: [PATCH 5.10 50/82] net: bridge: xmit: make sure we have at least eth header len bytes
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 38/48] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
 Date: Fri, 15 Nov 2024 07:38:27 +0100
-Message-ID: <20241115063727.362864868@linuxfoundation.org>
+Message-ID: <20241115063724.340407589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc upstream.
+[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
 
-syzbot triggered an uninit value[1] error in bridge device's xmit path
-by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
-we can actually pull that amount instead of assuming.
+Add Fibocom FG132 0x0112 composition:
 
-Tested with dropwatch:
- drop at: br_dev_xmit+0xb93/0x12d0 [bridge] (0xffffffffc06739b3)
- origin: software
- timestamp: Mon May 13 11:31:53 2024 778214037 nsec
- protocol: 0x88a8
- length: 2
- original length: 2
- drop reason: PKT_TOO_SMALL
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-[1]
-BUG: KMSAN: uninit-value in br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
- br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
- __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
- netdev_start_xmit include/linux/netdevice.h:4917 [inline]
- xmit_one net/core/dev.c:3531 [inline]
- dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
- __dev_queue_xmit+0x34db/0x5350 net/core/dev.c:4341
- dev_queue_xmit include/linux/netdevice.h:3091 [inline]
- __bpf_tx_skb net/core/filter.c:2136 [inline]
- __bpf_redirect_common net/core/filter.c:2180 [inline]
- __bpf_redirect+0x14a6/0x1620 net/core/filter.c:2187
- ____bpf_clone_redirect net/core/filter.c:2460 [inline]
- bpf_clone_redirect+0x328/0x470 net/core/filter.c:2432
- ___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
- __bpf_prog_run512+0xb5/0xe0 kernel/bpf/core.c:2238
- bpf_dispatcher_nop_func include/linux/bpf.h:1234 [inline]
- __bpf_prog_run include/linux/filter.h:657 [inline]
- bpf_prog_run include/linux/filter.h:664 [inline]
- bpf_test_run+0x499/0xc30 net/bpf/test_run.c:425
- bpf_prog_test_run_skb+0x14ea/0x1f20 net/bpf/test_run.c:1058
- bpf_prog_test_run+0x6b7/0xad0 kernel/bpf/syscall.c:4269
- __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5678
- __do_sys_bpf kernel/bpf/syscall.c:5767 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5765 [inline]
- __x64_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5765
- x64_sys_call+0x96b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:322
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Randy MacLeod <Randy.MacLeod@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_device.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -36,6 +36,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *
- 	const unsigned char *dest;
- 	u16 vid = 0;
- 
-+	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
-+
- 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
- 
- 	rcu_read_lock();
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 92c1500fa7c44..2cf4324a12fd1 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1432,6 +1432,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
++	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+-- 
+2.43.0
+
 
 
 
