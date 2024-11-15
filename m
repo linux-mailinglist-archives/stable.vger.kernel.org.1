@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A861D9CD8AF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A509CD923
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E47B283D35
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3178EB27CE9
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D3818873E;
-	Fri, 15 Nov 2024 06:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DF71885BF;
+	Fri, 15 Nov 2024 06:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHoKHd5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAubJD8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2667818871E;
-	Fri, 15 Nov 2024 06:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB0615FD13;
+	Fri, 15 Nov 2024 06:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653584; cv=none; b=kgMa5unRSMQxMm/XLNR66rH0ga2BOZJnyknDlEEDBdDQr2oR3+DYnhv+0KVqDekBIDitQbmEOV1OBixDlOVGazlRy5DRIrKgAEq3om9okVr1gkKn7qOXyl3Ip/8P6NRTZVbrWYMMYsgeHCCpmr6101F3N+PMo0ZdDji4oPOdYbk=
+	t=1731653840; cv=none; b=FbcD7Up83BXjo3ZrlDTo2zAxK62iHG6wUkuse85bc8NxC9NUr7TvPKr8G7X2hDKWuEPzY8EGzAjguKwmOt/zoHR1FQakqaWgT20VnN2cpaiQOaYhdxk/l7vOpD0sZu2W+yE6CgT8gMeIA5VACH5zYvrVRJe/kI9ANHg7am3eRjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653584; c=relaxed/simple;
-	bh=gRPOsoPsOtb4lwNrqURhvEKqyFMub7Eis3B4Pa0yVDY=;
+	s=arc-20240116; t=1731653840; c=relaxed/simple;
+	bh=ARR9RtuJvzUWzgW4qp1seEzEa3iZY/uiOl8I24x6pck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExMVKhIo0odB4NukDs7OpZIgOLMiee2ybUCfw4WgB1LWjHwdDGZly62eSjYIZ152L/NqPNLTeLhZUDaGpj49r2Yft5OMlNVZgL+QS5BolkvXvZayrLY7DD+WdMCDzJkMgtl1s9zxIvuti1hnEw0ATLKpHK0lrKQ8TvtXSsCRjCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHoKHd5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89148C4CECF;
-	Fri, 15 Nov 2024 06:53:03 +0000 (UTC)
+	 MIME-Version; b=hQjIp4Xycx9wzxDRGRAmOhMDsROsWmbRD3V1iBJLDdH8j0dk37ecgmKKmoDO9wYi/UR+W8LhmsCrFp8wAWkhNIqNnvPATfcPBtqGpgKbs5eCUy1XH1Vz4CElmK43N3WC9MQH+ES2wgcIVh0mbPDsejZpZuD4sYQbYxXit3DGMVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAubJD8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73496C4CECF;
+	Fri, 15 Nov 2024 06:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653584;
-	bh=gRPOsoPsOtb4lwNrqURhvEKqyFMub7Eis3B4Pa0yVDY=;
+	s=korg; t=1731653839;
+	bh=ARR9RtuJvzUWzgW4qp1seEzEa3iZY/uiOl8I24x6pck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHoKHd5MdzCrPjHoiibOhOahpPAQpT8o1rlpmsbyPlbbBgVMnGxKemzWOhfVTjGDq
-	 4/arzluEHczibKQ/e+14bT8u9JUdGSS0S5cbgC/nOeQnMHpGXBs3H0dHlIkabgJgfR
-	 YlA+2Mf1Lf9NgdbRU6z6uG9Fz9xPqoCcjeKvOT7k=
+	b=WAubJD8IIUpwTqr4QNEg0qyn/EGbzhMvLCHNMtm54wdTrw+Y5rAJ9HmbVTrJeBtwz
+	 ozDFEYc4F+KpUmk2op8dpJvsyprU5+NhNWwpy45sVmRG57T9NZt5dvKMc5Rk6/T5OS
+	 RVDFgQ/gotdrgyV/wOqesSMeNEG78aclnOvj/Mxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/39] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
+	syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Randy MacLeod <Randy.MacLeod@windriver.com>
+Subject: [PATCH 5.10 50/82] net: bridge: xmit: make sure we have at least eth header len bytes
 Date: Fri, 15 Nov 2024 07:38:27 +0100
-Message-ID: <20241115063723.231298896@linuxfoundation.org>
+Message-ID: <20241115063727.362864868@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
+commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc upstream.
 
-Currently the array size is only limited by the largest kmalloc size which
-is incorrect. This change will also return a more specific error message
-than ENOMEM to userspace.
+syzbot triggered an uninit value[1] error in bridge device's xmit path
+by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
+we can actually pull that amount instead of assuming.
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested with dropwatch:
+ drop at: br_dev_xmit+0xb93/0x12d0 [bridge] (0xffffffffc06739b3)
+ origin: software
+ timestamp: Mon May 13 11:31:53 2024 778214037 nsec
+ protocol: 0x88a8
+ length: 2
+ original length: 2
+ drop reason: PKT_TOO_SMALL
+
+[1]
+BUG: KMSAN: uninit-value in br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+ xmit_one net/core/dev.c:3531 [inline]
+ dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
+ __dev_queue_xmit+0x34db/0x5350 net/core/dev.c:4341
+ dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+ __bpf_tx_skb net/core/filter.c:2136 [inline]
+ __bpf_redirect_common net/core/filter.c:2180 [inline]
+ __bpf_redirect+0x14a6/0x1620 net/core/filter.c:2187
+ ____bpf_clone_redirect net/core/filter.c:2460 [inline]
+ bpf_clone_redirect+0x328/0x470 net/core/filter.c:2432
+ ___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
+ __bpf_prog_run512+0xb5/0xe0 kernel/bpf/core.c:2238
+ bpf_dispatcher_nop_func include/linux/bpf.h:1234 [inline]
+ __bpf_prog_run include/linux/filter.h:657 [inline]
+ bpf_prog_run include/linux/filter.h:664 [inline]
+ bpf_test_run+0x499/0xc30 net/bpf/test_run.c:425
+ bpf_prog_test_run_skb+0x14ea/0x1f20 net/bpf/test_run.c:1058
+ bpf_prog_test_run+0x6b7/0xad0 kernel/bpf/syscall.c:4269
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5678
+ __do_sys_bpf kernel/bpf/syscall.c:5767 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5765 [inline]
+ __x64_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5765
+ x64_sys_call+0x96b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Randy MacLeod <Randy.MacLeod@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ net/bridge/br_device.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index bca10214e0bf1..abdca2346f1a0 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -59,7 +59,7 @@
- #define VMWGFX_DRIVER_MINOR 20
- #define VMWGFX_DRIVER_PATCHLEVEL 0
- #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
--#define VMWGFX_MAX_DISPLAYS 16
-+#define VMWGFX_NUM_DISPLAY_UNITS 8
- #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -36,6 +36,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *
+ 	const unsigned char *dest;
+ 	u16 vid = 0;
  
- #define VMWGFX_MIN_INITIAL_WIDTH 1280
-@@ -79,7 +79,7 @@
- #define VMWGFX_NUM_GB_CONTEXT 256
- #define VMWGFX_NUM_GB_SHADER 20000
- #define VMWGFX_NUM_GB_SURFACE 32768
--#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
-+#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
- #define VMWGFX_NUM_DXCONTEXT 256
- #define VMWGFX_NUM_DXQUERY 512
- #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index a8f349e748e56..5210b8084217c 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -2261,7 +2261,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 	struct drm_mode_config *mode_config = &dev->mode_config;
- 	struct drm_vmw_update_layout_arg *arg =
- 		(struct drm_vmw_update_layout_arg *)data;
--	void __user *user_rects;
-+	const void __user *user_rects;
- 	struct drm_vmw_rect *rects;
- 	struct drm_rect *drm_rects;
- 	unsigned rects_size;
-@@ -2273,6 +2273,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 					    VMWGFX_MIN_INITIAL_HEIGHT};
- 		vmw_du_update_layout(dev_priv, 1, &def_rect);
- 		return 0;
-+	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
-+		return -E2BIG;
- 	}
++	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
++		kfree_skb(skb);
++		return NETDEV_TX_OK;
++	}
++
+ 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
  
- 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index 1099de1ece4b3..a2a294841df41 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
- 	s32 unit_y2;
- };
- 
--#define VMWGFX_NUM_DISPLAY_UNITS 8
--
--
- #define vmw_framebuffer_to_vfb(x) \
- 	container_of(x, struct vmw_framebuffer, base)
- #define vmw_framebuffer_to_vfbs(x) \
--- 
-2.43.0
-
+ 	rcu_read_lock();
 
 
 
