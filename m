@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-93314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD569CD889
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDC09CD92A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29D92810D2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 229B9B27D61
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F11118873E;
-	Fri, 15 Nov 2024 06:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A049C1885BF;
+	Fri, 15 Nov 2024 06:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4ijoW/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLpFFbYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D016E18873F;
-	Fri, 15 Nov 2024 06:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1C6188015;
+	Fri, 15 Nov 2024 06:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653508; cv=none; b=kir4lQPR5n3nTKmjIobIhSDDa06u8JemaB6W4hlS8qznSCszq2nRqlvZUja5OkblTAGw5szZl+zmQQ0lIG1YDsWLdgrxRa+WTKw/M3ayAYzleIJjdXGmy+CrxDrAg1Ik2Xu2PKBH61jkGVAbaH3Pm+PaOqFTv++UmbIBoFL8kGU=
+	t=1731653860; cv=none; b=I/E1UQrcuS28ObI9UflJkiTpAtOA5OX0CVgLyxdoM6MRxmECeSqeVETZsKJAcx8T3uZCo/7ZwINn5FCOq9/YnLLoukcBg62ouqY7IFyNcJ2X/ma985+F5cNBaGEg3hXD6mUUgpDHMn6KtsEd7QE+CXj+72NwEopJX6XUGRWlZgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653508; c=relaxed/simple;
-	bh=NLbKiu4vbOcrRQIcZeZvGuZy60mGIpmeo3SzNBeL3VU=;
+	s=arc-20240116; t=1731653860; c=relaxed/simple;
+	bh=DBWgE+uDeUiVbv4UmiPFCjLd9KHRCsO4pz4NEMd4g6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGxs43vvP98fb4Aj3HZFyFLKCTnMtR+lJGcAqViOy0T9F0+JB9+Bm5t2C58HSb4iEiGgdNc7Dot/hmvIDkidbRrf36LPoYgwIk2EXDBc1pRCC5SbeJtARlM9zzFW64VROqqFdqipV5qkgQOnoprDwI3Cge0PgEdU7OzLE4FLah0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4ijoW/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0811C4CED2;
-	Fri, 15 Nov 2024 06:51:47 +0000 (UTC)
+	 MIME-Version; b=iqBo5i6W8karkpOV1aX6vk3/oZZqYlSjoSFi6TQRPViAIpIfkDGI9pFot98gWvodSwQ9XAGNupe/EmsV+l0tBvWga4/sjn9DWYWNUC5n9BqrnIyAP/trlkcnOzoyzwkkBtDI4JbKBHmuGxVeZjY9v823qdik8NRSsGaOD+SkvPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLpFFbYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D94C4CECF;
+	Fri, 15 Nov 2024 06:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653508;
-	bh=NLbKiu4vbOcrRQIcZeZvGuZy60mGIpmeo3SzNBeL3VU=;
+	s=korg; t=1731653860;
+	bh=DBWgE+uDeUiVbv4UmiPFCjLd9KHRCsO4pz4NEMd4g6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4ijoW/t8xEn6FYu3zN0UK04apTnO+U/CBJ0oq/fXVN+0i1E7nw2CYV0KYAIsVJTp
-	 WiWG0zAM5Y+leCnqV/Xt4fzTA5puxZO1/CKwLsFbT1dL7lEa2upoEoJmoI2lGA2Anl
-	 1G3SCW53xXjdrr304CoSa4uJaiqWw1gi+pLw/hSY=
+	b=cLpFFbYzQOobruf1FiGLXVQd4aZdhA4bXWcrt1+NglGo3YRdXwtHvgC+NPDkjNTt2
+	 RavO2Rm/Oj9sk8star16j8GDwTXjfRSmFGosaVvff8JNSMMwZgzIAtZr2VyNdqeNIb
+	 KZLB9rNUzDPD8+VVHk0ZCjHO15i68ofRj5lsEAUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>
-Subject: [PATCH 6.6 43/48] mm/readahead: do not allow order-1 folio
+	Qi Xi <xiqi2@huawei.com>,
+	kernel test robot <lkp@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Wang ShaoBo <bobo.shaobowang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 55/82] fs/proc: fix compile warning about variable vmcore_mmap_ops
 Date: Fri, 15 Nov 2024 07:38:32 +0100
-Message-ID: <20241115063724.516433548@linuxfoundation.org>
+Message-ID: <20241115063727.542202966@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +67,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-commit ec056cef76a525706601b32048f174f9bea72c7c upstream.
+commit b8ee299855f08539e04d6c1a6acb3dc9e5423c00 upstream.
 
-The THP machinery does not support order-1 folios because it requires meta
-data spanning the first 3 `struct page`s.  So order-2 is the smallest
-large folio that we can safely create.
+When build with !CONFIG_MMU, the variable 'vmcore_mmap_ops'
+is defined but not used:
 
-There was a theoretical bug whereby if ra->size was 2 or 3 pages (due to
-the device-specific bdi->ra_pages being set that way), we could end up
-with order = 1.  Fix this by unconditionally checking if the preferred
-order is 1 and if so, set it to 0.  Previously this was done in a few
-specific places, but with this refactoring it is done just once,
-unconditionally, at the end of the calculation.
+>> fs/proc/vmcore.c:458:42: warning: unused variable 'vmcore_mmap_ops'
+     458 | static const struct vm_operations_struct vmcore_mmap_ops = {
 
-This is a theoretical bug found during review of the code; I have no
-evidence to suggest this manifests in the real world (I expect all
-device-specific ra_pages values are much bigger than 3).
+Fix this by only defining it when CONFIG_MMU is enabled.
 
-Link: https://lkml.kernel.org/r/20231201161045.3962614-1-ryan.roberts@arm.com
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lkml.kernel.org/r/20241101034803.9298-1-xiqi2@huawei.com
+Fixes: 9cb218131de1 ("vmcore: introduce remap_oldmem_pfn_range()")
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/lkml/202410301936.GcE8yUos-lkp@intel.com/
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/readahead.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/proc/vmcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -514,16 +514,14 @@ void page_cache_ra_order(struct readahea
- 		unsigned int order = new_order;
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -446,10 +446,6 @@ static vm_fault_t mmap_vmcore_fault(stru
+ #endif
+ }
  
- 		/* Align with smaller pages if needed */
--		if (index & ((1UL << order) - 1)) {
-+		if (index & ((1UL << order) - 1))
- 			order = __ffs(index);
--			if (order == 1)
--				order = 0;
--		}
- 		/* Don't allocate pages past EOF */
--		while (index + (1UL << order) - 1 > limit) {
--			if (--order == 1)
--				order = 0;
--		}
-+		while (index + (1UL << order) - 1 > limit)
-+			order--;
-+		/* THP machinery does not support order-1 */
-+		if (order == 1)
-+			order = 0;
- 		err = ra_alloc_folio(ractl, index, mark, order, gfp);
- 		if (err)
- 			break;
+-static const struct vm_operations_struct vmcore_mmap_ops = {
+-	.fault = mmap_vmcore_fault,
+-};
+-
+ /**
+  * vmcore_alloc_buf - allocate buffer in vmalloc memory
+  * @sizez: size of buffer
+@@ -477,6 +473,11 @@ static inline char *vmcore_alloc_buf(siz
+  * virtually contiguous user-space in ELF layout.
+  */
+ #ifdef CONFIG_MMU
++
++static const struct vm_operations_struct vmcore_mmap_ops = {
++	.fault = mmap_vmcore_fault,
++};
++
+ /*
+  * remap_oldmem_pfn_checked - do remap_oldmem_pfn_range replacing all pages
+  * reported as not being ram with the zero page.
 
 
 
