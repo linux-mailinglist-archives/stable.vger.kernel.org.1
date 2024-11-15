@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06A49CD7B9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459989CD807
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0295F1F22996
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C08E282157
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47481188722;
-	Fri, 15 Nov 2024 06:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F860185B5B;
+	Fri, 15 Nov 2024 06:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz25iu50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plMS51zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED91C188701;
-	Fri, 15 Nov 2024 06:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF5929A9;
+	Fri, 15 Nov 2024 06:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653035; cv=none; b=l1z/C4MODhzl/acebKLoPRhDTyB38G/7HyRd0UFa8nD/C4jAyzRa8Q4r/TTySMQz1p0Ph7ZoJEcIshacCrnoJYGCKcGjKihrUhuHmDA4HYFeD3GSngrzfhZd+4mAk+p4En5haa/+gBsN6s/hO6kAM4rC+qp6sfcs2ZdKzDLq9Ds=
+	t=1731653217; cv=none; b=qNaWuAffO1K2zwVtkDjKr0DBVmN4FvBSKvbnIK0AW5m+WN6dmgc4OvBubfTDpB3qqLxq/AFehNTo6/F1tl3uWL92yvNE/GL04nLXBHwEeLCi7SHxZzSPRzRqSBAHTnqU9ItUEBCNZTExGsjvHz6dQcZmi4hbC8RYMDyfUIK96PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653035; c=relaxed/simple;
-	bh=M+OJUOjfV6r2rZ3LoGq/frCOiOrC2oIbn5mM/ydCZvE=;
+	s=arc-20240116; t=1731653217; c=relaxed/simple;
+	bh=gQo0s5heO96qdNESvYtDBp32y031vl6W87i+PXHWT+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjVPARJBKf4ZAdkkqu77AZNyMHRDxLxf2urYmWDKpJOJNVGPHKHWlcetqSk1KEV1W8ACRxZLdMrtXhyBxWQKBEniai3fgs7Ij/IVW9Ad0MRT2Pu97kCDdgQBXxoEVKLpHrVLLIEf+6jq4oJ/9pdEo0yaXgKQKwkW4wIKd2e0B9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz25iu50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC1FC4CECF;
-	Fri, 15 Nov 2024 06:43:54 +0000 (UTC)
+	 MIME-Version; b=ctndtfGN4Cq+TJ+Sk4H4WzgMpqPngUyIVHi9aqaACNHFvYzX7qdtuMilrbu1HbRDEx9Na7G71fXWvTFI9PaP7YM1hR+XWa0jt9FhiI9vl0fksjEwzxnyPgZO9W9zGzRgIpAxReHVoxi7lpH/PLAbyZz7tdzZmfpbG7YIyYLuCmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plMS51zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70335C4CECF;
+	Fri, 15 Nov 2024 06:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653034;
-	bh=M+OJUOjfV6r2rZ3LoGq/frCOiOrC2oIbn5mM/ydCZvE=;
+	s=korg; t=1731653216;
+	bh=gQo0s5heO96qdNESvYtDBp32y031vl6W87i+PXHWT+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wz25iu508J3qIRLEjpjqVSj5tXVHuJth9iLKAyBqyHVdzK1w/QQRv6SsArV0j/iBB
-	 SCDDXrpHH+tJ8VxABW8E8GSpSsuNsnCh5PSMxlu5e+/OK5CTNLfV2EQ3xXrCkW7ehm
-	 e1KJZuxmY/8WHYbm3RbFA+oiC2cZUKIg5HZ1V3Wc=
+	b=plMS51zptwa8/0ohWZQnqMLAX7sY5Lyg7BjPyV4OVuuLyD2W4/3yaLkfRMvnFMCbL
+	 XoElxBgZGzR9Nhj1iW8ub4oge/1wWU5/Vw4OjvuLl/rC9d1ZmPT4fO2RV+4gDZgh0Z
+	 vXYc0Pld8FHvXHwww4ih6i/8+8ZrQm7JVLBjPdbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.4 34/66] mtd: rawnand: protect access to rawnand devices while in suspend
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Julian Vetter <jvetter@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 20/63] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
 Date: Fri, 15 Nov 2024 07:37:43 +0100
-Message-ID: <20241115063724.075230501@linuxfoundation.org>
+Message-ID: <20241115063726.649785587@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,168 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-commit 8cba323437a49a45756d661f500b324fc2d486fe upstream.
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-Prevent rawnand access while in a suspended state.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
-Commit 013e6292aaf5 ("mtd: rawnand: Simplify the locking") allows the
-rawnand layer to return errors rather than waiting in a blocking wait.
-
-Tested on a iMX6ULL.
-
-Fixes: 013e6292aaf5 ("mtd: rawnand: Simplify the locking")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20220208085213.1838273-1-sean@geanix.com
-[florian: Adjust rawnand.h members documentation and position]
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |   44 +++++++++++++++++----------------------
- include/linux/mtd/rawnand.h      |    2 +
- 2 files changed, 22 insertions(+), 24 deletions(-)
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -359,16 +359,19 @@ static int nand_isbad_bbm(struct nand_ch
-  *
-  * Return: -EBUSY if the chip has been suspended, 0 otherwise
-  */
--static int nand_get_device(struct nand_chip *chip)
-+static void nand_get_device(struct nand_chip *chip)
- {
--	mutex_lock(&chip->lock);
--	if (chip->suspended) {
-+	/* Wait until the device is resumed. */
-+	while (1) {
-+		mutex_lock(&chip->lock);
-+		if (!chip->suspended) {
-+			mutex_lock(&chip->controller->lock);
-+			return;
-+		}
- 		mutex_unlock(&chip->lock);
--		return -EBUSY;
--	}
--	mutex_lock(&chip->controller->lock);
- 
--	return 0;
-+		wait_event(chip->resume_wq, !chip->suspended);
-+	}
- }
- 
- /**
-@@ -593,9 +596,7 @@ static int nand_block_markbad_lowlevel(s
- 		nand_erase_nand(chip, &einfo, 0);
- 
- 		/* Write bad block marker to OOB */
--		ret = nand_get_device(chip);
--		if (ret)
--			return ret;
-+		nand_get_device(chip);
- 
- 		ret = nand_markbad_bbm(chip, ofs);
- 		nand_release_device(chip);
-@@ -3576,9 +3577,7 @@ static int nand_read_oob(struct mtd_info
- 	    ops->mode != MTD_OPS_RAW)
- 		return -ENOTSUPP;
- 
--	ret = nand_get_device(chip);
--	if (ret)
--		return ret;
-+	nand_get_device(chip);
- 
- 	if (!ops->datbuf)
- 		ret = nand_do_read_oob(chip, from, ops);
-@@ -4122,13 +4121,11 @@ static int nand_write_oob(struct mtd_inf
- 			  struct mtd_oob_ops *ops)
- {
- 	struct nand_chip *chip = mtd_to_nand(mtd);
--	int ret;
-+	int ret = 0;
- 
- 	ops->retlen = 0;
- 
--	ret = nand_get_device(chip);
--	if (ret)
--		return ret;
-+	nand_get_device(chip);
- 
- 	switch (ops->mode) {
- 	case MTD_OPS_PLACE_OOB:
-@@ -4184,9 +4181,7 @@ int nand_erase_nand(struct nand_chip *ch
- 		return -EINVAL;
- 
- 	/* Grab the lock and see if the device is available */
--	ret = nand_get_device(chip);
--	if (ret)
--		return ret;
-+	nand_get_device(chip);
- 
- 	/* Shift to get first page */
- 	page = (int)(instr->addr >> chip->page_shift);
-@@ -4273,7 +4268,7 @@ static void nand_sync(struct mtd_info *m
- 	pr_debug("%s: called\n", __func__);
- 
- 	/* Grab the lock and see if the device is available */
--	WARN_ON(nand_get_device(chip));
-+	nand_get_device(chip);
- 	/* Release it and go back */
- 	nand_release_device(chip);
- }
-@@ -4290,9 +4285,7 @@ static int nand_block_isbad(struct mtd_i
- 	int ret;
- 
- 	/* Select the NAND device */
--	ret = nand_get_device(chip);
--	if (ret)
--		return ret;
-+	nand_get_device(chip);
- 
- 	nand_select_target(chip, chipnr);
- 
-@@ -4354,6 +4347,8 @@ static void nand_resume(struct mtd_info
- 		pr_err("%s called for a chip which is not in suspended state\n",
- 			__func__);
- 	mutex_unlock(&chip->lock);
-+
-+	wake_up_all(&chip->resume_wq);
- }
- 
- /**
-@@ -5014,6 +5009,7 @@ static int nand_scan_ident(struct nand_c
- 	chip->cur_cs = -1;
- 
- 	mutex_init(&chip->lock);
-+	init_waitqueue_head(&chip->resume_wq);
- 
- 	/* Enforce the right timings for reset/detection */
- 	onfi_fill_data_interface(chip, NAND_SDR_IFACE, 0);
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -1064,6 +1064,7 @@ struct nand_legacy {
-  * @lock:		lock protecting the suspended field. Also used to
-  *			serialize accesses to the NAND device.
-  * @suspended:		set to 1 when the device is suspended, 0 when it's not.
-+ * @resume_wq:		wait queue to sleep if rawnand is in suspended state.
-  * @bbt:		[INTERN] bad block table pointer
-  * @bbt_td:		[REPLACEABLE] bad block table descriptor for flash
-  *			lookup.
-@@ -1117,6 +1118,7 @@ struct nand_chip {
- 
- 	struct mutex lock;
- 	unsigned int suspended : 1;
-+	wait_queue_head_t resume_wq;
- 
- 	uint8_t *oob_poi;
- 	struct nand_controller *controller;
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 4c036a9a420ab..8b40205394fe0 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
+-- 
+2.43.0
+
 
 
 
