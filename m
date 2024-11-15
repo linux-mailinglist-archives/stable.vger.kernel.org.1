@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD33B9CD7B5
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BB79CD8F3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E1DCB22F33
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5BE6B26D11
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A45E1898FB;
-	Fri, 15 Nov 2024 06:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A5C189913;
+	Fri, 15 Nov 2024 06:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5DrtZZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdEmLKdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AF7188701;
-	Fri, 15 Nov 2024 06:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C733A18873E;
+	Fri, 15 Nov 2024 06:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653021; cv=none; b=bfAUm4dQmfzjDz8wBvMZjGd/ecvZYKjRkaOM78X67yFFrmfwxj37wcuqp4CgFAcPsIkrzAd2LjqURRgHtrADJjUMAnwiIVXf87lA6hIf4GfIB2Sd/gfECjbmsLgm1SKrLshdufUytLsUsGWdLOnX0TnWE0sRKET61xfZsIs/p1E=
+	t=1731653729; cv=none; b=DpnpinpJckLhvGin/5It63LRRelAfwMEhAoc9jZHSDF2CsS/OgxJJ4eo98Ckev19jGqAd0KV80zd5TK4rtAcxa1bg/vmPAvvQh9HrhSfCD7+koIU+l5f7IwrZDHeMdbpypX7YlE0zI6dm01MYKm1OboolUa2ELBejLg+gVq2VVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653021; c=relaxed/simple;
-	bh=3z8B5whbJWT3HzUiowcsj5y/tTu1sXIqWI07qw90w8M=;
+	s=arc-20240116; t=1731653729; c=relaxed/simple;
+	bh=I2uX8nPpejQqorK1DY5X17cex1Cg6Ph32DCaUylSr8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVcAURYbge2vSe3xGz77O1Q2kUhx9xRQWwHAmicvAw8DSJ7VJrEdWDEEwY0ZaNQUWYzUXq6V+rMm0FnTOclbr5KJycg5p6nLW3QUgzgMxlp0towOggVRpG2fhlShXr/uZAv+meOdIC1sHGSYEcsGDnyzcfXv5B3AAeu5DRuhHtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5DrtZZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5831AC4CECF;
-	Fri, 15 Nov 2024 06:43:40 +0000 (UTC)
+	 MIME-Version; b=rCprcx+KPHolNIuKGH3ZWOwo5eGXZFbMQMrTWt+Ytv30h7EXsxHMXoAkJVnnWsgk+iOdaUQx/icDOcnKXo/WMBH1JAW6LmGHHnp9/6jzYDQcRWAQ6Ty77PusBfQ8E/QVISFFPURNsAasR1GjuS3C88hOcMQlZBvrRCxWYSXmNV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdEmLKdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C716C4CED2;
+	Fri, 15 Nov 2024 06:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653020;
-	bh=3z8B5whbJWT3HzUiowcsj5y/tTu1sXIqWI07qw90w8M=;
+	s=korg; t=1731653729;
+	bh=I2uX8nPpejQqorK1DY5X17cex1Cg6Ph32DCaUylSr8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5DrtZZb9flhLv5Ft9kJI7DkC4lO3VLrdC+od3gO8CuO80UnqgIMeDv3fSnC7WRNV
-	 9zj5ZPVV0/ZsuyP/2xwItnDma30rJFQMsS+76JyU6t61wWEzEb+P5e9Mj9GF/0GWyc
-	 FPv/tv097qXbp6lkAPUWJgAFvyhpMiivGcCHPEi0=
+	b=JdEmLKdzsE4A/2mUK4PrHe+20dfbIklJKIsxY8d0jGUTGEX2npVZ4HUYxJ5/4T0cS
+	 7ao8muBhIkPKUdZctUJn9Y7oI0CTf+YtOTqofDr31jTs9bdNBOLwB6d2MkHleVfgrj
+	 2UhjaX9B+5K3SFUCLk3b3ueogLGlhuVVodTbapHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.4 30/66] dm cache: fix potential out-of-bounds access on the first resume
+	Diederik de Haas <didi.debian@cknow.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 02/82] arm64: dts: rockchip: Remove hdmis 2nd interrupt on rk3328
 Date: Fri, 15 Nov 2024 07:37:39 +0100
-Message-ID: <20241115063723.930548107@linuxfoundation.org>
+Message-ID: <20241115063725.653218830@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
+[ Upstream commit de50a7e3681771c6b990238af82bf1dea9b11b21 ]
 
-Out-of-bounds access occurs if the fast device is expanded unexpectedly
-before the first-time resume of the cache table. This happens because
-expanding the fast device requires reloading the cache table for
-cache_create to allocate new in-core data structures that fit the new
-size, and the check in cache_preresume is not performed during the
-first resume, leading to the issue.
+The "synopsys,dw-hdmi.yaml" binding specifies that the interrupts
+property of the hdmi node has 'maxItems: 1', so the hdmi node in
+rk3328.dtsi having 2 is incorrect.
 
-Reproduce steps:
+Paragraph 1.3 ("System Interrupt connection") of the RK3328 TRM v1.1
+page 16 and 17 define the following hdmi related interrupts:
+-  67 hdmi_intr
+- 103 hdmi_intr_wakeup
 
-1. prepare component devices:
+The difference of 32 is due to a different base used in the TRM.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+The RK3399 (which uses the same binding) has '23: hdmi_irq' and
+'24: hdmi_wakeup_irq' according to its TRM (page 19).
+The RK3568 (also same binding) has '76: hdmi_wakeup' and '77: hdmi'
+according to page 17 of its TRM.
+In both cases the non-wakeup IRQ was used, so use that too for rk3328.
 
-2. load a cache table of 512 cache blocks, and deliberately expand the
-   fast device before resuming the cache, making the in-core data
-   structures inadequate.
-
-dmsetup create cache --notable
-dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-3. suspend the cache to write out the in-core dirty bitset and hint
-   array, leading to out-of-bounds access to the dirty bitset at offset
-   0x40:
-
-dmsetup suspend cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
-  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc90000085000, ffffc90000087000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
-                                             ^
-   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by checking the size change on the first resume.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Helped-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 725e351c265a ("arm64: dts: rockchip: add rk3328 display nodes")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/20241008113344.23957-3-didi.debian@cknow.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2999,24 +2999,24 @@ static dm_cblock_t get_cache_dev_size(st
- static bool can_resize(struct cache *cache, dm_cblock_t new_size)
- {
- 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
--		if (cache->sized) {
--			DMERR("%s: unable to extend cache due to missing cache table reload",
--			      cache_device_name(cache));
--			return false;
--		}
-+		DMERR("%s: unable to extend cache due to missing cache table reload",
-+		      cache_device_name(cache));
-+		return false;
- 	}
- 
- 	/*
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
--	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
--					   from_cblock(cache->cache_size),
--					   from_cblock(new_size)));
--	if (new_size != cache->cache_size) {
--		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--		      cache_device_name(cache),
--		      (unsigned long long) from_cblock(new_size));
--		return false;
-+	if (cache->loaded_mappings) {
-+		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+						   from_cblock(cache->cache_size),
-+						   from_cblock(new_size)));
-+		if (new_size != cache->cache_size) {
-+			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+			      cache_device_name(cache),
-+			      (unsigned long long) from_cblock(new_size));
-+			return false;
-+		}
- 	}
- 
- 	return true;
-@@ -3047,20 +3047,15 @@ static int cache_preresume(struct dm_tar
- 	/*
- 	 * Check to see if the cache has resized.
- 	 */
--	if (!cache->sized) {
--		r = resize_cache_dev(cache, csize);
--		if (r)
--			return r;
--
--		cache->sized = true;
--
--	} else if (csize != cache->cache_size) {
-+	if (!cache->sized || csize != cache->cache_size) {
- 		if (!can_resize(cache, csize))
- 			return -EINVAL;
- 
- 		r = resize_cache_dev(cache, csize);
- 		if (r)
- 			return r;
-+
-+		cache->sized = true;
- 	}
- 
- 	if (!cache->loaded_mappings) {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 3c6398e98f767..9e1701f421841 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -715,8 +715,7 @@
+ 		compatible = "rockchip,rk3328-dw-hdmi";
+ 		reg = <0x0 0xff3c0000 0x0 0x20000>;
+ 		reg-io-width = <4>;
+-		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>,
+-			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru PCLK_HDMI>,
+ 			 <&cru SCLK_HDMI_SFC>,
+ 			 <&cru SCLK_RTC32K>;
+-- 
+2.43.0
+
 
 
 
