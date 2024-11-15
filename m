@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-93205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820BD9CD7E7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23129CD850
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 464AB2835EF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F291F2220B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCE01339A4;
-	Fri, 15 Nov 2024 06:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5F6186294;
+	Fri, 15 Nov 2024 06:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyQUF2M1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0oMEAA3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACD4EAD0;
-	Fri, 15 Nov 2024 06:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1723153800;
+	Fri, 15 Nov 2024 06:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653141; cv=none; b=OC46fR6KGPQB1qMBTR3oGjuxtBuucASzVoblWbpICRWUbHytLfnjJRiVZ3j3/5YvsWSRufHcGulcUwJKWoV5O8ETmtTTeK6jJ+tq6pNBzlM21ejYhDjRKcOHQ7GDEtE/p2lAu43CU737FwvQ5ONwMSPmoeYk6M01b2aWRXBkrdQ=
+	t=1731653374; cv=none; b=cvLfEfYI609RgW13gbk1ua37biXAGIVW/9FO5X2QgKuC6/EKvhHY3W3+/MHbr++bz5yVerWfujKudrmc8n+8qLN99NJ9A591qfnaYE69EChZHSQSnEkKgc16VNE+pAvHAXCKDZfvq50Syp7hJAqQgHjLKspUg7vyevT80uR69TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653141; c=relaxed/simple;
-	bh=I8KFIsLkJH5FK03HInRAfOMcMNjXNpW9AbnbqufOfcM=;
+	s=arc-20240116; t=1731653374; c=relaxed/simple;
+	bh=BPuMh+FqRfUdG5OfbXrecPkAePZ/y/HaeSREskUemRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gGxoOsLu2zAp8Z1ZbbVMX/f/T2bkxUKiAqkSzoyi46GTkHMaMo14D0L7U/xAw0SRrreWg4WuH5yFxwDwWbbvn0da6GHFltZPiYAYmuWDJTpE+hGBZFPD7XOO0GejHj52Eab9v4Hp6ztxv8EImCYtb2Nzhi0a2k75pNGynGZc6eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyQUF2M1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5482C4CECF;
-	Fri, 15 Nov 2024 06:45:40 +0000 (UTC)
+	 MIME-Version; b=YZFagt1WOve7Z8XhuO8uUmSMdGvmsdbF6lpUNGTUoMor4dGLujKqVu6D85uDOuTf+IQZKYdEoH/nYCpIiszJdYakrneKaBZDQjYHvZd4UhmLyIwbt592S7rniL+w5SoB+MR+w2wLfEHxI7n9F921sC3/IYibC6Q0BkxoWiOAOLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0oMEAA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524FAC4CECF;
+	Fri, 15 Nov 2024 06:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653141;
-	bh=I8KFIsLkJH5FK03HInRAfOMcMNjXNpW9AbnbqufOfcM=;
+	s=korg; t=1731653373;
+	bh=BPuMh+FqRfUdG5OfbXrecPkAePZ/y/HaeSREskUemRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyQUF2M1XVjU2KQfEa4G8t2X0GJWrqSnxDGEqWknApldYftPocZCvxQxH+GKgOwIi
-	 QrawJRywg2BevXeiRqE09sUyBkwdHySSXu31tfypk4Q94SGVuYfbFuDG4dNXUDQ9Wt
-	 vtSTV45RNXuFQa0glOqggbHHLhFIlY1RjMdxsYdQ=
+	b=a0oMEAA3HPTxScbNxV3K/VSCEazExEOrj+xyvAcczPpaHaMDipgeibCg8f3NRXnpw
+	 b2rDSVAM5NzUQIhS2sORhb8fFijtdVlZU6s/hlZIyMxa6rnX5+tJAdJCoPOBqya9Zz
+	 +cY9zvPB+lL4z2Nl7OTFUdu3d0SmMhVE8co816tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
-	Takashi Iwai <tiwai@suse.de>,
+	Yuan Can <yuancan@huawei.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Zhu Lingshan <lingshan.zhu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 48/66] ALSA: usb-audio: Add quirks for Dell WD19 dock
+Subject: [PATCH 6.11 34/63] vDPA/ifcvf: Fix pci_read_config_byte() return code handling
 Date: Fri, 15 Nov 2024 07:37:57 +0100
-Message-ID: <20241115063724.576492616@linuxfoundation.org>
+Message-ID: <20241115063727.149095514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Schär <jan@jschaer.ch>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 4413665dd6c528b31284119e3571c25f371e1c36 ]
+[ Upstream commit 7f8825b2a78ac392d3fbb3a2e65e56d9e39d75e9 ]
 
-The WD19 family of docks has the same audio chipset as the WD15. This
-change enables jack detection on the WD19.
+ifcvf_init_hw() uses pci_read_config_byte() that returns
+PCIBIOS_* codes. The error handling, however, assumes the codes are
+normal errnos because it checks for < 0.
+Convert the error check to plain non-zero check.
 
-We don't need the dell_dock_mixer_init quirk for the WD19. It is only
-needed because of the dell_alc4020_map quirk for the WD15 in
-mixer_maps.c, which disables the volume controls. Even for the WD15,
-this quirk was apparently only needed when the dock firmware was not
-updated.
-
-Signed-off-by: Jan Schär <jan@jschaer.ch>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 5a2414bc454e ("virtio: Intel IFC VF driver for VDPA")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Message-Id: <20241017013812.129952-1-yuancan@huawei.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Zhu Lingshan <lingshan.zhu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vdpa/ifcvf/ifcvf_base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 08cbcd69b3251..403b83cfac4c1 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2444,6 +2444,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 			break;
- 		err = dell_dock_mixer_init(mixer);
- 		break;
-+	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
-+		err = dell_dock_mixer_create(mixer);
-+		break;
+diff --git a/drivers/vdpa/ifcvf/ifcvf_base.c b/drivers/vdpa/ifcvf/ifcvf_base.c
+index 472daa588a9d2..d5507b63b6cdb 100644
+--- a/drivers/vdpa/ifcvf/ifcvf_base.c
++++ b/drivers/vdpa/ifcvf/ifcvf_base.c
+@@ -108,7 +108,7 @@ int ifcvf_init_hw(struct ifcvf_hw *hw, struct pci_dev *pdev)
+ 	u32 i;
  
- 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
- 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
+ 	ret = pci_read_config_byte(pdev, PCI_CAPABILITY_LIST, &pos);
+-	if (ret < 0) {
++	if (ret) {
+ 		IFCVF_ERR(pdev, "Failed to read PCI capability list\n");
+ 		return -EIO;
+ 	}
 -- 
 2.43.0
 
