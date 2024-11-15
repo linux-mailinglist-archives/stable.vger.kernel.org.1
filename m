@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-93281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532069CD85A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA6E9CD820
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DB61F232C9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CA42832D6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E44F18734F;
-	Fri, 15 Nov 2024 06:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC031885AA;
+	Fri, 15 Nov 2024 06:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrlFntCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oD+45PJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB2BEAD0;
-	Fri, 15 Nov 2024 06:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C30EAD0;
+	Fri, 15 Nov 2024 06:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653394; cv=none; b=sLeKeFeKUQ0ReDcCHwexaZQLE2W07MUmPExeXdUbGCMMk+wlF4AdWoY9+QDE0rPEP6t/40hyCr3L0KIPMxW0RNgqAomrckpP1FyZ542/D3UQPg6Gx61avGoyYdVOQyKLUt3qExkAw22WiBrxI6VrUJtv/KtywwzkQumH2kw4RZI=
+	t=1731653265; cv=none; b=GoMya2/344ReCA3Ar7KQ4RjXm1qRz6WmmNDq+JBKNDP5kTLu+JAVA7wt4v2aAOFsS1ZuE7wI6aIFiNaoFfbgHIqo4l+J6IrhFTLRxbbAmyXPTeMBlG5H5cI3cPZpB/XweyWovf6FZFqDPWJrsIH2mJRaJtiznfL48z8gvQMRnE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653394; c=relaxed/simple;
-	bh=YlV28u13sf3Jigw7jPugYpM9uh0IKb78Yq4h7s9SZHg=;
+	s=arc-20240116; t=1731653265; c=relaxed/simple;
+	bh=kzzV66C6d2EazOjQpZPr1lJWhxZBs3lVqIAcpLc73z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9EadWgnWktDGA4ebp9NDd2Kb0Oz3kYZjszc99DNgCj+hTEEdl3xEqi4LhN9UrDfx3qnC6uSrl3m1bnSRUqIMwZGjCTBWhRCN1jDRXahO4Yu+aU8Mdhgr2nXwRpxsusa610CPnHUUs8cDMrTZDFAMm1fEpzdddrm1zNitm3rrqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrlFntCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE622C4CECF;
-	Fri, 15 Nov 2024 06:49:53 +0000 (UTC)
+	 MIME-Version; b=tpPg5BgayZVPnlqBlhsUabRPFnkzmrRXzNlj8bhUn0XpBKimEWn5suqQL9mCiokXD0zlV4t52S+uygHHjYxdomRtC7ahLMc1licMalv5lX1HoqnrxEbgWLUbvZBwLTs/WugWHhOZ3phYYHfuKXYlmdP5O1XZM8+hbOqrCdKwEqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oD+45PJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452E6C4CECF;
+	Fri, 15 Nov 2024 06:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653394;
-	bh=YlV28u13sf3Jigw7jPugYpM9uh0IKb78Yq4h7s9SZHg=;
+	s=korg; t=1731653265;
+	bh=kzzV66C6d2EazOjQpZPr1lJWhxZBs3lVqIAcpLc73z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IrlFntCWkRyexTKuYuKKUvc/itq2yHH2YSE/bX1RRRhoE/NakxFgy9Patnq2PNb8Y
-	 uKld/4SefSV2bnLiP4K5QckZ7LQhYOjoadrLXPRNyvwpj8Bb2KDFdX72il+MqCtGiu
-	 ysRy76mGcOhgFrimNP6eiRo8Gw8HMuAxhBL6Ka80=
+	b=oD+45PJGQE0JPRzQamN0bffMfSVlx1OEeieyr6vtNW4JfY+7hq01LDicXRtnq9zLr
+	 tpea96SEIB1K+6N27w/gCOpqp4ka4a8h2ozYWbai+VrlgIu9LXkTmXbBU+80T+R7j2
+	 5Vv7cDkl4nQPyRgBVJQyN79ZufBcNgzGD/OUNGBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Joyce <gjoyce@linux.ibm.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/48] nvme: disable CC.CRIME (NVME_CC_CRIME)
+Subject: [PATCH 6.11 36/63] bpf: Add sk_is_inet and IS_ICSK check in tls_sw_has_ctx_tx/rx
 Date: Fri, 15 Nov 2024 07:37:59 +0100
-Message-ID: <20241115063723.335041499@linuxfoundation.org>
+Message-ID: <20241115063727.219692204@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Joyce <gjoyce@linux.ibm.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 0ce96a6708f34280a536263ee5c67e20c433dcce ]
+[ Upstream commit 44d0469f79bd3d0b3433732877358df7dc6b17b1 ]
 
-Disable NVME_CC_CRIME so that CSTS.RDY indicates that the media
-is ready and able to handle commands without returning
-NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY.
+As the introduction of the support for vsock and unix sockets in sockmap,
+tls_sw_has_ctx_tx/rx cannot presume the socket passed in must be IS_ICSK.
+vsock and af_unix sockets have vsock_sock and unix_sock instead of
+inet_connection_sock. For these sockets, tls_get_ctx may return an invalid
+pointer and cause page fault in function tls_sw_ctx_rx.
 
-Signed-off-by: Greg Joyce <gjoyce@linux.ibm.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Tested-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+BUG: unable to handle page fault for address: 0000000000040030
+Workqueue: vsock-loopback vsock_loopback_work
+RIP: 0010:sk_psock_strp_data_ready+0x23/0x60
+Call Trace:
+ ? __die+0x81/0xc3
+ ? no_context+0x194/0x350
+ ? do_page_fault+0x30/0x110
+ ? async_page_fault+0x3e/0x50
+ ? sk_psock_strp_data_ready+0x23/0x60
+ virtio_transport_recv_pkt+0x750/0x800
+ ? update_load_avg+0x7e/0x620
+ vsock_loopback_work+0xd0/0x100
+ process_one_work+0x1a7/0x360
+ worker_thread+0x30/0x390
+ ? create_worker+0x1a0/0x1a0
+ kthread+0x112/0x130
+ ? __kthread_cancel_work+0x40/0x40
+ ret_from_fork+0x1f/0x40
+
+v2:
+  - Add IS_ICSK check
+v3:
+  - Update the commits in Fixes
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Fixes: 94531cfcbe79 ("af_unix: Add unix_stream_proto for sockmap")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Cong Wang <cong.wang@bytedance.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20241106003742.399240-1-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ include/net/tls.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 82509f3679373..e25206c7de80c 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2250,8 +2250,13 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
- 	else
- 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 3a33924db2bc7..61fef28801140 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -390,8 +390,12 @@ tls_offload_ctx_tx(const struct tls_context *tls_ctx)
  
--	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
--		ctrl->ctrl_config |= NVME_CC_CRIME;
-+	/*
-+	 * Setting CRIME results in CSTS.RDY before the media is ready. This
-+	 * makes it possible for media related commands to return the error
-+	 * NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY. Until the driver is
-+	 * restructured to handle retries, disable CC.CRIME.
-+	 */
-+	ctrl->ctrl_config &= ~NVME_CC_CRIME;
+ static inline bool tls_sw_has_ctx_tx(const struct sock *sk)
+ {
+-	struct tls_context *ctx = tls_get_ctx(sk);
++	struct tls_context *ctx;
++
++	if (!sk_is_inet(sk) || !inet_test_bit(IS_ICSK, sk))
++		return false;
  
- 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
- 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
-@@ -2286,10 +2291,7 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
- 		 * devices are known to get this wrong. Use the larger of the
- 		 * two values.
- 		 */
--		if (ctrl->ctrl_config & NVME_CC_CRIME)
--			ready_timeout = NVME_CRTO_CRIMT(crto);
--		else
--			ready_timeout = NVME_CRTO_CRWMT(crto);
-+		ready_timeout = NVME_CRTO_CRWMT(crto);
++	ctx = tls_get_ctx(sk);
+ 	if (!ctx)
+ 		return false;
+ 	return !!tls_sw_ctx_tx(ctx);
+@@ -399,8 +403,12 @@ static inline bool tls_sw_has_ctx_tx(const struct sock *sk)
  
- 		if (ready_timeout < timeout)
- 			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
+ static inline bool tls_sw_has_ctx_rx(const struct sock *sk)
+ {
+-	struct tls_context *ctx = tls_get_ctx(sk);
++	struct tls_context *ctx;
++
++	if (!sk_is_inet(sk) || !inet_test_bit(IS_ICSK, sk))
++		return false;
+ 
++	ctx = tls_get_ctx(sk);
+ 	if (!ctx)
+ 		return false;
+ 	return !!tls_sw_ctx_rx(ctx);
 -- 
 2.43.0
 
