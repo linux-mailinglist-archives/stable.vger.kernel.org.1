@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDB59CD7E2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA5D9CD86B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA04AB25B04
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4466B283BA8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7D418859F;
-	Fri, 15 Nov 2024 06:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6193187848;
+	Fri, 15 Nov 2024 06:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwGS731/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTSiU72x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296DA29A9;
-	Fri, 15 Nov 2024 06:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AFF185924;
+	Fri, 15 Nov 2024 06:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653124; cv=none; b=KRa1M4Zpz+ORpD8xX0bJI3pztpf6S+gyyoWyoXOehmLdSJC/PVKSlgDlqAZGgc2Obt0qqLaAG7r4IzyOVpybstxAZ/xBMOH2AJlqEXkdmOAxFrHT9wMCoZXycy44RdKPuWCUI75jJkZ7pqrsws9mOaEXU0Bu9uKzgMAqCx4fnDQ=
+	t=1731653439; cv=none; b=dtxl6AwBKFHqcmHB58Ovg3WVz5TcQrrJYBlbowxg2/78AzaYy/IWRVgrM0A9CH/bF05Jv9pEpOmXW9lE5IKplqqvHT36SSqlVv9eO5I6Ib5LGO7vAyaLIhHWz06EJJ0aysvIDFEXy2W+hxkAd/NHpz6m7kr2t7kh/j+o0kJZreo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653124; c=relaxed/simple;
-	bh=vpR3kkxWgrXQUBzINV/RGao3PcyuPXm0GlfvOikVn7g=;
+	s=arc-20240116; t=1731653439; c=relaxed/simple;
+	bh=z+AvLwOFUoyXOJxpiY86p0Ujhp8/4HBoY09e3sg+Jr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLipfwr7CF3Gq5uqjdhnj5yHnF/epkoCqI+WSuWls96SFwuUtktuyREPG7XLj5e03PVrImNy2rRsVdm3+2mzM983VrmycGVj0tedTuKxliRXuE8NZcnvptq9XI6g0mj6rpgwfNiWYWuARr964AgqHXao9QD2NhllSUCFQbCpUhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwGS731/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E53DC4CED4;
-	Fri, 15 Nov 2024 06:45:23 +0000 (UTC)
+	 MIME-Version; b=h/QpCt+nJTXI5V9yrNXsVbou5Kr4KK6lus6Nw6SLL+/mI9yFZztsFGqokloK+8wu8g75825M5DA4yxTK9OH2XV65NGtyDLX2MfbcRjj6+oJYThip+Df68aIB7knCMJUmvbKfeRlP+7bzKu5mMv68vDeMm4QKTqiRRTr4dhk9aWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTSiU72x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D16C4CECF;
+	Fri, 15 Nov 2024 06:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653124;
-	bh=vpR3kkxWgrXQUBzINV/RGao3PcyuPXm0GlfvOikVn7g=;
+	s=korg; t=1731653439;
+	bh=z+AvLwOFUoyXOJxpiY86p0Ujhp8/4HBoY09e3sg+Jr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwGS731/svSwIt1uUiAnVcZTssVt5T4XKNSI+G+9PKwwHUgwYjnZuNdej1HYBlzMm
-	 B02D5YzphLlbNEF9sEwa607T76mluS5Zt9SP4cXuIVaiU5df8KNdRvOdvQfHYpQGUm
-	 sp3w73Z85IJOjCHmQwfeVHvE7Gy9KA6kOMKfyMsM=
+	b=eTSiU72xJmb0e3rWa8knAUJ1ERVU5TzHVXQBOsGkFaKuxiYBGj7QmwwBRndcZ5DPo
+	 NIS/xckHJpJCbT3Hc7zyR3+hufon+pAKdfL/qxEEiUNACROaEW9CiIHrGxhFRTKvOZ
+	 LOh8cYFpqYJy5HoRvUWbSm/VgaGmygrNSPAP5F5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Hagar Gamal Halim <hagarhem@amazon.de>
-Subject: [PATCH 5.4 61/66] md/raid10: improve code of mrdev in raid10_sync_request
-Date: Fri, 15 Nov 2024 07:38:10 +0100
-Message-ID: <20241115063725.043366095@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/48] nvme-loop: flush off pending I/O while shutting down loop controller
+Date: Fri, 15 Nov 2024 07:38:11 +0100
+Message-ID: <20241115063723.766025173@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 59f8f0b54c8ffb4521f6bbd1cb6f4dfa5022e75e upstream.
+[ Upstream commit c199fac88fe7c749f88a0653e9f621b9f5a71cf1 ]
 
-'need_recover' and 'mrdev' are equivalent in raid10_sync_request(), and
-inc mrdev->nr_pending is unreasonable if don't need recovery. Replace
-'need_recover' with 'mrdev', and only inc nr_pending when needed.
+While shutting down loop controller, we first quiesce the admin/IO queue,
+delete the admin/IO tag-set and then at last destroy the admin/IO queue.
+However it's quite possible that during the window between quiescing and
+destroying of the admin/IO queue, some admin/IO request might sneak in
+and if that happens then we could potentially encounter a hung task
+because shutdown operation can't forward progress until any pending I/O
+is flushed off.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230527072218.2365857-3-linan666@huaweicloud.com
-Cc: Hagar Gamal Halim <hagarhem@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit helps ensure that before destroying the admin/IO queue, we
+unquiesce the admin/IO queue so that any outstanding requests, which are
+added after the admin/IO queue is quiesced, are now flushed to its
+completion.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/nvme/target/loop.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3069,7 +3069,6 @@ static sector_t raid10_sync_request(stru
- 			sector_t sect;
- 			int must_sync;
- 			int any_working;
--			int need_recover = 0;
- 			struct raid10_info *mirror = &conf->mirrors[i];
- 			struct md_rdev *mrdev, *mreplace;
+diff --git a/drivers/nvme/target/loop.c b/drivers/nvme/target/loop.c
+index 48d5df054cd02..bd61a1b82c4cd 100644
+--- a/drivers/nvme/target/loop.c
++++ b/drivers/nvme/target/loop.c
+@@ -265,6 +265,13 @@ static void nvme_loop_destroy_admin_queue(struct nvme_loop_ctrl *ctrl)
+ {
+ 	if (!test_and_clear_bit(NVME_LOOP_Q_LIVE, &ctrl->queues[0].flags))
+ 		return;
++	/*
++	 * It's possible that some requests might have been added
++	 * after admin queue is stopped/quiesced. So now start the
++	 * queue to flush these requests to the completion.
++	 */
++	nvme_unquiesce_admin_queue(&ctrl->ctrl);
++
+ 	nvmet_sq_destroy(&ctrl->queues[0].nvme_sq);
+ 	nvme_remove_admin_tag_set(&ctrl->ctrl);
+ }
+@@ -297,6 +304,12 @@ static void nvme_loop_destroy_io_queues(struct nvme_loop_ctrl *ctrl)
+ 		nvmet_sq_destroy(&ctrl->queues[i].nvme_sq);
+ 	}
+ 	ctrl->ctrl.queue_count = 1;
++	/*
++	 * It's possible that some requests might have been added
++	 * after io queue is stopped/quiesced. So now start the
++	 * queue to flush these requests to the completion.
++	 */
++	nvme_unquiesce_io_queues(&ctrl->ctrl);
+ }
  
-@@ -3077,14 +3076,13 @@ static sector_t raid10_sync_request(stru
- 			mrdev = rcu_dereference(mirror->rdev);
- 			mreplace = rcu_dereference(mirror->replacement);
- 
--			if (mrdev != NULL &&
--			    !test_bit(Faulty, &mrdev->flags) &&
--			    !test_bit(In_sync, &mrdev->flags))
--				need_recover = 1;
-+			if (mrdev && (test_bit(Faulty, &mrdev->flags) ||
-+			    test_bit(In_sync, &mrdev->flags)))
-+				mrdev = NULL;
- 			if (mreplace && test_bit(Faulty, &mreplace->flags))
- 				mreplace = NULL;
- 
--			if (!need_recover && !mreplace) {
-+			if (!mrdev && !mreplace) {
- 				rcu_read_unlock();
- 				continue;
- 			}
-@@ -3118,7 +3116,8 @@ static sector_t raid10_sync_request(stru
- 				rcu_read_unlock();
- 				continue;
- 			}
--			atomic_inc(&mrdev->nr_pending);
-+			if (mrdev)
-+				atomic_inc(&mrdev->nr_pending);
- 			if (mreplace)
- 				atomic_inc(&mreplace->nr_pending);
- 			rcu_read_unlock();
-@@ -3205,7 +3204,7 @@ static sector_t raid10_sync_request(stru
- 				r10_bio->devs[1].devnum = i;
- 				r10_bio->devs[1].addr = to_addr;
- 
--				if (need_recover) {
-+				if (mrdev) {
- 					bio = r10_bio->devs[1].bio;
- 					bio->bi_next = biolist;
- 					biolist = bio;
-@@ -3250,7 +3249,7 @@ static sector_t raid10_sync_request(stru
- 					for (k = 0; k < conf->copies; k++)
- 						if (r10_bio->devs[k].devnum == i)
- 							break;
--					if (!test_bit(In_sync,
-+					if (mrdev && !test_bit(In_sync,
- 						      &mrdev->flags)
- 					    && !rdev_set_badblocks(
- 						    mrdev,
-@@ -3276,12 +3275,14 @@ static sector_t raid10_sync_request(stru
- 				if (rb2)
- 					atomic_dec(&rb2->remaining);
- 				r10_bio = rb2;
--				rdev_dec_pending(mrdev, mddev);
-+				if (mrdev)
-+					rdev_dec_pending(mrdev, mddev);
- 				if (mreplace)
- 					rdev_dec_pending(mreplace, mddev);
- 				break;
- 			}
--			rdev_dec_pending(mrdev, mddev);
-+			if (mrdev)
-+				rdev_dec_pending(mrdev, mddev);
- 			if (mreplace)
- 				rdev_dec_pending(mreplace, mddev);
- 			if (r10_bio->devs[0].bio->bi_opf & MD_FAILFAST) {
+ static int nvme_loop_init_io_queues(struct nvme_loop_ctrl *ctrl)
+-- 
+2.43.0
+
 
 
 
