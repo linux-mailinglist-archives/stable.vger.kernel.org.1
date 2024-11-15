@@ -1,168 +1,97 @@
-Return-Path: <stable+bounces-93071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DCD9CD5A5
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 03:54:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0E79CD5DC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 04:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D291F226FB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 02:54:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0502EB234BC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 03:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CEC152E02;
-	Fri, 15 Nov 2024 02:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE1F154444;
+	Fri, 15 Nov 2024 03:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uNnBE02n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RB81Qvaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A62C10E4;
-	Fri, 15 Nov 2024 02:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0022B33997;
+	Fri, 15 Nov 2024 03:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731639266; cv=none; b=XoLVek3NkUm+F3mbgOZlS8sw6SF1ZssDmTFCNTZxtXUQexw1mGLGXkoZBEuW+HMozSjNr6Q8Hsxq2FH2kXi04LPkFE6wHydDBbg+YgzAgan8awPq5vbu79npigViKN2ivsmT8GTauIhghy3pIJgi0MWxZucBSfYSc5BeYHRLjS0=
+	t=1731641419; cv=none; b=MQAOcwQ/FElYGZ12kZMDjUCSgSCgzvOpeB6X1QmLNbcWl1G12D/fCN8OEhHpUpuyuK2Ty9rP4V9FXBgOnb3JqyO3/W7AtxbPwVCZ2XzR6Yc0Y1I8/RBrcb6f4oty9KRA5qqjWNZVEsI37/DDutH05uoXJlzpIv5mNTQJ+jlHNns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731639266; c=relaxed/simple;
-	bh=ntPXljdx4MIFT97ZOY3j7O5J2Cvq/0RFWZcaJMYhJXg=;
-	h=Date:To:From:Subject:Message-Id; b=KvbwcFOHENe8M66c6RJMmNPSD8zXjGEKpzYsCqbY5MyxpVDKAN9dUAnvkwQ+3BKNtqVCWv4Vr3/t/23t0nCko54oaQdOmMsnGtUmzZ6h5RLf+b2cT6Zrm7lOYaQvNJyMkNxCHAAr1lMJhyxmwjmwbszGBUntNjQVdwJGSU+Txzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uNnBE02n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F60CC4CECD;
-	Fri, 15 Nov 2024 02:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731639265;
-	bh=ntPXljdx4MIFT97ZOY3j7O5J2Cvq/0RFWZcaJMYhJXg=;
-	h=Date:To:From:Subject:From;
-	b=uNnBE02npqLNp/2Z+fYtuMIUjmtjD461r/VpLc62ScJaXB0LhQ0ET6FYMURvOI7Lf
-	 Zi9UYXMEgGnTXXjlPsrwlz4l+MfcbG4s19OAVBznIzYPJVkVMklwFmZG+RkZR7QOTt
-	 qACQULzRy/UPtdhE9s3jzZYagKlgxlSMO62bgI1w=
-Date: Thu, 14 Nov 2024 18:54:22 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,dmantipov@yandex.ru,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-uncache-inode-which-has-failed-entering-the-group.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241115025425.2F60CC4CECD@smtp.kernel.org>
+	s=arc-20240116; t=1731641419; c=relaxed/simple;
+	bh=Him8nl8FyzNVEHA1o0Xazwb9egJOQ5O9TgMHjAoDCoU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=RnEM2hEyuyye5vUhwkk9T/GqPhxDSwQ24BN/sLIqyIv0xH+aSymC+bOfAbc2yrRemTwyWf0f0tuUeHJ8o5qNDrpldIu9oVABxZpMvMB7Hb2eLVx7W4zTMx7Dl2/LMUZDk2WxFVIcOwdxy4OY2UgtHdY3n8jbEGWEZibXRVPovvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RB81Qvaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55ACCC4CECD;
+	Fri, 15 Nov 2024 03:30:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731641418;
+	bh=Him8nl8FyzNVEHA1o0Xazwb9egJOQ5O9TgMHjAoDCoU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RB81Qvaj5V0+kVVcbRM37PGyVbmJG5F258/uituX3OPjEmQXTPkMc69NeFD9ynAwl
+	 7r2HwsSa9FjTrCtBOukCojjx4TEQJSaTVPLGe7ADIfjZDezXjNybL9KM801jh9FbyX
+	 uEo6ZcnlH5+WRzQw1HClGsD6JCsxnrzK6W4euGBzetdKlpMqiiwJLsu0j8fvYJ8DTt
+	 D9vDNVLmth5RdAU86P+pkt6ZN+7uzqg95cWFIvGNe9hsXxLMni/lXan2LPhW3Fz3V7
+	 iXcp422k+TYSxrY0evK195nOa+RF4BOF3t8asbx1N8rEeDoy8OPzFIkxC1iWziNZDs
+	 zve2dlxT/HSTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B623809A80;
+	Fri, 15 Nov 2024 03:30:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: phy: dp83869: fix status reporting for
+ 1000base-x autonegotiation
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173164142900.2139249.18179517007808850405.git-patchwork-notify@kernel.org>
+Date: Fri, 15 Nov 2024 03:30:29 +0000
+References: <20241112-dp83869-1000base-x-v3-1-36005f4ab0d9@bootlin.com>
+In-Reply-To: <20241112-dp83869-1000base-x-v3-1-36005f4ab0d9@bootlin.com>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ dmurphy@ti.com, f.fainelli@gmail.com, thomas.petazzoni@bootlin.com,
+ maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
+Hello:
 
-The patch titled
-     Subject: ocfs2: uncache inode which has failed entering the group
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     ocfs2-uncache-inode-which-has-failed-entering-the-group.patch
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-uncache-inode-which-has-failed-entering-the-group.patch
+On Tue, 12 Nov 2024 15:06:08 +0100 you wrote:
+> The DP83869 PHY transceiver supports converting from RGMII to 1000base-x.
+> In this operation mode, autonegotiation can be performed, as described in
+> IEEE802.3.
+> 
+> The DP83869 has a set of fiber-specific registers located at offset 0xc00.
+> When the transceiver is configured in RGMII-to-1000base-x mode, these
+> registers are mapped onto offset 0, which should make reading the
+> autonegotiation status transparent.
+> 
+> [...]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Here is the summary with links:
+  - [net,v3] net: phy: dp83869: fix status reporting for 1000base-x autonegotiation
+    https://git.kernel.org/netdev/net/c/378e8feea9a7
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Subject: ocfs2: uncache inode which has failed entering the group
-Date: Thu, 14 Nov 2024 07:38:44 +0300
-
-Syzbot has reported the following BUG:
-
-kernel BUG at fs/ocfs2/uptodate.c:509!
-...
-Call Trace:
- <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? do_error_trap+0x1dc/0x2c0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
- ? ocfs2_set_new_buffer_uptodate+0x144/0x160
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ocfs2_group_add+0x39f/0x15a0
- ? __pfx_ocfs2_group_add+0x10/0x10
- ? __pfx_lock_acquire+0x10/0x10
- ? mnt_get_write_access+0x68/0x2b0
- ? __pfx_lock_release+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? smack_log+0x123/0x540
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x226/0x2b0
- ocfs2_ioctl+0x65e/0x7d0
- ? __pfx_ocfs2_ioctl+0x10/0x10
- ? smack_file_ioctl+0x29e/0x3a0
- ? __pfx_smack_file_ioctl+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? __pfx_ocfs2_ioctl+0x10/0x10
- __se_sys_ioctl+0xfb/0x170
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
-
-When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
-inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
-remains cached and subsequent call to the same 'ioctl()' for the same
-inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
-to cache the same buffer head of that inode). Fix this by uncaching
-the buffer head with 'ocfs2_remove_from_cache()' on error path in
-'ocfs2_group_add()'.
-
-Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/resize.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/fs/ocfs2/resize.c~ocfs2-uncache-inode-which-has-failed-entering-the-group
-+++ a/fs/ocfs2/resize.c
-@@ -574,6 +574,8 @@ out_commit:
- 	ocfs2_commit_trans(osb, handle);
- 
- out_free_group_bh:
-+	if (ret < 0)
-+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
- 	brelse(group_bh);
- 
- out_unlock:
-_
-
-Patches currently in -mm which might be from dmantipov@yandex.ru are
-
-ocfs2-uncache-inode-which-has-failed-entering-the-group.patch
 
 
