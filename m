@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB769CD941
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85F69CD984
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60447283BAC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7C5B257D4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71234188737;
-	Fri, 15 Nov 2024 06:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E9D1891AA;
+	Fri, 15 Nov 2024 07:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjMuObfo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ8G7nLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253C31885B3;
-	Fri, 15 Nov 2024 06:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D017555;
+	Fri, 15 Nov 2024 07:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653912; cv=none; b=jMS+ieJvo6VD9tMzw6QOvw3cczXb3kR6UdFbEMqZfPoaOwLUtdSBTBR7WAnFNFpN7FOmUz3oJ0q1e7Q1qXQa3CbAzDRO5jT+Z6z8N76ZM2jOQxSjszwp3oh0YPa9WVeg0fmngo1AWx9RLQnSrzRZvHa+MagxkUhbzvArAcEyO3Y=
+	t=1731654030; cv=none; b=uEgAo6HA3tJZGfgcSj1JEgwzmS4FLV2gnJb6bMyBARMk1aFKT7MStXqq7pGWkJvtnFPP/gbvfyv70HW+MKSnDTQ9XFZeNqQOqP0zP9T0xfsC7+thWPMnx3RhjVBGIXXn/hgGRZjqrFmk+Y0Lhr4Ok3vQDRglhG8BKDw9NssH/vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653912; c=relaxed/simple;
-	bh=D5EfdaBLw3u7qcMUultDWZhNq14T2d14hCQDiHKVApA=;
+	s=arc-20240116; t=1731654030; c=relaxed/simple;
+	bh=l2iWhNikCN0XQugw7pHL7Y9KEuxBMI94Kwnr7vEakFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHfPQwWtP9X4aRK1oLyYM0aJj8rMVWOA4ecnywQ1Ut337HKxx7Ls5dSemYM88dHWoZFabFN7RuCr5Qv5SPdd4M+ikRI17B5Tkdmpti/uOKVH4TrDcsyBUuqNtUxtIiDNfDxISoXN6sE1LS6edxCn90E4XrVdowIEhh76t4lWX5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjMuObfo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894E6C4CED2;
-	Fri, 15 Nov 2024 06:58:31 +0000 (UTC)
+	 MIME-Version; b=IGKUt8HBDzcsPjSnRQam9BxrWxiOqfxdSQQ4/HHNcjwrijq4FNOn03sECVa0sEi7FBq940yTJDcUagPpEWKoXfsc7V07qtVsKrC1hqatSw20VdP7xplJH6f9uIPrVzZqA4OYIB1qcaZ65PJtj+kzSt4Ro+1m4MmavGCFFUSKpZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ8G7nLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B16C4CECF;
+	Fri, 15 Nov 2024 07:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653912;
-	bh=D5EfdaBLw3u7qcMUultDWZhNq14T2d14hCQDiHKVApA=;
+	s=korg; t=1731654030;
+	bh=l2iWhNikCN0XQugw7pHL7Y9KEuxBMI94Kwnr7vEakFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjMuObfo6fCkH+ZHZpkdVy4DvTLK9zpKCPzFpQstSKgRbTWM+N0tHT36PDrs7wk+G
-	 hmHtZ+kbZOnhFpfOYNYt5LZLEALjiOQW2YbsPbOnviSlicqWCDPpKqGOVNNztvpUn1
-	 UkQZcJWrXl7zFBAXLnEhNeZtUXhbwN1ahItajPGo=
+	b=cZ8G7nLH15Ak4bui03hFpIebjmXH4mPrNnDU+zvLLsuzybmX077O83Tu3frw//EZg
+	 A+yTb4Bij3kaqMAglrIbkhgQ6xU0Y3uO5rFU+9yzVIYHimn04gjR+lysJE9Wv8Xbbc
+	 vSRdI/9rZo9qp4Cz/Jg4YKXt45HlGgq7BdzhFd5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stefan Blum <stefan.blum@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 73/82] crypto: marvell/cesa - Disable hash algorithms
+Subject: [PATCH 5.15 04/22] HID: multitouch: Add support for B2402FVA track point
 Date: Fri, 15 Nov 2024 07:38:50 +0100
-Message-ID: <20241115063728.179271112@linuxfoundation.org>
+Message-ID: <20241115063721.333924895@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Stefan Blum <stefanblum2004@gmail.com>
 
-[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
+[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
 
-Disable cesa hash algorithms by lowering the priority because they
-appear to be broken when invoked in parallel.  This allows them to
-still be tested for debugging purposes.
+By default the track point does not work on the Asus Expertbook B2402FVA.
 
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+>From libinput record i got the ID of the track point device:
+  evdev:
+    # Name: ASUE1201:00 04F3:32AE
+    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
+
+I found that the track point is functional, when i set the
+MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
+
+Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index add7ea011c987..8441c3198d460 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -923,7 +923,7 @@ struct ahash_alg mv_md5_alg = {
- 		.base = {
- 			.cra_name = "md5",
- 			.cra_driver_name = "mv-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -994,7 +994,7 @@ struct ahash_alg mv_sha1_alg = {
- 		.base = {
- 			.cra_name = "sha1",
- 			.cra_driver_name = "mv-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1068,7 +1068,7 @@ struct ahash_alg mv_sha256_alg = {
- 		.base = {
- 			.cra_name = "sha256",
- 			.cra_driver_name = "mv-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1303,7 +1303,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
- 		.base = {
- 			.cra_name = "hmac(md5)",
- 			.cra_driver_name = "mv-hmac-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1374,7 +1374,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha1)",
- 			.cra_driver_name = "mv-hmac-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1445,7 +1445,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha256)",
- 			.cra_driver_name = "mv-hmac-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 6a3f4371bd109..116876d710932 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2017,6 +2017,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_ELAN, 0x3148) },
+ 
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_ELAN, 0x32ae) },
++
+ 	/* Elitegroup panel */
+ 	{ .driver_data = MT_CLS_SERIAL,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
 -- 
 2.43.0
 
