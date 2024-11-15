@@ -1,132 +1,136 @@
-Return-Path: <stable+bounces-93492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3EC9CDB17
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 10:07:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E5C9CDB4E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 10:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A78F1F21239
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 09:07:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98CB281723
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 09:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802A118A959;
-	Fri, 15 Nov 2024 09:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A341E18FC7B;
+	Fri, 15 Nov 2024 09:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="tXfKv/XC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PQyMwQtW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BC718C01D
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 09:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C820518D621;
+	Fri, 15 Nov 2024 09:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731661660; cv=none; b=fPos6Yppatb+Yz+iG4uzpevhGMxoDuiQe+cntcPDDxstxL2Mbkcq6CPmdZDoROiOggZdBNAMjWov3bj6tY7g6cl4nwybeG+0iGSF+DH754/J2rssxLECSo828UQ86d23g24/STDE56V2xJ1oKnVR4YkpzEygbW+X0uJib99zxPc=
+	t=1731662192; cv=none; b=PCvJKt0yXl4JuQYkd3rMooD9hAa8gNH+YE4+x/jr17Id0sYvoRxjvFRrMW2ctZy6n3tx7kpP57HHGrx+q09bOX8jncVEdlbXZNenK1dQTy3SPrAUMM11EDMeoSgAGpZA3DJbyIjPW1AQweU+7bxs/Qv4rGVNfun/FHFVu6I9/RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731661660; c=relaxed/simple;
-	bh=LX2q62WYby1zXSo+OspoR6SQ4JOEQtEGQY1uhwAGwsk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rr+n58tT1A+NqpHwkJMya5kZrYwK4feNIjmUc8XIpg3XyQxOIzDOmz9anAeNHpOoYSAAy8rdlWODrdbddt1C2Hl+DqBsOUGuDxJnPrAxkq1ruvtBDhxNv/W9qGACMivcQ2DTLr7W9bQdpMOzVOOru17rRHmXUdIePlwUJ9pjrF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=tXfKv/XC; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-71e79f73aaeso1213992b3a.3
-        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 01:07:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1731661658; x=1732266458; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q/GGcDKwuNPpMFO6GIJo1U2NCmyHIGhmOInYHhaYUCk=;
-        b=tXfKv/XCsYU5lC0X13pUcbWJ6VDCYtcRNu2i1Oud64L9LZvIJB1bEGbD7EWz6E8Mwa
-         j+rPT/2uKdUI6fvxk2lV2Lv8YOmA6mbx6Fu9Y/YjWtDYoAiYNqbI3EPDL/wK/YIskhAg
-         UjCjLdCztHce0cjVzexF2/Fl/RY76D9Jtt+nAN5lhIauM63fxmJsp+wg8m5NJKUrc0UO
-         i4Zm6H+VgKTQ5ww7BDOAQ56dHv1c7Z9UQp47nQ5tWuiRe9XgYM3pAHhl4XoKDfcCdLsF
-         Txw5h8rCeOnEW7SoghafUVqrY4yHWr3y0rMbD2ABhjKRZ7FFxxOMBry8IYHdr6w3R6sx
-         /NVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731661658; x=1732266458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q/GGcDKwuNPpMFO6GIJo1U2NCmyHIGhmOInYHhaYUCk=;
-        b=rCdx8+m4TnhZn4I90zL9xf6ovwavU5vz0IrtU8fS8CnekjQ4/i25PitVQAhm/A29zO
-         fJ8OgE7pP3I+q+Q6RD5R1usst8B39gWutUtwUedy/axbx6beFRwAUYBWiKwxievjsDJ5
-         HI1nvBNq9YNQudvrRapOVgCR0kPIEF87XC5G/lUU1VtTUcJJS0DjEBXVosRgzImKEyJr
-         SFIdMZHzl9y4sESdJNy4FLEN+zKOGk73x6JOfWExWxuiaO/J49/2kTcsccXif8RuKh+T
-         nCLmrgLtMGQidCJCjLBM1uk6iW6j6BiQ0QGHnLkIQ7dOYIgc0XpyyrOi0uWiiRqT8pbu
-         F43w==
-X-Gm-Message-State: AOJu0YxYwIgUCCTxmwOGp9dYBEgNnhPa8V90B+deay1rUFtUT2eL7vvI
-	7tsZbsmINKbOmifRn1V2Qy3yM5d0NnzFjZbVUrAYEuWiU/RBpExJjaw8SfVRBK/rpJOz6YppKnb
-	zao57M3jcMlJADsgSXIirzdgbJ+9ynuAAtTkoog==
-X-Google-Smtp-Source: AGHT+IEipBAtaSO6qTco6CXlymxGLqUFgKpppjq1+DZHQLwOzlZTO2vDwCJPay9SltCtNZBs+tQmMU2jQDqrwF3BKco=
-X-Received: by 2002:a05:6a00:188e:b0:71d:eb7d:20d5 with SMTP id
- d2e1a72fcca58-72476b96ccbmr2943756b3a.8.1731661657842; Fri, 15 Nov 2024
- 01:07:37 -0800 (PST)
+	s=arc-20240116; t=1731662192; c=relaxed/simple;
+	bh=sAA9u1cnI1auPPiRpRvniYehm1E9zID/QJ1DJAzTyFs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ow7SXFSOZUM1vhD7fzJrv/Grbd/mQ7K6g3zE8QILftbKKRSZqKc6hBS5ehdlDbPVGY0hq5WJSh09UlzZerNl2Im/eR76Eh7BW4kA/E6SfMxKUyoEjczrmTxHcW3Z2kcIVD28wf1gMHUk+YiepxeMaF+72ou1ryEuVsesYdGlRGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PQyMwQtW; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AF8Mfr9022237;
+	Fri, 15 Nov 2024 09:16:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=EHVuDme6NnOiOL5RmBjJyo
+	P4D31GwrY5Xjo3uh4TiH8=; b=PQyMwQtWueafRYqR77fyK2IVtN8j1J7QR7iNnX
+	c623RKcg8ltdl38oTMXcmEDSQ/Zozg++6k0evuYNapprtsiz7OBNzfreE6ErHtQU
+	ivbfAIFUP9Z1rnlUd2KcaFU5axTu/DnnDTLYiqnojI9NLU5mh3zwEkoPLHSE+wpJ
+	chHwGwzeZFyX+PL1OGZ/BnLn8wG27GxWj7piksjmUqqd+cj8WHamElh24NolY+wM
+	FlNxxlIlI9KHYzMyK/hK0nIDJp2eXTGddCFDGKkkbYRtiPQSjjWkkXJJOF9adIWm
+	pqejabepEab2UIwFx5hV9/Vh4cRmDcpSyfh/yY2HOlncZYFQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42wex8ugk3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Nov 2024 09:16:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AF9Fx5e015905
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Nov 2024 09:15:59 GMT
+Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 15 Nov 2024 01:15:54 -0800
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
+To: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Konrad Dybcio
+	<konradybcio@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andy Gross <agross@kernel.org>, Stephen Boyd <swboyd@chromium.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <quic_ppratap@quicinc.com>,
+        <quic_jackp@quicinc.com>, Krishna Kurapati <quic_kriskura@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 5.15.y] phy: qcom: qmp: Fix NULL pointer dereference for USB Uni PHYs
+Date: Fri, 15 Nov 2024 14:45:45 +0530
+Message-ID: <20241115091545.2358156-1-quic_kriskura@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115063722.962047137@linuxfoundation.org>
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Fri, 15 Nov 2024 18:07:27 +0900
-Message-ID: <CAKL4bV48qydBq=_LGWDHW=bYB5JPvKa=3Nwg1WZC_aU3Upf8Zw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/48] 6.6.62-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: WtDCnt3GfOJrPmBfPpLZPNMM4SS_rqMC
+X-Proofpoint-ORIG-GUID: WtDCnt3GfOJrPmBfPpLZPNMM4SS_rqMC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ phishscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1011 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411150078
 
-Hi Greg
+Commit [1] introduced DP support to QMP driver. While doing so, the
+dp and usb configuration structures were added to a combo_phy_cfg
+structure. During probe, the match data is used to parse and identify the
+dp and usb configs separately. While doing so, the usb_cfg variable
+represents the configuration parameters for USB part of the phy (whether
+it is DP-Cobo or Uni). during probe, one corner case of parsing usb_cfg
+for Uni PHYs is left incomplete and it is left as NULL. This NULL variable
+further percolates down to qmp_phy_create() call essentially getting
+de-referenced and causing a crash.
 
-On Fri, Nov 15, 2024 at 3:51=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.62 release.
-> There are 48 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.62-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Subsequently, commit [2] split the driver into multiple files, each
+handling a specific PHY type (USB, DP-Combo, UFS, PCIe). During this
+refactoring, the probing process was modified, and the NULL pointer
+dereference issue no longer showed up.
 
-6.6.62-rc1 tested.
+[1]: https://lore.kernel.org/all/20200916231202.3637932-8-swboyd@chromium.org/
+[2]: https://lore.kernel.org/all/20220607213203.2819885-1-dmitry.baryshkov@linaro.org/
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Fixes: 52e013d0bffa ("phy: qcom-qmp: Add support for DP in USB3+DP combo phy")
+Cc: stable@vger.kernel.org # 5.15.y
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+---
+ drivers/phy/qualcomm/phy-qcom-qmp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.c b/drivers/phy/qualcomm/phy-qcom-qmp.c
+index eef863108bfe..e22ee71aa060 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
+@@ -5714,6 +5714,8 @@ static int qcom_qmp_phy_probe(struct platform_device *pdev)
+ 
+ 		usb_cfg = combo_cfg->usb_cfg;
+ 		cfg = usb_cfg; /* Setup clks and regulators */
++	} else {
++		usb_cfg = cfg;
+ 	}
+ 
+ 	/* per PHY serdes; usually located at base address */
+-- 
+2.34.1
 
-[    0.000000] Linux version 6.6.62-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
-Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Fri Nov 15 17:47:19 JST 2024
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
