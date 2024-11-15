@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-93444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F5B9CD951
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43BF9CD977
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF9EB280CC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE9D1F2133A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EBD18872A;
-	Fri, 15 Nov 2024 06:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696DB189BA2;
+	Fri, 15 Nov 2024 06:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEG9W3b6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8S27ZIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72FC187FE8;
-	Fri, 15 Nov 2024 06:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E6B2BB1B;
+	Fri, 15 Nov 2024 06:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653946; cv=none; b=elqaME1g7+5FRRa0IcTPjiajFKIBW7uHB2XPH3c9q521PmRQaySdkolp3ceDj52fA2ms4OhlVG4M5bHLNUjGZ+OmhZ4NlQyoTZoVIa8aH8g+/BoOt/u3SMSXKTgesrN9iMHGh1XFlrufxixopKol5qsZgqVvef1msXC7Ifk7lZQ=
+	t=1731653995; cv=none; b=WlO2MqBiBhyK000JPvSyDxzryMKkPEUmbelPr0qhUkAt0Ie9idWzoxDkhzWtyb52a0eqHZN9BqzHdhoD9R/ozHMnZJhvR4ZPy7z1GwawzqWGeDhfGzUI86x6HzXl4ReBByt7Eg3cubEeMmNaaFPFnV1E43U0IWA/IAlPu0aA4lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653946; c=relaxed/simple;
-	bh=cKUazjlMGfOKjT4nYI29YulVq8LoK8RYklJPgm/N1f8=;
+	s=arc-20240116; t=1731653995; c=relaxed/simple;
+	bh=QY0Yq71lHHJZzym8GLGc5jAxGL4MVq7RaF5iT2RpMlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8pVhVv3NX0gLNXaSPxdl089i5DOhP5qlTpzxtGfMV8YYCAF4tgmBznZflwbV//HaZV3TsDY3mcCSKtUYaHwuJaLznOLCsVhaJP49wba8d0vBJvbFaDx2nVg5hXGSgZZPVXNKIr7E7KV7ugSCpFmogmyISB7307tPsulrS+hfmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEG9W3b6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563C4C4CECF;
-	Fri, 15 Nov 2024 06:59:05 +0000 (UTC)
+	 MIME-Version; b=DHooPwzwg8/emCs6CpHejaWyKsdPQ473SdTH5rA3cbF3Fw9mJkMIZKfH1GPhTetbE/57/S/HNrgPoVAbJ7B4mNHXOsdVK5yFpjNrWLn8XbCpWVOPGaZiuraV7XwQ6WRurITMhKyrOtp3oPN4ozcFFsrg59uIfCMN6Ep1+N+TP/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8S27ZIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863DAC4CECF;
+	Fri, 15 Nov 2024 06:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653945;
-	bh=cKUazjlMGfOKjT4nYI29YulVq8LoK8RYklJPgm/N1f8=;
+	s=korg; t=1731653995;
+	bh=QY0Yq71lHHJZzym8GLGc5jAxGL4MVq7RaF5iT2RpMlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEG9W3b6gNwqPL2s0hsS7muc5UJRsFmsqPmWbX25SAuEp4wzXWvIIXYFOM+qzp0D5
-	 dkDiDXobI6slPEDrqB/10bcz/hGrrGxDFNkuGfwXT+CFnXVKW/9B1V4unka3ZOeO+a
-	 R727qUx9LMpPBxdVsLK0nZmCYCB+CfxAiQz4xR70=
+	b=O8S27ZIrR0BLTMOiMWIGUaRTgO45N+ZK29VMzJ6ebVWGTLr1R0WnCJDUwTtj1lbYl
+	 5hMAUgyLazq+C0pBTqxAGAJPvw4rm5GH1vB15UwuhI+89YCjVnh9Csr7MKy8xUj+yC
+	 UtQYxFfkpt8HhuOJVQxVShhselCo9Wi2796XrXI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Omar Sandoval <osandov@fb.com>
-Subject: [PATCH 5.10 82/82] 9p: fix slab cache name creation for real
-Date: Fri, 15 Nov 2024 07:38:59 +0100
-Message-ID: <20241115063728.498056759@linuxfoundation.org>
+	Izhar Firdaus <izhar@fedoraproject.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/22] HID: lenovo: Add support for Thinkpad X1 Tablet Gen 3 keyboard
+Date: Fri, 15 Nov 2024 07:39:00 +0100
+Message-ID: <20241115063721.690670074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
+[ Upstream commit 51268879eb2bfc563a91cdce69362d9dbf707e7e ]
 
-This was attempted by using the dev_name in the slab cache name, but as
-Omar Sandoval pointed out, that can be an arbitrary string, eg something
-like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
-if a filename contains a slash.
+The Thinkpad X1 Tablet Gen 3 keyboard has the same Lenovo specific quirks
+as the original  Thinkpad X1 Tablet keyboard.
 
-So just make it use a sequence counter, and make it an atomic_t to avoid
-any possible races or locking issues.
+Add the PID for the "Thinkpad X1 Tablet Gen 3 keyboard" to the hid-lenovo
+driver to fix the FnLock, Mute and media buttons not working.
 
-Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
-Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
-Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Izhar Firdaus <izhar@fedoraproject.org>
+Closes https://bugzilla.redhat.com/show_bug.cgi?id=2315395
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/hid-lenovo.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1004,6 +1004,7 @@ error:
- struct p9_client *p9_client_create(const char *dev_name, char *options)
- {
- 	int err;
-+	static atomic_t seqno = ATOMIC_INIT(0);
- 	struct p9_client *clnt;
- 	char *client_id;
- 	char *cache_name;
-@@ -1059,7 +1060,8 @@ struct p9_client *p9_client_create(const
- 	if (err)
- 		goto close_trans;
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index 44fd4a05ace38..9536f468b42c5 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -343,6 +343,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
+ 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
+ 							       usage, bit, max);
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
+ 	default:
+ 		return 0;
+@@ -431,6 +432,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
+ 		if (ret)
+ 			return ret;
+@@ -614,6 +616,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
+ 		return lenovo_event_cptkbd(hdev, field, usage, value);
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
+ 	default:
+ 		return 0;
+@@ -896,6 +899,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
+ 		break;
+ 	}
+@@ -1136,6 +1140,7 @@ static int lenovo_probe(struct hid_device *hdev,
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		ret = lenovo_probe_tp10ubkbd(hdev);
+ 		break;
+ 	default:
+@@ -1202,6 +1207,7 @@ static void lenovo_remove(struct hid_device *hdev)
+ 		break;
+ 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
+ 	case USB_DEVICE_ID_LENOVO_X1_TAB:
++	case USB_DEVICE_ID_LENOVO_X1_TAB3:
+ 		lenovo_remove_tp10ubkbd(hdev);
+ 		break;
+ 	}
+@@ -1247,6 +1253,8 @@ static const struct hid_device_id lenovo_devices[] = {
+ 	 */
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
++	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
++		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
+ 	{ }
+ };
  
--	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	cache_name = kasprintf(GFP_KERNEL,
-+		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
- 	if (!cache_name) {
- 		err = -ENOMEM;
- 		goto close_trans;
+-- 
+2.43.0
+
 
 
 
