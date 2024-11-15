@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-93285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACAF9CD85E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DF99CD914
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C3D81F21DBC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86955282FB3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0BA187FE8;
-	Fri, 15 Nov 2024 06:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377E3187FE8;
+	Fri, 15 Nov 2024 06:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqt7I0LQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GYKMgAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C26FEAD0;
-	Fri, 15 Nov 2024 06:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F9C185924;
+	Fri, 15 Nov 2024 06:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653408; cv=none; b=DQ4L2Zvr8snPLLyOvXzo4lN28mOOzSaJgE2/Cc6/Xlwhp7qQFnE7X8eqsbO2wrADq1A5TQoF2CEdQuS5SGoI6lGtF5lJMv5i8YZ381XTUJZcDyKNVxCb3qusI7G/GX20dlFfGZVwBSTollCP0u8ZehyJ9BL2IEUHMkttg4pRZIY=
+	t=1731653813; cv=none; b=UKdxl4uX9ttDG1g4n2xH7EKNqBpTaLpKrAhir9bZ0Xv9Tk8cT6qiyOCNIgmi70JOpefQ5LyPYISkQqpQc6fjI56kDx0gxo1xE5Bj9UGQnTeWEFkuDkcXdQOgry7Sg74Px8QznTRcofIZBwWr07dl/Z/aJLI0gQRJt8+ZXnkBF1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653408; c=relaxed/simple;
-	bh=LB9gLm6SucPZvE/cOrV3VC4s95C1wGq7nA0rNd4GoM4=;
+	s=arc-20240116; t=1731653813; c=relaxed/simple;
+	bh=zSMakonphGiz/6y3AvbjFvOqSAptlkDsX93zdx4NrQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XA7yLJIP/NOC1qBzQQLf1vRnvBvDV817WcjdxQI9Qf16OGkSVD0VT6Q7sz+SZSr0LVJU7wBMaL+NTtETQ35Duuu0zFLQuEDmRqBeL2blfNgguFUiW5sQ0bUv+L0/s/krpH08a4HIo/6vgC05686Kgsernx3q8Dyp53ykLS/05Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqt7I0LQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ABAC4CED0;
-	Fri, 15 Nov 2024 06:50:07 +0000 (UTC)
+	 MIME-Version; b=FrU4/XjoFvuVblmt/IfyY68cjxxzFb3ydujwqikBtKiTuZvIVEN5hFi4V5neBMpQl1UZoqmlZy9LR/bSEGleEf68KQMbWAjT4TrOk+MhsB+R19R7LeKFLJJSPTseyszbGIFTcAKMFQ64vRaQIlHEQOmNsqGWvO/qUVtjy2m358w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GYKMgAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50074C4CECF;
+	Fri, 15 Nov 2024 06:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653408;
-	bh=LB9gLm6SucPZvE/cOrV3VC4s95C1wGq7nA0rNd4GoM4=;
+	s=korg; t=1731653812;
+	bh=zSMakonphGiz/6y3AvbjFvOqSAptlkDsX93zdx4NrQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqt7I0LQiVuR9WMS8DlauNmvvrq/5tw2njA+b5X1+CcZVdYo1GtMiH4gca524yxzk
-	 RlLrfPwyXrj7cWDOrFyjp3OO5uXRFIMq9P7QzUVuZlh7E5+izjB4r3yWwMZ5kNoWYN
-	 JG6eq/N6iqc+/REEcTVIEe0Iwe1MkHwTWusxDV1I=
+	b=0GYKMgAkH1cvWOfAtIHR6H9dvsDX0zFJcCT/Ir8ctP3vOUDHuEPiIOaggVxFHpyUn
+	 AEGfKrbVsy9I5Xunf8UzHQajns4WoWKSXuEu7toDSUlE2YvXfGQRHZNVk1x9oXyRjz
+	 e5glKZiFMUR1ayCu7I5SmG8o3BLcL+4iyw0Xif0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yann Sionneau <ysionneau@kalrayinc.com>,
-	Julian Vetter <jvetter@kalrayinc.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Qu Wenru <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 14/48] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+Subject: [PATCH 5.10 26/82] scsi: sd_zbc: Use kvzalloc() to allocate REPORT ZONES buffer
 Date: Fri, 15 Nov 2024 07:38:03 +0100
-Message-ID: <20241115063723.479745904@linuxfoundation.org>
+Message-ID: <20241115063726.505452960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Vetter <jvetter@kalrayinc.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
+[ Upstream commit 7ce3e6107103214d354a16729a472f588be60572 ]
 
-When building for the UM arch and neither INDIRECT_IOMEM=y, nor
-HAS_IOMEM=y is selected, it will fall back to the implementations from
-asm-generic/io.h for IO memcpy. But these fall-back functions just do a
-memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
-INDIRECT_IOMEM'.
+We have two reports of failed memory allocation in btrfs' code which is
+calling into report zones.
 
-Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
-Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
-Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Both of these reports have the following signature coming from
+__vmalloc_area_node():
+
+ kworker/u17:5: vmalloc error: size 0, failed to allocate pages, mode:0x10dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NORETRY|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0
+
+Further debugging showed these where allocations of one sector (512
+bytes) and at least one of the reporter's systems where low on memory,
+so going through the overhead of allocating a vm area failed.
+
+Switching the allocation from __vmalloc() to kvzalloc() avoids the
+overhead of vmalloc() on small allocations and succeeds.
+
+Note: the buffer is already freed using kvfree() so there's no need to
+adjust the free path.
+
+Cc: Qu Wenru <wqu@suse.com>
+Cc: Naohiro Aota <naohiro.aota@wdc.com>
+Link: https://github.com/kdave/btrfs-progs/issues/779
+Link: https://github.com/kdave/btrfs-progs/issues/915
+Fixes: 23a50861adda ("scsi: sd_zbc: Cleanup sd_zbc_alloc_report_buffer()")
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241030110253.11718-1-jth@kernel.org
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sd_zbc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/Kconfig b/sound/Kconfig
-index 4c036a9a420ab..8b40205394fe0 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM || UML
-+	depends on HAS_IOMEM || INDIRECT_IOMEM
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
+diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
+index 01088f333dbc4..9b5dca0b6cf9a 100644
+--- a/drivers/scsi/sd_zbc.c
++++ b/drivers/scsi/sd_zbc.c
+@@ -169,8 +169,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
+ 	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
+ 
+ 	while (bufsize >= SECTOR_SIZE) {
+-		buf = __vmalloc(bufsize,
+-				GFP_KERNEL | __GFP_ZERO | __GFP_NORETRY);
++		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
+ 		if (buf) {
+ 			*buflen = bufsize;
+ 			return buf;
 -- 
 2.43.0
 
