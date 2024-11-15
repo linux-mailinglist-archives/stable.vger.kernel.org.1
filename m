@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-93409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226529CD91A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A3A9CD8AD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3E81F2107E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22AB1B27425
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7632C1885AA;
-	Fri, 15 Nov 2024 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935BB1891AB;
+	Fri, 15 Nov 2024 06:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvGHnqbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsdzUArv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A372BB1B;
-	Fri, 15 Nov 2024 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F19188713;
+	Fri, 15 Nov 2024 06:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653827; cv=none; b=Oc6/nJGEpTSXXY+p2m1oOdZzuL+I9JrBCWuEXtADEfDjTbtltUogMcUBQ51Jwuz+KX/P9ERb1qJcnRGVYbVriGPVi9Y5uVF2f06rAyZQBqrG6mQWdhOZMmGs7lbYtb+2kTpwdxPIlaA6/hsEfyM2c27jyEIq9UPKpa2ET+gWvbA=
+	t=1731653574; cv=none; b=puoiZetAHyjO9e+6sfTtu0MjInKz3af34MNW14rb0RzKFKPtQmAA0DPLaI9kTdUy9M04qk1Cz5Vko1aUwOI0ptUKv8nyog/JAt3PrOls3UOD0EhEIqfV5uoXzqXf3eMH6gA2+QGXkA1KzeyqYqrz2BYyRQ9hOzPvF6uqizbvqxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653827; c=relaxed/simple;
-	bh=Fh8iS/bzL/yb5gH9oWygnPxH7WcOmrPBVI3uLAG4750=;
+	s=arc-20240116; t=1731653574; c=relaxed/simple;
+	bh=/ZSHt3FAtYUux+B8VngxCOl9vPO1B/ycoCxwOivolg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idLDI5ryf9t8XITOJ9px7TyPu4y4S/VfRPZ8CHnzGqFh9QVA/YisC7B/Cy/mE6mZM15Ww61VL9Tjbgbhmkc79dEShojgHu6FQXbyVgpIbPINfAM1aIBm0wvBsmvi0joy84qCyCMGiEmujk8vUv5ibu9n03SJKhMZDCf0AWblJp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvGHnqbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E47C4CECF;
-	Fri, 15 Nov 2024 06:57:06 +0000 (UTC)
+	 MIME-Version; b=eG5dgeN0vEzJ2uAKnHNa/BOYdp8eHLzN45zoVDSvwL9Grc8mKquOT3VHDED++NkxGOtI/yrFO/oQWLqC1TyeloOaMpC6T5pH3S99HTRsXqaUKeFA0MrTVgn3ycgPJy6ybcZink3ZraOsy3R3PbS7/fUzmTMJGJjO/sj0wLVIb1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsdzUArv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA10C4CECF;
+	Fri, 15 Nov 2024 06:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653827;
-	bh=Fh8iS/bzL/yb5gH9oWygnPxH7WcOmrPBVI3uLAG4750=;
+	s=korg; t=1731653574;
+	bh=/ZSHt3FAtYUux+B8VngxCOl9vPO1B/ycoCxwOivolg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvGHnqbTl8WyqQDf0AzM8t8lBDkoi5+vMoTvKAxvRQ0YR6P1k65iMMH0QsuhVcCvc
-	 VMnsoKnEaL9lddCr+zGUVuYyeSgOgSr9NVULSF2UIpFxzJX4w/D69f6DXkIrZzZ53y
-	 eUECWo6rfhDabnr7AVAVaj2l5Ue9rwn4S67T7+ao=
+	b=KsdzUArv9PRrnRS3VAw5kN8KSXzMy/oohNJ2zPmryw5ef2+f3TrtMvtKVGoQmsC5K
+	 Tz1V3F7Z4pAAvtYnxxAiPRaTlITYTDGn8G5dbu+YFAz89R6S5/3fUwfc/kP47EouW5
+	 u+7tLeccXlS28fmO/6S/KXK0rBS2Do6oWaLlheT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.10 47/82] splice: dont generate zero-len segement bvecs
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 14/39] crypto: api - Fix liveliness check in crypto_alg_tested
 Date: Fri, 15 Nov 2024 07:38:24 +0100
-Message-ID: <20241115063727.255293101@linuxfoundation.org>
+Message-ID: <20241115063723.125788676@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 0f1d344feb534555a0dcd0beafb7211a37c5355e upstream.
+[ Upstream commit b81e286ba154a4e0f01a94d99179a97f4ba3e396 ]
 
-iter_file_splice_write() may spawn bvec segments with zero-length. In
-preparation for prohibiting them, filter out by hand at splice level.
+As algorithm testing is carried out without holding the main crypto
+lock, it is always possible for the algorithm to go away during the
+test.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So before crypto_alg_tested updates the status of the tested alg,
+it checks whether it's still on the list of all algorithms.  This
+is inaccurate because it may be off the main list but still on the
+list of algorithms to be removed.
+
+Updating the algorithm status is safe per se as the larval still
+holds a reference to it.  However, killing spawns of other algorithms
+that are of lower priority is clearly a deficiency as it adds
+unnecessary churn.
+
+Fix the test by checking whether the algorithm is dead.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/splice.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ crypto/algapi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -662,12 +662,14 @@ iter_file_splice_write(struct pipe_inode
+diff --git a/crypto/algapi.c b/crypto/algapi.c
+index 5dc9ccdd5a510..206a13f395967 100644
+--- a/crypto/algapi.c
++++ b/crypto/algapi.c
+@@ -341,7 +341,7 @@ void crypto_alg_tested(const char *name, int err)
+ 	q->cra_flags |= CRYPTO_ALG_DEAD;
+ 	alg = test->adult;
  
- 		/* build the vector */
- 		left = sd.total_len;
--		for (n = 0; !pipe_empty(head, tail) && left && n < nbufs; tail++, n++) {
-+		for (n = 0; !pipe_empty(head, tail) && left && n < nbufs; tail++) {
- 			struct pipe_buffer *buf = &pipe->bufs[tail & mask];
- 			size_t this_len = buf->len;
+-	if (list_empty(&alg->cra_list))
++	if (crypto_is_dead(alg))
+ 		goto complete;
  
--			if (this_len > left)
--				this_len = left;
-+			/* zero-length bvecs are not supported, skip them */
-+			if (!this_len)
-+				continue;
-+			this_len = min(this_len, left);
- 
- 			ret = pipe_buf_confirm(pipe, buf);
- 			if (unlikely(ret)) {
-@@ -680,6 +682,7 @@ iter_file_splice_write(struct pipe_inode
- 			array[n].bv_len = this_len;
- 			array[n].bv_offset = buf->offset;
- 			left -= this_len;
-+			n++;
- 		}
- 
- 		iov_iter_bvec(&from, WRITE, array, n, sd.total_len - left);
+ 	if (err == -ECANCELED)
+-- 
+2.43.0
+
 
 
 
