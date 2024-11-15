@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A59E9CD85B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83BD9CD821
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E42F2283BF7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E086283489
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101D8185924;
-	Fri, 15 Nov 2024 06:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39508188015;
+	Fri, 15 Nov 2024 06:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/E2YVdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hubGP/aB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FFA153800;
-	Fri, 15 Nov 2024 06:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D02BB1B;
+	Fri, 15 Nov 2024 06:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653397; cv=none; b=glViqUUMC1wh1KV1XOu+R7/ZVQj2Ui5QUZGMCKUk1ZscTOFUh+ZIO31CckgVpMOjTJbuO4XPPvJLvEREzkox820B8zzh4Tl8Wh+ZoekCkssGHfaWutGg2uNwlwTdH0i4EX7G3JycGHG9J4EmaO55LJPEJGgMVXICW94zHnKZYfI=
+	t=1731653269; cv=none; b=R/0Xl78gqJ1TYxBG66WIfhTrY6mzdmQEXcTxzkiUFJ6hovPQGR1y4D1kkT87tK9jng9pdZaoo16kIzgyWEp6grEMvBaetHDQ6Is0MXDSIRtuL8bN8IcHdm2xJX+nK3woQcPRVireKjr/M45rYioEkXVOZv7kzrGQHqM0d/d0TYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653397; c=relaxed/simple;
-	bh=bff7fT8gCg60q5GDyot6teOO5ISc32H1FTwv22RLrZw=;
+	s=arc-20240116; t=1731653269; c=relaxed/simple;
+	bh=yQuUfFyBw9huJ2cSOxiafYp7Y6GjqAmhKlQwh5CzNbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxRzZcNR8nCIqM8ZeN3s+eCHudLLmG9GNqctute+iO6kZ84XYG+2QGSsQB0Yui4pBoeMj8LeTHFfq4uYlxhW9vsegyp/K5KsrcSnnG+BVXKofDwSe4d/sr1C3umPqDziYmmHg3eACuhaXvVjcodXDoMCPg9y63nMru6pHxJtzQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/E2YVdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0ECC4CECF;
-	Fri, 15 Nov 2024 06:49:56 +0000 (UTC)
+	 MIME-Version; b=C95TqMn0gIomDEAYaz4n7BRc6Av8blnfHvMvyvToKMQeeP4N1iCk9U2oSxuORJxmuXGyQUS3aIxrhAVX9Pbw049hjjtkFhZSrRyPoxNl9Ry+TavzsEgtpywYtXU1Im9p/ZBG7JleowTwsR7y6InVW+kcM5d9bewMbznLkr1DxRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hubGP/aB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDD4C4CECF;
+	Fri, 15 Nov 2024 06:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653397;
-	bh=bff7fT8gCg60q5GDyot6teOO5ISc32H1FTwv22RLrZw=;
+	s=korg; t=1731653268;
+	bh=yQuUfFyBw9huJ2cSOxiafYp7Y6GjqAmhKlQwh5CzNbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/E2YVduEBHIhS5eI/RcwLNV+nHcwGf4xzgFp9Q4byh2bb7lNcRHMeuXrPkWwRoTA
-	 ddX8B7iSpY/58pYflgdnjOr3aC5qboy+S6Qab4hLkKj0vzJo640SvjWLu20JG6175n
-	 fNCHrjbN4lIrw6FeqsW7yQ/4+LbCPZFdQz/+FOv4=
+	b=hubGP/aBVzh0fB1Qp7aJ3DrvzatxWwrG5rxA+4ilyjagzZxw+8tvg1GcLwhbtvIF8
+	 7WnT77cm6Sj6EkkptHuK4sW06OS9fqUzRW5ZUO4CT+49IzXV8hsRcK683G/dUWkLso
+	 MoNnUmcGl3UU69X4n8qNVy1Nz1uPsasR3/yVGVUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jiawei Ye <jiawei.ye@foxmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/48] bpf: use kvzmalloc to allocate BPF verifier environment
+Subject: [PATCH 6.11 37/63] bpf: Fix mismatched RCU unlock flavour in bpf_out_neigh_v6
 Date: Fri, 15 Nov 2024 07:38:00 +0100
-Message-ID: <20241115063723.371127393@linuxfoundation.org>
+Message-ID: <20241115063727.255703768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Jiawei Ye <jiawei.ye@foxmail.com>
 
-[ Upstream commit 434247637c66e1be2bc71a9987d4c3f0d8672387 ]
+[ Upstream commit fb86c42a2a5d44e849ddfbc98b8d2f4f40d36ee3 ]
 
-The kzmalloc call in bpf_check can fail when memory is very fragmented,
-which in turn can lead to an OOM kill.
+In the bpf_out_neigh_v6 function, rcu_read_lock() is used to begin an RCU
+read-side critical section. However, when unlocking, one branch
+incorrectly uses a different RCU unlock flavour rcu_read_unlock_bh()
+instead of rcu_read_unlock(). This mismatch in RCU locking flavours can
+lead to unexpected behavior and potential concurrency issues.
 
-Use kvzmalloc to fall back to vmalloc when memory is too fragmented to
-allocate an order 3 sized bpf verifier environment.
+This possible bug was identified using a static analysis tool developed
+by myself, specifically designed to detect RCU-related issues.
 
-Admittedly this is not a very common case, and only happens on systems
-where memory has already been squeezed close to the limit, but this does
-not seem like much of a hot path, and it's a simple enough fix.
+This patch corrects the mismatched unlock flavour by replacing the
+incorrect rcu_read_unlock_bh() with the appropriate rcu_read_unlock(),
+ensuring that the RCU critical section is properly exited. This change
+prevents potential synchronization issues and aligns with proper RCU
+usage patterns.
 
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/r/20241008170735.16766766@imladris.surriel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
+Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/tencent_CFD3D1C3D68B45EA9F52D8EC76D2C4134306@qq.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 67eb55a354bcc..4f19a091571bb 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -20230,7 +20230,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
- 	/* 'struct bpf_verifier_env' can be global, but since it's not small,
- 	 * allocate/free it every time bpf_check() is called
- 	 */
--	env = kzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
-+	env = kvzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
- 	if (!env)
- 		return -ENOMEM;
- 
-@@ -20450,6 +20450,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr, bpfptr_t uattr, __u3
- 		mutex_unlock(&bpf_verifier_lock);
- 	vfree(env->insn_aux_data);
- err_free_env:
--	kfree(env);
-+	kvfree(env);
- 	return ret;
- }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b2b551401bc29..fe5ac8da5022f 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2248,7 +2248,7 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
+ 		rcu_read_unlock();
+ 		return ret;
+ 	}
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	if (dst)
+ 		IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
+ out_drop:
 -- 
 2.43.0
 
