@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-93334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A3A9CD8AD
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 929959CD896
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22AB1B27425
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DC8283BD2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935BB1891AB;
-	Fri, 15 Nov 2024 06:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B42185949;
+	Fri, 15 Nov 2024 06:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsdzUArv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fELU3Upc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F19188713;
-	Fri, 15 Nov 2024 06:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A9D185924;
+	Fri, 15 Nov 2024 06:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653574; cv=none; b=puoiZetAHyjO9e+6sfTtu0MjInKz3af34MNW14rb0RzKFKPtQmAA0DPLaI9kTdUy9M04qk1Cz5Vko1aUwOI0ptUKv8nyog/JAt3PrOls3UOD0EhEIqfV5uoXzqXf3eMH6gA2+QGXkA1KzeyqYqrz2BYyRQ9hOzPvF6uqizbvqxY=
+	t=1731653537; cv=none; b=F+MdXYcDNyDErdTmnKvgDniCk1xTBu1gjcn9BkUPyt10J21/JWdbhEhDRttoG4kl6lT86ZDsbUmfRG1iTKmlJFPq26JfyA7MjZq7sR735R0NC63vO9XJqV33X6kUAlpxrr+B6Eq5NkIZ/kT+qaDgDtEOTmJ3GqV/6WZB2pgj9jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653574; c=relaxed/simple;
-	bh=/ZSHt3FAtYUux+B8VngxCOl9vPO1B/ycoCxwOivolg8=;
+	s=arc-20240116; t=1731653537; c=relaxed/simple;
+	bh=G/9xzk4OpXgjNPEG5yqRBAZCK7EA5/ke6+uJaShUnkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG5dgeN0vEzJ2uAKnHNa/BOYdp8eHLzN45zoVDSvwL9Grc8mKquOT3VHDED++NkxGOtI/yrFO/oQWLqC1TyeloOaMpC6T5pH3S99HTRsXqaUKeFA0MrTVgn3ycgPJy6ybcZink3ZraOsy3R3PbS7/fUzmTMJGJjO/sj0wLVIb1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsdzUArv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA10C4CECF;
-	Fri, 15 Nov 2024 06:52:53 +0000 (UTC)
+	 MIME-Version; b=ADXbcIFjNtxlFlKXFct57d1SaUl3wt0RTR8wb8G1Q6/LCt1IMsb2+Eq7/g44JxEhzm2tcvt35CeTiLLDxI29RHgd6pULu/bbopeuWH+Nuef4/C/aDIKsbp2dphk2RhyEIyRPP+qnzuIwL1UEIEYizOoEEK6KCT9YkDqVRHLd7QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fELU3Upc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F24C4CECF;
+	Fri, 15 Nov 2024 06:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653574;
-	bh=/ZSHt3FAtYUux+B8VngxCOl9vPO1B/ycoCxwOivolg8=;
+	s=korg; t=1731653537;
+	bh=G/9xzk4OpXgjNPEG5yqRBAZCK7EA5/ke6+uJaShUnkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsdzUArv9PRrnRS3VAw5kN8KSXzMy/oohNJ2zPmryw5ef2+f3TrtMvtKVGoQmsC5K
-	 Tz1V3F7Z4pAAvtYnxxAiPRaTlITYTDGn8G5dbu+YFAz89R6S5/3fUwfc/kP47EouW5
-	 u+7tLeccXlS28fmO/6S/KXK0rBS2Do6oWaLlheT4=
+	b=fELU3UpcmRmYFIeqxzVFDjtM5GFjJCKy0fZ6HAgxKQWIvyDMgfMShq8XFh849EkgW
+	 POu4UVbVGqlMc3fXnhQoItvt25mqjeMjAHX1s8Eh1hIhgi4CeThooWcG7KOyUyhh5T
+	 6bUaR2ZZsaoqt9HWwMOcoVJH6BCy801bbceejCec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jack Yu <jack.yu@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/39] crypto: api - Fix liveliness check in crypto_alg_tested
+Subject: [PATCH 6.6 35/48] ASoC: rt722-sdca: increase clk_stop_timeout to fix clock stop issue
 Date: Fri, 15 Nov 2024 07:38:24 +0100
-Message-ID: <20241115063723.125788676@linuxfoundation.org>
+Message-ID: <20241115063724.232559854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Jack Yu <jack.yu@realtek.com>
 
-[ Upstream commit b81e286ba154a4e0f01a94d99179a97f4ba3e396 ]
+[ Upstream commit 038fa6ddf5d22694f61ff7a7a53c8887c6b08c45 ]
 
-As algorithm testing is carried out without holding the main crypto
-lock, it is always possible for the algorithm to go away during the
-test.
+clk_stop_timeout should be increased to 900ms to fix clock stop issue.
 
-So before crypto_alg_tested updates the status of the tested alg,
-it checks whether it's still on the list of all algorithms.  This
-is inaccurate because it may be off the main list but still on the
-list of algorithms to be removed.
-
-Updating the algorithm status is safe per se as the larval still
-holds a reference to it.  However, killing spawns of other algorithms
-that are of lower priority is clearly a deficiency as it adds
-unnecessary churn.
-
-Fix the test by checking whether the algorithm is dead.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://patch.msgid.link/cd26275d9fc54374a18dc016755cb72d@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c | 2 +-
+ sound/soc/codecs/rt722-sdca-sdw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index 5dc9ccdd5a510..206a13f395967 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -341,7 +341,7 @@ void crypto_alg_tested(const char *name, int err)
- 	q->cra_flags |= CRYPTO_ALG_DEAD;
- 	alg = test->adult;
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index 32578a212642e..91314327d9eee 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -253,7 +253,7 @@ static int rt722_sdca_read_prop(struct sdw_slave *slave)
+ 	}
  
--	if (list_empty(&alg->cra_list))
-+	if (crypto_is_dead(alg))
- 		goto complete;
+ 	/* set the timeout values */
+-	prop->clk_stop_timeout = 200;
++	prop->clk_stop_timeout = 900;
  
- 	if (err == -ECANCELED)
+ 	/* wake-up event */
+ 	prop->wake_capable = 1;
 -- 
 2.43.0
 
