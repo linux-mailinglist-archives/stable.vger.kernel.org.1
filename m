@@ -1,94 +1,117 @@
-Return-Path: <stable+bounces-93547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1DE9CE021
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 14:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92999CE02B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 14:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BFEC1F227B4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E0F1F24086
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 13:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F170C1C4A05;
-	Fri, 15 Nov 2024 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FB81CD21D;
+	Fri, 15 Nov 2024 13:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="HCXdOAuq"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="kzHEM7fm"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0EC1CDFA4
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 13:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EA51CCEE8;
+	Fri, 15 Nov 2024 13:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677668; cv=none; b=col/gOpG7VCDwQtcyCsl6BdC0TuMMq8wVvesJPFBzwSaKeH5ixmeTD4s0gKOJANVTMIlixWwi/xR264pBXHIVtVTBg3OhC9w1bkDs82ac01dXQdTALhHvJTs8jCifmx8B5Q/5pA2TfMXhKkp5OqfBT+tnppiid3HvjllBIf84WU=
+	t=1731677808; cv=none; b=AHRlDtWWvhFamPdAvs3z9JED+3PjHJPEOOxgv473Hu9EMXI4VUeqWhyqZ63WXyrvFvyWFgA6oluxtB80kSU0a3LnIeeRdl9EM7ych51MLJ5CMoz5SJSP6gHibw5nlj05CShRdmLAcRXLNzmwQz1Rx25ozrCBbuKCIcn5U7uAA3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677668; c=relaxed/simple;
-	bh=gLbDLLFaCm+pneJ0ecZSsUz4EzSQvHIor0UF/fLR+1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rG3jIjU1mrRDnJhkiy70HJ1G8lNF4irtSUUPWSuUJF6gQutoPtl+yPtMXUl9uv2VH2ErV9+VIqehzGcf5InGtW8Xeje8Hm0xxT2RpgFmCungQnTP8D3TOMwKsdy44wCugVPa8cWRyZ5G9GrpACXzYi4I3R9L3w0q0EPZqNXVVtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=HCXdOAuq; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-119-105.bstnma.fios.verizon.net [173.48.119.105])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4AFDY7rU014540
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Nov 2024 08:34:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1731677650; bh=YXeu00rAkkBMx+jCW+Umq2TqKt3Mm3W0qM6ehUOiUGQ=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=HCXdOAuqIff8JiBA+SBbi/24u8UbEcsuWvhHECXJwMtaea6XMUhQ8BpksgSVVUNQE
-	 +t4yP0l/T+Wd/bWC9xsdiSG+q+njib6F70qvRObkSyD712Noh6FDprtJHFOGY2uSN+
-	 ccagrW96Jv0F6FwCkVeIceLRjkC3U3ZYGHvN8vnyHZMw75gXLw+DP9YpcCyNWJUNwG
-	 JrEBYBqbyN9mev6VkIti12/P5edZh61O8RQHD293ZsJTmRfcK22b4M5oz3j5NCuMFF
-	 o8ba5W1WHo4d8S/rSXmfsdEF1turAm1X/L/lq3PBJwsq71kY9MnacCYFhM3QDd47pt
-	 9X0xI88FotM5A==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id CB07215C0317; Fri, 15 Nov 2024 08:34:07 -0500 (EST)
-Date: Fri, 15 Nov 2024 08:34:07 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linux Filesystem Development List <linux-fsdevel@vger.kernel.org>,
-        fstests@vger.kernel.org, stable@vger.kernel.org,
-        Leah Rumancik <leah.rumancik@gmail.com>,
-        "Darrick J. Wong" <djwong@kernel.org>
-Subject: Re: generic/645 failing on ext4, xfs (probably others) on all LTS
- kernels
-Message-ID: <20241115133407.GB582565@mit.edu>
-References: <20241110180533.GA200429@mit.edu>
- <20241111-tragik-busfahren-483825df1c00@brauner>
+	s=arc-20240116; t=1731677808; c=relaxed/simple;
+	bh=gd+fZnjtIrzZH8uRFuesecl8rg3R3bbNBsC0AcNkI2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qCISEN4lx3XQs1obnGeVWE9dPcnU6LM56vg0RbeMrAmnjyDlJbDnFLZrVSWVu8FRTYhFYPUQNkh72DObMlLBnl/Qov25QFGTznmYunZV6Tz/TgwBMxWFJMdRbBdM3LLoy3WwsV5CR6h+WDszgeDrM9fkmLpJh12BzhAmJqxpaNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=kzHEM7fm; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315839a7c9so15674375e9.3;
+        Fri, 15 Nov 2024 05:36:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1731677805; x=1732282605; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QFMEoy+VpYmS896YAj0P2dmeI7XvRACI2gkwVcDp1l0=;
+        b=kzHEM7fmloPhBc0IQt6/WezYsS9dIEmPFY/6WGhk1uq6MSlDzUPimMFh/xGmyXIlVi
+         s5sN52oZsTYDmher0sVWXHkPeeqwoZn7k6UFqJ9HznKAQpmWJrah0SpdKn8Yd9p/oNQp
+         g7gJ2V5WtP3apMl06QrR8bPragScVLWmDiX+ps+WjPb21+kLUeqpbRy2bEHRT7Ug/76c
+         HSkf2aXqa8LF28P8f9BXdcB6eL619lQv2L12ilB13Sx0/YpHWULMG6KZ5BXc0yACfTkE
+         uHEyj29aPBikhgq7FOtOK71kabaQbtDol9TtFIevACfjhE+FGynDbho1+S3eOBCGdd1b
+         oCkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731677805; x=1732282605;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QFMEoy+VpYmS896YAj0P2dmeI7XvRACI2gkwVcDp1l0=;
+        b=u0ZWqJWL32sQ0OSTMKm0wkTWYkZatjaWThU6ncgeLKfXEehmZPLpVG5LfBkCf8G+rH
+         MrnfSR4ePEnwQGA9GcU8wlNL+1V1CkKG5i//K7Z1FHE9Kzj10IMviqQrDvBAdrDF/Ntl
+         P/wosclA8GVKKj1DbM8pRqXdA+AUD23bfJ1xe1w75c5gPGEnG7COcjCvdEQ5eUdVW0jj
+         jHMdz5E7DK/x3vRoj+sRDVlFl03ccegzNRnHVRy9Cj3iTEbSOKzBRTbW9f2U1wK8ensE
+         BpbtPOAVAMbXyMCpPURD+9XL0foRCyu9Oa2t9mzrfH+qIH/OMG8ZeYDR/XMl76i6x/2d
+         0NTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9CVgj30+/UtG/cV0s1Qdp6FNUT7KRIZ+frqUJ8hosLXIA30parmHzKkpbgWrJGgSoNgBoi/ZR@vger.kernel.org, AJvYcCXx7ovJbyNfQNr/I+N9WPOPJxc5wUYkanvm+GtFr7JtfLeXVbvZ+V1aTlPFxHbzdDXdG0syzD1pIQIKLE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2vvTK4ZmM3vyZ56jjF1DhfTMRD2zAlvMsGBnOH5f4RHJKjxoM
+	W3SmB27Q8kaArjnjRar5ADoD+fkr9Td81NllWaDLlQQC7fOQ600=
+X-Google-Smtp-Source: AGHT+IFCGOXPuKhEx3Wk5YE8y8nyvKH/XqNmBteJiALxBgwKZI2U4Vxx8yVSP4YuFlEM3MRere3Prg==
+X-Received: by 2002:a05:600c:4f06:b0:426:6455:f124 with SMTP id 5b1f17b1804b1-432df67783emr23283655e9.0.1731677804979;
+        Fri, 15 Nov 2024 05:36:44 -0800 (PST)
+Received: from [192.168.1.3] (p5b05792c.dip0.t-ipconnect.de. [91.5.121.44])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da27fc8esm58933775e9.21.2024.11.15.05.36.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Nov 2024 05:36:44 -0800 (PST)
+Message-ID: <c4cda9aa-bead-4ca3-8878-8f6d05953ba4@googlemail.com>
+Date: Fri, 15 Nov 2024 14:36:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241111-tragik-busfahren-483825df1c00@brauner>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 00/48] 6.6.62-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241115063722.962047137@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 11, 2024 at 09:52:07AM +0100, Christian Brauner wrote:
+Am 15.11.2024 um 07:37 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.62 release.
+> There are 48 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> behavior would be well-specified so the patch changed that quite some
-> time ago.
-> 
-> Backporting this to older LTS kernels isn't difficult. We just need
-> custom patches for the LTS kernels but they should all be very simple.
-> 
-> Alternatively, you can just ignore the test on older kernels.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Well, what the custom patch to look like wasn't obvious to me, but
-that's because I'm not sufficiently familiar with the id mapping code.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-So I'll just ignore the test on older kernels.  If someone wants to
-create the custom patch, I'll revert the versioned exclude for
-{kvm,gce}-xfsteests.
+Beste Grüße,
+Peter Schneider
 
-Thanks,
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-						- Ted
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
