@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-93095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10229CD73E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:39:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E420F9CD812
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D50C1F22FF4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92FC282FC0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21990185B5B;
-	Fri, 15 Nov 2024 06:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE65118873E;
+	Fri, 15 Nov 2024 06:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kX7QWVnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeAg2qmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20E645;
-	Fri, 15 Nov 2024 06:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A940187FE8;
+	Fri, 15 Nov 2024 06:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652786; cv=none; b=RhQTtjncIYo43twK/ne7wO8Qx4NUOW1/fqo96cHZzmhHOr1PB/ECqVJcnVqmlE3FSIoUtReOZ7vRRfNf6OjCOTvqqCETH2daGtzNs2wfW921WdEOVjc5ZJvaBsT9Sno25PUgkxPdkmeylJQsnVzIKE36m1+LBTLQuGsy+v0n4/o=
+	t=1731653239; cv=none; b=e3SBZ2c1qD82c9GlyaCybTTaNtIDL/6ha2WRbW0HHgqzb+tp0ee5vUBZSpthGhJ5fLD9PJCi5aYDIHhneHBl6ZP6K49lE4TMwy3z6/2XVeuPnyIHFMPy/IA9LkhM6BvwGMs433KtUFNUvkGNU+lkdU2QUH0xRX5n+YbTWaI97L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652786; c=relaxed/simple;
-	bh=UfHNSl38A/AdVASJxBL/eRYw0bq1psQTUP2NdtZt+0g=;
+	s=arc-20240116; t=1731653239; c=relaxed/simple;
+	bh=PEdMssoUc4eRY+qkh9hkpjet2gy+5VL2F4HOXKO8djE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SH4aXNsJnHzvvGycG4Knrm03/mwYTCgCO2tFVF/bRKQ1ssJNDcBudLxZrC+rUIKWagx8RnDkXQNTPhYbF+6BpNEew6B4+ed7sBm/0KruUGverzsfi3VYOUMBcufoZUzedGUFSCQgDuh+K04cmJt+zpN3FRaQAfk1IqwsbWl1eoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kX7QWVnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41948C4CECF;
-	Fri, 15 Nov 2024 06:39:46 +0000 (UTC)
+	 MIME-Version; b=XCAdH++hUH4Ms2hAekpbCG24AtjAneer6Qt5TUykpidcN+5YlhG3zZXIJ8tVsnwDE6T1G/kl2KznFjll/Ck+VgU0f+YvLBaBAr05Ol1n0/HDIr8rLsyvaARtT7pzsqQkHAvQGWbDyOjaqI4DEyx2drORzdEy1Ei+PjTofHhhzpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeAg2qmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0889C4CECF;
+	Fri, 15 Nov 2024 06:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652786;
-	bh=UfHNSl38A/AdVASJxBL/eRYw0bq1psQTUP2NdtZt+0g=;
+	s=korg; t=1731653239;
+	bh=PEdMssoUc4eRY+qkh9hkpjet2gy+5VL2F4HOXKO8djE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kX7QWVnZGIyx87lpfYDdqMUWvS/5s8In5DB+v0mH3WCrGUvaN+gbQnSpH5fwrCWtp
-	 6R/L6X38quqKnaeOJiSZJGyJwD7yh+uTRA3LQBCxz/kBPs25XuUkzQR/ILFLkh3mok
-	 mk7KwpzFl2i6E3ILzs2bWOgemyIvnqJa8qe2PzJo=
+	b=IeAg2qmTlD9jPOh9lZxKD6u8/ErMdtpIN+QT+8CiJOwB/Ol9Wp1n37Hbz8UlpxZ5U
+	 bGkxB0O/6F36npK1x0u7xjy/06YmGbuY45hMaUCWxm4zV0Ro1t6BwSBSjSdIlfibgE
+	 n5qSoyGV/oVQCl8Y0Dch1gz1LTTUFv+8+izuo6MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: [PATCH 4.19 15/52] media: s5p-jpeg: prevent buffer overflows
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 05/63] selftests/bpf: Verify that sync_linked_regs preserves subreg_def
 Date: Fri, 15 Nov 2024 07:37:28 +0100
-Message-ID: <20241115063723.406494422@linuxfoundation.org>
+Message-ID: <20241115063726.089614478@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 14a22762c3daeac59a5a534e124acbb4d7a79b3a upstream.
+[ Upstream commit a41b3828ec056a631ad22413d4560017fed5c3bd ]
 
-The current logic allows word to be less than 2. If this happens,
-there will be buffer overflows, as reported by smatch. Add extra
-checks to prevent it.
+This test was added because of a bug in verifier.c:sync_linked_regs(),
+upon range propagation it destroyed subreg_def marks for registers.
+The test is written in a way to return an upper half of a register
+that is affected by range propagation and must have it's subreg_def
+preserved. This gives a return value of 0 and leads to undefined
+return value if subreg_def mark is not preserved.
 
-While here, remove an unused word = 0 assignment.
-
-Fixes: 6c96dbbc2aa9 ("[media] s5p-jpeg: add support for 5433")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240924210844.1758441-2-eddyz87@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/s5p-jpeg/jpeg-core.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ .../selftests/bpf/progs/verifier_scalar_ids.c | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
---- a/drivers/media/platform/s5p-jpeg/jpeg-core.c
-+++ b/drivers/media/platform/s5p-jpeg/jpeg-core.c
-@@ -803,11 +803,14 @@ static void exynos4_jpeg_parse_decode_h_
- 		(unsigned long)vb2_plane_vaddr(&vb->vb2_buf, 0) + ctx->out_q.sos + 2;
- 	jpeg_buffer.curr = 0;
- 
--	word = 0;
--
- 	if (get_word_be(&jpeg_buffer, &word))
- 		return;
--	jpeg_buffer.size = (long)word - 2;
-+
-+	if (word < 2)
-+		jpeg_buffer.size = 0;
-+	else
-+		jpeg_buffer.size = (long)word - 2;
-+
- 	jpeg_buffer.data += 2;
- 	jpeg_buffer.curr = 0;
- 
-@@ -1086,6 +1089,7 @@ static int get_word_be(struct s5p_jpeg_b
- 	if (byte == -1)
- 		return -1;
- 	*word = (unsigned int)byte | temp;
-+
- 	return 0;
+diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+index 13b29a7faa71a..d24d3a36ec144 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
++++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+@@ -656,4 +656,71 @@ __naked void two_old_ids_one_cur_id(void)
+ 	: __clobber_all);
  }
  
-@@ -1173,7 +1177,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
- 			if (get_word_be(&jpeg_buffer, &word))
- 				break;
- 			length = (long)word - 2;
--			if (!length)
-+			if (length <= 0)
- 				return false;
- 			sof = jpeg_buffer.curr; /* after 0xffc0 */
- 			sof_len = length;
-@@ -1204,7 +1208,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
- 			if (get_word_be(&jpeg_buffer, &word))
- 				break;
- 			length = (long)word - 2;
--			if (!length)
-+			if (length <= 0)
- 				return false;
- 			if (n_dqt >= S5P_JPEG_MAX_MARKER)
- 				return false;
-@@ -1217,7 +1221,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
- 			if (get_word_be(&jpeg_buffer, &word))
- 				break;
- 			length = (long)word - 2;
--			if (!length)
-+			if (length <= 0)
- 				return false;
- 			if (n_dht >= S5P_JPEG_MAX_MARKER)
- 				return false;
-@@ -1242,6 +1246,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
- 			if (get_word_be(&jpeg_buffer, &word))
- 				break;
- 			length = (long)word - 2;
-+			/* No need to check underflows as skip() does it  */
- 			skip(&jpeg_buffer, length);
- 			break;
- 		}
++SEC("socket")
++/* Note the flag, see verifier.c:opt_subreg_zext_lo32_rnd_hi32() */
++__flag(BPF_F_TEST_RND_HI32)
++__success
++/* This test was added because of a bug in verifier.c:sync_linked_regs(),
++ * upon range propagation it destroyed subreg_def marks for registers.
++ * The subreg_def mark is used to decide whether zero extension instructions
++ * are needed when register is read. When BPF_F_TEST_RND_HI32 is set it
++ * also causes generation of statements to randomize upper halves of
++ * read registers.
++ *
++ * The test is written in a way to return an upper half of a register
++ * that is affected by range propagation and must have it's subreg_def
++ * preserved. This gives a return value of 0 and leads to undefined
++ * return value if subreg_def mark is not preserved.
++ */
++__retval(0)
++/* Check that verifier believes r1/r0 are zero at exit */
++__log_level(2)
++__msg("4: (77) r1 >>= 32                     ; R1_w=0")
++__msg("5: (bf) r0 = r1                       ; R0_w=0 R1_w=0")
++__msg("6: (95) exit")
++__msg("from 3 to 4")
++__msg("4: (77) r1 >>= 32                     ; R1_w=0")
++__msg("5: (bf) r0 = r1                       ; R0_w=0 R1_w=0")
++__msg("6: (95) exit")
++/* Verify that statements to randomize upper half of r1 had not been
++ * generated.
++ */
++__xlated("call unknown")
++__xlated("r0 &= 2147483647")
++__xlated("w1 = w0")
++/* This is how disasm.c prints BPF_ZEXT_REG at the moment, x86 and arm
++ * are the only CI archs that do not need zero extension for subregs.
++ */
++#if !defined(__TARGET_ARCH_x86) && !defined(__TARGET_ARCH_arm64)
++__xlated("w1 = w1")
++#endif
++__xlated("if w0 < 0xa goto pc+0")
++__xlated("r1 >>= 32")
++__xlated("r0 = r1")
++__xlated("exit")
++__naked void linked_regs_and_subreg_def(void)
++{
++	asm volatile (
++	"call %[bpf_ktime_get_ns];"
++	/* make sure r0 is in 32-bit range, otherwise w1 = w0 won't
++	 * assign same IDs to registers.
++	 */
++	"r0 &= 0x7fffffff;"
++	/* link w1 and w0 via ID */
++	"w1 = w0;"
++	/* 'if' statement propagates range info from w0 to w1,
++	 * but should not affect w1->subreg_def property.
++	 */
++	"if w0 < 10 goto +0;"
++	/* r1 is read here, on archs that require subreg zero
++	 * extension this would cause zext patch generation.
++	 */
++	"r1 >>= 32;"
++	"r0 = r1;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
++
+ char _license[] SEC("license") = "GPL";
+-- 
+2.43.0
+
 
 
 
