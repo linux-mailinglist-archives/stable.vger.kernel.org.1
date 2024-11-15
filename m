@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35B19CD74F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7829CD7A6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23778B24D5E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1484E282115
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBEB1898EA;
-	Fri, 15 Nov 2024 06:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F2E154C00;
+	Fri, 15 Nov 2024 06:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/17ipV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/ODhOv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F1A1632DA;
-	Fri, 15 Nov 2024 06:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86785126C17;
+	Fri, 15 Nov 2024 06:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652814; cv=none; b=CxyKtGBkp7+bFc/pkc4HaIP37P44yRit5JIPgMJmS3VPyvfo9++cpTDfwK+YTfDBwJOMByzWWm0/uSt7G/yCSKfUIZ6v8RlPvue7Cj9jPplabFZyzMGJQiDgEaJ6YWecyu50rCkHOmjIpQ79OWGWg/vRDsAUrrtAB3+DQWanBvI=
+	t=1731653003; cv=none; b=WWJbrf2D6YF1uSE55H16l2FzvPNTko+9WFHaqpirQbj1H17T1SaYnGCMl7CtVVBZiJzShQnxqcrMlj6RHyfz76+QGVh/Gwf2dM9jqdzvjgHKvoyENLmWGETf0AsUKau79MoCkH3IK+ik4+4iiPfRwu18tGdU4iWwBxN4gUEdBVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652814; c=relaxed/simple;
-	bh=a8x4g/arWZ6Z4EPFkBP9P0Gg6pHigIfURRi4Se0UGCY=;
+	s=arc-20240116; t=1731653003; c=relaxed/simple;
+	bh=FpZEgnoeupIpr/jDxSFN7GVZJJVRIrfly40g6V3joUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Df0wVgxbZ4VrsTEwhp9H0c67XwjUagz37u9IFVJVGn6FIb+mL2NHVtASROzBsyTuVUK5hRcOLYQQfx7FQKsYZ2zZKiycrdHXw6CAahQo5SmmwtTnKm6zF91jIarP/9fC7CsgJH0v3BLMe1mtc/KHznZ27uXMOazAkMRxsc2EIhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/17ipV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E84C4CED0;
-	Fri, 15 Nov 2024 06:40:13 +0000 (UTC)
+	 MIME-Version; b=aq7TFF/R/kxN1oC9PKLyTEvX5QNi2WcfRadTQnpsfEIF9Y0MVCGd3ILMYonYoyxUfNkvEpXmOKYEaGsUTOwKFDOVL8LB4kKQ3uwy4zJPizpeNJZ+WfPqnLKkDbl5UZVIAX2rMr2gAENE70hkAfLp6jOx3vqvfQLylztzuKA3txw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/ODhOv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010A3C4CECF;
+	Fri, 15 Nov 2024 06:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652814;
-	bh=a8x4g/arWZ6Z4EPFkBP9P0Gg6pHigIfURRi4Se0UGCY=;
+	s=korg; t=1731653003;
+	bh=FpZEgnoeupIpr/jDxSFN7GVZJJVRIrfly40g6V3joUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/17ipV2ubcrDcVfuB1xun8VUdfuou4xqqC+MHHmHmE7MyAE6eODz13XntJiUbOVm
-	 AVRq30BdzSGXGpVcauBAfshSQkkDPGljMEzfkzHEnj8dBLXH+iFifBYrXrUxLWK0UE
-	 ObSD+huLOKpfOJFZXob2VICCFcnih2XlCmta8rfM=
+	b=U/ODhOv5dqe11hc7Al9hlgFt1AW6702LqqZAq0imiH8O7bQkjspG+DjDXEaioGuJ1
+	 v3nG5q1+K4gOpEv6THI3asuQvQ+Ov4BeMqWDT93VWTv7MnaV8Apf3gNsZE6+ZrwG25
+	 ggy9DzZ7Pxvao4FfqKu8XzUVvKD6KiG6TlVIePXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 4.19 22/52] dm cache: optimize dirty bit checking with find_next_bit when resizing
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 26/66] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
 Date: Fri, 15 Nov 2024 07:37:35 +0100
-Message-ID: <20241115063723.658090508@linuxfoundation.org>
+Message-ID: <20241115063723.787195324@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-commit f484697e619a83ecc370443a34746379ad99d204 upstream.
+commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
 
-When shrinking the fast device, dm-cache iteratively searches for a
-dirty bit among the cache blocks to be dropped, which is less efficient.
-Use find_next_bit instead, as it is twice as fast as the iterative
-approach with test_bit.
+acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
+would result in dereferencing buffer.pointer (obj) while being NULL.
 
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Although this case may be unrealistic for the current code, it is
+still better to protect against possible bugs.
+
+Bail out also when status is AE_NOT_FOUND.
+
+This fixes 1 FORWARD_NULL issue reported by Coverity
+Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
+
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -3001,14 +3001,14 @@ static bool can_resize(struct cache *cac
- 	/*
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
--	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		if (is_dirty(cache, new_size)) {
--			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--			      cache_device_name(cache),
--			      (unsigned long long) from_cblock(new_size));
--			return false;
--		}
--		new_size = to_cblock(from_cblock(new_size) + 1);
-+	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+					   from_cblock(cache->cache_size),
-+					   from_cblock(new_size)));
-+	if (new_size != cache->cache_size) {
-+		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+		      cache_device_name(cache),
-+		      (unsigned long long) from_cblock(new_size));
-+		return false;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -110,8 +110,8 @@ static union acpi_object *amdgpu_atif_ca
+ 				      &buffer);
+ 	obj = (union acpi_object *)buffer.pointer;
  
- 	return true;
+-	/* Fail if calling the method fails and ATIF is supported */
+-	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
++	/* Fail if calling the method fails */
++	if (ACPI_FAILURE(status)) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+ 		kfree(obj);
 
 
 
