@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4879CD7A9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D458B9CD7FE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058011F23069
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58B6FB25F0D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05E7188713;
-	Fri, 15 Nov 2024 06:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85C317E015;
+	Fri, 15 Nov 2024 06:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5mR361/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANcuJw95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A0188591;
-	Fri, 15 Nov 2024 06:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A608E29A9;
+	Fri, 15 Nov 2024 06:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653010; cv=none; b=U3oVQQrAEdlEaXIVy8BCDikK9UdJESESS3/5z0vrCcCuvz+wAZyQe8B8/npadZrTkW8mq6FyiKly8mzCulhG7sdERSUGnsBhxJuOb/8VlMjJ9T5bU589GSPN9SmjhlYp6iiBQSPEjuZ2xX/rU4H6EiCay2fnid5PbfZB6h4FZyg=
+	t=1731653192; cv=none; b=gCBQAPUc4Tipy/qYvbL/Ja7tmCrrSSkxR8pZdbnd7eOACdxDbghfy9MxPftVDqNgscwOPjmbM18yWxpkDfGr1Wm3gdr9KgrtyEjlPl5MXP+dB+wnCYPRgrAke1NyVGUGbIC4rxVcuV+XpnJpMZLjLamKDQ7+oyUH+4dPXpUL08w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653010; c=relaxed/simple;
-	bh=b9QWmRXj/2Kdq4QVUahKwbic/fcDxRFKCzBT6hC5JcA=;
+	s=arc-20240116; t=1731653192; c=relaxed/simple;
+	bh=K27TvtFgj3X1LbmGaiNq27DYFpNTBPTYV6tKbad0HPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiSx/bNDn3j7cybdJCKN0nMYWiGEs/TNpDPb2KqtbF7qkdALlAQOZQO+K9BE7xy3A20S4IiB7YPO/+0mZ3toqzU1pSPoAj2wEjhFtwozRsZi7L+a18LNjkFf3zbExBAnuyYo6aLyKgNzTUnteheXJzbNjFR4PoVEakdg9MVhzVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5mR361/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BE5C4CECF;
-	Fri, 15 Nov 2024 06:43:29 +0000 (UTC)
+	 MIME-Version; b=baowZxOrA310F77N1j9ems35lM8fO/ThiOABaKWf4xUVQDdZOYGrTptAMOr5Xkr1WXHGZ/alQ5ly7HGCnbGYQHMQW/pcLXA6AebMG2B/wLtaTBsTW9RpSZkumcQuNNL9+S0QaYHjEhQbe/KWRo0vRxQoQH2qJG7YKyzE27fYg3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANcuJw95; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1551FC4CECF;
+	Fri, 15 Nov 2024 06:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653010;
-	bh=b9QWmRXj/2Kdq4QVUahKwbic/fcDxRFKCzBT6hC5JcA=;
+	s=korg; t=1731653192;
+	bh=K27TvtFgj3X1LbmGaiNq27DYFpNTBPTYV6tKbad0HPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5mR361/guXQnROsDF++HNJnIpScWWZL4FjYF6lL8p9QCt5B3BVQmiZNxqh+RSF95
-	 tzn+Pz+yh1fExnOqS0H4QtD+LjYKjNJqEIUCFPfPYiG3Fd3iZtrEmczyI9EprN8x0H
-	 SCRk/BQw2Z5dv4fjq9FXqvjK+BKH9To5DaZkYgD0=
+	b=ANcuJw95BSBye/Io1FZ6JO2OCeNEF3eILy2PApNDnuFp07s60Oz9z6+FH6alDoCAQ
+	 sm44HNQQwGQN+O03Ge1IezQArvVHyMHlAWl9Ws+43RQ0H9Xz5RzFOwPQO9xP//VlIn
+	 mgh9zkh+LSRVcexLy5+vJn0TKC0ov/KlQcCa8/RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.4 28/66] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 14/63] iommu/arm-smmu: Clarify MMU-500 CPRE workaround
 Date: Fri, 15 Nov 2024 07:37:37 +0100
-Message-ID: <20241115063723.858556398@linuxfoundation.org>
+Message-ID: <20241115063726.409982464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit 792227719725497ce10a8039803bec13f89f8910 upstream.
+[ Upstream commit 0dfe314cdd0d378f96bb9c6bdc05c8120f48606d ]
 
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access.
+CPRE workarounds are implicated in at least 5 MMU-500 errata, some of
+which remain unfixed. The comment and warning message have proven to be
+unhelpfully misleading about this scope, so reword them to get the point
+across with less risk of going out of date or confusing users.
 
-Reproduce steps:
-
-1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
-   access to the dirty bitset (offset 0x80)
-
-dmsetup suspend cache
-dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
-  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc900000f3000, ffffc900000f5000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                     ^
-   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by making the index post-incremented.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/dfa82171b5248ad7cf1f25592101a6eec36b8c9a.1728400877.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-impl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -3010,13 +3010,13 @@ static bool can_resize(struct cache *cac
- 	 * We can't drop a dirty block when shrinking the cache.
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+index 9dc772f2cbb27..99030e6b16e7a 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+@@ -130,7 +130,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
+ 
+ 	/*
+ 	 * Disable MMU-500's not-particularly-beneficial next-page
+-	 * prefetcher for the sake of errata #841119 and #826419.
++	 * prefetcher for the sake of at least 5 known errata.
  	 */
- 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		new_size = to_cblock(from_cblock(new_size) + 1);
- 		if (is_dirty(cache, new_size)) {
- 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
- 			      cache_device_name(cache),
- 			      (unsigned long long) from_cblock(new_size));
- 			return false;
- 		}
-+		new_size = to_cblock(from_cblock(new_size) + 1);
+ 	for (i = 0; i < smmu->num_context_banks; ++i) {
+ 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
+@@ -138,7 +138,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
+ 		arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_ACTLR, reg);
+ 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
+ 		if (reg & ARM_MMU500_ACTLR_CPRE)
+-			dev_warn_once(smmu->dev, "Failed to disable prefetcher [errata #841119 and #826419], check ACR.CACHE_LOCK\n");
++			dev_warn_once(smmu->dev, "Failed to disable prefetcher for errata workarounds, check SACR.CACHE_LOCK\n");
  	}
  
- 	return true;
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
