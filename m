@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B5E9CD87C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767BF9CD84E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74DA4B25030
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0E3283B70
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324FC187848;
-	Fri, 15 Nov 2024 06:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB57185B5B;
+	Fri, 15 Nov 2024 06:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSB+kpdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcP4/8l8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A53185924;
-	Fri, 15 Nov 2024 06:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C13DEAD0;
+	Fri, 15 Nov 2024 06:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653481; cv=none; b=rzf/DqtGhP4kbUxCOux+Q6tbhptCNvYWVCkd5x0525Sj6IPMrKzZ4U/rGfE5oAxfc/d7UTv77zEavbJ8jn5gjogku1R2exTNXYSOSu/BbBwcuTactJnCUHd5GGYSD3teeTKf2yNs/fLrpgOuk6dppZ3lQguVm17izEV9mDAlh5Y=
+	t=1731653370; cv=none; b=h6fwhOVLOiIzWRHKeywPSCjC883gNrPNMFcCqfBcpoElXKffjC+xC2aBETIQrZUK17cNMnYs5HM4qwmuEqfEHLqwy13/xiVZrxPYOWtk4fWYQu7UQZaXfPiAEl0LpKnbQLL9dWfBB2jG0/FbLME8T+ABCVrOaNs1YtlQZ2J/PYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653481; c=relaxed/simple;
-	bh=i374AB5Jr/KSAp4liQ7ii5ThTt65EmIkkMt3QPlvzyw=;
+	s=arc-20240116; t=1731653370; c=relaxed/simple;
+	bh=umvHoY1C6Y8snKBbIK/MBmTH726DtehJHg4pZTBnq84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4pXbB0yGpxhsm5JCP/n1ES0DDcpwq6ko5fwwSjZ/yo/fPP+1eBAuGCP9iUdaCi/ELNkA1DVBoyajXN4OZTKj2l2Nmzbped7dTnAn5DMYHiiJrUPzKYP4kvaryYTF9VqePfhR6OtfCQKBt0x+hi9p7HeQRjwokW0HixQEcATPco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSB+kpdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C0CC4CECF;
-	Fri, 15 Nov 2024 06:51:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XA9CQLWo5HFgXOQs4rVGmWFRqkGV8MI7PpmaRM0+1olvIPiY9fc4haW8Rw7zySj08ZnOmgt3Q3SlEXlISLIKF3Cm+nhrTLyKu30k65/ExsduK0j3ZAxsSfJ8SPIp7L1bFbRUlRMfY42YHwVRtDdZqMagNogiUkY68sPtZwXGgp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcP4/8l8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2E8C4CECF;
+	Fri, 15 Nov 2024 06:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653480;
-	bh=i374AB5Jr/KSAp4liQ7ii5ThTt65EmIkkMt3QPlvzyw=;
+	s=korg; t=1731653370;
+	bh=umvHoY1C6Y8snKBbIK/MBmTH726DtehJHg4pZTBnq84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSB+kpduA3Gm1V3jpFQKnA6Xt7Blf8rWPeaD3bjJO5cYuz/bWgD81XMxrrwS5HT4a
-	 CfND4HZWND+OunelGvihnmMMG8fWVM3UdyKRAvrWH5N79PfbiBC7W2pRckmfl9ozyV
-	 eMdGT5EBjs4fEirVlSt9qx31UTLqKDF+3eOiEOis=
+	b=VcP4/8l8c4TGmfGGDuNhBMi919zTJUuwaaYpbrFL0tRXsTHoZkgcxfDBwUdZjMCRK
+	 IgCjyPYX2fIJzAKzPjhfBtaunUgsAXLNsNJQBCrE2jECEb2ZxkbHTrd0tARtORMwQR
+	 ARBR5SiMXuto6qc2qEk8b8eKUI9Y54yN1T9UCLiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Blum <stefan.blum@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/48] HID: multitouch: Add support for B2402FVA track point
+Subject: [PATCH 6.11 33/63] samples/landlock: Fix port parsing in sandboxer
 Date: Fri, 15 Nov 2024 07:37:56 +0100
-Message-ID: <20241115063723.228770343@linuxfoundation.org>
+Message-ID: <20241115063727.114214633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Blum <stefanblum2004@gmail.com>
+From: Matthieu Buffet <matthieu@buffet.re>
 
-[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
+[ Upstream commit 387285530d1d4bdba8c5dff5aeabd8d71638173f ]
 
-By default the track point does not work on the Asus Expertbook B2402FVA.
+If you want to specify that no port can be bind()ed, you would think
+(looking quickly at both help message and code) that setting
+LL_TCP_BIND="" would do it.
 
->From libinput record i got the ID of the track point device:
-  evdev:
-    # Name: ASUE1201:00 04F3:32AE
-    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
+However the code splits on ":" then applies atoi(), which does not allow
+checking for errors. Passing an empty string returns 0, which is
+interpreted as "allow bind(0)", which means bind to any ephemeral port.
+This bug occurs whenever passing an empty string or when leaving a
+trailing/leading colon, making it impossible to completely deny bind().
 
-I found that the track point is functional, when i set the
-MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
+To reproduce:
+export LL_FS_RO="/" LL_FS_RW="" LL_TCP_BIND=""
+./sandboxer strace -e bind nc -n -vvv -l -p 0
+Executing the sandboxed command...
+bind(3, {sa_family=AF_INET, sin_port=htons(0),
+     sin_addr=inet_addr("0.0.0.0")}, 16) = 0
+Listening on 0.0.0.0 37629
 
-Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Use strtoull(3) instead, which allows error checking. Check that the
+entire string has been parsed correctly without overflows/underflows,
+but not that the __u64 (the type of struct landlock_net_port_attr.port)
+is a valid __u16 port: that is already done by the kernel.
+
+Fixes: 5e990dcef12e ("samples/landlock: Support TCP restrictions")
+Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+Link: https://lore.kernel.org/r/20241019151534.1400605-2-matthieu@buffet.re
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ samples/landlock/sandboxer.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index e7199ae2e3d91..7584e5a3aafeb 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2020,6 +2020,10 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
- 			USB_VENDOR_ID_ELAN, 0x3148) },
+diff --git a/samples/landlock/sandboxer.c b/samples/landlock/sandboxer.c
+index e8223c3e781ab..5d8a9df5273f5 100644
+--- a/samples/landlock/sandboxer.c
++++ b/samples/landlock/sandboxer.c
+@@ -57,6 +57,25 @@ static inline int landlock_restrict_self(const int ruleset_fd,
+ #define ENV_TCP_CONNECT_NAME "LL_TCP_CONNECT"
+ #define ENV_DELIMITER ":"
  
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_ELAN, 0x32ae) },
++static int str2num(const char *numstr, __u64 *num_dst)
++{
++	char *endptr = NULL;
++	int err = 0;
++	__u64 num;
 +
- 	/* Elitegroup panel */
- 	{ .driver_data = MT_CLS_SERIAL,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
++	errno = 0;
++	num = strtoull(numstr, &endptr, 10);
++	if (errno != 0)
++		err = errno;
++	/* Was the string empty, or not entirely parsed successfully? */
++	else if ((*numstr == '\0') || (*endptr != '\0'))
++		err = EINVAL;
++	else
++		*num_dst = num;
++
++	return err;
++}
++
+ static int parse_path(char *env_path, const char ***const path_list)
+ {
+ 	int i, num_paths = 0;
+@@ -157,7 +176,6 @@ static int populate_ruleset_net(const char *const env_var, const int ruleset_fd,
+ 	char *env_port_name, *env_port_name_next, *strport;
+ 	struct landlock_net_port_attr net_port = {
+ 		.allowed_access = allowed_access,
+-		.port = 0,
+ 	};
+ 
+ 	env_port_name = getenv(env_var);
+@@ -168,7 +186,17 @@ static int populate_ruleset_net(const char *const env_var, const int ruleset_fd,
+ 
+ 	env_port_name_next = env_port_name;
+ 	while ((strport = strsep(&env_port_name_next, ENV_DELIMITER))) {
+-		net_port.port = atoi(strport);
++		__u64 port;
++
++		if (strcmp(strport, "") == 0)
++			continue;
++
++		if (str2num(strport, &port)) {
++			fprintf(stderr, "Failed to parse port at \"%s\"\n",
++				strport);
++			goto out_free_name;
++		}
++		net_port.port = port;
+ 		if (landlock_add_rule(ruleset_fd, LANDLOCK_RULE_NET_PORT,
+ 				      &net_port, 0)) {
+ 			fprintf(stderr,
 -- 
 2.43.0
 
