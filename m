@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4939CD77E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557BA9CD825
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77D7F1F230A1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C26E283A54
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273261885BE;
-	Fri, 15 Nov 2024 06:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B247E188015;
+	Fri, 15 Nov 2024 06:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+Y1cji3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktA9xMNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8853126C17;
-	Fri, 15 Nov 2024 06:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D724EAD0;
+	Fri, 15 Nov 2024 06:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652910; cv=none; b=l6oZWbS5mMQNQFnqyx0omEeKwIi6+kDA48J9r+kmgWCEyjrFga/1JIrmAsV35Uf1X35rPcGw8mCNLfPaRHlGbqXY4SZqFiMVRlmfwJgRVVxs8/tg3JvC68RoaUykh1Vo9cQ/kgI90dkrBqAe/kP8GekZ5p3q1SNf6c1QlWaDwbI=
+	t=1731653283; cv=none; b=GS35kwiP6gE41OG+YtogCzdCgypMa2OmpVh+QqZUOX3BR8Lz9w1cw2Q45OWZYW91nbqn2PUFUyKtilTADKFaaByKQ8cmDaJipCYMMnuPLfYiiJvybva2eHMA5oB0MZkS8quiFtwayRarCwgZKWBS2rgmzWk92BTn3n/O569KzqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652910; c=relaxed/simple;
-	bh=ku3irCk5P5o46Zzwz/XsR4dpXva/uzBiZXmbD1gjm5E=;
+	s=arc-20240116; t=1731653283; c=relaxed/simple;
+	bh=NttNPvl/1IFMLLU+2Q3od8ajasXWQjmtRTCXwJdcRks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPwKLSohyiwRyTFi0amiFiqPKsTD0VaSIxhMYaFgqVUMEP5ds2QJazRFTsEAwKvNvt3XH0AovuH4NMa52cav4nGxqJDS8Pxb5kzC/pKyIn93HwD5aVKHbIvEdBDJGA1P1XSbD6vtKGdqu6i0ANU7AOsugXQtY0wA9ZNGBuVXi/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+Y1cji3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4429EC4CECF;
-	Fri, 15 Nov 2024 06:41:50 +0000 (UTC)
+	 MIME-Version; b=IeFyEVNoNtcYIDMNSYMzzdawizBD0yNL/QfmmzlpP056iBNVXYwgkkHTOSvzNksUjdih9JaoW3MlqGrEhURoHECaZQ6j47PkgrGHkvh+Lhi8de9dX9j6o6B8OJDKmgXivMxbP+RsAv9MX4CPD3tXIbuuiIzQWafygmGbdB2rR5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktA9xMNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F2DC4CECF;
+	Fri, 15 Nov 2024 06:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652910;
-	bh=ku3irCk5P5o46Zzwz/XsR4dpXva/uzBiZXmbD1gjm5E=;
+	s=korg; t=1731653283;
+	bh=NttNPvl/1IFMLLU+2Q3od8ajasXWQjmtRTCXwJdcRks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+Y1cji3s63Cd/Vv1Ans3yATQQP/k2FLzq45mPQyz5oP/FaD5dnTU6fYEdO7PtUYh
-	 2sqPcgexJ6C7tYxW1DzrVpg816OeHWXGklTUkRXiqQ+gygyHhPGmHs4x072FgeP7E8
-	 N+/Vjf9vWfqcc+b8cVwOgridgr8nUOpbSU1srn74=
+	b=ktA9xMNm8Dfo2QdMhogYzs9kTP7zKPV427uAL2a2XNhnqRdpGHUTaS5OAml//kvHm
+	 gy1kYpblE5gPyWmGlugKQtoCx4yefeWfuwbm8d2WT6T3wEgwqOwue0B5KyrmV3u2PJ
+	 HIXbAT3WRT+thLHsuing4OCmoFUZrMXJXYbGWjRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ilya Dudikov <ilyadud@mail.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 51/52] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+Subject: [PATCH 6.11 41/63] ASoC: amd: yc: Fix non-functional mic on ASUS E1404FA
 Date: Fri, 15 Nov 2024 07:38:04 +0100
-Message-ID: <20241115063724.694032328@linuxfoundation.org>
+Message-ID: <20241115063727.398364986@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Ilya Dudikov <ilyadud@mail.ru>
 
-[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
+[ Upstream commit b0867999e3282378a0b26a7ad200233044d31eca ]
 
-Add Fibocom FG132 0x0112 composition:
+ASUS Vivobook E1404FA needs a quirks-table entry for the internal microphone to function properly.
 
-T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
-
-Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ilya Dudikov <ilyadud@mail.ru>
+Link: https://patch.msgid.link/20241016034038.13481-1-ilyadud25@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index bbd5183e5e635..57ccbc8a6c059 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1385,6 +1385,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
-+	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 275faf25e5a76..dc476bfb6da40 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -325,6 +325,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "E1404FA"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
