@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13659CD7E0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD7B9CD835
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 329DCB25A9F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65637281C4E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D349153800;
-	Fri, 15 Nov 2024 06:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C585186294;
+	Fri, 15 Nov 2024 06:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUBkqzb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV2hDEwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39722185924;
-	Fri, 15 Nov 2024 06:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D01185B5B;
+	Fri, 15 Nov 2024 06:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653122; cv=none; b=F2CA14KpRQn0BPtsJjqv+1bcB38o2kpP7DEoWXrNwHsDGYNQDXlaoyjW/Kc82Rq2woYlOAYBDiToq8qAcNUOVHlJJlI0bJfKy31RseZyTOVktGUtelyK2gP3hhBxN7rNs3/LNSjJjT01ZXTC6szQfTQH78X+1bA3NJ9tFA7mZDs=
+	t=1731653308; cv=none; b=flxWjhIi/8lwsK43lfMMCDrqFjGbOaDqW8m0Zs/NSvhaRBvKzqNebu1dE52TMaAVuBsdW3wnOTjxqSCeRkaMHlk14OabaY1Ri/F7bJ7Z4Q6RXvbyoFB8so/V3EzKkq1X3PDLfyA8o1MWe+91no1opwidR6oq+BlWgiGHm2C8OhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653122; c=relaxed/simple;
-	bh=OzhMVNhLEesYjEhRXHXmjcE65d1yc5elnO3t7Swx01k=;
+	s=arc-20240116; t=1731653308; c=relaxed/simple;
+	bh=GARmRt1KsD2PL9Mf+1+locIZ7/0Ob/eIJpUPn9hyoSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVuRhw4nGSq1/oh6+6fegqc/FTCf1u1yojQJ1k7Sm5406ivObgEVGExev/VZnkJKZ7n97T6NGqEaUYGTNZKoXPa08tqLiYtS7OSyDEmHpoIzZxmYX+Ts3MpAhfgPIyWrvpL85E4EvE+k+FCUWFnh2PbdCwO7pBN7s/1oTZOcNII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUBkqzb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3112BC4CECF;
-	Fri, 15 Nov 2024 06:45:19 +0000 (UTC)
+	 MIME-Version; b=OWSIKn7dYHf0Ts3GP9eEuJFK0O6Jy+BVH/+AKsdOq+D09RlTBgYcIFy0uMEtkbBgGTCSuFDBcAfqCTrvbC99qAWDFV6tGH/iaa7RjuYcFggSfYsKFZ7cPi42WJChHA81atZeJh9ApmH5dzr32fEEGGMH0uK/pPh25xHYppfSu/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV2hDEwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD658C4CECF;
+	Fri, 15 Nov 2024 06:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653120;
-	bh=OzhMVNhLEesYjEhRXHXmjcE65d1yc5elnO3t7Swx01k=;
+	s=korg; t=1731653305;
+	bh=GARmRt1KsD2PL9Mf+1+locIZ7/0Ob/eIJpUPn9hyoSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUBkqzb/KIlSAWqOePCPf6H7stMkJSHISEVTrX4Qr+8ULLPJAQWDGbt2HyqTDxwRo
-	 oq8VISxturld4kInNv+P+ylnoejqUZPUlCJtiFK7++V1zKMZzjsusnbXfv2I2VJ6G6
-	 +0w1Hm7fCeNmXqIqoxYX8pICChudTkijqBj447D8=
+	b=UV2hDEwBoBusNylhYTlcv3GNIUmJrs+UnlhBNizNTmHQ8aK4/jbNM0lDxvs9kbW9b
+	 CNUaGaocDUGWVayal7z4cv4Efep8T60qJq8/8sjkx9nrq3C4MLwTsdqx9Uiq08jRi1
+	 /4NSCt6ctfe6rFMz7SLjGBVhBzLzoRpWNlQmlYuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kenneth Albanowski <kenalba@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 60/66] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
-Date: Fri, 15 Nov 2024 07:38:09 +0100
-Message-ID: <20241115063725.007624629@linuxfoundation.org>
+Subject: [PATCH 6.11 47/63] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
+Date: Fri, 15 Nov 2024 07:38:10 +0100
+Message-ID: <20241115063727.610053832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Kenneth Albanowski <kenalba@chromium.org>
 
-[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
+[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
 
-Add Fibocom FG132 0x0112 composition:
+The Logitech Casa Touchpad does not reliably send touch release signals
+when communicating through the Logitech Bolt wireless-to-USB receiver.
 
-T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
+sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
+needed, but harmless.
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Linux does not have information on which devices are connected to the
+Bolt receiver, so we have to enable this for the entire device.
 
-Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index cce5ee84d29d3..db52090bb27be 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1382,6 +1382,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
-+	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 25f96494700d8..92cff3f2658cf 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -869,6 +869,7 @@
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
++#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
+ #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
+ #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
+ #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 871d7417824b8..24da739647635 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2137,6 +2137,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_LOGITECH,
+ 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
+ 
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
 -- 
 2.43.0
 
