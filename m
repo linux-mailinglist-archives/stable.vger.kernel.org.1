@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248CE9CD87F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F429CD7EC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA970B2520C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2232B25B56
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C38187848;
-	Fri, 15 Nov 2024 06:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4921339A4;
+	Fri, 15 Nov 2024 06:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCZlWzPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTEPHJox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C15EAD0;
-	Fri, 15 Nov 2024 06:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2924C2BB1B;
+	Fri, 15 Nov 2024 06:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653487; cv=none; b=e+udrd/E7fd5NWMHwrVRXSMt7WXyJsyUiKwDdx4okGb4sl5QaBgmJD1VdBXJJEm33GkmyJgejpHDvkU3BF4852DcQrGQSRE42I47IXJFU8g2PbPI1PvYr+kbwomS0axchH0A6+yqwLP2vfBchug6rR2/ohbvad0hMO0bDFWHFYs=
+	t=1731653148; cv=none; b=pSCTQjRH4HSmmANP8u4dOSB9m6oUdFOPOw5sQuzLMS1pEbE8q9nu4Ia1f7YbUD2OYoxSO/Qk1PcQjqVZhdWinBgQE94WtW2XZ8J346gH+493G+mtKDcjKdUqFsXbgCd8WfODleT5n6r9eGWUBIUkUh02yTTSHfPL5ZY9Dm4C2BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653487; c=relaxed/simple;
-	bh=CltygApxvTeicMzdDu9fe1kmdg8OXdzV9TYUtvRLrvw=;
+	s=arc-20240116; t=1731653148; c=relaxed/simple;
+	bh=05JF2L+H7h1bWhDldl7ls6lOT+iUSmTvNLSEEnN51t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwaXrQp9FwefE/wol5O5cmlzoimbAo12J0RLWjX0uSPUGMFYgcZnsuEYZQJzr/+hI9I2Azl/usVXMx5RnQo6Us+wyr969q2xrIWjiW0ukjCmGzLrE6HLkdtN+r7kT6o3RMnlicNdcDjM0vzg0I0M6tSs916XRaBW+pPzEfoYhJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCZlWzPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B627C4CECF;
-	Fri, 15 Nov 2024 06:51:27 +0000 (UTC)
+	 MIME-Version; b=T8ZNDj+Kiot5UFmupBBWCLWZotHvomZCWjfP0x5hv3d/+fmE/6KoSBvkJt/eqLq/rccr7/SIclOckZjW6jxDCXpUffRFK7d2JZbTLezu8LW5IW+sSmg6LJMcLWxKX11QHnSKgf0CI4JxwupquxKmuK2aCED3DItWn85FEnvHW0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTEPHJox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84889C4CED0;
+	Fri, 15 Nov 2024 06:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653487;
-	bh=CltygApxvTeicMzdDu9fe1kmdg8OXdzV9TYUtvRLrvw=;
+	s=korg; t=1731653148;
+	bh=05JF2L+H7h1bWhDldl7ls6lOT+iUSmTvNLSEEnN51t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCZlWzPX45KnB87BJ7MIJ0waW7gXdV2k3Py7kK2DtCNh9dQcQBdVqMB1EVR88cVb7
-	 Y7UOM5O4HcCveXhefGot3MYU/hxslHdRjfIcpJcp3HlD17nj4tKrLTn3zDMpnvFMBr
-	 Go2Gkrj4BbORUhpvPR0zv36y5dSdr+kOGmLg8Wt8=
+	b=mTEPHJoxN7vKy1caikBIFpxq0DjB7X9hPHHCuLDWmgK232Rxm5HHh6dm8ju5f6+CT
+	 kgoMifgBbP3u39MfTxIXndsfGSz4evocUuTedF0YeSrBDy/r8qtC4eyiKkQKOgEcBC
+	 pxioXqyD3xaJYPxtHpsDJURr8Mc3KOsd3bwZ8U6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/48] iommu/arm-smmu: Clarify MMU-500 CPRE workaround
+	Cedric Blancher <cedric.blancher@gmail.com>,
+	Dan Shelton <dan.f.shelton@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.4 49/66] NFSD: Fix NFSv4s PUTPUBFH operation
 Date: Fri, 15 Nov 2024 07:37:58 +0100
-Message-ID: <20241115063723.299544241@linuxfoundation.org>
+Message-ID: <20241115063724.611663186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0dfe314cdd0d378f96bb9c6bdc05c8120f48606d ]
+commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae upstream.
 
-CPRE workarounds are implicated in at least 5 MMU-500 errata, some of
-which remain unfixed. The comment and warning message have proven to be
-unhelpfully misleading about this scope, so reword them to get the point
-across with less risk of going out of date or confusing users.
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/dfa82171b5248ad7cf1f25592101a6eec36b8c9a.1728400877.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
+
+PUTPUBFH should now behave just like PUTROOTFH.
+
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
+Cc: stable@vger.kernel.org
+[ cel: adjusted to apply to origin/linux-5.4.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-impl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-index 9dc772f2cbb27..99030e6b16e7a 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-@@ -130,7 +130,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1069,14 +1069,6 @@ nfsd4_decode_putfh(struct nfsd4_compound
+ }
  
- 	/*
- 	 * Disable MMU-500's not-particularly-beneficial next-page
--	 * prefetcher for the sake of errata #841119 and #826419.
-+	 * prefetcher for the sake of at least 5 known errata.
- 	 */
- 	for (i = 0; i < smmu->num_context_banks; ++i) {
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
-@@ -138,7 +138,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
- 		arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_ACTLR, reg);
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
- 		if (reg & ARM_MMU500_ACTLR_CPRE)
--			dev_warn_once(smmu->dev, "Failed to disable prefetcher [errata #841119 and #826419], check ACR.CACHE_LOCK\n");
-+			dev_warn_once(smmu->dev, "Failed to disable prefetcher for errata workarounds, check SACR.CACHE_LOCK\n");
- 	}
- 
- 	return 0;
--- 
-2.43.0
-
+ static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, void *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+-static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, struct nfsd4_read *read)
+ {
+ 	DECODE_HEAD;
+@@ -1825,7 +1817,7 @@ static const nfsd4_dec nfsd4_dec_ops[] =
+ 	[OP_OPEN_CONFIRM]	= (nfsd4_dec)nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= (nfsd4_dec)nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= (nfsd4_dec)nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= (nfsd4_dec)nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= (nfsd4_dec)nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= (nfsd4_dec)nfsd4_decode_noop,
+ 	[OP_READ]		= (nfsd4_dec)nfsd4_decode_read,
+ 	[OP_READDIR]		= (nfsd4_dec)nfsd4_decode_readdir,
 
 
 
