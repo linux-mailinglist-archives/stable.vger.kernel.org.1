@@ -1,136 +1,116 @@
-Return-Path: <stable+bounces-93067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12D39C9693
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 01:15:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD289CCFAE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 01:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D8CCB21580
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 00:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1482D28220E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 00:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07C93C39;
-	Fri, 15 Nov 2024 00:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AD7383BF;
+	Fri, 15 Nov 2024 00:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Gmt5sAud"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WAirH+7v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F9FEDE;
-	Fri, 15 Nov 2024 00:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AE1E4A9;
+	Fri, 15 Nov 2024 00:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731629738; cv=none; b=lzIuWR6eiFn6T2ekwVPg6ctxCT4fBQ74ayfHrb/NdGKCqrhugyyoNSInM44AMAd/h9UKNZvXvETYRKBzL9mjIyz4c7GvlKs6Ypm4lk3MRpdku6q8L7K7FbIdM2LSAi5skX1URzA3n7O9W14Ked3xjYXp9jEAFblrva4KqZmru0s=
+	t=1731630855; cv=none; b=tLsdRRTOmosKivr5jHvIROcD6QVeWDJ6rQk8p4xOucArwxoxAk+PNedOfbJqtI1GFDYlOy30YxRBtQA3QPXMOU/sch6woAlQvL0NmBKWpFCtIasbC7WGAOQp8Du0Eojghi1EXZvdB4bG51h84RuC9mNe4Uz0sIWdZFQdNGNVA9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731629738; c=relaxed/simple;
-	bh=qtIf/XvE2L7S0s4UzV1eT0s98Kdh4Y4vXKEKcAjaQ5k=;
-	h=Date:To:From:Subject:Message-Id; b=ehR//YeIcA4KGcxiugNGxN/maB/0oR33sQH29NIJ3q2U2SFJaYiVSMShs6DS/Okq0ZJQFf5MiYbd3M485NW8wFbRievv8m/suqcjM/eCq0hHd2PrmLqvtyHwS7RzptnN34+rcnAntqRlXuhuAhk5qpbKkFyr3btysjAyUs3deEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Gmt5sAud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A09AC4CECD;
-	Fri, 15 Nov 2024 00:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731629738;
-	bh=qtIf/XvE2L7S0s4UzV1eT0s98Kdh4Y4vXKEKcAjaQ5k=;
-	h=Date:To:From:Subject:From;
-	b=Gmt5sAudpb6F8rM7JHcVRdPEyuVvE+nkX5fQglE1BDipHmzxh0o+FYCFrhEq/A18h
-	 4VW/4QO5iJx81QU11tezOp/dVny+J5sb64yx5jsO/lLW77Sieg7HZvzv8kLZQbwC8I
-	 CQiDcNbBz+ZpqzcRv5Aj/t/Nn+cPflflb3VFqEbY=
-Date: Thu, 14 Nov 2024 16:15:33 -0800
-To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,vbabka@suse.cz,sunnanyong@huawei.com,stable@vger.kernel.org,mgorman@techsingularity.net,david@redhat.com,alobakin@pm.me,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241115001537.7A09AC4CECD@smtp.kernel.org>
+	s=arc-20240116; t=1731630855; c=relaxed/simple;
+	bh=rBoI67vQ1EQnkFX0pf9Pdh59absDICM5ehoSjvK93Yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QfZTe6hKdvbbtUgBtz64jVGldBD7n4dMAQo5Jth77f4gYxy8/uEbQQ2wMkicJ+znoQKLrgtrWWY9esK3vm55UciwJ1zfSNB94a5xwpq9hfRV+uwE5JJjK2cmCQI4x/ePKnL/GqVZ1L48v1Ccx2J+n2dSIe1TR7uRxCQB5aBiyjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WAirH+7v; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C3225502;
+	Fri, 15 Nov 2024 01:33:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1731630838;
+	bh=rBoI67vQ1EQnkFX0pf9Pdh59absDICM5ehoSjvK93Yo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WAirH+7vP92sL8PRYkVG6wUSgeP3KVGSVpbQ4DLNOPFYelz2l5oB53V32hemL6Psg
+	 8qg15DRTZrHvlCQgybLTO4I8OheDcpfN3eKDAj7Y+hCuiBC5sDZ1yBLEst4ga/5OYV
+	 68hpwfNPcrcSyOiDx+44GNnAECxHMcMsPOyCX6g4=
+Date: Fri, 15 Nov 2024 02:34:03 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+Message-ID: <20241115003403.GP26171@pendragon.ideasonboard.com>
+References: <20241114-uvc-fix-event-v1-1-6c580ccf0766@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241114-uvc-fix-event-v1-1-6c580ccf0766@chromium.org>
 
+Hi Ricardo,
 
-The patch titled
-     Subject: mm: fix NULL pointer dereference in alloc_pages_bulk_noprof
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch
+Thank you for the patch.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch
+On Thu, Nov 14, 2024 at 12:17:51PM +0000, Ricardo Ribalda wrote:
+> If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
+> the following events will have that flag, regardless if they need it or
+> not.
+> 
+> This is because we keep using the same variable all the time and we do
+> not reset its original value.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Good catch.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> ---
+>  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> index e59a463c2761..5314e7864c49 100644
+> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> @@ -1626,13 +1626,13 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+>  {
+>  	struct uvc_control_mapping *mapping;
+>  	struct uvc_control *ctrl;
+> -	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+>  	unsigned int i;
+>  	unsigned int j;
+>  
+>  	for (i = 0; i < xctrls_count; ++i) {
+> -		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
+> +		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+>  
+> +		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
+>  		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+>  			/* Notification will be sent from an Interrupt event. */
+>  			continue;
+> 
+> ---
+> base-commit: b14257abe7057def6127f6fb2f14f9adc8acabdb
+> change-id: 20241114-uvc-fix-event-272df1585bb3
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+-- 
+Regards,
 
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm: fix NULL pointer dereference in alloc_pages_bulk_noprof
-Date: Wed, 13 Nov 2024 16:32:35 +0800
-
-We triggered a NULL pointer dereference for ac.preferred_zoneref->zone in
-alloc_pages_bulk_noprof() when the task is migrated between cpusets.
-
-When cpuset is enabled, in prepare_alloc_pages(), ac->nodemask may be
-&current->mems_allowed.  when first_zones_zonelist() is called to find
-preferred_zoneref, the ac->nodemask may be modified concurrently if the
-task is migrated between different cpusets.  Assuming we have 2 NUMA Node,
-when traversing Node1 in ac->zonelist, the nodemask is 2, and when
-traversing Node2 in ac->zonelist, the nodemask is 1.  As a result, the
-ac->preferred_zoneref points to NULL zone.
-
-In alloc_pages_bulk_noprof(), for_each_zone_zonelist_nodemask() finds a
-allowable zone and calls zonelist_node_idx(ac.preferred_zoneref), leading
-to NULL pointer dereference.
-
-__alloc_pages_noprof() fixes this issue by checking NULL pointer in commit
-ea57485af8f4 ("mm, page_alloc: fix check for NULL preferred_zone") and
-commit df76cee6bbeb ("mm, page_alloc: remove redundant checks from alloc
-fastpath").
-
-To fix it, check NULL pointer for preferred_zoneref->zone.
-
-Link: https://lkml.kernel.org/r/20241113083235.166798-1-tujinjiang@huawei.com
-Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Alexander Lobakin <alobakin@pm.me>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/page_alloc.c~mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof
-+++ a/mm/page_alloc.c
-@@ -4607,7 +4607,8 @@ unsigned long alloc_pages_bulk_noprof(gf
- 	gfp = alloc_gfp;
- 
- 	/* Find an allowed local zone that meets the low watermark. */
--	for_each_zone_zonelist_nodemask(zone, z, ac.zonelist, ac.highest_zoneidx, ac.nodemask) {
-+	z = ac.preferred_zoneref;
-+	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
- 		unsigned long mark;
- 
- 		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
-_
-
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
-mm-fix-null-pointer-dereference-in-alloc_pages_bulk_noprof.patch
-
+Laurent Pinchart
 
