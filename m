@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3549CD84D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5149CD879
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ADF1B22363
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E252807BD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF654186294;
-	Fri, 15 Nov 2024 06:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EF6187FE8;
+	Fri, 15 Nov 2024 06:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYic/7yt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR5YgYmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF23EAD0;
-	Fri, 15 Nov 2024 06:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BF8186294;
+	Fri, 15 Nov 2024 06:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653363; cv=none; b=g3MsHxB6YoctXODmGvqYCJxIJ07UqIjq9lhX6kO/hDgbd8R8pHC1hNxHs0yliSbSOfwJYbVWyxWF3pdVqBCPsRTx2w/d78EHbkeAbDp9P3i2CR/WNdJeWl6k4LIxrBAnM0CW8lC2V1ONTH7DIZY7iagh1HfJpUnebScOsY3yMQA=
+	t=1731653477; cv=none; b=nE/gCQ/KPU0qxcgIw/QtAE/6lK5dpzqcHC6sBBgDDdHsy2n+9/IkH7LaZTBSIrGOs+ITBdv8vCSugqY0v4iBYDf/cooMj/qxnhd/cIOtaV5gyO9FiDHIWxNp7irgIaI62lYGYuD+mYrekbDBc0UZ1NkEz5HL9MZ8wX9QxMYMnrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653363; c=relaxed/simple;
-	bh=/j7oANDh/28SnyK0KQ05ah6F3aZ3dOVZk2uUEja1hmE=;
+	s=arc-20240116; t=1731653477; c=relaxed/simple;
+	bh=r6APzv3Jt2taEHTSDoa6a/gpeoAe6ti2s9hBsu6Ww2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhFahB4Ke7PadWybxCvXB5IuOoWH5/dsJVAEgTwX/7a0n8PLlM9qmidGs0Nz7frMlFwacOqo+lovuRfkl8lAdh5QJNLgEDlIQdTh3nWnOAbcEy0pVQNpc0Z/6XiPAuLcxZHYbIkzwuSy1zZVwGL6W8RsbUBarKMronqYrmgfGNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYic/7yt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A2BC4CECF;
-	Fri, 15 Nov 2024 06:49:22 +0000 (UTC)
+	 MIME-Version; b=jSC6ABHve2x934YXGkn1pYndHdSMRWGEtcWxcz1AZyaoS55TWfz9p4fB0HhU4jtC+Zo5Gm8p4opMNwGf9V+BefsLMeQ0GF5dtwCb/ZuA4Uejw4Rn4gUQQ1g/ZvdTz0a1J5/fn5BGN5pR1ZvBa0XSrr0plnOuOGgK7k3OQKD0InY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR5YgYmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1112CC4CECF;
+	Fri, 15 Nov 2024 06:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653363;
-	bh=/j7oANDh/28SnyK0KQ05ah6F3aZ3dOVZk2uUEja1hmE=;
+	s=korg; t=1731653477;
+	bh=r6APzv3Jt2taEHTSDoa6a/gpeoAe6ti2s9hBsu6Ww2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RYic/7ytgnh83TmngBI6jqhwkxwGevpuBFSOMjBXQCLfVWMkIkmeGXjih0UXUu4fQ
-	 sA4gvHz2Qsxj3ek4q/dBYjg2gYpe+1Su670bIebt3UcaqIwjnt+Szt313R9NlsthAK
-	 ddIRjTz3BSFR56VYk4Nw/LsrbiGjVkXbHujRbWuk=
+	b=dR5YgYmRjy4X4jw5ZvQcGaLPfHZXMV6zEjSTIVM1IzG0KuLSjfedPJ4KWbbZq98Fv
+	 kkOqTmMz59Wc/6w95jHCCM75U7p+hGz5JhPcgfwm+gFmyG9CooSbZ0U+xXZAr3mcft
+	 00n45wa0npunkBOsbNKkxj+K2fPSbrsBcOWoeyhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
+	SurajSonawane2415 <surajsonawane0215@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 31/63] nvme-loop: flush off pending I/O while shutting down loop controller
-Date: Fri, 15 Nov 2024 07:37:54 +0100
-Message-ID: <20241115063727.043335695@linuxfoundation.org>
+Subject: [PATCH 6.6 06/48] block: Fix elevator_get_default() checking for NULL q->tag_set
+Date: Fri, 15 Nov 2024 07:37:55 +0100
+Message-ID: <20241115063723.193436553@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: SurajSonawane2415 <surajsonawane0215@gmail.com>
 
-[ Upstream commit c199fac88fe7c749f88a0653e9f621b9f5a71cf1 ]
+[ Upstream commit b402328a24ee7193a8ab84277c0c90ae16768126 ]
 
-While shutting down loop controller, we first quiesce the admin/IO queue,
-delete the admin/IO tag-set and then at last destroy the admin/IO queue.
-However it's quite possible that during the window between quiescing and
-destroying of the admin/IO queue, some admin/IO request might sneak in
-and if that happens then we could potentially encounter a hung task
-because shutdown operation can't forward progress until any pending I/O
-is flushed off.
+elevator_get_default() and elv_support_iosched() both check for whether
+or not q->tag_set is non-NULL, however it's not possible for them to be
+NULL. This messes up some static checkers, as the checking of tag_set
+isn't consistent.
 
-This commit helps ensure that before destroying the admin/IO queue, we
-unquiesce the admin/IO queue so that any outstanding requests, which are
-added after the admin/IO queue is quiesced, are now flushed to its
-completion.
+Remove the checks, which both simplifies the logic and avoids checker
+errors.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: SurajSonawane2415 <surajsonawane0215@gmail.com>
+Link: https://lore.kernel.org/r/20241007111416.13814-1-surajsonawane0215@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/loop.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ block/elevator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/loop.c b/drivers/nvme/target/loop.c
-index e32790d8fc260..a9d112d34d4f4 100644
---- a/drivers/nvme/target/loop.c
-+++ b/drivers/nvme/target/loop.c
-@@ -265,6 +265,13 @@ static void nvme_loop_destroy_admin_queue(struct nvme_loop_ctrl *ctrl)
+diff --git a/block/elevator.c b/block/elevator.c
+index 5ff093cb3cf8f..ba072d8f660e6 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -558,7 +558,7 @@ EXPORT_SYMBOL_GPL(elv_unregister);
+ static inline bool elv_support_iosched(struct request_queue *q)
  {
- 	if (!test_and_clear_bit(NVME_LOOP_Q_LIVE, &ctrl->queues[0].flags))
- 		return;
-+	/*
-+	 * It's possible that some requests might have been added
-+	 * after admin queue is stopped/quiesced. So now start the
-+	 * queue to flush these requests to the completion.
-+	 */
-+	nvme_unquiesce_admin_queue(&ctrl->ctrl);
-+
- 	nvmet_sq_destroy(&ctrl->queues[0].nvme_sq);
- 	nvme_remove_admin_tag_set(&ctrl->ctrl);
+ 	if (!queue_is_mq(q) ||
+-	    (q->tag_set && (q->tag_set->flags & BLK_MQ_F_NO_SCHED)))
++	    (q->tag_set->flags & BLK_MQ_F_NO_SCHED))
+ 		return false;
+ 	return true;
  }
-@@ -297,6 +304,12 @@ static void nvme_loop_destroy_io_queues(struct nvme_loop_ctrl *ctrl)
- 		nvmet_sq_destroy(&ctrl->queues[i].nvme_sq);
- 	}
- 	ctrl->ctrl.queue_count = 1;
-+	/*
-+	 * It's possible that some requests might have been added
-+	 * after io queue is stopped/quiesced. So now start the
-+	 * queue to flush these requests to the completion.
-+	 */
-+	nvme_unquiesce_io_queues(&ctrl->ctrl);
- }
+@@ -569,7 +569,7 @@ static inline bool elv_support_iosched(struct request_queue *q)
+  */
+ static struct elevator_type *elevator_get_default(struct request_queue *q)
+ {
+-	if (q->tag_set && q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
++	if (q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
+ 		return NULL;
  
- static int nvme_loop_init_io_queues(struct nvme_loop_ctrl *ctrl)
+ 	if (q->nr_hw_queues != 1 &&
 -- 
 2.43.0
 
