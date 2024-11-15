@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-93437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EE79CD947
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A35A9CD987
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFAED1F21FE1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2676A1F2230E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA75D185949;
-	Fri, 15 Nov 2024 06:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B70D1885A1;
+	Fri, 15 Nov 2024 07:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qph0gZw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXuwl/b/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF015FD13;
-	Fri, 15 Nov 2024 06:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5874052F9E;
+	Fri, 15 Nov 2024 07:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653922; cv=none; b=DEkfa6heIQiTUqXjrkzZWvus1ju6FpeNirmX5ULyyAiQL5YWC6AzaByMZA5nK257pgoQVUnL2vJXATz3oLOYchBtca7Y/CkLVTp0ltZX0C1ZaWnu3iaVAcx4iafsJ1eBq7VqfO4AQ/Fgo0Xc587RxOgq70IZ/noBOdlh+Xk0v4I=
+	t=1731654040; cv=none; b=CTYm6cyYCO/AcW3ZCHFW+rAmOM0RyD2DqmrbFS6tfZGkxR5QKGLJn7InLYm8PNke5iTmhj5IaW7UR7u01Z+lVSJBVe1EM//Msej9WYHxLSgX2CUkctQrtNzIMncsvQidI3X/dLmV1Pp4flrpGavkP+2BfVF7/OeOp3m0/kbT21M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653922; c=relaxed/simple;
-	bh=+n5cwINiBcWMuzL2R5bexN6XzVFxKDneOO23i8zCWqk=;
+	s=arc-20240116; t=1731654040; c=relaxed/simple;
+	bh=hb4JLX3w0T1QIR/7m6mKsDWV2FFUERhHtmXweanODdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxiaADl7q/XteA2VDQuT5vUPY4Gbpqsws36gpTHqkEGcBh2kESMvg08iT+6pwMaOjMWb1onlhzISOiOQG5venjGyOxoXT7S0tmi9Rsx7QeaiO42qtrIpikS147EFVB3VF5nGEUXmAeDa86DqRk/cg3qj8/c6C32UnIayk8wpyyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qph0gZw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BB7C4CED0;
-	Fri, 15 Nov 2024 06:58:41 +0000 (UTC)
+	 MIME-Version; b=hNOgf3SpFl5L+d9J1Ogji4XeHIBrugsfZCrMHyCvEEjYjBANwZ1OkZM9bYfqhtti6jlRnxKEtQTmdVIh5JAWNO7FQmVquvLEhRk2NTIVIdNe4UsvrNkvWZICv+u/GmusupDunmnM0jiW7p/MygMqgKekEhiCErl0pWjzB91RCSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXuwl/b/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA08DC4CECF;
+	Fri, 15 Nov 2024 07:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653922;
-	bh=+n5cwINiBcWMuzL2R5bexN6XzVFxKDneOO23i8zCWqk=;
+	s=korg; t=1731654040;
+	bh=hb4JLX3w0T1QIR/7m6mKsDWV2FFUERhHtmXweanODdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qph0gZw/r4KBlBYHLxzeCBO0JDNXDKyaFcpopQ0esHN5G9Dg+lHtMzoX0ZxTE7E/S
-	 0JagOGAE5/oVSJIL2Ka1WeW1mvNrgp2xFtOxFVv/7NeBUmsH2tXEMVXWG3+bflmSls
-	 /9JGf7Eri39aVFwLH3AjSSLc+j+P6X38i97DDKU0=
+	b=eXuwl/b/6Vt7j+t2BdYVHEH6vsQkJwY37BmgqmPWlIhB/9qzeyyb4PUonidqNcgje
+	 KqZm7EsOFsiG3izF/iqw3claMbUysh9UA4/cqd/wI8KljN8cmYGkBc4myoWNY6UZzy
+	 teC950y2qfsSWYmwRLlkkTriWusxuDkWr4BWQL4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Zhu Lingshan <lingshan.zhu@kernel.org>,
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 76/82] vDPA/ifcvf: Fix pci_read_config_byte() return code handling
+Subject: [PATCH 5.15 07/22] crypto: marvell/cesa - Disable hash algorithms
 Date: Fri, 15 Nov 2024 07:38:53 +0100
-Message-ID: <20241115063728.287230487@linuxfoundation.org>
+Message-ID: <20241115063721.439786594@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 7f8825b2a78ac392d3fbb3a2e65e56d9e39d75e9 ]
+[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
 
-ifcvf_init_hw() uses pci_read_config_byte() that returns
-PCIBIOS_* codes. The error handling, however, assumes the codes are
-normal errnos because it checks for < 0.
-Convert the error check to plain non-zero check.
+Disable cesa hash algorithms by lowering the priority because they
+appear to be broken when invoked in parallel.  This allows them to
+still be tested for debugging purposes.
 
-Fixes: 5a2414bc454e ("virtio: Intel IFC VF driver for VDPA")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Message-Id: <20241017013812.129952-1-yuancan@huawei.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Zhu Lingshan <lingshan.zhu@kernel.org>
+Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/ifcvf/ifcvf_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/vdpa/ifcvf/ifcvf_base.c b/drivers/vdpa/ifcvf/ifcvf_base.c
-index f2a128e56de5f..b5724b88d42bb 100644
---- a/drivers/vdpa/ifcvf/ifcvf_base.c
-+++ b/drivers/vdpa/ifcvf/ifcvf_base.c
-@@ -105,7 +105,7 @@ int ifcvf_init_hw(struct ifcvf_hw *hw, struct pci_dev *pdev)
- 	u32 i;
- 
- 	ret = pci_read_config_byte(pdev, PCI_CAPABILITY_LIST, &pos);
--	if (ret < 0) {
-+	if (ret) {
- 		IFCVF_ERR(pdev, "Failed to read PCI capability list\n");
- 		return -EIO;
- 	}
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index c72b0672fc710..84c1065092796 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -947,7 +947,7 @@ struct ahash_alg mv_md5_alg = {
+ 		.base = {
+ 			.cra_name = "md5",
+ 			.cra_driver_name = "mv-md5",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1018,7 +1018,7 @@ struct ahash_alg mv_sha1_alg = {
+ 		.base = {
+ 			.cra_name = "sha1",
+ 			.cra_driver_name = "mv-sha1",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1092,7 +1092,7 @@ struct ahash_alg mv_sha256_alg = {
+ 		.base = {
+ 			.cra_name = "sha256",
+ 			.cra_driver_name = "mv-sha256",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1327,7 +1327,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(md5)",
+ 			.cra_driver_name = "mv-hmac-md5",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1398,7 +1398,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(sha1)",
+ 			.cra_driver_name = "mv-hmac-sha1",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+@@ -1469,7 +1469,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
+ 		.base = {
+ 			.cra_name = "hmac(sha256)",
+ 			.cra_driver_name = "mv-hmac-sha256",
+-			.cra_priority = 300,
++			.cra_priority = 0,
+ 			.cra_flags = CRYPTO_ALG_ASYNC |
+ 				     CRYPTO_ALG_ALLOCATES_MEMORY |
+ 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
 -- 
 2.43.0
 
