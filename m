@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85F69CD984
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA5C9CD943
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7C5B257D4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1A4DB22353
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E9D1891AA;
-	Fri, 15 Nov 2024 07:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CBD187FE8;
+	Fri, 15 Nov 2024 06:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ8G7nLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLN/WPqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D017555;
-	Fri, 15 Nov 2024 07:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40542BB1B;
+	Fri, 15 Nov 2024 06:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654030; cv=none; b=uEgAo6HA3tJZGfgcSj1JEgwzmS4FLV2gnJb6bMyBARMk1aFKT7MStXqq7pGWkJvtnFPP/gbvfyv70HW+MKSnDTQ9XFZeNqQOqP0zP9T0xfsC7+thWPMnx3RhjVBGIXXn/hgGRZjqrFmk+Y0Lhr4Ok3vQDRglhG8BKDw9NssH/vs=
+	t=1731653915; cv=none; b=WaWGM4eX6oXyQfgL7+aNJkyYj0u/qn8eXfjZwASPo0Ql/x8WLQpf5segtjaA5Eew2xM5m4dfBe8iDTUKdrRVL1Auktr4UfgUVW4Lgm/Elnc5mwdaQqwNOXLX8MEdkJ1eZkG8E90e0boao7HWUfF5DabTiECiq2KZ9w5+1XtFzSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654030; c=relaxed/simple;
-	bh=l2iWhNikCN0XQugw7pHL7Y9KEuxBMI94Kwnr7vEakFc=;
+	s=arc-20240116; t=1731653915; c=relaxed/simple;
+	bh=qkddp2HSVhLouY9YJwXJCNhG8CHK2jJ6QUQ7sa+G/Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGKUt8HBDzcsPjSnRQam9BxrWxiOqfxdSQQ4/HHNcjwrijq4FNOn03sECVa0sEi7FBq940yTJDcUagPpEWKoXfsc7V07qtVsKrC1hqatSw20VdP7xplJH6f9uIPrVzZqA4OYIB1qcaZ65PJtj+kzSt4Ro+1m4MmavGCFFUSKpZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ8G7nLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B16C4CECF;
-	Fri, 15 Nov 2024 07:00:29 +0000 (UTC)
+	 MIME-Version; b=FZ0XxdP9SObQpnYs/kGYWSkmN61dc5Sf+MeJrovQUANrkiC+9s5Z7kvIk7N9B72P4cDRWAKwPsCTev7BNEinFoKbGkegrMQ5QBwX+Si9rQU5f1UcGT81C/sZD26LRxYTSgAjgKcEyOqYlUr5lNvBWRklRcQcX8LKbH+6zh3G3QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLN/WPqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5961C4CED0;
+	Fri, 15 Nov 2024 06:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654030;
-	bh=l2iWhNikCN0XQugw7pHL7Y9KEuxBMI94Kwnr7vEakFc=;
+	s=korg; t=1731653915;
+	bh=qkddp2HSVhLouY9YJwXJCNhG8CHK2jJ6QUQ7sa+G/Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZ8G7nLH15Ak4bui03hFpIebjmXH4mPrNnDU+zvLLsuzybmX077O83Tu3frw//EZg
-	 A+yTb4Bij3kaqMAglrIbkhgQ6xU0Y3uO5rFU+9yzVIYHimn04gjR+lysJE9Wv8Xbbc
-	 vSRdI/9rZo9qp4Cz/Jg4YKXt45HlGgq7BdzhFd5g=
+	b=jLN/WPqiL6MpVRtbqaLmqV2Iyteo3KE3GQGPG/YuXNduxFt0MFTFULAmAAiBu6DfD
+	 l1amvxIEvXK1lb+FxITa6KjuIdD1klNB1/zoywjU6XevoATyqUfIu2A5Gr3oJH9ksz
+	 jxC4JAVTm8Whekzah/L5bbkAfFeqC1fT8ZRNJeho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Blum <stefan.blum@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Julian Vetter <jvetter@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/22] HID: multitouch: Add support for B2402FVA track point
-Date: Fri, 15 Nov 2024 07:38:50 +0100
-Message-ID: <20241115063721.333924895@linuxfoundation.org>
+Subject: [PATCH 5.10 74/82] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+Date: Fri, 15 Nov 2024 07:38:51 +0100
+Message-ID: <20241115063728.214125914@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Blum <stefanblum2004@gmail.com>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-By default the track point does not work on the Asus Expertbook B2402FVA.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
->From libinput record i got the ID of the track point device:
-  evdev:
-    # Name: ASUE1201:00 04F3:32AE
-    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
-
-I found that the track point is functional, when i set the
-MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
-
-Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 6a3f4371bd109..116876d710932 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2017,6 +2017,10 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
- 			USB_VENDOR_ID_ELAN, 0x3148) },
- 
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_ELAN, 0x32ae) },
-+
- 	/* Elitegroup panel */
- 	{ .driver_data = MT_CLS_SERIAL,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
+diff --git a/sound/Kconfig b/sound/Kconfig
+index aaf2022ffc57d..cb4cb0d5b9591 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
 -- 
 2.43.0
 
