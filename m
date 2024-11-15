@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-93382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48DF9CD8F2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1069CD81F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D131F209B4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E1BE28155A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884F11891AB;
-	Fri, 15 Nov 2024 06:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3162187848;
+	Fri, 15 Nov 2024 06:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w38kHPrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdiJ+tlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A20188015;
-	Fri, 15 Nov 2024 06:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED9E153800;
+	Fri, 15 Nov 2024 06:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653733; cv=none; b=L+UOy6Ur6CZUv9e/sfiZ4CFvyWy447IJu/bc/Nec8RZukdn68xky/uG2ClokHEKXhqmEiEluGpt8jmjEky+LhbD6K3Hm08XDNJN3q+LZpzTcPfEiz2y67rVbNxdjvn3vYzgzbhma4AklPg1YmjZ+RrBQIkPxBBUIxUgHyJX22r8=
+	t=1731653262; cv=none; b=PX6wdT0gw+RXdEmtlG7Lg/Fp245BZu4F3Ce6IvjGSyfq6UyDRle/ZqULa1TS3obx8qiDmpWJaR+vORmMVM0osrg6RBtmADVCUM20qxWv35gpe9B2iP6rmWRT/VasSKqovpoOxqFLAqY7s8eG2/rFiQ//J6GXDjIMWiMl07yD300=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653733; c=relaxed/simple;
-	bh=U0HvFXFxfCO+2XMQahKAqRH7xiSjQw93w7CsCipbXRs=;
+	s=arc-20240116; t=1731653262; c=relaxed/simple;
+	bh=dskR0iBkRtKpzOYGMaWAtQ+nOLVw738Z9467d1FIWeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECfBWly83Z1BwNPjJj1Vll/RBe6CVk6Mb7XzN4VY83aLpKGf4TmBk0MDUrk7DT0iSznKJoyKxMN8nGhi7+fxrsq0hFi/VKQ75rHFhH6dSiDUEY4/xCkVi/894RbhJUx9iOlRX1nqpGOcXlyearUVCvgehaBBcpT6cVQLzHMLkOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w38kHPrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F12C4CECF;
-	Fri, 15 Nov 2024 06:55:32 +0000 (UTC)
+	 MIME-Version; b=pyhyJY2k6jV9DQm04mCr7U6l2e3DHXA03YypigNLLAd3u0qdqlzCyWWc5oZxlT33QNyEkI6DaYqL1sQCGRGpaVYPfYHONBgpfmuQ2pSSqnhAqoS7DbxgNpRTa1qenlytyPHsd7DGbFMxAv4VCtvP7GxuWOkVJ/T/z2cZglT8ACo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdiJ+tlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BEAC4CECF;
+	Fri, 15 Nov 2024 06:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653733;
-	bh=U0HvFXFxfCO+2XMQahKAqRH7xiSjQw93w7CsCipbXRs=;
+	s=korg; t=1731653262;
+	bh=dskR0iBkRtKpzOYGMaWAtQ+nOLVw738Z9467d1FIWeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w38kHPrVcRgwSadX9FDc2rgOSubvYWm/c0tlebDpDgykk4iskPdlb/JRhqcdlPxso
-	 LyKEwrjb6JzPp0zd8Ay/n0zUZPCubZs1LryCbKmWYcFtgc/lxphHnRLCLcvnR/cXUS
-	 3ElVDSPY/iTcF4cRBxXDU5KWr1wjqKP/hPMFZcNM=
+	b=HdiJ+tlZKDb0LZd6yTA05745/8/W1BRuYJ5CtjY9kdxU69p2QXb4RVw9pOaDsKmQ6
+	 9wdMezOM/WngEUah8fLvlEVVgxnEueql8NFSddGEVbkBuap2OzXVVFg35Hk/gnLZoR
+	 JTC3qY+3V+2fowUNizynYNL0ZtY6aQJutFidIm28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wu <david.wu@rock-chips.com>,
-	Johan Jonker <jbx6244@gmail.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Feng Liu <feliu@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 20/82] net: arc: fix the device for dma_map_single/dma_unmap_single
-Date: Fri, 15 Nov 2024 07:37:57 +0100
-Message-ID: <20241115063726.294901276@linuxfoundation.org>
+Subject: [PATCH 6.11 35/63] virtio_pci: Fix admin vq cleanup by using correct info pointer
+Date: Fri, 15 Nov 2024 07:37:58 +0100
+Message-ID: <20241115063727.184350674@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Feng Liu <feliu@nvidia.com>
 
-[ Upstream commit 71803c1dfa29e0d13b99e48fda11107cc8caebc7 ]
+[ Upstream commit 97ee04feb682c906a1fa973ebe586fe91567d165 ]
 
-The ndev->dev and pdev->dev aren't the same device, use ndev->dev.parent
-which has dma_mask, ndev->dev.parent is just pdev->dev.
-Or it would cause the following issue:
+vp_modern_avq_cleanup() and vp_del_vqs() clean up admin vq
+resources by virtio_pci_vq_info pointer. The info pointer of admin
+vq is stored in vp_dev->admin_vq.info instead of vp_dev->vqs[].
+Using the info pointer from vp_dev->vqs[] for admin vq causes a
+kernel NULL pointer dereference bug.
+In vp_modern_avq_cleanup() and vp_del_vqs(), get the info pointer
+from vp_dev->admin_vq.info for admin vq to clean up the resources.
+Also make info ptr as argument of vp_del_vq() to be symmetric with
+vp_setup_vq().
 
-[   39.933526] ------------[ cut here ]------------
-[   39.938414] WARNING: CPU: 1 PID: 501 at kernel/dma/mapping.c:149 dma_map_page_attrs+0x90/0x1f8
+vp_reset calls vp_modern_avq_cleanup, and causes the Call Trace:
+==================================================================
+BUG: kernel NULL pointer dereference, address:0000000000000000
+...
+CPU: 49 UID: 0 PID: 4439 Comm: modprobe Not tainted 6.11.0-rc5 #1
+RIP: 0010:vp_reset+0x57/0x90 [virtio_pci]
+Call Trace:
+ <TASK>
+...
+ ? vp_reset+0x57/0x90 [virtio_pci]
+ ? vp_reset+0x38/0x90 [virtio_pci]
+ virtio_reset_device+0x1d/0x30
+ remove_vq_common+0x1c/0x1a0 [virtio_net]
+ virtnet_remove+0xa1/0xc0 [virtio_net]
+ virtio_dev_remove+0x46/0xa0
+...
+ virtio_pci_driver_exit+0x14/0x810 [virtio_pci]
+==================================================================
 
-Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
-Signed-off-by: David Wu <david.wu@rock-chips.com>
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4c3b54af907e ("virtio_pci_modern: use completion instead of busy loop to wait on admin cmd result")
+Signed-off-by: Feng Liu <feliu@nvidia.com>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Message-Id: <20241024135406.81388-1-feliu@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/arc/emac_main.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/virtio/virtio_pci_common.c | 24 ++++++++++++++++++------
+ drivers/virtio/virtio_pci_common.h |  1 +
+ drivers/virtio/virtio_pci_modern.c | 12 +-----------
+ 3 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/arc/emac_main.c b/drivers/net/ethernet/arc/emac_main.c
-index b56a9e2aecd93..61d076e09571c 100644
---- a/drivers/net/ethernet/arc/emac_main.c
-+++ b/drivers/net/ethernet/arc/emac_main.c
-@@ -111,6 +111,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
+diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
+index c44d8ba00c02c..88074451dd615 100644
+--- a/drivers/virtio/virtio_pci_common.c
++++ b/drivers/virtio/virtio_pci_common.c
+@@ -24,6 +24,16 @@ MODULE_PARM_DESC(force_legacy,
+ 		 "Force legacy mode for transitional virtio 1 devices");
+ #endif
+ 
++bool vp_is_avq(struct virtio_device *vdev, unsigned int index)
++{
++	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
++
++	if (!virtio_has_feature(vdev, VIRTIO_F_ADMIN_VQ))
++		return false;
++
++	return index == vp_dev->admin_vq.vq_index;
++}
++
+ /* wait for pending irq handlers */
+ void vp_synchronize_vectors(struct virtio_device *vdev)
  {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
- 	struct net_device_stats *stats = &ndev->stats;
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
+@@ -234,10 +244,9 @@ static struct virtqueue *vp_setup_vq(struct virtio_device *vdev, unsigned int in
+ 	return vq;
+ }
  
- 	for (i = 0; i < TX_BD_NUM; i++) {
-@@ -140,7 +141,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
- 			stats->tx_bytes += skb->len;
- 		}
- 
--		dma_unmap_single(&ndev->dev, dma_unmap_addr(tx_buff, addr),
-+		dma_unmap_single(dev, dma_unmap_addr(tx_buff, addr),
- 				 dma_unmap_len(tx_buff, len), DMA_TO_DEVICE);
- 
- 		/* return the sk_buff to system */
-@@ -174,6 +175,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
- static int arc_emac_rx(struct net_device *ndev, int budget)
+-static void vp_del_vq(struct virtqueue *vq)
++static void vp_del_vq(struct virtqueue *vq, struct virtio_pci_vq_info *info)
  {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int work_done;
+ 	struct virtio_pci_device *vp_dev = to_vp_device(vq->vdev);
+-	struct virtio_pci_vq_info *info = vp_dev->vqs[vq->index];
+ 	unsigned long flags;
  
- 	for (work_done = 0; work_done < budget; work_done++) {
-@@ -223,9 +225,9 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
- 			continue;
- 		}
- 
--		addr = dma_map_single(&ndev->dev, (void *)skb->data,
-+		addr = dma_map_single(dev, (void *)skb->data,
- 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(&ndev->dev, addr)) {
-+		if (dma_mapping_error(dev, addr)) {
- 			if (net_ratelimit())
- 				netdev_err(ndev, "cannot map dma buffer\n");
- 			dev_kfree_skb(skb);
-@@ -237,7 +239,7 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
- 		}
- 
- 		/* unmap previosly mapped skb */
--		dma_unmap_single(&ndev->dev, dma_unmap_addr(rx_buff, addr),
-+		dma_unmap_single(dev, dma_unmap_addr(rx_buff, addr),
- 				 dma_unmap_len(rx_buff, len), DMA_FROM_DEVICE);
- 
- 		pktlen = info & LEN_MASK;
-@@ -423,6 +425,7 @@ static int arc_emac_open(struct net_device *ndev)
+ 	/*
+@@ -258,13 +267,16 @@ static void vp_del_vq(struct virtqueue *vq)
+ void vp_del_vqs(struct virtio_device *vdev)
  {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
- 	struct phy_device *phy_dev = ndev->phydev;
-+	struct device *dev = ndev->dev.parent;
+ 	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
++	struct virtio_pci_vq_info *info;
+ 	struct virtqueue *vq, *n;
  	int i;
  
- 	phy_dev->autoneg = AUTONEG_ENABLE;
-@@ -445,9 +448,9 @@ static int arc_emac_open(struct net_device *ndev)
- 		if (unlikely(!rx_buff->skb))
- 			return -ENOMEM;
+ 	list_for_each_entry_safe(vq, n, &vdev->vqs, list) {
+-		if (vp_dev->per_vq_vectors) {
+-			int v = vp_dev->vqs[vq->index]->msix_vector;
++		info = vp_is_avq(vdev, vq->index) ? vp_dev->admin_vq.info :
++						    vp_dev->vqs[vq->index];
  
--		addr = dma_map_single(&ndev->dev, (void *)rx_buff->skb->data,
-+		addr = dma_map_single(dev, (void *)rx_buff->skb->data,
- 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(&ndev->dev, addr)) {
-+		if (dma_mapping_error(dev, addr)) {
- 			netdev_err(ndev, "cannot dma map\n");
- 			dev_kfree_skb(rx_buff->skb);
- 			return -ENOMEM;
-@@ -548,6 +551,7 @@ static void arc_emac_set_rx_mode(struct net_device *ndev)
- static void arc_free_tx_queue(struct net_device *ndev)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
++		if (vp_dev->per_vq_vectors) {
++			int v = info->msix_vector;
+ 			if (v != VIRTIO_MSI_NO_VECTOR &&
+ 			    !vp_is_slow_path_vector(v)) {
+ 				int irq = pci_irq_vector(vp_dev->pci_dev, v);
+@@ -273,7 +285,7 @@ void vp_del_vqs(struct virtio_device *vdev)
+ 				free_irq(irq, vq);
+ 			}
+ 		}
+-		vp_del_vq(vq);
++		vp_del_vq(vq, info);
+ 	}
+ 	vp_dev->per_vq_vectors = false;
  
- 	for (i = 0; i < TX_BD_NUM; i++) {
-@@ -555,7 +559,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
- 		struct buffer_state *tx_buff = &priv->tx_buff[i];
- 
- 		if (tx_buff->skb) {
--			dma_unmap_single(&ndev->dev,
-+			dma_unmap_single(dev,
- 					 dma_unmap_addr(tx_buff, addr),
- 					 dma_unmap_len(tx_buff, len),
- 					 DMA_TO_DEVICE);
-@@ -579,6 +583,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
- static void arc_free_rx_queue(struct net_device *ndev)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
- 
- 	for (i = 0; i < RX_BD_NUM; i++) {
-@@ -586,7 +591,7 @@ static void arc_free_rx_queue(struct net_device *ndev)
- 		struct buffer_state *rx_buff = &priv->rx_buff[i];
- 
- 		if (rx_buff->skb) {
--			dma_unmap_single(&ndev->dev,
-+			dma_unmap_single(dev,
- 					 dma_unmap_addr(rx_buff, addr),
- 					 dma_unmap_len(rx_buff, len),
- 					 DMA_FROM_DEVICE);
-@@ -679,6 +684,7 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
- 	unsigned int len, *txbd_curr = &priv->txbd_curr;
- 	struct net_device_stats *stats = &ndev->stats;
- 	__le32 *info = &priv->txbd[*txbd_curr].info;
-+	struct device *dev = ndev->dev.parent;
- 	dma_addr_t addr;
- 
- 	if (skb_padto(skb, ETH_ZLEN))
-@@ -692,10 +698,9 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
- 		return NETDEV_TX_BUSY;
+@@ -354,7 +366,7 @@ vp_find_one_vq_msix(struct virtio_device *vdev, int queue_idx,
+ 			  vring_interrupt, 0,
+ 			  vp_dev->msix_names[msix_vec], vq);
+ 	if (err) {
+-		vp_del_vq(vq);
++		vp_del_vq(vq, *p_info);
+ 		return ERR_PTR(err);
  	}
  
--	addr = dma_map_single(&ndev->dev, (void *)skb->data, len,
--			      DMA_TO_DEVICE);
-+	addr = dma_map_single(dev, (void *)skb->data, len, DMA_TO_DEVICE);
+diff --git a/drivers/virtio/virtio_pci_common.h b/drivers/virtio/virtio_pci_common.h
+index 1d9c49947f52d..8beecf23ec85e 100644
+--- a/drivers/virtio/virtio_pci_common.h
++++ b/drivers/virtio/virtio_pci_common.h
+@@ -178,6 +178,7 @@ struct virtio_device *virtio_pci_vf_get_pf_dev(struct pci_dev *pdev);
+ #define VIRTIO_ADMIN_CMD_BITMAP 0
+ #endif
  
--	if (unlikely(dma_mapping_error(&ndev->dev, addr))) {
-+	if (unlikely(dma_mapping_error(dev, addr))) {
- 		stats->tx_dropped++;
- 		stats->tx_errors++;
- 		dev_kfree_skb_any(skb);
++bool vp_is_avq(struct virtio_device *vdev, unsigned int index);
+ void vp_modern_avq_done(struct virtqueue *vq);
+ int vp_modern_admin_cmd_exec(struct virtio_device *vdev,
+ 			     struct virtio_admin_cmd *cmd);
+diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+index 9193c30d640ae..4fbcbc7a9ae1c 100644
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -43,16 +43,6 @@ static int vp_avq_index(struct virtio_device *vdev, u16 *index, u16 *num)
+ 	return 0;
+ }
+ 
+-static bool vp_is_avq(struct virtio_device *vdev, unsigned int index)
+-{
+-	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
+-
+-	if (!virtio_has_feature(vdev, VIRTIO_F_ADMIN_VQ))
+-		return false;
+-
+-	return index == vp_dev->admin_vq.vq_index;
+-}
+-
+ void vp_modern_avq_done(struct virtqueue *vq)
+ {
+ 	struct virtio_pci_device *vp_dev = to_vp_device(vq->vdev);
+@@ -245,7 +235,7 @@ static void vp_modern_avq_cleanup(struct virtio_device *vdev)
+ 	if (!virtio_has_feature(vdev, VIRTIO_F_ADMIN_VQ))
+ 		return;
+ 
+-	vq = vp_dev->vqs[vp_dev->admin_vq.vq_index]->vq;
++	vq = vp_dev->admin_vq.info->vq;
+ 	if (!vq)
+ 		return;
+ 
 -- 
 2.43.0
 
