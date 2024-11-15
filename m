@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF1E9CD929
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E795A9CD860
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB1CB27DAB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 937C31F21882
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2173A188015;
-	Fri, 15 Nov 2024 06:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977351885B3;
+	Fri, 15 Nov 2024 06:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWDTvKSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5umAaxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DFD185924;
-	Fri, 15 Nov 2024 06:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C13153800;
+	Fri, 15 Nov 2024 06:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653853; cv=none; b=YCu25XE+7ScUSTSYKpNDt7ngH0+/+2X5/W2jaN0oS/Zcr4Doo/WixKxasES5hqpBT4QlbvE60n0GiJWi8fcH94nleAN+bfGZhfRKJanFIPMCAM/4p1n9vYEW+7In2TD89g+cmQexZWJBvQPK5QLyc5DZTcHqwlLYlLPGoaLxFRA=
+	t=1731653411; cv=none; b=neiF9rGiAM32B4P02oR4YqUgX7mocJ/y0pMX4i+2kYOj5a8yvd07/gB9NoCo8oLIDkYZrMRmtsQMUVxKQO9YlMD+2rjNimLPVQ2LqW7zi25RyfT+63wECE3oIf2DeM48vHYo3vS4Yh9JVdSj3x1ezD7OyZ0HIZHBKNkIqATqsLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653853; c=relaxed/simple;
-	bh=BfftGcSfMX6L8Xp+29zU91X5MIEGQz5HJsNlOOVqtqc=;
+	s=arc-20240116; t=1731653411; c=relaxed/simple;
+	bh=0SInrkeISLlMNj9wlBBa9Qyh7x1C9uCk496Dl3V5Wr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJs1bFGeXrBx1a+t4pWabpz2YpnsHlCl5IYMLs+ekMRdOYXjFwLui5X35ODxCi95nBZ0t3apUkNV/RmEeI85jw9FQarfHRJdCMGRgJ79B2w5Cbt7oAmMHbcHnv2MptByfcGHjV6cokHXclF2ngXV9iM9kDbIMqjdDpA+aER23XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWDTvKSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4B0C4CECF;
-	Fri, 15 Nov 2024 06:57:32 +0000 (UTC)
+	 MIME-Version; b=dnRcw0mXZsbwJrbuz8vfvPa0OxT3BykWgFAi+knHfqnt9N72ZX9zOUUl190ZtPLal6RCuPGSpmHYu+hU2jrZaQhQSx62HfGnW2kqT/Hvwjkn4CGi/mhgnXt6KrYVn3gO69VaDq05XZ5sXjHDXo1Drh1v8m+Myim00Gd7R00XaMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5umAaxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FDDC4CECF;
+	Fri, 15 Nov 2024 06:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653853;
-	bh=BfftGcSfMX6L8Xp+29zU91X5MIEGQz5HJsNlOOVqtqc=;
+	s=korg; t=1731653411;
+	bh=0SInrkeISLlMNj9wlBBa9Qyh7x1C9uCk496Dl3V5Wr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWDTvKSvXC5iHD4U4uuapdujEQrxVofez0pqN5lflIA+zq1M9eaMVyUO5NoRDeVSL
-	 8jnjjrGH3RMWYC3kwfGIC5eW8z09faTHy3MiQhT6frqCafzcC4lRNiPf+9yudIYrct
-	 t38qKq8dF1t5KIYT6/bxAxW/Q6iO8F7aCdkaoRC0=
+	b=m5umAaxOYLFePRTdnT3P144hTLIUVyljw3tv9izUar7MIIuUHseyuMfLb6T9sekNt
+	 ekyrc1211xGY3pFG/CsbmDrfbm+ZMT3zQE5M5V3LTJPQhkFqqFFHhcj4GvzorsXV2p
+	 Xxb0wPFppS4TStdEjOutCgU1efYlqFmftGJs2vZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 27/82] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+Subject: [PATCH 6.6 15/48] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
 Date: Fri, 15 Nov 2024 07:38:04 +0100
-Message-ID: <20241115063726.543189224@linuxfoundation.org>
+Message-ID: <20241115063723.515470149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
+[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
 
-If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
-though it's supposed to return error code, which is checked inside
-init_stream() in file tascam-stream.c.
+Currently the array size is only limited by the largest kmalloc size which
+is incorrect. This change will also return a more specific error message
+than ENOMEM to userspace.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/amdtp-tascam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
-index f823a2ab3544b..8ffc065b77f95 100644
---- a/sound/firewire/tascam/amdtp-tascam.c
-+++ b/sound/firewire/tascam/amdtp-tascam.c
-@@ -244,7 +244,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
- 			CIP_NONBLOCKING | CIP_SKIP_DBC_ZERO_CHECK, fmt,
- 			process_ctx_payloads, sizeof(struct amdtp_tscm));
- 	if (err < 0)
--		return 0;
-+		return err;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index ac3d7ff3f5bb9..def98d868deb4 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -61,7 +61,7 @@
+ #define VMWGFX_DRIVER_MINOR 20
+ #define VMWGFX_DRIVER_PATCHLEVEL 0
+ #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
+-#define VMWGFX_MAX_DISPLAYS 16
++#define VMWGFX_NUM_DISPLAY_UNITS 8
+ #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
  
- 	if (dir == AMDTP_OUT_STREAM) {
- 		// Use fixed value for FDF field.
+ #define VMWGFX_MIN_INITIAL_WIDTH 1280
+@@ -81,7 +81,7 @@
+ #define VMWGFX_NUM_GB_CONTEXT 256
+ #define VMWGFX_NUM_GB_SHADER 20000
+ #define VMWGFX_NUM_GB_SURFACE 32768
+-#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
++#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
+ #define VMWGFX_NUM_DXCONTEXT 256
+ #define VMWGFX_NUM_DXQUERY 512
+ #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 11f7c0e5420e0..33f73d559be72 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2327,7 +2327,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 	struct drm_mode_config *mode_config = &dev->mode_config;
+ 	struct drm_vmw_update_layout_arg *arg =
+ 		(struct drm_vmw_update_layout_arg *)data;
+-	void __user *user_rects;
++	const void __user *user_rects;
+ 	struct drm_vmw_rect *rects;
+ 	struct drm_rect *drm_rects;
+ 	unsigned rects_size;
+@@ -2339,6 +2339,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 					    VMWGFX_MIN_INITIAL_HEIGHT};
+ 		vmw_du_update_layout(dev_priv, 1, &def_rect);
+ 		return 0;
++	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
++		return -E2BIG;
+ 	}
+ 
+ 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 19a843da87b78..ec86f92517a14 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -198,9 +198,6 @@ struct vmw_kms_dirty {
+ 	s32 unit_y2;
+ };
+ 
+-#define VMWGFX_NUM_DISPLAY_UNITS 8
+-
+-
+ #define vmw_framebuffer_to_vfb(x) \
+ 	container_of(x, struct vmw_framebuffer, base)
+ #define vmw_framebuffer_to_vfbs(x) \
 -- 
 2.43.0
 
