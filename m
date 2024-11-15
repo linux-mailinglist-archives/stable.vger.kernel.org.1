@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-93425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68BF9CD933
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8999CD82E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C16728393C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AEF11F231B8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E142F188015;
-	Fri, 15 Nov 2024 06:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC305188A0C;
+	Fri, 15 Nov 2024 06:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTgkw7KF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enU9p2Ml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC3E2BB1B;
-	Fri, 15 Nov 2024 06:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A701185924;
+	Fri, 15 Nov 2024 06:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653882; cv=none; b=XwZoUVDc3s3Dg8XrLgNTFTvCprhFHbANwHL9calZa3p0slDqPXEmnvBJlUAU6PspLlQ0lnwfCghCfx9pfLYCUCSabIzgKEZqjbiF1gATK7UCmSLTTCsX8jlEBBXkAZDy52SKlkNUM3NJEYg8LsNpdwDTFn1Lu5I/qDBQQ8thaCk=
+	t=1731653292; cv=none; b=tdRTUTU1ZHaAZnKDWGIYelthI80lsL8GIpylT3qAgUrS2r7B0LzMW9RV6Yb41xzQy3MGQ7PCQe/TwTwhRMU+Nr+9/39xxCZvExuusMyZ5NDh2oZ1jULhbbKaBVR7km2pLxX6kszsk2q43s3HAohINQk7+pd3MI8X5FcJgHEqo8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653882; c=relaxed/simple;
-	bh=BrYjxwXZUME6GbBdEgZxb24SLTqw82z6qG3ue9+D3Zw=;
+	s=arc-20240116; t=1731653292; c=relaxed/simple;
+	bh=7oU9UCuC26pVdt7hOJueueyH3I4FQ0PTt9AVScZmzUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAR5hKd9HwS/Zy2TSbxBbQOYmFecSBx0DbE82wK3espOLYuWVmwPhJwjQ4GDl6CsYx0ijfUUtUEOBGxFDYmz0JRs0MURiQdNeVid9AUupV8It88UGtI/k1aCalxeKOdSmzLx0pKEbQT87CSTE3YEFfY/wMl6YmvY4Hde8nEBtKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTgkw7KF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2953FC4CECF;
-	Fri, 15 Nov 2024 06:58:01 +0000 (UTC)
+	 MIME-Version; b=Xt5H9IbCBjWAGsjns3UoikHR0PEg3NNyzcwt0eQMlx2cdK9FcaFUgZrXt/AWJp5L3ySYnPGqJwwTK6ljvrvyvezffiEdHpD7nrOrBxxjTdBWEB8NAwawjUQaoByzPOvt97Hh2VUQlSgh1ZnT9+e4PuaRIoc5PUn1J/zsm/eVh8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enU9p2Ml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20545C4CECF;
+	Fri, 15 Nov 2024 06:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653882;
-	bh=BrYjxwXZUME6GbBdEgZxb24SLTqw82z6qG3ue9+D3Zw=;
+	s=korg; t=1731653292;
+	bh=7oU9UCuC26pVdt7hOJueueyH3I4FQ0PTt9AVScZmzUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTgkw7KF1ZeimaFd8FUXR3iZACV78b5hLeFmU7nlyMkmoU0WNToiwS00pAyEqVOx2
-	 2K+BXA2UQ+6An0D5yVDpdfP5kpJTBGC8okzw4Bc6mAYfMXJegt3UgqyrznfHbsm/kh
-	 lYMD8olKhGSEzcyhO527dhSLMse4blr9TV2WcJBw=
+	b=enU9p2Mltmi7toIh25kzjRViGPDV/PAXcIWWNRXZ26oTNP3crU1g2rr2vHh4c9zEC
+	 jwLusGI3juUn+ZE6z7Er478s4li4dyoBk+KBU/EzxCzUhUKU9r+GIrj7hxBdXQA6sP
+	 6ALIQKOEJ8cECFrXAtSf736whahu1XTxLICjDpZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 30/82] media: cx24116: prevent overflows on SNR calculus
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 44/63] fs: Fix uninitialized value issue in from_kuid and from_kgid
 Date: Fri, 15 Nov 2024 07:38:07 +0100
-Message-ID: <20241115063726.649969656@linuxfoundation.org>
+Message-ID: <20241115063727.503931085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-as reported by Coverity, if reading SNR registers fail, a negative
-number will be returned, causing an underflow when reading SNR
-registers.
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-Prevent that.
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
 
-Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/media/dvb-frontends/cx24116.c
-+++ b/drivers/media/dvb-frontends/cx24116.c
-@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
- {
- 	struct cx24116_state *state = fe->demodulator_priv;
- 	u8 snr_reading;
-+	int ret;
- 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
- 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
- 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
-@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 02d2beb7ddb95..c6d0d17a759c1 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1128,9 +1128,12 @@ int ocfs2_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
  
- 	dprintk("%s()\n", __func__);
- 
--	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	if (ret  < 0)
-+		return ret;
-+
-+	snr_reading = ret;
- 
- 	if (snr_reading >= 0xa0 /* 100% */)
- 		*snr = 0xffff;
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
+-- 
+2.43.0
+
 
 
 
