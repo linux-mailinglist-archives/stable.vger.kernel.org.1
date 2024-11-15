@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-93302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804A99CD876
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D769CD7C6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46773282022
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD86D1F23155
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0548187FE8;
-	Fri, 15 Nov 2024 06:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A708188012;
+	Fri, 15 Nov 2024 06:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exLVSpfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euAkyfBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA3187848;
-	Fri, 15 Nov 2024 06:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48ACF154C00;
+	Fri, 15 Nov 2024 06:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653466; cv=none; b=Jmwm3EpItKSN9lWycHlxsvJ5OFcpl93P/2y4MrV3Kl5qoFUmprGkazOBHNon+fBzMz9lPwVa/xCpXGUt0P1eClkeMR6Qgz2SbA+m56U49bnDZdDNEFKrNdhelcWmjjydbS9MwOfjlF8DpoN98ScU1IzJkk3hukbAmkDZ0IR8rzc=
+	t=1731653069; cv=none; b=lsMRNsrffxNuG5O5qwYbrRYQsxraBJbz6m4iQTclQckLDJnM/Q/PHqybv/N3e7S58QuLzJc5guBU4J32A578+WIN+Bizg6BqZdxLQYbl5czeRbWK6HasQBkIKmdxZUo7UPYc99xjKBc7KXaRu3wEL+BA/khilIk9OR9B68GTov4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653466; c=relaxed/simple;
-	bh=qqVSdnl0J0Zn6suODGagCacIBNohhCSyLlFg166DaDA=;
+	s=arc-20240116; t=1731653069; c=relaxed/simple;
+	bh=vKUOTKJSGtzxCtg49qPi5Qkz07wRgrRrWNbWuM57qLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoSH8uPv3Zug/Nn4kXyjT5cVH4LCL8VJUYExnefFICyzV7btLlWONhzyPfKRRTIlF0tHZIqZLCXiGdSONyyy1J7TKTdy/p5B2r7CLUs428ZEJoAJRUmkRycegZOw2+c+ostyufxhPrj/OIf9tO5ni1gjHGVJF5UXXz31y+HbBYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exLVSpfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B997C4CECF;
-	Fri, 15 Nov 2024 06:51:05 +0000 (UTC)
+	 MIME-Version; b=jhqLDhClIxB+J1a9S5o+GWDfor9uMXCaYIOH9yaZpOfsPAg02BylPLfGDF+8/klqbe6JPL/WDD4QwBVZfxj7fBgd4PSz9u6azsHZnHE1KzBtlBOLqQTm6OYscOZXzyRQBcJVqZhOizeEw3lfLHVVvMHewu5PIM0j7w85oHLT4EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euAkyfBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB113C4CECF;
+	Fri, 15 Nov 2024 06:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653466;
-	bh=qqVSdnl0J0Zn6suODGagCacIBNohhCSyLlFg166DaDA=;
+	s=korg; t=1731653069;
+	bh=vKUOTKJSGtzxCtg49qPi5Qkz07wRgrRrWNbWuM57qLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exLVSpfPvFdB3yKQyw6EPvEQE0THA5e67Z9bHwGCAsBe0xa2BAPCKZw6DTS+BES4d
-	 Hw1gWyREdMRhhrWaT2Tto8/LsU6qjT72EGW8xO+LjmtSeit/FGd829PRZokBtgDcqj
-	 kVQezpQNmPYttAdz4QgD6gqoEfXlnGfF4vzvqSUE=
+	b=euAkyfBZQ6Reszt5jDkWkxU64y+lZNYIisDZ7wKw1krfDiur/HFCP+uOL43PSHZjK
+	 BrDmT1nFpxp/QsRFZ18K1Tx4odJfP+qqKYrrgEkyuRB/hnBuH/UcKKTlfhC7oMIk4K
+	 lLH34RrziEGsmn1zqWIeh9KN7SWTVgkupLLJZ5yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/48] selftests/bpf: Verify that sync_linked_regs preserves subreg_def
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 43/66] USB: serial: option: add Fibocom FG132 0x0112 composition
 Date: Fri, 15 Nov 2024 07:37:52 +0100
-Message-ID: <20241115063723.088813298@linuxfoundation.org>
+Message-ID: <20241115063724.399122565@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit a41b3828ec056a631ad22413d4560017fed5c3bd ]
+commit 393c74ccbd847bacf18865a01b422586fc7341cf upstream.
 
-This test was added because of a bug in verifier.c:sync_linked_regs(),
-upon range propagation it destroyed subreg_def marks for registers.
-The test is written in a way to return an upper half of a register
-that is affected by range propagation and must have it's subreg_def
-preserved. This gives a return value of 0 and leads to undefined
-return value if subreg_def mark is not preserved.
+Add Fibocom FG132 0x0112 composition:
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240924210844.1758441-2-eddyz87@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/bpf/progs/verifier_scalar_ids.c | 67 +++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-index 13b29a7faa71a..d24d3a36ec144 100644
---- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-@@ -656,4 +656,71 @@ __naked void two_old_ids_one_cur_id(void)
- 	: __clobber_all);
- }
- 
-+SEC("socket")
-+/* Note the flag, see verifier.c:opt_subreg_zext_lo32_rnd_hi32() */
-+__flag(BPF_F_TEST_RND_HI32)
-+__success
-+/* This test was added because of a bug in verifier.c:sync_linked_regs(),
-+ * upon range propagation it destroyed subreg_def marks for registers.
-+ * The subreg_def mark is used to decide whether zero extension instructions
-+ * are needed when register is read. When BPF_F_TEST_RND_HI32 is set it
-+ * also causes generation of statements to randomize upper halves of
-+ * read registers.
-+ *
-+ * The test is written in a way to return an upper half of a register
-+ * that is affected by range propagation and must have it's subreg_def
-+ * preserved. This gives a return value of 0 and leads to undefined
-+ * return value if subreg_def mark is not preserved.
-+ */
-+__retval(0)
-+/* Check that verifier believes r1/r0 are zero at exit */
-+__log_level(2)
-+__msg("4: (77) r1 >>= 32                     ; R1_w=0")
-+__msg("5: (bf) r0 = r1                       ; R0_w=0 R1_w=0")
-+__msg("6: (95) exit")
-+__msg("from 3 to 4")
-+__msg("4: (77) r1 >>= 32                     ; R1_w=0")
-+__msg("5: (bf) r0 = r1                       ; R0_w=0 R1_w=0")
-+__msg("6: (95) exit")
-+/* Verify that statements to randomize upper half of r1 had not been
-+ * generated.
-+ */
-+__xlated("call unknown")
-+__xlated("r0 &= 2147483647")
-+__xlated("w1 = w0")
-+/* This is how disasm.c prints BPF_ZEXT_REG at the moment, x86 and arm
-+ * are the only CI archs that do not need zero extension for subregs.
-+ */
-+#if !defined(__TARGET_ARCH_x86) && !defined(__TARGET_ARCH_arm64)
-+__xlated("w1 = w1")
-+#endif
-+__xlated("if w0 < 0xa goto pc+0")
-+__xlated("r1 >>= 32")
-+__xlated("r0 = r1")
-+__xlated("exit")
-+__naked void linked_regs_and_subreg_def(void)
-+{
-+	asm volatile (
-+	"call %[bpf_ktime_get_ns];"
-+	/* make sure r0 is in 32-bit range, otherwise w1 = w0 won't
-+	 * assign same IDs to registers.
-+	 */
-+	"r0 &= 0x7fffffff;"
-+	/* link w1 and w0 via ID */
-+	"w1 = w0;"
-+	/* 'if' statement propagates range info from w0 to w1,
-+	 * but should not affect w1->subreg_def property.
-+	 */
-+	"if w0 < 10 goto +0;"
-+	/* r1 is read here, on archs that require subreg zero
-+	 * extension this would cause zext patch generation.
-+	 */
-+	"r1 >>= 32;"
-+	"r0 = r1;"
-+	"exit;"
-+	:
-+	: __imm(bpf_ktime_get_ns)
-+	: __clobber_all);
-+}
-+
- char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2320,6 +2320,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x30) },	/* Fibocom FG132 Diag */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x40) },	/* Fibocom FG132 AT */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0, 0) },		/* Fibocom FG132 NMEA */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
 
 
 
