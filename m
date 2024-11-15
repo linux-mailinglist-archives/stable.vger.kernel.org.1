@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-93445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3753A9CD952
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 016FE9CD8CE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2D25B2151F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 751FAB23D53
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03868188CA9;
-	Fri, 15 Nov 2024 06:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060631885BF;
+	Fri, 15 Nov 2024 06:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciXlvKDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Drg4wFMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE82D185949;
-	Fri, 15 Nov 2024 06:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B892E14EC77;
+	Fri, 15 Nov 2024 06:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653949; cv=none; b=NWbb0V4Razu3njyXmeNPV85flLEGsMzZ0S2WKR2CfCobpqLggGwo+nfw2fA7HiM9NRNrfbq2ljEyi0Qm/weN00m8RpZHeu0fNBXUm09AGAI3KlFrLiii1M7TAHZEnUdkh7x2WpW6fu8GsK93oang56656OOKPlIdvKhRoxPSbSc=
+	t=1731653664; cv=none; b=pEXwMjjDzL2WpBHyKmnzisru30lNOfzJ0sZC0gn210hW77XLwMLTNyaYM6X1mAGAfgHKBpXIQdeQKWdqnR5V+ffNR2uCdm7mOBuFlFeAlAPQHB7qsYYPpnjHjBCFrMandiARZxqikG5jF2KRPzLYQXuYnsy9vOT2IsTl/7IhIuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653949; c=relaxed/simple;
-	bh=XZ9sz1oA0k62MISZq75y0Tyg1H4XWcEPYyMIBuHe3XY=;
+	s=arc-20240116; t=1731653664; c=relaxed/simple;
+	bh=aD1ofXg8tDXF8U3wKjjI74PWaZZF5pn+x0M/I7FR3+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyGkhbKwqXc+trTKngN0gGyq4v+ChHnqxdaYMcF6wpL0Lbu1K+BxKwh8MCURo0vAK2oKLaEkRny0qqC/Xoql0LsrEeKdAou0qmOWQRJDJU/PPemuKawn+aTsyO3H9WgDBcA9tn6lekS9R79WVQGZZPGS3grSiulTDDCYO9Aaw4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciXlvKDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB60FC4CECF;
-	Fri, 15 Nov 2024 06:59:08 +0000 (UTC)
+	 MIME-Version; b=dISkcLwn/+Z5w6Ig4M+axx5Vg+RJCfvcUduCfI8sPVAtvY3rCyS8PCQ3LqJoizQoqmJNcHYsUzcZnLCU2q9hoHY6EOKXWZaRr8e/kJZjaMi1Oc6CrBquJ8jv5u3+/Ov5L/uUYblKoHGnWYJGjmM7wn6gTnwLH7R+HvXSfVbPAPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Drg4wFMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233B7C4CED7;
+	Fri, 15 Nov 2024 06:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653949;
-	bh=XZ9sz1oA0k62MISZq75y0Tyg1H4XWcEPYyMIBuHe3XY=;
+	s=korg; t=1731653664;
+	bh=aD1ofXg8tDXF8U3wKjjI74PWaZZF5pn+x0M/I7FR3+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciXlvKDo6jTJ58/2HYoYN0JN3h7S7k5KAFebfmz2SanoroKFQSdBgfmHl4UpASvGe
-	 i3gIN3Zw1A6x7YDkeAe/rgchSNoeyGKqsdV7DfQQOy4zSwRAPIR/R6j7dKgRQ50zJ1
-	 TtumfaMs6ooKBWKxaSMrDsUdCkV//E/evGdknZxo=
+	b=Drg4wFMsHkWa7LXK/l4gNyz24T1lV8Fes1PlScUzKBDh9P4nPkWmA70SQFT8YCbi/
+	 2LV9d6hVU70y+/cKsdbifV9QOk4xhvracA2n1yGFUUh08BRmGj5D324/6iO+xve+YL
+	 WNEIG6yulbgr+jtBZE4W81pxLINXS6Q7z7utv4AM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Kanner <andrew.kanner@gmail.com>,
-	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 63/82] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
-Date: Fri, 15 Nov 2024 07:38:40 +0100
-Message-ID: <20241115063727.823828476@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH 6.1 31/39] uprobes: encapsulate preparation of uprobe args buffer
+Date: Fri, 15 Nov 2024 07:38:41 +0100
+Message-ID: <20241115063723.731582037@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +64,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 0b63c0e01fba40e3992bc627272ec7b618ccaef7 upstream.
+commit 3eaea21b4d27cff0017c20549aeb53034c58fc23 upstream.
 
-Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
+Move the logic of fetching temporary per-CPU uprobe buffer and storing
+uprobes args into it to a new helper function. Store data size as part
+of this buffer, simplifying interfaces a bit, as now we only pass single
+uprobe_cpu_buffer reference around, instead of pointer + dsize.
 
-[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
-[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
-[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
-[...]
-[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[...]
-[   57.331328] Call Trace:
-[   57.331477]  <TASK>
-[...]
-[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
-[   57.333778]  ? exc_page_fault+0x70/0x170
-[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
-[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
-[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
-[   57.335164]  ocfs2_xa_set+0x704/0xcf0
-[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
-[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
-[   57.335915]  ? trace_preempt_on+0x1e/0x70
-[   57.336153]  ? start_this_handle+0x16c/0x500
-[   57.336410]  ? preempt_count_sub+0x50/0x80
-[   57.336656]  ? _raw_read_unlock+0x20/0x40
-[   57.336906]  ? start_this_handle+0x16c/0x500
-[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
-[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
-[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
-[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
-[   57.338207]  ? dput+0x46/0x1c0
-[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338948]  __vfs_removexattr+0x92/0xc0
-[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
-[   57.339456]  ? preempt_count_sub+0x50/0x80
-[   57.339705]  vfs_removexattr+0x5f/0x100
-[...]
+This logic was duplicated across uprobe_dispatcher and uretprobe_dispatcher,
+and now will be centralized. All this is also in preparation to make
+this uprobe_cpu_buffer handling logic optional in the next patch.
 
-Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
-ocfs2_xa_value_truncate() with -ENOMEM.
+Link: https://lore.kernel.org/all/20240318181728.2795838-2-andrii@kernel.org/
+[Masami: update for v6.9-rc3 kernel]
 
-In this case the comment mentions that we can return 0 if
-ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
-anyway. But the following 'rc' check is wrong and execution flow do
-'ocfs2_xa_remove_entry(loc);' twice:
-* 1st: in ocfs2_xa_cleanup_value_truncate();
-* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
-
-Fix this by skipping the 2nd removal of the same entry and making
-syzkaller repro happy.
-
-Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
-Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
-Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/xattr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/trace/trace_uprobe.c |   79 ++++++++++++++++++++++----------------------
+ 1 file changed, 41 insertions(+), 38 deletions(-)
 
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -2042,8 +2042,7 @@ static int ocfs2_xa_remove(struct ocfs2_
- 				rc = 0;
- 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
- 							orig_clusters);
--			if (rc)
--				goto out;
-+			goto out;
- 		}
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -858,6 +858,7 @@ static const struct file_operations upro
+ struct uprobe_cpu_buffer {
+ 	struct mutex mutex;
+ 	void *buf;
++	int dsize;
+ };
+ static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
+ static int uprobe_buffer_refcnt;
+@@ -947,9 +948,26 @@ static void uprobe_buffer_put(struct upr
+ 	mutex_unlock(&ucb->mutex);
+ }
+ 
++static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
++						       struct pt_regs *regs)
++{
++	struct uprobe_cpu_buffer *ucb;
++	int dsize, esize;
++
++	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
++	dsize = __get_data_size(&tu->tp, regs);
++
++	ucb = uprobe_buffer_get();
++	ucb->dsize = tu->tp.size + dsize;
++
++	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
++
++	return ucb;
++}
++
+ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 				unsigned long func, struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize,
++				struct uprobe_cpu_buffer *ucb,
+ 				struct trace_event_file *trace_file)
+ {
+ 	struct uprobe_trace_entry_head *entry;
+@@ -960,14 +978,14 @@ static void __uprobe_trace_func(struct t
+ 
+ 	WARN_ON(call != trace_file->event_call);
+ 
+-	if (WARN_ON_ONCE(tu->tp.size + dsize > PAGE_SIZE))
++	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
+ 		return;
+ 
+ 	if (trace_trigger_soft_disabled(trace_file))
+ 		return;
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	entry = trace_event_buffer_reserve(&fbuffer, trace_file, size);
+ 	if (!entry)
+ 		return;
+@@ -981,14 +999,14 @@ static void __uprobe_trace_func(struct t
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
  	}
  
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+ 	trace_event_buffer_commit(&fbuffer);
+ }
+ 
+ /* uprobe handler */
+ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			     struct uprobe_cpu_buffer *ucb, int dsize)
++			     struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+@@ -997,7 +1015,7 @@ static int uprobe_trace_func(struct trac
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, 0, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, 0, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ 
+ 	return 0;
+@@ -1005,13 +1023,13 @@ static int uprobe_trace_func(struct trac
+ 
+ static void uretprobe_trace_func(struct trace_uprobe *tu, unsigned long func,
+ 				 struct pt_regs *regs,
+-				 struct uprobe_cpu_buffer *ucb, int dsize)
++				 struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, func, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, func, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -1339,7 +1357,7 @@ static bool uprobe_perf_filter(struct up
+ 
+ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 			       unsigned long func, struct pt_regs *regs,
+-			       struct uprobe_cpu_buffer *ucb, int dsize)
++			       struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct trace_event_call *call = trace_probe_event_call(&tu->tp);
+ 	struct uprobe_trace_entry_head *entry;
+@@ -1360,7 +1378,7 @@ static void __uprobe_perf_func(struct tr
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+ 
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	size = ALIGN(size + sizeof(u32), sizeof(u64)) - sizeof(u32);
+ 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE, "profile buffer not large enough"))
+ 		return;
+@@ -1383,13 +1401,10 @@ static void __uprobe_perf_func(struct tr
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
+ 	}
+ 
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
+-
+-	if (size - esize > tu->tp.size + dsize) {
+-		int len = tu->tp.size + dsize;
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+-		memset(data + len, 0, size - esize - len);
+-	}
++	if (size - esize > ucb->dsize)
++		memset(data + ucb->dsize, 0, size - esize - ucb->dsize);
+ 
+ 	perf_trace_buf_submit(entry, size, rctx, call->event.type, 1, regs,
+ 			      head, NULL);
+@@ -1399,21 +1414,21 @@ static void __uprobe_perf_func(struct tr
+ 
+ /* uprobe profile handler */
+ static int uprobe_perf_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			    struct uprobe_cpu_buffer *ucb, int dsize)
++			    struct uprobe_cpu_buffer *ucb)
+ {
+ 	if (!uprobe_perf_filter(&tu->consumer, 0, current->mm))
+ 		return UPROBE_HANDLER_REMOVE;
+ 
+ 	if (!is_ret_probe(tu))
+-		__uprobe_perf_func(tu, 0, regs, ucb, dsize);
++		__uprobe_perf_func(tu, 0, regs, ucb);
+ 	return 0;
+ }
+ 
+ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
+ 				struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize)
++				struct uprobe_cpu_buffer *ucb)
+ {
+-	__uprobe_perf_func(tu, func, regs, ucb, dsize);
++	__uprobe_perf_func(tu, func, regs, ucb);
+ }
+ 
+ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
+@@ -1479,10 +1494,8 @@ static int uprobe_dispatcher(struct upro
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 	int ret = 0;
+ 
+-
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 	tu->nhit++;
+ 
+@@ -1494,18 +1507,14 @@ static int uprobe_dispatcher(struct upro
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
++		ret |= uprobe_trace_func(tu, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
++		ret |= uprobe_perf_func(tu, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return ret;
+@@ -1517,7 +1526,6 @@ static int uretprobe_dispatcher(struct u
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 
+@@ -1529,18 +1537,13 @@ static int uretprobe_dispatcher(struct u
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+-
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		uretprobe_trace_func(tu, func, regs, ucb, dsize);
++		uretprobe_trace_func(tu, func, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		uretprobe_perf_func(tu, func, regs, ucb, dsize);
++		uretprobe_perf_func(tu, func, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return 0;
 
 
 
