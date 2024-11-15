@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-93415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF5B9CD925
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0959E9CD8B2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0C751F231F4
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29F7283CBA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BC818873F;
-	Fri, 15 Nov 2024 06:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B75187FE8;
+	Fri, 15 Nov 2024 06:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWHCvxxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuUVh5Wc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8701A15FD13;
-	Fri, 15 Nov 2024 06:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D934E153800;
+	Fri, 15 Nov 2024 06:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653850; cv=none; b=Xsld0+hehwk/OTOzVyNoIHA7+4RMhrvaTisSJVn3KKCaJgwCl4GpazJPpsRJ6k3ZhZVdEg4QsJLYVuqCm2xvT8GLE0eMW9X0cO+LDLz4Xpm354M7PsWNRNt0X3oOtChpIr+qFB0VHlxbx//HgByOm3hTdg+zy6dwPhMrj1o37rg=
+	t=1731653593; cv=none; b=lHI2nfJ391ZeuGtdNLkGqpc2L3+NF4No1fTW09EDFavn+65IeNV4OvC9naBzcY4Xh/ucIgAjb+UPj+QjXf8oEJxy7HHcJcgc4FQSxBQSjVAOCIr+/w5YhDIBe9HfGbU55xvX0CSWR/9NtjV/PmXwhjY68vNK70GpdBnViQlf3g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653850; c=relaxed/simple;
-	bh=RReTftOboVnllijtIXlU76jQJeInO9ZVPdkZ70sIMCg=;
+	s=arc-20240116; t=1731653593; c=relaxed/simple;
+	bh=q7pRiWCBPP2FdSSbR8+pCKpbb29af1rpLDFtPKzzE2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbB+XBPROYWmvOKHLGqJ51jIikOqDHAuNtP9+O5kYBab/RP8YQzaAW7MZQmTBfQ/zMQPkWOVzLFr7hf94q2befQ41rwd/nUOmpsBLU5vy84ZCtunqDsK4i8mTV2Hu6dD4ndMqr8s8pGEiLwEACOeKH2AhaG76c+DOaweo2DEAaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWHCvxxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F231EC4CED0;
-	Fri, 15 Nov 2024 06:57:29 +0000 (UTC)
+	 MIME-Version; b=sT0zJpuojlRy+edLv0lHsRfwaR4WQJkSFcfxrrktopGt5ntHf4effwewZO59F4XikS+Dn+HAH5/M431rItSeogWP92miFYrqOikfATollWJ2q8vJ4WDtWaZVHMklhrJytQSOWorwD/HmYKMhFTeO9Z4Wt8Yhv/5lbMxpBLp1S4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuUVh5Wc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EC2C4CECF;
+	Fri, 15 Nov 2024 06:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653850;
-	bh=RReTftOboVnllijtIXlU76jQJeInO9ZVPdkZ70sIMCg=;
+	s=korg; t=1731653593;
+	bh=q7pRiWCBPP2FdSSbR8+pCKpbb29af1rpLDFtPKzzE2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWHCvxxNgzZ0waRftEivJmiOTWIctdFxP4/qef7JO81TL/awmDq6W/yUvHzYpCvMH
-	 QiSsC/G+bo5IeVlUU2S1OxFJ/QVIXc0JqmWCji1u+koprQ2Ee9BgNLqIB0Dfkdpmco
-	 N6qFlNXzsOD4rRnzeNPZXsPf1vJjUpu25u/8c3Zc=
+	b=WuUVh5Wc9cz0Oe55Y1RF11nt4zAh+Bld4JFaA9ro8P5tnOLCiDrmN0oeHK6EqJXrE
+	 Opw+U83oC78eLKUbpoxdFllIZgKVMhETNlCH5eMOpIEnPUVSuvSGEvWoGHA2E7q8Z6
+	 sbeqGqTZxXcifpxd4Hpv2M6Pekq1eWUOLTrGta50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Subject: [PATCH 5.10 53/82] net: do not delay dst_entries_add() in dst_release()
+	2639161967 <2639161967@qq.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 20/39] powerpc/powernv: Free name on error in opal_event_init()
 Date: Fri, 15 Nov 2024 07:38:30 +0100
-Message-ID: <20241115063727.471930745@linuxfoundation.org>
+Message-ID: <20241115063723.339771348@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit ac888d58869bb99753e7652be19a151df9ecb35d upstream.
+[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
 
-dst_entries_add() uses per-cpu data that might be freed at netns
-dismantle from ip6_route_net_exit() calling dst_entries_destroy()
+In opal_event_init() if request_irq() fails name is not freed, leading
+to a memory leak. The code only runs at boot time, there's no way for a
+user to trigger it, so there's no security impact.
 
-Before ip6_route_net_exit() can be called, we release all
-the dsts associated with this netns, via calls to dst_release(),
-which waits an rcu grace period before calling dst_destroy()
+Fix the leak by freeing name in the error path.
 
-dst_entries_add() use in dst_destroy() is racy, because
-dst_entries_destroy() could have been called already.
-
-Decrementing the number of dsts must happen sooner.
-
-Notes:
-
-1) in CONFIG_XFRM case, dst_destroy() can call
-   dst_release_immediate(child), this might also cause UAF
-   if the child does not have DST_NOCOUNT set.
-   IPSEC maintainers might take a look and see how to address this.
-
-2) There is also discussion about removing this count of dst,
-   which might happen in future kernels.
-
-Fixes: f88649721268 ("ipv4: fix dst race in sk_dst_get()")
-Closes: https://lore.kernel.org/lkml/CANn89iLCCGsP7SFn9HKpvnKu96Td4KD08xf7aGtiYgZnkjaL=w@mail.gmail.com/T/
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20241008143110.1064899-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ resolved conflict due to bc9d3a9f2afc ("net: dst: Switch to rcuref_t
-  reference counting") is not in the tree ]
-Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: 2639161967 <2639161967@qq.com>
+Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dst.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -109,9 +109,6 @@ struct dst_entry *dst_destroy(struct dst
- 		child = xdst->child;
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index 391f505352007..e9849d70aee4a 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -282,6 +282,7 @@ int __init opal_event_init(void)
+ 				 name, NULL);
+ 		if (rc) {
+ 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
++			kfree(name);
+ 			continue;
+ 		}
  	}
- #endif
--	if (!(dst->flags & DST_NOCOUNT))
--		dst_entries_add(dst->ops, -1);
--
- 	if (dst->ops->destroy)
- 		dst->ops->destroy(dst);
- 	if (dst->dev)
-@@ -162,6 +159,12 @@ void dst_dev_put(struct dst_entry *dst)
- }
- EXPORT_SYMBOL(dst_dev_put);
- 
-+static void dst_count_dec(struct dst_entry *dst)
-+{
-+	if (!(dst->flags & DST_NOCOUNT))
-+		dst_entries_add(dst->ops, -1);
-+}
-+
- void dst_release(struct dst_entry *dst)
- {
- 	if (dst) {
-@@ -171,8 +174,10 @@ void dst_release(struct dst_entry *dst)
- 		if (WARN_ONCE(newrefcnt < 0, "dst_release underflow"))
- 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
- 					     __func__, dst, newrefcnt);
--		if (!newrefcnt)
-+		if (!newrefcnt){
-+			dst_count_dec(dst);
- 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
-+		}
- 	}
- }
- EXPORT_SYMBOL(dst_release);
-@@ -186,8 +191,10 @@ void dst_release_immediate(struct dst_en
- 		if (WARN_ONCE(newrefcnt < 0, "dst_release_immediate underflow"))
- 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
- 					     __func__, dst, newrefcnt);
--		if (!newrefcnt)
-+		if (!newrefcnt){
-+			dst_count_dec(dst);
- 			dst_destroy(dst);
-+		}
- 	}
- }
- EXPORT_SYMBOL(dst_release_immediate);
+-- 
+2.43.0
+
 
 
 
