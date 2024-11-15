@@ -1,274 +1,410 @@
-Return-Path: <stable+bounces-93477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5758C9CDA17
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:52:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534AA9CDA59
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 09:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17CB3281D79
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79731F225D6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828F6188A0E;
-	Fri, 15 Nov 2024 07:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05F916EB4C;
+	Fri, 15 Nov 2024 08:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fXK+ELo4";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="aKy3VDtI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kldG0ETv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E8518871E
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 07:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731657167; cv=fail; b=WKSsfalZZIit9KVgbCkrK7WOJOuOlT4kb49Q8fTKbFzrd9nbfh9wzjJTazq30I4VxWsFzwgbzebPFYL5N+dD32qXmqPZYM/6XGBMaxPgCMAaCjMiF0ThLgoK9gZ3XE/upMN07LJ/TnMUpKEX37tlWzdZaJJM215aATdrpcvw21c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731657167; c=relaxed/simple;
-	bh=98ncAhtmhJ8sjSuXxb1wJt6xjRGkO7eDImpLktXO4rM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=icJL4YL4PG6VxwVovDm0lD/SDb45Ujorg6yQw/oJIvzNhE762bRuCKpT5OXgHMZaPfqbdxbKLp/Vqa9FrZ+5nNBbfsIXiJy2TsiuH0zCcGpNbDfxKzVDGZiwL4RiIDQIHYQWAR+tY3f1rWsDSJSZbOY+WxFN/P2latk3qt3a0DI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fXK+ELo4; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=aKy3VDtI; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AF7cq9i003438;
-	Fri, 15 Nov 2024 07:52:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2023-11-20; bh=vhXg/Im+hZVrC7BUMj
-	t0hSGaAIxJDjOzMN3qBeMM0S8=; b=fXK+ELo4mAitoGX7OUbmztUo93vwziBItZ
-	DmB5f5iRArZix7SjJ6KlLKtrqnQzN+dz5mN7clJ4eeBR7RfO9Q3/IunuNj0sq5Dg
-	nYPBIicjAvrrb8lYExaL3RUzMKcn064rvV6zjX1dSQ+vQnzloscUrQfW+26vl34c
-	ryB6sSh1bU7HC1n2H+/nlVt9SfsLtHt6+nS7wO68ZpMa9kF/1mJvHPYB+goXJj7S
-	zSZsJ2yc2shaNNJJlQbYTBB0LWG+x+3ZqRXNA39OXH7+4sopDrrPqDPz7PEAyHJi
-	rVdp63PoSeDyx3clZ1HNjZCv+HqEqleGt+SgYytSYH4DSIOxOelA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42t0k2av8x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Nov 2024 07:52:37 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4AF61NqO025897;
-	Fri, 15 Nov 2024 07:52:36 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2048.outbound.protection.outlook.com [104.47.55.48])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42sx6bwc78-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Nov 2024 07:52:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vUiFM1c9wIQIgnAgqROs1Vj+pqdV91kMCYybxSCLuIWGxl3xCFz6B/cqz+cQeWswie4PqyfDst6QagTd2WXlnnqXceMwDOTKGinaA/pwqwy985Ni6EuZaARyT2a6cdTGs2RtS5XspxVI5Y8OfpQlf2QoZP4S3cSxB9TIgAY240uIiVJqXJ4vOfsh0mXxhD5vW9HoNGpwGTo6o1TRcVGgIuveOz+V8HN7ZrKO7LGyh/73tvPmAlBBVXfkrOP2gRWGYnJEz+IBPIWdtMW1CDFYKK6GW7+HGcutou3CaBmCnP8nWL3VK4L3BR+hQhwtxZYKwVf5DgCZFc1eqX/1Nxn33Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vhXg/Im+hZVrC7BUMjt0hSGaAIxJDjOzMN3qBeMM0S8=;
- b=GyGYlbD12LZHDADtFLrPN3Yr4z8zIY0uVtGMcjjBq28jZ9Ko7/naqDr/ubLrm7ydcDuMeoVMRWTeM+2bBn/I34ZmhUMpqrOoq/+oZoE13bHlGf5In7q0tB7sCGXPpDz/CxXMeCR0F1/vJlRKeCc904DhfVxY/uGkJHGX8He66VQslBwm76Rv4msH9nFLUU/6+Yc88DDiJdozmucT2TkZrOKbQ5/PbRHL3hgNxzaPGnFtdOrXpaGrsAMk9YDsA44z51jrb0KGbs4mZk9gd4gRzXCbuXlaHpElQrqY6am983HpI6mDViftwyIxc+ETmUQJ7GWfpyrnmuUMt4Cint/uaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70001188714;
+	Fri, 15 Nov 2024 08:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731658607; cv=none; b=R+JRgeV9A0Cf8/5fg6hulJ1GTwOWfpnvn9yczIMllXdH0CMoJUX13Uz0dhnk5un7RIv0+l8m+gEXas6m4YOkRL5oOwnRgc5bs9F5jzMJ4sVZqhN04C8+QxahCCqJuUb29NnMqC9nwwdTl3rPBye0wUjoFQU2dQNVJMej/yxf8co=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731658607; c=relaxed/simple;
+	bh=Y+Vqnb+ztVvpNqlKhZ8mJnKqScnAkM2qBF0AfcC8388=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZoAgfAPOORImUU5dct+e2w6QPuIf4kPEqzvZrsErY6j+WtjWoSghGQM8wOzebQx1PsbbVDQzEb6oddq0X/xsHlLh0QKN/zxOKXl6Ax7UjJf1016edNajg5tjSWGtBpuQrf2EqQRKN/dILgnmLZPr+VF5YNZVuxfpossqTrCHgXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kldG0ETv; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-720be27db27so1271262b3a.2;
+        Fri, 15 Nov 2024 00:16:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vhXg/Im+hZVrC7BUMjt0hSGaAIxJDjOzMN3qBeMM0S8=;
- b=aKy3VDtINzN2xf3nEtleJJzIGn8Oie3BvxNkOwm/80GwAtiLXkL0olKluMKMeePVdA3SmntpyN4f2ijQQTgcLwCzzX/RDcOXxbw+sY9scp/RtZU3VqS2GHY88IVCblBf38adfzz+yba3QbbC6bQMxUo7PT57s9tIvVE7ida9j3k=
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com (2603:10b6:a03:14f::25)
- by CH3PR10MB7436.namprd10.prod.outlook.com (2603:10b6:610:158::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.16; Fri, 15 Nov
- 2024 07:52:33 +0000
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9]) by BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9%7]) with mapi id 15.20.8137.027; Fri, 15 Nov 2024
- 07:52:33 +0000
-Date: Fri, 15 Nov 2024 07:52:26 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Jann Horn <jannh@google.com>,
-        stable <stable@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH 6.6.y] mm: refactor map_deny_write_exec()
-Message-ID: <bb420574-76ab-430e-838f-18690196b175@lucifer.local>
-References: <2024111110-dubbed-hydration-c1be@gregkh>
- <20241114183615.849150-1-lorenzo.stoakes@oracle.com>
- <2024111540-vegan-discard-a481@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024111540-vegan-discard-a481@gregkh>
-X-ClientProxiedBy: LO4P123CA0313.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:197::12) To BYAPR10MB3366.namprd10.prod.outlook.com
- (2603:10b6:a03:14f::25)
+        d=gmail.com; s=20230601; t=1731658605; x=1732263405; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WGZF6N3/pmMpF8j/jWulN5WaeUPbK5MzBQJo41d0xWQ=;
+        b=kldG0ETvPFEWruq9zDIFW1vvg99A1tIOW09tYvhm08AzDj6esmp2PeLHqGuigj87W9
+         mNHGwJIZB3185ZNQIwn4T51E7DmIzl79aWSKiVvuZ813bCkhwKK7nwoi9nVrsZC4k0TS
+         quy4OCZhLg453ot0vIXc4xy80EpruEmrDlYH/NixAZ539UswGyvuDXotb8VI/AH8ImTg
+         h1A2ey1hRTAJmigG+3gobrtD6pkjCPfOjBOTviSXRuXIIVSxd6OQ1bJwoiLbxgpvtVZ7
+         LyC/6HUSvCN1Agiqeg3/j6y2cNODO9kJUMY2l/sZ0u0YD/kLYNHqPkOib3FGilAWQIMU
+         //bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731658605; x=1732263405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WGZF6N3/pmMpF8j/jWulN5WaeUPbK5MzBQJo41d0xWQ=;
+        b=B08z8HRBQ2gR153u7w0gRQgjhiuVgicNEZlUM8wLJGs4P3YHJlAQgcPEU8k6NSZ9ze
+         eqOUh7zGhlg/nBrFDs3XxH9nOcWa5+30tItB1U0uCqzUiPHjXiUWrnsOt3MA/crhf7Gy
+         IcqgZK6r7Glfq3Aa/J2v+haYcUH7RlUfQO7jeljwCvKiVUovpTPdLxwbxll/2OTYsvgM
+         9xbJLu0rrtsLK4yd9n7cvcX5grfHe46zxkqLKK2ofy4cJyAvfwYIWvniiDn2n2wFD7w/
+         BOFyMxM6D/JCC3yoDVfGsopIIwr628Jd8s5EVzlHoQI70zP0r5D3vUItP2T7MCFeTi+r
+         q5kA==
+X-Forwarded-Encrypted: i=1; AJvYcCXn76KfGAADAsfvV67qjB8S3ZucyTQ9ynMFalQHFcCQhX3ZpryIpelpSPVyfkhTe99C8ai5mqF9p/SBCFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4OyxJc2hqSWwIhx1WfsMx3Nt1XxyRwwffPKwDdpV1qmKtDUeA
+	WUj6aPJNHeOlIuTOSoAEAEP8sMKIi2HJgBZewVZNzliTNAI7iwxONJaBIXLnxpNVbQGHU1WSMIT
+	+giydMWDgtweUW0xFmmD3Hqt8tSA=
+X-Google-Smtp-Source: AGHT+IFfJc06IFrDBRy4tXJOWYNxG+uqUeX4nHUkEk2HDPIBbYg1BbxEFKblCFuZzokCR9PK0kZz1LhjYXA0wtfe1aQ=
+X-Received: by 2002:a05:6a00:1703:b0:71e:7674:4cf6 with SMTP id
+ d2e1a72fcca58-72476b96cfbmr2708472b3a.8.1731658604484; Fri, 15 Nov 2024
+ 00:16:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3366:EE_|CH3PR10MB7436:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71cd50ea-7b0e-400d-2b5c-08dd054a768a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mz4sRcyoYxD7bJB67dwv8vgnHPtKb7Wxx0rcgv+tMBsniqYxnDsCbGecwH3+?=
- =?us-ascii?Q?ryHyow1sjK2lUIRraILhNOjvdxPZ6smrDs1ghjbR6r9tv8szDmTPakMRZDLH?=
- =?us-ascii?Q?mOvkWMSY1LBZ1qj7ZaMFMHrAtE4NZ61WcMZuxDssNEf3Ko5WDF+YBvXH7yz2?=
- =?us-ascii?Q?SSeHoT+V/qnx+GcKVaOWHeiVdtwPyyEryWJS3/Kvked4wsxQqTiA0upYcIey?=
- =?us-ascii?Q?2zZITDr0hHicFgxA3PozdW5bHzGGV9L5OcB93Ocd9tewjqlQg8Yd6q7bS824?=
- =?us-ascii?Q?KGQqbX7qJ9RKxrC5k2mrpXwrDJY3khJ7pfshsj8w+S6OiSJJkfxcTFATFXQ2?=
- =?us-ascii?Q?zW951d1WvT9vdqG0Qe9d1IGG3odJkD1b/kJlUROA9e5oRZ+zBkmhAHfeMo0T?=
- =?us-ascii?Q?o9xa1SkQesQ0xIWAR+IiciKMfviurUpqeMppe8S5TKHsYMv+8YbaaPDvXC2B?=
- =?us-ascii?Q?TjB4nohFAyCt5zwYYe8cyUV6Du8ieDLkgyZLcj7zJzsYnQMQ853Sg8/skJRh?=
- =?us-ascii?Q?GRpuzZMZREXFv542+slQ8ZudW90fekL4WYyCs4whcTUXpZOvi4gGnljmaBQN?=
- =?us-ascii?Q?3ROr+SiEyu2FUJv3YwIrqqe7KSL9v6JRGKUSp033kLhEuwIpJeezRIKHNAA6?=
- =?us-ascii?Q?kU29QWw+mG8q77SWL61Fq/11wZDiJdEebBJjMGjKKAxCu5y1yX5HS6gqvPj7?=
- =?us-ascii?Q?lQZ3O90jZ5Lz3te2uSSf9i6JPfjZ77GFw7sL9t4Km1b62wsMA+xqd6u5zLYl?=
- =?us-ascii?Q?p+OXwcYppds54kaYM08Ra0WdQHvv4zV2Lp+0Bd5n4pfPpGOXXZLNHf6uC4zF?=
- =?us-ascii?Q?2+BRmATE0VHEVj2kWFfp28lJoPcYw+V1TmDQQhNjOy4/Hu0tA8gqL4zQrWQ7?=
- =?us-ascii?Q?jbqm5zUUQ0Ggr1XMPlV+GBtQ9yR9pyrQFD2ojF5bvsqqb2RJ83o/sgQ7q0gI?=
- =?us-ascii?Q?soGwoqCn6M00UGFM1k6aN8aCguUrwrPZHc501zU4QcwANHz/Gy1Q33nhRwZW?=
- =?us-ascii?Q?MqGidPxor2ky47QQDI099GxLldFaNt6HuMaRd0RmdW76f+nTh9bWo4kE93gy?=
- =?us-ascii?Q?GQ06UGlJjqzBqev/iA5nscTlva54qoVWnnxilQN53CY1dS1fpH6/0MF0MZJm?=
- =?us-ascii?Q?Bn93F9yMc5fJEFTdKElr27LboavyenBOybWz2vSnmRfhU57+1+gcu7nP9MlY?=
- =?us-ascii?Q?sFsGbU/HCOKyY8LZpgrNTZjXhnnKd93mHabLveG+RDoVJ9T72r4iCxNuZeA7?=
- =?us-ascii?Q?dPOy/0EuzGfNosFtU3txfjLkCuqBo+zAmVmn5sj+D/vQyo2gypCZbIyr7j+l?=
- =?us-ascii?Q?/qfm1qVpOR7PjI45xKsT2lcJ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3366.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kT55GDFjjJMurCaMMAgH3/bezd383IrfYlGuNLH/rAuwloMTP8L4d/KBGT5z?=
- =?us-ascii?Q?y5xNeIOLBElVNlu99kxqkdukMezIXVkpyE1Ii1TLxQVyRCUgui8EivHT4Nbo?=
- =?us-ascii?Q?GepvWZw1Os9+xphQ/jn9ZwseVCUlgSQ6Sg2yni/s0OORa27ArIijLSSnmGs+?=
- =?us-ascii?Q?/o4/5jp1zItiuYE2ZYc3H9bYsKQeerjj3eol/Yi5ppCRxu575UIZHvgbNfkP?=
- =?us-ascii?Q?9tPEkRNaTKR7geGLNBwjS15vzdRehhn+OkWGR0Jt5nvca0CXVwaRXLumAw4E?=
- =?us-ascii?Q?ukkcjICQYhufKHrF16cyk4m1TTV8D3szEowqMcjcwflVg9hesALgsZ6TAbvQ?=
- =?us-ascii?Q?SkicGIE58ylqhg6oEE0W5rXAQLVIy4Uj2srGXcjXWENOaRY7BXkE5GopOAHv?=
- =?us-ascii?Q?ELGt5jfdN/jfkR2ss6RfarGLMK1EtCKysgZ5+DoTYZDPeUEYVwaNCP3z95yn?=
- =?us-ascii?Q?4J4NnpVM2T/MZh5pcR9HDDCIZHYDwPkJjPaoI4NSLi5J0m/nFCJIKk8Lo80N?=
- =?us-ascii?Q?oiv97g0FOOdxwfxYJeYD/+Fk2T88Nt+2gxP1DvNHam1y8+nCOX430+cIjvaL?=
- =?us-ascii?Q?+qhdO4BkrE/KXHOYC8aOrmjGHITWAri4H2SZlBdLztjrwjmJHFAAYSfA9PgH?=
- =?us-ascii?Q?YSUUFQycSjHQtBtG6z6senhq5e6RFHzsor0nIj9H3wfLjyqMLLbqVsDZQzGu?=
- =?us-ascii?Q?nTw95WGXP0redt4KDijd33iNVQvC08jcK3tg+l6Tz+OM0pU5OiWUJwpiCv0R?=
- =?us-ascii?Q?CsrhUOIVsXN4SJDg0fJn10fizcCWFZK05vGPPoSnCtGVpTv7lktaSNi5ifs1?=
- =?us-ascii?Q?YO+NoqiF5fAIbv/EzfYOL9V6kzi30xBqbJTR7HDflndFLIXaB9Hk7MBNB7pc?=
- =?us-ascii?Q?tAA5tygQLW+LH6g3m/6JMebRk4/j/qzwMD3iS0jwLKKNqTHB44rHevqP/KJk?=
- =?us-ascii?Q?Y+JqjwSmQvVxr6fVrSXYP9iAoBgNlSdxqxlMmqtV+CWa1cjMVbpAHlp9N8tY?=
- =?us-ascii?Q?TTHv2SUHmhASLs0Pzuh41TwR0B5idWy+yd+cPZpGOhBd2UpmGTKI6gRH54pd?=
- =?us-ascii?Q?Zo385VVmW5Xd6XKD1qJNHqh5mkuJw8pDQVUMtyK6HPuqpY7ksR+0/tBJCpw5?=
- =?us-ascii?Q?5W5JU89ChflEQ6/5zOzOzM2AXLdeBQ8Bba3snu0bhydGxl4cOJGIZ2DXuO8F?=
- =?us-ascii?Q?Gs4MwaoFpd9KI/bQ9KKb/bO0JQOTaIjrHlgvPe4DSjvMFpf9P0Z3ZOakj3Vw?=
- =?us-ascii?Q?RzohLfR7zQYUMJCgytlmlC5Gfu6DDECOcCJ30BQAofuavH3pnmTrr4i5XfrR?=
- =?us-ascii?Q?r6o3BSktz/OsJ1+5NUNreq7MgJ6qiYk0V72muKFhTHAflXJLYhMw1tyzvHzp?=
- =?us-ascii?Q?iR+4hvE6On6dMqlNi0IwgDQggViWIFlSj25/U0nBdoM0PJuwiL5urpFJ/gQ6?=
- =?us-ascii?Q?uMfh1S1lzlUR6p3KsTVVghtRXX6pfNC92TyrZIpiXWM6aW9JB1EywvZVuKsQ?=
- =?us-ascii?Q?KkqKgAyMjBGxO7t/QHnwhTZ5RGz97ENwouKxy8mFzcRWyEoLsNgqMtBS09xb?=
- =?us-ascii?Q?FlrKUKOaiySx42J1gkMfRF+0khetKhc+0KOj7//WtGq68DyctQ9zpIi70HnY?=
- =?us-ascii?Q?VQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	jLkz31v4jlH4l0LP18cBRNX62TI4AdpXaBTUaMVuicMjlByEBt7NRmuWqRS3NTq9ZltsBVPnjblAA9urNzalY5fM+CCADP/SPi5Cy8cgTvcw4sqZFHAFd0T80l4dJMTN09XHI6QOCwDty2bHQAQphMApBib0JQHlZkLGdxm0CPaT5I4ktQZub1uQ307yz77poB13jTUHQx0aDWvkM/CV/19lU83iTRbcom2toJkbOkOZJuDEssSSVWmVNxQJoIDQNFCX8eXUNfaTCFH87Z4uLOMzt7lXlQMlvWkeP9PqOfybmoJET4VhJuZ7O2981XoFZ6zmsqYwziXfYnkpsiQhz7wQyK0SHluDhkn3nDAY+h+nGqRAsnN2aVyvhTnmDx14SxVFEtQ5iUA08DIRpvkEyQWe/i2RpEAlaeeOgMVx6WrTVYq4AjjiyP5UprhOAOzeLkx6Y6yNw6+btagZ/7d8bXXwsHKedHrryRc629JmBrj703zV3kQcn+4RdP/zfpMBZFSA+tske+pa9rSL2GvQ6mb3g5l2fAGxqBxucz4c1UBcK27VCKvmYGGR2NrRF1QK0VaKmeQUe1NtFGXfj5EvFOn7Jadpi440bWMMF3dz+7Y=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71cd50ea-7b0e-400d-2b5c-08dd054a768a
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3366.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 07:52:33.4065
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X18urdMoxYGzaKGmAoWrkEIs6zeb5z4g8KtndK4X2GHQN/Gm7s+LPbuR7wkOiRMXiMAZehjSgVSCA8uQCthqf2xqobWiYeqBlWJAIULnp/M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7436
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-14_05,2024-11-14_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- spamscore=0 bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411150065
-X-Proofpoint-ORIG-GUID: XCyZ7Su2_IlvXkJk--PJMOw2d9uXTPer
-X-Proofpoint-GUID: XCyZ7Su2_IlvXkJk--PJMOw2d9uXTPer
+References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Fri, 15 Nov 2024 09:16:31 +0100
+Message-ID: <CADo9pHhc_JALkYdOGS1ZG5H3nc=4tz9GcR752Mx07ycPFy3Weg@mail.gmail.com>
+Subject: Re: [PATCH 6.11 00/63] 6.11.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 15, 2024 at 05:02:29AM +0100, Greg KH wrote:
-> On Thu, Nov 14, 2024 at 06:36:15PM +0000, Lorenzo Stoakes wrote:
-> > Refactor the map_deny_write_exec() to not unnecessarily require a VMA
-> > parameter but rather to accept VMA flags parameters, which allows us to use
-> > this function early in mmap_region() in a subsequent commit.
-> >
-> > While we're here, we refactor the function to be more readable and add some
-> > additional documentation.
-> >
-> > Reported-by: Jann Horn <jannh@google.com>
-> > Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
-> > Cc: stable <stable@kernel.org>
-> > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> > Reviewed-by: Jann Horn <jannh@google.com>
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >  include/linux/mman.h | 21 ++++++++++++++++++---
-> >  mm/mmap.c            |  2 +-
-> >  mm/mprotect.c        |  2 +-
-> >  3 files changed, 20 insertions(+), 5 deletions(-)
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
+
+AMD Ryzen 5 5600 6-Core Processor:
+https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
+https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
+https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
+motherboard :)
+
+running Arch Linux with the testing repos enabled:
+https://archlinux.org/ https://archboot.com/
+https://wiki.archlinux.org/title/Arch_Testing_Team
+
+Den fre 15 nov. 2024 kl 07:47 skrev Greg Kroah-Hartman
+<gregkh@linuxfoundation.org>:
 >
-> There's no clue here as to what the upstream git id is :(
-
-It's in-reply-to a mail that literally contains the upstream git id,
-following the instructions you explicitly gave.
-
+> This is the start of the stable review cycle for the 6.11.9 release.
+> There are 63 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Also, you sent lots of patches for each branch, but not as a series, so
-> we have no idea what order these go in :(
-
-I did wonder how you'd sort out ordering, but again, I was following your
-explicit instructions.
-
+> Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
+> Anything received after that time might be too late.
 >
-> Can you resend all of these, with the upstream git id in it, and as a
-> patch series, so we know to apply them correctly?
-
-I'll do this, but... I do have to say, Greg, each of these patches are in
-reply to a mail stating something like, for instance this one:
-
-	The patch below does not apply to the 6.6-stable tree.
-	If someone wants it applied there, or to any other stable or longterm
-	tree, then please email the backport, including the original git commit
-	id to <stable@vger.kernel.org>.
-
-(I note the above hand waves mention of including original git commit, but
-it's unwise to then immediately list explicit commands none of which
-mention this...)
-
-	To reproduce the conflict and resubmit, you may use the following commands:
-
-	git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-	git checkout FETCH_HEAD
-	git cherry-pick -x 0fb4a7ad270b3b209e510eb9dc5b07bf02b7edaf
-	# <resolve conflicts, build, test, etc.>
-	git commit -s
-	git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111110-dubbed-hydration-c1be@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Might I politely suggest changing this or no longer telling people a series
-of commands to follow that result in 'please redo everything over again'?
-
-Something like prefixing this with 'IF YOU NEED ONLY FIXUP A SINGLE COMMIT
-YOU CAN DO THE FOLLOWING:'?
-
-Because right now it reads as 'you _must_ follow these instructions' to
-resolve the issue.
-
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.11.9-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.11.y
+> and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
-
-A side note but... I didn't actually want to do these backports this way
-(as per our conversation prior to submission of original series), but my
-upstream patches got changed to cc: stable @ vger.kernel.org which
-triggered the bots, and is why I tried the follow these instructions.
-
-I would otherwise have sent these as series in the first instance. But
-c'est la vie. Murphy's law dictated this series of events happen instead :(
-
-Thanks, Lorenzo
+>
+> -------------
+> Pseudo-Shortlog of commits:
+>
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Linux 6.11.9-rc1
+>
+> Linus Torvalds <torvalds@linux-foundation.org>
+>     9p: fix slab cache name creation for real
+>
+> Qun-Wei Lin <qun-wei.lin@mediatek.com>
+>     mm: krealloc: Fix MTE false alarm in __do_krealloc
+>
+> Nirmoy Das <nirmoy.das@intel.com>
+>     drm/xe: Don't restart parallel queues multiple times on GT reset
+>
+> Nirmoy Das <nirmoy.das@intel.com>
+>     drm/xe/ufence: Prefetch ufence addr to catch bogus address
+>
+> Shuicheng Lin <shuicheng.lin@intel.com>
+>     drm/xe: Handle unreliable MMIO reads during forcewake
+>
+> Badal Nilawar <badal.nilawar@intel.com>
+>     drm/xe/guc/ct: Flush g2h worker in case of g2h response timeout
+>
+> Shuicheng Lin <shuicheng.lin@intel.com>
+>     drm/xe: Enlarge the invalidation timeout from 150 to 500
+>
+> Hou Tao <houtao1@huawei.com>
+>     bpf: Check validity of link->type in bpf_link_show_fdinfo()
+>
+> Reinhard Speyerer <rspmn@arcor.de>
+>     net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+>
+> Huacai Chen <chenhuacai@kernel.org>
+>     LoongArch: KVM: Mark hrtimer to expire in hard interrupt context
+>
+> Shengjiu Wang <shengjiu.wang@nxp.com>
+>     ASoC: fsl_micfil: Add sample rate constraint
+>
+> Yanteng Si <siyanteng@cqsoftware.com.cn>
+>     LoongArch: Use "Exception return address" to comment ERA
+>
+> Jack Yu <jack.yu@realtek.com>
+>     ASoC: rt722-sdca: increase clk_stop_timeout to fix clock stop issue
+>
+> Cyan Yang <cyan.yang@sifive.com>
+>     RISCV: KVM: use raw_spinlock for critical section in imsic
+>
+> Alexey Klimov <alexey.klimov@linaro.org>
+>     ASoC: codecs: lpass-rx-macro: fix RXn(rx,n) macro for DSM_CTL and SEC=
+7 regs
+>
+> Hans de Goede <hdegoede@redhat.com>
+>     HID: lenovo: Add support for Thinkpad X1 Tablet Gen 3 keyboard
+>
+> Kenneth Albanowski <kenalba@chromium.org>
+>     HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpa=
+d
+>
+> Bart=C5=82omiej Mary=C5=84czak <marynczakbartlomiej@gmail.com>
+>     HID: i2c-hid: Delayed i2c resume wakeup for 0x0d42 Goodix touchpad
+>
+> David Howells <dhowells@redhat.com>
+>     afs: Fix lock recursion
+>
+> Alessandro Zanni <alessandro.zanni87@gmail.com>
+>     fs: Fix uninitialized value issue in from_kuid and from_kgid
+>
+> David Howells <dhowells@redhat.com>
+>     netfs: Downgrade i_rwsem for a buffered write
+>
+> Derek Fang <derek.fang@realtek.com>
+>     ASoC: Intel: soc-acpi: lnl: Add match entry for TM2 laptops
+>
+> Ilya Dudikov <ilyadud@mail.ru>
+>     ASoC: amd: yc: Fix non-functional mic on ASUS E1404FA
+>
+> Christian Heusel <christian@heusel.eu>
+>     ASoC: amd: yc: Add quirk for ASUS Vivobook S15 M3502RA
+>
+> Zhu Jun <zhujun2@cmss.chinamobile.com>
+>     ASoC: codecs: Fix error handling in aw_dev_get_dsp_status function
+>
+> Amadeusz S=C5=82awi=C5=84ski <amadeuszx.slawinski@linux.intel.com>
+>     ASoC: Intel: avs: Update stream status in a separate thread
+>
+> Jiawei Ye <jiawei.ye@foxmail.com>
+>     bpf: Fix mismatched RCU unlock flavour in bpf_out_neigh_v6
+>
+> Zijian Zhang <zijianzhang@bytedance.com>
+>     bpf: Add sk_is_inet and IS_ICSK check in tls_sw_has_ctx_tx/rx
+>
+> Feng Liu <feliu@nvidia.com>
+>     virtio_pci: Fix admin vq cleanup by using correct info pointer
+>
+> Yuan Can <yuancan@huawei.com>
+>     vDPA/ifcvf: Fix pci_read_config_byte() return code handling
+>
+> Matthieu Buffet <matthieu@buffet.re>
+>     samples/landlock: Fix port parsing in sandboxer
+>
+> Nilay Shroff <nilay@linux.ibm.com>
+>     nvme: make keep-alive synchronous operation
+>
+> Nilay Shroff <nilay@linux.ibm.com>
+>     nvme-loop: flush off pending I/O while shutting down loop controller
+>
+> Lucas De Marchi <lucas.demarchi@intel.com>
+>     drm/xe/query: Increase timestamp width
+>
+> Linus Walleij <linus.walleij@linaro.org>
+>     net: phy: mdio-bcm-unimac: Add BCM6846 support
+>
+> Michael Ellerman <mpe@ellerman.id.au>
+>     powerpc/powernv: Free name on error in opal_event_init()
+>
+> Philip Yang <Philip.Yang@amd.com>
+>     drm/amdkfd: Accounting pdd vram_usage for svm
+>
+> Keith Busch <kbusch@kernel.org>
+>     nvme-multipath: defer partition scanning
+>
+> Will Deacon <will@kernel.org>
+>     kasan: Disable Software Tag-Based KASAN with GCC
+>
+> Baojun Xu <baojun.xu@ti.com>
+>     ALSA: hda/tas2781: Add new quirk for Lenovo, ASUS, Dell projects
+>
+> Showrya M N <showrya@chelsio.com>
+>     RDMA/siw: Add sendpage_ok() check to disable MSG_SPLICE_PAGES
+>
+> Tyrone Wu <wudevelops@gmail.com>
+>     selftests/bpf: Assert link info uprobe_multi count & path_size if uns=
+et
+>
+> Ian Forbes <ian.forbes@broadcom.com>
+>     drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPL=
+AY_UNITS
+>
+> Julian Vetter <jvetter@kalrayinc.com>
+>     sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+>
+> Harald Freudenberger <freude@linux.ibm.com>
+>     s390/ap: Fix CCA crypto card behavior within protected execution envi=
+ronment
+>
+> Herbert Xu <herbert@gondor.apana.org.au>
+>     crypto: marvell/cesa - Disable hash algorithms
+>
+> Herbert Xu <herbert@gondor.apana.org.au>
+>     crypto: api - Fix liveliness check in crypto_alg_tested
+>
+> Rik van Riel <riel@surriel.com>
+>     bpf: use kvzmalloc to allocate BPF verifier environment
+>
+> Greg Joyce <gjoyce@linux.ibm.com>
+>     nvme: disable CC.CRIME (NVME_CC_CRIME)
+>
+> Robin Murphy <robin.murphy@arm.com>
+>     iommu/arm-smmu: Clarify MMU-500 CPRE workaround
+>
+> WangYuli <wangyuli@uniontech.com>
+>     HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
+>
+> Stefan Blum <stefanblum2004@gmail.com>
+>     HID: multitouch: Add support for B2402FVA track point
+>
+> SurajSonawane2415 <surajsonawane0215@gmail.com>
+>     block: Fix elevator_get_default() checking for NULL q->tag_set
+>
+> Hannes Reinecke <hare@suse.de>
+>     nvme: tcp: avoid race between queue_lock lock and destroy
+>
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>     pinctrl: intel: platform: Add Panther Lake to the list of supported
+>
+> Rosen Penev <rosenp@gmail.com>
+>     pinctrl: aw9523: add missing mutex_destroy
+>
+> Sergey Matsievskiy <matsievskiysv@gmail.com>
+>     irqchip/ocelot: Fix trigger register address
+>
+> Nilay Shroff <nilay@linux.ibm.com>
+>     nvmet-passthru: clear EUID/NGUID/UUID while using loop target
+>
+> Eduard Zingerman <eddyz87@gmail.com>
+>     selftests/bpf: Verify that sync_linked_regs preserves subreg_def
+>
+> Pedro Falcato <pedro.falcato@gmail.com>
+>     9p: Avoid creating multiple slab caches with the same name
+>
+> Dominique Martinet <asmadeus@codewreck.org>
+>     9p: v9fs_fid_find: also lookup by inode if not found dentry
+>
+> Breno Leitao <leitao@debian.org>
+>     nvme/host: Fix RCU list traversal to use SRCU primitive
+>
+> Kuniyuki Iwashima <kuniyu@amazon.com>
+>     smb: client: Fix use-after-free of network namespace.
+>
+>
+> -------------
+>
+> Diffstat:
+>
+>  Makefile                                           |  4 +-
+>  arch/loongarch/include/asm/loongarch.h             |  2 +-
+>  arch/loongarch/kvm/timer.c                         |  7 +-
+>  arch/loongarch/kvm/vcpu.c                          |  2 +-
+>  arch/powerpc/platforms/powernv/opal-irqchip.c      |  1 +
+>  arch/riscv/kvm/aia_imsic.c                         |  8 +--
+>  block/elevator.c                                   |  4 +-
+>  crypto/algapi.c                                    |  2 +-
+>  drivers/crypto/marvell/cesa/hash.c                 | 12 ++--
+>  drivers/gpu/drm/amd/amdkfd/kfd_chardev.c           |  6 +-
+>  drivers/gpu/drm/amd/amdkfd/kfd_priv.h              |  2 +-
+>  drivers/gpu/drm/amd/amdkfd/kfd_process.c           |  4 +-
+>  drivers/gpu/drm/amd/amdkfd/kfd_svm.c               | 26 +++++++
+>  drivers/gpu/drm/vmwgfx/vmwgfx_drv.h                |  4 +-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                |  4 +-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                |  3 -
+>  drivers/gpu/drm/xe/xe_device.c                     |  2 +-
+>  drivers/gpu/drm/xe/xe_force_wake.c                 | 12 +++-
+>  drivers/gpu/drm/xe/xe_guc_ct.c                     | 18 +++++
+>  drivers/gpu/drm/xe/xe_guc_submit.c                 | 14 +++-
+>  drivers/gpu/drm/xe/xe_query.c                      |  6 +-
+>  drivers/gpu/drm/xe/xe_sync.c                       |  3 +-
+>  drivers/hid/hid-ids.h                              |  2 +
+>  drivers/hid/hid-lenovo.c                           |  8 +++
+>  drivers/hid/hid-multitouch.c                       | 13 ++++
+>  drivers/hid/i2c-hid/i2c-hid-core.c                 | 10 +++
+>  drivers/infiniband/sw/siw/siw_qp_tx.c              |  2 +
+>  drivers/iommu/arm/arm-smmu/arm-smmu-impl.c         |  4 +-
+>  drivers/irqchip/irq-mscc-ocelot.c                  |  4 +-
+>  drivers/net/mdio/mdio-bcm-unimac.c                 |  1 +
+>  drivers/net/usb/qmi_wwan.c                         |  1 +
+>  drivers/nvme/host/core.c                           | 52 ++++++++------
+>  drivers/nvme/host/multipath.c                      | 33 +++++++++
+>  drivers/nvme/host/nvme.h                           |  1 +
+>  drivers/nvme/host/tcp.c                            |  7 +-
+>  drivers/nvme/target/loop.c                         | 13 ++++
+>  drivers/nvme/target/passthru.c                     |  6 +-
+>  drivers/pinctrl/intel/Kconfig                      |  1 +
+>  drivers/pinctrl/pinctrl-aw9523.c                   |  6 +-
+>  drivers/s390/crypto/ap_bus.c                       |  3 +-
+>  drivers/s390/crypto/ap_bus.h                       |  2 +-
+>  drivers/s390/crypto/ap_queue.c                     | 28 +++++---
+>  drivers/vdpa/ifcvf/ifcvf_base.c                    |  2 +-
+>  drivers/virtio/virtio_pci_common.c                 | 24 +++++--
+>  drivers/virtio/virtio_pci_common.h                 |  1 +
+>  drivers/virtio/virtio_pci_modern.c                 | 12 +---
+>  fs/9p/fid.c                                        |  5 +-
+>  fs/afs/internal.h                                  |  2 +
+>  fs/afs/rxrpc.c                                     | 83 +++++++++++++++-=
+------
+>  fs/netfs/locking.c                                 |  3 +-
+>  fs/ocfs2/file.c                                    |  9 ++-
+>  fs/smb/client/connect.c                            | 14 +++-
+>  include/net/tls.h                                  | 12 +++-
+>  kernel/bpf/syscall.c                               | 14 ++--
+>  kernel/bpf/verifier.c                              |  4 +-
+>  lib/Kconfig.kasan                                  |  7 +-
+>  mm/slab_common.c                                   |  2 +-
+>  net/9p/client.c                                    | 12 +++-
+>  net/core/filter.c                                  |  2 +-
+>  samples/landlock/sandboxer.c                       | 32 ++++++++-
+>  sound/Kconfig                                      |  2 +-
+>  sound/pci/hda/patch_realtek.c                      | 29 ++++++++
+>  sound/soc/amd/yc/acp6x-mach.c                      | 14 ++++
+>  sound/soc/codecs/aw88399.c                         |  2 +-
+>  sound/soc/codecs/lpass-rx-macro.c                  | 15 ++--
+>  sound/soc/codecs/rt722-sdca-sdw.c                  |  2 +-
+>  sound/soc/fsl/fsl_micfil.c                         | 38 ++++++++++
+>  sound/soc/intel/avs/core.c                         |  3 +-
+>  sound/soc/intel/avs/pcm.c                          | 19 +++++
+>  sound/soc/intel/avs/pcm.h                          | 16 +++++
+>  sound/soc/intel/common/soc-acpi-intel-lnl-match.c  | 38 ++++++++++
+>  .../selftests/bpf/prog_tests/fill_link_info.c      |  9 +++
+>  .../selftests/bpf/progs/verifier_scalar_ids.c      | 67 ++++++++++++++++=
++
+>  73 files changed, 670 insertions(+), 167 deletions(-)
+>
+>
+>
 
