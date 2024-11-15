@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5129CD8A2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B989CD8C5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0088F283BEE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 669DB283CFD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6AF18872A;
-	Fri, 15 Nov 2024 06:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6048186294;
+	Fri, 15 Nov 2024 06:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgsK3j8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b9HpvBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E32018859F;
-	Fri, 15 Nov 2024 06:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CBF2BB1B;
+	Fri, 15 Nov 2024 06:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653555; cv=none; b=CSXIAUHF4FXt5FeDUGw9FfAhqmg22UCH+zVxbJrJX7MxgRxV+hDDdrjHR4w/JFrsiF7YAC2QdUeQVEaRDgsI7Iyqq0WpXLpCOJNLJKF2zvUuyuCaC3V3zg6dF2lBIfIcWN6EviM6N261QAl3mTNbjnhOqza7UfQ9LtA967fCbAg=
+	t=1731653644; cv=none; b=AsnLJpj9p6oKpb+y4ZN0gl900pqDv8wY5ZrthcK8iqO2VdxaspPGx73zOJjcxmylULnVwOVihI84yJihOyGedQzdT9gp41qbV31IVeW5H/RH7wwZ9R5hHYpCVyiSxqrpuOoptpZPLKQOdqpRoD6RlsC2MlRT5PaMZTdPGEpjvbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653555; c=relaxed/simple;
-	bh=FmdVXfSG2kAG1PW9cJ1C7oIxiVpgrmmrIzCEfDdpy+M=;
+	s=arc-20240116; t=1731653644; c=relaxed/simple;
+	bh=XCEy3iPMQR00/PpQKkgEck62Y10R3gdd8sdJtepwGrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qynHNiepeWb4985PYgVTCsJzOSvHkiH77udmRNXbPBb0NcdOKTcQSyvpzjvDq1Q0zZXTZNU0cfvk5JtP9iVAWslN938PFIChF8ZWId9uYliorJ4NoowknUcrph37Rh46dtb5sssilb2imjIs0eTeGFoQBI+f6ddNGQ4jFizGuPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgsK3j8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E391C4CECF;
-	Fri, 15 Nov 2024 06:52:33 +0000 (UTC)
+	 MIME-Version; b=DGv+e+6dCueb/u4o2qqRTAG3v24GO0BvpFEJlMMQMhNTpgmOJlk8aSomvRdHByMm+VpFGm9/GH+UfDjpNGnrF2rTPulctLRfJPl8htWjmzUs45t+oOGnFmbAdf+UcLAv7kuH0CKnj01O19P3OG7DPCqAlt2nV3PBZ6wnqbDkdG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b9HpvBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE47BC4CECF;
+	Fri, 15 Nov 2024 06:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653554;
-	bh=FmdVXfSG2kAG1PW9cJ1C7oIxiVpgrmmrIzCEfDdpy+M=;
+	s=korg; t=1731653644;
+	bh=XCEy3iPMQR00/PpQKkgEck62Y10R3gdd8sdJtepwGrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgsK3j8/A5lHTt3f3cGg/1/boL4UiXuMdlXH5DvbKuTaDbG+1slrX3vtFhWJVMG7B
-	 jWQqSTaYEXBbcz2QAlIN6a/t2sIHu1tQfDsn0aggf7jrAJOWyJQlWdL5tPBMDDzF+l
-	 fTKuxICwXqy5pmbmnSplaD50M+z3qREqF+s8kHkk=
+	b=2b9HpvBVhQoua12F1nRdP4sxSGYgzOqSGkPr2MSgmV/6s4DJFX18pUiyi0VJpRgNS
+	 XpBMLU/UbNugJnp7ivXRHF2nzZ2062jFN55UrQVlgIKB6eaXuR6kbih0L1H9jgx5QX
+	 Ndp9gvgj5XEtdqza0aSR2SLzUwVC5rxUTFz25HSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dudikov <ilyadud@mail.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Stefan Blum <stefan.blum@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/48] ASoC: amd: yc: Fix non-functional mic on ASUS E1404FA
-Date: Fri, 15 Nov 2024 07:38:19 +0100
-Message-ID: <20241115063724.051791195@linuxfoundation.org>
+Subject: [PATCH 6.1 10/39] HID: multitouch: Add support for B2402FVA track point
+Date: Fri, 15 Nov 2024 07:38:20 +0100
+Message-ID: <20241115063722.982012066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dudikov <ilyadud@mail.ru>
+From: Stefan Blum <stefanblum2004@gmail.com>
 
-[ Upstream commit b0867999e3282378a0b26a7ad200233044d31eca ]
+[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
 
-ASUS Vivobook E1404FA needs a quirks-table entry for the internal microphone to function properly.
+By default the track point does not work on the Asus Expertbook B2402FVA.
 
-Signed-off-by: Ilya Dudikov <ilyadud@mail.ru>
-Link: https://patch.msgid.link/20241016034038.13481-1-ilyadud25@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+>From libinput record i got the ID of the track point device:
+  evdev:
+    # Name: ASUE1201:00 04F3:32AE
+    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
+
+I found that the track point is functional, when i set the
+MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
+
+Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 2d766d988eb2e..08f823cd88699 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -325,6 +325,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "E1404FA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e7199ae2e3d91..7584e5a3aafeb 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2020,6 +2020,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_ELAN, 0x3148) },
+ 
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_ELAN, 0x32ae) },
++
+ 	/* Elitegroup panel */
+ 	{ .driver_data = MT_CLS_SERIAL,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
 -- 
 2.43.0
 
