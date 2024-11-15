@@ -1,98 +1,149 @@
-Return-Path: <stable+bounces-93607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827E69CF8EB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 23:02:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13119CFA20
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 23:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B25F28901C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 22:02:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DA09B61301
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 22:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9DB1FAF06;
-	Fri, 15 Nov 2024 21:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F91F76D5;
+	Fri, 15 Nov 2024 21:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IpXh+lP9"
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="QDaSXODW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.113.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779A61FAF00;
-	Fri, 15 Nov 2024 21:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FE91E261E;
+	Fri, 15 Nov 2024 21:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.113.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731706063; cv=none; b=pittSrQ8tyZTxoaCvjzyGee9L73OfXqXH+RIoyf4yNbW5hR17FL3EzElUOYGzEY+EUuHSvHFi+ooA+mP84BREMcjoafq2aU7dZNiudgeYpimyCH5UKU0Nu7j6WtTHq2nBx31SFcsIkjUsF4353eGxizqZDnnMV+JF1HvSxDog0U=
+	t=1731707401; cv=none; b=BEm326auustDiWwr6ntqjAk/VHFKA+fvSBp29wFtW+3ZMxbwKumqyYYmMy+dKAkx5H8uIse7pMeGrQwAKQdV15ycp+Jo5Zd6ASFUUe3lWkTXlbVbD6SRDQsoWmGhNrDFG4hAL9rW3kcJaG2M6AI4sDehNRop3tmfyI74SdQUuaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731706063; c=relaxed/simple;
-	bh=zBajkRM9JbHpDxyGGYx7924Z8qil0sf4kBqZ3lttZrQ=;
+	s=arc-20240116; t=1731707401; c=relaxed/simple;
+	bh=RBsCvaccGcvYyCrjd7CjL4oegLTgWL9V38JUNqV3SK8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bvX7+qGdL0LT7s+JHX6ilaKkl3A2knYpn1mBdlwcNxaML4a30qurGJM+J+Byhj8iRjzVpUyVtCM8NGpOFaj8VYEz6fVli2lFtsyP4UZ2pf9NaHzWrSDiMpyKm7TkSMTmP23FC22IYT1EKV1xeTB6t37LJkBBUj3lnGlzzsIhmRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IpXh+lP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98390C4CECF;
-	Fri, 15 Nov 2024 21:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731706063;
-	bh=zBajkRM9JbHpDxyGGYx7924Z8qil0sf4kBqZ3lttZrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IpXh+lP9Z3Ke7UE7DhFx6lLU5gW8oguhRh+c9l94/LhzXaTFxKNVa3Fdji64fXKYG
-	 c93sPQwY0LN8UrnqRyUMQ07iIJMYP6L8OZhZ3tfzqZZgHuk0SGyxQih1rj7qRzISm8
-	 +IUW3McJ54sl0AqDycPboHAfyoXbFXBxVpEndWke9h2GTjULctM6NELXe995zhvm1F
-	 xLmfFvQ96pY9qIsZgbjzCCSn0yyVEAbi8cDCY5hu6lepQbxXPtTvMokGjQGqJ0So1M
-	 neQTCboDuw9kHeMmQS+yfmu3/xv+n8qWHXZCSuNQa+AmBL8FwHihGZ9KC3T8hl/lhC
-	 D14CsElkStLmA==
-Date: Fri, 15 Nov 2024 21:27:39 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 5.10 00/82] 5.10.230-rc1 review
-Message-ID: <Zze8y08U9r5G0n3W@finisterre.sirena.org.uk>
-References: <20241115063725.561151311@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=k2v5J7sxzAGByRw1AjHhGltNLrWWd87vefQAddvANinEE2exuuChC7UjxULoABvRpI+EmNca+EakiGVbZTr8sVfa+V51WFzAmMXKtKgvdfkgcwAm2hBovQalmvTOz9V8ngXFZ+o9ScPm2LMmE0FMoSKJbT3c1sv8wIvzxKtcYTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=QDaSXODW; arc=none smtp.client-ip=195.154.113.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:Reply-To:
+	Subject:Content-ID:Content-Description:X-Debbugs-Cc;
+	bh=prMCeiS3C5eJ4JUpUHzaK1wSkzL+Nfbek9oMDzah4h0=; b=QDaSXODWgq8n0WBjsGY9mufYRE
+	TprfLoI9CPd0FjQsYPK2yfUZzgi1tSu29V5Et0dXxfSrwlpnjVXwSdgVxuOcNaDT+B99oKycmjsmB
+	DAABnDWgi07vWpOjFBUvxdqQ5eR3afnCJXEwU7k4FqxuQnDpot0lExyWy/eWu/KAqnGYpHkkW1HwM
+	uylRomXHgYBtXoB6tACZYx/mNUrZ8SedBZSQqQrO19ColuLE/x9NgtXDJsy3Etgxj0mjJxwXTdMnW
+	nhLSuiNcEworCLm/4gF1muA7o4RXFgXaC525GxvuC7BZ56mRTvSOlCbXWgiNhGFN+8m6bGS8lowou
+	wlzpax5A==;
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::2] helo=ohm.rr44.fr)
+	by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1tC4Bl-00D5ON-36;
+	Fri, 15 Nov 2024 22:49:13 +0100
+Date: Fri, 15 Nov 2024 22:49:12 +0100
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Celeste Liu <coelacanthushex@gmail.com>,
+	Celeste Liu via B4 Relay <devnull+CoelacanthusHex.gmail.com@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
+	Andrea Bolognani <abologna@redhat.com>,
+	Felix Yan <felixonmars@archlinux.org>,
+	Ruizhe Pan <c141028@gmail.com>,
+	Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
+	Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] riscv/entry: get correct syscall number from
+ syscall_get_nr()
+Message-ID: <ZzfB2LfsD0ATjLMv@aurel32.net>
+Mail-Followup-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Celeste Liu <coelacanthushex@gmail.com>,
+	Celeste Liu via B4 Relay <devnull+CoelacanthusHex.gmail.com@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
+	Andrea Bolognani <abologna@redhat.com>,
+	Felix Yan <felixonmars@archlinux.org>,
+	Ruizhe Pan <c141028@gmail.com>,
+	Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
+	Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+References: <87ldya4nv0.ffs@tglx>
+ <87sesgftng.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/Lgc3cRAkiiFft5E"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-X-Cookie: Editing is a rewording activity.
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87sesgftng.fsf@all.your.base.are.belong.to.us>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 
+On 2024-10-28 02:45, Bj=C3=B6rn T=C3=B6pel wrote:
+> Thanks for helping out to dissect this! Much appreciated!
+>=20
+> Thomas Gleixner <tglx@linutronix.de> writes:
+>=20
+> > Let me look at your failure analysis from your first reply:
+> >
+> >>  1. strace "tracing": Requires that regs->a0 is not tampered with prior
+> >>     ptrace notification
+> >>=20
+> >>     E.g.:
+> >>     | # ./strace /
+> >>     | execve("/", ["/"], 0x7ffffaac3890 /* 21 vars */) =3D -1 EACCES (=
+Permission denied)
+> >>     | ./strace: exec: Permission denied
+> >>     | +++ exited with 1 +++
+> >>     | # ./disable_ptrace_get_syscall_info ./strace /
+> >>     | execve(0xffffffffffffffda, ["/"], 0x7fffd893ce10 /* 21 vars */) =
+=3D -1 EACCES (Permission denied)
+> >>     | ./strace: exec: Permission denied
+> >>     | +++ exited with 1 +++
+> >>=20
+> >>     In the second case, arg0 is prematurely set to -ENOSYS
+> >>     (0xffffffffffffffda).
+> >
+> > That's expected if ptrace_get_syscall_info() is not used. Plain dumping
+> > registers will give you the current value on all architectures.
+> > ptrace_get_syscall_info() exist exactly for that reason.
+>=20
+> Noted! So this shouldn't be considered as a regression. IOW, the
+> existing upstream code is OK for this scenario.
 
---/Lgc3cRAkiiFft5E
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Not however that it breaks some programs, for instance I arrived on this
+thread by debugging python-ptrace. I'll try to look at adding support
+for ptrace_get_syscall_info(), but I am afraid we will find more broken
+programs.
 
-On Fri, Nov 15, 2024 at 07:37:37AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.230 release.
-> There are 82 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Regards
+Aurelien
 
-Tested-by: Mark Brown <broonie@kernel.org>
+[1] https://buildd.debian.org/status/fetch.php?pkg=3Dpython-ptrace&arch=3Dr=
+iscv64&ver=3D0.9.9-0.1%2Bb2&stamp=3D1731547088&raw=3D0
 
---/Lgc3cRAkiiFft5E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmc3vMsACgkQJNaLcl1U
-h9AdvAf/TtI0H+SWxVI7IK5Z5c7fnjl/HImIj0Wjxbha7k7JU8+Gi+g7XTdy8Sgx
-DIVl7JBQ8Rccpstn8Z74jGtvXqgGrKtYwkIgHbYs/ZlqPUAVDFB5zfDvvDLfBa3n
-UzAzgoTHjDSeXnQFHQTNsW/s8Sg6043Zlp7w9XLLcOmg8iP+tY+HvIKTeYIM78vY
-EWuPyCCSWYPujgJmskTEnAyeCurFUJKwgF7Z/5R86+Xps9hvKcrXPTdaCdP4cImp
-3jCIQ3F5BwvqJ8+ArKPNMu+RrTtmSS9WvwDgYGYWH2HaSXFNKGqMcT3SVgjLc7dz
-zgAEzRXJKdJ/wE3aZT+/nLtsxFtmUA==
-=qwQ8
------END PGP SIGNATURE-----
-
---/Lgc3cRAkiiFft5E--
+--=20
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
 
