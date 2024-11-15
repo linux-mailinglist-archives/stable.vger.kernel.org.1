@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A10F9CD7D6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10229CD73E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1226B26869
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D50C1F22FF4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157881885BF;
-	Fri, 15 Nov 2024 06:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21990185B5B;
+	Fri, 15 Nov 2024 06:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8syyo+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kX7QWVnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78271632DA;
-	Fri, 15 Nov 2024 06:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20E645;
+	Fri, 15 Nov 2024 06:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653096; cv=none; b=oxkpyVaXN+abnFSGnCQ5R1YOPiJA7LDhCxI4g8ABDNoE6HLdwnXc5qeciRJtIst3Wk4tLu+ETSej2lvrQf5aqy4hYjKKhNANbdm3kOfpM98x57RwqWUVrvpi2I3EHxdRiMFlN2r+CB3QkewD3ivSip4ncyey2PYtVlsZnf1ouFg=
+	t=1731652786; cv=none; b=RhQTtjncIYo43twK/ne7wO8Qx4NUOW1/fqo96cHZzmhHOr1PB/ECqVJcnVqmlE3FSIoUtReOZ7vRRfNf6OjCOTvqqCETH2daGtzNs2wfW921WdEOVjc5ZJvaBsT9Sno25PUgkxPdkmeylJQsnVzIKE36m1+LBTLQuGsy+v0n4/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653096; c=relaxed/simple;
-	bh=gp1WGQqvj9kV5CiDWQhYZZZvZctt9AgDvJetiFQ5/LU=;
+	s=arc-20240116; t=1731652786; c=relaxed/simple;
+	bh=UfHNSl38A/AdVASJxBL/eRYw0bq1psQTUP2NdtZt+0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTdGlzzZMVG9BsYjqI3zclAIehMeiErEDmhjHJhhk1KKx/KVVZb2XX8CO/TlleLpegVuHyYEUYqnpn04GZR06xlPBoFl9sxjEV9KI9/JQapOI1ZN1618mgmJIC5VV9bJy3pSoOQO3v9nyf8/OZ+JD/ayckngsAg9gzX5Mc7HYHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8syyo+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C812C4CED0;
-	Fri, 15 Nov 2024 06:44:56 +0000 (UTC)
+	 MIME-Version; b=SH4aXNsJnHzvvGycG4Knrm03/mwYTCgCO2tFVF/bRKQ1ssJNDcBudLxZrC+rUIKWagx8RnDkXQNTPhYbF+6BpNEew6B4+ed7sBm/0KruUGverzsfi3VYOUMBcufoZUzedGUFSCQgDuh+K04cmJt+zpN3FRaQAfk1IqwsbWl1eoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kX7QWVnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41948C4CECF;
+	Fri, 15 Nov 2024 06:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653096;
-	bh=gp1WGQqvj9kV5CiDWQhYZZZvZctt9AgDvJetiFQ5/LU=;
+	s=korg; t=1731652786;
+	bh=UfHNSl38A/AdVASJxBL/eRYw0bq1psQTUP2NdtZt+0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8syyo+182EizauAt2rtJjkKQXEXKBPfm+WKk4mlfHrITGyKtBMhfre+kPeNRsZDj
-	 Klb/Z6Hc6ZGCz9AfgpDPe+6mZMtVJmH97wn6MAXkQd0WGObwLIEVgyNJVOhzCElonw
-	 C0bsFdJYdgYQzTeGvNeIA8c4FbnE8QP+Cbzd/x+E=
+	b=kX7QWVnZGIyx87lpfYDdqMUWvS/5s8In5DB+v0mH3WCrGUvaN+gbQnSpH5fwrCWtp
+	 6R/L6X38quqKnaeOJiSZJGyJwD7yh+uTRA3LQBCxz/kBPs25XuUkzQR/ILFLkh3mok
+	 mk7KwpzFl2i6E3ILzs2bWOgemyIvnqJa8qe2PzJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/66] media: adv7604: prevent underflow condition when reporting colorspace
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: [PATCH 4.19 15/52] media: s5p-jpeg: prevent buffer overflows
 Date: Fri, 15 Nov 2024 07:37:28 +0100
-Message-ID: <20241115063723.536493733@linuxfoundation.org>
+Message-ID: <20241115063723.406494422@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
+commit 14a22762c3daeac59a5a534e124acbb4d7a79b3a upstream.
 
-Currently, adv76xx_log_status() reads some date using
-io_read() which may return negative values. The current logic
-doesn't check such errors, causing colorspace to be reported
-on a wrong way at adv76xx_log_status(), as reported by Coverity.
+The current logic allows word to be less than 2. If this happens,
+there will be buffer overflows, as reported by smatch. Add extra
+checks to prevent it.
 
-If I/O error happens there, print a different message, instead
-of reporting bogus messages to userspace.
+While here, remove an unused word = 0 assignment.
 
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+Fixes: 6c96dbbc2aa9 ("[media] s5p-jpeg: add support for 5433")
+Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/media/platform/s5p-jpeg/jpeg-core.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-index 1cee69919e1b9..d0b2d960c7847 100644
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -2477,10 +2477,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	const struct adv76xx_chip_info *info = state->info;
- 	struct v4l2_dv_timings timings;
- 	struct stdi_readback stdi;
--	u8 reg_io_0x02 = io_read(sd, 0x02);
-+	int ret;
-+	u8 reg_io_0x02;
- 	u8 edid_enabled;
- 	u8 cable_det;
--
- 	static const char * const csc_coeff_sel_rb[16] = {
- 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
- 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-@@ -2579,13 +2579,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	v4l2_info(sd, "-----Color space-----\n");
- 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
- 			rgb_quantization_range_txt[state->rgb_quantization_range]);
--	v4l2_info(sd, "Input color space: %s\n",
--			input_color_space_txt[reg_io_0x02 >> 4]);
--	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
--			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
--			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
--				"(16-235)" : "(0-255)",
--			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+
-+	ret = io_read(sd, 0x02);
-+	if (ret < 0) {
-+		v4l2_info(sd, "Can't read Input/Output color space\n");
-+	} else {
-+		reg_io_0x02 = ret;
-+
-+		v4l2_info(sd, "Input color space: %s\n",
-+				input_color_space_txt[reg_io_0x02 >> 4]);
-+		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-+				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-+				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-+					"(16-235)" : "(0-255)",
-+				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	}
- 	v4l2_info(sd, "Color space conversion: %s\n",
- 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
+--- a/drivers/media/platform/s5p-jpeg/jpeg-core.c
++++ b/drivers/media/platform/s5p-jpeg/jpeg-core.c
+@@ -803,11 +803,14 @@ static void exynos4_jpeg_parse_decode_h_
+ 		(unsigned long)vb2_plane_vaddr(&vb->vb2_buf, 0) + ctx->out_q.sos + 2;
+ 	jpeg_buffer.curr = 0;
  
--- 
-2.43.0
-
+-	word = 0;
+-
+ 	if (get_word_be(&jpeg_buffer, &word))
+ 		return;
+-	jpeg_buffer.size = (long)word - 2;
++
++	if (word < 2)
++		jpeg_buffer.size = 0;
++	else
++		jpeg_buffer.size = (long)word - 2;
++
+ 	jpeg_buffer.data += 2;
+ 	jpeg_buffer.curr = 0;
+ 
+@@ -1086,6 +1089,7 @@ static int get_word_be(struct s5p_jpeg_b
+ 	if (byte == -1)
+ 		return -1;
+ 	*word = (unsigned int)byte | temp;
++
+ 	return 0;
+ }
+ 
+@@ -1173,7 +1177,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			sof = jpeg_buffer.curr; /* after 0xffc0 */
+ 			sof_len = length;
+@@ -1204,7 +1208,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			if (n_dqt >= S5P_JPEG_MAX_MARKER)
+ 				return false;
+@@ -1217,7 +1221,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			if (n_dht >= S5P_JPEG_MAX_MARKER)
+ 				return false;
+@@ -1242,6 +1246,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
++			/* No need to check underflows as skip() does it  */
+ 			skip(&jpeg_buffer, length);
+ 			break;
+ 		}
 
 
 
