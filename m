@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E795A9CD860
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4939CD77E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 937C31F21882
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77D7F1F230A1
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977351885B3;
-	Fri, 15 Nov 2024 06:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273261885BE;
+	Fri, 15 Nov 2024 06:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5umAaxO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+Y1cji3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C13153800;
-	Fri, 15 Nov 2024 06:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8853126C17;
+	Fri, 15 Nov 2024 06:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653411; cv=none; b=neiF9rGiAM32B4P02oR4YqUgX7mocJ/y0pMX4i+2kYOj5a8yvd07/gB9NoCo8oLIDkYZrMRmtsQMUVxKQO9YlMD+2rjNimLPVQ2LqW7zi25RyfT+63wECE3oIf2DeM48vHYo3vS4Yh9JVdSj3x1ezD7OyZ0HIZHBKNkIqATqsLM=
+	t=1731652910; cv=none; b=l6oZWbS5mMQNQFnqyx0omEeKwIi6+kDA48J9r+kmgWCEyjrFga/1JIrmAsV35Uf1X35rPcGw8mCNLfPaRHlGbqXY4SZqFiMVRlmfwJgRVVxs8/tg3JvC68RoaUykh1Vo9cQ/kgI90dkrBqAe/kP8GekZ5p3q1SNf6c1QlWaDwbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653411; c=relaxed/simple;
-	bh=0SInrkeISLlMNj9wlBBa9Qyh7x1C9uCk496Dl3V5Wr0=;
+	s=arc-20240116; t=1731652910; c=relaxed/simple;
+	bh=ku3irCk5P5o46Zzwz/XsR4dpXva/uzBiZXmbD1gjm5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnRcw0mXZsbwJrbuz8vfvPa0OxT3BykWgFAi+knHfqnt9N72ZX9zOUUl190ZtPLal6RCuPGSpmHYu+hU2jrZaQhQSx62HfGnW2kqT/Hvwjkn4CGi/mhgnXt6KrYVn3gO69VaDq05XZ5sXjHDXo1Drh1v8m+Myim00Gd7R00XaMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5umAaxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FDDC4CECF;
-	Fri, 15 Nov 2024 06:50:10 +0000 (UTC)
+	 MIME-Version; b=EPwKLSohyiwRyTFi0amiFiqPKsTD0VaSIxhMYaFgqVUMEP5ds2QJazRFTsEAwKvNvt3XH0AovuH4NMa52cav4nGxqJDS8Pxb5kzC/pKyIn93HwD5aVKHbIvEdBDJGA1P1XSbD6vtKGdqu6i0ANU7AOsugXQtY0wA9ZNGBuVXi/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+Y1cji3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4429EC4CECF;
+	Fri, 15 Nov 2024 06:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653411;
-	bh=0SInrkeISLlMNj9wlBBa9Qyh7x1C9uCk496Dl3V5Wr0=;
+	s=korg; t=1731652910;
+	bh=ku3irCk5P5o46Zzwz/XsR4dpXva/uzBiZXmbD1gjm5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5umAaxOYLFePRTdnT3P144hTLIUVyljw3tv9izUar7MIIuUHseyuMfLb6T9sekNt
-	 ekyrc1211xGY3pFG/CsbmDrfbm+ZMT3zQE5M5V3LTJPQhkFqqFFHhcj4GvzorsXV2p
-	 Xxb0wPFppS4TStdEjOutCgU1efYlqFmftGJs2vZw=
+	b=U+Y1cji3s63Cd/Vv1Ans3yATQQP/k2FLzq45mPQyz5oP/FaD5dnTU6fYEdO7PtUYh
+	 2sqPcgexJ6C7tYxW1DzrVpg816OeHWXGklTUkRXiqQ+gygyHhPGmHs4x072FgeP7E8
+	 N+/Vjf9vWfqcc+b8cVwOgridgr8nUOpbSU1srn74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/48] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
+Subject: [PATCH 4.19 51/52] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
 Date: Fri, 15 Nov 2024 07:38:04 +0100
-Message-ID: <20241115063723.515470149@linuxfoundation.org>
+Message-ID: <20241115063724.694032328@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
+[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
 
-Currently the array size is only limited by the largest kmalloc size which
-is incorrect. This change will also return a more specific error message
-than ENOMEM to userspace.
+Add Fibocom FG132 0x0112 composition:
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+
+Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index ac3d7ff3f5bb9..def98d868deb4 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -61,7 +61,7 @@
- #define VMWGFX_DRIVER_MINOR 20
- #define VMWGFX_DRIVER_PATCHLEVEL 0
- #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
--#define VMWGFX_MAX_DISPLAYS 16
-+#define VMWGFX_NUM_DISPLAY_UNITS 8
- #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
- 
- #define VMWGFX_MIN_INITIAL_WIDTH 1280
-@@ -81,7 +81,7 @@
- #define VMWGFX_NUM_GB_CONTEXT 256
- #define VMWGFX_NUM_GB_SHADER 20000
- #define VMWGFX_NUM_GB_SURFACE 32768
--#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
-+#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
- #define VMWGFX_NUM_DXCONTEXT 256
- #define VMWGFX_NUM_DXQUERY 512
- #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 11f7c0e5420e0..33f73d559be72 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -2327,7 +2327,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 	struct drm_mode_config *mode_config = &dev->mode_config;
- 	struct drm_vmw_update_layout_arg *arg =
- 		(struct drm_vmw_update_layout_arg *)data;
--	void __user *user_rects;
-+	const void __user *user_rects;
- 	struct drm_vmw_rect *rects;
- 	struct drm_rect *drm_rects;
- 	unsigned rects_size;
-@@ -2339,6 +2339,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 					    VMWGFX_MIN_INITIAL_HEIGHT};
- 		vmw_du_update_layout(dev_priv, 1, &def_rect);
- 		return 0;
-+	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
-+		return -E2BIG;
- 	}
- 
- 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index 19a843da87b78..ec86f92517a14 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -198,9 +198,6 @@ struct vmw_kms_dirty {
- 	s32 unit_y2;
- };
- 
--#define VMWGFX_NUM_DISPLAY_UNITS 8
--
--
- #define vmw_framebuffer_to_vfb(x) \
- 	container_of(x, struct vmw_framebuffer, base)
- #define vmw_framebuffer_to_vfbs(x) \
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index bbd5183e5e635..57ccbc8a6c059 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1385,6 +1385,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
++	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
 -- 
 2.43.0
 
