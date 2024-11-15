@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6009CD7F8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35B19CD74F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028671F221FF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23778B24D5E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A1918734F;
-	Fri, 15 Nov 2024 06:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBEB1898EA;
+	Fri, 15 Nov 2024 06:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjhae6g7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/17ipV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528B9EAD0;
-	Fri, 15 Nov 2024 06:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F1A1632DA;
+	Fri, 15 Nov 2024 06:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653182; cv=none; b=qmgea9lSdDrIrHuDmIJvPrlziC9GzDjjDOkJv1l0z3kE3JZO1KF+7+Qnul38HbLZnL0G4B9K8rMNvB3UPoDa6HoNwmbyKI2FeQ+8nkE9UObzx9ymVt3w7fplYywtDO4BSstIGk/ekcs1W506w75ogUz/VXOjMRpDeL2rx/EXwuE=
+	t=1731652814; cv=none; b=CxyKtGBkp7+bFc/pkc4HaIP37P44yRit5JIPgMJmS3VPyvfo9++cpTDfwK+YTfDBwJOMByzWWm0/uSt7G/yCSKfUIZ6v8RlPvue7Cj9jPplabFZyzMGJQiDgEaJ6YWecyu50rCkHOmjIpQ79OWGWg/vRDsAUrrtAB3+DQWanBvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653182; c=relaxed/simple;
-	bh=43jLgVqYTfitqesq0mmBU4ah2dHleNgBIuye3HNcUE0=;
+	s=arc-20240116; t=1731652814; c=relaxed/simple;
+	bh=a8x4g/arWZ6Z4EPFkBP9P0Gg6pHigIfURRi4Se0UGCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGzKwpW0Dodo5AKEqFZYXwiATiYKODbB+348oOuRjnPCLH62Kfh1Kt4TKekxMmnf7dFls7tYIxDRxuyNOezCSkEcXzZenWY0+UcH+J7xs0ic/dLPCSjuORj5pydnof1z6IhODHTaqLkNCjddQDnPVROKRIpMD0bk13P66XW6OrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjhae6g7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5214C4CECF;
-	Fri, 15 Nov 2024 06:46:21 +0000 (UTC)
+	 MIME-Version; b=Df0wVgxbZ4VrsTEwhp9H0c67XwjUagz37u9IFVJVGn6FIb+mL2NHVtASROzBsyTuVUK5hRcOLYQQfx7FQKsYZ2zZKiycrdHXw6CAahQo5SmmwtTnKm6zF91jIarP/9fC7CsgJH0v3BLMe1mtc/KHznZ27uXMOazAkMRxsc2EIhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/17ipV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E84C4CED0;
+	Fri, 15 Nov 2024 06:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653182;
-	bh=43jLgVqYTfitqesq0mmBU4ah2dHleNgBIuye3HNcUE0=;
+	s=korg; t=1731652814;
+	bh=a8x4g/arWZ6Z4EPFkBP9P0Gg6pHigIfURRi4Se0UGCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjhae6g7nchckHrlTsbdZ69Lx6f71bSiuBwlyTF3QrsM+rjFZxJw0jqgfRINgCqIW
-	 swmbejdX8STnMHjqqsHCTzpU1EJ7fpxL/9cIN2nELU13H7R6l0DRSU64paHpLhHZpA
-	 eGGghigH4FbVJ8dpNGJ+vm+9/RrIEmT2dSVhx4ZA=
+	b=C/17ipV2ubcrDcVfuB1xun8VUdfuou4xqqC+MHHmHmE7MyAE6eODz13XntJiUbOVm
+	 AVRq30BdzSGXGpVcauBAfshSQkkDPGljMEzfkzHEnj8dBLXH+iFifBYrXrUxLWK0UE
+	 ObSD+huLOKpfOJFZXob2VICCFcnih2XlCmta8rfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SurajSonawane2415 <surajsonawane0215@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 11/63] block: Fix elevator_get_default() checking for NULL q->tag_set
-Date: Fri, 15 Nov 2024 07:37:34 +0100
-Message-ID: <20241115063726.304802172@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 4.19 22/52] dm cache: optimize dirty bit checking with find_next_bit when resizing
+Date: Fri, 15 Nov 2024 07:37:35 +0100
+Message-ID: <20241115063723.658090508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SurajSonawane2415 <surajsonawane0215@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit b402328a24ee7193a8ab84277c0c90ae16768126 ]
+commit f484697e619a83ecc370443a34746379ad99d204 upstream.
 
-elevator_get_default() and elv_support_iosched() both check for whether
-or not q->tag_set is non-NULL, however it's not possible for them to be
-NULL. This messes up some static checkers, as the checking of tag_set
-isn't consistent.
+When shrinking the fast device, dm-cache iteratively searches for a
+dirty bit among the cache blocks to be dropped, which is less efficient.
+Use find_next_bit instead, as it is twice as fast as the iterative
+approach with test_bit.
 
-Remove the checks, which both simplifies the logic and avoids checker
-errors.
-
-Signed-off-by: SurajSonawane2415 <surajsonawane0215@gmail.com>
-Link: https://lore.kernel.org/r/20241007111416.13814-1-surajsonawane0215@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/elevator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-cache-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/block/elevator.c b/block/elevator.c
-index 640fcc891b0d2..9430cde13d1a4 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -550,7 +550,7 @@ EXPORT_SYMBOL_GPL(elv_unregister);
- static inline bool elv_support_iosched(struct request_queue *q)
- {
- 	if (!queue_is_mq(q) ||
--	    (q->tag_set && (q->tag_set->flags & BLK_MQ_F_NO_SCHED)))
-+	    (q->tag_set->flags & BLK_MQ_F_NO_SCHED))
- 		return false;
- 	return true;
- }
-@@ -561,7 +561,7 @@ static inline bool elv_support_iosched(struct request_queue *q)
-  */
- static struct elevator_type *elevator_get_default(struct request_queue *q)
- {
--	if (q->tag_set && q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
-+	if (q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
- 		return NULL;
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -3001,14 +3001,14 @@ static bool can_resize(struct cache *cac
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		if (is_dirty(cache, new_size)) {
+-			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-			      cache_device_name(cache),
+-			      (unsigned long long) from_cblock(new_size));
+-			return false;
+-		}
+-		new_size = to_cblock(from_cblock(new_size) + 1);
++	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++					   from_cblock(cache->cache_size),
++					   from_cblock(new_size)));
++	if (new_size != cache->cache_size) {
++		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++		      cache_device_name(cache),
++		      (unsigned long long) from_cblock(new_size));
++		return false;
+ 	}
  
- 	if (q->nr_hw_queues != 1 &&
--- 
-2.43.0
-
+ 	return true;
 
 
 
