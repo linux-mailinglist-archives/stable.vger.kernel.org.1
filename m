@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA639CD744
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71589CD791
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 393101F2307D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E96B1F23126
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29F3185B5B;
-	Fri, 15 Nov 2024 06:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC8B1885BE;
+	Fri, 15 Nov 2024 06:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKsTt/r3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1rzLWN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7C43BBEB;
-	Fri, 15 Nov 2024 06:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C167C154C00;
+	Fri, 15 Nov 2024 06:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652804; cv=none; b=EyxPs6Ppnqo4i45UXJyM8yMHWBNNTDOgW8BSFouMvkW3yuXS/puqkgGiQ00UwDSukclea+1orAyyh+BMMciKl1gcQq/BZW6JClb9uO2QcWuPrQmyDmUXSYliHN1gZJg6vC7UgNFvfK+CAAgtw5WexP+By6uLBRXu001+qnnfleA=
+	t=1731652962; cv=none; b=jm9whuJuWELaSi7qmnVErdaDBtybUs+s5QNkM9D2KYheVLVxfclO58rx7rRu3RZjBHajti+Mx5AMX03p/b07OucAVXtSnNUSkjrAyz6mmRuTUy9x/NWX4KiqqcPshqOuBYmcvOs5mxJpclUEXtD0NQrpXsXIH27TGn8jq1TDAOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652804; c=relaxed/simple;
-	bh=rx/vUeSFwimQnh+nOFkRi5d4Tfqt2NIWD7NR0HdDm4c=;
+	s=arc-20240116; t=1731652962; c=relaxed/simple;
+	bh=+JakNv1EF51vA6BFC1yz8i+or+QAA0rd3EOsglG1aXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQscki/j9r8C1OWynbnuM/RGq1t7nWjVGTaTTd/z2UkUC2U7U7uwz9yIuBEvvZLaR2PflH12OSNYhFAgK/T9Qi2zQfNYXfksXB3Vg8Crm9sPwOEYlry81IF+4eknuGy61sFXZumKYGnzRr9cTrEbdpXjRta6hecFCErZsIV//l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKsTt/r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B52C4CECF;
-	Fri, 15 Nov 2024 06:40:03 +0000 (UTC)
+	 MIME-Version; b=LWbDrwnOzOuobrmVVYP0s0tgIF3JlyQUP2I/is98gVk5+qu8QLf1RLrrQWNRmDrZdf4jkMUt9aTEL2mO/gXLPDCxHffBJIDDi94y3kAzaa3uy3e6tGXn5TsKu1Xyn3JkvEgUcyG8h5m9GoRu6FUwxOPTpcGq7rOmael+e/ntlOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1rzLWN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AE4C4CECF;
+	Fri, 15 Nov 2024 06:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652804;
-	bh=rx/vUeSFwimQnh+nOFkRi5d4Tfqt2NIWD7NR0HdDm4c=;
+	s=korg; t=1731652962;
+	bh=+JakNv1EF51vA6BFC1yz8i+or+QAA0rd3EOsglG1aXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKsTt/r3aNvqpWYx/HjAkwdF3ZoBOWDpK5BfelfwjOnQp/ZV7WB+qTL7cbGrRDWN7
-	 fXeJ57QNPiMg5Uk0gTowtGrRgi/1C+9vB8k2DOVdMMhzeDkP2rFlf23qQ3NFZTzfND
-	 ANS8RSUJpDAgr+5ZB1uUkEcOPjMW6vu8FPZNodhg=
+	b=x1rzLWN+9cWri299BhAFAcCPrjWkswTa7llEVMwYunzAOIk2Bh0UG1zRyZgeGJv4q
+	 hyzwSduGJjLFrJ+aw9s6pB+Dw/dLkuzyBy0dN6ZtAFbc5s01MbbAdctO21+aCwj2f3
+	 nW/cosd/3ezWlBLoglWEMsIXBy78byKe5fulqQEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Caesar Wang <wxt@rock-chips.com>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/52] ARM: dts: rockchip: fix rk3036 acodec node
+Subject: [PATCH 5.4 06/66] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
 Date: Fri, 15 Nov 2024 07:37:15 +0100
-Message-ID: <20241115063722.938676739@linuxfoundation.org>
+Message-ID: <20241115063723.069803182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit c7206853cd7d31c52575fb1dc7616b4398f3bc8f ]
+[ Upstream commit 1580ccb6ed9dc76b8ff3e2d8912e8215c8b0fa6d ]
 
-The acodec node is not conformant to the binding.
+Neither the binding nor the driver implementation specify/use the grf
+reference provided in the rk3036. And neither does the newer rk3128
+user of the hdmi controller. So drop the rockchip,grf property.
 
-Set the correct nodename, use the correct compatible, add the needed
-#sound-dai-cells and sort the rockchip,grf below clocks properties
-as expected.
-
-Fixes: faea098e1808 ("ARM: dts: rockchip: add core rk3036 dtsi")
+Fixes: b7217cf19c63 ("ARM: dts: rockchip: add hdmi device node for rk3036")
+Cc: Caesar Wang <wxt@rock-chips.com>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-12-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-13-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/rk3036.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index c5144f06c3e70..f7b5853aeb79f 100644
+index 69ca841d57e75..7c031260186db 100644
 --- a/arch/arm/boot/dts/rk3036.dtsi
 +++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -316,12 +316,13 @@
- 		};
- 	};
- 
--	acodec: acodec-ana@20030000 {
--		compatible = "rk3036-codec";
-+	acodec: audio-codec@20030000 {
-+		compatible = "rockchip,rk3036-codec";
- 		reg = <0x20030000 0x4000>;
+@@ -333,7 +333,6 @@
+ 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru  PCLK_HDMI>;
+ 		clock-names = "pclk";
 -		rockchip,grf = <&grf>;
- 		clock-names = "acodec_pclk";
- 		clocks = <&cru PCLK_ACODEC>;
-+		rockchip,grf = <&grf>;
-+		#sound-dai-cells = <0>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&hdmi_ctl>;
  		status = "disabled";
- 	};
- 
 -- 
 2.43.0
 
