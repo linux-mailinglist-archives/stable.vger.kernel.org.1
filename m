@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83BD9CD821
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7069CD7EE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E086283489
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEC12B25C9E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39508188015;
-	Fri, 15 Nov 2024 06:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55536186294;
+	Fri, 15 Nov 2024 06:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hubGP/aB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hsb4gyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D02BB1B;
-	Fri, 15 Nov 2024 06:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1256814EC77;
+	Fri, 15 Nov 2024 06:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653269; cv=none; b=R/0Xl78gqJ1TYxBG66WIfhTrY6mzdmQEXcTxzkiUFJ6hovPQGR1y4D1kkT87tK9jng9pdZaoo16kIzgyWEp6grEMvBaetHDQ6Is0MXDSIRtuL8bN8IcHdm2xJX+nK3woQcPRVireKjr/M45rYioEkXVOZv7kzrGQHqM0d/d0TYs=
+	t=1731653155; cv=none; b=bcgMObr2V7VUc1zH+LLN9hwvB5761unjrIbi0vcsJ2/EuHZEAD+FcDi83rOK7PPrBtOoeiiI2mJJ/EpZ2kYkdIG6ZvosFC6PzZ8S2nm4oR5EgpDhg8EqL5KoS5UugHrnNNj/PoRY+8OAykJ8SqsaGa2mWCDWJELxzgtZ0sOxuP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653269; c=relaxed/simple;
-	bh=yQuUfFyBw9huJ2cSOxiafYp7Y6GjqAmhKlQwh5CzNbg=;
+	s=arc-20240116; t=1731653155; c=relaxed/simple;
+	bh=5eNn9dDsBWsYQWTZM8PUa1L++znggBKDS7y7HlGMPbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C95TqMn0gIomDEAYaz4n7BRc6Av8blnfHvMvyvToKMQeeP4N1iCk9U2oSxuORJxmuXGyQUS3aIxrhAVX9Pbw049hjjtkFhZSrRyPoxNl9Ry+TavzsEgtpywYtXU1Im9p/ZBG7JleowTwsR7y6InVW+kcM5d9bewMbznLkr1DxRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hubGP/aB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDD4C4CECF;
-	Fri, 15 Nov 2024 06:47:48 +0000 (UTC)
+	 MIME-Version; b=Egm0TuykT42Tfk/tCyU0pGNL2p7dmHVraWcsdvPEg2xJS4ATKJ1+s0dfLbkvaX+Gh3PV2xscnOKJ+0eHi07241OfY+5iVWzg844cLkZBPUOq9CLNWPAprAbCgEU4vtB4uIwIlmpmMgIGcu4Zheq97PiQIukXTZlLvdXrvejS9B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hsb4gyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30671C4CECF;
+	Fri, 15 Nov 2024 06:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653268;
-	bh=yQuUfFyBw9huJ2cSOxiafYp7Y6GjqAmhKlQwh5CzNbg=;
+	s=korg; t=1731653154;
+	bh=5eNn9dDsBWsYQWTZM8PUa1L++znggBKDS7y7HlGMPbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hubGP/aBVzh0fB1Qp7aJ3DrvzatxWwrG5rxA+4ilyjagzZxw+8tvg1GcLwhbtvIF8
-	 7WnT77cm6Sj6EkkptHuK4sW06OS9fqUzRW5ZUO4CT+49IzXV8hsRcK683G/dUWkLso
-	 MoNnUmcGl3UU69X4n8qNVy1Nz1uPsasR3/yVGVUk=
+	b=0Hsb4gyIsqv+bTWwMWsvjuiSvEmE3DvliFzPpMEdgab12CqxnSEAo4XXTp1q4902u
+	 +I8TPB7t030AO8EoCcR8Ygj91IrQChCaRurSWE/Acyblsx9EWNiukm+u6G3wgYjZg2
+	 QDZZ1UiLa5y3v64QqRbUpmvkgIvJBlGrvyYkiCBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Ye <jiawei.ye@foxmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 37/63] bpf: Fix mismatched RCU unlock flavour in bpf_out_neigh_v6
+	Hyunwoo Kim <v4bel@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 51/66] hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
 Date: Fri, 15 Nov 2024 07:38:00 +0100
-Message-ID: <20241115063727.255703768@linuxfoundation.org>
+Message-ID: <20241115063724.683844585@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Ye <jiawei.ye@foxmail.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit fb86c42a2a5d44e849ddfbc98b8d2f4f40d36ee3 ]
+commit e629295bd60abf4da1db85b82819ca6a4f6c1e79 upstream.
 
-In the bpf_out_neigh_v6 function, rcu_read_lock() is used to begin an RCU
-read-side critical section. However, when unlocking, one branch
-incorrectly uses a different RCU unlock flavour rcu_read_unlock_bh()
-instead of rcu_read_unlock(). This mismatch in RCU locking flavours can
-lead to unexpected behavior and potential concurrency issues.
+When hvs is released, there is a possibility that vsk->trans may not
+be initialized to NULL, which could lead to a dangling pointer.
+This issue is resolved by initializing vsk->trans to NULL.
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
-
-This patch corrects the mismatched unlock flavour by replacing the
-incorrect rcu_read_unlock_bh() with the appropriate rcu_read_unlock(),
-ensuring that the RCU critical section is properly exited. This change
-prevents potential synchronization issues and aligns with proper RCU
-usage patterns.
-
-Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/tencent_CFD3D1C3D68B45EA9F52D8EC76D2C4134306@qq.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/hyperv_transport.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b2b551401bc29..fe5ac8da5022f 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2248,7 +2248,7 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
- 		rcu_read_unlock();
- 		return ret;
- 	}
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 	if (dst)
- 		IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
- out_drop:
--- 
-2.43.0
-
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -531,6 +531,7 @@ static void hvs_destruct(struct vsock_so
+ 		vmbus_hvsock_device_unregister(chan);
+ 
+ 	kfree(hvs);
++	vsk->trans = NULL;
+ }
+ 
+ static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
 
 
 
