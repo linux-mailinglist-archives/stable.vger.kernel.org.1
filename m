@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-93389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E0E9CD8FD
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36F39CD761
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8BF280CBF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D9131F225AF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC93185949;
-	Fri, 15 Nov 2024 06:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62610126C17;
+	Fri, 15 Nov 2024 06:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlJEWoSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPRLrM4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C432BB1B;
-	Fri, 15 Nov 2024 06:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7A187FE8;
+	Fri, 15 Nov 2024 06:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653758; cv=none; b=Sp+fy+x3u9DqMMbopuXwQL4NGp8lZ++Iy6GIUblJuocVOoDPB6Nbn+7a2MvYptou4dP7DOePjuqO+V3x+zVbanKCQLCm12H7Dg0jUhgNiWjZIbi8qoJlPAe9i42SUtU5308ccAqsJIv04RwcR+SerQjIMCeeCKorWbWOX6+D6bg=
+	t=1731652845; cv=none; b=DEsd4ZVZ6hUwrcAjv9kIO7jGg0/hlf5oUeQqYHrO8uNstLbhTmjpeh60/FD6HYVrlaN8FqUcU48eY5pWx/lAObujB/+E39wuKWLHV+jwShFsRt/4cFJBfM1nVAIH4QRl5kmngK6UbvZ0HqY0UR7zGRz5WaeoxhxkFHAiE19RZBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653758; c=relaxed/simple;
-	bh=LR6uHbj1IGcNhE3REFiOs30tUfIjAzHEEPQubNoAO9c=;
+	s=arc-20240116; t=1731652845; c=relaxed/simple;
+	bh=SAFYGPtrnWTNg/d4tl+Y0Wzo6Pvz6yV4HvWOY8zYVP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9EQNVnveudL9+H3vqbYkmxAoEVmNkIoHlaMQOwyr4qP0zWxc0J1+graTxDJ5fgJ+PMPinnQIogCmZ8EmXaRP6VfOICorpv/yvSGw7AvAN2TT5jgP8hy5b2kN5xRzonrVINRd5OxbfsZOWExeM30D5Rgv4CcdX3uzt+3yV1j78w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlJEWoSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A589C4CECF;
-	Fri, 15 Nov 2024 06:55:57 +0000 (UTC)
+	 MIME-Version; b=jiOGPmN2VXWy6XrHmt5CAdVtTgzAZu8W8CsqB1bTXAgMYw2ctPcCJIbWIJovZX/DpgqF9BiWoC+C2gjyDPN6IZ1j+9PtB70BMJsu4+PF5FyvX3IIxbSGyjakovKvhhRuDxVou+susrT9B7b/Aj/AZZymdZDeoGsRxW8udUfqs2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPRLrM4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F70C4CECF;
+	Fri, 15 Nov 2024 06:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653757;
-	bh=LR6uHbj1IGcNhE3REFiOs30tUfIjAzHEEPQubNoAO9c=;
+	s=korg; t=1731652845;
+	bh=SAFYGPtrnWTNg/d4tl+Y0Wzo6Pvz6yV4HvWOY8zYVP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlJEWoSZFAkmE5tRbFXq2UNEJiYjWz7iCCvl4VV7/PkmrEUBnHngRq/UHViD7Cx48
-	 uHuGfkv1EYzjCKRuo9HjWzvlHxnMFkeqFGvkrHHZsK+gUECW9wyh8KvNa9bfn8a45r
-	 9kiSK6DLTrzpGHRC6lGYdQrfs5b0tLbYQKW7vGLs=
+	b=MPRLrM4EpB7droFahfUSiN2MdnnZhAU658Jts1sVgzWy0lWCvGCxbJQm8127P6eEd
+	 9l3dGBqChHrcZWnGbiqc3a6JHFkh5j+ZOETCW6xCQ/ujtIzF+zlDzydnVT0BjqtZJJ
+	 dR/xxBW4PgKjcHxLDJIXYls3Y/tiWzEq250BC3OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/82] arm64: dts: imx8mp: correct sdhc ipg clk
+	Qi Xi <xiqi2@huawei.com>,
+	kernel test robot <lkp@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Michael Holzheu <holzheu@linux.vnet.ibm.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Wang ShaoBo <bobo.shaobowang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 30/52] fs/proc: fix compile warning about variable vmcore_mmap_ops
 Date: Fri, 15 Nov 2024 07:37:43 +0100
-Message-ID: <20241115063725.795424500@linuxfoundation.org>
+Message-ID: <20241115063723.946739262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +67,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Qi Xi <xiqi2@huawei.com>
 
-[ Upstream commit eab6ba2aa3bbaf598a66e31f709bf84b7bb7dc8a ]
+commit b8ee299855f08539e04d6c1a6acb3dc9e5423c00 upstream.
 
-The ipg clk for sdhc sources from IPG_CLK_ROOT per i.MX 8M Plus
-Applications Processor Reference Manual, Table 5-2. System Clocks.
+When build with !CONFIG_MMU, the variable 'vmcore_mmap_ops'
+is defined but not used:
 
-Fixes: 6d9b8d20431f ("arm64: dts: freescale: Add i.MX8MP dtsi support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> fs/proc/vmcore.c:458:42: warning: unused variable 'vmcore_mmap_ops'
+     458 | static const struct vm_operations_struct vmcore_mmap_ops = {
+
+Fix this by only defining it when CONFIG_MMU is enabled.
+
+Link: https://lkml.kernel.org/r/20241101034803.9298-1-xiqi2@huawei.com
+Fixes: 9cb218131de1 ("vmcore: introduce remap_oldmem_pfn_range()")
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/lkml/202410301936.GcE8yUos-lkp@intel.com/
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/proc/vmcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index acee71ca32d83..0186b3992b95f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -659,7 +659,7 @@
- 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
- 				reg = <0x30b40000 0x10000>;
- 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk IMX8MP_CLK_DUMMY>,
-+				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
- 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
- 					 <&clk IMX8MP_CLK_USDHC1_ROOT>;
- 				clock-names = "ipg", "ahb", "per";
-@@ -673,7 +673,7 @@
- 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
- 				reg = <0x30b50000 0x10000>;
- 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk IMX8MP_CLK_DUMMY>,
-+				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
- 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
- 					 <&clk IMX8MP_CLK_USDHC2_ROOT>;
- 				clock-names = "ipg", "ahb", "per";
-@@ -687,7 +687,7 @@
- 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
- 				reg = <0x30b60000 0x10000>;
- 				interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk IMX8MP_CLK_DUMMY>,
-+				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
- 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
- 					 <&clk IMX8MP_CLK_USDHC3_ROOT>;
- 				clock-names = "ipg", "ahb", "per";
--- 
-2.43.0
-
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -431,10 +431,6 @@ static vm_fault_t mmap_vmcore_fault(stru
+ #endif
+ }
+ 
+-static const struct vm_operations_struct vmcore_mmap_ops = {
+-	.fault = mmap_vmcore_fault,
+-};
+-
+ /**
+  * vmcore_alloc_buf - allocate buffer in vmalloc memory
+  * @sizez: size of buffer
+@@ -462,6 +458,11 @@ static inline char *vmcore_alloc_buf(siz
+  * virtually contiguous user-space in ELF layout.
+  */
+ #ifdef CONFIG_MMU
++
++static const struct vm_operations_struct vmcore_mmap_ops = {
++	.fault = mmap_vmcore_fault,
++};
++
+ /*
+  * remap_oldmem_pfn_checked - do remap_oldmem_pfn_range replacing all pages
+  * reported as not being ram with the zero page.
 
 
 
