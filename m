@@ -1,183 +1,369 @@
-Return-Path: <stable+bounces-93088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E4E9CD6F0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312769CD796
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76B5AB24CF6
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2891F22ADA
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8E188920;
-	Fri, 15 Nov 2024 06:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533E8187FE8;
+	Fri, 15 Nov 2024 06:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ACr0ydcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaODkFJj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7F418872A
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 06:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4393BBEB;
+	Fri, 15 Nov 2024 06:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731651004; cv=none; b=Y3KCHNlXKC1wi0VpN7CzruapPSjnU1YXnPO7g+lhSlpqiOasFWSWzr2+x/WRezicDWvMlC2YPayDJv+D93mVYyknDH6ZI2WDhpeJ/mKPUCC36dnWzxEZrFl5wDUa1oodZjMU6YmMkzsLvfOSIny3aHLNzITz0B2i//fJYMFwjPs=
+	t=1731652977; cv=none; b=Amc59GtB+y/xUq+95zb+Gdny0s9xER0K0djpFOZu8de0bGerJCqJwCpxioo84qt/WXqAT6BnNQREa0YRCe2357c18p8IeD1ooWH4rkEsnQRJc7aJDJmRkaTZqVHZGgwkGprpqWI59dB8tt4ES8CY+Fd4vntE7BRk4eKTxDYwTWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731651004; c=relaxed/simple;
-	bh=4Js0j3dEAXVPgmPNSWcoJsDJFN6YRI9vWNB59uQKGHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P35DprTVrvkO/YrOWh23Ql2oSh4meVhr3hRznX/Ikhy1TXguXddq/llq0zEhSEXJtu17Sa3TOwQcSWRVFgP71RceE8TdMDZ9J9gKPc8xej+OgipTtwCCtggSDmL6B9ZZvOHFCyJKfIIps2U+VLjmZVBr7YdyLlW2IEA8QEKUi3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ACr0ydcQ; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20c805a0753so14827225ad.0
-        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 22:10:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1731651002; x=1732255802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sfiS9F6Hcq/jOnOhJuAuLR9CMW5tSMbCI2yp2GqSd5k=;
-        b=ACr0ydcQN2jH20BOhxmFV5E5w5m46tQ0R90RQB59oAwPFCk3LHcUe3JjKp4Yvp/lV/
-         wHAC5CiBu2SoIT7BS7VQMHdr/5R8RJomdoQT8O62NWRNnFJ6afiBpq6qpL8Q+Cc46oxS
-         PVQcX/29u3BR9UXUil9pJBuITPww6BksxP32w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731651002; x=1732255802;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sfiS9F6Hcq/jOnOhJuAuLR9CMW5tSMbCI2yp2GqSd5k=;
-        b=MyD7DOv69Bh7qNd03YXWFS+3MqQ1YjdEBj2ohnznUMkH1mT+ShZ4KtarR0c6WEezy4
-         lzRptWFBYy8UpBilvXu4svij9oyt6qg06lehVoky0+l65YfmNDChBzaVVQTWDRQvBDQj
-         UrunTsaazXky4f7GxnKepAynWq3CiUN3RJZ1lKj/Nuo/H4juWsSX33vbnYgcRR30yNp1
-         Y9VNZrouTK+vhwu0hVSVpjJHd3pRNZNOzxzZnoKJCRo6UtBKhWrufRGM9tbdsAf7bbUd
-         KLCxKraFmNBxdi2bOadcbALUaN6/QbPw6sw0tHqD5uvw4llk0r7JfI6SElNHJpEIVlPq
-         XjQg==
-X-Gm-Message-State: AOJu0YzKmeRMcXouyAGQCbcTy2iTnhsxSbR+yZysOKRd3BYonB5VrQKs
-	AW7eTu9ft/luzvASx9LvOP8I6BSSuwx5LtqVkVWOTfMAuTJTrZPKGQwuPiePYlrzeuSayDD891g
-	=
-X-Google-Smtp-Source: AGHT+IG3MgzXr+sGffv4+81XM+WNGMDpl8O4NITOvbxUBE45iPRqhS4W1V0XRk1A0H8HYEiWMnQR3w==
-X-Received: by 2002:a17:902:e54b:b0:20c:d578:d72d with SMTP id d9443c01a7336-211d0d62b4amr19545335ad.7.1731651001787;
-        Thu, 14 Nov 2024 22:10:01 -0800 (PST)
-Received: from localhost ([2401:fa00:8f:203:142f:6cb4:e895:7127])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-211d0dc5c94sm5721815ad.17.2024.11.14.22.10.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 22:10:01 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+	s=arc-20240116; t=1731652977; c=relaxed/simple;
+	bh=SzKMmS1fKvVd5X9elzm6R9oZ5/ZQWNbBXAOBUZc5E5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TTcZusFHEV0xL/umqL3rmZ5iMSo/pSHB4RVI1I71D4+LrSGK9PclXHg4TeNjcQlt39T1veowCilCI0upzHuh5kk+TYUMc0W+HTTU2YdTuDq+5RalPH5MZ67ggYQQmwH+hMBb4L7VKlIrA6oUkf+MvP4s6wFTo0RBrIXkXQBw6Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaODkFJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1252C4CECF;
+	Fri, 15 Nov 2024 06:42:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731652976;
+	bh=SzKMmS1fKvVd5X9elzm6R9oZ5/ZQWNbBXAOBUZc5E5Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=zaODkFJjO6nbTew9mbiFxBvKVQZLhK8aQRWJgS7bw3hgE2CH0QVFt/Q7H+lQYn4aD
+	 /P8hfiRrcwz296yYTGmdm7O4F2LsxuJMNg+rdbNchK7wC+f3PC43cI/o8IyH3dsak9
+	 pkkpBBYDltsccDMUiDYEMcoWj7/G8+Q9tQN5GeL8=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCHv2 5.15] udf: Allocate name buffer in directory iterator on heap
-Date: Fri, 15 Nov 2024 15:08:48 +0900
-Message-ID: <20241115060859.2453211-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 5.4 00/66] 5.4.286-rc1 review
+Date: Fri, 15 Nov 2024 07:37:09 +0100
+Message-ID: <20241115063722.834793938@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.286-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.4.286-rc1
+X-KernelTest-Deadline: 2024-11-17T06:37+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+This is the start of the stable review cycle for the 5.4.286 release.
+There are 66 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-[ Upstream commit 0aba4860b0d0216a1a300484ff536171894d49d8 ]
+Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
+Anything received after that time might be too late.
 
-Currently we allocate name buffer in directory iterators (struct
-udf_fileident_iter) on stack. These structures are relatively large
-(some 360 bytes on 64-bit architectures). For udf_rename() which needs
-to keep three of these structures in parallel the stack usage becomes
-rather heavy - 1536 bytes in total. Allocate the name buffer in the
-iterator from heap to avoid excessive stack usage.
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.286-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+and the diffstat can be found below.
 
-Link: https://lore.kernel.org/all/202212200558.lK9x1KW0-lkp@intel.com
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-[ senozhatsky: explicitly include slab.h to address build
-  failure reported by sashal@ ]
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- fs/udf/directory.c | 24 ++++++++++++++++--------
- fs/udf/udfdecl.h   |  2 +-
- 2 files changed, 17 insertions(+), 9 deletions(-)
+thanks,
 
-diff --git a/fs/udf/directory.c b/fs/udf/directory.c
-index e97ffae07833..a30898debdd1 100644
---- a/fs/udf/directory.c
-+++ b/fs/udf/directory.c
-@@ -19,6 +19,7 @@
- #include <linux/bio.h>
- #include <linux/crc-itu-t.h>
- #include <linux/iversion.h>
-+#include <linux/slab.h>
- 
- static int udf_verify_fi(struct udf_fileident_iter *iter)
- {
-@@ -248,9 +249,14 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- 	iter->elen = 0;
- 	iter->epos.bh = NULL;
- 	iter->name = NULL;
-+	iter->namebuf = kmalloc(UDF_NAME_LEN_CS0, GFP_KERNEL);
-+	if (!iter->namebuf)
-+		return -ENOMEM;
- 
--	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
--		return udf_copy_fi(iter);
-+	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		err = udf_copy_fi(iter);
-+		goto out;
-+	}
- 
- 	if (inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
- 		       &iter->eloc, &iter->elen, &iter->loffset) !=
-@@ -260,17 +266,17 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- 		udf_err(dir->i_sb,
- 			"position %llu not allocated in directory (ino %lu)\n",
- 			(unsigned long long)pos, dir->i_ino);
--		return -EFSCORRUPTED;
-+		err = -EFSCORRUPTED;
-+		goto out;
- 	}
- 	err = udf_fiiter_load_bhs(iter);
- 	if (err < 0)
--		return err;
-+		goto out;
- 	err = udf_copy_fi(iter);
--	if (err < 0) {
-+out:
-+	if (err < 0)
- 		udf_fiiter_release(iter);
--		return err;
--	}
--	return 0;
-+	return err;
- }
- 
- int udf_fiiter_advance(struct udf_fileident_iter *iter)
-@@ -307,6 +313,8 @@ void udf_fiiter_release(struct udf_fileident_iter *iter)
- 	brelse(iter->bh[0]);
- 	brelse(iter->bh[1]);
- 	iter->bh[0] = iter->bh[1] = NULL;
-+	kfree(iter->namebuf);
-+	iter->namebuf = NULL;
- }
- 
- static void udf_copy_to_bufs(void *buf1, int len1, void *buf2, int len2,
-diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
-index f764b4d15094..d35aa42bb577 100644
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -99,7 +99,7 @@ struct udf_fileident_iter {
- 	struct extent_position epos;	/* Position after the above extent */
- 	struct fileIdentDesc fi;	/* Copied directory entry */
- 	uint8_t *name;			/* Pointer to entry name */
--	uint8_t namebuf[UDF_NAME_LEN_CS0]; /* Storage for entry name in case
-+	uint8_t *namebuf;		/* Storage for entry name in case
- 					 * the name is split between two blocks
- 					 */
- };
--- 
-2.47.0.338.g60cca15819-goog
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.4.286-rc1
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    9p: fix slab cache name creation for real
+
+Christoph Hellwig <hch@lst.de>
+    mm: add remap_pfn_range_notrack
+
+Alex Zhang <zhangalex@google.com>
+    mm/memory.c: make remap_pfn_range() reject unaligned addr
+
+chenqiwu <chenqiwu@xiaomi.com>
+    mm: fix ambiguous comments for better code readability
+
+WANG Wenhu <wenhu.wang@vivo.com>
+    mm: clarify a confusing comment for remap_pfn_range()
+
+Li Nan <linan122@huawei.com>
+    md/raid10: improve code of mrdev in raid10_sync_request
+
+Reinhard Speyerer <rspmn@arcor.de>
+    net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+
+Alessandro Zanni <alessandro.zanni87@gmail.com>
+    fs: Fix uninitialized value issue in from_kuid and from_kgid
+
+Michael Ellerman <mpe@ellerman.id.au>
+    powerpc/powernv: Free name on error in opal_event_init()
+
+Julian Vetter <jvetter@kalrayinc.com>
+    sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+
+Rik van Riel <riel@surriel.com>
+    bpf: use kvzmalloc to allocate BPF verifier environment
+
+WangYuli <wangyuli@uniontech.com>
+    HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
+
+Pedro Falcato <pedro.falcato@gmail.com>
+    9p: Avoid creating multiple slab caches with the same name
+
+Jan Schär <jan@jschaer.ch>
+    ALSA: usb-audio: Add endianness annotations
+
+Hyunwoo Kim <v4bel@theori.io>
+    vsock/virtio: Initialization of the dangling pointer occurring in vsk->trans
+
+Hyunwoo Kim <v4bel@theori.io>
+    hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+
+Zheng Yejian <zhengyejian1@huawei.com>
+    ftrace: Fix possible use-after-free issue in ftrace_location()
+
+Chuck Lever <chuck.lever@oracle.com>
+    NFSD: Fix NFSv4's PUTPUBFH operation
+
+Jan Schär <jan@jschaer.ch>
+    ALSA: usb-audio: Add quirks for Dell WD19 dock
+
+Jan Schär <jan@jschaer.ch>
+    ALSA: usb-audio: Support jack detection on Dell dock
+
+Andrew Kanner <andrew.kanner@gmail.com>
+    ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+
+Marc Zyngier <maz@kernel.org>
+    irqchip/gic-v3: Force propagation of the active state with a read-back
+
+Benoît Monin <benoit.monin@gmx.fr>
+    USB: serial: option: add Quectel RG650V
+
+Reinhard Speyerer <rspmn@arcor.de>
+    USB: serial: option: add Fibocom FG132 0x0112 composition
+
+Jack Wu <wojackbb@gmail.com>
+    USB: serial: qcserial: add support for Sierra Wireless EM86xx
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    USB: serial: io_edgeport: fix use after free in debug printk
+
+Zijun Hu <quic_zijuhu@quicinc.com>
+    usb: musb: sunxi: Fix accessing an released usb phy
+
+Qi Xi <xiqi2@huawei.com>
+    fs/proc: fix compile warning about variable 'vmcore_mmap_ops'
+
+Benoit Sevens <bsevens@google.com>
+    media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
+
+Nikolay Aleksandrov <razor@blackwall.org>
+    net: bridge: xmit: make sure we have at least eth header len bytes
+
+Michael Walle <michael@walle.cc>
+    spi: fix use-after-free of the add_lock mutex
+
+Mark Brown <broonie@kernel.org>
+    spi: Fix deadlock when adding SPI controllers on SPI buses
+
+Sean Nyekjaer <sean@geanix.com>
+    mtd: rawnand: protect access to rawnand devices while in suspend
+
+Filipe Manana <fdmanana@suse.com>
+    btrfs: reinitialize delayed ref list after deleting it from the list
+
+Roberto Sassu <roberto.sassu@huawei.com>
+    nfs: Fix KMSAN warning in decode_getfattr_attrs()
+
+Zichen Xie <zichenxie0106@gmail.com>
+    dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
+
+Ming-Hung Tsai <mtsai@redhat.com>
+    dm cache: fix potential out-of-bounds access on the first resume
+
+Ming-Hung Tsai <mtsai@redhat.com>
+    dm cache: optimize dirty bit checking with find_next_bit when resizing
+
+Ming-Hung Tsai <mtsai@redhat.com>
+    dm cache: fix out-of-bounds access to the dirty bitset when resizing
+
+Ming-Hung Tsai <mtsai@redhat.com>
+    dm cache: correct the number of origin blocks to match the target length
+
+Antonio Quartulli <antonio@mandelbit.com>
+    drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
+
+Erik Schumacher <erik.schumacher@iris-sensing.com>
+    pwm: imx-tpm: Use correct MODULO value for EPWM mode
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: v4l2-tpg: prevent the risk of a division by zero
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: cx24116: prevent overflows on SNR calculus
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: s5p-jpeg: prevent buffer overflows
+
+Murad Masimov <m.masimov@maxima.ru>
+    ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: adv7604: prevent underflow condition when reporting colorspace
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: dvb_frontend: don't play tricks with underflow values
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: dvbdev: prevent the risk of out of memory access
+
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+    media: stb0899_algo: initialize cfr before using it
+
+Peiyang Wang <wangpeiyang1@huawei.com>
+    net: hns3: fix kernel crash when uninstalling driver
+
+Dario Binacchi <dario.binacchi@amarulasolutions.com>
+    can: c_can: fix {rx,tx}_errors statistics
+
+Xin Long <lucien.xin@gmail.com>
+    sctp: properly validate chunk size in sctp_sf_ootb()
+
+Wei Fang <wei.fang@nxp.com>
+    net: enetc: set MAC address to the VF net_device
+
+Qinglang Miao <miaoqinglang@huawei.com>
+    enetc: simplify the return expression of enetc_vf_set_mac_addr()
+
+Chen Ridong <chenridong@huawei.com>
+    security/keys: fix slab-out-of-bounds in key_task_permission
+
+Jiri Kosina <jkosina@suse.com>
+    HID: core: zero-initialize the report buffer
+
+Heiko Stuebner <heiko@sntech.de>
+    ARM: dts: rockchip: Fix the realtek audio codec on rk3036-kylin
+
+Heiko Stuebner <heiko@sntech.de>
+    ARM: dts: rockchip: Fix the spi controller on rk3036
+
+Heiko Stuebner <heiko@sntech.de>
+    ARM: dts: rockchip: drop grf reference from rk3036 hdmi
+
+Heiko Stuebner <heiko@sntech.de>
+    ARM: dts: rockchip: fix rk3036 acodec node
+
+Heiko Stuebner <heiko@sntech.de>
+    arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
+
+Heiko Stuebner <heiko@sntech.de>
+    arm64: dts: rockchip: Fix bluetooth properties on Rock960 boards
+
+Diederik de Haas <didi.debian@cknow.org>
+    arm64: dts: rockchip: Remove hdmi's 2nd interrupt on rk3328
+
+Geert Uytterhoeven <geert+renesas@glider.be>
+    arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/arm/boot/dts/rk3036-kylin.dts                 |   4 +-
+ arch/arm/boot/dts/rk3036.dtsi                      |  14 +-
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi           |   3 +-
+ arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi      |   1 -
+ arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi   |   2 +-
+ .../dts/rockchip/rk3399-sapphire-excavator.dts     |   2 +-
+ arch/powerpc/platforms/powernv/opal-irqchip.c      |   1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c           |   4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c        |   2 +-
+ drivers/hid/hid-core.c                             |   2 +-
+ drivers/hid/hid-multitouch.c                       |   5 +
+ drivers/irqchip/irq-gic-v3.c                       |   7 +
+ drivers/md/dm-cache-target.c                       |  35 ++---
+ drivers/md/dm-unstripe.c                           |   4 +-
+ drivers/md/raid10.c                                |  23 +--
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c      |   3 +
+ drivers/media/dvb-core/dvb_frontend.c              |   4 +-
+ drivers/media/dvb-core/dvbdev.c                    |  17 ++-
+ drivers/media/dvb-frontends/cx24116.c              |   7 +-
+ drivers/media/dvb-frontends/stb0899_algo.c         |   2 +-
+ drivers/media/i2c/adv7604.c                        |  26 ++--
+ drivers/media/platform/s5p-jpeg/jpeg-core.c        |  17 ++-
+ drivers/media/usb/uvc/uvc_driver.c                 |   2 +-
+ drivers/mtd/nand/raw/nand_base.c                   |  44 +++---
+ drivers/net/can/c_can/c_can.c                      |   7 +-
+ drivers/net/ethernet/freescale/enetc/enetc_vf.c    |   2 +
+ drivers/net/ethernet/hisilicon/hns3/hnae3.c        |   5 +-
+ drivers/net/usb/qmi_wwan.c                         |   1 +
+ drivers/pwm/pwm-imx-tpm.c                          |   4 +-
+ drivers/spi/spi.c                                  |  27 ++--
+ drivers/usb/musb/sunxi.c                           |   2 -
+ drivers/usb/serial/io_edgeport.c                   |   8 +-
+ drivers/usb/serial/option.c                        |   6 +
+ drivers/usb/serial/qcserial.c                      |   2 +
+ fs/btrfs/delayed-ref.c                             |   2 +-
+ fs/nfs/inode.c                                     |   1 +
+ fs/nfsd/nfs4xdr.c                                  |  10 +-
+ fs/ocfs2/file.c                                    |   9 +-
+ fs/ocfs2/xattr.c                                   |   3 +-
+ fs/proc/vmcore.c                                   |   9 +-
+ include/linux/mm.h                                 |   2 +
+ include/linux/mm_types.h                           |   4 +-
+ include/linux/mtd/rawnand.h                        |   2 +
+ include/linux/spi/spi.h                            |   3 +
+ kernel/bpf/verifier.c                              |   4 +-
+ kernel/trace/ftrace.c                              |  30 ++--
+ mm/memory.c                                        |  56 ++++---
+ net/9p/client.c                                    |  12 +-
+ net/bridge/br_device.c                             |   5 +
+ net/sctp/sm_statefuns.c                            |   2 +-
+ net/vmw_vsock/hyperv_transport.c                   |   1 +
+ net/vmw_vsock/virtio_transport_common.c            |   1 +
+ security/keys/keyring.c                            |   7 +-
+ sound/Kconfig                                      |   2 +-
+ sound/firewire/tascam/amdtp-tascam.c               |   2 +-
+ sound/usb/mixer_quirks.c                           | 170 +++++++++++++++++++++
+ 57 files changed, 453 insertions(+), 183 deletions(-)
+
 
 
