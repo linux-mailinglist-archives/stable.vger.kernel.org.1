@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-93426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89CB9CD935
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101509CD7DE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FAA21F22305
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52391F214E7
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA871885BF;
-	Fri, 15 Nov 2024 06:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DCE14EC77;
+	Fri, 15 Nov 2024 06:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDTAk/l8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf6wine6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD967185924;
-	Fri, 15 Nov 2024 06:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931DCEAD0;
+	Fri, 15 Nov 2024 06:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653886; cv=none; b=kmqzBxP8d3n/cmkheV2y+OCpZ8ymw3YvfsCxLoJy5LHiZVas0mH+F4UWnXw7yhJ/M5Ro3R2X/y73DE4IHG7r7uOtMOd/F85psjbIjHmWBhw96oPa7i5D3KxgPDSAX789ETa9QGFKyF13tL1Ly2loQWGkfSv5MA8+2NTlpcvy9io=
+	t=1731653117; cv=none; b=HH6JJp486dx1goFQF/hdAhzcu9nmjwxwSPneWpL4BmmXBLU7iySxB9dcbC/J9cLt28B/kvGKnT3JE3f1J9G4KUZBOyZzmbp5R5yAxCoPNj9nl1xzscGbGS0mipTAGyjAtwmmBaFXJB7iek12W8RPQ4G8CyZqirsRNlksRYySRHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653886; c=relaxed/simple;
-	bh=N3tDIAVgXV+6lUo4ixu33LI3zNwfM+Sum/A10oSxkGg=;
+	s=arc-20240116; t=1731653117; c=relaxed/simple;
+	bh=4cxRw/yp9F+kGTlyLY6jyfZWQf//u/yUDJALJc8IikA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBAeDZbCpw7AZ1t3ixad36StHleLteFKMlb2woo98hU3MHE5g2wahRi3QACntiu/ljHrgCKZCuzyMfKmHgQUBOarpDwo6UJpjZ84QkZWyIl+0XqvjZOVA5jQ9+/WjuhYrf8yNsP1nq6uusRFYJO6wqAhAkHwD8U/xyFx1/ZJqH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDTAk/l8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AA5C4CECF;
-	Fri, 15 Nov 2024 06:58:05 +0000 (UTC)
+	 MIME-Version; b=LTwCOU3H3J4mNACvOqnzSSG8MujmBqagpdHnMyg62Xg6smawqq/CsnUDU5XkvRvwv1ApiebVmzSoNoIbUwSuoEG3gAS39tx5aIzmyG+CFxxFNmkNQdzmIeNNfUb7hFsa7kJuED0dxdftjejSBzlpRPuMiCzG/ZRDiDMQxNlWjaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf6wine6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB59C4CECF;
+	Fri, 15 Nov 2024 06:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653885;
-	bh=N3tDIAVgXV+6lUo4ixu33LI3zNwfM+Sum/A10oSxkGg=;
+	s=korg; t=1731653117;
+	bh=4cxRw/yp9F+kGTlyLY6jyfZWQf//u/yUDJALJc8IikA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDTAk/l8gDn1p8sHnk/ophT5+lefb2Rn2tHwt0uW5u1K916Rq52KlWWGU+GFkhye+
-	 uLI52WYDyakTOB3hT3sMQLAdi74j/8H00l0NowVM73I5k8hfYlEaW+5dMZtNVjd+f9
-	 0QuhtpBGGfG0swgbrbXhOpvEKnS14h1iPWCkmNDY=
+	b=yf6wine64FnGthjcuRaACjjuekNUnug/+mDaL+pAIqNi9BfBrfTmBDI6zi5+mYV9h
+	 aCHXr95SjF1V4w5ieRfRlZHI35QbN6uHC/qC6D7mQX0k/Hn5TtU9J9jDAUqy6Sm47m
+	 5GpYfFGAQimgU61WlEE9qzXAdv0xqjQdYWcXVSeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 31/82] media: pulse8-cec: fix data timestamp at pulse8_setup()
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 59/66] fs: Fix uninitialized value issue in from_kuid and from_kgid
 Date: Fri, 15 Nov 2024 07:38:08 +0100
-Message-ID: <20241115063726.685009417@linuxfoundation.org>
+Message-ID: <20241115063724.971046318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-commit ba9cf6b430433e57bfc8072364e944b7c0eca2a4 upstream.
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-As pointed by Coverity, there is a hidden overflow condition there.
-As date is signed and u8 is unsigned, doing:
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-	date = (data[0] << 24)
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
 
-With a value bigger than 07f will make all upper bits of date
-0xffffffff. This can be demonstrated with this small code:
-
-<code>
-typedef int64_t time64_t;
-typedef uint8_t u8;
-
-int main(void)
-{
-	u8 data[] = { 0xde ,0xad , 0xbe, 0xef };
-	time64_t date;
-
-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Invalid data = 0x%08lx\n", date);
-
-	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Expected data = 0x%08lx\n", date);
-
-	return 0;
-}
-</code>
-
-Fix it by converting the upper bit calculation to unsigned.
-
-Fixes: cea28e7a55e7 ("media: pulse8-cec: reorganize function order")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/pulse8/pulse8-cec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-index ba67587bd43e..171366fe3544 100644
---- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
-+++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-@@ -685,7 +685,7 @@ static int pulse8_setup(struct pulse8 *pulse8, struct serio *serio,
- 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
- 	if (err)
- 		return err;
--	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-+	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
- 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 0c62cb90d63dd..3bbeea2e60f70 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1133,9 +1133,12 @@ int ocfs2_setattr(struct dentry *dentry, struct iattr *attr)
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
  
- 	dev_dbg(pulse8->dev, "Persistent config:\n");
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
 -- 
-2.47.0
+2.43.0
 
 
 
