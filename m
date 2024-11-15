@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-93435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA5C9CD943
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:58:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85489CD983
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1A4DB22353
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFF02826C6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CBD187FE8;
-	Fri, 15 Nov 2024 06:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1356315FD13;
+	Fri, 15 Nov 2024 07:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLN/WPqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mum56n+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40542BB1B;
-	Fri, 15 Nov 2024 06:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55FA52F9E;
+	Fri, 15 Nov 2024 07:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653915; cv=none; b=WaWGM4eX6oXyQfgL7+aNJkyYj0u/qn8eXfjZwASPo0Ql/x8WLQpf5segtjaA5Eew2xM5m4dfBe8iDTUKdrRVL1Auktr4UfgUVW4Lgm/Elnc5mwdaQqwNOXLX8MEdkJ1eZkG8E90e0boao7HWUfF5DabTiECiq2KZ9w5+1XtFzSg=
+	t=1731654034; cv=none; b=QcM6xRp4sAKGREKS7dIxDnjqpHU7GgD31GgLk89TyWHFRfiZgDGU+BcLUiG3U6IU1uslGXX+00cedr8r/mwjtdGA/U2A/YqbFDik9QxdoupDwvxreMr7y/+nnOV+bt8ntoAONthXVWAgn6LyADwuL0pMTV+J83UhS38nKkjUWD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653915; c=relaxed/simple;
-	bh=qkddp2HSVhLouY9YJwXJCNhG8CHK2jJ6QUQ7sa+G/Dw=;
+	s=arc-20240116; t=1731654034; c=relaxed/simple;
+	bh=kdJHGgnKhJ8k+fkAkAqzQZ7UIbPvK2JjXd8VzKQVvmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZ0XxdP9SObQpnYs/kGYWSkmN61dc5Sf+MeJrovQUANrkiC+9s5Z7kvIk7N9B72P4cDRWAKwPsCTev7BNEinFoKbGkegrMQ5QBwX+Si9rQU5f1UcGT81C/sZD26LRxYTSgAjgKcEyOqYlUr5lNvBWRklRcQcX8LKbH+6zh3G3QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLN/WPqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5961C4CED0;
-	Fri, 15 Nov 2024 06:58:34 +0000 (UTC)
+	 MIME-Version; b=fFWMpluvZC4xAYwreXKl/n5boAwOC9/2zmVoadALi+98HOmRZev8BNVhC6t37cJlUKUynbprv6xYrVBDL1Fud4zZ26bTpx9/lCVRZcjLn5an+8/w515h0X2rpd7BWkbjcGKC4dwvaEWZj/RuTqYcGlXMERTVJXg/CZvg2medCLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mum56n+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5CFC4CECF;
+	Fri, 15 Nov 2024 07:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653915;
-	bh=qkddp2HSVhLouY9YJwXJCNhG8CHK2jJ6QUQ7sa+G/Dw=;
+	s=korg; t=1731654033;
+	bh=kdJHGgnKhJ8k+fkAkAqzQZ7UIbPvK2JjXd8VzKQVvmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLN/WPqiL6MpVRtbqaLmqV2Iyteo3KE3GQGPG/YuXNduxFt0MFTFULAmAAiBu6DfD
-	 l1amvxIEvXK1lb+FxITa6KjuIdD1klNB1/zoywjU6XevoATyqUfIu2A5Gr3oJH9ksz
-	 jxC4JAVTm8Whekzah/L5bbkAfFeqC1fT8ZRNJeho=
+	b=mum56n+Wu75c28ygfd7fNLtsl46ytcPwAE21v4OdEFiR2KN0VoAwrR7VrZysqqRX9
+	 T6DN+VDpi1WBbbV3HnHiiZQxd0m2E4PlsdeHO5gjkLGeiqucVa8S07Tr8MdTJnK5wb
+	 6qO6xO4stBKENNPHuyoPboGtV51D4vualGnjQloc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yann Sionneau <ysionneau@kalrayinc.com>,
-	Julian Vetter <jvetter@kalrayinc.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 74/82] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+Subject: [PATCH 5.15 05/22] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
 Date: Fri, 15 Nov 2024 07:38:51 +0100
-Message-ID: <20241115063728.214125914@linuxfoundation.org>
+Message-ID: <20241115063721.368727618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
+References: <20241115063721.172791419@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Vetter <jvetter@kalrayinc.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
+[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
 
-When building for the UM arch and neither INDIRECT_IOMEM=y, nor
-HAS_IOMEM=y is selected, it will fall back to the implementations from
-asm-generic/io.h for IO memcpy. But these fall-back functions just do a
-memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
-INDIRECT_IOMEM'.
+The behavior of HONOR MagicBook Art 14 touchpad is not consistent
+after reboots, as sometimes it reports itself as a touchpad, and
+sometimes as a mouse.
 
-Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
-Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
-Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
+workaround to force set feature in mt_set_input_mode() for such special touchpad
+device.
+
+[jkosina@suse.com: reword changelog a little bit]
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/Kconfig b/sound/Kconfig
-index aaf2022ffc57d..cb4cb0d5b9591 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM || UML
-+	depends on HAS_IOMEM || INDIRECT_IOMEM
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 116876d710932..8f6e410af7016 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2087,6 +2087,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			0x347d, 0x7853) },
+ 
++	/* HONOR MagicBook Art 14 touchpad */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x35cc, 0x0104) },
++
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
 -- 
 2.43.0
 
