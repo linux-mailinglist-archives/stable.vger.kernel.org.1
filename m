@@ -1,149 +1,146 @@
-Return-Path: <stable+bounces-93556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DC49CF18A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 17:34:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26D89CF0D4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 16:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06515B3BD02
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 15:52:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341BF1F2BAF5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1471D5AA8;
-	Fri, 15 Nov 2024 15:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5235D1CEEBE;
+	Fri, 15 Nov 2024 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h34mAnO8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S3eI1y5N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDBB2F29;
-	Fri, 15 Nov 2024 15:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B081C75E2
+	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 15:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731685760; cv=none; b=VMRwnMgXZ1sntYfqQHEKFMng3CvF5pM1Bxo1yK+eLknHItdXGuTjpjK6rhzqr9YA7BVSjQKq+qalPVle4Fcuk55z9dsEvz/ty4rRC8NoVRx5ss+y9iayDLN1Tp+yO8qxiCq0EaJZiUseWLMssh1XK16fBJtz+YmyIDOmV1MFX3Q=
+	t=1731686354; cv=none; b=pluGmBLACl6QLGTGwTS2DqJHcIRjgY6mrU1HYrJxhEGKT/2IBinhQtnl0InYAkhi8VJK/+KIab7HBUUHoeqid1ZAKS4cVYAFuweSMfOHgTl/i0iYqaghZ0chlsYvnBi5fxQoIaQNM4nlV5tBjvlxuX4zrnrScq2jslCWo/V+JR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731685760; c=relaxed/simple;
-	bh=REuaaHZMoQv6ITFn0py/x2i/HcpSTzvBWmRC4GySXaY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fnICukBeTuA0U0lpOBBfPmu46jXEEa7Q1meM6awYDWvBl/cx2en6bfCrHSqP7B1b/z90NgMm4nnbJkdApaPVKdRHdDgUTwckRaXrNYoe0YlgC5R2RKxlWD/D6Qk3HoqV6hP/zQVzxw13aK9HvwXF4cAFD1BuS7uewo05YtX5vac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h34mAnO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5946CC4CECF;
-	Fri, 15 Nov 2024 15:49:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731685759;
-	bh=REuaaHZMoQv6ITFn0py/x2i/HcpSTzvBWmRC4GySXaY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h34mAnO8WRER/CpGHbOe2J48d14EhGHGf/ssbas1iuMjfq9Xwt9n+8pxXF+SvB23H
-	 iRIKIqDrOfyLVeWbTjw5o5SAd1sJbT6rwVF66nZjiMO2OrmSbHbGHA1reKbu4he5hv
-	 Gsqs+uMBy0QUDSOOYYEmBDMNU+t1cm9n3Np1KYGZrN8Gkh2ykKV17RU/wvm8Fds4A9
-	 j6wHkBdgjsbLK0ndXlv9gy2lk8FPjgPxH7Bj84T46BUgv0LFU48EIccPdEv+3bx7Dr
-	 0nZZY2c4Bo6C8dnpfP6rwDs1oLrQLVg6wnI9Cfj4PC69rdWfG5DzAp4VrREqwBxtpe
-	 X5bkoTltk4yBA==
-Message-ID: <f7b13e22-5241-4cdb-9c9a-1506b0066f0e@kernel.org>
-Date: Fri, 15 Nov 2024 16:49:15 +0100
+	s=arc-20240116; t=1731686354; c=relaxed/simple;
+	bh=AliMht6MUf2kRcQC+r9MBmkYM7mVB19mv+CzjTt4qc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d17Q0tvpu9D6wtxEK549/15mShyj0mvMRZq9ez+KBReqSEoca3a8N8kcaUqanKeF2dabSYOx1tImypuZaKiBS3Qt5Wraeadp4K/R5yd9B29FjQ347m+5E+yRThd88iR+gU8BkLYX/dygMYygfxW821et5M7uTyFumBJZUYP0HG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S3eI1y5N; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53a097aa3daso2049793e87.1
+        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 07:59:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731686351; x=1732291151; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gMfxO2Ju8vEjnQTSKznfl18LDxvCiGquG5jWu4YVQBI=;
+        b=S3eI1y5NnEf3Fm71IaxIL+/U75QPem/vapNJk7PYb761MBDTJsWS57bwidyTm3BXCV
+         JWFx9dCWk4wJgdxRd1PvX1dX367rAYvPBZ8N1Pe8lG4miGy5wBo9E+eCAEIJegCfB2Zi
+         rKk6YqN0mjUxNwa/4oxga/wLPXjIMNQhW0uRpoeNA17fbF6xfmw0+ZGyUlyz3bRxXTFV
+         oQX5COoSKcJfZDHiswdXqAaQl6eMQVMxTVKkU2gb7cvFQARBJiC50ePjUPKewLfqzWT6
+         MhkF9jpvDD6n46BsH4HZkHmo4p8q3yO6yxXUiBm66xW50n8hcnBCdyzxGZZUoqmU5OZb
+         2ADQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731686351; x=1732291151;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gMfxO2Ju8vEjnQTSKznfl18LDxvCiGquG5jWu4YVQBI=;
+        b=GMTvL0HW70fADu59u1krZ2HaCpmwyYW1jjtcOlKX2ZuhgImVd32pHaI8cz1BBwbvc3
+         BkSrqm5OM+5Hq4fmaz+MZNBOKXpuTY/rOKvbbrbc8hFRBApVRccaS1h3XwzUxIUE2bF5
+         RrfgPO/OFgBxc+MPfMLm9pKu8vvGt0BzAu4N24RWz8g6lx0jjvp2ag4t5xrGMMDmp6Pn
+         0D2jdzd8DcV1Tq+XHvDkFzdL+TaJNWOzZeCMYWFB4q+SpoYWF43yszqqICWRtgLt8zUr
+         yw/1k8ZIkFCoRK3Fu5z22Smh3O2eWXREl9ZyOzuL2nc2J4B55IGNDhfnLKtj8RoxSqsK
+         0SPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJjw8v0zpsSM4U366QNeDrkkLCwNJcHryM5gUOrq3IMS5seN+NzIV8FZxDt6cOV7OycSp1RTc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsiiTCL64ri536VobbSDTlBOKjuYNLpsop2cBy1fb8aL15uhlN
+	tvzPohoLBWKLy2WgsrNOSBllHId3wEHswjiSZ3QfUFncWrbOxf2v+vUNc2PqhFw=
+X-Google-Smtp-Source: AGHT+IGM7mU2Z7NRzQuZyYKrHQmac88PdjbXj6OEF7ihDrIv75j0NtxGn8TGk54rYau4nJmsS7JKLw==
+X-Received: by 2002:a05:6512:1594:b0:539:93e8:7eca with SMTP id 2adb3069b0e04-53dab2b3c5dmr1925115e87.35.1731686350401;
+        Fri, 15 Nov 2024 07:59:10 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53da6548b79sm615903e87.242.2024.11.15.07.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 07:59:08 -0800 (PST)
+Date: Fri, 15 Nov 2024 17:59:06 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Krishna Kurapati <quic_kriskura@quicinc.com>
+Cc: Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <quic_bjorande@quicinc.com>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Andy Gross <agross@kernel.org>, 
+	Stephen Boyd <swboyd@chromium.org>, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-phy@lists.infradead.org, quic_ppratap@quicinc.com, quic_jackp@quicinc.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y] phy: qcom: qmp: Fix NULL pointer dereference for
+ USB Uni PHYs
+Message-ID: <ibh3n7gl5qcawpiyjgxy2yum6jsmfv5lpfefuun3m2ktldcswl@odhjnmkj5jre>
+References: <20241115091545.2358156-1-quic_kriskura@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: LKFT CI: improving Networking selftests results when validating
- stable kernels
-Content-Language: en-GB
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
- Linux Kernel Functional Testing <lkft@linaro.org>,
- Kernel Selftests <linux-kselftest@vger.kernel.org>,
- Netdev <netdev@vger.kernel.org>, Linux Kernel
- <linux-kernel@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>, Ido Schimmel
- <idosch@nvidia.com>, stable@vger.kernel.org
-References: <ff870428-6375-4125-83bd-fc960b3c109b@kernel.org>
- <1bda012e-817a-45be-82e2-03ac78c58034@stanley.mountain>
- <c4ed1f88-e43b-4b12-bffc-faf27879042c@kernel.org>
- <226bc28f-d720-4bf9-90c9-ebdd4e711079@stanley.mountain>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <226bc28f-d720-4bf9-90c9-ebdd4e711079@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115091545.2358156-1-quic_kriskura@quicinc.com>
 
-Hi Dan,
+On Fri, Nov 15, 2024 at 02:45:45PM +0530, Krishna Kurapati wrote:
+> Commit [1] introduced DP support to QMP driver. While doing so, the
+> dp and usb configuration structures were added to a combo_phy_cfg
+> structure. During probe, the match data is used to parse and identify the
+> dp and usb configs separately. While doing so, the usb_cfg variable
+> represents the configuration parameters for USB part of the phy (whether
+> it is DP-Cobo or Uni). during probe, one corner case of parsing usb_cfg
+> for Uni PHYs is left incomplete and it is left as NULL. This NULL variable
+> further percolates down to qmp_phy_create() call essentially getting
+> de-referenced and causing a crash.
 
-On 15/11/2024 14:07, Dan Carpenter wrote:
-> On Fri, Nov 15, 2024 at 01:43:14PM +0100, Matthieu Baerts wrote:
->> Regarding the other questions from my previous email -- skipped tests
->> (e.g. I think Netfilter tests are no longer validated), KVM,
->> notifications -- do you know who at Linaro could eventually look at them?
->>
+The UNI PHY platforms don't have usb3-phy subnode. As such the usb_cfg
+variable should not be used in the for_each_available_child_of_node()
+loop.
+
+Please provide details for the platform on which you observe the crash
+and the backtrace.
+
 > 
-> The skip tests were because they lead to hangs.  We're going to look at those
-> again to see if they're still an issue.  And we're also going to try enable the
-> other tests you mentioned.
+> Subsequently, commit [2] split the driver into multiple files, each
+> handling a specific PHY type (USB, DP-Combo, UFS, PCIe). During this
+> refactoring, the probing process was modified, and the NULL pointer
+> dereference issue no longer showed up.
+> 
+> [1]: https://lore.kernel.org/all/20200916231202.3637932-8-swboyd@chromium.org/
+> [2]: https://lore.kernel.org/all/20220607213203.2819885-1-dmitry.baryshkov@linaro.org/
+> 
+> Fixes: 52e013d0bffa ("phy: qcom-qmp: Add support for DP in USB3+DP combo phy")
+> Cc: stable@vger.kernel.org # 5.15.y
+> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+> ---
+>  drivers/phy/qualcomm/phy-qcom-qmp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.c b/drivers/phy/qualcomm/phy-qcom-qmp.c
+> index eef863108bfe..e22ee71aa060 100644
+> --- a/drivers/phy/qualcomm/phy-qcom-qmp.c
+> +++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
+> @@ -5714,6 +5714,8 @@ static int qcom_qmp_phy_probe(struct platform_device *pdev)
+>  
+>  		usb_cfg = combo_cfg->usb_cfg;
+>  		cfg = usb_cfg; /* Setup clks and regulators */
+> +	} else {
+> +		usb_cfg = cfg;
+>  	}
+>  
+>  	/* per PHY serdes; usually located at base address */
+> -- 
+> 2.34.1
+> 
 
-Great, thank you!
-
-For KVM (or similar), I guess it is not available, right? Some
-time-sensitive tests might be unstable in such environment, and need to
-be skipped.
-
-For the notifications, do not hesitate to contact the corresponding
-maintainers, the last people who modified the problematic selftests and
-the netdev list. These "net" selftests are now better maintained, and
-they are regularly validated on the development branches:
-
-  https://netdev.bots.linux.dev/status.html
-
-Cheers,
-Matt
 -- 
-Sponsored by the NGI0 Core fund.
-
+With best wishes
+Dmitry
 
