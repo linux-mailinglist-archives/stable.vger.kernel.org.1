@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476889CD822
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592719CD77C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E90F51F21A9C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D98928165C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E67118871E;
-	Fri, 15 Nov 2024 06:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5F4187FE8;
+	Fri, 15 Nov 2024 06:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THjbGdCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUi3rQX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EF92BB1B;
-	Fri, 15 Nov 2024 06:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984D53BBEB;
+	Fri, 15 Nov 2024 06:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653272; cv=none; b=FrzK2b7YKBukRIV44W0AIMTkRuGdDGfAvpkJx5nX7EshSq+Rn3B3Gzr2Gx3/sRK2BTyicWJfR0jL0uYspGl+29M1mrmnvxMq2hKVc4SgR0c3x0xXA7w0P67fTo5bq71k/WhdgwxasoPCN5HRJkerVUl0w+bDRKKRF1KScKEmefs=
+	t=1731652900; cv=none; b=ZiGJjNj4dKb2W3EcGUhc8j69MH8NvpzKd5I8oic0fm0KH3vcunZGN/owyCQKtW9DKjaolZpG6YxPxg2GJbphLPUWrmzSPsK0n/sTFCoGERwSLy/Uv+iWjbERtbTCFKEIrp4rMTp3K4h+GLlUDtEH0gEMOiOCEebgIAutP2RC4QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653272; c=relaxed/simple;
-	bh=F3bF2kVPt+fprVAC2nu37LbyubgeWtrF0VfoD2iffiI=;
+	s=arc-20240116; t=1731652900; c=relaxed/simple;
+	bh=RZAl89LyPbS6FTe7+Mxqyp4OkaS9Z5zrbWDQQfxf+c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kt3HNxC3b8fQ7rdZ4SYVUtLp8aiUnJLNFHtnpj5jI2NcVFVu3rs2YYzV1qANy52BYtrUpWcfQDwSBwUIXI9LaQ7VLZKhz8FEcIjoIkK0p0+khL3dvE/vdw+TLEsZ+tE08zj8iiO9wYhy4s+QhDmaxaPZcDyRcaLHiCXg+oQjcp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THjbGdCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C10C4CECF;
-	Fri, 15 Nov 2024 06:47:52 +0000 (UTC)
+	 MIME-Version; b=AteEHmG4Day+pjxXcX6p0Ls3y64x6RcvNHZhXgjTI+Vln476fndbmzHThsAaQh6vOznQ6iDD1aeBWG1CE2DeY7h8I/+0F7OLYxo0Js7okRqhE26IevcaWUNqAqvF81trd/oS97bvPDiiUYz70EIauo8oIVMiommCagHTvJdUf/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUi3rQX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09765C4CECF;
+	Fri, 15 Nov 2024 06:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653272;
-	bh=F3bF2kVPt+fprVAC2nu37LbyubgeWtrF0VfoD2iffiI=;
+	s=korg; t=1731652900;
+	bh=RZAl89LyPbS6FTe7+Mxqyp4OkaS9Z5zrbWDQQfxf+c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THjbGdCvoSVKfzTu4eW1Qpwq7xm0b9bke3Weu4zXE58F+wBwNEPj/vaq4LxkvdtSD
-	 dEQLsnfyzNeyAlbjGSHM6p8NLGx8hRJLzE/cSays+rpNHpLDW4zmllbY7dKgrMLf6c
-	 k+Dn/0gnqy4fWgpxbcoVU/JbdOR0obV9/pZiUqoQ=
+	b=IUi3rQX2dd5K0skLt90UV4hvLRECXY9hb6U8+tqvC4RXzOPBqKEeHojlLVaP8Xprn
+	 D73Qo+HQfoKO81O9GwdjVntWmpYZD33KrPzm+WlslBZSBgJM+AjlNv8Ci59mqPxVYj
+	 QOqbnYcvC6Dk/QQ8Ntn6hVpMlyGTWzZL5aguwY0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Julian Vetter <jvetter@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 38/63] ASoC: Intel: avs: Update stream status in a separate thread
+Subject: [PATCH 4.19 48/52] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
 Date: Fri, 15 Nov 2024 07:38:01 +0100
-Message-ID: <20241115063727.291483234@linuxfoundation.org>
+Message-ID: <20241115063724.586434860@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-[ Upstream commit 0dbb186c3510cad4e9f443e801bf2e6ab5770c00 ]
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-Function snd_pcm_period_elapsed() is part of sequence servicing HDAudio
-stream IRQs. It's called under Global Interrupt Enable (GIE) disabled -
-no HDAudio interrupts will be raised. At the same time, the function may
-end up calling __snd_pcm_xrun() or snd_pcm_drain_done(). On the
-avs-driver side, this translates to IPCs and as GIE is disabled, these
-will never complete successfully.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
-Improve system stability by scheduling stream-IRQ handling in a separate
-thread.
-
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20241008083758.756578-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/core.c |  3 ++-
- sound/soc/intel/avs/pcm.c  | 19 +++++++++++++++++++
- sound/soc/intel/avs/pcm.h  | 16 ++++++++++++++++
- 3 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 sound/soc/intel/avs/pcm.h
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index f2dc82a2abc71..4d1e6c84918c6 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -28,6 +28,7 @@
- #include "avs.h"
- #include "cldma.h"
- #include "messages.h"
-+#include "pcm.h"
- 
- static u32 pgctl_mask = AZX_PGCTL_LSRMD_MASK;
- module_param(pgctl_mask, uint, 0444);
-@@ -247,7 +248,7 @@ static void hdac_stream_update_pos(struct hdac_stream *stream, u64 buffer_size)
- static void hdac_update_stream(struct hdac_bus *bus, struct hdac_stream *stream)
- {
- 	if (stream->substream) {
--		snd_pcm_period_elapsed(stream->substream);
-+		avs_period_elapsed(stream->substream);
- 	} else if (stream->cstream) {
- 		u64 buffer_size = stream->cstream->runtime->buffer_size;
- 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index c76b86254a8b4..37b1880c81141 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -16,6 +16,7 @@
- #include <sound/soc-component.h>
- #include "avs.h"
- #include "path.h"
-+#include "pcm.h"
- #include "topology.h"
- #include "../../codecs/hda.h"
- 
-@@ -30,6 +31,7 @@ struct avs_dma_data {
- 		struct hdac_ext_stream *host_stream;
- 	};
- 
-+	struct work_struct period_elapsed_work;
- 	struct snd_pcm_substream *substream;
- };
- 
-@@ -56,6 +58,22 @@ avs_dai_find_path_template(struct snd_soc_dai *dai, bool is_fe, int direction)
- 	return dw->priv;
- }
- 
-+static void avs_period_elapsed_work(struct work_struct *work)
-+{
-+	struct avs_dma_data *data = container_of(work, struct avs_dma_data, period_elapsed_work);
-+
-+	snd_pcm_period_elapsed(data->substream);
-+}
-+
-+void avs_period_elapsed(struct snd_pcm_substream *substream)
-+{
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
-+	struct snd_soc_dai *dai = snd_soc_rtd_to_cpu(rtd, 0);
-+	struct avs_dma_data *data = snd_soc_dai_get_dma_data(dai, substream);
-+
-+	schedule_work(&data->period_elapsed_work);
-+}
-+
- static int avs_dai_startup(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
- {
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
-@@ -77,6 +95,7 @@ static int avs_dai_startup(struct snd_pcm_substream *substream, struct snd_soc_d
- 	data->substream = substream;
- 	data->template = template;
- 	data->adev = adev;
-+	INIT_WORK(&data->period_elapsed_work, avs_period_elapsed_work);
- 	snd_soc_dai_set_dma_data(dai, substream, data);
- 
- 	if (rtd->dai_link->ignore_suspend)
-diff --git a/sound/soc/intel/avs/pcm.h b/sound/soc/intel/avs/pcm.h
-new file mode 100644
-index 0000000000000..0f3615c903982
---- /dev/null
-+++ b/sound/soc/intel/avs/pcm.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright(c) 2024 Intel Corporation
-+ *
-+ * Authors: Cezary Rojewski <cezary.rojewski@intel.com>
-+ *          Amadeusz Slawinski <amadeuszx.slawinski@linux.intel.com>
-+ */
-+
-+#ifndef __SOUND_SOC_INTEL_AVS_PCM_H
-+#define __SOUND_SOC_INTEL_AVS_PCM_H
-+
-+#include <sound/pcm.h>
-+
-+void avs_period_elapsed(struct snd_pcm_substream *substream);
-+
-+#endif
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 76febc37862de..be30a24daaf1c 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
 -- 
 2.43.0
 
