@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28289CD953
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AD59CD8D4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36333B22D09
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7568BB26174
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD06185924;
-	Fri, 15 Nov 2024 06:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605AC189B8D;
+	Fri, 15 Nov 2024 06:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia/jO4J3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQFpNpK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE39187FE8;
-	Fri, 15 Nov 2024 06:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBD6189903;
+	Fri, 15 Nov 2024 06:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653953; cv=none; b=V45H3NeUvtkXQDsbb/FkN0XDaYTX+JTI320TAbCz6phr4Iwn48pFzeI00X2736zpxDQv2JLWvdrg/qDaHn5SsP2g9yd5wtErx31kBjYiUSmbArU66A0cj6A0d9dW4ZOt+y/YDD7e4RPBh+8G/w4hYNTxNN2LqkyVSGWztzVOuLc=
+	t=1731653668; cv=none; b=ijkKcHNwoRR+g0xycaQzKGdwbO7VgDk/lmRCa+XmPQ5HzY6e4/s/X7/ix/Sdg1mDh1icu4mfkJ2bqjr0iGzCFuMBoluUhSECFslqUlI4r9aRk7SG34dM6jpsvH2wkRtNfBeV6RqZ/WZ1gLGYlYLd8+/NHVOqW9DHh3PHuWwp3H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653953; c=relaxed/simple;
-	bh=hYznJcgUr0V9UYJl6siuLbl1z7vmcy9GPQ6o/EgBzDo=;
+	s=arc-20240116; t=1731653668; c=relaxed/simple;
+	bh=BvAyzgL9xOTwSb66o5awSwAmGEz6TnLt7GKSrqGRHXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GO7L/0Qmgu0wEob76WJ/L8A1mFU60tt1dVoq5O4bZMZqUT/9UZz9QRPIANfCVC4PZk1ynvwRgmXKmvsqfFFDkPT2yA/EuyO+9DjWWXrrVu0oLd02Q4ClWAPvarS9N4RajzOk5WKSrTFdIZ9WEJ62jUBRlQ7mvkcoadsHsl37pns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia/jO4J3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E513C4CECF;
-	Fri, 15 Nov 2024 06:59:12 +0000 (UTC)
+	 MIME-Version; b=rUzQq642ldNZaV24POnU5K3cW9QhiTVHDSNF+wWY+DTIUIAc0de09L3rIeR9w5V77qWhhVkfPgQoWqp+Q8qnoprQPalmpRGVoJbsXixU82N2MMlgLl6xVUO0OiNTDI6O+jlR/oqWv6huMs9mKD0AqVq+UpTkGiof3Qal6iNstiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQFpNpK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6D0C4CED0;
+	Fri, 15 Nov 2024 06:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653953;
-	bh=hYznJcgUr0V9UYJl6siuLbl1z7vmcy9GPQ6o/EgBzDo=;
+	s=korg; t=1731653668;
+	bh=BvAyzgL9xOTwSb66o5awSwAmGEz6TnLt7GKSrqGRHXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ia/jO4J3q7u6DGCh8Q+vFO3gk61SYNb9/dL1YzZa/thb2HJwPeXOvUgCRIrX9u72D
-	 UGjZSSswpN16tdKD4LQnDFr3IOoC6XXUr8KAYwTWolUyHpaCRQlC8MKDA3qTGouh0w
-	 122fijmyIHZLvks6+YIImGTffjt0GAr60ZdOwZqo=
+	b=AQFpNpK7R/1bJSxbFYgtiPdl7Mgor1UN8f/PtUe0To0s4nRXVh04Uxa+rBTU/NehC
+	 PIMUc7SGSnrAhvqXrC1eYYvD8rJk++KtFMoSgMbO1k+osWYGkWRs+lsxaBVQ2SDxCy
+	 yNamBtRnHCgY157/glbwfAVjVUlVUnkBuoUzhmQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 64/82] ALSA: usb-audio: Support jack detection on Dell dock
-Date: Fri, 15 Nov 2024 07:38:41 +0100
-Message-ID: <20241115063727.859530671@linuxfoundation.org>
+	Qiao Ma <mqaio@linux.alibaba.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH 6.1 32/39] uprobe: avoid out-of-bounds memory access of fetching args
+Date: Fri, 15 Nov 2024 07:38:42 +0100
+Message-ID: <20241115063723.766948747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,238 +61,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Schär <jan@jschaer.ch>
+From: Qiao Ma <mqaio@linux.alibaba.com>
 
-[ Upstream commit 4b8ea38fabab45ad911a32a336416062553dfe9c ]
+commit 373b9338c9722a368925d83bc622c596896b328e upstream.
 
-The Dell WD15 dock has a headset and a line out port. Add support for
-detecting if a jack is inserted into one of these ports.
-For the headset jack, additionally determine if a mic is present.
+Uprobe needs to fetch args into a percpu buffer, and then copy to ring
+buffer to avoid non-atomic context problem.
 
-The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
-from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
-detection. Instead, jack detection works by sending HD Audio commands over
-vendor-type USB messages.
+Sometimes user-space strings, arrays can be very large, but the size of
+percpu buffer is only page size. And store_trace_args() won't check
+whether these data exceeds a single page or not, caused out-of-bounds
+memory access.
 
-I found out how it works by looking at USB captures on Windows.
-The audio codec is very similar to the one supported by
-sound/soc/codecs/rt298.c / rt298.h, some constant names and the mic
-detection are adapted from there. The realtek_add_jack function is adapted
-from build_connector_control in sound/usb/mixer.c.
+It could be reproduced by following steps:
+1. build kernel with CONFIG_KASAN enabled
+2. save follow program as test.c
 
-I tested this on a WD15 dock with the latest firmware.
+```
+\#include <stdio.h>
+\#include <stdlib.h>
+\#include <string.h>
 
-Signed-off-by: Jan Schär <jan@jschaer.ch>
-Link: https://lore.kernel.org/r/20220627171855.42338-1-jan@jschaer.ch
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 4413665dd6c5 ("ALSA: usb-audio: Add quirks for Dell WD19 dock")
+// If string length large than MAX_STRING_SIZE, the fetch_store_strlen()
+// will return 0, cause __get_data_size() return shorter size, and
+// store_trace_args() will not trigger out-of-bounds access.
+// So make string length less than 4096.
+\#define STRLEN 4093
+
+void generate_string(char *str, int n)
+{
+    int i;
+    for (i = 0; i < n; ++i)
+    {
+        char c = i % 26 + 'a';
+        str[i] = c;
+    }
+    str[n-1] = '\0';
+}
+
+void print_string(char *str)
+{
+    printf("%s\n", str);
+}
+
+int main()
+{
+    char tmp[STRLEN];
+
+    generate_string(tmp, STRLEN);
+    print_string(tmp);
+
+    return 0;
+}
+```
+3. compile program
+`gcc -o test test.c`
+
+4. get the offset of `print_string()`
+```
+objdump -t test | grep -w print_string
+0000000000401199 g     F .text  000000000000001b              print_string
+```
+
+5. configure uprobe with offset 0x1199
+```
+off=0x1199
+
+cd /sys/kernel/debug/tracing/
+echo "p /root/test:${off} arg1=+0(%di):ustring arg2=\$comm arg3=+0(%di):ustring"
+ > uprobe_events
+echo 1 > events/uprobes/enable
+echo 1 > tracing_on
+```
+
+6. run `test`, and kasan will report error.
+==================================================================
+BUG: KASAN: use-after-free in strncpy_from_user+0x1d6/0x1f0
+Write of size 8 at addr ffff88812311c004 by task test/499CPU: 0 UID: 0 PID: 499 Comm: test Not tainted 6.12.0-rc3+ #18
+Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x55/0x70
+ print_address_description.constprop.0+0x27/0x310
+ kasan_report+0x10f/0x120
+ ? strncpy_from_user+0x1d6/0x1f0
+ strncpy_from_user+0x1d6/0x1f0
+ ? rmqueue.constprop.0+0x70d/0x2ad0
+ process_fetch_insn+0xb26/0x1470
+ ? __pfx_process_fetch_insn+0x10/0x10
+ ? _raw_spin_lock+0x85/0xe0
+ ? __pfx__raw_spin_lock+0x10/0x10
+ ? __pte_offset_map+0x1f/0x2d0
+ ? unwind_next_frame+0xc5f/0x1f80
+ ? arch_stack_walk+0x68/0xf0
+ ? is_bpf_text_address+0x23/0x30
+ ? kernel_text_address.part.0+0xbb/0xd0
+ ? __kernel_text_address+0x66/0xb0
+ ? unwind_get_return_address+0x5e/0xa0
+ ? __pfx_stack_trace_consume_entry+0x10/0x10
+ ? arch_stack_walk+0xa2/0xf0
+ ? _raw_spin_lock_irqsave+0x8b/0xf0
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? depot_alloc_stack+0x4c/0x1f0
+ ? _raw_spin_unlock_irqrestore+0xe/0x30
+ ? stack_depot_save_flags+0x35d/0x4f0
+ ? kasan_save_stack+0x34/0x50
+ ? kasan_save_stack+0x24/0x50
+ ? mutex_lock+0x91/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ prepare_uprobe_buffer.part.0+0x2cd/0x500
+ uprobe_dispatcher+0x2c3/0x6a0
+ ? __pfx_uprobe_dispatcher+0x10/0x10
+ ? __kasan_slab_alloc+0x4d/0x90
+ handler_chain+0xdd/0x3e0
+ handle_swbp+0x26e/0x3d0
+ ? __pfx_handle_swbp+0x10/0x10
+ ? uprobe_pre_sstep_notifier+0x151/0x1b0
+ irqentry_exit_to_user_mode+0xe2/0x1b0
+ asm_exc_int3+0x39/0x40
+RIP: 0033:0x401199
+Code: 01 c2 0f b6 45 fb 88 02 83 45 fc 01 8b 45 fc 3b 45 e4 7c b7 8b 45 e4 48 98 48 8d 50 ff 48 8b 45 e8 48 01 d0 ce
+RSP: 002b:00007ffdf00576a8 EFLAGS: 00000206
+RAX: 00007ffdf00576b0 RBX: 0000000000000000 RCX: 0000000000000ff2
+RDX: 0000000000000ffc RSI: 0000000000000ffd RDI: 00007ffdf00576b0
+RBP: 00007ffdf00586b0 R08: 00007feb2f9c0d20 R09: 00007feb2f9c0d20
+R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000401040
+R13: 00007ffdf0058780 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+This commit enforces the buffer's maxlen less than a page-size to avoid
+store_trace_args() out-of-memory access.
+
+Link: https://lore.kernel.org/all/20241015060148.1108331-1-mqaio@linux.alibaba.com/
+
+Fixes: dcad1a204f72 ("tracing/uprobes: Fetch args before reserving a ring buffer")
+Signed-off-by: Qiao Ma <mqaio@linux.alibaba.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 167 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 167 insertions(+)
+ kernel/trace/trace_uprobe.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 99f2203bf51f1..750a386b9c177 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -24,6 +24,7 @@
- #include <sound/asoundef.h>
- #include <sound/core.h>
- #include <sound/control.h>
-+#include <sound/hda_verbs.h>
- #include <sound/hwdep.h>
- #include <sound/info.h>
- #include <sound/tlv.h>
-@@ -1793,6 +1794,169 @@ static int snd_soundblaster_e1_switch_create(struct usb_mixer_interface *mixer)
- 					  NULL);
- }
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -862,6 +862,7 @@ struct uprobe_cpu_buffer {
+ };
+ static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
+ static int uprobe_buffer_refcnt;
++#define MAX_UCB_BUFFER_SIZE PAGE_SIZE
  
-+/*
-+ * Dell WD15 dock jack detection
-+ *
-+ * The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
-+ * from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
-+ * detection. Instead, jack detection works by sending HD Audio commands over
-+ * vendor-type USB messages.
-+ */
-+
-+#define HDA_VERB_CMD(V, N, D) (((N) << 20) | ((V) << 8) | (D))
-+
-+#define REALTEK_HDA_VALUE 0x0038
-+
-+#define REALTEK_HDA_SET		62
-+#define REALTEK_HDA_GET_OUT	88
-+#define REALTEK_HDA_GET_IN	89
-+
-+#define REALTEK_LINE1			0x1a
-+#define REALTEK_VENDOR_REGISTERS	0x20
-+#define REALTEK_HP_OUT			0x21
-+
-+#define REALTEK_CBJ_CTRL2 0x50
-+
-+#define REALTEK_JACK_INTERRUPT_NODE 5
-+
-+#define REALTEK_MIC_FLAG 0x100
-+
-+static int realtek_hda_set(struct snd_usb_audio *chip, u32 cmd)
-+{
-+	struct usb_device *dev = chip->dev;
-+	u32 buf = cpu_to_be32(cmd);
-+
-+	return snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_SET,
-+			       USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
-+			       REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+}
-+
-+static int realtek_hda_get(struct snd_usb_audio *chip, u32 cmd, u32 *value)
-+{
-+	struct usb_device *dev = chip->dev;
-+	int err;
-+	u32 buf = cpu_to_be32(cmd);
-+
-+	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_GET_OUT,
-+			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
-+			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+	if (err < 0)
-+		return err;
-+	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), REALTEK_HDA_GET_IN,
-+			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_IN,
-+			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+	if (err < 0)
-+		return err;
-+
-+	*value = be32_to_cpu(buf);
-+	return 0;
-+}
-+
-+static int realtek_ctl_connector_get(struct snd_kcontrol *kcontrol,
-+				     struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-+	struct snd_usb_audio *chip = cval->head.mixer->chip;
-+	u32 pv = kcontrol->private_value;
-+	u32 node_id = pv & 0xff;
-+	u32 sense;
-+	u32 cbj_ctrl2;
-+	bool presence;
-+	int err;
-+
-+	err = snd_usb_lock_shutdown(chip);
-+	if (err < 0)
-+		return err;
-+	err = realtek_hda_get(chip,
-+			      HDA_VERB_CMD(AC_VERB_GET_PIN_SENSE, node_id, 0),
-+			      &sense);
-+	if (err < 0)
-+		goto err;
-+	if (pv & REALTEK_MIC_FLAG) {
-+		err = realtek_hda_set(chip,
-+				      HDA_VERB_CMD(AC_VERB_SET_COEF_INDEX,
-+						   REALTEK_VENDOR_REGISTERS,
-+						   REALTEK_CBJ_CTRL2));
-+		if (err < 0)
-+			goto err;
-+		err = realtek_hda_get(chip,
-+				      HDA_VERB_CMD(AC_VERB_GET_PROC_COEF,
-+						   REALTEK_VENDOR_REGISTERS, 0),
-+				      &cbj_ctrl2);
-+		if (err < 0)
-+			goto err;
-+	}
-+err:
-+	snd_usb_unlock_shutdown(chip);
-+	if (err < 0)
-+		return err;
-+
-+	presence = sense & AC_PINSENSE_PRESENCE;
-+	if (pv & REALTEK_MIC_FLAG)
-+		presence = presence && (cbj_ctrl2 & 0x0070) == 0x0070;
-+	ucontrol->value.integer.value[0] = presence;
-+	return 0;
-+}
-+
-+static const struct snd_kcontrol_new realtek_connector_ctl_ro = {
-+	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
-+	.name = "", /* will be filled later manually */
-+	.access = SNDRV_CTL_ELEM_ACCESS_READ,
-+	.info = snd_ctl_boolean_mono_info,
-+	.get = realtek_ctl_connector_get,
-+};
-+
-+static int realtek_resume_jack(struct usb_mixer_elem_list *list)
-+{
-+	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+		       &list->kctl->id);
-+	return 0;
-+}
-+
-+static int realtek_add_jack(struct usb_mixer_interface *mixer,
-+			    char *name, u32 val)
-+{
-+	struct usb_mixer_elem_info *cval;
-+	struct snd_kcontrol *kctl;
-+
-+	cval = kzalloc(sizeof(*cval), GFP_KERNEL);
-+	if (!cval)
-+		return -ENOMEM;
-+	snd_usb_mixer_elem_init_std(&cval->head, mixer,
-+				    REALTEK_JACK_INTERRUPT_NODE);
-+	cval->head.resume = realtek_resume_jack;
-+	cval->val_type = USB_MIXER_BOOLEAN;
-+	cval->channels = 1;
-+	cval->min = 0;
-+	cval->max = 1;
-+	kctl = snd_ctl_new1(&realtek_connector_ctl_ro, cval);
-+	if (!kctl) {
-+		kfree(cval);
-+		return -ENOMEM;
-+	}
-+	kctl->private_value = val;
-+	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
-+	kctl->private_free = snd_usb_mixer_elem_free;
-+	return snd_usb_mixer_add_control(&cval->head, kctl);
-+}
-+
-+static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
-+{
-+	int err;
-+
-+	err = realtek_add_jack(mixer, "Line Out Jack", REALTEK_LINE1);
-+	if (err < 0)
-+		return err;
-+	err = realtek_add_jack(mixer, "Headphone Jack", REALTEK_HP_OUT);
-+	if (err < 0)
-+		return err;
-+	err = realtek_add_jack(mixer, "Headset Mic Jack",
-+			       REALTEK_HP_OUT | REALTEK_MIC_FLAG);
-+	if (err < 0)
-+		return err;
-+	return 0;
-+}
-+
- static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
+ static int uprobe_buffer_init(void)
  {
- 	u16 buf = 0;
-@@ -3024,6 +3188,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_soundblaster_e1_switch_create(mixer);
- 		break;
- 	case USB_ID(0x0bda, 0x4014): /* Dell WD15 dock */
-+		err = dell_dock_mixer_create(mixer);
-+		if (err < 0)
-+			break;
- 		err = dell_dock_mixer_init(mixer);
- 		break;
+@@ -960,6 +961,11 @@ static struct uprobe_cpu_buffer *prepare
+ 	ucb = uprobe_buffer_get();
+ 	ucb->dsize = tu->tp.size + dsize;
  
--- 
-2.43.0
-
++	if (WARN_ON_ONCE(ucb->dsize > MAX_UCB_BUFFER_SIZE)) {
++		ucb->dsize = MAX_UCB_BUFFER_SIZE;
++		dsize = MAX_UCB_BUFFER_SIZE - tu->tp.size;
++	}
++
+ 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+ 
+ 	return ucb;
+@@ -978,9 +984,6 @@ static void __uprobe_trace_func(struct t
+ 
+ 	WARN_ON(call != trace_file->event_call);
+ 
+-	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
+-		return;
+-
+ 	if (trace_trigger_soft_disabled(trace_file))
+ 		return;
+ 
 
 
 
