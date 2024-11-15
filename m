@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-93322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469B79CD894
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F49CD847
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F23B51F21942
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FAC1F22FAC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5734B18873E;
-	Fri, 15 Nov 2024 06:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE1D185924;
+	Fri, 15 Nov 2024 06:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jh4jOBrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15VViXC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E8518734F;
-	Fri, 15 Nov 2024 06:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC9E29A9;
+	Fri, 15 Nov 2024 06:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653534; cv=none; b=rAtCHXvhrRJlgEDEnBy8pHaSameHI8xYNxCSM/IK6FApaUdzHgEqw27bpUNlr4L47bfaLvid7DfsIPW7edhIQ5WIA2CPlnYQ9BK4rAksp1DaXxLSvCZZnx7gwYUghrIBJ1Xe8emykf5DRdfHUeWvF3x/B6ofJ4GF+2dwZpU6QeQ=
+	t=1731653353; cv=none; b=YfG8480sJ75NkHvsNhYSHwZFteOrV9I8pUSjE3EobbIpzoKeAnfTVdblVjLyteZIxjetgvAK6lUU8J8y1tyOVH00XOynnabYcfvbA5IiBGSDIX523RseWhE57u6jl37wu9x8vxwSp1I7E/Fexpvqxsf1MNDwsJz8ETEn+I/GYhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653534; c=relaxed/simple;
-	bh=0YFnXS4dCzmB1tIXB8tJzcnjnpbKIhFAhnUKg8MCwmU=;
+	s=arc-20240116; t=1731653353; c=relaxed/simple;
+	bh=tlmIx9HdBEn5zGB/Gu7zwzk7bQ8k3HqbojNnaPqoHzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMdC0FbB7Y9lbugRKfuAdfF/cU11BAHcKXvMd3kEJjpPRXVGJtxre2spuuSKK8jvtiHfSgE1Osu4+zEO8SsxuQtOJhB88Mn2RHiar0PaVdOnx7/hGUkv2WsEYOYon75C6fyDWRHyySuuOSBSVzcp7C/gcCS4m/kf/0CCC4XJf/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jh4jOBrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91550C4CECF;
-	Fri, 15 Nov 2024 06:52:13 +0000 (UTC)
+	 MIME-Version; b=TBk+tDqlZYikJRXLg3J4J+aheDA0/EkG/TogikPF50xHF8ww+SAqohMeLd+6f2vafuT8CEBHp8bjwXPTXtZYJmKGKptC182yH10SRA2tAFcGwjF13IAscgq/HIqD6rx1GYVKiB/FCMENHD3jrn27Qw6cOqdwfrf60dqKB2Tzi8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15VViXC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DE0C4CECF;
+	Fri, 15 Nov 2024 06:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653534;
-	bh=0YFnXS4dCzmB1tIXB8tJzcnjnpbKIhFAhnUKg8MCwmU=;
+	s=korg; t=1731653353;
+	bh=tlmIx9HdBEn5zGB/Gu7zwzk7bQ8k3HqbojNnaPqoHzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jh4jOBrkVJTulTpwb0rORGIlQUz32WwBxCYQ54aMkOFUAt522iREAOlIA3GHyZbE+
-	 lIWT6GFqOt4eF0aVS05uOmX4tO8QjPKpfMZgcxul2d9kSsF/qEk2zLS+znCJ6j4UG3
-	 rugWL9XtrLdMUwRr2KlzEmMqsn8eo6M3xZq5WnKk=
+	b=15VViXC7Ud+pfBpvGg/zyfAi+hCUCrKuinABFW2Oqqkx3aY/ptUdzUCLYKZSi1UQu
+	 nUZBtVvT5AV6zuSgGDdMHm6huBbCzseLEUweaMcOBq+iBZjgZ0CfEk2Ga1nwx41IH7
+	 QVJxqaKSIJYI9Ji7v+ll4QZNzdQZIpD6Q+2AU9wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyan Yang <cyan.yang@sifive.com>,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 34/48] RISCV: KVM: use raw_spinlock for critical section in imsic
+Subject: [PATCH 6.11 60/63] drm/xe/ufence: Prefetch ufence addr to catch bogus address
 Date: Fri, 15 Nov 2024 07:38:23 +0100
-Message-ID: <20241115063724.197124735@linuxfoundation.org>
+Message-ID: <20241115063728.072773059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyan Yang <cyan.yang@sifive.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 3ec4350d4efb5ccb6bd0e11d9cf7f2be4f47297d ]
+[ Upstream commit 9c1813b3253480b30604c680026c7dc721ce86d1 ]
 
-For the external interrupt updating procedure in imsic, there was a
-spinlock to protect it already. But since it should not be preempted in
-any cases, we should turn to use raw_spinlock to prevent any preemption
-in case PREEMPT_RT was enabled.
+access_ok() only checks for addr overflow so also try to read the addr
+to catch invalid addr sent from userspace.
 
-Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
-Reviewed-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Message-ID: <20240919160126.44487-1-cyan.yang@sifive.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241016082304.66009-2-nirmoy.das@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+(cherry picked from commit 9408c4508483ffc60811e910a93d6425b8e63928)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/aia_imsic.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index e808723a85f1b..c1585444f856e 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -55,7 +55,7 @@ struct imsic {
- 	/* IMSIC SW-file */
- 	struct imsic_mrif *swfile;
- 	phys_addr_t swfile_pa;
--	spinlock_t swfile_extirq_lock;
-+	raw_spinlock_t swfile_extirq_lock;
- };
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index de80c8b7c8913..9d77f2d4096f5 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -54,8 +54,9 @@ static struct xe_user_fence *user_fence_create(struct xe_device *xe, u64 addr,
+ {
+ 	struct xe_user_fence *ufence;
+ 	u64 __user *ptr = u64_to_user_ptr(addr);
++	u64 __maybe_unused prefetch_val;
  
- #define imsic_vs_csr_read(__c)			\
-@@ -622,7 +622,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
- 	 * interruptions between reading topei and updating pending status.
- 	 */
+-	if (!access_ok(ptr, sizeof(*ptr)))
++	if (get_user(prefetch_val, ptr))
+ 		return ERR_PTR(-EFAULT);
  
--	spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
- 
- 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
- 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
-@@ -630,7 +630,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
- 	else
- 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
- 
--	spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
- }
- 
- static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
-@@ -1051,7 +1051,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
- 	}
- 	imsic->swfile = page_to_virt(swfile_page);
- 	imsic->swfile_pa = page_to_phys(swfile_page);
--	spin_lock_init(&imsic->swfile_extirq_lock);
-+	raw_spin_lock_init(&imsic->swfile_extirq_lock);
- 
- 	/* Setup IO device */
- 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);
+ 	ufence = kzalloc(sizeof(*ufence), GFP_KERNEL);
 -- 
 2.43.0
 
