@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65CA9CD921
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A861D9CD8AF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1A22833ED
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E47B283D35
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F110E185949;
-	Fri, 15 Nov 2024 06:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D3818873E;
+	Fri, 15 Nov 2024 06:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwHdPfr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHoKHd5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB8185924;
-	Fri, 15 Nov 2024 06:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2667818871E;
+	Fri, 15 Nov 2024 06:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653836; cv=none; b=UGtraxZiVpxlkkhOkz6OT7ltTQqLuQLIkgD/ickhEOJ5HuFthMfftodWUXNHFMU0r9GQt6PsyYcZbJRXiUobmCdeGSWqOvZgVQKduDNdKO4uUwpNUX8dYQlF0ocpOQKkRQOIs1ubCs99ulX/DzmofQuZGNc2vEnXXDwrJCMgNCY=
+	t=1731653584; cv=none; b=kgMa5unRSMQxMm/XLNR66rH0ga2BOZJnyknDlEEDBdDQr2oR3+DYnhv+0KVqDekBIDitQbmEOV1OBixDlOVGazlRy5DRIrKgAEq3om9okVr1gkKn7qOXyl3Ip/8P6NRTZVbrWYMMYsgeHCCpmr6101F3N+PMo0ZdDji4oPOdYbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653836; c=relaxed/simple;
-	bh=a0WsMdOsRfxH/kOqi8zfl90T8Kmffqp8OYICIlqyKJY=;
+	s=arc-20240116; t=1731653584; c=relaxed/simple;
+	bh=gRPOsoPsOtb4lwNrqURhvEKqyFMub7Eis3B4Pa0yVDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XYK7EfkUv2jivgIluaDwTh0bKuMvzejZ8bE4I+4eztDB+24UZ83BZ7Q/2Iuansls9nsiGFn7mGo5/I6waUmFgFb8DGNf62DUgKdECn7FU7DiDznQ25QpvHeD1R8l1Kt3ndDw9Vb9DrY3qyYtkrD1dSk36HqXTuyYgPlay/aHI5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwHdPfr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157EEC4CECF;
-	Fri, 15 Nov 2024 06:57:15 +0000 (UTC)
+	 MIME-Version; b=ExMVKhIo0odB4NukDs7OpZIgOLMiee2ybUCfw4WgB1LWjHwdDGZly62eSjYIZ152L/NqPNLTeLhZUDaGpj49r2Yft5OMlNVZgL+QS5BolkvXvZayrLY7DD+WdMCDzJkMgtl1s9zxIvuti1hnEw0ATLKpHK0lrKQ8TvtXSsCRjCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHoKHd5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89148C4CECF;
+	Fri, 15 Nov 2024 06:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653836;
-	bh=a0WsMdOsRfxH/kOqi8zfl90T8Kmffqp8OYICIlqyKJY=;
+	s=korg; t=1731653584;
+	bh=gRPOsoPsOtb4lwNrqURhvEKqyFMub7Eis3B4Pa0yVDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwHdPfr0JsF3HWc55BZ17dZJuzeUvyYjzUTjnkEd/xZ+O1dQVkB1xOVHO5Pbw28Qp
-	 H4qCr9AhiJt8f3TluFzWpafl5U6zbbdq5m+dwAR+mRgJZcoT4UKH24bW4lifVlKevW
-	 6aA1jdO4Wi4O9XJAjdgYpZgMnlLT6pIrLd8B4iZc=
+	b=AHoKHd5MdzCrPjHoiibOhOahpPAQpT8o1rlpmsbyPlbbBgVMnGxKemzWOhfVTjGDq
+	 4/arzluEHczibKQ/e+14bT8u9JUdGSS0S5cbgC/nOeQnMHpGXBs3H0dHlIkabgJgfR
+	 YlA+2Mf1Lf9NgdbRU6z6uG9Fz9xPqoCcjeKvOT7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <michael@walle.cc>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 49/82] spi: fix use-after-free of the add_lock mutex
-Date: Fri, 15 Nov 2024 07:38:26 +0100
-Message-ID: <20241115063727.326163828@linuxfoundation.org>
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/39] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
+Date: Fri, 15 Nov 2024 07:38:27 +0100
+Message-ID: <20241115063723.231298896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <michael@walle.cc>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 6c53b45c71b4920b5e62f0ea8079a1da382b9434 upstream.
+[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
 
-Commit 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on
-SPI buses") introduced a per-controller mutex. But mutex_unlock() of
-said lock is called after the controller is already freed:
+Currently the array size is only limited by the largest kmalloc size which
+is incorrect. This change will also return a more specific error message
+than ENOMEM to userspace.
 
-  spi_unregister_controller(ctlr)
-  -> put_device(&ctlr->dev)
-    -> spi_controller_release(dev)
-  -> mutex_unlock(&ctrl->add_lock)
-
-Move the put_device() after the mutex_unlock().
-
-Fixes: 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on SPI buses")
-Signed-off-by: Michael Walle <michael@walle.cc>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v5.15
-Link: https://lore.kernel.org/r/20211111083713.3335171-1-michael@walle.cc
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2892,12 +2892,6 @@ void spi_unregister_controller(struct sp
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index bca10214e0bf1..abdca2346f1a0 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -59,7 +59,7 @@
+ #define VMWGFX_DRIVER_MINOR 20
+ #define VMWGFX_DRIVER_PATCHLEVEL 0
+ #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
+-#define VMWGFX_MAX_DISPLAYS 16
++#define VMWGFX_NUM_DISPLAY_UNITS 8
+ #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
  
- 	device_del(&ctlr->dev);
+ #define VMWGFX_MIN_INITIAL_WIDTH 1280
+@@ -79,7 +79,7 @@
+ #define VMWGFX_NUM_GB_CONTEXT 256
+ #define VMWGFX_NUM_GB_SHADER 20000
+ #define VMWGFX_NUM_GB_SURFACE 32768
+-#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
++#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
+ #define VMWGFX_NUM_DXCONTEXT 256
+ #define VMWGFX_NUM_DXQUERY 512
+ #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index a8f349e748e56..5210b8084217c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2261,7 +2261,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 	struct drm_mode_config *mode_config = &dev->mode_config;
+ 	struct drm_vmw_update_layout_arg *arg =
+ 		(struct drm_vmw_update_layout_arg *)data;
+-	void __user *user_rects;
++	const void __user *user_rects;
+ 	struct drm_vmw_rect *rects;
+ 	struct drm_rect *drm_rects;
+ 	unsigned rects_size;
+@@ -2273,6 +2273,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 					    VMWGFX_MIN_INITIAL_HEIGHT};
+ 		vmw_du_update_layout(dev_priv, 1, &def_rect);
+ 		return 0;
++	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
++		return -E2BIG;
+ 	}
  
--	/* Release the last reference on the controller if its driver
--	 * has not yet been converted to devm_spi_alloc_master/slave().
--	 */
--	if (!ctlr->devm_allocated)
--		put_device(&ctlr->dev);
+ 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 1099de1ece4b3..a2a294841df41 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
+ 	s32 unit_y2;
+ };
+ 
+-#define VMWGFX_NUM_DISPLAY_UNITS 8
 -
- 	/* free bus id */
- 	mutex_lock(&board_lock);
- 	if (found == ctlr)
-@@ -2906,6 +2900,12 @@ void spi_unregister_controller(struct sp
- 
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
- 		mutex_unlock(&ctlr->add_lock);
-+
-+	/* Release the last reference on the controller if its driver
-+	 * has not yet been converted to devm_spi_alloc_master/slave().
-+	 */
-+	if (!ctlr->devm_allocated)
-+		put_device(&ctlr->dev);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
- 
+-
+ #define vmw_framebuffer_to_vfb(x) \
+ 	container_of(x, struct vmw_framebuffer, base)
+ #define vmw_framebuffer_to_vfbs(x) \
+-- 
+2.43.0
+
 
 
 
