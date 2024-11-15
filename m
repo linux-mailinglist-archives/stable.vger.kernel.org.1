@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-93220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D458B9CD7FE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1099CD8E0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58B6FB25F0D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D8E9B263A3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85C317E015;
-	Fri, 15 Nov 2024 06:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EE01898EA;
+	Fri, 15 Nov 2024 06:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANcuJw95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00g9/RPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A608E29A9;
-	Fri, 15 Nov 2024 06:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D671D14EC77;
+	Fri, 15 Nov 2024 06:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653192; cv=none; b=gCBQAPUc4Tipy/qYvbL/Ja7tmCrrSSkxR8pZdbnd7eOACdxDbghfy9MxPftVDqNgscwOPjmbM18yWxpkDfGr1Wm3gdr9KgrtyEjlPl5MXP+dB+wnCYPRgrAke1NyVGUGbIC4rxVcuV+XpnJpMZLjLamKDQ7+oyUH+4dPXpUL08w=
+	t=1731653691; cv=none; b=seYah1H5RlFcvFPf9E45heSnbqXtg9BpkBr07udBa3TrZb5MyOURhGCQTAvV08bmOFyEKBWBZCVptLXET/ymCZZLwaxJZYbFYbtMXASWlTVjs4NVmKvJduig58ZFTfZETfhrC332oz2yaztZphoOTEaLWLQFxwkkPejE7ZLdUKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653192; c=relaxed/simple;
-	bh=K27TvtFgj3X1LbmGaiNq27DYFpNTBPTYV6tKbad0HPo=;
+	s=arc-20240116; t=1731653691; c=relaxed/simple;
+	bh=iXN7M5Vts4/2DbIygtVZsaYRgRBosELgDP9tX70hg9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baowZxOrA310F77N1j9ems35lM8fO/ThiOABaKWf4xUVQDdZOYGrTptAMOr5Xkr1WXHGZ/alQ5ly7HGCnbGYQHMQW/pcLXA6AebMG2B/wLtaTBsTW9RpSZkumcQuNNL9+S0QaYHjEhQbe/KWRo0vRxQoQH2qJG7YKyzE27fYg3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANcuJw95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1551FC4CECF;
-	Fri, 15 Nov 2024 06:46:31 +0000 (UTC)
+	 MIME-Version; b=kTFCyjIBUm5uW2tzItGd4ZWiS0HzGiX/4h0TqVBSpVP5Wz3DSEAWqmQua/+VCaDCbGkMdR4WwIklbJF8GKLRcFrVrdQiJDAiOxzD/7OgszUNRANifn46u1iqJc9Uc+9WHSChcJZs9FKSCgX845L1a3CFCqeYGV6eAGrK0Cw2cwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00g9/RPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483AEC4CECF;
+	Fri, 15 Nov 2024 06:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653192;
-	bh=K27TvtFgj3X1LbmGaiNq27DYFpNTBPTYV6tKbad0HPo=;
+	s=korg; t=1731653691;
+	bh=iXN7M5Vts4/2DbIygtVZsaYRgRBosELgDP9tX70hg9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANcuJw95BSBye/Io1FZ6JO2OCeNEF3eILy2PApNDnuFp07s60Oz9z6+FH6alDoCAQ
-	 sm44HNQQwGQN+O03Ge1IezQArvVHyMHlAWl9Ws+43RQ0H9Xz5RzFOwPQO9xP//VlIn
-	 mgh9zkh+LSRVcexLy5+vJn0TKC0ov/KlQcCa8/RE=
+	b=00g9/RPmmkh3321bFJ5Lwa+ihMc4uSAki5RoYtR/l4V+4J2J1vgrlRWqJ3CYMo30w
+	 +a1j24EhYHp6H/wCkuuMNg7y5f12AT5ztGVnpID6PcGDL7cRHb+BemXm5x3EsYPWAG
+	 Iv8wpSaQRJxIw7oj7BNK5hcCo1UssbvWI6ZvuFxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 14/63] iommu/arm-smmu: Clarify MMU-500 CPRE workaround
-Date: Fri, 15 Nov 2024 07:37:37 +0100
-Message-ID: <20241115063726.409982464@linuxfoundation.org>
+Subject: [PATCH 5.10 01/82] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
+Date: Fri, 15 Nov 2024 07:37:38 +0100
+Message-ID: <20241115063725.617740372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 0dfe314cdd0d378f96bb9c6bdc05c8120f48606d ]
+[ Upstream commit 577b5761679da90e691acc939ebbe7879fff5f31 ]
 
-CPRE workarounds are implicated in at least 5 MMU-500 errata, some of
-which remain unfixed. The comment and warning message have proven to be
-unhelpfully misleading about this scope, so reword them to get the point
-across with less risk of going out of date or confusing users.
+There are no DT bindings and driver support for a "rockchip,rt5651"
+codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
+"simple-audio-card,name" property in the "rt5651-sound" node.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/dfa82171b5248ad7cf1f25592101a6eec36b8c9a.1728400877.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 0a3c78e251b3a266 ("arm64: dts: rockchip: Add support for rk3399 excavator main board")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/abc6c89811b3911785601d6d590483eacb145102.1727358193.git.geert+renesas@glider.be
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-impl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-index 9dc772f2cbb27..99030e6b16e7a 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-@@ -130,7 +130,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
+index 73e269a8ae0cc..bcc4f31982e11 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
+@@ -159,7 +159,7 @@
+ 	status = "okay";
  
- 	/*
- 	 * Disable MMU-500's not-particularly-beneficial next-page
--	 * prefetcher for the sake of errata #841119 and #826419.
-+	 * prefetcher for the sake of at least 5 known errata.
- 	 */
- 	for (i = 0; i < smmu->num_context_banks; ++i) {
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
-@@ -138,7 +138,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
- 		arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_ACTLR, reg);
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
- 		if (reg & ARM_MMU500_ACTLR_CPRE)
--			dev_warn_once(smmu->dev, "Failed to disable prefetcher [errata #841119 and #826419], check ACR.CACHE_LOCK\n");
-+			dev_warn_once(smmu->dev, "Failed to disable prefetcher for errata workarounds, check SACR.CACHE_LOCK\n");
- 	}
- 
- 	return 0;
+ 	rt5651: rt5651@1a {
+-		compatible = "rockchip,rt5651";
++		compatible = "realtek,rt5651";
+ 		reg = <0x1a>;
+ 		clocks = <&cru SCLK_I2S_8CH_OUT>;
+ 		clock-names = "mclk";
 -- 
 2.43.0
 
