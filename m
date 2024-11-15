@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-93108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D209CD75A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A7C9CD8F9
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 649651F22BA2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:41:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8681F2167A
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BB018A921;
-	Fri, 15 Nov 2024 06:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB67A187FE8;
+	Fri, 15 Nov 2024 06:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlBct9F4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJzqSXjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA3018A6D7;
-	Fri, 15 Nov 2024 06:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685312BB1B;
+	Fri, 15 Nov 2024 06:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652831; cv=none; b=d3mCK7oO6E8DtH4XXxIysWeNfUkxXW5po10GZt32aKrv/rneKIULePJ0EzbdUNVVK9NiagNbNCzusY6aPM/5IBSrBf+PmkCUtoPjOrLV3QA4sK3+bk5Npx+BbHOFN7kKF/f4YP8N+r9rOUjk/sHzx67RTyUvitN+lGvbHJqcU7s=
+	t=1731653747; cv=none; b=hHC/w6JClyNsmb3FMfQtuKTqtTfSLvfxXnRM5EAHHISoyodYL1hJKpFJlE5lcFZpY6BbbN8PdCHOhzn9RD/+d5cZQw9HTJRrD1sh4JJ2GaLiN/b92Lim57zyCam1yyf1uDO5Pw2bRVtuaHOi83RKfH4ADpVeSJAd5cowC0QTlWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652831; c=relaxed/simple;
-	bh=vKGi/S1TStsitfQjenuCHvci4zrVoeni5gNwlrKf3eg=;
+	s=arc-20240116; t=1731653747; c=relaxed/simple;
+	bh=A3GgDCHYHBwB7urUhxMroi0jub7RGBbcSl38VPeMsmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shaXLDqo9kVTjaj8SOcxauBO4sqJGWsdxEwnMMOtloouDQvM/NKzL0Nnp1mcZ/5AkHJ8pL/Qq867MCu2lhF/3M1O6QQPcdJsv6Lxg9wTuPxh8lyrVVOsADxaQqx6HKY4L+qxDZZJaXx0QrRzbvBVIJuNcAADVsJaPSW5MZ/xjKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlBct9F4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBBEC4CECF;
-	Fri, 15 Nov 2024 06:40:30 +0000 (UTC)
+	 MIME-Version; b=oLiDcEJI8oYs7tCzxwC5XcqyXBJtH1tSA6Cv18cgss4vRBCMHQfhWSUm7zUVvsPNE4GhypTBakhOdotW0GYJIDe667TKtyfcDZJkcEoB86xi9ViDua7Op3OEDX9pFNPCAxT0t4H+o+4wR1DtJJ69eEUxIZ9HPy+rYz6Wsm34ouk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJzqSXjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA844C4CECF;
+	Fri, 15 Nov 2024 06:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652831;
-	bh=vKGi/S1TStsitfQjenuCHvci4zrVoeni5gNwlrKf3eg=;
+	s=korg; t=1731653747;
+	bh=A3GgDCHYHBwB7urUhxMroi0jub7RGBbcSl38VPeMsmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlBct9F4PDVHBZDzgB9USAFPs7O2ZuKPfnSyKWQKk+OjAGl65byOLNMkKZrauD69G
-	 cjvL3pq3i3Cx4pGRy7Y0fhphjWUTfsDwf/Wz3b81XF1fyT6DaC7ReFynRnp+SU6OG/
-	 /yS6QNDexXDEltEc9+m6AI1QNWi+RPTdAWWX6mP0=
+	b=RJzqSXjfgvvZscnqrYdD76W1DePJYdLj1Uwqzjx+5QSRBmuXfCKvN+NYgsV1kPHUY
+	 sGd2ZhcDFyr5bB9yWdE1dCo4Mg+SJBqS0sfIYPMp5utmtO8MhUL2bGU43pCqBmWCP1
+	 NWD53PBLSFqr9wYwxRF7k8jpJdppOv6CAjDcuAnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Liska <mliska@suse.cz>,
-	Jay Vosburgh <j.vosburgh@gmail.com>,
-	Veaceslav Falico <vfalico@gmail.com>,
-	Andy Gospodarek <andy@greyhouse.net>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 4.19 27/52] bonding (gcc13): synchronize bond_{a,t}lb_xmit() types
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 03/82] arm64: dts: rockchip: Fix bluetooth properties on Rock960 boards
 Date: Fri, 15 Nov 2024 07:37:40 +0100
-Message-ID: <20241115063723.839238313@linuxfoundation.org>
+Message-ID: <20241115063725.688292641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-commit 777fa87c7682228e155cf0892ba61cb2ab1fe3ae upstream.
+[ Upstream commit ea74528aaea5a1dfc8e3de09ef2af37530eca526 ]
 
-Both bond_alb_xmit() and bond_tlb_xmit() produce a valid warning with
-gcc-13:
-  drivers/net/bonding/bond_alb.c:1409:13: error: conflicting types for 'bond_tlb_xmit' due to enum/integer mismatch; have 'netdev_tx_t(struct sk_buff *, struct net_device *)' ...
-  include/net/bond_alb.h:160:5: note: previous declaration of 'bond_tlb_xmit' with type 'int(struct sk_buff *, struct net_device *)'
+The expected clock-name is different, and extclk also is deprecated
+in favor of txco for clocks that are not crystals.
 
-  drivers/net/bonding/bond_alb.c:1523:13: error: conflicting types for 'bond_alb_xmit' due to enum/integer mismatch; have 'netdev_tx_t(struct sk_buff *, struct net_device *)' ...
-  include/net/bond_alb.h:159:5: note: previous declaration of 'bond_alb_xmit' with type 'int(struct sk_buff *, struct net_device *)'
+So fix it to match the binding.
 
-I.e. the return type of the declaration is int, while the definitions
-spell netdev_tx_t. Synchronize both of them to the latter.
-
-Cc: Martin Liska <mliska@suse.cz>
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Veaceslav Falico <vfalico@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20221031114409.10417-1-jirislaby@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[iwamatsu: adjust context]
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c72235c288c8 ("arm64: dts: rockchip: Add on-board WiFi/BT support for Rock960 boards")
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-5-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bond_alb.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/bond_alb.h
-+++ b/include/net/bond_alb.h
-@@ -172,8 +172,8 @@ int bond_alb_init_slave(struct bonding *
- void bond_alb_deinit_slave(struct bonding *bond, struct slave *slave);
- void bond_alb_handle_link_change(struct bonding *bond, struct slave *slave, char link);
- void bond_alb_handle_active_change(struct bonding *bond, struct slave *new_slave);
--int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
--int bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
-+netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
-+netdev_tx_t bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
- void bond_alb_monitor(struct work_struct *);
- int bond_alb_set_mac_address(struct net_device *bond_dev, void *addr);
- void bond_alb_clear_vlan(struct bonding *bond, unsigned short vlan_id);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
+index 5e3ac589bc54a..6fa94cb4d5f79 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
+@@ -568,7 +568,7 @@
+ 	bluetooth {
+ 		compatible = "brcm,bcm43438-bt";
+ 		clocks = <&rk808 1>;
+-		clock-names = "ext_clock";
++		clock-names = "txco";
+ 		device-wakeup-gpios = <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
+ 		host-wakeup-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
+ 		shutdown-gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
+-- 
+2.43.0
+
 
 
 
