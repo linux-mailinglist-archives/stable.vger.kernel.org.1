@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-93262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58C69CD83F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11509CD7C7
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3101DB22E31
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67C5DB2540C
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF22185924;
-	Fri, 15 Nov 2024 06:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D1817E015;
+	Fri, 15 Nov 2024 06:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/v8P0lY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDqZ8uJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1252BB1B;
-	Fri, 15 Nov 2024 06:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41C6154C00;
+	Fri, 15 Nov 2024 06:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653333; cv=none; b=eboKYHzDKBKEsiMzOx725MIMFc7GpQ548Ryt3xc+uhx4qTSEqac8R43hfUrVrpR1tSnIMkw6+ulxnMZa0TRTnT8XsVRHI39d9MwMrebuwrrUwzUA5wo+TN+Lq6His9yGuoG3WJ0pKw44B40Od+wwl3Oyo2A2hUTNQr1PXkXfeUA=
+	t=1731653065; cv=none; b=hiHzF9spjyCMosUIaEzbtpErOt/arxWmxD3aLi54b8fBaxGFlxYMIhLxWJ/tU6/DKvBJX5PzW9mJDbrr78mYgspCEHaoAXV0YCerETZ4oirGTJaGdipOZAbH9KMyZ8lTY586GNPTB9EAsC0/q9+bAf2DpzaOtFHCALPs9EyVbEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653333; c=relaxed/simple;
-	bh=FIx+BpA2pOY3jNOgiTIWbf6gZ4QHiwTyJbb2Xm3L77w=;
+	s=arc-20240116; t=1731653065; c=relaxed/simple;
+	bh=PA8Ow/mMKEQAS02vdJiXHDjona+xGu3XNum8iHDmXDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5LSuqOsoplPOjQIGVG79SZK9yztdf1b8belQ041XqOgpRUJbe5/dpTt27/UwWXiPAOy8F3Ybe3Sdpd2Kyhjc3HEFGEPQYZh1eX7WoBQ3Y714t9ILbs9HyIY4HtAw2QdiChQEXC20yID7J+qTu+w4I78Z0XBMmyR+yrS0xeh3/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/v8P0lY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E94C4CECF;
-	Fri, 15 Nov 2024 06:48:52 +0000 (UTC)
+	 MIME-Version; b=dei01LL6sgcLEr7NcDCTXIuxLtSCZJRa35JQAa65dtG/D2IP/aQyRE7dyOb5345o4ozNT+2Vnq12GeZRejV5invenInojPLALcAE0OT4+2Ht9uJGOUIWUh1J8VyrvYBh+bu6V/M/WBp+nGKP6WI1Wlf9rQhfT3/Dr3Vl+Z9UnfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDqZ8uJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3574FC4CECF;
+	Fri, 15 Nov 2024 06:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653332;
-	bh=FIx+BpA2pOY3jNOgiTIWbf6gZ4QHiwTyJbb2Xm3L77w=;
+	s=korg; t=1731653065;
+	bh=PA8Ow/mMKEQAS02vdJiXHDjona+xGu3XNum8iHDmXDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/v8P0lYENP4HFm28hORDeDvyfDpQaSzk3UQPCcHRppjShInM8mERuu6r/masr4Y1
-	 G8OYx1Y01Oym+NV7IjQAeMo6L6lGHhGlSn2Tu8eEO6uTXAeZJKDUb2vqqVnKjCngYw
-	 LiBrFH6/wj+H050FaVKi9p6QbF6xOtK5Bhcl7s6k=
+	b=RDqZ8uJHFJQ+pFRwVLzOf1SCk3/NLJwFDIddfi2K6XC09n6ji25+MgI4VwkMF7S8r
+	 HFPF0Wp4++2GzAU+HajiyO8Z2dZQAWa+bCOiied7Urdib7nFl0RdUT19poq/rcWf1C
+	 MW7ss9BVDC7oRPb9nWgnp+PZNmcX0mP3Gm6mOZK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	2639161967 <2639161967@qq.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 28/63] powerpc/powernv: Free name on error in opal_event_init()
+	Jack Wu <wojackbb@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 42/66] USB: serial: qcserial: add support for Sierra Wireless EM86xx
 Date: Fri, 15 Nov 2024 07:37:51 +0100
-Message-ID: <20241115063726.935970467@linuxfoundation.org>
+Message-ID: <20241115063724.363798797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Jack Wu <wojackbb@gmail.com>
 
-[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
+commit 25eb47eed52979c2f5eee3f37e6c67714e02c49c upstream.
 
-In opal_event_init() if request_irq() fails name is not freed, leading
-to a memory leak. The code only runs at boot time, there's no way for a
-user to trigger it, so there's no security impact.
+Add support for Sierra Wireless EM86xx with USB-id 0x1199:0x90e5 and
+0x1199:0x90e4.
 
-Fix the leak by freeing name in the error path.
+0x1199:0x90e5
+T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e5 Rev= 5.15
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Semtech EM8695 Mobile Broadband Adapter
+S:  SerialNumber=004403161882339
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Reported-by: 2639161967 <2639161967@qq.com>
-Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x1199:0x90e4
+T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e4 Rev= 0.00
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  SerialNumber=004403161882339
+C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=qcserial
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Jack Wu <wojackbb@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/qcserial.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index 56a1f7ce78d2c..d92759c21fae9 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -282,6 +282,7 @@ int __init opal_event_init(void)
- 				 name, NULL);
- 		if (rc) {
- 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
-+			kfree(name);
- 			continue;
- 		}
- 	}
--- 
-2.43.0
-
+--- a/drivers/usb/serial/qcserial.c
++++ b/drivers/usb/serial/qcserial.c
+@@ -166,6 +166,8 @@ static const struct usb_device_id id_tab
+ 	{DEVICE_SWI(0x1199, 0x9090)},	/* Sierra Wireless EM7565 QDL */
+ 	{DEVICE_SWI(0x1199, 0x9091)},	/* Sierra Wireless EM7565 */
+ 	{DEVICE_SWI(0x1199, 0x90d2)},	/* Sierra Wireless EM9191 QDL */
++	{DEVICE_SWI(0x1199, 0x90e4)},	/* Sierra Wireless EM86xx QDL*/
++	{DEVICE_SWI(0x1199, 0x90e5)},	/* Sierra Wireless EM86xx */
+ 	{DEVICE_SWI(0x1199, 0xc080)},	/* Sierra Wireless EM7590 QDL */
+ 	{DEVICE_SWI(0x1199, 0xc081)},	/* Sierra Wireless EM7590 */
+ 	{DEVICE_SWI(0x413c, 0x81a2)},	/* Dell Wireless 5806 Gobi(TM) 4G LTE Mobile Broadband Card */
 
 
 
