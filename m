@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-93407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A884C9CD919
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017F69CD846
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17B9FB2414E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB4B7283B15
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A5D15FD13;
-	Fri, 15 Nov 2024 06:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B23918734F;
+	Fri, 15 Nov 2024 06:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykB5KM8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZncHDBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDF4185949;
-	Fri, 15 Nov 2024 06:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC52B153800;
+	Fri, 15 Nov 2024 06:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653820; cv=none; b=aUDRzg8QsXx3t1ZIEjN145T7AIwDhg2tSrUSidEID+VsYxHs6FK2DjaPK0/TeHG08Th8mCeRoPJEsdvxE1lnArM0gnqV3S/pvYEMUFKYlTuQeOUu8a55s67ZCltlXW7T5AqraNP4HyoYbiTg21WLOAlpA3C0rYCsnoM+M5Ci3uo=
+	t=1731653350; cv=none; b=VdjrfCJgW/zetWfyZ0mU273Fh0pM9tLsRpML/bcyHFlV+1HB+jTn4FDg8US+Ye/Ev1a/TFVWvgumKYZIiZoOWPeJ4+DutyZz3R5Z2FBdswOcke6wYzfOxZRRduL6lW5laq2BYcw3p0LVnt6HnPAxtONA/j9SxGIwDsH6KG+ZcaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653820; c=relaxed/simple;
-	bh=K3xy5QeMzqTs3HXjn5he7b0YGz3mfqqs6utpDRN6oBg=;
+	s=arc-20240116; t=1731653350; c=relaxed/simple;
+	bh=tSxojuS+hq5s9tmmC6VF8ydSII+bS8l0tnAjzSdCMYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjXUFF6utJuCKTLXD8dEOjYep9aU/6Bb063WKYZJrfKFtQ+P1jF5EduoRNxhUA0yqe+sTNSt7Xariw8GvVdqHJLmt6pQkrHX17A3NyBfElwDnR7kk+81ZUCSaGunblJLADryYE8148na5Q4gmbzlR7jXKmAXlVV1rmx0KIFjUQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykB5KM8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B66FC4CECF;
-	Fri, 15 Nov 2024 06:56:58 +0000 (UTC)
+	 MIME-Version; b=PArFwZQHfO3t4+5ZTXtYC8qDW4nKBaogJvrM1kAehrsAqiUjAYS1ZPN8Lgul2+OtXh3Iv4rYRQrCQku4d2dih+e0FbsgIP8rQn5po1Ed4Pq91n7kD0NXwlP6v9QnGDoEmyrgXZVmR8oUzEgGqFC6WbqbuaH1ndMDuj16IRvz1ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZncHDBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B35CC4CECF;
+	Fri, 15 Nov 2024 06:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653819;
-	bh=K3xy5QeMzqTs3HXjn5he7b0YGz3mfqqs6utpDRN6oBg=;
+	s=korg; t=1731653349;
+	bh=tSxojuS+hq5s9tmmC6VF8ydSII+bS8l0tnAjzSdCMYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykB5KM8v7XvmM2YE2kEyg0ncZCT9ueNnaw+1PAj7R6qSK5/iR/hq+AswqSPveDKLr
-	 XcdpWYJLfRYIhDSIl+RmSAYEQb1ptPRBZRJCXaXYZCUozDja/ojte1HUXvUqxKe/fi
-	 eDvi/fMBHDMhiIFooWZLQsZF5amS++I6+nWchWTo=
+	b=EZncHDBNehOM9LxK9TVaaHfz+fUAmyncEtoOIWh0GV2KD0HbO5Yif7lYOGCDnd6Hq
+	 X6XgbAJa1iJHaro49Wg/Y6AdhqKjoTofkPF2gTViebY/oghwfJXEtb8c937OcYF5LD
+	 btITJ9MFNp+yPBXc2qURBCG5RBOADyjM/7SNssM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 5.10 45/82] nfs: Fix KMSAN warning in decode_getfattr_attrs()
+	Alex Zuo <alex.zuo@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 59/63] drm/xe: Handle unreliable MMIO reads during forcewake
 Date: Fri, 15 Nov 2024 07:38:22 +0100
-Message-ID: <20241115063727.182287958@linuxfoundation.org>
+Message-ID: <20241115063728.037049902@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +70,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
+[ Upstream commit 69418db678567bdf9a4992c83d448da462ffa78c ]
 
-Fix the following KMSAN warning:
+In some cases, when the driver attempts to read an MMIO register,
+the hardware may return 0xFFFFFFFF. The current force wake path
+code treats this as a valid response, as it only checks the BIT.
+However, 0xFFFFFFFF should be considered an invalid value, indicating
+a potential issue. To address this, we should add a log entry to
+highlight this condition and return failure.
+The force wake failure log level is changed from notice to err
+to match the failure return value.
 
-CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-=====================================================
-=====================================================
-BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_generic+0x806/0xb00
- nfs4_xdr_dec_getattr+0x1de/0x240
- rpcauth_unwrap_resp_decode+0xab/0x100
- rpcauth_unwrap_resp+0x95/0xc0
- call_decode+0x4ff/0xb50
- __rpc_execute+0x57b/0x19d0
- rpc_execute+0x368/0x5e0
- rpc_run_task+0xcfe/0xee0
- nfs4_proc_getattr+0x5b5/0x990
- __nfs_revalidate_inode+0x477/0xd00
- nfs_access_get_cached+0x1021/0x1cc0
- nfs_do_access+0x9f/0xae0
- nfs_permission+0x1e4/0x8c0
- inode_permission+0x356/0x6c0
- link_path_walk+0x958/0x1330
- path_lookupat+0xce/0x6b0
- filename_lookup+0x23e/0x770
- vfs_statx+0xe7/0x970
- vfs_fstatat+0x1f2/0x2c0
- __se_sys_newfstatat+0x67/0x880
- __x64_sys_newfstatat+0xbd/0x120
- x64_sys_call+0x1826/0x3cf0
- do_syscall_64+0xd0/0x1b0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+v2 (Matt Brost):
+  - set ret value (-EIO) to kick the error to upper layers
+v3 (Rodrigo):
+  - add commit message for the log level promotion from notice to err
+v4:
+  - update reviewed info
 
-The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
-decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
-initialized.
-
-Fix the issue by initializing fattr->mdsthreshold to NULL in
-nfs_fattr_init().
-
-Cc: stable@vger.kernel.org # v3.5.x
-Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Alex Zuo <alex.zuo@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Acked-by: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241017221547.1564029-1-shuicheng.lin@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit a9fbeabe7226a3bf90f82d0e28a02c18e3c67447)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_force_wake.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1532,6 +1532,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
- 	fattr->gencount = nfs_inc_attr_generation_counter();
- 	fattr->owner_name = NULL;
- 	fattr->group_name = NULL;
-+	fattr->mdsthreshold = NULL;
- }
- EXPORT_SYMBOL_GPL(nfs_fattr_init);
+diff --git a/drivers/gpu/drm/xe/xe_force_wake.c b/drivers/gpu/drm/xe/xe_force_wake.c
+index b263fff152737..7d9fc489dcb81 100644
+--- a/drivers/gpu/drm/xe/xe_force_wake.c
++++ b/drivers/gpu/drm/xe/xe_force_wake.c
+@@ -115,9 +115,15 @@ static int __domain_wait(struct xe_gt *gt, struct xe_force_wake_domain *domain,
+ 			     XE_FORCE_WAKE_ACK_TIMEOUT_MS * USEC_PER_MSEC,
+ 			     &value, true);
+ 	if (ret)
+-		xe_gt_notice(gt, "Force wake domain %d failed to ack %s (%pe) reg[%#x] = %#x\n",
+-			     domain->id, str_wake_sleep(wake), ERR_PTR(ret),
+-			     domain->reg_ack.addr, value);
++		xe_gt_err(gt, "Force wake domain %d failed to ack %s (%pe) reg[%#x] = %#x\n",
++			  domain->id, str_wake_sleep(wake), ERR_PTR(ret),
++			  domain->reg_ack.addr, value);
++	if (value == ~0) {
++		xe_gt_err(gt,
++			  "Force wake domain %d: %s. MMIO unreliable (forcewake register returns 0xFFFFFFFF)!\n",
++			  domain->id, str_wake_sleep(wake));
++		ret = -EIO;
++	}
  
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
