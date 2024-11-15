@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C063A9CD8C0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B369CD83E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DABE1F2343A
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3F01F2309D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB1B18734F;
-	Fri, 15 Nov 2024 06:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83429186294;
+	Fri, 15 Nov 2024 06:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIpjbvdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfCIHk75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C59914EC77;
-	Fri, 15 Nov 2024 06:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414ED17E015;
+	Fri, 15 Nov 2024 06:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653630; cv=none; b=pAFcsQ4nwvY/4CnlDKKQv+K5F4hkXO7EQum8dmt/b83xpC6noDwOyOD0ymQOUzbK0lxv0OVW79QLnMm7ABlm/4yMNMZlXgiRZoGzS4lbfXWW/bglj7C44pJuHlcGMLmCGC3/hBS16Q4cODVWjzDgXdrJi3+njbXmy9nBrVYmHqA=
+	t=1731653329; cv=none; b=sZ3ZU6IoFdf6oxyY0cLHS/54RigQJHJQgYCwv4Oxc9YG2H32DJQiRcFyVpgz0NxfyiNG6Cd36IukbyIzsPo0zlBGIWJBHqsLB8XXAnSPlFs/bdl+YuTJ2w2lqmWF5w9/CKWp04RcrI5lS4CedNUrUYgvJ8ICU6D6jOOWq1nu4/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653630; c=relaxed/simple;
-	bh=LPZOBUIavDapwelH2J0VHr4iRztmHJoR3dFy3t6xjrI=;
+	s=arc-20240116; t=1731653329; c=relaxed/simple;
+	bh=f+bEM/hYf8t30vwV0ZDCysL83ozuDkpLDYHH36iL6g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+vh2nFbEjIVEnh9NlX5kZy/ZP0yuD16CQ7wrvm0Fpgxozuce2YzjY8YlXDYGR6FQLycjkYoSAtA9p/gCMMY5KZlD/S4LMN2n1osz4axfCNHvYWi0Syqa8B1Cmssdp8laUvjvsKy8iGcHkqr5QT9vnTpnyVpqGnpEiuAUXkHd2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIpjbvdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE262C4CED7;
-	Fri, 15 Nov 2024 06:53:49 +0000 (UTC)
+	 MIME-Version; b=hWCbmOGRqvOLEnp8bYOmKnvWIsb1Pq4WYj+P+jVUWqirhURFxQFm6duRegytoyijmwzMvSYHdz1F1zHW+DWXu45x7sHebcZvQcfZUAXT17fsDe/A9o/U4t1RyDcqdq4nLk17RT5rLY1FZu1vNZoAUQg23oHAt37kXWuYC2BIw9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfCIHk75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B3BC4CECF;
+	Fri, 15 Nov 2024 06:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653630;
-	bh=LPZOBUIavDapwelH2J0VHr4iRztmHJoR3dFy3t6xjrI=;
+	s=korg; t=1731653329;
+	bh=f+bEM/hYf8t30vwV0ZDCysL83ozuDkpLDYHH36iL6g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIpjbvdZnbPm7lwEFJBtXN0XrKUEGt46f7R4BlJEtqO/aLxxxg2MDqOyWjHjgUJKb
-	 HXM8qYJeTmFq85hByRy6Acp45KeshPUDjm39UEMvVJcS0thPnWE6nwVeClE9ww5Jf/
-	 JzWn+ZpsLb6icgtWrrKaSJn3GgiQSTiPUNHo599w=
+	b=vfCIHk75kPLNQ8jWZvIZufKsivKcrG6Rv6YDoCit00cdUkHi4jY7Ui/QwOe9LYi8o
+	 NGJgsJX7V+oN5fiOidi4xgEcYgoRuCHi4czrhk8h378qZVcws+NmRncsYcBojUvFTC
+	 LATC9U38FVEtDggvI/7hu4q0tqfYwwCG5gyNMOjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/39] 9p: Avoid creating multiple slab caches with the same name
-Date: Fri, 15 Nov 2024 07:38:16 +0100
-Message-ID: <20241115063722.839131990@linuxfoundation.org>
+Subject: [PATCH 6.11 54/63] LoongArch: KVM: Mark hrtimer to expire in hard interrupt context
+Date: Fri, 15 Nov 2024 07:38:17 +0100
+Message-ID: <20241115063727.860350366@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pedro.falcato@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
+[ Upstream commit 73adbd92f3223dc0c3506822b71c6b259d5d537b ]
 
-In the spirit of [1], avoid creating multiple slab caches with the same
-name. Instead, add the dev_name into the mix.
+Like commit 2c0d278f3293f ("KVM: LAPIC: Mark hrtimer to expire in hard
+interrupt context") and commit 9090825fa9974 ("KVM: arm/arm64: Let the
+timer expire in hardirq context on RT"), On PREEMPT_RT enabled kernels
+unmarked hrtimers are moved into soft interrupt expiry mode by default.
+Then the timers are canceled from an preempt-notifier which is invoked
+with disabled preemption which is not allowed on PREEMPT_RT.
 
-[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
+The timer callback is short so in could be invoked in hard-IRQ context.
+So let the timer expire on hard-IRQ context even on -RT.
 
-Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
-Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+This fix a "scheduling while atomic" bug for PREEMPT_RT enabled kernels:
+
+ BUG: scheduling while atomic: qemu-system-loo/1011/0x00000002
+ Modules linked in: amdgpu rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat ns
+ CPU: 1 UID: 0 PID: 1011 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc2+ #1774
+ Tainted: [W]=WARN
+ Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
+ Stack : ffffffffffffffff 0000000000000000 9000000004e3ea38 9000000116744000
+         90000001167475a0 0000000000000000 90000001167475a8 9000000005644830
+         90000000058dc000 90000000058dbff8 9000000116747420 0000000000000001
+         0000000000000001 6a613fc938313980 000000000790c000 90000001001c1140
+         00000000000003fe 0000000000000001 000000000000000d 0000000000000003
+         0000000000000030 00000000000003f3 000000000790c000 9000000116747830
+         90000000057ef000 0000000000000000 9000000005644830 0000000000000004
+         0000000000000000 90000000057f4b58 0000000000000001 9000000116747868
+         900000000451b600 9000000005644830 9000000003a13998 0000000010000020
+         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
+         ...
+ Call Trace:
+ [<9000000003a13998>] show_stack+0x38/0x180
+ [<9000000004e3ea34>] dump_stack_lvl+0x84/0xc0
+ [<9000000003a71708>] __schedule_bug+0x48/0x60
+ [<9000000004e45734>] __schedule+0x1114/0x1660
+ [<9000000004e46040>] schedule_rtlock+0x20/0x60
+ [<9000000004e4e330>] rtlock_slowlock_locked+0x3f0/0x10a0
+ [<9000000004e4f038>] rt_spin_lock+0x58/0x80
+ [<9000000003b02d68>] hrtimer_cancel_wait_running+0x68/0xc0
+ [<9000000003b02e30>] hrtimer_cancel+0x70/0x80
+ [<ffff80000235eb70>] kvm_restore_timer+0x50/0x1a0 [kvm]
+ [<ffff8000023616c8>] kvm_arch_vcpu_load+0x68/0x2a0 [kvm]
+ [<ffff80000234c2d4>] kvm_sched_in+0x34/0x60 [kvm]
+ [<9000000003a749a0>] finish_task_switch.isra.0+0x140/0x2e0
+ [<9000000004e44a70>] __schedule+0x450/0x1660
+ [<9000000004e45cb0>] schedule+0x30/0x180
+ [<ffff800002354c70>] kvm_vcpu_block+0x70/0x120 [kvm]
+ [<ffff800002354d80>] kvm_vcpu_halt+0x60/0x3e0 [kvm]
+ [<ffff80000235b194>] kvm_handle_gspr+0x3f4/0x4e0 [kvm]
+ [<ffff80000235f548>] kvm_handle_exit+0x1c8/0x260 [kvm]
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/loongarch/kvm/timer.c | 7 ++++---
+ arch/loongarch/kvm/vcpu.c  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 0fc2d706d9c23..18db0e23e2f15 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -969,6 +969,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	int err;
- 	struct p9_client *clnt;
- 	char *client_id;
-+	char *cache_name;
+diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
+index 74a4b5c272d60..32dc213374bea 100644
+--- a/arch/loongarch/kvm/timer.c
++++ b/arch/loongarch/kvm/timer.c
+@@ -161,10 +161,11 @@ static void _kvm_save_timer(struct kvm_vcpu *vcpu)
+ 	if (kvm_vcpu_is_blocking(vcpu)) {
  
- 	err = 0;
- 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
-@@ -1026,15 +1027,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	if (err)
- 		goto close_trans;
+ 		/*
+-		 * HRTIMER_MODE_PINNED is suggested since vcpu may run in
+-		 * the same physical cpu in next time
++		 * HRTIMER_MODE_PINNED_HARD is suggested since vcpu may run in
++		 * the same physical cpu in next time, and the timer should run
++		 * in hardirq context even in the PREEMPT_RT case.
+ 		 */
+-		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED);
++		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED_HARD);
+ 	}
+ }
  
-+	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	if (!cache_name) {
-+		err = -ENOMEM;
-+		goto close_trans;
-+	}
-+
- 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
- 	 * followed by data accessed from userspace by read
- 	 */
- 	clnt->fcall_cache =
--		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
-+		kmem_cache_create_usercopy(cache_name, clnt->msize,
- 					   0, 0, P9_HDRSZ + 4,
- 					   clnt->msize - (P9_HDRSZ + 4),
- 					   NULL);
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 6905283f535b9..9218fc521c22d 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1144,7 +1144,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.vpid = 0;
+ 	vcpu->arch.flush_gpa = INVALID_GPA;
  
-+	kfree(cache_name);
- 	return clnt;
+-	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
++	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
+ 	vcpu->arch.swtimer.function = kvm_swtimer_wakeup;
  
- close_trans:
+ 	vcpu->arch.handle_exit = kvm_handle_exit;
 -- 
 2.43.0
 
