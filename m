@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B225C9CD884
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FD19CD8B6
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783062824BB
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B430CB2741E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE89187848;
-	Fri, 15 Nov 2024 06:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF5B188A18;
+	Fri, 15 Nov 2024 06:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLL2MCHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9tMF4c/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED0A185924;
-	Fri, 15 Nov 2024 06:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAC61885B3;
+	Fri, 15 Nov 2024 06:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653502; cv=none; b=me75CyFLKcIhiRboKH7GaAeBf5eyt6sF3nrv/fLlJ/m70GgINdWif1yK6la1UyLQ5YvYnvatxaLIk5ZEVQ7peTC9CqhV3zmnIcGTD1+Zzj3uTDsMjHzPcapK6SNeJbvonMVRMkH7Rgx7Nrk94GBiQRoiSV3OLHT4swkkOdzzejk=
+	t=1731653600; cv=none; b=PMuha6nW7DjxpjjNqzxxGiH4kbyM7b4bGTorF2Hbtm+hCGmzT/BhlxRgNddr1qh1+25oVUG9lv/5rcgHOkElMuAe+5tjnkyNWXvxeIzjWk8Axy7Hv8/KOfzgascGjtJgcC0SiXXgrzRD8yeO7otz1hLkBwwG7AQGpHbxVEajhoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653502; c=relaxed/simple;
-	bh=kgYwg87ZauiUbAyDrxgDO4Uy3EkMvxU+7TlymGOYEyM=;
+	s=arc-20240116; t=1731653600; c=relaxed/simple;
+	bh=KqrWPGWZmgL9KpoNxPzkeP7Bbg0z3kCUrNvwXW01/NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFa0cUiOM69vCcNzwteHA75fY+Gafj1r1TtUtK1aJThgQh0dYsBiwueMzFVWawFCus9R0YTP2YBdDQuHmPiFXV27C3310DEMQIq8EaECBg1FfSJ15qwSJ83xBoU8imAXvXuBigQD53m9OCQ2d+++mqvgLqOz200l9zDCb08w6Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLL2MCHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E28C4CECF;
-	Fri, 15 Nov 2024 06:51:40 +0000 (UTC)
+	 MIME-Version; b=IC/aTRALWl6Q48C8M5cOfMGsH42CuCgtsJnliLJs1R6SaJHjz24TMGDinZaZQxXbmtSpDOvn8uoBV9RDUMWYmA7ITmh5pKU+Mrh2e1+N9hjnuALFE76bYgjQ9HMiEv93TL6dpKthbL26b2+tqXhFtFe6kqNsc4/w6R2UhCT04JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9tMF4c/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3193C4CECF;
+	Fri, 15 Nov 2024 06:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653501;
-	bh=kgYwg87ZauiUbAyDrxgDO4Uy3EkMvxU+7TlymGOYEyM=;
+	s=korg; t=1731653600;
+	bh=KqrWPGWZmgL9KpoNxPzkeP7Bbg0z3kCUrNvwXW01/NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLL2MCHAvjdggnwpCE+OLWCwA1OOXKS21xYW6vzDeA6LJgGXwleX1UqK+VtOiMeN+
-	 C6+eRA+J9YrKNL2j9FCcnYwAgOYVm6B/N7HVWZzcGptelZmafbvVXKe3gbbRguk1fd
-	 iyv71fNRTDAsZH/zPObv/fDr+5m4jOb7IXAemVTo=
+	b=N9tMF4c/liXw0E4xft7XAgcLwRby2PdK5sDgTOxLa4U1+pJtC/BosBlNqHdEsQdUm
+	 I7z8pZ+eg7lgKjVmfT78INxKvNDx6ZcfOydyJgz34w/TzgMXwkDnTG8fudB988hPUf
+	 f6FOlaSr54hreZ0CZ4BJczwtu7HJxCX1KlZQe/Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.6 41/48] mm: krealloc: Fix MTE false alarm in __do_krealloc
-Date: Fri, 15 Nov 2024 07:38:30 +0100
-Message-ID: <20241115063724.445520202@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/39] nvme: make keep-alive synchronous operation
+Date: Fri, 15 Nov 2024 07:38:31 +0100
+Message-ID: <20241115063723.375244706@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 704573851b51808b45dae2d62059d1d8189138a2 upstream.
+[ Upstream commit d06923670b5a5f609603d4a9fee4dec02d38de9c ]
 
-This patch addresses an issue introduced by commit 1a83a716ec233 ("mm:
-krealloc: consider spare memory for __GFP_ZERO") which causes MTE
-(Memory Tagging Extension) to falsely report a slab-out-of-bounds error.
+The nvme keep-alive operation, which executes at a periodic interval,
+could potentially sneak in while shutting down a fabric controller.
+This may lead to a race between the fabric controller admin queue
+destroy code path (invoked while shutting down controller) and hw/hctx
+queue dispatcher called from the nvme keep-alive async request queuing
+operation. This race could lead to the kernel crash shown below:
 
-The problem occurs when zeroing out spare memory in __do_krealloc. The
-original code only considered software-based KASAN and did not account
-for MTE. It does not reset the KASAN tag before calling memset, leading
-to a mismatch between the pointer tag and the memory tag, resulting
-in a false positive.
+Call Trace:
+    autoremove_wake_function+0x0/0xbc (unreliable)
+    __blk_mq_sched_dispatch_requests+0x114/0x24c
+    blk_mq_sched_dispatch_requests+0x44/0x84
+    blk_mq_run_hw_queue+0x140/0x220
+    nvme_keep_alive_work+0xc8/0x19c [nvme_core]
+    process_one_work+0x200/0x4e0
+    worker_thread+0x340/0x504
+    kthread+0x138/0x140
+    start_kernel_thread+0x14/0x18
 
-Example of the error:
-==================================================================
-swapper/0: BUG: KASAN: slab-out-of-bounds in __memset+0x84/0x188
-swapper/0: Write at addr f4ffff8005f0fdf0 by task swapper/0/1
-swapper/0: Pointer tag: [f4], memory tag: [fe]
-swapper/0:
-swapper/0: CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.
-swapper/0: Hardware name: MT6991(ENG) (DT)
-swapper/0: Call trace:
-swapper/0:  dump_backtrace+0xfc/0x17c
-swapper/0:  show_stack+0x18/0x28
-swapper/0:  dump_stack_lvl+0x40/0xa0
-swapper/0:  print_report+0x1b8/0x71c
-swapper/0:  kasan_report+0xec/0x14c
-swapper/0:  __do_kernel_fault+0x60/0x29c
-swapper/0:  do_bad_area+0x30/0xdc
-swapper/0:  do_tag_check_fault+0x20/0x34
-swapper/0:  do_mem_abort+0x58/0x104
-swapper/0:  el1_abort+0x3c/0x5c
-swapper/0:  el1h_64_sync_handler+0x80/0xcc
-swapper/0:  el1h_64_sync+0x68/0x6c
-swapper/0:  __memset+0x84/0x188
-swapper/0:  btf_populate_kfunc_set+0x280/0x3d8
-swapper/0:  __register_btf_kfunc_id_set+0x43c/0x468
-swapper/0:  register_btf_kfunc_id_set+0x48/0x60
-swapper/0:  register_nf_nat_bpf+0x1c/0x40
-swapper/0:  nf_nat_init+0xc0/0x128
-swapper/0:  do_one_initcall+0x184/0x464
-swapper/0:  do_initcall_level+0xdc/0x1b0
-swapper/0:  do_initcalls+0x70/0xc0
-swapper/0:  do_basic_setup+0x1c/0x28
-swapper/0:  kernel_init_freeable+0x144/0x1b8
-swapper/0:  kernel_init+0x20/0x1a8
-swapper/0:  ret_from_fork+0x10/0x20
-==================================================================
+While shutting down fabric controller, if nvme keep-alive request sneaks
+in then it would be flushed off. The nvme_keep_alive_end_io function is
+then invoked to handle the end of the keep-alive operation which
+decrements the admin->q_usage_counter and assuming this is the last/only
+request in the admin queue then the admin->q_usage_counter becomes zero.
+If that happens then blk-mq destroy queue operation (blk_mq_destroy_
+queue()) which could be potentially running simultaneously on another
+cpu (as this is the controller shutdown code path) would forward
+progress and deletes the admin queue. So, now from this point onward
+we are not supposed to access the admin queue resources. However the
+issue here's that the nvme keep-alive thread running hw/hctx queue
+dispatch operation hasn't yet finished its work and so it could still
+potentially access the admin queue resource while the admin queue had
+been already deleted and that causes the above crash.
 
-Fixes: 1a83a716ec233 ("mm: krealloc: consider spare memory for __GFP_ZERO")
-Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fix helps avoid the observed crash by implementing keep-alive as a
+synchronous operation so that we decrement admin->q_usage_counter only
+after keep-alive command finished its execution and returns the command
+status back up to its caller (blk_execute_rq()). This would ensure that
+fabric shutdown code path doesn't destroy the fabric admin queue until
+keep-alive request finished execution and also keep-alive thread is not
+running hw/hctx queue dispatch operation.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slab_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1391,7 +1391,7 @@ __do_krealloc(const void *p, size_t new_
- 		/* Zero out spare memory. */
- 		if (want_init_on_alloc(flags)) {
- 			kasan_disable_current();
--			memset((void *)p + new_size, 0, ks - new_size);
-+			memset(kasan_reset_tag(p) + new_size, 0, ks - new_size);
- 			kasan_enable_current();
- 		}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index dc25d91891327..92ffeb6605618 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1231,10 +1231,9 @@ static void nvme_queue_keep_alive_work(struct nvme_ctrl *ctrl)
+ 			   nvme_keep_alive_work_period(ctrl));
+ }
  
+-static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+-						 blk_status_t status)
++static void nvme_keep_alive_finish(struct request *rq,
++		blk_status_t status, struct nvme_ctrl *ctrl)
+ {
+-	struct nvme_ctrl *ctrl = rq->end_io_data;
+ 	unsigned long flags;
+ 	bool startka = false;
+ 	unsigned long rtt = jiffies - (rq->deadline - rq->timeout);
+@@ -1252,13 +1251,11 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 		delay = 0;
+ 	}
+ 
+-	blk_mq_free_request(rq);
+-
+ 	if (status) {
+ 		dev_err(ctrl->device,
+ 			"failed nvme_keep_alive_end_io error=%d\n",
+ 				status);
+-		return RQ_END_IO_NONE;
++		return;
+ 	}
+ 
+ 	ctrl->ka_last_check_time = jiffies;
+@@ -1270,7 +1267,6 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 	spin_unlock_irqrestore(&ctrl->lock, flags);
+ 	if (startka)
+ 		queue_delayed_work(nvme_wq, &ctrl->ka_work, delay);
+-	return RQ_END_IO_NONE;
+ }
+ 
+ static void nvme_keep_alive_work(struct work_struct *work)
+@@ -1279,6 +1275,7 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 			struct nvme_ctrl, ka_work);
+ 	bool comp_seen = ctrl->comp_seen;
+ 	struct request *rq;
++	blk_status_t status;
+ 
+ 	ctrl->ka_last_check_time = jiffies;
+ 
+@@ -1301,9 +1298,9 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 	nvme_init_request(rq, &ctrl->ka_cmd);
+ 
+ 	rq->timeout = ctrl->kato * HZ;
+-	rq->end_io = nvme_keep_alive_end_io;
+-	rq->end_io_data = ctrl;
+-	blk_execute_rq_nowait(rq, false);
++	status = blk_execute_rq(rq, false);
++	nvme_keep_alive_finish(rq, status, ctrl);
++	blk_mq_free_request(rq);
+ }
+ 
+ static void nvme_start_keep_alive(struct nvme_ctrl *ctrl)
+-- 
+2.43.0
+
 
 
 
