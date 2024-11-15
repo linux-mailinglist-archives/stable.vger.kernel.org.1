@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C689CD868
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:50:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58C69CD83F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40BCCB26DCF
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:50:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3101DB22E31
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AB2188015;
-	Fri, 15 Nov 2024 06:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF22185924;
+	Fri, 15 Nov 2024 06:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOLhUVE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/v8P0lY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFB7185B5B;
-	Fri, 15 Nov 2024 06:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1252BB1B;
+	Fri, 15 Nov 2024 06:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653429; cv=none; b=RUIoQmPTI7xM2oO82fsGmSZibGG0h02c4xpEvKHNxwUz+KrxTLjhMYKso6j++Rs9wMzgCn/o9EJYN0Ob2CuIUzG/kbxnnGhvu6giDBkrRZtkQdnVm++S3QWG9HHobunXEJW6u5MqItbx6AJ0vCm8OkxjkuTu1b1JhgZDRkOfUlE=
+	t=1731653333; cv=none; b=eboKYHzDKBKEsiMzOx725MIMFc7GpQ548Ryt3xc+uhx4qTSEqac8R43hfUrVrpR1tSnIMkw6+ulxnMZa0TRTnT8XsVRHI39d9MwMrebuwrrUwzUA5wo+TN+Lq6His9yGuoG3WJ0pKw44B40Od+wwl3Oyo2A2hUTNQr1PXkXfeUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653429; c=relaxed/simple;
-	bh=77P+iuF+4kZrU/4k+uV1YTrblhJ4yT5HcMu/iVH48Is=;
+	s=arc-20240116; t=1731653333; c=relaxed/simple;
+	bh=FIx+BpA2pOY3jNOgiTIWbf6gZ4QHiwTyJbb2Xm3L77w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0zH6G844my/8b1jf6Pwp1Qm+7nRx9X+HTBpL0BjlAxXIiGcvkK+zW2s9FELH7+TzEUJyU14Mp5Yb+4hg56WqYczBktGLDKfb/vDJAsT6051eeMP7WwPCsVO1Ls0X6OidqqXkehToM5nmIvk8OFhHyqWzG0EFdI6kCDn+v/yQcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOLhUVE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54F5C4CECF;
-	Fri, 15 Nov 2024 06:50:28 +0000 (UTC)
+	 MIME-Version; b=t5LSuqOsoplPOjQIGVG79SZK9yztdf1b8belQ041XqOgpRUJbe5/dpTt27/UwWXiPAOy8F3Ybe3Sdpd2Kyhjc3HEFGEPQYZh1eX7WoBQ3Y714t9ILbs9HyIY4HtAw2QdiChQEXC20yID7J+qTu+w4I78Z0XBMmyR+yrS0xeh3/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/v8P0lY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E94C4CECF;
+	Fri, 15 Nov 2024 06:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653429;
-	bh=77P+iuF+4kZrU/4k+uV1YTrblhJ4yT5HcMu/iVH48Is=;
+	s=korg; t=1731653332;
+	bh=FIx+BpA2pOY3jNOgiTIWbf6gZ4QHiwTyJbb2Xm3L77w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOLhUVE8TuMyLxmituGQn51b5D5QnHPuabfrr31oC0uEzrdEFwi0OO/wgfH3XrIh2
-	 m2aBKcZzviecCkAnepz4swVZAts1BAwFg/avb1NVwH6ZLEuCuvfliFJYNEOMSP3/7v
-	 OSQFzJSSywdTKX6xsee9bxxujBRZA5YNpCZs02IY=
+	b=J/v8P0lYENP4HFm28hORDeDvyfDpQaSzk3UQPCcHRppjShInM8mERuu6r/masr4Y1
+	 G8OYx1Y01Oym+NV7IjQAeMo6L6lGHhGlSn2Tu8eEO6uTXAeZJKDUb2vqqVnKjCngYw
+	 LiBrFH6/wj+H050FaVKi9p6QbF6xOtK5Bhcl7s6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	2639161967 <2639161967@qq.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 02/48] 9p: Avoid creating multiple slab caches with the same name
+Subject: [PATCH 6.11 28/63] powerpc/powernv: Free name on error in opal_event_init()
 Date: Fri, 15 Nov 2024 07:37:51 +0100
-Message-ID: <20241115063723.053040091@linuxfoundation.org>
+Message-ID: <20241115063726.935970467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pedro.falcato@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
+[ Upstream commit cf8989d20d64ad702a6210c11a0347ebf3852aa7 ]
 
-In the spirit of [1], avoid creating multiple slab caches with the same
-name. Instead, add the dev_name into the mix.
+In opal_event_init() if request_irq() fails name is not freed, leading
+to a memory leak. The code only runs at boot time, there's no way for a
+user to trigger it, so there's no security impact.
 
-[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
+Fix the leak by freeing name in the error path.
 
-Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
-Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reported-by: 2639161967 <2639161967@qq.com>
+Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240920093520.67997-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index b05f73c291b4b..e7ea6c5c7463d 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -978,6 +978,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	int err;
- 	struct p9_client *clnt;
- 	char *client_id;
-+	char *cache_name;
- 
- 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
- 	if (!clnt)
-@@ -1034,15 +1035,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	if (err)
- 		goto close_trans;
- 
-+	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	if (!cache_name) {
-+		err = -ENOMEM;
-+		goto close_trans;
-+	}
-+
- 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
- 	 * followed by data accessed from userspace by read
- 	 */
- 	clnt->fcall_cache =
--		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
-+		kmem_cache_create_usercopy(cache_name, clnt->msize,
- 					   0, 0, P9_HDRSZ + 4,
- 					   clnt->msize - (P9_HDRSZ + 4),
- 					   NULL);
- 
-+	kfree(cache_name);
- 	return clnt;
- 
- close_trans:
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index 56a1f7ce78d2c..d92759c21fae9 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -282,6 +282,7 @@ int __init opal_event_init(void)
+ 				 name, NULL);
+ 		if (rc) {
+ 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
++			kfree(name);
+ 			continue;
+ 		}
+ 	}
 -- 
 2.43.0
 
