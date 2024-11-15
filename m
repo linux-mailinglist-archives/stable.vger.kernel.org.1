@@ -1,119 +1,98 @@
-Return-Path: <stable+bounces-93601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D465F9CF668
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 21:53:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7466F9CF6EC
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 22:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3338AB2AA24
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 20:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20E951F21BFD
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 21:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047B2153800;
-	Fri, 15 Nov 2024 20:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4981E2304;
+	Fri, 15 Nov 2024 21:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbLa2piO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYPMGbWL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f195.google.com (mail-qt1-f195.google.com [209.85.160.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5899A1DA23
-	for <stable@vger.kernel.org>; Fri, 15 Nov 2024 20:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36C412F585;
+	Fri, 15 Nov 2024 21:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731703949; cv=none; b=s6y9sqF8FyFq13L7TnGKNuoEK81QCgmB2KgUUqUwJb0vswZfKj7EDDGWt6oR0RfGJtZtmBcxeK+NkermAqa3JhT9iK0siKs/EnfFi/EXddBFJCt4U79G+0VTo/m/iHb1z6o15DvBkVMfoUAy1x1nMXC13nyJvFGEYza95/4Hcac=
+	t=1731705500; cv=none; b=HgCASezeMdkcrYC9BAkExfjBlv5CGWZ1/RGYm3k/M96nYBzVGjtvjQB/nk63gPjIPSws+1flKhFOkDWEaSXEGF0o5AKfjgmGhA1HUdJbSQ7R2L6hb61eW6Fck5+LJK3SXTbJJgTPFvWFMtgEOx1w41G+zwHACPUL3LnSiL4t/pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731703949; c=relaxed/simple;
-	bh=lgtrsfajWkqQhFMjso54USZ0nBjENfWXDV1JpuF+nkc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lZDvi/BWqSs4vEdhAZ+z1S/GjD2uDgN85GLysN7yQSFmLd5JVyj2LlHjEtA9QuwjQ3Yev6JpfItSItNVx1PBs/P95QlT81uFJVSnhselY4htKuNdD7qKW8YhxzHo4SmAPB6Wxqcp4FnXD7oWpObeA+7eOyMBeFXiJxWaYz3dpww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbLa2piO; arc=none smtp.client-ip=209.85.160.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f195.google.com with SMTP id d75a77b69052e-4608e389407so26165331cf.2
-        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 12:52:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731703946; x=1732308746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y+JXE3B5KawPF65U6HSOHR3FL9VUAcwuxe0IMh5c68A=;
-        b=lbLa2piOHKy8CgcaxQh8ksVIQS7DsYJ8IBQtcWqGAj6U097pHAMGXsVHKwIR+mJz+o
-         eBOaz75etjhFz1CQAWG0H63B9d9Vt/4v8XxCBG+0ZQl20rTug30QAZx9sk9vPEPCCexT
-         R/K+sieC3S7EIyjXtOx/IDsJ0BAAPEsi4sRPnf81j9s0/vgGN4jxnzKqQiQ6O5xMtYod
-         po5q8mM+aEot5UCMfnsSQ4FVceB0XxNWY0vlxWXScYp4j/dCoWJ5dhGUsBw8aOmS5ZNR
-         nkVqqGX592QT3f7Gj9W785hf9Z2Vt+1UqSHeC/jc8Vn9XdhW6WvzioLtePOV2U27dwcH
-         uXrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731703946; x=1732308746;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y+JXE3B5KawPF65U6HSOHR3FL9VUAcwuxe0IMh5c68A=;
-        b=QanH2+h6pC0113k1/sGB5p7bQj8M5pqtSjAMmhrUDxg/iAPVqdN8wPVqKM7RW0lBYU
-         UYvSev35SDhxFaTq1veCCdPxxkeuw2rKLjpBGiHGzCoosGoe7Z5+KI8Y0csexuQ863d8
-         d3qHBUJSPP0OASLXkjLdrr+2i8+Cdq+sfVcNY1+4ehNkjB1BPjbSU6huztMIrrI2+MWn
-         mtm0SiBpQAQ8ouP06UDb8DwoPJIAi/w/ap8NM2wLQFyJCvhJ1p0m9yloosuTE8bbh5nA
-         LGp+4xOOMDUM34n5NKDsTshIfmPH7eRhC9084dOtgMWoERnK4jhBrvjrY6xbsQJH59cA
-         TWQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMSF+JBDkDFwWEh3dsx8nCyGfMDg3KCgFG8S7DNxaMmiHIIjPTvm9oqvyyDm1aaSzzOT9I7Ic=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIVlwX6Ls2+aA/ibxhr3trZYmJtuXSRU0l35eNMs2kqfN4wFia
-	n8zNYIdAvTVJT5V4PA5ASIrTxOnpkmH8PckIJU1Cw9S8yObslmaD
-X-Google-Smtp-Source: AGHT+IHVkVw3cryn3SiPFqi2l6cxFQ6DtPK1Y2TsQd3PF5Xv4T1JOhWcXgQAcOPV7Er2j8fGRO+liQ==
-X-Received: by 2002:ac8:5791:0:b0:463:54f1:ec3b with SMTP id d75a77b69052e-46363e0c9bbmr49897901cf.17.1731703946129;
-        Fri, 15 Nov 2024 12:52:26 -0800 (PST)
-Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4635ab5da6bsm23831271cf.80.2024.11.15.12.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 12:52:25 -0800 (PST)
-From: Gax-c <zichenxie0106@gmail.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	mark.rutland@arm.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	chenyuan0y@gmail.com,
-	zzjas98@gmail.com,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: uaccess: Restrict user access to kernel memory in __copy_user_flushcache()
-Date: Fri, 15 Nov 2024 14:52:07 -0600
-Message-Id: <20241115205206.17678-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1731705500; c=relaxed/simple;
+	bh=1ablpgLpJCIXGvUvMmoRjJ6D2/PYdM1jTSMdF5fEjGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNp32AluSSMiCTHHlZh8zFmECkLjOIFlQ8xsLhF2Vk9hXjce3XUOZ3nH0oNSAsiwIk8GXcUeNX2WeGf4Kc2rz0ChKhhCuc+OWZIHGcg2ssB5rC9SeG7kodCmVarDSoUZHpMC/3wuTOK8XiDm+WRuQCaAqJCk7gvUcK0KPjz0JyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYPMGbWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67FFC4CECF;
+	Fri, 15 Nov 2024 21:18:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731705500;
+	bh=1ablpgLpJCIXGvUvMmoRjJ6D2/PYdM1jTSMdF5fEjGk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KYPMGbWL2MQNnE5p6O66CmQ8/12m/I4qxeYyILuI5y0CGGOyPwcIJGSNBL2GNDU/x
+	 JRnwBQ+Y0FEhMBbDI6EdR2NRj1nhhPCgk9fLGnKRpoxuqTrJWXc1O1lavHrSg3I/Ll
+	 AdZzVf/gaqjlkhvekkAgGWsueUkVf+ELUwaTn4xe+sjoRdAix58j8k9GlAPy6PQ+bX
+	 8SJteCtDCBs51f3UQapS9Y7MBonFtDEklH/2d1fP5kYm1EqLkMxQqLGJz1wlnHd4l6
+	 B16/VjKuHGYM5NrPYRgUMWtI9kZ/N9ZnVmk4V2G5VEctz0h0RTNzVkLOeBBswGKOb1
+	 ZV35eI6orvY2Q==
+Date: Fri, 15 Nov 2024 21:18:17 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.11 00/63] 6.11.9-rc1 review
+Message-ID: <Zze6meJKmuupFKL0@finisterre.sirena.org.uk>
+References: <20241115063725.892410236@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yPTeVfOOax1NwQUj"
+Content-Disposition: inline
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+X-Cookie: Editing is a rewording activity.
 
-From: Zichen Xie <zichenxie0106@gmail.com>
 
-raw_copy_from_user() do not call access_ok(), so this code allowed
-userspace to access any virtual memory address. Change it to
-copy_from_user().
+--yPTeVfOOax1NwQUj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: 9e94fdade4d8 ("arm64: uaccess: simplify __copy_user_flushcache()")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
----
- arch/arm64/lib/uaccess_flushcache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Nov 15, 2024 at 07:37:23AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.9 release.
+> There are 63 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/arch/arm64/lib/uaccess_flushcache.c b/arch/arm64/lib/uaccess_flushcache.c
-index 7510d1a23124..fb138a3934db 100644
---- a/arch/arm64/lib/uaccess_flushcache.c
-+++ b/arch/arm64/lib/uaccess_flushcache.c
-@@ -24,7 +24,7 @@ unsigned long __copy_user_flushcache(void *to, const void __user *from,
- {
- 	unsigned long rc;
- 
--	rc = raw_copy_from_user(to, from, n);
-+	rc = copy_from_user(to, from, n);
- 
- 	/* See above */
- 	dcache_clean_pop((unsigned long)to, (unsigned long)to + n - rc);
--- 
-2.34.1
+Tested-by: Mark Brown <broonie@kernel.org>
 
+--yPTeVfOOax1NwQUj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmc3upgACgkQJNaLcl1U
+h9BuBAf9E3QRKT6rf+btKlN5oVYDMEY3LIMzypiwVpM8NHJ3SR/vjAZ4D+oVymyh
+yidtznywRN12ij4J6G7ESiHZ/lcZtjBMvsfhgdRJlxb+BTLIC53sY8tHQdLXFNHT
+UeO7THwDH39jWLqvEXhxikfgjtsf5OC2K9P9XV0jTC3OtxlSajlmzRZMEX2TXPbl
+KwbTVi2gADFk+ZkwGE2BnPU2uLFVWDxFaiAhl3km1KGboYDzv7L5usbAd/ux8vKO
+4UuXPu1cn2mlGUW43cU1MyydqkT6V+eftY14RdpnFJJ+IbLOON3ey3CLV8l6kJoT
+p3IFHGBCM5KEohTcHYI9LLH27ZxAjw==
+=a7nr
+-----END PGP SIGNATURE-----
+
+--yPTeVfOOax1NwQUj--
 
