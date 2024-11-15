@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-93248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CA79CD827
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E8C9CD780
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89EA2282F01
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A61281C7E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2218153800;
-	Fri, 15 Nov 2024 06:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995911885B8;
+	Fri, 15 Nov 2024 06:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXOABz+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrB3ftuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07262BB1B;
-	Fri, 15 Nov 2024 06:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5745F3BBEB;
+	Fri, 15 Nov 2024 06:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653287; cv=none; b=eAicNKLR96jXSaaNTfQopkierMZFoNckZH8Zf+COsWMvHnmDSZCk0KhcEeI7PieZfTDlVJFxwkXfh7mZpeYzTqWf6kAXEjxDiXlaNUxfT7DkIaKxeteXEoHmTrKqRXF+WIYIUiocHwtEiixjCu/u+yQJ0PsNFSMJueVilHsJKUk=
+	t=1731652917; cv=none; b=icsg1AWfGfWabKik9WFse2sWf9Dnw0Sz3hmMnRCFnMxEUS5AohMqE3RlIf5iGFlTzwMX1RQ1VeBViQUgclJTTwfWiZ2KKCeLCuVZBwxkgLvD9cWKsW3fvvQotft/0lJ3gO/9LoMfH3ydCfkFj2R8X/ZDzpOozRNbHIMvmN5RpA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653287; c=relaxed/simple;
-	bh=0OQCz882qz2b7DqnlGrfHHcTh0hAHYuyZwSrTB4dK/A=;
+	s=arc-20240116; t=1731652917; c=relaxed/simple;
+	bh=f/0EmlfGxOQI2a7fS6tgAs/UWotwYl6XVO3E8ueY1pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lVbsK7CbUdV5cvZqiM8NKf3WJ7So/HLaYXRXlnLzfttY0Hl8x0lW3tRGNQLoBYNataTOobdOwEa6gAiPL/GnpKp6RACBKO2dV2eY5pUCkxOHd5pnrMsfxIkgvYl1WkJ0LZhLGuY9mziSFB2eL9ZDshrOnrcAxRwx8c9tWhxSxE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXOABz+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBF3C4CECF;
-	Fri, 15 Nov 2024 06:48:05 +0000 (UTC)
+	 MIME-Version; b=MIfwBSY6j/paD7bVyVKG8uGakwVO9lYPHcz5Fg191HtCNWActD8EsS1iLxSJXtre5sWTHXVIQupCvUdsjiqxC15+yTizyOHyhYvtOZ+JBVOLHhuYKED9WVuiuUDjtlFXL+ePYfH8O2+D9RJ73SdpgWkpf4rEHI/FIVCsEExF9+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrB3ftuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B33C4CED0;
+	Fri, 15 Nov 2024 06:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653286;
-	bh=0OQCz882qz2b7DqnlGrfHHcTh0hAHYuyZwSrTB4dK/A=;
+	s=korg; t=1731652917;
+	bh=f/0EmlfGxOQI2a7fS6tgAs/UWotwYl6XVO3E8ueY1pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXOABz+ktLVqTMOOHfs045oroYHpdG2ixHDW+g4I1YDNAmBIEAwBits6hQSxwjprJ
-	 5PdVzzByXlVsETrX16dIY5OTHcE5Axd0Vdh3LD2T0XvFNyBEWFavlSJY8IuCHTjllC
-	 RG93I4Y9adU4UK1Poc3MR+V/WNsY4MBqTJpt8SZo=
+	b=DrB3ftuk6tvpQxA4cUL0ZDgJgEW9Pvy6BQfV7DOJJpyk6XP+ilzpCJiwBZPbZMt4i
+	 BdTuxhK/f3329iVGvB3nvfqZya0stnjzBdub5M4jS+g+nm0T3r0ISEk3vrRIwfRRaa
+	 7b9bsVU6zShlC01yO1P9qpgJPOx2oa9RsrHO9cBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Fang <derek.fang@realtek.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 42/63] ASoC: Intel: soc-acpi: lnl: Add match entry for TM2 laptops
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Omar Sandoval <osandov@fb.com>
+Subject: [PATCH 4.19 52/52] 9p: fix slab cache name creation for real
 Date: Fri, 15 Nov 2024 07:38:05 +0100
-Message-ID: <20241115063727.433318787@linuxfoundation.org>
+Message-ID: <20241115063724.729942143@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 6924565a04e5f424c95e6d894584e3059f257373 ]
+commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
 
-Add a new match table entry on Lunarlake for the TM2 laptops
-with rt713 and rt1318.
+This was attempted by using the dev_name in the slab cache name, but as
+Omar Sandoval pointed out, that can be an arbitrary string, eg something
+like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
+if a filename contains a slash.
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241016030703.13669-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So just make it use a sequence counter, and make it an atomic_t to avoid
+any possible races or locking issues.
+
+Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
+Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
+Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../intel/common/soc-acpi-intel-lnl-match.c   | 38 +++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ net/9p/client.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-lnl-match.c b/sound/soc/intel/common/soc-acpi-intel-lnl-match.c
-index edfb668d0580d..8452b66149119 100644
---- a/sound/soc/intel/common/soc-acpi-intel-lnl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-lnl-match.c
-@@ -166,6 +166,15 @@ static const struct snd_soc_acpi_adr_device rt1316_3_group1_adr[] = {
- 	}
- };
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1016,6 +1016,7 @@ error:
+ struct p9_client *p9_client_create(const char *dev_name, char *options)
+ {
+ 	int err;
++	static atomic_t seqno = ATOMIC_INIT(0);
+ 	struct p9_client *clnt;
+ 	char *client_id;
+ 	char *cache_name;
+@@ -1071,7 +1072,8 @@ struct p9_client *p9_client_create(const
+ 	if (err)
+ 		goto close_trans;
  
-+static const struct snd_soc_acpi_adr_device rt1318_1_adr[] = {
-+	{
-+		.adr = 0x000133025D131801ull,
-+		.num_endpoints = 1,
-+		.endpoints = &single_endpoint,
-+		.name_prefix = "rt1318-1"
-+	}
-+};
-+
- static const struct snd_soc_acpi_adr_device rt1318_1_group1_adr[] = {
- 	{
- 		.adr = 0x000130025D131801ull,
-@@ -184,6 +193,15 @@ static const struct snd_soc_acpi_adr_device rt1318_2_group1_adr[] = {
- 	}
- };
- 
-+static const struct snd_soc_acpi_adr_device rt713_0_adr[] = {
-+	{
-+		.adr = 0x000031025D071301ull,
-+		.num_endpoints = 1,
-+		.endpoints = &single_endpoint,
-+		.name_prefix = "rt713"
-+	}
-+};
-+
- static const struct snd_soc_acpi_adr_device rt714_0_adr[] = {
- 	{
- 		.adr = 0x000030025D071401ull,
-@@ -286,6 +304,20 @@ static const struct snd_soc_acpi_link_adr lnl_sdw_rt1318_l12_rt714_l0[] = {
- 	{}
- };
- 
-+static const struct snd_soc_acpi_link_adr lnl_sdw_rt713_l0_rt1318_l1[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(rt713_0_adr),
-+		.adr_d = rt713_0_adr,
-+	},
-+	{
-+		.mask = BIT(1),
-+		.num_adr = ARRAY_SIZE(rt1318_1_adr),
-+		.adr_d = rt1318_1_adr,
-+	},
-+	{}
-+};
-+
- /* this table is used when there is no I2S codec present */
- struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
- 	/* mockup tests need to be first */
-@@ -343,6 +375,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
- 		.drv_name = "sof_sdw",
- 		.sof_tplg_filename = "sof-lnl-rt1318-l12-rt714-l0.tplg"
- 	},
-+	{
-+		.link_mask = BIT(0) | BIT(1),
-+		.links = lnl_sdw_rt713_l0_rt1318_l1,
-+		.drv_name = "sof_sdw",
-+		.sof_tplg_filename = "sof-lnl-rt713-l0-rt1318-l1.tplg"
-+	},
- 	{},
- };
- EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_lnl_sdw_machines);
--- 
-2.43.0
-
+-	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
++	cache_name = kasprintf(GFP_KERNEL,
++		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
+ 	if (!cache_name) {
+ 		err = -ENOMEM;
+ 		goto close_trans;
 
 
 
