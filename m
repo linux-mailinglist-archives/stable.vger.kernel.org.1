@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-93155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5459CD79E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93819CD819
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4137281CE2
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC622823E8
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB06188591;
-	Fri, 15 Nov 2024 06:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C402BB1B;
+	Fri, 15 Nov 2024 06:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkhzszdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrfOShkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC38188012;
-	Fri, 15 Nov 2024 06:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92212EAD0;
+	Fri, 15 Nov 2024 06:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652990; cv=none; b=XNlKUvGEhVBz1USuL/r6SJEYluPMID2djowF4BHwH3jQSFnjS2uwl9qv86y3DTLVzk207AeuVxH4oTo2S4z7heQDKpoGP+9YhITTOikp3x8Hit7cDBSRIOxRGcXUTkb9eSkNyezI3PqfKIly1QvlAglVUVIfK7u41o7FJBGbym0=
+	t=1731653252; cv=none; b=q3yZs7u6JGBu6Wfw5uxpvDzgWNxi22s9boEWkXz5a7YIvd9ByTLzignkF2yn4nIXcOvb5x2fvzSeQ/xHfZtnjvQROKG3jlpAOwIugDnbKsagpRM09CYF0a3hC49Miya+ckbiBGkiSFeTEijSCsjaE8aO9SYq9qj24piPWMf0T+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652990; c=relaxed/simple;
-	bh=fwgL/GBA6FPtCwrqB1/IPIND2Qk1nod2IzvLFrX38/8=;
+	s=arc-20240116; t=1731653252; c=relaxed/simple;
+	bh=0UfrvSPWRNxAk72Ev0P145nXX+Xb0o52eKUVV39ra08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STf6zeywNE5R8AFwDk8SSBDnQWqfov/Ulj9jjQXE//61sjTioHgP/oNONNW0qbN+Rp1+pE/AqZpZD2L+ZDRwqsAwgYPQ7Oickhn25EcBBw1Rx/dJzOJ4nErqB0zhfSFO95HzTWYuIkKDlvrLFS5E0pCj3IYMtdqBeAeIbGam+B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkhzszdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4CAC4CECF;
-	Fri, 15 Nov 2024 06:43:09 +0000 (UTC)
+	 MIME-Version; b=dDmyTXQl9wS8AkZPogfTvuue804xIHeb9OtQqmVae6CSlhxn2zUI6Gbg+wQFMPdsJ5tVLyQRvpPQx7w9D3iguK3r0mTva2OxVzDGwkMzG/JwE3CmW5FQQ1iS9XKpfbK0k21AUaNzrYLrlrIXW3RcMkZ1y520+z2W8XCzoTvwn+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrfOShkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EE0C4CECF;
+	Fri, 15 Nov 2024 06:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652990;
-	bh=fwgL/GBA6FPtCwrqB1/IPIND2Qk1nod2IzvLFrX38/8=;
+	s=korg; t=1731653252;
+	bh=0UfrvSPWRNxAk72Ev0P145nXX+Xb0o52eKUVV39ra08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkhzszdWU66zxnR51yOKussym3sdhmDUi0YCKlyMv/6roBI+5tKWC1Ro+TUw6E7v6
-	 ZjyNjzfb200oD8EXag/kotOfw6FeIQ4/2ZNJXu4jlTdW5DMsE7j+9q7OgJd+owkN+2
-	 j91m8M9Ij4+7oCUvAXq36Wlnm5iQR30xK8ZR6VjE=
+	b=vrfOShkG3YTqpcPEZSHtz230gi5CmvoMmSJ2F+dpc+svWxPHZngZ+eC5JfeljcqhQ
+	 FD3fkSJ7MFJIKI8AkSO3SgQwVwH3lFW6b/UwJm8WmAbi6JlfdKZkG/3LMMzm7UHdQn
+	 8kW+48yfakSOuCNW4eN6787YOtI2TVyX571I2UmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.4 22/66] media: cx24116: prevent overflows on SNR calculus
-Date: Fri, 15 Nov 2024 07:37:31 +0100
-Message-ID: <20241115063723.645084972@linuxfoundation.org>
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 09/63] pinctrl: intel: platform: Add Panther Lake to the list of supported
+Date: Fri, 15 Nov 2024 07:37:32 +0100
+Message-ID: <20241115063726.233938725@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
+[ Upstream commit 37756257093bf1bda0bb034f4f1bd3219c7b2a40 ]
 
-as reported by Coverity, if reading SNR registers fail, a negative
-number will be returned, causing an underflow when reading SNR
-registers.
+Intel Panther Lake is supported by the generic platform driver,
+so add it to the list of supported in Kconfig.
 
-Prevent that.
-
-Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/intel/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/dvb-frontends/cx24116.c
-+++ b/drivers/media/dvb-frontends/cx24116.c
-@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
- {
- 	struct cx24116_state *state = fe->demodulator_priv;
- 	u8 snr_reading;
-+	int ret;
- 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
- 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
- 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
-@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
+diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
+index 2101d30bd66c1..14c26c023590e 100644
+--- a/drivers/pinctrl/intel/Kconfig
++++ b/drivers/pinctrl/intel/Kconfig
+@@ -46,6 +46,7 @@ config PINCTRL_INTEL_PLATFORM
+ 	  of Intel PCH pins and using them as GPIOs. Currently the following
+ 	  Intel SoCs / platforms require this to be functional:
+ 	  - Lunar Lake
++	  - Panther Lake
  
- 	dprintk("%s()\n", __func__);
- 
--	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	if (ret  < 0)
-+		return ret;
-+
-+	snr_reading = ret;
- 
- 	if (snr_reading >= 0xa0 /* 100% */)
- 		*snr = 0xffff;
+ config PINCTRL_ALDERLAKE
+ 	tristate "Intel Alder Lake pinctrl and GPIO driver"
+-- 
+2.43.0
+
 
 
 
