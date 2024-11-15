@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-93421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E619CD92E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9CA29CD88F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A6A32837D9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 734A41F2300D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEE01885BF;
-	Fri, 15 Nov 2024 06:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFA71885B3;
+	Fri, 15 Nov 2024 06:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1pGZenG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCe1x09W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5992BB1B;
-	Fri, 15 Nov 2024 06:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8E4186294;
+	Fri, 15 Nov 2024 06:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653869; cv=none; b=j0cCx9WlRmz745c8V2kHVaUyyqBZj54/QEA9iZVXgvyVr8yMaYank+Ewk100DLgaqX9GYsPz5wIfxGA82YiDugU7qdgOW6FNK49DRpral+Oa/I7Sdq/ciQFitY4vOiF9bhoLutLX4c5BVOS4+D5r0VtyOEVgzOCWFlSOO6341Lc=
+	t=1731653518; cv=none; b=fDRy7fG4fMXVOaHZ3/EuGQ5Abv3cB+V87MK7xhGlaquQs4kOgEbI8b9nuQjmc7nAGoSlFgTS+An/L+LbwEw7eOa7nM7DuwSVO3sNDe1mH676LiHIh9SkKLdwRMxmp+bilPvh1Ga0M9UITF6DPig95ovH9kCxQ8To/2RZGau3U9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653869; c=relaxed/simple;
-	bh=I4B+QpZyg00eeb3t51UIE1I/WvMFHuynLkePBgfdzak=;
+	s=arc-20240116; t=1731653518; c=relaxed/simple;
+	bh=ew3+ijphF7i3LsGCfjfwmnZd+vkJav76YIYVbnkJWmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fh2O6T0ICk404837RUZtSMN6EOr+qDFYL4AqshY85kR4SVDIH50px+a6HWB2T7YpOIby9T35eY7qSte6d7+mbvr6lib7+donnZvDmPBQxZ+7TRTWwVOsvCyFr8leu1mfpkaa2O09+CH6mO4Wq/S29PpsHSf9s/7/DscR53MSjN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1pGZenG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9304C4CECF;
-	Fri, 15 Nov 2024 06:57:48 +0000 (UTC)
+	 MIME-Version; b=E+xC69B0fJyL6Ol+oD1CdpklscTg+3f8gMk87w+JhSuoV00pWPa9Tda0DIAqADdvnrITkkryQnIcK03m3ohzK/sTSwnuEcIcy8YUsFkqWkSE0Zx8LLN6CymrHPPynAtg1RD7AwkbxTcoK2D/T/aNnmb0uaHOJZc0fOKnlBxmpVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCe1x09W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A94C4CECF;
+	Fri, 15 Nov 2024 06:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653869;
-	bh=I4B+QpZyg00eeb3t51UIE1I/WvMFHuynLkePBgfdzak=;
+	s=korg; t=1731653517;
+	bh=ew3+ijphF7i3LsGCfjfwmnZd+vkJav76YIYVbnkJWmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1pGZenGU5K6f6vPW+QjMfKrKyMpJEFvB8Ksf647E7/WbYpuwX/eiHZu2Uqm1W8+y
-	 oVp3tmKCql4h48OFp6DVU77RhJ+ffgIsOfcrppv57TiTjofchLwE1gGCnm0X/1j2rL
-	 dIT5S4ZKAVXPX1PpKH0qvtLJQ1Lpt3hXe4856wiA=
+	b=XCe1x09Wqcxbbg75eoBmQc4LNawVewDA6Oukv5hmF5u1bBg0ft1BQsMS+6yQkY47c
+	 SAdFj8eTVOud5NPU+4PuAXpdCJ40Z1Qrw6XmBDQC25Px88qDs/dIplNBw8t5wILgKW
+	 qW5uDxGoc+uXSq1S9qLkPczoGR78ojp3UJFpwQaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 58/82] USB: serial: io_edgeport: fix use after free in debug printk
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lance Yang <ioworker0@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH 6.6 46/48] mm: refactor folio_undo_large_rmappable()
 Date: Fri, 15 Nov 2024 07:38:35 +0100
-Message-ID: <20241115063727.648490151@linuxfoundation.org>
+Message-ID: <20241115063724.623741857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +71,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-commit 37bb5628379295c1254c113a407cab03a0f4d0b4 upstream.
+commit 593a10dabe08dcf93259fce2badd8dc2528859a8 upstream.
 
-The "dev_dbg(&urb->dev->dev, ..." which happens after usb_free_urb(urb)
-is a use after free of the "urb" pointer.  Store the "dev" pointer at the
-start of the function to avoid this issue.
+Folios of order <= 1 are not in deferred list, the check of order is added
+into folio_undo_large_rmappable() from commit 8897277acfef ("mm: support
+order-1 folios in the page cache"), but there is a repeated check for
+small folio (order 0) during each call of the
+folio_undo_large_rmappable(), so only keep folio_order() check inside the
+function.
 
-Fixes: 984f68683298 ("USB: serial: io_edgeport.c: remove dbg() usage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+In addition, move all the checks into header file to save a function call
+for non-large-rmappable or empty deferred_list folio.
+
+Link: https://lkml.kernel.org/r/20240521130315.46072-1-wangkefeng.wang@huawei.com
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Upstream commit itself does not apply cleanly, because there
+  are fewer calls to folio_undo_large_rmappable() in this tree. ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_edgeport.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/huge_memory.c |   13 +------------
+ mm/internal.h    |   17 ++++++++++++++++-
+ mm/page_alloc.c  |    4 +---
+ 3 files changed, 18 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/serial/io_edgeport.c
-+++ b/drivers/usb/serial/io_edgeport.c
-@@ -846,11 +846,12 @@ static void edge_bulk_out_data_callback(
- static void edge_bulk_out_cmd_callback(struct urb *urb)
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2767,22 +2767,11 @@ out:
+ 	return ret;
+ }
+ 
+-void folio_undo_large_rmappable(struct folio *folio)
++void __folio_undo_large_rmappable(struct folio *folio)
  {
- 	struct edgeport_port *edge_port = urb->context;
-+	struct device *dev = &urb->dev->dev;
- 	int status = urb->status;
+ 	struct deferred_split *ds_queue;
+ 	unsigned long flags;
  
- 	atomic_dec(&CmdUrbs);
--	dev_dbg(&urb->dev->dev, "%s - FREE URB %p (outstanding %d)\n",
--		__func__, urb, atomic_read(&CmdUrbs));
-+	dev_dbg(dev, "%s - FREE URB %p (outstanding %d)\n", __func__, urb,
-+		atomic_read(&CmdUrbs));
+-	if (folio_order(folio) <= 1)
+-		return;
+-
+-	/*
+-	 * At this point, there is no one trying to add the folio to
+-	 * deferred_list. If folio is not in deferred_list, it's safe
+-	 * to check without acquiring the split_queue_lock.
+-	 */
+-	if (data_race(list_empty(&folio->_deferred_list)))
+-		return;
+-
+ 	ds_queue = get_deferred_split_queue(folio);
+ 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+ 	if (!list_empty(&folio->_deferred_list)) {
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -413,7 +413,22 @@ static inline void folio_set_order(struc
+ #endif
+ }
  
+-void folio_undo_large_rmappable(struct folio *folio);
++void __folio_undo_large_rmappable(struct folio *folio);
++static inline void folio_undo_large_rmappable(struct folio *folio)
++{
++	if (folio_order(folio) <= 1 || !folio_test_large_rmappable(folio))
++		return;
++
++	/*
++	 * At this point, there is no one trying to add the folio to
++	 * deferred_list. If folio is not in deferred_list, it's safe
++	 * to check without acquiring the split_queue_lock.
++	 */
++	if (data_race(list_empty(&folio->_deferred_list)))
++		return;
++
++	__folio_undo_large_rmappable(folio);
++}
  
- 	/* clean up the transfer buffer */
-@@ -860,8 +861,7 @@ static void edge_bulk_out_cmd_callback(s
- 	usb_free_urb(urb);
- 
- 	if (status) {
--		dev_dbg(&urb->dev->dev,
--			"%s - nonzero write bulk status received: %d\n",
-+		dev_dbg(dev, "%s - nonzero write bulk status received: %d\n",
- 			__func__, status);
+ static inline struct folio *page_rmappable_folio(struct page *page)
+ {
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -600,9 +600,7 @@ void destroy_large_folio(struct folio *f
  		return;
  	}
+ 
+-	if (folio_test_large_rmappable(folio))
+-		folio_undo_large_rmappable(folio);
+-
++	folio_undo_large_rmappable(folio);
+ 	mem_cgroup_uncharge(folio);
+ 	free_the_page(&folio->page, folio_order(folio));
+ }
 
 
 
