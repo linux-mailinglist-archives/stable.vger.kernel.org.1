@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063E59CD98C
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B3F9CD8DB
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB364283F09
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7010283CBF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4DC189913;
-	Fri, 15 Nov 2024 07:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB214153800;
+	Fri, 15 Nov 2024 06:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBIuJXuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4jpTTKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968C1DFFD;
-	Fri, 15 Nov 2024 07:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DFC185924;
+	Fri, 15 Nov 2024 06:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654054; cv=none; b=gaQ1CrtE9jrWbh+20UmS+nk8G95BfAtcRP94XbDls2AH3xzkcZ0E0FU98pfwZINPUl5zlIwxjLb8lSFeKVwZP2EDFVRXaNHSpynh7vXSFxp43+15xHXEEtBpNeZIBmj6GXVBR9suIyzBtaJZnXZ19tMFFUGL8VuIki2C/x3I5kQ=
+	t=1731653685; cv=none; b=AjsaL3YDjLFdtSH59N4oVIwxSesF8ancJRs/yB5izhgDkj/26iWRdTmTxbCN5MMcONSWufN7kKa1s/ma7rGwT8woYcPm4KgrXgI1uzTmDK9RGOXc6BACdF4xz6x/gq5Tyj5hkyiR3EGSHLBJ89AAgpnH7d/uLPr5Dd5p1xL867Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654054; c=relaxed/simple;
-	bh=u+ihKTzTWAKp/o46Y+Niyb5N+sb8GrgldaqleHaUfJ0=;
+	s=arc-20240116; t=1731653685; c=relaxed/simple;
+	bh=nX5GuuxSCm2eJub4QzSQdHCvpixjIsPQSJLkhb2h0jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tB3hMj9Xl5FUgKypEn1xE3598+SpXI3/c0h7PkXZro4VtYd42a7BRLPEYkFP+JNcD3H0ddS6rTJRFSaUsv10mOfDBsUdmuA2x+VsgHJw8CbME5odHE7c/qQUEPPVn357dierPeJ7B3Ub7A/QXOmHH2+IKQflgojZYVDRE7T0jCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBIuJXuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8389C4CED2;
-	Fri, 15 Nov 2024 07:00:53 +0000 (UTC)
+	 MIME-Version; b=O0q/O/XHNAX0dtzxfEJWCCLlfHo70xC46rPYGvzB8nrPtDMJSP9OlhDguoKH0Tr+Pe6ILDXWX7hYTy1cz/q00Dc5vVFCMJQ5Y1xkCbBYSr663A0QC45Ty2YFvPwgecMv3C0lv5/0JqUSro68cy971Tnbsv6DD0TDgAeu/nfdTkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4jpTTKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88B1C4CECF;
+	Fri, 15 Nov 2024 06:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654054;
-	bh=u+ihKTzTWAKp/o46Y+Niyb5N+sb8GrgldaqleHaUfJ0=;
+	s=korg; t=1731653685;
+	bh=nX5GuuxSCm2eJub4QzSQdHCvpixjIsPQSJLkhb2h0jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBIuJXuo09F4Rdl/R1o5/2O/6xvvPTtnpgdaUTUYZ4yZlU0RQjzJwdyNqaBROGYW2
-	 lDMrzLzxvbyqskpRviWKqdnNybBn3nfICiDjzE/YeFxcQsrNldRJrgdByzo6BnKOSh
-	 6GGHJRur0OAZz+YShwY/QS6yuVvKmd8N4r+LpBR8=
+	b=s4jpTTKNPVUrHcZSI7tIVJdldUIhsqKQRdF6G2583XtxdS27T/0WYRJa1CakNWRPF
+	 tUnFD50ITcArBqvroDyOMLXCpnxNemPuJTXj2BJH3RJFAOvEQDHF/luzN2R4CJu4d6
+	 vjYWcLHPEbPbmamhblW07kpTA3YkH8XcslWNgVG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/22] 9p: Avoid creating multiple slab caches with the same name
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 37/39] platform/x86: x86-android-tablets: Fix use after free on platform_device_register() errors
 Date: Fri, 15 Nov 2024 07:38:47 +0100
-Message-ID: <20241115063721.227517461@linuxfoundation.org>
+Message-ID: <20241115063723.944759035@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pedro.falcato@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
+commit 2fae3129c0c08e72b1fe93e61fd8fd203252094a upstream.
 
-In the spirit of [1], avoid creating multiple slab caches with the same
-name. Instead, add the dev_name into the mix.
+x86_android_tablet_remove() frees the pdevs[] array, so it should not
+be used after calling x86_android_tablet_remove().
 
-[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
+When platform_device_register() fails, store the pdevs[x] PTR_ERR() value
+into the local ret variable before calling x86_android_tablet_remove()
+to avoid using pdevs[] after it has been freed.
 
-Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
-Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5eba0141206e ("platform/x86: x86-android-tablets: Add support for instantiating platform-devs")
+Fixes: e2200d3f26da ("platform/x86: x86-android-tablets: Add gpio_keys support to x86_android_tablet_init()")
+Cc: stable@vger.kernel.org
+Reported-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Closes: https://lore.kernel.org/platform-driver-x86/20240917120458.7300-1-a.burakov@rosalinux.ru/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241005130545.64136-1-hdegoede@redhat.com
+[Xiangyu: Modified file path to backport this commit to fix CVE: CVE-2024-49986]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/platform/x86/x86-android-tablets.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index bf29462c919bb..03fb36d938c70 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1005,6 +1005,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	int err;
- 	struct p9_client *clnt;
- 	char *client_id;
-+	char *cache_name;
+--- a/drivers/platform/x86/x86-android-tablets.c
++++ b/drivers/platform/x86/x86-android-tablets.c
+@@ -1853,8 +1853,9 @@ static __init int x86_android_tablet_ini
+ 	for (i = 0; i < pdev_count; i++) {
+ 		pdevs[i] = platform_device_register_full(&dev_info->pdev_info[i]);
+ 		if (IS_ERR(pdevs[i])) {
++			ret = PTR_ERR(pdevs[i]);
+ 			x86_android_tablet_cleanup();
+-			return PTR_ERR(pdevs[i]);
++			return ret;
+ 		}
+ 	}
  
- 	err = 0;
- 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
-@@ -1057,15 +1058,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	if (err)
- 		goto close_trans;
- 
-+	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	if (!cache_name) {
-+		err = -ENOMEM;
-+		goto close_trans;
-+	}
-+
- 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
- 	 * followed by data accessed from userspace by read
- 	 */
- 	clnt->fcall_cache =
--		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
-+		kmem_cache_create_usercopy(cache_name, clnt->msize,
- 					   0, 0, P9_HDRSZ + 4,
- 					   clnt->msize - (P9_HDRSZ + 4),
- 					   NULL);
- 
-+	kfree(cache_name);
- 	return clnt;
- 
- close_trans:
--- 
-2.43.0
-
 
 
 
