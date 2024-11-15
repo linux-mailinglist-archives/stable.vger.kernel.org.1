@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-93405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DF99CD914
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:56:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB949CD77F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86955282FB3
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:56:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C9EB2631F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377E3187FE8;
-	Fri, 15 Nov 2024 06:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D29188012;
+	Fri, 15 Nov 2024 06:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GYKMgAk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2CZR4Pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F9C185924;
-	Fri, 15 Nov 2024 06:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB40185924;
+	Fri, 15 Nov 2024 06:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653813; cv=none; b=UKdxl4uX9ttDG1g4n2xH7EKNqBpTaLpKrAhir9bZ0Xv9Tk8cT6qiyOCNIgmi70JOpefQ5LyPYISkQqpQc6fjI56kDx0gxo1xE5Bj9UGQnTeWEFkuDkcXdQOgry7Sg74Px8QznTRcofIZBwWr07dl/Z/aJLI0gQRJt8+ZXnkBF1U=
+	t=1731652907; cv=none; b=oRgy474Wp3aTVVZYfu4gORRT6kkL3TXTcGWed7OkqhxeMhAqQqn6YP+gMFrYHelPKh5tP7raV+O6wkMfQR4ZEVMkxLaaGjFcZ9nSyt28xcsnzzOdB3Ydq8QUQg/NwwzzdAEz/QIPTTbBF6cR8h80Ko2gUbTJ9MzUAmIt6/hSW44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653813; c=relaxed/simple;
-	bh=zSMakonphGiz/6y3AvbjFvOqSAptlkDsX93zdx4NrQg=;
+	s=arc-20240116; t=1731652907; c=relaxed/simple;
+	bh=90Y2JB4c/oa4etDGt/0OAjmGS5vTlrZvj0A2UL7RhsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrU4/XjoFvuVblmt/IfyY68cjxxzFb3ydujwqikBtKiTuZvIVEN5hFi4V5neBMpQl1UZoqmlZy9LR/bSEGleEf68KQMbWAjT4TrOk+MhsB+R19R7LeKFLJJSPTseyszbGIFTcAKMFQ64vRaQIlHEQOmNsqGWvO/qUVtjy2m358w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GYKMgAk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50074C4CECF;
-	Fri, 15 Nov 2024 06:56:52 +0000 (UTC)
+	 MIME-Version; b=Hqlr8bFcIRv+DSl6bzJS/CnMJKy07SURCRl0su7AfKDc/KvKSi3AISGJ8a6oEpPW94PFaMNgorb4cTilyFRnIGMJLOJLnaGs6grgbU/Q6+Yyv/zgdGTUNXxtZ2Kcmge2d5D7YveBDYhxHNGA17ear60JWFbvLbA4gB9faY+Q3U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2CZR4Pt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C522DC4CECF;
+	Fri, 15 Nov 2024 06:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653812;
-	bh=zSMakonphGiz/6y3AvbjFvOqSAptlkDsX93zdx4NrQg=;
+	s=korg; t=1731652907;
+	bh=90Y2JB4c/oa4etDGt/0OAjmGS5vTlrZvj0A2UL7RhsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GYKMgAkH1cvWOfAtIHR6H9dvsDX0zFJcCT/Ir8ctP3vOUDHuEPiIOaggVxFHpyUn
-	 AEGfKrbVsy9I5Xunf8UzHQajns4WoWKSXuEu7toDSUlE2YvXfGQRHZNVk1x9oXyRjz
-	 e5glKZiFMUR1ayCu7I5SmG8o3BLcL+4iyw0Xif0M=
+	b=u2CZR4PtmyzSjMUoVuPLXq7zrF3tRpxlFtgxCiA1epKD6oRkHiCGAkgO5emwe+/aC
+	 5uzifBZ/5UjrnuhcK7AoDEfHOhFB+jY5Ncanlu7HfsrPPrrIQ8bGesrLTI76BUCZVy
+	 mFsnC3an5U/mHlj+JflCZRsjPy5VYANdhR4N7HEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenru <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 26/82] scsi: sd_zbc: Use kvzalloc() to allocate REPORT ZONES buffer
+Subject: [PATCH 4.19 50/52] fs: Fix uninitialized value issue in from_kuid and from_kgid
 Date: Fri, 15 Nov 2024 07:38:03 +0100
-Message-ID: <20241115063726.505452960@linuxfoundation.org>
+Message-ID: <20241115063724.658777678@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
-References: <20241115063725.561151311@linuxfoundation.org>
+In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
+References: <20241115063722.845867306@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-[ Upstream commit 7ce3e6107103214d354a16729a472f588be60572 ]
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-We have two reports of failed memory allocation in btrfs' code which is
-calling into report zones.
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-Both of these reports have the following signature coming from
-__vmalloc_area_node():
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
 
- kworker/u17:5: vmalloc error: size 0, failed to allocate pages, mode:0x10dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NORETRY|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0
-
-Further debugging showed these where allocations of one sector (512
-bytes) and at least one of the reporter's systems where low on memory,
-so going through the overhead of allocating a vm area failed.
-
-Switching the allocation from __vmalloc() to kvzalloc() avoids the
-overhead of vmalloc() on small allocations and succeeds.
-
-Note: the buffer is already freed using kvfree() so there's no need to
-adjust the free path.
-
-Cc: Qu Wenru <wqu@suse.com>
-Cc: Naohiro Aota <naohiro.aota@wdc.com>
-Link: https://github.com/kdave/btrfs-progs/issues/779
-Link: https://github.com/kdave/btrfs-progs/issues/915
-Fixes: 23a50861adda ("scsi: sd_zbc: Cleanup sd_zbc_alloc_report_buffer()")
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20241030110253.11718-1-jth@kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd_zbc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
-index 01088f333dbc4..9b5dca0b6cf9a 100644
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -169,8 +169,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 3c71c05a0581b..9062002fd56c6 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1143,9 +1143,12 @@ int ocfs2_setattr(struct dentry *dentry, struct iattr *attr)
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
  
- 	while (bufsize >= SECTOR_SIZE) {
--		buf = __vmalloc(bufsize,
--				GFP_KERNEL | __GFP_ZERO | __GFP_NORETRY);
-+		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
- 		if (buf) {
- 			*buflen = bufsize;
- 			return buf;
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
 -- 
 2.43.0
 
