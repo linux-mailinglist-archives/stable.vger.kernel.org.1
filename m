@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-93130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB949CD77F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:42:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F149CD7F2
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C9EB2631F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33E9A1F21C1F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D29188012;
-	Fri, 15 Nov 2024 06:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C9514EC77;
+	Fri, 15 Nov 2024 06:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2CZR4Pt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABMoDqTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB40185924;
-	Fri, 15 Nov 2024 06:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8D29A9;
+	Fri, 15 Nov 2024 06:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652907; cv=none; b=oRgy474Wp3aTVVZYfu4gORRT6kkL3TXTcGWed7OkqhxeMhAqQqn6YP+gMFrYHelPKh5tP7raV+O6wkMfQR4ZEVMkxLaaGjFcZ9nSyt28xcsnzzOdB3Ydq8QUQg/NwwzzdAEz/QIPTTbBF6cR8h80Ko2gUbTJ9MzUAmIt6/hSW44=
+	t=1731653168; cv=none; b=sh1euTUh5KlU5LR1SCeECV6dAQ+LyqfGwGW+uQ1SYdgbIJ7sz9TTF57gyEWDbQGeQf4zKAxDZ63HtuxxmP7dk5BbRj4rKAcZJ3m7udVB3sLLyq6EyZoJNHxZ3TorKfyqxa89TFrvT/Zc+BOICvHw+KPHdZ3Jn5bYA1WGf+iLXfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652907; c=relaxed/simple;
-	bh=90Y2JB4c/oa4etDGt/0OAjmGS5vTlrZvj0A2UL7RhsA=;
+	s=arc-20240116; t=1731653168; c=relaxed/simple;
+	bh=M8Q6BA/DErZrlcA0jzhzVcIvMwCcRLzLufi8SdG+WkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hqlr8bFcIRv+DSl6bzJS/CnMJKy07SURCRl0su7AfKDc/KvKSi3AISGJ8a6oEpPW94PFaMNgorb4cTilyFRnIGMJLOJLnaGs6grgbU/Q6+Yyv/zgdGTUNXxtZ2Kcmge2d5D7YveBDYhxHNGA17ear60JWFbvLbA4gB9faY+Q3U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2CZR4Pt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C522DC4CECF;
-	Fri, 15 Nov 2024 06:41:46 +0000 (UTC)
+	 MIME-Version; b=dem9W+fVDlFN4CQYxN+66g4nNMCWV0g1R+Lw2VD05bslseVCMsnHzhL4QaI/wKN45zgul7FtZH3YE17dO9rb//p5kRIkNeDx8uh19P2FLG95iM7Dhd4kKCSzyEiMD6sfPZ+h98CkbAFkxskZUWgz8xAVc9BBil7LzmEoRiBh1Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABMoDqTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056FBC4CECF;
+	Fri, 15 Nov 2024 06:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652907;
-	bh=90Y2JB4c/oa4etDGt/0OAjmGS5vTlrZvj0A2UL7RhsA=;
+	s=korg; t=1731653168;
+	bh=M8Q6BA/DErZrlcA0jzhzVcIvMwCcRLzLufi8SdG+WkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2CZR4PtmyzSjMUoVuPLXq7zrF3tRpxlFtgxCiA1epKD6oRkHiCGAkgO5emwe+/aC
-	 5uzifBZ/5UjrnuhcK7AoDEfHOhFB+jY5Ncanlu7HfsrPPrrIQ8bGesrLTI76BUCZVy
-	 mFsnC3an5U/mHlj+JflCZRsjPy5VYANdhR4N7HEE=
+	b=ABMoDqTJJzIEKjrwvDvpzXgCnYauGFgEASPZI8O/qsMX4ykZuwizkISOYUcz/JaUQ
+	 buC28PPtDnSTsljGSbFBci6uz08IooArS6cROQTBYCJmdeW3u9jB6t3TB4QoAVvf+n
+	 SUlAvt0mBt2J0iLPAACNdNSaEiC3RCDiiLJtqYi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
-	Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/52] fs: Fix uninitialized value issue in from_kuid and from_kgid
-Date: Fri, 15 Nov 2024 07:38:03 +0100
-Message-ID: <20241115063724.658777678@linuxfoundation.org>
+Subject: [PATCH 5.4 55/66] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
+Date: Fri, 15 Nov 2024 07:38:04 +0100
+Message-ID: <20241115063724.827953373@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
+[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
 
-ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
-a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
+The behavior of HONOR MagicBook Art 14 touchpad is not consistent
+after reboots, as sometimes it reports itself as a touchpad, and
+sometimes as a mouse.
 
-Initialize all fields of newattrs to avoid uninitialized variables, by
-checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
+workaround to force set feature in mt_set_input_mode() for such special touchpad
+device.
 
-Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+[jkosina@suse.com: reword changelog a little bit]
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index 3c71c05a0581b..9062002fd56c6 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1143,9 +1143,12 @@ int ocfs2_setattr(struct dentry *dentry, struct iattr *attr)
- 	trace_ocfs2_setattr(inode, dentry,
- 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
- 			    dentry->d_name.len, dentry->d_name.name,
--			    attr->ia_valid, attr->ia_mode,
--			    from_kuid(&init_user_ns, attr->ia_uid),
--			    from_kgid(&init_user_ns, attr->ia_gid));
-+			    attr->ia_valid,
-+				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
-+				attr->ia_valid & ATTR_UID ?
-+					from_kuid(&init_user_ns, attr->ia_uid) : 0,
-+				attr->ia_valid & ATTR_GID ?
-+					from_kgid(&init_user_ns, attr->ia_gid) : 0);
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index c3810e7140a55..5994e7d1b82d9 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2008,6 +2008,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			0x347d, 0x7853) },
  
- 	/* ensuring we don't even attempt to truncate a symlink */
- 	if (S_ISLNK(inode->i_mode))
++	/* HONOR MagicBook Art 14 touchpad */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x35cc, 0x0104) },
++
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
 -- 
 2.43.0
 
