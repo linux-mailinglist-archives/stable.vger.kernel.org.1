@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-93204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DB29CD7E8
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2CE9CD839
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC05CB25B53
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D5C1F22B8B
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28879185924;
-	Fri, 15 Nov 2024 06:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793B6185B5B;
+	Fri, 15 Nov 2024 06:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6WvkU12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr5oCvnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B4014EC77;
-	Fri, 15 Nov 2024 06:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375DEEAD0;
+	Fri, 15 Nov 2024 06:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653137; cv=none; b=LFdzlMfgPz8N2n4wveYkZ6FVvKHYhZEOpYUUZBEtWeYsQPyVTX1Q9k4Nkxhw1qUCita/YnRZ9PTphFaM/YSxsDoQP37arTMhRDV1jdTwfhCzbZ8FO+Us8vL6VvFYxZHIIqyUc3H8ahuRw5hHBtiv3zbs2NfJeRimpe3dSnOUpBA=
+	t=1731653320; cv=none; b=oGyZb6gVggm01pHl3V8bl0fN1ls6iyZ9MqL3R5kBKrveM5zwjbyo154Z0bMdogWClgGR9gJ8Yk04+4SWzY/p41MeHRvDRBTXRL53lxDQlG0W3MWlwO9wCDEk0Izyq3ljr6XMRn1H7lhZAiE4Gjal3W8g4u4kYcd5iNmu/lM74G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653137; c=relaxed/simple;
-	bh=pvKyAKK4+AWsShctkLE3IN3Yf27c4NcPm+2wE92F4eg=;
+	s=arc-20240116; t=1731653320; c=relaxed/simple;
+	bh=QoJHdl3hx+vbDSXRR/9qkCt8IsrinXlLP/s6CmwWzfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHj9eNrmZHNsA364CwhxR/H9fVaI1SR+FSv4DRqK6aeRXU4Q1+LoOhZgZ4GX3NgRgL4AGivCP+Jh6d6gMLzaT2tZf4E3KYCYsw4Dvk6y3K6RWQD2oEPPFdaEY4o5AUxCDAGfjyiEFvGVjoYrPjZgsQS6L6BqLooo1wEzxJquOYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6WvkU12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3203FC4CECF;
-	Fri, 15 Nov 2024 06:45:37 +0000 (UTC)
+	 MIME-Version; b=l1EUSmC2/V4M/GI0h+XzcV092fM0ho7zUVyS8P+amSKA/m+spcZzIia/jF6zvWycfT1hJe1LkI3zK8KK5J4w8bsG00jYLJMxP/nAIf5Sa+maWD7WrJjEWfGMQDbN7wemBhOO+abSak0UvQeKg5ZJlSh6L34D61MtpXRoyU77TwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr5oCvnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D55AC4CECF;
+	Fri, 15 Nov 2024 06:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653137;
-	bh=pvKyAKK4+AWsShctkLE3IN3Yf27c4NcPm+2wE92F4eg=;
+	s=korg; t=1731653318;
+	bh=QoJHdl3hx+vbDSXRR/9qkCt8IsrinXlLP/s6CmwWzfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6WvkU12mTckU89apXeiPnuexOMh20Di5iUfgm2VjNuZ+5ptgRjdrLMjtsDijDoZo
-	 Ftcm5UEIkNUiydTzenmV0Vs3b3HR4W8xZR3+Ec8OM7Pev8VETfCmwVXRLnrwJFYjJA
-	 LTT5EwwKCzKwATrgIJOrzSm42lsI2Md16RCnUiBs=
+	b=qr5oCvnByMMkwBjfXNJhfoi6KspiVDhgYLLXT0P6cXbef63nt0kbN4ceMO9YMiuWA
+	 rx5bVPg6vdY/ARtz4x6S2Azat8upX4Kaxm3pk8klOJoP1wvlFXpp7N4ixXfffh48it
+	 rawOcasmR+YhSmWLQyrHLSLF177zAYpolB6tFHbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.4 65/66] mm: add remap_pfn_range_notrack
+	Jack Yu <jack.yu@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 51/63] ASoC: rt722-sdca: increase clk_stop_timeout to fix clock stop issue
 Date: Fri, 15 Nov 2024 07:38:14 +0100
-Message-ID: <20241115063725.185551046@linuxfoundation.org>
+Message-ID: <20241115063727.752754589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jack Yu <jack.yu@realtek.com>
 
-commit 74ffa5a3e68504dd289135b1cf0422c19ffb3f2e upstream.
+[ Upstream commit 038fa6ddf5d22694f61ff7a7a53c8887c6b08c45 ]
 
-Patch series "add remap_pfn_range_notrack instead of reinventing it in i915", v2.
+clk_stop_timeout should be increased to 900ms to fix clock stop issue.
 
-i915 has some reason to want to avoid the track_pfn_remap overhead in
-remap_pfn_range.  Add a function to the core VM to do just that rather
-than reinventing the functionality poorly in the driver.
-
-Note that the remap_io_sg path does get exercises when using Xorg on my
-Thinkpad X1, so this should be considered lightly tested, I've not managed
-to hit the remap_io_mapping path at all.
-
-This patch (of 4):
-
-Add a version of remap_pfn_range that does not call track_pfn_range.  This
-will be used to fix horrible abuses of VM internals in the i915 driver.
-
-Link: https://lkml.kernel.org/r/20210326055505.1424432-1-hch@lst.de
-Link: https://lkml.kernel.org/r/20210326055505.1424432-2-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-(cherry picked from commit 69d4e1ce9087c8767f2fe9b9426fa2755c8e9072)
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://patch.msgid.link/cd26275d9fc54374a18dc016755cb72d@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h |    2 ++
- mm/memory.c        |   51 +++++++++++++++++++++++++++++++--------------------
- 2 files changed, 33 insertions(+), 20 deletions(-)
+ sound/soc/codecs/rt722-sdca-sdw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2566,6 +2566,8 @@ unsigned long change_prot_numa(struct vm
- struct vm_area_struct *find_extend_vma(struct mm_struct *, unsigned long addr);
- int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
- 			unsigned long pfn, unsigned long size, pgprot_t);
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot);
- int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
- int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num);
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1917,26 +1917,17 @@ static inline int remap_p4d_range(struct
- 	return 0;
- }
- 
--/**
-- * remap_pfn_range - remap kernel memory to userspace
-- * @vma: user vma to map to
-- * @addr: target page aligned user address to start at
-- * @pfn: page frame number of kernel physical memory address
-- * @size: size of mapping area
-- * @prot: page protection flags for this mapping
-- *
-- * Note: this is only safe if the mm semaphore is held when called.
-- *
-- * Return: %0 on success, negative error code otherwise.
-+/*
-+ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-+ * must have pre-validated the caching bits of the pgprot_t.
-  */
--int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
--		    unsigned long pfn, unsigned long size, pgprot_t prot)
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot)
- {
- 	pgd_t *pgd;
- 	unsigned long next;
- 	unsigned long end = addr + PAGE_ALIGN(size);
- 	struct mm_struct *mm = vma->vm_mm;
--	unsigned long remap_pfn = pfn;
- 	int err;
- 
- 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
-@@ -1966,10 +1957,6 @@ int remap_pfn_range(struct vm_area_struc
- 		vma->vm_pgoff = pfn;
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index 87354bb1564e8..d5c985ff5ac55 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -253,7 +253,7 @@ static int rt722_sdca_read_prop(struct sdw_slave *slave)
  	}
  
--	err = track_pfn_remap(vma, &prot, remap_pfn, addr, PAGE_ALIGN(size));
--	if (err)
--		return -EINVAL;
--
- 	vma->vm_flags |= VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
+ 	/* set the timeout values */
+-	prop->clk_stop_timeout = 200;
++	prop->clk_stop_timeout = 900;
  
- 	BUG_ON(addr >= end);
-@@ -1981,12 +1968,36 @@ int remap_pfn_range(struct vm_area_struc
- 		err = remap_p4d_range(mm, pgd, addr, next,
- 				pfn + (addr >> PAGE_SHIFT), prot);
- 		if (err)
--			break;
-+			return err;
- 	} while (pgd++, addr = next, addr != end);
- 
-+	return 0;
-+}
-+
-+/**
-+ * remap_pfn_range - remap kernel memory to userspace
-+ * @vma: user vma to map to
-+ * @addr: target page aligned user address to start at
-+ * @pfn: page frame number of kernel physical memory address
-+ * @size: size of mapping area
-+ * @prot: page protection flags for this mapping
-+ *
-+ * Note: this is only safe if the mm semaphore is held when called.
-+ *
-+ * Return: %0 on success, negative error code otherwise.
-+ */
-+int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
-+		    unsigned long pfn, unsigned long size, pgprot_t prot)
-+{
-+	int err;
-+
-+	err = track_pfn_remap(vma, &prot, pfn, addr, PAGE_ALIGN(size));
- 	if (err)
--		untrack_pfn(vma, remap_pfn, PAGE_ALIGN(size));
-+		return -EINVAL;
- 
-+	err = remap_pfn_range_notrack(vma, addr, pfn, size, prot);
-+	if (err)
-+		untrack_pfn(vma, pfn, PAGE_ALIGN(size));
- 	return err;
- }
- EXPORT_SYMBOL(remap_pfn_range);
+ 	/* wake-up event */
+ 	prop->wake_capable = 1;
+-- 
+2.43.0
+
 
 
 
