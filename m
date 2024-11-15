@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-93357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0ED9CD8C7
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:54:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E289CD94E
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7711F23432
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1824283A94
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD309188015;
-	Fri, 15 Nov 2024 06:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B3518873F;
+	Fri, 15 Nov 2024 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frfBx37f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZUfUzRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891B814EC77;
-	Fri, 15 Nov 2024 06:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9EF188015;
+	Fri, 15 Nov 2024 06:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653651; cv=none; b=fOt9SGJqnT6fQI/bpkJjzJkZq8poHkUZlPxjGxxIPC4VxrmesLHbn2BilQLvjl+NaGIPz8SXnuLl8ZPkHiaaRg/J/qMt5+Mv7BgWYUGxuL1QRxs1fSnWfVRsNxaacx4eTobBVV+FrkKtZEb/MqdGtzXZEEaTbpEMWAQuytO4Vas=
+	t=1731653935; cv=none; b=ggt93dQyLnFTtqmPwFcf1/1G1d25/ZxDaxQJQFlbn93dMiLQiO3g9oY5Pnij1o+t9G/+sffJQns3U5gJ56gCqdBXDczlczWz9xZtWRIxvo7HKuEsIcD+nEoxnQAAdmzcylCXbUYPUHNMJD9gQXN2khr2d22+rhaEHKx5xq+0/V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653651; c=relaxed/simple;
-	bh=jr9hKccuR71kVU5k5RF0pT1lAvqa3ysgbEdaqtxxwiE=;
+	s=arc-20240116; t=1731653935; c=relaxed/simple;
+	bh=U1KYRfAFM36X/NuoHaKTmdoRzR+aQ4LFDPG96qAIUUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWDwvZKuWikD5c4mNI0k0ozZGCIm02g2yxNg2AbER2mLDn3UgD9au32muCnbYtXPaJF2gDASLXbzh1ZBpFJCHlB7rXoY8DAFJM6s0YfY6fyHAtsob10PtwNK4XVXrvDnkY42MKzPCtognraf5IsmXrgStDW7QZAFvrTanwMVMIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frfBx37f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575DC4CECF;
-	Fri, 15 Nov 2024 06:54:10 +0000 (UTC)
+	 MIME-Version; b=PHkhcRQqgZdYD6Hk68muZZTDnmbKMK4We6tIG+PIdlYBxVc2y7fNsbWKVGa/pTJ6kq23zpVOxdjX+Smk/ximIs6mKyFFp4tbluIb3lER5EYCNRC/S181zwqjeL0IackpWjCW2apyuuzE+12wqRUBRJS2wVL0H68fxF2OwgORgPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZUfUzRn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A01EC4CECF;
+	Fri, 15 Nov 2024 06:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653651;
-	bh=jr9hKccuR71kVU5k5RF0pT1lAvqa3ysgbEdaqtxxwiE=;
+	s=korg; t=1731653935;
+	bh=U1KYRfAFM36X/NuoHaKTmdoRzR+aQ4LFDPG96qAIUUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frfBx37flpH94YOKcznohVBBJKATRVwlJQfQ2goXcrNRpxQPn8CUDRFXwSWnRei5/
-	 pbNfLMgSepbPj8LHgtCuwdSz40kvZbNDW1/e6+JLMshtIf+aOzIvGYUTuuj5Z27/aX
-	 UlFvjkJL50Ahbnlgn7mhsmQAd5S1UWbYZtHJMlng=
+	b=FZUfUzRnDazODfz2SpiL5257nixRt6dK6bujeAU5UlO8A3ETELbxmdeWqLPTVNa83
+	 b2tU9O8dm+zFx5hWQymo0qF56tqe5zfhXdFxhpmyi2Q3ULU3AI+LwSt87HXJqRyz/r
+	 3clvqMz8JJtS4DvniGZiE5DsYJIKVdakahBQyrAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Hagar Gamal Halim <hagarhem@amazon.de>
-Subject: [PATCH 6.1 29/39] md/raid10: improve code of mrdev in raid10_sync_request
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 62/82] irqchip/gic-v3: Force propagation of the active state with a read-back
 Date: Fri, 15 Nov 2024 07:38:39 +0100
-Message-ID: <20241115063723.659085662@linuxfoundation.org>
+Message-ID: <20241115063727.788785294@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 59f8f0b54c8ffb4521f6bbd1cb6f4dfa5022e75e upstream.
+commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
 
-'need_recover' and 'mrdev' are equivalent in raid10_sync_request(), and
-inc mrdev->nr_pending is unreasonable if don't need recovery. Replace
-'need_recover' with 'mrdev', and only inc nr_pending when needed.
+Christoffer reports that on some implementations, writing to
+GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
+issuing a deactivation of that interrupt via the system register interface.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230527072218.2365857-3-linan666@huaweicloud.com
-Cc: Hagar Gamal Halim <hagarhem@amazon.de>
+There are multiple reasons to this:
+
+ - this uses an early write-acknoledgement memory type (nGnRE), meaning
+   that the write may only have made it as far as some interconnect
+   by the time the store is considered "done"
+
+ - the GIC itself is allowed to buffer the write until it decides to
+   take it into account (as long as it is in finite time)
+
+The effects are that the activation may not have taken effect by the time
+the kernel enters the guest, forcing an immediate exit, or that a guest
+deactivation occurs before the interrupt is active, doing nothing.
+
+In order to guarantee that the write to the ISACTIVER register has taken
+effect, read back from it, forcing the interconnect to propagate the write,
+and the GIC to process the write before returning the read.
+
+Reported-by: Christoffer Dall <christoffer.dall@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Christoffer Dall <christoffer.dall@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/irqchip/irq-gic-v3.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3432,7 +3432,6 @@ static sector_t raid10_sync_request(stru
- 			sector_t sect;
- 			int must_sync;
- 			int any_working;
--			int need_recover = 0;
- 			struct raid10_info *mirror = &conf->mirrors[i];
- 			struct md_rdev *mrdev, *mreplace;
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -429,6 +429,13 @@ static int gic_irq_set_irqchip_state(str
+ 	}
  
-@@ -3440,14 +3439,13 @@ static sector_t raid10_sync_request(stru
- 			mrdev = rcu_dereference(mirror->rdev);
- 			mreplace = rcu_dereference(mirror->replacement);
+ 	gic_poke_irq(d, reg);
++
++	/*
++	 * Force read-back to guarantee that the active state has taken
++	 * effect, and won't race with a guest-driven deactivation.
++	 */
++	if (reg == GICD_ISACTIVER)
++		gic_peek_irq(d, reg);
+ 	return 0;
+ }
  
--			if (mrdev != NULL &&
--			    !test_bit(Faulty, &mrdev->flags) &&
--			    !test_bit(In_sync, &mrdev->flags))
--				need_recover = 1;
-+			if (mrdev && (test_bit(Faulty, &mrdev->flags) ||
-+			    test_bit(In_sync, &mrdev->flags)))
-+				mrdev = NULL;
- 			if (mreplace && test_bit(Faulty, &mreplace->flags))
- 				mreplace = NULL;
- 
--			if (!need_recover && !mreplace) {
-+			if (!mrdev && !mreplace) {
- 				rcu_read_unlock();
- 				continue;
- 			}
-@@ -3481,7 +3479,8 @@ static sector_t raid10_sync_request(stru
- 				rcu_read_unlock();
- 				continue;
- 			}
--			atomic_inc(&mrdev->nr_pending);
-+			if (mrdev)
-+				atomic_inc(&mrdev->nr_pending);
- 			if (mreplace)
- 				atomic_inc(&mreplace->nr_pending);
- 			rcu_read_unlock();
-@@ -3568,7 +3567,7 @@ static sector_t raid10_sync_request(stru
- 				r10_bio->devs[1].devnum = i;
- 				r10_bio->devs[1].addr = to_addr;
- 
--				if (need_recover) {
-+				if (mrdev) {
- 					bio = r10_bio->devs[1].bio;
- 					bio->bi_next = biolist;
- 					biolist = bio;
-@@ -3613,7 +3612,7 @@ static sector_t raid10_sync_request(stru
- 					for (k = 0; k < conf->copies; k++)
- 						if (r10_bio->devs[k].devnum == i)
- 							break;
--					if (!test_bit(In_sync,
-+					if (mrdev && !test_bit(In_sync,
- 						      &mrdev->flags)
- 					    && !rdev_set_badblocks(
- 						    mrdev,
-@@ -3639,12 +3638,14 @@ static sector_t raid10_sync_request(stru
- 				if (rb2)
- 					atomic_dec(&rb2->remaining);
- 				r10_bio = rb2;
--				rdev_dec_pending(mrdev, mddev);
-+				if (mrdev)
-+					rdev_dec_pending(mrdev, mddev);
- 				if (mreplace)
- 					rdev_dec_pending(mreplace, mddev);
- 				break;
- 			}
--			rdev_dec_pending(mrdev, mddev);
-+			if (mrdev)
-+				rdev_dec_pending(mrdev, mddev);
- 			if (mreplace)
- 				rdev_dec_pending(mreplace, mddev);
- 			if (r10_bio->devs[0].bio->bi_opf & MD_FAILFAST) {
 
 
 
