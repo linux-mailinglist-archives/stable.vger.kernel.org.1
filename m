@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-93266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D260E9CD845
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDE89CD892
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7335EB24E72
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9E81F232F9
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F91186294;
-	Fri, 15 Nov 2024 06:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18704188A18;
+	Fri, 15 Nov 2024 06:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7PQD2Ha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMHycQ7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7A7EAD0;
-	Fri, 15 Nov 2024 06:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92B2153800;
+	Fri, 15 Nov 2024 06:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653346; cv=none; b=S9jiSRq8UI8XvA3hiD+WpAErmdi5/ZzPSUSh42rhvCzOW/o/yo2X0UZvcSPd1IxZDNwuQGK9a2Eg09T7zwaL+IemamTSYuGqPFT0CbWIkTJV1Zx+2fZ5jVMjKwIwmEWMqYf/qTVM60jAfPOyiJ5m8Dre+spUhwXOfaI655aOCCo=
+	t=1731653527; cv=none; b=b9v7o5kvmHHjUTzNvugqE0mIj5r1UCsnCTJs4Le4kKk1/d1CuXPaVgFq6V59rh32eSK1BhGWOqBRbaMWD+P2/TeBwi0d15MMmavy/keAyVWZiLMtI1Tq7gEAvzaGp8OFNjyun4C6lglDaF1CESTFqtgZExKNXF9aPsBl6WRYYS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653346; c=relaxed/simple;
-	bh=oaQlrcgFsbIC8ndU/CRk+OURRxWY68ZusMt0/3q6WtU=;
+	s=arc-20240116; t=1731653527; c=relaxed/simple;
+	bh=q/KRCjovnyhb2wlxqT3ukjzkaGDiYfOSVWlsX6Ir/3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kc7++f8sdN7RGmVyOp/AO9c9Cw8pugAPOiaCfB24augJtCahVinbd4YQcQqTqWJfTXwQFUoZ2LCX/5FH3+NnACabwEfiY4KPpJBYH2ehLkasTItIIRLaS+pp670CG2f+w0DRszvRoeXLV/ScA6UhoAMju5lQRdCbRb8EGLCy2RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7PQD2Ha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E74C4CECF;
-	Fri, 15 Nov 2024 06:49:05 +0000 (UTC)
+	 MIME-Version; b=HywjC+zOABi9uUYRu0N0LsZdUn2LFxgN8KyOhSoZeHDt1f1bUuS+u9KEU09YSmISc3dRalU8QCRifk9NWJo9kGUBuOLMxkUnS7Djh7haLGjNDjuXYRccsltVPYlrY8X+uxYP6uWnsGRfBwPza8BftYIeOOq6ze4J8FqcSi8/fok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMHycQ7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B088C4CECF;
+	Fri, 15 Nov 2024 06:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653346;
-	bh=oaQlrcgFsbIC8ndU/CRk+OURRxWY68ZusMt0/3q6WtU=;
+	s=korg; t=1731653527;
+	bh=q/KRCjovnyhb2wlxqT3ukjzkaGDiYfOSVWlsX6Ir/3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7PQD2Ha0+edUuFOAz6V4pbic59kWGQ61PbsmoB5GNCx3Ct3nzZSPro9Nd8pkGeAC
-	 ivqu0/H5jnAoDljn8hS85f6gEF4mu8SS0LVufC+FnZhCxDfs1fn+KFIf9iKDEHrmTZ
-	 qdZ+vah9euecYaD+a5yVt7TzI5v9ZdotxUYsmgsc=
+	b=aMHycQ7OE9K+D7/AOUvwFL/cwhh5rDM7sonMc9Ee7/eF9I+QaudfcxR2+3mJxq/Md
+	 EhCe9LBD9apA1j7zETRcfiXwIeJN0DlIqxpf5X8UXIjlI0AdIk5GmZpzMSRecDOBbD
+	 SewJ9JWZYwC0vb6wgIWkc66p/Mg6mZ1Q8PS+GPCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Kenneth Albanowski <kenalba@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 58/63] drm/xe/guc/ct: Flush g2h worker in case of g2h response timeout
+Subject: [PATCH 6.6 32/48] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
 Date: Fri, 15 Nov 2024 07:38:21 +0100
-Message-ID: <20241115063728.001184216@linuxfoundation.org>
+Message-ID: <20241115063724.125466834@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
+References: <20241115063722.962047137@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badal Nilawar <badal.nilawar@intel.com>
+From: Kenneth Albanowski <kenalba@chromium.org>
 
-[ Upstream commit 22ef43c78647dd37b0dafe2182b8650b99dbbe59 ]
+[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
 
-In case if g2h worker doesn't get opportunity to within specified
-timeout delay then flush the g2h worker explicitly.
+The Logitech Casa Touchpad does not reliably send touch release signals
+when communicating through the Logitech Bolt wireless-to-USB receiver.
 
-v2:
-  - Describe change in the comment and add TODO (Matt B/John H)
-  - Add xe_gt_warn on fence done after G2H flush (John H)
-v3:
-  - Updated the comment with root cause
-  - Clean up xe_gt_warn message (John H)
+Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
+sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
+needed, but harmless.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1620
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2902
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Acked-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241017111410.2553784-2-badal.nilawar@intel.com
-(cherry picked from commit e5152723380404acb8175e0777b1cea57f319a01)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Linux does not have information on which devices are connected to the
+Bolt receiver, so we have to enable this for the entire device.
+
+Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 12e1fe6a8da28..1e8bb8b28a23e 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -897,6 +897,24 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 		}
- 	}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d4f6066dbbc59..1a05e22685895 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -868,6 +868,7 @@
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
++#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
+ #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
+ #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
+ #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index c2d79b2d6cdd2..bf9cad7112592 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2140,6 +2140,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_LOGITECH,
+ 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
  
-+	/*
-+	 * Occasionally it is seen that the G2H worker starts running after a delay of more than
-+	 * a second even after being queued and activated by the Linux workqueue subsystem. This
-+	 * leads to G2H timeout error. The root cause of issue lies with scheduling latency of
-+	 * Lunarlake Hybrid CPU. Issue dissappears if we disable Lunarlake atom cores from BIOS
-+	 * and this is beyond xe kmd.
-+	 *
-+	 * TODO: Drop this change once workqueue scheduling delay issue is fixed on LNL Hybrid CPU.
-+	 */
-+	if (!ret) {
-+		flush_work(&ct->g2h_worker);
-+		if (g2h_fence.done) {
-+			xe_gt_warn(gt, "G2H fence %u, action %04x, done\n",
-+				   g2h_fence.seqno, action[0]);
-+			ret = 1;
-+		}
-+	}
-+
- 	/*
- 	 * Ensure we serialize with completion side to prevent UAF with fence going out of scope on
- 	 * the stack, since we have no clue if it will fire after the timeout before we can erase
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
 -- 
 2.43.0
 
