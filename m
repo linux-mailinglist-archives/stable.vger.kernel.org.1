@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-93268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F49CD847
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6EE9CD918
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FAC1F22FAC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E331F231C0
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE1D185924;
-	Fri, 15 Nov 2024 06:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35D1885AA;
+	Fri, 15 Nov 2024 06:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15VViXC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nq0M1GML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC9E29A9;
-	Fri, 15 Nov 2024 06:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587F0185949;
+	Fri, 15 Nov 2024 06:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653353; cv=none; b=YfG8480sJ75NkHvsNhYSHwZFteOrV9I8pUSjE3EobbIpzoKeAnfTVdblVjLyteZIxjetgvAK6lUU8J8y1tyOVH00XOynnabYcfvbA5IiBGSDIX523RseWhE57u6jl37wu9x8vxwSp1I7E/Fexpvqxsf1MNDwsJz8ETEn+I/GYhs=
+	t=1731653823; cv=none; b=P/f9EbQtRTi5zARPOkfQ97fP/bO4A3REGPSbB2VryM7ymx0hxS4SEvV5yC87R501Dsfkm+IomrM2p9p3Ojpm1vHcGxYBP6q95/fic8hsw+iJ+H98tujRrUESybCBh/pdIc9zFmBJfTcFdXub490owCh+AmwgiKfCkSpfnxo0umA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653353; c=relaxed/simple;
-	bh=tlmIx9HdBEn5zGB/Gu7zwzk7bQ8k3HqbojNnaPqoHzI=;
+	s=arc-20240116; t=1731653823; c=relaxed/simple;
+	bh=IPYUZ4+Q028Vb8T6u9/zlMmqh0t+cjX+Iktwjf/j6KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBk+tDqlZYikJRXLg3J4J+aheDA0/EkG/TogikPF50xHF8ww+SAqohMeLd+6f2vafuT8CEBHp8bjwXPTXtZYJmKGKptC182yH10SRA2tAFcGwjF13IAscgq/HIqD6rx1GYVKiB/FCMENHD3jrn27Qw6cOqdwfrf60dqKB2Tzi8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15VViXC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DE0C4CECF;
-	Fri, 15 Nov 2024 06:49:12 +0000 (UTC)
+	 MIME-Version; b=koMloqBsdMIKMrIscTSKyYGkHoTiOMPO/yuR+KCxEf1aXuoc9k03NAVhNub3xGJK0s6LJS8ZnfJT82vVwWk/6wiWhJK118V3vSqWxgr3p1ZNmGcUool+gRajwQCzbcqxLyVSsbCT4+efz4n8AcsO3on3ZT4OGK2bIRcoWuMsHSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nq0M1GML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F3C4CECF;
+	Fri, 15 Nov 2024 06:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653353;
-	bh=tlmIx9HdBEn5zGB/Gu7zwzk7bQ8k3HqbojNnaPqoHzI=;
+	s=korg; t=1731653823;
+	bh=IPYUZ4+Q028Vb8T6u9/zlMmqh0t+cjX+Iktwjf/j6KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15VViXC7Ud+pfBpvGg/zyfAi+hCUCrKuinABFW2Oqqkx3aY/ptUdzUCLYKZSi1UQu
-	 nUZBtVvT5AV6zuSgGDdMHm6huBbCzseLEUweaMcOBq+iBZjgZ0CfEk2Ga1nwx41IH7
-	 QVJxqaKSIJYI9Ji7v+ll4QZNzdQZIpD6Q+2AU9wo=
+	b=nq0M1GMLBWnOdSJdDCShz4H3BO950aTHc63pvJiPzjZ7P1lXpyCz3b0Egw4wlS2RU
+	 hGUihdUqOyaBp7FRYgibPals+UJZ2qyK8uAPH+jjMNVgF/aXkbIc4oSHjGwuIF2Toj
+	 +2TrJHZflQi2M+HBbLTY0wXn16Z3CNojzgXOk0Kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 60/63] drm/xe/ufence: Prefetch ufence addr to catch bogus address
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 46/82] btrfs: reinitialize delayed ref list after deleting it from the list
 Date: Fri, 15 Nov 2024 07:38:23 +0100
-Message-ID: <20241115063728.072773059@linuxfoundation.org>
+Message-ID: <20241115063727.219182777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9c1813b3253480b30604c680026c7dc721ce86d1 ]
+commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
 
-access_ok() only checks for addr overflow so also try to read the addr
-to catch invalid addr sent from userspace.
+At insert_delayed_ref() if we need to update the action of an existing
+ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
+ref_add_list using list_del(), which leaves the ref's add_list member
+not reinitialized, as list_del() sets the next and prev members of the
+list to LIST_POISON1 and LIST_POISON2, respectively.
 
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241016082304.66009-2-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit 9408c4508483ffc60811e910a93d6425b8e63928)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If later we end up calling drop_delayed_ref() against the ref, which can
+happen during merging or when destroying delayed refs due to a transaction
+abort, we can trigger a crash since at drop_delayed_ref() we call
+list_empty() against the ref's add_list, which returns false since
+the list was not reinitialized after the list_del() and as a consequence
+we call list_del() again at drop_delayed_ref(). This results in an
+invalid list access since the next and prev members are set to poison
+pointers, resulting in a splat if CONFIG_LIST_HARDENED and
+CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
+otherwise.
+
+So fix this by deleting from the list with list_del_init() instead.
+
+Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
+CC: stable@vger.kernel.org # 4.19+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/delayed-ref.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index de80c8b7c8913..9d77f2d4096f5 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -54,8 +54,9 @@ static struct xe_user_fence *user_fence_create(struct xe_device *xe, u64 addr,
- {
- 	struct xe_user_fence *ufence;
- 	u64 __user *ptr = u64_to_user_ptr(addr);
-+	u64 __maybe_unused prefetch_val;
- 
--	if (!access_ok(ptr, sizeof(*ptr)))
-+	if (get_user(prefetch_val, ptr))
- 		return ERR_PTR(-EFAULT);
- 
- 	ufence = kzalloc(sizeof(*ufence), GFP_KERNEL);
--- 
-2.43.0
-
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -620,7 +620,7 @@ static int insert_delayed_ref(struct btr
+ 					      &href->ref_add_list);
+ 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
+ 				ASSERT(!list_empty(&exist->add_list));
+-				list_del(&exist->add_list);
++				list_del_init(&exist->add_list);
+ 			} else {
+ 				ASSERT(0);
+ 			}
 
 
 
