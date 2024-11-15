@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-93099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25259CD743
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DCE9CD7A4
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F15E1F22DA9
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:40:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DAD281F17
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796FF185924;
-	Fri, 15 Nov 2024 06:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7431898E9;
+	Fri, 15 Nov 2024 06:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omt/THVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6Vx6Jkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367EC3BBEB;
-	Fri, 15 Nov 2024 06:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC680189528;
+	Fri, 15 Nov 2024 06:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652801; cv=none; b=cZxN8Spj2XYAkqJJk35yyN4q3czbvkYQbu/Ue51tvly4mCVfMvQbvr03Evo32Ouewdfx7mu1FPf7m0Rd2N6t7SHgEKsG3sE84GHSEWJpl90XyjQIgmpjwy0af23fOEnc9uOdR9LEHH/8Eb29Odz4N/8HyJ/K0vT59fiVuK3hbzs=
+	t=1731652994; cv=none; b=OhdMiu9wI/2VWs3Qe1Upfr05GqgtMIpuJEdywirY2umt9FV2F5fomylVPXfgbVbCBn2/zeBhyhf/nnrS+5y4oTJwGcIj00DyIzfR6JiMLMj4wSODsD60zLrdS/B/+lNawh9cgoGk2yhQMGgiurRzl1xy5TkcG1vQEVh5gz2HJUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652801; c=relaxed/simple;
-	bh=8lv4d5cPIHoUnINwlCF6fyBiXmoXdIcguX4q8UoLDNo=;
+	s=arc-20240116; t=1731652994; c=relaxed/simple;
+	bh=MjEFB7KvfUnppRRJK/5FJ3uH1izvucOa/aYfRlPgOzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZNQ0PORX5HEzvMk+6SpTvoaQb4DDwa4DNM4mJP/zuizl5QCTz+MsUewv6EFL19Bj/bUccayZcuEkejQ7zTWUz9ny1Q7R9UI3dgsv7FoHY9o8epyOIgcaC/xZprZ3a8PTnjdXuPk7AdkeNFnb4EXvocZkodFzuGBmeqoELd1roM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omt/THVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BBEC4CECF;
-	Fri, 15 Nov 2024 06:40:00 +0000 (UTC)
+	 MIME-Version; b=UKTJbAF/nFLuJkOIQ+2h7ttlZbY8ghR0l+TtAuu2UXnu0P6Ug/ZkznqUqAmCdQ3K2dNjffV7IZ6lqFDO1iwAif85wCNCHxRCzl8ZxJeHho9UlzPMw9FXw1T5YNL1g915TiwWARsXqbMdNUIGI1btodpqNF7mpIi3zVM1M579zhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6Vx6Jkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037B1C4CED0;
+	Fri, 15 Nov 2024 06:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652800;
-	bh=8lv4d5cPIHoUnINwlCF6fyBiXmoXdIcguX4q8UoLDNo=;
+	s=korg; t=1731652993;
+	bh=MjEFB7KvfUnppRRJK/5FJ3uH1izvucOa/aYfRlPgOzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omt/THVdPi7370FefFt2J86tzxsNKjQ4rSDI0faBIcw69LCEq/YWnfWraqQOpvC5s
-	 6nhfWmrFyzKPtJ+sTyvO5cT2c51Zoz5OiadkAK1u4cjwc6oc/f/23JJH8jo447Q7K7
-	 QK7ZjucdJQpCrjEEo4I9yq75HKM/iaDQWSauRBF8=
+	b=m6Vx6JkjAs75Xox48czR4f1FHP2Ikc31nG/1eQEbh50wgbA78UXRTjx/3ZIN3470D
+	 AdA1eulq/qGiJI5uGPWkZI9DI4fcqbsHoocDFrQcHiIAzA35f6hPurQZRgZyiQu9wl
+	 miCwMcbhzSWDJZEacA5QanTx6SAKX5VstMc6vWuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 4.19 19/52] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.4 23/66] media: v4l2-tpg: prevent the risk of a division by zero
 Date: Fri, 15 Nov 2024 07:37:32 +0100
-Message-ID: <20241115063723.550265302@linuxfoundation.org>
+Message-ID: <20241115063723.680549871@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+As reported by Coverity, the logic at tpg_precalculate_line()
+blindly rescales the buffer even when scaled_witdh is equal to
+zero. If this ever happens, this will cause a division by zero.
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
+Instead, add a WARN_ON_ONCE() to trigger such cases and return
+without doing any precalculation.
 
-Bail out also when status is AE_NOT_FOUND.
-
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
-
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
+Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
 Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -115,8 +115,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+--- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
++++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
+@@ -1789,6 +1789,9 @@ static void tpg_precalculate_line(struct
+ 	unsigned p;
+ 	unsigned x;
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
++	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
++		return;
++
+ 	switch (tpg->pattern) {
+ 	case TPG_PAT_GREEN:
+ 		contrast = TPG_COLOR_100_RED;
 
 
 
