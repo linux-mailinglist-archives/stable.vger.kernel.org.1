@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-93090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A2B9CD736
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:39:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABD09CD7CE
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2512835F0
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:39:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1976B256A3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F621865EF;
-	Fri, 15 Nov 2024 06:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB551885AA;
+	Fri, 15 Nov 2024 06:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/CxzI+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfRLdNWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F948645;
-	Fri, 15 Nov 2024 06:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5A3126C17;
+	Fri, 15 Nov 2024 06:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652769; cv=none; b=O65tdfFhsuc19c5QrvU2W/Spay2PwlrBMIn7m3ZiEulVG/QNXkhhvA5JdEpsBXndsMeFjpNA1Jsg3CYEUJ3BnQxn8o/haTVJR/X/jUFP/GSFBqYxsoayvPbiSsBY0IWl8O6UAH0JZXMXg+xT8Nl4YT8R+2FeF+JTUuOEeNfQ31M=
+	t=1731653079; cv=none; b=dHCdJKSZ6fqBp9Whc5v1/DBaKUEoJJg1/NOUdccPJv4pFML/jzil8x1HIyxaF1C6eDMyV4r4iOldMSD7VgGRp9SgUmV9Q/ZTE1FY1/zBSqRje0sMEM4xFDN49qz6z3jnGzlGgH50bkPTCtU4PMWPbHfMpAjVCIAdXtHdJQjy/lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652769; c=relaxed/simple;
-	bh=5Us++We5IL7tiF26uaglKttiSPV2gHFAa47tPfYSFHU=;
+	s=arc-20240116; t=1731653079; c=relaxed/simple;
+	bh=4HOA+2A9glwXsSIrgWeaKvc9GCrIdsYk79Rmv4ZL5R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfVBB0w0cUXV1/afxaziSBWWO1cNA3sZCp/Rbxo5zEAF1Bd7JzzmB4tEZm8QyOPo51ls9/LOUNJ+boX+3wl8yCKRPNoja7dYAATLE8kKJSaa4vnrPBi76GkUatcBmFJvkB2izaj7/2YzIrXTdWbZ2xQBDjmGzFw6ax6sle05o7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/CxzI+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E39C4CECF;
-	Fri, 15 Nov 2024 06:39:28 +0000 (UTC)
+	 MIME-Version; b=HOskYxK6z52p0vxYMvcijoyvbbYQZ2tZ6Eh8K24Y2kkW/KtRcXesqtDd89AFok7R4Jc1GPG6ig4wGO6vdVNguRk5t/m9ve001u8qQlsIEDIEClYan121LaokKO5OK4I6mJtjYZZXdloPpwmLtA2Bnp+3iMcAf150mQnzXf+ohnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfRLdNWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE95C4CECF;
+	Fri, 15 Nov 2024 06:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652768;
-	bh=5Us++We5IL7tiF26uaglKttiSPV2gHFAa47tPfYSFHU=;
+	s=korg; t=1731653079;
+	bh=4HOA+2A9glwXsSIrgWeaKvc9GCrIdsYk79Rmv4ZL5R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/CxzI+tktc05cALWS4yYEqPLGUBn1Xcfk/Xzgmv4GttkhQQNRT6ygYVpDwdZyDYp
-	 pW3oL/ksZ/ZDI6clBn+pw5fh1M0uOUNoXr+2SJLgMO5Hiajq/4Sfi67wEApWru5Ahi
-	 Oo1OjMxNTAJgx4HYMcLAPQ6hyHjMw0Sgx5GAA9rI=
+	b=kfRLdNWy07WPzLpjAfhstGEEWsnLVL57kPD4bsEHL/8FOeEXFf5AentXTSwQuQHcN
+	 mW8vPeHIVgimx7Esc6g8pX+3NRZg/x+vTMBkbEFrjVOO+q4zw7ki9hLhpzocdeTre/
+	 iWnHEX0JJHaT6R7D4FJJB8ryyOkuMuTvjgvAUrs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 4.19 10/52] media: stb0899_algo: initialize cfr before using it
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 14/66] can: c_can: fix {rx,tx}_errors statistics
 Date: Fri, 15 Nov 2024 07:37:23 +0100
-Message-ID: <20241115063723.226386229@linuxfoundation.org>
+Message-ID: <20241115063723.357497162@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-References: <20241115063722.845867306@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 2d861977e7314f00bf27d0db17c11ff5e85e609a upstream.
+[ Upstream commit 4d6d26537940f3b3e17138987ed9e4a334780bf7 ]
 
-The loop at stb0899_search_carrier() starts with a random
-value for cfr, as reported by Coverity.
+The c_can_handle_bus_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission. The patch fixes the issue by incrementing the
+appropriate counter based on the type of error.
 
-Initialize it to zero, just like stb0899_dvbs_algo() to ensure
-that carrier search won't bail out.
-
-Fixes: 8bd135bab91f ("V4L/DVB (9375): Add STB0899 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 881ff67ad450 ("can: c_can: Added support for Bosch C_CAN controller")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241014135319.2009782-1-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/stb0899_algo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/media/dvb-frontends/stb0899_algo.c
-+++ b/drivers/media/dvb-frontends/stb0899_algo.c
-@@ -281,7 +281,7 @@ static enum stb0899_status stb0899_searc
+diff --git a/drivers/net/can/c_can/c_can.c b/drivers/net/can/c_can/c_can.c
+index f14e739ba3f45..07cf6fda9720f 100644
+--- a/drivers/net/can/c_can/c_can.c
++++ b/drivers/net/can/c_can/c_can.c
+@@ -1001,7 +1001,6 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
- 	short int derot_freq = 0, last_derot_freq = 0, derot_limit, next_loop = 3;
- 	int index = 0;
--	u8 cfr[2];
-+	u8 cfr[2] = {0};
- 	u8 reg;
+ 	/* common for all type of bus errors */
+ 	priv->can.can_stats.bus_error++;
+-	stats->rx_errors++;
  
- 	internal->status = NOCARRIER;
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+@@ -1018,26 +1017,32 @@ static int c_can_handle_bus_err(struct net_device *dev,
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.43.0
+
 
 
 
