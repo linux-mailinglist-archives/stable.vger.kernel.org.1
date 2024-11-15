@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-93257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4559CD838
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:48:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C9F9CD7E5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D78B71F213DC
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:48:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1616FB26B3F
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BCDEAD0;
-	Fri, 15 Nov 2024 06:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C725914EC77;
+	Fri, 15 Nov 2024 06:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB2Ca4q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzC5szOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C7B153800;
-	Fri, 15 Nov 2024 06:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8364029A9;
+	Fri, 15 Nov 2024 06:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653315; cv=none; b=kozjZz0AJkBq1BxjgkVHLRDM5Trh7wLMg2/FAki4zk/+7xETbS9aq/5QB2lq9qdYiqtqsv9zlK0ozQPmdk/nFIgyRAajbndCrV0y+Kh4SxEmSsurP3tyY/+0htBfWdE5iMQ70hOsImya8IZwcwzeC/kVkR+25JLIW8sbrzuxV5g=
+	t=1731653134; cv=none; b=Ac39CUysZZFlGBZQxmGfD31C2DJaINSqsq5iiCyuFHKyKYeI6z5kkG5MlMYZGJ/fg3v/85yVXSLDUR1eqiwY0dByU01WoLpc5a2ZXoz4lECxeN24MWyd8ZHSQkmuxrIEhifjqDLz2LW5baTMFi/FY4Ar2EWPU+E6TL5pjR7Vjx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653315; c=relaxed/simple;
-	bh=P+gYs0SVcDlR5PBAW7tXIDXCsH4Okj95AuqJuKBlbwo=;
+	s=arc-20240116; t=1731653134; c=relaxed/simple;
+	bh=ocoQ/HkIcFK/gHhW5DLu9+utAz+ukr3L6wIfXLhW3vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMGiTLfQbn0LgqMLV3fereJjSdDFBSdpjYiKLVxQ1OUtvjx4axCkaw+xIMbB4ytX9/YtjIGMk525Mg341RVZFgoy7piccV/9UjKQ4N0DVhZ1ptWXd4HQ+1Wp7R+z5TcppVMRVWhpf7pYvPk41azFhnMrlwUbnW03FUcEmW6jJew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB2Ca4q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE02C4CECF;
-	Fri, 15 Nov 2024 06:48:34 +0000 (UTC)
+	 MIME-Version; b=bvzVEcdRCzVLjYH0HiNXSH8AtO5+WBGYgPaQD+lpUGloP03idkyhk/mfqG0WkMVQiufVx9KCKQHJGEzMnSMV/Q8vtjXUADGTIo6TRA3hvdtLXUZMHv+69s++mAXMZewyF1qXUhlrbrUcW1FNXeU6awotF7PyKDwSlayWi8aZAR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzC5szOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E172DC4CECF;
+	Fri, 15 Nov 2024 06:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653315;
-	bh=P+gYs0SVcDlR5PBAW7tXIDXCsH4Okj95AuqJuKBlbwo=;
+	s=korg; t=1731653134;
+	bh=ocoQ/HkIcFK/gHhW5DLu9+utAz+ukr3L6wIfXLhW3vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB2Ca4q5nnFf+ExCBNePfrjlDMulVCh+Ri0wkD4hoxsVqaJncYAtPDg8nb8Ts9XOP
-	 jDacUaNDj0dxPSwFZtvSErxwQosG/qvTUodXbm3nsKyjscDciJB5Yh7w8mZu+yV7lO
-	 M531NhMtW5a3vlZcYHmHq61gGQDqWcu6wcAZsoGU=
+	b=BzC5szOCO6rzKVdeuSCr4U5cpOgjwf+t9j8Lar6uc+AW+P83kzccT7txXFWpuGGjV
+	 9el6onoL285x9U6aOe+GUpqlN9UifWX3f0cVbyReuHr5uBvN8DbXP3+TGIKTmuguDj
+	 V1SgxZTw1Gf0WvtYTE8dGWMz0uoy/tH6eEuDhEeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyan Yang <cyan.yang@sifive.com>,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 50/63] RISCV: KVM: use raw_spinlock for critical section in imsic
+	Alex Zhang <zhangalex@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 64/66] mm/memory.c: make remap_pfn_range() reject unaligned addr
 Date: Fri, 15 Nov 2024 07:38:13 +0100
-Message-ID: <20241115063727.717640319@linuxfoundation.org>
+Message-ID: <20241115063725.150318486@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyan Yang <cyan.yang@sifive.com>
+From: Alex Zhang <zhangalex@google.com>
 
-[ Upstream commit 3ec4350d4efb5ccb6bd0e11d9cf7f2be4f47297d ]
+commit 0c4123e3fb82d6014d0a70b52eb38153f658541c upstream.
 
-For the external interrupt updating procedure in imsic, there was a
-spinlock to protect it already. But since it should not be preempted in
-any cases, we should turn to use raw_spinlock to prevent any preemption
-in case PREEMPT_RT was enabled.
+This function implicitly assumes that the addr passed in is page aligned.
+A non page aligned addr could ultimately cause a kernel bug in
+remap_pte_range as the exit condition in the logic loop may never be
+satisfied.  This patch documents the need for the requirement, as well as
+explicitly adds a check for it.
 
-Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
-Reviewed-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Message-ID: <20240919160126.44487-1-cyan.yang@sifive.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Zhang <zhangalex@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Link: http://lkml.kernel.org/r/20200617233512.177519-1-zhangalex@google.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/aia_imsic.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/memory.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index 0a1e859323b45..a8085cd8215e3 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -55,7 +55,7 @@ struct imsic {
- 	/* IMSIC SW-file */
- 	struct imsic_mrif *swfile;
- 	phys_addr_t swfile_pa;
--	spinlock_t swfile_extirq_lock;
-+	raw_spinlock_t swfile_extirq_lock;
- };
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1920,7 +1920,7 @@ static inline int remap_p4d_range(struct
+ /**
+  * remap_pfn_range - remap kernel memory to userspace
+  * @vma: user vma to map to
+- * @addr: target user address to start at
++ * @addr: target page aligned user address to start at
+  * @pfn: page frame number of kernel physical memory address
+  * @size: size of mapping area
+  * @prot: page protection flags for this mapping
+@@ -1939,6 +1939,9 @@ int remap_pfn_range(struct vm_area_struc
+ 	unsigned long remap_pfn = pfn;
+ 	int err;
  
- #define imsic_vs_csr_read(__c)			\
-@@ -622,7 +622,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
- 	 * interruptions between reading topei and updating pending status.
- 	 */
- 
--	spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
- 
- 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
- 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
-@@ -630,7 +630,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
- 	else
- 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
- 
--	spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
- }
- 
- static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
-@@ -1051,7 +1051,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
- 	}
- 	imsic->swfile = page_to_virt(swfile_page);
- 	imsic->swfile_pa = page_to_phys(swfile_page);
--	spin_lock_init(&imsic->swfile_extirq_lock);
-+	raw_spin_lock_init(&imsic->swfile_extirq_lock);
- 
- 	/* Setup IO device */
- 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);
--- 
-2.43.0
-
++	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
++		return -EINVAL;
++
+ 	/*
+ 	 * Physically remapped pages are special. Tell the
+ 	 * rest of the world about it:
 
 
 
