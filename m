@@ -1,117 +1,164 @@
-Return-Path: <stable+bounces-93467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A833D9CD982
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 08:01:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B199CD7BF
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C0E5B26A6E
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D461E1F23148
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C88189902;
-	Fri, 15 Nov 2024 07:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CBE188A0C;
+	Fri, 15 Nov 2024 06:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZRk8ig2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pKsyo9Ok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFFE185924;
-	Fri, 15 Nov 2024 07:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F5B18873F;
+	Fri, 15 Nov 2024 06:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654026; cv=none; b=exC/VxAyLeWmbkAqiutQyGm7JBW439ynMxAgx4JgVxCGvDtIFsWvZKKPns1ekl7ah9/YWlpZMIYcpizAXvkDGblnDwgExQ1JIMn+Cjlz2IRVfv/bnc7dQFewsMbNyf1X5uPIB/cr2UIY/bNKw2VxUjEhcwODpOTQAMwy5OPetCE=
+	t=1731653055; cv=none; b=El3ND1SB2KacQZR5V+ypNFwWDFlghhmGwzL3+tMNRUgGg15By+bkk1km3MnNJrxZ6aPzP0KAvxHku1/MFQbXwkViWsvHLxW5Xdzq+II7KfzSPul/qXTxBPPzwWqE1P/gAe05JRYxBWCYG1lRaFRf/1hIds5yyJgrHm2keMHoj+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654026; c=relaxed/simple;
-	bh=KKJdD79I1Rx7wn//T0hzD5a+dbebGrAA2nPm6kxslLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgVlCbXUBJL/WdcFs9Wzq/5a7rndM5Fh5GO1lxxVwC0TXT1bBI2j3kPiyShBVfKvL8BJ5WtoMPjVnwJLVCvYwZUDsyAXDeuz5QgMuTKt4OHUosuuEG0tRrVaz4yMIbpqHlHFoJvZzaw0ASfBB277FKkSVqJYRLJMXP4GbygMTpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZRk8ig2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82056C4CECF;
-	Fri, 15 Nov 2024 07:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731654026;
-	bh=KKJdD79I1Rx7wn//T0hzD5a+dbebGrAA2nPm6kxslLE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZRk8ig2UiKwIW9qn03SINo/Ekvh/7WnWox/DapI25/lBUiEQZjmoTMt6CNeLNlxJ
-	 HUspFTmD75ybnM88SO3Y7mUZJwAIBQ0/pXm0ri+RLs+h1P06ZmbtWD6svqpU9a5/Y8
-	 MWSataskaLLTI486YIu0THEjMdICh7NmTYP99KXo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Omar Sandoval <osandov@fb.com>
-Subject: [PATCH 5.15 22/22] 9p: fix slab cache name creation for real
-Date: Fri, 15 Nov 2024 07:39:08 +0100
-Message-ID: <20241115063721.978964990@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063721.172791419@linuxfoundation.org>
-References: <20241115063721.172791419@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1731653055; c=relaxed/simple;
+	bh=MDMVBv6U+iekpjP73RsOAYT9pUMJjMaODKp8zXNrNgA=;
+	h=Date:To:From:Subject:Message-Id; b=LDkUePMUZu9RXR6L74a2aKoGGLv8zzp/OBT5jC8WWepwh03ERT8Cv3DwYtMqfRebn8q9wys1Yz2RN6f31cdaWyq3Vq5jJWB2UVSMUnEdZwxzp9QaVMfL15Gvvqcl+Cx8zgB2cBkuNexD37lvKdDMF4Px7d3fO6ot8IQlABvIstM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pKsyo9Ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102D8C4CECF;
+	Fri, 15 Nov 2024 06:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1731653054;
+	bh=MDMVBv6U+iekpjP73RsOAYT9pUMJjMaODKp8zXNrNgA=;
+	h=Date:To:From:Subject:From;
+	b=pKsyo9Okhj3uTphSODTeHWffNcJ3Caxzwqo40wew1AeihHKQN2dBM0dyHRPz4L0/O
+	 kv88Beg4xQR6qR1Co0GTrNZ7NAimwYOKwXiL8c8eFQ0bwen2Wk/ivst6bJSNG4NSkQ
+	 P915A54gYCJzncUpetyFFcgCCsEBYnAKEjS+9+Vw=
+Date: Thu, 14 Nov 2024 22:44:10 -0800
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,joel@joelfernandes.org,jannh@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-mremap-fix-address-wraparound-in-move_page_tables.patch removed from -mm tree
+Message-Id: <20241115064414.102D8C4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+The quilt patch titled
+     Subject: mm/mremap: fix address wraparound in move_page_tables()
+has been removed from the -mm tree.  Its filename was
+     mm-mremap-fix-address-wraparound-in-move_page_tables.patch
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-commit a360f311f57a36e96d88fa8086b749159714dcd2 upstream.
+------------------------------------------------------
+From: Jann Horn <jannh@google.com>
+Subject: mm/mremap: fix address wraparound in move_page_tables()
+Date: Mon, 11 Nov 2024 20:34:30 +0100
 
-This was attempted by using the dev_name in the slab cache name, but as
-Omar Sandoval pointed out, that can be an arbitrary string, eg something
-like "/dev/root".  Which in turn trips verify_dirent_name(), which fails
-if a filename contains a slash.
+On 32-bit platforms, it is possible for the expression `len + old_addr <
+old_end` to be false-positive if `len + old_addr` wraps around. 
+`old_addr` is the cursor in the old range up to which page table entries
+have been moved; so if the operation succeeded, `old_addr` is the *end* of
+the old region, and adding `len` to it can wrap.
 
-So just make it use a sequence counter, and make it an atomic_t to avoid
-any possible races or locking issues.
+The overflow causes mremap() to mistakenly believe that PTEs have been
+copied; the consequence is that mremap() bails out, but doesn't move the
+PTEs back before the new VMA is unmapped, causing anonymous pages in the
+region to be lost.  So basically if userspace tries to mremap() a
+private-anon region and hits this bug, mremap() will return an error and
+the private-anon region's contents appear to have been zeroed.
 
-Reported-and-tested-by: Omar Sandoval <osandov@fb.com>
-Link: https://lore.kernel.org/all/ZxafcO8KWMlXaeWE@telecaster.dhcp.thefacebook.com/
-Fixes: 79efebae4afc ("9p: Avoid creating multiple slab caches with the same name")
+The idea of this check is that `old_end - len` is the original start
+address, and writing the check that way also makes it easier to read; so
+fix the check by rearranging the comparison accordingly.
+
+(An alternate fix would be to refactor this function by introducing an
+"orig_old_start" variable or such.)
+
+
+Tested in a VM with a 32-bit X86 kernel; without the patch:
+
+```
+user@horn:~/big_mremap$ cat test.c
+#define _GNU_SOURCE
+#include <stdlib.h>
+#include <stdio.h>
+#include <err.h>
+#include <sys/mman.h>
+
+#define ADDR1 ((void*)0x60000000)
+#define ADDR2 ((void*)0x10000000)
+#define SIZE          0x50000000uL
+
+int main(void) {
+  unsigned char *p1 = mmap(ADDR1, SIZE, PROT_READ|PROT_WRITE,
+      MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED_NOREPLACE, -1, 0);
+  if (p1 == MAP_FAILED)
+    err(1, "mmap 1");
+  unsigned char *p2 = mmap(ADDR2, SIZE, PROT_NONE,
+      MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED_NOREPLACE, -1, 0);
+  if (p2 == MAP_FAILED)
+    err(1, "mmap 2");
+  *p1 = 0x41;
+  printf("first char is 0x%02hhx\n", *p1);
+  unsigned char *p3 = mremap(p1, SIZE, SIZE,
+      MREMAP_MAYMOVE|MREMAP_FIXED, p2);
+  if (p3 == MAP_FAILED) {
+    printf("mremap() failed; first char is 0x%02hhx\n", *p1);
+  } else {
+    printf("mremap() succeeded; first char is 0x%02hhx\n", *p3);
+  }
+}
+user@horn:~/big_mremap$ gcc -static -o test test.c
+user@horn:~/big_mremap$ setarch -R ./test
+first char is 0x41
+mremap() failed; first char is 0x00
+```
+
+With the patch:
+
+```
+user@horn:~/big_mremap$ setarch -R ./test
+first char is 0x41
+mremap() succeeded; first char is 0x41
+```
+
+Link: https://lkml.kernel.org/r/20241111-fix-mremap-32bit-wrap-v1-1-61d6be73b722@google.com
+Fixes: af8ca1c14906 ("mm/mremap: optimize the start addresses in move_page_tables()")
+Signed-off-by: Jann Horn <jannh@google.com>
 Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/9p/client.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1003,6 +1003,7 @@ error:
- struct p9_client *p9_client_create(const char *dev_name, char *options)
- {
- 	int err;
-+	static atomic_t seqno = ATOMIC_INIT(0);
- 	struct p9_client *clnt;
- 	char *client_id;
- 	char *cache_name;
-@@ -1058,7 +1059,8 @@ struct p9_client *p9_client_create(const
- 	if (err)
- 		goto close_trans;
+ mm/mremap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/mremap.c~mm-mremap-fix-address-wraparound-in-move_page_tables
++++ a/mm/mremap.c
+@@ -648,7 +648,7 @@ again:
+ 	 * Prevent negative return values when {old,new}_addr was realigned
+ 	 * but we broke out of the above loop for the first PMD itself.
+ 	 */
+-	if (len + old_addr < old_end)
++	if (old_addr < old_end - len)
+ 		return 0;
  
--	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	cache_name = kasprintf(GFP_KERNEL,
-+		"9p-fcall-cache-%u", atomic_inc_return(&seqno));
- 	if (!cache_name) {
- 		err = -ENOMEM;
- 		goto close_trans;
+ 	return len + old_addr - old_end;	/* how much done */
+_
+
+Patches currently in -mm which might be from jannh@google.com are
 
 
 
