@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-93311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC7C9CD885
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:51:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23FF9CD8B3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C619B2688B
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:51:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714E5B25E16
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F11187FE8;
-	Fri, 15 Nov 2024 06:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EF6189913;
+	Fri, 15 Nov 2024 06:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHVXiBIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiHy3Y37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6572A185924;
-	Fri, 15 Nov 2024 06:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E5518873F;
+	Fri, 15 Nov 2024 06:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653498; cv=none; b=ez8wlyH+pCsezE2kOVGZp17X2YRIzPsiQX2ncrlkV6TRMKol/x1Ei36hlU/os2wygspJeniO7eWlIe8W98wt42bRxNGUFKh4iIZhoKN3a2Mj5lFi2rPmI5aEelMeHue2yuBAjbh4ZAM0PfTHsKsw9bOkQgk7QjT2ILd8dwkpJqc=
+	t=1731653590; cv=none; b=jzw9o4MXZU8ECAFNIpugqwHds40NPa+kY0E5zBa6xRd4rvLbHvM1Er3hzZ0bV09A+cDD0FW/ky0jmiqNDqmOe19wuGOlZXWYjtw1lxS34oq7mpwLF1++0ABRecYqERel+USSB23u/xFFbtAMueUXgosGrNqg2PC0RGIzE66m33Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653498; c=relaxed/simple;
-	bh=cR9RGk++wTU7TOw0RtfzT2XHw88gASrF4vXtFoATw9E=;
+	s=arc-20240116; t=1731653590; c=relaxed/simple;
+	bh=k8HJ7Pq/fRX384IR2cBDg2/oDWzfrHkaL8LjY4k3Wqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zo6e8KE3YF3YyXbbiiz5d6JLR0XpSHY+NV7Cg3ThiXXos6dRVfuwENto6RCGM3lvHKy6MGghrU8sSYl6bbg0Fn6/NnXW+vLlxBbBFIfV2gaLeeHo5r/zgbWNOPGXhULmGBOOCeInr0CgY1v0tCQxfm0yloxMfKSZRl1xzQzGmpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHVXiBIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA01C4CECF;
-	Fri, 15 Nov 2024 06:51:37 +0000 (UTC)
+	 MIME-Version; b=Yz+Wqm5SJ8BmTfpLy7NHsaK/iz0X66hFiDaGleKsII56joRc5mzIZz9py42vUWYKyta6oGWTab+vNsWTPViNT6OGsNZsg5fT/7V84w81qLO3J6mKQ6ZhEuR9nfnAGOPP2B4psWeI1yabaKydgJvoWk1wtMzzicVnWvtr2HUnr2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiHy3Y37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F026C4CECF;
+	Fri, 15 Nov 2024 06:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653497;
-	bh=cR9RGk++wTU7TOw0RtfzT2XHw88gASrF4vXtFoATw9E=;
+	s=korg; t=1731653590;
+	bh=k8HJ7Pq/fRX384IR2cBDg2/oDWzfrHkaL8LjY4k3Wqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHVXiBIrzsakEecYzA0xaoN6LrGXYkjaa6ydTDJ5iIjUY5k4tkoWRhPtlWCIiqND0
-	 nU7g2nfdL3MWEJlb4IwXEXVF2ESY89Oy/8w/7DUhvlVpJALhYxEXAn5RbklC0VyX9e
-	 /Y3p9qO8cLJZmztO6IC7r/KSPU0m15XOuSkPMZ18=
+	b=JiHy3Y37f6HTVdhIyInbr6dWgqjQf8t5m+mHj6okHpN2IKKfT+F2cXYAc2uJ14vzs
+	 4reg/ru4bbcGy7iVgyhZPQvXRk9J6xTBRb6YUlwXT1GSbu1EbyfkhK89e3V+06r5B1
+	 GrAFCi4RhtiNsZT6BPxDZGXIdZnsL0SnvaFdHSJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 40/48] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/39] nvme-multipath: defer partition scanning
 Date: Fri, 15 Nov 2024 07:38:29 +0100
-Message-ID: <20241115063724.410699530@linuxfoundation.org>
+Message-ID: <20241115063723.303446205@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-References: <20241115063722.962047137@linuxfoundation.org>
+In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
+References: <20241115063722.599985562@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
+[ Upstream commit 1f021341eef41e77a633186e9be5223de2ce5d48 ]
 
-The io_register_iowq_max_workers() function calls io_put_sq_data(),
-which acquires the sqd->lock without releasing the uring_lock.
-Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
-before acquiring sqd->lock"), this can lead to a potential deadlock
-situation.
+We need to suppress the partition scan from occuring within the
+controller's scan_work context. If a path error occurs here, the IO will
+wait until a path becomes available or all paths are torn down, but that
+action also occurs within scan_work, so it would deadlock. Defer the
+partion scan to a different context that does not block scan_work.
 
-To resolve this issue, the uring_lock is released before calling
-io_put_sq_data(), and then it is re-acquired after the function call.
-
-This change ensures that the locks are acquired in the correct
-order, preventing the possibility of a deadlock.
-
-Suggested-by: Maximilian Heyne <mheyne@amazon.de>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/multipath.c | 33 +++++++++++++++++++++++++++++++++
+ drivers/nvme/host/nvme.h      |  1 +
+ 2 files changed, 34 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -4358,8 +4358,10 @@ static __cold int io_register_iowq_max_w
- 	}
- 
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
- 	}
- 
- 	if (copy_to_user(arg, new_count, sizeof(new_count)))
-@@ -4384,8 +4386,11 @@ static __cold int io_register_iowq_max_w
- 	return 0;
- err:
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
-+
- 	}
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 93ada8941a4c5..43b89c7d585f0 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -463,6 +463,20 @@ static int nvme_add_ns_head_cdev(struct nvme_ns_head *head)
  	return ret;
  }
+ 
++static void nvme_partition_scan_work(struct work_struct *work)
++{
++	struct nvme_ns_head *head =
++		container_of(work, struct nvme_ns_head, partition_scan_work);
++
++	if (WARN_ON_ONCE(!test_and_clear_bit(GD_SUPPRESS_PART_SCAN,
++					     &head->disk->state)))
++		return;
++
++	mutex_lock(&head->disk->open_mutex);
++	bdev_disk_changed(head->disk, false);
++	mutex_unlock(&head->disk->open_mutex);
++}
++
+ static void nvme_requeue_work(struct work_struct *work)
+ {
+ 	struct nvme_ns_head *head =
+@@ -489,6 +503,7 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
+ 	bio_list_init(&head->requeue_list);
+ 	spin_lock_init(&head->requeue_lock);
+ 	INIT_WORK(&head->requeue_work, nvme_requeue_work);
++	INIT_WORK(&head->partition_scan_work, nvme_partition_scan_work);
+ 
+ 	/*
+ 	 * Add a multipath node if the subsystems supports multiple controllers.
+@@ -504,6 +519,16 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
+ 		return -ENOMEM;
+ 	head->disk->fops = &nvme_ns_head_ops;
+ 	head->disk->private_data = head;
++
++	/*
++	 * We need to suppress the partition scan from occuring within the
++	 * controller's scan_work context. If a path error occurs here, the IO
++	 * will wait until a path becomes available or all paths are torn down,
++	 * but that action also occurs within scan_work, so it would deadlock.
++	 * Defer the partion scan to a different context that does not block
++	 * scan_work.
++	 */
++	set_bit(GD_SUPPRESS_PART_SCAN, &head->disk->state);
+ 	sprintf(head->disk->disk_name, "nvme%dn%d",
+ 			ctrl->subsys->instance, head->instance);
+ 
+@@ -552,6 +577,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
++		kblockd_schedule_work(&head->partition_scan_work);
+ 	}
+ 
+ 	mutex_lock(&head->lock);
+@@ -851,6 +877,12 @@ void nvme_mpath_shutdown_disk(struct nvme_ns_head *head)
+ 	kblockd_schedule_work(&head->requeue_work);
+ 	if (test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
+ 		nvme_cdev_del(&head->cdev, &head->cdev_device);
++		/*
++		 * requeue I/O after NVME_NSHEAD_DISK_LIVE has been cleared
++		 * to allow multipath to fail all I/O.
++		 */
++		synchronize_srcu(&head->srcu);
++		kblockd_schedule_work(&head->requeue_work);
+ 		del_gendisk(head->disk);
+ 	}
+ }
+@@ -862,6 +894,7 @@ void nvme_mpath_remove_disk(struct nvme_ns_head *head)
+ 	/* make sure all pending bios are cleaned up */
+ 	kblockd_schedule_work(&head->requeue_work);
+ 	flush_work(&head->requeue_work);
++	flush_work(&head->partition_scan_work);
+ 	put_disk(head->disk);
+ }
+ 
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 5f8a146b70148..0f49b779dec65 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -460,6 +460,7 @@ struct nvme_ns_head {
+ 	struct bio_list		requeue_list;
+ 	spinlock_t		requeue_lock;
+ 	struct work_struct	requeue_work;
++	struct work_struct	partition_scan_work;
+ 	struct mutex		lock;
+ 	unsigned long		flags;
+ #define NVME_NSHEAD_DISK_LIVE	0
+-- 
+2.43.0
+
 
 
 
