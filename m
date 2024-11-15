@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-93153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A559CD79D
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:43:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBCC9CD814
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FC8AB265DE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 150DE28371D
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0183188722;
-	Fri, 15 Nov 2024 06:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2709C1885AA;
+	Fri, 15 Nov 2024 06:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feP9ol2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvbHG3M9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7DC154C00;
-	Fri, 15 Nov 2024 06:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF81C18734F;
+	Fri, 15 Nov 2024 06:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731652983; cv=none; b=ZO1n8VZgiQN5bgpYzoLHo6U5yfjnx8Q6Ii1QvDMAz4z57nA6ni85rUDePWi1EpnHMz4fE37iMHxp6gNVittNpoiu4J2VND/0lMJZputDeMvB0h1GMyNPGJ3mGoceL39wbbYrQo5RMuGaKWvIZ5YYtH8eXEDY5CFBtgNz+wqEB98=
+	t=1731653242; cv=none; b=PRVNjzp5pEc0Xr6IHRLAAbollJzirVQY/mC0CCmemkuDnti+/PbDd4wlnSMoL59vb5i3k2g+hspXq3fm+924MroI2cjmqA940Q6wwRlyJjetVWihAzzcrAblEYQnBXHMpYXzAS0cjIvqsqRrJrsmSJg3BaGmGZUzCOSxwfc+m+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731652983; c=relaxed/simple;
-	bh=5NOaELHiZYHxLYquIA7qfqKwGf+oizr99nrisx3GZ9Y=;
+	s=arc-20240116; t=1731653242; c=relaxed/simple;
+	bh=uwq+ngDo51od4NGZ39H1qe4b5WPhaO6oGiFe64PWCE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2HK7uGJIU1gSdEZ2aswMQgRdfEtUthTzs51ND8q1j7qvaJF7AqQdY1ak9C1XfaQwxXMIRhmQL2wReLNVN5iEPJpM6bv3fCXSFPDPTQnRD6Dp4vHtmNo9PskTSaQ6qLVG+wzbaYaiADKPppurUGIgYqV2oInDnXMasT2uEtxp54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feP9ol2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDE5C4CECF;
-	Fri, 15 Nov 2024 06:43:02 +0000 (UTC)
+	 MIME-Version; b=kmv4596rcLZ70+RRSpgQaywn0h1L8KtVO8JQa8EyMeP1yGsBLv5ACk91jhHLwwRNx2nXDJN4mAKM5hSV3+Va+jpadGSDTofAS6HoK0ehKARr6RqR+l67bvKAlVHRmOlmz9sX+l5ZtHGlHPLty4asF6HQuPpqLdqulovsi/uvNn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvbHG3M9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52766C4CECF;
+	Fri, 15 Nov 2024 06:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731652983;
-	bh=5NOaELHiZYHxLYquIA7qfqKwGf+oizr99nrisx3GZ9Y=;
+	s=korg; t=1731653242;
+	bh=uwq+ngDo51od4NGZ39H1qe4b5WPhaO6oGiFe64PWCE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feP9ol2CF7fdfZIyhV8pcatcy5xVOExrx+iMHeCeLRXApClM+kgSmwlTh958FhW+K
-	 86yb42H74ZcnHPISAfuIanHuVE2sIxnja+EhBwoUhhEnd8wl76itbIUu1axl345iS8
-	 +x2S0B9YF4AUuU7S9Cstr4JL3T4Dwz/5m1ZjOu8c=
+	b=dvbHG3M9X0P8bds+upvZvy6KnYn9yw+WCbTBPVnPJ1htQSc7p/RsONVzrt54EOhdJ
+	 TjLsU/IgPkHUkBhE0/6tzTjAmPYKZEPediGHb2NzC2BQsn+ccSGvtU3+1gAAH6Pgcp
+	 DwSFNcsGpy+FdWv3LaqJaTSxUwTJr43eGP2cRRLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/66] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+Subject: [PATCH 6.11 06/63] nvmet-passthru: clear EUID/NGUID/UUID while using loop target
 Date: Fri, 15 Nov 2024 07:37:29 +0100
-Message-ID: <20241115063723.573484681@linuxfoundation.org>
+Message-ID: <20241115063726.126896964@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
-References: <20241115063722.834793938@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+References: <20241115063725.892410236@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
+[ Upstream commit e38dad438fc08162e20c600ae899e9e60688f72e ]
 
-If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
-though it's supposed to return error code, which is checked inside
-init_stream() in file tascam-stream.c.
+When nvme passthru is configured using loop target, the clear_ids
+attribute is, by default, set to true. This attribute would ensure that
+EUID/NGUID/UUID is cleared for the loop passthru target.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The newer NVMe disk supporting the NVMe spec 1.3 or higher, typically,
+implements the support for "Namespace Identification Descriptor list"
+command. This command when issued from host returns EUID/NGUID/UUID
+assigned to the inquired namespace. Not clearing these values, while
+using nvme passthru using loop target, would result in NVMe host driver
+rejecting the namespace. This check was implemented in the commit
+2079f41ec6ff ("nvme: check that EUI/GUID/UUID are globally unique").
 
-Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
+The fix implemented in this commit ensure that when host issues ns-id
+descriptor list command, the EUID/NGUID/UUID are cleared by passthru
+target. In fact, the function nvmet_passthru_override_id_descs() which
+clears those unique ids already exits, so we just need to ensure that
+ns-id descriptor list command falls through the corretc code path. And
+while we're at it, we also combines the three passthru admin command
+cases together which shares the same code.
+
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/amdtp-tascam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/passthru.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
-index f823a2ab3544b..8ffc065b77f95 100644
---- a/sound/firewire/tascam/amdtp-tascam.c
-+++ b/sound/firewire/tascam/amdtp-tascam.c
-@@ -244,7 +244,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
- 			CIP_NONBLOCKING | CIP_SKIP_DBC_ZERO_CHECK, fmt,
- 			process_ctx_payloads, sizeof(struct amdtp_tscm));
- 	if (err < 0)
--		return 0;
-+		return err;
- 
- 	if (dir == AMDTP_OUT_STREAM) {
- 		// Use fixed value for FDF field.
+diff --git a/drivers/nvme/target/passthru.c b/drivers/nvme/target/passthru.c
+index 24d0e2418d2e6..0f9b280c438d9 100644
+--- a/drivers/nvme/target/passthru.c
++++ b/drivers/nvme/target/passthru.c
+@@ -535,10 +535,6 @@ u16 nvmet_parse_passthru_admin_cmd(struct nvmet_req *req)
+ 		break;
+ 	case nvme_admin_identify:
+ 		switch (req->cmd->identify.cns) {
+-		case NVME_ID_CNS_CTRL:
+-			req->execute = nvmet_passthru_execute_cmd;
+-			req->p.use_workqueue = true;
+-			return NVME_SC_SUCCESS;
+ 		case NVME_ID_CNS_CS_CTRL:
+ 			switch (req->cmd->identify.csi) {
+ 			case NVME_CSI_ZNS:
+@@ -547,7 +543,9 @@ u16 nvmet_parse_passthru_admin_cmd(struct nvmet_req *req)
+ 				return NVME_SC_SUCCESS;
+ 			}
+ 			return NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
++		case NVME_ID_CNS_CTRL:
+ 		case NVME_ID_CNS_NS:
++		case NVME_ID_CNS_NS_DESC_LIST:
+ 			req->execute = nvmet_passthru_execute_cmd;
+ 			req->p.use_workqueue = true;
+ 			return NVME_SC_SUCCESS;
 -- 
 2.43.0
 
