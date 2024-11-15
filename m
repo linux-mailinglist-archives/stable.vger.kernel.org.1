@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-93338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A279CD8B1
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1C49CD927
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01726B25D3F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57B7DB27BB5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A20D188015;
-	Fri, 15 Nov 2024 06:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFA0188CA9;
+	Fri, 15 Nov 2024 06:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbE51Av5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkhu0+bv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FB32BB1B;
-	Fri, 15 Nov 2024 06:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CE015FD13;
+	Fri, 15 Nov 2024 06:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653587; cv=none; b=H+2yqPyUhjv7MGFf5k/tup8aA5Q1UvhQri+5AQJ5VUc/RFPOydeNKGsXox3kvDq/AvkN2RzlhTee9qDFb9Ngtg9BvCLkFOkDtGoXDVFIcsrGCYGPfPl1Zu/kpDihIctW1qRZJDHOfquAzuUSEQQ7IvZFm8NMcbyUCzWEuFLkl/E=
+	t=1731653847; cv=none; b=p5d3rDKwKmWBeCvL2BnlIBlX5MZszH/b4WVDtEep4oOEe+mKuplBijeplKvpRby8yc+ZnG2PznYNMmkgeooLrGZ8DAwBacnIMLN3toE9s/bHo0G5ksCBfVcq+XmcucFOaapjPclYkpwBJVP+fwx0dcc+2nkyuap4G3P34R3s7cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653587; c=relaxed/simple;
-	bh=OIF9sR0hzMx7ZfPn+9PyJrEPW2dCQ+zk7/73CW9nuXg=;
+	s=arc-20240116; t=1731653847; c=relaxed/simple;
+	bh=m2ef4UXVm2eUy+ko6wTqrot0ZiwUnvR73Q1o/PEKghE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QH7V+NDY55ncD3xA/ftTL1uWNQ0HDuJQyGDDpOF5DgGKdWTCRRvuP41osk77V1PBI7Cg7OUT6A6t/JisjQO0Ib4qO3FtL8f5z96r7JTdPWaNpGVRtWK1kJOjYeBBExETrZGykn8K+2EmS9tCjcJlFkXxSsNfKQfdPbHZ1vz7Rzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbE51Av5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8CEC4CECF;
-	Fri, 15 Nov 2024 06:53:06 +0000 (UTC)
+	 MIME-Version; b=kMan3c5lcWToZzHl2XzbnTyjYhDqVFK63q+kjoXSfR4SVfH12DfA2SW72F8uRFZQ5dbdN9R+I0f01d11W6ybfCvlUl8aLekFj+F0Gd1h8uQx1biPoIPeEvYyTRD7/Zy7I2VxVaInejKVWhnpOjz3luPUFuiLkgbgSyP/QK2GEac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkhu0+bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A8FC4CECF;
+	Fri, 15 Nov 2024 06:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653587;
-	bh=OIF9sR0hzMx7ZfPn+9PyJrEPW2dCQ+zk7/73CW9nuXg=;
+	s=korg; t=1731653846;
+	bh=m2ef4UXVm2eUy+ko6wTqrot0ZiwUnvR73Q1o/PEKghE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbE51Av55x48MEsXFbKvQMz9EhNAZKQr6lxaCYQOaxGY8tymjvOhllcVDNRe2iyWu
-	 sJXTQh+xbhxDuLpng/Q2rVFRfaAL/S4I+jgUs55CdEL4W41sJOQIrKrAJJ863JpWuK
-	 EYfEASeFrnnbPjKT26lKosTjtxId+2Hebh+TsObc=
+	b=pkhu0+bv4f3MVE63sdI1HY1jCl7Q+i5AqwOtGqMApCfsadQIMhV2RiHSlVEtN6eNC
+	 9qIcM8uqM7oER2s9aJM3Y/UiE2Z8kx5D/NWpicFad0h9pKLUIjanbfxMRPm9J8tbOv
+	 9uIylIC8XwXpGcKFwEC2XqKphseqEr45VQrvAHPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+	Riccardo Mancini <rickyman7@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linaro.org>,
 	Mark Rutland <mark.rutland@arm.com>,
-	syzbot+908886656a02769af987@syzkaller.appspotmail.com,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/39] kasan: Disable Software Tag-Based KASAN with GCC
-Date: Fri, 15 Nov 2024 07:38:28 +0100
-Message-ID: <20241115063723.266970553@linuxfoundation.org>
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: [PATCH 5.10 52/82] perf session: Add missing evlist__delete when deleting a session
+Date: Fri, 15 Nov 2024 07:38:29 +0100
+Message-ID: <20241115063727.435598002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +71,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Riccardo Mancini <rickyman7@gmail.com>
 
-[ Upstream commit 7aed6a2c51ffc97a126e0ea0c270fab7af97ae18 ]
+commit cf96b8e45a9bf74d2a6f1e1f88a41b10e9357c6b upstream.
 
-Syzbot reports a KASAN failure early during boot on arm64 when building
-with GCC 12.2.0 and using the Software Tag-Based KASAN mode:
+ASan reports a memory leak caused by evlist not being deleted on exit in
+perf-report, perf-script and perf-data.
+The problem is caused by evlist->session not being deleted, which is
+allocated in perf_session__read_header, called in perf_session__new if
+perf_data is in read mode.
+In case of write mode, the session->evlist is filled by the caller.
+This patch solves the problem by calling evlist__delete in
+perf_session__delete if perf_data is in read mode.
 
-  | BUG: KASAN: invalid-access in smp_build_mpidr_hash arch/arm64/kernel/setup.c:133 [inline]
-  | BUG: KASAN: invalid-access in setup_arch+0x984/0xd60 arch/arm64/kernel/setup.c:356
-  | Write of size 4 at addr 03ff800086867e00 by task swapper/0
-  | Pointer tag: [03], memory tag: [fe]
+Changes in v2:
+ - call evlist__delete from within perf_session__delete
 
-Initial triage indicates that the report is a false positive and a
-thorough investigation of the crash by Mark Rutland revealed the root
-cause to be a bug in GCC:
+v1: https://lore.kernel.org/lkml/20210621234317.235545-1-rickyman7@gmail.com/
 
-  > When GCC is passed `-fsanitize=hwaddress` or
-  > `-fsanitize=kernel-hwaddress` it ignores
-  > `__attribute__((no_sanitize_address))`, and instruments functions
-  > we require are not instrumented.
-  >
-  > [...]
-  >
-  > All versions [of GCC] I tried were broken, from 11.3.0 to 14.2.0
-  > inclusive.
-  >
-  > I think we have to disable KASAN_SW_TAGS with GCC until this is
-  > fixed
+ASan report follows:
 
-Disable Software Tag-Based KASAN when building with GCC by making
-CC_HAS_KASAN_SW_TAGS depend on !CC_IS_GCC.
+$ ./perf script report flamegraph
+=================================================================
+==227640==ERROR: LeakSanitizer: detected memory leaks
 
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Reported-by: syzbot+908886656a02769af987@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/000000000000f362e80620e27859@google.com
-Link: https://lore.kernel.org/r/ZvFGwKfoC4yVjN_X@J2N7QTR9R3
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218854
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20241014161100.18034-1-will@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+<SNIP unrelated>
+
+Indirect leak of 2704 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0x7f999e in evlist__new /home/user/linux/tools/perf/util/evlist.c:77:26
+    #3 0x8ad938 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3797:20
+    #4 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #5 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #6 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #7 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #8 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #9 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #10 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #11 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 568 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0x80ce88 in evsel__new_idx /home/user/linux/tools/perf/util/evsel.c:268:24
+    #3 0x8aed93 in evsel__new /home/user/linux/tools/perf/util/evsel.h:210:9
+    #4 0x8ae07e in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3853:11
+    #5 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #6 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #7 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #8 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #9 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #10 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #11 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #12 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 264 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0xbe3e70 in xyarray__new /home/user/linux/tools/lib/perf/xyarray.c:10:23
+    #3 0xbd7754 in perf_evsel__alloc_id /home/user/linux/tools/lib/perf/evsel.c:361:21
+    #4 0x8ae201 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3871:7
+    #5 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #6 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #7 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #8 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #9 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #10 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #11 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #12 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 32 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0xbd77e0 in perf_evsel__alloc_id /home/user/linux/tools/lib/perf/evsel.c:365:14
+    #3 0x8ae201 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3871:7
+    #4 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #5 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #6 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #7 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #8 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #9 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #10 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #11 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x4b8207 in strdup (/home/user/linux/tools/perf/perf+0x4b8207)
+    #1 0x8b4459 in evlist__set_event_name /home/user/linux/tools/perf/util/header.c:2292:16
+    #2 0x89d862 in process_event_desc /home/user/linux/tools/perf/util/header.c:2313:3
+    #3 0x8af319 in perf_file_section__process /home/user/linux/tools/perf/util/header.c:3651:9
+    #4 0x8aa6e9 in perf_header__process_sections /home/user/linux/tools/perf/util/header.c:3427:9
+    #5 0x8ae3e7 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3886:2
+    #6 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #7 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #8 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #9 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #10 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #11 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #12 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #13 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+SUMMARY: AddressSanitizer: 3728 byte(s) leaked in 7 allocation(s).
+
+Signed-off-by: Riccardo Mancini <rickyman7@gmail.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: http://lore.kernel.org/lkml/20210624231926.212208-1-rickyman7@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: stable@vger.kernel.org # 5.10.228
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Kconfig.kasan | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/session.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index ca09b1cf8ee9d..34420eb1cbfe1 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -22,8 +22,11 @@ config ARCH_DISABLE_KASAN_INLINE
- config CC_HAS_KASAN_GENERIC
- 	def_bool $(cc-option, -fsanitize=kernel-address)
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -299,8 +299,11 @@ void perf_session__delete(struct perf_se
+ 	perf_session__release_decomp_events(session);
+ 	perf_env__exit(&session->header.env);
+ 	machines__exit(&session->machines);
+-	if (session->data)
++	if (session->data) {
++		if (perf_data__is_read(session->data))
++			evlist__delete(session->evlist);
+ 		perf_data__close(session->data);
++	}
+ 	free(session);
+ }
  
-+# GCC appears to ignore no_sanitize_address when -fsanitize=kernel-hwaddress
-+# is passed. See https://bugzilla.kernel.org/show_bug.cgi?id=218854 (and
-+# the linked LKML thread) for more details.
- config CC_HAS_KASAN_SW_TAGS
--	def_bool $(cc-option, -fsanitize=kernel-hwaddress)
-+	def_bool !CC_IS_GCC && $(cc-option, -fsanitize=kernel-hwaddress)
- 
- # This option is only required for software KASAN modes.
- # Old GCC versions do not have proper support for no_sanitize_address.
-@@ -91,7 +94,7 @@ config KASAN_SW_TAGS
- 	help
- 	  Enables Software Tag-Based KASAN.
- 
--	  Requires GCC 11+ or Clang.
-+	  Requires Clang.
- 
- 	  Supported only on arm64 CPUs and relies on Top Byte Ignore.
- 
--- 
-2.43.0
-
 
 
 
