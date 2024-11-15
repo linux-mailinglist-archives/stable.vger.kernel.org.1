@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-93336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F7D9CD8AE
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:53:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65CA9CD921
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112DA1F2344F
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1A22833ED
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C531885AA;
-	Fri, 15 Nov 2024 06:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F110E185949;
+	Fri, 15 Nov 2024 06:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfhAU7SA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwHdPfr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D264C18859F;
-	Fri, 15 Nov 2024 06:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB8185924;
+	Fri, 15 Nov 2024 06:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653580; cv=none; b=lT6PUcT0t+6LKaWTKE+WVfob3XnOamlp5KW4buKkTZdGE5XaqwgxwybWlG0HO8atiebf4dgkN3vG3Lz6hQTnfL6f0546oy18C4rVJjNSC5EO/y2/CJ4NmSj0zz5y1Xld6kEUCJrFOjdkTxvvVEK0Tr7d0+vJOL2esug5+73Q6rU=
+	t=1731653836; cv=none; b=UGtraxZiVpxlkkhOkz6OT7ltTQqLuQLIkgD/ickhEOJ5HuFthMfftodWUXNHFMU0r9GQt6PsyYcZbJRXiUobmCdeGSWqOvZgVQKduDNdKO4uUwpNUX8dYQlF0ocpOQKkRQOIs1ubCs99ulX/DzmofQuZGNc2vEnXXDwrJCMgNCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653580; c=relaxed/simple;
-	bh=6Rkt1LzLJB22ff5lqtZAuuVIRcbSCLWHhMZHWLGOoG8=;
+	s=arc-20240116; t=1731653836; c=relaxed/simple;
+	bh=a0WsMdOsRfxH/kOqi8zfl90T8Kmffqp8OYICIlqyKJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrAkYYbo0PRXP9DiGhijq6H2psjwzaQjkEDRf5YB1htZrkqq5nGS7bGhWzcOaMoYmg28DFf84xUUzpYXrN8q7HsLxl9QHayCszCzJi3wafDKAnKcIttDUfycWmDb02eJ20qJp1wIk6YNrcTNtzN1qnZNU7jJQsqV4FBmwhmEZqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfhAU7SA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467D2C4CECF;
-	Fri, 15 Nov 2024 06:53:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XYK7EfkUv2jivgIluaDwTh0bKuMvzejZ8bE4I+4eztDB+24UZ83BZ7Q/2Iuansls9nsiGFn7mGo5/I6waUmFgFb8DGNf62DUgKdECn7FU7DiDznQ25QpvHeD1R8l1Kt3ndDw9Vb9DrY3qyYtkrD1dSk36HqXTuyYgPlay/aHI5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwHdPfr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157EEC4CECF;
+	Fri, 15 Nov 2024 06:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653580;
-	bh=6Rkt1LzLJB22ff5lqtZAuuVIRcbSCLWHhMZHWLGOoG8=;
+	s=korg; t=1731653836;
+	bh=a0WsMdOsRfxH/kOqi8zfl90T8Kmffqp8OYICIlqyKJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfhAU7SA6iYmeV2aRLJ3GP4+dEj1zYYvx0bAzoq/Os3t0nh911KeM6C6rh/BgUO29
-	 w61AveZarWmiFxXZMF2DXgNM3hR9NUM8dX4Ng5dcTk17RBCXy7CxSYIeBRu3j7uV0z
-	 rqU3C9MOBtzbkI0I5kFtbK9rxCBL+5leobO0mpus=
+	b=EwHdPfr0JsF3HWc55BZ17dZJuzeUvyYjzUTjnkEd/xZ+O1dQVkB1xOVHO5Pbw28Qp
+	 H4qCr9AhiJt8f3TluFzWpafl5U6zbbdq5m+dwAR+mRgJZcoT4UKH24bW4lifVlKevW
+	 6aA1jdO4Wi4O9XJAjdgYpZgMnlLT6pIrLd8B4iZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yann Sionneau <ysionneau@kalrayinc.com>,
-	Julian Vetter <jvetter@kalrayinc.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 16/39] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+	Michael Walle <michael@walle.cc>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 49/82] spi: fix use-after-free of the add_lock mutex
 Date: Fri, 15 Nov 2024 07:38:26 +0100
-Message-ID: <20241115063723.195848308@linuxfoundation.org>
+Message-ID: <20241115063727.326163828@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+In-Reply-To: <20241115063725.561151311@linuxfoundation.org>
+References: <20241115063725.561151311@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Vetter <jvetter@kalrayinc.com>
+From: Michael Walle <michael@walle.cc>
 
-[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
+commit 6c53b45c71b4920b5e62f0ea8079a1da382b9434 upstream.
 
-When building for the UM arch and neither INDIRECT_IOMEM=y, nor
-HAS_IOMEM=y is selected, it will fall back to the implementations from
-asm-generic/io.h for IO memcpy. But these fall-back functions just do a
-memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
-INDIRECT_IOMEM'.
+Commit 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on
+SPI buses") introduced a per-controller mutex. But mutex_unlock() of
+said lock is called after the controller is already freed:
 
-Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
-Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
-Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  spi_unregister_controller(ctlr)
+  -> put_device(&ctlr->dev)
+    -> spi_controller_release(dev)
+  -> mutex_unlock(&ctrl->add_lock)
+
+Move the put_device() after the mutex_unlock().
+
+Fixes: 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on SPI buses")
+Signed-off-by: Michael Walle <michael@walle.cc>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v5.15
+Link: https://lore.kernel.org/r/20211111083713.3335171-1-michael@walle.cc
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/Kconfig b/sound/Kconfig
-index 1903c35d799e1..5848eedcc3c9f 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM || UML
-+	depends on HAS_IOMEM || INDIRECT_IOMEM
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
--- 
-2.43.0
-
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2892,12 +2892,6 @@ void spi_unregister_controller(struct sp
+ 
+ 	device_del(&ctlr->dev);
+ 
+-	/* Release the last reference on the controller if its driver
+-	 * has not yet been converted to devm_spi_alloc_master/slave().
+-	 */
+-	if (!ctlr->devm_allocated)
+-		put_device(&ctlr->dev);
+-
+ 	/* free bus id */
+ 	mutex_lock(&board_lock);
+ 	if (found == ctlr)
+@@ -2906,6 +2900,12 @@ void spi_unregister_controller(struct sp
+ 
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+ 		mutex_unlock(&ctlr->add_lock);
++
++	/* Release the last reference on the controller if its driver
++	 * has not yet been converted to devm_spi_alloc_master/slave().
++	 */
++	if (!ctlr->devm_allocated)
++		put_device(&ctlr->dev);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
+ 
 
 
 
