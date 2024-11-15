@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-93233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCF59CD813
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:47:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C199CD7D5
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 07:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D8D7B26403
-	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:47:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C4DEB269C3
+	for <lists+stable@lfdr.de>; Fri, 15 Nov 2024 06:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF84187848;
-	Fri, 15 Nov 2024 06:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFEA18858C;
+	Fri, 15 Nov 2024 06:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQRnZHR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGuMr0Id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49644187FE8;
-	Fri, 15 Nov 2024 06:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A41632DA;
+	Fri, 15 Nov 2024 06:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653236; cv=none; b=CsI7xHOr0Ay63oeU+6fmBSVQD8/1b6zIFyo/lXKw5V7CmnL4PjuiD0n1zWvEJ/puKN93f3CIjJAVhvMqRA1jPCqRf9eCuHw0gNp9oRWQayPKtoPgw4uk8Hc6R39d/u60k8dnQoUtMUF6cKV96MC5Xr2e5Rw5FbyFARdqZw7ArIA=
+	t=1731653093; cv=none; b=boQv6CYA0kzPwe6NDujo++7nDOibN/LcpPhEr5jwJIz43CE/20lPn4GoYwfrtba8SOarG2PKNKWf6KAsDjX2yeYdDwQVssxLeMPwkt5S+Pxt2+vOhRdjfLxMxIH5eASvYzoZkVjnd13pPmbraJ8CbYth6sdyeZYfo0InUV9g/Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653236; c=relaxed/simple;
-	bh=EuiCE3dMBRJtUdjjnL+3Cb5zJs8yDKglclt2ncj7mII=;
+	s=arc-20240116; t=1731653093; c=relaxed/simple;
+	bh=Du1OSXhdSP346y2/hO6QCI9fF148JcUuujsU++LIneM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kztvCrnsHLEYy8G+4VkJ7+JLpQ9O1mpC1F4jafr+ffkAD8eI36ZgpsMJ9rbAck6f8nBxdhbEjVPDkT8gUtz5WbRCOxGCpY8tPNELe4BA3kuVYVx7RVIoDMcuM/lBSWW9ljyxBWviA/6uCV12tP1SN5eBimOmZCwfPNkZMu42EJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQRnZHR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC50BC4CECF;
-	Fri, 15 Nov 2024 06:47:15 +0000 (UTC)
+	 MIME-Version; b=JBhyjhEqplgjJ3mxvYQ3SMD6UXvPS+GgboRNvU203m8XQQvI/v9Vj3sLGldiGEJ7HdKrytyIa+mRTLB1R3T0fj18iDlf1nG/qi80tPi/c8SFBI47zAThoGgWNxVIVfOJW4b8T6DBZj5q1E/Fq9vV6UPT79rJxtcAZoL+nBMoTKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGuMr0Id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9A5C4CECF;
+	Fri, 15 Nov 2024 06:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653236;
-	bh=EuiCE3dMBRJtUdjjnL+3Cb5zJs8yDKglclt2ncj7mII=;
+	s=korg; t=1731653093;
+	bh=Du1OSXhdSP346y2/hO6QCI9fF148JcUuujsU++LIneM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQRnZHR3EKQouRMMVTUVyDeY3QcU7e95mz/tDBQLw5jU8pKmhDkdANNG3X72wsNK8
-	 v0YF15nKIWwg37s9/0lcwsq0B3gI0AK/MYf78rEXHaBPqwqK043isCEbfs0l9btHcY
-	 s65aQpihxFAN8fQyf3uwFxDboMUS77n6Qef5z5ac=
+	b=sGuMr0IdzqzT7wSVGNX/Wk10iHPz3D7HKI6WkIzgdTW5EJFKb1vbzpIQTP2lqgQr9
+	 8G6x8bzFw9h4E84S+Wf1LwO0nkR5ZmQA3jVIR5Gt/MedR2XiukH2kN1OrJ3QHqIpQY
+	 YP3nQ3MDZDlf60PAVoAzxcqsz6y003Hrm9YH+73o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 04/63] 9p: Avoid creating multiple slab caches with the same name
+Subject: [PATCH 5.4 18/66] media: dvb_frontend: dont play tricks with underflow values
 Date: Fri, 15 Nov 2024 07:37:27 +0100
-Message-ID: <20241115063726.054840245@linuxfoundation.org>
+Message-ID: <20241115063723.500886455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063722.834793938@linuxfoundation.org>
+References: <20241115063722.834793938@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Falcato <pedro.falcato@gmail.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
+[ Upstream commit 9883a4d41aba7612644e9bb807b971247cea9b9d ]
 
-In the spirit of [1], avoid creating multiple slab caches with the same
-name. Instead, add the dev_name into the mix.
+fepriv->auto_sub_step is unsigned. Setting it to -1 is just a
+trick to avoid calling continue, as reported by Coverity.
 
-[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
+It relies to have this code just afterwards:
 
-Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
-Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+	if (!ready) fepriv->auto_sub_step++;
+
+Simplify the code by simply setting it to zero and use
+continue to return to the while loop.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/media/dvb-core/dvb_frontend.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 5cd94721d974f..9e7b9151816d6 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -979,6 +979,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	int err;
- 	struct p9_client *clnt;
- 	char *client_id;
-+	char *cache_name;
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index ad3e42a4eaf73..01efb4bd260d9 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -442,8 +442,8 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
  
- 	clnt = kmalloc(sizeof(*clnt), GFP_KERNEL);
- 	if (!clnt)
-@@ -1035,15 +1036,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	if (err)
- 		goto close_trans;
+ 		default:
+ 			fepriv->auto_step++;
+-			fepriv->auto_sub_step = -1; /* it'll be incremented to 0 in a moment */
+-			break;
++			fepriv->auto_sub_step = 0;
++			continue;
+ 		}
  
-+	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	if (!cache_name) {
-+		err = -ENOMEM;
-+		goto close_trans;
-+	}
-+
- 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
- 	 * followed by data accessed from userspace by read
- 	 */
- 	clnt->fcall_cache =
--		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
-+		kmem_cache_create_usercopy(cache_name, clnt->msize,
- 					   0, 0, P9_HDRSZ + 4,
- 					   clnt->msize - (P9_HDRSZ + 4),
- 					   NULL);
- 
-+	kfree(cache_name);
- 	return clnt;
- 
- close_trans:
+ 		if (!ready) fepriv->auto_sub_step++;
 -- 
 2.43.0
 
