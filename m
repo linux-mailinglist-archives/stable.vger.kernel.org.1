@@ -1,80 +1,81 @@
-Return-Path: <stable+bounces-93622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4109CFBF4
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 02:15:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF5E9CFC07
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 02:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67EB5B243E5
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 01:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD669287BBF
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 01:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8AF18E756;
-	Sat, 16 Nov 2024 01:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133F1161;
+	Sat, 16 Nov 2024 01:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="og9I91Di"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DJotF72q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5F1364D6
-	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 01:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780567485
+	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 01:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731719734; cv=none; b=gAuq4htpFJNw1jFvAXJ6ZDYyiid5V/cmQhcyqLP28zEwfV83akPOZwNUnGJBlcl2kR7KQkaI9thKLXsC6dCGB0udkQgnjJDVbXDwG9wWaXLvjvr9VpIuOKwrom0YCGaljR1wc9OQV7ZowbNobetGyQJyLa9Eue/vcjWSaJGNG2Q=
+	t=1731720703; cv=none; b=U7Ya/KyqZWCGjjKM+aSWVTG4Npjsm/QyVDRxxH5bzkPIUc3Qzm083Cyh+w7qSynOrURmFzr5eoLhy8lLdDZssDHRGoakht+A0+zWryh+MVMxqB0OhGjOyzIeAKaz0aacH3KFExTNfO6dITATvbfZr305WhvU2+fBgNWaN8S5IHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731719734; c=relaxed/simple;
-	bh=zMUQZOCpZMQ/dKSc6ZVQ1W83Gl82z5d9JySnnvZROUk=;
+	s=arc-20240116; t=1731720703; c=relaxed/simple;
+	bh=UyhC43pZiyPSP9M0LAH70oO3s1X/Nxzx97WWOngNUN8=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=szxRTXdPyuTblgtinlvuEYzs22dr8IQICpcLAZkNAwDxZBCoGowfho1+KjDr5R1BE0v60E8QlStYQFjv6v4M8SjhgIPk1CEnEoQqDRLxzg63rIS9uqLbnp6utnrEqjx3Y7WUzgqMuoMd87eWZ+82WCuOW/TzUkJ4+SnJf7e81Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=og9I91Di; arc=none smtp.client-ip=209.85.160.42
+	 MIME-Version:Content-Type; b=bX26rCjMyaECkxQINzB8c0vcp+fuXCOJO2HnaDWO18AVWSJgPpdIR5S2ebcEEagFY5Wk1d02u+QP5M8LC0FZ9T02ovMEf+d7Er2dF99r9cJlzP82K5tVI2b6Ai4zpJbY5Mr8QIwHMdWMcUHmcAsXmzplISARTUJ5qrcwYUY0my4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DJotF72q; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2962feec93bso755762fac.1
-        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 17:15:32 -0800 (PST)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e6104701ffso1445340b6e.0
+        for <stable@vger.kernel.org>; Fri, 15 Nov 2024 17:31:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731719732; x=1732324532; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731720701; x=1732325501; darn=vger.kernel.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W3QI0B5maEg+/aEXJBItWHclgyMXYLApaat8l+0kJnA=;
-        b=og9I91Dir62eotvvSzP8D81HEy2X+v0B/wN/pF1J8N2UjjUOuU8yfCE/UcuRfIVuFp
-         4dOeGp4tqK3zzk4bssAs+AE+5t0ZeXAoUaiDhjBYZZVNygm/OV7cNukguADtNUS7KN4+
-         j39rzdHDDSFNWOq2oeisZ9vP6QxjO34I7fTkgvol6vhBDrmgoaTUolYIFUiX1ZmV/2u0
-         ilJvxM+QaO8upeYwR83Dl2jXJ/2ATdO0NqoDeBO75/OLaK3O2dgDC4zUe1NFfO51ILrh
-         PJQxRQnrokNImoBVuD4YBp4nqW5gBPxP1Dj8QkBlPL27jW+DKwT2xHboVr/sVXre2f0g
-         ZNPw==
+        bh=5G9v5idvngpVVbVWYeTOgnhwaczVG7ZO7E+ci5v9gPk=;
+        b=DJotF72qlPjlAo9DcrcdSIYEKApMwfNe4QC7KghldQrTxyXSn1Hjwh1h2iJJ+2IYhw
+         4Jl+/OhMF5fNOgLha9+DBRaoCpr24SQgg7P30aOixT80nLZW9wdMzJ6/3alrfmIdmNDm
+         oF9Rmk1MC2T6++8obPvweRCfE24JFFoavx2JaYDBg96Nupa9fShl7PaGl2BJvjbf/RVT
+         PP+jVaZPo5pX9syNsxK1Ag58Q8bW5rmxOi5CZMiVSAjWVDx5MJYtOZ0/T+ufSY6qvP3Q
+         cye6LKd0QrHp2CjYxloD41VfY4BWks2dxVhSZjjN3S3SYGwFaOoPmBor6fWJd1SkeCK+
+         /r9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731719732; x=1732324532;
+        d=1e100.net; s=20230601; t=1731720701; x=1732325501;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W3QI0B5maEg+/aEXJBItWHclgyMXYLApaat8l+0kJnA=;
-        b=em78wV4qW5s47Yymytqem4Vmje2QHky5zG5ok3SnidUgeY9Gc4o/0yRJaWDFuSiubl
-         MfEOH4R35uGe2hqafVOgiMquRJPwRTj5DJ5XBGcC4iL4RYXE4/GkfygjgCGF1Uz34HhW
-         vP6CeBXJ2Kpg7gY38Ks5ZM5fRXQAFkZQM54s6hWzJveHMILlSo3X9eipzbPxZEbYsy2E
-         R9QaLxsNvhevrheiXle6wWZdWd4ShZ4E5omVHoZRbLTxUpYJ/G7y12RypOl2aKJi3Osl
-         Lr+E0uLE9bzXCx/Q+uRxIRBRTZKu+YxFgZpIKV0bVPZ/tkA7F2GQtoDfVsvLPihjuv4d
-         1dfg==
-X-Forwarded-Encrypted: i=1; AJvYcCW68/oU57xIQAwQnh1mnMl8vxiMCEPsPaZF0elDjIepK28Ja/2+B8ngCKmL8hOPYzHSEwNIx3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSEJawo2FMpk1+PSk1lz2pV7qtJaj57+cxTfq+hBpDN1xy6/my
-	5RvsmuTXysNqga8AE+FTLc5eMx41icsBtnLwGlsmV2xuHSaqmKxOvmZ84XCp3Q==
-X-Google-Smtp-Source: AGHT+IFeCD8ZVgWdH34gSgJYIxjLsEKdeBaXUMar4RlXXY3UJD97gcwnL5d0iQyeGaj7c8TVzztT4w==
-X-Received: by 2002:a05:6870:50c:b0:288:6644:9c1c with SMTP id 586e51a60fabf-2962dc7dbe7mr4863024fac.6.1731719731855;
-        Fri, 15 Nov 2024 17:15:31 -0800 (PST)
+        bh=5G9v5idvngpVVbVWYeTOgnhwaczVG7ZO7E+ci5v9gPk=;
+        b=kcXhxYsBozcxWABQ7A/dAgV1PuGdKZ6OmUa+l4VPV0SuIDfVIlAvHzpvYnXlt7WxnW
+         RatVMHctX560YC3wcZYi3BrzU8pDd8/tqbaVAIvjNfRDTcH5tEQ+8MZNTSeO+jDJEmNP
+         Sik1wLIz+kkIoECdddlGJTy7IdeNwWQeeW7heIui1qGYa2iG/JADhKLmhkcyCvIBk/ji
+         S3px5intmfeSjb4c/8CMfsI25bztxM7vp5nM5qvIca01lVSvnYdwJo72PFAwkPEmb3Uz
+         120GOBnYVt0lmpTq31t6FLLnqB29g2esuAXFr6i47ztRMEq+i9kcaPEJhKBAoX4cGYN4
+         fzcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaHaxcvcpTVEoUqmxOmKAUxCiPRb0xdy73lzT8I0gzX9gVCwO9qK75F/B6f2zzbCZcBDbpgds=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTYSI+U+lMSa5+Yr3fwlSadCIGW3pkGYIQ/HA6v+OBA/me1WTL
+	8nj7tqB4h7M7/KGAt2Ylf8fYpNWf7//G2VXpJP+2x7WuGOwbS5hUwSp7397xLg==
+X-Google-Smtp-Source: AGHT+IEWc+wlunTzrsI5c65XXRyz//87jPEgvtqfK7vhTML3CHq0ByVXCrQTL8TaORbfZcuR68uHxw==
+X-Received: by 2002:a05:6808:1b99:b0:3e5:e72e:17c8 with SMTP id 5614622812f47-3e7bc7d31e3mr5511067b6e.21.1731720701418;
+        Fri, 15 Nov 2024 17:31:41 -0800 (PST)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a781a1b5csm980115a34.48.2024.11.15.17.15.29
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5eeabdbdb0dsm1006415eaf.42.2024.11.15.17.31.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 17:15:30 -0800 (PST)
-Date: Fri, 15 Nov 2024 17:14:43 -0800 (PST)
+        Fri, 15 Nov 2024 17:31:40 -0800 (PST)
+Date: Fri, 15 Nov 2024 17:31:38 -0800 (PST)
 From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: mm-commits@vger.kernel.org, yuzhao@google.com, stable@vger.kernel.org, 
-    hughd@google.com, chuck.lever@oracle.com, aha310510@gmail.com
-Subject: Re: + mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch added
- to mm-hotfixes-unstable branch
-In-Reply-To: <20241116010055.48A67C4CECF@smtp.kernel.org>
-Message-ID: <313876af-1755-7a86-60a2-678ffcf34bea@google.com>
-References: <20241116010055.48A67C4CECF@smtp.kernel.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+cc: Jeongjun Park <aha310510@gmail.com>, akpm@linux-foundation.org, 
+    stable@vger.kernel.org, regressions@lists.linux.dev, 
+    linux-nfs@vger.kernel.org, hughd@google.com, yuzhao@google.com
+Subject: Re: tmpfs hang after v6.12-rc6
+In-Reply-To: <ZzeQ1m3xIjrbUMDv@tissot.1015granger.net>
+Message-ID: <b40e7156-7500-5268-4c3d-c61a6382d1f0@google.com>
+References: <ZzdxKF39VEmXSSyN@tissot.1015granger.net> <Zzd12OGPDnZTMZ6t@tissot.1015granger.net> <CAO9qdTGLn6QWJg71Ad2xcobiTHE5ovoUxSqvrDDrE_i1+uqUQw@mail.gmail.com> <Zzd5YaI99+hieQV+@tissot.1015granger.net> <CAO9qdTEaYa639ebHX8Qd0_FqOZUZLc_JvYNyxepUthGyDqw_Bw@mail.gmail.com>
+ <ZzeQ1m3xIjrbUMDv@tissot.1015granger.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,75 +84,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 
-On Fri, 15 Nov 2024, Andrew Morton wrote:
+On Fri, 15 Nov 2024, Chuck Lever wrote:
 > 
-> The patch titled
->      Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
->      mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
+> As I said before, I've failed to find any file system getattr method
+> that explicitly takes the inode's semaphore around a
+> generic_fillattr() call. My understanding is that these methods
+> assume that their caller handles appropriate serialization.
+> Therefore, taking the inode semaphore at all in shmem_getattr()
+> seems to me to be the wrong approach entirely.
 > 
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
+> The point of reverting immediately is that any fix can't possibly
+> get the review and testing it deserves three days before v6.12
+> becomes final. Also, it's not clear what the rush to fix the
+> KCSAN splat is; according to the Fixes: tag, this issue has been
+> present for years without causing overt problems. It doesn't feel
+> like this change belongs in an -rc in the first place.
 > 
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> 
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
-> 
-> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-> 
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
-> 
-> ------------------------------------------------------
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-> Date: Fri Nov 15 04:57:24 PM PST 2024
-> 
-> Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
-> suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
-> NFS.
-> 
-> Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
-> Fixes: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net
-> Cc: Chuck Lever <chuck.lever@oracle.com>
-> Cc: Hugh Dickins <hughd@google.com>
+> Please revert d949d1d14fa2, then let's discuss a proper fix in a
+> separate thread. Thanks!
 
-Acked-by: Hugh Dickins <hughd@google.com>
+Thanks so much for reporting this issue, Chuck: just in time.
 
-Thanks Andrew, I was just in the course of preparing the same
-to rush to Linus: I'll leave that to you now.
+I agree abso-lutely with you: I was just preparing a revert,
+when I saw that akpm is already on it: great, thanks Andrew.
 
-> Cc: Jeongjun Park <aha310510@gmail.com>
-> Cc: Yu Zhao <yuzhao@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->  mm/shmem.c |    2 --
->  1 file changed, 2 deletions(-)
-> 
-> --- a/mm/shmem.c~mm-revert-mm-shmem-fix-data-race-in-shmem_getattr
-> +++ a/mm/shmem.c
-> @@ -1166,9 +1166,7 @@ static int shmem_getattr(struct mnt_idma
->  	stat->attributes_mask |= (STATX_ATTR_APPEND |
->  			STATX_ATTR_IMMUTABLE |
->  			STATX_ATTR_NODUMP);
-> -	inode_lock_shared(inode);
->  	generic_fillattr(idmap, request_mask, inode, stat);
-> -	inode_unlock_shared(inode);
->  
->  	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
->  		stat->blksize = HPAGE_PMD_SIZE;
-> _
-> 
-> Patches currently in -mm which might be from akpm@linux-foundation.org are
-> 
-> fs-proc-vmcorec-fix-warning-when-config_mmu=n.patch
-> mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
+I was not very keen to see that locking added, just to silence a syzbot
+sanitizer splat: added where there has never been any practical problem
+(and the result of any stat immediately stale anyway).  I was hoping we
+might get a performance regression reported, but a hang serves better!
+
+If there's a "data_race"-like annotation that can be added to silence
+the sanitizer, okay.  But more locking?  I don't think so.
+
+Hugh
 
