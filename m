@@ -1,80 +1,101 @@
-Return-Path: <stable+bounces-93658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81769D0008
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 18:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90749D0068
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 19:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE2A2827C2
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 17:20:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F061282CDC
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 18:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A021418FC79;
-	Sat, 16 Nov 2024 17:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="j3R2cqRp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E309E191484;
+	Sat, 16 Nov 2024 18:14:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2A618CC10;
-	Sat, 16 Nov 2024 17:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CA18C008;
+	Sat, 16 Nov 2024 18:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731777633; cv=none; b=E7rCj+ynenTPwMeOoNT9kzct8eaeaDTvTJJcvGcJtdHn8WykvVUH7RRYTYtmJcnXC+Fqvh2/v2Mz+AnGUToqGKfujia+h60B39L68r/0/L3/FfirMgCW3+NnZCM/TH3IayLzpUzdRZw8PCdueImYCZPkvgWK5XCRPAs+m2a5zn8=
+	t=1731780848; cv=none; b=P+Ix/IvjQn7HXF7JKdcYzdBr/aKsn8JP/NVPB10ogeRFEYhKBVND4M9bTNnCddTifIMVRC2dbMMnQetVIkpw8dphBkRDjO53mLcXaPYB2xAIWKOkggtFaTMMNE2NglnSQNR04B/RswtZcCsenJNkEwEZ5dr3R9rWQ0brizA9KLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731777633; c=relaxed/simple;
-	bh=H5yKHa85K/kN38MCbIEu0HaXLqb/id9+omWJt6O4sx0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=N1kBTk39FPCydmzvLtjyRAKvnIEyPTLxZ2JHdc+6KCYvf7TEXzpIqy8Oi0KFBAV/JDai4dcgpOTcQJMtcKsJdJrBsHqN6KiZGAsTS7kHgNakSgya0HxQs4wAlYtc39la9fw98AOWCMNN0yU82Q/Oeo4BhrYDIyh56gKzYgCtz6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=j3R2cqRp; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 0BEF82064B00; Sat, 16 Nov 2024 09:20:31 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0BEF82064B00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1731777631;
-	bh=H5yKHa85K/kN38MCbIEu0HaXLqb/id9+omWJt6O4sx0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3R2cqRpPqxerISa6afFCeIz1VLriksU3K0Hv5DlJt4cmpDXDYRmQ6+CprmeD6Yfu
-	 xLeHc0t8rvqXoQ/efoQ9/d/OiSOZ5pgvzD1hHHC/0KdAxLoWtZ+P2tJX8ZZKXuZYu3
-	 gCoFJp5BzDXhpyPnGnXsj+rN11kVrnmES33VUWzg=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.1] 6.1.118-rc1 review
-Date: Sat, 16 Nov 2024 09:20:31 -0800
-Message-Id: <1731777631-4398-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20241115063722.599985562@linuxfoundation.org>
-References: <20241115063722.599985562@linuxfoundation.org>
+	s=arc-20240116; t=1731780848; c=relaxed/simple;
+	bh=wutFM95Qn/SMnTexyHi02FvWZAuVUbPjRsQUsE+e7QI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kw+pXAF9pI4Cqj95OWqxx11hbws390r3JOeJCUZeFKwXg4UjLJq82zSj2Pa2PiR+A12zY7pWULK8KRXWL8v7nq7x5cdotlMhrWRLH/itBNC0aBf0a3mRsi3GXGnQRsmvQg5AdlXqJzXFY06BCeZmGidfZrB/MxmaySVeA4Jal/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7f3e30a43f1so488248a12.1;
+        Sat, 16 Nov 2024 10:14:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731780846; x=1732385646;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J1e1UW6hqf95jCfFb5aQStBTNaWPrEdtbrOS31Hf7Mg=;
+        b=Qs8rCzyPXr5Io/mPlJppzfIbDQH81V3d+Q+tbAgG310/5ZctwRjkTqbkmCwVus6bMa
+         9R8hTDAplhDFivCbU7YrMLuyl1CnvolUySwafTTHcXOtiGjviaq6+32nnO5iF/w/nk2b
+         gGntVUgRkBrPmx1TqPkptfG072JsX0CxgFolyZKuutH3r4+tLN4NhHW70GuY7ONuuPoz
+         Si6d/q+LNdkpVc6LcFQ2jNyRS6JHpQ8HwUGjL3OtLk4bSemFobz+YT8STpuhYXSvBJ6L
+         7cBmhi7lOVhLKxkaird+0oNiOkaq0I5CxN//gjmfmeGx02zJicZlRhbcneLN9jQzf3or
+         kRoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdxMsPdoJX06H0dW6k3D/LYFOUpBhkeerc2/J3BqZnbniD09w7szzoO+mcqctpOsjqEOA4mA95@vger.kernel.org, AJvYcCXZsxNtoTnBkOtCSt9yEvVw5M1FgE5obuiaS5T08EMqe8SBr8vg0J+AuKfhDMeTBmlzgkcFsikYNr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ/+6atZuq1+XZpD90wJXfKwls3B1o40F6l+Mf3xbvdx9X9/KS
+	9vcAIedtBeZvtqwYkDcI2IxXl9G+aunGV8VLoFy7kGftwKBbJaEi
+X-Google-Smtp-Source: AGHT+IGpXnAC5gH8SSmmG2YEH6w3S1MiYVNR7bx1egZRMoNZgH5tRDPD9rh8ScJOZzeKVJH3coknIA==
+X-Received: by 2002:a05:6a20:7f81:b0:1db:e3c7:9975 with SMTP id adf61e73a8af0-1dc90b237e7mr9948246637.15.1731780846417;
+        Sat, 16 Nov 2024 10:14:06 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f8c1c16c8csm3242592a12.7.2024.11.16.10.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 10:14:05 -0800 (PST)
+Date: Sun, 17 Nov 2024 03:14:03 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH] PCI: dwc: ep: Fix advertised resizable BAR size again
+Message-ID: <20241116181403.GA890334@rocinante>
+References: <20241116005950.2480427-2-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241116005950.2480427-2-cassel@kernel.org>
 
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+Hello,
 
+On 24-11-16 01:59:51, Niklas Cassel wrote:
+> The advertised resizable BAR size was fixed in commit 72e34b8593e0 ("PCI:
+> dwc: endpoint: Fix advertised resizable BAR size").
+> 
+> Commit 867ab111b242 ("PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API
+> to handle Link Down event") was included shortly after this, and moved the
+> code to another function. When the code was moved, this fix was mistakenly
+> lost.
+> 
+> According to the spec, it is illegal to not have a bit set in
+> PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
+> 
+> Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
+> 1 MB BAR size.
 
+Applied to controller/dwc, thank you!
 
+[01/01] PCI: dwc: ep: Fix advertised resizable BAR size regression
+        https://git.kernel.org/pci/pci/c/ead24c08af48
 
-Thanks,
-Hardik
+	Krzysztof
 
