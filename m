@@ -1,267 +1,241 @@
-Return-Path: <stable+bounces-93652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4AF9CFF85
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 16:32:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5369CFFB1
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 16:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF60B23FA3
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 15:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E8BA1F235FB
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 15:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F6A3EA76;
-	Sat, 16 Nov 2024 15:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B395417E010;
+	Sat, 16 Nov 2024 15:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ULFh/cmT"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Yd5tjWPi"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D75F18027;
-	Sat, 16 Nov 2024 15:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9804F18052;
+	Sat, 16 Nov 2024 15:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731771134; cv=none; b=tcIKGoGTCbP7Lj2pCyLtrPlVK4QeglBT3rFMEXGneowvi5NKwOWu2OPbSzhiAqSMyrHfe07px/reJoqJS6dt+kgLmT3Y0vG4FeKIsZozdKl/uusV2Up5k1sN97XXeBAkBgvaqUq7InFrefG4mzv6hK3F/WR/V4S38Z2Dc7Pfgd4=
+	t=1731772226; cv=none; b=nbJWJac3S7ra3Oahapsrd0zmXKmb/QY+5e97ASbRkMB+v7fNIEv+/cxzge/h+STYfAB+VI5SYTrutErsWzRkWkZGYFV5sxxooVOKR109g8LjAN6+0u01MxgBn1Cuvf6ZFCHAYfBGls5GorUaZw9n+mI9EU+BLyV6UwPXdEk++UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731771134; c=relaxed/simple;
-	bh=QxODOAmZsz6lFG6XlGiWsYink+useHRrpP5WdafDBCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIAQTxRQQOIp65LVzzd6amJhykzFTxxf6S6e8wrJDlmH2f3U6rinsa+Gd/amnp8fGnU+itJ0V6iMTEKYv5swLaymDQjUEqLVU2QW65w3gc3k5n8Vd+XRQ6a1C7n2N4gnaekj+cGuXUvqwYJ7bwYt8aarBBE6OxGW0x5AtyZVMPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ULFh/cmT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 573ED291;
-	Sat, 16 Nov 2024 16:31:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1731771108;
-	bh=QxODOAmZsz6lFG6XlGiWsYink+useHRrpP5WdafDBCI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULFh/cmTp2mGMoXovuWtSoH1Lwel/PEzLHgbRxBmRTlF0sMxqXLxpiuyveN11F8KM
-	 /iroFpIH5MTVmObpF9HP2UQ9C91p0G9EXNfWNO+QoHvm7Z2e6p6ZqImWEIlN/p7gCy
-	 N7+jA6TvNmfUYyvKxMoOY1LHn1LpASr1QwlWX1YE=
-Date: Sat, 16 Nov 2024 17:31:55 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>, linux-renesas-soc@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] drm: adv7511: Fix use-after-free in
- adv7533_attach_dsi()
-Message-ID: <20241116153155.GA12409@pendragon.ideasonboard.com>
-References: <20241116125415.30799-1-biju.das.jz@bp.renesas.com>
- <20241116125415.30799-2-biju.das.jz@bp.renesas.com>
+	s=arc-20240116; t=1731772226; c=relaxed/simple;
+	bh=wdABmWvmIPhgFkjip+5WZZhugtbvG99NFjnrsK3+dkU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=JUEs5gFVX450YjORUFYMZhfrMeKOnEDMiixH5QTuLyGNobWTDPJM3O9TaQu4qNLAdWcP9VKxG3vjjxEIcY3NqlJ95z3QBlcKb8I0AbWPJ2cH3ivZNo7v/mGcXY456dZq8YyO9fHk8JcEqMG0LgXwgVNKzEo2JN/hj9iNv4JPBGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Yd5tjWPi; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AGEN8Qx021009;
+	Sat, 16 Nov 2024 15:49:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=eb5NEXVzD8nXWbaNzThWpx
+	hQktIsdJ6cJpLZpuDHR0o=; b=Yd5tjWPiioyJhhvJd92kojHBwR1fV0F9bwW2NY
+	BUO2gVF1kweKcrBA+gjDN5FCGXy2jsukalxqtqulKVEWdUd8rh73odEn40XnZaGV
+	vxAfhSL/jsc7y3ojtBohXLXkbJT/5NlyfMq9XwcMk0Q+2zw+gk/a3VuzIGBWCg0M
+	7JnVK3z/QrKNvGAY8fzPAFkSEqiLK/GXLcvp8jEm+3hX/nqL+73keUoGq4KZCQOK
+	oUh6RbE/fQxh0Fs6Q5xaGv3FS3B2XZoQtChrqHItttwtuvUYXcp6pAxs712px5JP
+	bpRlA7tl5Adav5ucNZ/t0Wj8ZqwrF9tS+Z5/LQMggDbZ8d4w==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42xksqgxxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Nov 2024 15:49:58 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AGFnvs8012427
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 16 Nov 2024 15:49:57 GMT
+Received: from hu-zijuhu-lv.qualcomm.com (10.49.16.6) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sat, 16 Nov 2024 07:49:56 -0800
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+Date: Sat, 16 Nov 2024 07:49:23 -0800
+Subject: [PATCH v2] Bluetooth: qca: Support downloading board ID specific
+ NVM for WCN6855
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241116125415.30799-2-biju.das.jz@bp.renesas.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAAK/OGcC/32NQQ7CIBREr9L8tZgCRdCV9zBNQ75g/0JaQbGm4
+ e5iD2Bm9SaZNyskF8klODUrRJcp0RQqiF0DONpwc4yulUG0ouOcS7ZwmYY3hoNRavC0MCVRaem
+ 9NtpAnc3R1XpTXvrKI6XnFD/bQ+a/9o8sc1ajrG+tFao74vnxIqSAe5zu0JdSvkrBk8+yAAAA
+To: Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz
+	<luiz.dentz@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "Steev
+ Klimaszewski" <steev@kali.org>
+CC: Paul Menzel <pmenzel@molgen.mpg.de>, Zijun Hu <zijun_hu@icloud.com>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Luiz
+ Augusto von Dentz" <luiz.von.dentz@intel.com>,
+        Bjorn Andersson
+	<bjorande@quicinc.com>,
+        "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>,
+        "Cheng
+ Jiang" <quic_chejiang@quicinc.com>,
+        Johan Hovold <johan@kernel.org>,
+        "Jens
+ Glathe" <jens.glathe@oldschoolsolutions.biz>,
+        <stable@vger.kernel.org>, "Johan Hovold" <johan+linaro@kernel.org>,
+        Zijun Hu <quic_zijuhu@quicinc.com>
+X-Mailer: b4 0.14.1
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: vSBH5XbeRvQPomDem-dl8sjvPxZoXU75
+X-Proofpoint-ORIG-GUID: vSBH5XbeRvQPomDem-dl8sjvPxZoXU75
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 adultscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 phishscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411160136
 
-Hi Biju,
+For WCN6855, board ID specific NVM needs to be downloaded once board ID
+is available, but the default NVM is always downloaded currently, and
+the wrong NVM causes poor RF performance which effects user experience.
 
-Thank you for the patch.
+Fix by downloading board ID specific NVM if board ID is available.
 
-On Sat, Nov 16, 2024 at 12:54:10PM +0000, Biju Das wrote:
-> The host_node pointer was assigned and freed in adv7533_parse_dt(), and
-> later, adv7533_attach_dsi() used the same. Fix this use-after-free issue
-> with the below changes:
-> 
->  1. Drop host_node from struct adv7511 and instead use a local pointer in
->     adv7511_probe().
->  2. Update adv7533_parse_dt() to return the host_node.
->  3. Pass the host_node as a parameter to adv7533_attach_dsi().
->  4. Call of_node_put() after use.
-> 
-> Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> ---
-> Changes in v4:
->  - Updated commit description.
->  - Dropped host_node from struct adv7511 and instead used a local pointer
->    in probe(). Also freeing of host_node pointer after use is done in
->    probe().
-> Changes in v3:
->  - Replace __free construct with readable of_node_put().
-> Changes in v2:
->  - Added the tag "Cc: stable@vger.kernel.org" in the sign-off area.
->  - Dropped Archit Taneja invalid Mail address
-> ---
->  drivers/gpu/drm/bridge/adv7511/adv7511.h     |  6 +++---
->  drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 22 ++++++++++++++------
->  drivers/gpu/drm/bridge/adv7511/adv7533.c     | 20 +++++++++---------
->  3 files changed, 29 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511.h b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-> index ec0b7f3d889c..9f3fae7cc597 100644
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7511.h
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-> @@ -383,7 +383,6 @@ struct adv7511 {
->  	struct regulator_bulk_data *supplies;
->  
->  	/* ADV7533 DSI RX related params */
-> -	struct device_node *host_node;
->  	struct mipi_dsi_device *dsi;
->  	u8 num_dsi_lanes;
->  	bool use_timing_gen;
-> @@ -417,8 +416,9 @@ enum drm_mode_status adv7533_mode_valid(struct adv7511 *adv,
->  					const struct drm_display_mode *mode);
->  int adv7533_patch_registers(struct adv7511 *adv);
->  int adv7533_patch_cec_registers(struct adv7511 *adv);
-> -int adv7533_attach_dsi(struct adv7511 *adv);
-> -int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv);
-> +int adv7533_attach_dsi(struct adv7511 *adv, struct device_node *host_node);
-> +struct device_node *adv7533_parse_dt(struct device_node *np,
-> +				     struct adv7511 *adv);
->  
->  #ifdef CONFIG_DRM_I2C_ADV7511_AUDIO
->  int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511);
-> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> index eb5919b38263..3f1f309791a5 100644
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> @@ -1209,6 +1209,7 @@ static int adv7511_parse_dt(struct device_node *np,
->  static int adv7511_probe(struct i2c_client *i2c)
->  {
->  	struct adv7511_link_config link_config;
-> +	struct device_node *host_node = NULL;
->  	struct adv7511 *adv7511;
->  	struct device *dev = &i2c->dev;
->  	unsigned int val;
-> @@ -1233,12 +1234,17 @@ static int adv7511_probe(struct i2c_client *i2c)
->  	if (ret && ret != -ENODEV)
->  		return ret;
->  
-> -	if (adv7511->info->link_config)
-> +	if (adv7511->info->link_config) {
->  		ret = adv7511_parse_dt(dev->of_node, &link_config);
-> -	else
-> -		ret = adv7533_parse_dt(dev->of_node, adv7511);
-> -	if (ret)
-> -		return ret;
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (adv7511->info->has_dsi) {
-> +		host_node = adv7533_parse_dt(dev->of_node, adv7511);
-> +		if (IS_ERR(host_node))
-> +			return PTR_ERR(host_node);
-> +	}
->  
->  	ret = adv7511_init_regulators(adv7511);
->  	if (ret)
+Cc: Bjorn Andersson <bjorande@quicinc.com>
+Cc: Aiqun Yu (Maria) <quic_aiquny@quicinc.com>
+Cc: Cheng Jiang <quic_chejiang@quicinc.com>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+Cc: Steev Klimaszewski <steev@kali.org>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>
+Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+Cc: stable@vger.kernel.org # 6.4
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Thank you Paul, Jens, Steev, Johan, Luiz for code review, various
+verification, comments and suggestions. these comments and suggestions
+are very good, and all of them are taken by this v2 patch.
 
-host_node is leaked here.
+Regarding the variant 'g', sorry for that i can say nothing due to
+confidential information (CCI), but fortunately, we don't need to
+care about its difference against one without 'g' from BT host
+perspective, qca_get_hsp_nvm_name_generic() shows how to map BT chip
+to firmware.
 
-> @@ -1343,9 +1349,11 @@ static int adv7511_probe(struct i2c_client *i2c)
->  	}
->  
->  	if (adv7511->info->has_dsi) {
-> -		ret = adv7533_attach_dsi(adv7511);
-> +		ret = adv7533_attach_dsi(adv7511, host_node);
->  		if (ret)
->  			goto err_unregister_audio;
-> +
-> +		of_node_put(host_node);
->  	}
->  
->  	return 0;
-> @@ -1362,6 +1370,8 @@ static int adv7511_probe(struct i2c_client *i2c)
->  err_i2c_unregister_edid:
->  	i2c_unregister_device(adv7511->i2c_edid);
->  uninit_regulators:
-> +	if (host_node)
-> +		of_node_put(host_node);
+I will help to backport it to LTS kernels ASAP once this commit
+is mainlined.
+---
+Changes in v2:
+- Correct subject and commit message
+- Temporarily add nvm fallback logic to speed up backport.
+— Add fix/stable tags as suggested by Luiz and Johan
+- Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15af0aa2549c@quicinc.com
+---
+ drivers/bluetooth/btqca.c | 44 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 3 deletions(-)
 
-The error label and the error handling code are now out of sync, making
-the code harder to read and more error-prone.
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index dfbbac92242a..ddfe7e3c9b50 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -717,6 +717,29 @@ static void qca_generate_hsp_nvm_name(char *fwname, size_t max_size,
+ 		snprintf(fwname, max_size, "qca/hpnv%02x%s.%x", rom_ver, variant, bid);
+ }
+ 
++static void qca_get_hsp_nvm_name_generic(struct qca_fw_config *cfg,
++					 struct qca_btsoc_version ver,
++					 u8 rom_ver, u16 bid)
++{
++	const char *variant;
++
++	/* hsp gf chip */
++	if ((le32_to_cpu(ver.soc_id) & QCA_HSP_GF_SOC_MASK) == QCA_HSP_GF_SOC_ID)
++		variant = "g";
++	else
++		variant = "";
++
++	if (bid == 0x0)
++		snprintf(cfg->fwname, sizeof(cfg->fwname), "qca/hpnv%02x%s.bin",
++			 rom_ver, variant);
++	else if (bid & 0xff00)
++		snprintf(cfg->fwname, sizeof(cfg->fwname), "qca/hpnv%02x%s.b%x",
++			 rom_ver, variant, bid);
++	else
++		snprintf(cfg->fwname, sizeof(cfg->fwname), "qca/hpnv%02x%s.b%02x",
++			 rom_ver, variant, bid);
++}
++
+ static inline void qca_get_nvm_name_generic(struct qca_fw_config *cfg,
+ 					    const char *stem, u8 rom_ver, u16 bid)
+ {
+@@ -810,8 +833,15 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 	/* Give the controller some time to get ready to receive the NVM */
+ 	msleep(10);
+ 
+-	if (soc_type == QCA_QCA2066 || soc_type == QCA_WCN7850)
++	switch (soc_type) {
++	case QCA_QCA2066:
++	case QCA_WCN6855:
++	case QCA_WCN7850:
+ 		qca_read_fw_board_id(hdev, &boardid);
++		break;
++	default:
++		break;
++	}
+ 
+ 	/* Download NVM configuration */
+ 	config.type = TLV_TYPE_NVM;
+@@ -848,8 +878,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 				 "qca/msnv%02x.bin", rom_ver);
+ 			break;
+ 		case QCA_WCN6855:
+-			snprintf(config.fwname, sizeof(config.fwname),
+-				 "qca/hpnv%02x.bin", rom_ver);
++			qca_get_hsp_nvm_name_generic(&config, ver, rom_ver, boardid);
+ 			break;
+ 		case QCA_WCN7850:
+ 			qca_get_nvm_name_generic(&config, "hmt", rom_ver, boardid);
+@@ -861,9 +890,18 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		}
+ 	}
+ 
++download_nvm:
+ 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
+ 	if (err < 0) {
+ 		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
++		if (err == -ENOENT && boardid != 0 &&
++		    soc_type == QCA_WCN6855) {
++			boardid = 0;
++			qca_get_hsp_nvm_name_generic(&config, ver,
++						     rom_ver, boardid);
++			bt_dev_warn(hdev, "QCA fallback to default NVM");
++			goto download_nvm;
++		}
+ 		return err;
+ 	}
+ 
 
-Error handling is why I proposed keeping of_node in the adv7511
-structure, and calling of_node_put() in adv7511_remove() and at the end
-of the error handling path in adv7511_probe().
+---
+base-commit: e88b020190bf5bc3e7ce5bd8003fc39b23cc95fe
+change-id: 20241113-x13s_wcn6855_fix-53c573ff7878
 
->  	adv7511_uninit_regulators(adv7511);
->  
->  	return ret;
-> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> index 4481489aaf5e..5d0e55ef4028 100644
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> @@ -131,7 +131,7 @@ int adv7533_patch_cec_registers(struct adv7511 *adv)
->  				    ARRAY_SIZE(adv7533_cec_fixed_registers));
->  }
->  
-> -int adv7533_attach_dsi(struct adv7511 *adv)
-> +int adv7533_attach_dsi(struct adv7511 *adv, struct device_node *host_node)
->  {
->  	struct device *dev = &adv->i2c_main->dev;
->  	struct mipi_dsi_host *host;
-> @@ -142,7 +142,7 @@ int adv7533_attach_dsi(struct adv7511 *adv)
->  						   .node = NULL,
->  						 };
->  
-> -	host = of_find_mipi_dsi_host_by_node(adv->host_node);
-> +	host = of_find_mipi_dsi_host_by_node(host_node);
->  	if (!host)
->  		return dev_err_probe(dev, -EPROBE_DEFER,
->  				     "failed to find dsi host\n");
-> @@ -166,22 +166,22 @@ int adv7533_attach_dsi(struct adv7511 *adv)
->  	return 0;
->  }
->  
-> -int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
-> +struct device_node *adv7533_parse_dt(struct device_node *np,
-> +				     struct adv7511 *adv)
->  {
-> +	struct device_node *host_node;
->  	u32 num_lanes;
->  
->  	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
->  
->  	if (num_lanes < 1 || num_lanes > 4)
-> -		return -EINVAL;
-> +		return ERR_PTR(-EINVAL);
->  
->  	adv->num_dsi_lanes = num_lanes;
->  
-> -	adv->host_node = of_graph_get_remote_node(np, 0, 0);
-> -	if (!adv->host_node)
-> -		return -ENODEV;
-> -
-> -	of_node_put(adv->host_node);
-> +	host_node = of_graph_get_remote_node(np, 0, 0);
-> +	if (!host_node)
-> +		return ERR_PTR(-ENODEV);
->  
->  	adv->use_timing_gen = !of_property_read_bool(np,
->  						"adi,disable-timing-generator");
-> @@ -190,5 +190,5 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
->  	adv->rgb = true;
->  	adv->embedded_sync = false;
->  
-> -	return 0;
-> +	return host_node;
->  }
-
+Best regards,
 -- 
-Regards,
+Zijun Hu <quic_zijuhu@quicinc.com>
 
-Laurent Pinchart
 
