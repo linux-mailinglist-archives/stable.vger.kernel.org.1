@@ -1,233 +1,215 @@
-Return-Path: <stable+bounces-93629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06439CFD4F
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 09:23:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709D99CFD63
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 09:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07260B2551B
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 08:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007241F231ED
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 08:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6440A193079;
-	Sat, 16 Nov 2024 08:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8B1191F92;
+	Sat, 16 Nov 2024 08:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ULc7w4AD"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="W8yOUEL4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CB5192D8F
-	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 08:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFE9190678
+	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 08:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731745411; cv=none; b=iJhALRbyxzKQwjt5BAS9cZua2WiVJAuidFZijVlfOxZipoa1j5S2NtxkG62PocnDihoGDlWcxwJV6XVVtQFtwzxv0VCcUWfvil3oyGyYRVLomzck3TuqIASD7iLSKA00uneZOSVWPsI+nNLkD3eaz3vQ24elQdJU3yPIcqKwR74=
+	t=1731747095; cv=none; b=sVrrP6O6JuaYPdabDXDoZC2Ug6MG0ksYy6uyRF9Z44/ChOufsOZwYpQt/u6Qpw5MoKi3L+Rd8GYT9JUm+/gTA9GiL/oVtWzZssud/lwzs3BHf//qSoTmGEwVCSu9hncjTHE9VJTUzpQeYF6LMlPI2LZE5T5a7IocUuWIwJzMoYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731745411; c=relaxed/simple;
-	bh=/vAXpvQJcUvvaJpB0creFK6Tfqr0lDfjuAa3ofKrd2g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gpv+pN9Z45FlCpR7VKWKU7+vW0G746WT2s21+F3j82xFnM9P4jzY+jEbVFubdYRCPnVEIi/7INAWSGQMWMv75dJU+0nxsn1TBPczhnroJowNXcx29raOUkez1WmgbtlIff0kBnclPkheigaDeIdQ7+86FNA8r0BIHUbT6lNjp5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ULc7w4AD; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5146e6531c8so672041e0c.0
-        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 00:23:29 -0800 (PST)
+	s=arc-20240116; t=1731747095; c=relaxed/simple;
+	bh=f6mHnkDPvOKbkgTDa/SxzETiajleiUT+YIc+lsKI6jI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ofI3LbuNafnF7it3k/wxsDtIXLy+BBTTl8tc3abKZg/AoWwe865XXiynJrOEbytNFJ3klURyNw2BYVP7m8a+uEUlnC4E0QY6LQcGusg2waf1z9j+WccAZUQn47rvDmwZYNqKL8LnkPCocZ9VT6WvrqOu3vXtJdIlohfFKKXlzF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=W8yOUEL4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea14c863c1so308221a91.0
+        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 00:51:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731745408; x=1732350208; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jL+EGpzKO3rkWQkX1EtEQ2OUgQqQWIQ+psOwfG+IX20=;
-        b=ULc7w4ADIC50yySiIJIKzkFUtrgJKZMIfPoomsmMKxTm/ypPBzcjkOQLUEUgQ4CyZ4
-         KYA8oGrCSMpdmFpgKo6ITiXBIc9oYCwFPTKiWxjHoVPX0I0mxwBX98KRlQsVpvPVcJnF
-         yfovS11JmC/DRyOSfWtxWUwQVVKNvON2EIQZM8guqT3Kd4zzeQKjOYuEIrkcJMjVxUu7
-         AGCRYsQOXIOYIrRMGpP5AsTkaB37PMD+Dcs28n9p3oNxZ1EgT2R9s7DZHpfUzaG+3Plz
-         +vUep510SjCn8vpN+jV4OJJ0nLGdoq/irwmY4Tt7xixPXup+Idub2hc+abCXTxMInkPW
-         Z0+w==
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1731747092; x=1732351892; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=El+mIE1puynndiHCyRWzcjoNn60mpCRnTuzxZYTOXRU=;
+        b=W8yOUEL4wIDiyBJ9QBzQlA5Zc/r32nOcABKKclOUXFqHQKi0FWWTdJPtL+/epKSgG6
+         q2i3KgKppnUOyuNfiyWgu+cGPM7AhESU1L7KREvoX/ax14kLrFaMv/9Guxrx5h1Edd7w
+         rNcV/dobJ/RFHdQOAlskd++yoNx8RJeWEAPcL1eT5BMBlZSS3NN0KiIfvldBBZkSWB61
+         cBg5NgqtqyNfLW+DauR6FcSjffBZ4iYsCtrVmx14Pj5qierm8UetK0ouMoY3o4TNcR6m
+         sNtIzNvRpPfiDj4/hBiGGKc7xcj6hcvfs0IbWipIyEXHW4DfU+uaHrv11wusV3e8WgZc
+         PATQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731745408; x=1732350208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jL+EGpzKO3rkWQkX1EtEQ2OUgQqQWIQ+psOwfG+IX20=;
-        b=Wlvi2n6arXEIceQ94M2UToF76STXr7QvN8b5QAdTs24CPI4iRe+jG/SEZ2veotlAH9
-         Sbo6qNfDns3FSPUKn/tEMFXYVduLH+iWR4aqcU+zIOrALanT1Z5IsraL9c7VzF4OAsUf
-         wOK8ypjzyldd4esLQi+36zWA8tprBHq1oA8nvSbwpYoqTqMg7H3Kl4CInw2UsWyLwiiJ
-         sIK4QaQ1BFC758g4GhVPPl3aoRE+zfwYmdHe60f4V+JwkHp6kWzjYvBl2TqE5rDS9nV6
-         xZDwpdTNARwzVUMtJU3MFcoR1QAOFZk9250ZboAcG7i7Dz0yCPb72Lte8ysCjtbPLMmC
-         lBgg==
-X-Gm-Message-State: AOJu0Yy1AdckCz/eyjemZWSxvMh57nwpFx/5sfkVdN0EuQXnNCPKT1ln
-	iVGeri2XHiS8JpWAIcbOL9pn5BEaIRcxWeY6X2ThH7EnsugI8KKx40DpQ+WmN7OeVcUWnu6zBq8
-	Zcd/cXStdilo+6WCZmZnNjbXkqPqKZgRSYz0e/Q==
-X-Google-Smtp-Source: AGHT+IFfsrHAKWiUgxHG1qmyvjcG0JFl63uHkfBHMWAOjZI7ZUVNK9whEoSXc1qn9TgWJnXz4SICKB+CG8m7VOHh2aM=
-X-Received: by 2002:a05:6122:1794:b0:50d:3ec1:1546 with SMTP id
- 71dfb90a1353d-51477f148b9mr6219285e0c.4.1731745408187; Sat, 16 Nov 2024
- 00:23:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731747092; x=1732351892;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=El+mIE1puynndiHCyRWzcjoNn60mpCRnTuzxZYTOXRU=;
+        b=mROKZYvNre1zRd02MhafhDn27m6KIh1zBcTWAJh01WZsId368Gp6769lCNiOrVwXAZ
+         MqIIHmQ7chWbT9h6JAAUabaOgfQXsG5rzZB+Xmf4MjMGLh7AuZkobB0i6/DCJLPT4Kev
+         bdD06wZJKAK+tY6hg4UeeF1mCOXvczTFF+gMPGIpd2dfykqIfqLrLruRW2JwDQlZ6pJq
+         GNvrKfTBllvF1cY1wEW3WdXqiBLH5MXbahxRpUPXHtm/6q02j0M8XZ0dnQkDyxvORRT/
+         oLt1SKVKeCDpR0VXp9KOQbMfo2fveFD5K0krCEgsZyP0XpI1qFpTbniRRZ5WaIAPwEOG
+         lFWw==
+X-Forwarded-Encrypted: i=1; AJvYcCXY+Y2M5f/0qIt9vpnrU8uyZq23M8Q3AVrmE7AT/Ct5VhzydrjDvXWqxvxkYeS5VyA9rBgEU9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5iNCMdMABzriAWSHnY+0FoW2daSHjwIXJNLdkqgQ5d+ptbAc8
+	R818S8YcIaxqYtQmxaaNnABvhi+rKaqkIoQZrzP87nSIqgs8XaKarSOyXx8GpY8=
+X-Google-Smtp-Source: AGHT+IHc63oodTjpxWpthwwhNXH88hivRIVdpBQX07Hchw+AjfD5u+lb06nqQJ1kDu8r0VMR3t7opg==
+X-Received: by 2002:a17:90b:4c07:b0:2e2:d7db:41fa with SMTP id 98e67ed59e1d1-2ea15596d00mr7683908a91.33.1731747092280;
+        Sat, 16 Nov 2024 00:51:32 -0800 (PST)
+Received: from localhost.localdomain (133-32-133-31.east.xps.vectant.ne.jp. [133.32.133.31])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f45fa4sm23863285ad.185.2024.11.16.00.51.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 00:51:31 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: heikki.krogerus@linux.intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: typec: anx7411: fix fwnode_handle reference leak
+Date: Sat, 16 Nov 2024 17:51:24 +0900
+Message-Id: <20241116085124.3832328-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115063722.962047137@linuxfoundation.org>
-In-Reply-To: <20241115063722.962047137@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Sat, 16 Nov 2024 13:53:16 +0530
-Message-ID: <CA+G9fYuZYe7_AfPgjPMqPL9xgAq90kA5T272B3irJ-hLiM0Acg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/48] 6.6.62-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 15 Nov 2024 at 12:21, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.62 release.
-> There are 48 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.62-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+An fwnode_handle is obtained with an incremented refcount in
+anx7411_typec_port_probe(), however the refcount is not decremented in
+the error path or in the .remove() function. Therefore call
+fwnode_handle_put() accordingly.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Fixes: fe6d8a9c8e64 ("usb: typec: anx7411: Add Analogix PD ANX7411 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/usb/typec/anx7411.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/usb/typec/anx7411.c b/drivers/usb/typec/anx7411.c
+index 7e61c3ac8777..d3c5d8f410ca 100644
+--- a/drivers/usb/typec/anx7411.c
++++ b/drivers/usb/typec/anx7411.c
+@@ -1023,6 +1023,12 @@ static void anx7411_port_unregister_altmodes(struct typec_altmode **adev)
+ 		}
+ }
+ 
++static void anx7411_port_unregister(struct typec_params *typecp)
++{
++	fwnode_handle_put(typecp->caps.fwnode);
++	anx7411_port_unregister_altmodes(typecp->port_amode);
++}
++
+ static int anx7411_usb_mux_set(struct typec_mux_dev *mux,
+ 			       struct typec_mux_state *state)
+ {
+@@ -1158,34 +1164,34 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
+ 	ret = fwnode_property_read_string(fwnode, "power-role", &buf);
+ 	if (ret) {
+ 		dev_err(dev, "power-role not found: %d\n", ret);
+-		return ret;
++		goto put_fwnode;
+ 	}
+ 
+ 	ret = typec_find_port_power_role(buf);
+ 	if (ret < 0)
+-		return ret;
++		goto put_fwnode;
+ 	cap->type = ret;
+ 
+ 	ret = fwnode_property_read_string(fwnode, "data-role", &buf);
+ 	if (ret) {
+ 		dev_err(dev, "data-role not found: %d\n", ret);
+-		return ret;
++		goto put_fwnode;
+ 	}
+ 
+ 	ret = typec_find_port_data_role(buf);
+ 	if (ret < 0)
+-		return ret;
++		goto put_fwnode;
+ 	cap->data = ret;
+ 
+ 	ret = fwnode_property_read_string(fwnode, "try-power-role", &buf);
+ 	if (ret) {
+ 		dev_err(dev, "try-power-role not found: %d\n", ret);
+-		return ret;
++		goto put_fwnode;
+ 	}
+ 
+ 	ret = typec_find_power_role(buf);
+ 	if (ret < 0)
+-		return ret;
++		goto put_fwnode;
+ 	cap->prefer_role = ret;
+ 
+ 	/* Get source pdos */
+@@ -1197,7 +1203,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
+ 						     typecp->src_pdo_nr);
+ 		if (ret < 0) {
+ 			dev_err(dev, "source cap validate failed: %d\n", ret);
+-			return -EINVAL;
++			goto put_fwnode;
+ 		}
+ 
+ 		typecp->caps_flags |= HAS_SOURCE_CAP;
+@@ -1211,7 +1217,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
+ 						     typecp->sink_pdo_nr);
+ 		if (ret < 0) {
+ 			dev_err(dev, "sink cap validate failed: %d\n", ret);
+-			return -EINVAL;
++			goto put_fwnode;
+ 		}
+ 
+ 		for (i = 0; i < typecp->sink_pdo_nr; i++) {
+@@ -1255,13 +1261,18 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
+ 		ret = PTR_ERR(ctx->typec.port);
+ 		ctx->typec.port = NULL;
+ 		dev_err(dev, "Failed to register type c port %d\n", ret);
+-		return ret;
++		goto put_fwnode;
+ 	}
+ 
+ 	typec_port_register_altmodes(ctx->typec.port, NULL, ctx,
+ 				     ctx->typec.port_amode,
+ 				     MAX_ALTMODE);
+ 	return 0;
++
++put_fwnode:
++	fwnode_handle_put(fwnode);
++
++	return ret;
+ }
+ 
+ static int anx7411_typec_check_connection(struct anx7411_data *ctx)
+@@ -1528,7 +1539,7 @@ static int anx7411_i2c_probe(struct i2c_client *client)
+ 
+ free_typec_port:
+ 	typec_unregister_port(plat->typec.port);
+-	anx7411_port_unregister_altmodes(plat->typec.port_amode);
++	anx7411_port_unregister(&plat->typec);
+ 
+ free_typec_switch:
+ 	anx7411_unregister_switch(plat);
+@@ -1562,7 +1573,7 @@ static void anx7411_i2c_remove(struct i2c_client *client)
+ 	if (plat->typec.port)
+ 		typec_unregister_port(plat->typec.port);
+ 
+-	anx7411_port_unregister_altmodes(plat->typec.port_amode);
++	anx7411_port_unregister(&plat->typec);
+ }
+ 
+ static const struct i2c_device_id anx7411_id[] = {
+-- 
+2.34.1
 
-## Build
-* kernel: 6.6.62-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 68a649492c1fa0ed80e347e707b68e57128fa3c7
-* git describe: v6.6.60-169-g68a649492c1f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.6=
-0-169-g68a649492c1f
-
-## Test Regressions (compared to v6.6.60-120-gba4164ffa865)
-
-## Metric Regressions (compared to v6.6.60-120-gba4164ffa865)
-
-## Test Fixes (compared to v6.6.60-120-gba4164ffa865)
-
-## Metric Fixes (compared to v6.6.60-120-gba4164ffa865)
-
-## Test result summary
-total: 149514, pass: 123228, fail: 1597, skip: 24596, xfail: 93
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 128 total, 128 passed, 0 failed
-* arm64: 40 total, 40 passed, 0 failed
-* i386: 27 total, 25 passed, 2 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 19 total, 19 passed, 0 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 32 total, 32 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
