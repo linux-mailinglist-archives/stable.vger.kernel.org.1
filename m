@@ -1,227 +1,243 @@
-Return-Path: <stable+bounces-93639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F05E9CFEE2
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 13:53:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9BD9CFEF4
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 13:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0059F28793C
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 12:53:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AECB1B229E9
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 12:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA0016631C;
-	Sat, 16 Nov 2024 12:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x5RN/HAT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0FD1922C6;
+	Sat, 16 Nov 2024 12:59:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9540218FC65
-	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 12:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6F7A47;
+	Sat, 16 Nov 2024 12:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731761600; cv=none; b=GfSEGJ72XYFErr5qWSiIQMvEljqXJe/OZIrd4AiyOtikjYWuhQNzlR8TEz+MqdRbsodnYexsiO5S0w+zTvUjxO6mIEPebkEqaDI+zB8AoNHIsjKkQJilDEQQCseR9g3mkyjExqwGtch5G9HygcnAYHKhc61EBDYPvyr/tF0ogIo=
+	t=1731761987; cv=none; b=crmRGdejoQqVbJJOSaFDrEVe/KbZJ5JmI7U0b06n9QRMrsWBtZDvdmpN9VTqyhPegUXgiaUVtcK8rkoyFqeSdHIwCFjFxucwL9JD7XuUnxOudAKpGlDb7A1KNbfAOoX0cdtt/p911UvsXoYrZwibYhg6m/IPYnqD4pJuP0RtIBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731761600; c=relaxed/simple;
-	bh=59otJXTX3TPHZSbpcdpyniMM4ZfEufZ2SuyYmnUp6pk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mH0vGCv6IPpIeDaZX1oRyu8hZmUOWFSKzkUvk/XgtemLM+ZClcbeXK9eq47Y/dihIMfku3oNjhavIfFf4BErxMRXIW/urK/0U2Mx1MCrSIYP850CY08CjgV9EYsd0eIfu5Pcr4ro6dkFDlavko6XZUJ04CLPqAwLJGwAJrWEzyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x5RN/HAT; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-50d525be53eso593025e0c.0
-        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 04:53:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731761596; x=1732366396; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AlNnVnxiQ0/Us6Qy9l4AWDK9nCRlBxYrSIXgIu4HdPo=;
-        b=x5RN/HATS32QGuFMptVoTfBlNR+DDBam1jmcoYcCcnGzLMxhf44nJDUIxsvpPdTBgD
-         Z+h3VX9Mc+m9jfSqchc1MbUAuT8czKpkhJPD7LR8KPCNxB8P7WDz8ZAeZ47Op0Qyr5NJ
-         5idVr1k7BEtn9GdIC3pI475Uti4qcCUMhhJhkROsM//acY57hN9m/FszFAdVSLiiRBDT
-         dBT//OpHZiAl4rJKUr+k5RhatycApolbDwAmV6zrAn7NTSZcYmEn0BQ/Sk0FV1m91h82
-         acdbppiY2CC7TTBAjF2OsN2v7tWsK5hy2Ez04+qUwPNmv7eifzS3pzKvvu+18DTrdzbL
-         a3Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731761596; x=1732366396;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AlNnVnxiQ0/Us6Qy9l4AWDK9nCRlBxYrSIXgIu4HdPo=;
-        b=TjVZqnDpNdGUExftscKdy8FfHqp+sgx5YxrLK/U6H0MFiZqsdbBuFf6pYo9NQIGgOI
-         34ePHw25EjCGdsCuhaUGUHmBn3OH5yD11d+bK8StX9KbOiH2ChfHK2fTFzfz1M8Ga1T5
-         e82F4Dd/udwESXgpIStGNHu/rYN5ggrRJ4BB9PIDcrXsP7mhqymLeoWLY9VGe4alxYQ9
-         0IfLAijm8MJD4504a7XyZHRfMQwGQ75cidqNiLE96/7Zk3GPI4v/sacnEW66BTp1Kyyc
-         odfWvtAqt6H7/auxsTJbsMG8j/oBwV/oE5Rkevnl2bZKGrmO5HhqQRPMcEyqWddXi/nx
-         KF8A==
-X-Gm-Message-State: AOJu0YxY7ZD+odbVMrSjfvDO6/wP04TEfjndQ/CjVY09RswZi7nqalrf
-	Is3cyTnC/96XIW5G2QVqOZFH99EriiU5hJPZoaPbwn7l9ZGCEdQZesEggSwkU5m20t99U+WVmwb
-	V/UI9orX3tM9TvhA7CVtRuM3sfmrQAyIC9fO15Q==
-X-Google-Smtp-Source: AGHT+IEhl/7zaJfBDAMgE7jr6T974RNihwhmyM3AqcuHj/rQo9P5BcBwkz6m6hlI0/17nFhK+cCIFmhp6AhxtaXefmo=
-X-Received: by 2002:a05:6102:dc6:b0:4a4:9363:b84c with SMTP id
- ada2fe7eead31-4ad62ab15bcmr6164221137.6.1731761596528; Sat, 16 Nov 2024
- 04:53:16 -0800 (PST)
+	s=arc-20240116; t=1731761987; c=relaxed/simple;
+	bh=NVgFw+SSpPSIvYU6uBDlHDa2fpEyehwmTmHD0H5B6OE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GSdOdK2UKZPpnf9GbtVMPBYpr6RyHocLC2u0+TDJRIPh8/O5WCAcu5kETgadJaQXtuctb+nN4Mm96xlXmyZtSuPNEOALrVhMiNKGGg7owem28QSFuXKH7okWgkNwdiLNUpZ42KYjN5s4aIAQvfeF2QOv5dnOqpbHiSWqi3A+6Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-IronPort-AV: E=Sophos;i="6.12,159,1728918000"; 
+   d="scan'208";a="225033474"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 16 Nov 2024 21:54:35 +0900
+Received: from localhost.localdomain (unknown [10.226.92.53])
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 845E240061A2;
+	Sat, 16 Nov 2024 21:54:23 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>,
+	linux-renesas-soc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/3] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
+Date: Sat, 16 Nov 2024 12:54:10 +0000
+Message-ID: <20241116125415.30799-2-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241116125415.30799-1-biju.das.jz@bp.renesas.com>
+References: <20241116125415.30799-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115120451.517948500@linuxfoundation.org>
-In-Reply-To: <20241115120451.517948500@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Sat, 16 Nov 2024 18:23:05 +0530
-Message-ID: <CA+G9fYtdzDCDP_RxjPKS5wvQH=NsjT+bDRbukFqoX6cN+EHa7Q@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/67] 5.4.286-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 15 Nov 2024 at 17:35, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.286 release.
-> There are 67 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 17 Nov 2024 12:04:36 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.286-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The host_node pointer was assigned and freed in adv7533_parse_dt(), and
+later, adv7533_attach_dsi() used the same. Fix this use-after-free issue
+with the below changes:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+ 1. Drop host_node from struct adv7511 and instead use a local pointer in
+    adv7511_probe().
+ 2. Update adv7533_parse_dt() to return the host_node.
+ 3. Pass the host_node as a parameter to adv7533_attach_dsi().
+ 4. Call of_node_put() after use.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+Changes in v4:
+ - Updated commit description.
+ - Dropped host_node from struct adv7511 and instead used a local pointer
+   in probe(). Also freeing of host_node pointer after use is done in
+   probe().
+Changes in v3:
+ - Replace __free construct with readable of_node_put().
+Changes in v2:
+ - Added the tag "Cc: stable@vger.kernel.org" in the sign-off area.
+ - Dropped Archit Taneja invalid Mail address
+---
+ drivers/gpu/drm/bridge/adv7511/adv7511.h     |  6 +++---
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 22 ++++++++++++++------
+ drivers/gpu/drm/bridge/adv7511/adv7533.c     | 20 +++++++++---------
+ 3 files changed, 29 insertions(+), 19 deletions(-)
 
-## Build
-* kernel: 5.4.286-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: c655052e5fd83d7cfc19a650eb6c4cab30cc22cd
-* git describe: v5.4.285-68-gc655052e5fd8
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-85-68-gc655052e5fd8
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511.h b/drivers/gpu/drm/bridge/adv7511/adv7511.h
+index ec0b7f3d889c..9f3fae7cc597 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511.h
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511.h
+@@ -383,7 +383,6 @@ struct adv7511 {
+ 	struct regulator_bulk_data *supplies;
+ 
+ 	/* ADV7533 DSI RX related params */
+-	struct device_node *host_node;
+ 	struct mipi_dsi_device *dsi;
+ 	u8 num_dsi_lanes;
+ 	bool use_timing_gen;
+@@ -417,8 +416,9 @@ enum drm_mode_status adv7533_mode_valid(struct adv7511 *adv,
+ 					const struct drm_display_mode *mode);
+ int adv7533_patch_registers(struct adv7511 *adv);
+ int adv7533_patch_cec_registers(struct adv7511 *adv);
+-int adv7533_attach_dsi(struct adv7511 *adv);
+-int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv);
++int adv7533_attach_dsi(struct adv7511 *adv, struct device_node *host_node);
++struct device_node *adv7533_parse_dt(struct device_node *np,
++				     struct adv7511 *adv);
+ 
+ #ifdef CONFIG_DRM_I2C_ADV7511_AUDIO
+ int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index eb5919b38263..3f1f309791a5 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1209,6 +1209,7 @@ static int adv7511_parse_dt(struct device_node *np,
+ static int adv7511_probe(struct i2c_client *i2c)
+ {
+ 	struct adv7511_link_config link_config;
++	struct device_node *host_node = NULL;
+ 	struct adv7511 *adv7511;
+ 	struct device *dev = &i2c->dev;
+ 	unsigned int val;
+@@ -1233,12 +1234,17 @@ static int adv7511_probe(struct i2c_client *i2c)
+ 	if (ret && ret != -ENODEV)
+ 		return ret;
+ 
+-	if (adv7511->info->link_config)
++	if (adv7511->info->link_config) {
+ 		ret = adv7511_parse_dt(dev->of_node, &link_config);
+-	else
+-		ret = adv7533_parse_dt(dev->of_node, adv7511);
+-	if (ret)
+-		return ret;
++		if (ret)
++			return ret;
++	}
++
++	if (adv7511->info->has_dsi) {
++		host_node = adv7533_parse_dt(dev->of_node, adv7511);
++		if (IS_ERR(host_node))
++			return PTR_ERR(host_node);
++	}
+ 
+ 	ret = adv7511_init_regulators(adv7511);
+ 	if (ret)
+@@ -1343,9 +1349,11 @@ static int adv7511_probe(struct i2c_client *i2c)
+ 	}
+ 
+ 	if (adv7511->info->has_dsi) {
+-		ret = adv7533_attach_dsi(adv7511);
++		ret = adv7533_attach_dsi(adv7511, host_node);
+ 		if (ret)
+ 			goto err_unregister_audio;
++
++		of_node_put(host_node);
+ 	}
+ 
+ 	return 0;
+@@ -1362,6 +1370,8 @@ static int adv7511_probe(struct i2c_client *i2c)
+ err_i2c_unregister_edid:
+ 	i2c_unregister_device(adv7511->i2c_edid);
+ uninit_regulators:
++	if (host_node)
++		of_node_put(host_node);
+ 	adv7511_uninit_regulators(adv7511);
+ 
+ 	return ret;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+index 4481489aaf5e..5d0e55ef4028 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -131,7 +131,7 @@ int adv7533_patch_cec_registers(struct adv7511 *adv)
+ 				    ARRAY_SIZE(adv7533_cec_fixed_registers));
+ }
+ 
+-int adv7533_attach_dsi(struct adv7511 *adv)
++int adv7533_attach_dsi(struct adv7511 *adv, struct device_node *host_node)
+ {
+ 	struct device *dev = &adv->i2c_main->dev;
+ 	struct mipi_dsi_host *host;
+@@ -142,7 +142,7 @@ int adv7533_attach_dsi(struct adv7511 *adv)
+ 						   .node = NULL,
+ 						 };
+ 
+-	host = of_find_mipi_dsi_host_by_node(adv->host_node);
++	host = of_find_mipi_dsi_host_by_node(host_node);
+ 	if (!host)
+ 		return dev_err_probe(dev, -EPROBE_DEFER,
+ 				     "failed to find dsi host\n");
+@@ -166,22 +166,22 @@ int adv7533_attach_dsi(struct adv7511 *adv)
+ 	return 0;
+ }
+ 
+-int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
++struct device_node *adv7533_parse_dt(struct device_node *np,
++				     struct adv7511 *adv)
+ {
++	struct device_node *host_node;
+ 	u32 num_lanes;
+ 
+ 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
+ 
+ 	if (num_lanes < 1 || num_lanes > 4)
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
+ 
+ 	adv->num_dsi_lanes = num_lanes;
+ 
+-	adv->host_node = of_graph_get_remote_node(np, 0, 0);
+-	if (!adv->host_node)
+-		return -ENODEV;
+-
+-	of_node_put(adv->host_node);
++	host_node = of_graph_get_remote_node(np, 0, 0);
++	if (!host_node)
++		return ERR_PTR(-ENODEV);
+ 
+ 	adv->use_timing_gen = !of_property_read_bool(np,
+ 						"adi,disable-timing-generator");
+@@ -190,5 +190,5 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+ 	adv->rgb = true;
+ 	adv->embedded_sync = false;
+ 
+-	return 0;
++	return host_node;
+ }
+-- 
+2.43.0
 
-## Test Regressions (compared to v5.4.284-462-g5dfaabbf946a)
-
-## Metric Regressions (compared to v5.4.284-462-g5dfaabbf946a)
-
-## Test Fixes (compared to v5.4.284-462-g5dfaabbf946a)
-
-## Metric Fixes (compared to v5.4.284-462-g5dfaabbf946a)
-
-## Test result summary
-total: 57128, pass: 39927, fail: 1369, skip: 15755, xfail: 77
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 132 total, 132 passed, 0 failed
-* arm64: 32 total, 30 passed, 2 failed
-* i386: 20 total, 14 passed, 6 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 9 total, 9 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 28 total, 26 passed, 2 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
