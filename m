@@ -1,106 +1,116 @@
-Return-Path: <stable+bounces-93620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DFC9CFBEC
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 02:00:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523999CFBED
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 02:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F09C284893
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 01:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F13CC1F23B5E
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 01:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EF34C96;
-	Sat, 16 Nov 2024 01:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81F179E1;
+	Sat, 16 Nov 2024 01:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEdDdlEi"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RJJwZjuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094A22114;
-	Sat, 16 Nov 2024 01:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BC96FB0;
+	Sat, 16 Nov 2024 01:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731718853; cv=none; b=SiBGq+zuzQjxLV4xhn+w5bHVjlpbY4RrxAQpgR0R7TrYmvTNx1g5Qpp2zbFrCfR96IrsaTAfOzIIIB1C6hDNjy+3ZHqzzLO2yvvJTAf4KKtVWneRkpFbMz0REiOorcF1n1eNzGYUzeH+a3CkpTK8r5R5FdOxcO8qKgEKpEZVxT8=
+	t=1731718856; cv=none; b=hMtfDotBeEJq7ynzSykINSWTZUD065nlv0+wwwEdxWtPKve18zlIvQpPDE6Yvbqsw2PbVwYuj2gkatI7FDBvcVjaAas8Aa9qr/4w7yDYScpazLaazB/m8OsFvKawrZeQAIEej9ipf5H8nneOfHGlGkpfTK5sDpsqXKsQmWAp64M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731718853; c=relaxed/simple;
-	bh=UBdDBmt8ZlBFutpYAXacFPqijEw8kEDo7m/KsNO/SRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YLhjKHkqYlWNgAB9kA+6vIpbX7YbfR147aQEHV3wxkNTWhZeP4+VxvFJfqKvHB3w57G24TejFjruQsOQ8JRik03e8PbngGiHdvQPdGxgOkKuaDhQK4/Bcuxq6+NcP3ey/rISsVq2iyb8WFozMkFULAMAIFnUSwbrlHRRH16sV60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEdDdlEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2514DC4CECF;
-	Sat, 16 Nov 2024 01:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731718852;
-	bh=UBdDBmt8ZlBFutpYAXacFPqijEw8kEDo7m/KsNO/SRI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KEdDdlEijbHUcjU69cP4JtSO3BcupDk+sQJ0vbJZlC2Wlb9bup5zcCMqavvfjG9C3
-	 6uM43A4Ro1exDMhCjwFTBySOhygwoqZMJ9W6FNUI1bTCLKlBZ33kXNPhCSEG3Z1QZ6
-	 3AKHADpK+x28fpX05rRFU+Mt/o6gZDzwA4euK1OToJBvIaYJRgNW/q3VOODZwmkiuJ
-	 LAk/ta6uuWqTvw+4/keKUfDxPGIXLanqFchZVxB6IRaZZZccJGB51eMUzLSObVyNJ8
-	 rsEDjkEKR8VNc0L5n958vJM0FkpfqqsLzX5+LE43AB7Sg1MA93razAb/tIygqVJbOa
-	 SpW7UBh0BHitA==
-From: Niklas Cassel <cassel@kernel.org>
-To: Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH] PCI: dwc: ep: Fix advertised resizable BAR size again
-Date: Sat, 16 Nov 2024 01:59:51 +0100
-Message-ID: <20241116005950.2480427-2-cassel@kernel.org>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731718856; c=relaxed/simple;
+	bh=QOC0H8qbTZOuS02ORO4XjPKY8ShoQkmQvNIFJLrCWK4=;
+	h=Date:To:From:Subject:Message-Id; b=hz/d13WnZJcz6P0n07MPWkYc66IMWvkFq3iOzahp0JNrCxmlv//O0YLL4KQYK28M7/2VQyriX5CLgwa1+DytqkmVaaOAkzCwPNp+F5JUEiTIxQaClJWn9alcQS41GigBwclqYDLWNXdxVRcfZT1evdHG8PlOcDBpxksB82Bzu3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RJJwZjuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A67C4CECF;
+	Sat, 16 Nov 2024 01:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1731718855;
+	bh=QOC0H8qbTZOuS02ORO4XjPKY8ShoQkmQvNIFJLrCWK4=;
+	h=Date:To:From:Subject:From;
+	b=RJJwZjuQfbTzb/u0jnwOLiNxgqku5YtVMxP3FoexDQ0E23e8o2sc+yJFShZ/cGlCH
+	 ppHefXSLpBDTxLx2r91yPvbib+biOBAx+/jxArbaOjtHVz7+dBnKb9m6oosBdOQCat
+	 l/HU9/lJfL1R/sl2kn5rCq/FsSU28laJ7wabYomI=
+Date: Fri, 15 Nov 2024 17:00:51 -0800
+To: mm-commits@vger.kernel.org,yuzhao@google.com,stable@vger.kernel.org,hughd@google.com,chuck.lever@oracle.com,aha310510@gmail.com,akpm@linux-foundation.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241116010055.48A67C4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1492; i=cassel@kernel.org; h=from:subject; bh=UBdDBmt8ZlBFutpYAXacFPqijEw8kEDo7m/KsNO/SRI=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNLN37X9mrbzLkf9Ve/n/95+Ed87nzFpWeze872ruqx+1 3dN41vd0lHKwiDGxSArpsji+8Nlf3G3+5TjindsYOawMoEMYeDiFICJMMxg+Cvg3Vi3+TqLB9fD S1emhxu+3X5ZIHq54LJurZTTjKXrZpgz/OE9nJY9I7bXRfk9V/Kh2N8/0qxniLzJcGIvfX1a9qe uNzsA
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
 
-The advertised resizable BAR size was fixed in commit 72e34b8593e0 ("PCI:
-dwc: endpoint: Fix advertised resizable BAR size").
 
-Commit 867ab111b242 ("PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API
-to handle Link Down event") was included shortly after this, and moved the
-code to another function. When the code was moved, this fix was mistakenly
-lost.
+The patch titled
+     Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
 
-According to the spec, it is illegal to not have a bit set in
-PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
 
-Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
-1 MB BAR size.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Cc: stable@vger.kernel.org
-Fixes: 867ab111b242 ("PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle Link Down event")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
+Date: Fri Nov 15 04:57:24 PM PST 2024
+
+Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
+suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
+NFS.
+
+Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
+Fixes: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 43ba5c6738df1..cc8ff4a014368 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -689,7 +689,7 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
- 		 * for 1 MB BAR size only.
- 		 */
- 		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
--			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-+			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, BIT(4));
- 	}
+ mm/shmem.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/mm/shmem.c~mm-revert-mm-shmem-fix-data-race-in-shmem_getattr
++++ a/mm/shmem.c
+@@ -1166,9 +1166,7 @@ static int shmem_getattr(struct mnt_idma
+ 	stat->attributes_mask |= (STATX_ATTR_APPEND |
+ 			STATX_ATTR_IMMUTABLE |
+ 			STATX_ATTR_NODUMP);
+-	inode_lock_shared(inode);
+ 	generic_fillattr(idmap, request_mask, inode, stat);
+-	inode_unlock_shared(inode);
  
- 	dw_pcie_setup(pci);
--- 
-2.47.0
+ 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
+ 		stat->blksize = HPAGE_PMD_SIZE;
+_
+
+Patches currently in -mm which might be from akpm@linux-foundation.org are
+
+fs-proc-vmcorec-fix-warning-when-config_mmu=n.patch
+mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
 
 
