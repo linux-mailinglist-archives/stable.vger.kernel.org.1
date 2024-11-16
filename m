@@ -1,134 +1,97 @@
-Return-Path: <stable+bounces-93634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792049CFE59
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 11:57:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1F09CFE62
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 12:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC1AAB27FAF
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 10:57:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17B92844A0
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 11:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15019750B;
-	Sat, 16 Nov 2024 10:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B119046E;
+	Sat, 16 Nov 2024 11:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYB7etzL"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="iO9gL/DV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E9519343E;
-	Sat, 16 Nov 2024 10:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FEF79D0
+	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 11:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731754665; cv=none; b=kiCTURDsu6mteFP5l+foUo8/NYaiVQj2GvbEUKqKaM1RQK1C2ikc3u9LODbyaFj+W8r1PPoxs5VmDyGoPPPwEzA9ug7CEqU6tWwq8tUrTFlP+e16EtQg7qYAgfFlQ3Foik+jneZHFiQOknA/g4YwkxjQl3Y6Q1jNDuxVTqLF6LY=
+	t=1731755286; cv=none; b=Sk187XToEVeUOz/caQ/3Y3CbsWL7mZQCgaidl0G2+jYtMOh7MbggY+BeV9ow6sYK0rbRblPZcSr6gy5X5EuwTV8zRfv+qu5j6I6yDvUdSWs79S00NMtk/qey8OByU7S7G9HSjxdUne5V9Zs1nQaE4rBf3pkeWZxxaXyCvHg98j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731754665; c=relaxed/simple;
-	bh=eQb9wF7oznZn0WEVMLZdiD0aGrnPGx+MTcEP57njRgQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BPeXtAurHiftEM2Sdqq5MAi52LGc3HF5Wz5qnswkTQOO4VXz/HFK6UJPn/517ZfpD89opfMLJX46CQ9J8N6QUoa9JucTOwLJH9edQ8NG6gLra+QCUFFA6gHpicx8ate17WJy5vPXvQX6m0maP+tTdzI8RpDFxam/fIVYpiukF00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYB7etzL; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4316f3d3c21so21764245e9.3;
-        Sat, 16 Nov 2024 02:57:43 -0800 (PST)
+	s=arc-20240116; t=1731755286; c=relaxed/simple;
+	bh=aGFZT3LexnXwNnduyFroiIDDEcUkQ5Sjn3Fq8FzAa/4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=t9G0U5vFEETYI7DN9t3aqDE3xXKaK0frRNYjI2U0GYkXKH6S8KZciQ18KKWPHd8Y/udW+wLgp708UoKPpl4vFAKh2rSUFlHfC5peGeaIV2rQWug22JwHUwSOmjJOfDXaSBhIYZ8v+nHjSvQVaINZHAiVgR+E1II/bhUU+fw9NCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=iO9gL/DV; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731754662; x=1732359462; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=goImJceAXEwHpBa6B6ghd+sdLyfuey1E4bvkcllMT6A=;
-        b=eYB7etzLzLLa/jENfc8yI5/jtyvEIwjjVdhAaD2C6o4YaJLyVGEO/LcYTX9bTIb+Di
-         eyJ+csD/Dssk/q6pYo17rrjKO4SpoLIvAQqbfNmOeYHW1jrYHqcachuFtgLvjRyaPHdu
-         nCHrdphG35nTV4lzzIHOVsfCnxGrgimQVtm2wq9OaGE0kRWyOc/67tHG2YPIlQrfw6Dx
-         QjqHJJY42sD4OrO2N4H7sr0tqfw44R9/LXQOVqxv+6WnMtgSnXxzsVH4DeM2X8iHM5o2
-         Jv5sP4wUPxJpbCjNm/h8UEVj/OskEzeAb/f3/mSBCyv0VrGKBSqjBJCjPfi3jvBtLekT
-         aI4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731754662; x=1732359462;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=goImJceAXEwHpBa6B6ghd+sdLyfuey1E4bvkcllMT6A=;
-        b=hbn13q3YcBxgdNlMwc1B220KfU7bpH8HTnJKVSAUNy4shLewgmGIk7Cw/AhJU1KaEC
-         pDAEREdCDOz78xT1wFnjKey3ouPMZ9+yLwznLf5vfBDCgCIEVPK9rqbrMFupOEBzJyK9
-         qyAZL872tsS9X8N6FBxHDavAz0uDY7TZrGOBfE8FyE6cPJn5NQ/KKO9zmmj9Gz7AV1x0
-         sMwkrWJk1Y3+u1abG1LqI+bI5spzpg87OjuDZog7E4/MyffgYm7RIe0qxtvYt0k5PswE
-         YM5ctWZYxj5ejhNqN0I7SVQIpYtfVddehmXXuOQO8hf6B+sMDM7DJ47+oFir8JwJ7gHT
-         NqRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYlv72LyprBxxC9dZ38rEIz+cNI0PaAq4g0rGvyCt/WJihj7U7zPNaYW4XAgpUnPH1aZkY/vw6bkc=@vger.kernel.org, AJvYcCXMDaVNq/ywL3QZyOh9HSyg3eftZ61FHZnft1aGJ+JLtwgHoBoZTXdlUfcZegBSk9NdFxKuX6yw5NFORj+U@vger.kernel.org, AJvYcCXUEmIMTe7ylknwHYsMd3NNq90agC/Rw8rE9toy8uZdjpCFaKOH6dHShW+ZYFKIKrQcwlZWCtUe@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB0YEu1JSlUsut2Nu373eTaysz+MN11bvc0w5xfRp8Rd1H257u
-	UnBkF75HbScixiAUDooYXl6ZqO4OPMSBRm7MH1fT3VhPwmQiTlINa80EZQ==
-X-Google-Smtp-Source: AGHT+IEId6zSIFqCE8N53mVdYJ0fjpuVXnudlSr0iOmtwTmdqhLz3XGrAeBVhVV8RSj1oCQVzHEe2A==
-X-Received: by 2002:a05:6000:18ab:b0:37c:cc4b:d1ea with SMTP id ffacd0b85a97d-38225aa6573mr4908953f8f.53.1731754661934;
-        Sat, 16 Nov 2024 02:57:41 -0800 (PST)
-Received: from localhost.localdomain (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-382377822ffsm1302814f8f.82.2024.11.16.02.57.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2024 02:57:41 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	upstream@airoha.com
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] clk: en7523: Fix wrong BUS clock for EN7581
-Date: Sat, 16 Nov 2024 11:56:53 +0100
-Message-ID: <20241116105710.19748-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.2
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1731755285; x=1763291285;
+  h=from:to:cc:subject:date:message-id:content-id:
+   mime-version:content-transfer-encoding;
+  bh=aGFZT3LexnXwNnduyFroiIDDEcUkQ5Sjn3Fq8FzAa/4=;
+  b=iO9gL/DVvednVlIGJrCKMoRhTZCTd5oBsSdW2fZfFDBkHwR/DN1iS3hI
+   9/ki6jkXEB81SmGlLaBH2eGaqBXMEjamP8UW1V3EAJ8kMlCxg+JZV3yD0
+   fdwrl+01csFW7T15PK6c+dOn1DwUvV4+5lh0ogvo+76orMiKuAXBgsFmJ
+   k=;
+X-IronPort-AV: E=Sophos;i="6.12,159,1728950400"; 
+   d="scan'208";a="247545868"
+Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2024 11:08:03 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [10.0.43.254:3408]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.46.11:2525] with esmtp (Farcaster)
+ id 65a8eb73-ee7e-4fc8-8637-6625c64c5591; Sat, 16 Nov 2024 11:08:01 +0000 (UTC)
+X-Farcaster-Flow-ID: 65a8eb73-ee7e-4fc8-8637-6625c64c5591
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sat, 16 Nov 2024 11:08:00 +0000
+Received: from EX19D015EUB003.ant.amazon.com (10.252.51.113) by
+ EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sat, 16 Nov 2024 11:08:00 +0000
+Received: from EX19D015EUB003.ant.amazon.com ([fe80::c0b7:2320:49e3:8444]) by
+ EX19D015EUB003.ant.amazon.com ([fe80::c0b7:2320:49e3:8444%3]) with mapi id
+ 15.02.1258.034; Sat, 16 Nov 2024 11:08:00 +0000
+From: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+Subject: Backport request
+Thread-Topic: Backport request
+Thread-Index: AQHbOBfMnEWgrb0Sm0W8tFX/tKaqHw==
+Date: Sat, 16 Nov 2024 11:08:00 +0000
+Message-ID: <E15AA884-690F-495C-BFFA-612DD4177952@amazon.de>
+Accept-Language: en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A3C9A9727B375A458DDEDEC3633B824B@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 
-The Documentation for EN7581 had a typo and still referenced the EN7523
-BUS base source frequency. This was in conflict with a different page in
-the Documentration that state that the BUS runs at 300MHz (600MHz source
-with divisor set to 2) and the actual watchdog that tick at half the BUS
-clock (150MHz). This was verified with the watchdog by timing the
-seconds that the system takes to reboot (due too watchdog) and by
-operating on different values of the BUS divisor.
-
-The correct values for source of BUS clock are 600MHz and 540MHz.
-
-This was also confirmed by Airoha.
-
-Cc: stable@vger.kernel.org
-Fixes: 66bc47326ce2 ("clk: en7523: Add EN7581 support")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/clk/clk-en7523.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
-index e52c5460e927..239cb04d9ae3 100644
---- a/drivers/clk/clk-en7523.c
-+++ b/drivers/clk/clk-en7523.c
-@@ -87,6 +87,7 @@ static const u32 slic_base[] = { 100000000, 3125000 };
- static const u32 npu_base[] = { 333000000, 400000000, 500000000 };
- /* EN7581 */
- static const u32 emi7581_base[] = { 540000000, 480000000, 400000000, 300000000 };
-+static const u32 bus7581_base[] = { 600000000, 540000000 };
- static const u32 npu7581_base[] = { 800000000, 750000000, 720000000, 600000000 };
- static const u32 crypto_base[] = { 540000000, 480000000 };
- 
-@@ -222,8 +223,8 @@ static const struct en_clk_desc en7581_base_clks[] = {
- 		.base_reg = REG_BUS_CLK_DIV_SEL,
- 		.base_bits = 1,
- 		.base_shift = 8,
--		.base_values = bus_base,
--		.n_base_values = ARRAY_SIZE(bus_base),
-+		.base_values = bus7581_base,
-+		.n_base_values = ARRAY_SIZE(bus7581_base),
- 
- 		.div_bits = 3,
- 		.div_shift = 0,
--- 
-2.45.2
+SGksDQoNClBsZWFzZSBiYWNrcG9ydCBjb21taXQ6DQoNCjBmYWY4NGNhZWU2MyAoImNwdWZyZXE6
+IFJlcGxhY2UgZGVwcmVjYXRlZCBzdHJuY3B5KCkgd2l0aCBzdHJzY3B5KCkiKQ0KDQp0byBzdGFi
+bGUgdHJlZXMgNS4xMC55LCA1LjE1LnksIDYuMS55IGFuZCA2LjYueS4gVGhpcyBjb21taXQgZml4
+ZXMgcG9zc2libGUNCkJ1ZmZlciBub3QgbnVsbCB0ZXJtaW5hdGVkIG9mICJwb2xpY3ktPmxhc3Rf
+Z292ZXJub3IiIGFuZCAiZGVmYXVsdF9nb3Zlcm5vciINCmluIF9fY3B1ZnJlcV9vZmZsaW5lKCkg
+YW5kIGNwdWZyZXFfY29yZV9pbml0KCkuDQoNClRoaXMgYnVnIHdhcyBkaXNjb3ZlcmVkIGFuZCBy
+ZXNvbHZlZCB1c2luZyBDb3Zlcml0eSBTdGF0aWMgQW5hbHlzaXMNClNlY3VyaXR5IFRlc3Rpbmcg
+KFNBU1QpIGJ5IFN5bm9wc3lzLCBJbmMuDQoNCgoKCkFtYXpvbiBXZWIgU2VydmljZXMgRGV2ZWxv
+cG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApLcmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2Vz
+Y2hhZWZ0c2Z1ZWhydW5nOiBDaHJpc3RpYW4gU2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5n
+ZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFybG90dGVuYnVyZyB1bnRlciBIUkIgMjU3NzY0IEIK
+U2l0ejogQmVybGluClVzdC1JRDogREUgMzY1IDUzOCA1OTcK
 
 
