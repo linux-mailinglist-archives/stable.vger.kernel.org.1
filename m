@@ -1,178 +1,233 @@
-Return-Path: <stable+bounces-93627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0819CFD18
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 08:52:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD169CFD32
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 09:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4380FB2820D
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 07:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 452C31F22C79
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 08:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED86192B73;
-	Sat, 16 Nov 2024 07:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5871192B75;
+	Sat, 16 Nov 2024 08:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJHMum9f"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ti1NL4Y+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01750802;
-	Sat, 16 Nov 2024 07:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E9018FDBA
+	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 08:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731743546; cv=none; b=m+7rOmDt8AadE43zsx/9wd9MA5rF61alN0LsSVr7ofP6xHBaT+6MEFlAHBDRPfv4PkLvHrNsilvIYCsut9ZJP34QFl8KEYow9MVGbPW7H8mrttNf/1hUJvX0yNSjBWjWN5wX5nJI2y2NScOzkWq2ZT62sTJvl6Ngs0uTHNCRMEA=
+	t=1731744439; cv=none; b=Q5vhF2oeiaLd4VkOw24rpDCTi9gYx42RsLHdwBIee50jx/E7Z4gG7YZ2GhY+U4FQZDifVBivkCH44Vgm57YDwvvy03jikSOWyzwLCnebpwixbsRbx+KF5ptztwghHf8an9YsrRS94p0YdK7Tzu+sSlSUUnSLo6sqHfwPM7qlMy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731743546; c=relaxed/simple;
-	bh=fNHtc0+zCXKiZQYMDhUkNxMQ3/p8uayzt8FfmcFP2Gk=;
+	s=arc-20240116; t=1731744439; c=relaxed/simple;
+	bh=NAIlf6R7JXlWQUkwEAToGNXpP4mKJHRaO2W11Ni98hk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iUy0JUfseBdrpHm32i/97pmzbPDfEcVNueAB57BAJQB1aDaOyk6Hb26J1SydNvQSZwEM39sTNfAKboQZUH4hUKNFA3ucoHX92OKr01gt5rK/5T53HdsCPbIzqLQWwDpL/qDJBcpEAKuVbXSYiBl+SJZgEnkBhas/IykTr9vdaJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJHMum9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86158C4CED6;
-	Sat, 16 Nov 2024 07:52:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731743545;
-	bh=fNHtc0+zCXKiZQYMDhUkNxMQ3/p8uayzt8FfmcFP2Gk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sJHMum9fLZ8UH0we95bArJDc70uXpo26juyPImMv1T+TAc3Zd5f6XHMj5VMn0Eq5x
-	 iXbXYQfgslu4iVgFBO4k3SdjVWQlYniXNqTNgIddhyRpVxwtmvcMXvQ6+WdC/5ciJA
-	 +dwUJgt35CjgrpuDxorQcF2/wmIaEjbugEjCqysKMBe5JColjc0RL5uC1ZwDfdsWNB
-	 xg+vlACR4gdjX9o5CSVLIq2ovM+z+Y+g2Zwtqf0diIe3QR7vFsd6o5jWJ1zh3yINA1
-	 5K85NSPN4aO/fT9XVDNfAi0LRNyC9YTkReA0SHHDabuv7XTX37F2opw+BEMxoFHPCH
-	 znJi7uJgsEiEA==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ff589728e4so27312721fa.1;
-        Fri, 15 Nov 2024 23:52:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWu1WSXaRK0PDBotctgsXEhDkS35SJhJ5294Lbo7MKWNXNmnLMvroWvBJzdZnWTV3maCN3jG1n3ZPjDAUI=@vger.kernel.org, AJvYcCXjOBuMOnARWDflrZDulUxLvQRZ9al4+uU13DTCNqBkfGXE3bHeG01N1Hiv+vtqJi7ygCBoZagT@vger.kernel.org, AJvYcCXlb5oZAcO6qdDttslt3lRSjM6smSYZoFstgsueF262N8/9e4HCiptKnsPmHzacII37atjtX1GyhohmAUY1@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYPjIi3L9BWmUCFtzao5dXyclklFEIX6urGJiI4XwkZ5lrdvaP
-	b2rHKFqsHDLthTKgpk+JFRjlflZBnPwM+ZFBtdpj8xz03Nvw00dV5+pwlg/nukigAhG/5wSbg9E
-	CKjVgQC8RCXw00ZkV3svuj26cHf8=
-X-Google-Smtp-Source: AGHT+IEZYgHnEjSADdFNIcJ4Ry1Iwc5OrBqNExR4qHnevoPuz7uyulNZ1ZHGJZ4WUUb6vtKmfVvpRvXIVNthUJD1v0M=
-X-Received: by 2002:a2e:a721:0:b0:2ff:5e66:81a3 with SMTP id
- 38308e7fff4ca-2ff5e6683cemr14570031fa.11.1731743544213; Fri, 15 Nov 2024
- 23:52:24 -0800 (PST)
+	 To:Cc:Content-Type; b=Ub/jUEuUXyMZ/TT5JtWzL/EoZgSEunVArNT7oqImkJTJ+1o6vToVJd6jL44PYNcLd1eYeyYw1HzM4V11aqzKoelTAdlF960FMkhovd0aVnvxmlnOBq1jZ+4Utc4g5D5lApXCPP+z8BfsP0qmR6Z1HR3EVlTzbnm0w+61LtJZLpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ti1NL4Y+; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-513de4267d8so147751e0c.3
+        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 00:07:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731744435; x=1732349235; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2WmVZTA0OBY9zHSB9Kn5Ws2PBlPlk+7EEemKYnV7uns=;
+        b=ti1NL4Y+xgXyh+oYXU0KLWQDzuG0Uxd+K0bCQ4QuqzzSno4i3SuzGqyimfOH3ytV70
+         EsHHliDYNLAjJrlR08+nwASkXY64Dewp7Kl98lkZAB8yQ3SuQjtMDqz21KSVY0o1ZZne
+         b24rgBwjtkHhCNSLQNBChnTY1rhiOLo4DjBPpTaMEbbfx6iaEhYg+Mz+jKwjDrhQhq1g
+         P3AHuUWzfzQ/W7b/D9XkoZQcodY9a+LBe/uP4Q5OVJJB4CPmd1b1rOfEm9AH4fzGnx5R
+         78YwhldhoOn+dStgtacMpFbKqNNmZiQ5UXLsy+q+UJfy6BJi3IstiGcKRibybj6lnI1i
+         sxMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731744435; x=1732349235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2WmVZTA0OBY9zHSB9Kn5Ws2PBlPlk+7EEemKYnV7uns=;
+        b=wwsQryQOXQn/mcHqCgjNfxpMZin2FHpuZHVrrLGupgkARsFbl3CIO0+jZcTsfNI+3W
+         sB+OEB1cjLjSEp5pd0GzyKJrLxRIzdkBojvlfyZbd0JOVReF0pnNAfH+27Jz9BWQEbvI
+         bXmt6/mQA4G910rk/N3kpq0ZVsc3rjng4wA5hwda599rZ9/1iWI49R+mvzKkYSAY8KgC
+         F2zZe9m9fSb+hUnXhXWAH8KT75Ra2pK4cC66WqmYv81sPdmlsz/vNaNJ/zsnAwIofnRQ
+         8iQNLStmLQLaDXFCzSMimM9X98KvP0bqR8uo+ioTdJe2wfjwPwaSv9G0OfcenTuxMBYW
+         nzjw==
+X-Gm-Message-State: AOJu0YzXsLd9tdue7UFmv5dIwZon0uWzZkKu2RTuQX0r8ryZ/p/oco1u
+	4UPDOwqEnowI5nQ0n5xYn50lSaG9QaVJP1Y7ThM+RyCaPVcS1YXZ2jCt0sqd6mb4SgPenibrxEV
+	mptMVt+qBysfby8DcyntBeRBFlLF0Qbt4Jz6d4g==
+X-Google-Smtp-Source: AGHT+IHEfkUckBJ9XCrI2yVxSSJFj5t3YJDMntbgNupaqGx3dkUFYzNPzxPNBPxh0TXFSaU2ErN5g16+lB1l2lMkmXs=
+X-Received: by 2002:a05:6122:3c4d:b0:4f5:199b:2a61 with SMTP id
+ 71dfb90a1353d-51477f99aa8mr5580802e0c.9.1731744435541; Sat, 16 Nov 2024
+ 00:07:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241114145645.563356-1-parth105105@gmail.com>
- <2024111442-yeast-flail-fcea@gregkh> <20241115083940.GA3971@francesco-nb>
- <2024111541-antiquity-footpath-e221@gregkh> <ZzcYLAFqTSlFm2uF@gaggiata.pivistrello.it>
-In-Reply-To: <ZzcYLAFqTSlFm2uF@gaggiata.pivistrello.it>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 16 Nov 2024 16:51:48 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com>
-Message-ID: <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: switch from lz4c to lz4 for compression
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Parth Pancholi <parth105105@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Parth Pancholi <parth.pancholi@toradex.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>
+References: <20241115063725.892410236@linuxfoundation.org>
+In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 16 Nov 2024 13:37:04 +0530
+Message-ID: <CA+G9fYuzB_AvjT7tZQy+tH257ztf--cs8Y+y0wF25RuruOS+cw@mail.gmail.com>
+Subject: Re: [PATCH 6.11 00/63] 6.11.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 15, 2024 at 6:45=E2=80=AFPM Francesco Dolcini <francesco@dolcin=
-i.it> wrote:
+On Fri, 15 Nov 2024 at 12:17, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Fri, Nov 15, 2024 at 10:22:13AM +0100, Greg KH wrote:
-> > On Fri, Nov 15, 2024 at 09:39:40AM +0100, Francesco Dolcini wrote:
-> > > On Thu, Nov 14, 2024 at 05:02:01PM +0100, Greg KH wrote:
-> > > > On Thu, Nov 14, 2024 at 03:56:44PM +0100, Parth Pancholi wrote:
-> > > > > From: Parth Pancholi <parth.pancholi@toradex.com>
-> > > > >
-> > > > > Replace lz4c with lz4 for kernel image compression.
-> > > > > Although lz4 and lz4c are functionally similar, lz4c has been dep=
-recated
-> > > > > upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25=
-, lz4
-> > > > > and lz4c have been packaged together, making it safe to update th=
-e
-> > > > > requirement from lz4c to lz4.
-> > > > >
-> > > > > Consequently, some distributions and build systems, such as OpenE=
-mbedded,
-> > > > > have fully transitioned to using lz4. OpenEmbedded core adopted t=
-his
-> > > > > change in commit fe167e082cbd ("bitbake.conf: require lz4 instead=
- of
-> > > > > lz4c"), causing compatibility issues when building the mainline k=
-ernel
-> > > > > in the latest OpenEmbedded environment, as seen in the errors bel=
-ow.
-> > > > >
-> > > > > This change also updates the LZ4 compression commands to make it =
-backward
-> > > > > compatible by replacing stdin and stdout with the '-' option, due=
- to some
-> > > > > unclear reason, the stdout keyword does not work for lz4 and '-' =
-works for
-> > > > > both. In addition, this modifies the legacy '-c1' with '-9' which=
- is also
-> > > > > compatible with both. This fixes the mainline kernel build failur=
-es with
-> > > > > the latest master OpenEmbedded builds associated with the mention=
-ed
-> > > > > compatibility issues.
-> > > > >
-> > > > > LZ4     arch/arm/boot/compressed/piggy_data
-> > > > > /bin/sh: 1: lz4c: not found
-> > > > > ...
-> > > > > ...
-> > > > > ERROR: oe_runmake failed
-> > > > >
-> > > > > Cc: stable@vger.kernel.org
-> > > >
-> > > > What bug does this resolve that it needs to be backported to stable
-> > > > kernels?
-> > >
-> > > This is not solving any existing actual bug, and therefore there is n=
-o
-> > > fixes tag.
-> > >
-> > > The issue here is that the kernel build system is using lz4c, that is
-> > > deprecated since 2018, and now distributions are actively moving away=
- from it.
-> > >
-> > > openSUSE Tumbleweed and OE already removed it, so you would not be ab=
-le
-> > > to compile a stable kernel on such distribution when using lz4 unless=
- we
-> > > backport such a patch.
-> > >
-> > > Everything should be properly documented in the commit message alread=
-y.
-> > >
-> > > My understanding is that something like that would be a reason for
-> > > backporting to stable, if my understanding is not correct we'll remov=
-e
-> > > the cc:stable and send a v3.
-> >
-> > Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.=
-html
-> > for what meets stable kernel requirements.  I don't think that this
-> > patch is that.
+> This is the start of the stable review cycle for the 6.11.9 release.
+> There are 63 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Greg, ack.
+> Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
+> Anything received after that time might be too late.
 >
-> Masahiro, can you please let me know if we should send a v3 with the stab=
-le
-> tag removed or you can remove it yourself when applying?
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.11.9-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.11.y
+> and the diffstat can be found below.
 >
+> thanks,
+>
+> greg k-h
 
-I applied this with the stable tag removed.
-Thanks.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-(I guess someone may want to backport this eventually,
-as such distros cannot build stable kernels with ld4 compression.)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.11.9-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 0862a6020163c7b2e1de05e468651684ec642396
+* git describe: v6.11.7-249-g0862a6020163
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.11.y/build/v6.11=
+.7-249-g0862a6020163
 
+## Test Regressions (compared to v6.11.7-185-ga5b459e185d1)
 
---=20
-Best Regards
-Masahiro Yamada
+## Metric Regressions (compared to v6.11.7-185-ga5b459e185d1)
+
+## Test Fixes (compared to v6.11.7-185-ga5b459e185d1)
+
+## Metric Fixes (compared to v6.11.7-185-ga5b459e185d1)
+
+## Test result summary
+total: 153766, pass: 127727, fail: 1793, skip: 24246, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 130 total, 128 passed, 2 failed
+* arm64: 42 total, 42 passed, 0 failed
+* i386: 18 total, 16 passed, 2 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 32 total, 31 passed, 1 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 34 total, 34 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
