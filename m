@@ -1,185 +1,467 @@
-Return-Path: <stable+bounces-93641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6729CFEEC
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 13:54:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276319CFEF6
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 14:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C19F287A81
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 12:54:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB13F287FED
+	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 13:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0DC19340E;
-	Sat, 16 Nov 2024 12:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBB216631C;
+	Sat, 16 Nov 2024 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tss89jXs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cDVdmehu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837AF191F77
-	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 12:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3EE12C470
+	for <stable@vger.kernel.org>; Sat, 16 Nov 2024 13:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731761683; cv=none; b=q1AsWi1pNE/joFNQmL+YKnnhaQ9lpdTe6atvPjWOxmp7Qz1Z7gjMlqQa+rIaOXbzzawZ9WCmMWSG8ybTIwIMKobpUv8xR/MhoZRJ5JuuAfTtN3FbpoGhGT9QTaRsiLQnY17qzMGVlSTXO5HSdRdNLnOQa0Ii3nQczx+HE1PdLR0=
+	t=1731762287; cv=none; b=ikJWW4uq3ZSzvns2Mzw4s99PZyKhWGsKf4v8v1df5QJDfxWmz1JfVbwrHTtwG/oVl3cXmGtMaam1QVI/0YtMh45fFYhBZNqLCypKOaGPd0Ux0z/FBiJVO8zgE3CfBgLXx3nhqWbZrWMAg8Gg/0+33Vvjm9o9FHHdaj5JW+d1aGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731761683; c=relaxed/simple;
-	bh=V8tnW0pG41HoDBAZmyoo2mCqeNMoj/x8I1k9IWEuRNg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JVeckJdBw9mzEpz/4X5tQE7Pz5/Z+ruiS4uN42+Ph6CNY7HqoLmpYa+qsOOHrb42nN16h4TqNd20hOu3Oj8DFR3PHH7Gj25C//25uIpnvWdAirYxUmXg8Ge2q+ciaUnEmLDuJutsgukLE9Gpo7C2AF7UkpOmJOJc6l34whC1pDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tss89jXs; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5139cd01814so1051224e0c.0
-        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 04:54:40 -0800 (PST)
+	s=arc-20240116; t=1731762287; c=relaxed/simple;
+	bh=14Kmtp+QHAHiF6crmcI2HUdJ7ScxEgaTYmxm0E6I9KE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bUQ4MPymmiEzklH/JSN/gFr114XA+4s17X8Py9UzCMoJMWiOefEpqc7xPnQRsdwqahWS4TU7fJedgolQmSOGGODYyl2iyiQP5S7KsLXhaREiO/VGiGVo4uTV1LPF73AXi+htod9ZX/IonMBV7lPIwWSvwcFBwruGtevty+hHYmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cDVdmehu; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-460a612d867so2849191cf.3
+        for <stable@vger.kernel.org>; Sat, 16 Nov 2024 05:04:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731761679; x=1732366479; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PkrfLtlpmMOkbZGmAfotCto0+KgmvVAi/auh4c1VTLU=;
-        b=tss89jXs3Khjdx7l13RrTiaBR5A2T3K30sqbyFKFuYFGVk/KVK7Amt6lxsCFRtXu6K
-         3wtgLR7UGE/dsAVta1T0ozE7G2y4DI0rqqRdHzTw0dypAFsYrUKLi29P/r6CFuoj6aLH
-         Hq3/HGASbe2iyCKQhTg7sDh9ahM/WtGrvoaeT9YdXP0ZHcb5pQUtYjCMq9L9nePtoD7h
-         R9p5Sd+P/UZdj9qAoFkNo9/bhDNQ8yay9fOw2n4/GXn5Hzr1t7ol0Xwh7X6oiIRR0lug
-         g23H4AI7KvUGyhppFDblalhweFCvHAHfF8CUB9jMGWKjLMsvuI/ZKJfKJcwNaMO8htai
-         kHzQ==
+        d=gmail.com; s=20230601; t=1731762284; x=1732367084; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fOr+pH7O6SOfDB3FQItpqSZxcv9ug3IMYOKWgou0aBI=;
+        b=cDVdmehuMEF3c3otQqs9QygeWAn45n33L/ZvXPFvwqNuq1yUd3r2GznXBj/r4ytxBH
+         DtpGiOgaYaM2538uJUsq2FDo78XSQS+bpXH+Irj5acLiz635zWCa8GRCfKCkw9Jmu/4K
+         x+p+2kFPDXyFJnXxktiABxw4ghtPWSPqxIgaNr4He9NhVzcy/Yfje94nthpsXqliFEzD
+         3yvfS1Ah6tfL5pf7G6xgcN51tHy7JJyS81Q1FufklcBB9RLivN6dJbNyGaZNIsFADbA0
+         QIsEyZUNTSqSUBMl7VOdhfRr34x3MtH6iu8cN1vwp0Sfaha5uZVQCXY5LOmFL/6QRArp
+         CIfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731761679; x=1732366479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PkrfLtlpmMOkbZGmAfotCto0+KgmvVAi/auh4c1VTLU=;
-        b=F1NV+MXMvbHxslX0Sz/A3sUFrSyWQAehJUwu0HF0azoemUoa9FK8pRs0MtHaL4EpjS
-         g9Ir42gAsMftYJ9m7EPkfgVUybqKUEn5Nw6/Eoui0o3UttMpZZt85GKXJcNnuZXYNcbX
-         7PZlnCIBOaRKo/BO5QW2g7x25sBBJ98hVh2GrpqwXgoTLbV9ZqfGFU54NKFGv55/RcdC
-         fs9uTdFw7mx24uMCkXqJMaSmBPceDihFlcmj5iTi/ACcRijawc90HFEeLgS5uxoVYglh
-         23HL9m0iahnC2/BYVLxDD/FK/02Oi1YAg3meZljZ1Yba6RYEOanpFuKm1KbZxk4XJQn6
-         7MnQ==
-X-Gm-Message-State: AOJu0YxgjZUqyA5UoXZbZ7kmpc1vAhJJDsVUixe0rZr5nz7nI2Wzkswi
-	j9zEUj18V+fJQ083a8Vn0HTKdUfKKgKhbnlZ1eKyRELupr8BGi8hppH6bB96+Py22D5V3bcoQyi
-	Rlsm00BiiqQBulkqAICAK4a7ketNZ2KPqYRwZcA==
-X-Google-Smtp-Source: AGHT+IFBlNbBEfHKYfUCLNDUnsYSTdCdqnGy1PkuwbDOsfFBeRKbFAQ00f5BfHzKrvXon2aVChjMTfVk2GjdRQAR1X4=
-X-Received: by 2002:a05:6122:3d0c:b0:4f6:aa3e:aa4c with SMTP id
- 71dfb90a1353d-51478567375mr5882461e0c.3.1731761679481; Sat, 16 Nov 2024
- 04:54:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731762284; x=1732367084;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fOr+pH7O6SOfDB3FQItpqSZxcv9ug3IMYOKWgou0aBI=;
+        b=ByTdQEikYXawSEnCCL80KXO1/8mxS9fYPOIoLDy9YC053P+p9Nnz/fzv0tQxfMl/K0
+         s/eavIXtDg/SgSnyP7o8cpug1HPGYwQ/u8dWQRhDNadzDWUS6lT9XOoEdnn/tIY+X+zd
+         L+BXAG396hDWkBdjrTrUtMAgCXaQL6aTAuH5UbtME19oZK7T97WPJA/SaBQl8Yf0yWPH
+         rNjWeFOzU1qi54aklPy83SqDP85A9AEhwjpgiZFKd+aNQuWNP+OI85eOiovpI5Yrm7eR
+         wTXTw2zzzzSKXnlAX46ngEzWSA0Fc0hhIguGx8EONgkDXz7ZZT2Vy1iOv9C281+EtKVu
+         PszA==
+X-Gm-Message-State: AOJu0YwiTJtgqAqbMgMg8lpST9RL3iIyc0pxCbNjUJBfS98QCw6nAiMK
+	4V39r+Bq5a8gXLHI8R2HUzfWEHPkljtiFKH3lf3KLklAzmFNwcN5GSAN6gPm
+X-Gm-Gg: ASbGncs8lIr2DA0qNKz6bP3vA7PBfy+Vp4u3SDTfkwTtth2L2Z/Ybc9zn0cODORV2zf
+	1BU4g+p6TuCDqc74yuI8H2xLSiQftxzAVjMaxfQwV4F7u0w9xTgSqlHSjgA1KMvAjjBaGZiQ57o
+	O847AltZLftAheSPp966iSRI/koaqoaL0c150pr9RBq8lPFgu4s57XkPbV4Nuyo38YqGIn7T0Jm
+	yScowAP2gmDJXfV2uo2DkedqYTtyVzirWr7XgOMSNvuo6v9VBejFAz12HH8O4qTumE=
+X-Google-Smtp-Source: AGHT+IFOc2K8h+wneyIOVV87Uat/yX2vBHBUy9CZpn/kG4N3GBBsQFJXnhFLxvcY36Ty3CIQx94yrw==
+X-Received: by 2002:a05:620a:2a11:b0:7b1:13c9:ad10 with SMTP id af79cd13be357-7b36236be01mr369425285a.14.1731762283918;
+        Sat, 16 Nov 2024 05:04:43 -0800 (PST)
+Received: from tr4.amd.com (mkmvpn.amd.com. [165.204.54.211])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b35ca2f632sm257722585a.73.2024.11.16.05.04.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 05:04:42 -0800 (PST)
+From: Alex Deucher <alexdeucher@gmail.com>
+X-Google-Original-From: Alex Deucher <alexander.deucher@amd.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] Revert "drm/amd/pm: correct the workload setting"
+Date: Sat, 16 Nov 2024 08:04:27 -0500
+Message-ID: <20241116130427.1688714-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115063722.845867306@linuxfoundation.org>
-In-Reply-To: <20241115063722.845867306@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Sat, 16 Nov 2024 18:24:28 +0530
-Message-ID: <CA+G9fYvzExabWp94wW9dT=_KWLUWjTJvT4ZtoiJvFvGyxjW9Gg@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/52] 4.19.324-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 15 Nov 2024 at 12:11, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 4.19.324 release.
-> There are 52 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 17 Nov 2024 06:37:07 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
-4.19.324-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This reverts commit 4a18810d0b6fb2b853b75d21117040a783f2ab66.
 
+This causes a regression in the workload selection.
+A more extensive fix is being worked on for mainline.
+For stable, revert.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.11.x
+---
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 49 ++++++-------------
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  4 +-
+ .../gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c |  5 +-
+ .../gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c   |  5 +-
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c   |  5 +-
+ .../gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c  |  4 +-
+ .../gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c   |  4 +-
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  | 20 ++------
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  5 +-
+ .../drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c  |  9 ++--
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c        |  8 ---
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.h        |  2 -
+ 12 files changed, 36 insertions(+), 84 deletions(-)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index ee1bcfaae3e3..80e60ea2d11e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1259,33 +1259,26 @@ static int smu_sw_init(void *handle)
+ 	smu->watermarks_bitmap = 0;
+ 	smu->power_profile_mode = PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
+ 	smu->default_power_profile_mode = PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
+-	smu->user_dpm_profile.user_workload_mask = 0;
+ 
+ 	atomic_set(&smu->smu_power.power_gate.vcn_gated, 1);
+ 	atomic_set(&smu->smu_power.power_gate.jpeg_gated, 1);
+ 	atomic_set(&smu->smu_power.power_gate.vpe_gated, 1);
+ 	atomic_set(&smu->smu_power.power_gate.umsch_mm_gated, 1);
+ 
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT] = 0;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_FULLSCREEN3D] = 1;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_POWERSAVING] = 2;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_VIDEO] = 3;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_VR] = 4;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_COMPUTE] = 5;
+-	smu->workload_priority[PP_SMC_POWER_PROFILE_CUSTOM] = 6;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT] = 0;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_FULLSCREEN3D] = 1;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_POWERSAVING] = 2;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_VIDEO] = 3;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_VR] = 4;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_COMPUTE] = 5;
++	smu->workload_prority[PP_SMC_POWER_PROFILE_CUSTOM] = 6;
+ 
+ 	if (smu->is_apu ||
+-	    !smu_is_workload_profile_available(smu, PP_SMC_POWER_PROFILE_FULLSCREEN3D)) {
+-		smu->driver_workload_mask =
+-			1 << smu->workload_priority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
+-	} else {
+-		smu->driver_workload_mask =
+-			1 << smu->workload_priority[PP_SMC_POWER_PROFILE_FULLSCREEN3D];
+-		smu->default_power_profile_mode = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
+-	}
++	    !smu_is_workload_profile_available(smu, PP_SMC_POWER_PROFILE_FULLSCREEN3D))
++		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
++	else
++		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_FULLSCREEN3D];
+ 
+-	smu->workload_mask = smu->driver_workload_mask |
+-							smu->user_dpm_profile.user_workload_mask;
+ 	smu->workload_setting[0] = PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
+ 	smu->workload_setting[1] = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
+ 	smu->workload_setting[2] = PP_SMC_POWER_PROFILE_POWERSAVING;
+@@ -2355,20 +2348,17 @@ static int smu_switch_power_profile(void *handle,
+ 		return -EINVAL;
+ 
+ 	if (!en) {
+-		smu->driver_workload_mask &= ~(1 << smu->workload_priority[type]);
++		smu->workload_mask &= ~(1 << smu->workload_prority[type]);
+ 		index = fls(smu->workload_mask);
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+ 		workload[0] = smu->workload_setting[index];
+ 	} else {
+-		smu->driver_workload_mask |= (1 << smu->workload_priority[type]);
++		smu->workload_mask |= (1 << smu->workload_prority[type]);
+ 		index = fls(smu->workload_mask);
+ 		index = index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+ 		workload[0] = smu->workload_setting[index];
+ 	}
+ 
+-	smu->workload_mask = smu->driver_workload_mask |
+-						 smu->user_dpm_profile.user_workload_mask;
+-
+ 	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+ 		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
+ 		smu_bump_power_profile_mode(smu, workload, 0);
+@@ -3059,23 +3049,12 @@ static int smu_set_power_profile_mode(void *handle,
+ 				      uint32_t param_size)
+ {
+ 	struct smu_context *smu = handle;
+-	int ret;
+ 
+ 	if (!smu->pm_enabled || !smu->adev->pm.dpm_enabled ||
+ 	    !smu->ppt_funcs->set_power_profile_mode)
+ 		return -EOPNOTSUPP;
+ 
+-	if (smu->user_dpm_profile.user_workload_mask &
+-	   (1 << smu->workload_priority[param[param_size]]))
+-	   return 0;
+-
+-	smu->user_dpm_profile.user_workload_mask =
+-		(1 << smu->workload_priority[param[param_size]]);
+-	smu->workload_mask = smu->user_dpm_profile.user_workload_mask |
+-		smu->driver_workload_mask;
+-	ret = smu_bump_power_profile_mode(smu, param, param_size);
+-
+-	return ret;
++	return smu_bump_power_profile_mode(smu, param, param_size);
+ }
+ 
+ static int smu_get_fan_control_mode(void *handle, u32 *fan_mode)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index d60d9a12a47e..b44a185d07e8 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -240,7 +240,6 @@ struct smu_user_dpm_profile {
+ 	/* user clock state information */
+ 	uint32_t clk_mask[SMU_CLK_COUNT];
+ 	uint32_t clk_dependency;
+-	uint32_t user_workload_mask;
+ };
+ 
+ #define SMU_TABLE_INIT(tables, table_id, s, a, d)	\
+@@ -558,8 +557,7 @@ struct smu_context {
+ 	bool disable_uclk_switch;
+ 
+ 	uint32_t workload_mask;
+-	uint32_t driver_workload_mask;
+-	uint32_t workload_priority[WORKLOAD_POLICY_MAX];
++	uint32_t workload_prority[WORKLOAD_POLICY_MAX];
+ 	uint32_t workload_setting[WORKLOAD_POLICY_MAX];
+ 	uint32_t power_profile_mode;
+ 	uint32_t default_power_profile_mode;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index 31fe512028f4..c0f6b59369b7 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -1455,6 +1455,7 @@ static int arcturus_set_power_profile_mode(struct smu_context *smu,
+ 		return -EINVAL;
+ 	}
+ 
++
+ 	if ((profile_mode == PP_SMC_POWER_PROFILE_CUSTOM) &&
+ 	     (smu->smc_fw_version >= 0x360d00)) {
+ 		if (size != 10)
+@@ -1522,14 +1523,14 @@ static int arcturus_set_power_profile_mode(struct smu_context *smu,
+ 
+ 	ret = smu_cmn_send_smc_msg_with_param(smu,
+ 					  SMU_MSG_SetWorkloadMask,
+-					  smu->workload_mask,
++					  1 << workload_type,
+ 					  NULL);
+ 	if (ret) {
+ 		dev_err(smu->adev->dev, "Fail to set workload type %d\n", workload_type);
+ 		return ret;
+ 	}
+ 
+-	smu_cmn_assign_power_profile(smu);
++	smu->power_profile_mode = profile_mode;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index bb4ae529ae20..076620fa3ef5 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -2081,13 +2081,10 @@ static int navi10_set_power_profile_mode(struct smu_context *smu, long *input, u
+ 						       smu->power_profile_mode);
+ 	if (workload_type < 0)
+ 		return -EINVAL;
+-
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
+-				    smu->workload_mask, NULL);
++				    1 << workload_type, NULL);
+ 	if (ret)
+ 		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
+-	else
+-		smu_cmn_assign_power_profile(smu);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index ca94c52663c0..0d3e1a121b67 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -1786,13 +1786,10 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
+ 						       smu->power_profile_mode);
+ 	if (workload_type < 0)
+ 		return -EINVAL;
+-
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
+-				    smu->workload_mask, NULL);
++				    1 << workload_type, NULL);
+ 	if (ret)
+ 		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
+-	else
+-		smu_cmn_assign_power_profile(smu);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index 952ee22cbc90..1fe020f1f4db 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -1079,7 +1079,7 @@ static int vangogh_set_power_profile_mode(struct smu_context *smu, long *input,
+ 	}
+ 
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_ActiveProcessNotify,
+-				    smu->workload_mask,
++				    1 << workload_type,
+ 				    NULL);
+ 	if (ret) {
+ 		dev_err_once(smu->adev->dev, "Fail to set workload type %d\n",
+@@ -1087,7 +1087,7 @@ static int vangogh_set_power_profile_mode(struct smu_context *smu, long *input,
+ 		return ret;
+ 	}
+ 
+-	smu_cmn_assign_power_profile(smu);
++	smu->power_profile_mode = profile_mode;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
+index 62316a6707ef..cc0504b063fa 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
+@@ -890,14 +890,14 @@ static int renoir_set_power_profile_mode(struct smu_context *smu, long *input, u
+ 	}
+ 
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_ActiveProcessNotify,
+-				    smu->workload_mask,
++				    1 << workload_type,
+ 				    NULL);
+ 	if (ret) {
+ 		dev_err_once(smu->adev->dev, "Fail to set workload type %d\n", workload_type);
+ 		return ret;
+ 	}
+ 
+-	smu_cmn_assign_power_profile(smu);
++	smu->power_profile_mode = profile_mode;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 5dd7ceca64fe..d53e162dcd8d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2485,7 +2485,7 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
+ 	DpmActivityMonitorCoeffInt_t *activity_monitor =
+ 		&(activity_monitor_external.DpmActivityMonitorCoeffInt);
+ 	int workload_type, ret = 0;
+-	u32 workload_mask;
++	u32 workload_mask, selected_workload_mask;
+ 
+ 	smu->power_profile_mode = input[size];
+ 
+@@ -2552,7 +2552,7 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
+ 	if (workload_type < 0)
+ 		return -EINVAL;
+ 
+-	workload_mask = 1 << workload_type;
++	selected_workload_mask = workload_mask = 1 << workload_type;
+ 
+ 	/* Add optimizations for SMU13.0.0/10.  Reuse the power saving profile */
+ 	if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
+@@ -2567,22 +2567,12 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
+ 			workload_mask |= 1 << workload_type;
+ 	}
+ 
+-	smu->workload_mask |= workload_mask;
+ 	ret = smu_cmn_send_smc_msg_with_param(smu,
+ 					       SMU_MSG_SetWorkloadMask,
+-					       smu->workload_mask,
++					       workload_mask,
+ 					       NULL);
+-	if (!ret) {
+-		smu_cmn_assign_power_profile(smu);
+-		if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_POWERSAVING) {
+-			workload_type = smu_cmn_to_asic_specific_index(smu,
+-							       CMN2ASIC_MAPPING_WORKLOAD,
+-							       PP_SMC_POWER_PROFILE_FULLSCREEN3D);
+-			smu->power_profile_mode = smu->workload_mask & (1 << workload_type)
+-										? PP_SMC_POWER_PROFILE_FULLSCREEN3D
+-										: PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
+-		}
+-	}
++	if (!ret)
++		smu->workload_mask = selected_workload_mask;
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+index 9d0b19419de0..b891a5e0a396 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2499,14 +2499,13 @@ static int smu_v13_0_7_set_power_profile_mode(struct smu_context *smu, long *inp
+ 						       smu->power_profile_mode);
+ 	if (workload_type < 0)
+ 		return -EINVAL;
+-
+ 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
+-				    smu->workload_mask, NULL);
++				    1 << workload_type, NULL);
+ 
+ 	if (ret)
+ 		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
+ 	else
+-		smu_cmn_assign_power_profile(smu);
++		smu->workload_mask = (1 << workload_type);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index d9f0e7f81ed7..eaf80c5b3e4d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -1508,11 +1508,12 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
+ 	if (workload_type < 0)
+ 		return -EINVAL;
+ 
+-	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
+-										  smu->workload_mask, NULL);
+-
++	ret = smu_cmn_send_smc_msg_with_param(smu,
++					       SMU_MSG_SetWorkloadMask,
++					       1 << workload_type,
++					       NULL);
+ 	if (!ret)
+-		smu_cmn_assign_power_profile(smu);
++		smu->workload_mask = 1 << workload_type;
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+index bdfc5e617333..91ad434bcdae 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+@@ -1138,14 +1138,6 @@ int smu_cmn_set_mp1_state(struct smu_context *smu,
+ 	return ret;
+ }
+ 
+-void smu_cmn_assign_power_profile(struct smu_context *smu)
+-{
+-	uint32_t index;
+-	index = fls(smu->workload_mask);
+-	index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+-	smu->power_profile_mode = smu->workload_setting[index];
+-}
+-
+ bool smu_cmn_is_audio_func_enabled(struct amdgpu_device *adev)
+ {
+ 	struct pci_dev *p = NULL;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.h b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.h
+index 8a801e389659..1de685defe85 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.h
+@@ -130,8 +130,6 @@ void smu_cmn_init_soft_gpu_metrics(void *table, uint8_t frev, uint8_t crev);
+ int smu_cmn_set_mp1_state(struct smu_context *smu,
+ 			  enum pp_mp1_state mp1_state);
+ 
+-void smu_cmn_assign_power_profile(struct smu_context *smu);
+-
+ /*
+  * Helper function to make sysfs_emit_at() happy. Align buf to
+  * the current page boundary and record the offset.
+-- 
+2.47.0
 
-## Build
-* kernel: 4.19.324-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 3b4d1c2cc31466d675bc2579661f90066a9c0404
-* git describe: v4.19.323-53-g3b4d1c2cc314
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
-.323-53-g3b4d1c2cc314
-
-## Test Regressions (compared to v4.19.322-350-g9e8e2cfe2de9)
-
-## Metric Regressions (compared to v4.19.322-350-g9e8e2cfe2de9)
-
-## Test Fixes (compared to v4.19.322-350-g9e8e2cfe2de9)
-
-## Metric Fixes (compared to v4.19.322-350-g9e8e2cfe2de9)
-
-## Test result summary
-total: 25104, pass: 19640, fail: 186, skip: 5242, xfail: 36
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 101 total, 95 passed, 6 failed
-* arm64: 26 total, 21 passed, 5 failed
-* i386: 14 total, 11 passed, 3 failed
-* mips: 20 total, 20 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 21 total, 21 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 22 total, 16 passed, 6 failed
-
-## Test suites summary
-* boot
-* kunit
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
