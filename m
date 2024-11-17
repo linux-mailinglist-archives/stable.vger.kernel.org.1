@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-93750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AE79D072D
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 01:06:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984489D072E
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 01:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC52281E24
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 00:06:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F75A1F21322
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 00:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ED8EC2;
-	Mon, 18 Nov 2024 00:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D1B38B;
+	Mon, 18 Nov 2024 00:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="F62tTxCH"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="EYdxEJWN"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic316-12.consmr.mail.bf2.yahoo.com (sonic316-12.consmr.mail.bf2.yahoo.com [74.6.130.122])
+Received: from sonic310-15.consmr.mail.bf2.yahoo.com (sonic310-15.consmr.mail.bf2.yahoo.com [74.6.135.125])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F292A360
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 00:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.130.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D00139D
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 00:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.135.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731888389; cv=none; b=iWXIxiP4F5FozhrPyGtLkkvd3s0qJXomSNRFTqCm2UCam/fVOaJZFDO3E7tOdPTl+PW2rg/9Wgnfmti7qzV1TSCdbF8vPta4siiow8T4l553BATKsFxCySjTb3cujrbyI6HlgfjHi3UC4befK9sreBwb2RjrndDvHQFzAu3HBKE=
+	t=1731888392; cv=none; b=WqYI0sTpeu8BzfBQLMVwe+pJsAfWP7g1+cn7KYqZY8unhztkJwmZ+Vo2r3RceQYTnUvaD2yVUTiTZSUGxuAuWzvaGZ+Z+C/nc/daz7f/6gaYTYau+3vVd78+wxDy7ZkWCHvzt3tVANmONJoztdtiqbU0NVj7jwG2MRJ+I7i46G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731888389; c=relaxed/simple;
-	bh=IvWoevXXpmOe+XQTPhPlMfQe/45LyI5ZKS9WsLqakXc=;
+	s=arc-20240116; t=1731888392; c=relaxed/simple;
+	bh=YUce759kQ7h05bVUbjxEdZsIcSJvZgYa1EEcx85iesg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNZKORSaucw5BodbviKYQsl8D9r3NJQofCH5JbRuxwaQecw60hvQEueZIW28a6oM49piWu24JGERivPtdLxyDu3lEr5TDcSHxd5XpKzklSoutVTZCRDVjFUWk06x+34yEHG35yT2OIkQvpRuB5McwsfHxjZlD8dd9Uw+WPL5WMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=F62tTxCH; arc=none smtp.client-ip=74.6.130.122
+	 MIME-Version; b=i2JHd1y+3rw81GIq6hXDAo33TBkEnxZa4ken+GdGnz8lGREb1utlT2M+86F5xa3OHSzUImJkr4g2+4oAvJ8WJg6ij6PYu1SkYuYoeq9lITJfLsAwNscg7gE2naaR8YqY2c45rcSSn1nBi1JJtR4J4TMqZCgeLjUw1TT9BWOXuws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=EYdxEJWN; arc=none smtp.client-ip=74.6.135.125
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888387; bh=r8BNRTgQmSesSBBIr5W5/aasZKD6i/fztbdUkMyjEmU=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=F62tTxCHCfIcFZ+/rSPYP2aWNvyBN+fsqoUUC3Ps4+gRJPrVYSYeNBJmGIS9KDRZ7ExRVpmdFNKLmBUehwc+Me/4ioEjcsiiBfhAInyGnRPYnl5AzCnjmCNoatmIAzmidYa4MIoMpF3fUF7B52j9v1knis8JtETxC4SUDbA09vOKsMuLVbP2eTZqvqy1v3t2p3gaNgLlfZjYRLUHIv4y6JeHIvA/b1soMVjYMTxSh319cs+CxCGOKlPM8GP83vr5M3g6Tw3zf6qF7RD+PoCeGKi69oN/ZxcgzGC/IGiuyZShCKOfzJ6ZPWlXgulViTZPj76kQt6ERBJqQXZGmFPZkg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888387; bh=XvpHFkogB0NDCo3wwLQCvShie/xuhf88A8vjIhTdSWR=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=bXMCaLmTHMolPeFGePkuqbF5+CKfjtZ0hZHHsR4tmJK0vfeT2Ox6LpVCNpIjgee29MKgw1cuCV/iR2ejDQiBek2qF+7BzSSQAe7jCN6lDXlwqYSuSFdcg03o5DuAgpA3WW6BpyWKc3at2tso2nZz6+FVypXv3UuIER5kzmGz9A2CEbPxIqyZxikh9yUJ7iQc9DO+ZD2sepVGx4jWaswm/rEo+HkAlUb82Zrlg5uZ5wfhQdmUjxWM0gjgEHXcRe57hbfkYVtY5XDFmvZT3S1/M0FqlfAoamq56FkFA4SSgrqi/fAikj6aYopma3yr0ZPspt13tk9nKG/TiZN3k0/R/w==
-X-YMail-OSG: S59FKPMVM1kpCnS9ge_nKiG7mynvlQXg9djmEd46vzER7F4taZVXBpTAbBie9iE
- Z1jv1e0s0UnAvX4okVPcwnoKfnIGx1FcpsMvesr_qRR2uP38u2Pk9Ars1SBHlUbb0wK9IcXPZUCZ
- QHNDKXYJWApovQwQfNovAsc0cEvoNYiuFmLIIMhbvqvqBDdmqrEEc6isaYR0PeE53RnF9bFwdFbm
- wnw53xBrzODr0MJoDB7F5U4cnykrFKKXizKJaL8BSLHjSqCoIeqE2qClPnpM9oCXyhq.CknNINAB
- 77.sG_cmIP520_O71g3UFA4Y4_Ciik7jUuUcvK0KukCthLCmYesJxo5Cjl58lzK8SSZ_pvT.k9PP
- y1mGCzYNUMljZ53yd7hg6GnVjmG1NjU3jMQXTiRxnD9vWpbADRY8tyOkvAKQuXX3OJZwUDQNA.Id
- TzULIQadoJQ1CvDvkJTZuk_Dfsp5n9ZcMS.0Xjre5i_mPBoBEV9SV86.gd7OOEEMmJMTW1J2X4Vy
- vDJmQZAtPIGNXNevzMNoLYCN0oc9fQAd9TtiH.QcKH2AX1nhMiW3pC_CMM_wb7u9KkapEw5GDzQq
- BJJbPIrbKWPzl8nNjCKGMHDXzSYJ.mVQY9NYVePQVcB0Q43RCi5vPkAEoLnONPK1hiA7Hfcdf2me
- oasvWzAQAXEcmWblTG9sTTjZ2DiZazxzok2nK5rSF2mmyCNd4gRSS5oBE5HcFajs.fSO0cDVXATP
- gsoUEyIDeYDGMZGrPS1vVfj627mqbQtJOT75XXOKhSHSu7DaKpDsLNju3x7V4u03P4GXf2fMFFd1
- 4114K5ioLCXMdLLFTudY1D3tQ4r2oXe3MJFXWadoKhVQfAIriFTkrxQDhT1gBOTilp_DyvU3mSIP
- XP5sh9THH_Tgak_zRXUbcOTckDex2.vYKdWUQW2oYMTwKExPgenW7BVC7sdx81lz4wwU9tx7LMT_
- G4hLP2dJC9goV62vhdxoLwrZia2PD8yrZGMpGSJ9ZRSdvvqQmZOJt2GFM2NFtXVNZziqWyEGE3J_
- WbdpKy.DobAUmhcM.IkbubpZk0BKO17B3ntMt3zPEFO2vkuZ2ja6uBTr_znhJLbBDu6vqLqbeaWZ
- Gtz4UVlngnfdhudnmsKw2U45bj0.zanqeCv_a04Un6bXocwtyfhDASv0l.PASXEamsdGEKGyFCMA
- b_8k_5t69zm.owxj8r3Os0xbSfXKxOULipLwyW2.gHgdwsTferaxOzfRgpi4ykzTyURPW8k1S.4x
- oKY4117dMdvvpmnHfsn6d9aDZpkBG9TO6TvH5N.46D_rRl2IWM4zBlDgscVTFDRNQFnoTnthZfRd
- CF76hyUDhwSmMUaOBqegQDEGqcQk0xJaa37rFZ6Ye3jwTNINZR7z3ptRlTKVOkz4360ypoBiA1J0
- FHmzXdYxlmam84mJlKQH_dltQDbQ8iAOnLvqq4NvAYUt5eDfBYR4.R7BADfGyomCIGhpO9jd9OGU
- 832kYBhtgstB9VLrLsTQ85yDuHmO5sJJGI_CcpMOr3gGB0duzLzJ7lU.AGJCFmzsa4LrLp3gMvVu
- AHHTk978I5rgBKmE9W70M3B3qM3eu4qRR.Bif11wmktRUI35MGD1bM4PKQArVhQlI9UuSSa1zWwy
- 5I5N3r8zySqFoL3J61ImpjiOAmZ_9ApvOoRHYqYKcXbKHqBm0DNIwSQXeHQvF4zCgm7Nhe5.mDMa
- G5C64M4ft8noHA1QeBWubgOo5C7IfNlX1Ph6Qpjwv1W3aDdohRcN7VE1LNpy9EZzwAP8Dzd7Ova8
- _Pal8ScmE3GKmxY0q2Sq1j8VUBTv_EICkLVXIee0pfTejKxlqcIuGsxoood6iSle0FSH58ZAvjEz
- Ebnxsyc1x8z2XgjsBq.NpZB2.0fRoYZSW9IZPHUQ3zF65izpanDWgG32yo5F1aCMfP_Am9dv.kR9
- CHakXdabfw2Ve.QxCB82NWKrII2_xiWPl40mXkznL.gSMfSb.NXbzHObV8OI3gKfNVhQMzfzSFgg
- 5cLpzb_tsAhk1IcYdQdk939SS3kP7_wwjRVg1ShyGNuziQNNvlNShZb4v.SlI0ZOh4B2KDHJ_L0q
- .lvqoIW7RXjCIiY5x23RUe0bl5FbAqO_SKZ6fgamalhrF.Q1Df5zdk8iCYndEUiF2bv7p.yJSoCc
- nf87ZeUeH2sXzMjzt2717yMk7G3D6fCOe8.sZPLpbEQOtmwFRnS50npr8n8hfLYOWYZdK4Dh7.WQ
- REG5cfmJ7CGa35Zz_HdE3JBpVtw88p30q.KGXHqQE8BSqMvNZsIazEHjXUAGrOBo-
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888389; bh=sRhtt7tAu+00jSTS4pSlYyOtlC3u9JS4ZajQtj5R2sU=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=EYdxEJWNTdhlTebgDbORed5Nbu929s3hSjsFIayDkuzfMmnJhitfA0B+wgdZZSyO8SSakrnBqBJeOLFKCTSLAFeIwccnAAfZFzAewJ88IPD4MS9SRNH79ZPCp/EOYReyCgjgwcHZxxqu7PDJl3pe2HZSm+WofUAluI9B31L/zAJ/t//qBq6goz0YjCTv0VlsuOyFAcRxw/kafmPxwMwpwli21FXgkTdhOTp4gou7q6aTH5Q7v8ROn78TBCu0NT+gwsKwXbB757xThZgqG59xLU1lyy9IMeVrUVYb2jQ5AlV39S+Bu8OmjMr6Vs8+k6JQsX1+FCByQRESyvsBReQPoA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888389; bh=reeuNrsf/Ht5P7sTbptnI3tzn15A2R40d4etYlA79Gz=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=sgGD0sW/YnSupauPOTUyo50qkhsJGej8ZutjXvScNA8gw2ddDO1M+x0rmN3qb6jnxK5JrA1K2NPOl03K0H2ODJkPDx2JUA2XPlMjzKqI/SiOLe5mmXO0W+Zs9AYUrQld3YarwtGPjzQTOSjfTPYcJ6UXyW+N9RLhpwAGt3E6bmIvKo1NU+44A7rDfQShasqqDX0mu1LiWA0yPvi4lNJF65901D7QpjgZ8xcnq9HumdI74LSqSjELG4ykePQBG4vRNfBiLrIPgs5kolv9jIBHvchYDH/BZw8+Ym3Q54M5FJ6hw2E86neK4cciO3wkdvqxOfBbqEXlZoPWxg7mwG5NxQ==
+X-YMail-OSG: 7FZS7goVM1kFqpM.ur2T3h4XTx0vdgzCJBc8qLUHrYTgnOTayHKj2FgfxvNE1WK
+ 491WoRGF.wDUfU2XxNCUJ1bAT0lgcfcmUFtX_y6ToRIRezXagqQzEHSDGtcAH3QTnK4ZQonNL7R9
+ FxeI_wFhm6TX5pkdh19qepyQdbAxQmix7h0ITNq67VBoprXFPxnLqVO9kMsHCmne3teELxMizZ8D
+ puuP.rnh1DfswniRWXkx8UgSY0OtAjc9IkprGhoJH60eMUwVyB5mExaYECSquqLwhSLERBzpaXsB
+ yJXMKM1PfBk95ZRQUMdDdI5_pDPgEqbZ8wN2zvBGYkpSoYZO8wbG5O8Gt5Z274n.eb6ODamWOBA8
+ 3yyec2CKho3dnClgPncf7Jg0fpqQaBv0rMRDNxdpqnx9qm40FMjv1IlxoVkpc0VC0Jz4gbF2dZEX
+ PmbsemtzHDcGbZvCJQJ4UljKpfTEKDM8LVO4WwnPxMaLoMt4jaDq_AJrvwdkET1tcwHKFEDeAxV_
+ iNccFO5itxPRdWb5Qw6nQgfjE4OcFx5TyIxj9CwQ7PF4z56D1dbmWeTqOHnFXR_PVMEZSB8GPxVf
+ Aj7yhrSdk_pNRGxRyJjOJP2b489WUyK_OMJV2kR7.HVnEDbU0dc4XdCX0xm3k6Nl5TM.Gu4QZ88h
+ Dm0EO0jnRUcVj6F4dsT9DT8rWRZT6yNxUh66U85eYE0JcNxyTpcyfg2zHfyakzfr_Qwl5trcshl1
+ VZufYc9p07OLfxpXhEw1wamPei9lm5BvCVgWk0uSbB5ulhFi_WWO80H.4aa56xaO8THs27Qh8azA
+ lcGgs4Npyxj9WvtNZPBOKyteIGZltjkzaZmSjczMJILby7kemZM5_xkcCNUio5vgKl.iXtNlm9OE
+ rcVXu7f8RZo0K2oE7daGekYBJum3_Bg0v75nclsFddEWKlRm9MhXIDnJdi52pyFolMtbNRf0MzX.
+ 6GrO2TjSr8f.7IXS1jfmLGtv_8Z4jZq82K5JKqmzwzeztlzuE_MfyldA_15jb7QpZKS_Dyd.dAUo
+ iVvZ1GDZesRpNnSjsSZugSgRWvnIJzRi_GiSjzlnclR.IWKZG8KvGrPTmw.pdMWbemXP0Z0IyMwa
+ ukzO1sT.b7UzR0w3Wo1yFowoHHJ7QL2QH9Zq.C09yrnPpFarz34FNMDw3WrHbljMS1LVrqxGitY7
+ 5.fiqaDRnqi0Gjm7UV0DaXnZpQGFZm2WoRdzr2Iwhz.BcrWM761z3xqQtEI6z_8bgBXorEk_KNOY
+ rjKSfU_kSTjjPTuET1nUw6Q4yNwNbZO0_eUn4YoexYKXUv_h0N9mQqkC7n6nT2nte2LFUJ4fATeP
+ unvgSBDVYvfZaTYlvJNoXSPsACyLNUMccGV205pN.G3nUFYNtdMj4jUMh0dNbno6xz6c8fUKh0Zr
+ HWLRTJ155_oBgniA_c21XbBpGS4nuMvwk6pFnfR.E2qLNL6E1LSEEYqMU3IpcgYoeSbucIZyGAmO
+ ECRKycfSUaHAx6Oa0YtPLFqBtKxRSuBUZn964uTZc.2LKLgKhNK7iSI.ChuYreGBNN3lEewC6Y_O
+ gPH.NFTtaRYIJv5hoJQTcVZZAQcRsdQE91FusNrZb.Jbeast1fYt6tFWvyMufz0_vzYw8firzOvr
+ 88.Klp8ReqnEv4h7K1DHP0bNkR83AanCOAAjJ_D8XvEaroC5bHeoE2yg4CYplZbPLW8Fbtngl.ek
+ R2OaWW.ipmbf28HvsUDB1dSgoFhLtHZIpj6mTIuQSbkJn4DKCErjGBUpguOm8GELR9qyMAOhzgki
+ lwVQoMlYcuokb3E08jwzGn1ZdsghlWoUNoBqlNEJHSDpsTH1PHgY2caGCAvcoF1e8w1AzETc5kXr
+ 2x7ujkiwdhx01Y1TNSW9yps_j64pCNvZh8kd9NS7Jb46nhPuuWcO3PNSKI_7yL7LKmU9YMnbG2nd
+ bUufF7dPWPb.u7cJZ0GIzKjvCAomJCryLjhVEYlaENeO7obIXyohDmTXv56IlmJ.0P4YeVvHtKC_
+ PFMNW1XKFZdwV1Xb.dK6zE.0uYkEkMDc4GXkVYGKIzt42gkZ5nbhBYGmUYUjWV9x6JN2Hy0xoiyx
+ NStplWVzt2q3RcqepkCqz9LgPDkzKYHhU4fLCTomdjTmncUSNvJ4Ahu_b_6S711cPltEBKvM8xcV
+ .gUv2pjfbZ5AKFfODJvuOuGmrdeBK6eJE0EWF6P3qQl_1cJTeVBn57dRGgyPC6qNVPZyER7SaFJ.
+ ZGPHl3G9ZQS0BgNUBRrBVTV0A6BP5.2isSV06Q1Mvvle0__f_f_4NUARz8CVF1g--
 X-Sonic-MF: <dullfire@yahoo.com>
-X-Sonic-ID: c5f9e86c-2920-4ada-bd15-5c35f4c19cc5
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Mon, 18 Nov 2024 00:06:27 +0000
+X-Sonic-ID: 711db1ba-abf7-4532-aad5-58e6e86525ad
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.bf2.yahoo.com with HTTP; Mon, 18 Nov 2024 00:06:29 +0000
 Received: by hermes--production-ne1-bfc75c9cd-m9q8x (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e8940a2352a515f37c8ad5174ebcd87e;
-          Sun, 17 Nov 2024 23:36:04 +0000 (UTC)
+          Sun, 17 Nov 2024 23:36:06 +0000 (UTC)
 From: dullfire@yahoo.com
 To: dullfire@yahoo.com
 Cc: stable@vger.kernel.org
-Subject: [PATCH 1/2] PCI/MSI: Add MSIX option to write to ENTRY_DATA before any reads
-Date: Sun, 17 Nov 2024 17:35:43 -0600
-Message-ID: <20241117233544.18227-2-dullfire@yahoo.com>
+Subject: [PATCH 2/2] net/niu: niu requires MSIX ENTRY_DATA fields touch before entry reads
+Date: Sun, 17 Nov 2024 17:35:44 -0600
+Message-ID: <20241117233544.18227-3-dullfire@yahoo.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241117233544.18227-1-dullfire@yahoo.com>
 References: <20241117233544.18227-1-dullfire@yahoo.com>
@@ -88,46 +88,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Currier <dullfire@yahoo.com>
 
-Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
-introduces a readl() from ENTRY_VECTOR_CTRL before the writel() to
-ENTRY_DATA. This is correct, however some hardware, like the Sun Neptune
-chips, the niu module, will cause an error and/or fatal trap if any MSIX
-table entry is read before the corresponding ENTRY_DATA field is written
-to. This patch adds an optional early writel() in msix_prepare_msi_desc().
+Fix niu_try_msix() to not cause a fatal trap on sparc systems.
 
+Set PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST on the struct pci_dev to
+work around a bug in the hardware or firmware.
+
+For each vector entry in the msix table, niu chips will cause a fatal
+trap if any registers in that entry are read before that entries'
+ENTRY_DATA register is written to. Testing indicates writes to other
+registers are not sufficient to prevent the fatal trap, however the value
+does not appear to matter. This only needs to happen once after power up,
+so simply rebooting into a kernel lacking this fix will NOT cause the
+trap.
+
+NON-RESUMABLE ERROR: Reporting on cpu 64
+NON-RESUMABLE ERROR: TPC [0x00000000005f6900] <msix_prepare_msi_desc+0x90/0xa0>
+NON-RESUMABLE ERROR: RAW [4010000000000016:00000e37f93e32ff:0000000202000080:ffffffffffffffff
+NON-RESUMABLE ERROR:      0000000800000000:0000000000000000:0000000000000000:0000000000000000]
+NON-RESUMABLE ERROR: handle [0x4010000000000016] stick [0x00000e37f93e32ff]
+NON-RESUMABLE ERROR: type [precise nonresumable]
+NON-RESUMABLE ERROR: attrs [0x02000080] < ASI sp-faulted priv >
+NON-RESUMABLE ERROR: raddr [0xffffffffffffffff]
+NON-RESUMABLE ERROR: insn effective address [0x000000c50020000c]
+NON-RESUMABLE ERROR: size [0x8]
+NON-RESUMABLE ERROR: asi [0x00]
+CPU: 64 UID: 0 PID: 745 Comm: kworker/64:1 Not tainted 6.11.5 #63
+Workqueue: events work_for_cpu_fn
+TSTATE: 0000000011001602 TPC: 00000000005f6900 TNPC: 00000000005f6904 Y: 00000000    Not tainted
+TPC: <msix_prepare_msi_desc+0x90/0xa0>
+g0: 00000000000002e9 g1: 000000000000000c g2: 000000c50020000c g3: 0000000000000100
+g4: ffff8000470307c0 g5: ffff800fec5be000 g6: ffff800047a08000 g7: 0000000000000000
+o0: ffff800014feb000 o1: ffff800047a0b620 o2: 0000000000000011 o3: ffff800047a0b620
+o4: 0000000000000080 o5: 0000000000000011 sp: ffff800047a0ad51 ret_pc: 00000000005f7128
+RPC: <__pci_enable_msix_range+0x3cc/0x460>
+l0: 000000000000000d l1: 000000000000c01f l2: ffff800014feb0a8 l3: 0000000000000020
+l4: 000000000000c000 l5: 0000000000000001 l6: 0000000020000000 l7: ffff800047a0b734
+i0: ffff800014feb000 i1: ffff800047a0b730 i2: 0000000000000001 i3: 000000000000000d
+i4: 0000000000000000 i5: 0000000000000000 i6: ffff800047a0ae81 i7: 00000000101888b0
+I7: <niu_try_msix.constprop.0+0xc0/0x130 [niu]>
+Call Trace:
+[<00000000101888b0>] niu_try_msix.constprop.0+0xc0/0x130 [niu]
+[<000000001018f840>] niu_get_invariants+0x183c/0x207c [niu]
+[<00000000101902fc>] niu_pci_init_one+0x27c/0x2fc [niu]
+[<00000000005ef3e4>] local_pci_probe+0x28/0x74
+[<0000000000469240>] work_for_cpu_fn+0x8/0x1c
+[<000000000046b008>] process_scheduled_works+0x144/0x210
+[<000000000046b518>] worker_thread+0x13c/0x1c0
+[<00000000004710e0>] kthread+0xb8/0xc8
+[<00000000004060c8>] ret_from_fork+0x1c/0x2c
+[<0000000000000000>] 0x0
+Kernel panic - not syncing: Non-resumable error.
+
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
 ---
- drivers/pci/msi/msi.c | 2 ++
- include/linux/pci.h   | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/sun/niu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 3a45879d85db..50d87fb5e37f 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -611,6 +611,8 @@ void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
- 	if (desc->pci.msi_attrib.can_mask) {
- 		void __iomem *addr = pci_msix_desc_addr(desc);
- 
-+		if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
-+			writel(0, addr + PCI_MSIX_ENTRY_DATA);
- 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 41a27ae58ced..f5449b73b9a7 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -9058,6 +9058,8 @@ static void niu_try_msix(struct niu *np, u8 *ldg_num_map)
+ 		msi_vec[i].entry = i;
  	}
- }
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 37d97bef060f..b8b95b58d522 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -245,6 +245,8 @@ enum pci_dev_flags {
- 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
- 	/* Device does honor MSI masking despite saying otherwise */
- 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
-+	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
-+	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
- };
  
- enum pci_irq_reroute_variant {
++	pdev->dev_flags |= PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST;
++
+ 	num_irqs = pci_enable_msix_range(pdev, msi_vec, 1, num_irqs);
+ 	if (num_irqs < 0) {
+ 		np->flags &= ~NIU_FLAGS_MSIX;
 -- 
 2.45.2
 
