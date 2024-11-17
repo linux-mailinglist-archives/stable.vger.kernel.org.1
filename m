@@ -1,118 +1,134 @@
-Return-Path: <stable+bounces-93747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8099D0710
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 00:42:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AE79D072D
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 01:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52EC21F216E0
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 23:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC52281E24
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 00:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E397F1DDC1C;
-	Sun, 17 Nov 2024 23:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ED8EC2;
+	Mon, 18 Nov 2024 00:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="wBF5LxbE"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="F62tTxCH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from sonic316-12.consmr.mail.bf2.yahoo.com (sonic316-12.consmr.mail.bf2.yahoo.com [74.6.130.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466D215445D
-	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 23:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F292A360
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 00:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.130.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731886923; cv=none; b=AuEMz98JexihadhCkqnwaK9mypuc8d99oeyVMoAX85/HlEm8i4l9IW8RHE2dfc/ywltyjyxPPVc8vPa792lSnCjXkcPE1WoP5vb5fe4xQ5M4UHWzrg/jDOyeeSKSrIaPAnuJ/WqOvD25JlyyUHYgnKoFfksBPR4/RuIHs+DDkYo=
+	t=1731888389; cv=none; b=iWXIxiP4F5FozhrPyGtLkkvd3s0qJXomSNRFTqCm2UCam/fVOaJZFDO3E7tOdPTl+PW2rg/9Wgnfmti7qzV1TSCdbF8vPta4siiow8T4l553BATKsFxCySjTb3cujrbyI6HlgfjHi3UC4befK9sreBwb2RjrndDvHQFzAu3HBKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731886923; c=relaxed/simple;
-	bh=qxTOujbTL10cxGD+QdGTBhyG9RaWSm17XBudCi8uBi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SzLWdiAKVnVNK5dMLy2z/XXkKc+wLY5ynTqPvx92h1Fg1yJuJcc/gU3d36/wxi7UWx88yMR3CpTrl+BobHvAhqYN8Xg5LElwI41xGjklnIEjOUFRrI+ZTqJp9MoX+ikj5aosVcX1YOk1VKeLMTmGwM7V2uAPtWCUuVUirqXet8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=wBF5LxbE; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e5130832aso915168b3a.0
-        for <stable@vger.kernel.org>; Sun, 17 Nov 2024 15:42:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1731886921; x=1732491721; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SUTPquA8eQo3SmUaOr4zN6yMlKLusBV0j+4/2JWItaw=;
-        b=wBF5LxbEq1PaT3a7msB8CtZvB9UfUUMd6RvXeTP+U2KGj0YeSxvwT8yY0G8WczWIkn
-         15J4k9uJ6Dpd6AZfbNOUaRSD3HuYa30JFrAGQSAzQGF7yDEQ972Fyu+HYAti8nnqais9
-         1/gT7f2hWhtHVW4KRmBJFdYRx5grtC4yQYlhzEL9PQYuqs37O5iApXLGrWYxvJ6G3gNM
-         wN195gi6v/bU6+pRQSs5pNlM+jTCCuahDA3AIfjFOj2YZ1n3sjsUbQd9Nl08Bmz/W8OE
-         SMo4zHpIlfR43nZBWpCPaVjPWOvrj4OkjaBCQFn5tcJzdr1ZlX4yV+ICw3LXWBlBLzJH
-         XorQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731886921; x=1732491721;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SUTPquA8eQo3SmUaOr4zN6yMlKLusBV0j+4/2JWItaw=;
-        b=PChEQDVw+HQTS5t0AlqufKoLPecSpTOHnoEWTV4amuYJ7ieqF8fGoyjBUvcNer3eu+
-         tb0r2ZF9S+wK+rXPKWs1upK5gcfg6FvXpxj96ndjHmgVTqSrdXu8hJDApJWBDRU2bhKU
-         AdmSR/4lT7Kfzg/Hw1LsuK6S74l5R29m/mZy4ik/SgaX2H8JRYFQyasDISQGnBbviU1M
-         K3HERyxU+vk7o/6Xy7Lq9hE2Cll7PYuu7UdAl2SRj905JWbE8RJVqWZysfWl9f/WYpKs
-         xYlw1dgbMwNNq26ILEBpwswzRZQXlooOlWviIWsybsaBN7P4QSYCatxtIURGM3ViQp34
-         sSjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0U63Pt3K/RnjvkAHS7LZD4Lv2m94T9CacYDm8ENZfbt6CQzIU2ojMvqYXMWVq6QpqhttC1ok=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzED5+N9yJg2pLu4ddsQt5P3xbW5i3FJVHbMVyz5pEBzcBU1Zxo
-	XZZYI0z9og8pYv4KV4bGJP4Te/2EbRZlYaxMlECTw9YQyGwK7b1ZPmv4j0ZMYzk=
-X-Google-Smtp-Source: AGHT+IGiAd1rAkdTifocy8exaCIjQV+CPbeJh6699Tv0xtsUdygH+X0bJrVxisJuCl+ycdb/1IDZPw==
-X-Received: by 2002:a05:6a00:a0c:b0:71e:e4f:3e58 with SMTP id d2e1a72fcca58-72476cad10fmr13213225b3a.17.1731886921599;
-        Sun, 17 Nov 2024 15:42:01 -0800 (PST)
-Received: from dread.disaster.area (pa49-186-86-168.pa.vic.optusnet.com.au. [49.186.86.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724770eef26sm4858255b3a.33.2024.11.17.15.42.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 15:42:01 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1tCo8F-00G4fV-1g;
-	Mon, 18 Nov 2024 09:52:39 +1100
-Date: Mon, 18 Nov 2024 09:52:39 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs: prevent data-race due to missing inode_lock when
- calling vfs_getattr
-Message-ID: <ZzpztwFlxgz8q6BZ@dread.disaster.area>
-References: <20241117163719.39750-1-aha310510@gmail.com>
+	s=arc-20240116; t=1731888389; c=relaxed/simple;
+	bh=IvWoevXXpmOe+XQTPhPlMfQe/45LyI5ZKS9WsLqakXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DNZKORSaucw5BodbviKYQsl8D9r3NJQofCH5JbRuxwaQecw60hvQEueZIW28a6oM49piWu24JGERivPtdLxyDu3lEr5TDcSHxd5XpKzklSoutVTZCRDVjFUWk06x+34yEHG35yT2OIkQvpRuB5McwsfHxjZlD8dd9Uw+WPL5WMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=F62tTxCH; arc=none smtp.client-ip=74.6.130.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888387; bh=r8BNRTgQmSesSBBIr5W5/aasZKD6i/fztbdUkMyjEmU=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=F62tTxCHCfIcFZ+/rSPYP2aWNvyBN+fsqoUUC3Ps4+gRJPrVYSYeNBJmGIS9KDRZ7ExRVpmdFNKLmBUehwc+Me/4ioEjcsiiBfhAInyGnRPYnl5AzCnjmCNoatmIAzmidYa4MIoMpF3fUF7B52j9v1knis8JtETxC4SUDbA09vOKsMuLVbP2eTZqvqy1v3t2p3gaNgLlfZjYRLUHIv4y6JeHIvA/b1soMVjYMTxSh319cs+CxCGOKlPM8GP83vr5M3g6Tw3zf6qF7RD+PoCeGKi69oN/ZxcgzGC/IGiuyZShCKOfzJ6ZPWlXgulViTZPj76kQt6ERBJqQXZGmFPZkg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1731888387; bh=XvpHFkogB0NDCo3wwLQCvShie/xuhf88A8vjIhTdSWR=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=bXMCaLmTHMolPeFGePkuqbF5+CKfjtZ0hZHHsR4tmJK0vfeT2Ox6LpVCNpIjgee29MKgw1cuCV/iR2ejDQiBek2qF+7BzSSQAe7jCN6lDXlwqYSuSFdcg03o5DuAgpA3WW6BpyWKc3at2tso2nZz6+FVypXv3UuIER5kzmGz9A2CEbPxIqyZxikh9yUJ7iQc9DO+ZD2sepVGx4jWaswm/rEo+HkAlUb82Zrlg5uZ5wfhQdmUjxWM0gjgEHXcRe57hbfkYVtY5XDFmvZT3S1/M0FqlfAoamq56FkFA4SSgrqi/fAikj6aYopma3yr0ZPspt13tk9nKG/TiZN3k0/R/w==
+X-YMail-OSG: S59FKPMVM1kpCnS9ge_nKiG7mynvlQXg9djmEd46vzER7F4taZVXBpTAbBie9iE
+ Z1jv1e0s0UnAvX4okVPcwnoKfnIGx1FcpsMvesr_qRR2uP38u2Pk9Ars1SBHlUbb0wK9IcXPZUCZ
+ QHNDKXYJWApovQwQfNovAsc0cEvoNYiuFmLIIMhbvqvqBDdmqrEEc6isaYR0PeE53RnF9bFwdFbm
+ wnw53xBrzODr0MJoDB7F5U4cnykrFKKXizKJaL8BSLHjSqCoIeqE2qClPnpM9oCXyhq.CknNINAB
+ 77.sG_cmIP520_O71g3UFA4Y4_Ciik7jUuUcvK0KukCthLCmYesJxo5Cjl58lzK8SSZ_pvT.k9PP
+ y1mGCzYNUMljZ53yd7hg6GnVjmG1NjU3jMQXTiRxnD9vWpbADRY8tyOkvAKQuXX3OJZwUDQNA.Id
+ TzULIQadoJQ1CvDvkJTZuk_Dfsp5n9ZcMS.0Xjre5i_mPBoBEV9SV86.gd7OOEEMmJMTW1J2X4Vy
+ vDJmQZAtPIGNXNevzMNoLYCN0oc9fQAd9TtiH.QcKH2AX1nhMiW3pC_CMM_wb7u9KkapEw5GDzQq
+ BJJbPIrbKWPzl8nNjCKGMHDXzSYJ.mVQY9NYVePQVcB0Q43RCi5vPkAEoLnONPK1hiA7Hfcdf2me
+ oasvWzAQAXEcmWblTG9sTTjZ2DiZazxzok2nK5rSF2mmyCNd4gRSS5oBE5HcFajs.fSO0cDVXATP
+ gsoUEyIDeYDGMZGrPS1vVfj627mqbQtJOT75XXOKhSHSu7DaKpDsLNju3x7V4u03P4GXf2fMFFd1
+ 4114K5ioLCXMdLLFTudY1D3tQ4r2oXe3MJFXWadoKhVQfAIriFTkrxQDhT1gBOTilp_DyvU3mSIP
+ XP5sh9THH_Tgak_zRXUbcOTckDex2.vYKdWUQW2oYMTwKExPgenW7BVC7sdx81lz4wwU9tx7LMT_
+ G4hLP2dJC9goV62vhdxoLwrZia2PD8yrZGMpGSJ9ZRSdvvqQmZOJt2GFM2NFtXVNZziqWyEGE3J_
+ WbdpKy.DobAUmhcM.IkbubpZk0BKO17B3ntMt3zPEFO2vkuZ2ja6uBTr_znhJLbBDu6vqLqbeaWZ
+ Gtz4UVlngnfdhudnmsKw2U45bj0.zanqeCv_a04Un6bXocwtyfhDASv0l.PASXEamsdGEKGyFCMA
+ b_8k_5t69zm.owxj8r3Os0xbSfXKxOULipLwyW2.gHgdwsTferaxOzfRgpi4ykzTyURPW8k1S.4x
+ oKY4117dMdvvpmnHfsn6d9aDZpkBG9TO6TvH5N.46D_rRl2IWM4zBlDgscVTFDRNQFnoTnthZfRd
+ CF76hyUDhwSmMUaOBqegQDEGqcQk0xJaa37rFZ6Ye3jwTNINZR7z3ptRlTKVOkz4360ypoBiA1J0
+ FHmzXdYxlmam84mJlKQH_dltQDbQ8iAOnLvqq4NvAYUt5eDfBYR4.R7BADfGyomCIGhpO9jd9OGU
+ 832kYBhtgstB9VLrLsTQ85yDuHmO5sJJGI_CcpMOr3gGB0duzLzJ7lU.AGJCFmzsa4LrLp3gMvVu
+ AHHTk978I5rgBKmE9W70M3B3qM3eu4qRR.Bif11wmktRUI35MGD1bM4PKQArVhQlI9UuSSa1zWwy
+ 5I5N3r8zySqFoL3J61ImpjiOAmZ_9ApvOoRHYqYKcXbKHqBm0DNIwSQXeHQvF4zCgm7Nhe5.mDMa
+ G5C64M4ft8noHA1QeBWubgOo5C7IfNlX1Ph6Qpjwv1W3aDdohRcN7VE1LNpy9EZzwAP8Dzd7Ova8
+ _Pal8ScmE3GKmxY0q2Sq1j8VUBTv_EICkLVXIee0pfTejKxlqcIuGsxoood6iSle0FSH58ZAvjEz
+ Ebnxsyc1x8z2XgjsBq.NpZB2.0fRoYZSW9IZPHUQ3zF65izpanDWgG32yo5F1aCMfP_Am9dv.kR9
+ CHakXdabfw2Ve.QxCB82NWKrII2_xiWPl40mXkznL.gSMfSb.NXbzHObV8OI3gKfNVhQMzfzSFgg
+ 5cLpzb_tsAhk1IcYdQdk939SS3kP7_wwjRVg1ShyGNuziQNNvlNShZb4v.SlI0ZOh4B2KDHJ_L0q
+ .lvqoIW7RXjCIiY5x23RUe0bl5FbAqO_SKZ6fgamalhrF.Q1Df5zdk8iCYndEUiF2bv7p.yJSoCc
+ nf87ZeUeH2sXzMjzt2717yMk7G3D6fCOe8.sZPLpbEQOtmwFRnS50npr8n8hfLYOWYZdK4Dh7.WQ
+ REG5cfmJ7CGa35Zz_HdE3JBpVtw88p30q.KGXHqQE8BSqMvNZsIazEHjXUAGrOBo-
+X-Sonic-MF: <dullfire@yahoo.com>
+X-Sonic-ID: c5f9e86c-2920-4ada-bd15-5c35f4c19cc5
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Mon, 18 Nov 2024 00:06:27 +0000
+Received: by hermes--production-ne1-bfc75c9cd-m9q8x (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e8940a2352a515f37c8ad5174ebcd87e;
+          Sun, 17 Nov 2024 23:36:04 +0000 (UTC)
+From: dullfire@yahoo.com
+To: dullfire@yahoo.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] PCI/MSI: Add MSIX option to write to ENTRY_DATA before any reads
+Date: Sun, 17 Nov 2024 17:35:43 -0600
+Message-ID: <20241117233544.18227-2-dullfire@yahoo.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241117233544.18227-1-dullfire@yahoo.com>
+References: <20241117233544.18227-1-dullfire@yahoo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241117163719.39750-1-aha310510@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 18, 2024 at 01:37:19AM +0900, Jeongjun Park wrote:
-> Many filesystems lock inodes before calling vfs_getattr, so there is no
-> data-race for inodes. However, some functions in fs/stat.c that call
-> vfs_getattr do not lock inodes, so the data-race occurs.
-> 
-> Therefore, we need to apply a patch to remove the long-standing data-race
-> for inodes in some functions that do not lock inodes.
+From: Jonathan Currier <dullfire@yahoo.com>
 
-The lock does nothing useful here. The moment the lock is dropped,
-the information in the stat buffer is out of date (i.e. stale) and
-callers need to treat it as such. i.e. stat data is a point in time
-snapshot of inode state and nothing more.
+Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+introduces a readl() from ENTRY_VECTOR_CTRL before the writel() to
+ENTRY_DATA. This is correct, however some hardware, like the Sun Neptune
+chips, the niu module, will cause an error and/or fatal trap if any MSIX
+table entry is read before the corresponding ENTRY_DATA field is written
+to. This patch adds an optional early writel() in msix_prepare_msi_desc().
 
-Holding the inode lock over the getattr call does not change this -
-the information returned by getattr is not guaranteed to be up to
-date by the time the caller reads it.
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+---
+ drivers/pci/msi/msi.c | 2 ++
+ include/linux/pci.h   | 2 ++
+ 2 files changed, 4 insertions(+)
 
-i.e. If a caller needs stat information to be serialised against
-other operations on the inode, then it needs to hold the inode lock
-itself....
-
--Dave.
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 3a45879d85db..50d87fb5e37f 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -611,6 +611,8 @@ void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
+ 	if (desc->pci.msi_attrib.can_mask) {
+ 		void __iomem *addr = pci_msix_desc_addr(desc);
+ 
++		if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
++			writel(0, addr + PCI_MSIX_ENTRY_DATA);
+ 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+ 	}
+ }
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 37d97bef060f..b8b95b58d522 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -245,6 +245,8 @@ enum pci_dev_flags {
+ 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
+ 	/* Device does honor MSI masking despite saying otherwise */
+ 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
++	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
++	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
+ };
+ 
+ enum pci_irq_reroute_variant {
 -- 
-Dave Chinner
-david@fromorbit.com
+2.45.2
+
 
