@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-93724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF119D05D9
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:31:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F299D05DA
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163141F217EB
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5958728205E
 	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 20:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDD61CACE0;
-	Sun, 17 Nov 2024 20:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6B31DBB0D;
+	Sun, 17 Nov 2024 20:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+UOskZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuzJ5LzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1C718054
-	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9C418054
+	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731875505; cv=none; b=GE1CAGyY+oPWvXwWyq01jxxZnB2tbNOKzP5hELs2c1DMU1L2Jwt3U+SnhN6f3cqBaeoWPSSxl7hXYmypz7OZsni2KO2DeDGwHqgtalEFtO9goxV06f5qL9w2gFYGqejrYXWwC3QG6rjG6RzwUKbi9csxIQG2i09uV0EpFeriStY=
+	t=1731875508; cv=none; b=u13UyWfATakFUTybka2vFrcjESYYiIjS7cHwUHSI+FQjqi1XQhVgEiddbJycULKoosZUp7pCeiwIN1uwdJRJT+ittomnd+TYAumBpyRNuWxXzReLiUDZeSQ/HymT7HmLv6fIypZw89mQnsZ/zEghiZD9KIM42Igu+Xc2eC+Fy8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731875505; c=relaxed/simple;
-	bh=THY4lNuV4hRsJtZyCXSk3ESS8XdQjgoPJADaHHm6Qjs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kz8to++yXl8k48Np9Y1//S3pVq/pfAb7ok8HDgXRE71dTGesLX7lOF6M+TzX8wWxVo4bjGKM2P4dA6qIe1OuMEi70gL8vAqiKqpchnB4FktUyETgHq/+cCTUxM5byt7eiNKny7TQqEgHuJFHZystNj6ii0U2C87TVEZK6e3qgC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+UOskZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CD5C4CECD;
-	Sun, 17 Nov 2024 20:31:44 +0000 (UTC)
+	s=arc-20240116; t=1731875508; c=relaxed/simple;
+	bh=K6w11nSGu5Nl/viNWZdnhOfc6MkUw0fZv7j5Zj17taM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k5XAqppmnJZrjXv96yhWejQTAET/tSSJi7A7HbTAkaMjPwudMht23YG7l2osx/8DNYRAJoe4j0jMP+BMcCfY6nvLr4nFHSYFb2VHLCX7JP12zNnWbb6gXFG/rDRvYUUs40V1ydBc+rjw8yxviFaCfImlLowRGpLF6/1G+oS+8II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuzJ5LzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70463C4CECD;
+	Sun, 17 Nov 2024 20:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731875504;
-	bh=THY4lNuV4hRsJtZyCXSk3ESS8XdQjgoPJADaHHm6Qjs=;
+	s=korg; t=1731875507;
+	bh=K6w11nSGu5Nl/viNWZdnhOfc6MkUw0fZv7j5Zj17taM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=F+UOskZoK/c1oyIcLuizIJtdGjpgnZ8pA8IGXAKS6tT/gy0ynqqslSbo98igml8Tq
-	 HlUjuQtnDrLQfEkHpor10bBAHhzjDxctsnqD1xsVRtRnq750SYo43c95pjuYVH7NLQ
-	 UzeLD3o5j/DEt/XkTuLt5CvknP8GOBSUU2VMaA2Q=
-Subject: FAILED: patch "[PATCH] mptcp: hold pm lock when deleting entry" failed to apply to 6.1-stable tree
-To: geliang@kernel.org,kuba@kernel.org,matttbe@kernel.org,tanggeliang@kylinos.cn
+	b=vuzJ5LzLqi9yig2jPN3hy2Y/NmYqomN5JloOLuO8ngMRHaYM+yQ9uIih2X+uazB9B
+	 9mZuNdWwEN9ZiBSjf50G6zcsR/N6JetbBJPzKOzTHZZgYdHtn8WSl3kxwe7hKDvA8g
+	 tfdhorfwDmDqDvUSLYOdUkxWIKzYwWSbvbinCCLA=
+Subject: FAILED: patch "[PATCH] mptcp: pm: use _rcu variant under rcu_read_lock" failed to apply to 6.6-stable tree
+To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Nov 2024 21:31:12 +0100
-Message-ID: <2024111712-unnerving-implicate-ad47@gregkh>
+Date: Sun, 17 Nov 2024 21:31:22 +0100
+Message-ID: <2024111722-mandate-unzip-8568@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f642c5c4d528d11bd78b6c6f84f541cd3c0bea86
+git cherry-pick -x db3eab8110bc0520416101b6a5b52f44a43fb4cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111712-unnerving-implicate-ad47@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111722-mandate-unzip-8568@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,46 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f642c5c4d528d11bd78b6c6f84f541cd3c0bea86 Mon Sep 17 00:00:00 2001
-From: Geliang Tang <geliang@kernel.org>
-Date: Tue, 12 Nov 2024 20:18:34 +0100
-Subject: [PATCH] mptcp: hold pm lock when deleting entry
+From db3eab8110bc0520416101b6a5b52f44a43fb4cf Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 12 Nov 2024 20:18:35 +0100
+Subject: [PATCH] mptcp: pm: use _rcu variant under rcu_read_lock
 
-When traversing userspace_pm_local_addr_list and deleting an entry from
-it in mptcp_pm_nl_remove_doit(), msk->pm.lock should be held.
+In mptcp_pm_create_subflow_or_signal_addr(), rcu_read_(un)lock() are
+used as expected to iterate over the list of local addresses, but
+list_for_each_entry() was used instead of list_for_each_entry_rcu() in
+__lookup_addr(). It is important to use this variant which adds the
+required READ_ONCE() (and diagnostic checks if enabled).
 
-This patch holds this lock before mptcp_userspace_pm_lookup_addr_by_id()
-and releases it after list_move() in mptcp_pm_nl_remove_doit().
+Because __lookup_addr() is also used in mptcp_pm_nl_set_flags() where it
+is called under the pernet->lock and not rcu_read_lock(), an extra
+condition is then passed to help the diagnostic checks making sure
+either the associated spin lock or the RCU lock is held.
 
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
 Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-2-b835580cefa8@kernel.org
+Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-3-b835580cefa8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
-index 3f888bfe1462..e35178f5205f 100644
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -308,14 +308,17 @@ int mptcp_pm_nl_remove_doit(struct sk_buff *skb, struct genl_info *info)
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index db586a5b3866..45a2b5f05d38 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -524,7 +524,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
+ {
+ 	struct mptcp_pm_addr_entry *entry;
  
- 	lock_sock(sk);
- 
-+	spin_lock_bh(&msk->pm.lock);
- 	match = mptcp_userspace_pm_lookup_addr_by_id(msk, id_val);
- 	if (!match) {
- 		GENL_SET_ERR_MSG(info, "address with specified id not found");
-+		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
- 		goto out;
+-	list_for_each_entry(entry, &pernet->local_addr_list, list) {
++	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list,
++				lockdep_is_held(&pernet->lock)) {
+ 		if (mptcp_addresses_equal(&entry->addr, info, entry->addr.port))
+ 			return entry;
  	}
- 
- 	list_move(&match->list, &free_list);
-+	spin_unlock_bh(&msk->pm.lock);
- 
- 	mptcp_pm_remove_addrs(msk, &free_list);
- 
 
 
