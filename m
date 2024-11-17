@@ -1,119 +1,108 @@
-Return-Path: <stable+bounces-93699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BF59D04B6
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 17:58:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C81C9D04D4
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 18:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E378B222D7
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 16:58:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 326CF1F21FCC
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 17:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3771D8DEE;
-	Sun, 17 Nov 2024 16:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF511DA2F1;
+	Sun, 17 Nov 2024 17:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlNehxc/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dB38pEvz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3A31D9A4E;
-	Sun, 17 Nov 2024 16:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0219C15C0;
+	Sun, 17 Nov 2024 17:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731862684; cv=none; b=qUMerOwbjMSeu6F5vyoHtYep0IuiyIbwe8sC0e7z0spv1ibBkJVS4H+sDH9P8tBfKR/P5oBKneTkdxclXjTyTsk2wAklGWEGXRKgInAhrThq/5pjMStb6cgNfT9D2FEvcHGgM16QAWBupNRbuPfAv6dVRjolOxXuWJ3gWTm7fnM=
+	t=1731864703; cv=none; b=N2LxR94UhTlLQsNOQRTlhWbgmHTu1ghCedBNWF9ahwzvQH7mBGyEnfe3eagZyzIQ/cAapA6mz4tEQL4EUUHoIWQvNQnZCzQ3wl85ow4u7vvOxU5usTGdQbAauOzjA6OREqPe8Ipp/w8OXOnj3LVz0fPtVPJThbmP3DIlqjX5lDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731862684; c=relaxed/simple;
-	bh=9zNkXkUqhiT4/4QyOrzhcl3PWYD7D6JifJQs9H3zeIo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hMcFrV3Pl2jwmhoSsYgoeb6ZoZ0B/a//oeXIal75DQqY68JAz0qMeB9hK8YP+taWSWY+pAiPN74OkCHIe+Td5nDxmWBE8au7yql+JjHoIEQBbn5xZpdSzzt65kR0KT3ji+TdHa8c4XCTMhAzhuehswx7mUzTUDdT09aUwD+ytAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlNehxc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BFEC4CEDB;
-	Sun, 17 Nov 2024 16:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731862683;
-	bh=9zNkXkUqhiT4/4QyOrzhcl3PWYD7D6JifJQs9H3zeIo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlNehxc/o8WzdofOWsZ/cIeq3vaojCfLGcp20Mzm0YNYqI8cIV0OvB0WB46+tcALp
-	 oOjt+VLaZjMWKVSHrgYYv95+qPRNKCPzCOHgxPoJ4SuR4loLoeNTQG4Ee9+3cxUtsi
-	 Y+qp+6pNZ2hgUkI0If7J5yQKBf2ciOltQvPXBbphfaR7i7pGSNxByy1vjGBy+CtiuP
-	 VGGJHBnbju40KI82rc/RMUX3oCqHdQkdPPrbCvu/2VHCTohOGLy+Fg0myjhx25eglX
-	 z53Dhp88dV9/umJTxyfQALkTSMalFl2BVmL/8XmNvQIIfIjsuH0zzIFqXP4I1U/BLy
-	 Okhl6FhOrP6SQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tCib3-00DYt6-C7;
-	Sun, 17 Nov 2024 16:58:01 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Alexander Potapenko <glider@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/4] KVM: arm64: vgic-v3: Sanitise guest writes to GICR_INVLPIR
-Date: Sun, 17 Nov 2024 16:57:54 +0000
-Message-Id: <20241117165757.247686-2-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241117165757.247686-1-maz@kernel.org>
-References: <20241117165757.247686-1-maz@kernel.org>
+	s=arc-20240116; t=1731864703; c=relaxed/simple;
+	bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=h1IWFzoL182KY/fQ4R7Kg7P2bt7Iyfg+MQPPGeegmumSPh/PRxOpbgkC0WULVXRbIi0ZxFtngoLalCtnaqeAwU0pTY9xdenO95Tps5PpYuiFMnNgp3Sg6CQ5zQAu0gmaXOKDcCnqHKv01ctp+AbhL9U3846iNL7L4v6HmBYP7ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dB38pEvz; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d4b0943c7so2253570f8f.1;
+        Sun, 17 Nov 2024 09:31:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731864700; x=1732469500; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
+        b=dB38pEvzh3LILhgDAXUC9JlZjsTXuynrRZssCIP1EYZUbPuAtTDqj6KZfg0fnCjkSU
+         hjIpEAB0UG1WK+uqo/R6a79Gf/gCB7a3PjgPPzl9m+DnWd5JcCYmT0iUdL5zOpEKbK3o
+         8bwP6Moku+cs7MIE6SwDF3X1iRytCiF4tO/dgwKGGVaGY+m71Y26R+ULFZSfYid/UiNj
+         RblUxfh9gfiSZW4FMVZ3ExKBmDSdenU23v/Q8hXRdoFn2W0eZXb2jHxycg6P/harZCbr
+         Gwwj5dXgCO/VvnST5FcHnoEdW0a0Fhz3yazD3tZvhkWFSkwQgvfW/ovANN4Zj56vNkXl
+         gcnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731864700; x=1732469500;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
+        b=DkBwPZ5hJouuZydHcCV2uiIgSEG+o9LJ5jry0O0Mk7g0wcl3tuBwfrvmhAQa6ON0+a
+         ScR2gyBF6p3bUxz+BFW9k/mtgOEs7OlcJWAYW73wdDCGaQE3JaqXu5/sTG2IchL9iaUg
+         v5nZgPXzmmd2ioSvOGEUFlFYFcyOTFL55W4YHYRNJvL3/e/pp3uT3smsnBWx36+n1cV4
+         1EDCP/mQD5xZZuq/dgbgMcGZO0XOX81qsDEXBHBNte5UB+Qr65o/ZvXVLBQPDvGW+qW0
+         P+T2RgeR+oe0PnE+HeI9e6uzOQ4lqOQAYp4dzDFqkPLyHTvj8akTYG+gvhwVfAmQeNld
+         KzDw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/r5oS8anp/tyjraNR5kjvqlAnSKxnQHRw07ELG6lBRB2x+7ifbTAPdwpIs6QRxhVe6Mghfva3@vger.kernel.org, AJvYcCU4cPXRZbL61XmanX/h8dVcL4nQCtWz1ew3ZE+OzkE2q/dWjfSCxr5H6fQt1T3BAZDbWLk+D+9Wux9pcLPiA75RZN4=@vger.kernel.org, AJvYcCUAEKaI7v2HwfaFJ17lE7lxVYIuL4CMA4LquKBZzmhWw0Zr4Mv5MptWLRmyLxOxCeMtsHIRldrLBE3Hih81C0npjgs=@vger.kernel.org, AJvYcCWeZgrdvCgj+Lb8/9yDpFe6Hju2TE1dfxeF0ntkC+C2HEZifrtNsw7oflyO4mf6ugQdrQOfVaU3lYXZSi/2@vger.kernel.org, AJvYcCX4Zwb1d5VWDuBmuT4fa4kfn9CLit0+stmpCgTQX7deg3nnYP+RZ0w75xLOVumGHlYf+2BRqI+Q4pWwulSQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxubAau92N+EyC3chUpoNQwJEc8VqJ9GMEVUzNPHXFJL06Md12i
+	z0F44XDFf2rBCRt3+OTpXdyEMwOOsbMnIMtpIINz+WWhDBc4mp5L
+X-Google-Smtp-Source: AGHT+IGM5AOKwL/Gq+vlCdXodaTvKaKrFRZZ7omamsRPMIsQdxFKGxSowkpEpgRfKiIOKPWFsLR64Q==
+X-Received: by 2002:a05:6000:1fac:b0:382:d7a:315b with SMTP id ffacd0b85a97d-382258f0d9emr8122852f8f.11.1731864700227;
+        Sun, 17 Nov 2024 09:31:40 -0800 (PST)
+Received: from p200300c58705a8eb1a556f9921c6cbbb.dip0.t-ipconnect.de (p200300c58705a8eb1a556f9921c6cbbb.dip0.t-ipconnect.de. [2003:c5:8705:a8eb:1a55:6f99:21c6:cbbb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae1685csm10504821f8f.83.2024.11.17.09.31.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Nov 2024 09:31:39 -0800 (PST)
+Message-ID: <050e354f0d413dc39164bb72262b84b8c2038073.camel@gmail.com>
+Subject: Re: [PATCH 1/5] scsi: ufs: core: Cancel RTC work during
+ ufshcd_remove()
+From: Bean Huo <huobean@gmail.com>
+To: manivannan.sadhasivam@linaro.org, Alim Akhtar <alim.akhtar@samsung.com>,
+  Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, Mike Bi <mikebi@micron.com>, Bean
+ Huo <beanhuo@micron.com>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+ <linux@weissschuh.net>,  Luca Porzio <lporzio@micron.com>, Asutosh Das
+ <quic_asutoshd@quicinc.com>, Can Guo <quic_cang@quicinc.com>,  Pedro Sousa
+ <pedrom.sousa@synopsys.com>, Krzysztof Kozlowski <krzk@kernel.org>, Peter
+ Wang <peter.wang@mediatek.com>, Stanley Jhu <chu.stanley@gmail.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Orson Zhai
+ <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan
+ Zhang <zhang.lyra@gmail.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Santosh Y <santoshsy@gmail.com>, Namjae Jeon <linkinjeon@gmail.com>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 17 Nov 2024 18:31:32 +0100
+In-Reply-To: <20241111-ufs_bug_fix-v1-1-45ad8b62f02e@linaro.org>
+References: <20241111-ufs_bug_fix-v1-0-45ad8b62f02e@linaro.org>
+	 <20241111-ufs_bug_fix-v1-1-45ad8b62f02e@linaro.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, glider@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Make sure we filter out non-LPI invalidation when handling writes
-to GICR_INVLPIR.
 
-Fixes: 4645d11f4a553 ("KVM: arm64: vgic-v3: Implement MMIO-based LPI invalidation")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kvm/vgic/vgic-mmio-v3.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index 9e50928f5d7df..70a44852cbafe 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -530,6 +530,7 @@ static void vgic_mmio_write_invlpi(struct kvm_vcpu *vcpu,
- 				   unsigned long val)
- {
- 	struct vgic_irq *irq;
-+	u32 intid;
- 
- 	/*
- 	 * If the guest wrote only to the upper 32bit part of the
-@@ -541,9 +542,13 @@ static void vgic_mmio_write_invlpi(struct kvm_vcpu *vcpu,
- 	if ((addr & 4) || !vgic_lpis_enabled(vcpu))
- 		return;
- 
-+	intid = lower_32_bits(val);
-+	if (intid < VGIC_MIN_LPI)
-+		return;
-+
- 	vgic_set_rdist_busy(vcpu, true);
- 
--	irq = vgic_get_irq(vcpu->kvm, NULL, lower_32_bits(val));
-+	irq = vgic_get_irq(vcpu->kvm, NULL, intid);
- 	if (irq) {
- 		vgic_its_inv_lpi(vcpu->kvm, irq);
- 		vgic_put_irq(vcpu->kvm, irq);
--- 
-2.39.2
-
+Reviewed-by: Bean Huo <beanhuo@micron.com>
 
