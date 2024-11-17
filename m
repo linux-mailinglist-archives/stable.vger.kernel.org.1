@@ -1,108 +1,154 @@
-Return-Path: <stable+bounces-93702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC149D04EE
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 18:59:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2855B9D0540
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 19:45:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F6B2820D1
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 17:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A981F218CC
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 18:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78E81DAC83;
-	Sun, 17 Nov 2024 17:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73F41DC046;
+	Sun, 17 Nov 2024 18:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6mF8prQ"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="K7IzjkwP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B92335B5;
-	Sun, 17 Nov 2024 17:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B2F1DB366;
+	Sun, 17 Nov 2024 18:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731866382; cv=none; b=uc4pk8UeUYMG+vc46hFs2yGCX46DfiSFA7lJaZ4lphiOHCqsAwiMvdKEn6+IBsTK2OiN3WED6fZQ690U7ZSuPgdc1EEo8Fm68PkT7k2k6itCbSybRXQ8v8gP8jBXE7JTSg9PbSQB18Uxltl+bleSqllag0w3TVTcMsa5yTRDGrg=
+	t=1731869080; cv=none; b=ItMU0BHnNVLRLAhWyMBRT2q0R7q3jBFPuJnMPvaZIzg8IiPzY22eYjIhK1N+SXvMbeBkYYT8raJtZ+I4VmnxIk2MebD9ju9XOlwkM1I9DaLYn0P/5iII1JvAMK5W7HfLdGspAOZFhCpt9CEBpLlZuRbvt0ct2z9FLwTiwk9VjfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731866382; c=relaxed/simple;
-	bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RJnVQgzMNIqTTNVhaSjDv5ppffD/OfLpqdvJ9X/UKIImTPecnsHQ3I1MVminStIhHssDr+xOHNNlhNPTI7Iucn5MzDBrUmzPUegM/789L6Og9tNtJl+JiZKUBpnY175m8i/2+uvCQUW6DS72ndppwbVJU7z7NcJaa1c9ZoNvss8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6mF8prQ; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38230ed9baeso1148642f8f.1;
-        Sun, 17 Nov 2024 09:59:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731866379; x=1732471179; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
-        b=c6mF8prQVJxyhMtg7ExPwAc1LAs5scaC/zW4OqFFswv51UfefwxH4L5NnLenLwuR5N
-         bMn/Bb/MHk8rmqH6nPsniualcfnlk0ZrHAPMXObrLszxmmhsqemuYTjcZ4o+pTmSRVnu
-         9zTNleOFJ+vxwcCwrxgyhIJzSZ/QPIE5qEyx4xZEA90neta0X5VijNE2m5pZpf1elyTF
-         Z/viGVS2TKuhJscy1pNKLGKS1WfocoCHvt96S9/5LSwKs4mprE2YlQcMHLq2heNYlAia
-         Q4ELii9KGWMKbZuU8tExOxQc+obkIIYy7Ru1WXJ0DRPit38H5XYcuPkikP2aEVpQQRzT
-         Xyag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731866379; x=1732471179;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XU3f8iOzysWsUXprwUt22rCfRKOt8VzIxFdJ24lS6Ew=;
-        b=m04BeNMJauHT+F8Bs3O1erfRJvKJrpbA8DU5kd8o/WtmNXkJmcZ6zR0daEGxes8ZYh
-         LIGdKSfy4lrc3nVOCicxAaN9WcXMgEhHvN9quxat4RsXpZkMAamv1Tb+nuyWSNL39Uc4
-         ZrWf46uNtgXYhX54YdJn+RcAFua3kd1SHN4No+glGnNPcsWtLd8Jfrj8FfBbfUk3iipJ
-         83v/EGY7N3affDUxp8gDfaHBna6/f2vGau3SLcXh9JfPHOPB64oyMIzFS68OkLEYYzTG
-         yaXxj8H1OTEjuHZPDhFnV04U1s2tR86SNLL0RS8qLt/GHoUD1tjTiEgx0fbcd034SWn8
-         1uxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbim2VE57h/hph03FEpEhzqZf+xP0veftl2fWTrve+9fn7IzE3r1x8BCmMP5vY584bIcpL8Dm5FjF1BSWUYOWxA6E=@vger.kernel.org, AJvYcCWzAC3j4fXeqmo4/tpifdj5TBNyvxW5OPQGtpnlS0TE31UqClGaOb4f8WtZ5NAJjLzlj1xTRclczxyq59Wb@vger.kernel.org, AJvYcCX/UmF95vXiGVL8nv6dZXK0dZ+5+M7TZtRHxXiFXl7xUMVV39V2UwYk+PcrCa3GpjhUlW2/HZUanbLOS+4LrO3zNk8=@vger.kernel.org, AJvYcCX3FudyzHT8hnZCWn31ZIpA3YarXl7pU4bJzvHWVrEVk/af2KB8HEfNG5cNOpf79gdI0KesxGI6@vger.kernel.org, AJvYcCXcVg+B2wSvAYGEJhqcl1U5ssUkjx4D0ZGEOAgj+Ia0mAz3blvlTk1PCaxQY8JbnZfJ9VgJvvI12ZfHsa8l@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEl2cUg7hs9mkYg7TjVQfCKl+u5OCICcyz06UeO9/Nzq2rQUff
-	GfQYIofsltuvNPGWDdwqyuZz+daqiVmxy4S2I5G9QOAjFXBsExp6
-X-Google-Smtp-Source: AGHT+IHqbrlLtaP5Yd3T+27nHAETyVBfr+n6kx9rmAYJRbEsnbFwXaqkEA83aORA115kLsYVwdaKWw==
-X-Received: by 2002:a05:6000:2a7:b0:382:4485:2db2 with SMTP id ffacd0b85a97d-38244852eacmr1792870f8f.1.1731866377467;
-        Sun, 17 Nov 2024 09:59:37 -0800 (PST)
-Received: from p200300c58705a8eb1a556f9921c6cbbb.dip0.t-ipconnect.de (p200300c58705a8eb1a556f9921c6cbbb.dip0.t-ipconnect.de. [2003:c5:8705:a8eb:1a55:6f99:21c6:cbbb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823e0c910asm3389235f8f.39.2024.11.17.09.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 09:59:37 -0800 (PST)
-Message-ID: <e96fe03c6515e65f91c2524181ffc48815c2831f.camel@gmail.com>
-Subject: Re: [PATCH 3/5] scsi: ufs: pltfrm: Disable runtime PM during
- removal of glue drivers
-From: Bean Huo <huobean@gmail.com>
-To: manivannan.sadhasivam@linaro.org, Alim Akhtar <alim.akhtar@samsung.com>,
-  Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
- Petersen" <martin.petersen@oracle.com>, Mike Bi <mikebi@micron.com>, Bean
- Huo <beanhuo@micron.com>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
- <linux@weissschuh.net>,  Luca Porzio <lporzio@micron.com>, Asutosh Das
- <quic_asutoshd@quicinc.com>, Can Guo <quic_cang@quicinc.com>,  Pedro Sousa
- <pedrom.sousa@synopsys.com>, Krzysztof Kozlowski <krzk@kernel.org>, Peter
- Wang <peter.wang@mediatek.com>, Stanley Jhu <chu.stanley@gmail.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Orson Zhai
- <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan
- Zhang <zhang.lyra@gmail.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Santosh Y <santoshsy@gmail.com>, Namjae Jeon <linkinjeon@gmail.com>
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 17 Nov 2024 18:59:33 +0100
-In-Reply-To: <20241111-ufs_bug_fix-v1-3-45ad8b62f02e@linaro.org>
-References: <20241111-ufs_bug_fix-v1-0-45ad8b62f02e@linaro.org>
-	 <20241111-ufs_bug_fix-v1-3-45ad8b62f02e@linaro.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1731869080; c=relaxed/simple;
+	bh=xQww0AHembV1GDwFeMLbSDN+DhisvJ75fpAxcYvS27I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MwwrNahVYzDfgJMfbT88sIK+fmzpSLn60SdosMUc25GV6UdlPRK4vXk09Uhvan+Ed6Cf6jBWIKAHCsEe3RLStAdTJyxBaDOh3qPF3++18N2rIAvAK2K0hKM7Sbikuuhx+hEcoMcguJbkJOiwcJTYRHLwzk8JUK6V+fOvWUL4jTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=K7IzjkwP; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.6])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 8F1D1518E779;
+	Sun, 17 Nov 2024 18:44:28 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8F1D1518E779
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1731869068;
+	bh=UizkzJsqxuNwf5Xw9wKym3zKbiu8RngTlGJwvHGM9ME=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K7IzjkwP0LkE4kjgTpXFIHbAU72yRgqEC4jjxSmLHo0f6Q0NPCTTxlUecgl371fV+
+	 qWvCGH+D72kmrt+iXhHtvzqAaMIkPRsDGE3jlqqPDJwhHvlYrwkh8dlQFvemSFOoyT
+	 QcuWRgSIUhAOUkQfdsytKRrprCvz3uc69ANyGm8s=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Richard Weinberger <richard@nod.at>,
+	Zhihao Cheng <chengzhihao1@huawei.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Wang Yong <wang.yong12@zte.com.cn>,
+	Lu Zhongjun <lu.zhongjun@zte.com.cn>,
+	Yang Tao <yang.tao172@zte.com.cn>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] jffs2: initialize filesystem-private inode info in ->alloc_inode callback
+Date: Sun, 17 Nov 2024 21:44:11 +0300
+Message-Id: <20241117184412.366672-2-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241117184412.366672-1-pchelkin@ispras.ru>
+References: <20241117184412.366672-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+The symlink body (->target) should be freed at the same time as the inode
+itself per commit 4fdcfab5b553 ("jffs2: fix use-after-free on symlink
+traversal"). It is a filesystem-specific field but there exist several
+error paths during generic inode allocation when ->free_inode(), namely
+jffs2_free_inode(), is called with still uninitialized private info.
 
-Reviewed-by: Bean Huo <beanhuo@micron.com>
+The calltrace looks like:
+ alloc_inode
+  inode_init_always // fails
+   i_callback
+    free_inode
+    jffs2_free_inode // touches uninit ->target field
+
+Commit af9a8730ddb6 ("jffs2: Fix potential illegal address access in
+jffs2_free_inode") approached the observed problem but fixed it only
+partially. Our local Syzkaller instance is still hitting these kinds of
+failures.
+
+The thing is that jffs2_i_init_once(), where the initialization of
+f->target has been moved, is called once per slab allocation so it won't
+be called for the object structure possibly retrieved later from the slab
+cache for reuse.
+
+The practice followed by many other filesystems is to initialize
+filesystem-private inode contents in the corresponding ->alloc_inode()
+callbacks. This also allows to drop initialization from jffs2_iget() and
+jffs2_new_inode() as ->alloc_inode() is called in those places.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 4fdcfab5b553 ("jffs2: fix use-after-free on symlink traversal")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ fs/jffs2/fs.c    | 2 --
+ fs/jffs2/super.c | 3 ++-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
+index d175cccb7c55..85c4b273918f 100644
+--- a/fs/jffs2/fs.c
++++ b/fs/jffs2/fs.c
+@@ -271,7 +271,6 @@ struct inode *jffs2_iget(struct super_block *sb, unsigned long ino)
+ 	f = JFFS2_INODE_INFO(inode);
+ 	c = JFFS2_SB_INFO(inode->i_sb);
+ 
+-	jffs2_init_inode_info(f);
+ 	mutex_lock(&f->sem);
+ 
+ 	ret = jffs2_do_read_inode(c, f, inode->i_ino, &latest_node);
+@@ -439,7 +438,6 @@ struct inode *jffs2_new_inode (struct inode *dir_i, umode_t mode, struct jffs2_r
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	f = JFFS2_INODE_INFO(inode);
+-	jffs2_init_inode_info(f);
+ 	mutex_lock(&f->sem);
+ 
+ 	memset(ri, 0, sizeof(*ri));
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 4545f885c41e..b56ff63357f3 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -42,6 +42,8 @@ static struct inode *jffs2_alloc_inode(struct super_block *sb)
+ 	f = alloc_inode_sb(sb, jffs2_inode_cachep, GFP_KERNEL);
+ 	if (!f)
+ 		return NULL;
++
++	jffs2_init_inode_info(f);
+ 	return &f->vfs_inode;
+ }
+ 
+@@ -58,7 +60,6 @@ static void jffs2_i_init_once(void *foo)
+ 	struct jffs2_inode_info *f = foo;
+ 
+ 	mutex_init(&f->sem);
+-	f->target = NULL;
+ 	inode_init_once(&f->vfs_inode);
+ }
+ 
+-- 
+2.39.5
+
 
