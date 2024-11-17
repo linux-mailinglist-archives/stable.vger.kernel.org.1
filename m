@@ -1,92 +1,105 @@
-Return-Path: <stable+bounces-93742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4559D0649
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 22:29:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9799F9D0651
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 22:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62BFD2821E8
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:29:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 257F6B22208
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA6E1DDA33;
-	Sun, 17 Nov 2024 21:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FF21DDC00;
+	Sun, 17 Nov 2024 21:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IR+MJL4X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwLmSCsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB6A1D89F1
-	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 21:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4FD1DDA2D;
+	Sun, 17 Nov 2024 21:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731878959; cv=none; b=pz775c6/ro6rRIHCZvQvAwrlFjel7ciwrNDTRJAMnuX5N2BNNThm9ASgf7wir/0RaUdboflLQux/UmgYcnlCwf0M5oxN162OAvc5rH/wlQ9GyHVSHEHaICf1ihnSXJZkIgrrepztDCeQYUSp2uu5efOOsUd2kOUCvVRk5ZnSNmI=
+	t=1731879144; cv=none; b=NvhcYjulBbQjZ1yqYAEA3xOE8/urNGbGiH6e0YBqIBa9gb56eKpf06KkiMXCODfmwUDY9bj6CVq7Qet/abP6tz0JYCIiGISU9V7nOEjlP8qNU8KQ6vEzzZbK+w4uqUQY2dZHGmUqxpMP2N/CFVSfq/1CZv2DnujgsnS6rKIoCN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731878959; c=relaxed/simple;
-	bh=FzIzN85AkYYpU4cSosOy8FkaoJQqSG/ZcywNbtP4moE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZukYy6JlD06I6Ncss+4/sEWeGSu+lADaoMTxsY+hOCxoGnZxmckwdmyR4Eps/eAkGR0PY4lZ7qBw0tA0z1YHtOV0V4kxRT8Vtwo7a0duk4IjcYBe61LkTHrX2BxbaS9+Gk/ShEKvW5ZekJSDnoJOVkASCe50ddDS+o0Vo0cjvE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IR+MJL4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A42AC4CECD;
-	Sun, 17 Nov 2024 21:29:18 +0000 (UTC)
+	s=arc-20240116; t=1731879144; c=relaxed/simple;
+	bh=uhgh93plhiFV1pHFjFAu6nt5SYYT8N+YCq9mpcqsLXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ItpIu73t2OlXpHpOpVIKnsP38XQ4kYVnx0nr9hL2EOSGLf7j+UkYdUKL3OmlTKeTXLt1SiUph8CKyQbWzKgjAhYR2NMWRlPXpaSd103u2A5xKEX4XbfUAL2LiOvF/gB1aq1W5zjinogB0yAQc0wMZUi6b3DMje6xzm5qoezlTgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwLmSCsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14632C4CED8;
+	Sun, 17 Nov 2024 21:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731878958;
-	bh=FzIzN85AkYYpU4cSosOy8FkaoJQqSG/ZcywNbtP4moE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IR+MJL4X0dxSRmWnh9bGaM1ZhV8TPVB+QozJvf2Sa3Z0CzeohREbSoIbntsFpg13K
-	 e7BmFqa/MuYFcQK+MeO4tXqI/OhYR1Go3Y5sWg/Umd9QibAhX643iTmaa4XsfqZXpR
-	 +OPCgxm/hhTuHOfYwCoVtevUQau1D8ZDjvjTTLkW8FSkHYNJGmax3UXicYLmHb2lKP
-	 BlM3dp4FZSXxsh3yVG2OYoloHuT/09kcl+WEiOhA+v+rS3nMzgH6og9jZVdufBkdhe
-	 aZH9EYH70WIjuyA2ZpcEi3atr46QpdyGy3zD5+7udushqqzs56nQ4zDU6KQIQMbP6Y
-	 ozomkrS18FrMw==
-Message-ID: <64e3126b-0c43-480b-b7b2-80b95a27dc94@kernel.org>
-Date: Sun, 17 Nov 2024 15:29:12 -0600
+	s=k20201202; t=1731879143;
+	bh=uhgh93plhiFV1pHFjFAu6nt5SYYT8N+YCq9mpcqsLXk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YwLmSCshoiCMBHQ8SdisMNZY5nlg2cAQVDgmOSPyURaXMQ4aCumx3TQV0KV/+aF0d
+	 nY4VP9HmKvlqTs/RX9o2Z1gCH0tU7BiqNXsFXj5+AnT546vfGt5QpnRiK29A8edJoB
+	 GwoKdrdVbhYnlwkXxdzVH3PDZ3CIOFJxcLxZhjtoqOVrmnCBWJqV47cbz23wZ8Fhjt
+	 4+Y/fD9zKUvNuY4hTnlGY+ssNQ5Bp0O0X00VooV2Hr7/PAuer8xTbU1F32iEz5F4+x
+	 q6Y+uvCsWTU5LKrqqnCg9dgroyUS3FYb8wZG0msfJ4XmRLA9qWnZHFzGFhRfR9kgtV
+	 NK7InFdZjg3lg==
+From: cel@kernel.org
+To: <linux-mm@kvack.org>,
+	<linux-fsdevel@vger.kernel.org>,
+	Hugh Dickens <hughd@google.com>
+Cc: yukuai3@huawei.com,
+	yangerkun@huaweicloud.com,
+	Chuck Lever <chuck.lever@oracle.com>,
+	stable@vger.kernel.org
+Subject: [RFC PATCH 1/2] libfs: Return ENOSPC when the directory offset range is exhausted
+Date: Sun, 17 Nov 2024 16:32:05 -0500
+Message-ID: <20241117213206.1636438-2-cel@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241117213206.1636438-1-cel@kernel.org>
+References: <20241117213206.1636438-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Additional panel replay fixes for 6.11
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, james.dutton@gmail.com
-References: <62a02199-5213-4a6f-b2d4-7898a26344c6@kernel.org>
- <2024111725-grooving-pretended-7b61@gregkh>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <2024111725-grooving-pretended-7b61@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Chuck Lever <chuck.lever@oracle.com>
 
+Testing shows that the EBUSY error return from mtree_alloc_cyclic()
+leaks into user space. The ERRORS section of "man creat(2)" says:
 
-On 11/17/24 14:21, Greg KH wrote:
-> On Sun, Nov 17, 2024 at 09:20:29AM -0600, Mario Limonciello wrote:
->> Hi,
->>
->> A few more panel replay fixes have been made for issues reported on 6.11.y
->>
->> commit 17e68f89132b ("drm/amd/display: Run idle optimizations at end of
->> vblank handler")
->> commit b8d9d5fef4915 ("drm/amd/display: Change some variable name of psr")
->> commit bd8a957661743 ("drm/amd/display: Fix Panel Replay not update screen
->> correctly")
->>
->> There were tested by
->> Tested-By: James Courtier-Dutton <james.dutton@gmail.com>
->> on 6.11.8 base.
-> 
-> 2 were already tagged for stable, I would have gotten to them this week.
-> All now queued up, thanks.
-> 
-> greg k-h
+>	EBUSY	O_EXCL was specified in flags and pathname refers
+>		to a block device that is in use by the system
+>		(e.g., it is mounted).
 
-Thanks! I knew at least one was tagged, but when I was testing without 
-the whole series I couldn't apply it alone.
+ENOSPC is closer to what applications expect in this situation.
 
-So I figured I should preempt the failure emails since I knew this 
-series was coming and important.  Hopefully one less failure email :)
+Note that the normal range of simple directory offset values is
+2..2^63, so hitting this error is going to be rare to impossible.
+
+Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/libfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 46966fd8bcf9..bf67954b525b 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -288,7 +288,9 @@ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
+ 
+ 	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
+ 				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
+-	if (ret < 0)
++	if (unlikely(ret == -EBUSY))
++		return -ENOSPC;
++	if (unlikely(ret < 0))
+ 		return ret;
+ 
+ 	offset_set(dentry, offset);
+-- 
+2.47.0
+
 
