@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-93733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EA29D060F
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 22:08:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1E09D0611
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 22:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A7CA2825E3
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:08:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEDC41F21B3E
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06A91DBB31;
-	Sun, 17 Nov 2024 21:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81731DBB31;
+	Sun, 17 Nov 2024 21:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7epHJvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYFOum/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8010E84A3E
-	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 21:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D8A84A3E
+	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 21:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731877684; cv=none; b=KDF+meLLMdOT/R1idBVBE2BU2Hwvw9xqU15GtxHGO4/M+lA0a3lbrjQur0uX99IwMgsGstE/vy8PvV/RlBvpH2ZP2saS3XdTO5R8EvA2oH3yT9wcu1SteqqieN/kI6VQ2CeqILjUMVOjWWdMZ/bYyridNS9QlFspKHFVvxafkPA=
+	t=1731877743; cv=none; b=h+sNjHNmZDqe9u4RO1YJlP9yRfjXio1XXPv/V+sbcmJjKhXPZ4JzRZWYcKmlgbf5FFTNfVv/5Vimt0c+l6/tlfD1jY/uoWLgQj623ur03nJKA6cgaVe/S4QasCTTAvcb9iI6G7Bq21d3Po8dE2vjBheZp8uGXr+pD2d1hVKI+b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731877684; c=relaxed/simple;
-	bh=ulNjA/9Hj5geQHwYWfNTt/84lxs9o+2cB50zZZV7vg4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d6s9AEpqwZrOHDEHYnVot2Z8di9cMJ2ufxvLB8ms/ur53GoczqJnPHiZuhZfSIy8mI3VHuhzemNGkkOdMwGcYRjIBjLQlC6KdVHakCGnM6PAcODmSN3EQ6U/1kYpClm2HQvYD6/5g/paf5kY4zD35kzEuDry8wV5OpCBWOtnbnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7epHJvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B038CC4CECD;
-	Sun, 17 Nov 2024 21:08:03 +0000 (UTC)
+	s=arc-20240116; t=1731877743; c=relaxed/simple;
+	bh=iPQUq34SMcKVpzlCEDtSKX3lznVXU759w2H6/8eeNZU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rL2G497o8WnI288xWe3PCOMJLHqUVXtgsEyseo8gYqBGJYqGMPJCQyJvZ+R+HsxrgBT/nn++M+MeKFpBpohW0gH2bLCNTN0ikWGf4xxUTZ22T6kdt1WFc4CctXlT/iYyPM3vuizdOkU4tprFif9tpkGYd/jcmHZfvgdPnGUr/Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYFOum/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E73C4CECD;
+	Sun, 17 Nov 2024 21:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731877684;
-	bh=ulNjA/9Hj5geQHwYWfNTt/84lxs9o+2cB50zZZV7vg4=;
+	s=korg; t=1731877743;
+	bh=iPQUq34SMcKVpzlCEDtSKX3lznVXU759w2H6/8eeNZU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=k7epHJvdOMfV/aKk6RYSLWqgGJVcfNTYv2Aej3barC+GMYP/EGAxv8+bn2kdpYwDw
-	 GR005lUxOYg//TKAqWu7ZpmRKw4q774AKPCSeRWK6E7d7/4K7IfaluH6LYBXaFyBKj
-	 uMIQ173hiFL/OiUpVNHBd6lPWuzmrVnbJOPJ2KhA=
-Subject: FAILED: patch "[PATCH] pmdomain: core: Add GENPD_FLAG_DEV_NAME_FW flag" failed to apply to 5.15-stable tree
-To: quic_sibis@quicinc.com,dmitry.baryshkov@linaro.org,johan+linaro@kernel.org,ulf.hansson@linaro.org
+	b=xYFOum/ysPMrjkUbv9B4oiieB/ekVgy0rNgK2rTWPRPzczgyFFUu+v54kLRI+fy0z
+	 llHMBcoRWDgLBqCtIhNn1AKB+k9jxghmTvzzh1pNIcf1mixDNl8QUmbCtdRUJaCyG+
+	 XG9MXjI+U/KBs2CUbRXYEw1qTTmYzExFYXK1T1Mg=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix check in gmc_v9_0_get_vm_pte()" failed to apply to 6.6-stable tree
+To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Nov 2024 22:07:36 +0100
-Message-ID: <2024111736-chihuahua-linguini-7bcb@gregkh>
+Date: Sun, 17 Nov 2024 22:08:38 +0100
+Message-ID: <2024111738-jalapeno-unknown-3db3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 899f44531fe6cac4b024710fec647ecc127724b8
+git cherry-pick -x 0e5ac88fb918297a7484b67f2b484d43bed3fbbe
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111736-chihuahua-linguini-7bcb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111738-jalapeno-unknown-3db3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,239 +77,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 899f44531fe6cac4b024710fec647ecc127724b8 Mon Sep 17 00:00:00 2001
-From: Sibi Sankar <quic_sibis@quicinc.com>
-Date: Wed, 30 Oct 2024 18:25:10 +0530
-Subject: [PATCH] pmdomain: core: Add GENPD_FLAG_DEV_NAME_FW flag
+From 0e5ac88fb918297a7484b67f2b484d43bed3fbbe Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Thu, 31 Oct 2024 10:04:17 +0100
+Subject: [PATCH] drm/amdgpu: fix check in gmc_v9_0_get_vm_pte()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Introduce GENPD_FLAG_DEV_NAME_FW flag which instructs genpd to generate
-an unique device name using ida. It is aimed to be used by genpd providers
-which derive their names directly from FW making them susceptible to
-debugfs node creation failures.
+The coherency flags can only be determined when the BO is locked and that
+in turn is only guaranteed when the mapping is validated.
 
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-Fixes: 718072ceb211 ("PM: domains: create debugfs nodes when adding power domains")
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Fix the check, move the resource check into the function and add an assert
+that the BO is locked.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: d1a372af1c3d ("drm/amdgpu: Set MTYPE in PTE based on BO flags")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1b4ca8546f5b5c482717bedb8e031227b1541539)
 Cc: stable@vger.kernel.org
-Message-ID: <20241030125512.2884761-5-quic_sibis@quicinc.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 5ede0f7eda09..29ad510e881c 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -7,6 +7,7 @@
- #define pr_fmt(fmt) "PM: " fmt
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
+index c76ac0dfe572..7a45f3fdc734 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
+@@ -1124,8 +1124,10 @@ static void gmc_v9_0_get_coherence_flags(struct amdgpu_device *adev,
+ 					 uint64_t *flags)
+ {
+ 	struct amdgpu_device *bo_adev = amdgpu_ttm_adev(bo->tbo.bdev);
+-	bool is_vram = bo->tbo.resource->mem_type == TTM_PL_VRAM;
+-	bool coherent = bo->flags & (AMDGPU_GEM_CREATE_COHERENT | AMDGPU_GEM_CREATE_EXT_COHERENT);
++	bool is_vram = bo->tbo.resource &&
++		bo->tbo.resource->mem_type == TTM_PL_VRAM;
++	bool coherent = bo->flags & (AMDGPU_GEM_CREATE_COHERENT |
++				     AMDGPU_GEM_CREATE_EXT_COHERENT);
+ 	bool ext_coherent = bo->flags & AMDGPU_GEM_CREATE_EXT_COHERENT;
+ 	bool uncached = bo->flags & AMDGPU_GEM_CREATE_UNCACHED;
+ 	struct amdgpu_vm *vm = mapping->bo_va->base.vm;
+@@ -1133,6 +1135,8 @@ static void gmc_v9_0_get_coherence_flags(struct amdgpu_device *adev,
+ 	bool snoop = false;
+ 	bool is_local;
  
- #include <linux/delay.h>
-+#include <linux/idr.h>
- #include <linux/kernel.h>
- #include <linux/io.h>
- #include <linux/platform_device.h>
-@@ -23,6 +24,9 @@
- #include <linux/cpu.h>
- #include <linux/debugfs.h>
- 
-+/* Provides a unique ID for each genpd device */
-+static DEFINE_IDA(genpd_ida);
++	dma_resv_assert_held(bo->tbo.base.resv);
 +
- #define GENPD_RETRY_MAX_MS	250		/* Approximate */
+ 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
+ 	case IP_VERSION(9, 4, 1):
+ 	case IP_VERSION(9, 4, 2):
+@@ -1251,9 +1255,8 @@ static void gmc_v9_0_get_vm_pte(struct amdgpu_device *adev,
+ 		*flags &= ~AMDGPU_PTE_VALID;
+ 	}
  
- #define GENPD_DEV_CALLBACK(genpd, type, callback, dev)		\
-@@ -171,6 +175,7 @@ static const struct genpd_lock_ops genpd_raw_spin_ops = {
- #define genpd_is_cpu_domain(genpd)	(genpd->flags & GENPD_FLAG_CPU_DOMAIN)
- #define genpd_is_rpm_always_on(genpd)	(genpd->flags & GENPD_FLAG_RPM_ALWAYS_ON)
- #define genpd_is_opp_table_fw(genpd)	(genpd->flags & GENPD_FLAG_OPP_TABLE_FW)
-+#define genpd_is_dev_name_fw(genpd)	(genpd->flags & GENPD_FLAG_DEV_NAME_FW)
- 
- static inline bool irq_safe_dev_in_sleep_domain(struct device *dev,
- 		const struct generic_pm_domain *genpd)
-@@ -189,7 +194,7 @@ static inline bool irq_safe_dev_in_sleep_domain(struct device *dev,
- 
- 	if (ret)
- 		dev_warn_once(dev, "PM domain %s will not be powered off\n",
--				genpd->name);
-+			      dev_name(&genpd->dev));
- 
- 	return ret;
- }
-@@ -274,7 +279,7 @@ static void genpd_debug_remove(struct generic_pm_domain *genpd)
- 	if (!genpd_debugfs_dir)
- 		return;
- 
--	debugfs_lookup_and_remove(genpd->name, genpd_debugfs_dir);
-+	debugfs_lookup_and_remove(dev_name(&genpd->dev), genpd_debugfs_dir);
+-	if (bo && bo->tbo.resource)
+-		gmc_v9_0_get_coherence_flags(adev, mapping->bo_va->base.bo,
+-					     mapping, flags);
++	if ((*flags & AMDGPU_PTE_VALID) && bo)
++		gmc_v9_0_get_coherence_flags(adev, bo, mapping, flags);
  }
  
- static void genpd_update_accounting(struct generic_pm_domain *genpd)
-@@ -731,7 +736,7 @@ static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
- 	genpd->states[state_idx].power_on_latency_ns = elapsed_ns;
- 	genpd->gd->max_off_time_changed = true;
- 	pr_debug("%s: Power-%s latency exceeded, new value %lld ns\n",
--		 genpd->name, "on", elapsed_ns);
-+		 dev_name(&genpd->dev), "on", elapsed_ns);
- 
- out:
- 	raw_notifier_call_chain(&genpd->power_notifiers, GENPD_NOTIFY_ON, NULL);
-@@ -782,7 +787,7 @@ static int _genpd_power_off(struct generic_pm_domain *genpd, bool timed)
- 	genpd->states[state_idx].power_off_latency_ns = elapsed_ns;
- 	genpd->gd->max_off_time_changed = true;
- 	pr_debug("%s: Power-%s latency exceeded, new value %lld ns\n",
--		 genpd->name, "off", elapsed_ns);
-+		 dev_name(&genpd->dev), "off", elapsed_ns);
- 
- out:
- 	raw_notifier_call_chain(&genpd->power_notifiers, GENPD_NOTIFY_OFF,
-@@ -1940,7 +1945,7 @@ int dev_pm_genpd_add_notifier(struct device *dev, struct notifier_block *nb)
- 
- 	if (ret) {
- 		dev_warn(dev, "failed to add notifier for PM domain %s\n",
--			 genpd->name);
-+			 dev_name(&genpd->dev));
- 		return ret;
- 	}
- 
-@@ -1987,7 +1992,7 @@ int dev_pm_genpd_remove_notifier(struct device *dev)
- 
- 	if (ret) {
- 		dev_warn(dev, "failed to remove notifier for PM domain %s\n",
--			 genpd->name);
-+			 dev_name(&genpd->dev));
- 		return ret;
- 	}
- 
-@@ -2013,7 +2018,7 @@ static int genpd_add_subdomain(struct generic_pm_domain *genpd,
- 	 */
- 	if (!genpd_is_irq_safe(genpd) && genpd_is_irq_safe(subdomain)) {
- 		WARN(1, "Parent %s of subdomain %s must be IRQ safe\n",
--				genpd->name, subdomain->name);
-+		     dev_name(&genpd->dev), subdomain->name);
- 		return -EINVAL;
- 	}
- 
-@@ -2088,7 +2093,7 @@ int pm_genpd_remove_subdomain(struct generic_pm_domain *genpd,
- 
- 	if (!list_empty(&subdomain->parent_links) || subdomain->device_count) {
- 		pr_warn("%s: unable to remove subdomain %s\n",
--			genpd->name, subdomain->name);
-+			dev_name(&genpd->dev), subdomain->name);
- 		ret = -EBUSY;
- 		goto out;
- 	}
-@@ -2225,6 +2230,7 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
- 	genpd->status = is_off ? GENPD_STATE_OFF : GENPD_STATE_ON;
- 	genpd->device_count = 0;
- 	genpd->provider = NULL;
-+	genpd->device_id = -ENXIO;
- 	genpd->has_provider = false;
- 	genpd->accounting_time = ktime_get_mono_fast_ns();
- 	genpd->domain.ops.runtime_suspend = genpd_runtime_suspend;
-@@ -2265,7 +2271,18 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
- 		return ret;
- 
- 	device_initialize(&genpd->dev);
--	dev_set_name(&genpd->dev, "%s", genpd->name);
-+
-+	if (!genpd_is_dev_name_fw(genpd)) {
-+		dev_set_name(&genpd->dev, "%s", genpd->name);
-+	} else {
-+		ret = ida_alloc(&genpd_ida, GFP_KERNEL);
-+		if (ret < 0) {
-+			put_device(&genpd->dev);
-+			return ret;
-+		}
-+		genpd->device_id = ret;
-+		dev_set_name(&genpd->dev, "%s_%u", genpd->name, genpd->device_id);
-+	}
- 
- 	mutex_lock(&gpd_list_lock);
- 	list_add(&genpd->gpd_list_node, &gpd_list);
-@@ -2287,13 +2304,13 @@ static int genpd_remove(struct generic_pm_domain *genpd)
- 
- 	if (genpd->has_provider) {
- 		genpd_unlock(genpd);
--		pr_err("Provider present, unable to remove %s\n", genpd->name);
-+		pr_err("Provider present, unable to remove %s\n", dev_name(&genpd->dev));
- 		return -EBUSY;
- 	}
- 
- 	if (!list_empty(&genpd->parent_links) || genpd->device_count) {
- 		genpd_unlock(genpd);
--		pr_err("%s: unable to remove %s\n", __func__, genpd->name);
-+		pr_err("%s: unable to remove %s\n", __func__, dev_name(&genpd->dev));
- 		return -EBUSY;
- 	}
- 
-@@ -2307,9 +2324,11 @@ static int genpd_remove(struct generic_pm_domain *genpd)
- 	genpd_unlock(genpd);
- 	genpd_debug_remove(genpd);
- 	cancel_work_sync(&genpd->power_off_work);
-+	if (genpd->device_id != -ENXIO)
-+		ida_free(&genpd_ida, genpd->device_id);
- 	genpd_free_data(genpd);
- 
--	pr_debug("%s: removed %s\n", __func__, genpd->name);
-+	pr_debug("%s: removed %s\n", __func__, dev_name(&genpd->dev));
- 
- 	return 0;
- }
-@@ -3272,12 +3291,12 @@ static int genpd_summary_one(struct seq_file *s,
- 	else
- 		snprintf(state, sizeof(state), "%s",
- 			 status_lookup[genpd->status]);
--	seq_printf(s, "%-30s  %-30s  %u", genpd->name, state, genpd->performance_state);
-+	seq_printf(s, "%-30s  %-30s  %u", dev_name(&genpd->dev), state, genpd->performance_state);
- 
- 	/*
- 	 * Modifications on the list require holding locks on both
- 	 * parent and child, so we are safe.
--	 * Also genpd->name is immutable.
-+	 * Also the device name is immutable.
- 	 */
- 	list_for_each_entry(link, &genpd->parent_links, parent_node) {
- 		if (list_is_first(&link->parent_node, &genpd->parent_links))
-@@ -3502,7 +3521,7 @@ static void genpd_debug_add(struct generic_pm_domain *genpd)
- 	if (!genpd_debugfs_dir)
- 		return;
- 
--	d = debugfs_create_dir(genpd->name, genpd_debugfs_dir);
-+	d = debugfs_create_dir(dev_name(&genpd->dev), genpd_debugfs_dir);
- 
- 	debugfs_create_file("current_state", 0444,
- 			    d, genpd, &status_fops);
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index b637ec14025f..cf4b11be3709 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -92,6 +92,10 @@ struct dev_pm_domain_list {
-  * GENPD_FLAG_OPP_TABLE_FW:	The genpd provider supports performance states,
-  *				but its corresponding OPP tables are not
-  *				described in DT, but are given directly by FW.
-+ *
-+ * GENPD_FLAG_DEV_NAME_FW:	Instructs genpd to generate an unique device name
-+ *				using ida. It is used by genpd providers which
-+ *				get their genpd-names directly from FW.
-  */
- #define GENPD_FLAG_PM_CLK	 (1U << 0)
- #define GENPD_FLAG_IRQ_SAFE	 (1U << 1)
-@@ -101,6 +105,7 @@ struct dev_pm_domain_list {
- #define GENPD_FLAG_RPM_ALWAYS_ON (1U << 5)
- #define GENPD_FLAG_MIN_RESIDENCY (1U << 6)
- #define GENPD_FLAG_OPP_TABLE_FW	 (1U << 7)
-+#define GENPD_FLAG_DEV_NAME_FW	 (1U << 8)
- 
- enum gpd_status {
- 	GENPD_STATE_ON = 0,	/* PM domain is on */
-@@ -163,6 +168,7 @@ struct generic_pm_domain {
- 	atomic_t sd_count;	/* Number of subdomains with power "on" */
- 	enum gpd_status status;	/* Current state of the domain */
- 	unsigned int device_count;	/* Number of devices */
-+	unsigned int device_id;		/* unique device id */
- 	unsigned int suspended_count;	/* System suspend device counter */
- 	unsigned int prepared_count;	/* Suspend counter of prepared devices */
- 	unsigned int performance_state;	/* Aggregated max performance state */
+ static void gmc_v9_0_override_vm_pte_flags(struct amdgpu_device *adev,
 
 
