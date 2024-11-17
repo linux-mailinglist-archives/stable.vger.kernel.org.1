@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-93729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A98A9D05E1
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:47:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E090F9D060D
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 22:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9C6282119
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 20:47:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 103C9B220C2
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 21:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E48D1DB924;
-	Sun, 17 Nov 2024 20:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F181DBB31;
+	Sun, 17 Nov 2024 21:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwjWvHzB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usOH2wn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F01B17BB6
-	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0706584A3E
+	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 21:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731876419; cv=none; b=QJ21iGXXNFG9/cs0cdbbVYCoIrjWgvzjxfxUNVEFxULdnAmfwnzUcsdEOgJ8hAp4RIKp4m3GaF+17B2PUR+dVP7UHw0+XlmaSQd0XsEccMqAv1i02bZ1nRdy3glolBgwtXug7UguV2H1OXrB2LF1dCgxRwDuknKZs1XheaTLqwI=
+	t=1731877648; cv=none; b=U0Vvtm4ciS8BpuO0YAcZQlEYJu5gECHjecQCkytveZxtz72ygctgqt98T2VlClZoBK0TCxFL+RI9/pTCZ/P+Gzh/3G13rHhXt43+K4emjCRc5NGt+V4Xz9tQkBFnA+1hbk3eVxKFGqwFyKy+d7HEed/eLYpxxwlSAA4W4DnZSi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731876419; c=relaxed/simple;
-	bh=QhTxonAInE+XzSOXSovYZwZz06FGFPspv4zQeCAxLlY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FPBwtgDY2li97XxoIPJD7YJ6BgmFTaRFD7ZF6YOO5A0sEtO6z8Gq6O6rD7ypv9sIRnKwvUDs5tKd+zD5NtjUAImLmdYNSjNHebeyHRNwo/zKNUccGYpD4yZHJ0NxTW0zPFR5tBIbgspiNVx/tzVgn5dN2BEb2LSX+qer8RCvsgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwjWvHzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6499C4CECD;
-	Sun, 17 Nov 2024 20:46:58 +0000 (UTC)
+	s=arc-20240116; t=1731877648; c=relaxed/simple;
+	bh=dPE/6UDMMNTud90mRB8SxwxkKNDGqNVlNy5eq4COdCc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oJnHuwxLrXzrKOJnMEKkVtnFqnfQkiE/0bSXP4GfuPGsVmWeGT/k52xAcx4wxL13cWrx3o4h5ZjmQkl+A/EEOmnzR96qKyvknkCVkZpvZyZydMwDEx0t/4O5UMGrsHVkFYiXSTdY2nFJtHi8GuWLkTjnDVcRJ20F+z7ouKbTwgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usOH2wn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18123C4CECD;
+	Sun, 17 Nov 2024 21:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731876419;
-	bh=QhTxonAInE+XzSOXSovYZwZz06FGFPspv4zQeCAxLlY=;
+	s=korg; t=1731877645;
+	bh=dPE/6UDMMNTud90mRB8SxwxkKNDGqNVlNy5eq4COdCc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mwjWvHzB8+LaWFyUUTEXcnPefhcBjeqeAoXYxWridHDhbMDJ047NhWpMbRtlM5wVw
-	 8OMa7hNrAqiiM/OIAKYFCaIgBZxiWQPAYf9jkFzvzElz2YVSjx87X1YmaB4i8Exjxq
-	 8+qO7xMgnbv4Fhwb5uORCi0ls9frM5jnA21vf+Wc=
-Subject: FAILED: patch "[PATCH] mmc: sunxi-mmc: Fix A100 compatible description" failed to apply to 5.15-stable tree
-To: andre.przywara@arm.com,parthiban@linumiz.com,ulf.hansson@linaro.org,wens@csie.org
+	b=usOH2wn9IJGz0m6qGFsFafnUJC2ma/1yn6lY2DN8B8etrPDcUJh1muGUT55zhbPVq
+	 hIKNI2neelKzMmXZ7+VShXlPQKRgb8UQ/GFwK7MK5C9qZ4+LXvVP02vW6aqvZtqCdZ
+	 DdDqQsdHArG/5wwnMO0mX9ajSEkheff03tVrvP4o=
+Subject: FAILED: patch "[PATCH] pmdomain: imx93-blk-ctrl: correct remove path" failed to apply to 6.1-stable tree
+To: peng.fan@nxp.com,ulf.hansson@linaro.org,wahrenst@gmx.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Nov 2024 21:46:34 +0100
-Message-ID: <2024111734-aneurism-aroma-9f52@gregkh>
+Date: Sun, 17 Nov 2024 22:07:00 +0100
+Message-ID: <2024111700-overhang-copied-323b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 85b580afc2c215394e08974bf033de9face94955
+git cherry-pick -x f7c7c5aa556378a2c8da72c1f7f238b6648f95fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111734-aneurism-aroma-9f52@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111700-overhang-copied-323b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,56 +77,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 85b580afc2c215394e08974bf033de9face94955 Mon Sep 17 00:00:00 2001
-From: Andre Przywara <andre.przywara@arm.com>
-Date: Thu, 7 Nov 2024 01:42:40 +0000
-Subject: [PATCH] mmc: sunxi-mmc: Fix A100 compatible description
+From f7c7c5aa556378a2c8da72c1f7f238b6648f95fb Mon Sep 17 00:00:00 2001
+From: Peng Fan <peng.fan@nxp.com>
+Date: Fri, 1 Nov 2024 18:12:51 +0800
+Subject: [PATCH] pmdomain: imx93-blk-ctrl: correct remove path
 
-It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
-blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
-And while this alone would make a trivial fix, the H616 falls back to
-the A100 compatible string, so we have to now match the H616 compatible
-string explicitly against the description advertising 64K DMA blocks.
+The check condition should be 'i < bc->onecell_data.num_domains', not
+'bc->onecell_data.num_domains' which will make the look never finish
+and cause kernel panic.
 
-As the A100 is now compatible with the D1 description, let the A100
-compatible string point to that block instead, and introduce an explicit
-match against the H616 string, pointing to the old description.
-Also remove the redundant setting of clk_delays to NULL on the way.
+Also disable runtime to address
+"imx93-blk-ctrl 4ac10000.system-controller: Unbalanced pm_runtime_enable!"
 
-Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
+Fixes: e9aa77d413c9 ("soc: imx: add i.MX93 media blk ctrl driver")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
 Cc: stable@vger.kernel.org
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
+Message-ID: <20241101101252.1448466-1-peng.fan@oss.nxp.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-index d3bd0ac99ec4..e0ab5fd635e6 100644
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
- 	.needs_new_timings = true,
- };
+diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+index 904ffa55b8f4..b10348ac10f0 100644
+--- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+@@ -313,7 +313,9 @@ static void imx93_blk_ctrl_remove(struct platform_device *pdev)
  
--static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
-+static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
- 	.idma_des_size_bits = 16,
- 	.idma_des_shift = 2,
--	.clk_delays = NULL,
- 	.can_calibrate = true,
- 	.mask_data0 = true,
- 	.needs_new_timings = true,
-@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
- 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
--	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
-+	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
-+	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+ 	of_genpd_del_provider(pdev->dev.of_node);
+ 
+-	for (i = 0; bc->onecell_data.num_domains; i++) {
++	pm_runtime_disable(&pdev->dev);
++
++	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+ 		struct imx93_blk_ctrl_domain *domain = &bc->domains[i];
+ 
+ 		pm_genpd_remove(&domain->genpd);
 
 
