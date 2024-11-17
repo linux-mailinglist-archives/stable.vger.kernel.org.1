@@ -1,103 +1,146 @@
-Return-Path: <stable+bounces-93669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974069D0172
-	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 00:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0339D028B
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 09:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0ABFB24A10
-	for <lists+stable@lfdr.de>; Sat, 16 Nov 2024 23:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214572822B4
+	for <lists+stable@lfdr.de>; Sun, 17 Nov 2024 08:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B09194096;
-	Sat, 16 Nov 2024 23:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A99013A26F;
+	Sun, 17 Nov 2024 08:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q23Gy8wq"
+	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="h6XkncAE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27495621;
-	Sat, 16 Nov 2024 23:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D9038F9C
+	for <stable@vger.kernel.org>; Sun, 17 Nov 2024 08:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731799855; cv=none; b=fxizFwxO1Sdlti2R8PFVL390PGCJNiHz6Fg4WNSyYqdzIfVqv6+HxdFq1oYs36Nix/umBQlJ57Nnpp+rVLLf220XjxUxOTSth3bGWVDkB9rMPBk63qr5Ww4kDEw46y508C2w0ulZd+PSnYoikm6daeQf2Q3OZDPk+kFdYUAVA0M=
+	t=1731833662; cv=none; b=rSBd6kP7CAo8KdXMw+ck/WOyqObiTvQYugEiuj2AJ2bWPt988IXrhWkIkzBJHutFSrYyD9ng2IxOar3KrcSR/zFuD+5De42EdXjDg+NjAeBgTGdKmT1v++TZakNR5EQgLNehRs1lCK7WjJ0kJ6XZKKoxSgYo41mBl3kFO0e28HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731799855; c=relaxed/simple;
-	bh=pFSKbNtJgt4gZgqd5/3angfseALOzBp8X5mUpHiH1FE=;
-	h=Date:To:From:Subject:Message-Id; b=E+7AsXbrFLWQmW8HLorEheXikPO+dU68NVsi7vPx1MIvVDnZgeGRHPwHPGF1F7vo4qPPUpn+K2LpA+pLr6lZ9+IcOtLjwg2wPmxNFXjQagbTzRwSdatXFwUNH0Ulk3KUHL/NTnAgO+EFlCSedetOakaG85gtMvjZHpk0/JTC9hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q23Gy8wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FBAC4CEC3;
-	Sat, 16 Nov 2024 23:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731799854;
-	bh=pFSKbNtJgt4gZgqd5/3angfseALOzBp8X5mUpHiH1FE=;
-	h=Date:To:From:Subject:From;
-	b=Q23Gy8wqh1ktt2eWfpMILqNQtxzKnN1zw2Y2p7Qahd5A98scqpi+kfGf/LqeKbj+A
-	 zP1qHW3psu3fYTe1OdkT5Z/2+5D//h76xj1p2nZHgmUfGuVzBdoxbTewn6Neus/aKb
-	 kPhIYVb6fJZ/hdo+ja1GwHDKQZ5dzUpa12VslROA=
-Date: Sat, 16 Nov 2024 15:30:50 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,stable@vger.kernel.org,hughd@google.com,chuck.lever@oracle.com,aha310510@gmail.com,akpm@linux-foundation.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch removed from -mm tree
-Message-Id: <20241116233053.F1FBAC4CEC3@smtp.kernel.org>
+	s=arc-20240116; t=1731833662; c=relaxed/simple;
+	bh=1CgclRnp10ly/JD5SiLrTDFla8mus//SPDBxcGQV0jY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aWfL4nESDw1Vt4hG4E3AjOhZZdD18tPNZxDH+aiY7BW5wv4n77JKwMVSy015Y+pi6Q7Sfnf2y5DdZkwZRAXhLthZRqCt0IObZbhj8uL/zkinFP778PDZYV+91ZGhQkHaRkpz2y43wqZFpNXe4qArkyPW8GAHoS/ZbmRXjftzjng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=h6XkncAE; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9ed0ec0e92so153284866b.0
+        for <stable@vger.kernel.org>; Sun, 17 Nov 2024 00:54:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1731833657; x=1732438457; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aAFozerT8AmWvaMiQhtVKgrLvIOoUAQYsmUVcu4V1u0=;
+        b=h6XkncAEP5lZU7dLWT3iVaWZKNTd2D+jLdHb1E9WzRlZo64hwVFLdlpw+PNj9jiEfE
+         0ZSMBx7zlbgpHYESCAPSp+JJychIe+cq8er/XXvfdfzc2vj6Iq5LZag7iIpZ4n39VDo5
+         PLIoq9HzcRmAaft/8e3R0mMPQ1YcRCJHLXWgdvJs2UZBnWeL8omeRGty+LKgYDIGv+fc
+         Kt18gEPB4r8A+iJvyrnUZejvuru3ukTC6/+c842PC29ByxB+WnbDccY9VfR2dMZMT0IC
+         MF8M/7NFqx+g/52D3aoEM55HIYdG9e74B1P2YYFIi4RotqO90QBGT72Aa3d0/PqxOiuY
+         d2Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731833657; x=1732438457;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aAFozerT8AmWvaMiQhtVKgrLvIOoUAQYsmUVcu4V1u0=;
+        b=EPVaNvi9jgGlBi2SKfUOFpoi9pV1n7sgzlYOd/k+4BMFNgVo+BRdVmB2VWFovnqK1U
+         b1PATSeRwTUG9KZxziMnXaq5wBI/K8jjt2RZTmYzK9p9PNZe4AZlud24bjgix/o91Piv
+         MJhabjUC0U69dUchDE+IpdsOzdmgoGJeuDPQntlzUeYv1PuCEQKUjR/9bT/0UoueWEHE
+         4c44RTEqVpXn2lPEUg6N+F7DSZd0Kwe4KNFmzA7oyB7zRhwZwcv7D3BWfsStqkdMsEiM
+         AKWeg3SprRg4JIhCkUvf2jM2O/GolyewhuOV/1+cKwjJSK+/btmux3rNgkly5tfymMs7
+         ZJLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFY/J85hy0056zvUqkDvJKwaT36xokE74vVMnOCx/jwz+OeU3I4BYqxssubV5fsYPiI6M8htQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQvpT+CRiT0R30lqnfQCIelntqa5s0AWA9nzh5GwhGilziHgKF
+	3mlNy8KY/OOecpwTP1D7w7HQfDuIzVSHP9ZPq8B3a5HtQ9bcuJQE1soaPZQMZyUrVI2ckpc7FRC
+	oO6TpxftCWPP1Ck1fmhC4munobbNFh35Dku8=
+X-Google-Smtp-Source: AGHT+IH9A6EZKAlNlaThpg9AAuD/cbmV9VJvtt/bhTQvVCtVUAtunC0O/fpyJLc/etjVvqahiNW3SCx3U6/D6U7BbUI=
+X-Received: by 2002:a17:907:3f98:b0:a9e:d539:86c4 with SMTP id
+ a640c23a62f3a-aa4833f41cdmr702610266b.9.1731833657034; Sun, 17 Nov 2024
+ 00:54:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20241004061541.1666280-1-nobuhiro1.iwamatsu@toshiba.co.jp>
+In-Reply-To: <20241004061541.1666280-1-nobuhiro1.iwamatsu@toshiba.co.jp>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Date: Sun, 17 Nov 2024 17:53:51 +0900
+Message-ID: <CABMQnVK_RUC84QQ5zb+ZpuMOZcFMNV6HzEYAfmX4bOrRm+rvTw@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY ID
+To: dinguyen@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, robh+dt@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Dinh,
+
+Please check and apply this patch?
+
+Thanks,
+  Nobuhiro
+
+2024=E5=B9=B410=E6=9C=884=E6=97=A5(=E9=87=91) 15:16 Nobuhiro Iwamatsu <iwam=
+atsu@nigauri.org>:
+>
+> From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+>
+> On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
+> found and the network device does not work.
+>
+> ```
+> stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (er=
+ror: -19)
+> ```
+>
+> To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of the
+> mdio bus. Also the PHY ID connected to this board is 4. Therefore, change
+> to 4.
+>
+> Fixes: 8fbc10b995a5 ("net: stmmac: check fwnode for phy device before sca=
+nning for phy")
+> Cc: stable@vger.kernel.org # 6.3+
+> Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+> ---
+>  arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts b=
+/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> index ce0d6514eeb571..e4794ccb8e413f 100644
+> --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> @@ -66,8 +66,10 @@ &gmac1 {
+>         mdio0 {
+>                 #address-cells =3D <1>;
+>                 #size-cells =3D <0>;
+> -               phy0: ethernet-phy@0 {
+> -                       reg =3D <0>;
+> +               compatible =3D "snps,dwmac-mdio";
+> +
+> +               phy0: ethernet-phy@4 {
+> +                       reg =3D <4>;
+>                         rxd0-skew-ps =3D <0>;
+>                         rxd1-skew-ps =3D <0>;
+>                         rxd2-skew-ps =3D <0>;
+> --
+> 2.45.2
+>
 
 
-The quilt patch titled
-     Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-has been removed from the -mm tree.  Its filename was
-     mm-revert-mm-shmem-fix-data-race-in-shmem_getattr.patch
-
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-Date: Fri Nov 15 04:57:24 PM PST 2024
-
-Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
-suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
-NFS.
-
-As Hugh commented, "added just to silence a syzbot sanitizer splat: added
-where there has never been any practical problem".
-
-Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
-Fixes: d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()")
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/shmem.c |    2 --
- 1 file changed, 2 deletions(-)
-
---- a/mm/shmem.c~mm-revert-mm-shmem-fix-data-race-in-shmem_getattr
-+++ a/mm/shmem.c
-@@ -1166,9 +1166,7 @@ static int shmem_getattr(struct mnt_idma
- 	stat->attributes_mask |= (STATX_ATTR_APPEND |
- 			STATX_ATTR_IMMUTABLE |
- 			STATX_ATTR_NODUMP);
--	inode_lock_shared(inode);
- 	generic_fillattr(idmap, request_mask, inode, stat);
--	inode_unlock_shared(inode);
- 
- 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
- 		stat->blksize = HPAGE_PMD_SIZE;
-_
-
-Patches currently in -mm which might be from akpm@linux-foundation.org are
-
-fs-proc-vmcorec-fix-warning-when-config_mmu=n.patch
-
+--=20
+Nobuhiro Iwamatsu
+   iwamatsu at {nigauri.org / debian.org / kernel.org}
+   GPG ID: 32247FBB40AD1FA6
 
