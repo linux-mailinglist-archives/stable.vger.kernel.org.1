@@ -1,159 +1,167 @@
-Return-Path: <stable+bounces-93796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB489D1173
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 14:09:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D549D123E
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 14:41:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9DC1F212BA
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 13:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF60282428
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 13:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDDE19AA56;
-	Mon, 18 Nov 2024 13:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FB41AA1F7;
+	Mon, 18 Nov 2024 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmPCodLv"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="nE2XcsPf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED8B1E49B;
-	Mon, 18 Nov 2024 13:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5CA1990C7;
+	Mon, 18 Nov 2024 13:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731935334; cv=none; b=Rg/zXkykzoWhu4AV1Jd7VRPwEys5rsnD9DPBWsg7lmNuzEdjUesci0R7NGON650NWPElr8mTVB6Is3w6FmvOIKzgtw4J+n8KmfEiME/TQsWFXjGatFKWWi+kZujmQev/uslfXbYNOVHKSZTXogn3kqThkuwPMBSUvfxrBoYcwTY=
+	t=1731937217; cv=none; b=fT3mPlNLBmRzeCBCeILiZy5OsEX3aRlepL8NSnEeH/nc0IR+8BJ43GVVsj/Y3b3CCbLLNXv3KxNVbyaQaQ3TtrNWM3z8edwZDdGL7MLEVY9rU7FVGCqF7gYUbmrw+sNsaUuXKCEQAub0g9Knyg1NLxSglGTFyJZbubvZuYUEbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731935334; c=relaxed/simple;
-	bh=HzQVcMEu/w6/YCCfncF8ljt72py1cVuCfnwesEoiDQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uP/VF1UeujbgY23Kz1OhpcAVZ1V23bChfSzkS5XB8ZsfalXq+7dEYwlkneR7wDIRDA3dHEHM6Dn26f9xqpgSaL8XT2XyIBmQPSiwOaZ/JfjgMB7Exq+oG+Z16CMdafcYyiiURJeRBd620zF99pePNhoUx1gtgiEsxUzDKcDaodI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmPCodLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79442C4CED0;
-	Mon, 18 Nov 2024 13:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731935334;
-	bh=HzQVcMEu/w6/YCCfncF8ljt72py1cVuCfnwesEoiDQo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HmPCodLvAM2mfqSr9Okjuq8iZqMlsiEye0sO/guWVcBWVoZs+sPvA5CiAw6bog4X0
-	 mh6l47DWBglsNNtT5g5w8SHLxo5rqFOHT0s9P/271Ee4EERKYSGdBJQeOXG+/mRLdr
-	 pG7EP9eILymffWjECadMwxXpa5xDADRbLgpYClIco/wSCrvMEo8yqJ0u3/wBADZf2e
-	 qc09Oh2k90EL64rXSJNMVn3OCKzaprPdNyyoIyQiWupl56RnZCITFuBtEfW5pgf6jg
-	 MtEAV5U6St4kmMNfV0YI1Ac7NSNEpGtbbspyDrzipyCcnaQBXQT8Gt6tZc/iHmVzOY
-	 3IF/mC5uwWtwg==
-Message-ID: <d1679678-8996-4484-bcf4-d4eaa6f009a4@kernel.org>
-Date: Mon, 18 Nov 2024 15:08:48 +0200
+	s=arc-20240116; t=1731937217; c=relaxed/simple;
+	bh=XnyYllDzL0LL/+HkkTfZ2htDmi7RlBBYQfsAV/1yFHg=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=QDZzeGPBESqAqzucUCv1GfTnAI4M5mLQwB3RQkz4eHUI2Zx6UY3o+kMuKQxV9SpOjMD3GE8xG7J5JfgCvfWiFsWURCocXUNomiQ8DKwyHBBEHjmh46sLr5RZLkkcWWkO9HAPI/UZKOpIg6O0/m/IubzI6fZremeXE87gKZpt1Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=nE2XcsPf; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIBbYPa032344;
+	Mon, 18 Nov 2024 14:39:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=7O5nEKFBIBm1GCz6ZDzn1l
+	9NyOXSXAkg3gdqNTBw/HY=; b=nE2XcsPfH3AzQg1iYCU7fjXmHVVhj3gQQmL2SJ
+	P9RXzEE/UBI70MbQ+E2n1ytEhHrHr5mmXbxb6pMRdFraFww5wWNws3itwLP40K3E
+	13m3NS+MerDYrS+1rHHJNR8AV9qNRLimWORgfxvpDGKUH1I7eqsnsGVq2a2zmXWH
+	0t0PFd7ytjQFgfUvZsb2kw8ITw8dKAtCiXshX0Rlz1gLuOwePA/TuZEk0zAMWXf9
+	7MelT8lBC+UuSLdxehjkkRyudRBSsNRg5hKbUSPpdQlGddKYzrsLQlm9oGZZnGtZ
+	oi59IJ8jjS9qBLZs23zG8Aix4GzBLs3miGhuRPkXn1qGAVPw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 42xkqeq7rh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Nov 2024 14:39:41 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 7574E40053;
+	Mon, 18 Nov 2024 14:38:29 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2D14026E70C;
+	Mon, 18 Nov 2024 14:35:26 +0100 (CET)
+Received: from localhost (10.129.178.213) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Mon, 18 Nov
+ 2024 14:35:25 +0100
+From: Alain Volmat <alain.volmat@foss.st.com>
+Subject: [PATCH v3 00/15] media: stm32: introduction of CSI / DCMIPP for
+ STM32MP25
+Date: Mon, 18 Nov 2024 14:35:23 +0100
+Message-ID: <20241118-csi_dcmipp_mp25-v3-0-c1914afb0a0f@foss.st.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
- module
-To: Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- hns@goldelico.com, linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, khilman@baylibre.com,
- stable@vger.kernel.org
-References: <20241107225100.1803943-1-andreas@kemnade.info>
- <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
- <20241108184118.5ee8114c@akair> <20241111150953.GA23206@atomide.com>
- <20241111193117.5a5f5ecb@akair> <20241111234604.66a9691b@akair>
- <20241116212734.30f5d35b@akair>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241116212734.30f5d35b@akair>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJtCO2cC/2WNQQ6CMBBFr0JmbUkZxBFW3sMQgqWVWUCbDiEaw
+ t2tuHT5XvLf30BsZCvQZBtEu7KwnxOUpwzM2M9Pq3hIDKjxXGhNygh3g5k4hG4KWCkiqi+6cBU
+ NPaRViNbx6yje28Qjy+Lj+zhY8Wt/rUJXf60VlVaP2plrT0ilwZvzIrksufETtPu+fwA3Eyy4s
+ AAAAA==
+X-Change-ID: 20241007-csi_dcmipp_mp25-7779601f57da
+To: Hugues Fruchet <hugues.fruchet@foss.st.com>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre
+ Torgue <alexandre.torgue@foss.st.com>,
+        Hans Verkuil
+	<hverkuil-cisco@xs4all.nl>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+CC: <linux-media@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Alain Volmat <alain.volmat@foss.st.com>,
+        <stable@vger.kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
+This series introduces the camera pipeline support for the
+STM32MP25 SOC.  The STM32MP25 has 3 pipelines, fed from a
+single camera input which can be either parallel or csi.
 
+This series adds the basic support for the 1st pipe (dump)
+which, in term of features is same as the one featured on
+the STM32MP13 SOC.  It focuses on introduction of the
+CSI input stage for the DCMIPP, and the CSI specific new
+control code for the DCMIPP.
+One of the subdev of the DCMIPP, dcmipp_parallel is now
+renamed as dcmipp_input since it allows to not only control
+the parallel but also the csi interface.
 
-On 16/11/2024 22:27, Andreas Kemnade wrote:
-> Am Mon, 11 Nov 2024 23:46:04 +0100
-> schrieb Andreas Kemnade <andreas@kemnade.info>:
-> 
->> Am Mon, 11 Nov 2024 19:31:17 +0100
->> schrieb Andreas Kemnade <andreas@kemnade.info>:
->>
->>> Am Mon, 11 Nov 2024 17:09:53 +0200
->>> schrieb Tony Lindgren <tony@atomide.com>:
->>>   
->>>> * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:    
->>>>> They are not used, if they are just disabled, kernel does not touch
->>>>> them, so if it is there, the kernel can handle
->>>>> pm. At least as long as it is not under ti,sysc.
->>>>>
->>>>> There are probably cleaner solutions for this, but for a CC: stable I
->>>>> would prefer something less invasive.      
->>>>
->>>> For unused devices, it's best to configure things to use ti-sysc, and
->>>> then set status disabled (or reserved) for the child devices only. This
->>>> way the parent interconnect target module is PM runtime managed by
->>>> Linux, and it's power domain gets properly idled for the unused devices
->>>> too.
->>>>     
->>> Hmm, we also have omap_hwmod_setup_all() which is still called if
->>> without device nodes being available.
->>>
->>> Converting mcspi to ti-sysc is more than 100 lines. So it does not
->>> qualify for stable.
->>>   
->>>>> I can try a ti-sysc based fix in parallel.      
->>>>
->>>> Yeah that should be trivial hopefully :)
->>>>     
->>> I played around, got pm issues too, tried to force-enable things (via
->>> power/control),
->>> watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
->>> or reset.
->>>
->>> but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
->>>
->>> I test from initramfs, so no mmc activity involved
->>>
->>> removing status = "disabled" from mcspi3 solves things.
->>> With and without ti-sysc conversion. removing status = "disabled" from
->>> mcspi4 seems not to help.
->>>
->>> That all cannot be... I will retry tomorrow.
->>>   
->> well, I tried a bit further:
->> I build the omap spi driver as module.
->> and booted With mcspi3 not disabled and no module autoload.
->>
->> without module loaded: pm bad, same as with mcspi3 disabled
->> with module loaded: core pm ok
->> with module loaded and unloaded: core pm ok.
->>
->> so at least a trace.
->>
-> ok, I am a bit further.
-> mcspi is per default in slave mode, setting it to master solves issues.
-> And that happens when the driver is probed because its default is
-> master.
-> Having the pins muxed as mode 7 also helps or selecting a pulldown for
-> cs. (cs is active high per default!)
-> switching to pullup does not harm once the spi module is off, but having
-> active cs seems to prevent idling despite CM_IDLEST1_CORE
-> not showing it.
-> 
-> History: u-boot muxes McSPI3, because it can be available on an
-> optionally fitted pin header. But there is no user known (would need
-> a dtb overlay anyways). So I will rather mux to mode 7.
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+---
+Changes in v3:
+* stm32-csi: use clk_bulk api
+* stm32-csiL perform reset control within the probe
+- Link to v2: https://lore.kernel.org/r/20241105-csi_dcmipp_mp25-v2-0-b9fc8a7273c2@foss.st.com
 
-I'm sorry I didn't fully understand the problem.
+---
+Alain Volmat (15):
+      media: stm32: dcmipp: correct dma_set_mask_and_coherent mask value
+      dt-bindings: media: add description of stm32 csi
+      media: stm32: csi: addition of the STM32 CSI driver
+      media: stm32: dcmipp: use v4l2_subdev_is_streaming
+      media: stm32: dcmipp: replace s_stream with enable/disable_streams
+      media: stm32: dcmipp: rename dcmipp_parallel into dcmipp_input
+      media: stm32: dcmipp: add support for csi input into dcmipp-input
+      media: stm32: dcmipp: add bayer 10~14 bits formats
+      media: stm32: dcmipp: add 1X16 RGB / YUV formats support
+      media: stm32: dcmipp: avoid duplicated format on enum in bytecap
+      media: stm32: dcmipp: fill media ctl hw_revision field
+      dt-bindings: media: add the stm32mp25 compatible of DCMIPP
+      media: stm32: dcmipp: add core support for the stm32mp25
+      arm64: dts: st: add csi & dcmipp node in stm32mp25
+      arm64: dts: st: enable imx335/csi/dcmipp pipeline on stm32mp257f-ev1
 
-So, u-boot configures pinmux for McSPI3 and enables McSPI3 as well
-but fails to disable it properly?
-And because McSPI3 is in slave mode and CS is active it fails to
-transition to idle in Linux?
+ .../devicetree/bindings/media/st,stm32-dcmipp.yaml |   53 +-
+ .../bindings/media/st,stm32mp25-csi.yaml           |  125 +++
+ MAINTAINERS                                        |    8 +
+ arch/arm64/boot/dts/st/stm32mp251.dtsi             |   23 +
+ arch/arm64/boot/dts/st/stm32mp257f-ev1.dts         |   85 ++
+ drivers/media/platform/st/stm32/Kconfig            |   14 +
+ drivers/media/platform/st/stm32/Makefile           |    1 +
+ drivers/media/platform/st/stm32/stm32-csi.c        | 1137 ++++++++++++++++++++
+ .../media/platform/st/stm32/stm32-dcmipp/Makefile  |    2 +-
+ .../st/stm32/stm32-dcmipp/dcmipp-bytecap.c         |  128 ++-
+ .../st/stm32/stm32-dcmipp/dcmipp-byteproc.c        |  119 +-
+ .../platform/st/stm32/stm32-dcmipp/dcmipp-common.h |    4 +-
+ .../platform/st/stm32/stm32-dcmipp/dcmipp-core.c   |  116 +-
+ .../platform/st/stm32/stm32-dcmipp/dcmipp-input.c  |  540 ++++++++++
+ .../st/stm32/stm32-dcmipp/dcmipp-parallel.c        |  440 --------
+ 15 files changed, 2219 insertions(+), 576 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241007-csi_dcmipp_mp25-7779601f57da
 
-So isn't this a u-boot issue?
-
+Best regards,
 -- 
-cheers,
--roger
+Alain Volmat <alain.volmat@foss.st.com>
 
 
