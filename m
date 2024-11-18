@@ -1,111 +1,130 @@
-Return-Path: <stable+bounces-93767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3939D0954
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:09:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35539D09FB
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 08:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84AA28212C
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A094282632
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2D9145B27;
-	Mon, 18 Nov 2024 06:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF55213A89A;
+	Mon, 18 Nov 2024 07:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r1fcLvd2"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Qg9yzeki"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C287F460;
-	Mon, 18 Nov 2024 06:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC47322E;
+	Mon, 18 Nov 2024 07:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731910169; cv=none; b=pVg6X5buGj3Te5ZHGUZokBQ3q+5GcBfTqJznD7JldaJsd2zznL8a9+fSo0G0sF3p8XV3yLDUsW02vUHJqxWF4jwM2kT7HL1hEG8ydCgK7TlW8sTLC6K8F/7xAsVOzpzz7eeow74j6IutTagJVIvau4tPED5XiRVQToLRk49eEpw=
+	t=1731913416; cv=none; b=jxdFo/JgjWMx2kKMK03LPm6UsCgDNstm7q6sdZel87ihPtf8VVivC3mlg4fwTH5vKLFpc7loa8M1htD9DGylUOsoLohM9+JXMIwWHZYVsCaJtxcSLN2kK+W6zZ4Y8FgmWfrgp9gd3QjcG7mf1ILIEwL5YonOfGYpH967+JLrHuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731910169; c=relaxed/simple;
-	bh=4C7Swz1qKPs9kGTA4qQCbhjD9yZVeVNp8/5aRRkyZI8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFegw+0PGaNkDKngh8ETcgUV6OTx0c9w62VKBSQQan2IW8QBfjUjjqlRiqNDQZ6baD9N6IBpd4uMaprktWOTfRl3FFsjkfmB+3ULzYC3jldGA3wKubINtAnV8GUgCQ2NTAoDaJe/4i00xqLE9+4ld/6zt8MX33o9P7LCDlnW3IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r1fcLvd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A46AC4CECF;
-	Mon, 18 Nov 2024 06:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731910169;
-	bh=4C7Swz1qKPs9kGTA4qQCbhjD9yZVeVNp8/5aRRkyZI8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1fcLvd2EZqoyhjS9Y4hDiWzTSNSLnMxR1SkUhs+KYVqmA4Jh3IOQQ8wQplKLq+GL
-	 S6rEsg14XqQQuXkaM3ThgjDe4XHq+tL5zpo7ZWVZmhNEZCxk9AO4GzpM46H1WXEA5i
-	 XFUgHOGoLkxPlLESzXhXJuHoygzmlE+vbi2rgxfVnpMl/pOvJQZ5a6Wz9UZrFBb4ML
-	 04VGJ1f6UxGN4Q3APFnmNrmjknlP3b3GBZS4kIvfQqTndE3ERYMihNU7n5aWBvknn1
-	 ehuUHqLJOSFV7VhkawqF6vwb0aWOmVdyZP2Tf/efH9sSRzgO1R3afFbb6mWCQtmpD8
-	 bIyHHZwp0mfmg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1tCuww-000000042if-36yW;
-	Mon, 18 Nov 2024 07:09:26 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: 
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] docs: media: update location of the media patches
-Date: Mon, 18 Nov 2024 07:09:19 +0100
-Message-ID: <544c6883e49e4b85bf5338d794f754ac0cfe3436.1731910082.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1731910082.git.mchehab+huawei@kernel.org>
-References: <cover.1731910082.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1731913416; c=relaxed/simple;
+	bh=oEltPeUPlVF+TBkOrghRwb2ODhbY7aIsbaCsGT8RZMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mAc0PfvXgH8WQwZuNUPNVnQFC5dPSNxPLmwLapQEVyNKxQ+oH8mzEpZ/4yyn8Bl9KrPWLbc1QYS0O9EuUIZpnnwgt84bz/uAQyoxRE0lJMiTO3CP5RUcekMOwl0n0X8+27fOEX15oyKJzIADv5ex3Sg1qRtjmVeOpTCPgjCKu7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Qg9yzeki; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=GK+QvS1NaDpuClV7licehKvxkGcFMiW2ifaIQoP8yRM=; b=Qg9yzekis7kbfpAllVIVQFLePw
+	oUelVmASsQMoD7bmcMeX0lIe3D33fHDnsznOHgwjwDjdkCDCAUVxwIfUtwWbaN9aYKzDRnesPGAwN
+	XIuYVN88BrVxkJVvI7t2FH4c9KFecp1eyKqZPjk75QH9AG9kdti4SakM8YxVofYw9rzDzbZqO6yGE
+	RfYA3FKFGVkHprHscYkRNqLxqHmuRhbdTjXKBSm8qhz40HjodN/t1o3yMM5IirNniuC/HNXIP7L+k
+	RVZtbqGQasNMflxthe4uaeXD5DY4QQ3KrEEqRc5g/o2LPjJf/H6QM1NaBZUpkE2HVv3dYIisO0VMc
+	2nf7mlRg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tCvnG-0000000GIzs-3V5f;
+	Mon, 18 Nov 2024 07:03:30 +0000
+Date: Mon, 18 Nov 2024 07:03:30 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: prevent data-race due to missing inode_lock when
+ calling vfs_getattr
+Message-ID: <20241118070330.GG3387508@ZenIV>
+References: <20241117165540.GF3387508@ZenIV>
+ <E79FF080-A233-42F6-80EB-543384A0C3AC@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+In-Reply-To: <E79FF080-A233-42F6-80EB-543384A0C3AC@gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Due to recent changes on the way we're maintaining media, the
-location of the main tree was updated.
+On Mon, Nov 18, 2024 at 03:00:39PM +0900, Jeongjun Park wrote:
+> 
+> Hello,
+> 
+> > Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > 
+> > ﻿On Mon, Nov 18, 2024 at 01:37:19AM +0900, Jeongjun Park wrote:
+> >> Many filesystems lock inodes before calling vfs_getattr, so there is no
+> >> data-race for inodes. However, some functions in fs/stat.c that call
+> >> vfs_getattr do not lock inodes, so the data-race occurs.
+> >> 
+> >> Therefore, we need to apply a patch to remove the long-standing data-race
+> >> for inodes in some functions that do not lock inodes.
+> > 
+> > Why do we care?  Slapping even a shared lock on a _very_ hot path, with
+> > possible considerable latency, would need more than "theoretically it's
+> > a data race".
+> 
+> All the functions that added lock in this patch are called only via syscall,
+> so in most cases there will be no noticeable performance issue.
 
-Change docs accordingly.
+Pardon me, but I am unable to follow your reasoning.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/admin-guide/media/building.rst | 2 +-
- Documentation/admin-guide/media/saa7134.rst  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> And
+> this data-race is not a problem that only occurs in theory. It is
+> a bug that syzbot has been reporting for years. Many file systems that
+> exist in the kernel lock inode_lock before calling vfs_getattr, so
+> data-race does not occur, but only fs/stat.c has had a data-race
+> for years. This alone shows that adding inode_lock to some
+> functions is a good way to solve the problem without much 
+> performance degradation.
 
-diff --git a/Documentation/admin-guide/media/building.rst b/Documentation/admin-guide/media/building.rst
-index a06473429916..7a413ba07f93 100644
---- a/Documentation/admin-guide/media/building.rst
-+++ b/Documentation/admin-guide/media/building.rst
-@@ -15,7 +15,7 @@ Please notice, however, that, if:
- 
- you should use the main media development tree ``master`` branch:
- 
--    https://git.linuxtv.org/media_tree.git/
-+    https://git.linuxtv.org/media.git/
- 
- In this case, you may find some useful information at the
- `LinuxTv wiki pages <https://linuxtv.org/wiki>`_:
-diff --git a/Documentation/admin-guide/media/saa7134.rst b/Documentation/admin-guide/media/saa7134.rst
-index 51eae7eb5ab7..18d7cbc897db 100644
---- a/Documentation/admin-guide/media/saa7134.rst
-+++ b/Documentation/admin-guide/media/saa7134.rst
-@@ -67,7 +67,7 @@ Changes / Fixes
- Please mail to linux-media AT vger.kernel.org unified diffs against
- the linux media git tree:
- 
--    https://git.linuxtv.org/media_tree.git/
-+    https://git.linuxtv.org/media.git/
- 
- This is done by committing a patch at a clone of the git tree and
- submitting the patch using ``git send-email``. Don't forget to
--- 
-2.47.0
+Explain.  First of all, these are, by far, the most frequent callers
+of vfs_getattr(); what "many filesystems" are doing around their calls
+of the same is irrelevant.  Which filesystems, BTW?  And which call
+chains are you talking about?  Most of the filesystems never call it
+at all.
 
+Furthermore, on a lot of userland loads stat(2) is a very hot path -
+it is called a lot.  And the rwsem in question has a plenty of takers -
+both shared and exclusive.  The effect of piling a lot of threads
+that grab it shared on top of the existing mix is not something
+I am ready to predict without experiments - not beyond "likely to be
+unpleasant, possibly very much so".
+
+Finally, you have not offered any explanations of the reasons why
+that data race matters - and "syzbot reporting" is not one.  It is
+possible that actual observable bugs exist, but it would be useful
+to have at least one of those described in details.
+
+Please, spell your reasoning out.  Note that fetch overlapping with
+store is *NOT* a bug in itself.  It may become such if you observe
+an object in inconsistent state - e.g. on a 32bit architecture
+reading a 64bit value in parallel with assignment to the same may
+end up with a problem.  And yes, we do have just such a value
+read there - inode size.  Which is why i_size_read() is used there,
+with matching i_size_write() in the writers.
+
+Details matter; what is and what is not an inconsistent state
+really does depend upon the object you are talking about.
+There's no way in hell for syzbot to be able to determine that.
 
