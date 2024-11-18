@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-93781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC75B9D0E54
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:21:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2F59D0E55
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759031F217A5
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:21:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0A30282F59
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1A4194A60;
-	Mon, 18 Nov 2024 10:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E3225760;
+	Mon, 18 Nov 2024 10:18:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A492617C224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48D012EBE7
 	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 10:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925114; cv=none; b=PG9TyDxKtEway/KC3UUFV4ZrfsmMNStB42gQKw8k7qXrbQ9ydLjCYjgQ2l22nTj/2Ol16IkbYr+/UrSYfaxs0BQXfipZ+qlxV/JDeRqWdsvKfNUwKJvb8sT5FuL3ctbC4bsLGd4rReN3+VRuoczuMPfuiOwNB3ZO57mO32hy/o8=
+	t=1731925115; cv=none; b=NXyBASzu8k3hQz9R67X4wL6h81iH/nAiZcoOI7kaA6Dsn+OJnCqdyhdZG09fUtAA+69urvRX3nGxJEaufhW5pX31lesdzWdyDju1177QujZr2o6BhvYP64doUOhAINbTUA3Xn+p8LOAqhXUK4wih58CKiHvnj7m4Ohjb56TBVUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731925114; c=relaxed/simple;
-	bh=Iy2Gvq6LLru+B142klb6yQpukUOOmTYNXyzt7ruXzaM=;
+	s=arc-20240116; t=1731925115; c=relaxed/simple;
+	bh=VCkHQ6f3mAlnMdGatpZKxHHJ1BEwhcceEaOXrVaUX3c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fiaRRnbqUyHaiJyIrzlx90aAwQQ9t4yka42UVv4oBc9hfJVw6yq4yeu9cuvvYSd/vWNiOk3sxW7I7mcO5ikHbluue1yBhCbedHK+zQKm07wa5dk3iTURzWzWbECpPRsubjtScmlgdLlibjuhwf2RM1i1FB5V+AnrW9yNRc8jRTU=
+	 MIME-Version; b=RFg00GUJ/+0onqNfThQsyBKBQHY6f0ArcvbN526dRo5T7BqqG5OQgu7PNwWLRLFIULBlYVf4fOpdj9QPaCML3txThsCE2Sr3EaGpPeiYZZ8xRn73a2oo/8zVhdPcSbjtrkkHjA3HqTAh0JUMNon4rc4txLJialEQzro6O87pe8Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id 630382338D;
+	by air.basealt.ru (Postfix) with ESMTPSA id A021823391;
 	Mon, 18 Nov 2024 13:18:24 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org
 Cc: kovalev@altlinux.org
-Subject: [PATCH 1/2] ext4: filesystems without casefold feature cannot be mounted with siphash
-Date: Mon, 18 Nov 2024 13:18:10 +0300
-Message-Id: <20241118101811.15896-2-kovalev@altlinux.org>
+Subject: [PATCH 2/2] ext4: fix error message when rejecting the default hash
+Date: Mon, 18 Nov 2024 13:18:11 +0300
+Message-Id: <20241118101811.15896-3-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 In-Reply-To: <20241118101811.15896-1-kovalev@altlinux.org>
 References: <20241118101811.15896-1-kovalev@altlinux.org>
@@ -51,41 +51,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
+[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
 
-When mounting the ext4 filesystem, if the default hash version is set to
-DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
+Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash") properly rejects volumes where
+s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
+error message should not look into casefold setup - a filesystem should
+never have DX_HASH_SIPHASH as the default hash.  Fix it and, since we
+are there, move the check to ext4_hash_info_init.
 
-Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+Fixes:985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash")
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
- fs/ext4/super.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ext4/ext4.h  |  1 +
+ fs/ext4/super.c | 28 +++++++++++++++++-----------
+ 2 files changed, 18 insertions(+), 11 deletions(-)
 
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 72abb8d6caf75..d5706aedf4fef 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2449,6 +2449,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
+ #define DX_HASH_HALF_MD4_UNSIGNED	4
+ #define DX_HASH_TEA_UNSIGNED		5
+ #define DX_HASH_SIPHASH			6
++#define DX_HASH_LAST 			DX_HASH_SIPHASH
+ 
+ static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+ 			      const void *address, unsigned int length)
 diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index cf2c8cf507780..68070b1859803 100644
+index 68070b1859803..3e4b9bf101454 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -3559,6 +3559,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+@@ -3559,14 +3559,6 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
  	}
  #endif
  
-+	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
-+	    !ext4_has_feature_casefold(sb)) {
-+		ext4_msg(sb, KERN_ERR,
-+			 "Filesystem without casefold feature cannot be "
-+			 "mounted with siphash");
-+		return 0;
-+	}
-+
+-	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+-	    !ext4_has_feature_casefold(sb)) {
+-		ext4_msg(sb, KERN_ERR,
+-			 "Filesystem without casefold feature cannot be "
+-			 "mounted with siphash");
+-		return 0;
+-	}
+-
  	if (readonly)
  		return 1;
  
+@@ -5050,16 +5042,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+ 	return ret;
+ }
+ 
+-static void ext4_hash_info_init(struct super_block *sb)
++static int ext4_hash_info_init(struct super_block *sb)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	unsigned int i;
+ 
++	sbi->s_def_hash_version = es->s_def_hash_version;
++
++	if (sbi->s_def_hash_version > DX_HASH_LAST) {
++		ext4_msg(sb, KERN_ERR,
++			 "Invalid default hash set in the superblock");
++		return -EINVAL;
++	} else if (sbi->s_def_hash_version == DX_HASH_SIPHASH) {
++		ext4_msg(sb, KERN_ERR,
++			 "SIPHASH is not a valid default hash value");
++		return -EINVAL;
++	}
++
+ 	for (i = 0; i < 4; i++)
+ 		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
+ 
+-	sbi->s_def_hash_version = es->s_def_hash_version;
+ 	if (ext4_has_feature_dir_index(sb)) {
+ 		i = le32_to_cpu(es->s_flags);
+ 		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+@@ -5077,6 +5080,7 @@ static void ext4_hash_info_init(struct super_block *sb)
+ #endif
+ 		}
+ 	}
++	return 0;
+ }
+ 
+ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+@@ -5234,7 +5238,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
+ 	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+ 
+-	ext4_hash_info_init(sb);
++	err = ext4_hash_info_init(sb);
++	if (err)
++		goto failed_mount;
+ 
+ 	if (ext4_handle_clustersize(sb))
+ 		goto failed_mount;
 -- 
 2.33.8
 
