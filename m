@@ -1,80 +1,81 @@
-Return-Path: <stable+bounces-93761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B609E9D087A
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 05:53:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0149D087B
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 05:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45B4DB2115A
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 04:53:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5861F215A8
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 04:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A7E7DA81;
-	Mon, 18 Nov 2024 04:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7357DA81;
+	Mon, 18 Nov 2024 04:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iX60CQtD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aNpHxkku"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F01128E8
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 04:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD7C28E8
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 04:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731905601; cv=none; b=gZhMbbco7r4tXV+VX+Yjxh2piYpxc8yuXBIfCvSwwsChZbKauEASKNnMj7sDjhBogTQSFdqKgY4TctQbuKb9ZvgX5cv/j0g4EnpXZ6NIW6DivbiIlqgAq5OemqbuMo3lRcvZ6BrfQD8CxvVXUCN94KoYIJpve2JxkRJkIc4tblQ=
+	t=1731905732; cv=none; b=Afa86UAME8Wdchp7FV++hjjXInIKxdHCeA4eythx8oUO27nmiRgwRWzG9rhonP+Q/Zn7Sjk5Dto9qRaJJBq5OHPXcpl8HEyyo/ESsgu5e6AWKHBRcgDAxvIyTpMK5lSwtw4M+1oxTqfUMLmgMNvdYllKVEZ9nqz+EJWl/923vcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731905601; c=relaxed/simple;
-	bh=9kcG2ckhrrpy7SQinGIk2pjWe+fFBKDvTOvgxUXo8Jc=;
+	s=arc-20240116; t=1731905732; c=relaxed/simple;
+	bh=JLdHjcZJU0u6rquREJ2EUrF9NAVM7qlMxeRq3I8W5CM=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=AWKBMzRPEnKnY4wkKpa4TBfGR0d6ltjRJ2266JeOxyd/3ySoEReqVhg4qBu4M7fKzRGwmxaAq34p4A8i+f0Ys5tnnh9pz9SMtfRcush3xjwQjGhSK6fK60HeWt5S1MRdE7af2UlMGowDCobo38vwhTDaxgaQLZoMXm6HQF9Qa8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iX60CQtD; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version:Content-Type; b=HA9dEQuqChlBS4n7SNYo8m7IbiL/wgwMy9HjQ+Z2SKfCg3maxAAl9+Lg0slUwlts2N8kY19LOpmIrVp72LYtSWcv64WvM+zaNFCC8Hiue4pXlCutxyqd4xYtRTKX2qzl+onHBaAVEPgyXlY+0b6qy1ipTNon4o1j2gzcu4GgDGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aNpHxkku; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-211c1bd70f6so27039745ad.0
-        for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:53:20 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21116b187c4so8665435ad.3
+        for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:55:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731905600; x=1732510400; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731905730; x=1732510530; darn=vger.kernel.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QHeERZAknwemQpzWI3pi2Cp+Ti/hO/9f+w1YiT3hr6U=;
-        b=iX60CQtDaUMsjl6tj1DR2ZIu0uTtMY6Ktk93zP9pW65AHeTWT+gpoaFFRESqfW8dqH
-         TjPRPOze2x5B2EbT0mYpLyyO+9QwIlaz+Fo6NDF0bJ4YA88erGIDBv6QzkYYS+892H7P
-         /KqZSFHrpOeT3g3VGLQi6kAbLBCxYo2FR9jBGBO6RIbJr7qxt6Mr8JvwV0JxTHbYp76K
-         /O6wk+PgLTCqu7yZZNjS4GJcVcqaAWxsZlZY80Cr4Qf7HkTG0AtB9SkX0i2xP+bWW2mx
-         KFh58Pg89JW54BkvHrf5KN5qo0U3Kn5haV4yad59159BZkLQ+O6GcmiJ5Cnde+FNwIsV
-         JwTA==
+        bh=o6vY+aSsnuaRE7lvXSjbw/Ba6Iku0uNLInPIFfnHcyo=;
+        b=aNpHxkku3+AMSSp6QcTwG1H2GVA8pn8YhgD07gVusJHnZy9g41Nc80+dM8FQhr1dx6
+         o8J8S3i4TmsmzwS1Sf5WZTRomim0qcBQ1QyX0XLS2NNaRkkfGZSupOhwJZScNIAYFhs1
+         p4FovJK1w5ucZyendyWakt+MmnXlnmh/5NtHg5H89tCFfpGY54JzlrV8ii+/SFVoQsLO
+         6lwszg9DLR/Axvqrrbs+WDMEsqlQcNZo9vWA6lpASs6L5gXNnv8V+ByvYLXPZ3DbI4N4
+         h4W8yj+q8Fi9HuG7RYxroycTPHniqBSxgegnJSnpC7w9EVwR9l5m29BpHdz90OrohEN8
+         7nLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731905600; x=1732510400;
+        d=1e100.net; s=20230601; t=1731905730; x=1732510530;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QHeERZAknwemQpzWI3pi2Cp+Ti/hO/9f+w1YiT3hr6U=;
-        b=MReFAxYJuD9O+W9Rb/0906z1XYwqYfE1Vafg1Vf9C1J6qbcZpzU+KHv/YwvjZPcflK
-         wODQfuH9yyW1YvI4/tBlmnBitMJUWgKYQoH9v2LfkLJnul38fA3D3xLZBoCUX3xAoFYx
-         flCnUyIW0S+JzaQ5EQkwGBntqNZfNyxAAXrWl3qk2vRcYKnRGglwqAjyGAHDCoTmc3nz
-         w24I5pIl6JhcEEbJ4Ak4cHnJko5UbtQqjmnvxU0WnupzGHqSNqbTiPmm4glyTJOCUhQI
-         nD/C2xZAN1xRxG+RvDtTUqiRc3ivreaxTcS8vXCqh5p+a78BKGinwNwy9MeBHqUca8CU
-         8FAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEnid2Sk4dhNk9urhJY489OZPEia+AUXoKP0Bgb0wsx6/h4vIW65k2459eLn+1ON7SPdAoNkA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7wTN3SNUaKuuajWHkSUZaSkxEXTM45rM+lCMa1V8qn9jvbEaB
-	UMcNQmNm0N/alI4a0qJ0DEevYXm6G8r8kh5EMJZCzQgJyigmDlz3THnJmkOiOA==
-X-Google-Smtp-Source: AGHT+IFqteQpaSMnvlHhaRUyJyBok6kQjOB0iu4EazYg/GDSUuyC61NqacxVWVgzM5VnTXM8CCRLAA==
-X-Received: by 2002:a17:902:d4cf:b0:211:f10e:2dc1 with SMTP id d9443c01a7336-211f10e3491mr67692665ad.3.1731905599606;
-        Sun, 17 Nov 2024 20:53:19 -0800 (PST)
+        bh=o6vY+aSsnuaRE7lvXSjbw/Ba6Iku0uNLInPIFfnHcyo=;
+        b=ERQnob0rMzO2ww7H/Czr4c+nAJAFMPhgV2/tHIbexoCFGZUWJ+kAJI/OziLbRdOqha
+         E02rHpAVGnqQpJNutQGXERKCnuFrwSMbl1UyKzIw1+PpOnW3DTaaBHvvoKZ+wmCMYFgP
+         4FiPibQx5Cgpji6dxQ2QN9Oi45+LIFAO+C3+BWzhK/ezRPIvMBzK86xvYD0NFlz+EjNZ
+         4f+fx8J9I6fVnFUGf3Aa2XdYg2FNdu9EVKYjbr+ncQR3phYNTFKMjNi/pFUVtz04NG8U
+         /like+5vzb4zYk+lCHSDqaf3UfPNBFSUWNbf0MG0rKXj1JoBcDd49XU0mo5vJbgw2cgg
+         CErQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXuLGtFYv86tZ4XKkJPCfPKqzeyKUWbbPe/jAXNot07Gxng02IefnnjnwhCA2FYbUKx/Ops4+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3mx7N/NC6StunwOJNME4PafokitsW4eahpEJiczBG5dOkkI0j
+	zcCLDykvR56nDTLV8V367g6omqUG2rc7VhxTsmgG4NRzyGwXSGJcJfaCu+iUaQVFrWT5NBpwADB
+	/WQ==
+X-Google-Smtp-Source: AGHT+IHfNkRKjo417tJfIU7LMPlBxNgYZAMTEQtF6yehSNTM7uxcN5HgTYUlArPNQeryaO9TJbEX5A==
+X-Received: by 2002:a17:902:d4cd:b0:211:fb9c:b1ce with SMTP id d9443c01a7336-211fb9cb652mr79229265ad.17.1731905730360;
+        Sun, 17 Nov 2024 20:55:30 -0800 (PST)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724771e201fsm5254911b3a.151.2024.11.17.20.53.18
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f34f2fsm48187495ad.159.2024.11.17.20.55.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 20:53:18 -0800 (PST)
-Date: Sun, 17 Nov 2024 20:53:17 -0800 (PST)
+        Sun, 17 Nov 2024 20:55:29 -0800 (PST)
+Date: Sun, 17 Nov 2024 20:55:28 -0800 (PST)
 From: Hugh Dickins <hughd@google.com>
 To: gregkh@linuxfoundation.org
 cc: akpm@linux-foundation.org, aha310510@gmail.com, chuck.lever@oracle.com, 
     hughd@google.com, stable@vger.kernel.org, yuzhao@google.com
 Subject: Re: FAILED: patch "[PATCH] mm: revert "mm: shmem: fix data-race in
- shmem_getattr()"" failed to apply to 5.15-stable tree
-In-Reply-To: <2024111702-gonad-immobile-513e@gregkh>
-Message-ID: <c27966fa-007b-97dd-c39c-10412539e9d3@google.com>
-References: <2024111702-gonad-immobile-513e@gregkh>
+ shmem_getattr()"" failed to apply to 5.10-stable tree
+In-Reply-To: <2024111703-uncork-sincerity-4d6e@gregkh>
+Message-ID: <a83ff8e9-6431-d237-94ec-5059c166a84f@google.com>
+References: <2024111703-uncork-sincerity-4d6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,23 +86,23 @@ Content-Type: text/plain; charset=US-ASCII
 
 On Sun, 17 Nov 2024, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 5.15-stable tree.
+> The patch below does not apply to the 5.10-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
 > 
 > To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 > git checkout FETCH_HEAD
 > git cherry-pick -x d1aa0c04294e29883d65eac6c2f72fe95cc7c049
 > # <resolve conflicts, build, test, etc.>
 > git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111702-gonad-immobile-513e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111703-uncork-sincerity-4d6e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-For 5.15 please use this replacement patch:
+For 5.10 and 5.4 and 4.19 please use this replacement patch:
 
-From 975b740a6d720fdf478e9238b65fa96e9b5d631a Mon Sep 17 00:00:00 2001
+From 98dfa72dd24347bfcbb9a60ac65ad42130ff44f5 Mon Sep 17 00:00:00 2001
 From: Andrew Morton <akpm@linux-foundation.org>
 Date: Fri, 15 Nov 2024 16:57:24 -0800
 Subject: [PATCH] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
@@ -129,18 +130,18 @@ Signed-off-by: Hugh Dickins <hughd@google.com>
  1 file changed, 2 deletions(-)
 
 diff --git a/mm/shmem.c b/mm/shmem.c
-index cdb169348ba9..663fb117cd87 100644
+index 8239a0beb01c..e173d83b4448 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1077,9 +1077,7 @@ static int shmem_getattr(struct user_namespace *mnt_userns,
+@@ -1077,9 +1077,7 @@ static int shmem_getattr(const struct path *path, struct kstat *stat,
  		shmem_recalc_inode(inode);
  		spin_unlock_irq(&info->lock);
  	}
 -	inode_lock_shared(inode);
- 	generic_fillattr(&init_user_ns, inode, stat);
+ 	generic_fillattr(inode, stat);
 -	inode_unlock_shared(inode);
  
- 	if (shmem_is_huge(NULL, inode, 0))
+ 	if (is_huge_enabled(sb_info))
  		stat->blksize = HPAGE_PMD_SIZE;
 -- 
 2.47.0.338.g60cca15819-goog
