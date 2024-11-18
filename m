@@ -1,223 +1,1556 @@
-Return-Path: <stable+bounces-93766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A569D0948
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:06:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC329D0959
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 147F1B21EFB
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:06:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA55B22A36
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8C513E02A;
-	Mon, 18 Nov 2024 06:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90701474AF;
+	Mon, 18 Nov 2024 06:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfLh6WBo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEE617FE
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 06:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731910005; cv=fail; b=a7jzqXEMVRCR2NmVm2dq+c7FYII+FhX+o0U5ay0k9G197TFOHp7D7scd90Hj4jxkwwXcpI9VTBrhEE4EJMqRhLTZ4bS2zSEPRQT/ZyYHJGDnCzF2intoz5eOGnj/f32WrEwAceZVU803KdSM/B5JC/Djaj6hWnWjd204Vh0nkcc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731910005; c=relaxed/simple;
-	bh=/+uJKN/22zjrvAk6vqGzMk4T/azcMsKyPjn8j2GvRqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=BPkW3rszkOjc8HSYCjlEZLFIfSUNU2IE2EkVA0T/UIosPuvbKkaNEZiPfxAc7lHj0OLEBz7oaFQQV3Q/9jl1o9ivyFMBzU244VGqcEyEWsc4NMhRIWeW16Dg27W0qdUIvo+oYnqeJgbeton5A5PUUlPssvMGxCcHCTfhZeWiMqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AI5eWek011595;
-	Mon, 18 Nov 2024 06:06:29 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2175.outbound.protection.outlook.com [104.47.55.175])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xjc89cv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 06:06:28 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nz0KZ80K+93NT5LHak7YkVdC0bCIWNsQeU6XHqVu9x5Ory3uRhR6vI908CHQ2JDS9LwYMcYkwm5/MkZ0o89zcCa9hTdNvmzRFm42xX+tPXv/6olP8wA1XxpFejCBkRGnWXHZ9+N/8mxtKKo/zU/5GL7+zkZe1NK1ohVdg7xfn8j6O318VL3t0X2nA/ObsWZmf/ph7LdUF5lSUQDc6Vck0aTW+X4hol0c8PjIPFoR4sHRyCepQ4AMaImhhXagzpH5FV162JsVcQ5J+iA0IYDmj33jqTJ4EQe7fSmIJczF26AoUQFuQ306n+SWG6uAwIJiyPsL4hREhfXxSEjCt7w7eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zjxK2FV2ufmhqZXTgu8NzfOhbdluljPAZ6UGt64uYCQ=;
- b=EeMoqH1GEEjtW9BeCBlwnD9BlwZe9A9atIOlS7Sot2AuSlCWLDelqCFJq9N71ydvfJQmUbD7xxtwmUyKIZaVPGBEHZAESX0V8Yps/AxLKeq2fJo+hwIXEJeXbpQXMB5N45FnzOTQTKKMcy1KMEKnU4rcvvdEf9CjPmQqxEIPIV33qBxMD7GGnX+s6hVSeAMwqgHbS6Iyk3tgJtvB7rwgUJvPaQVrFVfhyDNDiq8JORY6gduo9Gq1CCJNwXdKCFIf4rZDWy24FhTEvu/+z+OgqX358M3Wl9GfIWh1Ghfe0XVmCNyDiMEuX5T8GdrdQWxLxbPTc/euwh4KGyz+noDHBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by CO1PR11MB4865.namprd11.prod.outlook.com (2603:10b6:303:9c::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Mon, 18 Nov
- 2024 06:06:23 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8158.021; Mon, 18 Nov 2024
- 06:06:23 +0000
-From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-To: andre.werner@systec-electronic.com, andrew@lunn.ch,
-        gregkh@linuxfoundation.org
-Cc: xiangyu.chen@aol.com, stable@vger.kernel.org
-Subject: [PATCH 6.1.y] net: phy: phy_device: Prevent nullptr exceptions on ISR
-Date: Mon, 18 Nov 2024 14:06:25 +0800
-Message-ID: <20241118060625.937010-1-xiangyu.chen@eng.windriver.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TY2PR06CA0044.apcprd06.prod.outlook.com
- (2603:1096:404:2e::32) To MW4PR11MB5824.namprd11.prod.outlook.com
- (2603:10b6:303:187::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1391465AB;
+	Mon, 18 Nov 2024 06:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731910170; cv=none; b=u2P2pTqM6Yi0eTMPnN2bvnXIDWfv5wW7tKQYKIJD4qGF94NgWsYIbgcLy08SI8IoIb0yCBIBq11zqQg2wSHoD2DFLRX9JXg1WZgaooQx7zZlozLo0qj8a2WH5OhV5miTz8TXLr4/N2aN0T/DQSAZ78D7j65FKwZmgqJ31kX701A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731910170; c=relaxed/simple;
+	bh=LhDjtHgA4weOPXhN0GsGeiR2iSvlZ+lyf8HyedlGxfg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lwh59V3xDkNUwzSNv6Xv/APXv4844QA59INq41Amwi3dRovZP/CEMG69p+Ec0exhpBJy5pSr1JGJeAWx0EhTGkO+CPV2SsfUjSZTGO6SiInvFEtLMXr1wV8SgfE31LJoZvi51B2COHfdgYrENxLNhBh8wL2xOg0VU99cFHdmnfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfLh6WBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C352C4CED6;
+	Mon, 18 Nov 2024 06:09:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731910170;
+	bh=LhDjtHgA4weOPXhN0GsGeiR2iSvlZ+lyf8HyedlGxfg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MfLh6WBohi0yupFc+RK97cmfZUl92PX9wUnJ1Z7yNWC01euRNONFEvA8OMuLZG9Wb
+	 RenBtrrpCvPFFaijZDLwRFYNhL21XK2QJpYSdUUTqD+ieeIwlKMGSGPW2HPKyqc1Lr
+	 rYB7QUvtutiU2SRlgNPS9y4t/dyb0xTmOyymYlEhqZ019tFAQpGOcPx7Wnn+ylm1P5
+	 FDTJUxdDaC4b9wuTdxAaaoc/um3svKCJF19gD0kFmJvJkHqqLGS7CcqDkMVt0nXP5G
+	 9OH6ZEwcj6hu3GR5z+6W1SP4T8fP7rbWEaSRGovAVABO+xvkuXSARzwgKPH8JU7yWM
+	 dj7LLK/ZHIYUg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1tCuww-000000042ic-30EI;
+	Mon, 18 Nov 2024 07:09:26 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: 
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] MAINTAINERS: update location of media main tree
+Date: Mon, 18 Nov 2024 07:09:18 +0100
+Message-ID: <1979472efe602f7f705ac0ff256877045823a7b9.1731910082.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1731910082.git.mchehab+huawei@kernel.org>
+References: <cover.1731910082.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CO1PR11MB4865:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b9593fc-ee4f-4c0f-6fb7-08dd07972100
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LcbV3yjZP5A+vP8UD7+6fPfqrft+LpFV8ZFNfT02Xl8/BNqHsu3dVlBj21AS?=
- =?us-ascii?Q?6dtNTWa0JBRRWTbS5nXhGv+Mqz+rgZUg3LNhfxj4yZuALCAijugaM0128cw9?=
- =?us-ascii?Q?UxAcpeMa4B/g8422qezCdqDKruy8CEcpHGff0Mx/+s5VgNBYBPSUrof+Rovp?=
- =?us-ascii?Q?GU/cFNqlx4nWE8HGyLNPQLSV1QUcLPjOG8kjUxz7ZedT4qkjKGXk68x9vxIf?=
- =?us-ascii?Q?hsOvP9Ccid3t68uT/wOHdW13f0hKLotCQb7ddgXxHAUhS87dU+1Ocvmt2vOl?=
- =?us-ascii?Q?x8WpE6OoA5MgjZrHnUyMa4dQdu2rnW97BVfWKr7YVvl7RUA+ATqHis5/UQrA?=
- =?us-ascii?Q?Sg1amBkKmQYs3yeKLrep43J4l60UYqw0Ehn1/ZcJwd/l6KZToVQbbc+bf97y?=
- =?us-ascii?Q?DJjyDEbKIb0Mw4sjPGy8V8D9bTH11MaBCQCPFHILW3F52fdHuf1VR1jXiQNS?=
- =?us-ascii?Q?oknWL5rrk7efn7WL7oOwhj/8/LG20LAfAd2Qrlb0YyWM2mVUx2gPLeVSNt3m?=
- =?us-ascii?Q?3Bf9+Q5CMCkvh4814Ak1nH5xt2J49OFA0Kga7g1aPdSJL56vz5vC5QtlCzu1?=
- =?us-ascii?Q?nxmDzIoycp2tjqBz+iwEKtkrrg3gCLABG7HUYaGhDpUXVVeKGB9nInpkWDc0?=
- =?us-ascii?Q?3kSnT/X5R6ntAVL3ARQKEFmjowYgTvOPWrvymXKooFE4FtgVPEoh2R7wOVyi?=
- =?us-ascii?Q?9mB1BEJk38demNzKn+i1ybiJC+8CtywHPlEWG3qz1SZJ34pM9Dw5SBdW5etd?=
- =?us-ascii?Q?ZTKYa7hhAsWQukjPZcOVwV7o9f9FVBmWrZR3z599oTVFtTBDHGxblNBXxXtQ?=
- =?us-ascii?Q?oV4sXoYfaMxwb9BLiv2nsp2sYG1JnUTvDwX391l1ejP9dWLpFNIB45ollC0i?=
- =?us-ascii?Q?gZnJy5a6wdXieJYM01JwBv+eOk4sWV7ND/PUsw21R+uENDpEz8HzYHkjf3XG?=
- =?us-ascii?Q?0jf73dpkvH+tDKg2PADJHm6UhxhxnO7NSSdtOjZnyVgZELQi+r7/Elu7NzXU?=
- =?us-ascii?Q?d+ZR9p0YA2gp+dS7utOavvDwJRcMnRiapBRu37TNojCsd0xfJE7zxX/coMrL?=
- =?us-ascii?Q?s/p9ltMIf5tOTp6Z6VA4ppfNNErPgF56OEztaqbTnjuReILx7cLChu5RziLY?=
- =?us-ascii?Q?xssMiQzj17MUG4O+w57C3V7be1+gvrnAn3xmABWRKngKlLpCh5iz/HF5XBzD?=
- =?us-ascii?Q?lmx+2TSZkU1HPNlmxZtT9aFLHXauYMEJWJ/oMOqOOalsZtULOP086ZIPvHUy?=
- =?us-ascii?Q?QPe6WiwiI5eOk8jB9zapE3S38Fv4uSVjoVCyZpRTxdOHptN3yauLg0Q2S21h?=
- =?us-ascii?Q?e/R+t3OfQCcpQ6stFayQU6kV6NpBd/2wROBL9A5QI0UyNGmyozNuN6NP6+Oe?=
- =?us-ascii?Q?upQnyC6Lp3Ixv0ZnYeolK+wRHfao?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fk3G+FmQfDfUjP0LbctSZlqxl+MBMBrOrFMl7s8eUv1x8rM0YdFlPedOLUiN?=
- =?us-ascii?Q?qdlygvsOWN7K+F6gdpSUhdf2qDaanKhiOyU1zqeGPhgRPjTtzgUcJdBUs3mm?=
- =?us-ascii?Q?zjtwvSdWE3qW1oEFI/MbY9Zo9eIsOAg/LH/TruWaomJcq7FIUxu1Wku66BRk?=
- =?us-ascii?Q?LZSX2IInemCfzxFbyXMiq0IdbJ8/RtLUp/gBCLaW14BexDWo0kxfWzqHbogT?=
- =?us-ascii?Q?tjLSYtvB1L+jtYNdKVhySYnZKDXo9YbwOGNR6VZdDkeEQsaUWSl+uYcXjr/u?=
- =?us-ascii?Q?dupSa3JfJafvta+DNWgTdMzDUKLWR5NaJRY1ldUUgI7i3WVCoKpeYOmBLu7Z?=
- =?us-ascii?Q?RnMYJzm6iEyIRUuthrBm/VGcETW6dWa82LlMAxF9WMmWqOVWxLikG14YVge9?=
- =?us-ascii?Q?zJqvud0TZQCmsOPYHL7jp/Ghb50YMON4aFcQEAQeRSEJE9XLLTD53j9RXffm?=
- =?us-ascii?Q?9PCuGYwSWn0x6BQpwS1U8xoCPX23cGJsYUVHaK32cf10W5E9H8l68qbttC2O?=
- =?us-ascii?Q?5miZDJOLlVO7hAO3kTefgBHoP8dMnfTuJQ/sTTAedt1xj4jlc32J07JInoEt?=
- =?us-ascii?Q?APfxnb77qCl59NVDslMHsHtMM34FJMBC5BD3Xw2X3D80637go+Mjwt0r1/G4?=
- =?us-ascii?Q?EfuRBm60krKvVy3e9MNkVoidmXxcuiEGYrQPBtS3/4uQkEV5E8ncG8txl1Or?=
- =?us-ascii?Q?xuscjvhSaVRQLpnEhhGV4N4U5PQW/BI7KALJKA0fx1XxjWgMHSoTqxK+If9i?=
- =?us-ascii?Q?oJjHZb9FiSkTLCvqK9ccrQqSIiiYtzFqS9bLhzs6Nac7u58g+Kq7xSuoyXy2?=
- =?us-ascii?Q?NG8PLIit6nYpLm+Aikg5PULHgkuS3MXIruQU8NLPNws8hRP1W5QeOoF5qB3a?=
- =?us-ascii?Q?d+PYnNoDrL08/pSla3q8c8frC8D8RRF3lWOB5nqb5GYlOdIC8AzMLd6U1biR?=
- =?us-ascii?Q?3BaFnLKq43/EbAZf7hWPNULFi6Is4cSyLLVTvJhZqzKifYzajNGJNCci+Uau?=
- =?us-ascii?Q?WwUXocQDiIWbqfFcEOvprPUEd6THuh5xMEAazk/zhA+kz98b7TL2VGAChzpE?=
- =?us-ascii?Q?kp+Eu/XEIlfRMOvBxaVkZdCYxlVO91dUue+1d8/ymm7qgmtenIagXQNTgsmF?=
- =?us-ascii?Q?IGGhdL2NWwP2uVmtC+7dEbgF4mQA6dfa70dXGaScnsYy2LeSYJ/O3e+g5SnH?=
- =?us-ascii?Q?lbRQ54ONGVts5FHiEanl6WzMYK+Is07cHAIs0uCM793x1SUn0xtHac4WerRz?=
- =?us-ascii?Q?VBc2R8dPqS7ok6h8lF49N1cyhD1jVZs9Mr/CBflRv7CP1BTUtON9QqVq2+t0?=
- =?us-ascii?Q?9TTAzhqvwhkdGjOzYJRz3zqIvN49yUOgAkmxZnLMfHdDqdnxLpYI1QJVZDHa?=
- =?us-ascii?Q?VfUWUQfUIYcrw/Zuw4elSyxlrRwoQmClE1FKMli1XpLbA0UsAS3nckb4wVgB?=
- =?us-ascii?Q?Q0TCziEXbesdvRcV7kifsazuhgNf8T2D+Cc2PBfrXH5nupt+7J7xDJXkbkBj?=
- =?us-ascii?Q?sWGrlZ4tKnmxynlf0HSV6y+I1P/MOk1gQMUxMJIM7sGCyl85Qnaz7flR4lJH?=
- =?us-ascii?Q?gGy+pyz2MnqcT02H8tOKRPPx2tCGf5hZVFdoGPjjii5meNma1EyLPQYmSkaO?=
- =?us-ascii?Q?KQ=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b9593fc-ee4f-4c0f-6fb7-08dd07972100
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 06:06:23.3605
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z59ycVXvNQUNz0MEWu2Bxu1VJxSSDDbnoZ+TzkhyU4ED7rIic1+aTV8qczp6I0GYKXvWB4NDJdzSWHvRlgiveW4Hq/48tXrhMs0OstJdRks=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4865
-X-Proofpoint-GUID: rKSZlgk4FjdQpDSuf0BYm85ipcStgP9b
-X-Authority-Analysis: v=2.4 cv=R6hRGsRX c=1 sm=1 tr=0 ts=673ad964 cx=c_pps a=F+2k2gSOfOtDHduSTNWrfg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=VwQbUJbxAAAA:8
- a=rSCAxNCNAAAA:8 a=t7CeM3EgAAAA:8 a=-MB37Cf_dW2RCP4BnbQA:9 a=5Ne0ADHCvXQD7w03ko0Y:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Proofpoint-ORIG-GUID: rKSZlgk4FjdQpDSuf0BYm85ipcStgP9b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-18_02,2024-11-14_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- mlxscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 bulkscore=0
- impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2409260000 definitions=main-2411180050
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-From: Andre Werner <andre.werner@systec-electronic.com>
+There were some recent changes on the way we're handling
+media patches. Now, the official tree is located at:
 
-[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
+	https://git.linuxtv.org/media.git/
 
-If phydev->irq is set unconditionally, check
-for valid interrupt handler or fall back to polling mode to prevent
-nullptr exceptions in interrupt service routine.
+Update it at MAINTAINERS file.
 
-Signed-off-by: Andre Werner <andre.werner@systec-electronic.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ MAINTAINERS | 332 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 166 insertions(+), 166 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f25b0d338ca8..b165f92db51c 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1378,6 +1378,11 @@ int phy_sfp_probe(struct phy_device *phydev,
- }
- EXPORT_SYMBOL(phy_sfp_probe);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b599693deb13..aab0827938b6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -701,7 +701,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-aimslab*
  
-+static bool phy_drv_supports_irq(struct phy_driver *phydrv)
-+{
-+	return phydrv->config_intr && phydrv->handle_interrupt;
-+}
-+
- /**
-  * phy_attach_direct - attach a network device to a given PHY device pointer
-  * @dev: network device to attach
-@@ -1487,6 +1492,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ AIO
+@@ -809,7 +809,7 @@ ALLWINNER A10 CSI DRIVER
+ M:	Maxime Ripard <mripard@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.yaml
+ F:	drivers/media/platform/sunxi/sun4i-csi/
  
- 	phydev->interrupts = PHY_INTERRUPT_DISABLED;
+@@ -818,7 +818,7 @@ M:	Yong Deng <yong.deng@magewell.com>
+ M:	Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun6i-a31-csi.yaml
+ F:	drivers/media/platform/sunxi/sun6i-csi/
  
-+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-+		phydev->irq = PHY_POLL;
-+
- 	/* Port is set to PORT_TP by default and the actual PHY driver will set
- 	 * it to different value depending on the PHY configuration. If we have
- 	 * the generic PHY driver we can't figure it out, thus set the old
-@@ -2926,11 +2934,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- }
- EXPORT_SYMBOL(phy_get_internal_delay);
+@@ -826,7 +826,7 @@ ALLWINNER A31 ISP DRIVER
+ M:	Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun6i-a31-isp.yaml
+ F:	drivers/staging/media/sunxi/sun6i-isp/
+ F:	drivers/staging/media/sunxi/sun6i-isp/uapi/sun6i-isp-config.h
+@@ -835,7 +835,7 @@ ALLWINNER A31 MIPI CSI-2 BRIDGE DRIVER
+ M:	Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun6i-a31-mipi-csi2.yaml
+ F:	drivers/media/platform/sunxi/sun6i-mipi-csi2/
  
--static bool phy_drv_supports_irq(struct phy_driver *phydrv)
--{
--	return phydrv->config_intr && phydrv->handle_interrupt;
--}
--
- /**
-  * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
-  * @fwnode: pointer to the mdio_device's fwnode
+@@ -3348,7 +3348,7 @@ ASAHI KASEI AK7375 LENS VOICE COIL DRIVER
+ M:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/asahi-kasei,ak7375.yaml
+ F:	drivers/media/i2c/ak7375.c
+ 
+@@ -3765,7 +3765,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/dvb-usb-v2/az6007.c
+ 
+ AZTECH FM RADIO RECEIVER DRIVER
+@@ -3773,7 +3773,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-aztech*
+ 
+ B43 WIRELESS DRIVER
+@@ -3857,7 +3857,7 @@ M:	Fabien Dessenne <fabien.dessenne@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/platform/st/sti/bdisp
+ 
+ BECKHOFF CX5020 ETHERCAT MASTER DRIVER
+@@ -4865,7 +4865,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/driver-api/media/drivers/bttv*
+ F:	drivers/media/pci/bt8xx/bttv*
+ 
+@@ -4979,13 +4979,13 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-cadet*
+ 
+ CAFE CMOS INTEGRATED CAMERA CONTROLLER DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/cafe_ccic*
+ F:	drivers/media/platform/marvell/
+ 
+@@ -5169,7 +5169,7 @@ M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	http://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/ABI/testing/debugfs-cec-error-inj
+ F:	Documentation/devicetree/bindings/media/cec/cec-common.yaml
+ F:	Documentation/driver-api/media/cec-core.rst
+@@ -5186,7 +5186,7 @@ M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	http://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/cec/cec-gpio.yaml
+ F:	drivers/media/cec/platform/cec-gpio/
+ 
+@@ -5393,7 +5393,7 @@ CHRONTEL CH7322 CEC DRIVER
+ M:	Joe Tessler <jrt@google.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/chrontel,ch7322.yaml
+ F:	drivers/media/cec/i2c/ch7322.c
+ 
+@@ -5582,7 +5582,7 @@ M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/cobalt/
+ 
+ COCCINELLE/Semantic Patches (SmPL)
+@@ -6026,7 +6026,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	http://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/cs3308.c
+ 
+ CS5535 Audio ALSA driver
+@@ -6057,7 +6057,7 @@ M:	Andy Walls <awalls@md.metrocast.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/cx18/
+ F:	include/uapi/linux/ivtv*
+ 
+@@ -6066,7 +6066,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/common/cx2341x*
+ F:	include/media/drv-intf/cx2341x.h
+ 
+@@ -6084,7 +6084,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/driver-api/media/drivers/cx88*
+ F:	drivers/media/pci/cx88/
+ 
+@@ -6320,7 +6320,7 @@ DEINTERLACE DRIVERS FOR ALLWINNER H3
+ M:	Jernej Skrabec <jernej.skrabec@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun8i-h3-deinterlace.yaml
+ F:	drivers/media/platform/sunxi/sun8i-di/
+ 
+@@ -6447,7 +6447,7 @@ M:	Hugues Fruchet <hugues.fruchet@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/platform/st/sti/delta
+ 
+ DENALI NAND DRIVER
+@@ -6855,7 +6855,7 @@ DONGWOON DW9714 LENS VOICE COIL DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+ F:	drivers/media/i2c/dw9714.c
+ 
+@@ -6863,13 +6863,13 @@ DONGWOON DW9719 LENS VOICE COIL DRIVER
+ M:	Daniel Scally <djrscally@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/dw9719.c
+ 
+ DONGWOON DW9768 LENS VOICE COIL DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml
+ F:	drivers/media/i2c/dw9768.c
+ 
+@@ -6877,7 +6877,7 @@ DONGWOON DW9807 LENS VOICE COIL DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/dongwoon,dw9807-vcm.yaml
+ F:	drivers/media/i2c/dw9807-vcm.c
+ 
+@@ -7860,7 +7860,7 @@ DSBR100 USB FM RADIO DRIVER
+ M:	Alexey Klimov <alexey.klimov@linaro.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/dsbr100.c
+ 
+ DT3155 MEDIA DRIVER
+@@ -7868,7 +7868,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/dt3155/
+ 
+ DVB_USB_AF9015 MEDIA DRIVER
+@@ -7913,7 +7913,7 @@ S:	Maintained
+ W:	https://linuxtv.org
+ W:	http://github.com/mkrufky
+ Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/dvb-usb/cxusb*
+ 
+ DVB_USB_EC168 MEDIA DRIVER
+@@ -8282,7 +8282,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/em28xx*
+ F:	drivers/media/usb/em28xx/
+ 
+@@ -8578,7 +8578,7 @@ EXTRON DA HD 4K PLUS CEC DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/cec/usb/extron-da-hd-4k-plus/
+ 
+ EXYNOS DP DRIVER
+@@ -9400,7 +9400,7 @@ GALAXYCORE GC2145 SENSOR DRIVER
+ M:	Alain Volmat <alain.volmat@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/galaxycore,gc2145.yaml
+ F:	drivers/media/i2c/gc2145.c
+ 
+@@ -9448,7 +9448,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-gemtek*
+ 
+ GENERIC ARCHITECTURE TOPOLOGY
+@@ -9830,56 +9830,56 @@ GS1662 VIDEO SERIALIZER
+ M:	Charles-Antoine Couret <charles-antoine.couret@nexvision.fr>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/spi/gs1662.c
+ 
+ GSPCA FINEPIX SUBDRIVER
+ M:	Frank Zago <frank@zago.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/finepix.c
+ 
+ GSPCA GL860 SUBDRIVER
+ M:	Olivier Lorin <o.lorin@laposte.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/gl860/
+ 
+ GSPCA M5602 SUBDRIVER
+ M:	Erik Andren <erik.andren@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/m5602/
+ 
+ GSPCA PAC207 SONIXB SUBDRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/pac207.c
+ 
+ GSPCA SN9C20X SUBDRIVER
+ M:	Brian Johnson <brijohn@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/sn9c20x.c
+ 
+ GSPCA T613 SUBDRIVER
+ M:	Leandro Costantino <lcostantino@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/t613.c
+ 
+ GSPCA USB WEBCAM DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/gspca/
+ 
+ GTP (GPRS Tunneling Protocol)
+@@ -9996,7 +9996,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/hdpvr/
+ 
+ HEWLETT PACKARD ENTERPRISE ILO CHIF DRIVER
+@@ -10503,7 +10503,7 @@ M:	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/platform/st/sti/hva
+ 
+ HWPOISON MEMORY FAILURE HANDLING
+@@ -10531,7 +10531,7 @@ HYNIX HI556 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/hi556.c
+ 
+ HYNIX HI846 SENSOR DRIVER
+@@ -11502,7 +11502,7 @@ M:	Dan Scally <djrscally@gmail.com>
+ R:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/userspace-api/media/v4l/pixfmt-srggb10-ipu3.rst
+ F:	drivers/media/pci/intel/ipu3/
+ 
+@@ -11523,7 +11523,7 @@ M:	Bingbu Cao <bingbu.cao@intel.com>
+ R:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/ipu6-isys.rst
+ F:	drivers/media/pci/intel/ipu6/
+ 
+@@ -12036,7 +12036,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-isa*
+ 
+ ISAPNP
+@@ -12138,7 +12138,7 @@ M:	Andy Walls <awalls@md.metrocast.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/ivtv*
+ F:	drivers/media/pci/ivtv/
+ F:	include/uapi/linux/ivtv*
+@@ -12286,7 +12286,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-keene*
+ 
+ KERNEL AUTOMOUNTER
+@@ -13573,7 +13573,7 @@ MA901 MASTERKIT USB FM RADIO DRIVER
+ M:	Alexey Klimov <alexey.klimov@linaro.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-ma901.c
+ 
+ MAC80211
+@@ -13868,7 +13868,7 @@ MAX2175 SDR TUNER DRIVER
+ M:	Ramesh Shanmugasundaram <rashanmu@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/max2175.txt
+ F:	Documentation/userspace-api/media/drivers/max2175.rst
+ F:	drivers/media/i2c/max2175*
+@@ -14048,7 +14048,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-maxiradio*
+ 
+ MAXLINEAR ETHERNET PHY DRIVER
+@@ -14131,7 +14131,7 @@ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://www.linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/mc/
+ F:	include/media/media-*.h
+ F:	include/uapi/linux/media.h
+@@ -14140,7 +14140,7 @@ MEDIA DRIVER FOR FREESCALE IMX PXP
+ M:	Philipp Zabel <p.zabel@pengutronix.de>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/platform/nxp/imx-pxp.[ch]
+ 
+ MEDIA DRIVERS FOR ASCOT2E
+@@ -14149,7 +14149,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/ascot2e*
+ 
+ MEDIA DRIVERS FOR CXD2099AR CI CONTROLLERS
+@@ -14157,7 +14157,7 @@ M:	Jasmin Jessich <jasmin@anw.at>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/cxd2099*
+ 
+ MEDIA DRIVERS FOR CXD2841ER
+@@ -14166,7 +14166,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/cxd2841er*
+ 
+ MEDIA DRIVERS FOR CXD2880
+@@ -14174,7 +14174,7 @@ M:	Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	http://linuxtv.org/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/cxd2880/*
+ F:	drivers/media/spi/cxd2880*
+ 
+@@ -14182,7 +14182,7 @@ MEDIA DRIVERS FOR DIGITAL DEVICES PCIE DEVICES
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/ddbridge/*
+ 
+ MEDIA DRIVERS FOR FREESCALE IMX
+@@ -14190,7 +14190,7 @@ M:	Steve Longerbeam <slongerbeam@gmail.com>
+ M:	Philipp Zabel <p.zabel@pengutronix.de>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/imx.rst
+ F:	Documentation/devicetree/bindings/media/imx.txt
+ F:	drivers/staging/media/imx/
+@@ -14204,7 +14204,7 @@ M:	Martin Kepplinger <martin.kepplinger@puri.sm>
+ R:	Purism Kernel Team <kernel@puri.sm>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/imx7.rst
+ F:	Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+ F:	Documentation/devicetree/bindings/media/nxp,imx7-csi.yaml
+@@ -14219,7 +14219,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/helene*
+ 
+ MEDIA DRIVERS FOR HORUS3A
+@@ -14228,7 +14228,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/horus3a*
+ 
+ MEDIA DRIVERS FOR LNBH25
+@@ -14237,14 +14237,14 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/lnbh25*
+ 
+ MEDIA DRIVERS FOR MXL5XX TUNER DEMODULATORS
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/mxl5xx*
+ 
+ MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
+@@ -14253,7 +14253,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ W:	https://linuxtv.org
+ W:	http://netup.tv/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/netup_unidvb/*
+ 
+ MEDIA DRIVERS FOR NVIDIA TEGRA - VDE
+@@ -14261,7 +14261,7 @@ M:	Dmitry Osipenko <digetx@gmail.com>
+ L:	linux-media@vger.kernel.org
+ L:	linux-tegra@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
+ F:	drivers/media/platform/nvidia/tegra-vde/
+ 
+@@ -14270,7 +14270,7 @@ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,ceu.yaml
+ F:	drivers/media/platform/renesas/renesas-ceu.c
+ F:	include/media/drv-intf/renesas-ceu.h
+@@ -14280,7 +14280,7 @@ M:	Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,drif.yaml
+ F:	drivers/media/platform/renesas/rcar_drif.c
+ 
+@@ -14289,7 +14289,7 @@ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,fcp.yaml
+ F:	drivers/media/platform/renesas/rcar-fcp.c
+ F:	include/media/rcar-fcp.h
+@@ -14299,7 +14299,7 @@ M:	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,fdp1.yaml
+ F:	drivers/media/platform/renesas/rcar_fdp1.c
+ 
+@@ -14308,7 +14308,7 @@ M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,csi2.yaml
+ F:	Documentation/devicetree/bindings/media/renesas,isp.yaml
+ F:	Documentation/devicetree/bindings/media/renesas,vin.yaml
+@@ -14322,7 +14322,7 @@ M:	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/renesas,vsp1.yaml
+ F:	drivers/media/platform/renesas/vsp1/
+ 
+@@ -14330,14 +14330,14 @@ MEDIA DRIVERS FOR ST STV0910 DEMODULATOR ICs
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/stv0910*
+ 
+ MEDIA DRIVERS FOR ST STV6111 TUNER ICs
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/dvb-frontends/stv6111*
+ 
+ MEDIA DRIVERS FOR STM32 - DCMI / DCMIPP
+@@ -14345,7 +14345,7 @@ M:	Hugues Fruchet <hugues.fruchet@foss.st.com>
+ M:	Alain Volmat <alain.volmat@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml
+ F:	Documentation/devicetree/bindings/media/st,stm32-dcmipp.yaml
+ F:	drivers/media/platform/st/stm32/stm32-dcmi.c
+@@ -14357,7 +14357,7 @@ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+ Q:	http://patchwork.kernel.org/project/linux-media/list/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/admin-guide/media/
+ F:	Documentation/devicetree/bindings/media/
+ F:	Documentation/driver-api/media/
+@@ -14933,7 +14933,7 @@ L:	linux-media@vger.kernel.org
+ L:	linux-amlogic@lists.infradead.org
+ S:	Supported
+ W:	http://linux-meson.com/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/cec/amlogic,meson-gx-ao-cec.yaml
+ F:	drivers/media/cec/platform/meson/ao-cec-g12a.c
+ F:	drivers/media/cec/platform/meson/ao-cec.c
+@@ -14943,7 +14943,7 @@ M:	Neil Armstrong <neil.armstrong@linaro.org>
+ L:	linux-media@vger.kernel.org
+ L:	linux-amlogic@lists.infradead.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/amlogic,axg-ge2d.yaml
+ F:	drivers/media/platform/amlogic/meson-ge2d/
+ 
+@@ -14959,7 +14959,7 @@ M:	Neil Armstrong <neil.armstrong@linaro.org>
+ L:	linux-media@vger.kernel.org
+ L:	linux-amlogic@lists.infradead.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/amlogic,gx-vdec.yaml
+ F:	drivers/staging/media/meson/vdec/
+ 
+@@ -15557,7 +15557,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-miropcm20*
+ 
+ MITSUMI MM8013 FG DRIVER
+@@ -15709,7 +15709,7 @@ MR800 AVERMEDIA USB FM RADIO DRIVER
+ M:	Alexey Klimov <alexey.klimov@linaro.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-mr800.c
+ 
+ MRF24J40 IEEE 802.15.4 RADIO DRIVER
+@@ -15776,7 +15776,7 @@ MT9M114 ONSEMI SENSOR DRIVER
+ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/onnn,mt9m114.yaml
+ F:	drivers/media/i2c/mt9m114.c
+ 
+@@ -15784,7 +15784,7 @@ MT9P031 APTINA CAMERA SENSOR
+ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/aptina,mt9p031.yaml
+ F:	drivers/media/i2c/mt9p031.c
+ 
+@@ -15792,7 +15792,7 @@ MT9T112 APTINA CAMERA SENSOR
+ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/mt9t112.c
+ F:	include/media/i2c/mt9t112.h
+ 
+@@ -15800,7 +15800,7 @@ MT9V032 APTINA CAMERA SENSOR
+ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/mt9v032.txt
+ F:	drivers/media/i2c/mt9v032.c
+ F:	include/media/i2c/mt9v032.h
+@@ -15809,7 +15809,7 @@ MT9V111 APTINA CAMERA SENSOR
+ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/aptina,mt9v111.yaml
+ F:	drivers/media/i2c/mt9v111.c
+ 
+@@ -16996,13 +16996,13 @@ OMNIVISION OV01A10 SENSOR DRIVER
+ M:	Bingbu Cao <bingbu.cao@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov01a10.c
+ 
+ OMNIVISION OV02A10 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov02a10.yaml
+ F:	drivers/media/i2c/ov02a10.c
+ 
+@@ -17010,14 +17010,14 @@ OMNIVISION OV08D10 SENSOR DRIVER
+ M:	Jimmy Su <jimmy.su@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov08d10.c
+ 
+ OMNIVISION OV08X40 SENSOR DRIVER
+ M:	Jason Chen <jason.z.chen@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov08x40.c
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov08x40.yaml
+ 
+@@ -17025,14 +17025,14 @@ OMNIVISION OV13858 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov13858.c
+ 
+ OMNIVISION OV13B10 SENSOR DRIVER
+ M:	Arec Kao <arec.kao@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov13b10.c
+ 
+ OMNIVISION OV2680 SENSOR DRIVER
+@@ -17040,7 +17040,7 @@ M:	Rui Miguel Silva <rmfrfs@gmail.com>
+ M:	Hans de Goede <hansg@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+ F:	drivers/media/i2c/ov2680.c
+ 
+@@ -17048,7 +17048,7 @@ OMNIVISION OV2685 SENSOR DRIVER
+ M:	Shunqian Zheng <zhengsq@rock-chips.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+ F:	drivers/media/i2c/ov2685.c
+ 
+@@ -17058,14 +17058,14 @@ R:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ R:	Bingbu Cao <bingbu.cao@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov2740.c
+ 
+ OMNIVISION OV4689 SENSOR DRIVER
+ M:	Mikhail Rudenko <mike.rudenko@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov4689.yaml
+ F:	drivers/media/i2c/ov4689.c
+ 
+@@ -17073,7 +17073,7 @@ OMNIVISION OV5640 SENSOR DRIVER
+ M:	Steve Longerbeam <slongerbeam@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov5640.c
+ 
+ OMNIVISION OV5647 SENSOR DRIVER
+@@ -17081,7 +17081,7 @@ M:	Dave Stevenson <dave.stevenson@raspberrypi.com>
+ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov5647.yaml
+ F:	drivers/media/i2c/ov5647.c
+ 
+@@ -17089,7 +17089,7 @@ OMNIVISION OV5670 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov5670.yaml
+ F:	drivers/media/i2c/ov5670.c
+ 
+@@ -17097,7 +17097,7 @@ OMNIVISION OV5675 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov5675.yaml
+ F:	drivers/media/i2c/ov5675.c
+ 
+@@ -17105,7 +17105,7 @@ OMNIVISION OV5693 SENSOR DRIVER
+ M:	Daniel Scally <djrscally@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov5693.yaml
+ F:	drivers/media/i2c/ov5693.c
+ 
+@@ -17113,21 +17113,21 @@ OMNIVISION OV5695 SENSOR DRIVER
+ M:	Shunqian Zheng <zhengsq@rock-chips.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov5695.c
+ 
+ OMNIVISION OV64A40 SENSOR DRIVER
+ M:	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov64a40.yaml
+ F:	drivers/media/i2c/ov64a40.c
+ 
+ OMNIVISION OV7670 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ov7670.txt
+ F:	drivers/media/i2c/ov7670.c
+ 
+@@ -17135,7 +17135,7 @@ OMNIVISION OV772x SENSOR DRIVER
+ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov772x.yaml
+ F:	drivers/media/i2c/ov772x.c
+ F:	include/media/i2c/ov772x.h
+@@ -17143,7 +17143,7 @@ F:	include/media/i2c/ov772x.h
+ OMNIVISION OV7740 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ov7740.txt
+ F:	drivers/media/i2c/ov7740.c
+ 
+@@ -17151,7 +17151,7 @@ OMNIVISION OV8856 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov8856.yaml
+ F:	drivers/media/i2c/ov8856.c
+ 
+@@ -17160,7 +17160,7 @@ M:	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+ M:	Nicholas Roth <nicholas@rothemail.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
+ F:	drivers/media/i2c/ov8858.c
+ 
+@@ -17168,7 +17168,7 @@ OMNIVISION OV9282 SENSOR DRIVER
+ M:	Dave Stevenson <dave.stevenson@raspberrypi.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ovti,ov9282.yaml
+ F:	drivers/media/i2c/ov9282.c
+ 
+@@ -17184,7 +17184,7 @@ R:	Akinobu Mita <akinobu.mita@gmail.com>
+ R:	Sylwester Nawrocki <s.nawrocki@samsung.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/ov9650.txt
+ F:	drivers/media/i2c/ov9650.c
+ 
+@@ -17193,7 +17193,7 @@ M:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ R:	Bingbu Cao <bingbu.cao@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/ov9734.c
+ 
+ ONBOARD USB HUB DRIVER
+@@ -18638,7 +18638,7 @@ PULSE8-CEC DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/cec/usb/pulse8/
+ 
+ PURELIFI PLFXLC DRIVER
+@@ -18653,7 +18653,7 @@ L:	pvrusb2@isely.net	(subscribers-only)
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	http://www.isely.net/pvrusb2/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/driver-api/media/drivers/pvrusb2*
+ F:	drivers/media/usb/pvrusb2/
+ 
+@@ -18661,7 +18661,7 @@ PWC WEBCAM DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/pwc/*
+ F:	include/trace/events/pwc.h
+ 
+@@ -19165,7 +19165,7 @@ R:	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+ L:	linux-media@vger.kernel.org
+ L:	linux-arm-msm@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/*venus*
+ F:	drivers/media/platform/qcom/venus/
+ 
+@@ -19210,14 +19210,14 @@ RADIOSHARK RADIO DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-shark.c
+ 
+ RADIOSHARK2 RADIO DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-shark2.c
+ F:	drivers/media/radio/radio-tea5777.c
+ 
+@@ -19241,7 +19241,7 @@ RAINSHADOW-CEC DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/cec/usb/rainshadow/
+ 
+ RALINK MIPS ARCHITECTURE
+@@ -19332,7 +19332,7 @@ M:	Sean Young <sean@mess.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	http://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/driver-api/media/rc-core.rst
+ F:	Documentation/userspace-api/media/rc/
+ F:	drivers/media/rc/
+@@ -20046,7 +20046,7 @@ ROTATION DRIVER FOR ALLWINNER A83T
+ M:	Jernej Skrabec <jernej.skrabec@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/allwinner,sun8i-a83t-de2-rotate.yaml
+ F:	drivers/media/platform/sunxi/sun8i-rotate/
+ 
+@@ -20300,7 +20300,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/saa6588*
+ 
+ SAA7134 VIDEO4LINUX DRIVER
+@@ -20308,7 +20308,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/driver-api/media/drivers/saa7134*
+ F:	drivers/media/pci/saa7134/
+ 
+@@ -20316,7 +20316,7 @@ SAA7146 VIDEO4LINUX-2 DRIVER
+ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/common/saa7146/
+ F:	drivers/media/pci/saa7146/
+ F:	include/media/drv-intf/saa7146*
+@@ -20934,7 +20934,7 @@ SHARP RJ54N1CB0C SENSOR DRIVER
+ M:	Jacopo Mondi <jacopo@jmondi.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/rj54n1cb0c.c
+ F:	include/media/i2c/rj54n1cb0c.h
+ 
+@@ -20984,7 +20984,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/silabs,si470x.yaml
+ F:	drivers/media/radio/si470x/radio-si470x-i2c.c
+ 
+@@ -20993,7 +20993,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/si470x/radio-si470x-common.c
+ F:	drivers/media/radio/si470x/radio-si470x-usb.c
+ F:	drivers/media/radio/si470x/radio-si470x.h
+@@ -21003,7 +21003,7 @@ M:	Eduardo Valentin <edubezval@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/si4713/si4713.?
+ 
+ SI4713 FM RADIO TRANSMITTER PLATFORM DRIVER
+@@ -21011,7 +21011,7 @@ M:	Eduardo Valentin <edubezval@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/si4713/radio-platform-si4713.c
+ 
+ SI4713 FM RADIO TRANSMITTER USB DRIVER
+@@ -21019,7 +21019,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/si4713/radio-usb-si4713.c
+ 
+ SIANO DVB DRIVER
+@@ -21027,7 +21027,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/common/siano/
+ F:	drivers/media/mmc/siano/
+ F:	drivers/media/usb/siano/
+@@ -21403,14 +21403,14 @@ SONY IMX208 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/imx208.c
+ 
+ SONY IMX214 SENSOR DRIVER
+ M:	Ricardo Ribalda <ribalda@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+ F:	drivers/media/i2c/imx214.c
+ 
+@@ -21418,7 +21418,7 @@ SONY IMX219 SENSOR DRIVER
+ M:	Dave Stevenson <dave.stevenson@raspberrypi.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/imx219.yaml
+ F:	drivers/media/i2c/imx219.c
+ 
+@@ -21426,7 +21426,7 @@ SONY IMX258 SENSOR DRIVER
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+ F:	drivers/media/i2c/imx258.c
+ 
+@@ -21434,7 +21434,7 @@ SONY IMX274 SENSOR DRIVER
+ M:	Leon Luo <leonl@leopardimaging.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx274.yaml
+ F:	drivers/media/i2c/imx274.c
+ 
+@@ -21443,7 +21443,7 @@ M:	Kieran Bingham <kieran.bingham@ideasonboard.com>
+ M:	Umang Jain <umang.jain@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
+ F:	drivers/media/i2c/imx283.c
+ 
+@@ -21451,7 +21451,7 @@ SONY IMX290 SENSOR DRIVER
+ M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx290.yaml
+ F:	drivers/media/i2c/imx290.c
+ 
+@@ -21460,7 +21460,7 @@ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx296.yaml
+ F:	drivers/media/i2c/imx296.c
+ 
+@@ -21468,20 +21468,20 @@ SONY IMX319 SENSOR DRIVER
+ M:	Bingbu Cao <bingbu.cao@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/imx319.c
+ 
+ SONY IMX334 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx334.yaml
+ F:	drivers/media/i2c/imx334.c
+ 
+ SONY IMX335 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+ F:	drivers/media/i2c/imx335.c
+ 
+@@ -21489,13 +21489,13 @@ SONY IMX355 SENSOR DRIVER
+ M:	Tianshu Qiu <tian.shu.qiu@intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/imx355.c
+ 
+ SONY IMX412 SENSOR DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx412.yaml
+ F:	drivers/media/i2c/imx412.c
+ 
+@@ -21503,7 +21503,7 @@ SONY IMX415 SENSOR DRIVER
+ M:	Michael Riesch <michael.riesch@wolfvision.net>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+ F:	drivers/media/i2c/imx415.c
+ 
+@@ -21792,7 +21792,7 @@ M:	Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+ M:	Sylvain Petinot <sylvain.petinot@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
+ F:	drivers/media/i2c/st-mipid02.c
+ 
+@@ -21828,7 +21828,7 @@ M:	Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+ M:	Sylvain Petinot <sylvain.petinot@foss.st.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/st,st-vgxy61.yaml
+ F:	Documentation/userspace-api/media/drivers/vgxy61.rst
+ F:	drivers/media/i2c/vgxy61.c
+@@ -22118,7 +22118,7 @@ STK1160 USB VIDEO CAPTURE DRIVER
+ M:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/stk1160/
+ 
+ STM32 AUDIO (ASoC) DRIVERS
+@@ -22555,7 +22555,7 @@ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+ Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/tuners/tda18250*
+ 
+ TDA18271 MEDIA DRIVER
+@@ -22601,7 +22601,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/tda9840*
+ 
+ TEA5761 TUNER DRIVER
+@@ -22609,7 +22609,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Odd fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/tuners/tea5761.*
+ 
+ TEA5767 TUNER DRIVER
+@@ -22617,7 +22617,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/tuners/tea5767.*
+ 
+ TEA6415C MEDIA DRIVER
+@@ -22625,7 +22625,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/tea6415c*
+ 
+ TEA6420 MEDIA DRIVER
+@@ -22633,7 +22633,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/i2c/tea6420*
+ 
+ TEAM DRIVER
+@@ -22921,7 +22921,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/radio/radio-raremono.c
+ 
+ THERMAL
+@@ -22997,7 +22997,7 @@ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ M:	Paul Elder <paul.elder@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/i2c/thine,thp7312.yaml
+ F:	Documentation/userspace-api/media/drivers/thp7312.rst
+ F:	drivers/media/i2c/thp7312.c
+@@ -23584,7 +23584,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Odd Fixes
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/tw68/
+ 
+ TW686X VIDEO4LINUX DRIVER
+@@ -23592,7 +23592,7 @@ M:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	http://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/pci/tw686x/
+ 
+ U-BOOT ENVIRONMENT VARIABLES
+@@ -24076,7 +24076,7 @@ M:	Hans de Goede <hdegoede@redhat.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	http://www.ideasonboard.org/uvc/
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/usb/uvc/
+ F:	include/uapi/linux/uvcvideo.h
+ 
+@@ -24182,7 +24182,7 @@ V4L2 ASYNC AND FWNODE FRAMEWORKS
+ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/v4l2-core/v4l2-async.c
+ F:	drivers/media/v4l2-core/v4l2-fwnode.c
+ F:	include/media/v4l2-async.h
+@@ -24348,7 +24348,7 @@ M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/test-drivers/vicodec/*
+ 
+ VIDEO I2C POLLING DRIVER
+@@ -24376,7 +24376,7 @@ M:	Daniel W. S. Almeida <dwlsalmeida@gmail.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/test-drivers/vidtv/*
+ 
+ VIMC VIRTUAL MEDIA CONTROLLER DRIVER
+@@ -24385,7 +24385,7 @@ R:	Kieran Bingham <kieran.bingham@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/test-drivers/vimc/*
+ 
+ VIRT LIB
+@@ -24633,7 +24633,7 @@ M:	Hans Verkuil <hverkuil@xs4all.nl>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/test-drivers/vivid/*
+ 
+ VM SOCKETS (AF_VSOCK)
+@@ -25187,7 +25187,7 @@ M:	Mauro Carvalho Chehab <mchehab@kernel.org>
+ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ W:	https://linuxtv.org
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	drivers/media/tuners/xc2028.*
+ 
+ XDP (eXpress Data Path)
+@@ -25411,7 +25411,7 @@ XILINX VIDEO IP CORES
+ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ L:	linux-media@vger.kernel.org
+ S:	Supported
+-T:	git git://linuxtv.org/media_tree.git
++T:	git git://linuxtv.org/media.git
+ F:	Documentation/devicetree/bindings/media/xilinx/
+ F:	drivers/media/platform/xilinx/
+ F:	include/uapi/linux/xilinx-v4l2-controls.h
 -- 
-2.43.0
+2.47.0
 
 
