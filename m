@@ -1,101 +1,109 @@
-Return-Path: <stable+bounces-93756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D2E9D07DC
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 03:23:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E206D9D07E6
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 03:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01012281F36
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 02:23:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 380C2B218A5
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 02:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4261E511;
-	Mon, 18 Nov 2024 02:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="aB1nkNf2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C87D1E507;
+	Mon, 18 Nov 2024 02:26:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1177F1802B;
-	Mon, 18 Nov 2024 02:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D33360
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 02:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731896624; cv=none; b=kCXyBSPBEz6bGQy1DIZaaaJ6aDR3EpoxP8o3ij6RJKq50E/+2C0k57HwtmDrS6VEQkEo1t3xvLZuV75MV7CLEfNQM6q4vKKi5V/zL1zAt8B2+MXE3CLwWDHBxuBhni5913b+cKaHMGVSWjy6eMwdwA3fL5d2kNfOlVyEbXaqQ0s=
+	t=1731896799; cv=none; b=eLxKkpSypVmAw2K5zp2j1G7TBVAbAjJPl29edng7FWcsp1OcaPNIK4lYdazTFJH5zE5sueBQgky0m0XvCThjxwWa22tgVE/9rirzFnz80YfdOwDpb8qYhOFn3zJirQp1cBsVCM89BAv0fJsxup7jD1ye3CB5dAcpO+ZnmFtBxpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731896624; c=relaxed/simple;
-	bh=zBvyMW1l3nuOVD4PLCHV7981Hc048pK4JQXFcTCUR6A=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=aC63WdWXlcZL2R/58DIgCef99YqXNiHOpolhd0YzhuHfRmBU4M+FQ19CTDYCd0DGD4e+iaAe5jGKEGfvCdUytv1ypAgbORgIJqQ7fHz/ycfL7qQuM2tH9yOSSkCz0oddcftTopHM5H2wFfz/INA25SGY3J9dT5vREarVBN3TzpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=aB1nkNf2; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AI2NSeV44167482, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1731896608; bh=zBvyMW1l3nuOVD4PLCHV7981Hc048pK4JQXFcTCUR6A=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=aB1nkNf2AMG+xI4SwGdLvVUsBrcTUuzUlS3Zrd/0aPHrWjGYNqlTI5NgpcplzwtP8
-	 g5/+7ps8m8A8q6cWmptS+DBkW9LPYwub1W+jmC7sCM24xbMEacv61WnxwH5pKGqb2N
-	 XMmh1lXQC0le3yhi/tqseOjv02Lf34SKT/NO0ONhfUGPXHTEbE1IFFpBZU0GsjZK15
-	 Mazfj2YiNQYfOfGSfw2Hj3FsvVFVR//JqoabgLUaKtsAzHxiFifWIV9gwpmOC41ZtL
-	 mIJWbyxrd19Nuzai0edPCS04LVW7qWPjRDCahaX2rB8G851o4JAQRfIP6VEvS7CbJM
-	 DK8Kufw7veMqA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AI2NSeV44167482
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Nov 2024 10:23:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 18 Nov 2024 10:23:28 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Nov
- 2024 10:23:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Hans de Goede <hdegoede@redhat.com>,
-        Jes Sorensen
-	<Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>
-CC: Hans de Goede <hdegoede@redhat.com>, <linux-wireless@vger.kernel.org>,
-        <stable@vger.kernel.org>, Peter Robinson <pbrobinson@gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-In-Reply-To: <20241107140833.274986-1-hdegoede@redhat.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1731896799; c=relaxed/simple;
+	bh=TXn4y5juGEPBgwUxkcoJFh3/fXqGLIrnAAh6BseMT/M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QWXQBBD2Av5Wfpn8o8WNFp+PWOFfW+NFXCMbz3KrsdWBjst4M/UibWd5jr6V9T3ioyAlrqunWmQkDhtCSym5MB5n01x92dfh92lSQ0goBX2tSU1GTX2no/pfbNwXIMREofeA9S1lmBQkIBlkvHo/kqu+AFQwfhDiEBsfzr9fsvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AI1SRKC027004;
+	Sun, 17 Nov 2024 18:26:30 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xqj7s3xr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 17 Nov 2024 18:26:29 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 17 Nov 2024 18:26:29 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 17 Nov 2024 18:26:28 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+Subject: [PATCH 6.1] fs/ntfs3: Additional check in ntfs_file_release
+Date: Mon, 18 Nov 2024 10:26:50 +0800
+Message-ID: <20241118022650.558385-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Message-ID: <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
-Date: Mon, 18 Nov 2024 10:23:28 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-Proofpoint-ORIG-GUID: WBGNfDIgZLgYHqb3RVdV_xkXT1JWHZRW
+X-Proofpoint-GUID: WBGNfDIgZLgYHqb3RVdV_xkXT1JWHZRW
+X-Authority-Analysis: v=2.4 cv=Sb6ldeRu c=1 sm=1 tr=0 ts=673aa5d5 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=GFCt93a2AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8 a=2DXtWoY0YfVhbeZ-LxUA:9 a=0UNspqPZPZo5crgNHNjb:22
+ a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-17_24,2024-11-14_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ mlxlogscore=999 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411180020
 
-Hans de Goede <hdegoede@redhat.com> wrote:
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
-> except for the following 10, add these to the untested section so they
-> can be used with the rtl8xxxu as the rtl8192cu are well supported.
-> 
-> This fixes these wifi modules not working on distributions which have
-> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
-> like Fedora.
-> 
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
-> Cc: stable@vger.kernel.org
-> Cc: Peter Robinson <pbrobinson@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+[ Upstream commit 031d6f608290c847ba6378322d0986d08d1a645a ]
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-31be3175bd7b wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-
+Reported-by: syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 ---
-https://github.com/pkshih/rtw.git
+ fs/ntfs3/file.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index aedd4f5f459e..70b38465aee3 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1214,8 +1214,16 @@ static int ntfs_file_release(struct inode *inode, struct file *file)
+ 	int err = 0;
+ 
+ 	/* If we are last writer on the inode, drop the block reservation. */
+-	if (sbi->options->prealloc && ((file->f_mode & FMODE_WRITE) &&
+-				      atomic_read(&inode->i_writecount) == 1)) {
++	if (sbi->options->prealloc &&
++	    ((file->f_mode & FMODE_WRITE) &&
++	     atomic_read(&inode->i_writecount) == 1)
++	   /*
++	    * The only file when inode->i_fop = &ntfs_file_operations and
++	    * init_rwsem(&ni->file.run_lock) is not called explicitly is MFT.
++	    *
++	    * Add additional check here.
++	    */
++	    && inode->i_ino != MFT_REC_MFT) {
+ 		ni_lock(ni);
+ 		down_write(&ni->file.run_lock);
+ 
+-- 
+2.43.0
 
 
