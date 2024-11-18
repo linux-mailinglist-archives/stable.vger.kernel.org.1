@@ -1,126 +1,121 @@
-Return-Path: <stable+bounces-93764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739719D08CD
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:25:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D239D0925
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF61281CA0
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 05:25:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10A3AB21905
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD92D13C8FF;
-	Mon, 18 Nov 2024 05:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19484A22;
+	Mon, 18 Nov 2024 06:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k3HINUEj"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CAE13A863;
-	Mon, 18 Nov 2024 05:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A58DDC5;
+	Mon, 18 Nov 2024 06:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731907497; cv=none; b=CH0xKGYzoh8j6qElCW7qxzdOmHGNKLlF0Tua+kt1/H0kTIEfItGi5C1pW6Gm7piMzwnnRil1O3m8OvChq2lH0IgKq2A77ruNXzRVPli/pyoWSb07KM+nSo/M4tSRBvJzDk3PRC0fT6i7A98Z6xJ03gz429HECwyslnGM1IQoYWA=
+	t=1731909654; cv=none; b=XlxBLAaZGpCAojq16nDO73YkE4Md4zdDZCEb3cmypzHoio9wnLCAU3yXZKZTuRW/PWKsRFXJ1yoUPacAL6qfe/MglxaxE+rvbmpelscUcajrJyjGuAXmhqacYhWwmOA/puhwvbmgLQtk2w2qKnH1UY+XJb1A9qCzYN/9+bgTO2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731907497; c=relaxed/simple;
-	bh=ckvDb3fapY7BF3jRYQuWCEPO5x9k7IjKePH5akN4J7A=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=D2gkOvO37iw9y+6ooqUe3rQ7UakVsNKS+ghwAJypMdJjQxcMqBnc6lVaMecLRDLugq1/oa7AUcNOd+yXarR1Qtf3THUbpHbnjJpU/cXLWX4aOlgGingc0tQJ31f9M6JylHdqGCxgig/qeZQaL/KeU8iYZsqD8ErVHGGYl6dXDps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XsGG353sgz92Gv;
-	Mon, 18 Nov 2024 13:22:03 +0800 (CST)
-Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0EDD41401E0;
-	Mon, 18 Nov 2024 13:24:46 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 18 Nov 2024 13:24:44 +0800
-Subject: Re: [PATCH 2/2] jffs2: initialize inocache earlier
-To: Fedor Pchelkin <pchelkin@ispras.ru>, Richard Weinberger <richard@nod.at>
-CC: David Woodhouse <dwmw2@infradead.org>, Wang Yong <wang.yong12@zte.com.cn>,
-	Lu Zhongjun <lu.zhongjun@zte.com.cn>, Yang Tao <yang.tao172@zte.com.cn>, Al
- Viro <viro@zeniv.linux.org.uk>, <linux-mtd@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>
-References: <20241117184412.366672-1-pchelkin@ispras.ru>
- <20241117184412.366672-3-pchelkin@ispras.ru>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <b4865aaf-8253-b44e-55fe-d1fab1f5f092@huawei.com>
-Date: Mon, 18 Nov 2024 13:24:43 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	s=arc-20240116; t=1731909654; c=relaxed/simple;
+	bh=sgFGmAJSWz62h5J0gaOs0tTJ0+JIkMwQW8wgYGPyNjw=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=ZBdUuTe2RObH9vQHS2/z+HeghRBCm9zoQMAIy9dCrg028ByqZVd/YM6gbfmJPZIKYW0QxFzRhrQ9XkRdL3MD4BHfv/4qsx9Zd91K1pStygoQHkxqA9J1Hc2fNR0hUC0SRuE1AE+n0lPVb5wQN/xutxdUCup0pB6VU/YjZLB6Zbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k3HINUEj; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21210fe8775so5314035ad.1;
+        Sun, 17 Nov 2024 22:00:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731909652; x=1732514452; darn=vger.kernel.org;
+        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
+         :from:content-transfer-encoding:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kO+QtFpKfgzNuqO1kZp/2nPap7iCfAUCSQud9ZT+/+Q=;
+        b=k3HINUEjcyuCyACMEeizV1B5Dj86tZQqBhZ2PXX4ZrTbGKvNAqse7ZbZJD0PfY4eRS
+         wLG1DBYo2FzFZ6FeA8bgJ5dXP0PoUufKkkJQU8jGCVbik29gEJFGk0o21ffD8wPXyfEW
+         yjSGsQiU59+1ZJ/QHLT4p+kQQsWnHk6WV9zU2cL1yQZkYdlqmNTm21Fjx3pIrxOg0LAe
+         D8wxIYepF4YMusf6ByyRH4uXRyqTiPN9HfXExchu8gD+mVUHler8ppmvwlBlkbHmUFwb
+         9SyUiB0l0RPoCkdgnYHS4E2uDnDAGH9xdqPJBFXrYJG8ZA0H9b6Top4vHwnzPNmO9PXk
+         kWZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731909652; x=1732514452;
+        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
+         :from:content-transfer-encoding:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kO+QtFpKfgzNuqO1kZp/2nPap7iCfAUCSQud9ZT+/+Q=;
+        b=xJACQ1pPD7+1fk8eCCKGnQScFV3iFvtFR3uMXIPochwCBkgeitM3hd5VteF4t4qAPA
+         4lu1l8EJl90R6CWTkqX50+oX5y0pipliYAdV3U6/WhRHAEf6e8DR+e9LI2U2/8ZobMOM
+         TI9P6FQxyrw2CaYDIG7BskFJoGbSsA8um6RGOP1T8aQVhFOB9SYyb2QVj4Wn2fUIzJrD
+         DKr8vHFiN4qDCvGnNQu0UAzqVyPPwu7jQU2nEcvxwZ4CCZt09PksOTV2ItdLk1t7TNk8
+         JOz41Bkv/gPrKxOhZ+Mjd/fDe4Ib91K+rg5Wzdsjw2FkCevtHAFch4imNtg0eFT+Yzgz
+         wV1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWSW6rGdsntcVO1udcOBEbSTxk94hpgfQu9pkx7NTYglaQh5jtz3VbHPVSvCcVX2h3S3GjYqDyp@vger.kernel.org, AJvYcCXnKkgXJPvdk6opIn1c/rTZNqwIzXy47OKQUCHkre3oC1hlL/K9yfYMbQcL5PrYyH2my5Tp0H/BJV3X3ixd@vger.kernel.org, AJvYcCXyPH8nBow3B8ZHDTlQr/JLPZMuJ3NsAYQ4hnE9FYbCsheNireN1B3wAjiZBdeYUG9o9bKBljgn9eo0ymgO@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVUoih+UjHMKS7WC4HV+QDd2uR7+T9wKKlWUFLhTohZqCxyEG0
+	bGUEHOW90zgBENqqrngeH4V0ZaaiOp2XqDupykQrtKMEPWZ9Hh4Y21vVMwwK
+X-Google-Smtp-Source: AGHT+IFdxyTPCM6q1QU17AqfiduUvqhQ1jdXop17N8bmnqw3ZxHsAmLAuld0aAwN/RD4QYOI9Rf7Tg==
+X-Received: by 2002:a17:902:ce0e:b0:20b:a73b:3f5 with SMTP id d9443c01a7336-211d06f619cmr172400875ad.14.1731909651862;
+        Sun, 17 Nov 2024 22:00:51 -0800 (PST)
+Received: from smtpclient.apple ([2001:e60:a40b:abbe:19cc:3a68:771c:24a1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0ec7b9csm49435665ad.73.2024.11.17.22.00.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Nov 2024 22:00:51 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Jeongjun Park <aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20241117184412.366672-3-pchelkin@ispras.ru>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemk500005.china.huawei.com (7.202.194.90)
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] fs: prevent data-race due to missing inode_lock when calling vfs_getattr
+Date: Mon, 18 Nov 2024 15:00:39 +0900
+Message-Id: <E79FF080-A233-42F6-80EB-543384A0C3AC@gmail.com>
+References: <20241117165540.GF3387508@ZenIV>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20241117165540.GF3387508@ZenIV>
+To: Al Viro <viro@zeniv.linux.org.uk>
+X-Mailer: iPhone Mail (21G93)
 
-ÔÚ 2024/11/18 2:44, Fedor Pchelkin Ð´µÀ:
-> Inside jffs2_new_inode() there is a small gap when jffs2_init_acl_pre() or
-> jffs2_do_new_inode() may fail e.g. due to a memory allocation error while
-> uninit inocache field is touched upon subsequent inode eviction.
-> 
-> general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] PREEMPT SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
-> CPU: 0 PID: 10592 Comm: syz-executor.1 Not tainted 5.10.209-syzkaller #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-> RIP: 0010:jffs2_xattr_delete_inode+0x35/0x130 fs/jffs2/xattr.c:602
-> Call Trace:
->   jffs2_do_clear_inode+0x4c/0x570 fs/jffs2/readinode.c:1418
->   evict+0x281/0x6b0 fs/inode.c:577
->   iput_final fs/inode.c:1697 [inline]
->   iput.part.0+0x4df/0x6d0 fs/inode.c:1723
->   iput+0x58/0x80 fs/inode.c:1713
->   jffs2_new_inode+0xb12/0xdb0 fs/jffs2/fs.c:469
->   jffs2_create+0x90/0x400 fs/jffs2/dir.c:177
->   lookup_open.isra.0+0xead/0x1260 fs/namei.c:3169
->   open_last_lookups fs/namei.c:3239 [inline]
->   path_openat+0x96c/0x2670 fs/namei.c:3428
->   do_filp_open+0x1a4/0x3f0 fs/namei.c:3458
->   do_sys_openat2+0x171/0x420 fs/open.c:1186
->   do_sys_open fs/open.c:1202 [inline]
->   __do_sys_openat fs/open.c:1218 [inline]
->   __se_sys_openat fs/open.c:1213 [inline]
->   __x64_sys_openat+0x13c/0x1f0 fs/open.c:1213
->   do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
-> 
-> Initialize the inocache pointer to a NULL value while preparing an inode
-> in jffs2_init_inode_info(). jffs2_xattr_delete_inode() will handle it
-> later just fine.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
->   fs/jffs2/os-linux.h | 1 +
->   1 file changed, 1 insertion(+)
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-> 
-> diff --git a/fs/jffs2/os-linux.h b/fs/jffs2/os-linux.h
-> index 86ab014a349c..39b6565f10c9 100644
-> --- a/fs/jffs2/os-linux.h
-> +++ b/fs/jffs2/os-linux.h
-> @@ -55,6 +55,7 @@ static inline void jffs2_init_inode_info(struct jffs2_inode_info *f)
->   	f->metadata = NULL;
->   	f->dents = NULL;
->   	f->target = NULL;
-> +	f->inocache = NULL;
->   	f->flags = 0;
->   	f->usercompr = 0;
->   }
-> 
+Hello,
 
+> Al Viro <viro@zeniv.linux.org.uk> wrote:
+>=20
+> =EF=BB=BFOn Mon, Nov 18, 2024 at 01:37:19AM +0900, Jeongjun Park wrote:
+>> Many filesystems lock inodes before calling vfs_getattr, so there is no
+>> data-race for inodes. However, some functions in fs/stat.c that call
+>> vfs_getattr do not lock inodes, so the data-race occurs.
+>>=20
+>> Therefore, we need to apply a patch to remove the long-standing data-race=
+
+>> for inodes in some functions that do not lock inodes.
+>=20
+> Why do we care?  Slapping even a shared lock on a _very_ hot path, with
+> possible considerable latency, would need more than "theoretically it's
+> a data race".
+
+All the functions that added lock in this patch are called only via syscall,=
+
+so in most cases there will be no noticeable performance issue. And
+this data-race is not a problem that only occurs in theory. It is
+a bug that syzbot has been reporting for years. Many file systems that
+exist in the kernel lock inode_lock before calling vfs_getattr, so
+data-race does not occur, but only fs/stat.c has had a data-race
+for years. This alone shows that adding inode_lock to some
+functions is a good way to solve the problem without much=20
+performance degradation.
+
+Regards,
+
+Jeongjun Park=
 
