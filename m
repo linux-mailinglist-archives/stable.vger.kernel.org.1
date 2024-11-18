@@ -1,169 +1,97 @@
-Return-Path: <stable+bounces-93820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184BB9D177B
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:58:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6530D9D180A
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 19:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88C01B231A2
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 17:58:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD8F6B232C3
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD511C0DED;
-	Mon, 18 Nov 2024 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47081E0DF0;
+	Mon, 18 Nov 2024 18:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xt6gsZNy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7Ngp+VU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF20199EB2
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 17:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F35C2E3EB;
+	Mon, 18 Nov 2024 18:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731952709; cv=none; b=E8/oK4q7v+zf7c404EZ03FLVdxqeQV74x4cJHj91+0sC51m72S+OCEe8WVTZXf+pdCLglOvimb0D8zDps627TyohrDD91bfZPqRNaz9yeZEkuSk1eqB3kZ1zQ4rG0EYTbiWZZfTphriLvCTMOtQpAYINnsEpBI3I2TejXoVDTlw=
+	t=1731954461; cv=none; b=VO7UhrObpKP+ngh3XIiQEl0swbd6/9uPvKyNLdGCLPuYwPZCk44BE3kJSsiHG7Wv2eH7mW7MnfkBZ5HZiID1cKLyPWJGvF6xqzgUQLMmGtVeGLCqXzarn9IB8NLOUH5Ka2jKo+E+J0vF0PyLeKifonHTgTHanQO4OXwIvk9pHlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731952709; c=relaxed/simple;
-	bh=laZIAQktD4QzqPlaVyKPfOrBu4SfRyQ3/OCJp+BYGEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bXBkS2tAUn8mBDgFZAxc4YHdMyQZeuTt5gdLh6Zyi8xg8XB0DvgDxxRWXVuIu2NC3o6O/DY8GgtvD2nSLlB3wLgcGzs2bMlTvMp9pXM4JbFBkSL71OvHP6Q2i5YeRbbw2jYkPvAV+ciYr2f39nH6eBH7zPhTbFnImprybc5mC4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xt6gsZNy; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53da4fd084dso4610488e87.0
-        for <stable@vger.kernel.org>; Mon, 18 Nov 2024 09:58:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731952705; x=1732557505; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QlLGnW7dtwwICLyvfGuSa1NcQ36vNNOBbZLVzsySdLE=;
-        b=Xt6gsZNyA25zn3g2Sek8XJQDvzW8ZZCWx1YaqNPy10mtBbE1ZuVZUp8JVxqQwHok2c
-         kLukUMEEog2WVZR0AlbMRFvy/vD0tQbcHc3blIKJT+hUWWFN+qwLvCDJNoIJyEqckdIJ
-         sy52Byvc0sHVmnfvaMrLnnrQ1fLBaElJs7U90slxL5J0wPBrtw79iYsx3hc6knZ0Uz+4
-         7ZRB7eny02MSn+rL/n5BTyLmyyUa57v6KEpfK2J6h/zcfswAcwfzKa9LqgP0oz1Dzbgm
-         70Ri04EyxY7I9M9cRtO362z2nG24MekVyfv/TxJhL2V4eS679+B8CApyLZg3WHvI0Eyf
-         f/0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731952705; x=1732557505;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QlLGnW7dtwwICLyvfGuSa1NcQ36vNNOBbZLVzsySdLE=;
-        b=EIrPgeqRybBF+dH3Y6fdAl6m3PW+49g2TIiK/QE3kvcuJ0W7Me/QUdZ/1W4cxZyfkS
-         9Widu2TecQGWDTnroW3izd0l+xWlr6dwAhuFniSrP4F7T9t8M1Oxe6IG5+1na0vOztnd
-         nE3qzC+XddQXL86+K5KiVnIUc1VzSSjoVZXSqWhLGYALKWHNR648SRdo1Frfni8Xdq08
-         gzuAnjy3qwLaxDVI83eivaktOv4ZhrTKI/QMgMVlDjeQAQYIRMnMWFM9xSeCNdBgUru5
-         5sH7bU8RxTxAZo3TvmQDyWNCGjWAkQvvvJ/4ZMACD5JSlYmzxk6gZeJDT228FcVLP/xW
-         s3jw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFR//ZGLN8DczmD+uycgzvNvScW66xCcYQP7Thlx2/4XGcnsQPEJFLWUm66ra6WNrdXh1OsSE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkwvRYROKW4q/HNRTsMdumcukgbZQo5OgPokNnIdoOfqS0vSuZ
-	t78IsMfNMefC+bJQ+EdW3Cl+ySf9CRjcPeQQLRWtnMem7Zov9Gja0xJ6890Wciw=
-X-Google-Smtp-Source: AGHT+IF+k106SySWsa5RW6D8wDsdbeikotHZLceTzJqS77LXkttXhrPKvuUPvkQI0pZUabYUcvomPg==
-X-Received: by 2002:a05:6512:31c7:b0:539:f84d:bee1 with SMTP id 2adb3069b0e04-53dbd4a08b4mr104842e87.17.1731952704554;
-        Mon, 18 Nov 2024 09:58:24 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd472359sm18758e87.198.2024.11.18.09.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 09:58:23 -0800 (PST)
-Date: Mon, 18 Nov 2024 19:58:20 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: =?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abhishek Pandit-Subedi <abhishekpandit@chromium.org>, 
-	Benson Leung <bleung@chromium.org>, Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: ucsi: Fix completion notifications
-Message-ID: <5iacpnq5akk3gk7kdg5wkbaohbtwtuc6cl7xyubsh2apkteye3@2ztqtkpoauyg>
-References: <20241104154252.1463188-1-ukaszb@chromium.org>
+	s=arc-20240116; t=1731954461; c=relaxed/simple;
+	bh=NLdKw/UATgY4PqOfpBzRkVWIWTouEGLzd5iy/KkeXW8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kh2ZlZV/HTxgh5k5RSX586m0KOSrsmOXj3nW2/YD/Df7M01v4I3/dZhjIfono3qS6ixrWGFh0PQ2XBk0UvzJd5rOUb3R96Gpk4AaFYHpYQorn5FRj/46z0AL9C1FnMW18dt/rioRfeX6Oz4H6xN5ygwN5tGoif9/7IcE9SDRF4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7Ngp+VU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A22C4CECC;
+	Mon, 18 Nov 2024 18:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731954461;
+	bh=NLdKw/UATgY4PqOfpBzRkVWIWTouEGLzd5iy/KkeXW8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=J7Ngp+VUS32b4tPJv7i6zLMSUuRFGeMe+we4rkV7lMr//2w/tbrOZ2402xTQZ/VWm
+	 Rw67989FyR6MDB4NB/VPejESWPKqXIXh3m/jhSRZmVfZYnrd06aIY+99UWua56Oouu
+	 r5pI52kOGBB1hmitcRkAzvk43JHQhu92/Pn3ecHhGDNML8CeCGiMiheZVDaRN93/pq
+	 NAlWyqrUW9+lZSoc7Qqfg79xe0TRFTi3V5rR6L2v/7N3iRg7f55bQ0+nDfYlqhsW1G
+	 MIIlzgY6YySxQaorutVqZr3+EleD2CnkMtt7TogyJvtzDlxkNu0iVtL0yIzjAvr2ID
+	 zSBWGPqpXdPWw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 6.6.y 0/6] mptcp: fix recent failed backports
+Date: Mon, 18 Nov 2024 19:27:18 +0100
+Message-ID: <20241118182718.3011097-8-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1203; i=matttbe@kernel.org; h=from:subject; bh=NLdKw/UATgY4PqOfpBzRkVWIWTouEGLzd5iy/KkeXW8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnO4cGa9U1ksfWHBO80GsDAcf1QYthw2LR9SWyQ 5AWDdMuBNuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzuHBgAKCRD2t4JPQmmg c7j6EADJaqejSNp/FsLbQsLMmS/u0dIJ2cN7PKOmuWySE7LZHPRCY5CsqEQmw066eMtaNPDhlgo Qx2lakT9qymCmZgY23/Zb0vkmePTMQuasPbrPJeYir7z3qTTTPZdfsZYmXrFb7Bjm9VPr3rGDuP GJ8PA49PDu/eu7ri9QmNL2ghUnpueDUnQo5rZ1q1aOy16dhRHGoVNQzwaqZAecSSwgR1KOdZa2L Jq25t7cNJ5xJa5PJyGbj//h/WHWtPzOH+UIZlepbFFzFYypxiHGT/tHUMhIDxGIFy86mzyUm6om wByzu0BJnIwjrnhWBlXG8ix6Fu6RXfM3EpEwkGOAHJztOXrVVF6UkWcrhLX6XI54vUgCN0raRvV FUHNfYFE3T5iTFrKiK74yM/rBtMXkWvOley5fqVDZEDkoGYMEbOc+BWpxxbgrg7Edp90Ik30MFY t3t4HDR/0xjFXXza93guMtG6/iRifOlHgvqXb8bI7bPA/maYZuiZq3Sw+amnUQOYUYdNiZMkYhD q+x8yKloE2FlOeMN60+0TK89R6HGtYnuY6MVbuhkHwY8eK2czLJO6kHYXaKS8QpzViDK6uJNOHo wr7ToepsS/bRRwjgsUkQqDr/lvxZYrXp36txxijLn8Yd5ZA4XxE5brENc0P/CjiEpNJPt/iDZkp AN5W5EU3JTyDIIw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241104154252.1463188-1-ukaszb@chromium.org>
 
-On Mon, Nov 04, 2024 at 03:42:52PM +0000, Łukasz Bartosik wrote:
-> OPM                         PPM                         LPM
->  |        1.send cmd         |                           |
->  |-------------------------->|                           |
->  |                           |--                         |
->  |                           |  | 2.set busy bit in CCI  |
->  |                           |<-                         |
->  |      3.notify the OPM     |                           |
->  |<--------------------------|                           |
->  |                           | 4.send cmd to be executed |
->  |                           |-------------------------->|
->  |                           |                           |
->  |                           |      5.cmd completed      |
->  |                           |<--------------------------|
->  |                           |                           |
->  |                           |--                         |
->  |                           |  | 6.set cmd completed    |
->  |                           |<-       bit in CCI        |
->  |                           |                           |
->  |   7.handle notification   |                           |
->  |   from point 3, read CCI  |                           |
->  |<--------------------------|                           |
->  |                           |                           |
->  |     8.notify the OPM      |                           |
->  |<--------------------------|                           |
->  |                           |                           |
-> 
-> When the PPM receives command from the OPM (p.1) it sets the busy bit
-> in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
-> command to be executed by the LPM (p.4). When the PPM receives command
-> completion from the LPM (p.5) it sets command completion bit in the CCI
-> (p.6) and sends notification to the OPM (p.8). If command execution by
-> the LPM is fast enough then when the OPM starts handling the notification
-> from p.3 in p.7 and reads the CCI value it will see command completion bit
-> and will call complete(). Then complete() might be called again when the
-> OPM handles notification from p.8.
+Greg recently reported 3 patches that could not be applied without
+conflict in v6.6:
 
-I think the change is fine, but I'd like to understand, what code path
-causes the first read from the OPM side before the notification from
-the PPM?
+ - e0266319413d ("mptcp: update local address flags when setting it")
+ - f642c5c4d528 ("mptcp: hold pm lock when deleting entry")
+ - db3eab8110bc ("mptcp: pm: use _rcu variant under rcu_read_lock")
 
-> 
-> This fix replaces test_bit() with test_and_clear_bit()
-> in ucsi_notify_common() in order to call complete() only
-> once per request.
-> 
-> Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-> ---
->  drivers/usb/typec/ucsi/ucsi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index e0f3925e401b..7a9b987ea80c 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
->  		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
->  
->  	if (cci & UCSI_CCI_ACK_COMPLETE &&
-> -	    test_bit(ACK_PENDING, &ucsi->flags))
-> +	    test_and_clear_bit(ACK_PENDING, &ucsi->flags))
->  		complete(&ucsi->complete);
->  
->  	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
-> -	    test_bit(COMMAND_PENDING, &ucsi->flags))
-> +	    test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
->  		complete(&ucsi->complete);
->  }
->  EXPORT_SYMBOL_GPL(ucsi_notify_common);
-> -- 
-> 2.47.0.199.ga7371fff76-goog
-> 
+Conflicts, if any, have been resolved, and documented in each patch.
+
+Note that there are 3 extra patches added to avoid some conflicts:
+
+ - 14cb0e0bf39b ("mptcp: define more local variables sk")
+ - 06afe09091ee ("mptcp: add userspace_pm_lookup_addr_by_id helper")
+ - af250c27ea1c ("mptcp: drop lookup_by_id in lookup_addr")
+
+The Stable-dep-of tags have been added to these patches.
+
+Geliang Tang (5):
+  mptcp: define more local variables sk
+  mptcp: add userspace_pm_lookup_addr_by_id helper
+  mptcp: update local address flags when setting it
+  mptcp: hold pm lock when deleting entry
+  mptcp: drop lookup_by_id in lookup_addr
+
+Matthieu Baerts (NGI0) (1):
+  mptcp: pm: use _rcu variant under rcu_read_lock
+
+ net/mptcp/pm_netlink.c   | 15 ++++----
+ net/mptcp/pm_userspace.c | 77 ++++++++++++++++++++++++++--------------
+ 2 files changed, 58 insertions(+), 34 deletions(-)
 
 -- 
-With best wishes
-Dmitry
+2.45.2
+
 
