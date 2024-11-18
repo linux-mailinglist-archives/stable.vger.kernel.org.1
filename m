@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-93780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C269D0ED6
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:46:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC75B9D0E54
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6C77B2CB5D
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759031F217A5
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3C1194A5A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1A4194A60;
 	Mon, 18 Nov 2024 10:18:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903DA25760
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A492617C224
 	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 10:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925114; cv=none; b=upPHVsoroZH//DNUPMW2WQfekuLB0FEAaWhMsOmG8Mgbs4Iqh+fnnDWxQQ3nN6yO1kD2IfTEFDQhi9J4RohwY0TOsYgynfutU2gsKJigvgb9N0iL785BnWyLdTOltbF8ZksBCIkXasrVZamxoXqx3N3908b6bLit7wPWdTIdVwo=
+	t=1731925114; cv=none; b=PG9TyDxKtEway/KC3UUFV4ZrfsmMNStB42gQKw8k7qXrbQ9ydLjCYjgQ2l22nTj/2Ol16IkbYr+/UrSYfaxs0BQXfipZ+qlxV/JDeRqWdsvKfNUwKJvb8sT5FuL3ctbC4bsLGd4rReN3+VRuoczuMPfuiOwNB3ZO57mO32hy/o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731925114; c=relaxed/simple;
-	bh=Wv1797IJSAgCC7GxD5Esae+WJaTsqEoerXMj5gRaEr8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TxES/29YIYEdsizvafdJJbqmft5kHUXt/o194A/2BS4y+w2EQ+tANeawFhMmpticlpldVK8+HfwB0DiMJSFS6+zmIdYOPHF2sjciJ//bA4+3O763RpXsW9O8Wd5WsF5B41XP1Wp+iUouGhkvffjVlWvjCoJPawe9FeiIG+F0nS0=
+	bh=Iy2Gvq6LLru+B142klb6yQpukUOOmTYNXyzt7ruXzaM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fiaRRnbqUyHaiJyIrzlx90aAwQQ9t4yka42UVv4oBc9hfJVw6yq4yeu9cuvvYSd/vWNiOk3sxW7I7mcO5ikHbluue1yBhCbedHK+zQKm07wa5dk3iTURzWzWbECpPRsubjtScmlgdLlibjuhwf2RM1i1FB5V+AnrW9yNRc8jRTU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id 19AF82337F;
+	by air.basealt.ru (Postfix) with ESMTPSA id 630382338D;
 	Mon, 18 Nov 2024 13:18:24 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org
 Cc: kovalev@altlinux.org
-Subject: [PATCH 6.6.y 0/2] ext4: Fix warning related to siphash and ext4 filesystem mounting
-Date: Mon, 18 Nov 2024 13:18:09 +0300
-Message-Id: <20241118101811.15896-1-kovalev@altlinux.org>
+Subject: [PATCH 1/2] ext4: filesystems without casefold feature cannot be mounted with siphash
+Date: Mon, 18 Nov 2024 13:18:10 +0300
+Message-Id: <20241118101811.15896-2-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
+In-Reply-To: <20241118101811.15896-1-kovalev@altlinux.org>
+References: <20241118101811.15896-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,44 +51,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Found by syzbot (https://syzkaller.appspot.com/bug?extid=340581ba9dceb7e06fb3)
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-log (6.6.61):
+[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
 
-EXT4-fs (loop0): encrypted files will use data=ordered instead of data journaling mode
-EXT4-fs (loop0): 1 truncate cleaned up
-EXT4-fs (loop0): mounted filesystem 00000000-0000-0000-0000-000000000000 r/w without journal. Quota mode: none.
-fscrypt: AES-256-CTS-CBC using implementation "cts-cbc-aes-aesni"
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 3775 at fs/crypto/fname.c:567 fscrypt_fname_siphash (fs/crypto/fname.c:567) 
-CPU: 0 PID: 3775 Comm: fscrypt_fname_s Not tainted 6.6.61-un-def-alt1.kasan #1
-RIP: 0010:fscrypt_fname_siphash (fs/crypto/fname.c:567 (discriminator 1)) 
-Call Trace:
-<TASK>
-__ext4fs_dirhash (fs/ext4/hash.c:268) 
-ext4fs_dirhash (fs/ext4/hash.c:322) 
-htree_dirblock_to_tree (fs/ext4/namei.c:1127)
-ext4_htree_fill_tree (fs/ext4/namei.c:1222) 
-ext4_readdir (fs/ext4/dir.c:608 fs/ext4/dir.c:142) 
-iterate_dir (fs/readdir.c:106) 
-__x64_sys_getdents64 (fs/readdir.c:406 fs/readdir.c:390 fs/readdir.c:390) 
-do_syscall_64 (arch/x86/entry/common.c:51 arch/x86/entry/common.c:81) 
-...
-</TASK>
+When mounting the ext4 filesystem, if the default hash version is set to
+DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
 
-These patches address a warning encountered when mounting ext4 filesystems
-with the default hash version set to SIPHASH while the casefold feature is not
-enabled. The warning occurs due to incorrect error handling and setup of the
-default hash version.
+Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ fs/ext4/super.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-[PATCH 1/2] ext4: filesystems without casefold feature cannot be mounted with siphash
-Ensures that ext4 filesystems with the default hash set to SIPHASH cannot be
-mounted if the casefold feature is not enabled.
-
-[PATCH 2/2] ext4: fix error message when rejecting the default hash
-Corrects the error message logic for rejecting filesystems with the default
-SIPHASH hash version, ensuring the error message doesn't incorrectly
-reference the casefold setup. Also moves the check to ext4_hash_info_init
-to ensure consistency.
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index cf2c8cf507780..68070b1859803 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3559,6 +3559,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+ 	}
+ #endif
+ 
++	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
++	    !ext4_has_feature_casefold(sb)) {
++		ext4_msg(sb, KERN_ERR,
++			 "Filesystem without casefold feature cannot be "
++			 "mounted with siphash");
++		return 0;
++	}
++
+ 	if (readonly)
+ 		return 1;
+ 
+-- 
+2.33.8
 
 
