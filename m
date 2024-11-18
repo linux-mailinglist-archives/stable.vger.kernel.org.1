@@ -1,163 +1,129 @@
-Return-Path: <stable+bounces-93785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40059D0EF1
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:51:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4F29D0EFE
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D773B2D5C1
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E1628298B
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8861990B7;
-	Mon, 18 Nov 2024 10:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CA2198A22;
+	Mon, 18 Nov 2024 10:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="fMbqfWZb"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021B198E6D
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 10:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722D8194C6F;
+	Mon, 18 Nov 2024 10:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925262; cv=none; b=CML67kcGl8RkXIkunpYvUSGm2Nes/9ytaQo4jbEVuoemDzGhPfze7CG6Z1HUZctJap1WJ4YC67YHRysoAy76yiB5C2+cDikpcl+E0iS0ZJfcFxpoSfwtkMybuvajhGp2IXtA45tMD1rTvksh9kCg0MkwVqbqqzEN1faSAnY1lQ0=
+	t=1731927190; cv=none; b=GSwqhhMe7WdZAAPYnuGKcRpjHiBtH6gssIa2YZzvUGP7VHNV5Af17fMv3VNZHCBpkBkPang6si57ivk6iOLBcgbSuQCu8TD3KBTTPQhbModksY16Dp57Vb0x3P8kYTon/oWSzqlRwfW2XjvG5+ojE/aOGLeNASoiU0bgdojS9BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731925262; c=relaxed/simple;
-	bh=VCkHQ6f3mAlnMdGatpZKxHHJ1BEwhcceEaOXrVaUX3c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GXLz4aUaTVr2hRuWfdeD7bhhFtT6t02ROfzqoJCcgHi7Fl5+w8lcQSPCdGNRaMmC8BUVg8fnkf4b5+oEVlCC78dY5ZNUhkBHsY1lHKA2jVUnDAQ/Q/OQ3VfuGNo3jWR36/uUqL5zPq2Xqn+QE7RuBfyL3TGvoFD7YzSnqrfJVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id C2D9923392;
-	Mon, 18 Nov 2024 13:20:58 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Cc: lvc-project@linuxtesting.org,
-	dutyrok@altlinux.org,
-	gerben@altlinux.org,
-	kovalev@altlinux.org
-Subject: [PATCH 3/3] ext4: fix error message when rejecting the default hash
-Date: Mon, 18 Nov 2024 13:20:50 +0300
-Message-Id: <20241118102050.16077-4-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20241118102050.16077-1-kovalev@altlinux.org>
-References: <20241118102050.16077-1-kovalev@altlinux.org>
+	s=arc-20240116; t=1731927190; c=relaxed/simple;
+	bh=+x9gh2Y5UcQuq8aK2A9oGJ1F6zkRC9ZHYRXLcWailTY=;
+	h=Subject:MIME-Version:Content-Type:Date:Message-ID:CC:From:To:
+	 References:In-Reply-To; b=J/y6REugz8ulayuu2stOtuTUIbvz3mYD31V9it6gcHdeIn5KOdtQ5IundRfQvWD3j/+skI0OkODRvAhsj1hG5+ipsRVvw5GVxSs/S15doay+hf12u25OH47ftNjlaWEA9Q2cQVVZSoqO8FdCC2PtOpSyIToYUnqjdmUMouuFY9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=fMbqfWZb; arc=none smtp.client-ip=52.119.213.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731927189; x=1763463189;
+  h=mime-version:content-transfer-encoding:date:message-id:
+   cc:from:to:references:in-reply-to:subject;
+  bh=+x9gh2Y5UcQuq8aK2A9oGJ1F6zkRC9ZHYRXLcWailTY=;
+  b=fMbqfWZbJeocjYY4bYz5kM0yjX4lViqld/qPJzFeoc6IkrMe0wbfzD3G
+   O8dEOuaJGToPwgd1mpQla7MLD6rrD/ftRVnJrkQNJ9eTsv334vGkN1zW1
+   gYpri1NStlIzwsi8gkG96d2nchHAlJodrw0gUJr6hjwelMZ4+1WHtXWCK
+   w=;
+X-IronPort-AV: E=Sophos;i="6.12,163,1728950400"; 
+   d="scan'208";a="696016659"
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 10:53:05 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.10.100:44201]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.18.131:2525] with esmtp (Farcaster)
+ id faa7a066-a7f2-435f-ad58-ea2403f89473; Mon, 18 Nov 2024 10:53:04 +0000 (UTC)
+X-Farcaster-Flow-ID: faa7a066-a7f2-435f-ad58-ea2403f89473
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 18 Nov 2024 10:53:03 +0000
+Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
+ (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Mon, 18 Nov 2024
+ 10:52:59 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 18 Nov 2024 10:52:56 +0000
+Message-ID: <D5P8Y0SCMRJZ.2VAI4IK2RCOAC@amazon.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Matt Fleming
+	<matt@codeblueprint.co.uk>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stanspas@amazon.de>,
+	<nh-open-source@amazon.com>, <stable@vger.kernel.org>
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+X-Mailer: aerc 0.18.2-87-gd0484b153aa5-dirty
+References: <20241112185217.48792-1-nsaenz@amazon.com>
+ <20241112185217.48792-2-nsaenz@amazon.com>
+ <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+X-ClientProxiedBy: EX19D032UWA002.ant.amazon.com (10.13.139.81) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+On Fri Nov 15, 2024 at 4:39 PM UTC, Ard Biesheuvel wrote:
+> On Tue, 12 Nov 2024 at 19:53, Nicolas Saenz Julienne <nsaenz@amazon.com> =
+wrote:
+>>
+>> Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+>> routine, kexec_enter_virtual_mode(), which replays the mappings made by
+>> the original kernel. Unfortunately, that function fails to reinstate
+>> EFI's memory attributes, which would've otherwise been set after
+>> entering virtual mode. Remediate this by calling
+>> efi_runtime_update_mappings() within kexec's routine.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TAB=
+LE")
+>> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+>>
+>> ---
+>>
+>> Notes:
+>> - Tested with QEMU/OVMF.
+>>
+>
+>
+> I'll queue these up,
 
-[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
+Thanks!
 
-Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
-be mounted with siphash") properly rejects volumes where
-s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
-error message should not look into casefold setup - a filesystem should
-never have DX_HASH_SIPHASH as the default hash.  Fix it and, since we
-are there, move the check to ext4_hash_info_init.
+> but I am going drop the cc stable: the memory attributes table is an
+> overlay of the EFI memory map with restricted permissions for EFI
+> runtime services regions, which are only mapped while a EFI runtime
+> call is in progress.
+>
+> So if the table is not taken into account after kexec, the runtime
+> code and data mappings will all be RWX but I think this is a situation
+> we can live with. If nothing breaks, we can always revisit this later
+> if there is an actual need.
 
-Fixes:985b67cd8639 ("ext4: filesystems without casefold feature cannot
-be mounted with siphash")
+My intention was backporting the fix all the way to
+'stable/linux-5.10.y'. But I'm happy to wait, or even to maintain an
+internal backport. It's simple enough.
 
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- fs/ext4/ext4.h  |  1 +
- fs/ext4/super.c | 28 +++++++++++++++++-----------
- 2 files changed, 18 insertions(+), 11 deletions(-)
-
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 72abb8d6caf75..d5706aedf4fef 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -2449,6 +2449,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
- #define DX_HASH_HALF_MD4_UNSIGNED	4
- #define DX_HASH_TEA_UNSIGNED		5
- #define DX_HASH_SIPHASH			6
-+#define DX_HASH_LAST 			DX_HASH_SIPHASH
- 
- static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
- 			      const void *address, unsigned int length)
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 68070b1859803..3e4b9bf101454 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -3559,14 +3559,6 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
- 	}
- #endif
- 
--	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
--	    !ext4_has_feature_casefold(sb)) {
--		ext4_msg(sb, KERN_ERR,
--			 "Filesystem without casefold feature cannot be "
--			 "mounted with siphash");
--		return 0;
--	}
--
- 	if (readonly)
- 		return 1;
- 
-@@ -5050,16 +5042,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
- 	return ret;
- }
- 
--static void ext4_hash_info_init(struct super_block *sb)
-+static int ext4_hash_info_init(struct super_block *sb)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_super_block *es = sbi->s_es;
- 	unsigned int i;
- 
-+	sbi->s_def_hash_version = es->s_def_hash_version;
-+
-+	if (sbi->s_def_hash_version > DX_HASH_LAST) {
-+		ext4_msg(sb, KERN_ERR,
-+			 "Invalid default hash set in the superblock");
-+		return -EINVAL;
-+	} else if (sbi->s_def_hash_version == DX_HASH_SIPHASH) {
-+		ext4_msg(sb, KERN_ERR,
-+			 "SIPHASH is not a valid default hash value");
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < 4; i++)
- 		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
- 
--	sbi->s_def_hash_version = es->s_def_hash_version;
- 	if (ext4_has_feature_dir_index(sb)) {
- 		i = le32_to_cpu(es->s_flags);
- 		if (i & EXT2_FLAGS_UNSIGNED_HASH)
-@@ -5077,6 +5080,7 @@ static void ext4_hash_info_init(struct super_block *sb)
- #endif
- 		}
- 	}
-+	return 0;
- }
- 
- static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
-@@ -5234,7 +5238,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
- 	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
- 
--	ext4_hash_info_init(sb);
-+	err = ext4_hash_info_init(sb);
-+	if (err)
-+		goto failed_mount;
- 
- 	if (ext4_handle_clustersize(sb))
- 		goto failed_mount;
--- 
-2.33.8
-
+Nicolas
 
