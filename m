@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-93876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11F29D1B99
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8722C9D1BA0
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9481F224C5
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 23:04:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D53D1F220C8
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 23:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755891E7658;
-	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A751D1E6DC2;
+	Mon, 18 Nov 2024 23:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ofi2ccV0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUhqpemS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3164F1D0DDE;
-	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63339153BE4;
+	Mon, 18 Nov 2024 23:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731971087; cv=none; b=VWMQeZSpoj7ZEbm5Hie5mZJsX+ybwUEoq8T24JTWkdVkbMKMIE83B3vCsA02JmHDQRSU+CmqyEvYwWjBVVslXPFs1B1qQVBbEp7KCFL97NjGJtFewVHfYUQlF4/91qDb3L3qyI50IWM+WG4OOw1pLI6RC/wYujAScdJ60Wr93x4=
+	t=1731971134; cv=none; b=khoy7Wpl2ki2JfHrpJ7uWw+ypsXxcMT4QJ7v5iTSKKAfa9gqTFUiNAGHK9SLTJ7WG/UclcShT1hLJygqtPtDSohNOFS1SeIExTWqJUlnnvI989A0ZIRL9vmXFRnt+1313m7FOxGToswRdjUYSb9D5cn/sKx7v9FdIX0jNPmF/mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731971087; c=relaxed/simple;
-	bh=jmJ4H6fsAxmvUhHg1MxFBsdBZX3AUZ6jOHO+8MLFBT0=;
+	s=arc-20240116; t=1731971134; c=relaxed/simple;
+	bh=Z1R38SnehH6MB09rjsLVKG/DpEtCFdEVtBvmiBtwzRs=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EXuRb2+N1MhxqddRdU64IWIDQUbfV5ug29bOQmAA/lvLBZkilrvTsOqBF4noch9iOWV+Xckn3yQ2n7RAsUvuW516WXDQZ/c8K7lwgbF7QaA/egmrPu296j/0z8qntah74THZSrEtJXGxkY+lOWEGBKBA/KzrTChyGaDoWMXu7qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ofi2ccV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE72C4CECC;
-	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VWP5FJmgnQ7zHwrRYZWT5NXEqCjtp3rVri76E3/uGN5vD14L3Yrn6cDE+O/qKE63ZDcUopsVCckEZeOfQ1h0YPbVivLGixxL4mOm4NxdLwVXV34WFwf2z0MZlr3p+ldNn9FvtrbDZLeoiStG6vXLUCZKc0CdMJx+AsjAlbNfXq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUhqpemS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8875C4CECC;
+	Mon, 18 Nov 2024 23:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731971087;
-	bh=jmJ4H6fsAxmvUhHg1MxFBsdBZX3AUZ6jOHO+8MLFBT0=;
+	s=k20201202; t=1731971134;
+	bh=Z1R38SnehH6MB09rjsLVKG/DpEtCFdEVtBvmiBtwzRs=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=Ofi2ccV0N2DNh6FYsiAcx/pB38aEW+WhTDDHP3QsUNQ14RAV/KaaPVeXw/z7Ly0Wf
-	 xQmLy2OuX0LrkuAjyDyqvRjxzRx3gSKrfpQ6nRxwteGoLgvUvoPzLS5LJ6Q7KPJq/a
-	 xn3F9sITBCOIa+PjwOfn2P5+xdRYzPRkHhu8WsRbceLtiXWPV1Ad9PrGMOiC6kemGG
-	 wPLSQy1Eyy3A1SczwiEzZjCi0nRZkslg2ZNGzY2G7z0zxZr/vitQLr8bf58Ef1AlCc
-	 HqNPMB5MF/CG45R8mEOk84ptJTPH1tEhQaDoX3uQAaJrYOjTFz9NeeTrSrdxr2jLcz
-	 B080Mas4Bl3jw==
-Date: Mon, 18 Nov 2024 15:04:46 -0800
-Subject: [PATCH 01/10] xfs: fix off-by-one error in fsmap's end_daddr usage
+	b=gUhqpemSRhq6NmCLcWYN18N2Wa9W887z1dlvusLtaDPCBPNNHVRbQbDXaWCswy/F+
+	 F6R661Ec3+//MB7HuFbalcax38JfD5b6WyFO6v7M3W4vJSa0V6HYyQUpTrcCf9tbVj
+	 nB/tnNaGlHnJgG0Pb5qME5MB9ydPHewgjTWkDn9HxowI2f1206Tt/JysbDLxnrWaE4
+	 aZGMeGnarCWbwoT9q0eM/O79qdBaZWiwDTqQkWN1rTd5rLDZunKULek7mXOZtdsL3i
+	 53Dsk2fM+Cbhrgzqxgqmr0XNTWVXlyZ4TfRq1xeWrPjCEMEH9N1/TFfrs7qogOLOMI
+	 5fRdffg/Se6TQ==
+Date: Mon, 18 Nov 2024 15:05:33 -0800
+Subject: [PATCH 04/10] xfs: return a 64-bit block count from
+ xfs_btree_count_blocks
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org
-Cc: stable@vger.kernel.org, wozizhi@huawei.com, hch@lst.de,
- linux-xfs@vger.kernel.org
-Message-ID: <173197084431.911325.16302324218533112215.stgit@frogsfrogsfrogs>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Message-ID: <173197084481.911325.2907716202971546808.stgit@frogsfrogsfrogs>
 In-Reply-To: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
 References: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
 Precedence: bulk
@@ -61,124 +61,207 @@ Content-Transfer-Encoding: 7bit
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-In commit ca6448aed4f10a, we created an "end_daddr" variable to fix
-fsmap reporting when the end of the range requested falls in the middle
-of an unknown (aka free on the rmapbt) region.  Unfortunately, I didn't
-notice that the the code sets end_daddr to the last sector of the device
-but then uses that quantity to compute the length of the synthesized
-mapping.
+With the nrext64 feature enabled, it's possible for a data fork to have
+2^48 extent mappings.  Even with a 64k fsblock size, that maps out to
+a bmbt containing more than 2^32 blocks.  Therefore, this predicate must
+return a u64 count to avoid an integer wraparound that will cause scrub
+to do the wrong thing.
 
-Zizhi Wo later observed that when end_daddr isn't set, we still don't
-report the last fsblock on a device because in that case (aka when
-info->last is true), the info->high mapping that we pass to
-xfs_getfsmap_group_helper has a startblock that points to the last
-fsblock.  This is also wrong because the code uses startblock to
-compute the length of the synthesized mapping.
+It's unlikely that any such filesystem currently exists, because the
+incore bmbt would consume more than 64GB of kernel memory on its own,
+and so far nobody except me has driven a filesystem that far, judging
+from the lack of complaints.
 
-Fix the second problem by setting end_daddr unconditionally, and fix the
-first problem by setting start_daddr to one past the end of the range to
-query.
-
-Cc: <stable@vger.kernel.org> # v6.11
-Fixes: ca6448aed4f10a ("xfs: Fix missing interval for missing_owner in xfs fsmap")
+Cc: <stable@vger.kernel.org> # v5.19
+Fixes: df9ad5cc7a5240 ("xfs: Introduce macros to represent new maximum extent counts for data/attr forks")
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reported-by: Zizhi Wo <wozizhi@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/xfs/xfs_fsmap.c |   38 ++++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 16 deletions(-)
+ fs/xfs/libxfs/xfs_btree.c        |    4 ++--
+ fs/xfs/libxfs/xfs_btree.h        |    2 +-
+ fs/xfs/libxfs/xfs_ialloc_btree.c |    4 +++-
+ fs/xfs/scrub/agheader.c          |    6 +++---
+ fs/xfs/scrub/agheader_repair.c   |    6 +++---
+ fs/xfs/scrub/fscounters.c        |    2 +-
+ fs/xfs/scrub/ialloc.c            |    4 ++--
+ fs/xfs/scrub/refcount.c          |    2 +-
+ fs/xfs/xfs_bmap_util.c           |    2 +-
+ 9 files changed, 17 insertions(+), 15 deletions(-)
 
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index 82f2e0dd224997..3290dd8524a69a 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -163,7 +163,8 @@ struct xfs_getfsmap_info {
- 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
- 	/* daddr of low fsmap key when we're using the rtbitmap */
- 	xfs_daddr_t		low_daddr;
--	xfs_daddr_t		end_daddr;	/* daddr of high fsmap key */
-+	/* daddr of high fsmap key, or the last daddr on the device */
-+	xfs_daddr_t		end_daddr;
- 	u64			missing_owner;	/* owner of holes */
- 	u32			dev;		/* device id */
- 	/*
-@@ -387,8 +388,8 @@ xfs_getfsmap_group_helper(
- 	 * we calculated from userspace's high key to synthesize the record.
- 	 * Note that if the btree query found a mapping, there won't be a gap.
- 	 */
--	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL)
--		frec->start_daddr = info->end_daddr;
-+	if (info->last)
-+		frec->start_daddr = info->end_daddr + 1;
- 	else
- 		frec->start_daddr = xfs_gbno_to_daddr(xg, startblock);
+diff --git a/fs/xfs/libxfs/xfs_btree.c b/fs/xfs/libxfs/xfs_btree.c
+index 2b5fc5fd16435d..c748866ef92368 100644
+--- a/fs/xfs/libxfs/xfs_btree.c
++++ b/fs/xfs/libxfs/xfs_btree.c
+@@ -5144,7 +5144,7 @@ xfs_btree_count_blocks_helper(
+ 	int			level,
+ 	void			*data)
+ {
+-	xfs_extlen_t		*blocks = data;
++	xfs_filblks_t		*blocks = data;
+ 	(*blocks)++;
  
-@@ -736,11 +737,10 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
- 	 * we calculated from userspace's high key to synthesize the record.
- 	 * Note that if the btree query found a mapping, there won't be a gap.
- 	 */
--	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL) {
--		frec.start_daddr = info->end_daddr;
--	} else {
-+	if (info->last)
-+		frec.start_daddr = info->end_daddr + 1;
-+	else
- 		frec.start_daddr = xfs_rtb_to_daddr(mp, start_rtb);
--	}
+ 	return 0;
+@@ -5154,7 +5154,7 @@ xfs_btree_count_blocks_helper(
+ int
+ xfs_btree_count_blocks(
+ 	struct xfs_btree_cur	*cur,
+-	xfs_extlen_t		*blocks)
++	xfs_filblks_t		*blocks)
+ {
+ 	*blocks = 0;
+ 	return xfs_btree_visit_blocks(cur, xfs_btree_count_blocks_helper,
+diff --git a/fs/xfs/libxfs/xfs_btree.h b/fs/xfs/libxfs/xfs_btree.h
+index 3b739459ebb0f4..c5bff273cae255 100644
+--- a/fs/xfs/libxfs/xfs_btree.h
++++ b/fs/xfs/libxfs/xfs_btree.h
+@@ -484,7 +484,7 @@ typedef int (*xfs_btree_visit_blocks_fn)(struct xfs_btree_cur *cur, int level,
+ int xfs_btree_visit_blocks(struct xfs_btree_cur *cur,
+ 		xfs_btree_visit_blocks_fn fn, unsigned int flags, void *data);
  
- 	frec.len_daddr = XFS_FSB_TO_BB(mp, rtbcount);
- 	return xfs_getfsmap_helper(tp, info, &frec);
-@@ -933,7 +933,10 @@ xfs_getfsmap(
- 	struct xfs_trans		*tp = NULL;
- 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
- 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
--	struct xfs_getfsmap_info	info = { NULL };
-+	struct xfs_getfsmap_info	info = {
-+		.fsmap_recs		= fsmap_recs,
-+		.head			= head,
-+	};
- 	bool				use_rmap;
- 	int				i;
- 	int				error = 0;
-@@ -998,9 +1001,6 @@ xfs_getfsmap(
+-int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_extlen_t *blocks);
++int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_filblks_t *blocks);
  
- 	info.next_daddr = head->fmh_keys[0].fmr_physical +
- 			  head->fmh_keys[0].fmr_length;
--	info.end_daddr = XFS_BUF_DADDR_NULL;
--	info.fsmap_recs = fsmap_recs;
--	info.head = head;
+ union xfs_btree_rec *xfs_btree_rec_addr(struct xfs_btree_cur *cur, int n,
+ 		struct xfs_btree_block *block);
+diff --git a/fs/xfs/libxfs/xfs_ialloc_btree.c b/fs/xfs/libxfs/xfs_ialloc_btree.c
+index 9b34896dd1a32f..6f270d8f4270cb 100644
+--- a/fs/xfs/libxfs/xfs_ialloc_btree.c
++++ b/fs/xfs/libxfs/xfs_ialloc_btree.c
+@@ -744,6 +744,7 @@ xfs_finobt_count_blocks(
+ {
+ 	struct xfs_buf		*agbp = NULL;
+ 	struct xfs_btree_cur	*cur;
++	xfs_filblks_t		blocks;
+ 	int			error;
  
- 	/* For each device we support... */
- 	for (i = 0; i < XFS_GETFSMAP_DEVS; i++) {
-@@ -1013,17 +1013,23 @@ xfs_getfsmap(
- 			break;
+ 	error = xfs_ialloc_read_agi(pag, tp, 0, &agbp);
+@@ -751,9 +752,10 @@ xfs_finobt_count_blocks(
+ 		return error;
  
- 		/*
--		 * If this device number matches the high key, we have
--		 * to pass the high key to the handler to limit the
--		 * query results.  If the device number exceeds the
--		 * low key, zero out the low key so that we get
--		 * everything from the beginning.
-+		 * If this device number matches the high key, we have to pass
-+		 * the high key to the handler to limit the query results, and
-+		 * set the end_daddr so that we can synthesize records at the
-+		 * end of the query range or device.
- 		 */
- 		if (handlers[i].dev == head->fmh_keys[1].fmr_device) {
- 			dkeys[1] = head->fmh_keys[1];
- 			info.end_daddr = min(handlers[i].nr_sectors - 1,
- 					     dkeys[1].fmr_physical);
-+		} else {
-+			info.end_daddr = handlers[i].nr_sectors - 1;
- 		}
-+
-+		/*
-+		 * If the device number exceeds the low key, zero out the low
-+		 * key so that we get everything from the beginning.
-+		 */
- 		if (handlers[i].dev > head->fmh_keys[0].fmr_device)
- 			memset(&dkeys[0], 0, sizeof(struct xfs_fsmap));
+ 	cur = xfs_finobt_init_cursor(pag, tp, agbp);
+-	error = xfs_btree_count_blocks(cur, tree_blocks);
++	error = xfs_btree_count_blocks(cur, &blocks);
+ 	xfs_btree_del_cursor(cur, error);
+ 	xfs_trans_brelse(tp, agbp);
++	*tree_blocks = blocks;
  
+ 	return error;
+ }
+diff --git a/fs/xfs/scrub/agheader.c b/fs/xfs/scrub/agheader.c
+index 61f80a6410c738..1d41b85478da9d 100644
+--- a/fs/xfs/scrub/agheader.c
++++ b/fs/xfs/scrub/agheader.c
+@@ -458,7 +458,7 @@ xchk_agf_xref_btreeblks(
+ {
+ 	struct xfs_agf		*agf = sc->sa.agf_bp->b_addr;
+ 	struct xfs_mount	*mp = sc->mp;
+-	xfs_agblock_t		blocks;
++	xfs_filblks_t		blocks;
+ 	xfs_agblock_t		btreeblks;
+ 	int			error;
+ 
+@@ -507,7 +507,7 @@ xchk_agf_xref_refcblks(
+ 	struct xfs_scrub	*sc)
+ {
+ 	struct xfs_agf		*agf = sc->sa.agf_bp->b_addr;
+-	xfs_agblock_t		blocks;
++	xfs_filblks_t		blocks;
+ 	int			error;
+ 
+ 	if (!sc->sa.refc_cur)
+@@ -840,7 +840,7 @@ xchk_agi_xref_fiblocks(
+ 	struct xfs_scrub	*sc)
+ {
+ 	struct xfs_agi		*agi = sc->sa.agi_bp->b_addr;
+-	xfs_agblock_t		blocks;
++	xfs_filblks_t		blocks;
+ 	int			error = 0;
+ 
+ 	if (!xfs_has_inobtcounts(sc->mp))
+diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
+index 0fad0baaba2f69..b45d2b32051a63 100644
+--- a/fs/xfs/scrub/agheader_repair.c
++++ b/fs/xfs/scrub/agheader_repair.c
+@@ -256,7 +256,7 @@ xrep_agf_calc_from_btrees(
+ 	struct xfs_agf		*agf = agf_bp->b_addr;
+ 	struct xfs_mount	*mp = sc->mp;
+ 	xfs_agblock_t		btreeblks;
+-	xfs_agblock_t		blocks;
++	xfs_filblks_t		blocks;
+ 	int			error;
+ 
+ 	/* Update the AGF counters from the bnobt. */
+@@ -946,7 +946,7 @@ xrep_agi_calc_from_btrees(
+ 	if (error)
+ 		goto err;
+ 	if (xfs_has_inobtcounts(mp)) {
+-		xfs_agblock_t	blocks;
++		xfs_filblks_t	blocks;
+ 
+ 		error = xfs_btree_count_blocks(cur, &blocks);
+ 		if (error)
+@@ -959,7 +959,7 @@ xrep_agi_calc_from_btrees(
+ 	agi->agi_freecount = cpu_to_be32(freecount);
+ 
+ 	if (xfs_has_finobt(mp) && xfs_has_inobtcounts(mp)) {
+-		xfs_agblock_t	blocks;
++		xfs_filblks_t	blocks;
+ 
+ 		cur = xfs_finobt_init_cursor(sc->sa.pag, sc->tp, agi_bp);
+ 		error = xfs_btree_count_blocks(cur, &blocks);
+diff --git a/fs/xfs/scrub/fscounters.c b/fs/xfs/scrub/fscounters.c
+index 4a50f8e0004092..ca23cf4db6c5ef 100644
+--- a/fs/xfs/scrub/fscounters.c
++++ b/fs/xfs/scrub/fscounters.c
+@@ -261,7 +261,7 @@ xchk_fscount_btreeblks(
+ 	struct xchk_fscounters	*fsc,
+ 	xfs_agnumber_t		agno)
+ {
+-	xfs_extlen_t		blocks;
++	xfs_filblks_t		blocks;
+ 	int			error;
+ 
+ 	error = xchk_ag_init_existing(sc, agno, &sc->sa);
+diff --git a/fs/xfs/scrub/ialloc.c b/fs/xfs/scrub/ialloc.c
+index abad54c3621d44..4dc7c83dc08a40 100644
+--- a/fs/xfs/scrub/ialloc.c
++++ b/fs/xfs/scrub/ialloc.c
+@@ -650,8 +650,8 @@ xchk_iallocbt_xref_rmap_btreeblks(
+ 	struct xfs_scrub	*sc)
+ {
+ 	xfs_filblks_t		blocks;
+-	xfs_extlen_t		inobt_blocks = 0;
+-	xfs_extlen_t		finobt_blocks = 0;
++	xfs_filblks_t		inobt_blocks = 0;
++	xfs_filblks_t		finobt_blocks = 0;
+ 	int			error;
+ 
+ 	if (!sc->sa.ino_cur || !sc->sa.rmap_cur ||
+diff --git a/fs/xfs/scrub/refcount.c b/fs/xfs/scrub/refcount.c
+index 2b6be75e942415..1c5e45cc64190c 100644
+--- a/fs/xfs/scrub/refcount.c
++++ b/fs/xfs/scrub/refcount.c
+@@ -491,7 +491,7 @@ xchk_refcount_xref_rmap(
+ 	struct xfs_scrub	*sc,
+ 	xfs_filblks_t		cow_blocks)
+ {
+-	xfs_extlen_t		refcbt_blocks = 0;
++	xfs_filblks_t		refcbt_blocks = 0;
+ 	xfs_filblks_t		blocks;
+ 	int			error;
+ 
+diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
+index 1fe676710394e1..d08505bdfe17a3 100644
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -112,7 +112,7 @@ xfs_bmap_count_blocks(
+ 	struct xfs_mount	*mp = ip->i_mount;
+ 	struct xfs_ifork	*ifp = xfs_ifork_ptr(ip, whichfork);
+ 	struct xfs_btree_cur	*cur;
+-	xfs_extlen_t		btblocks = 0;
++	xfs_filblks_t		btblocks = 0;
+ 	int			error;
+ 
+ 	*nextents = 0;
 
 
