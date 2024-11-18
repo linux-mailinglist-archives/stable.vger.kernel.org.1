@@ -1,275 +1,125 @@
-Return-Path: <stable+bounces-93816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177C79D16B9
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:06:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C229D16F8
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F521F2298B
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 17:06:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41010B26DCF
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 17:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9871BDA8C;
-	Mon, 18 Nov 2024 17:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0B61C1F2F;
+	Mon, 18 Nov 2024 17:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqF6lU9o"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Xh+9nKA5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEA21BD4E2;
-	Mon, 18 Nov 2024 17:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780CE198E99
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 17:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731949554; cv=none; b=QDG1sE/3Qx1HZUMAeGuIH2UuTaiwWETZziVBopUh2xkqdO51wtKclCIZ44wL6MKdD2ce2oGgdeSNiYYSYjkcpzVuBbqisMm+Iq9i1ltqJfAWUgiFZTAYcjcy4vgcTXpHyD9ubFxJt9lOvWxgCoxtv4771dP4aUOLoBJ/EKg9vSI=
+	t=1731950218; cv=none; b=SO8eVTKjGSX6OlZfy9gk0Xje3PtessbwKOt3Z96yAzWYWA+mMZcTK5/7g9SZLl/n18Ji4HI25N8AaMEDnbGA0ShD9azyCanW8xQRxmu4iMsnrtqGCXXaN3z6bD6icEfVuWkFzuESkAZsssKF7M596CL2eltPlywnQ0Ok3I0z79w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731949554; c=relaxed/simple;
-	bh=j/2iHbWKdqr4IOdfrNOHbbHzH5o8YVW0WXIAyZt5DkE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lqtxx8liJYn6vobPtbQPKu9yb+b+jwztJd8INgJVNVcezTuDUpPv0mBirEXs6FoVoCS/8B/Vr7rZ6L2hp5e9RIoxdgfnUVpNd7UjVNqPzHxs2wKdmJ53E2uDpOqXMuO8RAYwV5ow5cxIQ63jEwKUn6+qp70k5ZnnKC3QZX8q7y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqF6lU9o; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cfaeed515bso2677584a12.1;
-        Mon, 18 Nov 2024 09:05:50 -0800 (PST)
+	s=arc-20240116; t=1731950218; c=relaxed/simple;
+	bh=CWDBNXH4jHoe58BC2k4dunSk0tlK38O1mGHvoIYY04o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=g0YaM/9rWDqCE+EUh5u2zRJY7u3g6U27V4fm8OKkc2/KpM2CkdY89AqIcfvEho7TCXWd/j++yL3oYlTKsFZxMMqHoOkBqnqEfUxeFicAihLxC5rxLNxnpM/bFxJ+j1Km6zfshe2/v3QZ2T/J8yODY2+xt6Ocr4r3fwukPonRdNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Xh+9nKA5; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6d40e69577dso357856d6.3
+        for <stable@vger.kernel.org>; Mon, 18 Nov 2024 09:16:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731949549; x=1732554349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RAAcT/OPi/xTEIu4o5P9ht6vtv0FiG41VgA9+8+Ke2o=;
-        b=KqF6lU9oZXcmwgqIpZnc1Z4+Vp1kfFAK6fwWGAFy7CHsOfjXVd3MvvoYpAdar/BEdJ
-         4y8qgNE3P47TFmjEZPv7jAbrMyds5m1bWtVQQatTElWzri9MA+w4ojWSsV+lOS8e7ydA
-         VtvkpkPmkaDgwM9VHaMCKP8ggTfcJGwLd1ByGH3M6jepfXUPkfIOEG97fBC/b4J/YFc/
-         ZG30/quBj8vKBzCKucoW4Ejk6B3P4EMjU3YVzushBPmbHePvQIuqwB+AYS+6WEtxh7DO
-         ueyb1arXyualxkcS03FGmI50e7QwJPRBRlLRMnJWI7Tv7yyrm5sNUA4qZlyi9dSYm3/a
-         f1Bg==
+        d=chromium.org; s=google; t=1731950216; x=1732555016; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0s+PWv/U6gq3vAzVYG7RCYvqQjttSAdHzrpbiuMrdnc=;
+        b=Xh+9nKA5y8a4lqYh5gOOD9nBvqPXrdM41wXbg/+3zvOmd9vPxvHsSTtm6QYKoE3y4o
+         /2IxWOdXKUWhXWI8XOeEHj/kadQl0bcjL5ZH2olTXRiIciMrmSIL7JAm/6IOj5BuIP9F
+         3lwrVwlhilRcWKkYx3yuL1TRt8ZFl+5BRf7a4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731949549; x=1732554349;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RAAcT/OPi/xTEIu4o5P9ht6vtv0FiG41VgA9+8+Ke2o=;
-        b=aglXXPwM8E1fOkSvOwCHLWSb0423sEDvhkAIO111L/PGTZJiBlya8PiA5uP43FC7mE
-         5fMIKjePBXz2ItRD0NRHbyDnh+MTbr5XQpic2nJE4WwaNMSE0fR98VRWEFG7Jk9UWLtR
-         W+ljr79FbF13wIRSbCG5vEIoz1fvvVbVfwO20RlFXuHMkqUqebshVqbNt0lm3f/xv+aP
-         YyIRrQGoeponOdG+IpMtC+e4heDa5TWk9rnSd0W7SZ47wpmIdw8reR+o1mFcF4XJS+ut
-         IakkOec048Hha3UmOV4E21Grqz8nqooIVQG7EX96arIeTg8BsjTqEOsH1sL9lKGzPw+T
-         y62g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYrYyv+8wFyFjQhgaCWulmPUeqJQE/ZNhXr0k5o9jZK4ukkKUPGHx4ooVW/s49FrC0GBujvo2X@vger.kernel.org, AJvYcCWk3+IJDkoTWKOf9UVKRnhCiJM6Oey6L6sCYkRQleHy4zGmPqiyEPVvAqpoAZmZ5vczijzq9es9U+AkgBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrkqrQjIEheeKYc3JB8mi2bl8oDMTLxVRYiO1N366hVXGe34+e
-	24r+3RgrnfdRBifnVhIydKb95HnH5ZxIu+qOSMsQwwQ5GAdphkpbqOqSJXyWAcNkVR7LSqisG5O
-	OBr6CHq/6g0NcatANAiJPorfZFBA=
-X-Google-Smtp-Source: AGHT+IFT1a0ahsVwQr/ntY5jBpOYCzQ75ZgH6KFnj0LUci0TFmKYQgqclum4n/5C7Xi5p6jFSBhTk8VTOpuyk1gKTg8=
-X-Received: by 2002:a05:6402:35cd:b0:5cf:9517:e3e3 with SMTP id
- 4fb4d7f45d1cf-5cf9517e555mr10913313a12.25.1731949547556; Mon, 18 Nov 2024
- 09:05:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731950216; x=1732555016;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0s+PWv/U6gq3vAzVYG7RCYvqQjttSAdHzrpbiuMrdnc=;
+        b=xSftB2Ob1j7staiI1PLTqnVv/kXo0dWZK5r+77NPeB5mcbmlzSIm1pOXie9a5yQhE+
+         cBwMRsPwMDUGseo1rYHN98vPPNk2xBqAxghcfQCKzelnNZAbZQAzyIiv8k3R3+7cPef9
+         7ekvryJdzKFgIRAXsAHWc7fZQtI7/is4K59vZweRGItCY4fQEUh5GCtR3OcJA+nuA254
+         4224xBfA3FQI2HrQFkFyAV+UUS5Zk/3IzYfVlizhf+JyZG/E7L5NYcI+vD8D9SuXgzQL
+         3ygJfXw7WRnwmmEBAwYWdqxgLiCfdxW29G6tVzdb4C34/UlSwYrASBACht5XxeFrvocI
+         b5Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIuG5dIeloV8Onclb3ahopFXH5xongNZxKatD+vh3V+jePvmc+pOwr2K+1DDzd/b3NYA6KeDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3CLtS0vDuNpNaJACnmvYE3HlFT1DTP+7+ODEuclGbM2JG19g7
+	PSEtFUH1sJd5ua5pWO+E/g7wC5XgGDPrmDdwj79EBW21oV9o4WSO1tKVn9Oy02TYzsBt6a+SouM
+	=
+X-Google-Smtp-Source: AGHT+IHqgkd9XhI7qGK0AYrkAcHwNlnyYa8PS3ajRxlfV91tztrB7ZusaTQmOAPXjHz6X28n8xkdqw==
+X-Received: by 2002:a05:6214:f07:b0:6d4:a29:dd46 with SMTP id 6a1803df08f44-6d40a29eaa2mr168899606d6.26.1731950216066;
+        Mon, 18 Nov 2024 09:16:56 -0800 (PST)
+Received: from denia.c.googlers.com (189.216.85.34.bc.googleusercontent.com. [34.85.216.189])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d40dd733c3sm38255246d6.97.2024.11.18.09.16.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 09:16:55 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v3 0/2] media: uvcvideo: Support partial control reads and
+ minor changes
+Date: Mon, 18 Nov 2024 17:16:50 +0000
+Message-Id: <20241118-uvc-readless-v3-0-d97c1a3084d0@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115215256.578125-1-kaleshsingh@google.com>
- <CAHbLzkrVoK-y4zc10+=0hDGZLi8+i73wSHciTUOWGDBsEcD0xw@mail.gmail.com> <f0502143-3b37-44aa-a3fa-d468e64b3245@suse.cz>
-In-Reply-To: <f0502143-3b37-44aa-a3fa-d468e64b3245@suse.cz>
-From: Yang Shi <shy828301@gmail.com>
-Date: Mon, 18 Nov 2024 09:05:36 -0800
-Message-ID: <CAHbLzkq+CwMdGprYFa4jrzc3QSJ5eCDcEtp_EwWJ3G-aJmEx6A@mail.gmail.com>
-Subject: Re: [PATCH] mm: Respect mmap hint address when aligning for THP
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kalesh Singh <kaleshsingh@google.com>, kernel-team@android.com, android-mm@google.com, 
-	Andrew Morton <akpm@linux-foundation.org>, Yang Shi <yang@os.amperecomputing.com>, 
-	Rik van Riel <riel@surriel.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Minchan Kim <minchan@kernel.org>, Hans Boehm <hboehm@google.com>, 
-	Lokesh Gidra <lokeshgidra@google.com>, stable@vger.kernel.org, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIJ2O2cC/32MQQ6CMBAAv0L2bE1bigFP/sN4KO0Cmwg1W2k0h
+ L9bOJrocSaZWSAiE0Y4FwswJooUpgzloQA32KlHQT4zaKmNkrIWc3KC0fo7xih02TVt7ayXbQk
+ 5eTB29Np311vmgeIz8Hu/J7XZH6OkhBTSaOtMVavOmIsbOIw0j8fAPWyvpP/1eu994ytlEavTV
+ 7+u6wfDjnjQ6wAAAA==
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-On Sun, Nov 17, 2024 at 3:12=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 11/15/24 23:15, Yang Shi wrote:
-> > On Fri, Nov 15, 2024 at 1:52=E2=80=AFPM Kalesh Singh <kaleshsingh@googl=
-e.com> wrote:
-> >>
-> >> Commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-> >> boundaries") updated __get_unmapped_area() to align the start address
-> >> for the VMA to a PMD boundary if CONFIG_TRANSPARENT_HUGEPAGE=3Dy.
-> >>
-> >> It does this by effectively looking up a region that is of size,
-> >> request_size + PMD_SIZE, and aligning up the start to a PMD boundary.
-> >>
-> >> Commit 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment
-> >> on 32 bit") opted out of this for 32bit due to regressions in mmap bas=
-e
-> >> randomization.
-> >>
-> >> Commit d4148aeab412 ("mm, mmap: limit THP alignment of anonymous
-> >> mappings to PMD-aligned sizes") restricted this to only mmap sizes tha=
-t
-> >> are multiples of the PMD_SIZE due to reported regressions in some
-> >> performance benchmarks -- which seemed mostly due to the reduced spati=
-al
-> >> locality of related mappings due to the forced PMD-alignment.
-> >>
-> >> Another unintended side effect has emerged: When a user specifies an m=
-map
-> >> hint address, the THP alignment logic modifies the behavior, potential=
-ly
-> >> ignoring the hint even if a sufficiently large gap exists at the reque=
-sted
-> >> hint location.
-> >>
-> >> Example Scenario:
-> >>
-> >> Consider the following simplified virtual address (VA) space:
-> >>
-> >>     ...
-> >>
-> >>     0x200000-0x400000 --- VMA A
-> >>     0x400000-0x600000 --- Hole
-> >>     0x600000-0x800000 --- VMA B
-> >>
-> >>     ...
-> >>
-> >> A call to mmap() with hint=3D0x400000 and len=3D0x200000 behaves diffe=
-rently:
-> >>
-> >>   - Before THP alignment: The requested region (size 0x200000) fits in=
-to
-> >>     the gap at 0x400000, so the hint is respected.
-> >>
-> >>   - After alignment: The logic searches for a region of size
-> >>     0x400000 (len + PMD_SIZE) starting at 0x400000.
-> >>     This search fails due to the mapping at 0x600000 (VMA B), and the =
-hint
-> >>     is ignored, falling back to arch_get_unmapped_area[_topdown]().
->
-> Hmm looks like the search is not done in the optimal way regardless of
-> whether or not it ignores a hint - it should be able to find the hole, no=
-?
->
-> >> In general the hint is effectively ignored, if there is any
-> >> existing mapping in the below range:
-> >>
-> >>      [mmap_hint + mmap_size, mmap_hint + mmap_size + PMD_SIZE)
-> >>
-> >> This changes the semantics of mmap hint; from ""Respect the hint if a
-> >> sufficiently large gap exists at the requested location" to "Respect t=
-he
-> >> hint only if an additional PMD-sized gap exists beyond the requested s=
-ize".
-> >>
-> >> This has performance implications for allocators that allocate their h=
-eap
-> >> using mmap but try to keep it "as contiguous as possible" by using the
-> >> end of the exisiting heap as the address hint. With the new behavior
-> >> it's more likely to get a much less contiguous heap, adding extra
-> >> fragmentation and performance overhead.
-> >>
-> >> To restore the expected behavior; don't use thp_get_unmapped_area_vmfl=
-ags()
-> >> when the user provided a hint address.
->
-> Agreed, the hint should take precendence.
->
-> > Thanks for fixing it. I agree we should respect the hint address. But
-> > this patch actually just fixed anonymous mapping and the file mappings
-> > which don't support thp_get_unmapped_area(). So I think you should
-> > move the hint check to __thp_get_unmapped_area().
-> >
-> > And Vlastimil's fix d4148aeab412 ("mm, mmap: limit THP alignment of
-> > anonymous mappings to PMD-aligned sizes") should be moved to there too
-> > IMHO.
->
-> This was brought up, but I didn't want to do it as part of the stable fix=
- as
-> that would change even situations that Rik's change didn't.
-> If the mmap hint change is another stable hotfix, I wouldn't conflate it
-> either. But we can try it for further development. But careful about just
-> moving the code as-is, the file-based mappings are different than anonymo=
-us
-> memory and I believe file offsets matter:
->
-> https://lore.kernel.org/all/9d7c73f6-1e1a-458b-93c6-3b44959022e0@suse.cz/
->
-> https://lore.kernel.org/all/5f7a49e8-0416-4648-a704-a7a67e8cd894@suse.cz/
+Some cameras do not return all the bytes requested from a control
+if it can fit in less bytes. Eg: returning 0xab instead of 0x00ab.
+Support these devices.
 
-Did some research about the history of the code, I found this commit:
+Also, now that we are at it, improve uvc_query_ctrl() logging.
 
-97d3d0f9a1cf ("mm/huge_memory.c: thp: fix conflict of above-47bit hint
-address and PMD alignment"), it tried to fix "the function would not
-try to allocate PMD-aligned area if *any* hint address specified."
-It was for file mapping back then since anonymous mapping THP
-alignment was not supported yet.
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v3:
+- Improve documentation.
+- Do not change return sequence.
+- Use dev_ratelimit and dev_warn_once
+- Link to v2: https://lore.kernel.org/r/20241008-uvc-readless-v2-0-04d9d51aee56@chromium.org
 
-But it seems like this patch somehow tried to do something reverse. It
-may not be correct either.
+Changes in v2:
+- Rewrite error handling (Thanks Sakari)
+- Discard 2/3. It is not needed after rewriting the error handling.
+- Link to v1: https://lore.kernel.org/r/20241008-uvc-readless-v1-0-042ac4581f44@chromium.org
 
-With Vlastimis's fix, we just try to make the address THP aligned for
-anonymous mapping when the size is PMD aligned. So we don't need to
-take into account the padding for anonymous mapping anymore.
+---
+Ricardo Ribalda (2):
+      media: uvcvideo: Support partial control reads
+      media: uvcvideo: Add more logging to uvc_query_ctrl()
 
-So IIUC we should do something like:
+ drivers/media/usb/uvc/uvc_video.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241008-uvc-readless-23f9b8cad0b3
 
-@@ -1085,7 +1085,11 @@ static unsigned long
-__thp_get_unmapped_area(struct file *filp,
-        if (off_end <=3D off_align || (off_end - off_align) < size)
-                return 0;
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
 
--       len_pad =3D len + size;
-+       if (filp)
-+               len_pad =3D len + size;
-+       else
-+               len_pad =3D len;
-+
-        if (len_pad < len || (off + len_pad) < off)
-                return 0;
-
->
-> >> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >> Cc: Vlastimil Babka <vbabka@suse.cz>
-> >> Cc: Yang Shi <yang@os.amperecomputing.com>
-> >> Cc: Rik van Riel <riel@surriel.com>
-> >> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> >> Cc: Suren Baghdasaryan <surenb@google.com>
-> >> Cc: Minchan Kim <minchan@kernel.org>
-> >> Cc: Hans Boehm <hboehm@google.com>
-> >> Cc: Lokesh Gidra <lokeshgidra@google.com>
-> >> Cc: <stable@vger.kernel.org>
-> >> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP bound=
-aries")
-> >> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
->
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->
-> >> ---
-> >>  mm/mmap.c | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/mm/mmap.c b/mm/mmap.c
-> >> index 79d541f1502b..2f01f1a8e304 100644
-> >> --- a/mm/mmap.c
-> >> +++ b/mm/mmap.c
-> >> @@ -901,6 +901,7 @@ __get_unmapped_area(struct file *file, unsigned lo=
-ng addr, unsigned long len,
-> >>         if (get_area) {
-> >>                 addr =3D get_area(file, addr, len, pgoff, flags);
-> >>         } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
-> >> +                  && !addr /* no hint */
-> >>                    && IS_ALIGNED(len, PMD_SIZE)) {
-> >>                 /* Ensures that larger anonymous mappings are THP alig=
-ned. */
-> >>                 addr =3D thp_get_unmapped_area_vmflags(file, addr, len=
-,
-> >>
-> >> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
-> >> --
-> >> 2.47.0.338.g60cca15819-goog
-> >>
->
 
