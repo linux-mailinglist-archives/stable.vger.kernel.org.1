@@ -1,81 +1,69 @@
-Return-Path: <stable+bounces-93793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C37B9D109A
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 13:35:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBEF9D10D3
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 13:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A7B1F22C7E
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 12:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9239D1F232F6
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 12:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A6B1993B2;
-	Mon, 18 Nov 2024 12:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19F319ADA4;
+	Mon, 18 Nov 2024 12:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OXnaAD2Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5Isaf9/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C918190665;
-	Mon, 18 Nov 2024 12:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D0D190468;
+	Mon, 18 Nov 2024 12:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731933303; cv=none; b=mCteqHUJto20OOksmr1VhrFAdiIuKjpLywt+00J0RG0GGikJRc/kXwPdHs2gjP338TUTUDIkPdd4btvALeZafWipXM5ul9eYuTZ9eS0PJqPlO5sbFtPqp3KuIZRw2VkcgOTQvqp4WLPHNbwSD/P8b45TE+a0eBYAjiYo2bioMjU=
+	t=1731933821; cv=none; b=ufa6UZz8b2N8+OrhCnNqM+LrmyLfr66892VrNU0b9F3QGit5JfuIpsR1wIZ4CDp0TwyP4g5X7NcqEvhUsZui4qcryrq+LAV8uswRMP4Z6zTvqao/orIVKpvLBkLwitp9iiKwpTHFyNx1WOLDuHl9uoeqpxpec75ANzUjXbRBXVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731933303; c=relaxed/simple;
-	bh=1QOLDhyKFCcj1qC0kCMyZR1QMMmfAF6c9IjuK1xpGPY=;
+	s=arc-20240116; t=1731933821; c=relaxed/simple;
+	bh=P33LpuhdOaOsy6SERvgsmmUyXLkRAXCmjvEKqwplfY4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rVeHFicxroseKFgvgvkRNa5f/bgmVYEtfdesgooh92DKoYI6Qo8Jig1V7vZQEE9i3Hca5Vol9QRzhvbDxg/s9RPWOP6ya7weTiUNG2CmKmKdXKQ2CbELve7m6eJ1M65KAKMluf4kYKqs1XvguH4OWD2UNh+M87r+LymW+FLhF0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OXnaAD2Q; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731933302; x=1763469302;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=1QOLDhyKFCcj1qC0kCMyZR1QMMmfAF6c9IjuK1xpGPY=;
-  b=OXnaAD2Qq2mvLio5QR1uMJ2bEuFz1zcTtESMpLn/snb2qL1XBCrR3Ss8
-   JGEj+NqtZTjQ0ZtszVWkEhS/utsH+7LHqU9wRjLWSjq57F7U+2fNYyWks
-   NdBYEzE5tNrrhmD6rDIJQJWyofeneBd0H0W+wuxyQbkPH1XhEoUPpVdCx
-   YmiLIeuXSoI8EslLzdK1YIbfTVKETnIajDVYdf4qq/gLFAEuzyAh40sps
-   YjjMcxbtJKSARCP6mSLS5itWYYK/fZMuxXrdTI8GLbM2gI5sb3/oHEa13
-   dpYxvvsfGdP6jZKPfKP6Di/vZ2g8cJ39gt64INTw/S6zVyWmiV/gzDAHt
-   g==;
-X-CSE-ConnectionGUID: QzDAqeYXTY6JauaqnLYYsQ==
-X-CSE-MsgGUID: fLCVol3oRCGdqnp9YzYgOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="32038074"
-X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; 
-   d="scan'208";a="32038074"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 04:35:01 -0800
-X-CSE-ConnectionGUID: B1q4FiRqT6mCukSLw6qJBQ==
-X-CSE-MsgGUID: 8rmFiE4bS/KFyiLxISpb/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="94267318"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 04:35:00 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tD0y1-0000000G0EN-1JwC;
-	Mon, 18 Nov 2024 14:34:57 +0200
-Date: Mon, 18 Nov 2024 14:34:57 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Sai Kumar Cholleti <skmr537@gmail.com>, bgolaszewski@baylibre.com,
-	linux-gpio@vger.kernel.org, mmcclain@noprivs.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] gpio: exar: set value when external pull-up or
- pull-down is present
-Message-ID: <Zzs0cc2F4vkGhqCQ@smile.fi.intel.com>
-References: <ZykY251SaLeksh9T@smile.fi.intel.com>
- <20241105071523.2372032-1-skmr537@gmail.com>
- <ZyouKu8_vfFs20CB@smile.fi.intel.com>
- <ZzN0nn6WFw2J8HTF@smile.fi.intel.com>
- <CAMRc=Md=tv6QapMCoiLf6eeK9qOtG1jvENHnKdTk2i6U+=8p5A@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBAQeugNYckz7y3JnYx0U8wbF+FBGl2/LQkbyH1LildaP8RSMoS7JvUwpaHQf9hP0/Xlp8a08gWBpkGexygaftWWysSaZe1TN2eyOendS6AzkcK07sOadx/sxpAvTKk3oDTuCJb4oLiTCRG1s2E54etnmJ3yC9CbNDZsZ0ZpH1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5Isaf9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFABC4CECC;
+	Mon, 18 Nov 2024 12:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731933820;
+	bh=P33LpuhdOaOsy6SERvgsmmUyXLkRAXCmjvEKqwplfY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S5Isaf9/icUMnPspKQTNYNG3FeD9iqRpejGzi+r1UnIf8CZh6mfYuPECYxEA62MLl
+	 9RvgHdQYfLGzoKqooDkfys8MTXAjoXwcbb3w/GVnKsNb3fES7EndW8S4wN4RpU6jgZ
+	 NvoehrqpjhqlhjJBFeuulZHCJepAB7EbjPF/T3QggVK/wfP9BsOueyfR7zqmSCrCue
+	 P2yt+gW4H1XjGs7AznZL276rg/vYX4CI81FdjywhjYlMLqD72nNaZyIQMX7dSoN4Ni
+	 jBVOiV5zIeqctOupyA2ZPmFdH6DtZfVjZpXPF8s2lIHUrR1K+UNdVBySOWH/WGNzly
+	 +g1kIx/y+4VSQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tD16F-0000000008J-3cQ2;
+	Mon, 18 Nov 2024 13:43:28 +0100
+Date: Mon, 18 Nov 2024 13:43:27 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Zijun Hu <quic_zijuhu@quicinc.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>, Zijun Hu <zijun_hu@icloud.com>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Bjorn Andersson <bjorande@quicinc.com>,
+	"Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>,
+	Cheng Jiang <quic_chejiang@quicinc.com>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH v2] Bluetooth: qca: Support downloading board ID specific
+ NVM for WCN6855
+Message-ID: <Zzs2b6y-DPY3v8ty@hovoldconsulting.com>
+References: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,39 +73,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Md=tv6QapMCoiLf6eeK9qOtG1jvENHnKdTk2i6U+=8p5A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
 
-On Mon, Nov 18, 2024 at 12:00:00PM +0100, Bartosz Golaszewski wrote:
-> On Tue, Nov 12, 2024 at 5:09 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Nov 05, 2024 at 04:39:38PM +0200, Andy Shevchenko wrote:
-> > > On Tue, Nov 05, 2024 at 12:45:23PM +0530, Sai Kumar Cholleti wrote:
-
-...
-
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > Does this need to be applied, Bart?
-> > Seems it is missed in your branches...
+On Sat, Nov 16, 2024 at 07:49:23AM -0800, Zijun Hu wrote:
+> For WCN6855, board ID specific NVM needs to be downloaded once board ID
+> is available, but the default NVM is always downloaded currently, and
+> the wrong NVM causes poor RF performance which effects user experience.
 > 
-> Maybe if the author used get_maintainers.pl as they should, I would
-> have noticed this earlier?
+> Fix by downloading board ID specific NVM if board ID is available.
+> 
+> Cc: Bjorn Andersson <bjorande@quicinc.com>
+> Cc: Aiqun Yu (Maria) <quic_aiquny@quicinc.com>
+> Cc: Cheng Jiang <quic_chejiang@quicinc.com>
+> Cc: Johan Hovold <johan@kernel.org>
+> Cc: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+> Cc: Steev Klimaszewski <steev@kali.org>
+> Cc: Paul Menzel <pmenzel@molgen.mpg.de>
 
-Ah good catch!
+Nit: These Cc tags should typically not be here in the commit message,
+and should at least not be needed for people who git-send-email will
+already include because of Tested-by and Reviewed-by tags.
 
-Sai, FYI, I use my script [1] which does all required stuff for me.
-Feel free to use it, patch, comment, etc...
+If they help with your workflow then perhaps you can just put them below
+the cut-off (---) line.
 
-> I have some other fixes to pick up so I'll send this later in the merge window.
+> Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+> Cc: stable@vger.kernel.org # 6.4
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 
-Thanks!
+When making non-trivial changes, like the addition of the fallback NVM
+feature in v2, you should probably have dropped any previous Reviewed-by
+tags.
 
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
+The fallback handling looks good to me though (and also works as
+expected).
 
--- 
-With Best Regards,
-Andy Shevchenko
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Tested-by: Steev Klimaszewski <steev@kali.org>
+> Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 
+> Changes in v2:
+> - Correct subject and commit message
+> - Temporarily add nvm fallback logic to speed up backport.
+> — Add fix/stable tags as suggested by Luiz and Johan
+> - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-v1-1-15af0aa2549c@quicinc.com
+ 
+> +download_nvm:
+>  	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
+>  	if (err < 0) {
+>  		bt_dev_err(hdev, "QCA Failed to download NVM (%d)", err);
+> +		if (err == -ENOENT && boardid != 0 &&
+> +		    soc_type == QCA_WCN6855) {
+> +			boardid = 0;
+> +			qca_get_hsp_nvm_name_generic(&config, ver,
+> +						     rom_ver, boardid);
+> +			bt_dev_warn(hdev, "QCA fallback to default NVM");
+> +			goto download_nvm;
+> +		}
+>  		return err;
 
+If you think it's ok for people to continue using the wrong (default)
+NVM file for a while still until their distros ship the board-specific
+ones, then this looks good to me and should ease the transition:
+
+[    6.125626] Bluetooth: hci0: QCA Downloading qca/hpnv21g.b8c
+[    6.126730] bluetooth hci0: Direct firmware load for qca/hpnv21g.b8c failed with error -2
+[    6.126826] Bluetooth: hci0: QCA Failed to request file: qca/hpnv21g.b8c (-2)
+[    6.126894] Bluetooth: hci0: QCA Failed to download NVM (-2)
+[    6.126951] Bluetooth: hci0: QCA fallback to default NVM
+[    6.127003] Bluetooth: hci0: QCA Downloading qca/hpnv21g.bin
+[    6.309322] Bluetooth: hci0: QCA setup on UART is completed
+
+Johan
 
