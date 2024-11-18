@@ -1,150 +1,146 @@
-Return-Path: <stable+bounces-93799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BBA9D1264
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 14:46:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F699D12AE
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 15:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBAAF1F21F64
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 13:46:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C752833A5
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 14:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1A11A9B2F;
-	Mon, 18 Nov 2024 13:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79F519AD7E;
+	Mon, 18 Nov 2024 14:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="A59KTjoq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5citjI6q";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jlnLQJ+Z";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3dt8dq7Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2VCOtCY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3721199EA3;
-	Mon, 18 Nov 2024 13:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFB719884B
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 14:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731937267; cv=none; b=OSZgqhbrI4itGm4iXYQ5j6SiE6TDqd9NlA+hGk8CxZvdNS6+ZvVh+hMUgm7y5aJJaVQShw/n31qdIWlkQgrSx6x39suopsMDctE0256Sm9HI8Ds+s3GdZ6Mp4B4CWHQtV2ZEv5FGt9bO42hf8DatAygZNJLyJ78qHqVUpCtXfsc=
+	t=1731939007; cv=none; b=Mvv2wl2BIcKn59UhOcPu5fYOr8UOq4k/+5pvVXAuvEiIG3rUwxaaZkXYMDWtJRtIN42MwKhBUxCXRkmPMQrMf1kgIW9lLMxFkeLF5u/ba+H3FDRo15H0hTrwU4+bJvJb9oJwculJflFrbtPdeFakjir9NnUvV3t9RjcGGLa01NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731937267; c=relaxed/simple;
-	bh=uKE/0a42PrVZhu/VkkIYnHs6rtFBFgty5o6WzC8DIbc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tt4bELSZglqFON8tOakqh+VDrS0RoD9NpiJB6pZwPcM/FIA1der4TRst1FVQ6mfk9vagZlBCS1c19eJ3vhyzrBnztoLeELJolSvM1ZpjKTTnO4L8jd5o6w1wT+sWCEWYrp6fSC49XWqvrt6zTXcRO3I+bVOzbfkS8G4args3M0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=A59KTjoq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5citjI6q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jlnLQJ+Z; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3dt8dq7Y; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1B09921151;
-	Mon, 18 Nov 2024 13:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731937264; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mRvlMHRqPsHvF+Y4rop7W+Ht8NphPpCypBNENGLLC/I=;
-	b=A59KTjoqJ52YEpalyBsLvAt5DDQUvVT1zw3mLOCGmUeUWEpdwkZm/+/WNVJyCnZ3WrZWST
-	p/m03KtJ7N83qNhjpncBNA/mWbwKNXfD/LtY8RMxV8tzhX/f1Smo94qjyueiDs8cQcFoDK
-	IjsmnFpk+FLorhhkNxKP4O686LhVhfU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731937264;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mRvlMHRqPsHvF+Y4rop7W+Ht8NphPpCypBNENGLLC/I=;
-	b=5citjI6q1pv2FRPxDSJpfbvRIrE5B0aizTCu4iszUGo6GGpVWWdhD+ZjA8sGL4pzRmr6wT
-	YUWEsOOU8Aq8ZXBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731937263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mRvlMHRqPsHvF+Y4rop7W+Ht8NphPpCypBNENGLLC/I=;
-	b=jlnLQJ+ZV5TkzrX0FZRtDFKxpyJDm/7JTRmHiiPGyGIlnvazZtoovlc3g0lqi45AA5KX/m
-	jCA2uXaMCD+ZHaHydpO2aI8Pu8iO9ngB/fiiXxL0AyTFgIL14O6kSYd5SLHpwI2wu4FauK
-	wiQFpL4jCTZWrTw9x0MKj4y+/KUdpGE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731937263;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mRvlMHRqPsHvF+Y4rop7W+Ht8NphPpCypBNENGLLC/I=;
-	b=3dt8dq7YM1dyOm1huS3cAFDmhKjeyK/dBjn87wg+kFMazRt3IoXGh32YZxT4gZpiPBav8w
-	ordxHetS65LUtNAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CF81E134A0;
-	Mon, 18 Nov 2024 13:41:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RIxjMe5DO2cuaQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 18 Nov 2024 13:41:02 +0000
-Date: Mon, 18 Nov 2024 14:41:02 +0100
-Message-ID: <87frno7j81.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Takashi Iwai <tiwai@suse.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda: Poll jack events for LS7A HD-Audio
-In-Reply-To: <20241115150653.2819100-1-chenhuacai@loongson.cn>
-References: <20241115150653.2819100-1-chenhuacai@loongson.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1731939007; c=relaxed/simple;
+	bh=Wx54fdMz1kOg4pNDXDXVAiV3AWLqXmG86A/9WOZNHFU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J8M80Ze2S6fis1c6loG6wD6cCpS8Cas1vibBUQVOY+cW+gFTPAMovrPyro0IhcIpjz9FO+lyiSnVP17iyRkvlTaiBPSYQrD/j8oZovNKEPTFQCflPuOQmABz/GB1R/Li6VErigAC0ZGw7AKuCbBhZW+d75h5iyd6PgpOh8WUY1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2VCOtCY; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e49d5deeeso146934b3a.0
+        for <stable@vger.kernel.org>; Mon, 18 Nov 2024 06:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731939005; x=1732543805; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x3TUna0YQr4Wj+2n6bJe9uUSz+cPZNlp5sWEozSXdjc=;
+        b=F2VCOtCYPjzBGNOKeWAy8t4wF7gHdL9mIK6DxmxRqfcs8R+g6f5b7gCQ8wspKZr53Q
+         Izb1PlPzPvwZpjyF3TRJuDhzg+bTduUAahE3J19K4Ycr5MslcDRdaCSJnrCBEMviWHC9
+         TZr5tZcXYPWhNwZS7afE9n0dcWyDvZsOds8w7hVRg1QURBJBu/eSfpcSrbe7niIlrhQA
+         EncJ0K2vt2a3Irp8LcSyawJx0/ApIyYqLnTCIO9yIezE5QPnFb5iLb6jQvdfA7gqVNNP
+         NU13sBhMHUX0k7Xn8GRnNUgJsOlnAC3Pbt8TU4vcwN+DuCuxqgXXcfdmo56A9nFxEf27
+         1dGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731939005; x=1732543805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x3TUna0YQr4Wj+2n6bJe9uUSz+cPZNlp5sWEozSXdjc=;
+        b=TdvCn1GctIb9u1He87U5ypg69klUHp9ArmU+cD4GZJkJL+O7IXwtl5r+SAoKqY7CKp
+         8qB1VPt06AJtLN5WhT6d0ff0jp5xfVkNmcwpI2Rv+zh0vrChrqHf8OD0BESqA6aQddFW
+         xp8uf5heJZd2ys3f+o3bQPk0qlQEQvP8i1ENrLNCVTK42yM4uxhQkoPi4zfROOOByHI5
+         D0wufvqaYQEpCypHc5BsI5AudOHqUMda08guBSe+XPdqf8IQ1nvZzYGH4EqHPv9rhUq6
+         5V2szcx0awRMLcPq3x9IG/fGr3/p3O2GoFv8ER+vDnkytuliy7L4A8vFp84AsyWmfhQy
+         Mw0Q==
+X-Gm-Message-State: AOJu0Yx8WEHi87F5tsQ4pmciLBYO3j7u9UwgG46160K5ft0XpntlpZJR
+	JBopVYX/S4f6n7slzLhVL1hzSe1c5bo6Wnhx7dfXLSRsa7bZRctt11HgTuzW/SRKrY7Gb6wEFXF
+	ngX9Tna3LLLxRRV80fEwq5gKClZs=
+X-Google-Smtp-Source: AGHT+IEEwyGqtph6tUDQISyTtF7jieMYFj2+UEQkCHRLvRonvRUmUbSsdvBbgv6SfdP9M0/mJiwlofdft59pfq20ulw=
+X-Received: by 2002:a05:6a00:1704:b0:71e:66bb:d33b with SMTP id
+ d2e1a72fcca58-72476bc530emr6932302b3a.1.1731939005466; Mon, 18 Nov 2024
+ 06:10:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Score: -3.30
-X-Spam-Flag: NO
+MIME-Version: 1.0
+References: <20241116130427.1688714-1-alexander.deucher@amd.com>
+ <2024111614-conjoined-purity-5dcb@gregkh> <CADnq5_PkG8JywBPj5mivspUPJUC6chEGuNEH5a1_A-FCd_8wog@mail.gmail.com>
+ <2024111653-storm-haste-2272@gregkh> <CADnq5_MPEwVGmnMBz_xzO4ZCBM0kgqP=rzwK+L5VPjwpnRj9+A@mail.gmail.com>
+ <2024111617-subarctic-repeater-c06f@gregkh>
+In-Reply-To: <2024111617-subarctic-repeater-c06f@gregkh>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 18 Nov 2024 09:09:53 -0500
+Message-ID: <CADnq5_OhPc5gia7AH4diYi3SZvUPHFLPxsJNxn20+02t+Otomg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "drm/amd/pm: correct the workload setting"
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, sashal@kernel.org, 
+	Alex Deucher <alexander.deucher@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 15 Nov 2024 16:06:53 +0100,
-Huacai Chen wrote:
-> 
-> LS7A HD-Audio disable interrupts and use polling mode due to hardware
-> drawbacks. As a result, unsolicited jack events are also unusable. If
-> we want to support headphone hotplug, we need to also poll jack events.
-> 
-> Here we use 1500ms as the poll interval if no module parameter specify
-> it.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+On Sat, Nov 16, 2024 at 11:07=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Sat, Nov 16, 2024 at 10:07:38AM -0500, Alex Deucher wrote:
+> > On Sat, Nov 16, 2024 at 9:51=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Sat, Nov 16, 2024 at 08:48:58AM -0500, Alex Deucher wrote:
+> > > > On Sat, Nov 16, 2024 at 8:47=E2=80=AFAM Greg KH <gregkh@linuxfounda=
+tion.org> wrote:
+> > > > >
+> > > > > On Sat, Nov 16, 2024 at 08:04:27AM -0500, Alex Deucher wrote:
+> > > > > > This reverts commit 4a18810d0b6fb2b853b75d21117040a783f2ab66.
+> > > > > >
+> > > > > > This causes a regression in the workload selection.
+> > > > > > A more extensive fix is being worked on for mainline.
+> > > > > > For stable, revert.
+> > > > >
+> > > > > Why is this not reverted in Linus's tree too?  Why is this only f=
+or a
+> > > > > stable tree?  Why can't we take what will be in 6.12?
+> > > >
+> > > > I'm about to send out the patch for 6.12 as well, but I want to mak=
+e
+> > > > sure it gets into 6.11 before it's EOL.
+> > >
+> > > If 6.11 is EOL, there's no need to worry about it :)
+> >
+> > End users care :)
+> >
+> > >
+> > > I'd much prefer to take the real patch please.
+> >
+> > Here's the PR I sent to Dave and Sima:
+> > https://lists.freedesktop.org/archives/dri-devel/2024-November/477927.h=
+tml
+> > I didn't cc stable because I had already send this patch to stable in
+> > this thread.
+>
+> I'd much rather prefer to match up with what is in Linus's tree.  If you
+> have the git id that lands in Linus's tree, please let us know and we
+> can take that.  This way we can keep 6.11 and 6.12 in sync, right?
 
-Thanks, applied now.
+Sure, but if the patch happened to miss 6.12.0, it would have landed
+in 6.12.1.  If that happened 6.11 may have missed it and right now and
+for the near future, 6.11 is what is important to users and distros.
+Anyway, the patch landed before 6.12 final, so please pull:
+commit 44f392fbf628 ("Revert "drm/amd/pm: correct the workload setting"")
+into 6.11 stable.
 
+Thanks!
 
-Takashi
+Alex
+
+>
+> thanks,
+>
+> greg k-h
 
