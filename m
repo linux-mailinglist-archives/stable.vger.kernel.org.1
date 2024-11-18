@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-93825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027049D180E
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 19:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE009D180F
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 19:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB7DB282BF0
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:27:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8251C282DE0
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 18:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6253E1E0DF8;
-	Mon, 18 Nov 2024 18:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1CD1E0DF0;
+	Mon, 18 Nov 2024 18:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjWOkjoI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfUMmS2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CB81DED55;
-	Mon, 18 Nov 2024 18:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5342E3EB;
+	Mon, 18 Nov 2024 18:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731954471; cv=none; b=nziq3+FQv01QrdXzUBp0WLWnSLXNnwIjWLoL4vFIcnYd6iYF6igsVS7uzoA2BkidSSJMyU5WYnFKz8bivFYDmKKaP6XOYy/kAmGOAspvTP3Mr6c0racjvqLpd9AfRZz7lQDGlJybYOyD8et89I6w69mVRtHViNSEzi/25J9DU0w=
+	t=1731954473; cv=none; b=VVHkrCT+DtoO26oVQVUK3hL9Nrbh7ecEBszKV4kWAoghzpkaawiPqQx7BvLVhS8VGtsTDBxUoWr71Qwzf0xAh37vXLL0JaCk2abK3gPZuPwpU1IPLuZ7X9MppZuGOwVLdtbdp52i+UF3hi+hhPOCr56RJbnfYurXLRAYRLU6QtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731954471; c=relaxed/simple;
-	bh=CdJglmChTxPvCtcuBJbIchuWMi7jrzVTg3UuiGg/2/s=;
+	s=arc-20240116; t=1731954473; c=relaxed/simple;
+	bh=/3vKm4ylPIZa2+7EkL5cjCgtZjnU/uUqzgWYRCC2N2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHsocjir471dkQYFL/3kPL+6k7gGb486CFytd2HoUrw6jGZnwFHLeUjuE5GUr2vie/7XL27YWjYIn42bOREh46JOSGxqmBbgANWduVifkEtvy6MfXWStA/8VFVEHJyDDtE2J/925JfUb4SFQGtf1VuiqWRHE4/9pzNnIWOn9AOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjWOkjoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FE2C4CED1;
-	Mon, 18 Nov 2024 18:27:48 +0000 (UTC)
+	 MIME-Version; b=ljWqua+5PcRkflPo3Wve74mRxIvyWHn0kFsRLE5QsI7epl0XzSDDrIzR4pEPvuregHDX3vUaz5IOXxL5J+WC9KnKGSFfTZFopg76qmr9L9fX9da5vSr5EJCo3XqVhu92aYpcYO7186Rzt/2TgYY8vQR9Q2fXW0Bp8L3s7YL70W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfUMmS2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B61C4CED1;
+	Mon, 18 Nov 2024 18:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731954470;
-	bh=CdJglmChTxPvCtcuBJbIchuWMi7jrzVTg3UuiGg/2/s=;
+	s=k20201202; t=1731954473;
+	bh=/3vKm4ylPIZa2+7EkL5cjCgtZjnU/uUqzgWYRCC2N2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjWOkjoIHgICTicAbASA4Umx2kDmpfh6tJIFGWipUwIlQwnjlwwUH7bf0sjVaDiJA
-	 Hi00cSTuVE3kHv/8Q9k7Gf7G8px/J+pQGBHLzQ4WKV1UsODNPjdKelXb1KZpYRLn1K
-	 LnLmj/jRA7jxm5DEha5WG9LPTrvYtBAbhF3f6+WFvdXyFbW9Tt5bYNRVylBIP/Ng1b
-	 KeaznYcd02KPDrAljppgf0g5Loozg5fpqn2ZSDApsxPDz5mQP9ce0KKrZZa0q8vZ67
-	 I5ED4XidTpPDF15A69NQCC4qVyoWRJ+ZPtUQ4sUpt9EF/6bdJ0Ne0zRSqKIA1vT02w
-	 trLAnJy922JPw==
+	b=SfUMmS2PM+4MsuH4G7QONjucezcUrLwU+kHTNhz/o4QEyRXqiAPj1gjE9pyO1dPSG
+	 4/1jlRVRhJ7V9h5RCGxwPzwXrKa6HSi78OGiiJD29Xp6EJxC1X3Kz3L0if9QgUaHWo
+	 3rLHtporu3jSUJBsGv1BtBgek5A1Qm0eEr/HEJhRVEBR/97om6UopQVpNHG/+ZhBnq
+	 ZdF9DqUumDVlUBdFjm96slWRyrQUz2sduDgO02E/mNuHTy+mrRtc383uukE8gSYK7b
+	 ftHyVECQ6sn1OmQLrOhQXJE2+r8qlsvYeXlEev84AFrTykJQOZKstJxmwZ+VKK6T0L
+	 sSQO7hrcMEfWg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
@@ -49,9 +49,9 @@ Cc: Geliang Tang <tanggeliang@kylinos.cn>,
 	sashal@kernel.org,
 	Matthieu Baerts <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6.y 4/6] mptcp: hold pm lock when deleting entry
-Date: Mon, 18 Nov 2024 19:27:22 +0100
-Message-ID: <20241118182718.3011097-12-matttbe@kernel.org>
+Subject: [PATCH 6.6.y 5/6] mptcp: drop lookup_by_id in lookup_addr
+Date: Mon, 18 Nov 2024 19:27:23 +0100
+Message-ID: <20241118182718.3011097-13-matttbe@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241118182718.3011097-8-matttbe@kernel.org>
 References: <20241118182718.3011097-8-matttbe@kernel.org>
@@ -61,54 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1570; i=matttbe@kernel.org; h=from:subject; bh=SMoaqfsurtC6D2JNsiposiESLPMcvY287nxTCPsXang=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnO4cGKsSQS9V78pDIw2VLzAglaaSkLH9/C+Drr LrXPQayRMyJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzuHBgAKCRD2t4JPQmmg czGjEACsPHUH62v014SQaNsBCKF5zRyhMD5aAt6pdj1BSqCugYyovuP6ze02bAf4prc95foW7DB U/jEMbBjyNBFl6duzy53dv6Fw0FfNJR/cT1rTRqMZ/q4jn9M6dgsvgKluvED35dLICdpV9wzgRs xs3Hn5Gvc7Ok7Wo/0ItTFQSASO5z1iUOeW7EG/JFy/4fPljkugK/rI3cgZLgXZEmgPIXoXcfgNS A1SxAaaHs0r0MJI/itmpcwrBQDV2UqUv4UlblBwzp76zqtnn6VvUVlZbtxCvhAfszLuW4uj8oND /EPznlIJepa+EM8IlfN5qDIZK3Xlv4D4T4c5GZeduc7tr/kk6fJ+rUNX9IfqL2weXWTfOs6Txa4 JOGmNlZ9Hy52Nkz6FmxQwCrlKsnK4Xox55/OIgP3WW7XJlAfJdlT4Fw2+MIXCEzMLykFgljt8JX Y0MV78q0mOBDNJ7amS9dk7qmG5ZQHJes+AJYq4sIC2X3ZkcqWskNQ0xmHyIS5t0h3pyXWaXjszl UmT4rSOkIy0kPCdJMkoe9InmfZgvDsYZRc1B7NHm6Eg2Wwy2ORosPP3vfCgj/kIIWZ3mn7ZfUZX 98T8rwSFPsbC8ljNnOejgisSF5dpoHSRxaLSufg/I2Az53KUiTo+XIH7H8MHAZcydjZ0/xVlifn PI/W1G85LMhjcyQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2923; i=matttbe@kernel.org; h=from:subject; bh=hZg08X/uvrihXLRHj7mAWzN7ZcWhonPGmdfxZ8g+tg8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnO4cGcETYB6kQVnX/rRVcS5ysvxTL48mRfMDmH UTbX2JGu0qJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzuHBgAKCRD2t4JPQmmg c1KXD/9ce6U7OUrs8zuv0YyDSf14DbKZZgaC9UD+OB8eNFoiarcFJbe2zgwUl9cCfm00nxEKoEW AqAl75pWdD6Re5XTgxTOvcohoRYkuhceF0EOcNzyBcS8Zi+jNeBPc2cuUB+bUZuZO2qfhXNheia KQ0lJQpE4h7bqmFEmTxgQNL+QLHzTi3l8UQm06Ybe1GtOmlEyFFf29YOEu5t1TGmMtfzN50upun BLiwQf1PiniayeQ/oGTf2wEoKGvm3UC0jWqGHENG+PeI2F/WikBxXx9bwwc6ilxmqbPs8PcWAKz qZUeUbKGRx+cRfpALlQy9I02ixW4rilWATXJKaHWb17fz4SY8sbFygn2TfTMUBCp2jLkdX8Clyo PnUyILpkxxjfuD8zCR/NQSrBcAHRFWlKQSqVF89jy8VOHW8uO7nr8SDDgK3qwb2rvQZQZBFi8Pj GZKHXcJ09iPovjA2c73p+HV163601TUotHfaDfwJI+pBYweKP+H/STWqZYwOq+BjU0Ew08dpJ0s GLzlNgylOqU0aAkKbktyJW5sVWZJOVV7KdY2t+mrHMI79n/ftszZrJ2hoqDFM3jwRcHh57/hnhZ 9mkbzDAz3eZcy8Qd7F28tfCPeUxN83mkb5ziGNQXANhOSW0L4F2LjmAmWNCL4RqiozOTMiQtDQl ltn67qzb57qfYCQ==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
 From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit f642c5c4d528d11bd78b6c6f84f541cd3c0bea86 upstream.
+commit af250c27ea1c404e210fc3a308b20f772df584d6 upstream.
 
-When traversing userspace_pm_local_addr_list and deleting an entry from
-it in mptcp_pm_nl_remove_doit(), msk->pm.lock should be held.
+When the lookup_by_id parameter of __lookup_addr() is true, it's the same
+as __lookup_addr_by_id(), it can be replaced by __lookup_addr_by_id()
+directly. So drop this parameter, let __lookup_addr() only looks up address
+on the local address list by comparing addresses in it, not address ids.
 
-This patch holds this lock before mptcp_userspace_pm_lookup_addr_by_id()
-and releases it after list_move() in mptcp_pm_nl_remove_doit().
-
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Cc: stable@vger.kernel.org
 Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-2-b835580cefa8@kernel.org
+Link: https://lore.kernel.org/r/20240305-upstream-net-next-20240304-mptcp-misc-cleanup-v1-4-c436ba5e569b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: db3eab8110bc ("mptcp: pm: use _rcu variant under rcu_read_lock")
+[ Conflicts in pm_netlink.c, because commit 6a42477fe449 ("mptcp: update
+  set_flags interfaces") is not in this version, and causes too many
+  conflicts when backporting it. The conflict is easy to resolve: addr
+  is a pointer here here in mptcp_pm_nl_set_flags(), the rest of the
+  code is the same. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/pm_userspace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/pm_netlink.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
-index e268f61d8eb0..8faf776cb977 100644
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -324,14 +324,17 @@ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index d8c47ca86de4..76be4f4412df 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -521,15 +521,12 @@ __lookup_addr_by_id(struct pm_nl_pernet *pernet, unsigned int id)
+ }
  
- 	lock_sock(sk);
+ static struct mptcp_pm_addr_entry *
+-__lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info,
+-	      bool lookup_by_id)
++__lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
+ {
+ 	struct mptcp_pm_addr_entry *entry;
  
-+	spin_lock_bh(&msk->pm.lock);
- 	match = mptcp_userspace_pm_lookup_addr_by_id(msk, id_val);
- 	if (!match) {
- 		GENL_SET_ERR_MSG(info, "address with specified id not found");
-+		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
- 		goto remove_err;
+ 	list_for_each_entry(entry, &pernet->local_addr_list, list) {
+-		if ((!lookup_by_id &&
+-		     mptcp_addresses_equal(&entry->addr, info, entry->addr.port)) ||
+-		    (lookup_by_id && entry->addr.id == info->id))
++		if (mptcp_addresses_equal(&entry->addr, info, entry->addr.port))
+ 			return entry;
+ 	}
+ 	return NULL;
+@@ -560,7 +557,7 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 
+ 		mptcp_local_address((struct sock_common *)msk->first, &mpc_addr);
+ 		rcu_read_lock();
+-		entry = __lookup_addr(pernet, &mpc_addr, false);
++		entry = __lookup_addr(pernet, &mpc_addr);
+ 		if (entry) {
+ 			__clear_bit(entry->addr.id, msk->pm.id_avail_bitmap);
+ 			msk->mpc_endpoint_id = entry->addr.id;
+@@ -2064,7 +2061,8 @@ int mptcp_pm_nl_set_flags(struct net *net, struct mptcp_pm_addr_entry *addr, u8
  	}
  
- 	list_move(&match->list, &free_list);
-+	spin_unlock_bh(&msk->pm.lock);
- 
- 	mptcp_pm_remove_addrs(msk, &free_list);
- 
+ 	spin_lock_bh(&pernet->lock);
+-	entry = __lookup_addr(pernet, &addr->addr, lookup_by_id);
++	entry = lookup_by_id ? __lookup_addr_by_id(pernet, addr->addr.id) :
++			       __lookup_addr(pernet, &addr->addr);
+ 	if (!entry) {
+ 		spin_unlock_bh(&pernet->lock);
+ 		return -EINVAL;
 -- 
 2.45.2
 
