@@ -1,36 +1,37 @@
-Return-Path: <stable+bounces-93783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72D49D0E5E
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:23:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198F69D0E60
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 11:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C76C28272F
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:23:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C67651F21032
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 10:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830B193060;
-	Mon, 18 Nov 2024 10:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91C31991DD;
+	Mon, 18 Nov 2024 10:21:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F165D198831
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 10:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CF01991C6
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 10:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925261; cv=none; b=rKJGkMS5PQZaGlnHX86JpFC1oV63Kl909BebjnDMuKwDuFGxDpjfF3AMAhqQJgtU698oeW/EannRCe5ONy7MehRmIczgRuGbRFqBQgPui/HHlx77MmoQuzFpyzaAK4HBVdhFp+Xsh/Mu76oqJbQqXhUN2P6jTM0/ioQRT9DE65Y=
+	t=1731925262; cv=none; b=jcW4hh456WZINWD7kgg56VFEFhqmqFPjXg/nQlDNVYzBYY+diuNoTUAd48WB4+XugEgXkjmSq+jQmGQicZlMD2Ur0/71l5jCJD5rzSxhb5/Z9pgLwv5iH2lpxpZcZyask45J/sSwyaOSurz3bvrX/agGaQJd8Cgb6gW6QgCGimg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731925261; c=relaxed/simple;
-	bh=OfnCczRsx/w7ezphhoclkYC30W61fOe2O9q7FAcnxZQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J35kp8usqAP0pD+sHJqX8FkI56Uzqj1GgyalwIHHYQ9u2hKCazLTr5eiS48xEkzh5eLCeUbQPBmHjf8HpZagVLzmrteW+T9gV9KHhffI0SpJrdtynCBL/Yi9xCYyl7K/s2LdezI8cEMNG+M3lPpn9TCFys/jcrRjTSij2xsm5Lw=
+	s=arc-20240116; t=1731925262; c=relaxed/simple;
+	bh=BaQVs6E5Uz5JL7AiucAi372j8GeN1tCD9KuaizjscyM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QGiHKpPvV4XLL8QMo9r/5vuMp6sRNZ7eyNW9vT41r+13tlHCXFlc86JJzLGKLkVhr+ZCuOtbd4XZqMhYn4fT30ssYsWlByebCst0XYpkrYve9h5Ghy76cZdj31+eerRVMAG462stLkEYzD+NaYMlHtmSS524oFxgzD5tXIHdJis=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id ED14A2337F;
-	Mon, 18 Nov 2024 13:20:57 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id 4E1CE2338D;
+	Mon, 18 Nov 2024 13:20:58 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
@@ -39,10 +40,12 @@ Cc: lvc-project@linuxtesting.org,
 	dutyrok@altlinux.org,
 	gerben@altlinux.org,
 	kovalev@altlinux.org
-Subject: [PATCH 6.1.y 0/3] ext4: Fix warning related to siphash and ext4 filesystem mounting
-Date: Mon, 18 Nov 2024 13:20:47 +0300
-Message-Id: <20241118102050.16077-1-kovalev@altlinux.org>
+Subject: [PATCH 1/3] ext4: factor out ext4_hash_info_init()
+Date: Mon, 18 Nov 2024 13:20:48 +0300
+Message-Id: <20241118102050.16077-2-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
+In-Reply-To: <20241118102050.16077-1-kovalev@altlinux.org>
+References: <20241118102050.16077-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,50 +54,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Found by syzbot (https://syzkaller.appspot.com/bug?extid=9177d065333561cd6fd0):
+From: Jason Yan <yanaijie@huawei.com>
 
-EXT4-fs (loop0): encrypted files will use data=ordered instead of data journaling mode
-EXT4-fs (loop0): 1 truncate cleaned up
-EXT4-fs (loop0): mounted filesystem without journal. Quota mode: none.
-fscrypt: AES-256-CTS-CBC using implementation "cts-cbc-aes-aesni"
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 4245 at fs/crypto/fname.c:567 fscrypt_fname_siphash+0xb9/0xf0
-Modules linked in:
-CPU: 1 PID: 4245 Comm: syz-executor375 Not tainted 6.1.116-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:fscrypt_fname_siphash+0xb9/0xf0 fs/crypto/fname.c:567
-Call Trace:
- <TASK>
- __ext4fs_dirhash+0xdd2/0x14c0 fs/ext4/hash.c:268
- ext4fs_dirhash+0x1b8/0x320 fs/ext4/hash.c:322
- htree_dirblock_to_tree+0x723/0x10d0 fs/ext4/namei.c:1125
- ext4_htree_fill_tree+0x73d/0x13f0 fs/ext4/namei.c:1220
- ext4_dx_readdir fs/ext4/dir.c:605 [inline]
- ext4_readdir+0x2e87/0x3880 fs/ext4/dir.c:142
- iterate_dir+0x224/0x560
- __do_sys_getdents64 fs/readdir.c:369 [inline]
- __se_sys_getdents64+0x209/0x4f0 fs/readdir.c:354
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x3b/0xb0 arch/x86/entry/common.c:81
- </TASK>
+[ Upstream commit db9345d9e6f075e1ec26afadf744078ead935fec ]
 
-These patches address a warning encountered when mounting ext4 filesystems
-with the default hash version set to SIPHASH while the casefold feature is not
-enabled. The warning occurs due to incorrect error handling and setup of the
-default hash version.
+Factor out ext4_hash_info_init() to simplify __ext4_fill_super(). No
+functional change.
 
-[PATCH 1/3 ] ext4: factor out ext4_hash_info_init()
-Simplifies the ext4 filesystem setup by factoring out the ext4_hash_info_init
-function, with no functional change.
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Link: https://lore.kernel.org/r/20230323140517.1070239-2-yanaijie@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+ fs/ext4/super.c | 50 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 20 deletions(-)
 
-[PATCH 2/3] ext4: filesystems without casefold feature cannot be mounted with siphash
-Ensures that ext4 filesystems with the default hash set to SIPHASH cannot be
-mounted if the casefold feature is not enabled.
-
-[PATCH 3/3] ext4: fix error message when rejecting the default hash
-Corrects the error message logic for rejecting filesystems with the default
-SIPHASH hash version, ensuring the error message doesn't incorrectly
-reference the casefold setup. Also moves the check to ext4_hash_info_init
-to ensure consistency.
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 3bf214d4afef5..cf2c8cf507780 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5042,6 +5042,35 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+ 	return ret;
+ }
+ 
++static void ext4_hash_info_init(struct super_block *sb)
++{
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	struct ext4_super_block *es = sbi->s_es;
++	unsigned int i;
++
++	for (i = 0; i < 4; i++)
++		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
++
++	sbi->s_def_hash_version = es->s_def_hash_version;
++	if (ext4_has_feature_dir_index(sb)) {
++		i = le32_to_cpu(es->s_flags);
++		if (i & EXT2_FLAGS_UNSIGNED_HASH)
++			sbi->s_hash_unsigned = 3;
++		else if ((i & EXT2_FLAGS_SIGNED_HASH) == 0) {
++#ifdef __CHAR_UNSIGNED__
++			if (!sb_rdonly(sb))
++				es->s_flags |=
++					cpu_to_le32(EXT2_FLAGS_UNSIGNED_HASH);
++			sbi->s_hash_unsigned = 3;
++#else
++			if (!sb_rdonly(sb))
++				es->s_flags |=
++					cpu_to_le32(EXT2_FLAGS_SIGNED_HASH);
++#endif
++		}
++	}
++}
++
+ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ {
+ 	struct ext4_super_block *es = NULL;
+@@ -5197,26 +5226,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
+ 	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+ 
+-	for (i = 0; i < 4; i++)
+-		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
+-	sbi->s_def_hash_version = es->s_def_hash_version;
+-	if (ext4_has_feature_dir_index(sb)) {
+-		i = le32_to_cpu(es->s_flags);
+-		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+-			sbi->s_hash_unsigned = 3;
+-		else if ((i & EXT2_FLAGS_SIGNED_HASH) == 0) {
+-#ifdef __CHAR_UNSIGNED__
+-			if (!sb_rdonly(sb))
+-				es->s_flags |=
+-					cpu_to_le32(EXT2_FLAGS_UNSIGNED_HASH);
+-			sbi->s_hash_unsigned = 3;
+-#else
+-			if (!sb_rdonly(sb))
+-				es->s_flags |=
+-					cpu_to_le32(EXT2_FLAGS_SIGNED_HASH);
+-#endif
+-		}
+-	}
++	ext4_hash_info_init(sb);
+ 
+ 	if (ext4_handle_clustersize(sb))
+ 		goto failed_mount;
+-- 
+2.33.8
 
 
