@@ -1,148 +1,153 @@
-Return-Path: <stable+bounces-93762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0149D087B
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 05:55:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC8E9D08C8
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 06:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5861F215A8
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 04:55:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B82B1B21A2C
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 05:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7357DA81;
-	Mon, 18 Nov 2024 04:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aNpHxkku"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D24C13C9D9;
+	Mon, 18 Nov 2024 05:22:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD7C28E8
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 04:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F058613A863;
+	Mon, 18 Nov 2024 05:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731905732; cv=none; b=Afa86UAME8Wdchp7FV++hjjXInIKxdHCeA4eythx8oUO27nmiRgwRWzG9rhonP+Q/Zn7Sjk5Dto9qRaJJBq5OHPXcpl8HEyyo/ESsgu5e6AWKHBRcgDAxvIyTpMK5lSwtw4M+1oxTqfUMLmgMNvdYllKVEZ9nqz+EJWl/923vcw=
+	t=1731907347; cv=none; b=NhDRQ/70z2RlJKGl3V/+43uhaU4nPp2wULn+R1V9My0GUKgaofHpuIKE8Eb8CBscz9chsLZ9dJHnzn5Nxkl8KxHmlH/TYHexUwcV6kuLvhiImVwBcbS48Zw9izA4N5Zg7Zh6l+di1yaJtRPuL0j5G10/IaBfM7zZS6ODO1hJqB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731905732; c=relaxed/simple;
-	bh=JLdHjcZJU0u6rquREJ2EUrF9NAVM7qlMxeRq3I8W5CM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=HA9dEQuqChlBS4n7SNYo8m7IbiL/wgwMy9HjQ+Z2SKfCg3maxAAl9+Lg0slUwlts2N8kY19LOpmIrVp72LYtSWcv64WvM+zaNFCC8Hiue4pXlCutxyqd4xYtRTKX2qzl+onHBaAVEPgyXlY+0b6qy1ipTNon4o1j2gzcu4GgDGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aNpHxkku; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21116b187c4so8665435ad.3
-        for <stable@vger.kernel.org>; Sun, 17 Nov 2024 20:55:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731905730; x=1732510530; darn=vger.kernel.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6vY+aSsnuaRE7lvXSjbw/Ba6Iku0uNLInPIFfnHcyo=;
-        b=aNpHxkku3+AMSSp6QcTwG1H2GVA8pn8YhgD07gVusJHnZy9g41Nc80+dM8FQhr1dx6
-         o8J8S3i4TmsmzwS1Sf5WZTRomim0qcBQ1QyX0XLS2NNaRkkfGZSupOhwJZScNIAYFhs1
-         p4FovJK1w5ucZyendyWakt+MmnXlnmh/5NtHg5H89tCFfpGY54JzlrV8ii+/SFVoQsLO
-         6lwszg9DLR/Axvqrrbs+WDMEsqlQcNZo9vWA6lpASs6L5gXNnv8V+ByvYLXPZ3DbI4N4
-         h4W8yj+q8Fi9HuG7RYxroycTPHniqBSxgegnJSnpC7w9EVwR9l5m29BpHdz90OrohEN8
-         7nLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731905730; x=1732510530;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6vY+aSsnuaRE7lvXSjbw/Ba6Iku0uNLInPIFfnHcyo=;
-        b=ERQnob0rMzO2ww7H/Czr4c+nAJAFMPhgV2/tHIbexoCFGZUWJ+kAJI/OziLbRdOqha
-         E02rHpAVGnqQpJNutQGXERKCnuFrwSMbl1UyKzIw1+PpOnW3DTaaBHvvoKZ+wmCMYFgP
-         4FiPibQx5Cgpji6dxQ2QN9Oi45+LIFAO+C3+BWzhK/ezRPIvMBzK86xvYD0NFlz+EjNZ
-         4f+fx8J9I6fVnFUGf3Aa2XdYg2FNdu9EVKYjbr+ncQR3phYNTFKMjNi/pFUVtz04NG8U
-         /like+5vzb4zYk+lCHSDqaf3UfPNBFSUWNbf0MG0rKXj1JoBcDd49XU0mo5vJbgw2cgg
-         CErQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuLGtFYv86tZ4XKkJPCfPKqzeyKUWbbPe/jAXNot07Gxng02IefnnjnwhCA2FYbUKx/Ops4+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3mx7N/NC6StunwOJNME4PafokitsW4eahpEJiczBG5dOkkI0j
-	zcCLDykvR56nDTLV8V367g6omqUG2rc7VhxTsmgG4NRzyGwXSGJcJfaCu+iUaQVFrWT5NBpwADB
-	/WQ==
-X-Google-Smtp-Source: AGHT+IHfNkRKjo417tJfIU7LMPlBxNgYZAMTEQtF6yehSNTM7uxcN5HgTYUlArPNQeryaO9TJbEX5A==
-X-Received: by 2002:a17:902:d4cd:b0:211:fb9c:b1ce with SMTP id d9443c01a7336-211fb9cb652mr79229265ad.17.1731905730360;
-        Sun, 17 Nov 2024 20:55:30 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f34f2fsm48187495ad.159.2024.11.17.20.55.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 20:55:29 -0800 (PST)
-Date: Sun, 17 Nov 2024 20:55:28 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: gregkh@linuxfoundation.org
-cc: akpm@linux-foundation.org, aha310510@gmail.com, chuck.lever@oracle.com, 
-    hughd@google.com, stable@vger.kernel.org, yuzhao@google.com
-Subject: Re: FAILED: patch "[PATCH] mm: revert "mm: shmem: fix data-race in
- shmem_getattr()"" failed to apply to 5.10-stable tree
-In-Reply-To: <2024111703-uncork-sincerity-4d6e@gregkh>
-Message-ID: <a83ff8e9-6431-d237-94ec-5059c166a84f@google.com>
-References: <2024111703-uncork-sincerity-4d6e@gregkh>
+	s=arc-20240116; t=1731907347; c=relaxed/simple;
+	bh=X2+RyZ7bRyBKT6+ECQvgdWgRsQgvRDABRjJMBskmZs8=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=shuGFJ210N9cjArAt5gWkMV0cNPlIjUp3PeP86fhLIB9S2A3HbqirfrCKQ32UqgzWoqgganRWq+ehtl1faqHOedTabo1ZL50wdbH5hInsMsIgFpAR5BW0vlOy+T1iCBqcNllV0s3wiI9rhjfXe34i5UwDktG5E1NN1qNlRSo2iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XsGD063cWz2GZky;
+	Mon, 18 Nov 2024 13:20:16 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id F00B5140135;
+	Mon, 18 Nov 2024 13:22:12 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 18 Nov 2024 13:22:11 +0800
+Subject: Re: [PATCH 1/2] jffs2: initialize filesystem-private inode info in
+ ->alloc_inode callback
+To: Fedor Pchelkin <pchelkin@ispras.ru>, Richard Weinberger <richard@nod.at>
+CC: David Woodhouse <dwmw2@infradead.org>, Wang Yong <wang.yong12@zte.com.cn>,
+	Lu Zhongjun <lu.zhongjun@zte.com.cn>, Yang Tao <yang.tao172@zte.com.cn>, Al
+ Viro <viro@zeniv.linux.org.uk>, <linux-mtd@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+	<stable@vger.kernel.org>
+References: <20241117184412.366672-1-pchelkin@ispras.ru>
+ <20241117184412.366672-2-pchelkin@ispras.ru>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <c68152b5-e91a-2296-21fd-c6a80a406958@huawei.com>
+Date: Mon, 18 Nov 2024 13:22:10 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20241117184412.366672-2-pchelkin@ispras.ru>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
 
-On Sun, 17 Nov 2024, gregkh@linuxfoundation.org wrote:
+ÔÚ 2024/11/18 2:44, Fedor Pchelkin Ð´µÀ:
+> The symlink body (->target) should be freed at the same time as the inode
+> itself per commit 4fdcfab5b553 ("jffs2: fix use-after-free on symlink
+> traversal"). It is a filesystem-specific field but there exist several
+> error paths during generic inode allocation when ->free_inode(), namely
+> jffs2_free_inode(), is called with still uninitialized private info.
 > 
-> The patch below does not apply to the 5.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> The calltrace looks like:
+>   alloc_inode
+>    inode_init_always // fails
+>     i_callback
+>      free_inode
+>      jffs2_free_inode // touches uninit ->target field
 > 
-> To reproduce the conflict and resubmit, you may use the following commands:
+> Commit af9a8730ddb6 ("jffs2: Fix potential illegal address access in
+> jffs2_free_inode") approached the observed problem but fixed it only
+> partially. Our local Syzkaller instance is still hitting these kinds of
+> failures.
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x d1aa0c04294e29883d65eac6c2f72fe95cc7c049
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111703-uncork-sincerity-4d6e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+> The thing is that jffs2_i_init_once(), where the initialization of
+> f->target has been moved, is called once per slab allocation so it won't
+> be called for the object structure possibly retrieved later from the slab
+> cache for reuse.
+> 
+> The practice followed by many other filesystems is to initialize
+> filesystem-private inode contents in the corresponding ->alloc_inode()
+> callbacks. This also allows to drop initialization from jffs2_iget() and
+> jffs2_new_inode() as ->alloc_inode() is called in those places.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: 4fdcfab5b553 ("jffs2: fix use-after-free on symlink traversal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> ---
+>   fs/jffs2/fs.c    | 2 --
+>   fs/jffs2/super.c | 3 ++-
+>   2 files changed, 2 insertions(+), 3 deletions(-)
+> 
 
-For 5.10 and 5.4 and 4.19 please use this replacement patch:
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
+> index d175cccb7c55..85c4b273918f 100644
+> --- a/fs/jffs2/fs.c
+> +++ b/fs/jffs2/fs.c
+> @@ -271,7 +271,6 @@ struct inode *jffs2_iget(struct super_block *sb, unsigned long ino)
+>   	f = JFFS2_INODE_INFO(inode);
+>   	c = JFFS2_SB_INFO(inode->i_sb);
+>   
+> -	jffs2_init_inode_info(f);
+>   	mutex_lock(&f->sem);
+>   
+>   	ret = jffs2_do_read_inode(c, f, inode->i_ino, &latest_node);
+> @@ -439,7 +438,6 @@ struct inode *jffs2_new_inode (struct inode *dir_i, umode_t mode, struct jffs2_r
+>   		return ERR_PTR(-ENOMEM);
+>   
+>   	f = JFFS2_INODE_INFO(inode);
+> -	jffs2_init_inode_info(f);
+>   	mutex_lock(&f->sem);
+>   
+>   	memset(ri, 0, sizeof(*ri));
+> diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+> index 4545f885c41e..b56ff63357f3 100644
+> --- a/fs/jffs2/super.c
+> +++ b/fs/jffs2/super.c
+> @@ -42,6 +42,8 @@ static struct inode *jffs2_alloc_inode(struct super_block *sb)
+>   	f = alloc_inode_sb(sb, jffs2_inode_cachep, GFP_KERNEL);
+>   	if (!f)
+>   		return NULL;
+> +
+> +	jffs2_init_inode_info(f);
+>   	return &f->vfs_inode;
+>   }
+>   
+> @@ -58,7 +60,6 @@ static void jffs2_i_init_once(void *foo)
+>   	struct jffs2_inode_info *f = foo;
+>   
+>   	mutex_init(&f->sem);
+> -	f->target = NULL;
+>   	inode_init_once(&f->vfs_inode);
+>   }
+>   
+> 
 
-From 98dfa72dd24347bfcbb9a60ac65ad42130ff44f5 Mon Sep 17 00:00:00 2001
-From: Andrew Morton <akpm@linux-foundation.org>
-Date: Fri, 15 Nov 2024 16:57:24 -0800
-Subject: [PATCH] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-
-commit d1aa0c04294e29883d65eac6c2f72fe95cc7c049 upstream.
-
-Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
-suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
-NFS.
-
-As Hugh commented, "added just to silence a syzbot sanitizer splat: added
-where there has never been any practical problem".
-
-Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
-Fixes: d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()")
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- mm/shmem.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 8239a0beb01c..e173d83b4448 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1077,9 +1077,7 @@ static int shmem_getattr(const struct path *path, struct kstat *stat,
- 		shmem_recalc_inode(inode);
- 		spin_unlock_irq(&info->lock);
- 	}
--	inode_lock_shared(inode);
- 	generic_fillattr(inode, stat);
--	inode_unlock_shared(inode);
- 
- 	if (is_huge_enabled(sb_info))
- 		stat->blksize = HPAGE_PMD_SIZE;
--- 
-2.47.0.338.g60cca15819-goog
 
