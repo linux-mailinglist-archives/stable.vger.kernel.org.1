@@ -1,302 +1,251 @@
-Return-Path: <stable+bounces-93828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C829D18E3
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 20:29:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34309D191B
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 20:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75319B2207A
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 19:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0B72281C37
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 19:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B361E1301;
-	Mon, 18 Nov 2024 19:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D3E1E5037;
+	Mon, 18 Nov 2024 19:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HC9BvHFQ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="K/JoWf1P";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="wxEQ2C/1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3731AA1FF
-	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 19:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731958135; cv=none; b=bNeSGRk5EpdjUqpO9RJzUgNrS3rTL73FsPMLRmSUOUbvtFjHvmRcM1K98Yzu1kuOvFaHbKYITBwdXf6crsboBLvAeZJwmFznujccbJ4t6irtlgwMmmnsSw3rcpJOaz6GpzzHhBvWH/kHub8fox0gXO8Twsbt3FlkbxC4XzeIHmM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731958135; c=relaxed/simple;
-	bh=hippO2WRcgBrEgO3iuQQgjW0bcDVg/Oi22/RsGrlV5w=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pxPejgQZGc5xnLlAOjaVxhszaPxUBCwjG0r4ff5tvcx7n/HrufT2xy3WV/QtRA/0FiJicSLB2u//3iruVtCIjV+2zs/0m6562Ey0TnjT2+cPRB3d/5cyQNQOTANfdBpDPas2jKill3/opLgFbCFcSPe19d3sIIj7J8N8QfsXTdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HC9BvHFQ; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20c805a0753so800735ad.0
-        for <stable@vger.kernel.org>; Mon, 18 Nov 2024 11:28:52 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C731E282B;
+	Mon, 18 Nov 2024 19:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731958895; cv=fail; b=gjJ3/O20C3k9zUxmytXV0bbN8Lse0JqLDPb1F+EpIbpLosKGFh9WLsy4j1+ufRWaaJthWoSMxq1IeVgGqMq24wfF0HDC6YIsirZHdC8GwZCNsCNep5LUOP6MFzhOThU1QiRVRHZBR6abttr7ys3v9m/KBMbuzw3wOceo1SUR4yI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731958895; c=relaxed/simple;
+	bh=PM8TW0Tn3Qe1ylLPthRwNPiWgLM1Gcy5Pzt1/XCjCzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uD3mVCx9POO+jazgStOszwHCFQbBbnN+ziIAjMkDLyDW5CbzBVQykS4Jk4YWeSEM/ZLr1lc3AMEIddCI0phSF3vZF9b59pAsU2MKlRzE2SqKmtl/XL7CtCIKRCW5ZyHfK4ZLWp/thqpENdST8kJ9v6DhroXWlXJs3kJs7ST7bMw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=K/JoWf1P; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=wxEQ2C/1; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIGU4C8005616;
+	Mon, 18 Nov 2024 19:41:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2023-11-20; bh=uHZb8Yvp8n2iUkto
+	lZgGWVt58BkKJtZRhofsnmQhk2Y=; b=K/JoWf1PEv4g4MZtLMxREyG1blZjV05A
+	i3rcLFQvTxBv6ynMOsKoRE3Kpre6NtoCZ4AhFiihtzLHlpkUJbH8wVE8S0HpW0fZ
+	mfTV4JCCh4FpZl9by4g8KsApg3Q3M1uyenC1lgCSJfWWY3kSkIkDZcRC9x8sqN1q
+	HCp9ivzitBhG1iVZHEO11t7hGeRzhp+jMgIkFxtwWy9/oTOXTu9M4jQCywqJKMj4
+	54VhmKLIXb4CHt/WFOOEJjwel015KWpRpyu5saqrr8zZBFxyz+leveiDySu1kgE5
+	XG8SvXzlfEqjaPF3D7ykX0d0IVRos7YFww4UU+jVwB85sljMHCi1sQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42ynyr1y8w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 Nov 2024 19:41:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIIG1tf037247;
+	Mon, 18 Nov 2024 19:41:22 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2172.outbound.protection.outlook.com [104.47.59.172])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42xhu7rhsx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 Nov 2024 19:41:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=laTrVO0HeMA7lftRuaYs0lhOZ0/D4AGdY6KoR5bqaDV0UCRKW1+Wef0FEI8J5LVKAzEXoF9kYty/eVIaNY/ezp1lB+lpbBdT1J93aHmMCZ3y5M246R1ps1GS5+10HtIXNYcpAOYoWoXZNU4YB8JMZovhkOecoc0FC0Vrw9WjDPSO/P/n8AEEm4EzfV7G/XDks0V28EH2Esr25qFI5N5kRooGMnfG4Ki+WkRWg2SOn3W31DRIbl77DoQxrVGisoAn3ep06yIHF+4MSfxmQ5E3zwS/9q6L+QLTZifKACsmkqBTEY1+nEsmss6W63MjFUIiIzAASxjJtefrFc4Lh0326g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uHZb8Yvp8n2iUktolZgGWVt58BkKJtZRhofsnmQhk2Y=;
+ b=AL37BpU18Fypr4YNt9kR6v2LtRXLUm69li2JKD369QOns5CSE2XlrODuNOvnhFz6kAPbEtCFg1ChN8Wx/8w+vQPKUMe8FwfutW4vEbAY61hf4UvyzjzQoJZW/4HQrAfPPPV2JyGygF/UkHbGJ/cfwS0oLpQSaDuv8+hIElJOrZXyLnfJGFCROhbSsEr8gF4NqA1OIGnSQBpFCwF0BouMFks2XjjL3nbwqzPCEYJFbGkxVSWK6S2YrLjUjPhZpsl2FneJEY8WQmXKBaOHkTcna4J5MHajITKanTaEvfwPwsLB8KV29HFiZ648Lf2+jC9Hy+phIYx0A/4pSH/UKSvvew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731958132; x=1732562932; darn=vger.kernel.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7t4m5Z37YOfTxskiXTWmspFh27xW8LKY9pzYa5vEjts=;
-        b=HC9BvHFQYqJo71tiwOI1kSH07ZCpLNaBv2odP+0HI1mAzoEH8Roqujy1oouEiln1/5
-         +h+OGdW48TQAB74nh65i0TvHZHrn/mhgB9O+b5Jt3wj+w+/eqaWdBF10KIITOE7jRKVi
-         lC6xrjlDTImcod/63RTx81s7yfdbA/qaYfuap3c2vVixXm97pdsD0irIFNjrxTxyyEMh
-         Dxj/a5xDiQjN8Vc8QhHFaEfHSgtKQAuOLDiezpuiC6TK8DW33JKCU88jviv7h8ITWF67
-         YeLEIe9wqwloE63++gA8zrMl97ojjh6KsJyQOsspcA44DkaDbZ7cEpN1rz1+UbJjvF6A
-         T1hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731958132; x=1732562932;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7t4m5Z37YOfTxskiXTWmspFh27xW8LKY9pzYa5vEjts=;
-        b=Hdzr4G0gZmKgY/ITH3+zNrn86iH5es+TiPUNS5jyWvpz4hbI/rtRP23MpC94NGfANk
-         W5D6YJjSpt2BJR5N7YPvpT6PXXUJX9aBW6fqyXBejgFjveEqXxyW4LvAV7HCLFY02ixS
-         M0/U4N7K3McdFvHPQ8b4ZRcDZ9cPiQF1Fy0CE3s6HccyLeI4/21lGj34i6Y5N8MddyWC
-         cuOBHL/8Br6yx/x5jAd6rEIEDaHikeDDvUr3jQ10UTeny/ltONyGuxNbpnVUwSgjg8go
-         apKOpdb4+66SAWz3zzGxcvUBYgtHYG3H3uwLABYiIl2xF8WF491sI+Gg/mV3JwzURhPb
-         cYnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFJfZtM91267Ie+2ijRNmc613U+GPXgOlx3/v2gQfiK3Wgx6io8qTKNcrmTdnx+lKXV08qe5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNorIXN5UBPrbu5FFSh3xIMxMcsLhf9WXlGqX5YW/dokotMDlZ
-	qQ3btLLgman3c29u16WSo91M5rWB7GUQ6bSnn9GybbjrOwhwuSTFLiLm/tmTKw==
-X-Google-Smtp-Source: AGHT+IFxkSi/K5kMLV+yEYMel+9OqiQso3dX3TsT/O/eTu1HwYUVmCqmc1lcsxgqATy6DZhjTBsYog==
-X-Received: by 2002:a17:902:da92:b0:20e:590f:58af with SMTP id d9443c01a7336-211d0d62174mr208717105ad.1.1731958132357;
-        Mon, 18 Nov 2024 11:28:52 -0800 (PST)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211fe7244b0sm38178875ad.198.2024.11.18.11.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 11:28:51 -0800 (PST)
-Date: Mon, 18 Nov 2024 11:28:42 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-To: gregkh@linuxfoundation.org
-cc: roman.gushchin@linux.dev, akpm@linux-foundation.org, hughd@google.com, 
-    seanjc@google.com, stable@vger.kernel.org, vbabka@suse.cz, 
-    willy@infradead.org
-Subject: Re: FAILED: patch "[PATCH] mm: page_alloc: move mlocked flag clearance
- into" failed to apply to 6.6-stable tree
-In-Reply-To: <2024111714-varsity-grub-d888@gregkh>
-Message-ID: <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
-References: <2024111714-varsity-grub-d888@gregkh>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uHZb8Yvp8n2iUktolZgGWVt58BkKJtZRhofsnmQhk2Y=;
+ b=wxEQ2C/1ReqY/HyS2K7AicKbqkJK/wQf211iWQN76M577pcXTMZ1OSMpoEuRgM0etzx1vs8HhY5khVB/GMb4AYT6mmtMQUzqVzIlxIKLXROwLAXKBQqYRq9cLdlcU3G6QMw0xZ28wnnJHt8k9QlaMvIO0LMRMD+KC+Sh1A9RIFc=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by BLAPR10MB5073.namprd10.prod.outlook.com (2603:10b6:208:307::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24; Mon, 18 Nov
+ 2024 19:41:19 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%6]) with mapi id 15.20.8158.021; Mon, 18 Nov 2024
+ 19:41:19 +0000
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Jann Horn <jannh@google.com>,
+        "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+        syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com,
+        Vlastimil Babka <vbabka@suse.cz>, stable@vger.kernel.org
+Subject: [PATCH 6.12.y] mm/mmap: fix __mmap_region() error handling in rare merge failure case
+Date: Mon, 18 Nov 2024 14:40:48 -0500
+Message-ID: <20241118194048.2355180-1-Liam.Howlett@oracle.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: YT4P288CA0074.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d0::7) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|BLAPR10MB5073:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3ec565d-89c6-4622-1524-08dd0808f923
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j4dJ5lVjTpvKD6QPcvxs8Ko1wtidzD+a3IUrC3IHZTZiTnqSjjv7zbTFwjjE?=
+ =?us-ascii?Q?p+uqGIH0Zijz/IJeyvQafW+9GWt01l8KL5k/3eSxWyDyGkTIzU2vll7JqjRi?=
+ =?us-ascii?Q?PG7W0+UomNyWCjPVN3iO8gZphsaP7I2wW6dyxZMzCiqXB/Cv/H5Zf//wstL2?=
+ =?us-ascii?Q?V208kkrT34FVimyLNXuzcKjFxxAbm1ovQvaYK4bd8DgaLIRZ5fbM4GDMx8/y?=
+ =?us-ascii?Q?L1ITM3TQ9YLC8kW7/gw0ZHq4ZYvFf9WY6pUdeaaQKOypKoIYbtF2D52YASCT?=
+ =?us-ascii?Q?d6uPzYx1fos2Thh9kblcq/UYrIZVzoCYM4ACT3XT0XFRuHtYwBwM3KcO4YkU?=
+ =?us-ascii?Q?Y9BgWm1AUFJUHGZCnVempL2DNcHizxxN0URiMdle7iNjMOqjpkBGt03ovyfx?=
+ =?us-ascii?Q?55mJD1/UkA97WXoM4nIQ5O4MKpxIfFsvF6ZmCbjMX+YiPOs9x3T4ZBioYp5/?=
+ =?us-ascii?Q?HmvuGE/WEGtggvZn/B4WzhRR5ThUMtoy86MM9waycr/NEeRGebq9D8PWcWH4?=
+ =?us-ascii?Q?UXqOwnon0BKxv4D2r8MByt5uLkVRWuRWGO85idxgZfmL+Le34FoIDkayhVyz?=
+ =?us-ascii?Q?eZWS/yEehLCY+AQTnG0sXB8f4tFh0U65HMtI2Gan5d8xVGfHI1cqVhcrA0o8?=
+ =?us-ascii?Q?fXtjtHLoiNXTv7ScdlsicCG80SsyHzsh5MPNwk7gINfu/0Cm6Nt6bH9W7DUV?=
+ =?us-ascii?Q?55+IqQaJQZq+W3adXbfxJN+eoSY+HdOVeyipXlNOnKZmF5XqhuJn4sfkLtxp?=
+ =?us-ascii?Q?4PCmuUrOkootWyiu301P2ipfTJ/4vTXvxWUC5otFgOaUCnlur5t0TLRvyEG5?=
+ =?us-ascii?Q?mTsneI8/fIw0gS9qFaDpnd7mmxA2/C90Rwue9CFP6KMYg3ta79f6W80PygiG?=
+ =?us-ascii?Q?RjnZz+Q+3ISQ7QSds44MjqMEfIf1dP8jSBSfnULTip1WPwlMO2hD/tAwQ4AG?=
+ =?us-ascii?Q?7xrEqxqBnzRobRqjdRpylaTDmG1T7V5vSG5phVcDiM+CpCjvO/65emhWTMvf?=
+ =?us-ascii?Q?aKX38YqcWmbhB+a4nVluLAwMl2qyFxfVMHK/zqz4tSmeKHnKtkH34TapD5yA?=
+ =?us-ascii?Q?oZlPfDl+fhiM1gTU1jNyLtakWv0HUGr5t5Vzuku1RbPyxJ0dosnda2YWJBud?=
+ =?us-ascii?Q?U4cehfONyHfkHzix5kPlZMYwPbMbzIWROQa4roQ38bPNnr5bcttVkO0SY42q?=
+ =?us-ascii?Q?EJGG9ztJJbPWKZYJMUIjOjE0zQ8TuYES1xOXjNCvSb0MNH9a6gt89aAviQ9K?=
+ =?us-ascii?Q?KrEOVV2LCnvln6QiWSSw?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XkSNwYkv0Jh9MaTcaBn4Bk2Vtk+n2Z1dAN/w/ZM71D4v0iVZtQTE6Gnh1keo?=
+ =?us-ascii?Q?LmDesiZV7qLzoLckCtxPwMJk5p7tIprh4u1uKXdQRB0Vb8jT8YiwlOdoKmLq?=
+ =?us-ascii?Q?EQDeYL9awhH3MazzyhbWRIR9YEj5ZLh7rxjEgYkfsdOzC3VvcoZ4Q1wCvWBq?=
+ =?us-ascii?Q?OS4cahV1akuyqDONh2zGdK9841Gw6MmdFJCh9YM7+L0W27UND499kUfZ2ppl?=
+ =?us-ascii?Q?wBw0E5m7ZNmikTrJUZRmbXoxH6nB6mjiMEO9XSr773btpwB0tPjPDV0MMz5n?=
+ =?us-ascii?Q?f6cF9EJcHQT9AErp7SHH/wwP58kSM+7Yz9nsnoCeSsXGsYnexsvbsPszDKlt?=
+ =?us-ascii?Q?vMiMwgwz+r5uO+wbpf3vBo+Ud13VyeHU72NhR9yTAP5/SuR9oCLpld9yZdXt?=
+ =?us-ascii?Q?pgATRcWL30QWzi+cyb49+9iUE2WXgwUbMM463dPZMDkBV954cyebPgHnR0jg?=
+ =?us-ascii?Q?fBTBsntnKTxhUBWBlJnonRQ/dMqwbvRN2//4ZLceeEnhjz6CUOMn2qZFvJpZ?=
+ =?us-ascii?Q?5fEEXNqeC/9nKtG7PGzXEwJPdutxd6p2sjyKPeSODwXkkGSacmm5E2MWKpnB?=
+ =?us-ascii?Q?Ou47ZhAwvB5vrNMvjR3FrCSJSpoaWQRCxFF6cQyQzK0Ky0yAEu8/a+kuv+zP?=
+ =?us-ascii?Q?813qHs9tL63uUyySsOZw417DWdho0xbO7OgiWnmqY2i1QvXXjisJ/hVQ7BCM?=
+ =?us-ascii?Q?U+MnP4Di9HGbO0RCVLRiwdfhbM4PTpAqBHtsKMVMG/qh2NskS5PXkCamCFDP?=
+ =?us-ascii?Q?WvCW9qhs+uhJkkKdlroLKZ8EqT4PRRgN+Bu3G20uLe1XBf+dp1nzPNZnrz4K?=
+ =?us-ascii?Q?x03ltV8tSKAjp7jmAZP74ROK/JukBfhgBrCN1gROoumwmk483DnDNXPzl0eK?=
+ =?us-ascii?Q?bO4YZSfnnRxXcwccRGZZaTkbXK74nDpDqiyC+hyJbyrgYaPeiQs4AnqXVavP?=
+ =?us-ascii?Q?x9sesCD10T8RAKbF/a1ccPZaTn8GpYEaAzOVHTvnoA9VllL6IYjUeEQzyl1U?=
+ =?us-ascii?Q?vT+X1SlJ4uOh4zZtneEqWfIWFQcfIDszdBi5xvYfC0oWlXec3P+Mjg2wlhm3?=
+ =?us-ascii?Q?0224k2mEoPXIozgIruMb9PWTinuYKB8fNLbIcQ+wd7w6cl0+ti+3GTYyuUA0?=
+ =?us-ascii?Q?Lo7EFoLZAaJ3Lp+q0fH3HmI+2mqBpaJJXcq2Wvms1vWoVO1H5Z4UcovI93Yk?=
+ =?us-ascii?Q?KwZGSDRr3TawfeEoqFYtr+b986DiY2BXg9PDr6fcWAX1PLfw3Qe4/jfifgdH?=
+ =?us-ascii?Q?NzSKVfvi/nFBSctUEoVWMoVyYCMJlI/pmbCmVI7eGZ8+G7e1efuatYRNW2j5?=
+ =?us-ascii?Q?tncY5EeTJ7sr6hHRIxzZO1mDZFIAtJiulINk9D+DEjjN+I3TeYm9OAN0N0cr?=
+ =?us-ascii?Q?NtXWeNiREkwBFYAeHN4z/ry/yc3L+dkcaqAmDpv3EwjJHZi/rpEyxypdxeDH?=
+ =?us-ascii?Q?+olC2Ux61OoPBxAXo7pt0Sl8aEjE0UXaNh14mERxhsoJ/8g117MFJBfa2n8V?=
+ =?us-ascii?Q?ayBhGP5L0sp0UtF3IHw0XKHaV4ThRMkyfi1YnkClM+8QjVntAKP45BmIHesP?=
+ =?us-ascii?Q?1RPoBHgz+PrrDpOgBtprkZrNoiKWSRJC/p3qZD7+?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	dRpc8boVzLlrWjT8Pz4gcYpeJKkmup2/m9PSPz7htKphwIOzEhU2JzV2z5K68ySasQLuaNFMHZ7I1MsjTS8eT26y3mEeXS6mOO+r6Cenj4/iQgD2vM8e6WUALlyMYVMIxNxKKBpeOdk844YfKjXCdWBY1uyuSLMP1JcfSCoOLh9pzSJXy6L+9Y61jQD5omuEjI2CSvRujlQw0avLq/0hLlkQ6J777HR+OmY/ywcKMt5rIIj7lGCJXvrzm9PI3mP5+FuZxvlygYA2MbDOrfwUgYU5qKkbZWyCLV2g4AhbEchHtqEEMYqQqWT8J+j8ZuPeCqD86J5hjgxKi4Qa4955sCS9z/LgGWB0NezkGGMMJm7K63bW4HpeXrmh8weaCeOLNn8GrM1kqZaBXYBLbvtX06fsh/GKvLkczRTlpgsYPPMSKiqzBdyUwPAyJkppUWndYysWhrz/XCg4lWxHmLCZNCXUOalYQ8w+nF7+DhlCKN82kZ/orddd9v6tlXSeNW9ZH9A4DYrgy1FqY3gjTymR2A1xcjD4rErmnASxUnJoH0APKd5QuacYOfvfijV/Gvq1qFNnOHlSJXx+e3QHd7xzbIJ74f15KzWE6WBVShJxKG8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3ec565d-89c6-4622-1524-08dd0808f923
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 19:41:19.0975
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e7yMb9NRUzQ6G6WYHlRqlUKN9t/L45eQBV7+XIxCTxK956OiY7gxaj5PF17xL818ckaCiEXU3ZcQun2cz1Y+vg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5073
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-18_15,2024-11-18_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2411180162
+X-Proofpoint-ORIG-GUID: 1M4v3zPBqjpDm-p2bdWW4z0afv39f4-y
+X-Proofpoint-GUID: 1M4v3zPBqjpDm-p2bdWW4z0afv39f4-y
 
-On Sun, 17 Nov 2024, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 66edc3a5894c74f8887c8af23b97593a0dd0df4d
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111714-varsity-grub-d888@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 
-For 6.6 and 6.1 please use this replacement patch:
+The mmap_region() function tries to install a new vma, which requires a
+pre-allocation for the maple tree write due to the complex locking
+scenarios involved.
 
-From 9de12cbafdf2fae7d5bfdf14f4684ce3244469df Mon Sep 17 00:00:00 2001
-From: Roman Gushchin <roman.gushchin@linux.dev>
-Date: Wed, 6 Nov 2024 19:53:54 +0000
-Subject: [PATCH] mm: page_alloc: move mlocked flag clearance into
- free_pages_prepare()
+Recent efforts to simplify the error recovery required the relocation of
+the preallocation of the maple tree nodes (via vma_iter_prealloc()
+calling mas_preallocate()) higher in the function.
 
-commit 66edc3a5894c74f8887c8af23b97593a0dd0df4d upstream.
+The relocation of the preallocation meant that, if there was a file
+associated with the vma and the driver call (mmap_file()) modified the
+vma flags, then a new merge of the new vma with existing vmas is
+attempted.
 
-Syzbot reported a bad page state problem caused by a page being freed
-using free_page() still having a mlocked flag at free_pages_prepare()
-stage:
+During the attempt to merge the existing vma with the new vma, the vma
+iterator is used - the same iterator that would be used for the next
+write attempt to the tree.  In the event of needing a further allocation
+and if the new allocations fails, the vma iterator (and contained maple
+state) will cleaned up, including freeing all previous allocations and
+will be reset internally.
 
-  BUG: Bad page state in process syz.5.504  pfn:61f45
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x61f45
-  flags: 0xfff00000080204(referenced|workingset|mlocked|node=0|zone=1|lastcpupid=0x7ff)
-  raw: 00fff00000080204 0000000000000000 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-  page_owner tracks the page as allocated
-  page last allocated via order 0, migratetype Unmovable, gfp_mask 0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 8443, tgid 8442 (syz.5.504), ts 201884660643, free_ts 201499827394
-   set_page_owner include/linux/page_owner.h:32 [inline]
-   post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
-   prep_new_page mm/page_alloc.c:1545 [inline]
-   get_page_from_freelist+0x303f/0x3190 mm/page_alloc.c:3457
-   __alloc_pages_noprof+0x292/0x710 mm/page_alloc.c:4733
-   alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
-   kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
-   kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
-   kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5488 [inline]
-   kvm_dev_ioctl+0x12dc/0x2240 virt/kvm/kvm_main.c:5530
-   __do_compat_sys_ioctl fs/ioctl.c:1007 [inline]
-   __se_compat_sys_ioctl+0x510/0xc90 fs/ioctl.c:950
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  page last free pid 8399 tgid 8399 stack trace:
-   reset_page_owner include/linux/page_owner.h:25 [inline]
-   free_pages_prepare mm/page_alloc.c:1108 [inline]
-   free_unref_folios+0xf12/0x18d0 mm/page_alloc.c:2686
-   folios_put_refs+0x76c/0x860 mm/swap.c:1007
-   free_pages_and_swap_cache+0x5c8/0x690 mm/swap_state.c:335
-   __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
-   tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
-   tlb_flush_mmu_free mm/mmu_gather.c:366 [inline]
-   tlb_flush_mmu+0x3a3/0x680 mm/mmu_gather.c:373
-   tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:465
-   exit_mmap+0x496/0xc40 mm/mmap.c:1926
-   __mmput+0x115/0x390 kernel/fork.c:1348
-   exit_mm+0x220/0x310 kernel/exit.c:571
-   do_exit+0x9b2/0x28e0 kernel/exit.c:926
-   do_group_exit+0x207/0x2c0 kernel/exit.c:1088
-   __do_sys_exit_group kernel/exit.c:1099 [inline]
-   __se_sys_exit_group kernel/exit.c:1097 [inline]
-   __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
-   x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 8442 Comm: syz.5.504 Not tainted 6.12.0-rc6-syzkaller #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-   bad_page+0x176/0x1d0 mm/page_alloc.c:501
-   free_page_is_bad mm/page_alloc.c:918 [inline]
-   free_pages_prepare mm/page_alloc.c:1100 [inline]
-   free_unref_page+0xed0/0xf20 mm/page_alloc.c:2638
-   kvm_destroy_vm virt/kvm/kvm_main.c:1327 [inline]
-   kvm_put_kvm+0xc75/0x1350 virt/kvm/kvm_main.c:1386
-   kvm_vcpu_release+0x54/0x60 virt/kvm/kvm_main.c:4143
-   __fput+0x23f/0x880 fs/file_table.c:431
-   task_work_run+0x24f/0x310 kernel/task_work.c:239
-   exit_task_work include/linux/task_work.h:43 [inline]
-   do_exit+0xa2f/0x28e0 kernel/exit.c:939
-   do_group_exit+0x207/0x2c0 kernel/exit.c:1088
-   __do_sys_exit_group kernel/exit.c:1099 [inline]
-   __se_sys_exit_group kernel/exit.c:1097 [inline]
-   __ia32_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
-   ia32_sys_call+0x2624/0x2630 arch/x86/include/generated/asm/syscalls_32.h:253
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf745d579
-  Code: Unable to access opcode bytes at 0xf745d54f.
-  RSP: 002b:00000000f75afd6c EFLAGS: 00000206 ORIG_RAX: 00000000000000fc
-  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000000000
-  RDX: 0000000000000000 RSI: 00000000ffffff9c RDI: 00000000f744cff4
-  RBP: 00000000f717ae61 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-   </TASK>
+Upon returning to the __mmap_region() function, the error reason is lost
+and the function sets the vma iterator limits, and then tries to
+continue to store the new vma using vma_iter_store() - which expects
+preallocated nodes.
 
-The problem was originally introduced by commit b109b87050df ("mm/munlock:
-replace clear_page_mlock() by final clearance"): it was focused on
-handling pagecache and anonymous memory and wasn't suitable for lower
-level get_page()/free_page() API's used for example by KVM, as with this
-reproducer.
+A preallocation should be performed in case the allocations were lost
+during the failure scenario - there is no risk of over allocating.  The
+range is already set in the vma_iter_store() call below, so it is not
+necessary.
 
-Fix it by moving the mlocked flag clearance down to free_page_prepare().
-
-The bug itself if fairly old and harmless (aside from generating these
-warnings), aside from a small memory leak - "bad" pages are stopped from
-being allocated again.
-
-Link: https://lkml.kernel.org/r/20241106195354.270757-1-roman.gushchin@linux.dev
-Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reported-by: syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>
+Reported-by: syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/x/log.txt?x=17b0ace8580000
+Fixes: 5de195060b2e2 ("mm: resolve faulty mmap_region() error path behaviour")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/page_alloc.c | 15 +++++++++++++++
- mm/swap.c       | 20 --------------------
- 2 files changed, 15 insertions(+), 20 deletions(-)
+ mm/mmap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 7272a922b838..3d7e685bdd0b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1082,12 +1082,27 @@ static __always_inline bool free_pages_prepare(struct page *page,
- 	int bad = 0;
- 	bool skip_kasan_poison = should_skip_kasan_poison(page, fpi_flags);
- 	bool init = want_init_on_free();
-+	struct folio *folio = page_folio(page);
- 
- 	VM_BUG_ON_PAGE(PageTail(page), page);
- 
- 	trace_mm_page_free(page, order);
- 	kmsan_free_page(page, order);
- 
-+	/*
-+	 * In rare cases, when truncation or holepunching raced with
-+	 * munlock after VM_LOCKED was cleared, Mlocked may still be
-+	 * found set here.  This does not indicate a problem, unless
-+	 * "unevictable_pgs_cleared" appears worryingly large.
-+	 */
-+	if (unlikely(folio_test_mlocked(folio))) {
-+		long nr_pages = folio_nr_pages(folio);
-+
-+		__folio_clear_mlocked(folio);
-+		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-+		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
-+	}
-+
- 	if (unlikely(PageHWPoison(page)) && !order) {
- 		/*
- 		 * Do not let hwpoison pages hit pcplists/buddy
-diff --git a/mm/swap.c b/mm/swap.c
-index cd8f0150ba3a..42082eba42de 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -89,14 +89,6 @@ static void __page_cache_release(struct folio *folio)
- 		__folio_clear_lru_flags(folio);
- 		unlock_page_lruvec_irqrestore(lruvec, flags);
- 	}
--	/* See comment on folio_test_mlocked in release_pages() */
--	if (unlikely(folio_test_mlocked(folio))) {
--		long nr_pages = folio_nr_pages(folio);
--
--		__folio_clear_mlocked(folio);
--		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
--		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
--	}
- }
- 
- static void __folio_put_small(struct folio *folio)
-@@ -1021,18 +1013,6 @@ void release_pages(release_pages_arg arg, int nr)
- 			__folio_clear_lru_flags(folio);
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 79d541f1502b2..5cef9a1981f1b 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1491,7 +1491,10 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 				vm_flags = vma->vm_flags;
+ 				goto file_expanded;
+ 			}
+-			vma_iter_config(&vmi, addr, end);
++			if (vma_iter_prealloc(&vmi, vma)) {
++				error = -ENOMEM;
++				goto unmap_and_free_file_vma;
++			}
  		}
  
--		/*
--		 * In rare cases, when truncation or holepunching raced with
--		 * munlock after VM_LOCKED was cleared, Mlocked may still be
--		 * found set here.  This does not indicate a problem, unless
--		 * "unevictable_pgs_cleared" appears worryingly large.
--		 */
--		if (unlikely(folio_test_mlocked(folio))) {
--			__folio_clear_mlocked(folio);
--			zone_stat_sub_folio(folio, NR_MLOCK);
--			count_vm_event(UNEVICTABLE_PGCLEARED);
--		}
--
- 		list_add(&folio->lru, &pages_to_free);
- 	}
- 	if (lruvec)
+ 		vm_flags = vma->vm_flags;
 -- 
-2.47.0.338.g60cca15819-goog
+2.43.0
+
 
