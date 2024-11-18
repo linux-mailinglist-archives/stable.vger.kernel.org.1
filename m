@@ -1,143 +1,170 @@
-Return-Path: <stable+bounces-93771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FCA9D0A6C
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 08:52:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F739D0A9D
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 09:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91F16B213E5
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 07:52:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11DFC2810D9
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 08:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9842914E2C0;
-	Mon, 18 Nov 2024 07:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B29D13D50C;
+	Mon, 18 Nov 2024 08:07:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E5515C0;
-	Mon, 18 Nov 2024 07:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFF7405FB
+	for <stable@vger.kernel.org>; Mon, 18 Nov 2024 08:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731916354; cv=none; b=NJqgVBAeGcf1Dy3g/OdXzj5TXXlwig7GF5nRAisPtf8d8RYILAT5dLqdyhd1E7WX8icpPC6MV6/t41c88OEfa6neglzG+kI9hNzUNiUfoQoLmLFsDIsDL5Cz0n/XF4qx0dremhb+ZjE3WOiyaZiy1RkwiD0PbwL9+KLuslS0AHY=
+	t=1731917275; cv=none; b=WoVwqYwtiQVRQ1Riqs5xZfyN75SCB1hlBrK9vofl87wDDh0JtApo39UfjU263vqHobRyJwxRBOf5p9DEhwCMA7S4KagfnujDLEnJwEYtbxXigy4PA3r7XXcf3WK2NrGW36Dl29R7BmbSvTD30gn2NNwaH/CadJlvDX2uB15OKYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731916354; c=relaxed/simple;
-	bh=ds3mQwNHuP/1AgYxmIFWb3FLhI+RhvLE/XpCur/+ikY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K9E0M1GTxo3zpsHoy7WV5TYicBsoO1uki4ZNwflcjqvOtirDfRO43MAvz4ysHeArRWDsgP8aEAG015B0ZgY+yTNUuukF4ioipj8dm6SPR5AVvmTFfecc7tVqhu8j6g+m2hfHMB7QeFDZkxbmDGSbQt1KJHMR0roxkMwBp50Abd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526F2C4CECC;
-	Mon, 18 Nov 2024 07:52:33 +0000 (UTC)
-Message-ID: <4f8b8ce0-727c-4527-b6a5-19f7f035f3c5@xs4all.nl>
-Date: Mon, 18 Nov 2024 08:52:31 +0100
+	s=arc-20240116; t=1731917275; c=relaxed/simple;
+	bh=1Xlz4/oIFHCLg1jEs4vVAvr3NYWYztsxh9UI2qX+7AM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OPFDB8i5/PoF2J5nDYJZ2QrgaKBQA6g6iWltc6SjR8zUR/Ek5IMOUoB21SpRGnJYpO3rESe6F4sZFF3cPfDKHF1gOjttPOO7wu2Bb0gxFbu7zwrtFJCq8IWLUSo9kYV2XPJ39rSQnwRZAWyQqRkp2Nk1Jx269bXka2e1bZTMlP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AI7L4qM020653;
+	Mon, 18 Nov 2024 00:07:51 -0800
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xusq16pe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 18 Nov 2024 00:07:51 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 18 Nov 2024 00:07:50 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 18 Nov 2024 00:07:50 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+Subject: [PATCH 6.6] drm/amd/pm: Vangogh: Fix kernel memory out of bounds write
+Date: Mon, 18 Nov 2024 16:08:12 +0800
+Message-ID: <20241118080812.960909-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] docs: media: update location of the media patches
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- stable@vger.kernel.org
-References: <cover.1731910082.git.mchehab+huawei@kernel.org>
- <544c6883e49e4b85bf5338d794f754ac0cfe3436.1731910082.git.mchehab+huawei@kernel.org>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <544c6883e49e4b85bf5338d794f754ac0cfe3436.1731910082.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: edNMl2pOpyHZ-sKdoQoWk5Oc4SwLnSHX
+X-Proofpoint-ORIG-GUID: edNMl2pOpyHZ-sKdoQoWk5Oc4SwLnSHX
+X-Authority-Analysis: v=2.4 cv=d9mnygjE c=1 sm=1 tr=0 ts=673af5d7 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=V2sgnzSHAAAA:8 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=5cPpX14MogTr20BxmYkA:9
+ a=Z31ocT7rh6aUJxSkT1EX:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-18_04,2024-11-14_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ phishscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999 spamscore=0
+ bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411180067
 
-On 18/11/2024 07:09, Mauro Carvalho Chehab wrote:
-> Due to recent changes on the way we're maintaining media, the
-> location of the main tree was updated.
-> 
-> Change docs accordingly.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Upstream commit 4aa923a6e6406b43566ef6ac35a3d9a3197fa3e8 ]
 
-Regards,
+KASAN reports that the GPU metrics table allocated in
+vangogh_tables_init() is not large enough for the memset done in
+smu_cmn_init_soft_gpu_metrics(). Condensed report follows:
 
-	Hans
+[   33.861314] BUG: KASAN: slab-out-of-bounds in smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu]
+[   33.861799] Write of size 168 at addr ffff888129f59500 by task mangoapp/1067
+...
+[   33.861808] CPU: 6 UID: 1000 PID: 1067 Comm: mangoapp Tainted: G        W          6.12.0-rc4 #356 1a56f59a8b5182eeaf67eb7cb8b13594dd23b544
+[   33.861816] Tainted: [W]=WARN
+[   33.861818] Hardware name: Valve Galileo/Galileo, BIOS F7G0107 12/01/2023
+[   33.861822] Call Trace:
+[   33.861826]  <TASK>
+[   33.861829]  dump_stack_lvl+0x66/0x90
+[   33.861838]  print_report+0xce/0x620
+[   33.861853]  kasan_report+0xda/0x110
+[   33.862794]  kasan_check_range+0xfd/0x1a0
+[   33.862799]  __asan_memset+0x23/0x40
+[   33.862803]  smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.863306]  vangogh_get_gpu_metrics_v2_4+0x123/0xad0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.864257]  vangogh_common_get_gpu_metrics+0xb0c/0xbc0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.865682]  amdgpu_dpm_get_gpu_metrics+0xcc/0x110 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.866160]  amdgpu_get_gpu_metrics+0x154/0x2d0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.867135]  dev_attr_show+0x43/0xc0
+[   33.867147]  sysfs_kf_seq_show+0x1f1/0x3b0
+[   33.867155]  seq_read_iter+0x3f8/0x1140
+[   33.867173]  vfs_read+0x76c/0xc50
+[   33.867198]  ksys_read+0xfb/0x1d0
+[   33.867214]  do_syscall_64+0x90/0x160
+...
+[   33.867353] Allocated by task 378 on cpu 7 at 22.794876s:
+[   33.867358]  kasan_save_stack+0x33/0x50
+[   33.867364]  kasan_save_track+0x17/0x60
+[   33.867367]  __kasan_kmalloc+0x87/0x90
+[   33.867371]  vangogh_init_smc_tables+0x3f9/0x840 [amdgpu]
+[   33.867835]  smu_sw_init+0xa32/0x1850 [amdgpu]
+[   33.868299]  amdgpu_device_init+0x467b/0x8d90 [amdgpu]
+[   33.868733]  amdgpu_driver_load_kms+0x19/0xf0 [amdgpu]
+[   33.869167]  amdgpu_pci_probe+0x2d6/0xcd0 [amdgpu]
+[   33.869608]  local_pci_probe+0xda/0x180
+[   33.869614]  pci_device_probe+0x43f/0x6b0
 
-> ---
->  Documentation/admin-guide/media/building.rst | 2 +-
->  Documentation/admin-guide/media/saa7134.rst  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/media/building.rst b/Documentation/admin-guide/media/building.rst
-> index a06473429916..7a413ba07f93 100644
-> --- a/Documentation/admin-guide/media/building.rst
-> +++ b/Documentation/admin-guide/media/building.rst
-> @@ -15,7 +15,7 @@ Please notice, however, that, if:
->  
->  you should use the main media development tree ``master`` branch:
->  
-> -    https://git.linuxtv.org/media_tree.git/
-> +    https://git.linuxtv.org/media.git/
->  
->  In this case, you may find some useful information at the
->  `LinuxTv wiki pages <https://linuxtv.org/wiki>`_:
-> diff --git a/Documentation/admin-guide/media/saa7134.rst b/Documentation/admin-guide/media/saa7134.rst
-> index 51eae7eb5ab7..18d7cbc897db 100644
-> --- a/Documentation/admin-guide/media/saa7134.rst
-> +++ b/Documentation/admin-guide/media/saa7134.rst
-> @@ -67,7 +67,7 @@ Changes / Fixes
->  Please mail to linux-media AT vger.kernel.org unified diffs against
->  the linux media git tree:
->  
-> -    https://git.linuxtv.org/media_tree.git/
-> +    https://git.linuxtv.org/media.git/
->  
->  This is done by committing a patch at a clone of the git tree and
->  submitting the patch using ``git send-email``. Don't forget to
+Empirically we can confirm that the former allocates 152 bytes for the
+table, while the latter memsets the 168 large block.
+
+Root cause appears that when GPU metrics tables for v2_4 parts were added
+it was not considered to enlarge the table to fit.
+
+The fix in this patch is rather "brute force" and perhaps later should be
+done in a smarter way, by extracting and consolidating the part version to
+size logic to a common helper, instead of brute forcing the largest
+possible allocation. Nevertheless, for now this works and fixes the out of
+bounds write.
+
+v2:
+ * Drop impossible v3_0 case. (Mario)
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 41cec40bc9ba ("drm/amd/pm: Vangogh: Add new gpu_metrics_v2_4 to acquire gpu_metrics")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Evan Quan <evan.quan@amd.com>
+Cc: Wenyou Yang <WenYou.Yang@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241025145639.19124-1-tursulin@igalia.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0880f58f9609f0200483a49429af0f050d281703)
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+---
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index f46cda889483..454216bd6f1d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -256,10 +256,9 @@ static int vangogh_tables_init(struct smu_context *smu)
+ 		goto err0_out;
+ 	smu_table->metrics_time = 0;
+ 
+-	if (smu_version >= 0x043F3E00)
+-		smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_3);
+-	else
+-		smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_2);
++	smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_2);
++	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_3));
++	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_4));
+ 	smu_table->gpu_metrics_table = kzalloc(smu_table->gpu_metrics_table_size, GFP_KERNEL);
+ 	if (!smu_table->gpu_metrics_table)
+ 		goto err1_out;
+-- 
+2.43.0
 
 
