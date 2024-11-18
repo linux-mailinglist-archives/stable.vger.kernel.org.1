@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-93875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C84D9D1B84
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:02:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11F29D1B99
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EFD5281680
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 23:02:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9481F224C5
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 23:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E8B1EBA1E;
-	Mon, 18 Nov 2024 23:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755891E7658;
+	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dna9yI5E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ofi2ccV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D01EBA0C;
-	Mon, 18 Nov 2024 23:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3164F1D0DDE;
+	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731970895; cv=none; b=c2fnFIcGfCvDOaP2L4ijdXLLjnlrsVAD2piWzUOX5vxAgiZYsmaf6PqNZPyTNavEKtEtd5CTb0n0cBP7dCTd3O6LYQAGKJVMOk+RaZgb1MliGr9A/fZEpi7RvQ6ookbpF0jsMR9xyAhxqkWPjkhRUPjseroLfI2vIth6X14jk3Y=
+	t=1731971087; cv=none; b=VWMQeZSpoj7ZEbm5Hie5mZJsX+ybwUEoq8T24JTWkdVkbMKMIE83B3vCsA02JmHDQRSU+CmqyEvYwWjBVVslXPFs1B1qQVBbEp7KCFL97NjGJtFewVHfYUQlF4/91qDb3L3qyI50IWM+WG4OOw1pLI6RC/wYujAScdJ60Wr93x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731970895; c=relaxed/simple;
-	bh=bARq+IanWDi+o1bAx7pNfFQRqEtVG7WdE58XWrS4hxg=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=VM0hokOgUL3eav746jDutuRFfkRYtTQfUBRh3zdSRafZFbLCEZ4QUoS/If3fhEOtPV/6en8LdaJxYatQNu+r/1aTSC5iKJqwrBMbzpLVXKJwd9e7AgDesJwrrCEwNcQp+1lCNdlAnbTxQs5ZSsy4SRRQiIkx361PYSyT/uJ3mxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dna9yI5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF073C4CED0;
-	Mon, 18 Nov 2024 23:01:33 +0000 (UTC)
+	s=arc-20240116; t=1731971087; c=relaxed/simple;
+	bh=jmJ4H6fsAxmvUhHg1MxFBsdBZX3AUZ6jOHO+8MLFBT0=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EXuRb2+N1MhxqddRdU64IWIDQUbfV5ug29bOQmAA/lvLBZkilrvTsOqBF4noch9iOWV+Xckn3yQ2n7RAsUvuW516WXDQZ/c8K7lwgbF7QaA/egmrPu296j/0z8qntah74THZSrEtJXGxkY+lOWEGBKBA/KzrTChyGaDoWMXu7qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ofi2ccV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE72C4CECC;
+	Mon, 18 Nov 2024 23:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731970893;
-	bh=bARq+IanWDi+o1bAx7pNfFQRqEtVG7WdE58XWrS4hxg=;
-	h=Date:Subject:From:To:Cc:From;
-	b=Dna9yI5EladsgbJ1MBrR8PDiEsgRFQZcS9NSrUP5vDfjeh0yxiJh8xMTjVL8eV/VP
-	 pKQZiA7p8FrJJGOOAKjZ3q2cHHAVnBS4PuekYSVj/W/96gpJ4TG5D7y1M6uQCBRjLt
-	 ypuBru4xzkQRX/lLzwPpWfQ9nHvNme4qDwySTSIFLY4pX5YQy/LRPXH/ifa+GclMO5
-	 8NlkwHxJR0gwom8KMbQ6RgEbAunl4lIG73Brh4+TEAHDHSZ2wkMK8drOQpcbULqnNH
-	 E4wx7gYJSeu5mIzgfFsqnnrT5/bw0+n2YCZGgfTNQ30YmJ3Z85O890JWwutAvZq018
-	 FIRbLN6epYeWA==
-Date: Mon, 18 Nov 2024 15:01:33 -0800
-Subject: [PATCHSET] xfs: bug fixes for 6.13
+	s=k20201202; t=1731971087;
+	bh=jmJ4H6fsAxmvUhHg1MxFBsdBZX3AUZ6jOHO+8MLFBT0=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=Ofi2ccV0N2DNh6FYsiAcx/pB38aEW+WhTDDHP3QsUNQ14RAV/KaaPVeXw/z7Ly0Wf
+	 xQmLy2OuX0LrkuAjyDyqvRjxzRx3gSKrfpQ6nRxwteGoLgvUvoPzLS5LJ6Q7KPJq/a
+	 xn3F9sITBCOIa+PjwOfn2P5+xdRYzPRkHhu8WsRbceLtiXWPV1Ad9PrGMOiC6kemGG
+	 wPLSQy1Eyy3A1SczwiEzZjCi0nRZkslg2ZNGzY2G7z0zxZr/vitQLr8bf58Ef1AlCc
+	 HqNPMB5MF/CG45R8mEOk84ptJTPH1tEhQaDoX3uQAaJrYOjTFz9NeeTrSrdxr2jLcz
+	 B080Mas4Bl3jw==
+Date: Mon, 18 Nov 2024 15:04:46 -0800
+Subject: [PATCH 01/10] xfs: fix off-by-one error in fsmap's end_daddr usage
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org
-Cc: dan.carpenter@linaro.org, hch@lst.de, stable@vger.kernel.org,
- wozizhi@huawei.com, linux-xfs@vger.kernel.org
-Message-ID: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
+Cc: stable@vger.kernel.org, wozizhi@huawei.com, hch@lst.de,
+ linux-xfs@vger.kernel.org
+Message-ID: <173197084431.911325.16302324218533112215.stgit@frogsfrogsfrogs>
+In-Reply-To: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
+References: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,54 +59,126 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi all,
+From: Darrick J. Wong <djwong@kernel.org>
 
-Bug fixes for 6.13.
+In commit ca6448aed4f10a, we created an "end_daddr" variable to fix
+fsmap reporting when the end of the range requested falls in the middle
+of an unknown (aka free on the rmapbt) region.  Unfortunately, I didn't
+notice that the the code sets end_daddr to the last sector of the device
+but then uses that quantity to compute the length of the synthesized
+mapping.
 
-If you're going to start using this code, I strongly recommend pulling
-from my git trees, which are linked below.
+Zizhi Wo later observed that when end_daddr isn't set, we still don't
+report the last fsblock on a device because in that case (aka when
+info->last is true), the info->high mapping that we pass to
+xfs_getfsmap_group_helper has a startblock that points to the last
+fsblock.  This is also wrong because the code uses startblock to
+compute the length of the synthesized mapping.
 
-With a bit of luck, this should all go splendidly.
-Comments and questions are, as always, welcome.
+Fix the second problem by setting end_daddr unconditionally, and fix the
+first problem by setting start_daddr to one past the end of the range to
+query.
 
---D
-
-kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=xfs-fixes-6.13
+Cc: <stable@vger.kernel.org> # v6.11
+Fixes: ca6448aed4f10a ("xfs: Fix missing interval for missing_owner in xfs fsmap")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reported-by: Zizhi Wo <wozizhi@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
-Commits in this patchset:
- * xfs: fix off-by-one error in fsmap's end_daddr usage
- * xfs: metapath scrubber should use the already loaded inodes
- * xfs: keep quota directory inode loaded
- * xfs: return a 64-bit block count from xfs_btree_count_blocks
- * xfs: don't drop errno values when we fail to ficlone the entire range
- * xfs: separate healthy clearing mask during repair
- * xfs: set XFS_SICK_INO_SYMLINK_ZAPPED explicitly when zapping a symlink
- * xfs: mark metadir repair tempfiles with IRECOVERY
- * xfs: fix null bno_hint handling in xfs_rtallocate_rtg
- * xfs: fix error bailout in xfs_rtginode_create
----
- fs/xfs/libxfs/xfs_btree.c        |    4 +-
- fs/xfs/libxfs/xfs_btree.h        |    2 +
- fs/xfs/libxfs/xfs_ialloc_btree.c |    4 ++
- fs/xfs/libxfs/xfs_rtgroup.c      |    2 +
- fs/xfs/scrub/agheader.c          |    6 ++-
- fs/xfs/scrub/agheader_repair.c   |    6 ++-
- fs/xfs/scrub/fscounters.c        |    2 +
- fs/xfs/scrub/health.c            |   57 ++++++++++++++++++--------------
- fs/xfs/scrub/ialloc.c            |    4 +-
- fs/xfs/scrub/metapath.c          |   68 +++++++++++++++-----------------------
- fs/xfs/scrub/refcount.c          |    2 +
- fs/xfs/scrub/scrub.h             |    6 +++
- fs/xfs/scrub/symlink_repair.c    |    3 +-
- fs/xfs/scrub/tempfile.c          |   10 ++++--
- fs/xfs/xfs_bmap_util.c           |    2 +
- fs/xfs/xfs_file.c                |    8 ++++
- fs/xfs/xfs_fsmap.c               |   38 ++++++++++++---------
- fs/xfs/xfs_inode.h               |    2 +
- fs/xfs/xfs_qm.c                  |   47 ++++++++++++++------------
- fs/xfs/xfs_qm.h                  |    1 +
- fs/xfs/xfs_rtalloc.c             |    2 +
- 21 files changed, 151 insertions(+), 125 deletions(-)
+ fs/xfs/xfs_fsmap.c |   38 ++++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
+
+
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 82f2e0dd224997..3290dd8524a69a 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -163,7 +163,8 @@ struct xfs_getfsmap_info {
+ 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
+ 	/* daddr of low fsmap key when we're using the rtbitmap */
+ 	xfs_daddr_t		low_daddr;
+-	xfs_daddr_t		end_daddr;	/* daddr of high fsmap key */
++	/* daddr of high fsmap key, or the last daddr on the device */
++	xfs_daddr_t		end_daddr;
+ 	u64			missing_owner;	/* owner of holes */
+ 	u32			dev;		/* device id */
+ 	/*
+@@ -387,8 +388,8 @@ xfs_getfsmap_group_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
+ 	 */
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL)
+-		frec->start_daddr = info->end_daddr;
++	if (info->last)
++		frec->start_daddr = info->end_daddr + 1;
+ 	else
+ 		frec->start_daddr = xfs_gbno_to_daddr(xg, startblock);
+ 
+@@ -736,11 +737,10 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
+ 	 */
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL) {
+-		frec.start_daddr = info->end_daddr;
+-	} else {
++	if (info->last)
++		frec.start_daddr = info->end_daddr + 1;
++	else
+ 		frec.start_daddr = xfs_rtb_to_daddr(mp, start_rtb);
+-	}
+ 
+ 	frec.len_daddr = XFS_FSB_TO_BB(mp, rtbcount);
+ 	return xfs_getfsmap_helper(tp, info, &frec);
+@@ -933,7 +933,10 @@ xfs_getfsmap(
+ 	struct xfs_trans		*tp = NULL;
+ 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
+ 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
+-	struct xfs_getfsmap_info	info = { NULL };
++	struct xfs_getfsmap_info	info = {
++		.fsmap_recs		= fsmap_recs,
++		.head			= head,
++	};
+ 	bool				use_rmap;
+ 	int				i;
+ 	int				error = 0;
+@@ -998,9 +1001,6 @@ xfs_getfsmap(
+ 
+ 	info.next_daddr = head->fmh_keys[0].fmr_physical +
+ 			  head->fmh_keys[0].fmr_length;
+-	info.end_daddr = XFS_BUF_DADDR_NULL;
+-	info.fsmap_recs = fsmap_recs;
+-	info.head = head;
+ 
+ 	/* For each device we support... */
+ 	for (i = 0; i < XFS_GETFSMAP_DEVS; i++) {
+@@ -1013,17 +1013,23 @@ xfs_getfsmap(
+ 			break;
+ 
+ 		/*
+-		 * If this device number matches the high key, we have
+-		 * to pass the high key to the handler to limit the
+-		 * query results.  If the device number exceeds the
+-		 * low key, zero out the low key so that we get
+-		 * everything from the beginning.
++		 * If this device number matches the high key, we have to pass
++		 * the high key to the handler to limit the query results, and
++		 * set the end_daddr so that we can synthesize records at the
++		 * end of the query range or device.
+ 		 */
+ 		if (handlers[i].dev == head->fmh_keys[1].fmr_device) {
+ 			dkeys[1] = head->fmh_keys[1];
+ 			info.end_daddr = min(handlers[i].nr_sectors - 1,
+ 					     dkeys[1].fmr_physical);
++		} else {
++			info.end_daddr = handlers[i].nr_sectors - 1;
+ 		}
++
++		/*
++		 * If the device number exceeds the low key, zero out the low
++		 * key so that we get everything from the beginning.
++		 */
+ 		if (handlers[i].dev > head->fmh_keys[0].fmr_device)
+ 			memset(&dkeys[0], 0, sizeof(struct xfs_fsmap));
+ 
 
 
