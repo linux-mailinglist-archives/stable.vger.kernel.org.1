@@ -1,98 +1,98 @@
-Return-Path: <stable+bounces-93754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7319D07A5
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 02:48:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C2A9D07CF
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 03:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6491F21674
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 01:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E255B281DDB
+	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 02:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD37832C8B;
-	Mon, 18 Nov 2024 01:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EF71EEE0;
+	Mon, 18 Nov 2024 02:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="A2mUILxi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2rEQ2/j"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989817FE;
-	Mon, 18 Nov 2024 01:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E982907;
+	Mon, 18 Nov 2024 02:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731894514; cv=none; b=mklOK97c4ttSysMLOeqVQUTM35g2+RieLrrV4LKu70/c/L+cSV49sHIqWXdSVsB324OIhLWiOKibktPIMdGLM45DPjdip/53o1dfRlOMMpBqIeiLZTHzXR4NcXfrplbxTDhinubYxkYo2kFZwYehm9uij4R+dWK09Lm5386G1jw=
+	t=1731896285; cv=none; b=bLb/vb+PDjAdde0sqigm1zr5KdxD40wxvFF+fsLxmdCczPX7rp3OPKxLR0YsqcYeyJFvjJkvNRZ43snUI9WIiKhltvODSANX4sRi1Bo7tk5VQd1wcbCaFTlPsyoDNVzUkz2IQET+XCEThuz00zKEoHIjPS5OWdIokchtU+8j5nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731894514; c=relaxed/simple;
-	bh=UIDQ79NXPVjMdLsgl9nnghZU0uQkF0jSdCEcqXI9gd0=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=uupwDg/s09wdoncPCFV2eWy4RQywlR7e0i+S/3BSN2uHF3ovr+BxuXvRrJitMVuW+TpuoGarW5H81oYcBG3fFP16VL974OxWbVpU4Kn0GtNR08JL1GD1M1eebEdiKKD/MMuMiPfVDsQx6Vm85z6KilB1jhTawEr9ntrf+snbtYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=A2mUILxi; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AI1mM5P14129943, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1731894502; bh=UIDQ79NXPVjMdLsgl9nnghZU0uQkF0jSdCEcqXI9gd0=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=A2mUILxiOLbqqptWpfVuSl1zt0qcosnazZcTQxjO220HhwpH6/5EQ2tJdr1lhEXlh
-	 hDpouQ9TjV2VB2wvwUnua0QLkmymCsP+OYV8y8qisQohb7m392hY6MVlLuE6tYFO2B
-	 TqWKg6gj3IfFKKldY9jV7o1DZz54keDwFvsnAmgshfDmS/P4BaNPEavJtZNJc7WlZE
-	 ApUe4T+3n2xjBHn9flfxKu7juDDdf1I3qhW/csmlWIvC7Wm4QzhapnPYxNf6L3FiGU
-	 scViUIYZw2aLmU1e1MYSXmh4CdGQe0dmDFhg8Yt1mpS4DhDwUPHwf+bJvciX7Wd3UC
-	 xvsbTqtpAGjwg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AI1mM5P14129943
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Nov 2024 09:48:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 18 Nov 2024 09:48:22 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Nov
- 2024 09:48:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Colin Ian King <colin.i.king@gmail.com>,
-        Ping-Ke Shih
-	<pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        Su Hui
-	<suhui@nfschina.com>, <linux-wireless@vger.kernel.org>
-CC: <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
-In-Reply-To: <20241106154642.1627886-1-colin.i.king@gmail.com>
-References: <20241106154642.1627886-1-colin.i.king@gmail.com>
+	s=arc-20240116; t=1731896285; c=relaxed/simple;
+	bh=bup4rUewPp03t4U8vjVhWSVu/1bFX3dKG/XZG/QXuIU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZFcvVwtkv/iSiE1QTZbPivrOXJkidbvxCW9YMIxKF0E51mhVOjJz/WDt9/jI4JwLlu/UkDBPYNnBRMwYhXM4MTvHI+MCh8zX+hKMzsY8+ZQmIwPaeyJkduz4hnCSLjpQiyiPW3SeFygfJzGRwm7UUUMeomVZ0pLX8nDMJAeRZHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2rEQ2/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40709C4CED8;
+	Mon, 18 Nov 2024 02:18:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731896285;
+	bh=bup4rUewPp03t4U8vjVhWSVu/1bFX3dKG/XZG/QXuIU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u2rEQ2/jAXp+XURt0u3TA4By7SrBimi8OBpG434o/ivR6W2IZlI1WH6P18rJOuxjT
+	 a+2blm7kv3VeSEl/Mgw0SJWUB6CaIqx71xzqdmf9ppQboQYN/Vg0eRUK5/yJvsZ7ur
+	 84hUitT4p5h+FhfntlrQ6nnkRiiXtGUqBBhiMOqqm4hNquNmqbyrEI8qipByYal7UJ
+	 xk3sUHv2iIr8VLKVCQGFKqnvTNbPDR4jt+ifQlD2Jom3L1O+nefr8MweJcL2Eg8xvY
+	 YGg0f0BAXwaW2saVnB4dyIDEFwyXvTCuXns4sW3NJYfAy2Uubhcp63ddKLgE1s0Ola
+	 w2N15ci6w6gjQ==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e5fbc40239so459037b6e.3;
+        Sun, 17 Nov 2024 18:18:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVv56wDi0qGxqR/TgwHD2wcCo3bjO8f5eax91O8j3ucF11uzY42ZdXCBHVY8OS6SgwuHNkOqenlSOp9@vger.kernel.org, AJvYcCWr3cCvTs9+Qfct720TlYeV+iAZw8EgDpoNQJ7t8TC2yl6GhB1lBmrflsEqp2Bb6k9N0zLX+hEv/gKETlRk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyABQCXuW5QLqtyzVUW1UDlmTBNNOo4+5QgrdfU1JgVF2o4y6du
+	liGvTE4zzG7rFZ/YXQj4CiEu9D1TD+H0YTIFcjQpBKo0CO2uVGY8FjB8z9MOR/HSulaAdUX1FnC
+	3QxBIURiTy0ENXH+Wg7u+lYPcV74=
+X-Google-Smtp-Source: AGHT+IFQlhJVEGO188jp6Uyc1QT8eEFtfELf30pohcInWrKUP0IAFJLg/sq0Jtu5VDga+1vna/t3VWHsCOPlW+PPPyA=
+X-Received: by 2002:a05:6808:189c:b0:3e7:b9be:5480 with SMTP id
+ 5614622812f47-3e7bc7b1d61mr8158067b6e.7.1731896284500; Sun, 17 Nov 2024
+ 18:18:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <3b611dd3-a2c9-4092-8192-820b87cbda32@RTEXMBS04.realtek.com.tw>
-Date: Mon, 18 Nov 2024 09:48:19 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+References: <20241115083240.230361-1-vamsi-krishna.brahmajosyula@broadcom.com>
+In-Reply-To: <20241115083240.230361-1-vamsi-krishna.brahmajosyula@broadcom.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 18 Nov 2024 11:17:53 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8pWn+fY=kAX_inrAS3TxmSB+qrjDSr7gZq9dn2P5Nfcg@mail.gmail.com>
+Message-ID: <CAKYAXd8pWn+fY=kAX_inrAS3TxmSB+qrjDSr7gZq9dn2P5Nfcg@mail.gmail.com>
+Subject: Re: [PATCH v6.1 0/2] ksmbd: fix potencial out-of-bounds when buffer
+ offset is invalid
+To: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, yuxuanzhe@outlook.com, 
+	stfrench@microsoft.com, sashal@kernel.org, senozhatsky@chromium.org, 
+	tom@talpey.com, linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, 
+	vasavi.sirnapalli@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Colin Ian King <colin.i.king@gmail.com> wrote:
-
-> A previous clean-up fix removed the assignment of v2 inside a while loop
-> that turned it into an infinite loop. Fix this by restoring the assignment
-> of v2 from array[] so that v2 is updated inside the loop.
-> 
-> Fixes: cda37445718d ("wifi: rtlwifi: rtl8821ae: phy: remove some useless code")
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> Tested-by: Ping-Ke Shih <pkshih@realtek.com>
-> Reviewed-by: Su Hui <suhui@nfschina.com>
-
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-5e5903a442bb wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
-
----
-https://github.com/pkshih/rtw.git
-
+On Fri, Nov 15, 2024 at 5:32=E2=80=AFPM Vamsi Krishna Brahmajosyula
+<vamsi-krishna.brahmajosyula@broadcom.com> wrote:
+>
+> The dependent patch (slab-out-of-bounds) is backported from 6.7 instead o=
+f 6.6.
+> In the 6.6 commit (9e4937cbc150f), the upstream commit id points to an in=
+correct one.
+Looks good to me:)
+Thanks for backporting ksmbd's fixes to stable 6.1 kernel.
+>
+> Namjae Jeon (2):
+>   ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+>   ksmbd: fix potencial out-of-bounds when buffer offset is invalid
+>
+>  fs/smb/server/smb2misc.c | 26 ++++++++++++++++------
+>  fs/smb/server/smb2pdu.c  | 48 ++++++++++++++++++++++------------------
+>  2 files changed, 45 insertions(+), 29 deletions(-)
+>
+> --
+> 2.39.4
+>
 
