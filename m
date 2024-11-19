@@ -1,98 +1,141 @@
-Return-Path: <stable+bounces-93990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E24D9D2660
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:06:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764089D267A
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53F70281F55
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:06:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24D871F22CA4
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3B71CCB2B;
-	Tue, 19 Nov 2024 13:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KalCWegP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B321CCEFA;
+	Tue, 19 Nov 2024 13:10:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B251CCB2E;
-	Tue, 19 Nov 2024 13:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C542A1CC8BF;
+	Tue, 19 Nov 2024 13:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732021562; cv=none; b=K9XX87BJabDAj560sW3JVjq+TBYE85DFue7Ak6Xb3lF+8BErCJOQIgmQ3z72dSwEOURlFqV7AO2VgqBWKXye4CkBMTmXL5h///FWmdn+zAr+OybyL6N2MzY0YgMYtEXfxuov9KFl6od3hMgm7cjq4rhtApu9w2Ojy7hkAWYj83k=
+	t=1732021838; cv=none; b=GsM9vbkH1gYiEVv7OyktgG6OOxY41DMAmB81BE3jBoxxHdO7NZ5Ld/+qu0DBpHI8GA/snbUBbCpTQFXNgHeYXwaQCyxx6VeyTskD/dyW+dOJ9sfO9IpYgno8GuC8r/dXJtFb2R8GSznrXJiuFCfGmY+k45+NULVLNsYqkb3PQ6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732021562; c=relaxed/simple;
-	bh=yl8iqZVQmlkS7Fojqxk7oxtkvip7mrEBpO7+48Yz1j8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TJSaxHL4XugSJw3K9J6HfRnCKLsEQw0Rz82nAiaeo2xo8BpTC7o3RPw4v5on5Z6k4Ur4TiM51YPaOpQ57kr57QasGM5wxDo0v/3bUerNFOhvKOYJnC0XeOUDhV/S9TIL2ux/6FcsoxSY+z0f5M1WDrncx9BDkKj+HsGQoI9V7SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KalCWegP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAD8C4CED8;
-	Tue, 19 Nov 2024 13:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732021562;
-	bh=yl8iqZVQmlkS7Fojqxk7oxtkvip7mrEBpO7+48Yz1j8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KalCWegP7Fqn0DIvP3ttfqggO2V8khY8wjN91O3Rd7nfTXtY6/S4nQv2V/CDlBiTe
-	 asFDhY8KVZ0NPRC069sBthecKUn5LFBFKPgBI2bdv5TepRA1mZoTvj65JrqWUQplcl
-	 VjMB73dOfc3E0MQOYBppkeI7dIDf7/rvG8AEVA0c=
-Date: Tue, 19 Nov 2024 14:05:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org, sashal@kernel.org
-Subject: Re: [PATCH 6.1.y 0/7] mptcp: fix recent failed backports
-Message-ID: <2024111923-preppy-raider-2faa@gregkh>
-References: <20241119083547.3234013-9-matttbe@kernel.org>
+	s=arc-20240116; t=1732021838; c=relaxed/simple;
+	bh=2yD66c7VzXv3gjDHnuLMwJbGJ4Iaaw0Cncqx7BrTMZw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g8jKkHkDSKr2aJDQ2rswhMHWz5XPb4x90eg75VUyBtxpKcuXTA1XGddww3+Pno8HmE2eMiicGM69wbkRJilO+fazT5WQxBToBL4ZVZFSy6Kb2AbmzzTD/KH04BtTsJAo3kUMhQiX5u6eEw/ryYFfwupAvUxM8+WvmuxjxvyHMPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: qdnQKTnwQW+57xfaeIeIqw==
+X-CSE-MsgGUID: LOQcRYo4TROjczDMBqFI5w==
+X-IronPort-AV: E=Sophos;i="6.12,166,1728918000"; 
+   d="scan'208";a="229300905"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 19 Nov 2024 22:10:26 +0900
+Received: from localhost.localdomain (unknown [10.226.92.216])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 96E534024119;
+	Tue, 19 Nov 2024 22:10:19 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>,
+	linux-renesas-soc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/3] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
+Date: Tue, 19 Nov 2024 13:10:03 +0000
+Message-ID: <20241119131011.105359-2-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241119131011.105359-1-biju.das.jz@bp.renesas.com>
+References: <20241119131011.105359-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119083547.3234013-9-matttbe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 19, 2024 at 09:35:48AM +0100, Matthieu Baerts (NGI0) wrote:
-> Greg recently reported 3 patches that could not be applied without
-> conflict in v6.1:
-> 
->  - e0266319413d ("mptcp: update local address flags when setting it")
->  - f642c5c4d528 ("mptcp: hold pm lock when deleting entry")
->  - db3eab8110bc ("mptcp: pm: use _rcu variant under rcu_read_lock")
-> 
-> Conflicts, if any, have been resolved, and documented in each patch.
-> 
-> Note that there are 3 extra patches added to avoid some conflicts:
-> 
->  - 14cb0e0bf39b ("mptcp: define more local variables sk")
->  - 06afe09091ee ("mptcp: add userspace_pm_lookup_addr_by_id helper")
->  - af250c27ea1c ("mptcp: drop lookup_by_id in lookup_addr")
-> 
-> The Stable-dep-of tags have been added to these patches.
-> 
-> 1 extra patch has been included, it is supposed to be backported, but it
-> was missing the Cc stable tag and it had conflicts:
-> 
->  - ce7356ae3594 ("mptcp: cope racing subflow creation in
->    mptcp_rcv_space_adjust")
-> 
-> Geliang Tang (5):
->   mptcp: define more local variables sk
->   mptcp: add userspace_pm_lookup_addr_by_id helper
->   mptcp: update local address flags when setting it
->   mptcp: hold pm lock when deleting entry
->   mptcp: drop lookup_by_id in lookup_addr
-> 
-> Matthieu Baerts (NGI0) (1):
->   mptcp: pm: use _rcu variant under rcu_read_lock
-> 
-> Paolo Abeni (1):
->   mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
+The host_node pointer was assigned and freed in adv7533_parse_dt(), and
+later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
+by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
+in error path of probe() and also in the remove().
 
-now queued up, thanks!
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+Changes in v5:
+ - Updated commit description.
+ - restored host_node in struct adv7511.
+ - Dropped of_node_put() in adv7533_parse_dt() and calling of_node_put()
+   in error path of probe() and also in the remove().
+Changes in v4:
+ - Updated commit description.
+ - Dropped host_node from struct adv7511 and instead used a local pointer
+   in probe(). Also freeing of host_node pointer after use is done in
+   probe().
+Changes in v3:
+ - Replace __free construct with readable of_node_put().
+Changes in v2:
+ - Added the tag "Cc: stable@vger.kernel.org" in the sign-off area.
+ - Dropped Archit Taneja invalid Mail address
+---
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 5 +++++
+ drivers/gpu/drm/bridge/adv7511/adv7533.c     | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-greg k-h
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index eb5919b38263..6cfdda04f52f 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1363,6 +1363,8 @@ static int adv7511_probe(struct i2c_client *i2c)
+ 	i2c_unregister_device(adv7511->i2c_edid);
+ uninit_regulators:
+ 	adv7511_uninit_regulators(adv7511);
++	if (adv7511->host_node)
++		of_node_put(adv7511->host_node);
+ 
+ 	return ret;
+ }
+@@ -1371,6 +1373,9 @@ static void adv7511_remove(struct i2c_client *i2c)
+ {
+ 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
+ 
++	if (adv7511->host_node)
++		of_node_put(adv7511->host_node);
++
+ 	adv7511_uninit_regulators(adv7511);
+ 
+ 	drm_bridge_remove(&adv7511->bridge);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+index 4481489aaf5e..5f195e91b3e6 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -181,8 +181,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+ 	if (!adv->host_node)
+ 		return -ENODEV;
+ 
+-	of_node_put(adv->host_node);
+-
+ 	adv->use_timing_gen = !of_property_read_bool(np,
+ 						"adi,disable-timing-generator");
+ 
+-- 
+2.43.0
+
 
