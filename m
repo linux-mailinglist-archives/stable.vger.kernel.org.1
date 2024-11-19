@@ -1,130 +1,168 @@
-Return-Path: <stable+bounces-93949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84F39D24A0
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:12:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FF09D252F
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56EFB1F230F2
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 11:12:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 813C6B22CD5
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 11:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7D1C3306;
-	Tue, 19 Nov 2024 11:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D641CBA1F;
+	Tue, 19 Nov 2024 11:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JPqpOQWD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P/h+PV0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmOupbsO"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1582214AD1A;
-	Tue, 19 Nov 2024 11:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D14211C;
+	Tue, 19 Nov 2024 11:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732014728; cv=none; b=p56kUylRuk2UX3oNoiRMfAGLt0mzrNp/Du7fiPcim+dvDL6gHqXm8azOJ9Wy/nFjgOEB3AZWJiQQ/0dXvVXH961ddCD9evY5HezEBW+XbUCpifnuz4xXr7KZJkRfWyRnFo7uQtPSZF9Fe8IDKLEMuOmURu/nklwOs91bOk9qtZg=
+	t=1732017526; cv=none; b=nMRDR0HywiyLxc+M63WhiN+cCrrRBUdgEu0LUFmZp9GQcT6784vR0a1GWbA1OIqK6pu60YKNQt9pB83ZHroJZAvUPsuUc/oVndKkK6QwwHlajBzn0HdOIWIE0zYVgANP6EE+/eavWrw9Miy6BW/L/MR6iJUL6bnxE9BEAU6rQwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732014728; c=relaxed/simple;
-	bh=mknntYxIV69Ae/WS6lyHe236OCBngYEIu6gZwYR1Y+w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sI4osRn3Rqy1vsHX9iN8VZbvKYgf8ZSbDv8+tnrUaOLqY/LuSKhts9xw+bjcSr3DNixsrai0c7rh5lnxvKYoVr0xMylFxavWq/hjE6ze5mAq46NeGB82M6GU5WIG6SXNEIxl3L99xe+4Xvtl7G2VHkHzXinsuxbzrA0zu5oJ08k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JPqpOQWD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P/h+PV0+; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732014724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AnSoKCnQrjrmzqa2C++pRQDGWZYwmEGb3klOeM1ODno=;
-	b=JPqpOQWDN5FAAIkObFQ79DDrfI8arMwdauXPgIuDle4pPYOugOv7fjHc9QGglhicCjsGPu
-	XJ8j25eHWH5k0IrUP5IzQHZfZVgFgxtka4sW4icbnpcIoNdDJ7ozmtWhJBjEEPMq0BwlFl
-	gD3VsjhSZtGW6KN+2zRp0axSnbAQFJupGqeIFzZ5jW5rR+Vwoyc0MvsYQBmO6/pdG4jZuz
-	JfcUh3jY5vTwUnAfMzAAypk1op5cN5zr0SuTF2pIh0zaqvdiSL1d3GT826fJ6tG8Nsng8E
-	7zuMBQjLRDv34YoYNKr7ZW+mMPoRDgcKh4DPYHEVHND66Os5gc9fcm0WBTgsrw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732014724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AnSoKCnQrjrmzqa2C++pRQDGWZYwmEGb3klOeM1ODno=;
-	b=P/h+PV0+Vj1KVJvq625yvh4OJfnE2mUnoxtSv70YLtIIg/RSzdMfzIRdzlK6kBxRSBD5m3
-	HVAUppB4cdc98XCA==
-To: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: John Ogness <john.ogness@linutronix.de>,
-	Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: kprobes: Fix incorrect address calculation
-Date: Tue, 19 Nov 2024 12:10:56 +0100
-Message-Id: <20241119111056.2554419-1-namcao@linutronix.de>
+	s=arc-20240116; t=1732017526; c=relaxed/simple;
+	bh=K8FMiqW5NIEUmvDDVxv170oLszWNxCd/M4x52+9ZjMU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ls3WdjXo2zFPwgzlpXw0rhjakCddID2maxCFo2Rn/9s14fbg+KPyZlXcZ4Kur6/wStmOv9jUjk4dJQUeOH6jDfSH29ClrownJ95gRapoUTXggZWZ34u+rY9Imqhls+yMOXFxBW+8HHmw+85HnH9Bs7s7t1iBZ+gmOSAk/ypcRtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmOupbsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3BCC4CECF;
+	Tue, 19 Nov 2024 11:58:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1732017525;
+	bh=K8FMiqW5NIEUmvDDVxv170oLszWNxCd/M4x52+9ZjMU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WmOupbsOU5umXwVorZ1Imowtg2Nkw2bvxxvg4PPd02ZggC3EKr2DnqgT/uzl6J5Cf
+	 l0uGiItxip2UQ6YLt62knmbBLKqcnbONHHu2LiKExlUx/T7tzIVMFNQ86nEQozod5g
+	 fSGeH5YEjbOgdEvznYNXWvQR6RtIrSSe0rlBrA+Y=
+Date: Tue, 19 Nov 2024 12:58:21 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: stable@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: Fix build ID parsing logic in stable trees
+Message-ID: <2024111955-excursion-diaper-2675@gregkh>
+References: <2024110536-agonizing-campus-21f0@gregkh>
+ <ZyniGMz5QLhGVWSY@krava>
+ <2024110636-rebound-chip-f389@gregkh>
+ <ZytZrt31Y1N7-hXK@krava>
+ <Zy0dNahbYlHISjkU@telecaster>
+ <Zy3NVkewYPO9ZSDx@krava>
+ <Zy6eJdwR3LWOlrQg@krava>
+ <CAEf4Bza3PFp53nkBxupn1Z6jYw-FyXJcZp7kJh8aeGhe1cc6CA@mail.gmail.com>
+ <ZzUWRyDmndTpZU3Y@krava>
+ <ZzeQrYy-6I3NK4gX@telecaster>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZzeQrYy-6I3NK4gX@telecaster>
 
-p->ainsn.api.insn is a pointer to u32, therefore arithmetic operations are
-multiplied by four. This is clearly undesirable for this case.
+On Fri, Nov 15, 2024 at 10:19:25AM -0800, Omar Sandoval wrote:
+> On Wed, Nov 13, 2024 at 10:12:39PM +0100, Jiri Olsa wrote:
+> > On Wed, Nov 13, 2024 at 12:07:39PM -0800, Andrii Nakryiko wrote:
+> > > On Fri, Nov 8, 2024 at 3:26 PM Jiri Olsa <olsajiri@gmail.com> wrote:
+> > > >
+> > > > On Fri, Nov 08, 2024 at 09:35:34AM +0100, Jiri Olsa wrote:
+> > > > > On Thu, Nov 07, 2024 at 12:04:05PM -0800, Omar Sandoval wrote:
+> > > > > > On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
+> > > > > > > On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
+> > > > > > > > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
+> > > > > > > > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
+> > > > > > > > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
+> > > > > > > > > > > hi,
+> > > > > > > > > > > sending fix for buildid parsing that affects only stable trees
+> > > > > > > > > > > after merging upstream fix [1].
+> > > > > > > > > > >
+> > > > > > > > > > > Upstream then factored out the whole buildid parsing code, so it
+> > > > > > > > > > > does not have the problem.
+> > > > > > > > > >
+> > > > > > > > > > Why not just take those patches instead?
+> > > > > > > > >
+> > > > > > > > > I guess we could, but I thought it's too big for stable
+> > > > > > > > >
+> > > > > > > > > we'd need following 2 changes to fix the issue:
+> > > > > > > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+> > > > > > > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
+> > > > > > > > >
+> > > > > > > > > and there's also few other follow ups:
+> > > > > > > > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
+> > > > > > > > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
+> > > > > > > > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() API
+> > > > > > > > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
+> > > > > > > > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
+> > > > > > > > >
+> > > > > > > > > which I guess are not strictly needed
+> > > > > > > >
+> > > > > > > > Can you verify what exact ones are needed here?  We'll be glad to take
+> > > > > > > > them if you can verify that they work properly.
+> > > > > > >
+> > > > > > > ok, will check
+> > > > > >
+> > > > > > Hello,
+> > > > > >
+> > > > > > I noticed that the BUILD-ID field in vmcoreinfo is broken on
+> > > > > > stable/longterm kernels and found this thread. Can we please get this
+> > > > > > fixed soon?
+> > > > > >
+> > > > > > I tried cherry-picking the patches mentioned above ("lib/buildid: add
+> > > > > > single folio-based file reader abstraction" and "lib/buildid: take into
+> > > > > > account e_phoff when fetching program headers"), but they don't apply
+> > > > > > cleanly before 6.11, and they'd need to be reworked for 5.15, which was
+> > > > > > before folios were introduced. Jiri's minimal fix works for me and seems
+> > > > > > like a much safer option.
+> > > > >
+> > > > > hi,
+> > > > > thanks for testing
+> > > > >
+> > > > > I think for 6.11 we could go with backport of:
+> > > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+> > > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
+> > > > >
+> > > > > and with the small fix for the rest
+> > > > >
+> > > > > but I still need to figure out why also 60c845b4896b is needed
+> > > > > to fix the issue on 6.11.. hopefully today
+> > > >
+> > > > ok, so the fix the issue in 6.11 with upstream backports we'd need both:
+> > > >
+> > > >   1) de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+> > > >   2) 60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
+> > > >
+> > > > 2) is needed because 1) seems to omit ehdr->e_phoff addition (patch below)
+> > > > which is added back in 2)
+> > > >
+> > > > IMO 6.11 is close to upstream and by taking above upstream fixes it will be
+> > > > easier to backport other possible fixes in the future, for other trees I'd
+> > > > take the original one line fix I posted
+> > > 
+> > > I still maintain that very minimal is the way to go instead of risking
+> > > bringing new potential regressions by partially backporting folio
+> > > rework patchset.
+> > > 
+> > > Jiri, there is no point in risking this, best to fix this quickly and
+> > > minimally. If we ever need to backport further fixes, *then* we can
+> > > think about folio-based implementation backport.
+> > 
+> > ok, make sense, the original plan works for me as well
+> > 
+> > jirka
+> 
+> Greg, could you please queue up Jiri's one line fixes for 5.15, 6.1,
+> 6.6, and 6.11?
 
-Cast it to (void *) first before any calculation.
+Ok, will do, but hopefully you all will help out if there's any problems
+with the change going forward...
 
-Below is a sample before/after. The dumped memory is two kprobe slots, the
-first slot has
-
-  - c.addiw a0, 0x1c (0x7125)
-  - ebreak           (0x00100073)
-
-and the second slot has:
-
-  - c.addiw a0, -4   (0x7135)
-  - ebreak           (0x00100073)
-
-Before this patch:
-
-(gdb) x/16xh 0xff20000000135000
-0xff20000000135000:	0x7125	0x0000	0x0000	0x0000	0x7135	0x0010	0x0000	0x0000
-0xff20000000135010:	0x0073	0x0010	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
-
-After this patch:
-
-(gdb) x/16xh 0xff20000000125000
-0xff20000000125000:	0x7125	0x0073	0x0010	0x0000	0x7135	0x0073	0x0010	0x0000
-0xff20000000125010:	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000	0x0000
-
-Fixes: b1756750a397 ("riscv: kprobes: Use patch_text_nosync() for insn slot=
-s")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
----
- arch/riscv/kernel/probes/kprobes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/=
-kprobes.c
-index 474a65213657..d2dacea1aedd 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -30,7 +30,7 @@ static void __kprobes arch_prepare_ss_slot(struct kprobe =
-*p)
- 	p->ainsn.api.restore =3D (unsigned long)p->addr + len;
-=20
- 	patch_text_nosync(p->ainsn.api.insn, &p->opcode, len);
--	patch_text_nosync(p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH(insn));
-+	patch_text_nosync((void *)p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH=
-(insn));
- }
-=20
- static void __kprobes arch_prepare_simulate(struct kprobe *p)
---=20
-2.39.5
-
+greg k-h
 
