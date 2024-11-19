@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88259D288E
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156AC9D2893
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 320C0B2ADF8
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C53F6B2AEDB
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED461CF5F9;
-	Tue, 19 Nov 2024 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678EE1CEACB;
+	Tue, 19 Nov 2024 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ljBNctYY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQRdzeow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD011CEACB
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F661CF5FD
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027627; cv=none; b=HwlaBM1XD3sR8u6CEeLWIT8aNdKAs8iPrVQdbNUnX4mEL0x2cOqfh1pMxPhtI/qUSCpasLaSqD2gG8VawRvZvs175Bk6MZ40ylvZrlcH6JXqdzymGlq4hL/40Zn8mZTufIKxsPShMaTRiDzkDMmaHKe9t9KQJEAGCqdYSKCa1ZQ=
+	t=1732027629; cv=none; b=HcF5Qc4RH6mAe0GzaIU15Ooc7LHU9Ym1FhDZVo5G78PoJN+jIp3o89Jy79xLCXnB3WoEad9mpE3lWva8wgS7f16PCzSda0UXJ+cho3ukOJEL/LoFAEfDZdpEOHHiUYcNqlRd6bsULlEntF1EVk7DmPsJuV8F7UAzvnXPwPlzEI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027627; c=relaxed/simple;
-	bh=fjylV1LJJEi9tJYf8nZijcWr6fhmlv8CM/os/eua8/c=;
+	s=arc-20240116; t=1732027629; c=relaxed/simple;
+	bh=hDdCVj8DEYAn9+1aZTlOHXT6zgWf0IoeM18SDa6V164=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI+N4rteLuqpGvAXI0JcQ5Fu4Gx0hj3kML4Brdbt8k/XkauB/rrqpYD6A1HQ4362/lR5Qh6y44AKrjoXXfNKXasnLjgnn8yMTM9bd0UYUQX7VZTaQZcrNRDS+0eKKuZobIumZ8gz7I/kD+6Ne9IZDiWNfSaNgj00TWPrc8ZS1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ljBNctYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1CDC4CECF;
-	Tue, 19 Nov 2024 14:47:06 +0000 (UTC)
+	 MIME-Version; b=fgF7gPdUqMp/9GYgzYDDO6YZD7nJQLszWG5dEe8qAR4bwyrE31kf8mQHkDXGODDqINWCvt2hnQtMpzTAA966WlE2dOMxZQc4OBNnXbeZnKo+RmPn5ALzwkgFEE+gCJqD8YL0wTzJtvWiXQOfUlje8Qs9XykoE+Iw5Op7AMr5Vdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQRdzeow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BA6C4CECF;
+	Tue, 19 Nov 2024 14:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732027627;
-	bh=fjylV1LJJEi9tJYf8nZijcWr6fhmlv8CM/os/eua8/c=;
+	s=k20201202; t=1732027629;
+	bh=hDdCVj8DEYAn9+1aZTlOHXT6zgWf0IoeM18SDa6V164=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljBNctYYZkVjOEl04mXJow3zt7dl6H6XRnB3EIpafrJ0Af6Uq5gTIM9bcmYPuY5Cb
-	 5OhNTze31/OSq7zKz5GR2+JjxZOZUmbaopr/iuuA7jDlUthrbIlxKnjpWDuSVwMdfb
-	 Rm7jiRoIJeRY4LtPaw9rgnn2S8mNK7Jd/1JdjX6i814SAT+cwb7dM4WXltxSXqlhdC
-	 QqTx8LqXRA15O8NQMQTxh2hKiKIz9nHUWqLcjvAxmDVGiLQmiQc2B2QTssYsLmCpqu
-	 wY/9wdVKd1TtLQTU1m/AoauLbcmpZJH59A42ORTzio/gAfkB2hD2wpXSnqOGQtacJW
-	 HtXldaxfreF4w==
+	b=KQRdzeowXuZ7cRJEXgSAfGuX1aMC7nBzhnOFA+Vy8RJtbcmSomGoQeMSYdssBJduD
+	 xUfJ8y3RP0PJ3l21AQMRlq3ExxoyYS3FIDhsC728EaEA2tE4UfJYDl6OdxwDsgI6wC
+	 JYJmd8HoynCkb0XdUrUGol/L+PMMS0/BOrdq+KFYRStmDd+2TMS+d1lQ01tiMvf2hd
+	 B1eUVf2bVD4nasxqBt7H0TMZ3QEHYBJj6yyvHQ12Q3zrf4iTE8YQp5QAbOs3ut1dfN
+	 pv2KGTg7NQABeQoN29zGGHVMAMO4blBAqbGo9D2YQ0wW76XdL/YZdSChEV56ecVDQl
+	 Yd82aGhsctECg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 2/2] null_blk: fix null-ptr-dereference while configuring 'power' and 'submit_queues'
-Date: Tue, 19 Nov 2024 09:47:05 -0500
-Message-ID: <20241119082719.4034054-3-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 6.1] ipvs: properly dereference pe in ip_vs_add_service
+Date: Tue, 19 Nov 2024 09:47:07 -0500
+Message-ID: <20241119102010.2572322-1-bin.lan.cn@windriver.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119082719.4034054-3-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241119102010.2572322-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,102 +63,61 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: a2db328b0839312c169eb42746ec46fc1ab53ed2
+The upstream commit SHA1 provided is correct: cbd070a4ae62f119058973f6d2c984e325bce6e7
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Yu Kuai <yukuai3@huawei.com>
+Backport author: Bin Lan <bin.lan.cn@windriver.com>
+Commit author: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
 
 Status in newer kernel trees:
 6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: aaadb755f2d6)
+6.6.y | Present (different SHA1: 3dd428039e06)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 07:54:23.312797547 -0500
-+++ /tmp/tmp.yAelMilevi	2024-11-19 07:54:23.307193909 -0500
+--- -	2024-11-19 07:39:13.723692653 -0500
++++ /tmp/tmp.z99Kibx5w4	2024-11-19 07:39:13.716370307 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit a2db328b0839312c169eb42746ec46fc1ab53ed2 ]
++[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
 +
- Writing 'power' and 'submit_queues' concurrently will trigger kernel
- panic:
+ Use pe directly to resolve sparse warning:
  
-@@ -49,15 +51,17 @@
- Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
- Link: https://lore.kernel.org/r/20240523153934.1937851-1-yukuai1@huaweicloud.com
- Signed-off-by: Jens Axboe <axboe@kernel.dk>
-+Signed-off-by: Sasha Levin <sashal@kernel.org>
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+   net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+@@ -7,17 +9,19 @@
+ Acked-by: Julian Anastasov <ja@ssi.bg>
+ Acked-by: Simon Horman <horms@kernel.org>
+ Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
++[ Resolve minor conflicts to fix CVE-2024-42322 ]
++Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
  ---
-  drivers/block/null_blk/main.c | 40 +++++++++++++++++++++++------------
-  1 file changed, 26 insertions(+), 14 deletions(-)
+  net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
+  1 file changed, 5 insertions(+), 5 deletions(-)
  
- diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
--index 5d56ad4ce01a1..eb023d2673693 100644
-+index f58778b57375..e838eed4aacf 100644
- --- a/drivers/block/null_blk/main.c
- +++ b/drivers/block/null_blk/main.c
--@@ -413,13 +413,25 @@ static int nullb_update_nr_hw_queues(struct nullb_device *dev,
-+@@ -392,13 +392,25 @@ static int nullb_update_nr_hw_queues(struct nullb_device *dev,
-  static int nullb_apply_submit_queues(struct nullb_device *dev,
-  				     unsigned int submit_queues)
-  {
-@@ -85,7 +89,7 @@
-  }
+ diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+-index 78a1cc72dc38a..706c2b52a1ac6 100644
++index 17a1b731a76b..18e37b32a5d6 100644
+ --- a/net/netfilter/ipvs/ip_vs_ctl.c
+ +++ b/net/netfilter/ipvs/ip_vs_ctl.c
+-@@ -1459,18 +1459,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+- 	if (ret < 0)
+- 		goto out_err;
++@@ -1382,18 +1382,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
++ 		sched = NULL;
++ 	}
   
-  NULLB_DEVICE_ATTR(size, ulong, NULL);
--@@ -468,28 +480,31 @@ static ssize_t nullb_device_power_store(struct config_item *item,
-+@@ -444,28 +456,31 @@ static ssize_t nullb_device_power_store(struct config_item *item,
-  	if (ret < 0)
-  		return ret;
-  
-@@ -122,25 +126,25 @@
-  }
-  
-  CONFIGFS_ATTR(nullb_device_, power);
--@@ -1932,15 +1947,12 @@ static int null_add_dev(struct nullb_device *dev)
-- 	nullb->q->queuedata = nullb;
-+@@ -2102,15 +2117,12 @@ static int null_add_dev(struct nullb_device *dev)
-  	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
-+ 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, nullb->q);
-  
- -	mutex_lock(&lock);
-  	rv = ida_alloc(&nullb_indexes, GFP_KERNEL);
- -	if (rv < 0) {
- -		mutex_unlock(&lock);
- +	if (rv < 0)
-- 		goto out_cleanup_disk;
-+ 		goto out_cleanup_zone;
- -	}
+ -	/* Bind the ct retriever */
+ -	RCU_INIT_POINTER(svc->pe, pe);
+@@ -36,6 +40,9 @@
+ +	RCU_INIT_POINTER(svc->pe, pe);
+ +	pe = NULL;
  +
-  	nullb->index = rv;
-  	dev->index = rv;
- -	mutex_unlock(&lock);
-  
-- 	if (config_item_name(&dev->group.cg_item)) {
-- 		/* Use configfs dir name as the device name */
--@@ -1969,9 +1981,7 @@ static int null_add_dev(struct nullb_device *dev)
-+ 	blk_queue_logical_block_size(nullb->q, dev->blocksize);
-+ 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
-+@@ -2134,9 +2146,7 @@ static int null_add_dev(struct nullb_device *dev)
-  	if (rv)
-  		goto out_ida_free;
-  
-@@ -150,7 +154,7 @@
-  
-  	pr_info("disk %s created\n", nullb->disk_name);
-  
--@@ -2020,7 +2030,9 @@ static int null_create_dev(void)
-+@@ -2185,7 +2195,9 @@ static int null_create_dev(void)
-  	if (!dev)
-  		return -ENOMEM;
-  
-@@ -160,3 +164,6 @@
-  	if (ret) {
-  		null_free_dev(dev);
-  		return ret;
++ 	ip_vs_start_estimator(ipvs, &svc->stats);
++ 
+  	/* Count only IPv4 services for old get/setsockopt interface */
+- 	if (svc->af == AF_INET)
+- 		ipvs->num_services++;
 +-- 
 +2.43.0
 +
@@ -168,5 +127,9 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-6.1.y:
+    
 
