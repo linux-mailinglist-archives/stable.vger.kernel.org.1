@@ -1,82 +1,96 @@
-Return-Path: <stable+bounces-94017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1BE9D284A
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:35:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5EE9D284E
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC29282CC7
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050DA1F21333
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB96B1CCEC6;
-	Tue, 19 Nov 2024 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21DA1CCB53;
+	Tue, 19 Nov 2024 14:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UxxdH3Hc"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XS/eOi29";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eUqtteDP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XS/eOi29";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eUqtteDP"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C8414658D
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB90E57D;
+	Tue, 19 Nov 2024 14:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732026939; cv=none; b=n9CUxd/TsI8l0u5lxrJupjP8SjQ/3loORMb0UIQACkMKXMj5hIFh5ZJJcn54HvsVi3ciBXvnN8n2yrVx1j+B+D0Xz+LhEcpSuNoXJR7mJgaN33F9bikhr7oXD2WsLPfjyDGV8eFTwPNXG3FEdKvisCrWrqHeGLt0ny1GAPeiY0E=
+	t=1732027004; cv=none; b=n71bM3eh2SNQT3U7dG+6b+6nRNkbyRniZryXH+tkrOkrfVUrHdJ4TbxloONSrDL1UTPFtDaoVqVFMZkp3WkQ+8mmhzz/4Shdm9dMQ+5R8nxJnffU3hclIy3WqCtG3GnJbHWzl1TR35Su9XsPfiOD/EDMShbbwZEo59XAVuKddig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732026939; c=relaxed/simple;
-	bh=inyP8EzpXjrTYOwbBZhVZakTi62ByPip/mFB2T5+hAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gD3Hl7JWfwkso+wLwnA1FK0zRCtOjUDmHXoc/u6PmymdJAnBSByYAKlSDffnJhjC5ELHXx/QlAans/XSgQNHuSTzPyKHh+rEmkREa0HIEGgKufmlaj9Hen+wSYhAQZ3J3ixJO68fIS5lPyioLqnFw+nN67FghT9jNo+cpLjPrqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UxxdH3Hc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732026936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1732027004; c=relaxed/simple;
+	bh=ad2GvHN3fcJLb5LPKw2v2shaHOY1+QPxPzs+8SZ1MGk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dH0zpMvBGE4fHPQ6cszaxAWGkM4QcSwLfBou+xGfnJISSTO6m0COL7moowKcBCGWfKefGu9efksGxxulfR6HE8/Ql+z6kpSZFog9K4xR7lQeCi+Eju9Vp0mkZk436Zb8N+MffWr1CEgQCPuD2ofEwN6VybW7TByQFPqGgc/IXrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XS/eOi29; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eUqtteDP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XS/eOi29; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eUqtteDP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 939111F79C;
+	Tue, 19 Nov 2024 14:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732027000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JKx890WpfnsU0/gagsqAu/7bg4tMVV8GUtdV3TL7xsM=;
-	b=UxxdH3Hc3xxHGVkKbPSchB0vztmPosD97VhIDHDqHVXarC/0h9H49NOP/0OFHg3a8+u9ty
-	Vyq7ZcylmRcPVgCtWq+3oyr0AA+RxELHUywJrzcjog6iFM3FGYTVJPXgKRA/P+90V5/iMS
-	V+1Tz51CovcItTC3pvDfB7y1u7uMB7Y=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-W4otyrVuPiWGk1PT-Uz1vw-1; Tue, 19 Nov 2024 09:35:35 -0500
-X-MC-Unique: W4otyrVuPiWGk1PT-Uz1vw-1
-X-Mimecast-MFC-AGG-ID: W4otyrVuPiWGk1PT-Uz1vw
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4314a22ed8bso29026355e9.1
-        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 06:35:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732026934; x=1732631734;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JKx890WpfnsU0/gagsqAu/7bg4tMVV8GUtdV3TL7xsM=;
-        b=PyXFI3ke8iawjlnGpJAuABlpHXkGSrHIHzzwwDhTmcK1hMUPYv8X6vblt0GoJTQhkU
-         VHuhfSpyLobR1Pt10HDN+g9r5unZq5oPWVkrkh/CGB7QP6Leh9gBdlEfwiBufOmMbMAO
-         NNhrzMN4PBvMnvdUFM1CmGFWZmNy9LGajgBPZ4VJFDyTrPvBebbxxZ7zhceREDSwarKt
-         /tHAvjR5sRZTYGLXdiLLIWlT5Vtrl8DIU9bSQ2WKDW5l455LV8H4NvPSrl+IPv0/5xMy
-         nfwAxcWsFMRsuGvVCgf5PGc/oi70U3VHmSPnE1ThozCjiXb+uSvs7k2JRKBTaRXyIPqt
-         p1BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpEHaHmPEEK1kmO+K0wrmuKXo808aFYHnAf/RD6dZt5L2BV6iouiy5jCD9e1FeB10ZivrIYkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYIv+mckxBJh/frBBA3urcgPjGn15iu3T9eG2yZv4+4IWrbvTX
-	nGOloanIQh06KgnXGxP9AvKlSwdQkqGvPqxKDsYIFTy01LYexlFf+ocUfODJFmSGeQ5qUw5Zykn
-	cP1ECehdsumQz4xHRxB1I37D68GGylWvdLZcAbGJyq+a2gLBSRmsR0Q==
-X-Received: by 2002:a05:600c:5492:b0:431:5d89:646e with SMTP id 5b1f17b1804b1-432df792df0mr123888915e9.32.1732026934044;
-        Tue, 19 Nov 2024 06:35:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWNHgoarbx3hUcQezjymarz8pGO7PL0597K0482rDOTfSC0yJPFVaW9DwAPbLFRBl1lqybvA==
-X-Received: by 2002:a05:600c:5492:b0:431:5d89:646e with SMTP id 5b1f17b1804b1-432df792df0mr123888685e9.32.1732026933695;
-        Tue, 19 Nov 2024 06:35:33 -0800 (PST)
-Received: from ?IPV6:2003:cb:c74b:d000:3a9:de5c:9ae6:ccb3? (p200300cbc74bd00003a9de5c9ae6ccb3.dip0.t-ipconnect.de. [2003:cb:c74b:d000:3a9:de5c:9ae6:ccb3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab80582sm195595185e9.19.2024.11.19.06.35.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Nov 2024 06:35:33 -0800 (PST)
-Message-ID: <db6e1966-3824-45cd-8cae-740348780002@redhat.com>
-Date: Tue, 19 Nov 2024 15:35:31 +0100
+	bh=78eK/xKpdwzTo490zBwaeaASTrV1q2qFVo+vGv2j2EY=;
+	b=XS/eOi29YM+fIQ9X7m8uzOJazsp2yRukUlaP39A0JKyQS5fVOJoSnu+GmR1qPvySSTAey2
+	xCwWmOZEPDqTyxQ9mZrHrgsJtogyYqXaEv/lZ93dvGHzev4GD4lg1p5yY3ahZ9iXe5NWFI
+	m7SRsHTOO+r6LPBzruE4zPLjl2wsNLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732027000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=78eK/xKpdwzTo490zBwaeaASTrV1q2qFVo+vGv2j2EY=;
+	b=eUqtteDPog95VnW0zKN8G9xJVLVhuqGTaGHqp5g8JUpCBeGrleL4hhw5HLKuvvzGNR7wVD
+	3OC+344GUfIMlyCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="XS/eOi29";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eUqtteDP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732027000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=78eK/xKpdwzTo490zBwaeaASTrV1q2qFVo+vGv2j2EY=;
+	b=XS/eOi29YM+fIQ9X7m8uzOJazsp2yRukUlaP39A0JKyQS5fVOJoSnu+GmR1qPvySSTAey2
+	xCwWmOZEPDqTyxQ9mZrHrgsJtogyYqXaEv/lZ93dvGHzev4GD4lg1p5yY3ahZ9iXe5NWFI
+	m7SRsHTOO+r6LPBzruE4zPLjl2wsNLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732027000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=78eK/xKpdwzTo490zBwaeaASTrV1q2qFVo+vGv2j2EY=;
+	b=eUqtteDPog95VnW0zKN8G9xJVLVhuqGTaGHqp5g8JUpCBeGrleL4hhw5HLKuvvzGNR7wVD
+	3OC+344GUfIMlyCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B61F1376E;
+	Tue, 19 Nov 2024 14:36:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ytF/HXiiPGeWEQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 19 Nov 2024 14:36:40 +0000
+Message-ID: <4e10f9e9-11e7-4f02-88b7-47102197e93a@suse.cz>
+Date: Tue, 19 Nov 2024 15:36:40 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,162 +98,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: Respect mmap hint address when aligning for THP
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: kernel-team@android.com, android-mm@google.com,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Yang Shi <yang@os.amperecomputing.com>, Rik van Riel <riel@surriel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Minchan Kim <minchan@kernel.org>, Hans Boehm <hboehm@google.com>,
- Lokesh Gidra <lokeshgidra@google.com>, stable@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>,
- Yang Shi <shy828301@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20241118214650.3667577-1-kaleshsingh@google.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 6.12.y] mm/mmap: fix __mmap_region() error handling in
+ rare merge failure case
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20241118214650.3667577-1-kaleshsingh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Jann Horn <jannh@google.com>,
+ syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20241118194048.2355180-1-Liam.Howlett@oracle.com>
+ <qmmd4lujbzwyhxmjf3wagmfakbirjleufgkh6ozh5wbled3zp7@2z6trp6xlci7>
+ <2024111935-tabasco-haziness-b485@gregkh>
+ <6m2hn4wzvvgozrrvvivy6brxiafx6g2qaedkrcicxnmflcopzg@7idyf4fuymff>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <6m2hn4wzvvgozrrvvivy6brxiafx6g2qaedkrcicxnmflcopzg@7idyf4fuymff>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 939111F79C
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TAGGED_RCPT(0.00)[bc6bfc25a68b7a020ee1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On 18.11.24 22:46, Kalesh Singh wrote:
-> Commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-> boundaries") updated __get_unmapped_area() to align the start address
-> for the VMA to a PMD boundary if CONFIG_TRANSPARENT_HUGEPAGE=y.
+On 11/19/24 15:25, Liam R. Howlett wrote:
+> * Greg KH <gregkh@linuxfoundation.org> [241119 09:17]:
+>> On Mon, Nov 18, 2024 at 03:32:14PM -0500, Liam R. Howlett wrote:
+>> > Okay, before I get yelled at...
+>> > 
+>> > This commit is only necessary for 6.12.y until Lorenzo's other fixes to
+>> > older stables land (and I'll have to figure out what to do in each).
+>> > 
+>> > The commit will not work on mm-unstable, because it doesn't exist due to
+>> > refactoring.
+>> > 
+>> > The commit does not have a tag about "upstream commit" because there
+>> > isn't one - the closest thing I could point to does not have a stable
+>> > git id.
+>> > 
+>> > So here I am with a fix for a kernel that was released a few hours ago
+>> > that is not necessary in v6.13, for a bug that's out there on syzkaller.
+>> > 
+>> > Also, it's very unlikely to happen unless you inject failures like
+>> > syzkaller.  But hey, pretty decent turn-around on finding a fix - so
+>> > that's a rosy outlook.
+>> 
+>> Why isn't this needed in 6.13.y?  What's going to be different in there
+>> that this isn't needed?
 > 
-> It does this by effectively looking up a region that is of size,
-> request_size + PMD_SIZE, and aligning up the start to a PMD boundary.
-> 
-> Commit 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment
-> on 32 bit") opted out of this for 32bit due to regressions in mmap base
-> randomization.
-> 
-> Commit d4148aeab412 ("mm, mmap: limit THP alignment of anonymous
-> mappings to PMD-aligned sizes") restricted this to only mmap sizes that
-> are multiples of the PMD_SIZE due to reported regressions in some
-> performance benchmarks -- which seemed mostly due to the reduced spatial
-> locality of related mappings due to the forced PMD-alignment.
-> 
-> Another unintended side effect has emerged: When a user specifies an mmap
-> hint address, the THP alignment logic modifies the behavior, potentially
-> ignoring the hint even if a sufficiently large gap exists at the requested
-> hint location.
-> 
-> Example Scenario:
-> 
-> Consider the following simplified virtual address (VA) space:
-> 
->      ...
-> 
->      0x200000-0x400000 --- VMA A
->      0x400000-0x600000 --- Hole
->      0x600000-0x800000 --- VMA B
-> 
->      ...
-> 
-> A call to mmap() with hint=0x400000 and len=0x200000 behaves differently:
-> 
->    - Before THP alignment: The requested region (size 0x200000) fits into
->      the gap at 0x400000, so the hint is respected.
-> 
->    - After alignment: The logic searches for a region of size
->      0x400000 (len + PMD_SIZE) starting at 0x400000.
->      This search fails due to the mapping at 0x600000 (VMA B), and the hint
->      is ignored, falling back to arch_get_unmapped_area[_topdown]().
-> 
-> In general the hint is effectively ignored, if there is any
-> existing mapping in the below range:
-> 
->       [mmap_hint + mmap_size, mmap_hint + mmap_size + PMD_SIZE)
-> 
-> This changes the semantics of mmap hint; from ""Respect the hint if a
-> sufficiently large gap exists at the requested location" to "Respect the
-> hint only if an additional PMD-sized gap exists beyond the requested size".
-> 
-> This has performance implications for allocators that allocate their heap
-> using mmap but try to keep it "as contiguous as possible" by using the
-> end of the exisiting heap as the address hint. With the new behavior
-> it's more likely to get a much less contiguous heap, adding extra
-> fragmentation and performance overhead.
-> 
-> To restore the expected behavior; don't use thp_get_unmapped_area_vmflags()
-> when the user provided a hint address, for anonymous mappings.
-> 
-> Note: As, Yang Shi, pointed out: the issue still remains for filesystems
-> which are using thp_get_unmapped_area() for their get_unmapped_area() op.
-> It is unclear what worklaods will regress for if we ignore THP alignment
-> when the hint address is provided for such file backed mappings -- so this
-> fix will be handled separately.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Yang Shi <yang@os.amperecomputing.com>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Hans Boehm <hboehm@google.com>
-> Cc: Lokesh Gidra <lokeshgidra@google.com>
-> Cc: <stable@vger.kernel.org>
-> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
-> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> Reviewed-by: Rik van Riel <riel@surriel.com>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
+> The code has been refactored and avoids the scenario.  I'd name the
+> refactoring commit as the upstream commit, but it does not have a stable
+> git id as it's in mm-unstable.  So I'm at a bit of a loss of how to
+> follow the process.
 
-LGTM. Hopefully that's the end of this story :)
+Is it not in mm-stable now, given we're in a merge window? Anyway AFAIU if
+the stable-specific fix is completely different from the upstream
+refactoring, we don't even try to pretend it's the same "commit XYZ
+upstream" no?
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers,
-
-David / dhildenb
+>> 
+>> Do you just want me to take this for the 6.12.y tree now?  I'll be glad
+>> to, just confused a bit.
+> 
+> Yes, please.
+> 
+> 
+> Thanks,
+> Liam
 
 
