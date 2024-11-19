@@ -1,160 +1,100 @@
-Return-Path: <stable+bounces-94050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DDE9D2AE6
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 17:28:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E7D9D2D86
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 19:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61E8F1F25B64
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:28:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A098EB3D59B
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 17:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0061D095E;
-	Tue, 19 Nov 2024 16:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E58E1D220E;
+	Tue, 19 Nov 2024 17:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uhkeF+z+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxZGSQzM"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38AB1CFEDE;
-	Tue, 19 Nov 2024 16:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD69F1D04A5;
+	Tue, 19 Nov 2024 17:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732033690; cv=none; b=NyyUopfVQGiMxcNNc6ckgJePKnNsySHe5KR1hPo4tx9M/rtOH+x+i1vk5v2a8eOhs2agWdCS9GIQzh33iobC2GMangtcSlxqPqJp5T7gga4b5/w2a67TRG0fS9UhcIYI5bwUitsAnl1amo0siA7MtFafI9yZbi1G43EtocCzDFo=
+	t=1732037195; cv=none; b=aCflfDykSd2g/sRos2WUTU8zB2/lYyoCq8GJFcUrKOOBfY4uhO6CbYlXVeQKcNejdE5+0MJDms0Fw3BK8CZSKg2sx8Jn9J6YpUgjpsf2I93RZCvA5AF4k7YIu3yEX1v634//TxHlGO8WP1TJyF2ZyKsiTAur2vNpeisjU/ooHgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732033690; c=relaxed/simple;
-	bh=fCnZd7xuHdxj/TyD9kKMoI71UVb4g3by4VMPnhxqEAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpdFC5e2U8yF9rkBOdq0wEJ3b5YIXLrBtXQBpKw6Ouyrqun34RvdXQGJFGyy8jAEzfDYLJ/swPOUOaT5qVEDJ6oEcmHJY+haD2WXIKhW7h5+4kNmz9doP0Im3qAALIgjD7L5xFDtEeym34LMI3XFAIGMEPM3D4sW4/OhyV2NdNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uhkeF+z+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EFD81B3;
-	Tue, 19 Nov 2024 17:27:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1732033660;
-	bh=fCnZd7xuHdxj/TyD9kKMoI71UVb4g3by4VMPnhxqEAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uhkeF+z+IBJvfgRTNWKOEjjrN2SsXA3+E32IWjMv2cLo/L7CDLHEg+TXUWKG0tV6h
-	 cERcfqecLNBWTIAoGtvVHwN8mODVsXJNOMFH6ttcqDZLL+8Nf6f8aoStdWKb3jywYo
-	 bb2hg4NaaFj/qe2NKid5oOR4IrnwcvWhlBeC48ZQ=
-Date: Tue, 19 Nov 2024 18:27:48 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>, linux-renesas-soc@vger.kernel.org,
+	s=arc-20240116; t=1732037195; c=relaxed/simple;
+	bh=4FczEMCiPK8wpc3ODDtfIp947673ljSp+A5ZMU+Mb4E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t/ajTSYI3zrzJy7z2Iu789lz9Fwug8XouMa7i1UWJVQZ3ExUme57Kf2CQ8vAKfdwuqM6xsdoy51TcBYSPdXPfro6F13Ad+bDOyNua0D79ziUr5hnURE4S76nCYKCuquaAM9Qb56s4P3l/IDMrDZewfL/ZLa9dYD8OUrwYD0LfD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxZGSQzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6233FC4CED0;
+	Tue, 19 Nov 2024 17:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732037193;
+	bh=4FczEMCiPK8wpc3ODDtfIp947673ljSp+A5ZMU+Mb4E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AxZGSQzMVCI6uEHu93dplVVkrsdTohR0WxM4WtEDq7AF2Mff4O8vkVSW0/WThUo5g
+	 y/ili1yUIiHysFTrFyFamiPgymnhVZCRyEdC00sU53EHw5FSGnt2DMjxaaVsarlycJ
+	 6eJTKGLrg6TWLP+XdAWZAD7jNvQQZ0wcG96LJl54NZ6N+auBP5RpPRHpu0LXdDDcJQ
+	 xJYo9rw6OOBgjIP7Ms2LuU+hIdPF3N+HbSyZKBt9vqKU0Gp1k13YvSWZpUgQ2HKFLR
+	 y2fwh0uRchZIEC3XY+bxEYRRlBCyV+pOH5mi351oqNrpbK0ZZueekGj0kKnYm+3W7F
+	 oZ+PYSOqM0DpQ==
+From: Kees Cook <kees@kernel.org>
+To: Jan Hendrik Farr <kernel@jfarr.cc>
+Cc: Kees Cook <kees@kernel.org>,
+	nathan@kernel.org,
+	ojeda@kernel.org,
+	ndesaulniers@google.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	thorsten.blum@toblux.com,
+	ardb@kernel.org,
+	oliver.sang@intel.com,
+	gustavoars@kernel.org,
+	kent.overstreet@linux.dev,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	akpm@linux-foundation.org,
+	tavianator@tavianator.com,
+	linux-hardening@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] drm: adv7511: Fix use-after-free in
- adv7533_attach_dsi()
-Message-ID: <20241119162748.GQ31681@pendragon.ideasonboard.com>
-References: <20241119131011.105359-1-biju.das.jz@bp.renesas.com>
- <20241119131011.105359-2-biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH 1/1] Compiler Attributes: disable __counted_by for clang < 19.1.3
+Date: Tue, 19 Nov 2024 09:26:27 -0800
+Message-Id: <173203718634.3118906.4631874727014346327.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241029140036.577804-2-kernel@jfarr.cc>
+References: <20241029140036.577804-1-kernel@jfarr.cc> <20241029140036.577804-2-kernel@jfarr.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241119131011.105359-2-biju.das.jz@bp.renesas.com>
 
-Hi Biju,
-
-Thank you for the patch.
-
-On Tue, Nov 19, 2024 at 01:10:03PM +0000, Biju Das wrote:
-> The host_node pointer was assigned and freed in adv7533_parse_dt(), and
-> later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
-> by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
-> in error path of probe() and also in the remove().
+On Tue, 29 Oct 2024 15:00:36 +0100, Jan Hendrik Farr wrote:
+> This patch disables __counted_by for clang versions < 19.1.3 because
+> of the two issues listed below. It does this by introducing
+> CONFIG_CC_HAS_COUNTED_BY.
 > 
-> Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> ---
-> Changes in v5:
->  - Updated commit description.
->  - restored host_node in struct adv7511.
->  - Dropped of_node_put() in adv7533_parse_dt() and calling of_node_put()
->    in error path of probe() and also in the remove().
-> Changes in v4:
->  - Updated commit description.
->  - Dropped host_node from struct adv7511 and instead used a local pointer
->    in probe(). Also freeing of host_node pointer after use is done in
->    probe().
-> Changes in v3:
->  - Replace __free construct with readable of_node_put().
-> Changes in v2:
->  - Added the tag "Cc: stable@vger.kernel.org" in the sign-off area.
->  - Dropped Archit Taneja invalid Mail address
-> ---
->  drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 5 +++++
->  drivers/gpu/drm/bridge/adv7511/adv7533.c     | 2 --
->  2 files changed, 5 insertions(+), 2 deletions(-)
+> 1. clang < 19.1.2 has a bug that can lead to __bdos returning 0:
+> https://github.com/llvm/llvm-project/pull/110497
 > 
-> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> index eb5919b38263..6cfdda04f52f 100644
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-> @@ -1363,6 +1363,8 @@ static int adv7511_probe(struct i2c_client *i2c)
->  	i2c_unregister_device(adv7511->i2c_edid);
->  uninit_regulators:
->  	adv7511_uninit_regulators(adv7511);
-> +	if (adv7511->host_node)
-> +		of_node_put(adv7511->host_node);
+> [...]
 
-This won't be called when adv7511_init_regulators() fails as the driver
-returns directly then, leaking the reference. You need a new error label
-and a goto for that error path.
+Applied to for-next/hardening, thanks!
 
-In the future, when touching error handling, please try to check
-existing error paths and verify they're still right.
+[1/1] Compiler Attributes: disable __counted_by for clang < 19.1.3
+      https://git.kernel.org/kees/c/f06e108a3dc5
 
->  
->  	return ret;
->  }
-> @@ -1371,6 +1373,9 @@ static void adv7511_remove(struct i2c_client *i2c)
->  {
->  	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
->  
-> +	if (adv7511->host_node)
-> +		of_node_put(adv7511->host_node);
-> +
->  	adv7511_uninit_regulators(adv7511);
->  
->  	drm_bridge_remove(&adv7511->bridge);
-> diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> index 4481489aaf5e..5f195e91b3e6 100644
-> --- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> +++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-> @@ -181,8 +181,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
->  	if (!adv->host_node)
->  		return -ENODEV;
->  
-> -	of_node_put(adv->host_node);
-> -
->  	adv->use_timing_gen = !of_property_read_bool(np,
->  						"adi,disable-timing-generator");
->  
+Take care,
 
 -- 
-Regards,
+Kees Cook
 
-Laurent Pinchart
 
