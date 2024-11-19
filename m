@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F82A9D25EC
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA529D25EE
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ECCD1F21ECA
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDAD1B298D4
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47261192D77;
-	Tue, 19 Nov 2024 12:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE701CB30A;
+	Tue, 19 Nov 2024 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcPDpjmM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zr6odyha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C1146D6A
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E23F1BDABE
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019489; cv=none; b=jny2MyngichU5PpmHDxB3ieJGh+AW+g3a+HwlI2/yFu8g2lfINje6Ys2XtYWInrz0+sQJ+jm3hfM7cTTzZe8A4Q+alh1IJD/hKfBf6aPwr3xNZYmYeZCJuZoj7qHpFyR+bkGHvWzFzWJrMCjYcbrZtjDABr8RMvjV2rQ1/eZWH8=
+	t=1732019490; cv=none; b=EeLqkcnb1UkETg9IqW8K1F+Q/cDwpzz+Cbpc1Sb4JQ+HErZCSwaSDYU69oJeoUdfETBPcr/UNk0dHPCFCx4FmRQuVS8VVgnSe3KPuSfjDlymUUil8uPbgKYKul4fK67YVeZ2HBBRnSZZOxpBtbM8oTNqVx0IfzVmHu6goSw27to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019489; c=relaxed/simple;
-	bh=ewDonmJg12JCSH80v8DxUFCJWO+WhrrDvoBrQbRNYYg=;
+	s=arc-20240116; t=1732019490; c=relaxed/simple;
+	bh=FlUsR6rKbPLmLxnTiUzLVuiUX0l+QsVmGU2XxF2729U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIqBQnaVTQF788EAJG+NEIrBdVmoPiEsxD9RkN94dIOY9deAV6hOB18to0G7sLqiBwpoPldysZupPrXUlO9xDlvJjH2uaQT3GD1ykiz2bnRKJBXzfZF6lNBD8308z4Md3+oxFC1E1dMLzMZgXxePqAuXrXJbJCynrs990NqGb1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcPDpjmM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7C7C4CECF;
-	Tue, 19 Nov 2024 12:31:28 +0000 (UTC)
+	 MIME-Version; b=OqOollw01EbIyO4C4c3PD0hxYe80y++/JyEb9bNxsPE7llEBJyI7g2Moc5+Mbps9+TqwCfI2HxrD8IHoEnQjz/mAK5iQc6W8H8SRbzyXl31vUBPx4ZbepmiJXrENz41Eh3mCY4rp8elFtsKLxb8ix6t1E2WUSkCUG/BviE15Fpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zr6odyha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B28C4CECF;
+	Tue, 19 Nov 2024 12:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019488;
-	bh=ewDonmJg12JCSH80v8DxUFCJWO+WhrrDvoBrQbRNYYg=;
+	s=k20201202; t=1732019490;
+	bh=FlUsR6rKbPLmLxnTiUzLVuiUX0l+QsVmGU2XxF2729U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcPDpjmMJWIoPRBWNyf1j+SN1NwWWjV2tfngmfDaKCaWap9uCzsibzpNhCMht4AfF
-	 WaFnoBsCgrZR6ymzgjlywBeO9A3y0xtWNKit1knhqVWVFADAat0tD9c2YjoeBNWJXw
-	 vIk7842Nca7g3Tjr6ejgSc/EEf7lifjIqvgTYs7ZLpAXl93YagVvlwUXp/hPhIZ7+k
-	 HLhg+UXKCfLgWsqCwwUj80danRFRIVp3kME9ltOB10AqVTODVi84kARmNC1QMDZflV
-	 eYfQKeiMyOrp0LGmWBkP6Ok2Oon8nj9R3AOYAsnQZBhoE4j9fbeNUPL1a3wOfGXjcs
-	 KWwS53xxNANDQ==
+	b=Zr6odyhakI2Vk/5VYtMZn63tTxIA2atHvxBJVJ8uIHkhGCcWHGb3roodjjbhLky8e
+	 ozWO+M1lRZZdtwnpXdXRURuXG563RCJAJHrzyXGKej2MzL7KrolwED4tl1zG2AF+d0
+	 CNdfNz9QNHyNHJ9FPCCf0/g2Q/XM9MODuPlA0DLInNdv8Tt3v9c+y4s2G4myLelVjt
+	 vbCxohkafAhTO6V3UCoNcAl7AcGqoejIAJs+LDUg09UMyb/WA3ifuGWFFZl6u1G7TP
+	 IumhLRe14cUM3rjONI0sg8cXE45d5Eli1PE4L6lnyL3JaBveIny0DkoREOqBD7piQW
+	 eJKl0qwGBQKdg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 2/5] NFSD: Async COPY result needs to return a write verifier
-Date: Tue, 19 Nov 2024 07:31:27 -0500
-Message-ID: <20241119004732.4703-3-cel@kernel.org>
+Subject: Re: [PATCH 5.15 2/5] NFSD: Async COPY result needs to return a write verifier
+Date: Tue, 19 Nov 2024 07:31:28 -0500
+Message-ID: <20241118212035.3848-4-cel@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119004732.4703-3-cel@kernel.org>
+In-Reply-To:  <20241118212035.3848-4-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,13 +76,12 @@ Commit in newer trees:
 | 6.6.y           |  Not found                                   |
 | 6.1.y           |  Not found                                   |
 | 5.15.y          |  Not found                                   |
-| 5.10.y          |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 02:04:52.531497218 -0500
-+++ /tmp/tmp.dacUqCgtri	2024-11-19 02:04:52.526625055 -0500
+--- -	2024-11-19 00:16:27.668243687 -0500
++++ /tmp/tmp.m9YY6SNo0E	2024-11-19 00:16:27.663676492 -0500
 @@ -1,3 +1,5 @@
 +[ Upstream commit 9ed666eba4e0a2bb8ffaa3739d830b64d4f2aaad ]
 +
@@ -93,7 +92,7 @@ Note: The patch differs from the upstream commit:
  is needed.
  
  Reviewed-by: Jeff Layton <jlayton@kernel.org>
-+[ cel: adjusted to apply to origin/linux-5.10.y ]
++[ cel: adjusted to apply to origin/linux-5.15.y ]
  Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
  ---
 - fs/nfsd/nfs4proc.c | 23 ++++++++---------------
@@ -103,7 +102,7 @@ Note: The patch differs from the upstream commit:
  
  diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
 -index 963a02e179a0a..231c6035602f6 100644
-+index fbd42c1a3fcd..3a445b78edd5 100644
++index 2b1fcf5b6bf8..08d90e0e8fae 100644
  --- a/fs/nfsd/nfs4proc.c
  +++ b/fs/nfsd/nfs4proc.c
 -@@ -752,15 +752,6 @@ nfsd4_access(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
@@ -182,5 +181,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
