@@ -1,116 +1,107 @@
-Return-Path: <stable+bounces-93934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A739D21A0
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 09:35:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBD29D21A5
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 09:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50DE7282AE7
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 08:35:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4808B1F22802
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 08:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95207158870;
-	Tue, 19 Nov 2024 08:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF0D19AD8C;
+	Tue, 19 Nov 2024 08:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="paiECvLE"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923D71531DB
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 08:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA95819ABC3;
+	Tue, 19 Nov 2024 08:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732005318; cv=none; b=V2o5655cmFho7XL8nPEb0na0DExkgFPsO5DuhEDQoUhcs7JoVus1LUrvqknYdYEQpxFspRPxo7LHB5q1TL3cRPgTATDNn8HIzVH/hB6Mzi5Q4JQir+qMoScchp40niemW6g0AIbCmp1Cf7a29sB3mXRrDhbt+SB3veSs2XKPN8s=
+	t=1732005356; cv=none; b=h0h/96muifc9MqZS2V36QR/pO8McUZthP2sIZ6BwJbiavIuUWwpl9O9ebeMc39N8Vccx6HFCWq5Olrhiy5LQktKhltoND18KoRKkS7RGmKeuu8joaKrc6mR9WOGMCIUW9LyHMRe0UPJJWCJ83i1JI29ulP1pLirojaWKGfuxBTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732005318; c=relaxed/simple;
-	bh=dAm1vh81c4LCoG7qtQ0qBV9JUO2v8pXlIyOyOmbHrT8=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=aQ9cJD3dITdWL31c3LonxCTf31MzVk3wFQ22E2wE2p6EIevKe3BtkC5voQY9r0AnxLi6pvn7vYq6sq8or61ouySTbGraCqbXcwiZgBZf6MbkX2M3yTu4MAJOCPHCQqNYow7Jp9FliZcOukw7a2nbsPoqm6FX45/8nBwXhFyZk/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XsyV52Z4Lz4f3jR1
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 16:34:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id D02B71A058E
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 16:35:11 +0800 (CST)
-Received: from [10.174.176.73] (unknown [10.174.176.73])
-	by APP4 (Coremail) with SMTP id gCh0CgCXc4e8TTxn8XLfCA--.25394S3;
-	Tue, 19 Nov 2024 16:35:10 +0800 (CST)
-Subject: Re: [PATCH 6.1.y 0/2] Backport to fix CVE-2024-36478
-To: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
- christophe.jaillet@wanadoo.fr
-Cc: stable@vger.kernel.org, xiangyu.chen@aol.com,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20241119082719.4034054-1-xiangyu.chen@eng.windriver.com>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <6250e1f3-cdc7-b172-e9c2-4ac82db9c21f@huaweicloud.com>
-Date: Tue, 19 Nov 2024 16:35:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1732005356; c=relaxed/simple;
+	bh=XeSq6g08rYcyGJPUGhZKPGFUNTzIhSo4GdUbpdQC7yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XDKLn9lO35xkOkEtpeq3dSO9BfXy0BxyveG5K50OW+75bevVkkt2HiRAMLtpt7pwwvuHSu1qWly/2MaIjdNKoGiQoLhkCZNYxyC1nDPkCZ5LfcDPim0ukSIivVB2u8BTgaWHNu9VykwC5+TFhkEO13AK10nBkF5fbMyNSEbMLys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=paiECvLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EF6C4CECF;
+	Tue, 19 Nov 2024 08:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732005356;
+	bh=XeSq6g08rYcyGJPUGhZKPGFUNTzIhSo4GdUbpdQC7yk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=paiECvLE607jyQ9nCU9GzHdLKI0VWq2Tsp60UBue7jV3r5VxDrgYTiWxOR2J3ISfA
+	 G2nwvOsNSwwSPG7rr3Ki6bqzH4dS8QDbtUXHbzvI0cqw3iZHJSdtQHPr1bK48sFqrq
+	 7MzueudRouBO6ToAwef9AZrrXMvtBeoYzO+5fFOe6042goVJR0O8WlYyghateFKeku
+	 aczC+eNMOnBPx0FpYPQin8x+V3wKwS+wDd/LDvC4uUQIhCsRNPEGE3GyrbUpGLllu8
+	 DdS51qJt+xiHtj0TDBwXbTlHjDJu9j5G+cUJuZYWYMPkKPU1xhmHHkQwifPqSqtqfd
+	 IYAOQVPpEFYug==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 6.1.y 0/7] mptcp: fix recent failed backports
+Date: Tue, 19 Nov 2024 09:35:48 +0100
+Message-ID: <20241119083547.3234013-9-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241119082719.4034054-1-xiangyu.chen@eng.windriver.com>
-Content-Type: text/plain; charset=gbk; format=flowed
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1541; i=matttbe@kernel.org; h=from:subject; bh=XeSq6g08rYcyGJPUGhZKPGFUNTzIhSo4GdUbpdQC7yk=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnPE3ja0kt8bdWm/nnUgNd5WeywbroOc47vwRPE TZTPHWoIneJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzxN4wAKCRD2t4JPQmmg c9AOD/0Uiakfoornwx9HdgS9QzeFBgzG5BypWxP3Zn2V+ayBHvsvnb+T5kJFwqLDo/09XgBUU1m VQVjn5xpDNexQqD8SsbPakMeGf7kSO9o+tg99tizXvxKpAKq0eQ2N0i/S9TbKGaybdAsIQuo+zD 2Y3UPJJajdcPTtKrmhtQBN2oG7sZMWmyC8envSYl/CDEMrWBrr8KqY2NVwsGzRbJ+phW+QT4H6f GQLZ02EWUl8hSYLN6Yjr/aj6bV6hkZqSlt12JqFsZUUC2adnfj4wvEukrKvNhXMUgp1VO9UAkWX yBdubGR2e9c9Yqf62PuDsSMcoOyx1dZuA7JiFgOS6jFF7lvGi47NjA7HGavYJIkqAhypfbHUjET gVo19j3VE7aUYjnzEjkImzTtdl6b4Xng0UYRPB7pjVxys3ciRMWC2UccBpCPKG/Nwm8oOhraYCI GKtJks4HEbTArGSWhe8wb8EjqfHRZBWQ61Udwsu9CaqB5CoQ7524f10s1OqVd5XQQCGJ0+drEQn 1n17BCzykLwdudRZrTIjx65TSYZLuYcCSZ4tSJ1e6RSGS8kBBKKOfedFc38v26S/mMFu412guPW +vMf7su6KZpd2PZceLm1onif1mUuL7/71W2v5I45Clh/udBBjCPGKYdiWNdwoEO7IKy34cfEABu jWTdG5SPq1+k8QA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCXc4e8TTxn8XLfCA--.25394S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrurWxuw4ktF45CFWDKw17KFg_yoWDXFc_Ca
-	4FvFy8JryDWF4jga4DKFy7ZrZ0ka1UXry8XF42gFZrJry3ZFy3Jw4xGrZ5ZF1DXa1xuFW5
-	JF1fZa95ur1SqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbx8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AK
-	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
-	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
-	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jjVb
-	kUUUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-Hi,
+Greg recently reported 3 patches that could not be applied without
+conflict in v6.1:
 
-ÔÚ 2024/11/19 16:27, Xiangyu Chen Ð´µÀ:
-> From: Xiangyu Chen <xiangyu.chen@windriver.com>
-> 
-> Backport to fix CVE-2024-36478
-> 
-> https://lore.kernel.org/linux-cve-announce/2024062136-CVE-2024-36478-d249@gregkh/
-> 
-> The CVE fix is "null_blk: fix null-ptr-dereference while configuring 'power'
-> and 'submit_queues'"
-> 
-> This required 1 extra commit to make sure the picks are clean:
-> null_blk: Remove usage of the deprecated ida_simple_xx() API
-> 
-> 
-> Christophe JAILLET (1):
->    null_blk: Remove usage of the deprecated ida_simple_xx() API
-> 
-> Yu Kuai (1):
->    null_blk: fix null-ptr-dereference while configuring 'power' and
->      'submit_queues'
+ - e0266319413d ("mptcp: update local address flags when setting it")
+ - f642c5c4d528 ("mptcp: hold pm lock when deleting entry")
+ - db3eab8110bc ("mptcp: pm: use _rcu variant under rcu_read_lock")
 
-Thanks for backporing the patch, there is a follow up patch you should
-pick together:
+Conflicts, if any, have been resolved, and documented in each patch.
 
-https://lore.kernel.org/all/20240527043445.235267-1-dlemoal@kernel.org/
+Note that there are 3 extra patches added to avoid some conflicts:
 
-Thanks,
-Kuai
+ - 14cb0e0bf39b ("mptcp: define more local variables sk")
+ - 06afe09091ee ("mptcp: add userspace_pm_lookup_addr_by_id helper")
+ - af250c27ea1c ("mptcp: drop lookup_by_id in lookup_addr")
 
-> 
->   drivers/block/null_blk/main.c | 44 ++++++++++++++++++++++-------------
->   1 file changed, 28 insertions(+), 16 deletions(-)
-> 
+The Stable-dep-of tags have been added to these patches.
+
+1 extra patch has been included, it is supposed to be backported, but it
+was missing the Cc stable tag and it had conflicts:
+
+ - ce7356ae3594 ("mptcp: cope racing subflow creation in
+   mptcp_rcv_space_adjust")
+
+Geliang Tang (5):
+  mptcp: define more local variables sk
+  mptcp: add userspace_pm_lookup_addr_by_id helper
+  mptcp: update local address flags when setting it
+  mptcp: hold pm lock when deleting entry
+  mptcp: drop lookup_by_id in lookup_addr
+
+Matthieu Baerts (NGI0) (1):
+  mptcp: pm: use _rcu variant under rcu_read_lock
+
+Paolo Abeni (1):
+  mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
+
+ net/mptcp/pm_netlink.c   | 15 ++++----
+ net/mptcp/pm_userspace.c | 77 ++++++++++++++++++++++++++--------------
+ net/mptcp/protocol.c     |  3 +-
+ 3 files changed, 60 insertions(+), 35 deletions(-)
+
+-- 
+2.45.2
 
 
