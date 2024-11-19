@@ -1,121 +1,147 @@
-Return-Path: <stable+bounces-94004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC999D2761
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:54:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33749D27AB
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:10:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A811C1F23829
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D905B30AF6
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECBC1CDA27;
-	Tue, 19 Nov 2024 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2DA1CDA3E;
+	Tue, 19 Nov 2024 13:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDVzOL2a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HY7wgTbp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633201CCEF7;
-	Tue, 19 Nov 2024 13:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B141B1CCECF;
+	Tue, 19 Nov 2024 13:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732024367; cv=none; b=KgXkyZVcHioUlr/zzLl3eaH7FIAIXEBo6yDF5l9Z476I5b2XlA2RDhe59jARPX4LwSGPUytgh0fnPMEykIQE+ZdctTwh+utCFSPXnya4OOqtXsJq1viw0hBMrcnLVYT5p3aiky+66qzy74DOTnFsyvc76spvhoZOxfldqJ4bVjo=
+	t=1732024698; cv=none; b=DMyoC8cBjMBCxH9LsCkRrM/gkDthcEacdi8XWHgkdNSpGh8aVIO8nxvT7V/2VrioB57PDfGv4AO660XnoiEvHAx8OAMnuRY4gJlqtUUnvVTgKNkCWRXjFUv3ho7dwYre1kopKPAzmZVrYwp7Aufzzp2GGH4at79Qw9lNV+jfsK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732024367; c=relaxed/simple;
-	bh=1Pjxc+Ys+Og1dQEoe7LKD4sONGdg5iwH6SoYoSWLLhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aglNWB4akcf1f65xSKp5DGmg3NbxE0B1jAL7uj1sH6Q6uQ0a26V5h7CgyRQeaOVLH7IBibjV1oM238YTMIn4sfoo7+Hgvjge0snfF5GaxeN6ZoWiifro8/wGoQt08TL1lUwOtyAdxrJHD3MsZbfPkuhsR/fV5mMJpw6NwuLiNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDVzOL2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF9C4CECF;
-	Tue, 19 Nov 2024 13:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732024367;
-	bh=1Pjxc+Ys+Og1dQEoe7LKD4sONGdg5iwH6SoYoSWLLhE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PDVzOL2a+NXq3DDuDEfG7H9mCnJV9VPjPcUTcHAv6vLtAj8nmbCKKRwmNyOOh4JL1
-	 j81sxVPE+uvgioOr8X9OsQJiHup3pJ8GqO92UIV6PNNKsHZQ76GuoUPy6dRkALmnKA
-	 9CpGNiJqV+RAuIMYWk0hvu34vPdBd2tiNnU5iVyTEGiIXWUtV3LvRjd1rCrB/wlSuF
-	 o8oe2f8Gpo1GKUQAmo4XoCzmQ1aXJSYJ7ZLicz9S5jDWfP+fhmS/h+94uvMHVBfBsg
-	 aNK1mur2XHwk2iLqclwIdzCo3l/DZ25DJLS8Isl6M7G2vfnu6EEaiNwAsS4OQNzhHE
-	 KOSenjVwLOUEQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tDOeh-00000000856-2jXa;
-	Tue, 19 Nov 2024 14:52:35 +0100
-Date: Tue, 19 Nov 2024 14:52:35 +0100
-From: Johan Hovold <johan@kernel.org>
-To: =?utf-8?Q?Gy=C3=B6rgy?= Kurucz <me@kuruczgy.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@gmail.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org,
-	Leonard Lausen <leonard@lausen.nl>,
-	Abel Vesa <abel.vesa@linaro.org>
-Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
- connector
-Message-ID: <ZzyYI8KkWK36FfXf@hovoldconsulting.com>
-References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
- <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
+	s=arc-20240116; t=1732024698; c=relaxed/simple;
+	bh=hubE/oIsEXcyJKdSHaK31n5gltZEvFOLvxTg1HGGg5I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AaqoOT4FoKqIMU8yUYC5FpaNlSaYDeVBXsSBT9MQaHSPnQ2C2AOsEwJD8gEkFcQz9mXXlC+GIcmN12OTfhJl/B5EaF3dRBeT0BzKLpF3CdAsxTgVdP171BfpBF/SD9vDFS8tM+z5j1zdWf6GFEFKLuJ+TFdpP8Rzw5w3ns8CboU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HY7wgTbp; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732024697; x=1763560697;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=hubE/oIsEXcyJKdSHaK31n5gltZEvFOLvxTg1HGGg5I=;
+  b=HY7wgTbpXaCpcZqnUWE/tTqYi4LZdT6soPEkB63a261/K5sTjsqxDa3G
+   fJh4oMKT5cNSpgDxkV4hAUt9TXsowIsgn5mlu92foRLUBHG/Hcd2x5aOV
+   GSg1s+tMBrBK3h6n2YHLVtXbnk7gNKGSvLHHKtySobNVNzqBOWBiValti
+   LQ3CzHZ8siv5/jWpS+ASdqgYigUbH/AiZrtUAdRbZfzwAd95maqRSuPxJ
+   OWOIOfGqn17Q7hGg8aqk1NI9llRxz7Oj2OZmvObp8mNifAwDrx0m/NuA4
+   fnmizx7LXsT9e5PIBrSwOjPRw5E9lEZQMNZiBWpHQp6lUNG/+T8IiBtne
+   w==;
+X-CSE-ConnectionGUID: rnID8a/nRLi46vFYswP2BQ==
+X-CSE-MsgGUID: Tc0KVM9pTrWsup1pvl4Mkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="31435319"
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
+   d="scan'208";a="31435319"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 05:58:15 -0800
+X-CSE-ConnectionGUID: kscStD/TSkuM5H2C5Q0xLg==
+X-CSE-MsgGUID: /SGz3THoTFuQPsO3Z71Q1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
+   d="scan'208";a="89956369"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa007.jf.intel.com with ESMTP; 19 Nov 2024 05:58:15 -0800
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	linux-kernel@vger.kernel.org
+Cc: acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	eranian@google.com,
+	ak@linux.intel.com,
+	dapeng1.mi@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 1/4] perf/x86/intel/ds: Unconditionally drain PEBS DS when changing PEBS_DATA_CFG
+Date: Tue, 19 Nov 2024 05:55:01 -0800
+Message-Id: <20241119135504.1463839-2-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20241119135504.1463839-1-kan.liang@linux.intel.com>
+References: <20241119135504.1463839-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
 
-On Fri, Aug 30, 2024 at 07:36:32PM +0200, György Kurucz wrote:
+From: Kan Liang <kan.liang@linux.intel.com>
 
-> For context, I have a Lenovo Yoga Slim 7x laptop, and was having issues 
-> with the display staying black after sleep. As a workaround, I could 
-> switch to a different VT and back.
-> 
-> > [ 1185.831970] [dpu error]connector not connected 3
-> 
-> I can confirm that I was seeing this exact error message as well.
-> 
-> >   	if (!conn_state || !conn_state->connector) {
-> >   		DPU_ERROR("invalid connector state\n");
-> >   		return -EINVAL;
-> > -	} else if (conn_state->connector->status != connector_status_connected) {
-> > -		DPU_ERROR("connector not connected %d\n", conn_state->connector->status);
-> > -		return -EINVAL;
-> >   	}
-> >   
-> >   	crtc = conn_state->crtc;
-> 
-> After applying this patch, the screen now resumes successfully, and the 
-> errors are gone.
+The PEBS kernel warnings can still be observed with the below case.
 
-I'm seeing the same issue as György on the x1e80100 CRD and Lenovo
-ThinkPad T14s. Without this patch, the internal display fails to resume
-properly (switching VT brings it back) and the following errors are
-logged:
+when the below commands are running in parallel for a while.
 
-	[dpu error]connector not connected 3
-	[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
+  while true;
+  do
+	perf record --no-buildid -a --intr-regs=AX  \
+		    -e cpu/event=0xd0,umask=0x81/pp \
+		    -c 10003 -o /dev/null ./triad;
+  done &
 
-I see the same symptoms with Xorg as well as sway.
+  while true;
+  do
+	perf record -e 'cpu/mem-loads,ldlat=3/uP' -W -d -- ./dtlb
+  done
 
-Can we please get this fixed and backported as soon as possible?
+The commit b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing
+PEBS_DATA_CFG") intends to flush the entire PEBS buffer before the
+hardware is reprogrammed. However, it fails in the above case.
 
-Even if there are further issues with some "Night Light" functionality
-on one machine, keeping this bug as workaround does not seem warranted
-given that it breaks basic functionality for users.
+The first perf command utilizes the large PEBS, while the second perf
+command only utilizes a single PEBS. When the second perf event is
+added, only the n_pebs++. The intel_pmu_pebs_enable() is invoked after
+intel_pmu_pebs_add(). So the cpuc->n_pebs == cpuc->n_large_pebs check in
+the intel_pmu_drain_large_pebs() fails. The PEBS DS is not flushed.
+The new PEBS event should not be taken into account when flushing the
+existing PEBS DS.
 
-The x1e80100 is the only platform I have access to with a writeback
-connector, but this regression potentially affects a whole host of older
-platforms as well.
+The check is unnecessary here. Before the hardware is reprogrammed, all
+the stale records must be drained unconditionally.
 
-Johan
+For single PEBS or PEBS-vi-pt, the DS must be empty. The drain_pebs()
+can handle the empty case. There is no harm to unconditionally drain the
+PEBS DS.
+
+Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/ds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 8afc4ad3cd16..1a4b326ca2ce 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1489,7 +1489,7 @@ void intel_pmu_pebs_enable(struct perf_event *event)
+ 			 * hence we need to drain when changing said
+ 			 * size.
+ 			 */
+-			intel_pmu_drain_large_pebs(cpuc);
++			intel_pmu_drain_pebs_buffer();
+ 			adaptive_pebs_record_size_update();
+ 			wrmsrl(MSR_PEBS_DATA_CFG, pebs_data_cfg);
+ 			cpuc->active_pebs_data_cfg = pebs_data_cfg;
+-- 
+2.38.1
+
 
