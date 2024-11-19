@@ -1,139 +1,93 @@
-Return-Path: <stable+bounces-94044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594A69D2981
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:23:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402789D29A2
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20582283125
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCDC528169B
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67C31CF28C;
-	Tue, 19 Nov 2024 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC3A1CEEB9;
+	Tue, 19 Nov 2024 15:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzK2ILIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0/zfugY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFFA1CEAB8;
-	Tue, 19 Nov 2024 15:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB91CF5C7
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 15:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732029784; cv=none; b=UBM3AcoIeGcsw336GHJJQ0vxsilYiSA6RuyZ95xkMJiLX+CKi5vIuQutVk8JQ5+/HsucfS0IdJJ0eI/uUUXjEv23pr1dMddXAHsLQcP3dFLcbWp6Gr9uPcAVJHCDZ1iNrT01ns/C7f/XdoUt7UcP8ylS2732u9n5q9qiAqTHX/w=
+	t=1732030213; cv=none; b=UeboH+lDCyMPjmKYu1Dtzf7xXfMdueXQ6FTRwGhqVJjlbrjz37SccAJhQfUlpp9qggjJU7nwGccMLhKafQRYAvdLJQ2Wz8zUkFX3BAiTtgvC5YgrS0+XUC6A1u7UgjDLWlxSx+Q6rszEgUj3kT2PDAZyDGYXkLA1ixrIyOZ+JHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732029784; c=relaxed/simple;
-	bh=5u9IOamW6ThE9+oNsHjhT6A1o1r9h/A0pmniqNKUgiI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GnvaAcH5Ysc+hGVpLXX3f1cBzE8XkW2Nn4CTq/U8aObmSTR0gLNTDCxOHRqtjmO8KXPHtgvNSp1dhbKdCTs359rjCTfkP5CnTAgyKMfxyy5bcSqIRsUd8NDTUru+CguPlPyGkHh5Pa4sN7GxZ98SOqSHRoXc/++vTjnzbz+eYSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzK2ILIy; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4314fa33a35so47081775e9.1;
-        Tue, 19 Nov 2024 07:23:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732029781; x=1732634581; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4DR5BsjCRl1rkPCWbfou0D00YBGACEs7JX1z1Y/fK5Y=;
-        b=HzK2ILIy6z32wVI2Kz41TCzl7i+6sYmg3I/uvy2IKf7oI4co+qGU0PmyXUm+3pE5va
-         /EVjdcMMYosMl2ohQOD7UkxX5b0A2+dM8bdKM03U38vcV37o3qq2zyO+4vKOxjDVBOL8
-         mTJPj18pHXdvlExqL2D63HIcfRM19vt5rvlRXb28cneRxUrmrulDdSOILxVwOWFlodIE
-         yZBQuw1ZyTZNnVORymc+V5gF+BPlMPE//NsiBFaFcfP4B7F7rXJhDNmbgPs11WabYQdb
-         TTDpetzUgFM3//B+qLY3lTj9nIdIq/iVZOca3/8850xcoZYA0utOt9LfPhbz9UP6pTBZ
-         HMuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732029781; x=1732634581;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4DR5BsjCRl1rkPCWbfou0D00YBGACEs7JX1z1Y/fK5Y=;
-        b=Iube6tBxPa8mqsx7EWkPjyqXcG4Y29EuI+Y9wJAOBdeAjfrMO98fMClCPg+uKBr3T5
-         uSdZa0gaa6XZnMgJTQw0JjsnZX5+cVCxKwKqtqqy7Ab6eMhAlDjxyqKsVS2/UFARiyJ2
-         IC0YNQwlzs1sTWW/dLewN1RsIQ9pfCEorhsHBSb9mK5inv4oL+X1iA6YLVB850WCzrxQ
-         383mudM+YkV8T8klx7q/sCAtmn8IVIYYAYP4iHW9ImzU4FItBXdSF4wXezVt9zwfyOsb
-         PJTvMQR/NxVWhswPiquAMtwsQrhhsE41c1xbk/eea8Gfm2Ncu+g2pgVKT5/G66N4DUNR
-         kXhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiXZKdvBk58Ft6o3DNaUX9Utmav4KMb88XPNSnr7XS1906efd1fqOcPdSg68YQBizAqPZoc1ji@vger.kernel.org, AJvYcCVx16XABJwV7XWBVoDYKuc1XbOPAtpnbV+sv9ipjxN19pILZwsoSiV3rPGNj7yEJUr09qE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOWF8PdtJbFa3aq9Rt85IvVlm3xBbQp1S1sELyOqLErrpU7365
-	oSi/tMVYyFKMGSfXsBaaDkV3ZDDcJVBOb+b0q/aCHM1PcvubHRf2
-X-Google-Smtp-Source: AGHT+IE215p1cfBnYIitD+B1fAUaDKTRHNGSjEbICNKHauWOyVHxwOfRESqgE/oA9BawlC/YjrjSIg==
-X-Received: by 2002:a05:600c:3b2a:b0:431:6060:8b22 with SMTP id 5b1f17b1804b1-432df72c076mr163048685e9.10.1732029780937;
-        Tue, 19 Nov 2024 07:23:00 -0800 (PST)
-Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab7206csm194647105e9.7.2024.11.19.07.23.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 07:23:00 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Tue, 19 Nov 2024 16:22:58 +0100
+	s=arc-20240116; t=1732030213; c=relaxed/simple;
+	bh=trkbb9owAfXXQ+XDnKApPjIqqEPc5U9HDoCYDOY3pcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O8vrD31HkVhahPqh2b+PDkRV/0s8X1xZAXyfUBy3K53rPuZj3e+rx97L85v+KsVzbibZ1G4nv8D2m8gwjt9vjZZ/l/flGyHi86CrvFLx+u2bVk8DQoIZ9o3i/dxRILyp2qrvdacIsX72XC9X3A3KpuPh6VVgl+L6pLaSI8BbgUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0/zfugY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549CFC4CECF;
+	Tue, 19 Nov 2024 15:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732030212;
+	bh=trkbb9owAfXXQ+XDnKApPjIqqEPc5U9HDoCYDOY3pcA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S0/zfugYheXZ6qUAME8h/iSM5J5mnL6u/2DXwA67Z64orbLVoPLHtpAnc1r9gI7Nw
+	 xnirCvnEC1Q6sr0wE28/UjjjSAy1AQYuBY/ZNOpXzNGS4VNN6xm8yFS7MRz0vDaoLL
+	 eF7LcBOemM00kbHzyM58Q+Bz8dQb/trOHMiGbfnP46xVUi2WhQKwvgtjWrVf5aRTKX
+	 tpLfLwFmwUryARSlhjybSbp41qlh32EyTHfKWa4or0TkmSZgOUIYU450XQyZIjDc6r
+	 lCQSEoBl2sq3LDg1j3IZZ2DO8KABB75d92jhWXqOKQqxWgjQImVTumupMRgKvPfbyl
+	 RX6ZFQyNteMEg==
+Date: Tue, 19 Nov 2024 10:30:10 -0500
+From: Sasha Levin <sashal@kernel.org>
 To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Omar Sandoval <osandov@osandov.com>, stable@vger.kernel.org,
-	Jiri Olsa <olsajiri@gmail.com>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: Fix build ID parsing logic in stable trees
-Message-ID: <ZzytUhGqbCMZtS7T@krava>
-References: <ZyniGMz5QLhGVWSY@krava>
- <2024110636-rebound-chip-f389@gregkh>
- <ZytZrt31Y1N7-hXK@krava>
- <Zy0dNahbYlHISjkU@telecaster>
- <Zy3NVkewYPO9ZSDx@krava>
- <Zy6eJdwR3LWOlrQg@krava>
- <CAEf4Bza3PFp53nkBxupn1Z6jYw-FyXJcZp7kJh8aeGhe1cc6CA@mail.gmail.com>
- <ZzUWRyDmndTpZU3Y@krava>
- <ZzeQrYy-6I3NK4gX@telecaster>
- <2024111955-excursion-diaper-2675@gregkh>
+Cc: Chuck Lever <chuck.lever@oracle.com>, stable@vger.kernel.org,
+	cel@kernel.org
+Subject: Re: [PATCH 6.1 1/5] NFSD: initialize copy->cp_clp early in
+ nfsd4_copy for use by trace point
+Message-ID: <ZzyvAnV1p00w5f2_@sashalap>
+References: <20241118211900.3808-2-cel@kernel.org>
+ <20241118211900.3808-2-cel@kernel.org>
+ <ZzybZplCfSkWKsyi@tissot.1015granger.net>
+ <2024111915-annually-semisoft-c5d6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <2024111955-excursion-diaper-2675@gregkh>
+In-Reply-To: <2024111915-annually-semisoft-c5d6@gregkh>
 
-On Tue, Nov 19, 2024 at 12:58:21PM +0100, Greg KH wrote:
+On Tue, Nov 19, 2024 at 03:13:51PM +0100, Greg KH wrote:
+>On Tue, Nov 19, 2024 at 09:06:30AM -0500, Chuck Lever wrote:
+>> On Mon, Nov 18, 2024 at 11:36:15PM -0500, Sasha Levin wrote:
+>> > [ Sasha's backport helper bot ]
+>> >
+>> > Hi,
+>> >
+>> > The upstream commit SHA1 provided is correct: 15d1975b7279693d6f09398e0e2e31aca2310275
+>> >
+>> > WARNING: Author mismatch between patch and upstream commit:
+>> > Backport author: cel@kernel.org
+>> > Commit author: Dai Ngo <dai.ngo@oracle.com>
+>>
+>> Is this a bug in my backport script? Should patches backported
+>> to LTS retain the upstream patch author, or should they be From:
+>> the backporter? If the former, I can adjust my scripts.
+>
+>No, this is correct, I think Sasha's scripts are a bit too sensitive
+>here and in a few other places.
 
-SNIP
+Right, sorry - this is more of an indicator for me to say "this patch
+was backported by someone who's not the author, review it more
+carefully".
 
-> > > > >
-> > > > > ok, so the fix the issue in 6.11 with upstream backports we'd need both:
-> > > > >
-> > > > >   1) de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-> > > > >   2) 60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-> > > > >
-> > > > > 2) is needed because 1) seems to omit ehdr->e_phoff addition (patch below)
-> > > > > which is added back in 2)
-> > > > >
-> > > > > IMO 6.11 is close to upstream and by taking above upstream fixes it will be
-> > > > > easier to backport other possible fixes in the future, for other trees I'd
-> > > > > take the original one line fix I posted
-> > > > 
-> > > > I still maintain that very minimal is the way to go instead of risking
-> > > > bringing new potential regressions by partially backporting folio
-> > > > rework patchset.
-> > > > 
-> > > > Jiri, there is no point in risking this, best to fix this quickly and
-> > > > minimally. If we ever need to backport further fixes, *then* we can
-> > > > think about folio-based implementation backport.
-> > > 
-> > > ok, make sense, the original plan works for me as well
-> > > 
-> > > jirka
-> > 
-> > Greg, could you please queue up Jiri's one line fixes for 5.15, 6.1,
-> > 6.6, and 6.11?
-> 
-> Ok, will do, but hopefully you all will help out if there's any problems
-> with the change going forward...
-
-no worries, will help with that
-
-thanks,
-jirka
+-- 
+Thanks,
+Sasha
 
