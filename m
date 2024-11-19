@@ -1,215 +1,135 @@
-Return-Path: <stable+bounces-94038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D134E9D2938
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:11:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DBD9D2945
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664311F23D8B
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8AA1F211FA
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74401D150D;
-	Tue, 19 Nov 2024 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D04B1CF5FD;
+	Tue, 19 Nov 2024 15:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gT9zaEpk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2JYLkM2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A82E1D1318;
-	Tue, 19 Nov 2024 15:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5382D1CCB37;
+	Tue, 19 Nov 2024 15:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028924; cv=none; b=pgg8CProuV45OEBzX/8b9Kfg0IcnNEZ775aMOpONxp2Mof6bRit83Iin5fUDyerZ9gG+7LPCb5ltiqBo0BN9Xgd6uMUBYNwZGIAtfQsd5+stlxdm7qCQ4SDyrG7GOwJXYJuMH1lekXYk/PC2thx7U6HQrO/OP/KXz+yH3gSz/C4=
+	t=1732029072; cv=none; b=efRI+4ePW42uUq9vZl9KD67Z8YeCcKO/3rO940QRgZ1etDUf3KoHD87VF/wPihIWB/V8uqH89PhyWkaTAAjJMbyDxDRT9TV4o/xlpqnagM9VQ96u0eMrcLKUO4QXRBeq8xGcNaD0Log71bRciKzo1xlWoiF0rKoxOQyfMbv18+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732028924; c=relaxed/simple;
-	bh=jOinomfvSkRkzC8TdVy88/VMlbD5SXhu5QQdFZM7Ua4=;
+	s=arc-20240116; t=1732029072; c=relaxed/simple;
+	bh=u7CYeHchdgH72+HflqWq0W1bzAuufE9hVtAx1Xo/xEE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxNCUMZUeY6GKVixxiu94WYKU6xTVk2S+WSfbkAEnNhW757hhe84AuuzsHP9h2Uh70DtvD7S0VpceAytPk7qpD67qfpFQbQnhiJn4jtMCxPsMDjFOpfbKzcpclYl7OQwEUQDWwPbZ55FLmZu9bJrbf8Pzz5onbPf8UNoVG0OhpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gT9zaEpk; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732028922; x=1763564922;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jOinomfvSkRkzC8TdVy88/VMlbD5SXhu5QQdFZM7Ua4=;
-  b=gT9zaEpkL3z6yS7EMNgLqwZFhm/H89BvqxMJaJk2olLbiGqyflpRuUPC
-   KyfmHzHJUruV2WvjHrwIzgAnE9WY98zOspiocqLvBdd/UCf253QiWBsGI
-   Zx7zDdHxikrkxrjrR4zzjvkTMajoql+ScL+wvkoZmHpLCFI/CI1YH9Hxp
-   bbNVjQIpxNFndlo8TFFgg2kGxcMA+IvCcKUVUYET26soFzKvItQAg10SI
-   A3BDWAibAwQi4zrsewll7t031vDOnxVOB1xeE0FfzCE5NSfcyC8MprbiX
-   FqrwBRJswwCDeIKQmf9U1y7FAXa+qX250nc2znDi5Vb19+xmAkco7R7u7
-   Q==;
-X-CSE-ConnectionGUID: jhp1wgr7SR+liPGrQeOrsg==
-X-CSE-MsgGUID: 42N9Fm+mQlWtqUj/Uu4U5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="42674784"
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
-   d="scan'208";a="42674784"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 07:08:40 -0800
-X-CSE-ConnectionGUID: sMhV3/MPRQCN0S5HC+skug==
-X-CSE-MsgGUID: QvZCenRHT0iLS7taIOQ1Kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
-   d="scan'208";a="89994684"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa010.fm.intel.com with SMTP; 19 Nov 2024 07:08:39 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 19 Nov 2024 17:08:37 +0200
-Date: Tue, 19 Nov 2024 17:08:37 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: anx7411: fix fwnode_handle reference leak
-Message-ID: <Zzyp9cSIoqNBFpFa@kuha.fi.intel.com>
-References: <20241116085124.3832328-1-joe@pf.is.s.u-tokyo.ac.jp>
+	 Content-Type:Content-Disposition:In-Reply-To; b=iTxPtZO3UDACZAmN53Jjz1b+bP3vP9p+VcnCQbSCsIotnCN4WM4RbgOyv1gfC7lIIpkK0hxMjdRMRmgpnGBTXlZjMoOL9lw9e2mPJzmTMHOfCpL6EtoYgJcqAeuSTHxMpP8zQqhP/53jNoto9gmZ+WqJ6i5HlnWOxnE9Jd14Q8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2JYLkM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA99FC4CECF;
+	Tue, 19 Nov 2024 15:11:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732029071;
+	bh=u7CYeHchdgH72+HflqWq0W1bzAuufE9hVtAx1Xo/xEE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A2JYLkM2Ih0LQl2O/9c4zZ8bzwrlXLqS03NsHezMXXPOgz+eunkVvrEKwqTG+wY6S
+	 kuvLrldGErj+pr+IgEZxIQfSV8DqH6g1AfCoEJU5tu1KzqboNp8R2hoQhrHcylraG4
+	 wgNKo9wiecdZKVN+cggr/VL8ojURjjuYYAldk5I3D+W48iSAfwKBDajov6ycpDtnnc
+	 pBJvBeUG9hSGEyXdVM9xFVH/0ICMt3su13jqZp1VXa+HpSeNqTNQFhjrQHkWOtlN5i
+	 D25JXlnaE3i99FIdSG/iIGRfnGzLLRb9KY0qkR0XaB9RJHgs2XuVKiTNfj1u3gWDB4
+	 Lz5AKunVAcyHg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tDPsa-000000003KO-14Qw;
+	Tue, 19 Nov 2024 16:11:00 +0100
+Date: Tue, 19 Nov 2024 16:11:00 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Leonard Lausen <leonard@lausen.nl>
+Cc: =?utf-8?Q?Gy=C3=B6rgy?= Kurucz <me@kuruczgy.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org,
+	Abel Vesa <abel.vesa@linaro.org>
+Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
+ connector
+Message-ID: <ZzyqhK-FUwoAcgx1@hovoldconsulting.com>
+References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
+ <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
+ <ZzyYI8KkWK36FfXf@hovoldconsulting.com>
+ <2138d887-f1bf-424a-b3e5-e827a39cc855@lausen.nl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241116085124.3832328-1-joe@pf.is.s.u-tokyo.ac.jp>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2138d887-f1bf-424a-b3e5-e827a39cc855@lausen.nl>
 
-On Sat, Nov 16, 2024 at 05:51:24PM +0900, Joe Hattori wrote:
-> An fwnode_handle is obtained with an incremented refcount in
-> anx7411_typec_port_probe(), however the refcount is not decremented in
-> the error path or in the .remove() function. Therefore call
-> fwnode_handle_put() accordingly.
+On Tue, Nov 19, 2024 at 09:33:26AM -0500, Leonard Lausen wrote:
+
+> > I'm seeing the same issue as György on the x1e80100 CRD and Lenovo
+> > ThinkPad T14s. Without this patch, the internal display fails to resume
+> > properly (switching VT brings it back) and the following errors are
+> > logged:
+> > 
+> > 	[dpu error]connector not connected 3
+> > 	[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
+> > 
+> > I see the same symptoms with Xorg as well as sway.
 > 
-> Fixes: fe6d8a9c8e64 ("usb: typec: anx7411: Add Analogix PD ANX7411 support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-> ---
->  drivers/usb/typec/anx7411.c | 33 ++++++++++++++++++++++-----------
->  1 file changed, 22 insertions(+), 11 deletions(-)
+> The issue of "internal display fails to resume properly (switching VT brings it back)"
+> also affects sc7180 platform during some resumes. Do you see the issue consistently
+> during every resume?
+
+Yes, it happens on every suspend cycle here.
+
+I didn't notice the issue initially as fbdev does not seem to be
+affected, and I've been running with this patch applied to suppress the
+resume errors since it was posted.
+
+> > Can we please get this fixed and backported as soon as possible?
+> > 
+> > Even if there are further issues with some "Night Light" functionality
+> > on one machine, keeping this bug as workaround does not seem warranted
+> > given that it breaks basic functionality for users.
 > 
-> diff --git a/drivers/usb/typec/anx7411.c b/drivers/usb/typec/anx7411.c
-> index 7e61c3ac8777..d3c5d8f410ca 100644
-> --- a/drivers/usb/typec/anx7411.c
-> +++ b/drivers/usb/typec/anx7411.c
-> @@ -1023,6 +1023,12 @@ static void anx7411_port_unregister_altmodes(struct typec_altmode **adev)
->  		}
->  }
->  
-> +static void anx7411_port_unregister(struct typec_params *typecp)
-> +{
-> +	fwnode_handle_put(typecp->caps.fwnode);
-> +	anx7411_port_unregister_altmodes(typecp->port_amode);
-> +}
+> I suspect this is not about "further issues with some 'Night Light' functionality
+> on one machine", but rather a more fundamental issue or race condition in the qcom
+> DRM devices stack, that is exposed when applying this patch. With this patch applied
+> DRM device state is lost after resume and setting the state is no longer possible.
+> Lots of kernel errors are printed if attempting to set DRM state such as the
+> Color Transform Matrix, when running a kernel with this patch applied.
+> Back in July 2024 I tested this patch on top of 6.9.8 and next-20240709,
+> observing below snippet being logged tens of times:
+> 
+> [drm:_dpu_rm_check_lm_and_get_connected_blks] [dpu error]failed to get dspp on lm 0
+> [drm:_dpu_rm_make_reservation] [dpu error]unable to find appropriate mixers
+> [drm:dpu_rm_reserve] [dpu error]failed to reserve hw resources: -119
+> 
+> Full logs are attached at https://gitlab.freedesktop.org/drm/msm/-/issues/58.
 
-Why not remove the port here while at it.
-Otherwise this LGTM.
+I would not be surprised if there are further issues here, but we can't
+just leave things completely broken as they currently are.
 
->  static int anx7411_usb_mux_set(struct typec_mux_dev *mux,
->  			       struct typec_mux_state *state)
->  {
-> @@ -1158,34 +1164,34 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  	ret = fwnode_property_read_string(fwnode, "power-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "power-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_port_power_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->type = ret;
->  
->  	ret = fwnode_property_read_string(fwnode, "data-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "data-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_port_data_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->data = ret;
->  
->  	ret = fwnode_property_read_string(fwnode, "try-power-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "try-power-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_power_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->prefer_role = ret;
->  
->  	/* Get source pdos */
-> @@ -1197,7 +1203,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  						     typecp->src_pdo_nr);
->  		if (ret < 0) {
->  			dev_err(dev, "source cap validate failed: %d\n", ret);
-> -			return -EINVAL;
-> +			goto put_fwnode;
->  		}
->  
->  		typecp->caps_flags |= HAS_SOURCE_CAP;
-> @@ -1211,7 +1217,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  						     typecp->sink_pdo_nr);
->  		if (ret < 0) {
->  			dev_err(dev, "sink cap validate failed: %d\n", ret);
-> -			return -EINVAL;
-> +			goto put_fwnode;
->  		}
->  
->  		for (i = 0; i < typecp->sink_pdo_nr; i++) {
-> @@ -1255,13 +1261,18 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  		ret = PTR_ERR(ctx->typec.port);
->  		ctx->typec.port = NULL;
->  		dev_err(dev, "Failed to register type c port %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	typec_port_register_altmodes(ctx->typec.port, NULL, ctx,
->  				     ctx->typec.port_amode,
->  				     MAX_ALTMODE);
->  	return 0;
-> +
-> +put_fwnode:
-> +	fwnode_handle_put(fwnode);
-> +
-> +	return ret;
->  }
->  
->  static int anx7411_typec_check_connection(struct anx7411_data *ctx)
-> @@ -1528,7 +1539,7 @@ static int anx7411_i2c_probe(struct i2c_client *client)
->  
->  free_typec_port:
->  	typec_unregister_port(plat->typec.port);
-> -	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-> +	anx7411_port_unregister(&plat->typec);
->  
->  free_typec_switch:
->  	anx7411_unregister_switch(plat);
-> @@ -1562,7 +1573,7 @@ static void anx7411_i2c_remove(struct i2c_client *client)
->  	if (plat->typec.port)
->  		typec_unregister_port(plat->typec.port);
->  
-> -	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-> +	anx7411_port_unregister(&plat->typec);
->  }
->  
->  static const struct i2c_device_id anx7411_id[] = {
+> > The x1e80100 is the only platform I have access to with a writeback
+> > connector, but this regression potentially affects a whole host of older
+> > platforms as well.
+> 
+> Have you attempted setting CTM or other DRM state when running with this patch?
 
-thanks,
+Nope, I just want basic suspend to work.
 
--- 
-heikki
+Johan
 
