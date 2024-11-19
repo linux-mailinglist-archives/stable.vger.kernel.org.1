@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5786F9D1F60
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1799D1F5F
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FB91B24437
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1E5628029E
 	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E565214D2A0;
-	Tue, 19 Nov 2024 04:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFD114B96E;
+	Tue, 19 Nov 2024 04:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpxL5qd+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQNQjSqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F8814883C
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF352149C57
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731991003; cv=none; b=rE5h9iyrDQ15w8EFh9sHyigslprfCs1lyFCYCzRVp2sOO6UK4g22FFVPbJmMKjdAkLnJre6PhtfgUf8wCIBvO4TOsVqLIGsNZYIzjXchuiwKjSQF71aXuy33oDQbosRTImAccF3nlqGSQfITZq4h7kjHYYJYQHV6/UgE1vTLY20=
+	t=1731991005; cv=none; b=WkkQ4boYNG0tP/rd0RyZr68l2dmpRdMp97h2oGOFgSEidHFFcofN4VRi23U0pthKwXrG2kh/9WYlxBkzaVie3JvUS7rPBDOFHbUHBaJeiPmychhFi5bQmUWp0hdCXCNbgfR2B59ESqVP1SybSDALSQd3V+yAjVU7HSSGJ7+GI64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731991003; c=relaxed/simple;
-	bh=ksEXlhB757MaVVmk+azjduhfOtsKwrH9EjFhfmz3+X0=;
+	s=arc-20240116; t=1731991005; c=relaxed/simple;
+	bh=EMI2oGqW24Sqx/ZMGr3Zwr4x9pRxJiLrNhleDE1t4uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQib+rg1zSHroMpQETdiFbo5jVObzD1QKSMjsDct+9Ahiasr6HYFwJsyvRJXY8GH9mIRhj8Evu7Pa089+TVHaMFLGrNI8NlHm+6qfjwwPwEc7X2+eS3Iew1LodVqD6/q5clwoILhLQ3W2nd3h1S1xWKRQQZfoNQejVz6fTYemMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpxL5qd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16807C4CECF;
-	Tue, 19 Nov 2024 04:36:42 +0000 (UTC)
+	 MIME-Version; b=IZV//tBWPL0KTEAAFS6n4afhhKn4KC+B3KiNnzfQbLD+CnVCzDaAmeEcrrSZ1fB/NydRXBjA2xtbbG6X5GHacTkaTho6dxSf4/cUUlj8D+GlzVnsnZS8eoCYMl45xtEZHf+GQSB1TcBSemm3h4SBeR3dm37y90K53a3sBh6/YkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQNQjSqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D8BC4CED1;
+	Tue, 19 Nov 2024 04:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731991003;
-	bh=ksEXlhB757MaVVmk+azjduhfOtsKwrH9EjFhfmz3+X0=;
+	s=k20201202; t=1731991005;
+	bh=EMI2oGqW24Sqx/ZMGr3Zwr4x9pRxJiLrNhleDE1t4uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpxL5qd+OW+j6bQe00WbJhDfOGYizlXgCa25nnIHz3tyvztRTU3N2qLKoRXtfy//l
-	 LQWehTgmVvh5kV0bDShj4SMzC5ipRddCCrE922f1sw37E56WxQJ5qXm9uxAW5h28+U
-	 ZRK70Kh1qUQtWVC5xahZaAxJN25sIbYW4Y5tWtwZMO5/IKeMUo21ZPJr/PXojmPhRK
-	 KKekLHrA8n2csinBC51HXz8yUPEBmjZdbFdBq59pTF5M2ct9VhAvdV859ODD7w8dHU
-	 TzGmF2M/BAHAQYvj36MlnkjVk2c5MMcCSRDD5Ancy8m3LJyTJpzEkFIHAmttqQZINa
-	 Cbd2P11g+l6wQ==
+	b=dQNQjSqfYNaZ7fhlDPzw0lIhb/4h2Mnlgbe7PgEE4/iTOolkFHUBIIfyr9KfNhYia
+	 9eDV8tvDtzERJRSmZPCy8KibGIZ1V1wVixcORnkFzderJjokL5oJdIhB5Cp+dcuorX
+	 M6OXJwHW/X/v4PTCayQUEX9qAqb+UGlhMvnKWNdzdU6CBEmDdBk9aocvftbMlS84QH
+	 pp2A9Vgr6MoFPKeu8ElQbGU7dvmqlqXQGoRqRo9kHlhIC+lNv0GZDW0a+E8ftpqpTP
+	 tziS1iVFj3bJu2EIj0GMd8Qu+OBvJRCT9BsKg9+7Cvz8qld5C2b7G2YcU04lSeNQXc
+	 K/xhWS3USfr/w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y v2 3/4] mm: refactor arch_calc_vm_flag_bits() and arm64 MTE handling
-Date: Mon, 18 Nov 2024 23:36:41 -0500
-Message-ID: <fb0aeea7eb024efb92c512a873f40aa6ab27898a.1731946386.git.lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH 6.1.y v2 4/4] mm: resolve faulty mmap_region() error path behaviour
+Date: Mon, 18 Nov 2024 23:36:43 -0500
+Message-ID: <c1010a906529ca76149fe169291f0bb94b506dac.1731946386.git.lorenzo.stoakes@oracle.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <fb0aeea7eb024efb92c512a873f40aa6ab27898a.1731946386.git.lorenzo.stoakes@oracle.com>
+In-Reply-To:  <c1010a906529ca76149fe169291f0bb94b506dac.1731946386.git.lorenzo.stoakes@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,183 +63,266 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 5baf8b037debf4ec60108ccfeccb8636d1dbad81
+The upstream commit SHA1 provided is correct: 5de195060b2e251a835f622759550e6202167641
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: 9f5efc1137ba)      |
+| 6.11.y          |  Not found                                   |
 | 6.6.y           |  Not found                                   |
 | 6.1.y           |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 17:15:02.588328592 -0500
-+++ /tmp/tmp.LhvhUpwE7J	2024-11-18 17:15:02.577003940 -0500
-@@ -50,29 +50,29 @@
+--- -	2024-11-18 17:18:53.116972504 -0500
++++ /tmp/tmp.LfCsQR09RO	2024-11-18 17:18:53.109756830 -0500
+@@ -65,16 +65,17 @@
  Cc: Will Deacon <will@kernel.org>
  Cc: <stable@vger.kernel.org>
  Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 +Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
  ---
-- arch/arm64/include/asm/mman.h  | 10 +++++++---
-- arch/parisc/include/asm/mman.h |  5 +++--
-- include/linux/mman.h           |  7 ++++---
-- mm/mmap.c                      |  2 +-
-- mm/nommu.c                     |  2 +-
-- mm/shmem.c                     |  3 ---
-- 6 files changed, 16 insertions(+), 13 deletions(-)
-+ arch/arm64/include/asm/mman.h | 10 +++++++---
-+ include/linux/mman.h          |  7 ++++---
-+ mm/mmap.c                     |  2 +-
-+ mm/nommu.c                    |  2 +-
-+ mm/shmem.c                    |  3 ---
-+ 5 files changed, 13 insertions(+), 11 deletions(-)
+- mm/mmap.c | 119 +++++++++++++++++++++++++++++-------------------------
+- 1 file changed, 65 insertions(+), 54 deletions(-)
++ mm/mmap.c | 104 ++++++++++++++++++++++++++++++------------------------
++ 1 file changed, 57 insertions(+), 47 deletions(-)
  
- diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
--index 9e39217b4afbb..798d965760d43 100644
-+index 5966ee4a6154..ef35c52aabd6 100644
- --- a/arch/arm64/include/asm/mman.h
- +++ b/arch/arm64/include/asm/mman.h
--@@ -6,6 +6,8 @@
-+@@ -3,6 +3,8 @@
-+ #define __ASM_MMAN_H__
-  
-- #ifndef BUILD_VDSO
-  #include <linux/compiler.h>
- +#include <linux/fs.h>
- +#include <linux/shmem_fs.h>
-  #include <linux/types.h>
-+ #include <uapi/asm/mman.h>
-  
-- static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
--@@ -31,19 +33,21 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-+@@ -21,19 +23,21 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-  }
-  #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
-  
-@@ -97,37 +97,8 @@
-  
-  static inline bool arch_validate_prot(unsigned long prot,
-  	unsigned long addr __always_unused)
--diff --git a/arch/parisc/include/asm/mman.h b/arch/parisc/include/asm/mman.h
--index 89b6beeda0b86..663f587dc7896 100644
----- a/arch/parisc/include/asm/mman.h
--+++ b/arch/parisc/include/asm/mman.h
--@@ -2,6 +2,7 @@
-- #ifndef __ASM_MMAN_H__
-- #define __ASM_MMAN_H__
-- 
--+#include <linux/fs.h>
-- #include <uapi/asm/mman.h>
-- 
-- /* PARISC cannot allow mdwe as it needs writable stacks */
--@@ -11,7 +12,7 @@ static inline bool arch_memory_deny_write_exec_supported(void)
-- }
-- #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
-- 
---static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
--+static inline unsigned long arch_calc_vm_flag_bits(struct file *file, unsigned long flags)
-- {
-- 	/*
-- 	 * The stack on parisc grows upwards, so if userspace requests memory
--@@ -23,6 +24,6 @@ static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
-- 
-- 	return 0;
-- }
---#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
--+#define arch_calc_vm_flag_bits(file, flags) arch_calc_vm_flag_bits(file, flags)
-- 
-- #endif /* __ASM_MMAN_H__ */
- diff --git a/include/linux/mman.h b/include/linux/mman.h
--index 8ddca62d6460b..a842783ffa62b 100644
-+index 58b3abd457a3..21ea08b919d9 100644
- --- a/include/linux/mman.h
- +++ b/include/linux/mman.h
- @@ -2,6 +2,7 @@
-@@ -138,7 +109,7 @@
-  #include <linux/mm.h>
-  #include <linux/percpu_counter.h>
-  
--@@ -94,7 +95,7 @@ static inline void vm_unacct_memory(long pages)
-+@@ -90,7 +91,7 @@ static inline void vm_unacct_memory(long pages)
-  #endif
-  
-  #ifndef arch_calc_vm_flag_bits
-@@ -147,7 +118,7 @@
-  #endif
-  
-  #ifndef arch_validate_prot
--@@ -151,13 +152,13 @@ calc_vm_prot_bits(unsigned long prot, unsigned long pkey)
-+@@ -147,12 +148,12 @@ calc_vm_prot_bits(unsigned long prot, unsigned long pkey)
-   * Combine the mmap "flags" argument into "vm_flags" used internally.
-   */
-  static inline unsigned long
-@@ -157,49 +128,51 @@
-  	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
-  	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
-  	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
-- 	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
- -	       arch_calc_vm_flag_bits(flags);
- +	       arch_calc_vm_flag_bits(file, flags);
-  }
-  
-  unsigned long vm_commit_limit(void);
  diff --git a/mm/mmap.c b/mm/mmap.c
--index ab71d4c3464cd..aee5fa08ae5d1 100644
-+index 4bfec4df51c2..322677f61d30 100644
+-index aee5fa08ae5d1..79d541f1502b2 100644
++index 322677f61d30..9a9933ede542 100644
  --- a/mm/mmap.c
  +++ b/mm/mmap.c
--@@ -344,7 +344,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
-+@@ -1316,7 +1316,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
-  	 * to. we assume access permissions have been handled by the open
-  	 * of the memory object, so we don't do any here.
-  	 */
---	vm_flags |= calc_vm_prot_bits(prot, pkey) | calc_vm_flag_bits(flags) |
--+	vm_flags |= calc_vm_prot_bits(prot, pkey) | calc_vm_flag_bits(file, flags) |
-+-	vm_flags = calc_vm_prot_bits(prot, pkey) | calc_vm_flag_bits(flags) |
-++	vm_flags = calc_vm_prot_bits(prot, pkey) | calc_vm_flag_bits(file, flags) |
-  			mm->def_flags | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC;
+-@@ -1358,20 +1358,18 @@ int do_munmap(struct mm_struct *mm, unsigned long start, size_t len,
+- 	return do_vmi_munmap(&vmi, mm, start, len, uf, false);
++@@ -2652,7 +2652,7 @@ int do_munmap(struct mm_struct *mm, unsigned long start, size_t len,
++ 	return do_mas_munmap(&mas, mm, start, len, uf, false);
+  }
   
-- 	/* Obtain the address to map to. we verify (or select) it and ensure
-+ 	if (flags & MAP_LOCKED)
- diff --git a/mm/nommu.c b/mm/nommu.c
--index 635d028d647b3..e9b5f527ab5b4 100644
-+index e0428fa57526..859ba6bdeb9c 100644
- --- a/mm/nommu.c
- +++ b/mm/nommu.c
--@@ -842,7 +842,7 @@ static unsigned long determine_vm_flags(struct file *file,
-+@@ -903,7 +903,7 @@ static unsigned long determine_vm_flags(struct file *file,
+ -unsigned long mmap_region(struct file *file, unsigned long addr,
+@@ -82,45 +83,31 @@
+  		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
+  		struct list_head *uf)
   {
-  	unsigned long vm_flags;
+- 	struct mm_struct *mm = current->mm;
+- 	struct vm_area_struct *vma = NULL;
+- 	pgoff_t pglen = PHYS_PFN(len);
+--	struct vm_area_struct *merge;
+- 	unsigned long charged = 0;
+- 	struct vma_munmap_struct vms;
+- 	struct ma_state mas_detach;
+- 	struct maple_tree mt_detach;
+- 	unsigned long end = addr + len;
+--	bool writable_file_mapping = false;
+- 	int error;
+- 	VMA_ITERATOR(vmi, mm, addr);
+- 	VMG_STATE(vmg, mm, &vmi, addr, end, vm_flags, pgoff);
+-@@ -1445,28 +1443,26 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+- 	vm_flags_init(vma, vm_flags);
++@@ -2750,26 +2750,28 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+  	vma->vm_page_prot = vm_get_page_prot(vm_flags);
++ 	vma->vm_pgoff = pgoff;
   
- -	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(flags);
- +	vm_flags = calc_vm_prot_bits(prot, 0) | calc_vm_flag_bits(file, flags);
-+ 	/* vm_flags |= mm->def_flags; */
+-+	if (vma_iter_prealloc(&vmi, vma)) {
++-	if (file) {
++-		if (vm_flags & VM_SHARED) {
++-			error = mapping_map_writable(file->f_mapping);
++-			if (error)
++-				goto free_vma;
++-		}
+++	if (mas_preallocate(&mas, vma, GFP_KERNEL)) {
+ +		error = -ENOMEM;
+ +		goto free_vma;
+ +	}
+-+
+- 	if (file) {
++ 
+++	if (file) {
+  		vma->vm_file = get_file(file);
+  		error = mmap_file(file, vma);
+  		if (error)
+ -			goto unmap_and_free_vma;
+--
+--		if (vma_is_shared_maywrite(vma)) {
+--			error = mapping_map_writable(file->f_mapping);
+--			if (error)
+--				goto close_and_free_vma;
+--
+--			writable_file_mapping = true;
+--		}
+ +			goto unmap_and_free_file_vma;
+- 
+++
+ +		/* Drivers cannot alter the address of the VMA. */
+ +		WARN_ON_ONCE(addr != vma->vm_start);
++ 
+  		/*
+ -		 * Expansion is handled above, merging is handled below.
+ -		 * Drivers should not alter the address of the VMA.
+@@ -134,28 +121,21 @@
+ +		VM_WARN_ON_ONCE(vm_flags != vma->vm_flags &&
+ +				!(vm_flags & VM_MAYWRITE) &&
+ +				(vma->vm_flags & VM_MAYWRITE));
+++
++ 		mas_reset(&mas);
   
-- 	if (!file) {
-- 		/*
-+ 	if (!(capabilities & NOMMU_MAP_DIRECT)) {
- diff --git a/mm/shmem.c b/mm/shmem.c
--index 4ba1d00fabdaa..e87f5d6799a7b 100644
-+index 0e1fbc53717d..d1a33f66cc7f 100644
- --- a/mm/shmem.c
- +++ b/mm/shmem.c
--@@ -2733,9 +2733,6 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
-+@@ -2308,9 +2308,6 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
-  	if (ret)
-  		return ret;
+- 		vma_iter_config(&vmi, addr, end);
+  		/*
+-@@ -1474,6 +1470,8 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+- 		 * vma again as we may succeed this time.
+- 		 */
+- 		if (unlikely(vm_flags != vma->vm_flags && vmg.prev)) {
+-+			struct vm_area_struct *merge;
+-+
+- 			vmg.flags = vma->vm_flags;
+- 			/* If this fails, state is reset ready for a reattempt. */
+- 			merge = vma_merge_new_range(&vmg);
+-@@ -1491,7 +1489,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
++@@ -2792,7 +2794,8 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+  				vma = merge;
+  				/* Update vm_flags to pick up the change. */
+  				vm_flags = vma->vm_flags;
+ -				goto unmap_writable;
+++				mas_destroy(&mas);
+ +				goto file_expanded;
+  			}
+- 			vma_iter_config(&vmi, addr, end);
+  		}
+-@@ -1500,26 +1498,15 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
++ 
++@@ -2800,31 +2803,15 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+  	} else if (vm_flags & VM_SHARED) {
+  		error = shmem_zero_setup(vma);
+  		if (error)
+@@ -165,41 +145,46 @@
+  		vma_set_anonymous(vma);
+  	}
   
- -	/* arm64 - allow memory tagging on RAM-based files */
---	vm_flags_set(vma, VM_MTE_ALLOWED);
-+-	vma->vm_flags |= VM_MTE_ALLOWED;
+--	if (map_deny_write_exec(vma->vm_flags, vma->vm_flags)) {
+--		error = -EACCES;
+--		goto close_and_free_vma;
+--	}
+--
+ -	/* Allow architectures to sanity-check the vm_flags */
+ -	if (!arch_validate_flags(vma->vm_flags)) {
+ -		error = -EINVAL;
+--		goto close_and_free_vma;
++-		if (file)
++-			goto close_and_free_vma;
++-		else if (vma->vm_file)
++-			goto unmap_and_free_vma;
++-		else
++-			goto free_vma;
+ -	}
  -
-  	file_accessed(file);
-- 	/* This is anonymous shared memory if it is unlinked at the time of mmap */
-- 	if (inode->i_nlink)
-+ 	vma->vm_ops = &shmem_vm_ops;
-+ 	return 0;
+--	if (vma_iter_prealloc(&vmi, vma)) {
++-	if (mas_preallocate(&mas, vma, GFP_KERNEL)) {
+ -		error = -ENOMEM;
+--		goto close_and_free_vma;
++-		if (file)
++-			goto close_and_free_vma;
++-		else if (vma->vm_file)
++-			goto unmap_and_free_vma;
++-		else
++-			goto free_vma;
+ -	}
+ +#ifdef CONFIG_SPARC64
+ +	/* TODO: Fix SPARC ADI! */
+ +	WARN_ON_ONCE(!arch_validate_flags(vm_flags));
+ +#endif
+  
+- 	/* Lock the VMA since it is modified after insertion into VMA tree */
+- 	vma_start_write(vma);
+-@@ -1533,10 +1520,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
++ 	if (vma->vm_file)
++ 		i_mmap_lock_write(vma->vm_file->f_mapping);
++@@ -2847,10 +2834,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+  	 */
+  	khugepaged_enter_vma(vma, vma->vm_flags);
+  
+ -	/* Once vma denies write, undo our temporary denial count */
+ -unmap_writable:
+--	if (writable_file_mapping)
++-	if (file && vm_flags & VM_SHARED)
+ -		mapping_unmap_writable(file->f_mapping);
+ +file_expanded:
+  	file = vma->vm_file;
+- 	ksm_add_vma(vma);
+  expanded:
+-@@ -1569,23 +1553,17 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
++ 	perf_event_mmap(vma);
++@@ -2879,28 +2863,54 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+  
+  	vma_set_page_prot(vma);
+  
+@@ -208,33 +193,22 @@
+  
+ -close_and_free_vma:
+ -	vma_close(vma);
+--
+--	if (file || vma->vm_file) {
+ -unmap_and_free_vma:
+--		fput(vma->vm_file);
+--		vma->vm_file = NULL;
+ +unmap_and_free_file_vma:
+-+	fput(vma->vm_file);
+-+	vma->vm_file = NULL;
++ 	fput(vma->vm_file);
++ 	vma->vm_file = NULL;
+  
+--		vma_iter_set(&vmi, vma->vm_end);
+--		/* Undo any partial mapping done by a device driver. */
+--		unmap_region(&vmi.mas, vma, vmg.prev, vmg.next);
+--	}
+--	if (writable_file_mapping)
++ 	/* Undo any partial mapping done by a device driver. */
++ 	unmap_region(mm, mas.tree, vma, prev, next, vma->vm_start, vma->vm_end);
++-	if (file && (vm_flags & VM_SHARED))
+ -		mapping_unmap_writable(file->f_mapping);
+-+	vma_iter_set(&vmi, vma->vm_end);
+-+	/* Undo any partial mapping done by a device driver. */
+-+	unmap_region(&vmi.mas, vma, vmg.prev, vmg.next);
+ +free_iter_vma:
+-+	vma_iter_free(&vmi);
+++	mas_destroy(&mas);
+  free_vma:
+  	vm_area_free(vma);
+  unacct_error:
+-@@ -1595,10 +1573,43 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+- abort_munmap:
+- 	vms_abort_munmap_vmas(&vms, &mas_detach);
+- gather_failed:
++ 	if (charged)
++ 		vm_unacct_memory(charged);
+ -	validate_mm(mm);
+  	return error;
+  }
+@@ -246,16 +220,12 @@
+ +	unsigned long ret;
+ +	bool writable_file_mapping = false;
+ +
+-+	/* Check to see if MDWE is applicable. */
+-+	if (map_deny_write_exec(vm_flags, vm_flags))
+-+		return -EACCES;
+-+
+ +	/* Allow architectures to sanity-check the vm_flags. */
+ +	if (!arch_validate_flags(vm_flags))
+ +		return -EINVAL;
+ +
+ +	/* Map writable and ensure this isn't a sealed memfd. */
+-+	if (file && is_shared_maywrite(vm_flags)) {
+++	if (file && (vm_flags & VM_SHARED)) {
+ +		int error = mapping_map_writable(file->f_mapping);
+ +
+ +		if (error)
+@@ -273,6 +243,9 @@
+ +	return ret;
+ +}
+ +
+- static int __vm_munmap(unsigned long start, size_t len, bool unlock)
++ static int __vm_munmap(unsigned long start, size_t len, bool downgrade)
+  {
+  	int ret;
 +-- 
 +2.47.0
 +
