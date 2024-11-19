@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8FD9D2880
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CB89D2881
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5131F23175
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3917F280DE3
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DBE1CF5D6;
-	Tue, 19 Nov 2024 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557461CF5D2;
+	Tue, 19 Nov 2024 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBJp1HgQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLFjFazM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B4E1CCEE1
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165B21CC174
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027607; cv=none; b=HmZEJyBhSy4H/3ixdSX5AFmyHVHVX7w6CP5MRoodgsm/PQutWMKrp7crhpxs3yxUwjHhPaIoKah5iOfMtTadlcpnkvrlNM6LUKo+EnRgHQbv9aVq28nOxKLJVwLBdvyy5SkSMsO1bbmDtBCxvw3kzEG3YDCMn6ch8vmGcgzq1Ys=
+	t=1732027609; cv=none; b=GDkq6zjJrxhrHdMpckoQXoYvWNMcJ/AfEfd6QBOQtza794DAJzKzJ868hPdlj7OLrHd8DPVg1syCMyrSBfX4Z/VklCWKVDnlhqi6rMKiN6mjts0wnrQd4timw9tFLLhoLYZfTaffmGxoV3vRFQwXoBSH+V569L7tt2OAOzHB2CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027607; c=relaxed/simple;
-	bh=CIlXVWzBa1K6Oy2N6R7ROsM3dnzb8LN71tzdjS8GoxE=;
+	s=arc-20240116; t=1732027609; c=relaxed/simple;
+	bh=1qKwVbmX5Ou6evD6a4lvWH9L5fty0WdZIC9J3nu2ULg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dklr6IAbxCOIcOuy9WnNX6WrB7QdwVeLYZ0RmXoaFt/3Q7NplS0gnkvlR1ih6pOddzjBTqWDCSUq2N/znGk97KuGcsjqX3e0nTIVaTMzYW5AWXlV3QAz73Fy6S9umKyxQZ5EKE2J+LvSFyPZMHRyQAkc8UJ+uuQ8Rqavhin1PiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBJp1HgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0F1C4CECF;
-	Tue, 19 Nov 2024 14:46:46 +0000 (UTC)
+	 MIME-Version; b=pyknB3efvQlRIElQhpxoCz3Ti6tK6ZaylVp7tRypK6MT4vrtVgFRI8oB8bukF4wAKZcItFYmM6Y1DhUMWht/UmYXv3T6VbA9phX8m+/HLuojXvLrEuIn2VzT6vjQ38OgvY9In057Kfu1emuPdnlfB8EIyA4v8Om2YfDaRyiyKUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLFjFazM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B71EC4CECF;
+	Tue, 19 Nov 2024 14:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732027606;
-	bh=CIlXVWzBa1K6Oy2N6R7ROsM3dnzb8LN71tzdjS8GoxE=;
+	s=k20201202; t=1732027609;
+	bh=1qKwVbmX5Ou6evD6a4lvWH9L5fty0WdZIC9J3nu2ULg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBJp1HgQ16kM/u64OgYpH+rAXx6WStKPIeVFp4CJLenhnlWMzN9KL2+2qaHsPIv+H
-	 v46ogyj0bokDhv8aXQtsgojCTv10HrNIOaSpzTXMfAkchcR1rz5FGx+aGxdmjME6P5
-	 d/LIAmhrhKg8QYjH5/E0P1BupQG8opBP9b99oOAqaKF6H7JpstKVzzGdfll8ZTnHyl
-	 jGplzrAayaXuTQ/oTufcfS3rQi2tKNQP8j6r2ZKFWa2JqJ2d0GTmXQa0FZff8Koc8+
-	 o34WnArYM8bGp3CzzurByxIVrvRO8WTMRpYekjCRD3rE35nY0ZcQPf5Z8VW2edbbde
-	 TkdNftvtk5WsA==
+	b=dLFjFazMN1LcPCVoHgXUo0sWhUOKHvBypp2ZG6tH5huxLgrdzXSqRMtIIrF2GONpO
+	 7CY03dR/Tqh0kkI4Zj6+uyk+nnyO89lg2VE8xzqP9+FdykWZWHG5veKojVJshAFF3w
+	 ChnXfoAWzhQ5aVJJpcUdjC2B5+YUhLvmisG10O2tM5NjcDguM7VLtU2kjWHzrosqQT
+	 /VG9HjT3rFRvdgJq12SKwM4i8eR20o+GDtShQwmQJ3s7P8Y15G8wfUl+jzzPkCdUu5
+	 ZkXJQWv5Y8tojvK9I4TDQYY9ze7GiLshyVwx+XQwWiqAPzIhHjjXZSLRS5m12a+j2H
+	 XI7G16AYV1wlw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] leds: mlxreg: Use devm_mutex_init() for mutex initialization
-Date: Tue, 19 Nov 2024 09:46:45 -0500
-Message-ID: <20241119083919.2490177-1-bin.lan.cn@windriver.com>
+Subject: Re: [PATCH 6.1.y 1/7] mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
+Date: Tue, 19 Nov 2024 09:46:47 -0500
+Message-ID: <20241119083547.3234013-10-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119083919.2490177-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241119083547.3234013-10-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,84 +63,60 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: efc347b9efee1c2b081f5281d33be4559fa50a16
+The upstream commit SHA1 provided is correct: ce7356ae35943cc6494cc692e62d51a734062b7d
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: George Stark <gnstark@salutedevices.com>
+Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Commit author: Paolo Abeni <pabeni@redhat.com>
 
 
 Status in newer kernel trees:
-6.11.y | Present (exact SHA1)
-6.6.y | Not found
+6.11.y | Present (different SHA1: 8cccaf4eb99b)
+6.6.y | Present (different SHA1: 4e86acecbba9)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 07:43:38.458373754 -0500
-+++ /tmp/tmp.8Ym27M0bF0	2024-11-19 07:43:38.452657083 -0500
+--- -	2024-11-19 08:38:07.302555583 -0500
++++ /tmp/tmp.UE8LSqsrXJ	2024-11-19 08:38:07.300507479 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit efc347b9efee1c2b081f5281d33be4559fa50a16 ]
++commit ce7356ae35943cc6494cc692e62d51a734062b7d upstream.
 +
- In this driver LEDs are registered using devm_led_classdev_register()
- so they are automatically unregistered after module's remove() is done.
- led_classdev_unregister() calls module's led_set_brightness() to turn off
-@@ -8,15 +10,17 @@
- Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
- Link: https://lore.kernel.org/r/20240411161032.609544-8-gnstark@salutedevices.com
- Signed-off-by: Lee Jones <lee@kernel.org>
-+[ Resolve minor conflicts to fix CVE-2024-42129 ]
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+ Additional active subflows - i.e. created by the in kernel path
+ manager - are included into the subflow list before starting the
+ 3whs.
+@@ -15,21 +17,29 @@
+ Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+ Link: https://patch.msgid.link/02374660836e1b52afc91966b7535c8c5f7bafb0.1731060874.git.pabeni@redhat.com
+ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
++[ Conflicts in protocol.c, because commit f410cbea9f3d ("tcp: annotate
++  data-races around tp->window_clamp") has not been backported to this
++  version. The conflict is easy to resolve, because only the context is
++  different, but not the line to modify. ]
++Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
  ---
-- drivers/leds/leds-mlxreg.c | 14 +++++---------
-- 1 file changed, 5 insertions(+), 9 deletions(-)
-+ drivers/leds/leds-mlxreg.c | 16 +++++-----------
-+ 1 file changed, 5 insertions(+), 11 deletions(-)
+  net/mptcp/protocol.c | 3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
  
- diff --git a/drivers/leds/leds-mlxreg.c b/drivers/leds/leds-mlxreg.c
--index 5595788d98d20..1b70de72376cc 100644
-+index 39210653acf7..b1510cd32e47 100644
- --- a/drivers/leds/leds-mlxreg.c
- +++ b/drivers/leds/leds-mlxreg.c
--@@ -256,6 +256,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
-+@@ -257,6 +257,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
-  {
-  	struct mlxreg_core_platform_data *led_pdata;
-  	struct mlxreg_led_priv_data *priv;
-@@ -24,7 +28,7 @@
-  
-  	led_pdata = dev_get_platdata(&pdev->dev);
-  	if (!led_pdata) {
--@@ -267,26 +268,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
-+@@ -268,28 +269,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
-  	if (!priv)
-  		return -ENOMEM;
-  
-@@ -39,11 +43,13 @@
-  	return mlxreg_led_config(priv);
-  }
-  
---static void mlxreg_led_remove(struct platform_device *pdev)
-+-static int mlxreg_led_remove(struct platform_device *pdev)
- -{
- -	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
- -
- -	mutex_destroy(&priv->access_lock);
-+-
-+-	return 0;
- -}
- -
-  static struct platform_driver mlxreg_led_driver = {
-@@ -51,7 +57,10 @@
-  	    .name = "leds-mlxreg",
-  	},
-  	.probe = mlxreg_led_probe,
---	.remove_new = mlxreg_led_remove,
-+-	.remove = mlxreg_led_remove,
-  };
-  
-  module_platform_driver(mlxreg_led_driver);
+ diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+-index 95a5a3da39447..48d480982b787 100644
++index 78ac5c538e13..1acd4e37a0ea 100644
+ --- a/net/mptcp/protocol.c
+ +++ b/net/mptcp/protocol.c
+-@@ -2082,7 +2082,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
++@@ -2057,7 +2057,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+  				slow = lock_sock_fast(ssk);
+  				WRITE_ONCE(ssk->sk_rcvbuf, rcvbuf);
+- 				WRITE_ONCE(tcp_sk(ssk)->window_clamp, window_clamp);
++ 				tcp_sk(ssk)->window_clamp = window_clamp;
+ -				tcp_cleanup_rbuf(ssk, 1);
+ +				if (tcp_can_send_ack(ssk))
+ +					tcp_cleanup_rbuf(ssk, 1);
+  				unlock_sock_fast(ssk, slow);
+  			}
+  		}
 +-- 
-+2.43.0
++2.45.2
 +
 ---
 
@@ -148,9 +124,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Failed    |
-
-Build Errors:
-Build error for stable/linux-6.6.y:
-    
+| stable/linux-6.1.y        |  Success    |  Success   |
 
