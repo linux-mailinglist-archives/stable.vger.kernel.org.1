@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA039D25E8
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BC89D25E9
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49C52855E1
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153FC1F24DCB
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3051CBEB5;
-	Tue, 19 Nov 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9588E1CC14C;
+	Tue, 19 Nov 2024 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7D/0sx8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0RPGONA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA5213B780
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5663713B780
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019480; cv=none; b=uXQ5xgD6EdB2MA1lVt0EpSQUTj1cVtSLSQWuoTB8pdatLTqznpBjelt6EKLNvCMYvpEdeOSF7zWaT6tI7EgGB4/gXvSYQcjiOJ2mvd/icEJr4heYAb/jiibY/F9X2qo4BzdWRX3heAfUPVvC9tu+qvsOIFfsMoYqcEbR7M1w5FY=
+	t=1732019483; cv=none; b=m3rVtlQT2J+nEv33jnj5mwrAwYMcQGNz21KLksnw0slhErTo+SWW5uB+vyXptmo/1lo/4LRc6Hb77dyh4eZRKSNILxni5gXgBWPyAAZ5lQvFpvXXr6Ul4LwCvitnr0ONBNPg1t4NN5nZyKPobPo+1FXzGij0AROxb1PFedZ9aGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019480; c=relaxed/simple;
-	bh=PlYZx/IyVQolJT1Ae0l3rV89t0nSuhEHYfqkRezJXCw=;
+	s=arc-20240116; t=1732019483; c=relaxed/simple;
+	bh=6hQi/Vzetu4yiWFJTuBOejUMlgUo+jKz5dCJ5OKqhJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWt0g+2ikA0VNmHAzuPZp4S35x03bXI3tfy0aFMLbpqh6DC2z+XeDGHIKRh178EJwDYro9tH7kU75nT6N6HyjtC/ECq6LiWQWCZZPcHmuXPFOlE+cDZq9UJHUOyT0s06GsmpooKOM3ihS55A1DbOQ4IyI4G5nocQK/Sx8hmpJF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7D/0sx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85CDC4CECF;
-	Tue, 19 Nov 2024 12:31:19 +0000 (UTC)
+	 MIME-Version; b=d66FeO+yXmiRYdrQrEAMTE/X5EjnMDMXtwXM5NfhKRh5JN43tohZmZErD/9oVp3aF82ZhrelOZQoTpWISIvpv50hxm3Ce8XSeayTUS+HpNqDa1QYHTf24yaNU81HdTV5BPN5cRXpSqai28LaPTBXYuux8fgqtKT1dJuthPIz9PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0RPGONA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649F0C4CECF;
+	Tue, 19 Nov 2024 12:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019480;
-	bh=PlYZx/IyVQolJT1Ae0l3rV89t0nSuhEHYfqkRezJXCw=;
+	s=k20201202; t=1732019482;
+	bh=6hQi/Vzetu4yiWFJTuBOejUMlgUo+jKz5dCJ5OKqhJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7D/0sx80Av5Esr+zvtYZ1zQOA8MKaAfpjHoKPtxevGgYW2ERVGsUBSLYyuhfkSLZ
-	 ls28P892x9Wc9b7xOlXyzYBCnwfX6gABMr6Segvb6Ldv81kyiHwDKwHLqU81wGyHsE
-	 4rPNh7AFVn2pnVNJEM8Hc2I4Rmbtt+Ajy0tLX7n92t11n+KHfqeeyGqNAVk3JIWkV3
-	 eOBRs/iLRCd/6YAmOWgz3oslJbMLr6hBHvkKuClSb4IWLWUmvbMFyR90nVe5uJYe7P
-	 ZjC7o4HmidIm4am0lJV42SvOlxhNyXdtvkanciVbLSbTgnIDpVY+UGUaxzmOXABfM8
-	 8V36PvMmI6OCw==
+	b=l0RPGONAAwhh8u4ZjiOolC00x0GA3DPUlg8enrG5mMofAUudtGHJuFFThHDbvXeor
+	 DWRm151y7TS8ng56XQRd5z0lQ/Inql0BiG1yIrLwUEi0pcJgIAsex7SUNwBDUTQ1Zs
+	 l+LQYyqsA4G35NPD1E/K7LkdqPAe8B2RyGqRNvQDK2x1PL+5MSeSMAwYy1ez0U0+bF
+	 4BdyvMT1hUa446AgPptxLDkIHBufWiVCTRwXx7ijVm8Xyp05NmPZt90GR4//ihglWo
+	 ewAzpXPu+6xJto+jWf6qnEXh4UTo0VKHggNIbq+wnRXh2a/40aVxempv0Z6lmkBSa8
+	 1xKOmvM2+wWNw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 1/2] fs/9p: fix uninitialized values during inode evict
-Date: Tue, 19 Nov 2024 07:31:18 -0500
-Message-ID: <20241119034317.3364577-2-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 5.15 1/5] NFSD: initialize copy->cp_clp early in nfsd4_copy for use by trace point
+Date: Tue, 19 Nov 2024 07:31:20 -0500
+Message-ID: <20241118212343.3935-2-cel@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119034317.3364577-2-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241118212343.3935-2-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,11 +63,11 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 6630036b7c228f57c7893ee0403e92c2db2cd21d
+The upstream commit SHA1 provided is correct: 15d1975b7279693d6f09398e0e2e31aca2310275
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Eric Van Hensbergen <ericvh@kernel.org>
+Backport author: cel@kernel.org
+Commit author: Dai Ngo <dai.ngo@oracle.com>
 
 Commit in newer trees:
 
@@ -75,82 +75,51 @@ Commit in newer trees:
 | 6.11.y          |  Present (exact SHA1)                        |
 | 6.6.y           |  Not found                                   |
 | 6.1.y           |  Not found                                   |
+| 5.15.y          |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 02:22:27.424212767 -0500
-+++ /tmp/tmp.RwSqbmtnlO	2024-11-19 02:22:27.419074107 -0500
-@@ -1,3 +1,5 @@
-+[ Upstream commit 6630036b7c228f57c7893ee0403e92c2db2cd21d ]
+--- -	2024-11-19 00:34:46.562972386 -0500
++++ /tmp/tmp.dJ2FyvDKol	2024-11-19 00:34:46.560154414 -0500
+@@ -1,17 +1,20 @@
++[ Upstream commit 15d1975b7279693d6f09398e0e2e31aca2310275 ]
 +
- If an iget fails due to not being able to retrieve information
- from the server then the inode structure is only partially
- initialized.  When the inode gets evicted, references to
-@@ -12,39 +14,48 @@
+ Prepare for adding server copy trace points.
  
- Reported-by: syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com
- Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-+(cherry picked from commit 1b4cb6e91f19b81217ad98142ee53a1ab25893fd)
-+[Xiangyu: CVE-2024-36923 Minor conflict resolution due to missing 4eb31178 ]
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+ Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+ Tested-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
++Stable-dep-of: 9ed666eba4e0 ("NFSD: Async COPY result needs to return a write verifier")
+ Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
  ---
-- fs/9p/vfs_inode.c | 16 ++++++++++------
-- 1 file changed, 10 insertions(+), 6 deletions(-)
-+ fs/9p/vfs_inode.c | 23 +++++++++++++----------
-+ 1 file changed, 13 insertions(+), 10 deletions(-)
+  fs/nfsd/nfs4proc.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
  
- diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
--index 360a5304ec03c..b01b1bbf24937 100644
-+index 8f287009545c..495631eba3a6 100644
- --- a/fs/9p/vfs_inode.c
- +++ b/fs/9p/vfs_inode.c
--@@ -344,17 +344,21 @@ void v9fs_evict_inode(struct inode *inode)
-- 	struct v9fs_inode __maybe_unused *v9inode = V9FS_I(inode);
-- 	__le32 __maybe_unused version;
-+@@ -392,17 +392,20 @@ void v9fs_evict_inode(struct inode *inode)
-+ 	struct v9fs_inode *v9inode = V9FS_I(inode);
-+ 	__le32 version;
+ diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+-index 4199ede0583c7..c27f2fdcea32c 100644
++index 11dcf3debb1d..2b1fcf5b6bf8 100644
+ --- a/fs/nfsd/nfs4proc.c
+ +++ b/fs/nfsd/nfs4proc.c
+-@@ -1798,6 +1798,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1769,6 +1769,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  	__be32 status;
+  	struct nfsd4_copy *async_copy = NULL;
   
- -	truncate_inode_pages_final(&inode->i_data);
-+-	version = cpu_to_le32(v9inode->qid.version);
-+-	fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
- +	if (!is_bad_inode(inode)) {
- +		truncate_inode_pages_final(&inode->i_data);
-- 
---	version = cpu_to_le32(v9inode->qid.version);
---	netfs_clear_inode_writeback(inode, &version);
- +		version = cpu_to_le32(v9inode->qid.version);
--+		netfs_clear_inode_writeback(inode, &version);
-- 
-++		fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
-+ 				      &version);
- -	clear_inode(inode);
- -	filemap_fdatawrite(&inode->i_data);
-+-
-+-	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-+-	/* clunk the fid stashed in writeback_fid */
-+-	p9_fid_put(v9inode->writeback_fid);
-+-	v9inode->writeback_fid = NULL;
- +		clear_inode(inode);
- +		filemap_fdatawrite(&inode->i_data);
-- 
-- #ifdef CONFIG_9P_FSCACHE
---	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
- +		if (v9fs_inode_cookie(v9inode))
- +			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-- #endif
-++		/* clunk the fid stashed in writeback_fid */
-++		p9_fid_put(v9inode->writeback_fid);
-++		v9inode->writeback_fid = NULL;
- +	} else
- +		clear_inode(inode);
-  }
+@@ -19,7 +22,7 @@
+  	if (nfsd4_ssc_is_inter(copy)) {
+  		if (!inter_copy_offload_enable || nfsd4_copy_is_sync(copy)) {
+  			status = nfserr_notsupp;
+-@@ -1812,7 +1813,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1783,7 +1784,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  			return status;
+  	}
   
-- struct inode *v9fs_fid_iget(struct super_block *sb, struct p9_fid *fid)
-+ static int v9fs_test_inode(struct inode *inode, void *data)
+@@ -27,3 +30,6 @@
+  	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+  		sizeof(struct knfsd_fh));
+  	if (nfsd4_copy_is_async(copy)) {
 +-- 
-+2.43.0
++2.47.0
 +
 ---
 
@@ -158,5 +127,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
