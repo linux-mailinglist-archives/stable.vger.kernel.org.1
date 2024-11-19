@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85CC9D1F61
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718DF9D1F63
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776BF1F2292F
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AC67B24583
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC8514D6ED;
-	Tue, 19 Nov 2024 04:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CF114E2DA;
+	Tue, 19 Nov 2024 04:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lv/KtGZb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHzrH2PN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9FA149C57
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87485149C57
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731991007; cv=none; b=b8bgcj/3+mvLFpCxMMvp8eqCZe/OKj792AY4mqKxgCmqYP8R+Ifj+LjLBDs7AZi2UpwLleVl0I7r2tRyRHM+E5rYW08T7iYBVBsTYgK1qWgR0vReDJNO0BmEfWEh4h8ZoYEV1ynSQ46z25XVuayZgvxsfnY6wwGgVcEQt/T2vAQ=
+	t=1731991009; cv=none; b=F26FUzVgNZv4U59M8nQHMgyI3OdLPlQg/vUh2OcRQXHtriKGLfXlFAD9NZ7oe8CW54oJ2XQ4+D0jR2gNw0DBZ8MMfGj8FvR0MSbjTAKSbj/xqk8ALPIufv1meO531dq6qmVDjZHB1jISpFzO6XyoG229bTnb0x1ll2C7SBPFKCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731991007; c=relaxed/simple;
-	bh=Xtd27Am7E+7ycIc10cdKTAFak4/ehuye4vGhLJAA6PM=;
+	s=arc-20240116; t=1731991009; c=relaxed/simple;
+	bh=FtSgMEojX8E1mt2CnEAYS/Hjli6PL7gYgD+GLTrRXo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oT8+QWJ2OyMxYHobNGU8bbQYbVnfpBtqOI5CTMsmzakbgSJDLXkCRc6/7zlewZL7tvByKa8JuQN1L39n5to8UTKyebyLMCWGbk6BZVTXkZGjG3OPdj2jCbM+O4mBw4mUq0hyFz3lZmBhngpRCFIzclNxo9fWdyvOTAcj3X15MlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lv/KtGZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0592DC4CED2;
-	Tue, 19 Nov 2024 04:36:46 +0000 (UTC)
+	 MIME-Version; b=d5kHCiAlyNIhN5rc0/vJw+J0r9btDnqh8Q1ECgpE3mhMpN6ES3bkXOCq0hO7CiL3wraf8GO+JvTUmr1xltwh92346pMuUHtE7hvOlSXsu0JuUeOMwsHaSFSJD6s2FzdL6+Kah/rzsWu4TwyBooUhnRK4OkZXYsEG+O0D7GORJh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHzrH2PN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38B0C4CECF;
+	Tue, 19 Nov 2024 04:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731991007;
-	bh=Xtd27Am7E+7ycIc10cdKTAFak4/ehuye4vGhLJAA6PM=;
+	s=k20201202; t=1731991009;
+	bh=FtSgMEojX8E1mt2CnEAYS/Hjli6PL7gYgD+GLTrRXo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lv/KtGZbvaEdKTBIZBKzVvK+IoKpA+RMunXtIh39u4noV2BFeT//MAB8gi/RZcBo8
-	 ivlKQLa5B9AFKNmCnLu5/EyzgfQx8DHh/pkoWBXFuyLAiPDwRj98ZlIEcCKiymC8R+
-	 4lPUQRRaRQ25eijlEHrqkSPz8P1MjIU0PkSsm9Cd/NiudHwCrHkRaV+dJCoWBYY6lo
-	 dzpwTRVn/qn7QnMbCPskROIzL1kZ+uchO+C7i/tgrnJmj1beATCb39BQFspOYIqQpX
-	 NSofuPVo0Fd3JLeNTH/1JWIcztp7QVPn1I9+e/bSLUSxoJi6hsl0WGznIR2Vk1NI22
-	 WsUjukDo7D0BA==
+	b=NHzrH2PNudUs5yKDaTqPI0Ih8icvu5JP0ksbb/gBSpK/KPvbr/pU/bPke2az4Rr7R
+	 VH16jbcC3bSPkuEwOdwb3VSL0qxjKdxaCq+KFfJc8JJO7adTYRR3G6aM13RcfHUudJ
+	 Y0ia7Nyuiz1Bv48OXgF5T+lHaq7JV06dj8d3zHElvPCNs9jKO9L6Jclc+vAehJIQJW
+	 d0whGHbB7baJmiZbQ1hjH+KZ1M3AqaEFlf7bRiwenX6SMqSWa8tBexaJ+VJ93jnWO2
+	 RhEY3KfHEuMNJexXHuazCKhX10f1YtXCCBfj5ba0FV2ALTv4hPJgfWRE+N6TdCnmxX
+	 eF000zUsSDCCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] wifi: rtw89: fix null pointer access when abort scan
-Date: Mon, 18 Nov 2024 23:36:45 -0500
-Message-ID: <20241118032551.298969-1-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 6.1.y] net: phy: phy_device: Prevent nullptr exceptions on ISR
+Date: Mon, 18 Nov 2024 23:36:47 -0500
+Message-ID: <20241118060625.937010-1-xiangyu.chen@eng.windriver.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118032551.298969-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241118060625.937010-1-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,66 +63,82 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 7e11a2966f51695c0af0b1f976a32d64dee243b2
+The upstream commit SHA1 provided is correct: 61c81872815f46006982bb80460c0c80a949b35b
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Po-Hao Huang <phhuang@realtek.com>
+Commit author: Andre Werner <andre.werner@systec-electronic.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
 | 6.11.y          |  Present (exact SHA1)                        |
-| 6.6.y           |  Present (different SHA1: b34d64e9aa55)      |
+| 6.6.y           |  Present (different SHA1: 7a71f61ebf95)      |
 | 6.1.y           |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 17:23:03.622084195 -0500
-+++ /tmp/tmp.60YCJ78a5r	2024-11-18 17:23:03.614228530 -0500
+--- -	2024-11-18 16:38:01.483389153 -0500
++++ /tmp/tmp.SYoIAckoNK	2024-11-18 16:38:01.476295468 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 7e11a2966f51695c0af0b1f976a32d64dee243b2 ]
++[ Upstream commit 61c81872815f46006982bb80460c0c80a949b35b ]
 +
- During cancel scan we might use vif that weren't scanning.
- Fix this by using the actual scanning vif.
- 
-@@ -5,15 +7,18 @@
- Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
- Signed-off-by: Kalle Valo <kvalo@kernel.org>
- Link: https://msgid.link/20240119081501.25223-6-pkshih@realtek.com
+ If phydev->irq is set unconditionally, check
+ for valid interrupt handler or fall back to polling mode to prevent
+ nullptr exceptions in interrupt service routine.
+@@ -6,15 +8,17 @@
+ Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+ Link: https://lore.kernel.org/r/20240129135734.18975-2-andre.werner@systec-electronic.com
+ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 +Signed-off-by: Sasha Levin <sashal@kernel.org>
-+[Xiangyu:  Bp to fix CVE: CVE-2024-35946 resolved minor conflicts]
 +Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-- drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
-- 1 file changed, 2 insertions(+), 2 deletions(-)
-+ drivers/net/wireless/realtek/rtw89/mac80211.c | 2 +-
-+ 1 file changed, 1 insertion(+), 1 deletion(-)
+  drivers/net/phy/phy_device.c | 13 ++++++++-----
+  1 file changed, 8 insertions(+), 5 deletions(-)
  
- diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
--index 21b42984fd8a4..b61c5be8cae3c 100644
-+index 3a108b13aa59..4909de5cd0ea 100644
- --- a/drivers/net/wireless/realtek/rtw89/mac80211.c
- +++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
--@@ -441,7 +441,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
-+@@ -381,7 +381,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
-  			 * when disconnected by peer
-  			 */
-  			if (rtwdev->scanning)
-@@ -22,12 +27,6 @@
-  		}
-  	}
+ diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+-index dd778c7fde1dd..52828d1c64f7a 100644
++index f25b0d338ca8..b165f92db51c 100644
+ --- a/drivers/net/phy/phy_device.c
+ +++ b/drivers/net/phy/phy_device.c
+-@@ -1413,6 +1413,11 @@ int phy_sfp_probe(struct phy_device *phydev,
++@@ -1378,6 +1378,11 @@ int phy_sfp_probe(struct phy_device *phydev,
+  }
+  EXPORT_SYMBOL(phy_sfp_probe);
   
--@@ -994,7 +994,7 @@ static int rtw89_ops_remain_on_channel(struct ieee80211_hw *hw,
-- 	}
-- 
-- 	if (rtwdev->scanning)
---		rtw89_hw_scan_abort(rtwdev, vif);
--+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
-- 
-- 	if (type == IEEE80211_ROC_TYPE_MGMT_TX)
-- 		roc->state = RTW89_ROC_MGMT;
+@@ -26,9 +30,9 @@
+  /**
+   * phy_attach_direct - attach a network device to a given PHY device pointer
+   * @dev: network device to attach
+-@@ -1527,6 +1532,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+- 	if (phydev->dev_flags & PHY_F_NO_IRQ)
+- 		phydev->irq = PHY_POLL;
++@@ -1487,6 +1492,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
++ 
++ 	phydev->interrupts = PHY_INTERRUPT_DISABLED;
+  
+ +	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
+ +		phydev->irq = PHY_POLL;
+@@ -36,7 +40,7 @@
+  	/* Port is set to PORT_TP by default and the actual PHY driver will set
+  	 * it to different value depending on the PHY configuration. If we have
+  	 * the generic PHY driver we can't figure it out, thus set the old
+-@@ -2992,11 +3000,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
++@@ -2926,11 +2934,6 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
+  }
+  EXPORT_SYMBOL(phy_get_internal_delay);
+  
+@@ -45,6 +49,9 @@
+ -	return phydrv->config_intr && phydrv->handle_interrupt;
+ -}
+ -
+- static int phy_led_set_brightness(struct led_classdev *led_cdev,
+- 				  enum led_brightness value)
+- {
++ /**
++  * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
++  * @fwnode: pointer to the mdio_device's fwnode
 +-- 
 +2.43.0
 +
