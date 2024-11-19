@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC449D1F59
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C775D9D1F5B
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BCB01F226A9
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDAC282D3C
 	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29279150994;
-	Tue, 19 Nov 2024 04:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3791F14E2CD;
+	Tue, 19 Nov 2024 04:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeGAwzJe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwSqVYqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA281459F6
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1D214E2E2
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731990993; cv=none; b=k9u/PMDDkc7vAr1fKFSFMACSuD/847PBVzWpPl7v0ybbQCR/sAUs5DsGO+JXjM47rITN29HT17tfNF4qmckFqULEwXjZ3UFzoZUw2mr288EL2d2nK8e68jnW0F33ggI1dz9rlcB+/w2cRqvmr4QqAQfIWYUEA9q50FmWe8RSi1k=
+	t=1731990996; cv=none; b=JMqyO0n/Sff6UIOET4M70zXnM41AYf95Vipo9L9CVCAha7FLKNUoA/cKbRagbP4FCeqj9idRIcEXUr6gM0poSk7etbr/vV2lsCpFiHEDTQc4/gtRmjseBDjMhv8jLXqDKoBk99TFwHTgrIiByITMiloNhCQsGvq5Oy0Ry06zWno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731990993; c=relaxed/simple;
-	bh=tKpjcykir+6ISqJT1uczCxoj48Ekr7FDn1bijRpl1eg=;
+	s=arc-20240116; t=1731990996; c=relaxed/simple;
+	bh=nfVh3WG0lh5aJTr5YWaZx8HjXmvlm0FbdhnlV+O1fjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdU58WtgGQdjS0J0nEnr4hdmwnKxwzpIEbm/FB9CLa8pxJXhcMsTysS6Q6xd0s5/U4RNDSllF+zut/j48oGFTgezUEysB247s8pJa/NOb1+kpBdHSbyQENagN0RAWFb9M15IYYowR5mvVgulx0mvTik9+bQ+e1TnvrDZgnvW9II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeGAwzJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC27C4CECF;
-	Tue, 19 Nov 2024 04:36:32 +0000 (UTC)
+	 MIME-Version; b=Ntd8vG7DyS8DQchTomIXfIm8mR5gkY+xIADOD4b7DnB/BjFNhHSuVjFWv9wQZ4ahPe2bUIITvRchFcjhFR8N+wCvE/gUr6VrAejO9CiEPZi4gUBaYdJajIaDloNCKyYcgV4E+xJm1TbAxleAo6e+onnNm2uzu1aMtTlFD85LFe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwSqVYqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E2BC4CECF;
+	Tue, 19 Nov 2024 04:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731990993;
-	bh=tKpjcykir+6ISqJT1uczCxoj48Ekr7FDn1bijRpl1eg=;
+	s=k20201202; t=1731990995;
+	bh=nfVh3WG0lh5aJTr5YWaZx8HjXmvlm0FbdhnlV+O1fjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeGAwzJeFd/6jxOYmDoErlRb8qQyG8dx22h8Z47iRAr9w4f98pRewzEGS8XtrxAzd
-	 Uge8gsoD/925/DR4DaQHLxm3y5GsfQnC9Tw+/WBxT0k08C7V8GPyU3L62Qb2U3vMVF
-	 l6/nul+Pbk9zIzeccvooL4XSrZz9WhP4KOrhGQEz7L6/qWDx8aW3oth2fYW9NcVlL/
-	 I7+ipYTgm0+tJqpm09aP3LJvjcS9sadm3M9n0mryOw3lw3RU62/fGCWQVfiJc1TTP3
-	 vCnyRiMYgniXJjSHeuvlr+7wx3c6YkHHh4WyF45A4p9Tcn99ZJsJybP2Rif4KxMlWJ
-	 nbCIOLj0RRPYg==
+	b=ZwSqVYqv5LP6YTzrXAkmRA8+kGIP0Ul6M9dgWb5+imgYXfpyD9WQrJhJKF7GEQAJN
+	 2UHkUd+FuF3h1lVw3ff8NWSmaE+yvjFvd1wgq5Z3IoB0uYOiwcSFpZIoRVbYWzR/Y/
+	 JhbTWUXK3LXFoNcOPhlgQemVnlWTUO+TrZI5BObwUehYazarQ4KXJ1AAD4XN+XJ1bR
+	 7JfJsMknk4Q12NxxWSmYElxrk860dQD8S5CXPUIcXjxyCG2RSPpqMn9RRJ8atWW/C5
+	 9sXsKcB0DLvp0bsoi8AaQzTXloG8XwztdqFG3JKaaZf76BNx5iYDbTtdz31m9lz0bg
+	 t7xtzQNxhUDOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/3] ext4: factor out ext4_hash_info_init()
-Date: Mon, 18 Nov 2024 23:36:31 -0500
-Message-ID: <20241118102050.16077-2-kovalev@altlinux.org>
+Subject: Re: [PATCH 2/3] ext4: filesystems without casefold feature cannot be mounted with siphash
+Date: Mon, 18 Nov 2024 23:36:33 -0500
+Message-ID: <20241118102050.16077-3-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118102050.16077-2-kovalev@altlinux.org>
+In-Reply-To:  <20241118102050.16077-3-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,59 +63,63 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: db9345d9e6f075e1ec26afadf744078ead935fec
+The upstream commit SHA1 provided is correct: 985b67cd86392310d9e9326de941c22fc9340eec
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
-Commit author: Jason Yan <yanaijie@huawei.com>
+Commit author: Lizhi Xu <lizhi.xu@windriver.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (exact SHA1)                        |
+| 6.11.y          |  Present (different SHA1: e1373903db6c)      |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 17:26:48.895059440 -0500
-+++ /tmp/tmp.VjhMY5d2bY	2024-11-18 17:26:48.887055706 -0500
-@@ -1,18 +1,21 @@
-+[ Upstream commit db9345d9e6f075e1ec26afadf744078ead935fec ]
+--- -	2024-11-18 22:36:26.258041949 -0500
++++ /tmp/tmp.H7dIMzFjni	2024-11-18 22:36:26.250299326 -0500
+@@ -1,3 +1,5 @@
++[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
 +
- Factor out ext4_hash_info_init() to simplify __ext4_fill_super(). No
- functional change.
+ When mounting the ext4 filesystem, if the default hash version is set to
+ DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
  
- Signed-off-by: Jason Yan <yanaijie@huawei.com>
- Link: https://lore.kernel.org/r/20230323140517.1070239-2-yanaijie@huawei.com
+@@ -5,18 +7,19 @@
+ Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+ Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
  Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 +Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
  ---
-  fs/ext4/super.c | 50 +++++++++++++++++++++++++++++--------------------
-  1 file changed, 30 insertions(+), 20 deletions(-)
+- fs/ext4/super.c | 7 +++++++
+- 1 file changed, 7 insertions(+)
++ fs/ext4/super.c | 8 ++++++++
++ 1 file changed, 8 insertions(+)
  
  diff --git a/fs/ext4/super.c b/fs/ext4/super.c
--index 690faf766d23a..13c0345c53873 100644
-+index 3bf214d4afef5..cf2c8cf507780 100644
+-index e72145c4ae5a0..25cd0d662e31b 100644
++index cf2c8cf507780..68070b1859803 100644
  --- a/fs/ext4/super.c
  +++ b/fs/ext4/super.c
--@@ -5024,6 +5024,35 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
-+@@ -5042,6 +5042,35 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
-  	return ret;
-  }
-  
-@@ -48,7 +51,7 @@
-  static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
-  {
-  	struct ext4_super_block *es = NULL;
--@@ -5179,26 +5208,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
-+@@ -5197,26 +5226,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
-  	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
-  	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
-  
-@@ -76,3 +79,6 @@
-  
-  	if (ext4_handle_clustersize(sb))
-  		goto failed_mount;
+-@@ -3582,6 +3582,13 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+- 			 "mounted without CONFIG_UNICODE");
+- 		return 0;
++@@ -3559,6 +3559,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+  	}
++ #endif
++ 
+ +	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+ +	    !ext4_has_feature_casefold(sb)) {
+ +		ext4_msg(sb, KERN_ERR,
+@@ -24,6 +27,10 @@
+ +			 "mounted with siphash");
+ +		return 0;
+ +	}
+- 
+++
+  	if (readonly)
+  		return 1;
++ 
 +-- 
 +2.33.8
 +
@@ -125,11 +129,11 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.11.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-| stable/linux-4.19.y       |  Failed     |  N/A       |
+| stable/linux-6.11.y       |  Failed (branch not found)  |  N/A       |
+| stable/linux-6.6.y        |  Failed (branch not found)  |  N/A       |
+| stable/linux-6.1.y        |  Failed (branch not found)  |  N/A       |
+| stable/linux-5.15.y       |  Failed (branch not found)  |  N/A       |
+| stable/linux-5.10.y       |  Failed (branch not found)  |  N/A       |
+| stable/linux-5.4.y        |  Failed (branch not found)  |  N/A       |
+| stable/linux-4.19.y       |  Failed (branch not found)  |  N/A       |
 
