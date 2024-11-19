@@ -1,131 +1,122 @@
-Return-Path: <stable+bounces-94040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F769D2996
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:28:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6579D2963
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 859D8B253CC
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:15:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D78D1F22917
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401EF1CF5D8;
-	Tue, 19 Nov 2024 15:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C81D12EC;
+	Tue, 19 Nov 2024 15:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjJmP59x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hvLaduA/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00ED61CDFA6
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 15:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1531D0426
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 15:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732029240; cv=none; b=OtAn2e9x2qurmhcksvXmxXg7A5uqI7SEhhZiuzLWc0Y4KLDeWQc4oYAXLld/BftCvLlFSzGJVZirW6xtLHRNOIuTG7cJ4wkLzrpK5OJB6nL+I4iO62zipOS89AXM3spOSH/EjW1ZJzPDHj/q5myAzyMDEB48h+55XyH702hog6A=
+	t=1732029269; cv=none; b=ZH+SQt3kOOgG3p947XtL5tIticwKKRajoCUfG0eXhzZVfGvJW4G8rKG5E2pqAgcc6GQzccDxkr0LYSypjs0sHplttE5hGL1Cp3qySnwa5C6KDVDxHFmDmdjKifB8doR1jDlmJB2xT3iJpsGyHMFXIOKYA7KzclK9LT5OuPCN/2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732029240; c=relaxed/simple;
-	bh=JdJn8qJ1J1VZzNIWYwh3jrLxBBPnKYxdTYs10oLXbIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qk3zG5oAFOqxDMfZdcoRRWxkbTbduoN4ySdtVDh37TqnjpHG+vXqZTHcq2uyeev4wGOcqHqnHnrb0TWx1qtFmyhkXG7q6VkH4bCbsJai3oVh5Mm/3Hcwr/Waq64BZ0/PMIQJ49w8L0lIkZZ0sM6/SoQeXQ4GqR3JAeiSn9B4b/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjJmP59x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF9FC4CECF;
-	Tue, 19 Nov 2024 15:13:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732029239;
-	bh=JdJn8qJ1J1VZzNIWYwh3jrLxBBPnKYxdTYs10oLXbIY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjJmP59xYHe+i63RgU+Bv9fDR8ml6XoSHC5HfYkM1dDzg3AN10etNzq/c3caRMkF7
-	 /tXYIeEMHM8EnVEUAn4tJ4Y/riO+QOMmsfEd7MFWMjsy1wd1s2+SSCGdiYjkxBrTQX
-	 l6KAUQxUaQsQgITcpZWx3Yx0TjA2yTnSi+USz4vuNfAkaZC7mOsmPrJMai8EZU+KvT
-	 Encz4Vnmy+MpPIJR0IhmwSekdG3gNE7sDxYlW1seSyS7r2sHCY63con/ppT5ev3KIh
-	 5DgYi9P1PMqtGd6nUWxF8oa5bm48pWilVmb/ZDk81svi9qJ4nY7sEBOn83Tm/VHsAg
-	 XYDdX5fiwzdIw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 v2] parisc: fix a possible DMA corruption
-Date: Tue, 19 Nov 2024 10:13:57 -0500
-Message-ID: <20241119133255.2573917-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119133255.2573917-1-bin.lan.cn@windriver.com>
-References: 
+	s=arc-20240116; t=1732029269; c=relaxed/simple;
+	bh=if69drRBCTV4awSjdBUuTYvDa30Qxaap9FKm1O56q7U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l0m06UgXBQdxY4MhXLb2sAQPZkadABxIGLCPoEmgs5hVYMDKL7M/Y+C0K6dVfyTO9edmChDms0Mm+JYqByPelfDbWjZn/s4QNrC8Jj5j/Oxz4senZFXp5FEvsN8tH8mV7Z2HAU9rZoZrEBCU0netdDrPlHo43ejnf2wStwT7pYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hvLaduA/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732029265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=if69drRBCTV4awSjdBUuTYvDa30Qxaap9FKm1O56q7U=;
+	b=hvLaduA/YeMJRELxaKy4GA9mAPTzp3g3zZneUfI+66IBVFoo0GFzk7HjQkmfEX9CD1fb/O
+	KWRj4uVVORnw+MW5kO5Wmmrmbqo42DjijLTCvFQ28z0t0m0T9vw3w0lAGxNvTVVKy0waZQ
+	GadvTD/E5qaXkLi+wS3PWNCY3FsegkU=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-164-odinL6WiNJ2AteMihozlvQ-1; Tue, 19 Nov 2024 10:14:23 -0500
+X-MC-Unique: odinL6WiNJ2AteMihozlvQ-1
+X-Mimecast-MFC-AGG-ID: odinL6WiNJ2AteMihozlvQ
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6d425049448so26419246d6.0
+        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 07:14:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732029263; x=1732634063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=if69drRBCTV4awSjdBUuTYvDa30Qxaap9FKm1O56q7U=;
+        b=SIQb+WQlLZCkbJCmdY3iIMBn015RGuKi5dgx+3y6tsHaW8ZaGQdvRbpswTc0RhxYm/
+         mFJoWPju1dxAJzuNgWG2LfG/qk7/9CgPJ3wz+DGHL97Wt272liRSmLStMXfUfGq2ynwV
+         d/R/9pMGl1s1ymqyowWZICF/sAcnnXGLD3hnztKBPS2ja7iCF6/J14WrJMw2zKL+IqtT
+         Ly//aZzaQXHsWl52oF/DhfQS7z6a9K1w8vcfABI72oKTk03oLVCN8tri2vQsktPdPW0G
+         7mlFkjfbU5o4byF2EbZZEnQ/rDhlQa47Fur7v8mYyg4XleAiGZqq1RQVptrEXj6mm5+2
+         t3BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCS5lvDyzYVQNGXiG8g6i0nTgG0uJJFEmmyl3QK6/66joz3Z6PIaj9jeZT9cZruVu762W9hGI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8dVwt6hsrc/cOYo/UBUiRV9ZOC6rFAGCjal4WSkdPzXzxFQlZ
+	oUqID4vJeASzMEi9kU0q0j2vE8oRRYD5l7cCTnr27JQlfN/NLfuJL0BHI8Svn3wuc4c1j6+5aBA
+	agTbB7FMBlbtQ7rFHkYde+llJhBnhc1OvH4PQjjpOImSlQ/dg3iga5z+NdOJcGGOr0jgekEeM3Q
+	xwRTb8B4Htz9OoFoq+w2xMMicWfXdf
+X-Received: by 2002:a05:6214:5342:b0:6d3:f1ff:f8d6 with SMTP id 6a1803df08f44-6d3fb897fabmr211990016d6.40.1732029263249;
+        Tue, 19 Nov 2024 07:14:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0SlS3oVJQi6iYOznIb2/23KkAp5532+AGyC12c5UZIJ3MNw9YvtejqtSgZStLfm5g2gA2QzoeQinXwBB7eLA=
+X-Received: by 2002:a05:6214:5342:b0:6d3:f1ff:f8d6 with SMTP id
+ 6a1803df08f44-6d3fb897fabmr211989736d6.40.1732029263001; Tue, 19 Nov 2024
+ 07:14:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241118222828.240530-1-max.kellermann@ionos.com>
+ <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
+ <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
+ <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com>
+ <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com> <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
+In-Reply-To: <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
+From: Patrick Donnelly <pdonnell@redhat.com>
+Date: Tue, 19 Nov 2024 10:13:57 -0500
+Message-ID: <CA+2bHPZW5ngyrAs8LaYzm__HGewf0De51MvffNZW4h+WX7kfwA@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
+	Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dario@cure53.de, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+On Tue, Nov 19, 2024 at 9:54=E2=80=AFAM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
+>
+> On Tue, Nov 19, 2024 at 2:58=E2=80=AFPM Patrick Donnelly <pdonnell@redhat=
+.com> wrote:
+> > The protocol does **not** require building the full path for most
+> > operations unless it involves a snapshot.
+>
+> We don't use Ceph snapshots, but before today's emergency update, we
+> could shoot down an arbitrary server with a single (unprivileged)
+> system call using this vulnerability.
+>
+> I'm not sure what your point is, but this vulnerability exists, it
+> works without snapshots and we think it's serious.
 
-Hi,
+I'm not suggesting there isn't a bug. I'm correcting a misunderstanding.
 
-The upstream commit SHA1 provided is correct: 7ae04ba36b381bffe2471eff3a93edced843240f
+--=20
+Patrick Donnelly, Ph.D.
+He / Him / His
+Red Hat Partner Engineer
+IBM, Inc.
+GPG: 19F28A586F808C2402351B93C3301A3E258DD79D
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Mikulas Patocka <mpatocka@redhat.com>
-
-
-Status in newer kernel trees:
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 642a0b7453da)
-6.1.y | Not found
-
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-19 10:04:23.510130519 -0500
-+++ /tmp/tmp.RmGTgK9eLP	2024-11-19 10:04:23.501032984 -0500
-@@ -1,3 +1,5 @@
-+[ Upstream commit 7ae04ba36b381bffe2471eff3a93edced843240f ]
-+
- ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
- possible that two unrelated 16-byte allocations share a cache line. If
- one of these allocations is written using DMA and the other is written
-@@ -15,16 +17,17 @@
- Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
- Cc: stable@vger.kernel.org
- Signed-off-by: Helge Deller <deller@gmx.de>
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
- ---
-  arch/parisc/Kconfig             |  1 +
-  arch/parisc/include/asm/cache.h | 11 ++++++++++-
-  2 files changed, 11 insertions(+), 1 deletion(-)
- 
- diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
--index 5d650e02cbf4a..b0a2ac3ba9161 100644
-+index 3341d4a42199..3a32b49d7ad0 100644
- --- a/arch/parisc/Kconfig
- +++ b/arch/parisc/Kconfig
--@@ -20,6 +20,7 @@ config PARISC
-+@@ -18,6 +18,7 @@ config PARISC
-  	select ARCH_SUPPORTS_HUGETLBFS if PA20
-  	select ARCH_SUPPORTS_MEMORY_FAILURE
-  	select ARCH_STACKWALK
-@@ -33,7 +36,7 @@
-  	select HAVE_RELIABLE_STACKTRACE
-  	select DMA_OPS
- diff --git a/arch/parisc/include/asm/cache.h b/arch/parisc/include/asm/cache.h
--index 2a60d7a72f1fa..a3f0f100f2194 100644
-+index e23d06b51a20..91e753f08eaa 100644
- --- a/arch/parisc/include/asm/cache.h
- +++ b/arch/parisc/include/asm/cache.h
- @@ -20,7 +20,16 @@
-@@ -54,3 +57,6 @@
-  
-  #define __read_mostly __section(".data..read_mostly")
-  
-+-- 
-+2.43.0
-+
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
