@@ -1,118 +1,156 @@
-Return-Path: <stable+bounces-93984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00FD9D25EF
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386769D2612
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:44:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A5E21F2416F
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FAC6B2A9F9
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805ED1CACD9;
-	Tue, 19 Nov 2024 12:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916281CBE84;
+	Tue, 19 Nov 2024 12:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSdxoi/6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNW+ebQE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4201D1BDABE
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E761CB30A;
+	Tue, 19 Nov 2024 12:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019496; cv=none; b=MFdALYYqSImlYbHQ05ICknbXy3PCo1lrXiYAk1aRPFszhAxh3SyOAJgN+bTM/PijjQgDqmHrTvtBvJrEPp79H9I/FufZ/qx+ilVusX3m51DomCkZ37Buk/Qlgb+Y8gPhNEjWDHnOQ6nJ4OqU6eIHUL8ByKFOZqNUYGeFJ0b35u8=
+	t=1732019943; cv=none; b=oQPhS8Y47VlJsb3RwAbWaITBGets856i4hQXwmGM9AjB39Sax3n8Gr1aO4PT9uTpLtuHbN5oRxT7/dbzSTuxatyL2K0VWj1wQzLS9YmYHq1eIrkNnObTSNIDagcuOsPU62OnaLSwgpPQ5d0KUFM/CEKsNphgqXevqlq5rFlYL9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019496; c=relaxed/simple;
-	bh=/Nld003I2yXGwv3RvPd4oUqhz91Qdlmk7WaiDxVoiXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loYmjJTFLIm7NQ62TaAgtXYXwydp0KsJGDpUHKjn4qgUmrwLrXQMrKVzGB8ZCvINZOz2nYf6o7vj5/I1VyI5BmSFWTVco7TUab3ZP0RjTUWKy770zWZhaUr1cLCH1XJyTPKzQ/7zIj6YQrJxDLsj5DZjgFE0o18K7JPN2VwQwt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSdxoi/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD1FC4CECF;
-	Tue, 19 Nov 2024 12:31:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019494;
-	bh=/Nld003I2yXGwv3RvPd4oUqhz91Qdlmk7WaiDxVoiXQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSdxoi/6bTvRCqG0goWKMa0nDJK+Mi//UwLsdbeIgKg9WQPRbSiwv9cCspJ/ZGYKm
-	 8NHL6r8dHUInfiF/VgnxeK4lFAwUXksMygcQrF6iqzPyhtsrnrTsjyPnmqIFjNbZqQ
-	 dCl2mere980erW+sIG9l1vNUU0+BUB8oCHtDnod2oFk0tWZcTn3rJbCv9NvhgM8yOL
-	 C+Wy2wJQ63Q36+iR4KQZJS72glxt63niZekAuCANc4Ja7OFJm0Td0AV0hxgsbNfK+C
-	 eJNW5PtvkueNc+99Gd/GkWR9ZkeXohISNRGPPv3Edid2iHQEIlyiAklXvvVsjGFFeV
-	 6L55ZIZy3QB8g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: cel@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 5/5] NFSD: Never decrement pending_async_copies on error
-Date: Tue, 19 Nov 2024 07:31:32 -0500
-Message-ID: <20241118212035.3848-10-cel@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118212035.3848-10-cel@kernel.org>
-References: 
+	s=arc-20240116; t=1732019943; c=relaxed/simple;
+	bh=8iBqnQalMGmDNmE0r5Hr6zKEtbWAH9SA9qg6eJ54jYc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uC9Ha52NdS17lynbQySArPxQdWgmg3902aOumkeV8wNkLzPBGjJonuVVrvFsuVqndK3rZH7tLPSwDrPAI5nX6oIjVoyXZGWLryAYHu+ahgQ7uSNejNG6Vj3FyG5wVdkC30l6d2Y5qkFIBypl78dTVJnpBOFi9URdlQq6rcnEEUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNW+ebQE; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e9ff7a778cso3932826a91.1;
+        Tue, 19 Nov 2024 04:39:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732019941; x=1732624741; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JnZ4qxtYlpHZEhiV3OA1KhsP1iSPVNJtA1zzeqy70e4=;
+        b=kNW+ebQEfvoEAq07z3TbHMyi8tP+k1jUBCfmXCk2jvaYoWxTN2hUGJ4aU5fwXD/B0S
+         qeH4g35hdOR6vRL9LF4XNGEUhT96lQ3fKPf7GjmtzgOvFGUykScaSA25xoY4SZmWsGvs
+         3QSerAcvM4w8NvPu3eStDfJ1gGUqZ2oQJXHHie9KJcRHGPpEFDT+YuIhKy3K4FGoyjLa
+         hHCoBBx+0mGamCx7uy2jUev1Mhpr55yIUiZqEeCD4lC3tSUx2oyfD2K1boapcPC6f/dO
+         wo3mgLPP+Uul7sXFOdH/xG8fWk4E6oEJZsU9yFfSfR3Kn96K9EAl6B3x2619DQ2qxSZD
+         1IIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732019941; x=1732624741;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JnZ4qxtYlpHZEhiV3OA1KhsP1iSPVNJtA1zzeqy70e4=;
+        b=YprOMwTTfPMH+T9EhJ0Hjbm/2Zz/7YpGyRO4P5y3GKJTa3yDMGwjrZhipJ6FrIYa2f
+         LXk6Kvcc6xeaWZAVZvJ/okZb7jf/Vty60WY3Wm6ue/JHPScgAdlN+6b2UjM6OHAF+n5r
+         482CSCNm+2grrJHGrVYmsqTJfFe/Ra/91Qa19iQRkV9T2CzvkO3FHFJ0VFs7QNVBpFZt
+         aiEau63UJNmpR/XMOmyWQs7mtsS92LkbyJwVazhZVZeOApMWtpnCtI2+Es+pwYup0Gm9
+         Y2z/7nqLZLZl/82T56Ao5bFa+iEnYUib0l5qExSu6SE7i9c6zT9DsEhDvgH5W0ORQ6vC
+         BhDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTK7OIsUE0WICs6k7YcEQef886EfIe2FVqMuz37/P53atPGiZABFAB45k6LETfJb8DBh021Ystf9qc9wHQ@vger.kernel.org, AJvYcCV2CLa9DYwSPHA8yxJTqWCsxHfBS2D8LBQGyGDMvwSFswdELMc5WT7EjJWEo93HGgAAxFsoj8EwgVsU@vger.kernel.org, AJvYcCXwTDVF1VZk4ve4NA021QOtX2hzPIT9ZSZwGxAu/D67XMY+iui7Aja0qmqiiolGG79nBGm1orAX@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGsnkZSQCm3svuv32m0xvK9iZy0okBoGE1qZrAL8LlxituINIe
+	RaRSuT3XprWhTasnW7ykP7bSgJ8LXvnHoq673ndKgsDvAJ9EI50z2T71MKJrjEbw068SMouW1QP
+	XqxhzS5JyAUKOTB64E6nIxRJ20/I=
+X-Google-Smtp-Source: AGHT+IFkq5BsdRSYuU1Pl5Sb0f6LIlJ/9TRKK19i3Xu4IVqUtYGvNnBs8ndn12i7Jz3NjGug4ZtDVTSyuye4d/foe40=
+X-Received: by 2002:a17:90b:4fce:b0:2ea:61c4:a443 with SMTP id
+ 98e67ed59e1d1-2eaaa73b935mr4703490a91.4.1732019941182; Tue, 19 Nov 2024
+ 04:39:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241118222828.240530-1-max.kellermann@ionos.com>
+In-Reply-To: <20241118222828.240530-1-max.kellermann@ionos.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Tue, 19 Nov 2024 13:38:49 +0100
+Message-ID: <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
+To: Max Kellermann <max.kellermann@ionos.com>, Patrick Donnelly <pdonnell@redhat.com>, 
+	Venky Shankar <vshankar@redhat.com>
+Cc: xiubli@redhat.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dario@cure53.de, stable@vger.kernel.org, 
+	Jeff Layton <jlayton@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+On Mon, Nov 18, 2024 at 11:28=E2=80=AFPM Max Kellermann
+<max.kellermann@ionos.com> wrote:
+>
+> If the full path to be built by ceph_mdsc_build_path() happens to be
+> longer than PATH_MAX, then this function will enter an endless (retry)
+> loop, effectively blocking the whole task.  Most of the machine
+> becomes unusable, making this a very simple and effective DoS
+> vulnerability.
+>
+> I cannot imagine why this retry was ever implemented, but it seems
+> rather useless and harmful to me.  Let's remove it and fail with
+> ENAMETOOLONG instead.
 
-Hi,
+Hi Max,
 
-The upstream commit SHA1 provided is correct: 8286f8b622990194207df9ab852e0f87c60d35e9
+When this was put in place in 2009, I think the idea of a retry was
+copied from CIFS.  Jeff preserved the retry when he massaged this code
+to not warn in case a rename race is detected [1].  CIFS got rid of it
+only a couple of years ago [2][3].
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: cel@kernel.org
-Commit author: Chuck Lever <chuck.lever@oracle.com>
+Adding Patrick and Venky as well, please chime in.
 
-Commit in newer trees:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3Df5946bcc5e79038f9f7cb66ec25bd3b2d39b2775
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3Df6a9bc336b600e1266e6eebb0972d75d5b93aea9
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D991e72eb0e99764219865b9a3a07328695148e14
 
-|-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: 1421883aa30c)      |
-| 6.6.y           |  Not found                                   |
-| 6.1.y           |  Not found                                   |
-| 5.15.y          |  Not found                                   |
-|-----------------|----------------------------------------------|
+Thanks,
 
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-19 00:30:56.835091842 -0500
-+++ /tmp/tmp.uWkVfqzE9j	2024-11-19 00:30:56.831399388 -0500
-@@ -1,3 +1,5 @@
-+[ Upstream commit 8286f8b622990194207df9ab852e0f87c60d35e9 ]
-+
- The error flow in nfsd4_copy() calls cleanup_async_copy(), which
- already decrements nn->pending_async_copies.
- 
-@@ -9,10 +11,10 @@
-  1 file changed, 1 insertion(+), 3 deletions(-)
- 
- diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
--index 5fd1ce3fc8fb7..d32f2dfd148fe 100644
-+index 6267a41092ae..0b698e25826f 100644
- --- a/fs/nfsd/nfs4proc.c
- +++ b/fs/nfsd/nfs4proc.c
--@@ -1845,10 +1845,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
-+@@ -1791,10 +1791,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
-  		refcount_set(&async_copy->refcount, 1);
-  		/* Arbitrary cap on number of pending async copy operations */
-  		if (atomic_inc_return(&nn->pending_async_copies) >
-@@ -24,3 +26,6 @@
-  		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-  		if (!async_copy->cp_src)
-  			goto out_err;
-+-- 
-+2.47.0
-+
----
+                Ilya
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+>
+> Cc: stable@vger.kernel.org
+> Reported-by: Dario Wei=C3=9Fer <dario@cure53.de>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+>  fs/ceph/mds_client.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+> index c4a5fd94bbbb..4f6ac015edcd 100644
+> --- a/fs/ceph/mds_client.c
+> +++ b/fs/ceph/mds_client.c
+> @@ -2808,12 +2808,11 @@ char *ceph_mdsc_build_path(struct ceph_mds_client=
+ *mdsc, struct dentry *dentry,
+>
+>         if (pos < 0) {
+>                 /*
+> -                * A rename didn't occur, but somehow we didn't end up wh=
+ere
+> -                * we thought we would. Throw a warning and try again.
+> +                * The path is longer than PATH_MAX and this function
+> +                * cannot ever succeed.  Creating paths that long is
+> +                * possible with Ceph, but Linux cannot use them.
+>                  */
+> -               pr_warn_client(cl, "did not end path lookup where expecte=
+d (pos =3D %d)\n",
+> -                              pos);
+> -               goto retry;
+> +               return ERR_PTR(-ENAMETOOLONG);
+>         }
+>
+>         *pbase =3D base;
+> --
+> 2.45.2
+>
 
