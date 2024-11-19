@@ -1,109 +1,140 @@
-Return-Path: <stable+bounces-93942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6450A9D21AD
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 09:36:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34C19D21B3
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 09:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5FFAB22621
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 08:36:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29BE0B22B1A
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 08:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A197D198A25;
-	Tue, 19 Nov 2024 08:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doxeka68"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2614C198A07;
+	Tue, 19 Nov 2024 08:39:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7F7198A17;
-	Tue, 19 Nov 2024 08:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62BF197A7A
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 08:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732005371; cv=none; b=BcSbASrT4sGCGEXOvkL5jPaXBfU3qwz6IBv+dhmWn8WUyhK2Ep3eboNe4vJ3XMSVYKzX8NwDHoeu3TYtH8ai9YBJqOwQZ8Rzr4BZ9Q3S5/oCnwdqXAZqm8udo4p4ZZMICrd35g73pEJZPbRwFidwSHbte1JMQ1SJ4Rq5zoN26Y4=
+	t=1732005545; cv=none; b=Ef24yzBkLw0w1NpBZv2Slk08f+ctZiLA77pt+qGxFWuf1OI1reQQLg3lejAYStOlL21pkabTQkGnpcpv6dpcktA8nsDSmZzLvI0QJwBbk8B4bG7xSawzKm/OwCkOceuSgjKUXQ1ZRprVOh7lpwaTHKAw+XJPAizkZ//gCH2rqe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732005371; c=relaxed/simple;
-	bh=3AMU3wdCDVm5tVBiothvkIyHUAqsTq8A8UY0redF5Z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cH8t/VVuXoMtSWgwW68q54DSQiHPBfhQvvlGwLk7OCzKjCWTu1fUhmhj3vt2BxUG7kbLd8ZS93ePvxsGHjTGz4wyESWXTc4N5m67qHAU5pzXoehELC+7JJ0pQO2vc5oBX5fOvIJEJLKm1KVoMktysXmDD7NOKp2fqSPKIuD62Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doxeka68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40ABCC4CED6;
-	Tue, 19 Nov 2024 08:36:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732005370;
-	bh=3AMU3wdCDVm5tVBiothvkIyHUAqsTq8A8UY0redF5Z0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doxeka68YbwmxL66JgPGJzbu1nuwjNmbNV4DMl8ebHKnT2fUzTM2ZkjpWQe9TCyWD
-	 xCx16QiNXLWf3VqkB0qRtrft1SzgBq/S2efSD41eoE8HCaqPKhUW2JgSHcOEfEweJO
-	 gpTGbYUVlX5xAVKjLEPGssGpbn2n3dNAL8VTPQqXwNG/DeJetBKza94W/K5IhwWoav
-	 zcX4goDBYHBHFS2HfDU0aIeOQp+5x8aYm8yim+eo8LdiTCWyx1pEjL6v9Q4R3O9EPa
-	 T866z/lnvDPaTxSuw1w6fEKRIaUp8hFZysnZYcetgAxaWL5ZO5L+BaqTxxRQfraoAK
-	 IKc6QX1lgbnWg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	sashal@kernel.org,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 7/7] mptcp: pm: use _rcu variant under rcu_read_lock
-Date: Tue, 19 Nov 2024 09:35:55 +0100
-Message-ID: <20241119083547.3234013-16-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241119083547.3234013-9-matttbe@kernel.org>
-References: <20241119083547.3234013-9-matttbe@kernel.org>
+	s=arc-20240116; t=1732005545; c=relaxed/simple;
+	bh=4qAfmfhuAuZBQ7G1wAdODRnYWfHpHzcYYEJG7gdcpvo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o6oCu2oiKV7d0udWen0+kcZRBY8BMZok0SykzGUVPNip0FKn/vieaobJJSh4dbISzzbuA+vkuKbCGAD3OAuQh84h7CgsBntXuMsXD6pRXNzGfG2C4fyo/kNnQL3mRkqqhhLN/JLTzkokIt/5vOIMg594bIPoo7Za0oR32s/yBJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ7p9w6006003
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 08:38:59 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xjc8arw8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 08:38:59 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Tue, 19 Nov 2024 00:38:58 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Tue, 19 Nov 2024 00:38:57 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <stable@vger.kernel.org>
+Subject: [PATCH 6.6] leds: mlxreg: Use devm_mutex_init() for mutex initialization
+Date: Tue, 19 Nov 2024 16:39:19 +0800
+Message-ID: <20241119083919.2490177-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1770; i=matttbe@kernel.org; h=from:subject; bh=3AMU3wdCDVm5tVBiothvkIyHUAqsTq8A8UY0redF5Z0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnPE3kpcUzql7unpgDC1+yMvbNybGpiD38BF8gM QHbIRiAgtOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzxN5AAKCRD2t4JPQmmg c5jgEADLvhabaRG2tpo+/4jChu5phYD7gxelnYKGYDsrD1TBZ+4ckhdkXExg5AjmyTi0rZeBruB B44J6TgCVBi6K6/G0hcCQbNasv2pinsqirCBBfoJ9A1dsLpbqmA6Y4uV3vEWINOkKVMFzkmXbVX cZZXV6vahXMFQUXuHHYXdIQWLB5La05DfqSU0adaxuLUOW8hnkYV4+ko/bcCNhRMrYQAVvrNRvb 5iPTKYSMXxkdz/7gCQ3xeaybQuj7ZvgJZyULShuJr2P7D6DzGRtui1mn/qzb2FJZNz97TAtbvfy VoyASV/Kx2NNWffi4WeU32iwuTC6X52WGXSl8Y1otRDU1UxuxUVK2EDzI/Xf4GvuVYD+spf82Xs +KGaHfzsPTpgO+9z/bHfSBU+AyZ2oByqw7SrNsDyNrEroZMGd/hIz25b75AvrAMVtjn3EPDhGjH heOjoZ+DjyO5fe+ZHZ3zOK0udXgF2aTa0HjIXloEJtVoZNifM1VGsMHuc+VFUpr0hpRidC53iWZ OBezT4Z15+DeBy5YCN03clzXjeUmGQ4VkIntcmuRJdjipWU1E6n2uBYeCl1d2RLo2ErjkF+jjgp 1VDxm2CHDRtWH40vCOxX16OAHSaHIaY9NKxzVwiOWBzkg2NHxcbbKnnC9V6bayx70pIa+Pwaa8j Ev656Mv/cdjjjPQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: o3MGmCZ4kFwLgcio1OCXZJoWolw0wMQW
+X-Authority-Analysis: v=2.4 cv=R6hRGsRX c=1 sm=1 tr=0 ts=673c4ea3 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=oIrh2ZjCAAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=XpvTgcSfuN2lSBDXnSgA:9
+ a=PybRJKj6JLd7Pqq7RWh6:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: o3MGmCZ4kFwLgcio1OCXZJoWolw0wMQW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-19_01,2024-11-18_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxlogscore=999
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2411190061
 
-commit db3eab8110bc0520416101b6a5b52f44a43fb4cf upstream.
+From: George Stark <gnstark@salutedevices.com>
 
-In mptcp_pm_create_subflow_or_signal_addr(), rcu_read_(un)lock() are
-used as expected to iterate over the list of local addresses, but
-list_for_each_entry() was used instead of list_for_each_entry_rcu() in
-__lookup_addr(). It is important to use this variant which adds the
-required READ_ONCE() (and diagnostic checks if enabled).
+[ Upstream commit efc347b9efee1c2b081f5281d33be4559fa50a16 ]
 
-Because __lookup_addr() is also used in mptcp_pm_nl_set_flags() where it
-is called under the pernet->lock and not rcu_read_lock(), an extra
-condition is then passed to help the diagnostic checks making sure
-either the associated spin lock or the RCU lock is held.
+In this driver LEDs are registered using devm_led_classdev_register()
+so they are automatically unregistered after module's remove() is done.
+led_classdev_unregister() calls module's led_set_brightness() to turn off
+the LEDs and that callback uses mutex which was destroyed already
+in module's remove() so use devm API instead.
 
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-3-b835580cefa8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: George Stark <gnstark@salutedevices.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20240411161032.609544-8-gnstark@salutedevices.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+[ Resolve minor conflicts to fix CVE-2024-42129 ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 ---
- net/mptcp/pm_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/leds/leds-mlxreg.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 9b65d9360976..3fd7de56a30f 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -529,7 +529,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
+diff --git a/drivers/leds/leds-mlxreg.c b/drivers/leds/leds-mlxreg.c
+index 39210653acf7..b1510cd32e47 100644
+--- a/drivers/leds/leds-mlxreg.c
++++ b/drivers/leds/leds-mlxreg.c
+@@ -257,6 +257,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
  {
- 	struct mptcp_pm_addr_entry *entry;
+ 	struct mlxreg_core_platform_data *led_pdata;
+ 	struct mlxreg_led_priv_data *priv;
++	int err;
  
--	list_for_each_entry(entry, &pernet->local_addr_list, list) {
-+	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list,
-+				lockdep_is_held(&pernet->lock)) {
- 		if (mptcp_addresses_equal(&entry->addr, info, entry->addr.port))
- 			return entry;
- 	}
+ 	led_pdata = dev_get_platdata(&pdev->dev);
+ 	if (!led_pdata) {
+@@ -268,28 +269,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	mutex_init(&priv->access_lock);
++	err = devm_mutex_init(&pdev->dev, &priv->access_lock);
++	if (err)
++		return err;
++
+ 	priv->pdev = pdev;
+ 	priv->pdata = led_pdata;
+ 
+ 	return mlxreg_led_config(priv);
+ }
+ 
+-static int mlxreg_led_remove(struct platform_device *pdev)
+-{
+-	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
+-
+-	mutex_destroy(&priv->access_lock);
+-
+-	return 0;
+-}
+-
+ static struct platform_driver mlxreg_led_driver = {
+ 	.driver = {
+ 	    .name = "leds-mlxreg",
+ 	},
+ 	.probe = mlxreg_led_probe,
+-	.remove = mlxreg_led_remove,
+ };
+ 
+ module_platform_driver(mlxreg_led_driver);
 -- 
-2.45.2
+2.43.0
 
 
