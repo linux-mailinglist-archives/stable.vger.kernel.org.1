@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4A29D288D
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39D19D2882
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CEE9B2A5E7
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9911A281840
 	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718CC1CC8AB;
-	Tue, 19 Nov 2024 14:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C41CF5E3;
+	Tue, 19 Nov 2024 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHGbe29K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPSEn9hh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A291C4608
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937B81CDFC8
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027611; cv=none; b=DOj3c42GX3ndC5dsikZGFugej6Oe59L0bhx8p2j/W0vo6c+OGf0tUfXDR+AU4jQHuGwGjGsHTQwnOWwqxda5naawlMmbxnvRVtEShmMfDHFVPSJ/TE+KnYvoeusSgRVCjai7p+VM1R1zWI6DPop+4wI6WGyHXWnzc5y9/ntfo1w=
+	t=1732027613; cv=none; b=CowjEc96m4+OkL2GAwldne6yFb6BW7q8VnKNVo5RekY9vkJTwCJoyfoybTtJ65Hjzbfz3idH7hOk3kwizNIO72G0BuAj8y1uhccbAwz4ITX+QVu0/eKxT9rsOTWI079BurWWZUct6Lf6Jpq6SlLH81YufPq6V98nb4eKgGmhZeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027611; c=relaxed/simple;
-	bh=LgNCR3YUpbCxbr5+iDU7xCGz4oENUqXhLWsjCTpMOK4=;
+	s=arc-20240116; t=1732027613; c=relaxed/simple;
+	bh=XB2LCVXy1D3eTz+pMKRuMSMbzSrdv2fIMjLfvoz4oKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXHVFtCo7fzmKdlD+zTlKQ9Whh8QDg0OxUdmT9dx79EmP+ZVf/aP2pP0V4I95sMrHTIQq/vuPlgQJowWS+lWj2UkgkdVHQrIMry/VcvsVBKGk7Pq4olNPldN/BtxOR+wxzM8GbeU8+Z4EiuQy8sw1c4SgBObMTb7l+YSCLfgYOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHGbe29K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C72C4CECF;
-	Tue, 19 Nov 2024 14:46:50 +0000 (UTC)
+	 MIME-Version; b=e/cmTOrMElWpBEvXsMcYMhBAdjwfa1V1YpoQ+G9urU/XxOFomHkLDmgq5F/MVVlTPGQ8Z+FnkSMw/Vy1Oqsz6dF2/DMnLHKOnU08GP1CW+fRveLOcgy0PRj0zayjSu5HmFwpCBFq1TgdmUX9HbaJq9Fp9B6uQeACE3pRCRxXceY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPSEn9hh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886F2C4CECF;
+	Tue, 19 Nov 2024 14:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732027611;
-	bh=LgNCR3YUpbCxbr5+iDU7xCGz4oENUqXhLWsjCTpMOK4=;
+	s=k20201202; t=1732027613;
+	bh=XB2LCVXy1D3eTz+pMKRuMSMbzSrdv2fIMjLfvoz4oKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHGbe29KEHiLFA1lXJAnQWI9NLJ2HNKuXuloTlK9ImnhyLcTjhfUweXpYybWG343m
-	 sQ6WELF9MD1c7XNjFGcLw69V398IZRAn66Svk9saI9IvXA1tsCAuRKbNg8wbbElWM5
-	 GjBIrj+EKWR5FOqxtEagmpDoAW3Pw8kPgCLTcNH4zbO1RbkGidFcIuVcd6ACu+/4cg
-	 XCyepou6uBBebk9bnyuPwfCjXRF9kIOnCvUI8RziYD0m1ivVJ4xn1OfvDFOqyAeaRZ
-	 Y7ZXhYu7P7rxB4COP8WwQLI7jD3xYJjbbXxnAWxo3YYm1JGWnoTbv1xdWj9dRlevCs
-	 YSQECBN/PG7Bw==
+	b=rPSEn9hhXaLzuVcR+RmDCdJlvThhLYZZGZFeX2xayYhN2JH0o0pgCfiuS8OLFr5cH
+	 UTIfXL9G04IyXfJI8SU7ap2O7mKQj8viSxNUecZ5t58W+4HE9hdemLINA8zMHyWBl3
+	 HXCFC3wlqCK2nrOzEfiSateNYebQHP+Ovu0Y5nDHqe/avXW9CFqJhuiEEzNI0palO6
+	 7r38bX7oITtObfeemrtbrqU4jH9SfkS3tRPOilawHDW8LVuyc5YHDOzpB2uVkkUVF2
+	 VszeEb98LaWcaFbi+GIFiACspOijyFSRsrEzAkG5eGyXlQLGfWZYL50zbAvNx4exBO
+	 q3SB+BqB7h2MQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 1/2] null_blk: Remove usage of the deprecated ida_simple_xx() API
-Date: Tue, 19 Nov 2024 09:46:49 -0500
-Message-ID: <20241119082719.4034054-2-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 6.1.y 5/7] mptcp: hold pm lock when deleting entry
+Date: Tue, 19 Nov 2024 09:46:51 -0500
+Message-ID: <20241119083547.3234013-14-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119082719.4034054-2-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241119083547.3234013-14-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,64 +63,62 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 95931a245b44ee04f3359ec432e73614d44d8b38
+The upstream commit SHA1 provided is correct: f642c5c4d528d11bd78b6c6f84f541cd3c0bea86
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Commit author: Geliang Tang <tanggeliang@kylinos.cn>
 
 
 Status in newer kernel trees:
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: b2b02202f87d)
+6.11.y | Present (different SHA1: ff6abb7bc44a)
+6.6.y | Not found
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 07:44:28.325681660 -0500
-+++ /tmp/tmp.6gBkpSJI36	2024-11-19 07:44:28.319958074 -0500
+--- -	2024-11-19 09:14:36.773993774 -0500
++++ /tmp/tmp.Cjfj42tExY	2024-11-19 09:14:36.772429060 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 95931a245b44ee04f3359ec432e73614d44d8b38 ]
++commit f642c5c4d528d11bd78b6c6f84f541cd3c0bea86 upstream.
 +
- ida_alloc() and ida_free() should be preferred to the deprecated
- ida_simple_get() and ida_simple_remove().
+ When traversing userspace_pm_local_addr_list and deleting an entry from
+ it in mptcp_pm_nl_remove_doit(), msk->pm.lock should be held.
  
-@@ -6,15 +8,16 @@
- Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
- Link: https://lore.kernel.org/r/bf257b1078475a415cdc3344c6a750842946e367.1705222845.git.christophe.jaillet@wanadoo.fr
- Signed-off-by: Jens Axboe <axboe@kernel.dk>
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+@@ -11,15 +13,16 @@
+ Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+ Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-2-b835580cefa8@kernel.org
+ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
++Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
  ---
-  drivers/block/null_blk/main.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+  net/mptcp/pm_userspace.c | 3 +++
+  1 file changed, 3 insertions(+)
  
- diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
--index 9f7695f00c2db..36755f263e8ec 100644
-+index 4d78b5583dc6..f58778b57375 100644
- --- a/drivers/block/null_blk/main.c
- +++ b/drivers/block/null_blk/main.c
--@@ -1840,7 +1840,7 @@ static void null_del_dev(struct nullb *nullb)
-+@@ -1764,7 +1764,7 @@ static void null_del_dev(struct nullb *nullb)
+ diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
+-index 3f888bfe1462e..e35178f5205fa 100644
++index 195f84f16b97..9016f8900c19 100644
+ --- a/net/mptcp/pm_userspace.c
+ +++ b/net/mptcp/pm_userspace.c
+-@@ -308,14 +308,17 @@ int mptcp_pm_nl_remove_doit(struct sk_buff *skb, struct genl_info *info)
++@@ -326,14 +326,17 @@ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
   
-  	dev = nullb->dev;
+  	lock_sock(sk);
   
-@@ -23,8 +26,8 @@
+@@ -29,7 +32,7 @@
+  		GENL_SET_ERR_MSG(info, "address with specified id not found");
+ +		spin_unlock_bh(&msk->pm.lock);
+  		release_sock(sk);
+- 		goto out;
++ 		goto remove_err;
+  	}
   
-  	list_del_init(&nullb->list);
+  	list_move(&match->list, &free_list);
+@@ -37,3 +40,6 @@
   
--@@ -2174,7 +2174,7 @@ static int null_add_dev(struct nullb_device *dev)
-- 	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
-+@@ -2103,7 +2103,7 @@ static int null_add_dev(struct nullb_device *dev)
-+ 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, nullb->q);
+  	mptcp_pm_remove_addrs(msk, &free_list);
   
-  	mutex_lock(&lock);
- -	rv = ida_simple_get(&nullb_indexes, 0, 0, GFP_KERNEL);
-@@ -32,3 +35,6 @@
-  	if (rv < 0) {
-  		mutex_unlock(&lock);
-  		goto out_cleanup_zone;
 +-- 
-+2.43.0
++2.45.2
 +
 ---
 
