@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686A69D1F5A
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC449D1F59
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2A17B24322
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BCB01F226A9
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261171514DC;
-	Tue, 19 Nov 2024 04:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29279150994;
+	Tue, 19 Nov 2024 04:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+KBleyg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeGAwzJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF9814E2CD
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA281459F6
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731990991; cv=none; b=fD9PLw0adoIMvy8hgPp9t8xdyYb55qx5LXsxBhZZG65pSNqaZTjRhvcywHrjFu5WSYI8Zew0ezLsbVST6wJLZf/B50tRnKKJE3yV93AwujJXqigq00XXFAPA32X6m3yC6KP68IJLo6tOkkshvPBsn8eHO1Zz0B70dp8T6erOSDU=
+	t=1731990993; cv=none; b=k9u/PMDDkc7vAr1fKFSFMACSuD/847PBVzWpPl7v0ybbQCR/sAUs5DsGO+JXjM47rITN29HT17tfNF4qmckFqULEwXjZ3UFzoZUw2mr288EL2d2nK8e68jnW0F33ggI1dz9rlcB+/w2cRqvmr4QqAQfIWYUEA9q50FmWe8RSi1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731990991; c=relaxed/simple;
-	bh=DQ+0+ZHqGlziw23OFCUNcV3YgHVuasllZ37JsOFodnU=;
+	s=arc-20240116; t=1731990993; c=relaxed/simple;
+	bh=tKpjcykir+6ISqJT1uczCxoj48Ekr7FDn1bijRpl1eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stxAmFXfhD2yHk0sSFkEb85mPn1UBybimNAgKDwZVY/CkJpyoL+jnNuQqpTIA6pd4+QzIiENk1PRZwcGls6mzX8nwv05UPXkpgkTkI8StLikqUbgo885jDgQoi+NSJ5UjBfLuc3wevlrveOu1pNGC6CGugwklviDtJLvoWcXzQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+KBleyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D88C4CED2;
-	Tue, 19 Nov 2024 04:36:30 +0000 (UTC)
+	 MIME-Version; b=XdU58WtgGQdjS0J0nEnr4hdmwnKxwzpIEbm/FB9CLa8pxJXhcMsTysS6Q6xd0s5/U4RNDSllF+zut/j48oGFTgezUEysB247s8pJa/NOb1+kpBdHSbyQENagN0RAWFb9M15IYYowR5mvVgulx0mvTik9+bQ+e1TnvrDZgnvW9II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeGAwzJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC27C4CECF;
+	Tue, 19 Nov 2024 04:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731990991;
-	bh=DQ+0+ZHqGlziw23OFCUNcV3YgHVuasllZ37JsOFodnU=;
+	s=k20201202; t=1731990993;
+	bh=tKpjcykir+6ISqJT1uczCxoj48Ekr7FDn1bijRpl1eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+KBleygMtRAcPP2wlGm2LR7uSDLXpLqb4BQ98Svwisqhlotysss6d8pyKM3tRztY
-	 ZTm1wV+DIi2qYd4x6j6Mkj89q728epVVYfYpk1RBRLci57uaI2PH9MSqFMd5YopsNV
-	 YnZL+p5BDuipqNw9Ohsr4Oip/MelFVoIGUemtjyN9TWIeglgPNd9iM4wm4+HWnLOl3
-	 wjV9D0pUWe1i9yRH0TDho0wHW0wtVEnvkiTESf/7hOtgF6IiPphQyXbeEGYxOuN2Z8
-	 eP9hgorQthATKp0k5Ia8HPvU5RHZBCEWPcoASMJ9cU8PZU8HVQuje8wLokOzhF0cf+
-	 2huozX8INsArg==
+	b=VeGAwzJeFd/6jxOYmDoErlRb8qQyG8dx22h8Z47iRAr9w4f98pRewzEGS8XtrxAzd
+	 Uge8gsoD/925/DR4DaQHLxm3y5GsfQnC9Tw+/WBxT0k08C7V8GPyU3L62Qb2U3vMVF
+	 l6/nul+Pbk9zIzeccvooL4XSrZz9WhP4KOrhGQEz7L6/qWDx8aW3oth2fYW9NcVlL/
+	 I7+ipYTgm0+tJqpm09aP3LJvjcS9sadm3M9n0mryOw3lw3RU62/fGCWQVfiJc1TTP3
+	 vCnyRiMYgniXJjSHeuvlr+7wx3c6YkHHh4WyF45A4p9Tcn99ZJsJybP2Rif4KxMlWJ
+	 nbCIOLj0RRPYg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>,
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: FAILED: patch "[PATCH] mm: page_alloc: move mlocked flag clearance into" failed to apply to 6.6-stable tree
-Date: Mon, 18 Nov 2024 23:36:29 -0500
-Message-ID: <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
+Subject: Re: [PATCH 1/3] ext4: factor out ext4_hash_info_init()
+Date: Mon, 18 Nov 2024 23:36:31 -0500
+Message-ID: <20241118102050.16077-2-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
+In-Reply-To:  <20241118102050.16077-2-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,130 +63,61 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 66edc3a5894c74f8887c8af23b97593a0dd0df4d
+The upstream commit SHA1 provided is correct: db9345d9e6f075e1ec26afadf744078ead935fec
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hugh Dickins <hughd@google.com>
-Commit author: Roman Gushchin <roman.gushchin@linux.dev>
+Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
+Commit author: Jason Yan <yanaijie@huawei.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: fa484b40621a)      |
-| 6.6.y           |  Not found                                   |
+| 6.11.y          |  Present (exact SHA1)                        |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 16:46:31.817057604 -0500
-+++ /tmp/tmp.r9qovxR4fN	2024-11-18 16:46:31.809104506 -0500
-@@ -1,3 +1,13 @@
-+For 6.6 and 6.1 please use this replacement patch:
+--- -	2024-11-18 17:26:48.895059440 -0500
++++ /tmp/tmp.VjhMY5d2bY	2024-11-18 17:26:48.887055706 -0500
+@@ -1,18 +1,21 @@
++[ Upstream commit db9345d9e6f075e1ec26afadf744078ead935fec ]
 +
-+>From 9de12cbafdf2fae7d5bfdf14f4684ce3244469df Mon Sep 17 00:00:00 2001
-+From: Roman Gushchin <roman.gushchin@linux.dev>
-+Date: Wed, 6 Nov 2024 19:53:54 +0000
-+Subject: [PATCH] mm: page_alloc: move mlocked flag clearance into
-+ free_pages_prepare()
-+
-+commit 66edc3a5894c74f8887c8af23b97593a0dd0df4d upstream.
-+
- Syzbot reported a bad page state problem caused by a page being freed
- using free_page() still having a mlocked flag at free_pages_prepare()
- stage:
-@@ -109,26 +119,26 @@
- Cc: Vlastimil Babka <vbabka@suse.cz>
- Cc: <stable@vger.kernel.org>
- Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-+Signed-off-by: Hugh Dickins <hughd@google.com>
- ---
-  mm/page_alloc.c | 15 +++++++++++++++
-- mm/swap.c       | 14 --------------
-- 2 files changed, 15 insertions(+), 14 deletions(-)
-+ mm/swap.c       | 20 --------------------
-+ 2 files changed, 15 insertions(+), 20 deletions(-)
+ Factor out ext4_hash_info_init() to simplify __ext4_fill_super(). No
+ functional change.
  
- diff --git a/mm/page_alloc.c b/mm/page_alloc.c
--index c6c7bb3ea71bc..216fbbfbedcf9 100644
-+index 7272a922b838..3d7e685bdd0b 100644
- --- a/mm/page_alloc.c
- +++ b/mm/page_alloc.c
--@@ -1048,6 +1048,7 @@ __always_inline bool free_pages_prepare(struct page *page,
-- 	bool skip_kasan_poison = should_skip_kasan_poison(page);
-+@@ -1082,12 +1082,27 @@ static __always_inline bool free_pages_prepare(struct page *page,
-+ 	int bad = 0;
-+ 	bool skip_kasan_poison = should_skip_kasan_poison(page, fpi_flags);
-  	bool init = want_init_on_free();
-- 	bool compound = PageCompound(page);
- +	struct folio *folio = page_folio(page);
-  
-  	VM_BUG_ON_PAGE(PageTail(page), page);
-  
--@@ -1057,6 +1058,20 @@ __always_inline bool free_pages_prepare(struct page *page,
-- 	if (memcg_kmem_online() && PageMemcgKmem(page))
-- 		__memcg_kmem_uncharge_page(page, order);
-+ 	trace_mm_page_free(page, order);
-+ 	kmsan_free_page(page, order);
-  
- +	/*
- +	 * In rare cases, when truncation or holepunching raced with
-@@ -145,23 +155,17 @@
- +	}
- +
-  	if (unlikely(PageHWPoison(page)) && !order) {
-- 		/* Do not let hwpoison pages hit pcplists/buddy */
-- 		reset_page_owner(page, order);
-+ 		/*
-+ 		 * Do not let hwpoison pages hit pcplists/buddy
- diff --git a/mm/swap.c b/mm/swap.c
--index b8e3259ea2c47..59f30a981c6f9 100644
-+index cd8f0150ba3a..42082eba42de 100644
- --- a/mm/swap.c
- +++ b/mm/swap.c
--@@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
-- 		lruvec_del_folio(*lruvecp, folio);
-+@@ -89,14 +89,6 @@ static void __page_cache_release(struct folio *folio)
-  		__folio_clear_lru_flags(folio);
-+ 		unlock_page_lruvec_irqrestore(lruvec, flags);
-  	}
---
---	/*
---	 * In rare cases, when truncation or holepunching raced with
---	 * munlock after VM_LOCKED was cleared, Mlocked may still be
---	 * found set here.  This does not indicate a problem, unless
---	 * "unevictable_pgs_cleared" appears worryingly large.
---	 */
-+-	/* See comment on folio_test_mlocked in release_pages() */
- -	if (unlikely(folio_test_mlocked(folio))) {
- -		long nr_pages = folio_nr_pages(folio);
- -
-@@ -171,4 +175,26 @@
- -	}
+ Signed-off-by: Jason Yan <yanaijie@huawei.com>
+ Link: https://lore.kernel.org/r/20230323140517.1070239-2-yanaijie@huawei.com
+ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
++Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+ ---
+  fs/ext4/super.c | 50 +++++++++++++++++++++++++++++--------------------
+  1 file changed, 30 insertions(+), 20 deletions(-)
+ 
+ diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+-index 690faf766d23a..13c0345c53873 100644
++index 3bf214d4afef5..cf2c8cf507780 100644
+ --- a/fs/ext4/super.c
+ +++ b/fs/ext4/super.c
+-@@ -5024,6 +5024,35 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
++@@ -5042,6 +5042,35 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+  	return ret;
   }
   
-- /*
-+ static void __folio_put_small(struct folio *folio)
-+@@ -1021,18 +1013,6 @@ void release_pages(release_pages_arg arg, int nr)
-+ 			__folio_clear_lru_flags(folio);
-+ 		}
-+ 
-+-		/*
-+-		 * In rare cases, when truncation or holepunching raced with
-+-		 * munlock after VM_LOCKED was cleared, Mlocked may still be
-+-		 * found set here.  This does not indicate a problem, unless
-+-		 * "unevictable_pgs_cleared" appears worryingly large.
-+-		 */
-+-		if (unlikely(folio_test_mlocked(folio))) {
-+-			__folio_clear_mlocked(folio);
-+-			zone_stat_sub_folio(folio, NR_MLOCK);
-+-			count_vm_event(UNEVICTABLE_PGCLEARED);
-+-		}
-+-
-+ 		list_add(&folio->lru, &pages_to_free);
-+ 	}
-+ 	if (lruvec)
+@@ -48,7 +51,7 @@
+  static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+  {
+  	struct ext4_super_block *es = NULL;
+-@@ -5179,26 +5208,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
++@@ -5197,26 +5226,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+  	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
+  	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+  
+@@ -76,3 +79,6 @@
+  
+  	if (ext4_handle_clustersize(sb))
+  		goto failed_mount;
 +-- 
-+2.47.0.338.g60cca15819-goog
++2.33.8
 +
 ---
 
@@ -194,5 +125,11 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.11.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Failed     |  N/A       |
+| stable/linux-5.10.y       |  Failed     |  N/A       |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
+| stable/linux-4.19.y       |  Failed     |  N/A       |
 
