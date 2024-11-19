@@ -1,129 +1,101 @@
-Return-Path: <stable+bounces-94034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297AA9D288C
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97489D28A6
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:55:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E40D3280A8F
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF2E9B24726
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751571CFED1;
-	Tue, 19 Nov 2024 14:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA891CEE91;
+	Tue, 19 Nov 2024 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W//Wp5Hn"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="b+yqNkfb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354F31C2DB2
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259D21CDFD8
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027633; cv=none; b=FBQUHbwmAMNDITvHyBRa7qA2bA35FMYEV4at7JPEWb414XHZvIxGQpa17jleSTS91YDy3guCMopVZe5JMjz1xffhZUIxp7LFh5uTuEFdN1REtRJN6QcOGdnlgNkXdqq2ICelUjlt6o0SoOp7oZBGU15qyJS88pzZ8tNbFdNRgq4=
+	t=1732028087; cv=none; b=hhdsZ4frNxcJ9cwLgLZGrBp2BLbTzjfqXqafI3b4XmBhPwsnTmUbtfDNA48Y9iJY68XlVkPSxHBewUl8KhcTjrOmERPbgn9/kFkkgJEge9mkhFFo2xbjB1Xpflx/zUHYAA+6i3SChikMFBkXw8QuNbEQDDltcojiffXQCEVTesE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027633; c=relaxed/simple;
-	bh=js9GPzhkvgyKDdz3XeL7xX9Ib3a3Rl8RXERSUc9yQDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iff33EkGvMuyhCidXA4UFxE9s/eqrBZBNttNbvrgJIOInaaG7EqR2+qw/6jpPLM66Pt5l4BPoa4HGnwOxEVRlP11p8IZ2qSd2g/Ba+KhKmSp6CguM62waWKqTJoTpMUMgaVvsT1Gsbdax427oE5LFAeduSBnrHmMdoBSGe7cnWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W//Wp5Hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DF9C4CED2;
-	Tue, 19 Nov 2024 14:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732027633;
-	bh=js9GPzhkvgyKDdz3XeL7xX9Ib3a3Rl8RXERSUc9yQDM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W//Wp5HnmznGuMgYkp4dvC/F3QReAMLrtiN360F9Auj54PGRuMdaLpLvhYZGdJK9N
-	 vznkeMwGLWKMW//qAnCD4i9dQiOWKbj85yA+boR4VT9gd/rU1dJ+tJ6f2ginB+e37H
-	 ubSDwgMGsQ6iEkM2wOlWdi1dCAZsYX7UYM504Wa5+eNLjauzCc0f/nKnltF8pZbsY5
-	 rQB5gHo2lSZJcsRsk0qbNy0iR0F+MjkMm5OQGoixelkuQ4X+9K4U9N7QOZU7WBnxF/
-	 6G24xgFev7YsvThVygO8GKQPJuwr92RdobrCatBWLHS/Kz4sP2WhNsVdE+EdoDr7lI
-	 /DNNnHfMek7NQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
-Date: Tue, 19 Nov 2024 09:47:11 -0500
-Message-ID: <20241119105858.3494900-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119105858.3494900-2-matttbe@kernel.org>
-References: 
+	s=arc-20240116; t=1732028087; c=relaxed/simple;
+	bh=y+k4CazNvujMU74lD4Cw4HxpVoXKoadx5aTCGAmeTkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f6hqsMmAkiWeyTB1CK9GK6aWJsDCOZ4phCC3786zT8n+hUOhoSF9o/lQlNVljfuxCrvnN+A+OYXgp3EnRWhjBXHHOh4SnUhGGBkDKE81JQqYmw+BUXljuoR8paWoZYPJ0FUWKwpUjnOUy2zFx6FRs6d6dxJ9+7TzofDLoytLqAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=b+yqNkfb; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38246333e12so2385108f8f.1
+        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 06:54:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1732028083; x=1732632883; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y+k4CazNvujMU74lD4Cw4HxpVoXKoadx5aTCGAmeTkM=;
+        b=b+yqNkfbNcJQHjYcXNoYzMC1hEX85s8+z1LTawIM8BFN8ZSMwtTI9QaDIBTEvCCS7n
+         +OAMCXNX0fPxyPxonavP7X5Ql6vR2cIplgQKZc/cmgqJj0O7pHJ4KYqXtj/jLiJTogo3
+         dK8P3WlsZOfVyMhqOnGYJh8xGNIKml18btYloerTEn6zicuunbIS5WOEGPKKsfug0xz7
+         QyVxih0JMhnhGKxEbwJ5aKxlyHJSCk6oS/kHdMznsrVVYgsb+YsrPcxiC98Jy/17Dcos
+         lSQZl202Y0zLCVHh/O6N6vSC6/C5Lymbn4lOAKYzZWj4pRJbAoC1YWXf84QNPu5A0RJI
+         z3Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732028083; x=1732632883;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y+k4CazNvujMU74lD4Cw4HxpVoXKoadx5aTCGAmeTkM=;
+        b=ZNMW94TPUW6AtBZBti4ijBLBnXouF5lByDwBuu2ih8HnNGfuQ2Ehr0KKgNuQUUaZeP
+         470OhRO5VymtK0sJJEdGtiFIi9gYR8FeC+Xi5OaNiy+dBgTI8H3abDKVazvEKCTD6C14
+         Ma2azvOlejZRQ2uF+zpKa3hHLoylg9+lmRjbC8V6aQQc3cOCa5gOPVAg6ycm3aQB+zVp
+         kGE1ok2G3uSBXAbrf28XNiZq4Bfk0UPKQ1q5q6s5O76jnvtdg6LSt0cWefdpzTxDdL3l
+         QF/Rq9A9XCd44jeQ7rAZHum3Cg4gIb0N9j5izOU3odiADsEsQ4sHZBTP/XA8VY0fvnBL
+         USOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbqvMTg56UBssC1T2MWQ5l4Vb0eKyp2P6000KlnJ2LRWwTsGX115zv18JHjRk2pBPXNjofmlk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzupyyre4sj2S9xNfs1F8bV3aKPRG+JEDfjmAfN9rptIOeXw5wL
+	oPyldjYWIw3c6xRopW4gAOsAGAziE8Bp74DuCWl3khsohoFr8SqROMyg7p+8BJhjeUbbgISMvJL
+	KgSeKV3a4MJbrH/L4CmWFzWqbP25xNTMDGEuwgw==
+X-Google-Smtp-Source: AGHT+IGuKk4gG4vY2G6qz9afVz/KqkacpJNrLmnb5kFxR695mDP43aiJMoLRGZeY1f8uPQkmwuJwMCBH3Th+igQwxWI=
+X-Received: by 2002:a05:6000:144d:b0:382:440e:4e88 with SMTP id
+ ffacd0b85a97d-382440e521bmr10076471f8f.16.1732028083591; Tue, 19 Nov 2024
+ 06:54:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241118222828.240530-1-max.kellermann@ionos.com>
+ <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
+ <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
+ <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com> <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
+In-Reply-To: <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Tue, 19 Nov 2024 15:54:32 +0100
+Message-ID: <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
+To: Patrick Donnelly <pdonnell@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
+	Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dario@cure53.de, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+On Tue, Nov 19, 2024 at 2:58=E2=80=AFPM Patrick Donnelly <pdonnell@redhat.c=
+om> wrote:
+> The protocol does **not** require building the full path for most
+> operations unless it involves a snapshot.
 
-Hi,
+We don't use Ceph snapshots, but before today's emergency update, we
+could shoot down an arbitrary server with a single (unprivileged)
+system call using this vulnerability.
 
-The upstream commit SHA1 provided is correct: ce7356ae35943cc6494cc692e62d51a734062b7d
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Commit author: Paolo Abeni <pabeni@redhat.com>
-
-
-Status in newer kernel trees:
-6.11.y | Present (different SHA1: 8cccaf4eb99b)
-6.6.y | Present (different SHA1: 4e86acecbba9)
-6.1.y | Not found
-5.15.y | Not found
-
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-19 08:12:45.655104079 -0500
-+++ /tmp/tmp.Rh1DhZx01T	2024-11-19 08:12:45.650999675 -0500
-@@ -1,3 +1,5 @@
-+commit ce7356ae35943cc6494cc692e62d51a734062b7d upstream.
-+
- Additional active subflows - i.e. created by the in kernel path
- manager - are included into the subflow list before starting the
- 3whs.
-@@ -15,21 +17,29 @@
- Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- Link: https://patch.msgid.link/02374660836e1b52afc91966b7535c8c5f7bafb0.1731060874.git.pabeni@redhat.com
- Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+[ Conflicts in protocol.c, because commit f410cbea9f3d ("tcp: annotate
-+  data-races around tp->window_clamp") has not been backported to this
-+  version. The conflict is easy to resolve, because only the context is
-+  different, but not the line to modify. ]
-+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- ---
-  net/mptcp/protocol.c | 3 ++-
-  1 file changed, 2 insertions(+), 1 deletion(-)
- 
- diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
--index 95a5a3da39447..48d480982b787 100644
-+index 34c98596350e..bcbb1f92ce24 100644
- --- a/net/mptcp/protocol.c
- +++ b/net/mptcp/protocol.c
--@@ -2082,7 +2082,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
-+@@ -1986,7 +1986,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
-  				slow = lock_sock_fast(ssk);
-  				WRITE_ONCE(ssk->sk_rcvbuf, rcvbuf);
-- 				WRITE_ONCE(tcp_sk(ssk)->window_clamp, window_clamp);
-+ 				tcp_sk(ssk)->window_clamp = window_clamp;
- -				tcp_cleanup_rbuf(ssk, 1);
- +				if (tcp_can_send_ack(ssk))
- +					tcp_cleanup_rbuf(ssk, 1);
-  				unlock_sock_fast(ssk, slow);
-  			}
-  		}
-+-- 
-+2.45.2
-+
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+I'm not sure what your point is, but this vulnerability exists, it
+works without snapshots and we think it's serious.
 
