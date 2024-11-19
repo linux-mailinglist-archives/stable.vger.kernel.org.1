@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FF49D25E6
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3E9D25E7
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1FD81F24540
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539DC28555C
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2151CBE89;
-	Tue, 19 Nov 2024 12:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8D61CBE95;
+	Tue, 19 Nov 2024 12:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJUqCn+T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORby+o/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB9313B780
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A43E1CBEA7
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019476; cv=none; b=E7TF3oOJUaEww5WAxFIKWNGkNYhoGR5Znmn0D7fziFrCIYfQY1FeWE57CCCo4uVdaHBJWjVRTtRVwMQpS8mIE46p7O83hqvH4PnEZcdKIwVzdDMLmrTHOKf72oRUeGCdYcvML/sJ+zfnmtQty9+hmjIFFXLNrKDkyCzn3KNZxVc=
+	t=1732019478; cv=none; b=sbmPtjGqXX5bSAw/XB4G3jZ4CxjvLjoCuGwj8Qfq5R2W8+PAhnlD7C4nl28CvC/8UUb/FtYFSRh/RCtY+RgsaKl4yiSrZRiRG+mMW06sFy3cgrBVNKf04nxTJ3XMSihHtMzCGpLlaqh9y8QiDHVSkq01caHku61Lje48TI2ARO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019476; c=relaxed/simple;
-	bh=pGhRiKczDgLD1J3OyOqV/p3g/zA9dBb9fAPnkizr7yU=;
+	s=arc-20240116; t=1732019478; c=relaxed/simple;
+	bh=4o22Gn4RnLOpEFjmzxE4YqslY+WjN+zjLysdloOx1jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohe8acdOl8XVbcn7Bl3JG1LHV6LSl6FBHureBOYOB+BOt3N0N5vHH8Z9fjCEl4OFnnPtt5H0l17sh7Up2uY8XTOs1u3ZzUxNF5Y5QvqzPUsItAah6z0DKikNOSFIYtEstvqzNbK0ppmqoTC6lDTgQnTcbBaEkcRW8lJBwjmmibw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJUqCn+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A02C4CECF;
-	Tue, 19 Nov 2024 12:31:15 +0000 (UTC)
+	 MIME-Version; b=rQt7CQrNj/QFMkO2zCsoUf4KQMTtHX53Ueaj9nPZRx5usZnRopibD9c5wl9EOtqpM4+bWwWJdT6W3DlsjCJaNDaHd8qB5bbQIW5B429GQFev6jvN1kEQZJx8fJMpUk4wYSSzG2hZZQdPatPA8ENHjW2bsF0A4IUEfgdxbDvQ+0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORby+o/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83D2C4CECF;
+	Tue, 19 Nov 2024 12:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019476;
-	bh=pGhRiKczDgLD1J3OyOqV/p3g/zA9dBb9fAPnkizr7yU=;
+	s=k20201202; t=1732019478;
+	bh=4o22Gn4RnLOpEFjmzxE4YqslY+WjN+zjLysdloOx1jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJUqCn+T6xwpl/n2R85EdKoRhKh7GoL/6N/XxwERA9TWjnW85BBODONxbdSgVO9ow
-	 CD4PPZhIFEUajMJfLv8L8AFrJ5+1kjKVRg161dJJ5maWSYSvcAuaNyiIvLAcV8uk6e
-	 jJFfvBqmRiH1+dhA1wpv7MGPIbNtawoIo3D/xn/0IayLMce4Dh+XuOUYfF3f2xHXJw
-	 03Vo4yYWo0f5nUcFv8RjO+CITtzqlZY7k6rqyXQG+uW7/SGRRsLzJB9QF4ZdJvS8pd
-	 BcmjYdQU83jDMZB4HRXqYCtImxFfyyqjPz6DdDPlkQD5ofFUz70jhCdo68i64mF9uq
-	 O3vEUDE6oGqZw==
+	b=ORby+o/+i+GDwTgQJ/9HrwmI5+lJswZOB2v5pW5FQ9p/lZhhPWRVf0mcEDyL2E3Oi
+	 kbP0IkxLecAU0VaR1NXi52r+Rg2fEEr6/NEZOsJ/vvKmEBFckQuH7PvetU+St3vY3H
+	 YNjTEucY041Povk6gpDjGcGcJX2VXCWF+PGOlhs1nOafplhhPGKdU0Uf1kI7v9Rcrf
+	 a14UHpmEByXqTwPY9dtXUUD3I3dqqGU5yVi0kO9cQtVZHbKThcO4I09hM2pWRCRq3p
+	 /fjdL+nktrh7Tw+2N3EJywoMIvDPfdYguSnRSv/vjZLtBcTgZmYJIfI2/dtzDFuShK
+	 zaCxL7Tyd5Y5w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 3/6] mptcp: update local address flags when setting it
-Date: Tue, 19 Nov 2024 07:31:14 -0500
-Message-ID: <20241118182718.3011097-11-matttbe@kernel.org>
+Subject: Re: [PATCH 6.6 5/5] NFSD: Never decrement pending_async_copies on error
+Date: Tue, 19 Nov 2024 07:31:16 -0500
+Message-ID: <20241118211413.3756-6-cel@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118182718.3011097-11-matttbe@kernel.org>
+In-Reply-To:  <20241118211413.3756-6-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,82 +63,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: e0266319413d5d687ba7b6df7ca99e4b9724a4f2
+The upstream commit SHA1 provided is correct: 8286f8b622990194207df9ab852e0f87c60d35e9
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Commit author: Geliang Tang <tanggeliang@kylinos.cn>
+Backport author: cel@kernel.org
+Commit author: Chuck Lever <chuck.lever@oracle.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: a2062ee787b2)      |
+| 6.11.y          |  Present (different SHA1: 1421883aa30c)      |
 | 6.6.y           |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 01:08:21.112126559 -0500
-+++ /tmp/tmp.JshXcaxs5Q	2024-11-19 01:08:21.107482370 -0500
+--- -	2024-11-18 23:59:31.421354519 -0500
++++ /tmp/tmp.lcSzHSawOv	2024-11-18 23:59:31.413848668 -0500
 @@ -1,3 +1,5 @@
-+commit e0266319413d5d687ba7b6df7ca99e4b9724a4f2 upstream.
++[ Upstream commit 8286f8b622990194207df9ab852e0f87c60d35e9 ]
 +
- Just like in-kernel pm, when userspace pm does set_flags, it needs to send
- out MP_PRIO signal, and also modify the flags of the corresponding address
- entry in the local address list. This patch implements the missing logic.
-@@ -13,29 +15,34 @@
- Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-1-b835580cefa8@kernel.org
- Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+[ Conflicts in pm_userspace.c, because commit 6a42477fe449 ("mptcp:
-+  update set_flags interfaces"), is not in this version, and causes too
-+  many conflicts when backporting it. The same code can still be added
-+  at the same place, before sending the ACK. ]
-+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- ---
-  net/mptcp/pm_userspace.c | 12 ++++++++++++
-  1 file changed, 12 insertions(+)
+ The error flow in nfsd4_copy() calls cleanup_async_copy(), which
+ already decrements nn->pending_async_copies.
  
- diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
--index 56dfea9862b7b..3f888bfe1462e 100644
-+index 23e362c11801..e268f61d8eb0 100644
- --- a/net/mptcp/pm_userspace.c
- +++ b/net/mptcp/pm_userspace.c
--@@ -560,6 +560,7 @@ int mptcp_userspace_pm_set_flags(struct sk_buff *skb, struct genl_info *info)
-- 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
-- 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
-- 	struct net *net = sock_net(skb->sk);
-+@@ -563,6 +563,7 @@ int mptcp_userspace_pm_set_flags(struct net *net, struct nlattr *token,
-+ 				 struct mptcp_pm_addr_entry *loc,
-+ 				 struct mptcp_pm_addr_entry *rem, u8 bkup)
-+ {
- +	struct mptcp_pm_addr_entry *entry;
-  	struct mptcp_sock *msk;
-  	int ret = -EINVAL;
-  	struct sock *sk;
--@@ -601,6 +602,17 @@ int mptcp_userspace_pm_set_flags(struct sk_buff *skb, struct genl_info *info)
-- 	if (loc.flags & MPTCP_PM_ADDR_FLAG_BACKUP)
-- 		bkup = 1;
-+@@ -583,6 +584,17 @@ int mptcp_userspace_pm_set_flags(struct net *net, struct nlattr *token,
-+ 	    rem->addr.family == AF_UNSPEC)
-+ 		goto set_flags_err;
-  
- +	spin_lock_bh(&msk->pm.lock);
- +	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
--+		if (mptcp_addresses_equal(&entry->addr, &loc.addr, false)) {
-++		if (mptcp_addresses_equal(&entry->addr, &loc->addr, false)) {
- +			if (bkup)
- +				entry->flags |= MPTCP_PM_ADDR_FLAG_BACKUP;
- +			else
-@@ -45,5 +52,8 @@
- +	spin_unlock_bh(&msk->pm.lock);
- +
-  	lock_sock(sk);
-- 	ret = mptcp_pm_nl_mp_prio_send_ack(msk, &loc.addr, &rem.addr, bkup);
-+ 	ret = mptcp_pm_nl_mp_prio_send_ack(msk, &loc->addr, &rem->addr, bkup);
-  	release_sock(sk);
+@@ -9,10 +11,10 @@
+  1 file changed, 1 insertion(+), 3 deletions(-)
+ 
+ diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+-index 5fd1ce3fc8fb7..d32f2dfd148fe 100644
++index 444f68ade80c..d64f792964e1 100644
+ --- a/fs/nfsd/nfs4proc.c
+ +++ b/fs/nfsd/nfs4proc.c
+-@@ -1845,10 +1845,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1820,10 +1820,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  		refcount_set(&async_copy->refcount, 1);
+  		/* Arbitrary cap on number of pending async copy operations */
+  		if (atomic_inc_return(&nn->pending_async_copies) >
+@@ -24,3 +26,6 @@
+  		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+  		if (!async_copy->cp_src)
+  			goto out_err;
 +-- 
-+2.45.2
++2.47.0
 +
 ---
 
