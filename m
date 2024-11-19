@@ -1,101 +1,84 @@
-Return-Path: <stable+bounces-93881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8194E9D1BAC
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:06:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507AF9D1CB7
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 01:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C9C2817C0
-	for <lists+stable@lfdr.de>; Mon, 18 Nov 2024 23:06:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 164382823A5
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 00:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03051E767D;
-	Mon, 18 Nov 2024 23:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CEB17C8D;
+	Tue, 19 Nov 2024 00:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1mlkdsS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBhXxUxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB95153BE4;
-	Mon, 18 Nov 2024 23:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FB1196;
+	Tue, 19 Nov 2024 00:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731971212; cv=none; b=A+858ZHNjfmw4kM5X+jYoHP2FeNO1Kh7ECcnLt0XpuQcx/olOS8vM1zk3i1FOJrJqKYD4Rsxtj8Jg/63Vf9auarkNxv9xaT8S8RiFrX5yB/lOEdQkgttDJANEufKQudkE/wLms8VLoTYiE1Cl25UFVBTy6bZD3oBJcOoZpaRT3w=
+	t=1731977255; cv=none; b=jMKjC9yw/JMp+RNVEo+POJ78yJ67wdsyU5kxI6w8mYf8RLzMxSpPexfv1XEgsH6cf3uGFOPuGBS2bnJ4E14d2acd3XfozzyxHE8XjIJr+uF0pVN7HaMjZZMJoj/YQG6gWL3Jrj5fxt8stiY1YOE7HsGLFF9oJTLlLoGH8QI6Nqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731971212; c=relaxed/simple;
-	bh=eLsu41YeD0HrTyRtmIQlUugqMJ3IXNNewNaUs639yJs=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdPhfypIst8pdtCb6TmvctNVDCSuv1epk5ODLCzOwGafU83cM8O1PE9l8GKQySSYAffJ2FTSJVcegxRsATnDAgVZeoY/hsyDYyJnR9GXYKveVK+TiTJiOSwKkcOvvvlAXdYi3GtfIJsTgHka8cCrwxWe64GC3So4UjN9p3h5yR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1mlkdsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1ACC4CECC;
-	Mon, 18 Nov 2024 23:06:51 +0000 (UTC)
+	s=arc-20240116; t=1731977255; c=relaxed/simple;
+	bh=GFdywPDt/DV4WcBGDX/bMizY3+b0W7G7827H3STBdUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Di0HQy7oe7aaRUJJmCEqXKfE/2wPW/zqGrhTknUi8Jqto+gu1mk+JUvTca63O1sCw3Vn3qlPgCd5hgndgM4jgvkZSFcrWeGLsn0tSFzhIeFF6mtWh2C+qP5919kEyq2w2R9qeqrPdtailDUDOECmKUh6gUDFL8JhyDj9LnkQ4HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBhXxUxz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A4EC4CECC;
+	Tue, 19 Nov 2024 00:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731971212;
-	bh=eLsu41YeD0HrTyRtmIQlUugqMJ3IXNNewNaUs639yJs=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=D1mlkdsSv5bzrYnReyWvYBEh8U5fhrjq44REhiIDXeSFlqh0xDysvzBdMaLoZJBg9
-	 cctREXTyEraDCIWnsvZlYOI+TxXVVXl0Ls52CulTaGhhk9eIS6euP/zaEOTXS9ST9f
-	 wZ6pjs/T3Jxzoy7n+xHVlIklENwwe0k+DKCQDGcX4r1oqWZNcsp3W+mQB4FPiO65J7
-	 4Sr+UgoN0t/ZM3vPKQ9lsEuwKUL0JFCUIrbuthFlZXZqV/imLg1PCgRNEDmCB50Kz9
-	 Qczjb2ztJwA68O8JrGRmxo/hJ+iFI3ZBhoM6O8A+w0BH0BkOcDX7vw5PqHURuJUt6C
-	 2rKaU/C0CM/+g==
-Date: Mon, 18 Nov 2024 15:06:51 -0800
-Subject: [PATCH 09/10] xfs: fix null bno_hint handling in xfs_rtallocate_rtg
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: djwong@kernel.org, cem@kernel.org
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <173197084566.911325.17606647892449835782.stgit@frogsfrogsfrogs>
-In-Reply-To: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
-References: <173197084388.911325.10473700839283408918.stgit@frogsfrogsfrogs>
+	s=k20201202; t=1731977255;
+	bh=GFdywPDt/DV4WcBGDX/bMizY3+b0W7G7827H3STBdUw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LBhXxUxzcmDxIi5nBJFnc4wwrvCWeBUk5P8jZ3zjVWQWz/rtZOkFwllxylxerZ0Sh
+	 Cq+D6olffIygsAPlJW89vtXLsTegnwfKAavMsfahyBSiq25JSKkPBQ3CBeCQomA7TL
+	 ti9vNXQmL6Zkag3fDSB4FU+Pz2/E+3I8cwYs63fMiG8+oX/8wP1zVgloduJz24BIdV
+	 MjCc+itQaB0lgQ+MCYR+GdCPjATAC7j5PcrLMptGjw+jZG/yeePCPKdfCCI3B762mp
+	 awkJcHVtbLbSUAH9ictNqdHeqHxIkxF1ysv6FXdyz4KQOfyyJm9l0fL3z0AQ6S32PF
+	 W1I2/ygtAIRjA==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 0/5] Address CVE-2024-49974
+Date: Mon, 18 Nov 2024 19:47:27 -0500
+Message-ID: <20241119004732.4703-1-cel@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-xfs_bmap_rtalloc initializes the bno_hint variable to NULLRTBLOCK (aka
-NULLFSBLOCK).  If the allocation request is for a file range that's
-adjacent to an existing mapping, it will then change bno_hint to the
-blkno hint in the bmalloca structure.
+Backport the set of upstream patches that cap the number of
+concurrent background NFSv4.2 COPY operations.
 
-In other words, bno_hint is either a rt block number, or it's all 1s.
-Unfortunately, commit ec12f97f1b8a8f didn't take the NULLRTBLOCK state
-into account, which means that it tries to translate that into a
-realtime extent number.  We then end up with an obnoxiously high rtx
-number and pointlessly feed that to the near allocator.  This often
-fails and falls back to the by-size allocator.  Seeing as we had no
-locality hint anyway, this is a waste of time.
+Chuck Lever (4):
+  NFSD: Async COPY result needs to return a write verifier
+  NFSD: Limit the number of concurrent async COPY operations
+  NFSD: Initialize struct nfsd4_copy earlier
+  NFSD: Never decrement pending_async_copies on error
 
-Fix the code to detect a lack of bno_hint correctly.  This was detected
-by running xfs/009 with metadir enabled and a 28k rt extent size.
+Dai Ngo (1):
+  NFSD: initialize copy->cp_clp early in nfsd4_copy for use by trace
+    point
 
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: ec12f97f1b8a8f ("xfs: make the rtalloc start hint a xfs_rtblock_t")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
----
- fs/xfs/xfs_rtalloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/netns.h     |  1 +
+ fs/nfsd/nfs4proc.c  | 36 +++++++++++++++++-------------------
+ fs/nfsd/nfs4state.c |  1 +
+ fs/nfsd/xdr4.h      |  1 +
+ 4 files changed, 20 insertions(+), 19 deletions(-)
 
-
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 0cb534d71119a5..fcfa6e0eb3ad2a 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -1827,7 +1827,7 @@ xfs_rtallocate_rtg(
- 	 * For an allocation to an empty file at offset 0, pick an extent that
- 	 * will space things out in the rt area.
- 	 */
--	if (bno_hint)
-+	if (bno_hint != NULLFSBLOCK)
- 		start = xfs_rtb_to_rtx(args.mp, bno_hint);
- 	else if (!xfs_has_rtgroups(args.mp) && initial_user_data)
- 		start = xfs_rtpick_extent(args.rtg, tp, maxlen);
+-- 
+2.47.0
 
 
