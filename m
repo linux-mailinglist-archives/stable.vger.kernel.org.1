@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C775D9D1F5B
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F059D1F5C
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDAC282D3C
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7D3D1F2281C
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3791F14E2CD;
-	Tue, 19 Nov 2024 04:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1B1152E0C;
+	Tue, 19 Nov 2024 04:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwSqVYqv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogEV82fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1D214E2E2
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3807148857
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731990996; cv=none; b=JMqyO0n/Sff6UIOET4M70zXnM41AYf95Vipo9L9CVCAha7FLKNUoA/cKbRagbP4FCeqj9idRIcEXUr6gM0poSk7etbr/vV2lsCpFiHEDTQc4/gtRmjseBDjMhv8jLXqDKoBk99TFwHTgrIiByITMiloNhCQsGvq5Oy0Ry06zWno=
+	t=1731990998; cv=none; b=RoJAGLeE7JMguh/FVcRbT/HbiSfs8QUMjiW+lI0nVKI5alwIihDiTxHAidGhIC3N4uiHlXh++y0o8bowZQjqtLRjfVrVpo0MQJYe4iM9jBkFrsTui0j6PLDasd/VBaLsr8YVk3+rm8tNasZTOWa3zJ9SbD2fqorvDjURWPkc7A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731990996; c=relaxed/simple;
-	bh=nfVh3WG0lh5aJTr5YWaZx8HjXmvlm0FbdhnlV+O1fjs=;
+	s=arc-20240116; t=1731990998; c=relaxed/simple;
+	bh=cBVsmzaYdqsz6YjkJvT0uCPW8tIDW8zcI1RD+93B63E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ntd8vG7DyS8DQchTomIXfIm8mR5gkY+xIADOD4b7DnB/BjFNhHSuVjFWv9wQZ4ahPe2bUIITvRchFcjhFR8N+wCvE/gUr6VrAejO9CiEPZi4gUBaYdJajIaDloNCKyYcgV4E+xJm1TbAxleAo6e+onnNm2uzu1aMtTlFD85LFe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwSqVYqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E2BC4CECF;
-	Tue, 19 Nov 2024 04:36:34 +0000 (UTC)
+	 MIME-Version; b=VhdGio5U2EeeBgVnb+Zv5mUgK17spgOaYnXtV72cTFZQziwwl9YJr327LuvwhYu1wHb4RHa/ws102QU+1etyKw+A4wR7Kkv7hQ2unVdFA49SA2SLh1pkFCV36M1EceS0ZtBd70Ly65+j2oczExBDCK5K3yJwttrzQVzdut8CnV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogEV82fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B403C4CED1;
+	Tue, 19 Nov 2024 04:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731990995;
-	bh=nfVh3WG0lh5aJTr5YWaZx8HjXmvlm0FbdhnlV+O1fjs=;
+	s=k20201202; t=1731990997;
+	bh=cBVsmzaYdqsz6YjkJvT0uCPW8tIDW8zcI1RD+93B63E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwSqVYqv5LP6YTzrXAkmRA8+kGIP0Ul6M9dgWb5+imgYXfpyD9WQrJhJKF7GEQAJN
-	 2UHkUd+FuF3h1lVw3ff8NWSmaE+yvjFvd1wgq5Z3IoB0uYOiwcSFpZIoRVbYWzR/Y/
-	 JhbTWUXK3LXFoNcOPhlgQemVnlWTUO+TrZI5BObwUehYazarQ4KXJ1AAD4XN+XJ1bR
-	 7JfJsMknk4Q12NxxWSmYElxrk860dQD8S5CXPUIcXjxyCG2RSPpqMn9RRJ8atWW/C5
-	 9sXsKcB0DLvp0bsoi8AaQzTXloG8XwztdqFG3JKaaZf76BNx5iYDbTtdz31m9lz0bg
-	 t7xtzQNxhUDOw==
+	b=ogEV82fe0OvS/pS9BB2bI+TIEJNMkLyfRCt+AqqGWGtehxLLwlquWDi9dW45YFmat
+	 BihVfVumHADr/Oo1d7qG3NaBbFIpxcqQt+SDtSX2tLlVQ4dkb+Gy1bUkXJ3358ak21
+	 o/2gm5GO7SeKAE1RCviv69MB57tsZ6iEQdZbwUzgMEQh3M5y5bNpcVSbN8HsH2lPwt
+	 JODLyCKmcVHuDhXG8VDE8NDBVTbMA3l201nK85CeHL36/QFYLfAIBiLCKw4dE+7UBD
+	 OSv0pe4fvFpKDIoWnnYXj/HvG4jRypZCjMVHa1vguqhN0cb76AiA+4Ahgjvx+7GCPe
+	 UpHKwf0iXhUFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 2/3] ext4: filesystems without casefold feature cannot be mounted with siphash
-Date: Mon, 18 Nov 2024 23:36:33 -0500
-Message-ID: <20241118102050.16077-3-kovalev@altlinux.org>
+Subject: Re: [PATCH 3/3] ext4: fix error message when rejecting the default hash
+Date: Mon, 18 Nov 2024 23:36:35 -0500
+Message-ID: <20241118102050.16077-4-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118102050.16077-3-kovalev@altlinux.org>
+In-Reply-To:  <20241118102050.16077-4-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,63 +63,112 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 985b67cd86392310d9e9326de941c22fc9340eec
+The upstream commit SHA1 provided is correct: a2187431c395cdfbf144e3536f25468c64fc7cfa
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
-Commit author: Lizhi Xu <lizhi.xu@windriver.com>
+Commit author: Gabriel Krisman Bertazi <krisman@suse.de>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: e1373903db6c)      |
+| 6.11.y          |  Present (different SHA1: b5778b2b428a)      |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 22:36:26.258041949 -0500
-+++ /tmp/tmp.H7dIMzFjni	2024-11-18 22:36:26.250299326 -0500
+--- -	2024-11-18 22:36:26.886622930 -0500
++++ /tmp/tmp.pApf2ytKkR	2024-11-18 22:36:26.882290161 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
++[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
 +
- When mounting the ext4 filesystem, if the default hash version is set to
- DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
- 
-@@ -5,18 +7,19 @@
- Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
- Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+ Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
+ be mounted with siphash") properly rejects volumes where
+ s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
+@@ -11,16 +13,17 @@
+ Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+ Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
  Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 +Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
  ---
-- fs/ext4/super.c | 7 +++++++
-- 1 file changed, 7 insertions(+)
-+ fs/ext4/super.c | 8 ++++++++
-+ 1 file changed, 8 insertions(+)
+  fs/ext4/ext4.h  |  1 +
+- fs/ext4/super.c | 27 +++++++++++++++++----------
+- 2 files changed, 18 insertions(+), 10 deletions(-)
++ fs/ext4/super.c | 28 +++++++++++++++++-----------
++ 2 files changed, 18 insertions(+), 11 deletions(-)
  
+ diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+-index 481ece3660eb7..7ac668d4ce83c 100644
++index 72abb8d6caf75..d5706aedf4fef 100644
+ --- a/fs/ext4/ext4.h
+ +++ b/fs/ext4/ext4.h
+-@@ -2462,6 +2462,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
++@@ -2449,6 +2449,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
+  #define DX_HASH_HALF_MD4_UNSIGNED	4
+  #define DX_HASH_TEA_UNSIGNED		5
+  #define DX_HASH_SIPHASH			6
+@@ -29,13 +32,13 @@
+  static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+  			      const void *address, unsigned int length)
  diff --git a/fs/ext4/super.c b/fs/ext4/super.c
--index e72145c4ae5a0..25cd0d662e31b 100644
-+index cf2c8cf507780..68070b1859803 100644
+-index 58423e6bf3d07..adc5046fe9dd5 100644
++index 68070b1859803..3e4b9bf101454 100644
  --- a/fs/ext4/super.c
  +++ b/fs/ext4/super.c
--@@ -3582,6 +3582,13 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+-@@ -3583,13 +3583,6 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
 - 			 "mounted without CONFIG_UNICODE");
 - 		return 0;
-+@@ -3559,6 +3559,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
++@@ -3559,14 +3559,6 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
   	}
 + #endif
 + 
- +	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
- +	    !ext4_has_feature_casefold(sb)) {
- +		ext4_msg(sb, KERN_ERR,
-@@ -24,6 +27,10 @@
- +			 "mounted with siphash");
- +		return 0;
- +	}
+ -	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+ -	    !ext4_has_feature_casefold(sb)) {
+ -		ext4_msg(sb, KERN_ERR,
+@@ -43,10 +46,11 @@
+ -			 "mounted with siphash");
+ -		return 0;
+ -	}
 - 
-++
++-
   	if (readonly)
   		return 1;
+-@@ -5095,16 +5088,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
 + 
++@@ -5050,16 +5042,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+  	return ret;
+  }
+  
+@@ -76,22 +80,25 @@
+  	if (ext4_has_feature_dir_index(sb)) {
+  		i = le32_to_cpu(es->s_flags);
+  		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+-@@ -5122,6 +5126,7 @@ static void ext4_hash_info_init(struct super_block *sb)
++@@ -5077,6 +5080,7 @@ static void ext4_hash_info_init(struct super_block *sb)
+  #endif
+  		}
+  	}
+ +	return 0;
+  }
+  
+- static int ext4_block_group_meta_init(struct super_block *sb, int silent)
+-@@ -5257,7 +5262,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+- 	if (err)
+- 		goto failed_mount;
++ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
++@@ -5234,7 +5238,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
++ 	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
++ 	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+  
+ -	ext4_hash_info_init(sb);
+ +	err = ext4_hash_info_init(sb);
+ +	if (err)
+ +		goto failed_mount;
+  
+- 	err = ext4_handle_clustersize(sb);
+- 	if (err)
++ 	if (ext4_handle_clustersize(sb))
++ 		goto failed_mount;
 +-- 
 +2.33.8
 +
