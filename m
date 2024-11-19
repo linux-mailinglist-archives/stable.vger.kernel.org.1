@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16F09D1F58
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686A69D1F5A
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 05:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B3F283171
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2A17B24322
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 04:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F324414D6ED;
-	Tue, 19 Nov 2024 04:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261171514DC;
+	Tue, 19 Nov 2024 04:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcSacLMa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+KBleyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD1D14AD2E
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF9814E2CD
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 04:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731990989; cv=none; b=EaIUOsEWfWoYrmnU4uKcyDiOj0xapex6eKASAZ7Zs9oxLw6ZzGvDDRDvNLRY9WmTy2c4VdYsF3cjOpCaBK4vW+7nOTelx5F6KNrxLBDYPZxcQRo3neOkqREkxVon4bMAfORKOYVXmplNtiFBlg2mb8kGKXTf15M7ngw5ibh9cMM=
+	t=1731990991; cv=none; b=fD9PLw0adoIMvy8hgPp9t8xdyYb55qx5LXsxBhZZG65pSNqaZTjRhvcywHrjFu5WSYI8Zew0ezLsbVST6wJLZf/B50tRnKKJE3yV93AwujJXqigq00XXFAPA32X6m3yC6KP68IJLo6tOkkshvPBsn8eHO1Zz0B70dp8T6erOSDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731990989; c=relaxed/simple;
-	bh=YLbOAvQCyOryQxeEp91l4z6TMz9A/22L2P9H5skRI7s=;
+	s=arc-20240116; t=1731990991; c=relaxed/simple;
+	bh=DQ+0+ZHqGlziw23OFCUNcV3YgHVuasllZ37JsOFodnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrZBMSlUAKmDhgT5Yiop3Lh6XM5c9nyoucssk/2dONhKkM1Qv0BzfJcozxSdUyWXsaVKF0gUn8RcfrPI0WIONu7HDzadQZDift3M/CM5gpoKCAElyxpzBeXhFmI/J7eBsYIkeJNBY9VPU/9kAwkmmih/CxIbxxui58eiaVQ2mys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcSacLMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06147C4CECF;
-	Tue, 19 Nov 2024 04:36:28 +0000 (UTC)
+	 MIME-Version; b=stxAmFXfhD2yHk0sSFkEb85mPn1UBybimNAgKDwZVY/CkJpyoL+jnNuQqpTIA6pd4+QzIiENk1PRZwcGls6mzX8nwv05UPXkpgkTkI8StLikqUbgo885jDgQoi+NSJ5UjBfLuc3wevlrveOu1pNGC6CGugwklviDtJLvoWcXzQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+KBleyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D88C4CED2;
+	Tue, 19 Nov 2024 04:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731990989;
-	bh=YLbOAvQCyOryQxeEp91l4z6TMz9A/22L2P9H5skRI7s=;
+	s=k20201202; t=1731990991;
+	bh=DQ+0+ZHqGlziw23OFCUNcV3YgHVuasllZ37JsOFodnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcSacLMaXhhTiPgdGqr0r9U0ZAfwTVnYdZ//0GAVJYAcpA6K+t/kbJkS0pFY3ejBq
-	 o+2x6Fp1Anght0WQu8/SVFBNlXwxxV7M/ZtdFJTn0m4PwkyTc+Wqb5HiYywjbMb3Ht
-	 BS3pA96f523QND5iXjtqWj/CUvEr8R5Si5iv0FG3ix+HZ1oEE0/a9I0iF/QMUczUax
-	 DDILAwPG8ks8W/eb8Y5mAhIiSVOwUStgIVfKBafgk86b0upjmpSTH+9V9k8NXly6/8
-	 ySXu3jH2OrLVtY/effSZNkYZ7GEf5UZMHF/7Mk9IgYtRy+szqpYEMS2p2qqRO6PU0Z
-	 OGf4YaVWL1rHw==
+	b=V+KBleygMtRAcPP2wlGm2LR7uSDLXpLqb4BQ98Svwisqhlotysss6d8pyKM3tRztY
+	 ZTm1wV+DIi2qYd4x6j6Mkj89q728epVVYfYpk1RBRLci57uaI2PH9MSqFMd5YopsNV
+	 YnZL+p5BDuipqNw9Ohsr4Oip/MelFVoIGUemtjyN9TWIeglgPNd9iM4wm4+HWnLOl3
+	 wjV9D0pUWe1i9yRH0TDho0wHW0wtVEnvkiTESf/7hOtgF6IiPphQyXbeEGYxOuN2Z8
+	 eP9hgorQthATKp0k5Ia8HPvU5RHZBCEWPcoASMJ9cU8PZU8HVQuje8wLokOzhF0cf+
+	 2huozX8INsArg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Hugh Dickins <hughd@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: FAILED: patch "[PATCH] mm: revert "mm: shmem: fix data-race in shmem_getattr()"" failed to apply to 5.10-stable tree
-Date: Mon, 18 Nov 2024 23:36:27 -0500
-Message-ID: <a83ff8e9-6431-d237-94ec-5059c166a84f@google.com>
+Subject: Re: FAILED: patch "[PATCH] mm: page_alloc: move mlocked flag clearance into" failed to apply to 6.6-stable tree
+Date: Mon, 18 Nov 2024 23:36:29 -0500
+Message-ID: <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <a83ff8e9-6431-d237-94ec-5059c166a84f@google.com>
+In-Reply-To:  <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,69 +63,128 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: d1aa0c04294e29883d65eac6c2f72fe95cc7c049
+The upstream commit SHA1 provided is correct: 66edc3a5894c74f8887c8af23b97593a0dd0df4d
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Hugh Dickins <hughd@google.com>
-Commit author: Andrew Morton <akpm@linux-foundation.org>
+Commit author: Roman Gushchin <roman.gushchin@linux.dev>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: 285505dc512d)      |
-| 6.6.y           |  Present (different SHA1: 552c02da3b0f)      |
-| 6.1.y           |  Not found                                   |
-| 5.15.y          |  Not found                                   |
-| 5.10.y          |  Not found                                   |
+| 6.11.y          |  Present (different SHA1: fa484b40621a)      |
+| 6.6.y           |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-18 22:55:31.238709435 -0500
-+++ /tmp/tmp.VNf4ys5kLv	2024-11-18 22:55:31.230277300 -0500
-@@ -1,3 +1,12 @@
-+For 5.10 and 5.4 and 4.19 please use this replacement patch:
+--- -	2024-11-18 16:46:31.817057604 -0500
++++ /tmp/tmp.r9qovxR4fN	2024-11-18 16:46:31.809104506 -0500
+@@ -1,3 +1,13 @@
++For 6.6 and 6.1 please use this replacement patch:
 +
-+>From 98dfa72dd24347bfcbb9a60ac65ad42130ff44f5 Mon Sep 17 00:00:00 2001
-+From: Andrew Morton <akpm@linux-foundation.org>
-+Date: Fri, 15 Nov 2024 16:57:24 -0800
-+Subject: [PATCH] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
++>From 9de12cbafdf2fae7d5bfdf14f4684ce3244469df Mon Sep 17 00:00:00 2001
++From: Roman Gushchin <roman.gushchin@linux.dev>
++Date: Wed, 6 Nov 2024 19:53:54 +0000
++Subject: [PATCH] mm: page_alloc: move mlocked flag clearance into
++ free_pages_prepare()
 +
-+commit d1aa0c04294e29883d65eac6c2f72fe95cc7c049 upstream.
++commit 66edc3a5894c74f8887c8af23b97593a0dd0df4d upstream.
 +
- Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
- suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
- NFS.
-@@ -13,21 +22,25 @@
- Cc: Yu Zhao <yuzhao@google.com>
+ Syzbot reported a bad page state problem caused by a page being freed
+ using free_page() still having a mlocked flag at free_pages_prepare()
+ stage:
+@@ -109,26 +119,26 @@
+ Cc: Vlastimil Babka <vbabka@suse.cz>
  Cc: <stable@vger.kernel.org>
  Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 +Signed-off-by: Hugh Dickins <hughd@google.com>
  ---
-  mm/shmem.c | 2 --
-  1 file changed, 2 deletions(-)
+  mm/page_alloc.c | 15 +++++++++++++++
+- mm/swap.c       | 14 --------------
+- 2 files changed, 15 insertions(+), 14 deletions(-)
++ mm/swap.c       | 20 --------------------
++ 2 files changed, 15 insertions(+), 20 deletions(-)
  
- diff --git a/mm/shmem.c b/mm/shmem.c
--index e87f5d6799a7b..568bb290bdce3 100644
-+index 8239a0beb01c..e173d83b4448 100644
- --- a/mm/shmem.c
- +++ b/mm/shmem.c
--@@ -1166,9 +1166,7 @@ static int shmem_getattr(struct mnt_idmap *idmap,
-- 	stat->attributes_mask |= (STATX_ATTR_APPEND |
-- 			STATX_ATTR_IMMUTABLE |
-- 			STATX_ATTR_NODUMP);
-+@@ -1077,9 +1077,7 @@ static int shmem_getattr(const struct path *path, struct kstat *stat,
-+ 		shmem_recalc_inode(inode);
-+ 		spin_unlock_irq(&info->lock);
-+ 	}
- -	inode_lock_shared(inode);
-- 	generic_fillattr(idmap, request_mask, inode, stat);
-+ 	generic_fillattr(inode, stat);
- -	inode_unlock_shared(inode);
+ diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+-index c6c7bb3ea71bc..216fbbfbedcf9 100644
++index 7272a922b838..3d7e685bdd0b 100644
+ --- a/mm/page_alloc.c
+ +++ b/mm/page_alloc.c
+-@@ -1048,6 +1048,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+- 	bool skip_kasan_poison = should_skip_kasan_poison(page);
++@@ -1082,12 +1082,27 @@ static __always_inline bool free_pages_prepare(struct page *page,
++ 	int bad = 0;
++ 	bool skip_kasan_poison = should_skip_kasan_poison(page, fpi_flags);
+  	bool init = want_init_on_free();
+- 	bool compound = PageCompound(page);
+ +	struct folio *folio = page_folio(page);
   
-- 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
-+ 	if (is_huge_enabled(sb_info))
-  		stat->blksize = HPAGE_PMD_SIZE;
+  	VM_BUG_ON_PAGE(PageTail(page), page);
+  
+-@@ -1057,6 +1058,20 @@ __always_inline bool free_pages_prepare(struct page *page,
+- 	if (memcg_kmem_online() && PageMemcgKmem(page))
+- 		__memcg_kmem_uncharge_page(page, order);
++ 	trace_mm_page_free(page, order);
++ 	kmsan_free_page(page, order);
+  
+ +	/*
+ +	 * In rare cases, when truncation or holepunching raced with
+@@ -145,23 +155,17 @@
+ +	}
+ +
+  	if (unlikely(PageHWPoison(page)) && !order) {
+- 		/* Do not let hwpoison pages hit pcplists/buddy */
+- 		reset_page_owner(page, order);
++ 		/*
++ 		 * Do not let hwpoison pages hit pcplists/buddy
+ diff --git a/mm/swap.c b/mm/swap.c
+-index b8e3259ea2c47..59f30a981c6f9 100644
++index cd8f0150ba3a..42082eba42de 100644
+ --- a/mm/swap.c
+ +++ b/mm/swap.c
+-@@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
+- 		lruvec_del_folio(*lruvecp, folio);
++@@ -89,14 +89,6 @@ static void __page_cache_release(struct folio *folio)
+  		__folio_clear_lru_flags(folio);
++ 		unlock_page_lruvec_irqrestore(lruvec, flags);
+  	}
+--
+--	/*
+--	 * In rare cases, when truncation or holepunching raced with
+--	 * munlock after VM_LOCKED was cleared, Mlocked may still be
+--	 * found set here.  This does not indicate a problem, unless
+--	 * "unevictable_pgs_cleared" appears worryingly large.
+--	 */
++-	/* See comment on folio_test_mlocked in release_pages() */
+ -	if (unlikely(folio_test_mlocked(folio))) {
+ -		long nr_pages = folio_nr_pages(folio);
+ -
+@@ -171,4 +175,26 @@
+ -	}
+  }
+  
+- /*
++ static void __folio_put_small(struct folio *folio)
++@@ -1021,18 +1013,6 @@ void release_pages(release_pages_arg arg, int nr)
++ 			__folio_clear_lru_flags(folio);
++ 		}
++ 
++-		/*
++-		 * In rare cases, when truncation or holepunching raced with
++-		 * munlock after VM_LOCKED was cleared, Mlocked may still be
++-		 * found set here.  This does not indicate a problem, unless
++-		 * "unevictable_pgs_cleared" appears worryingly large.
++-		 */
++-		if (unlikely(folio_test_mlocked(folio))) {
++-			__folio_clear_mlocked(folio);
++-			zone_stat_sub_folio(folio, NR_MLOCK);
++-			count_vm_event(UNEVICTABLE_PGCLEARED);
++-		}
++-
++ 		list_add(&folio->lru, &pages_to_free);
++ 	}
++ 	if (lruvec)
 +-- 
 +2.47.0.338.g60cca15819-goog
 +
@@ -135,5 +194,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
