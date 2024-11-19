@@ -1,168 +1,159 @@
-Return-Path: <stable+bounces-93950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FF09D252F
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:58:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015289D2535
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 813C6B22CD5
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 11:58:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 461BEB22F6A
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D641CBA1F;
-	Tue, 19 Nov 2024 11:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3931CBEB6;
+	Tue, 19 Nov 2024 12:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmOupbsO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uut391cW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D14211C;
-	Tue, 19 Nov 2024 11:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C351CBEAD;
+	Tue, 19 Nov 2024 12:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732017526; cv=none; b=nMRDR0HywiyLxc+M63WhiN+cCrrRBUdgEu0LUFmZp9GQcT6784vR0a1GWbA1OIqK6pu60YKNQt9pB83ZHroJZAvUPsuUc/oVndKkK6QwwHlajBzn0HdOIWIE0zYVgANP6EE+/eavWrw9Miy6BW/L/MR6iJUL6bnxE9BEAU6rQwQ=
+	t=1732017831; cv=none; b=DSWrOqa9hjRg0wk2esAquHL0aRMxQii4a60dZcmVKxsgPi6Qr+94fcyQK0AvoTzOcwV6p5MwGkv73uYcOlC4/DLbHnENoAWKKYcw21vHQmkRif17wiMoJhqwlHwRNMhZQDNMqg0e8477LnITB4Zi1sAP9qFreOC+1ERYb7kRdtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732017526; c=relaxed/simple;
-	bh=K8FMiqW5NIEUmvDDVxv170oLszWNxCd/M4x52+9ZjMU=;
+	s=arc-20240116; t=1732017831; c=relaxed/simple;
+	bh=wmW6cIqAb6XVKlAHrsm3fV6YzjQrZf9jJvLGOKRTxeA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ls3WdjXo2zFPwgzlpXw0rhjakCddID2maxCFo2Rn/9s14fbg+KPyZlXcZ4Kur6/wStmOv9jUjk4dJQUeOH6jDfSH29ClrownJ95gRapoUTXggZWZ34u+rY9Imqhls+yMOXFxBW+8HHmw+85HnH9Bs7s7t1iBZ+gmOSAk/ypcRtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmOupbsO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3BCC4CECF;
-	Tue, 19 Nov 2024 11:58:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAbX9DvxI+Lj9Nd6Mnmp/+FQHyTSQ0oC64bFxBwi5CfaO18k4xY3BSqDu/9ae1LFB14JqvqmtKbzF7Was+ZZJNQ6dZsYx38h2OOOaSMonMR+q1A71JkNVKFsR0llZrKeJFlzBsXHnQQyyOJCBDQ+I7ROIEOKReprAo+lc3JnDS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uut391cW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AD4C4CED2;
+	Tue, 19 Nov 2024 12:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732017525;
-	bh=K8FMiqW5NIEUmvDDVxv170oLszWNxCd/M4x52+9ZjMU=;
+	s=korg; t=1732017831;
+	bh=wmW6cIqAb6XVKlAHrsm3fV6YzjQrZf9jJvLGOKRTxeA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WmOupbsOU5umXwVorZ1Imowtg2Nkw2bvxxvg4PPd02ZggC3EKr2DnqgT/uzl6J5Cf
-	 l0uGiItxip2UQ6YLt62knmbBLKqcnbONHHu2LiKExlUx/T7tzIVMFNQ86nEQozod5g
-	 fSGeH5YEjbOgdEvznYNXWvQR6RtIrSSe0rlBrA+Y=
-Date: Tue, 19 Nov 2024 12:58:21 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Omar Sandoval <osandov@osandov.com>
-Cc: stable@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: Fix build ID parsing logic in stable trees
-Message-ID: <2024111955-excursion-diaper-2675@gregkh>
-References: <2024110536-agonizing-campus-21f0@gregkh>
- <ZyniGMz5QLhGVWSY@krava>
- <2024110636-rebound-chip-f389@gregkh>
- <ZytZrt31Y1N7-hXK@krava>
- <Zy0dNahbYlHISjkU@telecaster>
- <Zy3NVkewYPO9ZSDx@krava>
- <Zy6eJdwR3LWOlrQg@krava>
- <CAEf4Bza3PFp53nkBxupn1Z6jYw-FyXJcZp7kJh8aeGhe1cc6CA@mail.gmail.com>
- <ZzUWRyDmndTpZU3Y@krava>
- <ZzeQrYy-6I3NK4gX@telecaster>
+	b=Uut391cWITwL5HoRwg9vXUFQU6WmqowDQEVPQ6Qv0zYQSpQ7PmjlPhpH7GUQy1aac
+	 32d5D8/TTLMSakW7FSyU+O4z/1IQvQRNPCd/BEyYe4h9FASLGCRzNKeBLoRZQQKtAy
+	 GL8Mkcus6aFRZ1epyreFD5mXjCV54vLdIbQklJJs=
+Date: Tue, 19 Nov 2024 13:03:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH 6.11 066/184] media: dvbdev: prevent the risk of out of
+ memory access
+Message-ID: <2024111920-nimbly-dipping-4c25@gregkh>
+References: <20241112101900.865487674@linuxfoundation.org>
+ <20241112101903.395286793@linuxfoundation.org>
+ <20241118003338.GA3311143@thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZzeQrYy-6I3NK4gX@telecaster>
+In-Reply-To: <20241118003338.GA3311143@thelio-3990X>
 
-On Fri, Nov 15, 2024 at 10:19:25AM -0800, Omar Sandoval wrote:
-> On Wed, Nov 13, 2024 at 10:12:39PM +0100, Jiri Olsa wrote:
-> > On Wed, Nov 13, 2024 at 12:07:39PM -0800, Andrii Nakryiko wrote:
-> > > On Fri, Nov 8, 2024 at 3:26 PM Jiri Olsa <olsajiri@gmail.com> wrote:
-> > > >
-> > > > On Fri, Nov 08, 2024 at 09:35:34AM +0100, Jiri Olsa wrote:
-> > > > > On Thu, Nov 07, 2024 at 12:04:05PM -0800, Omar Sandoval wrote:
-> > > > > > On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
-> > > > > > > On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
-> > > > > > > > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
-> > > > > > > > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
-> > > > > > > > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
-> > > > > > > > > > > hi,
-> > > > > > > > > > > sending fix for buildid parsing that affects only stable trees
-> > > > > > > > > > > after merging upstream fix [1].
-> > > > > > > > > > >
-> > > > > > > > > > > Upstream then factored out the whole buildid parsing code, so it
-> > > > > > > > > > > does not have the problem.
-> > > > > > > > > >
-> > > > > > > > > > Why not just take those patches instead?
-> > > > > > > > >
-> > > > > > > > > I guess we could, but I thought it's too big for stable
-> > > > > > > > >
-> > > > > > > > > we'd need following 2 changes to fix the issue:
-> > > > > > > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-> > > > > > > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-> > > > > > > > >
-> > > > > > > > > and there's also few other follow ups:
-> > > > > > > > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
-> > > > > > > > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
-> > > > > > > > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() API
-> > > > > > > > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
-> > > > > > > > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
-> > > > > > > > >
-> > > > > > > > > which I guess are not strictly needed
-> > > > > > > >
-> > > > > > > > Can you verify what exact ones are needed here?  We'll be glad to take
-> > > > > > > > them if you can verify that they work properly.
-> > > > > > >
-> > > > > > > ok, will check
-> > > > > >
-> > > > > > Hello,
-> > > > > >
-> > > > > > I noticed that the BUILD-ID field in vmcoreinfo is broken on
-> > > > > > stable/longterm kernels and found this thread. Can we please get this
-> > > > > > fixed soon?
-> > > > > >
-> > > > > > I tried cherry-picking the patches mentioned above ("lib/buildid: add
-> > > > > > single folio-based file reader abstraction" and "lib/buildid: take into
-> > > > > > account e_phoff when fetching program headers"), but they don't apply
-> > > > > > cleanly before 6.11, and they'd need to be reworked for 5.15, which was
-> > > > > > before folios were introduced. Jiri's minimal fix works for me and seems
-> > > > > > like a much safer option.
-> > > > >
-> > > > > hi,
-> > > > > thanks for testing
-> > > > >
-> > > > > I think for 6.11 we could go with backport of:
-> > > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-> > > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-> > > > >
-> > > > > and with the small fix for the rest
-> > > > >
-> > > > > but I still need to figure out why also 60c845b4896b is needed
-> > > > > to fix the issue on 6.11.. hopefully today
-> > > >
-> > > > ok, so the fix the issue in 6.11 with upstream backports we'd need both:
-> > > >
-> > > >   1) de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-> > > >   2) 60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-> > > >
-> > > > 2) is needed because 1) seems to omit ehdr->e_phoff addition (patch below)
-> > > > which is added back in 2)
-> > > >
-> > > > IMO 6.11 is close to upstream and by taking above upstream fixes it will be
-> > > > easier to backport other possible fixes in the future, for other trees I'd
-> > > > take the original one line fix I posted
-> > > 
-> > > I still maintain that very minimal is the way to go instead of risking
-> > > bringing new potential regressions by partially backporting folio
-> > > rework patchset.
-> > > 
-> > > Jiri, there is no point in risking this, best to fix this quickly and
-> > > minimally. If we ever need to backport further fixes, *then* we can
-> > > think about folio-based implementation backport.
+On Sun, Nov 17, 2024 at 05:33:38PM -0700, Nathan Chancellor wrote:
+> On Tue, Nov 12, 2024 at 11:20:24AM +0100, Greg Kroah-Hartman wrote:
+> > 6.11-stable review patch.  If anyone has any objections, please let me know.
 > > 
-> > ok, make sense, the original plan works for me as well
+> > ------------------
 > > 
-> > jirka
+> > From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > 
+> > [ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
+> > 
+> > The dvbdev contains a static variable used to store dvb minors.
+> > 
+> > The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
+> > or not. When not set, dvb_register_device() won't check for
+> > boundaries, as it will rely that a previous call to
+> > dvb_register_adapter() would already be enforcing it.
+> > 
+> > On a similar way, dvb_device_open() uses the assumption
+> > that the register functions already did the needed checks.
+> > 
+> > This can be fragile if some device ends using different
+> > calls. This also generate warnings on static check analysers
+> > like Coverity.
+> > 
+> > So, add explicit guards to prevent potential risk of OOM issues.
+> > 
+> > Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
+> >  1 file changed, 15 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+> > index b43695bc51e75..14f323fbada71 100644
+> > --- a/drivers/media/dvb-core/dvbdev.c
+> > +++ b/drivers/media/dvb-core/dvbdev.c
+> > @@ -86,10 +86,15 @@ static DECLARE_RWSEM(minor_rwsem);
+> >  static int dvb_device_open(struct inode *inode, struct file *file)
+> >  {
+> >  	struct dvb_device *dvbdev;
+> > +	unsigned int minor = iminor(inode);
+> > +
+> > +	if (minor >= MAX_DVB_MINORS)
+> > +		return -ENODEV;
+> >  
+> >  	mutex_lock(&dvbdev_mutex);
+> >  	down_read(&minor_rwsem);
+> > -	dvbdev = dvb_minors[iminor(inode)];
+> > +
+> > +	dvbdev = dvb_minors[minor];
+> >  
+> >  	if (dvbdev && dvbdev->fops) {
+> >  		int err = 0;
+> > @@ -525,7 +530,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+> >  	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
+> >  		if (!dvb_minors[minor])
+> >  			break;
+> > -	if (minor == MAX_DVB_MINORS) {
+> > +	if (minor >= MAX_DVB_MINORS) {
+> >  		if (new_node) {
+> >  			list_del(&new_node->list_head);
+> >  			kfree(dvbdevfops);
+> > @@ -540,6 +545,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+> >  	}
+> >  #else
+> >  	minor = nums2minor(adap->num, type, id);
+> > +	if (minor >= MAX_DVB_MINORS) {
+> > +		dvb_media_device_free(dvbdev);
+> > +		list_del(&dvbdev->list_head);
+> > +		kfree(dvbdev);
+> > +		*pdvbdev = NULL;
+> > +		mutex_unlock(&dvbdev_register_lock);
+> > +		return ret;
 > 
-> Greg, could you please queue up Jiri's one line fixes for 5.15, 6.1,
-> 6.6, and 6.11?
+> This needs commit a4aebaf6e6ef ("media: dvbdev: fix the logic when
+> DVB_DYNAMIC_MINORS is not set"), otherwise there is a warning with
+> certain configurations when building with clang:
+> 
+>   drivers/media/dvb-core/dvbdev.c:554:10: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
+>     554 |                 return ret;
+>         |                        ^~~
+>   drivers/media/dvb-core/dvbdev.c:463:13: note: initialize the variable 'ret' to silence this warning
+>     463 |         int id, ret;
+>         |                    ^
+>         |                     = 0
+>   1 warning generated.
+> 
+> I was somewhat surprised when this warning showed up in my stable
+> builds, until I realized that change does not have a Fixes tag like it
+> really should have...
 
-Ok, will do, but hopefully you all will help out if there's any problems
-with the change going forward...
+Now queued up, thanks.
 
 greg k-h
 
