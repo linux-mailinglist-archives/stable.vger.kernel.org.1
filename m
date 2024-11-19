@@ -1,122 +1,112 @@
-Return-Path: <stable+bounces-93947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3309D2377
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 11:25:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EF59D2457
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 11:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54414281FF7
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 10:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10BF51F239A9
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 10:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA581C3300;
-	Tue, 19 Nov 2024 10:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532001C2301;
+	Tue, 19 Nov 2024 10:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utIUs9p+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE841C1AD1
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 10:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEAA1C07F9;
+	Tue, 19 Nov 2024 10:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732011597; cv=none; b=QiyWAtN+vsELZA9L7kJ9Bj4H8NrzisYn0VugHljPvcaCQoMpRz2e/aJDSGiQ5aYBYWMdzTzHTptg8xu44/1sduXGAHB1BIQ/wKLOgoScMrmDQAVfTcLnE8dlNl/MVsY637U1neygd/fqpN1dZZB/sZFhKzDXRg5Yaru7W7e5rp8=
+	t=1732013955; cv=none; b=o/6aB1RXudkcd5sdiN8Gc8p/siwDxQAs5tXB+uoDn2JjmytaUgqp8d6ZbVlVHAABefkd9jNMWqX3QA7q7HbBaOIeMDGt1wAUXUCXfic1hBOUSwVJGa7obrHHpa3vtqjMVRAb7W79Bc6DUXSen848XVIerkIqsn5ZWPWUpjPVevg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732011597; c=relaxed/simple;
-	bh=yP7e/AAGXRTOfSgv/Dx/SJS45os/3p2gELfpmMeVBws=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oh6x3JfNlhjDNzno+BAgCMC+NUv33H4/1wLA3e2ufDjduVHJsYJoOEQRDphQYAa10pWlmtj5Wk06uMS0W9Cc+IsbkfvZjlLmBpUi5WxnVUFqMbrLUR+vLCFeKe3pj4Je9wJRUesI4qjG/5GVrfYvTLqOoLoZ0i+rgY+lFt1rwEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ6nEc2026043;
-	Tue, 19 Nov 2024 10:19:51 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xgm0jx2b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 19 Nov 2024 10:19:51 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 19 Nov 2024 02:19:49 -0800
-Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 19 Nov 2024 02:19:48 -0800
-From: Bin Lan <bin.lan.cn@windriver.com>
-To: <chenhx.fnst@fujitsu.com>, <stable@vger.kernel.org>
-Subject: [PATCH 6.1] ipvs: properly dereference pe in ip_vs_add_service
-Date: Tue, 19 Nov 2024 18:20:10 +0800
-Message-ID: <20241119102010.2572322-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1732013955; c=relaxed/simple;
+	bh=JVbnu0sAQ/YKJbs+i4PxYwD1ttKgXN1HQFfLAjGEJTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jJuHEv2nhDsnk907uNgOisuSkYmkDhe5Q35FjUr6IPGhPwhHiVqiCXeIB3oP2y0DM0hH2TP1DQnPIkXaINdQsEBmHujBOdrdWYrRUBP18crjXviCKu4owv4QDgyKo3VlxUl1gtvUCNKU42PwiFNRBbQBM/f4d/qrSq5TH69bVIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utIUs9p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF0DC4CECF;
+	Tue, 19 Nov 2024 10:59:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732013954;
+	bh=JVbnu0sAQ/YKJbs+i4PxYwD1ttKgXN1HQFfLAjGEJTw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=utIUs9p+rXGG/rUh78inRfp+aX0okAXhuhTfr+UwdOX/dJdWCcdv0dCc/iyhbpgjO
+	 z8kTkvunGAEhH3nW6aiNSIzmNSfkcrnx8bhcGu20/8LzQtKiEekKcx5R6JdQYEtHL9
+	 n8Hx27ETAV5jrPe3REQcgaFgpxLEeAIHNEIbtSXxvhtyycl7NsLCuz24n3XFkl6Ljq
+	 qu2+/QJsNqCSebXIZtzGwCCpWMjV8/dFgMngdFAE0d+MkT4Bi14CLBBHf6S7oHTZaU
+	 gq1/J7DwsrlnJl77EMDwLQvQA4KqrTEqGfwpjPJ/Zr31IfBYC9XmNUGknDzztgrpk1
+	 ej20xfsoSlw+g==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	sashal@kernel.org,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
+Date: Tue, 19 Nov 2024 11:58:59 +0100
+Message-ID: <20241119105858.3494900-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1792; i=matttbe@kernel.org; h=from:subject; bh=K/yzLVBVKv8VyVxf+d0AlQvJI8/Ma/Ji3Y7ZjJX2y6Q=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnPG9yRcu4JBlHcEyzPkuKKJtWdaZFEoTfZX+P2 1WXLwkVceSJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzxvcgAKCRD2t4JPQmmg c0k0EADpQwFeGh7AF8tm6wE7KgOxOqTgWw9bHKcG40r9l/hz0JkHlFc508PQfqWkpkSr24dTa8q ItlT+W7V7m15Va9OCz8V6Ko5GAacO2yUOtl5E91WYvtn6Xi6ZIYFdYv0nSTUO/00X0tbOi5Oaly SkwgFXCx41FN4XBtk5x84tORqwuJhPu0TLSwIT6+GDegrPA8xDDbRmwEw8rwY+USwn0zDZKFaL6 8VND8gbVMl2HUXywG6Dgr7NDhdlhTwJ6luidaKpHoQz1gHXA/KlsfcM86lFYH+t6OlVhWbvv4w3 9bT9dY6ADsfazrtp5DkFUVYEU2KKCtHIpQHxRcguxn8kgVFXMsi82EPyEiaYXyEKxXrWI135pY5 1fgj0o378zAOsJdyXyblrc20bLTDyhrCOtsxmy4MoBAOKgfI0p6lj4r+TXspzhIzGnWnpaAG5EH Aw5Lm1SnAH/OAhwbI3awByJrS3CkM9kXgPpoVN+XgZv0VE8khtk1mEkt+Y2gmB+DZUEDDqQtNdB 028dfyif6Cx5PEDIVabqgSpPTXhihc1tQoeFzc1TG63J0JeagHC/C3XEcPEl4VXkwAA7UPiuKBw jeNo4wkzTTQCUYtYsnQm67fjJfpp7MAlGbLGvhlHlf5wRKfE8oqQEkxvsLOj01KEUa0DexsFRaZ Z9ap7S58MAAAKBg==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 2KC-iOl9uVOx3qKZ4xjnlVTrdghJiikV
-X-Proofpoint-GUID: 2KC-iOl9uVOx3qKZ4xjnlVTrdghJiikV
-X-Authority-Analysis: v=2.4 cv=E4efprdl c=1 sm=1 tr=0 ts=673c6647 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=omOdbC7AAAAA:8 a=VwQbUJbxAAAA:8 a=3HDBlxybAAAA:8 a=t7CeM3EgAAAA:8 a=muPqGdaolyqQ0NJvmWgA:9
- a=laEoCiVfU_Unz3mSdgXN:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-19_02,2024-11-18_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411190072
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+commit ce7356ae35943cc6494cc692e62d51a734062b7d upstream.
 
-Use pe directly to resolve sparse warning:
+Additional active subflows - i.e. created by the in kernel path
+manager - are included into the subflow list before starting the
+3whs.
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+A racing recvmsg() spooling data received on an already established
+subflow would unconditionally call tcp_cleanup_rbuf() on all the
+current subflows, potentially hitting a divide by zero error on
+the newly created ones.
 
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ Resolve minor conflicts to fix CVE-2024-42322 ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Explicitly check that the subflow is in a suitable state before
+invoking tcp_cleanup_rbuf().
+
+Fixes: c76c6956566f ("mptcp: call tcp_cleanup_rbuf on subflows")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/02374660836e1b52afc91966b7535c8c5f7bafb0.1731060874.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in protocol.c, because commit f410cbea9f3d ("tcp: annotate
+  data-races around tp->window_clamp") has not been backported to this
+  version. The conflict is easy to resolve, because only the context is
+  different, but not the line to modify. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/mptcp/protocol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 17a1b731a76b..18e37b32a5d6 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1382,18 +1382,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 		sched = NULL;
- 	}
- 
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
- 
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
-+
- 	ip_vs_start_estimator(ipvs, &svc->stats);
- 
- 	/* Count only IPv4 services for old get/setsockopt interface */
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 34c98596350e..bcbb1f92ce24 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1986,7 +1986,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+ 				slow = lock_sock_fast(ssk);
+ 				WRITE_ONCE(ssk->sk_rcvbuf, rcvbuf);
+ 				tcp_sk(ssk)->window_clamp = window_clamp;
+-				tcp_cleanup_rbuf(ssk, 1);
++				if (tcp_can_send_ack(ssk))
++					tcp_cleanup_rbuf(ssk, 1);
+ 				unlock_sock_fast(ssk, slow);
+ 			}
+ 		}
 -- 
-2.43.0
+2.45.2
 
 
