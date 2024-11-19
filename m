@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A2E9D25ED
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00FD9D25EF
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A792283C02
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A5E21F2416F
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281301C727F;
-	Tue, 19 Nov 2024 12:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805ED1CACD9;
+	Tue, 19 Nov 2024 12:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EfdHTswP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSdxoi/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1F11BDABE
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4201D1BDABE
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019492; cv=none; b=KMlVhHyuobBmkr4CMi9yskZdakvjsZ9HGIyR5hARPF7jDIiufjYbsbPYEoOszh45MGyrL3HE9tBnDBfRuKeoIg6q2YkUSPQlLCp5dwwUExV+KS1sBJA87veC1ySu7PG7SWyPGuIyGheeIyc52RS+VXV+3qkBHV5qowo3ZWaunt8=
+	t=1732019496; cv=none; b=MFdALYYqSImlYbHQ05ICknbXy3PCo1lrXiYAk1aRPFszhAxh3SyOAJgN+bTM/PijjQgDqmHrTvtBvJrEPp79H9I/FufZ/qx+ilVusX3m51DomCkZ37Buk/Qlgb+Y8gPhNEjWDHnOQ6nJ4OqU6eIHUL8ByKFOZqNUYGeFJ0b35u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019492; c=relaxed/simple;
-	bh=x9JXOMGnTvmyZ5/C4nl5GcoQ/yH2k1CRlvEEM4AQCsY=;
+	s=arc-20240116; t=1732019496; c=relaxed/simple;
+	bh=/Nld003I2yXGwv3RvPd4oUqhz91Qdlmk7WaiDxVoiXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SB2IAB7pJBeTTAhdtUjNRDP6ZvFUU6sgsirTcCHkxGJHBSFxlRmRcKDMS53OwHYjP8dhQ2ZfWTE5v7yCMdecvOu0b2PR25ONbXHC+KOvWUd6re3QsHijXwz9N0SXfYvRsE8idQxnfpQGCZxen7ymiTmufNRcBh2WXDC+yYYd5so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EfdHTswP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC7AC4CECF;
-	Tue, 19 Nov 2024 12:31:31 +0000 (UTC)
+	 MIME-Version; b=loYmjJTFLIm7NQ62TaAgtXYXwydp0KsJGDpUHKjn4qgUmrwLrXQMrKVzGB8ZCvINZOz2nYf6o7vj5/I1VyI5BmSFWTVco7TUab3ZP0RjTUWKy770zWZhaUr1cLCH1XJyTPKzQ/7zIj6YQrJxDLsj5DZjgFE0o18K7JPN2VwQwt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSdxoi/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD1FC4CECF;
+	Tue, 19 Nov 2024 12:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019492;
-	bh=x9JXOMGnTvmyZ5/C4nl5GcoQ/yH2k1CRlvEEM4AQCsY=;
+	s=k20201202; t=1732019494;
+	bh=/Nld003I2yXGwv3RvPd4oUqhz91Qdlmk7WaiDxVoiXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfdHTswPSvcMC6zW13bDa48GSg8dDL8HfUV5leFZE+SFfhQXczVO+E6FWHv9EAmFt
-	 v6afjoIMa/Um6PnrlP/Rh8dL+codu17tsI/S4do1v8SINEWFm4WRhG1jlW4bxxZVlQ
-	 8YBRFlE5Z6VnwEeWEHedjmgORoL3iZhvjsvcKJMPvFPsnpFqu0+jD54T9vckq4Xd6p
-	 XN2Pa0PRWmbCDOPT/MyTLeKVZVNYzLEXBXdttz+71Q1FtqOo14bItS/rDWlwm3Yy6m
-	 cNFDx61cP6Tm9UCFlW+upR/wzowBlSPmfGq46AoOUJzW2Qvtl03JMP4f4O+t6yileI
-	 CShVS8b7hy3XQ==
+	b=HSdxoi/6bTvRCqG0goWKMa0nDJK+Mi//UwLsdbeIgKg9WQPRbSiwv9cCspJ/ZGYKm
+	 8NHL6r8dHUInfiF/VgnxeK4lFAwUXksMygcQrF6iqzPyhtsrnrTsjyPnmqIFjNbZqQ
+	 dCl2mere980erW+sIG9l1vNUU0+BUB8oCHtDnod2oFk0tWZcTn3rJbCv9NvhgM8yOL
+	 C+Wy2wJQ63Q36+iR4KQZJS72glxt63niZekAuCANc4Ja7OFJm0Td0AV0hxgsbNfK+C
+	 eJNW5PtvkueNc+99Gd/GkWR9ZkeXohISNRGPPv3Edid2iHQEIlyiAklXvvVsjGFFeV
+	 6L55ZIZy3QB8g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 1/2] net: add copy_safe_from_sockptr() helper
-Date: Tue, 19 Nov 2024 07:31:30 -0500
-Message-ID: <20241119020537.3050784-2-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 5.15 5/5] NFSD: Never decrement pending_async_copies on error
+Date: Tue, 19 Nov 2024 07:31:32 -0500
+Message-ID: <20241118212035.3848-10-cel@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119020537.3050784-2-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241118212035.3848-10-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,58 +63,50 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 6309863b31dd80317cd7d6824820b44e254e2a9c
+The upstream commit SHA1 provided is correct: 8286f8b622990194207df9ab852e0f87c60d35e9
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Eric Dumazet <edumazet@google.com>
+Backport author: cel@kernel.org
+Commit author: Chuck Lever <chuck.lever@oracle.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (exact SHA1)                        |
-| 6.6.y           |  Present (different SHA1: ae7f73e64e9b)      |
+| 6.11.y          |  Present (different SHA1: 1421883aa30c)      |
+| 6.6.y           |  Not found                                   |
 | 6.1.y           |  Not found                                   |
+| 5.15.y          |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 01:37:21.875695197 -0500
-+++ /tmp/tmp.N75ESVdFIm	2024-11-19 01:37:21.870628258 -0500
+--- -	2024-11-19 00:30:56.835091842 -0500
++++ /tmp/tmp.uWkVfqzE9j	2024-11-19 00:30:56.831399388 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 6309863b31dd80317cd7d6824820b44e254e2a9c ]
++[ Upstream commit 8286f8b622990194207df9ab852e0f87c60d35e9 ]
 +
- copy_from_sockptr() helper is unsafe, unless callers
- did the prior check against user provided optlen.
+ The error flow in nfsd4_copy() calls cleanup_async_copy(), which
+ already decrements nn->pending_async_copies.
  
-@@ -25,12 +27,15 @@
- Signed-off-by: Eric Dumazet <edumazet@google.com>
- Link: https://lore.kernel.org/r/20240408082845.3957374-2-edumazet@google.com
- Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+Stable-dep-of: 7a87441c9651 ("nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies")
-+Signed-off-by: Sasha Levin <sashal@kernel.org>
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
- ---
-  include/linux/sockptr.h | 25 +++++++++++++++++++++++++
-  1 file changed, 25 insertions(+)
+@@ -9,10 +11,10 @@
+  1 file changed, 1 insertion(+), 3 deletions(-)
  
- diff --git a/include/linux/sockptr.h b/include/linux/sockptr.h
--index 307961b41541a..317200cd3a603 100644
-+index bae5e2369b4f..1c1a5d926b17 100644
- --- a/include/linux/sockptr.h
- +++ b/include/linux/sockptr.h
- @@ -50,11 +50,36 @@ static inline int copy_from_sockptr_offset(void *dst, sockptr_t src,
-@@ -67,6 +72,9 @@
- +	return copy_from_sockptr(dst, optval, ksize);
- +}
- +
-- static inline int copy_struct_from_sockptr(void *dst, size_t ksize,
-- 		sockptr_t src, size_t usize)
-+ static inline int copy_to_sockptr_offset(sockptr_t dst, size_t offset,
-+ 		const void *src, size_t size)
-  {
+ diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+-index 5fd1ce3fc8fb7..d32f2dfd148fe 100644
++index 6267a41092ae..0b698e25826f 100644
+ --- a/fs/nfsd/nfs4proc.c
+ +++ b/fs/nfsd/nfs4proc.c
+-@@ -1845,10 +1845,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1791,10 +1791,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  		refcount_set(&async_copy->refcount, 1);
+  		/* Arbitrary cap on number of pending async copy operations */
+  		if (atomic_inc_return(&nn->pending_async_copies) >
+@@ -24,3 +26,6 @@
+  		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+  		if (!async_copy->cp_src)
+  			goto out_err;
 +-- 
-+2.43.0
++2.47.0
 +
 ---
 
@@ -122,5 +114,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
