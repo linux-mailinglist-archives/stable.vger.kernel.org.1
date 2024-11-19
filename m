@@ -1,128 +1,121 @@
-Return-Path: <stable+bounces-94003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E3C9D2748
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:50:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC999D2761
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE691F235B8
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:50:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A811C1F23829
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6262A1CDA0F;
-	Tue, 19 Nov 2024 13:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECBC1CDA27;
+	Tue, 19 Nov 2024 13:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KU7L3AyT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDVzOL2a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311C1C4A28;
-	Tue, 19 Nov 2024 13:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633201CCEF7;
+	Tue, 19 Nov 2024 13:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732024243; cv=none; b=KNRZLVy0GfVGYFIWpZRbTdZzthT3pnJTCkEeC5y4pHV38Zcnw0LGCq1R8wkCLAFDk3HtG/ylsUR5vBGlahhOyPandkZXftp4DXgjZjsgLavTpt9w+PJddyQ4XuQYSsADV9qeqlqVP3VpzV6sg02OloRZl+1N/W02jrpa3Feh4l0=
+	t=1732024367; cv=none; b=KgXkyZVcHioUlr/zzLl3eaH7FIAIXEBo6yDF5l9Z476I5b2XlA2RDhe59jARPX4LwSGPUytgh0fnPMEykIQE+ZdctTwh+utCFSPXnya4OOqtXsJq1viw0hBMrcnLVYT5p3aiky+66qzy74DOTnFsyvc76spvhoZOxfldqJ4bVjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732024243; c=relaxed/simple;
-	bh=O+2yaWE7MrY0hAbm6RSLIF6P8HDec6BOFm3Kn1pxwQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UrNlVg6T6ZkqRViPKTmDLOqNUWbPaDiBYqDL2AZOr2EZkKCMftIwlSB+1z01ZYmahvv+yhRWB/bY+9cpPiq2Ld1DVOGMXf8672ieSNNmci7spMSGSSU+OaoZTbLjld+kFXmbmaYn4pL1bpSnbdGTRfBBw4kK+WirYFIa+h0uQDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KU7L3AyT; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6eeb66727e7so3271997b3.2;
-        Tue, 19 Nov 2024 05:50:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732024240; x=1732629040; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O+2yaWE7MrY0hAbm6RSLIF6P8HDec6BOFm3Kn1pxwQ8=;
-        b=KU7L3AyTu+ROBnaWbv2DMtB4x8s5omgdJ61aKiQvH89LnR1eE0+z56wRmwl0BnR7Vl
-         6JzqyrzuZWVSLZFA7AJPp//h5WkqLgohafnUC6dDAHNLTSLQm7yklf4jdL8EuNpzl9/D
-         nyJbD2DTcu78r2v8QFkIu6TrWgIxhcte0t5L2yWWKK08SxxwLE/HlF+7PZLJK5YtT/hi
-         YGd35b3bL0JCUI3C/3nSQiT0QjWw28KFnL5KWnvhpUBbRJxe+ONnF/Fau6Al3zCzEJ03
-         5jWM/fia99BFpGYSDqWT/P5cyYXHhozwEBHBA5IYn5KRfLsVAkQTJRrTPsz5HLRuRJz/
-         ECmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732024240; x=1732629040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O+2yaWE7MrY0hAbm6RSLIF6P8HDec6BOFm3Kn1pxwQ8=;
-        b=dtKF6XV8qpKrOtDKLox4i0Je8w6VfGoft48zNbjSjuNaB2MSgCt3fIVP+OEisTAO1O
-         GE8LNYh39XYFeYDbhPJYRuWz5cFTxEHgZzpIB/uOA5Iy8Ys+iVKMVw/XtoEtcqrzFhn0
-         0nZ4y9cIIjeo1sMjtZqGoRGRlfCfdGBupQ/a/VB3K8AI8TPkYzs0ZpZLVJrWp/S6/YsS
-         lTTF6Ks9qunou3QMH84xu0dPjAZmiUPfWIT1Axlf+Jz5nezP6CRZmwivzPZYO8GnCgWD
-         cuG+rEVEJJUjAlZgsVr4KTViAHlEClO/WrK/szBbXAl021tZ9jS7WaGD5v7/tIlWmJ4a
-         NLAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPy1EsjZjcupMlCIAOopKa672dvU+5+8v4w8nIYaEUHpS8ohoEHBuwN5Ue1FmNkMVGDST8oxsd@vger.kernel.org, AJvYcCVrF+VWXoFOZuEQrQoosgMf2irNDHvpu6YQuQYaYQCeaay+VFHPCv9E8y0o7xZOekVrCjFTO9K8Snqb@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAv7szeRIRHKUJgTBqsu74Q5KEU4p6p1HhqNNssTEVHpj4Te+0
-	fSqfxaO0+vf1OGHGVkatE/3D2pWEqXS/Ldz49rJABZhW9PJ6hrQkj9/izvNQsl72PyAKKh3qHzz
-	3w4QMU+SgNPC4YFuM3KEPYlddkGdZJDqR
-X-Google-Smtp-Source: AGHT+IEnjUXISR+k4UUPJm48i01H3L9JOOKgFtZw1NvIyvaQ3rtpjlow50haeyfW0zsWpvebBgMN/T6lv3GM+Zt32nk=
-X-Received: by 2002:a05:690c:7307:b0:6ea:8ebb:1f9e with SMTP id
- 00721157ae682-6ee55c57eb7mr166850177b3.36.1732024240669; Tue, 19 Nov 2024
- 05:50:40 -0800 (PST)
+	s=arc-20240116; t=1732024367; c=relaxed/simple;
+	bh=1Pjxc+Ys+Og1dQEoe7LKD4sONGdg5iwH6SoYoSWLLhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aglNWB4akcf1f65xSKp5DGmg3NbxE0B1jAL7uj1sH6Q6uQ0a26V5h7CgyRQeaOVLH7IBibjV1oM238YTMIn4sfoo7+Hgvjge0snfF5GaxeN6ZoWiifro8/wGoQt08TL1lUwOtyAdxrJHD3MsZbfPkuhsR/fV5mMJpw6NwuLiNzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDVzOL2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF9C4CECF;
+	Tue, 19 Nov 2024 13:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732024367;
+	bh=1Pjxc+Ys+Og1dQEoe7LKD4sONGdg5iwH6SoYoSWLLhE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PDVzOL2a+NXq3DDuDEfG7H9mCnJV9VPjPcUTcHAv6vLtAj8nmbCKKRwmNyOOh4JL1
+	 j81sxVPE+uvgioOr8X9OsQJiHup3pJ8GqO92UIV6PNNKsHZQ76GuoUPy6dRkALmnKA
+	 9CpGNiJqV+RAuIMYWk0hvu34vPdBd2tiNnU5iVyTEGiIXWUtV3LvRjd1rCrB/wlSuF
+	 o8oe2f8Gpo1GKUQAmo4XoCzmQ1aXJSYJ7ZLicz9S5jDWfP+fhmS/h+94uvMHVBfBsg
+	 aNK1mur2XHwk2iLqclwIdzCo3l/DZ25DJLS8Isl6M7G2vfnu6EEaiNwAsS4OQNzhHE
+	 KOSenjVwLOUEQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tDOeh-00000000856-2jXa;
+	Tue, 19 Nov 2024 14:52:35 +0100
+Date: Tue, 19 Nov 2024 14:52:35 +0100
+From: Johan Hovold <johan@kernel.org>
+To: =?utf-8?Q?Gy=C3=B6rgy?= Kurucz <me@kuruczgy.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@gmail.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org,
+	Leonard Lausen <leonard@lausen.nl>,
+	Abel Vesa <abel.vesa@linaro.org>
+Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
+ connector
+Message-ID: <ZzyYI8KkWK36FfXf@hovoldconsulting.com>
+References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
+ <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZykY251SaLeksh9T@smile.fi.intel.com> <20241105071523.2372032-1-skmr537@gmail.com>
- <ZyouKu8_vfFs20CB@smile.fi.intel.com> <ZzN0nn6WFw2J8HTF@smile.fi.intel.com>
- <CAMRc=Md=tv6QapMCoiLf6eeK9qOtG1jvENHnKdTk2i6U+=8p5A@mail.gmail.com> <Zzs0cc2F4vkGhqCQ@smile.fi.intel.com>
-In-Reply-To: <Zzs0cc2F4vkGhqCQ@smile.fi.intel.com>
-From: sai kumar <skmr537@gmail.com>
-Date: Tue, 19 Nov 2024 19:20:29 +0530
-Message-ID: <CAA=kqWKv0rJZwarNm6dDrEsP9EsdiJOoo5HcbMOD_0iVfA=eUQ@mail.gmail.com>
-Subject: Re: [PATCH v3] gpio: exar: set value when external pull-up or
- pull-down is present
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, bgolaszewski@baylibre.com, linux-gpio@vger.kernel.org, 
-	mmcclain@noprivs.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
 
-Thanks Andy and Bart.
+On Fri, Aug 30, 2024 at 07:36:32PM +0200, György Kurucz wrote:
 
-On Mon, Nov 18, 2024 at 6:05=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Mon, Nov 18, 2024 at 12:00:00PM +0100, Bartosz Golaszewski wrote:
-> > On Tue, Nov 12, 2024 at 5:09=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Tue, Nov 05, 2024 at 04:39:38PM +0200, Andy Shevchenko wrote:
-> > > > On Tue, Nov 05, 2024 at 12:45:23PM +0530, Sai Kumar Cholleti wrote:
->
-> ...
->
-> > > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > >
-> > > Does this need to be applied, Bart?
-> > > Seems it is missed in your branches...
-> >
-> > Maybe if the author used get_maintainers.pl as they should, I would
-> > have noticed this earlier?
->
-> Ah good catch!
->
-> Sai, FYI, I use my script [1] which does all required stuff for me.
-> Feel free to use it, patch, comment, etc...
->
-> > I have some other fixes to pick up so I'll send this later in the merge=
- window.
->
-> Thanks!
->
-> [1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintaine=
-r.sh
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+> For context, I have a Lenovo Yoga Slim 7x laptop, and was having issues 
+> with the display staying black after sleep. As a workaround, I could 
+> switch to a different VT and back.
+> 
+> > [ 1185.831970] [dpu error]connector not connected 3
+> 
+> I can confirm that I was seeing this exact error message as well.
+> 
+> >   	if (!conn_state || !conn_state->connector) {
+> >   		DPU_ERROR("invalid connector state\n");
+> >   		return -EINVAL;
+> > -	} else if (conn_state->connector->status != connector_status_connected) {
+> > -		DPU_ERROR("connector not connected %d\n", conn_state->connector->status);
+> > -		return -EINVAL;
+> >   	}
+> >   
+> >   	crtc = conn_state->crtc;
+> 
+> After applying this patch, the screen now resumes successfully, and the 
+> errors are gone.
+
+I'm seeing the same issue as György on the x1e80100 CRD and Lenovo
+ThinkPad T14s. Without this patch, the internal display fails to resume
+properly (switching VT brings it back) and the following errors are
+logged:
+
+	[dpu error]connector not connected 3
+	[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
+
+I see the same symptoms with Xorg as well as sway.
+
+Can we please get this fixed and backported as soon as possible?
+
+Even if there are further issues with some "Night Light" functionality
+on one machine, keeping this bug as workaround does not seem warranted
+given that it breaks basic functionality for users.
+
+The x1e80100 is the only platform I have access to with a writeback
+connector, but this regression potentially affects a whole host of older
+platforms as well.
+
+Johan
 
