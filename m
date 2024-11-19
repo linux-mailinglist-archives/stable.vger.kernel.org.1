@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-93956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F1E9D25D4
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A209D25D3
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 13:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0026B294B1
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20AC1F252A0
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 12:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A675A1C07DB;
-	Tue, 19 Nov 2024 12:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188791CBE80;
+	Tue, 19 Nov 2024 12:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRrJ/ZlU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX+/4GNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7871CBA12
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4911C4A30
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 12:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732019439; cv=none; b=o3jPz01DFrWkf6VElV5vhmUrqGHFvn76DI998O8zJvH/a8wDTGRWI+tQbIPSPzJ3eeysetnWEEvUDfXK5Mei6K/xvDT0sx3IEYISw6Ts2au/fINhKYH3uZy2cTp7RhxaEuvXziQEIlBbUKxyktV9cRm7JJjjc5FzFlpOFN0gLoQ=
+	t=1732019441; cv=none; b=JzjlwqbwDDigISOivHuOiiWhJT79J+IaE00WMkuRVCMXVZzuehP5TCjnFDOj4vmO+3n9deu/J6nSiMci5+YQzENVbvV0l0oOSUoYcMZsHJEO/RHI1dNRttRdwKL//gGiljHM8sIzD/5KFMaE5XUgtp+kQUb7fsIpUddsiQ6WBSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732019439; c=relaxed/simple;
-	bh=E32+QOn1tQ1/JFiqIhC5sGnXZdWP+mrFw+U4wDPAFA0=;
+	s=arc-20240116; t=1732019441; c=relaxed/simple;
+	bh=UpTdHFkMlsNP9BBZMzfzqzOAOMqx7QLyXjJVfWoxIXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjVCQbmzOuiESZRSUn2kX59dMBVF4VD2XKvZYSgzZWIdVnMFvdbjyF025fzTDR6zwKkW/tGi992FmkXTtJoghjD0BMC7ejFQt2U6aHZbFH8Bq4r1GdGgU61qPryGmABU80cvDwQNww0ANJ7/F7vE7xm/x8CMNNZLmYCaHbZUVeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRrJ/ZlU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D06C4CECF;
-	Tue, 19 Nov 2024 12:30:38 +0000 (UTC)
+	 MIME-Version; b=YfVYMyWst0Gb7ZPrUPVsEPF7+jcVEWdoU+TGgPmmYzUAt8v/vmimgJ4o9IRnc7j0ikLAb5PgkHMSSsWCPaZmg551cRUOjxVcw7qJoZer1VV7u6UWOfmTP49P2eS5jWc8ZCNVsjqsWFHo5+t0MXNgqafB3IHvJAZkBJOyZJ/kjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX+/4GNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E443FC4CECF;
+	Tue, 19 Nov 2024 12:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732019439;
-	bh=E32+QOn1tQ1/JFiqIhC5sGnXZdWP+mrFw+U4wDPAFA0=;
+	s=k20201202; t=1732019441;
+	bh=UpTdHFkMlsNP9BBZMzfzqzOAOMqx7QLyXjJVfWoxIXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRrJ/ZlU0k5UARBaSVTXsCwzB6xbg5yaxNhSvaxjpqA31ix8fDyuXye7VaB+id+fM
-	 khhTxSVR4ZL3D7ZtEbdvMMJgCaXOc7s6j4PJaTu5Atupzsgc78qXQTrZZlN0pmxItN
-	 Oy9u8i3xXwlggH0EWXsrpDBjhjA3g5MtLhf182dOmv5mSV+24xqthgRjxr7hQ6UCvR
-	 +lHbstRNX1UwuQ1LDvSrlX/dUV3gYXV6rt3TtXaxjcavQ327Nmnz0d4APVTmECVN9v
-	 RJHOmW3OBOLkbzZiRKcxdlpXC8UveFiaEh7HOKYCWufnFCmwrVwdIt1PG0vTW8/DH2
-	 OcWpnk6WzY5yQ==
+	b=bX+/4GNFMf3/+kqF6IeNJArDHAFsE0np0j8r1qZCGV8j6ZAFv0wk2FucTcYg8T4o3
+	 WqiBLfPWKcKbNOcNaj5qOgNreT18lGUDFGgDeseV8qlo7LUgK8gyDvcbnrTbwcfk5F
+	 4Unm/ybGNPl1XPPr14anf9txZ4jBSwDFNbqDZ4dy6Y9i/FaBFxoNXcmXesyFk+0vWI
+	 8lf0elJh7fdUBSor2Cf1MaqKbpj8LITRdqUKMbSDGCZh7AuiH3MA/MJiha9DWe59DP
+	 mpfkPqlp3IcisX1MDTP3pDvodseIwCBToLk5YnHS++PSePiobp5rvCcjLtO/e2R9Ra
+	 XZGWZ9GYjddJg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 4/6] mptcp: hold pm lock when deleting entry
-Date: Tue, 19 Nov 2024 07:30:37 -0500
-Message-ID: <20241118182718.3011097-12-matttbe@kernel.org>
+Subject: Re: [PATCH 5.15 4/5] NFSD: Initialize struct nfsd4_copy earlier
+Date: Tue, 19 Nov 2024 07:30:39 -0500
+Message-ID: <20241118212343.3935-5-cel@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241118182718.3011097-12-matttbe@kernel.org>
+In-Reply-To:  <20241118212343.3935-5-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,63 +63,50 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f642c5c4d528d11bd78b6c6f84f541cd3c0bea86
+The upstream commit SHA1 provided is correct: 63fab04cbd0f96191b6e5beedc3b643b01c15889
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Commit author: Geliang Tang <tanggeliang@kylinos.cn>
+Backport author: cel@kernel.org
+Commit author: Chuck Lever <chuck.lever@oracle.com>
 
 Commit in newer trees:
 
 |-----------------|----------------------------------------------|
-| 6.11.y          |  Present (different SHA1: ff6abb7bc44a)      |
+| 6.11.y          |  Present (different SHA1: e30a9a2f69c3)      |
 | 6.6.y           |  Not found                                   |
+| 6.1.y           |  Not found                                   |
+| 5.15.y          |  Not found                                   |
 |-----------------|----------------------------------------------|
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 01:13:28.589534977 -0500
-+++ /tmp/tmp.4bH6oETSx7	2024-11-19 01:13:28.583100037 -0500
+--- -	2024-11-19 00:47:49.695764940 -0500
++++ /tmp/tmp.R4ErlJ20nR	2024-11-19 00:47:49.689051896 -0500
 @@ -1,3 +1,5 @@
-+commit f642c5c4d528d11bd78b6c6f84f541cd3c0bea86 upstream.
++[ Upstream commit 63fab04cbd0f96191b6e5beedc3b643b01c15889 ]
 +
- When traversing userspace_pm_local_addr_list and deleting an entry from
- it in mptcp_pm_nl_remove_doit(), msk->pm.lock should be held.
+ Ensure the refcount and async_copies fields are initialized early.
+ cleanup_async_copy() will reference these fields if an error occurs
+ in nfsd4_copy(). If they are not correctly initialized, at the very
+@@ -13,10 +15,10 @@
+  1 file changed, 2 insertions(+), 2 deletions(-)
  
-@@ -11,15 +13,16 @@
- Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-2-b835580cefa8@kernel.org
- Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
- ---
-  net/mptcp/pm_userspace.c | 3 +++
-  1 file changed, 3 insertions(+)
- 
- diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
--index 3f888bfe1462e..e35178f5205fa 100644
-+index e268f61d8eb0..8faf776cb977 100644
- --- a/net/mptcp/pm_userspace.c
- +++ b/net/mptcp/pm_userspace.c
--@@ -308,14 +308,17 @@ int mptcp_pm_nl_remove_doit(struct sk_buff *skb, struct genl_info *info)
-+@@ -324,14 +324,17 @@ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
-  
-  	lock_sock(sk);
-  
-@@ -29,7 +32,7 @@
-  		GENL_SET_ERR_MSG(info, "address with specified id not found");
- +		spin_unlock_bh(&msk->pm.lock);
-  		release_sock(sk);
-- 		goto out;
-+ 		goto remove_err;
-  	}
-  
-  	list_move(&match->list, &free_list);
-@@ -37,3 +40,6 @@
-  
-  	mptcp_pm_remove_addrs(msk, &free_list);
-  
+ diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+-index b5a6bf4f459fb..5fd1ce3fc8fb7 100644
++index 54f43501fed9..6267a41092ae 100644
+ --- a/fs/nfsd/nfs4proc.c
+ +++ b/fs/nfsd/nfs4proc.c
+-@@ -1841,14 +1841,14 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1787,14 +1787,14 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  		if (!async_copy)
+  			goto out_err;
+  		async_copy->cp_nn = nn;
+@@ -33,3 +35,6 @@
+  		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+  		if (!async_copy->cp_src)
+  			goto out_err;
 +-- 
-+2.45.2
++2.47.0
 +
 ---
 
@@ -127,5 +114,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
