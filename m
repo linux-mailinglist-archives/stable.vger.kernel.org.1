@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249F79D2889
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297AA9D288C
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C71711F231B7
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E40D3280A8F
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 14:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820C51CF7DE;
-	Tue, 19 Nov 2024 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751571CFED1;
+	Tue, 19 Nov 2024 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJfUGcXp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W//Wp5Hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424FE1CF7C7
-	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354F31C2DB2
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027631; cv=none; b=mcOWY2y6oRTNT/lVXJE/6l/NWLuO0fCpbVCjxXh/TwfimSDuIpll945FmonLTCVzqy9rpGUfj5qQuONBEJacAijDUy58cUI3Yiux7vNcp3RlOPbgn/OiqtwhDDo56vQzlxdWmCDwyXfDf8+nt+4TJ6xLSlbfK5PumQQEZ21GgNg=
+	t=1732027633; cv=none; b=FBQUHbwmAMNDITvHyBRa7qA2bA35FMYEV4at7JPEWb414XHZvIxGQpa17jleSTS91YDy3guCMopVZe5JMjz1xffhZUIxp7LFh5uTuEFdN1REtRJN6QcOGdnlgNkXdqq2ICelUjlt6o0SoOp7oZBGU15qyJS88pzZ8tNbFdNRgq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027631; c=relaxed/simple;
-	bh=n1A4qKdCwCMxb176SJ/4DbSEUtTswTLh7cVpmN6QEAQ=;
+	s=arc-20240116; t=1732027633; c=relaxed/simple;
+	bh=js9GPzhkvgyKDdz3XeL7xX9Ib3a3Rl8RXERSUc9yQDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6WxEZBd3H++2eNLDDQV1r8P/yU2rn2TGnbZVIbO+z3Hr7JOHz90RGMnutB7ynBaiEsmc9/3epoauXjCvB3kewk2aWFwhV7BQHlb3wcDoigLko+966qk23Q1jbgdJQuyUU8XpN9d0Sa2OxL/lviEj9KHmSnNl9dka0edqkynUi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJfUGcXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF64C4CED2;
-	Tue, 19 Nov 2024 14:47:10 +0000 (UTC)
+	 MIME-Version; b=iff33EkGvMuyhCidXA4UFxE9s/eqrBZBNttNbvrgJIOInaaG7EqR2+qw/6jpPLM66Pt5l4BPoa4HGnwOxEVRlP11p8IZ2qSd2g/Ba+KhKmSp6CguM62waWKqTJoTpMUMgaVvsT1Gsbdax427oE5LFAeduSBnrHmMdoBSGe7cnWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W//Wp5Hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DF9C4CED2;
+	Tue, 19 Nov 2024 14:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732027631;
-	bh=n1A4qKdCwCMxb176SJ/4DbSEUtTswTLh7cVpmN6QEAQ=;
+	s=k20201202; t=1732027633;
+	bh=js9GPzhkvgyKDdz3XeL7xX9Ib3a3Rl8RXERSUc9yQDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJfUGcXpsPxES2CYwdd77rcpbHJSBokugi/z1uKX24cz5h+V0zh3pI23Qgc53ebOZ
-	 8ZFK/5qFx6ZZPsEKfSLL/+tAl2oVMinA9fY3CDpYuVmsh6pVzjNHy5G/5KFbizoB4B
-	 sgh7J2AdIS6/DJlHeCwAWx6wdNN8vA0kQ2Akp4AJJaRgoAJNFFbeNPHUW7rrW1VOS5
-	 GIuuHlHwzY6RQLnZ/lRHxTch9p1FUPqBa9jkjW8Vo55NDSCBwpukJQvdWwPBpSYiyP
-	 T93rrDhK8Gon9UWAi7y0dBcdIP8SCfHD3XZcP1aa7JP8EeVK287vVz0IVRAsc1P2g5
-	 GM2pWn+Tvdb8w==
+	b=W//Wp5HnmznGuMgYkp4dvC/F3QReAMLrtiN360F9Auj54PGRuMdaLpLvhYZGdJK9N
+	 vznkeMwGLWKMW//qAnCD4i9dQiOWKbj85yA+boR4VT9gd/rU1dJ+tJ6f2ginB+e37H
+	 ubSDwgMGsQ6iEkM2wOlWdi1dCAZsYX7UYM504Wa5+eNLjauzCc0f/nKnltF8pZbsY5
+	 rQB5gHo2lSZJcsRsk0qbNy0iR0F+MjkMm5OQGoixelkuQ4X+9K4U9N7QOZU7WBnxF/
+	 6G24xgFev7YsvThVygO8GKQPJuwr92RdobrCatBWLHS/Kz4sP2WhNsVdE+EdoDr7lI
+	 /DNNnHfMek7NQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] net: fec: remove .ndo_poll_controller to avoid deadlocks
-Date: Tue, 19 Nov 2024 09:47:09 -0500
-Message-ID: <20241119074135.4005807-1-xiangyu.chen@eng.windriver.com>
+Subject: Re: [PATCH 5.15.y] mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
+Date: Tue, 19 Nov 2024 09:47:11 -0500
+Message-ID: <20241119105858.3494900-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241119074135.4005807-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241119105858.3494900-2-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,68 +63,61 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: c2e0c58b25a0a0c37ec643255558c5af4450c9f5
+The upstream commit SHA1 provided is correct: ce7356ae35943cc6494cc692e62d51a734062b7d
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Wei Fang <wei.fang@nxp.com>
+Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Commit author: Paolo Abeni <pabeni@redhat.com>
 
 
 Status in newer kernel trees:
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: d38625f71950)
+6.11.y | Present (different SHA1: 8cccaf4eb99b)
+6.6.y | Present (different SHA1: 4e86acecbba9)
 6.1.y | Not found
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-19 08:03:02.310968054 -0500
-+++ /tmp/tmp.8vAz2sLVW3	2024-11-19 08:03:02.303549904 -0500
+--- -	2024-11-19 08:12:45.655104079 -0500
++++ /tmp/tmp.Rh1DhZx01T	2024-11-19 08:12:45.650999675 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit c2e0c58b25a0a0c37ec643255558c5af4450c9f5 ]
++commit ce7356ae35943cc6494cc692e62d51a734062b7d upstream.
 +
- There is a deadlock issue found in sungem driver, please refer to the
- commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
- deadlocks"). The root cause of the issue is that netpoll is in atomic
-@@ -12,15 +14,17 @@
- Signed-off-by: Wei Fang <wei.fang@nxp.com>
- Link: https://lore.kernel.org/r/20240511062009.652918-1-wei.fang@nxp.com
+ Additional active subflows - i.e. created by the in kernel path
+ manager - are included into the subflow list before starting the
+ 3whs.
+@@ -15,21 +17,29 @@
+ Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+ Link: https://patch.msgid.link/02374660836e1b52afc91966b7535c8c5f7bafb0.1731060874.git.pabeni@redhat.com
  Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+Signed-off-by: Sasha Levin <sashal@kernel.org>
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
++[ Conflicts in protocol.c, because commit f410cbea9f3d ("tcp: annotate
++  data-races around tp->window_clamp") has not been backported to this
++  version. The conflict is easy to resolve, because only the context is
++  different, but not the line to modify. ]
++Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
  ---
-  drivers/net/ethernet/freescale/fec_main.c | 26 -----------------------
-  1 file changed, 26 deletions(-)
+  net/mptcp/protocol.c | 3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
  
- diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
--index 8bd213da8fb6f..a72d8a2eb0b31 100644
-+index 0a5c3d27ed3b..aeab6c28892f 100644
- --- a/drivers/net/ethernet/freescale/fec_main.c
- +++ b/drivers/net/ethernet/freescale/fec_main.c
--@@ -3674,29 +3674,6 @@ fec_set_mac_address(struct net_device *ndev, void *p)
-+@@ -3508,29 +3508,6 @@ fec_set_mac_address(struct net_device *ndev, void *p)
-  	return 0;
-  }
-  
-@@ -50,13 +54,16 @@
-  static inline void fec_enet_set_netdev_features(struct net_device *netdev,
-  	netdev_features_t features)
-  {
--@@ -4003,9 +3980,6 @@ static const struct net_device_ops fec_netdev_ops = {
-+@@ -3604,9 +3581,6 @@ static const struct net_device_ops fec_netdev_ops = {
-  	.ndo_tx_timeout		= fec_timeout,
-  	.ndo_set_mac_address	= fec_set_mac_address,
-- 	.ndo_eth_ioctl		= phy_do_ioctl_running,
-+ 	.ndo_eth_ioctl		= fec_enet_ioctl,
- -#ifdef CONFIG_NET_POLL_CONTROLLER
- -	.ndo_poll_controller	= fec_poll_controller,
- -#endif
-  	.ndo_set_features	= fec_set_features,
-- 	.ndo_bpf		= fec_enet_bpf,
-- 	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
-+ };
-+ 
+ diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+-index 95a5a3da39447..48d480982b787 100644
++index 34c98596350e..bcbb1f92ce24 100644
+ --- a/net/mptcp/protocol.c
+ +++ b/net/mptcp/protocol.c
+-@@ -2082,7 +2082,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
++@@ -1986,7 +1986,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+  				slow = lock_sock_fast(ssk);
+  				WRITE_ONCE(ssk->sk_rcvbuf, rcvbuf);
+- 				WRITE_ONCE(tcp_sk(ssk)->window_clamp, window_clamp);
++ 				tcp_sk(ssk)->window_clamp = window_clamp;
+ -				tcp_cleanup_rbuf(ssk, 1);
+ +				if (tcp_can_send_ack(ssk))
+ +					tcp_cleanup_rbuf(ssk, 1);
+  				unlock_sock_fast(ssk, slow);
+  			}
+  		}
 +-- 
-+2.43.0
++2.45.2
 +
 ---
 
@@ -132,5 +125,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
