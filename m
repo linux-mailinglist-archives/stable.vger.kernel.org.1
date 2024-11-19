@@ -1,136 +1,106 @@
-Return-Path: <stable+bounces-94048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EEC9D2A71
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 17:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9269D2ADC
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 17:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18822B30A8D
-	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 15:46:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 861D5B28FB6
+	for <lists+stable@lfdr.de>; Tue, 19 Nov 2024 16:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDFA1D1E81;
-	Tue, 19 Nov 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90191D0BA7;
+	Tue, 19 Nov 2024 16:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="coRMDQG3"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="yvmoqkUK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756231CC179;
-	Tue, 19 Nov 2024 15:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8891D095E
+	for <stable@vger.kernel.org>; Tue, 19 Nov 2024 16:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732030812; cv=none; b=YmAQk2sOhGS9NHpRvkeS4yGjT4UA0ulUoZa+RDX9vAA8/ypByWLJxTu9AF2ev0O2u7iUPmeOFt+DwX7qjG5fwJV1zKOczfa8vFtQmc0ywZ2EZUYz/yxm1zKYLObQbdteSmdejEO/7U5fv8HF5uwgJ61+Abmm3hYGFZFUnOz3xAc=
+	t=1732033217; cv=none; b=KKyxY/HMOw2vZJ2iFlJgdcrSHuMeapqaRrsId7ygbil4eZthNS5KPnLLm1DSpbI31mpA4/xUBrAEjLG1f2Xn0WbA3h1R6lbqiLvx/zfVNlp5rXH4MS8jP3d05eSraBQTcX5QRBL0HzBmt9y0Ey3Dq30am8XSjEgwl4gRvbakd6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732030812; c=relaxed/simple;
-	bh=wpO9kXG2AkJlN7uT0ycdfw1x+Hc2jk+LpAjzlT7Y6fI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=au/bkAsbrB4ifvyx/DYPEnWorNih7uwzxumhcmu8LLUIhD8MgaDq/hQ21N4tJpUbgTGcebXj/HP/bJmADh9N/7kAOZFqq/khm5xND6ZcSdPvMOJ3Qg4vPJkRuVHTIWiWzpEeZWZkB06IrR7lKSti6eGI2bdVekK4tBZtmLP+Eh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=coRMDQG3; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732030811; x=1763566811;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wpO9kXG2AkJlN7uT0ycdfw1x+Hc2jk+LpAjzlT7Y6fI=;
-  b=coRMDQG3erJLKp4KOqzd8Vzbx6vgpyxo5zOFYyLdsL8/cRklTOy5jL9h
-   2+S+aeej7UvjMXPWYpO0ZV0pAZyJOs6Oqqp4zIatUmrWUzg7Oaw2VxNI2
-   1q2rlZptjY/Il5VzTLueAoyTHiPUsV1Tn1ffVZ73Q2GFlx3G8/fL0ydwr
-   rXsFPi4Q7MGCxJ7Jhof0v3d6is6A6mtXJ7hR/XbWDG5bufrs0f5bt0O8y
-   dq+jFmQyr3UJNFuhFvc66M5BnWy9h3ZjtGAnzTe1tb3uZTB8CZhdC0geK
-   bQ5QL2FW+v03pW71+pt5ylvhj1mrc1cwr3XllfugqHBW9hoMclJmDtAg9
-   g==;
-X-CSE-ConnectionGUID: HrLSNVOnRC23zrZXBBDqKQ==
-X-CSE-MsgGUID: iVTNp1GDRMC2If2i7YeH8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11261"; a="35710242"
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
-   d="scan'208";a="35710242"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2024 07:40:11 -0800
-X-CSE-ConnectionGUID: drryZjE5RkK+uRjbIw7mKQ==
-X-CSE-MsgGUID: v63POYoYQ5GN6K1F+TRazQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,166,1728975600"; 
-   d="scan'208";a="89600184"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by orviesa009.jf.intel.com with SMTP; 19 Nov 2024 07:40:09 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 19 Nov 2024 17:40:07 +0200
-Date: Tue, 19 Nov 2024 17:40:07 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: anx7411: fix OF node reference leaks in
- anx7411_typec_switch_probe()
-Message-ID: <ZzyxV6xoMjgIEACe@kuha.fi.intel.com>
-References: <20241116085503.3835860-1-joe@pf.is.s.u-tokyo.ac.jp>
+	s=arc-20240116; t=1732033217; c=relaxed/simple;
+	bh=OdIfCpg1AbVHgB2T9ispri3GwOHonibskh7udt0tJSk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=J0iXroEX2St3qETopcr0bbIyUZe5Zg1Cojl8SKk8Kabquq//dN4VOr4Y6HIgb0shCl9UUoO1Cs3BFYFg3Fv0bweKhvEpfPmj61WIxz6wZFzIDPCLhySvxWtK5rb6dupD5942TmYSbmOQkzN9YGssdtKc6txALtGDdAFc86SWoJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=yvmoqkUK; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2969dc28d9eso1138684fac.0
+        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 08:20:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1732033215; x=1732638015; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o/Ft9aR9yRqj3mw2lSDRrmazp16w7rI4C6akOruFlLg=;
+        b=yvmoqkUK4R2/JO3S/Gl7TzLvr/fR0uP7B5AswRkbupwIzK5pZ2ZazZ8j19TJbEWilU
+         yqNheA3JwVWg3FHTlgZ8g8yqJlUX6R21p/MDEN5tDcXySREt/odX07g4h323DUB6asse
+         6WVUcgDkDlQlm+TrmOMdXnQ8+yklOF0iGhUmrc7ugHxVg7mYBo4c1W0+dgOL5S+bOrr6
+         q2mCBBU4i3dADEv3xJ9YHM9mjCHxu0sG02316e2wDNYth5gLAhtyNQc+G2pwRchO6ljW
+         YNdtz3NwQrZP7/ccji5Hy+XdGFhyhMmqOPGOWt7WyhoZ4mPz+EtJ3naVpAGvtgUVFv2T
+         Q1rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732033215; x=1732638015;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o/Ft9aR9yRqj3mw2lSDRrmazp16w7rI4C6akOruFlLg=;
+        b=XokoGfivwGqhlltPQK5oez6rMSiW0VaP/VAYY1iwxIcJ081L7T3qET+2MD7yB8MH2d
+         ldzTxrGJheGnM915ZKOp3XYWJw56/VZXcbTtNUiYzLjajac9wNGpwliIcv+B3M3RxLSr
+         ApqHnm0N8ADQdNaw5G/zsZgFyx4V8NRm8VPKwR5/KL+bmTEmWiJcPte/rJZjSJonFrtn
+         B+O00F/P7SdTtCutTD5F9owxcFx4BHHWpt4vBLRRuCp7+pPD0Pin06L4/QRvlmr/lsvF
+         xB0gaLTVu6YQixZxywEr64tnVxWvpolcBiq9cBL8CRj61BEL9hGgs0f9iV3A4Srl3eqF
+         H9cA==
+X-Gm-Message-State: AOJu0Yxuta0zRBiM4H6k1UG1/I7i1rW9R/Jl6R3heXEhg4NG9XYSy9Ni
+	mRwS2c0zKOd+cOVSmDSAhtVZkgOvkEofibrx408r40v/zmSQp6PwnCOBOwA9CSQ=
+X-Google-Smtp-Source: AGHT+IHUSAcx5cc3Rj7yHOAXiycIRvr9L9h13LXraWwRqkP6IfzKdhaJyzOX6qpSjqqWjmH+Y1RfDg==
+X-Received: by 2002:a05:6870:bacd:b0:296:1e98:6846 with SMTP id 586e51a60fabf-2962e34d157mr13773103fac.40.1732033215025;
+        Tue, 19 Nov 2024 08:20:15 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29651ac449bsm3588807fac.37.2024.11.19.08.20.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2024 08:20:14 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org, Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20241119030646.2319030-1-ming.lei@redhat.com>
+References: <20241119030646.2319030-1-ming.lei@redhat.com>
+Subject: Re: [PATCH] ublk: fix error code for unsupported command
+Message-Id: <173203321410.117382.14501473576821099671.b4-ty@kernel.dk>
+Date: Tue, 19 Nov 2024 09:20:14 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241116085503.3835860-1-joe@pf.is.s.u-tokyo.ac.jp>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-86319
 
-On Sat, Nov 16, 2024 at 05:55:03PM +0900, Joe Hattori wrote:
-> The refcounts of the OF nodes obtained in by of_get_child_by_name()
-> calls in anx7411_typec_switch_probe() are not decremented, so add
-> fwnode_handle_put() calls to anx7411_unregister_switch() and
-> anx7411_unregister_mux().
+
+On Tue, 19 Nov 2024 11:06:46 +0800, Ming Lei wrote:
+> ENOTSUPP is for kernel use only, and shouldn't be sent to userspace.
 > 
-> Fixes: e45d7337dc0e ("usb: typec: anx7411: Use of_get_child_by_name() instead of of_find_node_by_name()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-> ---
-> Changed in v2:
-> - Add the Cc: stable@vger.kernel.org tag.
-> ---
->  drivers/usb/typec/anx7411.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> Fix it by replacing it with EOPNOTSUPP.
 > 
-> diff --git a/drivers/usb/typec/anx7411.c b/drivers/usb/typec/anx7411.c
-> index cdb7e8273823..d3c5d8f410ca 100644
-> --- a/drivers/usb/typec/anx7411.c
-> +++ b/drivers/usb/typec/anx7411.c
-> @@ -29,6 +29,8 @@
->  #include <linux/workqueue.h>
->  #include <linux/power_supply.h>
->  
-> +#include "mux.h"
+> 
 
-This should not be necessary.
+Applied, thanks!
 
->  #define TCPC_ADDRESS1		0x58
->  #define TCPC_ADDRESS2		0x56
->  #define TCPC_ADDRESS3		0x54
-> @@ -1094,6 +1096,7 @@ static void anx7411_unregister_mux(struct anx7411_data *ctx)
->  {
->  	if (ctx->typec.typec_mux) {
->  		typec_mux_unregister(ctx->typec.typec_mux);
-> +		fwnode_handle_put(ctx->typec.typec_mux->dev.fwnode);
->  		ctx->typec.typec_mux = NULL;
->  	}
->  }
-> @@ -1102,6 +1105,7 @@ static void anx7411_unregister_switch(struct anx7411_data *ctx)
->  {
->  	if (ctx->typec.typec_switch) {
->  		typec_switch_unregister(ctx->typec.typec_switch);
-> +		fwnode_handle_put(ctx->typec.typec_switch->dev.fwnode);
->  		ctx->typec.typec_switch = NULL;
->  	}
->  }
+[1/1] ublk: fix error code for unsupported command
+      commit: 34c1227035b3ab930a1ae6ab6f22fec1af8ab09e
 
-Instead of accessing the fwnode like that, add members for them to
-anx7411_data.
-
-thanks,
-
+Best regards,
 -- 
-heikki
+Jens Axboe
+
+
+
 
