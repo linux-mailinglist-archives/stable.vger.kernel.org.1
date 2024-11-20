@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-94209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B3A9D3B8F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17C39D3BD9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDA428204F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AB261F2401A
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BB1BBBF8;
-	Wed, 20 Nov 2024 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E88D1C8FD6;
+	Wed, 20 Nov 2024 13:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtQIgm/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAEoq3Tn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2884E1AA1C3;
-	Wed, 20 Nov 2024 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEC41AA7AE;
+	Wed, 20 Nov 2024 13:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107557; cv=none; b=RjvPqow7WJ2bwZAbsSQIvZlvqhK8Z838JMFlvp8DjfCVi/x3+cXbkwfFtbmeQUFVozbXAUsR6Svwov9Jh8smwzwCCLJ/TuxHGE7VY262bc9hSu+ZvO1H/iVxq7T41xz4Au4Vepn1nMDZ/QSjVtH1vrAnz/gqNlbBXPwGkVey5fg=
+	t=1732107611; cv=none; b=TSRN8aThdrsTzFrq3Kl/X/Gq/fT/FLIPbW/rMKR/VMSoEo0ic7aJW1aAw5JtQIJc4tqSnY+Als8a9G4R+g3wAHKJ5wmILCvT33eJ0zsdGXL1eMv41641fajmpLn+4EFJBgWsJ4D2iaT4Wl35Cl0lndDuWrah2ARk5cUsYj0Cn2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107557; c=relaxed/simple;
-	bh=EcsRZL6iKeHxjqz9cVQrwpAaj87PUgVOtyfM8G3AgBA=;
+	s=arc-20240116; t=1732107611; c=relaxed/simple;
+	bh=KxSCAcVius1Oo+nGvjesezURmQmiJcdsws4CDgL45PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEoJNnesjWRH5orX9suS9C7DP1jmzn9Ok38RMdbCXjCDN6GimR4hQGPoXYrTBPwH+JQnb5ZAY9lU1dv0pAgMVXMaDRNyorZBvO6+jRjfz61e57yyJ1rcZSVOr88Ja5F/yowoQQM8RM/zWOfnif/OSnMikKCrmO8HuSiCZuSKrk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtQIgm/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED91EC4CED2;
-	Wed, 20 Nov 2024 12:59:16 +0000 (UTC)
+	 MIME-Version; b=e1VZ0i/4u00n0XCdDSA4D8FFUqfFj/mDgYusTwjUKOmVmhy2n3Ps8SZJXjSCBtiDTcA2MJlERx/kcfEj5s7qd06H90KcMzc180XT8dSW1rmS1iKGSF2YQhe3M4G6dfrsRYcFKVDTg8Up3eYBlmEA5anggI0vn0ztCsw3RHbj2LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAEoq3Tn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5336C4CECD;
+	Wed, 20 Nov 2024 13:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107557;
-	bh=EcsRZL6iKeHxjqz9cVQrwpAaj87PUgVOtyfM8G3AgBA=;
+	s=korg; t=1732107611;
+	bh=KxSCAcVius1Oo+nGvjesezURmQmiJcdsws4CDgL45PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtQIgm/CHFDmHKP/2YyjLuPl1/li8E2pL5MVAo7bLd8ZoQExlU8tJCiD1zj0JrC7y
-	 /vho8sAgy0jns5b8aLnbzVVABXqu8GvFCGZRBh5jNBST1mIKtWTMQr4mWkHkWVM2MF
-	 9ROtH1/wZR/LUZ4jYJTulp8b8OnzsRmg/HnMEIcw=
+	b=FAEoq3Tn2UWq3UPECy12+/hehfXdRXYyAd79lOd7ZmMK+xCpnJ8lzOny5FS0gpDap
+	 N6xCZOMqzRB22r5osd8n8gNwoo8PLKFxAaatKZyHhxf/1QZxEIuHbM3vAOOZs0urX5
+	 rrNIDebHbAzHipycFYV8IyHDyQ7yQq8bIGP4cxy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 098/107] drm/amd/display: Adjust VSDB parser for replay feature
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 63/82] NFSD: Limit the number of concurrent async COPY operations
 Date: Wed, 20 Nov 2024 13:57:13 +0100
-Message-ID: <20241120125631.937319797@linuxfoundation.org>
+Message-ID: <20241120125631.031921375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 16dd2825c23530f2259fc671960a3a65d2af69bd upstream.
+[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
 
-At some point, the IEEE ID identification for the replay check in the
-AMD EDID was added. However, this check causes the following
-out-of-bounds issues when using KASAN:
+Nothing appears to limit the number of concurrent async COPY
+operations that clients can start. In addition, AFAICT each async
+COPY can copy an unlimited number of 4MB chunks, so can run for a
+long time. Thus IMO async COPY can become a DoS vector.
 
-[   27.804016] BUG: KASAN: slab-out-of-bounds in amdgpu_dm_update_freesync_caps+0xefa/0x17a0 [amdgpu]
-[   27.804788] Read of size 1 at addr ffff8881647fdb00 by task systemd-udevd/383
+Add a restriction mechanism that bounds the number of concurrent
+background COPY operations. Start simple and try to be fair -- this
+patch implements a per-namespace limit.
 
-...
+An async COPY request that occurs while this limit is exceeded gets
+NFS4ERR_DELAY. The requesting client can choose to send the request
+again after a delay or fall back to a traditional read/write style
+copy.
 
-[   27.821207] Memory state around the buggy address:
-[   27.821215]  ffff8881647fda00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   27.821224]  ffff8881647fda80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   27.821234] >ffff8881647fdb00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   27.821243]                    ^
-[   27.821250]  ffff8881647fdb80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   27.821259]  ffff8881647fdc00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   27.821268] ==================================================================
+If there is need to make the mechanism more sophisticated, we can
+visit that in future patches.
 
-This is caused because the ID extraction happens outside of the range of
-the edid lenght. This commit addresses this issue by considering the
-amd_vsdb_block size.
-
-Cc: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7e381b1ccd5e778e3d9c44c669ad38439a861d8)
 Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49974
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/netns.h     |    1 +
+ fs/nfsd/nfs4proc.c  |   11 +++++++++--
+ fs/nfsd/nfs4state.c |    1 +
+ fs/nfsd/xdr4.h      |    1 +
+ 4 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -12038,7 +12038,7 @@ static int parse_amd_vsdb(struct amdgpu_
- 			break;
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -153,6 +153,7 @@ struct nfsd_net {
+ 	u32		s2s_cp_cl_id;
+ 	struct idr	s2s_cp_stateids;
+ 	spinlock_t	s2s_cp_lock;
++	atomic_t	pending_async_copies;
+ 
+ 	/*
+ 	 * Version information
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1273,6 +1273,7 @@ static void nfs4_put_copy(struct nfsd4_c
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
+ 		return;
++	atomic_dec(&copy->cp_nn->pending_async_copies);
+ 	kfree(copy->cp_src);
+ 	kfree(copy);
+ }
+@@ -1811,10 +1812,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+ 		sizeof(struct knfsd_fh));
+ 	if (nfsd4_copy_is_async(copy)) {
+-		status = nfserrno(-ENOMEM);
+ 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
+ 		if (!async_copy)
+ 			goto out_err;
++		async_copy->cp_nn = nn;
++		/* Arbitrary cap on number of pending async copy operations */
++		if (atomic_inc_return(&nn->pending_async_copies) >
++				(int)rqstp->rq_pool->sp_nrthreads) {
++			atomic_dec(&nn->pending_async_copies);
++			goto out_err;
++		}
+ 		INIT_LIST_HEAD(&async_copy->copies);
+ 		refcount_set(&async_copy->refcount, 1);
+ 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+@@ -1853,7 +1860,7 @@ out_err:
  	}
+ 	if (async_copy)
+ 		cleanup_async_copy(async_copy);
+-	status = nfserrno(-ENOMEM);
++	status = nfserr_jukebox;
+ 	goto out;
+ }
  
--	while (j < EDID_LENGTH) {
-+	while (j < EDID_LENGTH - sizeof(struct amd_vsdb_block)) {
- 		struct amd_vsdb_block *amd_vsdb = (struct amd_vsdb_block *)&edid_ext[j];
- 		unsigned int ieeeId = (amd_vsdb->ieee_id[2] << 16) | (amd_vsdb->ieee_id[1] << 8) | (amd_vsdb->ieee_id[0]);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8142,6 +8142,7 @@ static int nfs4_state_create_net(struct
+ 	spin_lock_init(&nn->client_lock);
+ 	spin_lock_init(&nn->s2s_cp_lock);
+ 	idr_init(&nn->s2s_cp_stateids);
++	atomic_set(&nn->pending_async_copies, 0);
  
+ 	spin_lock_init(&nn->blocked_locks_lock);
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -574,6 +574,7 @@ struct nfsd4_copy {
+ 	struct nfsd4_ssc_umount_item *ss_nsui;
+ 	struct nfs_fh		c_fh;
+ 	nfs4_stateid		stateid;
++	struct nfsd_net		*cp_nn;
+ };
+ 
+ static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
 
 
 
