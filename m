@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-94243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204C69D3BAE
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B00D9D3B67
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E02F1F22F08
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1AC1F21914
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A0E1AB6EF;
-	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34DE1A9B42;
+	Wed, 20 Nov 2024 12:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEYSBdbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bygBCOap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE01C1F0A;
-	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709661991AA;
+	Wed, 20 Nov 2024 12:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107582; cv=none; b=IE0h2NTgu0baGl77tA4Od/hyLBk4JabA3jjm+DBa1FxPE/WpErTfd56Xc0CkXZ1JE44aCcRRQvT4zYZqnD+5T7mCxTC4Z25KRQGpvO6FQce5Ch+vJ7VUXvklf7emYb92kWMvXO/7ELkxMJ+z8xZCKG4mCUjnX1MpKJEPKt5S48E=
+	t=1732107528; cv=none; b=V4TJ/6JQH2cYBZ3JHuAB0ubO1z5tsnt8SP6lTUO8legr4DGlnRNBdu1HRkC395EURwBElrQ5V+JdmmKXa8rRprA5eKzkCaqk7xsk5UzIjiJPfVKgMvCgb76P7W/lvbsmrh3QBUDv8xfA12m92Fx34kN49ItBqU/WTKFU/GI+VbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107582; c=relaxed/simple;
-	bh=705Nk1twKF6NKIQBfX/l1OHSCVq65+APFQVYBRJfMO4=;
+	s=arc-20240116; t=1732107528; c=relaxed/simple;
+	bh=uHxujYS0h8Z8iFGNVOqQbIaQdOIZ1Xffxkiw0s3P6F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLEz8F1VMH8XFC4LUHhn7GdrVtQATDy2h9j2Atwq6WFj5Nlww4wtN8b0G2/WlbXJjV6+xh9pWg7jW+ec/P+HGHufiOZ5xVoZrUfzmNwiUSSKN9Zq7n7k6hAEr+Qy5KZyQe49njd45SrMfkPyBi7PXBSHoWWQYovRiMuEM10/Dzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEYSBdbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F921C4CECD;
-	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
+	 MIME-Version; b=UF7mwItvvyzhgZgXQjCprihUk+H4mUBs5AfLq6bsa+oqGdiF1hck5NPUbhZDCYXIP57MacpGnb17si9aUSFBfAEc0qvT/2IlNARI02YhhkKH4DjN01Ks2HLn+pj2c+0dXlFmE37cFQE8NACLp9hAly+NN837u7yyCFc2y5Z2s94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bygBCOap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355C6C4CECD;
+	Wed, 20 Nov 2024 12:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107582;
-	bh=705Nk1twKF6NKIQBfX/l1OHSCVq65+APFQVYBRJfMO4=;
+	s=korg; t=1732107528;
+	bh=uHxujYS0h8Z8iFGNVOqQbIaQdOIZ1Xffxkiw0s3P6F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEYSBdbItm+svjhWIa67Y8GRedMs9LwIWOB+3hjuDa0+4Fjpa1/wNdVYZ3UIzREaU
-	 1rZAtP7BM4uPIdHIYBBKd0sbfZ0TP48dQ0nR1x4oH41R3J/9KwaK6dqcZP2K+94dFI
-	 9+veqHl1WnMBap9Vl4EZ9GdsxyCqCEj3HxKExnBI=
+	b=bygBCOappx5m7CYM+YA93gXezv1RqA20dHBfe9xsBbwvjiV8lfsYGMH7/cO4IlXBm
+	 RE9rcBcoPYHUsB02dSv7lMsOxt1PUHSIPiR0LQ6iiLpZOnQ7EoSCHs/0bgUJ1pyFWT
+	 2tNJ0s0o6lsYO9O9GMkWhCNNnTCLcok2i3tSZ8U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/82] net: ti: icssg-prueth: Fix 1 PPS sync
-Date: Wed, 20 Nov 2024 13:56:34 +0100
-Message-ID: <20241120125630.153762392@linuxfoundation.org>
+	Christoph Anton Mitterer <calestyo@scientia.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.11 060/107] tpm: Disable TPM on tpm2_create_primary() failure
+Date: Wed, 20 Nov 2024 13:56:35 +0100
+Message-ID: <20241120125631.030942429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit dc065076ee7768377d7c16af7d1b0767782d8c98 ]
+commit 423893fcbe7e9adc875bce4e55b9b25fc1424977 upstream.
 
-The first PPS latch time needs to be calculated by the driver
-(in rounded off seconds) and configured as the start time
-offset for the cycle. After synchronizing two PTP clocks
-running as master/slave, missing this would cause master
-and slave to start immediately with some milliseconds
-drift which causes the PPS signal to never synchronize with
-the PTP master.
+The earlier bug fix misplaced the error-label when dealing with the
+tpm2_create_primary() return value, which the original completely ignored.
 
-Fixes: 186734c15886 ("net: ti: icssg-prueth: add packet timestamping and ptp support")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
-Link: https://patch.msgid.link/20241111095842.478833-1-m-malladi@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087331
+Fixes: cc7d8594342a ("tpm: Rollback tpm2_load_null()")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 13 +++++++++++--
- drivers/net/ethernet/ti/icssg/icssg_prueth.h | 12 ++++++++++++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index fb120baee5532..7efb3e347c042 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -15,6 +15,7 @@
- #include <linux/genalloc.h>
- #include <linux/if_vlan.h>
- #include <linux/interrupt.h>
-+#include <linux/io-64-nonatomic-hi-lo.h>
- #include <linux/kernel.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
-@@ -1245,6 +1246,8 @@ static int prueth_perout_enable(void *clockops_data,
- 	struct prueth_emac *emac = clockops_data;
- 	u32 reduction_factor = 0, offset = 0;
- 	struct timespec64 ts;
-+	u64 current_cycle;
-+	u64 start_offset;
- 	u64 ns_period;
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -948,10 +948,13 @@ static int tpm2_load_null(struct tpm_chi
+ 	/* Deduce from the name change TPM interference: */
+ 	dev_err(&chip->dev, "null key integrity check failed\n");
+ 	tpm2_flush_context(chip, tmp_null_key);
+-	chip->flags |= TPM_CHIP_FLAG_DISABLE;
  
- 	if (!on)
-@@ -1283,8 +1286,14 @@ static int prueth_perout_enable(void *clockops_data,
- 	writel(reduction_factor, emac->prueth->shram.va +
- 		TIMESYNC_FW_WC_SYNCOUT_REDUCTION_FACTOR_OFFSET);
- 
--	writel(0, emac->prueth->shram.va +
--		TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
-+	current_cycle = icssg_read_time(emac->prueth->shram.va +
-+					TIMESYNC_FW_WC_CYCLECOUNT_OFFSET);
-+
-+	/* Rounding of current_cycle count to next second */
-+	start_offset = roundup(current_cycle, MSEC_PER_SEC);
-+
-+	hi_lo_writeq(start_offset, emac->prueth->shram.va +
-+		     TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
- 
- 	return 0;
+ err:
+-	return rc ? -ENODEV : 0;
++	if (rc) {
++		chip->flags |= TPM_CHIP_FLAG_DISABLE;
++		rc = -ENODEV;
++	}
++	return rc;
  }
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index 3fe80a8758d30..0713ad7897b68 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -257,6 +257,18 @@ static inline int prueth_emac_slice(struct prueth_emac *emac)
  
- extern const struct ethtool_ops icssg_ethtool_ops;
- 
-+static inline u64 icssg_read_time(const void __iomem *addr)
-+{
-+	u32 low, high;
-+
-+	do {
-+		high = readl(addr + 4);
-+		low = readl(addr);
-+	} while (high != readl(addr + 4));
-+
-+	return low + ((u64)high << 32);
-+}
-+
- /* Classifier helpers */
- void icssg_class_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac);
- void icssg_class_set_host_mac_addr(struct regmap *miig_rt, const u8 *mac);
--- 
-2.43.0
-
+ /**
 
 
 
