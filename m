@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-94250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B909D3BB3
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDE99D3B6F
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88DEE28248A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21F9B28F87
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568A71AA787;
-	Wed, 20 Nov 2024 12:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A917C1B1D63;
+	Wed, 20 Nov 2024 12:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keT9xCnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg4FSLYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F0C1AA1E6;
-	Wed, 20 Nov 2024 12:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F321AA793;
+	Wed, 20 Nov 2024 12:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107588; cv=none; b=Qx/hLug7beZ0BKuCOMwdqwFKCHxOfhKZo8z4axgS7nqMC+9dRpYAAw/HS2lb+3bxh3YaIBa69MzqZgpStwnoeYjeC7zXmIkq9kxP0bz0URF/PRAfXCuvU/xtQNa2Ia7e3QBnenEi+U2g5TqGYcG6WUHy2D7b+XJ0xOrEoWsdars=
+	t=1732107533; cv=none; b=j+vNGc+L8fQhgDbIEIlvTbnvYT9SWlPQsCWKpum6Zfw+lXgbKVkxtYLiyVBhcXegZuMi2QaM3BNc915cxXxCJgrtxjhzDudbodyk2LxuGdmMnyDtnH4ICQY84hwJfxSQFBQy273fpS3G9aaqX7EFtF15s9ZjLh+ExWOzHcFMqJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107588; c=relaxed/simple;
-	bh=pMpjbBX7HK7sQ6cxQPJkcGKohfDVSX7SDtO4/zqlk8M=;
+	s=arc-20240116; t=1732107533; c=relaxed/simple;
+	bh=RqyhxQNGxs5JKI9m/fNrCHdAiGn00kv7XNtcsp+m/Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhHUM1eM68qBh/doM+oxryK4sKy9zVaoc+JuBpP0AF5fceVc6r3wX/p4npxWShe5JamUb/UJOFNAWtU2PJPLg3qmylXZHygJx4I+uDg8fAjal7KSXgh8QtVAt5+c11UL73oe/0EiTsItHjDYuHkwpfOwbCgaRYXS0QQZSWlgs/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keT9xCnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C27C4CED9;
-	Wed, 20 Nov 2024 12:59:47 +0000 (UTC)
+	 MIME-Version; b=BboLbjT810yUyljdZbVy9DokFaDcmx7YXVMCHgSeCNBPNldyQJXdU5VKMHiBdEm3vQHbrPoITK7+9X5MU4WpuoHY+6i3qcTzUyJu4JTA0TUxR/ngqfD2D2shvkoyv6cWa4EB1pmOLPQAoGO5UHVwboHwCMgBNaYyFxo0bPdpA5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg4FSLYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6370C4CECD;
+	Wed, 20 Nov 2024 12:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107588;
-	bh=pMpjbBX7HK7sQ6cxQPJkcGKohfDVSX7SDtO4/zqlk8M=;
+	s=korg; t=1732107532;
+	bh=RqyhxQNGxs5JKI9m/fNrCHdAiGn00kv7XNtcsp+m/Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=keT9xCnUul928lN2pqsz3D+S+8F+J5c7QrE4K6rMyFA96Qi7z46CtuHJyGoentwhi
-	 Yj7hItw88anXRpBg7GNGP0Vy7z4wUaa9HP+oyJ1Ima5PSDhOocNAASCqwnDDHn1NOO
-	 5842uOk19b0WbKEhGLAXigTrmCKElHRQrE6expQY=
+	b=zg4FSLYmUrASqxyUv+oAqTRcthAbrX1lllAngDscnE70g34c05SEB9PRocWDwo7z0
+	 4yj4u8wXjwDc4qo0y1efhl7Y4bEBNmqWimilU/CqSfFUYPrsjJrFSYbTrPSgPqTJLs
+	 h9mTDiePUkH+7IgGA2kVdfXsI5j9IqBIOW9mSxDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 30/82] ocfs2: uncache inode which has failed entering the group
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 065/107] mptcp: update local address flags when setting it
 Date: Wed, 20 Nov 2024 13:56:40 +0100
-Message-ID: <20241120125630.288607269@linuxfoundation.org>
+Message-ID: <20241120125631.142893484@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
+commit e0266319413d5d687ba7b6df7ca99e4b9724a4f2 upstream.
 
-Syzbot has reported the following BUG:
+Just like in-kernel pm, when userspace pm does set_flags, it needs to send
+out MP_PRIO signal, and also modify the flags of the corresponding address
+entry in the local address list. This patch implements the missing logic.
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-...
-Call Trace:
- <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? do_error_trap+0x1dc/0x2c0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
- ? ocfs2_set_new_buffer_uptodate+0x144/0x160
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ocfs2_group_add+0x39f/0x15a0
- ? __pfx_ocfs2_group_add+0x10/0x10
- ? __pfx_lock_acquire+0x10/0x10
- ? mnt_get_write_access+0x68/0x2b0
- ? __pfx_lock_release+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? smack_log+0x123/0x540
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x226/0x2b0
- ocfs2_ioctl+0x65e/0x7d0
- ? __pfx_ocfs2_ioctl+0x10/0x10
- ? smack_file_ioctl+0x29e/0x3a0
- ? __pfx_smack_file_ioctl+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? __pfx_ocfs2_ioctl+0x10/0x10
- __se_sys_ioctl+0xfb/0x170
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
+Traverse all address entries on userspace_pm_local_addr_list to find the
+local address entry, if bkup is true, set the flags of this entry with
+FLAG_BACKUP, otherwise, clear FLAG_BACKUP.
 
-When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
-inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
-remains cached and subsequent call to the same 'ioctl()' for the same
-inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
-to cache the same buffer head of that inode). Fix this by uncaching
-the buffer head with 'ocfs2_remove_from_cache()' on error path in
-'ocfs2_group_add()'.
-
-Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 892f396c8e68 ("mptcp: netlink: issue MP_PRIO signals from userspace PMs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-1-b835580cefa8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/resize.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/pm_userspace.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -566,6 +566,8 @@ out_commit:
- 	ocfs2_commit_trans(osb, handle);
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -574,6 +574,7 @@ int mptcp_userspace_pm_set_flags(struct
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
+ 	struct net *net = sock_net(skb->sk);
++	struct mptcp_pm_addr_entry *entry;
+ 	struct mptcp_sock *msk;
+ 	int ret = -EINVAL;
+ 	struct sock *sk;
+@@ -615,6 +616,17 @@ int mptcp_userspace_pm_set_flags(struct
+ 	if (loc.flags & MPTCP_PM_ADDR_FLAG_BACKUP)
+ 		bkup = 1;
  
- out_free_group_bh:
-+	if (ret < 0)
-+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
- 	brelse(group_bh);
- 
- out_unlock:
++	spin_lock_bh(&msk->pm.lock);
++	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, &loc.addr, false)) {
++			if (bkup)
++				entry->flags |= MPTCP_PM_ADDR_FLAG_BACKUP;
++			else
++				entry->flags &= ~MPTCP_PM_ADDR_FLAG_BACKUP;
++		}
++	}
++	spin_unlock_bh(&msk->pm.lock);
++
+ 	lock_sock(sk);
+ 	ret = mptcp_pm_nl_mp_prio_send_ack(msk, &loc.addr, &rem.addr, bkup);
+ 	release_sock(sk);
 
 
 
