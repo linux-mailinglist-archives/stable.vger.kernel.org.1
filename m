@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-94275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEEC9D3BF0
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A262E9D3B87
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E316B2A7A8
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1E31F21E5C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD231C8797;
-	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136B41BAEFC;
+	Wed, 20 Nov 2024 12:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROOAstTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3HJhFXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB1D1C830E;
-	Wed, 20 Nov 2024 13:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C8D1AAE3F;
+	Wed, 20 Nov 2024 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107607; cv=none; b=GRtsnuw4Y/x3ViAKCF9My2HcyFxq/Jv7GnwP9pNPnOHteQ3vJGG3FWEFmm/WfOZAscAXZF9eEnbBI7a7iSGr1b9bEicqSR8TGNIflEWPgA0jzQHo/59vgkK3u9TDeTYTFdKBwsEiifi0CAVCLPLQZlqZ8FKHvdFQLYI8mek2fqk=
+	t=1732107551; cv=none; b=lmMUjUdPRijDZsjMzz+gy61lZO9SDwfCaRrYxGI009Q166BphKv8nBrifcnbraWcODetJQy2h1Vq2cgF2mKqJzQOJkfBWhilXWl6WRugTEbBPomj7Vo024nctWW4+0uyG6aITRGRYUHZa+r4fjjE7yBRNOLYiapVmQ+O0MMwmFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107607; c=relaxed/simple;
-	bh=K7ChAq73IUPqd9HpV0n/k9Bz5TIn3ZedeDjPmIpkxNE=;
+	s=arc-20240116; t=1732107551; c=relaxed/simple;
+	bh=lR6d73fT818/Bvu7yaIRp1RSoAU2kpNwSy/C1xOUznw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsgcG+hCYogAJ/WIaK7ofuho9FPAoCblmG76xA7fy8xbiE2+yqFgVQKo48Y7Wi0q0tA2rAFn3ksXTwzZ6r5ZdGhJ3RLp8NVcuVtXUxoU2vYYbvaraV0IbIfEcalxN8MPqERXir3VnQ3A4AhRWCjmlhV0vOAZ/d/yoeyWXeztDNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROOAstTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74942C4CED2;
-	Wed, 20 Nov 2024 13:00:06 +0000 (UTC)
+	 MIME-Version; b=LKAJieDv1lkdds1rKV35+LKvkaQ5ZAEuev3TCTTwWLwEDJF3c1ApzdPqvQJJAmR8ysaiu+fjXXZ7rixXrYrAmQTV0s01uhm3xcPUQIGJFns/KeW5drWvEsW+Lu9zyTLfFsOVwdDdukfxee6+TjFVzsY2LSdBHgNLT6DZApZ4/SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3HJhFXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD52C4CECD;
+	Wed, 20 Nov 2024 12:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107606;
-	bh=K7ChAq73IUPqd9HpV0n/k9Bz5TIn3ZedeDjPmIpkxNE=;
+	s=korg; t=1732107551;
+	bh=lR6d73fT818/Bvu7yaIRp1RSoAU2kpNwSy/C1xOUznw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROOAstTKa9SZqBd0PV79c2u+59ZZOKsXHdDV3UPBc57vS+KxdWFDpGzwb60UZDftO
-	 T5+kFmgrzvR1CWvPTKW3j1FjPTdDV7Kio5BDqeas7MbmXkjhew5UVxeq1biFVMKow8
-	 IdsUCE/VHygPqclY2JdY+jX4uqM2qdgA0yzuYc7M=
+	b=z3HJhFXaEZ6vL3DazOb9h9VUC2DDe58ieMFOxYqTtEZLCbkANUwoiu/NyJ615xeq6
+	 JXHCX3MdKyLl1cvUxNxTdYPiOd2nGaRSOvNgzBC2RY+g2r4Qopb1FssMEaWVkM6TkO
+	 l1V6tIEwgdBMC+ypGcvPUn6PNeaVzlmW3F47fzfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 57/82] staging: vchiq_arm: Get the rid off struct vchiq_2835_state
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 092/107] drm/amd: Fix initialization mistake for NBIO 7.7.0
 Date: Wed, 20 Nov 2024 13:57:07 +0100
-Message-ID: <20241120125630.894936545@linuxfoundation.org>
+Message-ID: <20241120125631.787841299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 4e2766102da632f26341d5539519b0abf73df887 ]
+commit 7013a8268d311fded6c7a6528fc1de82668e75f6 upstream.
 
-The whole benefit of this encapsulating struct is questionable.
-It just stores a flag to signalize the init state of vchiq_arm_state.
-Beside the fact this flag is set too soon, the access to uninitialized
-members should be avoided. So initialize vchiq_arm_state properly before
-assign it directly to vchiq_state.
+There is a strapping issue on NBIO 7.7.0 that can lead to spurious PME
+events while in the D0 state.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20240621131958.98208-6-wahrenst@gmx.net
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20241112161142.28974-1-mario.limonciello@amd.com
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 447a54a0f79c9a409ceaa17804bdd2e0206397b9)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 404b739e8955 ("staging: vchiq_arm: Use devm_kzalloc() for vchiq_arm_state allocation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../interface/vchiq_arm/vchiq_arm.c           | 25 +++++--------------
- 1 file changed, 6 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index aa2313f3bcab8..0a97fb237f5e7 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -115,11 +115,6 @@ struct vchiq_arm_state {
- 	int first_connect;
- };
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
+@@ -247,6 +247,12 @@ static void nbio_v7_7_init_registers(str
+ 	if (def != data)
+ 		WREG32_SOC15(NBIO, 0, regBIF0_PCIE_MST_CTRL_3, data);
  
--struct vchiq_2835_state {
--	int inited;
--	struct vchiq_arm_state arm_state;
--};
--
- struct vchiq_pagelist_info {
- 	struct pagelist *pagelist;
- 	size_t pagelist_buffer_size;
-@@ -580,29 +575,21 @@ vchiq_arm_init_state(struct vchiq_state *state,
- int
- vchiq_platform_init_state(struct vchiq_state *state)
- {
--	struct vchiq_2835_state *platform_state;
-+	struct vchiq_arm_state *platform_state;
- 
--	state->platform_state = kzalloc(sizeof(*platform_state), GFP_KERNEL);
--	if (!state->platform_state)
-+	platform_state = kzalloc(sizeof(*platform_state), GFP_KERNEL);
-+	if (!platform_state)
- 		return -ENOMEM;
- 
--	platform_state = (struct vchiq_2835_state *)state->platform_state;
--
--	platform_state->inited = 1;
--	vchiq_arm_init_state(state, &platform_state->arm_state);
-+	vchiq_arm_init_state(state, platform_state);
-+	state->platform_state = (struct opaque_platform_state *)platform_state;
- 
- 	return 0;
++	switch (adev->ip_versions[NBIO_HWIP][0]) {
++	case IP_VERSION(7, 7, 0):
++		data = RREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4) & ~BIT(23);
++		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4, data);
++		break;
++	}
  }
  
- static struct vchiq_arm_state *vchiq_platform_get_arm_state(struct vchiq_state *state)
- {
--	struct vchiq_2835_state *platform_state;
--
--	platform_state   = (struct vchiq_2835_state *)state->platform_state;
--
--	WARN_ON_ONCE(!platform_state->inited);
--
--	return &platform_state->arm_state;
-+	return (struct vchiq_arm_state *)state->platform_state;
- }
- 
- void
--- 
-2.43.0
-
+ static void nbio_v7_7_update_medium_grain_clock_gating(struct amdgpu_device *adev,
 
 
 
