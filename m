@@ -1,95 +1,129 @@
-Return-Path: <stable+bounces-94098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABA69D3539
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 09:18:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEF9D353B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 09:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54ADB1F23521
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:18:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BCA9B24D51
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E446188721;
-	Wed, 20 Nov 2024 08:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C07156F39;
+	Wed, 20 Nov 2024 08:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cx8h7H1F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rn5TAIqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC5E166F3A;
-	Wed, 20 Nov 2024 08:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5977200CB;
+	Wed, 20 Nov 2024 08:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732090655; cv=none; b=kWL850ojLT+uwW+W3sSFBvp/XYS/sVEW60Vhn+ieyqSQ5MV6M13KGdsBG01OW7BiFaGOoRBpCysDPiDPVO1fEw+1/TEENpZf2JeKT8epZDveAA4KC2VnAXT27NkkdMGptmHIWU5npYoRyr6kD5xNoo6uBNVNbmULcR/bfnIl9a4=
+	t=1732090724; cv=none; b=PDO9hXfGF8JkIBZ1X36UP8q+EWzgGmiikx7t+VpDAMspGz0pskynFYH7/Uvfiatus7232l/1q+iYTmtOfEBwck3rGHZfNuyCvtxYmGM7uLcgRPaKTpmn5naKhh3LJt+Bc3FbAoV0eMKLWagkVv8cIo0VuuIMK9queEbVXBgQGX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732090655; c=relaxed/simple;
-	bh=VZ0bMgpHmeS1q3zJXNgfFqVDOKY02RdiVHnzp3t4PKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n3nF7a9k0xCNMW0ZiIJWia0RHhanKUhE3YeXXLm3H961efVSPQW1DRcaCP/nhDHWh1SYugkHTi/7m3q43N/KuIHl0J+YpdtLmD6ouv2pyqomrjVHirJHC8Kpvi2vbHlipM0seTTdiQL0oHSJhc1tLjVgF8OIIsfoGrnU3LA0aHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cx8h7H1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791B1C4CECD;
-	Wed, 20 Nov 2024 08:17:32 +0000 (UTC)
+	s=arc-20240116; t=1732090724; c=relaxed/simple;
+	bh=8b23fimKmndiXTou2v0A2ca4nGlMAUjHBQGaAzvrsO0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s1YnsiZ4YpqKq8MzgQV2QJ9EAeQXz6PFWzg84M+DchG80Infb/mmbNx6H5Djq9Qhr3VpOyX1M5pxL1hpTGeCTT8FDKXMS9oz+eIVIi4VdB8skpFoncw+1nHRxBfYjhpbs5r6swAE7eM90TvkQXeH4eQ9q9fETCEXZRwZytGOof8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rn5TAIqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AD4C4CED0;
+	Wed, 20 Nov 2024 08:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732090655;
-	bh=VZ0bMgpHmeS1q3zJXNgfFqVDOKY02RdiVHnzp3t4PKc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cx8h7H1FN/5vsyHemnKYAB0VKnI16GrilNQpp6mC4wYbA6viC2kfsPuA1cAowKTMt
-	 p2+ZRVrb3FMo+4EBoWLoxoRuv3WrSigL8SBsGkNtexnOLEVXCF7iBjQj29t9dK+q4S
-	 YQUNHA9Jbn7pb9Cgizuktomm6li/x21k5/CzcSgRni1u3FsC5Em8+TntJSsfPiSglz
-	 NHDLsOSPSrtpnrpVRbF9/WO1RzJ3OORZn4qIYeJw48HAJUBYfoSMOusjjrtR0xze90
-	 eFXw1pXPi7pRXKgJG1YJtOZFkKdO5mSYAH9DDQr+mGaDdclJ8mGzM4Ik7WLXW38iyb
-	 jDo7Dy5JPckhQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	"Cc :" <stable@vger.kernel.org>
-Subject: [PATCH] statmount: fix security option retrieval
-Date: Wed, 20 Nov 2024 09:17:25 +0100
-Message-ID: <20241120-verehren-rhabarber-83a11b297bcc@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <c8eaa647-5d67-49b6-9401-705afcb7e4d7@stanley.mountain>
-References: <c8eaa647-5d67-49b6-9401-705afcb7e4d7@stanley.mountain>
+	s=k20201202; t=1732090724;
+	bh=8b23fimKmndiXTou2v0A2ca4nGlMAUjHBQGaAzvrsO0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rn5TAIqp1p/IXH31gLKRH4YNtlKqy087CpReAwzPXR3vj96sFQ8X9pu5dOH0r7bOF
+	 v7hJxbnxbTZ4kzEnwLw6ojhX6N/MjoSli/d30xP+WKgMMh9Tx92x2I7Utl/2rf9GPE
+	 PR+b+G8p300LgLnmvymtwSZvLVw6AkVWM+Row6yRcVrKy7lshkjaDXyPwughTd7ghV
+	 2dvWXr7scgXMh5P71oC6mup7DJYXBIch8PsLlJKzQH2uCa8jofR5CBBj/K8Wi48MWh
+	 25lW82QDCwSDCMq6k8TEQmW4sS1NadLa62CVtkfByWiJLKUD2+17D4/wKWy3tzxSV+
+	 1vCvM7cjKWr+w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tDfv6-00EOz6-3T;
+	Wed, 20 Nov 2024 08:18:41 +0000
+Date: Wed, 20 Nov 2024 08:18:39 +0000
+Message-ID: <86v7wiuxls.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: kvmarm@lists.linux.dev,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Colton Lewis <coltonlewis@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
+In-Reply-To: <20241120005230.2335682-2-oliver.upton@linux.dev>
+References: <20241120005230.2335682-1-oliver.upton@linux.dev>
+	<20241120005230.2335682-2-oliver.upton@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=864; i=brauner@kernel.org; h=from:subject:message-id; bh=VZ0bMgpHmeS1q3zJXNgfFqVDOKY02RdiVHnzp3t4PKc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTbzha7omcmfLT/ZfTVhqfu7zm4OvNbjBay+D2I681ew VnjP/toRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwESUrjP8UxEyeH6pT+llYFfz ovMCSR5h06eesMh/JvunNiL8l/K3OEaGJ2fFCu/FTjbc6DaVLSZeN5jbKdzY6G1iuDvvucqDTeI sAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, mizhang@google.com, coltonlewis@google.com, rananta@google.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Fix the inverted check for security_sb_show_options().
+On Wed, 20 Nov 2024 00:52:29 +0000,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> From: Raghavendra Rao Ananta <rananta@google.com>
+> 
+> DDI0487K D13.1.1 describes the PMU overflow condition, which evaluates
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/c8eaa647-5d67-49b6-9401-705afcb7e4d7@stanley.mountain
-Fixes: aefff51e1c29 ("statmount: retrieve security mount options")
-Cc: Cc: <stable@vger.kernel.org> # mainline only
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- fs/namespace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+nit: DDI0487K.a, and D13.3.1.
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 6b0a17487d0f..eb34a5160f64 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5116,7 +5116,7 @@ static int statmount_opt_sec_array(struct kstatmount *s, struct seq_file *seq)
- 	buf_start = seq->buf + start;
- 
- 	err = security_sb_show_options(seq, sb);
--	if (!err)
-+	if (err)
- 		return err;
- 
- 	if (unlikely(seq_has_overflowed(seq)))
+> to true if any counter's global enable (PMCR_EL0.E), overflow flag
+> (PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+> Of note, this does not require a counter to be enabled
+> (i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
+> 
+> Align kvm_pmu_overflow_status() with the reality of the architecture
+> and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+> bug was discovered while running an SBSA PMU test [*], which only sets
+> PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+> Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> [ oliver: massaged changelog ]
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  arch/arm64/kvm/pmu-emul.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index 8ad62284fa23..3855cc9d0ca5 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+> @@ -381,7 +381,6 @@ static u64 kvm_pmu_overflow_status(struct kvm_vcpu *vcpu)
+>  
+>  	if ((kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E)) {
+>  		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+> -		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
+>  		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
+>  	}
+>  
+
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+
+	M.
+
 -- 
-2.45.2
-
+Without deviation from the norm, progress is not possible.
 
