@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-94230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733469D3BAB
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8989D3B59
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5574B29477
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238AEB28FEF
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20961ABEC5;
-	Wed, 20 Nov 2024 12:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224691ABEA3;
+	Wed, 20 Nov 2024 12:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbVi1JC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDNdra8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B071B1BE23C;
-	Wed, 20 Nov 2024 12:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EBC1AB6EF;
+	Wed, 20 Nov 2024 12:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107572; cv=none; b=UKOO7PtBCOqQtjbj8KMnxF+KRkXArRMtzz1f81k4B5XjLsJUM24IMq4WnTnCSNJfyzd/JZPWH4S/QBmQBGs7B/u+VlZeCdrYJuGmzg5RjQtAqycj9SZsKrP2es6Hc8PgQqJmlVaZBfqLDfxyllMY1WngeyrDObqYCJA5Qxkp+8Y=
+	t=1732107517; cv=none; b=IUcyPzRD1DNH8WRfLwn1YxK+/agDZ5vxH5r/obyMLEtjiVEBkWih1QBZpPLiRBy1pnArHDc/LKmxmYKefX5S5qHo6/HzuZDr8QgEFCgoxVvITVDKaMtnm+gg16BHtlVMbAUYl4WCgO7SubYWYLvn2Tve753CxyD+ixpYVQacqZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107572; c=relaxed/simple;
-	bh=MSEg/5C9EizcOgf1EjtJHeJQu7TAlYlViVI3tGjDnLU=;
+	s=arc-20240116; t=1732107517; c=relaxed/simple;
+	bh=4tVTpL1mZd7+8SG+9SA52ST+5AaJybesJh/dQrw4g8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9m1H0sLhVnG4eTfGORagzhiTZEB/1Xyz1WGHLWgUjsc0OtXWgYU8JyHm53OBRo6W+L1qyjdn/il0g9kY/EyftzEDPYQt9Zg1HlzJNA3XrNe4HN8Cj11SVBNGthSEnrHUL5q4wkofXm2rP4RIYPW3TFB8dyt+B8NzbEWSg5duEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbVi1JC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF70C4CECD;
-	Wed, 20 Nov 2024 12:59:32 +0000 (UTC)
+	 MIME-Version; b=dqFyV51V9MI2yDPFYL07rvWypbSFwXb6S+6EAq+VOF+gJkQ5XgYXfsz0P90vP8Mfu1ozpGQC3kPVCGHxSDJOCicXce4KTbqFj42AjYvgD4MSknoJXGvbpKTIGanA0SjgHXbUXqfJPfMzGQyjECtom6xZOR8c21gkZuyHekyLBqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDNdra8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE05C4CECD;
+	Wed, 20 Nov 2024 12:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107572;
-	bh=MSEg/5C9EizcOgf1EjtJHeJQu7TAlYlViVI3tGjDnLU=;
+	s=korg; t=1732107517;
+	bh=4tVTpL1mZd7+8SG+9SA52ST+5AaJybesJh/dQrw4g8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbVi1JC50jTEnqUxskqH0IrXEl1GAYw2HhhfT2kCxxlSNUwYCoX4iaWQMwgkuL7gM
-	 0JXEpgNgOuv91yZAltBAHH2ZmHzHJ+1ITbiHUEUiGe60k234c/YSbgJgwZqA3x8tv0
-	 HuWxMQph2KdpVo3b+xa3sYNVNNGrYYBivlNWgPgo=
+	b=BDNdra8xFg65mTooiWWUsQcWlr8L446zV9ffCus52EsYzfdvPTWnp/6mmLwyaXVqh
+	 FMZZIaL81z+xvFDWYTOdKBFegaKVRmwezUqCojlJlbvwmmW6RPATa8uFljD3wGIGxC
+	 wEbBDzEhFd5Jyn1BleEA3YeC1+hKbcW4mpn0sHpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/82] Revert "RDMA/core: Fix ENODEV error for iWARP test over vlan"
+	Jann Horn <jannh@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 047/107] mm/mremap: fix address wraparound in move_page_tables()
 Date: Wed, 20 Nov 2024 13:56:22 +0100
-Message-ID: <20241120125629.893785883@linuxfoundation.org>
+Message-ID: <20241120125630.737996804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +66,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 6abe2a90808192a5a8b2825293e5f10e80fdea56 ]
+commit a4a282daf1a190f03790bf163458ea3c8d28d217 upstream.
 
-The citied commit in Fixes line caused to regression for udaddy [1]
-application. It doesn't work over VLANs anymore.
+On 32-bit platforms, it is possible for the expression `len + old_addr <
+old_end` to be false-positive if `len + old_addr` wraps around.
+`old_addr` is the cursor in the old range up to which page table entries
+have been moved; so if the operation succeeded, `old_addr` is the *end* of
+the old region, and adding `len` to it can wrap.
 
-Client:
-  ifconfig eth2 1.1.1.1
-  ip link add link eth2 name p0.3597 type vlan protocol 802.1Q id 3597
-  ip link set dev p0.3597 up
-  ip addr add 2.2.2.2/16 dev p0.3597
-  udaddy -S 847 -C 220 -c 2 -t 0 -s 2.2.2.3 -b 2.2.2.2
+The overflow causes mremap() to mistakenly believe that PTEs have been
+copied; the consequence is that mremap() bails out, but doesn't move the
+PTEs back before the new VMA is unmapped, causing anonymous pages in the
+region to be lost.  So basically if userspace tries to mremap() a
+private-anon region and hits this bug, mremap() will return an error and
+the private-anon region's contents appear to have been zeroed.
 
-Server:
-  ifconfig eth2 1.1.1.3
-  ip link add link eth2 name p0.3597 type vlan protocol 802.1Q id 3597
-  ip link set dev p0.3597 up
-  ip addr add 2.2.2.3/16 dev p0.3597
-  udaddy -S 847 -C 220 -c 2 -t 0 -b 2.2.2.3
+The idea of this check is that `old_end - len` is the original start
+address, and writing the check that way also makes it easier to read; so
+fix the check by rearranging the comparison accordingly.
 
-[1] https://github.com/linux-rdma/rdma-core/blob/master/librdmacm/examples/udaddy.c
+(An alternate fix would be to refactor this function by introducing an
+"orig_old_start" variable or such.)
 
-Fixes: 5069d7e202f6 ("RDMA/core: Fix ENODEV error for iWARP test over vlan")
-Reported-by: Leon Romanovsky <leonro@nvidia.com>
-Closes: https://lore.kernel.org/all/20241110130746.GA48891@unreal
-Link: https://patch.msgid.link/bb9d403419b2b9566da5b8bf0761fa8377927e49.1731401658.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+Tested in a VM with a 32-bit X86 kernel; without the patch:
+
+```
+user@horn:~/big_mremap$ cat test.c
+#define _GNU_SOURCE
+#include <stdlib.h>
+#include <stdio.h>
+#include <err.h>
+#include <sys/mman.h>
+
+#define ADDR1 ((void*)0x60000000)
+#define ADDR2 ((void*)0x10000000)
+#define SIZE          0x50000000uL
+
+int main(void) {
+  unsigned char *p1 = mmap(ADDR1, SIZE, PROT_READ|PROT_WRITE,
+      MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED_NOREPLACE, -1, 0);
+  if (p1 == MAP_FAILED)
+    err(1, "mmap 1");
+  unsigned char *p2 = mmap(ADDR2, SIZE, PROT_NONE,
+      MAP_ANONYMOUS|MAP_PRIVATE|MAP_FIXED_NOREPLACE, -1, 0);
+  if (p2 == MAP_FAILED)
+    err(1, "mmap 2");
+  *p1 = 0x41;
+  printf("first char is 0x%02hhx\n", *p1);
+  unsigned char *p3 = mremap(p1, SIZE, SIZE,
+      MREMAP_MAYMOVE|MREMAP_FIXED, p2);
+  if (p3 == MAP_FAILED) {
+    printf("mremap() failed; first char is 0x%02hhx\n", *p1);
+  } else {
+    printf("mremap() succeeded; first char is 0x%02hhx\n", *p3);
+  }
+}
+user@horn:~/big_mremap$ gcc -static -o test test.c
+user@horn:~/big_mremap$ setarch -R ./test
+first char is 0x41
+mremap() failed; first char is 0x00
+```
+
+With the patch:
+
+```
+user@horn:~/big_mremap$ setarch -R ./test
+first char is 0x41
+mremap() succeeded; first char is 0x41
+```
+
+Link: https://lkml.kernel.org/r/20241111-fix-mremap-32bit-wrap-v1-1-61d6be73b722@google.com
+Fixes: af8ca1c14906 ("mm/mremap: optimize the start addresses in move_page_tables()")
+Signed-off-by: Jann Horn <jannh@google.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/addr.c | 2 --
- 1 file changed, 2 deletions(-)
+ mm/mremap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
-index fd78d678877c4..f253295795f0a 100644
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -269,8 +269,6 @@ rdma_find_ndev_for_src_ip_rcu(struct net *net, const struct sockaddr *src_in)
- 		break;
- #endif
- 	}
--	if (!ret && dev && is_vlan_dev(dev))
--		dev = vlan_dev_real_dev(dev);
- 	return ret ? ERR_PTR(ret) : dev;
- }
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -648,7 +648,7 @@ again:
+ 	 * Prevent negative return values when {old,new}_addr was realigned
+ 	 * but we broke out of the above loop for the first PMD itself.
+ 	 */
+-	if (len + old_addr < old_end)
++	if (old_addr < old_end - len)
+ 		return 0;
  
--- 
-2.43.0
-
+ 	return len + old_addr - old_end;	/* how much done */
 
 
 
