@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-94182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350F49D3B74
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEA99D3BB8
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8949B21FFF
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E06391F21DE2
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93D31AA7B1;
-	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08F61AE864;
+	Wed, 20 Nov 2024 12:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpQqBDuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwf63ubM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6902215853A;
-	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4171AE843;
+	Wed, 20 Nov 2024 12:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107537; cv=none; b=bvBmguT+XbRMgAVjz07QCxtn+50XJx8EmGYvmkjFO+JzXQMmNELFqfATJvmcM0jrqbdrOJPgEW/hLNCpLyzlQ7w83+PyFIxvZDqKB0f4H+F0sVc+o6kEzPzzmzgo5lwf6xeq7ap44wKNAZFkesQUrU7oCEhjGEKGdAfiljlcnvA=
+	t=1732107591; cv=none; b=GuQWK4VVd+jR5l66Whz/UrsYQwHRJw4if0cplRo+D8l+dMAwYuOYDXzByRm0qWbHrj0/dQ4/BL7x6XB9Fz5VRWd0naVDvqBI5usSdF/in0bA4pICAwmo5xOAVv+NeVqFy/j4zQkU3x+bQEydO8G3aEC7r1VIicqbF1z0DxhRsxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107537; c=relaxed/simple;
-	bh=zkdN+ocJiN49mDq5b1STFR0WAX4/F0ssPwD3ZBlhR/0=;
+	s=arc-20240116; t=1732107591; c=relaxed/simple;
+	bh=hmuPY7qPgO2N9bwh6zLjfW8vTxtUY8IyAfRNTVXST1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e60a24H82mfWDw+kFqWjyg8LpySbdwfp9zqClprAClkQKIscoLVkExM+5CENGv66t2cBreRY4dfoSspVTknuAHFuGhleO8Ro16Q3DvAev0k47rcLS63n1AjchImHBHq4uLi/AQ5CDf+ofAETddezXjeCshvU87pjHORwevyR+Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpQqBDuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DD1C4CECD;
-	Wed, 20 Nov 2024 12:58:56 +0000 (UTC)
+	 MIME-Version; b=MpRZgrHF0HAErlWuW5bjrkPsnzcKxdpBl64KgMf5EFzijwzzHLZPKSgB16s95T6ZECummJXLp3r3iODhW25nGHFWoUFKbbMwbVjWntvi8/gMw6ZPTrDXocNat7sADHCK9lJR/DgkIDubZx5G2/lguM+XS+nJxIs5erMDMqSwvQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwf63ubM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EB2C4CECD;
+	Wed, 20 Nov 2024 12:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107536;
-	bh=zkdN+ocJiN49mDq5b1STFR0WAX4/F0ssPwD3ZBlhR/0=;
+	s=korg; t=1732107591;
+	bh=hmuPY7qPgO2N9bwh6zLjfW8vTxtUY8IyAfRNTVXST1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpQqBDuYfJE8hio0HiGiXawdAQbT1Raxu6EUF2hCx8zg2b3Jbb5LCfwDbSgZ5vBlS
-	 wwmtLLTbfFChN/xHpGcUiQ5huAyY8S35TTs2Nl0PGh7RU1qu8Xsa2LarTdeGmXo52C
-	 S/s5wErClkkTAj8g+2RX6PHgXKSM0HYp/4Iru9WQ=
+	b=wwf63ubMvXBa/f36QmRPfE9k2C91TCdyjSauOCIe50Jz9+W6kDm/Y+pOvuzFvfFxn
+	 vcpQ13roDaE6TdDdEBNBoqSg52JavFyreQNS6bh5+XL5mQtbrXv2c/3De80KdLjMGY
+	 AnwvTDzB44HunXPjCFz2XAFrhm9gRLHJmjHPfE7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 070/107] LoongArch: Fix early_numa_add_cpu() usage for FDT systems
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Enrico Bravi (PhD at polito.it)" <enrico.bravi@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.6 35/82] ima: fix buffer overrun in ima_eventdigest_init_common
 Date: Wed, 20 Nov 2024 13:56:45 +0100
-Message-ID: <20241120125631.260409786@linuxfoundation.org>
+Message-ID: <20241120125630.403545516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit 30cec747d6bf2c3e915c075d76d9712e54cde0a6 upstream.
+commit 923168a0631bc42fffd55087b337b1b6c54dcff5 upstream.
 
-early_numa_add_cpu() applies on physical CPU id rather than logical CPU
-id, so use cpuid instead of cpu.
+Function ima_eventdigest_init() calls ima_eventdigest_init_common()
+with HASH_ALGO__LAST which is then used to access the array
+hash_digest_size[] leading to buffer overrun. Have a conditional
+statement to handle this.
 
-Cc: stable@vger.kernel.org
-Fixes: 3de9c42d02a79a5 ("LoongArch: Add all CPUs enabled by fdt to NUMA node 0")
-Reported-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 9fab303a2cb3 ("ima: fix violation measurement list record")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Tested-by: Enrico Bravi (PhD at polito.it) <enrico.bravi@huawei.com>
+Cc: stable@vger.kernel.org # 5.19+
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/smp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/integrity/ima/ima_template_lib.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -296,7 +296,7 @@ static void __init fdt_smp_setup(void)
- 		__cpu_number_map[cpuid] = cpu;
- 		__cpu_logical_map[cpu] = cpuid;
- 
--		early_numa_add_cpu(cpu, 0);
-+		early_numa_add_cpu(cpuid, 0);
- 		set_cpuid_to_node(cpuid, 0);
+--- a/security/integrity/ima/ima_template_lib.c
++++ b/security/integrity/ima/ima_template_lib.c
+@@ -318,15 +318,21 @@ static int ima_eventdigest_init_common(c
+ 				      hash_algo_name[hash_algo]);
  	}
  
+-	if (digest)
++	if (digest) {
+ 		memcpy(buffer + offset, digest, digestsize);
+-	else
++	} else {
+ 		/*
+ 		 * If digest is NULL, the event being recorded is a violation.
+ 		 * Make room for the digest by increasing the offset by the
+-		 * hash algorithm digest size.
++		 * hash algorithm digest size. If the hash algorithm is not
++		 * specified increase the offset by IMA_DIGEST_SIZE which
++		 * fits SHA1 or MD5
+ 		 */
+-		offset += hash_digest_size[hash_algo];
++		if (hash_algo < HASH_ALGO__LAST)
++			offset += hash_digest_size[hash_algo];
++		else
++			offset += IMA_DIGEST_SIZE;
++	}
+ 
+ 	return ima_write_template_field_data(buffer, offset + digestsize,
+ 					     fmt, field_data);
 
 
 
