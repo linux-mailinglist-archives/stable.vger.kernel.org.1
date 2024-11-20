@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-94086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767869D3253
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 03:58:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1689B9D325A
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 04:02:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB2528423B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 02:58:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5993283776
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 03:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85D04D8CE;
-	Wed, 20 Nov 2024 02:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EC44436E;
+	Wed, 20 Nov 2024 03:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A57xcPX9"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b="rv6x7jtb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mailgate02.uberspace.is (mailgate02.uberspace.is [185.26.156.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A009E41C62;
-	Wed, 20 Nov 2024 02:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9903DBB6
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 03:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732071471; cv=none; b=FRYoQzB6+nvm0lr/ZRQywUblyNJvg0KfXuXCTUuTnM55O7P/hvW+FILicH9CO+eBU3DY+YfRpj584D0/gNNaMJQF9sBF+l5to806b9cHfAlbCZgvIoZCave8XIMoEkiqQ1dHJQg9X0alL2P1q0XP5WcImdR7Jphw0Ld93YbK2jQ=
+	t=1732071762; cv=none; b=pxRKiiGZoG0z1zu+pc+C/HIzw87eVG6Kq7JWA+vEX5qyMsx+5E4wAc/lxzdI/hJpNysMnKSdkZ7tbNmxJzqIo63rz1ywR76bN2FKMgq7iIJTDOFxdTi6YMemF7Sv9n1wwlZJjco406zf05GSp2jD8xRF4uNo+LzHfQcAVyGAwVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732071471; c=relaxed/simple;
-	bh=Aw7IdFuEXLbMBlkSZdde3kG/DSC1Uw8cU93GCXPXfHk=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cpAV1u6Z7edx2TiNKPV0R5UhnuXj/jeyLtxDgZZsVzwglGhPv1wcOhKRdhJJxe/vmbvVBZ3kRHWDcb1A7deL6rVXbGTP/n63U4FIKvXbQ7w8picmOW7cH73jx6mJIC7F5GvIrq6t2/vWiqmIsD46sdERE7kN2ehVYby4MgGkL1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A57xcPX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC20AC4CECF;
-	Wed, 20 Nov 2024 02:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732071471;
-	bh=Aw7IdFuEXLbMBlkSZdde3kG/DSC1Uw8cU93GCXPXfHk=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=A57xcPX9gXaqjn05XIM4WCCKqcjtCldfwyCIwHK+xgJxoppX/tQR+HBnHHtzaR61N
-	 i6QiHuP+5ZvvYnePtA8f9TEcnd1zwnAKMN5kaLaq5WTTCshOlAY5sWFGM6hcNd7OxT
-	 33aFqJZ3px6iaeOON1APHXPlBX+8RlhUPbx+FMtMDmWIF4Ld80iuGEpEeq1rmnS4+P
-	 0wO81ajmDp9gNRis4uinLF1ZRZwyMQNbeq30Cv1PUJAz3kv9PlXPfpcZqrw7VLFYD0
-	 l/pD14XNcGTGv9NE8orh7ihiQeQWI7j4U/XoglqNjLvOMx9iI30DbuO5lA91VU/NXA
-	 5QCrUmgOUj1ZA==
-Message-ID: <35c20e47-9124-45df-8067-67c5ef29600e@kernel.org>
-Date: Wed, 20 Nov 2024 10:57:47 +0800
+	s=arc-20240116; t=1732071762; c=relaxed/simple;
+	bh=8jNv7+kbCBf2b2GClu55b6gv+Vj/t/2sMO+mquGa+Jo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y29P061REdWh9sE2HfsuYEZiahBr9kIkPZApLp2Mj7Tp7+GrgV8R1norxwVDTvzDWg+Afrn9BG0WtExkPLGKRV0g0dX56IJ4f2AsgX2mgyRbKstOPPP1UkMYh6y7//hAGcCkLyn0DAdEm0TybcefUNUGSaonro90YWc1VAH+sKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl; spf=pass smtp.mailfrom=lausen.nl; dkim=fail (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b=rv6x7jtb reason="key not found in DNS"; arc=none smtp.client-ip=185.26.156.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lausen.nl
+Received: from devico.uberspace.de (devico.uberspace.de [185.26.156.185])
+	by mailgate02.uberspace.is (Postfix) with ESMTPS id E19601801D3
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 04:02:37 +0100 (CET)
+Received: (qmail 29189 invoked by uid 990); 20 Nov 2024 03:02:37 -0000
+Authentication-Results: devico.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+	by devico.uberspace.de (Haraka/3.0.1) with ESMTPSA; Wed, 20 Nov 2024 04:02:37 +0100
+Message-ID: <4f145884-2c91-4e32-a7bc-b439746c6adb@lausen.nl>
+Date: Tue, 19 Nov 2024 22:02:33 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,145 +48,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Chao Yu <chao@kernel.org>, Eric Sandeen <sandeen@redhat.com>,
- Daniel Rosenberg <drosen@google.com>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [f2fs-dev] [PATCH] Revert "f2fs: remove unreachable lazytime
- mount option parsing"
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-References: <20241112010820.2788822-1-jaegeuk@kernel.org>
- <ZzPLELITeOeBsYdi@google.com>
- <2d26eeee-01f7-445b-a1d2-bc2de65b5599@kernel.org>
- <Zzz5ocjKK_naOnMq@google.com>
+Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
+ connector
+To: Johan Hovold <johan@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: =?UTF-8?Q?Gy=C3=B6rgy_Kurucz?= <me@kuruczgy.com>,
+ Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org,
+ Abel Vesa <abel.vesa@linaro.org>
+References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
+ <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
+ <ZzyYI8KkWK36FfXf@hovoldconsulting.com>
+ <2138d887-f1bf-424a-b3e5-e827a39cc855@lausen.nl>
+ <ZzyqhK-FUwoAcgx1@hovoldconsulting.com>
 Content-Language: en-US
-From: Chao Yu <chao@kernel.org>
-In-Reply-To: <Zzz5ocjKK_naOnMq@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Leonard Lausen <leonard@lausen.nl>
+Autocrypt: addr=leonard@lausen.nl; keydata=
+ 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 Sw==
+In-Reply-To: <ZzyqhK-FUwoAcgx1@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Bar: -
+X-Rspamd-Report: BAYES_HAM(-1.061072) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
+X-Rspamd-Score: -1.151072
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=lausen.nl; s=uberspace;
+	h=from:to:cc:subject:date;
+	bh=8jNv7+kbCBf2b2GClu55b6gv+Vj/t/2sMO+mquGa+Jo=;
+	b=rv6x7jtbsQwegujTx322XHsocu0G20sR2MloiMMToFZdVRigWM4UijidEw3B8hDLBeMlQJvLDv
+	evkg1IcrS1efiBp0RrUjTW3uvyt0E3eFwqCe74HbT3ehIL44RE4cQSty1fq48AR/0VEzU7FJInjo
+	/0GdtfL5gukerZoiOiSxQwcXGCHHRgsrmxSoBH6+Is+lLY008QKo8X92TrexLSJZdwBwofLisVsR
+	TrlgZZ7zFzulwn7C/gb2hzoox+3e0gTgUL+sf9BhAjVZFR5Eqm1rEdAbIS2BeUjeIYhWd6N4HiSv
+	+TU9Z41bKBY8E9KThE0B0X0Gu9Tbk3rfr+geJBYiYoFY6arXPeq4aTbhSM7rmbLDAogsE/NtGBZ6
+	6Y4WoUFnK90Stwt6o89ZOtOQrzxMQ8YR1bYjcqeojhRUByV+HWkkf4c8miGWwyezYII6KrY6DHTJ
+	U+VUb2wgg1pd+mgxzcaYdGKDz4xvk4LxpUof9If3hBqSoc56cRKDUp1ihi2txUunPdH0iU2cO498
+	N4z3gp48Ebu/0fZGMk1Yj6UT4DLctLcH0BD2ZTwOAppTNt/BSKGQs39nFgvUE3KbBWaSrjiZo7TM
+	etyAHxDpajSECOTRBF/iWWUEh4+cmgK4gAArdQ4g8UmjX9ic9k/CXLn4nk5VjBDoTVHkaEYn6LQN
+	s=
 
-On 2024/11/20 4:48, Jaegeuk Kim wrote:
-> On 11/19, Chao Yu wrote:
->> On 2024/11/13 5:39, Jaegeuk Kim via Linux-f2fs-devel wrote:
->>> Hi Eric,
->>>
->>> Could you please check this revert as it breaks the mount()?
->>> It seems F2FS needs to implement new mount support.
->>
->> Hi all,
->>
->> Actually, if we want to enable lazytime option, we can use mount
->> syscall as:
->>
->> mount("/dev/vdb", "/mnt/test", "f2fs", MS_LAZYTIME, NULL);
->>
->> or use shell script as:
->>
->> mount -t f2fs -o lazytime /dev/vdb /mnt/test
->>
->> IIUC, the reason why mount command can handle lazytime is, after
->> 8c7f073aaeaa ("libmount: add support for MS_LAZYTIME"), mount command
->> supports to map "lazytime" to MS_LAZYTIME, and use MS_LAZYTIME in
->> parameter @mountflags of mount(2).
->>
->> So, it looks we have alternative way to enable/disable lazytime feature
->> after removing Opt_{no,}lazytime parsing in f2fs, do we really need this
->> revert patch?
+>> The issue of "internal display fails to resume properly (switching VT brings it back)"
+>> also affects sc7180 platform during some resumes. Do you see the issue consistently
+>> during every resume?
 > 
-> This is a regression of the below command. I don't think offering others are
-> feasible.
+> Yes, it happens on every suspend cycle here.
 > 
-> mount("/dev/vdb", "/mnt/test", "f2fs", 0, "lazytime");
+> I didn't notice the issue initially as fbdev does not seem to be
+> affected, and I've been running with this patch applied to suppress the
+> resume errors since it was posted.
 
-Alright, there are other options were removed along w/ removal of
-related feature. e.g.
+Ok. Then situation is worse on x1e80100 than sc7180, where the issue only
+occurs sporadically.
 
-1. io_bits=%u by commit 87161a2b0aed ("f2fs: deprecate io_bits")
-2. whint_mode=%s by commit 930e2607638d ("f2fs: remove obsolete whint_mode")
-
-Do we need to add these options handling back, and print "xxx options were
-deprecated" as we did in ("f2fs: kill heap-based allocation"), in order to
-avoid mount(......, "io_bits=%u" or "whint_mode=%s") command regression?
-
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 867b147eb957..329f317e6f09 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -733,10 +733,8 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
-  			clear_opt(sbi, DISCARD);
-  			break;
-  		case Opt_noheap:
--			set_opt(sbi, NOHEAP);
--			break;
-  		case Opt_heap:
--			clear_opt(sbi, NOHEAP);
-+			f2fs_warn(sbi, "heap/no_heap options were deprecated");
-  			break;
-
-Thanks,
-
+>>> The x1e80100 is the only platform I have access to with a writeback
+>>> connector, but this regression potentially affects a whole host of older
+>>> platforms as well.
+>>
+>> Have you attempted setting CTM or other DRM state when running with this patch?
 > 
->>
->> Thanks,
->>
->>>
->>> Thanks,
->>>
->>> On 11/12, Jaegeuk Kim wrote:
->>>> This reverts commit 54f43a10fa257ad4af02a1d157fefef6ebcfa7dc.
->>>>
->>>> The above commit broke the lazytime mount, given
->>>>
->>>> mount("/dev/vdb", "/mnt/test", "f2fs", 0, "lazytime");
->>>>
->>>> CC: stable@vger.kernel.org # 6.11+
->>>> Signed-off-by: Daniel Rosenberg <drosen@google.com>
->>>> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
->>>> ---
->>>>    fs/f2fs/super.c | 10 ++++++++++
->>>>    1 file changed, 10 insertions(+)
->>>>
->>>> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
->>>> index 49519439b770..35c4394e4fc6 100644
->>>> --- a/fs/f2fs/super.c
->>>> +++ b/fs/f2fs/super.c
->>>> @@ -150,6 +150,8 @@ enum {
->>>>    	Opt_mode,
->>>>    	Opt_fault_injection,
->>>>    	Opt_fault_type,
->>>> +	Opt_lazytime,
->>>> +	Opt_nolazytime,
->>>>    	Opt_quota,
->>>>    	Opt_noquota,
->>>>    	Opt_usrquota,
->>>> @@ -226,6 +228,8 @@ static match_table_t f2fs_tokens = {
->>>>    	{Opt_mode, "mode=%s"},
->>>>    	{Opt_fault_injection, "fault_injection=%u"},
->>>>    	{Opt_fault_type, "fault_type=%u"},
->>>> +	{Opt_lazytime, "lazytime"},
->>>> +	{Opt_nolazytime, "nolazytime"},
->>>>    	{Opt_quota, "quota"},
->>>>    	{Opt_noquota, "noquota"},
->>>>    	{Opt_usrquota, "usrquota"},
->>>> @@ -922,6 +926,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
->>>>    			f2fs_info(sbi, "fault_type options not supported");
->>>>    			break;
->>>>    #endif
->>>> +		case Opt_lazytime:
->>>> +			sb->s_flags |= SB_LAZYTIME;
->>>> +			break;
->>>> +		case Opt_nolazytime:
->>>> +			sb->s_flags &= ~SB_LAZYTIME;
->>>> +			break;
->>>>    #ifdef CONFIG_QUOTA
->>>>    		case Opt_quota:
->>>>    		case Opt_usrquota:
->>>> -- 
->>>> 2.47.0.277.g8800431eea-goog
->>>
->>>
->>> _______________________________________________
->>> Linux-f2fs-devel mailing list
->>> Linux-f2fs-devel@lists.sourceforge.net
->>> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+> Nope, I just want basic suspend to work.
+
+Ok.
+
+Given my previous testing and finding of this patch causing unexplained CRTC
+CTM regression was back in July on 6.9.8 and next-20240709, I went ahead and
+tested on 6.10.14, 6.11.9 and 6.12 as well. To recall, the problematic behavior
+observed with this patch before was that CRTC CTM state would be lost after
+suspend with external display attached and re-setting the state was no longer
+possible after resume. (The "failed to get dspp on lm 0" etc. errors mentioned
+in my earlier email today were not associated with CRTC state issue, but
+actually occur with and without this patch. Apologies for misstating, given the
+elapsed time):
+
+The finding is that while 6.10.14 with this patch applied still suffers from
+that regression, 6.11.9 and 6.12 do not face the CRTC state regression.
+Therefore, whatever issue the patch uncovered in older kernels and which
+justified not merging it before due to regressing basic CTM functionality, is
+now fixed. The patch should be good to merge and backport to 6.11, but from my
+perspective should not be backported to older kernels unless the interaction
+with the DRM CRTC state issue is understood and an associated fix backported as
+well.
+
+I also confirmed that the patch (still) fixes the
+"[drm:drm_mode_config_helper_resume] *ERROR* Failed to resume (-22)"
+error upon resume.
+
+Tested-by: Leonard Lausen <leonard@lausen.nl> # on sc7180 lazor
+
+Thank you
+Leonard
 
 
