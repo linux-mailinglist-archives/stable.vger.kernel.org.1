@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-94201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FFB9D3B88
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D719D3BD3
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 246F5B23A4D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9041F23F76
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EE51A9B45;
-	Wed, 20 Nov 2024 12:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD5B1C878E;
+	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV9oyBKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxqJzB4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2334C1AAE3F;
-	Wed, 20 Nov 2024 12:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAC21C830B;
+	Wed, 20 Nov 2024 13:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107551; cv=none; b=nwMpMqoqj9auRiKr+/rQTAPNmkAU9eDsmMjYqSV3/CTEZleMx0ULBdkOAABZ55ciKmTPNCx6pu8nNUFo3zS8NkHCn70DIPyZSyYPTJ4f5d6YfKyfgKmyj/MtCBk/A/US0pO/PFq96Kg8/+qRGc0itsmnkkE9t+Q6fZIUz5LAoDY=
+	t=1732107607; cv=none; b=EoiW+g0731nsTfjFFqG0sL8xNI20VtX153AzsFGCbqObMGVBbjmJhzSEiOlEgDVwH6CZilNNFPyve2fLm6SmCz2c8T1JLM9PbowJqlZQ9dEoaXolFvE9rXMYumZZzcmPELJfMCGjvzETZZEVJ2Kn+9htZzfW3+juif3phDnsVBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107551; c=relaxed/simple;
-	bh=TuEr/KKC6oX8R7UP+aw6GUVQ+vAANldc/0Yfnb718tY=;
+	s=arc-20240116; t=1732107607; c=relaxed/simple;
+	bh=poOgLjJURqHizdHszuMrxzKRqUBdcMyAPFQB9KWCIYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpUhRHjVmyJYmxFKPl+Yr5O1ERW/BMfHTvnL2iqf1WVrrnYNAZcK7T5rSGPs90GmKT4ogsUkmshLRT8JFJn7Wqi5YIpGmsEaxtbPTIgkvfStjpDot4eIB/mOqnMiBDOd/piZ6LUeDKDj/H+RdDHH9s7MI/gmPDx9W1RqyL6aPjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV9oyBKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6297C4CECD;
-	Wed, 20 Nov 2024 12:59:10 +0000 (UTC)
+	 MIME-Version; b=qC4bVBMTXtIt4XG7229zyQLDRPoR2uA2DMj4TzacekvPavVVJbSxURZEHVCIR7oa2tL7Q7ixbcMI0obm3lArt7jaO3D96ivS4PiTVBbmKHwk/p+++AV4ghE4Uykvx69UzJDqqjoz1qdi/tMQpeOeA14BX68fckQVGl6YVqYMB/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxqJzB4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0E6C4CECD;
+	Wed, 20 Nov 2024 13:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107551;
-	bh=TuEr/KKC6oX8R7UP+aw6GUVQ+vAANldc/0Yfnb718tY=;
+	s=korg; t=1732107605;
+	bh=poOgLjJURqHizdHszuMrxzKRqUBdcMyAPFQB9KWCIYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KV9oyBKvlCizSGOoU3bL3v2OFpnTNxpEISqAbItdMErvVttYWlWoHA7Xd/yVJSbBw
-	 t0M19D74Pq5KtC1OTK8KWkslmdrUSwQFGM/HAb1O3fK0K+beNJlnB4B16E5EXTmRfO
-	 yLDfUCuiYyGeXbkMfZgy2ffGOApZGaJA7alG6PuA=
+	b=FxqJzB4QE6Z8jlzd8iNi4BToRf940V/XcxWekGxIGDSCugh2MfpDzdOnD0n5s4Qtb
+	 blUR4JacV8hY6tWfk1iUzfvFVbQ0xw2WzZc/M+vlu97BwqB55wC2F1ZMc2Ye7WNgZe
+	 VI0NSgxSA3sST/Qf6RviknIWVsRQR37tAZLQiADc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.11 091/107] nouveau/dp: handle retries for AUX CH transfers with GSP.
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 56/82] mm/damon/core: handle zero {aggregation,ops_update} intervals
 Date: Wed, 20 Nov 2024 13:57:06 +0100
-Message-ID: <20241120125631.763362305@linuxfoundation.org>
+Message-ID: <20241120125630.873747470@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 9776c0a75a1a86b753b2dc7c1ecc3baa048a8dec upstream.
+[ Upstream commit 3488af0970445ff5532c7e8dc5e6456b877aee5e ]
 
-eb284f4b3781 drm/nouveau/dp: Honor GSP link training retry timeouts
+Patch series "mm/damon/core: fix handling of zero non-sampling intervals".
 
-tried to fix a problem with panel retires, however it appears
-the auxch also needs the same treatment, so add the same retry
-wrapper around it.
+DAMON's internal intervals accounting logic is not correctly handling
+non-sampling intervals of zero values for a wrong assumption.  This could
+cause unexpected monitoring behavior, and even result in infinite hang of
+DAMON sysfs interface user threads in case of zero aggregation interval.
+Fix those by updating the intervals accounting logic.  For details of the
+root case and solutions, please refer to commit messages of fixes.
 
-This fixes some eDP panels after a suspend/resume cycle.
+This patch (of 2):
 
-Fixes: eb284f4b3781 ("drm/nouveau/dp: Honor GSP link training retry timeouts")
-Cc: stable@vger.kernel.org
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241111034126.2028401-2-airlied@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+DAMON's logics to determine if this is the time to do aggregation and ops
+update assumes next_{aggregation,ops_update}_sis are always set larger
+than current passed_sample_intervals.  And therefore it further assumes
+continuously incrementing passed_sample_intervals every sampling interval
+will make it reaches to the next_{aggregation,ops_update}_sis in future.
+The logic therefore make the action and update
+next_{aggregation,ops_updaste}_sis only if passed_sample_intervals is same
+to the counts, respectively.
+
+If Aggregation interval or Ops update interval are zero, however,
+next_aggregation_sis or next_ops_update_sis are set same to current
+passed_sample_intervals, respectively.  And passed_sample_intervals is
+incremented before doing the next_{aggregation,ops_update}_sis check.
+Hence, passed_sample_intervals becomes larger than
+next_{aggregation,ops_update}_sis, and the logic says it is not the time
+to do the action and update next_{aggregation,ops_update}_sis forever,
+until an overflow happens.  In other words, DAMON stops doing aggregations
+or ops updates effectively forever, and users cannot get monitoring
+results.
+
+Based on the documents and the common sense, a reasonable behavior for
+such inputs is doing an aggregation and an ops update for every sampling
+interval.  Handle the case by removing the assumption.
+
+Note that this could incur particular real issue for DAMON sysfs interface
+users, in case of zero Aggregation interval.  When user starts DAMON with
+zero Aggregation interval and asks online DAMON parameter tuning via DAMON
+sysfs interface, the request is handled by the aggregation callback.
+Until the callback finishes the work, the user who requested the online
+tuning just waits.  Hence, the user will be stuck until the
+passed_sample_intervals overflows.
+
+Link: https://lkml.kernel.org/r/20241031183757.49610-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20241031183757.49610-2-sj@kernel.org
+Fixes: 4472edf63d66 ("mm/damon/core: use number of passed access sampling as a timer")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.7.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/nouveau/nvkm/engine/disp/r535.c   | 59 +++++++++++--------
- 1 file changed, 35 insertions(+), 24 deletions(-)
+ mm/damon/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-index 8f9aa3463c3c..99110ab2f44d 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-@@ -1060,33 +1060,44 @@ r535_dp_aux_xfer(struct nvkm_outp *outp, u8 type, u32 addr, u8 *data, u8 *psize)
- 	NV0073_CTRL_DP_AUXCH_CTRL_PARAMS *ctrl;
- 	u8 size = *psize;
- 	int ret;
-+	int retries;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index a29390fd55935..d0441e24a8ed5 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1454,7 +1454,7 @@ static int kdamond_fn(void *data)
+ 		if (ctx->ops.check_accesses)
+ 			max_nr_accesses = ctx->ops.check_accesses(ctx);
  
--	ctrl = nvkm_gsp_rm_ctrl_get(&disp->rm.objcom, NV0073_CTRL_CMD_DP_AUXCH_CTRL, sizeof(*ctrl));
--	if (IS_ERR(ctrl))
--		return PTR_ERR(ctrl);
-+	for (retries = 0; retries < 3; ++retries) {
-+		ctrl = nvkm_gsp_rm_ctrl_get(&disp->rm.objcom, NV0073_CTRL_CMD_DP_AUXCH_CTRL, sizeof(*ctrl));
-+		if (IS_ERR(ctrl))
-+			return PTR_ERR(ctrl);
+-		if (ctx->passed_sample_intervals == next_aggregation_sis) {
++		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
+ 			kdamond_merge_regions(ctx,
+ 					max_nr_accesses / 10,
+ 					sz_limit);
+@@ -1472,7 +1472,7 @@ static int kdamond_fn(void *data)
  
--	ctrl->subDeviceInstance = 0;
--	ctrl->displayId = BIT(outp->index);
--	ctrl->bAddrOnly = !size;
--	ctrl->cmd = type;
--	if (ctrl->bAddrOnly) {
--		ctrl->cmd = NVDEF_SET(ctrl->cmd, NV0073_CTRL, DP_AUXCH_CMD, REQ_TYPE, WRITE);
--		ctrl->cmd = NVDEF_SET(ctrl->cmd, NV0073_CTRL, DP_AUXCH_CMD,  I2C_MOT, FALSE);
-+		ctrl->subDeviceInstance = 0;
-+		ctrl->displayId = BIT(outp->index);
-+		ctrl->bAddrOnly = !size;
-+		ctrl->cmd = type;
-+		if (ctrl->bAddrOnly) {
-+			ctrl->cmd = NVDEF_SET(ctrl->cmd, NV0073_CTRL, DP_AUXCH_CMD, REQ_TYPE, WRITE);
-+			ctrl->cmd = NVDEF_SET(ctrl->cmd, NV0073_CTRL, DP_AUXCH_CMD,  I2C_MOT, FALSE);
-+		}
-+		ctrl->addr = addr;
-+		ctrl->size = !ctrl->bAddrOnly ? (size - 1) : 0;
-+		memcpy(ctrl->data, data, size);
-+
-+		ret = nvkm_gsp_rm_ctrl_push(&disp->rm.objcom, &ctrl, sizeof(*ctrl));
-+		if ((ret == -EAGAIN || ret == -EBUSY) && ctrl->retryTimeMs) {
-+			/*
-+			 * Device (likely an eDP panel) isn't ready yet, wait for the time specified
-+			 * by GSP before retrying again
-+			 */
-+			nvkm_debug(&disp->engine.subdev,
-+				   "Waiting %dms for GSP LT panel delay before retrying in AUX\n",
-+				   ctrl->retryTimeMs);
-+			msleep(ctrl->retryTimeMs);
-+			nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
-+		} else {
-+			memcpy(data, ctrl->data, size);
-+			*psize = ctrl->size;
-+			ret = ctrl->replyType;
-+			nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
-+			break;
-+		}
- 	}
--	ctrl->addr = addr;
--	ctrl->size = !ctrl->bAddrOnly ? (size - 1) : 0;
--	memcpy(ctrl->data, data, size);
--
--	ret = nvkm_gsp_rm_ctrl_push(&disp->rm.objcom, &ctrl, sizeof(*ctrl));
--	if (ret) {
--		nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
--		return ret;
--	}
--
--	memcpy(data, ctrl->data, size);
--	*psize = ctrl->size;
--	ret = ctrl->replyType;
--	nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
- 	return ret;
- }
+ 		sample_interval = ctx->attrs.sample_interval ?
+ 			ctx->attrs.sample_interval : 1;
+-		if (ctx->passed_sample_intervals == next_aggregation_sis) {
++		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
+ 			ctx->next_aggregation_sis = next_aggregation_sis +
+ 				ctx->attrs.aggr_interval / sample_interval;
  
+@@ -1482,7 +1482,7 @@ static int kdamond_fn(void *data)
+ 				ctx->ops.reset_aggregated(ctx);
+ 		}
+ 
+-		if (ctx->passed_sample_intervals == next_ops_update_sis) {
++		if (ctx->passed_sample_intervals >= next_ops_update_sis) {
+ 			ctx->next_ops_update_sis = next_ops_update_sis +
+ 				ctx->attrs.ops_update_interval /
+ 				sample_interval;
 -- 
-2.47.0
+2.43.0
 
 
 
