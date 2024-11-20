@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-94256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAD49D3BC2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F079D3B75
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0134B2433E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47044B22281
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73C81C1F3F;
-	Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DE91AA7AE;
+	Wed, 20 Nov 2024 12:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5/dhy3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8aSxVsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F651C243A;
-	Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F515853A;
+	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107592; cv=none; b=B2KeCQ+lfaD62C8Jra+nksydNMDRDaw9neaSAlhVMruoI2dafjUWlaVuiA3l2dUIDV6Clx64do9hqM0j4TemIzycwveNOjFINdRyGyKhOuMOP+PYF8znGi+Jri4c3uYR7mUZPDzsZl1QUscP1IeJsl6coH3DsoePnFS2UtREsiU=
+	t=1732107537; cv=none; b=GKUqxCpAtZyE3IMrOltZGp5EMVjvKHU2e+Dh8G3zFH4znW8nM7JzewXKUVEKdXd0gfNYMSxuGo5pW0dotqSZww/OQxZJYOTOeLdQCMjLuhXM0PYYNsnPLIPDDcrq2VJFbqyMBBwZtLNtfXYGOJLOjHCl1uY27ZeRWyx2kHFCmn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107592; c=relaxed/simple;
-	bh=P7e41+A6tC0wPsOhyI2ANFi3zzv7DQWNjJE/T/T5mDE=;
+	s=arc-20240116; t=1732107537; c=relaxed/simple;
+	bh=RD1uMX6XRiJfjlpLVkjo/DPJ8rebGUL4rrDEN1Hbzg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBtdJJDk1KL/FsPKOX2x5BQ18ONtv3okyuLbk7Coxvz1dUHtvnZEjMx0crf2qPS6gDXmvHLaksMStEgluZ8YxYVYeC3YOPJXTeZGBfDpcg/39ZgMMeUReoYlvXKt6cwdKKFqieot8y8oEZG3F77GAVCE/94f/Wg7vmBMN2d8+VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5/dhy3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4421EC4CECD;
-	Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
+	 MIME-Version; b=kFgfV6lH5tSPeUlDivEr/6nNgyO2WA9UTF1KSVZj58W+X2ZDYAm0tWC77APHxbGImmz+ljS+7FgpkvavF1GhlVKsF0s8OvxnjuEWGOrUIB8tV8kbQhhtN4KntFiXiRzN/rB3Wh5Qxpf/cTajqT6yD8QVZacEG9AUGW0SgN1xQVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8aSxVsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A692EC4CECD;
+	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107592;
-	bh=P7e41+A6tC0wPsOhyI2ANFi3zzv7DQWNjJE/T/T5mDE=;
+	s=korg; t=1732107537;
+	bh=RD1uMX6XRiJfjlpLVkjo/DPJ8rebGUL4rrDEN1Hbzg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5/dhy3jRTPAgRd4AdqOOn+87RPkxUFfDBb/J4O6kSTXt8jGUqlUp1uP55UGxqa8/
-	 FokusSkFDbVvW2QRYANRkw+x13oqkQVu2VXMJOydQfQmIqYbs7wLI5LUVHwwS/67K+
-	 Ij+nw7j+AgJNYT//GJMbVeUVn0cEQl076u5u6Ga4=
+	b=L8aSxVsL5m631v+zJcnpXIn6jwnIJ+N/6IoK+lFIv5hG5G2thjCl2Y+Rh9UPCY2Fv
+	 JW7SD4vGIsGuAPUTbTNl9UvxkBiERAgOCbaJbDYDRMm3IaomOvfL3s4+yDpIpwLwNM
+	 e5v7IahuTdUDUMUFDdywt4vcJP+CFkhZ2LhEqTVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Like Xu <like.xu.linux@gmail.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 36/82] KVM: nVMX: Treat vpid01 as current if L2 is active, but with VPID disabled
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.11 071/107] LoongArch: Disable KASAN if PGDIR_SIZE is too large for cpu_vabits
 Date: Wed, 20 Nov 2024 13:56:46 +0100
-Message-ID: <20241120125630.426335042@linuxfoundation.org>
+Message-ID: <20241120125631.282723620@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 2657b82a78f18528bef56dc1b017158490970873 upstream.
+commit 227ca9f6f6aeb8aa8f0c10430b955f1fe2aeab91 upstream.
 
-When getting the current VPID, e.g. to emulate a guest TLB flush, return
-vpid01 if L2 is running but with VPID disabled, i.e. if VPID is disabled
-in vmcs12.  Architecturally, if VPID is disabled, then the guest and host
-effectively share VPID=0.  KVM emulates this behavior by using vpid01 when
-running an L2 with VPID disabled (see prepare_vmcs02_early_rare()), and so
-KVM must also treat vpid01 as the current VPID while L2 is active.
+If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
+overflow UINTPTR_MAX because KASAN_SHADOW_START/KASAN_SHADOW_END are
+aligned up by PGDIR_SIZE. And then the overflowed KASAN_SHADOW_END looks
+like a user space address.
 
-Unconditionally treating vpid02 as the current VPID when L2 is active
-causes KVM to flush TLB entries for vpid02 instead of vpid01, which
-results in TLB entries from L1 being incorrectly preserved across nested
-VM-Enter to L2 (L2=>L1 isn't problematic, because the TLB flush after
-nested VM-Exit flushes vpid01).
+For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too large
+for Loongson-2K series whose cpu_vabits = 39.
 
-The bug manifests as failures in the vmx_apicv_test KVM-Unit-Test, as KVM
-incorrectly retains TLB entries for the APIC-access page across a nested
-VM-Enter.
+Since CONFIG_4KB_4LEVEL is completely legal for CPUs with cpu_vabits <=
+39, we just disable KASAN via early return in kasan_init(). Otherwise we
+get a boot failure.
 
-Opportunisticaly add comments at various touchpoints to explain the
-architectural requirements, and also why KVM uses vpid01 instead of vpid02.
+Moreover, we change KASAN_SHADOW_END from the first address after KASAN
+shadow area to the last address in KASAN shadow area, in order to avoid
+the end address exactly overflow to 0 (which is a legal case). We don't
+need to worry about alignment because pgd_addr_end() can handle it.
 
-All credit goes to Chao, who root caused the issue and identified the fix.
-
-Link: https://lore.kernel.org/all/ZwzczkIlYGX+QXJz@intel.com
-Fixes: 2b4a5a5d5688 ("KVM: nVMX: Flush current VPID (L1 vs. L2) for KVM_REQ_TLB_FLUSH_GUEST")
 Cc: stable@vger.kernel.org
-Cc: Like Xu <like.xu.linux@gmail.com>
-Debugged-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Tested-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20241031202011.1580522-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/nested.c |   30 +++++++++++++++++++++++++-----
- arch/x86/kvm/vmx/vmx.c    |    2 +-
- 2 files changed, 26 insertions(+), 6 deletions(-)
+ arch/loongarch/include/asm/kasan.h |    2 +-
+ arch/loongarch/mm/kasan_init.c     |   15 +++++++++++++--
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -1150,11 +1150,14 @@ static void nested_vmx_transition_tlb_fl
- 		kvm_make_request(KVM_REQ_HV_TLB_FLUSH, vcpu);
+--- a/arch/loongarch/include/asm/kasan.h
++++ b/arch/loongarch/include/asm/kasan.h
+@@ -51,7 +51,7 @@
+ /* KAsan shadow memory start right after vmalloc. */
+ #define KASAN_SHADOW_START		round_up(KFENCE_AREA_END, PGDIR_SIZE)
+ #define KASAN_SHADOW_SIZE		(XKVRANGE_VC_SHADOW_END - XKPRANGE_CC_KASAN_OFFSET)
+-#define KASAN_SHADOW_END		round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE)
++#define KASAN_SHADOW_END		(round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE) - 1)
+ 
+ #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
+ #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -218,7 +218,7 @@ static void __init kasan_map_populate(un
+ asmlinkage void __init kasan_early_init(void)
+ {
+ 	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_START, PGDIR_SIZE));
+-	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, PGDIR_SIZE));
++	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END + 1, PGDIR_SIZE));
+ }
+ 
+ static inline void kasan_set_pgd(pgd_t *pgdp, pgd_t pgdval)
+@@ -233,7 +233,7 @@ static void __init clear_pgds(unsigned l
+ 	 * swapper_pg_dir. pgd_clear() can't be used
+ 	 * here because it's nop on 2,3-level pagetable setups
+ 	 */
+-	for (; start < end; start += PGDIR_SIZE)
++	for (; start < end; start = pgd_addr_end(start, end))
+ 		kasan_set_pgd((pgd_t *)pgd_offset_k(start), __pgd(0));
+ }
+ 
+@@ -243,6 +243,17 @@ void __init kasan_init(void)
+ 	phys_addr_t pa_start, pa_end;
  
  	/*
--	 * If vmcs12 doesn't use VPID, L1 expects linear and combined mappings
--	 * for *all* contexts to be flushed on VM-Enter/VM-Exit, i.e. it's a
--	 * full TLB flush from the guest's perspective.  This is required even
--	 * if VPID is disabled in the host as KVM may need to synchronize the
--	 * MMU in response to the guest TLB flush.
-+	 * If VPID is disabled, then guest TLB accesses use VPID=0, i.e. the
-+	 * same VPID as the host, and so architecturally, linear and combined
-+	 * mappings for VPID=0 must be flushed at VM-Enter and VM-Exit.  KVM
-+	 * emulates L2 sharing L1's VPID=0 by using vpid01 while running L2,
-+	 * and so KVM must also emulate TLB flush of VPID=0, i.e. vpid01.  This
-+	 * is required if VPID is disabled in KVM, as a TLB flush (there are no
-+	 * VPIDs) still occurs from L1's perspective, and KVM may need to
-+	 * synchronize the MMU in response to the guest TLB flush.
- 	 *
- 	 * Note, using TLB_FLUSH_GUEST is correct even if nested EPT is in use.
- 	 * EPT is a special snowflake, as guest-physical mappings aren't
-@@ -2229,6 +2232,17 @@ static void prepare_vmcs02_early_rare(st
- 
- 	vmcs_write64(VMCS_LINK_POINTER, INVALID_GPA);
- 
-+	/*
-+	 * If VPID is disabled, then guest TLB accesses use VPID=0, i.e. the
-+	 * same VPID as the host.  Emulate this behavior by using vpid01 for L2
-+	 * if VPID is disabled in vmcs12.  Note, if VPID is disabled, VM-Enter
-+	 * and VM-Exit are architecturally required to flush VPID=0, but *only*
-+	 * VPID=0.  I.e. using vpid02 would be ok (so long as KVM emulates the
-+	 * required flushes), but doing so would cause KVM to over-flush.  E.g.
-+	 * if L1 runs L2 X with VPID12=1, then runs L2 Y with VPID12 disabled,
-+	 * and then runs L2 X again, then KVM can and should retain TLB entries
-+	 * for VPID12=1.
++	 * If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
++	 * overflow UINTPTR_MAX and then looks like a user space address.
++	 * For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too
++	 * large for Loongson-2K series whose cpu_vabits = 39.
 +	 */
- 	if (enable_vpid) {
- 		if (nested_cpu_has_vpid(vmcs12) && vmx->nested.vpid02)
- 			vmcs_write16(VIRTUAL_PROCESSOR_ID, vmx->nested.vpid02);
-@@ -5827,6 +5841,12 @@ static int handle_invvpid(struct kvm_vcp
- 		return nested_vmx_fail(vcpu,
- 			VMXERR_INVALID_OPERAND_TO_INVEPT_INVVPID);
- 
++	if (KASAN_SHADOW_END < vm_map_base) {
++		pr_warn("PGDIR_SIZE too large for cpu_vabits, KernelAddressSanitizer disabled.\n");
++		return;
++	}
++
 +	/*
-+	 * Always flush the effective vpid02, i.e. never flush the current VPID
-+	 * and never explicitly flush vpid01.  INVVPID targets a VPID, not a
-+	 * VMCS, and so whether or not the current vmcs12 has VPID enabled is
-+	 * irrelevant (and there may not be a loaded vmcs12).
-+	 */
- 	vpid02 = nested_get_vpid02(vcpu);
- 	switch (type) {
- 	case VMX_VPID_EXTENT_INDIVIDUAL_ADDR:
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -3193,7 +3193,7 @@ static void vmx_flush_tlb_all(struct kvm
- 
- static inline int vmx_get_current_vpid(struct kvm_vcpu *vcpu)
- {
--	if (is_guest_mode(vcpu))
-+	if (is_guest_mode(vcpu) && nested_cpu_has_vpid(get_vmcs12(vcpu)))
- 		return nested_get_vpid02(vcpu);
- 	return to_vmx(vcpu)->vpid;
- }
+ 	 * PGD was populated as invalid_pmd_table or invalid_pud_table
+ 	 * in pagetable_init() which depends on how many levels of page
+ 	 * table you are using, but we had to clean the gpd of kasan
 
 
 
