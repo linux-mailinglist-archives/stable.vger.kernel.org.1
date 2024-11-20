@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-94167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6CE9D3B62
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920959D3BAC
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 745A82820C2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57E6A28403F
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9297E1A76DE;
-	Wed, 20 Nov 2024 12:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A46A1AA782;
+	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHcSOHYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qj7XhAGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523F71A706F;
-	Wed, 20 Nov 2024 12:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480FF1A7262;
+	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107525; cv=none; b=km+ZnF3tLlYHvNXquPzfMCPgRzL59qAcggQoi/TSx8g2QISDEAMVaxXqzCBscAHEmZqToOxPHhdIDHCFWc+IEWR6n2Rp73i7wnDDxeIbDC9wbcg0zOcsKqtIvEHRe55nMWmFNDvcGHTWiGoDOB1Bas76PQGrGkc7n8fODa0Spko=
+	t=1732107581; cv=none; b=EbPW0qA1U9GcF9a1B+8XV5/34o6KgVjXfk2u1ix/6J4TuY3JxbIjQoDp8V25zcbMKYvztHGdl4OuunYjodEYV2tH1drBXMUGqarf9SlBoqlo6TJ+Za00Kcu/tCqHrEpluyAqnr6+kOIbCsl1kxb4qKDMYODT1HSFVUKkCwbke1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107525; c=relaxed/simple;
-	bh=A1eGRKLHij7+XLL23kY+TIibSb0sExsiO3iH+DPt5FI=;
+	s=arc-20240116; t=1732107581; c=relaxed/simple;
+	bh=97WX+sZJqbMNoO6BQfJhl/yUh1AE3sowOGh3YUEVhrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vmcjhsmiqk+J29SZdv+hT3lKhodv9bQZhOleASJDvBW0qRYIz7ni5DT7JYuE36ehdx+gea3KBKPZG26Uuq5jKXekjfepkjjwRttDcP9zULHQEq02KcY2GorGT4y0F66DULSm7W7WtsAjR0dq0fL24us6rrnga/fsQFcPXqWV3gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHcSOHYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20489C4CECD;
-	Wed, 20 Nov 2024 12:58:45 +0000 (UTC)
+	 MIME-Version; b=QUPEOuvfzfMG1hspxuV7J4d5slWQjYFB66Wp/omLKf3puQOd8K2WSPzCJgFVc3RCGe9VQIMAGydMO4opDHz6LZheMQVUa/MMjzOOuuRbYKsdvkKPEsDF6OhPxh9hA7kgv2bYFeZK7mlPwS9d0WbMjkv0nOv0JLk7szgAilSkzNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qj7XhAGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DC7C4CECD;
+	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107525;
-	bh=A1eGRKLHij7+XLL23kY+TIibSb0sExsiO3iH+DPt5FI=;
+	s=korg; t=1732107581;
+	bh=97WX+sZJqbMNoO6BQfJhl/yUh1AE3sowOGh3YUEVhrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHcSOHYhlzAmxJ1EKfNi+9a4sBo+upTax0hd/uYSGDmJoTR62LrNKwHCt5YC2vNXJ
-	 cYQh2vyfQfLslyKU1seCTOO5K8/E7TmDpqqD6jd9mgxc9c/M34VqQNavKzHFLXx69N
-	 xrt5yBaaoQDvQqY7xd2M039TCMhbnp4sZM2ezxq8=
+	b=Qj7XhAGrrJ2Ap4fYZXKa/LCuKTlMEEnAb7ROV/JU3E+oQC8tA5gZys4PnAcBny2xF
+	 ikacha+AZEDn6sv8mCtGpqYhuCpQevbcZRBZI+be7ZaRZ2NHFun1Kq/p+Y130dRtVB
+	 ARlUZQKTmcfcu+/edMQ3EZ3TJo6x6scAUcjP6NuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Yong He <zhuangel570@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.11 056/107] KVM: x86: Unconditionally set irr_pending when updating APICv state
-Date: Wed, 20 Nov 2024 13:56:31 +0100
-Message-ID: <20241120125630.941542923@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/82] net: stmmac: rename stmmac_pltfr_remove_no_dt to stmmac_pltfr_remove
+Date: Wed, 20 Nov 2024 13:56:32 +0100
+Message-ID: <20241120125630.110279802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit d3ddef46f22e8c3124e0df1f325bc6a18dadff39 upstream.
+[ Upstream commit 2c9fc838067b02cb3e6057fef5cd7cf1c04a95aa ]
 
-Always set irr_pending (to true) when updating APICv status to fix a bug
-where KVM fails to set irr_pending when userspace sets APIC state and
-APICv is disabled, which ultimate results in KVM failing to inject the
-pending interrupt(s) that userspace stuffed into the vIRR, until another
-interrupt happens to be emulated by KVM.
+Now, all users of the old stmmac_pltfr_remove() are converted to the
+devres helper, it's time to rename stmmac_pltfr_remove_no_dt() back to
+stmmac_pltfr_remove() and remove the old stmmac_pltfr_remove().
 
-Only the APICv-disabled case is flawed, as KVM forces apic->irr_pending to
-be true if APICv is enabled, because not all vIRR updates will be visible
-to KVM.
-
-Hit the bug with a big hammer, even though strictly speaking KVM can scan
-the vIRR and set/clear irr_pending as appropriate for this specific case.
-The bug was introduced by commit 755c2bf87860 ("KVM: x86: lapic: don't
-touch irr_pending in kvm_apic_update_apicv when inhibiting it"), which as
-the shortlog suggests, deleted code that updated irr_pending.
-
-Before that commit, kvm_apic_update_apicv() did indeed scan the vIRR, with
-with the crucial difference that kvm_apic_update_apicv() did the scan even
-when APICv was being *disabled*, e.g. due to an AVIC inhibition.
-
-        struct kvm_lapic *apic = vcpu->arch.apic;
-
-        if (vcpu->arch.apicv_active) {
-                /* irr_pending is always true when apicv is activated. */
-                apic->irr_pending = true;
-                apic->isr_count = 1;
-        } else {
-                apic->irr_pending = (apic_search_irr(apic) != -1);
-                apic->isr_count = count_vectors(apic->regs + APIC_ISR);
-        }
-
-And _that_ bug (clearing irr_pending) was introduced by commit b26a695a1d78
-("kvm: lapic: Introduce APICv update helper function"), prior to which KVM
-unconditionally set irr_pending to true in kvm_apic_set_state(), i.e.
-assumed that the new virtual APIC state could have a pending IRQ.
-
-Furthermore, in addition to introducing this issue, commit 755c2bf87860
-also papered over the underlying bug: KVM doesn't ensure CPUs and devices
-see APICv as disabled prior to searching the IRR.  Waiting until KVM
-emulates an EOI to update irr_pending "works", but only because KVM won't
-emulate EOI until after refresh_apicv_exec_ctrl(), and there are plenty of
-memory barriers in between.  I.e. leaving irr_pending set is basically
-hacking around bad ordering.
-
-So, effectively revert to the pre-b26a695a1d78 behavior for state restore,
-even though it's sub-optimal if no IRQs are pending, in order to provide a
-minimal fix, but leave behind a FIXME to document the ugliness.  With luck,
-the ordering issue will be fixed and the mess will be cleaned up in the
-not-too-distant future.
-
-Fixes: 755c2bf87860 ("KVM: x86: lapic: don't touch irr_pending in kvm_apic_update_apicv when inhibiting it")
-Cc: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Reported-by: Yong He <zhuangel570@gmail.com>
-Closes: https://lkml.kernel.org/r/20241023124527.1092810-1-alexyonghe%40tencent.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20241106015135.2462147-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5b366eae7193 ("stmmac: dwmac-intel-plat: fix call balance of tx_clk handling routines")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |   29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ .../stmicro/stmmac/dwmac-intel-plat.c         |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-visconti.c  |  3 +--
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 23 +++----------------
+ .../ethernet/stmicro/stmmac/stmmac_platform.h |  1 -
+ 4 files changed, 5 insertions(+), 24 deletions(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2629,19 +2629,26 @@ void kvm_apic_update_apicv(struct kvm_vc
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+index d1aec2ca2b429..70edc5232379f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+@@ -164,7 +164,7 @@ static void intel_eth_plat_remove(struct platform_device *pdev)
  {
- 	struct kvm_lapic *apic = vcpu->arch.apic;
+ 	struct intel_dwmac *dwmac = get_stmmac_bsp_priv(&pdev->dev);
  
--	if (apic->apicv_active) {
--		/* irr_pending is always true when apicv is activated. */
--		apic->irr_pending = true;
-+	/*
-+	 * When APICv is enabled, KVM must always search the IRR for a pending
-+	 * IRQ, as other vCPUs and devices can set IRR bits even if the vCPU
-+	 * isn't running.  If APICv is disabled, KVM _should_ search the IRR
-+	 * for a pending IRQ.  But KVM currently doesn't ensure *all* hardware,
-+	 * e.g. CPUs and IOMMUs, has seen the change in state, i.e. searching
-+	 * the IRR at this time could race with IRQ delivery from hardware that
-+	 * still sees APICv as being enabled.
-+	 *
-+	 * FIXME: Ensure other vCPUs and devices observe the change in APICv
-+	 *        state prior to updating KVM's metadata caches, so that KVM
-+	 *        can safely search the IRR and set irr_pending accordingly.
-+	 */
-+	apic->irr_pending = true;
-+
-+	if (apic->apicv_active)
- 		apic->isr_count = 1;
--	} else {
--		/*
--		 * Don't clear irr_pending, searching the IRR can race with
--		 * updates from the CPU as APICv is still active from hardware's
--		 * perspective.  The flag will be cleared as appropriate when
--		 * KVM injects the interrupt.
--		 */
-+	else
- 		apic->isr_count = count_vectors(apic->regs + APIC_ISR);
--	}
-+
- 	apic->highest_isr_cache = -1;
+-	stmmac_pltfr_remove_no_dt(pdev);
++	stmmac_pltfr_remove(pdev);
+ 	clk_disable_unprepare(dwmac->tx_clk);
  }
  
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
+index 45f5d66a11c26..a5a5cfa989c6e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
+@@ -256,8 +256,7 @@ static int visconti_eth_dwmac_probe(struct platform_device *pdev)
+ 
+ static void visconti_eth_dwmac_remove(struct platform_device *pdev)
+ {
+-	stmmac_pltfr_remove_no_dt(pdev);
+-
++	stmmac_pltfr_remove(pdev);
+ 	visconti_eth_clock_remove(pdev);
+ }
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 30d5e635190e6..b4fdd40be63cb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -810,7 +810,7 @@ static void devm_stmmac_pltfr_remove(void *data)
+ {
+ 	struct platform_device *pdev = data;
+ 
+-	stmmac_pltfr_remove_no_dt(pdev);
++	stmmac_pltfr_remove(pdev);
+ }
+ 
+ /**
+@@ -837,12 +837,12 @@ int devm_stmmac_pltfr_probe(struct platform_device *pdev,
+ EXPORT_SYMBOL_GPL(devm_stmmac_pltfr_probe);
+ 
+ /**
+- * stmmac_pltfr_remove_no_dt
++ * stmmac_pltfr_remove
+  * @pdev: pointer to the platform device
+  * Description: This undoes the effects of stmmac_pltfr_probe() by removing the
+  * driver and calling the platform's exit() callback.
+  */
+-void stmmac_pltfr_remove_no_dt(struct platform_device *pdev)
++void stmmac_pltfr_remove(struct platform_device *pdev)
+ {
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+@@ -851,23 +851,6 @@ void stmmac_pltfr_remove_no_dt(struct platform_device *pdev)
+ 	stmmac_dvr_remove(&pdev->dev);
+ 	stmmac_pltfr_exit(pdev, plat);
+ }
+-EXPORT_SYMBOL_GPL(stmmac_pltfr_remove_no_dt);
+-
+-/**
+- * stmmac_pltfr_remove
+- * @pdev: platform device pointer
+- * Description: this function calls the main to free the net resources
+- * and calls the platforms hook and release the resources (e.g. mem).
+- */
+-void stmmac_pltfr_remove(struct platform_device *pdev)
+-{
+-	struct net_device *ndev = platform_get_drvdata(pdev);
+-	struct stmmac_priv *priv = netdev_priv(ndev);
+-	struct plat_stmmacenet_data *plat = priv->plat;
+-
+-	stmmac_pltfr_remove_no_dt(pdev);
+-	stmmac_remove_config_dt(pdev, plat);
+-}
+ EXPORT_SYMBOL_GPL(stmmac_pltfr_remove);
+ 
+ /**
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+index c5565b2a70acc..bb07a99e1248b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+@@ -32,7 +32,6 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
+ int devm_stmmac_pltfr_probe(struct platform_device *pdev,
+ 			    struct plat_stmmacenet_data *plat,
+ 			    struct stmmac_resources *res);
+-void stmmac_pltfr_remove_no_dt(struct platform_device *pdev);
+ void stmmac_pltfr_remove(struct platform_device *pdev);
+ extern const struct dev_pm_ops stmmac_pltfr_pm_ops;
+ 
+-- 
+2.43.0
+
 
 
 
