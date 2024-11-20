@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-94258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF7B9D3BF3
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6819D3B7B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3305B29D10
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB151B22F01
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4ED1C2DB8;
-	Wed, 20 Nov 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09041B533F;
+	Wed, 20 Nov 2024 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7reGzEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN0rWmYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293411AA783;
-	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C81DFEF;
+	Wed, 20 Nov 2024 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107594; cv=none; b=rp58ufdyqIwp9GfeZ+do+/psP1X32xeHafyKtsa1mfeDpG3UnHNM+0mkas40WTjs/K33h4cmIOwKr+R8y0dUk43/Gcft8hcTNtdWtoKks4a60ZGB3hVeKDemjb3qxEiK/WmmAIU1FV/SeWARaBunlaW6aD8DUzdRofoEUh7RuOs=
+	t=1732107541; cv=none; b=LDf9KyBv5r6L481WgGkigj/bVKx6ySIYZE9gFM7YCpRkcncpth6EEp+F4RT+1iRe9SIk2ZibFd0reDVJvn7/MZxJuqeNnzvkBW8Jyg+eFpZCfujQkImKsCcut/4bvSRQx0KY8OuFO5NHCu4fvHk52CosvmXJhxyyUTbYw6O/4oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107594; c=relaxed/simple;
-	bh=0iCmUTn1fTfJzA8DXDaFFCS9jnxokmScmP8ZqACvnDE=;
+	s=arc-20240116; t=1732107541; c=relaxed/simple;
+	bh=LemcfKD68W02ZBO17DIuRgVsk24TgtYr1BCdleKiXQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBYcwIEyqnbWx1Qewfmea8DFLBKmfjmMgXyKHjvIG3gfWPA6qRicL3AV60GAo3E5vaY3FORaxT+OysOO9jX1I1/3SFZxCGSlPKP4CY4uGUFMiBvP9F771HLm8Cw+M85gD1PRF/sYOWXvfWNblC4JsKYRBj/fUDiTC8rUJ1lTT4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7reGzEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58D6C4CECD;
-	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
+	 MIME-Version; b=Z9qgH88ePhrXvox2oks7tWpWGaZUQYg5ATf1i0q1Muu5TYi4MCyJkak7030zveKS9rmvBshcNkuln/w/htti18KRQEdy5ZSRC7nL+0tI69vPx/x2fIKi44VbIBkTMapTLwko8HFAJSidEWUFNLyiY/XHuU8VIBzYk7+R7fI3kl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN0rWmYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6431DC4CECD;
+	Wed, 20 Nov 2024 12:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107593;
-	bh=0iCmUTn1fTfJzA8DXDaFFCS9jnxokmScmP8ZqACvnDE=;
+	s=korg; t=1732107541;
+	bh=LemcfKD68W02ZBO17DIuRgVsk24TgtYr1BCdleKiXQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7reGzEc79pIf2mRmtgyeIX6Xe3tk9LjA/LRR1PiDOKjVEqP5Kyc+7NKMO+HxvjQH
-	 CHT/+WTHTsJi9PUkNH1h40//SOItS2OeS4Zk27PJl0fD2mjPgh8W6btn0+mN7VtfvA
-	 GzZ85uRO3Oeqz4LISpqDfN3L1dhGA+dmPdAki9W4=
+	b=QN0rWmYWpA8mdPN6DQvhA8FOi1x3CsAuI+28lma86CqEJhozNnhI7AVYrimozlQN5
+	 xdVHQpqwxjbQp+MyS4wSu4LGvn+0uiKzHEPvDHbfKZBNIvcapkXMLePjmy6dgGhkT5
+	 e51cb19cEpHVUpxyJW4qdR1TehGH5+VDe0l/PUC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/82] drm/rockchip: vop: Fix a dereferenced before check warning
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.11 039/107] x86/CPU/AMD: Clear virtualized VMLOAD/VMSAVE on Zen4 client
 Date: Wed, 20 Nov 2024 13:56:14 +0100
-Message-ID: <20241120125629.722777440@linuxfoundation.org>
+Message-ID: <20241120125630.559920968@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit ab1c793f457f740ab7108cc0b1340a402dbf484d ]
+commit a5ca1dc46a6b610dd4627d8b633d6c84f9724ef0 upstream.
 
-The 'state' can't be NULL, we should check crtc_state.
+A number of Zen4 client SoCs advertise the ability to use virtualized
+VMLOAD/VMSAVE, but using these instructions is reported to be a cause
+of a random host reboot.
 
-Fix warning:
-drivers/gpu/drm/rockchip/rockchip_drm_vop.c:1096
-vop_plane_atomic_async_check() warn: variable dereferenced before check
-'state' (see line 1077)
+These instructions aren't intended to be advertised on Zen4 client
+so clear the capability.
 
-Fixes: 5ddb0bd4ddc3 ("drm/atomic: Pass the full state to planes async atomic check and update")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021072818.61621-1-andyshrk@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219009
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/amd.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index ee72e8c6ad69b..a34d3fc662489 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -1076,10 +1076,10 @@ static int vop_plane_atomic_async_check(struct drm_plane *plane,
- 	if (!plane->state->fb)
- 		return -EINVAL;
- 
--	if (state)
--		crtc_state = drm_atomic_get_existing_crtc_state(state,
--								new_plane_state->crtc);
--	else /* Special case for asynchronous cursor updates. */
-+	crtc_state = drm_atomic_get_existing_crtc_state(state, new_plane_state->crtc);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -924,6 +924,17 @@ static void init_amd_zen4(struct cpuinfo
+ {
+ 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR))
+ 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
 +
-+	/* Special case for asynchronous cursor updates. */
-+	if (!crtc_state)
- 		crtc_state = plane->crtc->state;
++	/*
++	 * These Zen4 SoCs advertise support for virtualized VMLOAD/VMSAVE
++	 * in some BIOS versions but they can lead to random host reboots.
++	 */
++	switch (c->x86_model) {
++	case 0x18 ... 0x1f:
++	case 0x60 ... 0x7f:
++		clear_cpu_cap(c, X86_FEATURE_V_VMSAVE_VMLOAD);
++		break;
++	}
+ }
  
- 	return drm_atomic_helper_check_plane_state(plane->state, crtc_state,
--- 
-2.43.0
-
+ static void init_amd_zen5(struct cpuinfo_x86 *c)
 
 
 
