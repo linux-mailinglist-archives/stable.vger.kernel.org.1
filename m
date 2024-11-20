@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-94304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAF39D3BEA
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3549D3B79
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBD21F23760
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66054B23171
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D911A0BD6;
-	Wed, 20 Nov 2024 13:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F3B1B5337;
+	Wed, 20 Nov 2024 12:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6LEChY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWAGFaHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C312F1B5ED8;
-	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D854E1DFEF;
+	Wed, 20 Nov 2024 12:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107628; cv=none; b=HFFfYys9lvG1QnRsRRhr0LdIZwwdNDZLjRU1iwbJS3QMxkxK0Vfh8UlvT88cmgZxMk0XLM0ONiN7BPjG5Ca3skfW5wf6LTcILNvM5+qaGFoOid9BYozoo6wX42bkkpbEN0b6RYdxlZarET4lrpGTT02yXSR5ZyCW92JqZqSw42M=
+	t=1732107540; cv=none; b=DdWxF4u0HTXD91yjtHFnt/mLPbmODsud3V6w4Cfbjy+w+J5Iu4U0KazrDL3UXuQujuyoq0BFnJ2EHu7zwKTJF0/CkE565yR+7Sg2NXRmiqM8l0YGP3FWMqq/iez7OhVCWrkAmJlOVgg0M4422+PGwIokxS5BHeGiB/B2Ap1C64s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107628; c=relaxed/simple;
-	bh=AdaQrp1LJ59CE2O/43iCY9nMxj811yvi3so0r8ZB1n0=;
+	s=arc-20240116; t=1732107540; c=relaxed/simple;
+	bh=ENhcsyigXkDcyzyz1HNUTGuueCvFt80D3+0lP5fGAv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7CmMuAxQKltMKv7HTHizkWgDPdCWDY7wAuBXkOXFXS+Q8YLLwsrBwHvBFD646TEhnOKflQeH9lyhwD/lkz1ofHyDFbtXVSyh2ip2C0GyRdH1T1tkyokh0IyjViiNa294UHAXOY7+48dGKpKRvixezjjLzV9eUIW8yhGDmPq0x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6LEChY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B76C4CED1;
-	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
+	 MIME-Version; b=m5sW1tlmSFMr2rcQ895MbhgWEmwZrvXJBH+mVvHFxnw0ozfF9noGIoO3EVYSLdfWoO2S/MZiuchM0LRVZW3Jty4i4kgrybnGtgWINpBZb9dgchK7vNKsn2lwjMKPfNRNb9Y8xvHh2qqAZ+7knx1M7FiTB16OYC4wK3UGuJpg8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWAGFaHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A44C4CED1;
+	Wed, 20 Nov 2024 12:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107628;
-	bh=AdaQrp1LJ59CE2O/43iCY9nMxj811yvi3so0r8ZB1n0=;
+	s=korg; t=1732107540;
+	bh=ENhcsyigXkDcyzyz1HNUTGuueCvFt80D3+0lP5fGAv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6LEChY0/btbjW/a1OwE4rkSz7uInDarRK6e4+uLVdUvwbDtS0KxuspRxxkeZztFS
-	 +qHFpd7IIMp0M2vNqpNxuLq9W3Te63zCN0huPIn6w02NJ/q6Lw52CMwDtOBeZtM8kB
-	 a8sN7MtW1yZb4nGa/M31Nc5iGTGLawfU6UQQLK50=
+	b=GWAGFaHVqCUALnSPtnxJf01o8jBskCJ1TWa963T5DW4YBXh9J3VPBpxEKitgU3Q/+
+	 8qX2x4YwDKkDfr2dez42pCJiWVq44cwYXjP5smvD45wSvrPn2gH0HIEuFQC5zjMmfo
+	 R+cq2kOJHdRw55DcgyRVGyH4M251PzdVb/3acG1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 38/82] KVM: VMX: Bury Intel PT virtualization (guest/host mode) behind CONFIG_BROKEN
-Date: Wed, 20 Nov 2024 13:56:48 +0100
-Message-ID: <20241120125630.470252569@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.11 074/107] LoongArch: Make KASAN work with 5-level page-tables
+Date: Wed, 20 Nov 2024 13:56:49 +0100
+Message-ID: <20241120125631.350357440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +60,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit aa0d42cacf093a6fcca872edc954f6f812926a17 upstream.
+commit a410656643ce4844ba9875aa4e87a7779308259b upstream.
 
-Hide KVM's pt_mode module param behind CONFIG_BROKEN, i.e. disable support
-for virtualizing Intel PT via guest/host mode unless BROKEN=y.  There are
-myriad bugs in the implementation, some of which are fatal to the guest,
-and others which put the stability and health of the host at risk.
+Make KASAN work with 5-level page-tables, including:
+1. Implement and use __pgd_none() and kasan_p4d_offset().
+2. As done in kasan_pmd_populate() and kasan_pte_populate(), restrict
+   the loop conditions of kasan_p4d_populate() and kasan_pud_populate()
+   to avoid unnecessary population.
 
-For guest fatalities, the most glaring issue is that KVM fails to ensure
-tracing is disabled, and *stays* disabled prior to VM-Enter, which is
-necessary as hardware disallows loading (the guest's) RTIT_CTL if tracing
-is enabled (enforced via a VMX consistency check).  Per the SDM:
-
-  If the logical processor is operating with Intel PT enabled (if
-  IA32_RTIT_CTL.TraceEn = 1) at the time of VM entry, the "load
-  IA32_RTIT_CTL" VM-entry control must be 0.
-
-On the host side, KVM doesn't validate the guest CPUID configuration
-provided by userspace, and even worse, uses the guest configuration to
-decide what MSRs to save/load at VM-Enter and VM-Exit.  E.g. configuring
-guest CPUID to enumerate more address ranges than are supported in hardware
-will result in KVM trying to passthrough, save, and load non-existent MSRs,
-which generates a variety of WARNs, ToPA ERRORs in the host, a potential
-deadlock, etc.
-
-Fixes: f99e3daf94ff ("KVM: x86: Add Intel PT virtualization work mode")
 Cc: stable@vger.kernel.org
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Tested-by: Adrian Hunter <adrian.hunter@intel.com>
-Message-ID: <20241101185031.1799556-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/mm/kasan_init.c |   26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -212,9 +212,11 @@ module_param(ple_window_shrink, uint, 04
- static unsigned int ple_window_max        = KVM_VMX_DEFAULT_PLE_WINDOW_MAX;
- module_param(ple_window_max, uint, 0444);
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -13,6 +13,13 @@
  
--/* Default is SYSTEM mode, 1 for host-guest mode */
-+/* Default is SYSTEM mode, 1 for host-guest mode (which is BROKEN) */
- int __read_mostly pt_mode = PT_MODE_SYSTEM;
-+#ifdef CONFIG_BROKEN
- module_param(pt_mode, int, S_IRUGO);
+ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+ 
++#ifdef __PAGETABLE_P4D_FOLDED
++#define __pgd_none(early, pgd) (0)
++#else
++#define __pgd_none(early, pgd) (early ? (pgd_val(pgd) == 0) : \
++(__pa(pgd_val(pgd)) == (unsigned long)__pa(kasan_early_shadow_p4d)))
 +#endif
++
+ #ifdef __PAGETABLE_PUD_FOLDED
+ #define __p4d_none(early, p4d) (0)
+ #else
+@@ -147,6 +154,19 @@ static pud_t *__init kasan_pud_offset(p4
+ 	return pud_offset(p4dp, addr);
+ }
  
- static DEFINE_STATIC_KEY_FALSE(vmx_l1d_should_flush);
- static DEFINE_STATIC_KEY_FALSE(vmx_l1d_flush_cond);
++static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node, bool early)
++{
++	if (__pgd_none(early, pgdp_get(pgdp))) {
++		phys_addr_t p4d_phys = early ?
++			__pa_symbol(kasan_early_shadow_p4d) : kasan_alloc_zeroed_page(node);
++		if (!early)
++			memcpy(__va(p4d_phys), kasan_early_shadow_p4d, sizeof(kasan_early_shadow_p4d));
++		pgd_populate(&init_mm, pgdp, (p4d_t *)__va(p4d_phys));
++	}
++
++	return p4d_offset(pgdp, addr);
++}
++
+ static void __init kasan_pte_populate(pmd_t *pmdp, unsigned long addr,
+ 				      unsigned long end, int node, bool early)
+ {
+@@ -183,19 +203,19 @@ static void __init kasan_pud_populate(p4
+ 	do {
+ 		next = pud_addr_end(addr, end);
+ 		kasan_pmd_populate(pudp, addr, next, node, early);
+-	} while (pudp++, addr = next, addr != end);
++	} while (pudp++, addr = next, addr != end && __pud_none(early, READ_ONCE(*pudp)));
+ }
+ 
+ static void __init kasan_p4d_populate(pgd_t *pgdp, unsigned long addr,
+ 					    unsigned long end, int node, bool early)
+ {
+ 	unsigned long next;
+-	p4d_t *p4dp = p4d_offset(pgdp, addr);
++	p4d_t *p4dp = kasan_p4d_offset(pgdp, addr, node, early);
+ 
+ 	do {
+ 		next = p4d_addr_end(addr, end);
+ 		kasan_pud_populate(p4dp, addr, next, node, early);
+-	} while (p4dp++, addr = next, addr != end);
++	} while (p4dp++, addr = next, addr != end && __p4d_none(early, READ_ONCE(*p4dp)));
+ }
+ 
+ static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
 
 
 
