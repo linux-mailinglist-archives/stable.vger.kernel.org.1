@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-94185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8289D3B78
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAF39D3BEA
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39A11B29246
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBD21F23760
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17B41B4F30;
-	Wed, 20 Nov 2024 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D911A0BD6;
+	Wed, 20 Nov 2024 13:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFx677b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6LEChY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED9415853A;
-	Wed, 20 Nov 2024 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C312F1B5ED8;
+	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107539; cv=none; b=dmJaRPHc965SXjIqzA8TrNxwAsqZ5gPofKePZbP3In87kTN17e2Lblqv39q8ZtMBQLRBNTeOJN5IQlaP1iO42TPlYVhXIxkbIP5xR3UnF69uzSBsrSzuhrVR6ZydL48nqpKV4K3iyh36tfMHEmbi3C1pZ1Tzn5VyQh+aEEa+qZg=
+	t=1732107628; cv=none; b=HFFfYys9lvG1QnRsRRhr0LdIZwwdNDZLjRU1iwbJS3QMxkxK0Vfh8UlvT88cmgZxMk0XLM0ONiN7BPjG5Ca3skfW5wf6LTcILNvM5+qaGFoOid9BYozoo6wX42bkkpbEN0b6RYdxlZarET4lrpGTT02yXSR5ZyCW92JqZqSw42M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107539; c=relaxed/simple;
-	bh=+3uMi2jGQhurCrLEPBI69ARKEYcUzjGzcbDEdz6TgHQ=;
+	s=arc-20240116; t=1732107628; c=relaxed/simple;
+	bh=AdaQrp1LJ59CE2O/43iCY9nMxj811yvi3so0r8ZB1n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEbBCDgQGe3xcF05blAEfBc7FQgW2ulViil5JmvreSRCSg6oKdyaGp+cPoB2l2HwkvSPmFKJCm5SF7sTHGUBILnkDh1672tCaW8kVSZ60aZw7Zz+OOMoJovi0nHH6WrsgVADDnUzMWtXLYFMga88fo49r71RTeQARSmXsbfxetg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFx677b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A7EC4CECD;
-	Wed, 20 Nov 2024 12:58:59 +0000 (UTC)
+	 MIME-Version; b=O7CmMuAxQKltMKv7HTHizkWgDPdCWDY7wAuBXkOXFXS+Q8YLLwsrBwHvBFD646TEhnOKflQeH9lyhwD/lkz1ofHyDFbtXVSyh2ip2C0GyRdH1T1tkyokh0IyjViiNa294UHAXOY7+48dGKpKRvixezjjLzV9eUIW8yhGDmPq0x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6LEChY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B76C4CED1;
+	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107539;
-	bh=+3uMi2jGQhurCrLEPBI69ARKEYcUzjGzcbDEdz6TgHQ=;
+	s=korg; t=1732107628;
+	bh=AdaQrp1LJ59CE2O/43iCY9nMxj811yvi3so0r8ZB1n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFx677b0dFL+vom1OQZEQz9wlhNYVaXgQ+rCvxvZGvc7tXO61S4p7D8hTYMYwS1vP
-	 bWC1zBRf+AI+fuMCsyVpQqdWZ70kui58pqk8OJ3rDMmLtyo/aL0JdNG1him8++AG61
-	 4uj1oX7D/RyF4T6jrWxha0zLYaDviSeX7jW18IgM=
+	b=B6LEChY0/btbjW/a1OwE4rkSz7uInDarRK6e4+uLVdUvwbDtS0KxuspRxxkeZztFS
+	 +qHFpd7IIMp0M2vNqpNxuLq9W3Te63zCN0huPIn6w02NJ/q6Lw52CMwDtOBeZtM8kB
+	 a8sN7MtW1yZb4nGa/M31Nc5iGTGLawfU6UQQLK50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 073/107] LoongArch: Fix AP booting issue in VM mode
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 38/82] KVM: VMX: Bury Intel PT virtualization (guest/host mode) behind CONFIG_BROKEN
 Date: Wed, 20 Nov 2024 13:56:48 +0100
-Message-ID: <20241120125631.328085204@linuxfoundation.org>
+Message-ID: <20241120125630.470252569@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6ce031e5d6f475d476bab55ab7d8ea168fedc4c1 upstream.
+commit aa0d42cacf093a6fcca872edc954f6f812926a17 upstream.
 
-Native IPI is used for AP booting, because it is the booting interface
-between OS and BIOS firmware. The paravirt IPI is only used inside OS,
-and native IPI is necessary to boot AP.
+Hide KVM's pt_mode module param behind CONFIG_BROKEN, i.e. disable support
+for virtualizing Intel PT via guest/host mode unless BROKEN=y.  There are
+myriad bugs in the implementation, some of which are fatal to the guest,
+and others which put the stability and health of the host at risk.
 
-When booting AP, we write the kernel entry address in the HW mailbox of
-AP and send IPI interrupt to it. AP executes idle instruction and waits
-for interrupts or SW events, then clears IPI interrupt and jumps to the
-kernel entry from HW mailbox.
+For guest fatalities, the most glaring issue is that KVM fails to ensure
+tracing is disabled, and *stays* disabled prior to VM-Enter, which is
+necessary as hardware disallows loading (the guest's) RTIT_CTL if tracing
+is enabled (enforced via a VMX consistency check).  Per the SDM:
 
-Between writing HW mailbox and sending IPI, AP can be woken up by SW
-events and jumps to the kernel entry, so ACTION_BOOT_CPU IPI interrupt
-will keep pending during AP booting. And native IPI interrupt handler
-needs be registered so that it can clear pending native IPI, else there
-will be endless interrupts during AP booting stage.
+  If the logical processor is operating with Intel PT enabled (if
+  IA32_RTIT_CTL.TraceEn = 1) at the time of VM entry, the "load
+  IA32_RTIT_CTL" VM-entry control must be 0.
 
-Here native IPI interrupt is initialized even if paravirt IPI is used.
+On the host side, KVM doesn't validate the guest CPUID configuration
+provided by userspace, and even worse, uses the guest configuration to
+decide what MSRs to save/load at VM-Enter and VM-Exit.  E.g. configuring
+guest CPUID to enumerate more address ranges than are supported in hardware
+will result in KVM trying to passthrough, save, and load non-existent MSRs,
+which generates a variety of WARNs, ToPA ERRORs in the host, a potential
+deadlock, etc.
 
+Fixes: f99e3daf94ff ("KVM: x86: Add Intel PT virtualization work mode")
 Cc: stable@vger.kernel.org
-Fixes: 74c16b2e2b0c ("LoongArch: KVM: Add PV IPI support on guest side")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Tested-by: Adrian Hunter <adrian.hunter@intel.com>
+Message-ID: <20241101185031.1799556-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/paravirt.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/kvm/vmx/vmx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/paravirt.c
-+++ b/arch/loongarch/kernel/paravirt.c
-@@ -50,11 +50,18 @@ static u64 paravt_steal_clock(int cpu)
- }
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -212,9 +212,11 @@ module_param(ple_window_shrink, uint, 04
+ static unsigned int ple_window_max        = KVM_VMX_DEFAULT_PLE_WINDOW_MAX;
+ module_param(ple_window_max, uint, 0444);
  
- #ifdef CONFIG_SMP
-+static struct smp_ops native_ops;
-+
- static void pv_send_ipi_single(int cpu, unsigned int action)
- {
- 	int min, old;
- 	irq_cpustat_t *info = &per_cpu(irq_stat, cpu);
+-/* Default is SYSTEM mode, 1 for host-guest mode */
++/* Default is SYSTEM mode, 1 for host-guest mode (which is BROKEN) */
+ int __read_mostly pt_mode = PT_MODE_SYSTEM;
++#ifdef CONFIG_BROKEN
+ module_param(pt_mode, int, S_IRUGO);
++#endif
  
-+	if (unlikely(action == ACTION_BOOT_CPU)) {
-+		native_ops.send_ipi_single(cpu, action);
-+		return;
-+	}
-+
- 	old = atomic_fetch_or(BIT(action), &info->message);
- 	if (old)
- 		return;
-@@ -74,6 +81,11 @@ static void pv_send_ipi_mask(const struc
- 	if (cpumask_empty(mask))
- 		return;
- 
-+	if (unlikely(action == ACTION_BOOT_CPU)) {
-+		native_ops.send_ipi_mask(mask, action);
-+		return;
-+	}
-+
- 	action = BIT(action);
- 	for_each_cpu(i, mask) {
- 		info = &per_cpu(irq_stat, i);
-@@ -141,6 +153,8 @@ static void pv_init_ipi(void)
- {
- 	int r, swi;
- 
-+	/* Init native ipi irq for ACTION_BOOT_CPU */
-+	native_ops.init_ipi();
- 	swi = get_percpu_irq(INT_SWI0);
- 	if (swi < 0)
- 		panic("SWI0 IRQ mapping failed\n");
-@@ -179,6 +193,7 @@ int __init pv_ipi_init(void)
- 		return 0;
- 
- #ifdef CONFIG_SMP
-+	native_ops		= mp_ops;
- 	mp_ops.init_ipi		= pv_init_ipi;
- 	mp_ops.send_ipi_single	= pv_send_ipi_single;
- 	mp_ops.send_ipi_mask	= pv_send_ipi_mask;
+ static DEFINE_STATIC_KEY_FALSE(vmx_l1d_should_flush);
+ static DEFINE_STATIC_KEY_FALSE(vmx_l1d_flush_cond);
 
 
 
