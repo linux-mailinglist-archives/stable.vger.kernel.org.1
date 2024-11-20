@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-94316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4769D9D3BF7
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:05:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21E39D3C27
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5DDC1F24019
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC4431F25199
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995561AB512;
-	Wed, 20 Nov 2024 13:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1FE1CB336;
+	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcCj6oAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5yjnZ/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579A81DFEF;
-	Wed, 20 Nov 2024 13:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093211ABEC5;
+	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107662; cv=none; b=RLdu8QCn8uB6P1Y36VEZHecNTVRLWQOGEOa/6YMpLrUHsBJP2F16NVjLXv85UP19FpoVSFQK6A408RUOMhd8Vxlr3vxiGS9R3M43ffZgMbp4zqt+21UVI609wlkPZ4M46mn5YSN5/i4RbHhfzmU6T2cmsM1Tf7ATorzvFuNbzSQ=
+	t=1732107702; cv=none; b=USLLo4/wzd3WgSYnXUF0dbq3rrJRgnTHjyAmBlC4kILl0N6SwujbOxEPUHV1OatzoSmxAfYAvQtgFmnlr5aIFyZ9ZjB7NsEX35fJMhenHD01vrXUUxNfSVtIa5a1UCkIWb1oaz0Ck9GkoXQamj0f1Im7FY64DvopPqA8UvYSICg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107662; c=relaxed/simple;
-	bh=iFCCXO6XJEABb+s+zKRc5noQ8UbIjC2ps2CL7ngTCYM=;
+	s=arc-20240116; t=1732107702; c=relaxed/simple;
+	bh=fFj64FxxY0kAaWXtVlGcVZeXbJwWFVFB7RZ7WzzT4/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiX+dmjQKpz+Rq1pTvu9Lak6x7pQ/t13f4rOwaC66sz77Y7zJYd9L7T/Vds0Spanu/Oy1AiPKvSN/O5QAATbTtAA+e02W3vEnVs7sUm6mbr2jTT4AUeR48E+7ehlsjh2PrdV5rVhY16OkMfQItCaxVXreFdYhPxhM94orzpF1Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcCj6oAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E055C4CECD;
-	Wed, 20 Nov 2024 13:01:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OAadOfFMHFxGuqkfCxUfjrlDE2mzm2ZPaU3N4Yxn1Yw2jJ+d+dIv9ilX1dhhWkGrRIFImVsi3+DQwDcV7cD4UgtH7HesQm5LJ+UyyTOGkq1lVrMomnjoR+KxgOdbxZOe+eV98NtWRfUmwZ8OG3Pztl+LwH9Kb8GtdkSNlHao7kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5yjnZ/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB893C4CECD;
+	Wed, 20 Nov 2024 13:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107662;
-	bh=iFCCXO6XJEABb+s+zKRc5noQ8UbIjC2ps2CL7ngTCYM=;
+	s=korg; t=1732107701;
+	bh=fFj64FxxY0kAaWXtVlGcVZeXbJwWFVFB7RZ7WzzT4/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcCj6oACHspShuCKxAtivweE7g/k5Sf0ZBQoi+ET/yWY/BfbRfvU6Yoy5O5IabWcM
-	 pjps30HyuTpHOtHmB9Xcke+7NfWhDmt3s1eN/3Cj0PF/PYiJlUyJEIsmIk6/Efk9cz
-	 KGzLuQlTxmLpOYUOluD6WGtBqWz3Q+ZGPO+8Tp4w=
+	b=K5yjnZ/7dFKrmeo9ayk9o3DtsoHx7U6EzRjLGsTIhqkk+RkeB9eyUEAr+tUeApDMB
+	 iHphsjwk+bY/cN1+TzhE6AFVqws3IhUTtnyvXKXComFzHpmwbEkb+VAPR81QJy5Qxa
+	 Pn3AXNAQXFhlMJJyTogE4yHf8Io/Crxo9+vd5HpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harith George <harith.g@alifsemi.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/73] ARM: 9419/1: mm: Fix kernel memory mapping for xip kernels
-Date: Wed, 20 Nov 2024 13:58:01 +0100
-Message-ID: <20241120125809.988257656@linuxfoundation.org>
+	Baoquan He <bhe@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 16/73] x86/mm: Fix a kdump kernel failure on SME system when CONFIG_IMA_KEXEC=y
+Date: Wed, 20 Nov 2024 13:58:02 +0100
+Message-ID: <20241120125810.012027210@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -61,151 +61,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harith G <harith.g@alifsemi.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit ed6cbe6e5563452f305e89c15846820f2874e431 ]
+commit 8d9ffb2fe65a6c4ef114e8d4f947958a12751bbe upstream.
 
-The patchset introducing kernel_sec_start/end variables to separate the
-kernel/lowmem memory mappings, broke the mapping of the kernel memory
-for xipkernels.
+The kdump kernel is broken on SME systems with CONFIG_IMA_KEXEC=y enabled.
+Debugging traced the issue back to
 
-kernel_sec_start/end variables are in RO area before the MMU is switched
-on for xipkernels.
-So these cannot be set early in boot in head.S. Fix this by setting these
-after MMU is switched on.
-xipkernels need two different mappings for kernel text (starting at
-CONFIG_XIP_PHYS_ADDR) and data (starting at CONFIG_PHYS_OFFSET).
-Also, move the kernel code mapping from devicemaps_init() to map_kernel().
+  b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec").
 
-Fixes: a91da5457085 ("ARM: 9089/1: Define kernel physical section start and end")
-Signed-off-by: Harith George <harith.g@alifsemi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Testing was previously not conducted on SME systems with CONFIG_IMA_KEXEC
+enabled, which led to the oversight, with the following incarnation:
+
+...
+  ima: No TPM chip found, activating TPM-bypass!
+  Loading compiled-in module X.509 certificates
+  Loaded X.509 cert 'Build time autogenerated kernel key: 18ae0bc7e79b64700122bb1d6a904b070fef2656'
+  ima: Allocated hash algorithm: sha256
+  Oops: general protection fault, probably for non-canonical address 0xcfacfdfe6660003e: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc2+ #14
+  Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.20.0 05/03/2023
+  RIP: 0010:ima_restore_measurement_list
+  Call Trace:
+   <TASK>
+   ? show_trace_log_lvl
+   ? show_trace_log_lvl
+   ? ima_load_kexec_buffer
+   ? __die_body.cold
+   ? die_addr
+   ? exc_general_protection
+   ? asm_exc_general_protection
+   ? ima_restore_measurement_list
+   ? vprintk_emit
+   ? ima_load_kexec_buffer
+   ima_load_kexec_buffer
+   ima_init
+   ? __pfx_init_ima
+   init_ima
+   ? __pfx_init_ima
+   do_one_initcall
+   do_initcalls
+   ? __pfx_kernel_init
+   kernel_init_freeable
+   kernel_init
+   ret_from_fork
+   ? __pfx_kernel_init
+   ret_from_fork_asm
+   </TASK>
+  Modules linked in:
+  ---[ end trace 0000000000000000 ]---
+  ...
+  Kernel panic - not syncing: Fatal exception
+  Kernel Offset: disabled
+  Rebooting in 10 seconds..
+
+Adding debug printks showed that the stored addr and size of ima_kexec buffer
+are not decrypted correctly like:
+
+  ima: ima_load_kexec_buffer, buffer:0xcfacfdfe6660003e, size:0xe48066052d5df359
+
+Three types of setup_data info
+
+  — SETUP_EFI,
+  - SETUP_IMA, and
+  - SETUP_RNG_SEED
+
+are passed to the kexec/kdump kernel. Only the ima_kexec buffer
+experienced incorrect decryption. Debugging identified a bug in
+early_memremap_is_setup_data(), where an incorrect range calculation
+occurred due to the len variable in struct setup_data ended up only
+representing the length of the data field, excluding the struct's size,
+and thus leading to miscalculation.
+
+Address a similar issue in memremap_is_setup_data() while at it.
+
+  [ bp: Heavily massage. ]
+
+Fixes: b3c72fc9a78e ("x86/boot: Introduce setup_indirect")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240911081615.262202-3-bhe@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/head.S |  8 ++++++--
- arch/arm/mm/mmu.c      | 34 +++++++++++++++++++++-------------
- 2 files changed, 27 insertions(+), 15 deletions(-)
+ arch/x86/mm/ioremap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
-index 29e2900178a1f..b97da9e069a06 100644
---- a/arch/arm/kernel/head.S
-+++ b/arch/arm/kernel/head.S
-@@ -252,11 +252,15 @@ __create_page_tables:
- 	 */
- 	add	r0, r4, #KERNEL_OFFSET >> (SECTION_SHIFT - PMD_ENTRY_ORDER)
- 	ldr	r6, =(_end - 1)
-+
-+	/* For XIP, kernel_sec_start/kernel_sec_end are currently in RO memory */
-+#ifndef CONFIG_XIP_KERNEL
- 	adr_l	r5, kernel_sec_start		@ _pa(kernel_sec_start)
- #if defined CONFIG_CPU_ENDIAN_BE8 || defined CONFIG_CPU_ENDIAN_BE32
- 	str	r8, [r5, #4]			@ Save physical start of kernel (BE)
- #else
- 	str	r8, [r5]			@ Save physical start of kernel (LE)
-+#endif
- #endif
- 	orr	r3, r8, r7			@ Add the MMU flags
- 	add	r6, r4, r6, lsr #(SECTION_SHIFT - PMD_ENTRY_ORDER)
-@@ -264,6 +268,7 @@ __create_page_tables:
- 	add	r3, r3, #1 << SECTION_SHIFT
- 	cmp	r0, r6
- 	bls	1b
-+#ifndef CONFIG_XIP_KERNEL
- 	eor	r3, r3, r7			@ Remove the MMU flags
- 	adr_l	r5, kernel_sec_end		@ _pa(kernel_sec_end)
- #if defined CONFIG_CPU_ENDIAN_BE8 || defined CONFIG_CPU_ENDIAN_BE32
-@@ -271,8 +276,7 @@ __create_page_tables:
- #else
- 	str	r3, [r5]			@ Save physical end of kernel (LE)
- #endif
--
--#ifdef CONFIG_XIP_KERNEL
-+#else
- 	/*
- 	 * Map the kernel image separately as it is not located in RAM.
- 	 */
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index 463fc2a8448f0..a39a7043f1896 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -1401,18 +1401,6 @@ static void __init devicemaps_init(const struct machine_desc *mdesc)
- 		create_mapping(&map);
- 	}
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -650,7 +650,8 @@ static bool memremap_is_setup_data(resou
+ 		paddr_next = data->next;
+ 		len = data->len;
  
--	/*
--	 * Map the kernel if it is XIP.
--	 * It is always first in the modulearea.
--	 */
--#ifdef CONFIG_XIP_KERNEL
--	map.pfn = __phys_to_pfn(CONFIG_XIP_PHYS_ADDR & SECTION_MASK);
--	map.virtual = MODULES_VADDR;
--	map.length = ((unsigned long)_exiprom - map.virtual + ~SECTION_MASK) & SECTION_MASK;
--	map.type = MT_ROM;
--	create_mapping(&map);
--#endif
--
- 	/*
- 	 * Map the cache flushing regions.
- 	 */
-@@ -1602,12 +1590,27 @@ static void __init map_kernel(void)
- 	 * This will only persist until we turn on proper memory management later on
- 	 * and we remap the whole kernel with page granularity.
- 	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	phys_addr_t kernel_nx_start = kernel_sec_start;
-+#else
- 	phys_addr_t kernel_x_start = kernel_sec_start;
- 	phys_addr_t kernel_x_end = round_up(__pa(__init_end), SECTION_SIZE);
- 	phys_addr_t kernel_nx_start = kernel_x_end;
-+#endif
- 	phys_addr_t kernel_nx_end = kernel_sec_end;
- 	struct map_desc map;
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			memunmap(data);
+ 			return true;
+ 		}
+@@ -712,7 +713,8 @@ static bool __init early_memremap_is_set
+ 		paddr_next = data->next;
+ 		len = data->len;
  
-+	/*
-+	 * Map the kernel if it is XIP.
-+	 * It is always first in the modulearea.
-+	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	map.pfn = __phys_to_pfn(CONFIG_XIP_PHYS_ADDR & SECTION_MASK);
-+	map.virtual = MODULES_VADDR;
-+	map.length = ((unsigned long)_exiprom - map.virtual + ~SECTION_MASK) & SECTION_MASK;
-+	map.type = MT_ROM;
-+	create_mapping(&map);
-+#else
- 	map.pfn = __phys_to_pfn(kernel_x_start);
- 	map.virtual = __phys_to_virt(kernel_x_start);
- 	map.length = kernel_x_end - kernel_x_start;
-@@ -1617,7 +1620,7 @@ static void __init map_kernel(void)
- 	/* If the nx part is small it may end up covered by the tail of the RWX section */
- 	if (kernel_x_end == kernel_nx_end)
- 		return;
--
-+#endif
- 	map.pfn = __phys_to_pfn(kernel_nx_start);
- 	map.virtual = __phys_to_virt(kernel_nx_start);
- 	map.length = kernel_nx_end - kernel_nx_start;
-@@ -1762,6 +1765,11 @@ void __init paging_init(const struct machine_desc *mdesc)
- {
- 	void *zero_page;
- 
-+#ifdef CONFIG_XIP_KERNEL
-+	/* Store the kernel RW RAM region start/end in these variables */
-+	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
-+	kernel_sec_end = round_up(__pa(_end), SECTION_SIZE);
-+#endif
- 	pr_debug("physical kernel sections: 0x%08llx-0x%08llx\n",
- 		 kernel_sec_start, kernel_sec_end);
- 
--- 
-2.43.0
-
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			early_memunmap(data, sizeof(*data));
+ 			return true;
+ 		}
 
 
 
