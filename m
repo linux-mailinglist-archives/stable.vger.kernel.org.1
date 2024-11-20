@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-94223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735E49D3B9A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0291E9D3BE9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DBDA1F22CF4
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB048285B91
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D951BC9ED;
-	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8671B5ED4;
+	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+obKvZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckA7OnDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A011A7045;
-	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856A1A0BD6;
+	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107567; cv=none; b=U89+cvEw089A0qPnO8LnsV2fVu1XOOqj6V09ralf6Z3tLlEF0qjQaq1hoCEjpOIw6hlcaQOQi30+K8LtPeQNFw9Cj1yI8SdR0xL9ehdC7pSA2gbFy5ym7kDGAfLkU+KkwvCfAg50KVZ6olQ2J42V0bguVaPIK2EQ9kfuLtS461U=
+	t=1732107628; cv=none; b=Tmbv3JBAwApJxahsS19DRHPviPukYc/aOWL0nPN2JQj3Dj9hPgRGaWpcM6JAmlwrbutPBs/zSVAxe2FPZXdfR8Ku/HunDU2Ks5OX92xBVfpOhq09Jz/9iJ6xAzGpV/2HKC4cEQ81cIFa7wkwSHjfyDsvU9n9slwFV/w1s5LZ3HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107567; c=relaxed/simple;
-	bh=Sz4w4gwHdhPKkfckhkeaTYUx8na9vXn8b2Kp5aB/vUc=;
+	s=arc-20240116; t=1732107628; c=relaxed/simple;
+	bh=MabJgEQTIGsADFOpN8xRgaZ+9uplwjC33cC8RmP1afc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+BB4E8nb9QD5JYG6UWi3TfIvK/y6ZeNh2PGfUfGCUIufdY52BsYoz/BQikdLqNpt2GZfGzeN8LZfzGLjcqyodqpecr01YpMtKVE0J33hOEXjHuUuJ01HPww8fS1shKqMIpoTUOlclqmQGNdZhyOJJZuz+2dxfPAjLGcGJvkEiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+obKvZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8E9C4CED1;
-	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
+	 MIME-Version; b=oqzFXqeH1/OCxdjDE4hJyKLhmRl48yWsbDQ8yHUfFI9fgXc6BqyPRe+SoVHvyR2KMXxy+4y/idirQHTseIxOo8rP0ZqAqvNt8ZviZtV2CYma/IKjm+fUsLPbFc90srvdkx4SEdKi5VExxXGeSIYpoSPzMSJ0w+e5PIvLWGbYLK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckA7OnDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF7CC4CECD;
+	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107567;
-	bh=Sz4w4gwHdhPKkfckhkeaTYUx8na9vXn8b2Kp5aB/vUc=;
+	s=korg; t=1732107628;
+	bh=MabJgEQTIGsADFOpN8xRgaZ+9uplwjC33cC8RmP1afc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+obKvZ3OJZ4w979cXzNYnEkd73CpB/Ke5yueFx7RJcMH6JlulnSdDRWDKLvdHaDW
-	 MtsCTk9p3F09+BiYOH4oTEzwYu1SjWkratrb5xF4KfuUMRzecLfrqed/BnynIaZzbq
-	 H/jf+tYTth6t3oipEdJdqZgJZJDz0JwKIzSjgVGk=
+	b=ckA7OnDgOB5MXOykk0IcSOh6ZrAYlmZR9rwXIkN5+utAdCiDa+QybtqV1WZct5N3I
+	 B4RWIHdRahuNl+Dzlv77sa9pBuVVLeVdsfbSZqQ/3KsPvW19lqKXB7Rz89eS9uYYQZ
+	 DGQlvOf/PQQQrjB00KfGyXB97JBpF289sbDHqriY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 082/107] mmc: sunxi-mmc: Fix A100 compatible description
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 47/82] LoongArch: Make KASAN work with 5-level page-tables
 Date: Wed, 20 Nov 2024 13:56:57 +0100
-Message-ID: <20241120125631.538027637@linuxfoundation.org>
+Message-ID: <20241120125630.671856856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +60,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 85b580afc2c215394e08974bf033de9face94955 upstream.
+commit a410656643ce4844ba9875aa4e87a7779308259b upstream.
 
-It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
-blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
-And while this alone would make a trivial fix, the H616 falls back to
-the A100 compatible string, so we have to now match the H616 compatible
-string explicitly against the description advertising 64K DMA blocks.
+Make KASAN work with 5-level page-tables, including:
+1. Implement and use __pgd_none() and kasan_p4d_offset().
+2. As done in kasan_pmd_populate() and kasan_pte_populate(), restrict
+   the loop conditions of kasan_p4d_populate() and kasan_pud_populate()
+   to avoid unnecessary population.
 
-As the A100 is now compatible with the D1 description, let the A100
-compatible string point to that block instead, and introduce an explicit
-match against the H616 string, pointing to the old description.
-Also remove the redundant setting of clk_delays to NULL on the way.
-
-Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sunxi-mmc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/loongarch/mm/kasan_init.c |   26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i
- 	.needs_new_timings = true,
- };
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -13,6 +13,13 @@
  
--static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
-+static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
- 	.idma_des_size_bits = 16,
- 	.idma_des_shift = 2,
--	.clk_delays = NULL,
- 	.can_calibrate = true,
- 	.mask_data0 = true,
- 	.needs_new_timings = true,
-@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_m
- 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
--	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
-+	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
-+	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+ 
++#ifdef __PAGETABLE_P4D_FOLDED
++#define __pgd_none(early, pgd) (0)
++#else
++#define __pgd_none(early, pgd) (early ? (pgd_val(pgd) == 0) : \
++(__pa(pgd_val(pgd)) == (unsigned long)__pa(kasan_early_shadow_p4d)))
++#endif
++
+ #ifdef __PAGETABLE_PUD_FOLDED
+ #define __p4d_none(early, p4d) (0)
+ #else
+@@ -142,6 +149,19 @@ static pud_t *__init kasan_pud_offset(p4
+ 	return pud_offset(p4dp, addr);
+ }
+ 
++static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node, bool early)
++{
++	if (__pgd_none(early, pgdp_get(pgdp))) {
++		phys_addr_t p4d_phys = early ?
++			__pa_symbol(kasan_early_shadow_p4d) : kasan_alloc_zeroed_page(node);
++		if (!early)
++			memcpy(__va(p4d_phys), kasan_early_shadow_p4d, sizeof(kasan_early_shadow_p4d));
++		pgd_populate(&init_mm, pgdp, (p4d_t *)__va(p4d_phys));
++	}
++
++	return p4d_offset(pgdp, addr);
++}
++
+ static void __init kasan_pte_populate(pmd_t *pmdp, unsigned long addr,
+ 				      unsigned long end, int node, bool early)
+ {
+@@ -178,19 +198,19 @@ static void __init kasan_pud_populate(p4
+ 	do {
+ 		next = pud_addr_end(addr, end);
+ 		kasan_pmd_populate(pudp, addr, next, node, early);
+-	} while (pudp++, addr = next, addr != end);
++	} while (pudp++, addr = next, addr != end && __pud_none(early, READ_ONCE(*pudp)));
+ }
+ 
+ static void __init kasan_p4d_populate(pgd_t *pgdp, unsigned long addr,
+ 					    unsigned long end, int node, bool early)
+ {
+ 	unsigned long next;
+-	p4d_t *p4dp = p4d_offset(pgdp, addr);
++	p4d_t *p4dp = kasan_p4d_offset(pgdp, addr, node, early);
+ 
+ 	do {
+ 		next = p4d_addr_end(addr, end);
+ 		kasan_pud_populate(p4dp, addr, next, node, early);
+-	} while (p4dp++, addr = next, addr != end);
++	} while (p4dp++, addr = next, addr != end && __p4d_none(early, READ_ONCE(*p4dp)));
+ }
+ 
+ static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
 
 
 
