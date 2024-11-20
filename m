@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-94360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB10B9D3C21
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8251D9D3C64
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E6ED283C3E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4997B2C579
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09CF1BE84B;
-	Wed, 20 Nov 2024 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5657B1BE84E;
+	Wed, 20 Nov 2024 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtftJdCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uH5NGg9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC8E1BE226;
-	Wed, 20 Nov 2024 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147A11ABEC5;
+	Wed, 20 Nov 2024 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107696; cv=none; b=D4sUeKTJ10Npe9dYHoBrQGhJUEIYBrK4VRKS72Z4Eq/oJzU1jgkqnL2fSwtT4XysFZTeTxk/ud+qo94GrSacgTTgnsc15z9WZplHZbqpCjwoHP8UELYBX++6FdnYBaBo+Da3eIyUK4nkwBWs/8OgUHJGuOdhiCxyUTCKEE/YlIM=
+	t=1732107698; cv=none; b=TmJ2g13NyFTlMl6AjIEGtbeTyi6DwpjFeOqnA3J3wlbocFwtgfMmvM4yvBsRHfs0Xc7yKn7D0vQKPSP250lHzHDH0SqxZeElOl4P3DcVgHqnT0IFgszhfVIApcQ49sDMT/mD0zHhWz6EkPngFuWTgY2zFEd+pa+TyBbZo8kzn48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107696; c=relaxed/simple;
-	bh=Blqfoc6rOlz5qJf+tunxJ3Ncx5VxViRCODQlzIQOFQo=;
+	s=arc-20240116; t=1732107698; c=relaxed/simple;
+	bh=r7+NYWb4pCG048+V98/vNzre5FuZGg2B1EDnNc2JPXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvqcLluOOTFfdYoupd+6S5okbwh0qNawsNmKOn6prr2DHotDNpA7J5ybWhrjL5K4xFT3Ao+/JA+7tzXiqKL2Sfok5b74PSrrTKPIFloiuKeZhZ87gg082LJRKgx/er8b2JW+aDiwEfqcufVMeH/g4vQoYpct10gnzttZfGk+BtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtftJdCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA43C4CECD;
-	Wed, 20 Nov 2024 13:01:36 +0000 (UTC)
+	 MIME-Version; b=fuIs/G+JtNHdHoDP5vgaTjXZwGBo8hkmxFb74x9dQxF7Ya4ql8tvn3s7KuOWdyJtRHqIQeJbCBDj2a9rdE02MbY83u1Gmu9yf7n0fJP9yIr7vNfMmQf4b75dEGjBPh0olycFYHACPg4bQUMb4d9s4nrKUZ9usn21ZK2EWFkEC8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uH5NGg9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DF4C4CECD;
+	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107696;
-	bh=Blqfoc6rOlz5qJf+tunxJ3Ncx5VxViRCODQlzIQOFQo=;
+	s=korg; t=1732107698;
+	bh=r7+NYWb4pCG048+V98/vNzre5FuZGg2B1EDnNc2JPXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtftJdCMZzIdZsazAFgdzV3dWywwohYGD2NG9fjthUES1Yp94dTNjz7Qm4ZmX+rXW
-	 BWjVXCO6pnqLWNoXkhnStxKCq8iOb5C2OZzE9IBBJjT6ohVqLVEfBclbXBlAbqijHX
-	 H1vzK67ueyILAYRvoIvV+WsG75cMBagImdcV3Nx0=
+	b=uH5NGg9M421I7wdcLUT3IhoduFUbMreRaaLne6UPZItxkuRNjbWofLhkYLvAzI9tx
+	 /odABMC0PdQ5QVm8Vx/GSgDuHja7V/XwWuGNtijgsnlzgs+kzlq3L/BJ4PyCBRJ+02
+	 UZPbMqLObqirgk0IOd1sK0K6b9+ObrC0Qprdtvjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Angus Chen <angus.chen@jaguarmicro.com>,
-	Xiaoguang Wang <lege.wang@jaguarmicro.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 6.1 20/73] vp_vdpa: fix id_table array not null terminated error
-Date: Wed, 20 Nov 2024 13:58:06 +0100
-Message-ID: <20241120125810.103198879@linuxfoundation.org>
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Enrico Bravi (PhD at polito.it)" <enrico.bravi@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.1 21/73] ima: fix buffer overrun in ima_eventdigest_init_common
+Date: Wed, 20 Nov 2024 13:58:07 +0100
+Message-ID: <20241120125810.126285081@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -68,54 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiaoguang Wang <lege.wang@jaguarmicro.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit 4e39ecadf1d2a08187139619f1f314b64ba7d947 upstream.
+commit 923168a0631bc42fffd55087b337b1b6c54dcff5 upstream.
 
-Allocate one extra virtio_device_id as null terminator, otherwise
-vdpa_mgmtdev_get_classes() may iterate multiple times and visit
-undefined memory.
+Function ima_eventdigest_init() calls ima_eventdigest_init_common()
+with HASH_ALGO__LAST which is then used to access the array
+hash_digest_size[] leading to buffer overrun. Have a conditional
+statement to handle this.
 
-Fixes: ffbda8e9df10 ("vdpa/vp_vdpa : add vdpa tool support in vp_vdpa")
-Cc: stable@vger.kernel.org
-Suggested-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Angus Chen <angus.chen@jaguarmicro.com>
-Signed-off-by: Xiaoguang Wang <lege.wang@jaguarmicro.com>
-Message-Id: <20241105133518.1494-1-lege.wang@jaguarmicro.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: 9fab303a2cb3 ("ima: fix violation measurement list record")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Tested-by: Enrico Bravi (PhD at polito.it) <enrico.bravi@huawei.com>
+Cc: stable@vger.kernel.org # 5.19+
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/virtio_pci/vp_vdpa.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ security/integrity/ima/ima_template_lib.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/vdpa/virtio_pci/vp_vdpa.c
-+++ b/drivers/vdpa/virtio_pci/vp_vdpa.c
-@@ -591,7 +591,11 @@ static int vp_vdpa_probe(struct pci_dev
- 		goto mdev_err;
+diff --git a/security/integrity/ima/ima_template_lib.c b/security/integrity/ima/ima_template_lib.c
+index 4183956c53af..0e627eac9c33 100644
+--- a/security/integrity/ima/ima_template_lib.c
++++ b/security/integrity/ima/ima_template_lib.c
+@@ -318,15 +318,21 @@ static int ima_eventdigest_init_common(const u8 *digest, u32 digestsize,
+ 				      hash_algo_name[hash_algo]);
  	}
  
--	mdev_id = kzalloc(sizeof(struct virtio_device_id), GFP_KERNEL);
-+	/*
-+	 * id_table should be a null terminated array, so allocate one additional
-+	 * entry here, see vdpa_mgmtdev_get_classes().
-+	 */
-+	mdev_id = kcalloc(2, sizeof(struct virtio_device_id), GFP_KERNEL);
- 	if (!mdev_id) {
- 		err = -ENOMEM;
- 		goto mdev_id_err;
-@@ -611,8 +615,8 @@ static int vp_vdpa_probe(struct pci_dev
- 		goto probe_err;
- 	}
+-	if (digest)
++	if (digest) {
+ 		memcpy(buffer + offset, digest, digestsize);
+-	else
++	} else {
+ 		/*
+ 		 * If digest is NULL, the event being recorded is a violation.
+ 		 * Make room for the digest by increasing the offset by the
+-		 * hash algorithm digest size.
++		 * hash algorithm digest size. If the hash algorithm is not
++		 * specified increase the offset by IMA_DIGEST_SIZE which
++		 * fits SHA1 or MD5
+ 		 */
+-		offset += hash_digest_size[hash_algo];
++		if (hash_algo < HASH_ALGO__LAST)
++			offset += hash_digest_size[hash_algo];
++		else
++			offset += IMA_DIGEST_SIZE;
++	}
  
--	mdev_id->device = mdev->id.device;
--	mdev_id->vendor = mdev->id.vendor;
-+	mdev_id[0].device = mdev->id.device;
-+	mdev_id[0].vendor = mdev->id.vendor;
- 	mgtdev->id_table = mdev_id;
- 	mgtdev->max_supported_vqs = vp_modern_get_num_queues(mdev);
- 	mgtdev->supported_features = vp_modern_get_features(mdev);
+ 	return ima_write_template_field_data(buffer, offset + digestsize,
+ 					     fmt, field_data);
+-- 
+2.47.0
+
 
 
 
