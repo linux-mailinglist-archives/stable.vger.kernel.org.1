@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-94170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E888C9D3B65
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204C69D3BAE
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970D81F21FB5
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E02F1F22F08
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A85D1AA783;
-	Wed, 20 Nov 2024 12:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A0E1AB6EF;
+	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeCwR2yz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEYSBdbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE9E1991AA;
-	Wed, 20 Nov 2024 12:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE01C1F0A;
+	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107528; cv=none; b=e6dH9YHzd/o608jODNFsAqLn9ZUmmUuDQucycEY8M1pieonOKX/Lmt8Z87JynFf7Ca3JdAtAKX+MmEeXAaUJGattps12GzP/qGG5TH++fj3jlde4KQQPcpJPouxxXIwccV5A4FB9hAVoWpHhWWlpqLBbDAa4vfN9mB9r/zfCjps=
+	t=1732107582; cv=none; b=IE0h2NTgu0baGl77tA4Od/hyLBk4JabA3jjm+DBa1FxPE/WpErTfd56Xc0CkXZ1JE44aCcRRQvT4zYZqnD+5T7mCxTC4Z25KRQGpvO6FQce5Ch+vJ7VUXvklf7emYb92kWMvXO/7ELkxMJ+z8xZCKG4mCUjnX1MpKJEPKt5S48E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107528; c=relaxed/simple;
-	bh=ZVixMvBaA5q6U9S/NnbEXFemwLgDIama0mAOgyhI79M=;
+	s=arc-20240116; t=1732107582; c=relaxed/simple;
+	bh=705Nk1twKF6NKIQBfX/l1OHSCVq65+APFQVYBRJfMO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8GIEO/FQmUtebxNE3qa29k7OjNRGHsr0J3RR35oHc6FqWZmMFySL9REK5pHqqWQi31gq7SJRYjfdzI7wlubS63/uSa84R/iKr5UZ+lAphXvd1gvgt3HuwFzokZ1dmilVkdRcpW4FvRoNAO6ovo1O8y3g8FzLMcQn76Dlb1hneg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeCwR2yz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63565C4CECD;
-	Wed, 20 Nov 2024 12:58:47 +0000 (UTC)
+	 MIME-Version; b=DLEz8F1VMH8XFC4LUHhn7GdrVtQATDy2h9j2Atwq6WFj5Nlww4wtN8b0G2/WlbXJjV6+xh9pWg7jW+ec/P+HGHufiOZ5xVoZrUfzmNwiUSSKN9Zq7n7k6hAEr+Qy5KZyQe49njd45SrMfkPyBi7PXBSHoWWQYovRiMuEM10/Dzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEYSBdbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F921C4CECD;
+	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107527;
-	bh=ZVixMvBaA5q6U9S/NnbEXFemwLgDIama0mAOgyhI79M=;
+	s=korg; t=1732107582;
+	bh=705Nk1twKF6NKIQBfX/l1OHSCVq65+APFQVYBRJfMO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeCwR2yzLZ5F0tX7zLqkDTFphNnjUVJ8d8bsTmebsF9/10cD5kTKO8AWQeBzjj3ur
-	 Gz5nlYO8T7UZ8l9mBoYIOyNJhV3bhtioloE0fR8e8lGUUn9zXrRreFcdNya5QMLyJ/
-	 FSZgSMY2KhLd8wUjuRj7kSZk7+jWd62upL5W9P88=
+	b=MEYSBdbItm+svjhWIa67Y8GRedMs9LwIWOB+3hjuDa0+4Fjpa1/wNdVYZ3UIzREaU
+	 1rZAtP7BM4uPIdHIYBBKd0sbfZ0TP48dQ0nR1x4oH41R3J/9KwaK6dqcZP2K+94dFI
+	 9+veqHl1WnMBap9Vl4EZ9GdsxyCqCEj3HxKExnBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hajime Tazaki <thehajime@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 059/107] nommu: pass NULL argument to vma_iter_prealloc()
+	Meghana Malladi <m-malladi@ti.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 24/82] net: ti: icssg-prueth: Fix 1 PPS sync
 Date: Wed, 20 Nov 2024 13:56:34 +0100
-Message-ID: <20241120125631.008527525@linuxfoundation.org>
+Message-ID: <20241120125630.153762392@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hajime Tazaki <thehajime@gmail.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-commit 247d720b2c5d22f7281437fd6054a138256986ba upstream.
+[ Upstream commit dc065076ee7768377d7c16af7d1b0767782d8c98 ]
 
-When deleting a vma entry from a maple tree, it has to pass NULL to
-vma_iter_prealloc() in order to calculate internal state of the tree, but
-it passed a wrong argument.  As a result, nommu kernels crashed upon
-accessing a vma iterator, such as acct_collect() reading the size of vma
-entries after do_munmap().
+The first PPS latch time needs to be calculated by the driver
+(in rounded off seconds) and configured as the start time
+offset for the cycle. After synchronizing two PTP clocks
+running as master/slave, missing this would cause master
+and slave to start immediately with some milliseconds
+drift which causes the PPS signal to never synchronize with
+the PTP master.
 
-This commit fixes this issue by passing a right argument to the
-preallocation call.
-
-Link: https://lkml.kernel.org/r/20241108222834.3625217-1-thehajime@gmail.com
-Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 186734c15886 ("net: ti: icssg-prueth: add packet timestamping and ptp support")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
+Link: https://patch.msgid.link/20241111095842.478833-1-m-malladi@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/nommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 13 +++++++++++--
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h | 12 ++++++++++++
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -568,7 +568,7 @@ static int delete_vma_from_mm(struct vm_
- 	VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index fb120baee5532..7efb3e347c042 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -15,6 +15,7 @@
+ #include <linux/genalloc.h>
+ #include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
++#include <linux/io-64-nonatomic-hi-lo.h>
+ #include <linux/kernel.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+@@ -1245,6 +1246,8 @@ static int prueth_perout_enable(void *clockops_data,
+ 	struct prueth_emac *emac = clockops_data;
+ 	u32 reduction_factor = 0, offset = 0;
+ 	struct timespec64 ts;
++	u64 current_cycle;
++	u64 start_offset;
+ 	u64 ns_period;
  
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
--	if (vma_iter_prealloc(&vmi, vma)) {
-+	if (vma_iter_prealloc(&vmi, NULL)) {
- 		pr_warn("Allocation of vma tree for process %d failed\n",
- 		       current->pid);
- 		return -ENOMEM;
+ 	if (!on)
+@@ -1283,8 +1286,14 @@ static int prueth_perout_enable(void *clockops_data,
+ 	writel(reduction_factor, emac->prueth->shram.va +
+ 		TIMESYNC_FW_WC_SYNCOUT_REDUCTION_FACTOR_OFFSET);
+ 
+-	writel(0, emac->prueth->shram.va +
+-		TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
++	current_cycle = icssg_read_time(emac->prueth->shram.va +
++					TIMESYNC_FW_WC_CYCLECOUNT_OFFSET);
++
++	/* Rounding of current_cycle count to next second */
++	start_offset = roundup(current_cycle, MSEC_PER_SEC);
++
++	hi_lo_writeq(start_offset, emac->prueth->shram.va +
++		     TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index 3fe80a8758d30..0713ad7897b68 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -257,6 +257,18 @@ static inline int prueth_emac_slice(struct prueth_emac *emac)
+ 
+ extern const struct ethtool_ops icssg_ethtool_ops;
+ 
++static inline u64 icssg_read_time(const void __iomem *addr)
++{
++	u32 low, high;
++
++	do {
++		high = readl(addr + 4);
++		low = readl(addr);
++	} while (high != readl(addr + 4));
++
++	return low + ((u64)high << 32);
++}
++
+ /* Classifier helpers */
+ void icssg_class_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac);
+ void icssg_class_set_host_mac_addr(struct regmap *miig_rt, const u8 *mac);
+-- 
+2.43.0
+
 
 
 
