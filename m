@@ -1,75 +1,65 @@
-Return-Path: <stable+bounces-94457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B07B9D4258
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 20:05:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7179A9D425E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 20:12:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17BFF28323D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 19:05:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E34F01F21E63
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 19:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C3E1AA7B1;
-	Wed, 20 Nov 2024 19:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9941AB537;
+	Wed, 20 Nov 2024 19:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yra6Lbru"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IauYsWIL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6A315534B;
-	Wed, 20 Nov 2024 19:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5262513AA35;
+	Wed, 20 Nov 2024 19:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732129531; cv=none; b=URl/sFCyNdONRCTIozjs3L948JSVoByiEJaBGRt6k+RKnYSsnRQDazQoN4l/l3YN3IFilcd3udU6nH9eZx4SKM+EDGUUVcQVYFeUU7YRpesSuPmlap0FmY+liAgUM8NCGKRCNVGPNCv5HsTvjpL8SYziyjUcuZZVde/XpeX2GR8=
+	t=1732129943; cv=none; b=pDhFpPWP10j1KuSQ2o2+Qhya8KyeZofYE5zQUX4YlGddmIgFlMJ4TsBFFJHZPeayElFWZ6BdXnZdLo1YlGn/QCjg9Prg85V845Usf4IIfxRm3yQd/DGVVzT+XImsPJlHSN59P8hL6HhuJ/a/0bvObbVqkVDc/qwhjyOVB0IpmIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732129531; c=relaxed/simple;
-	bh=VgzztgUYTj2gdZLejtz2gNTSGzeKzDJP3AgjXP/IMu4=;
+	s=arc-20240116; t=1732129943; c=relaxed/simple;
+	bh=rBAOjiX/W/LhNtzozjW87P7Hdw+S32E9dRry2kowNOg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CrznVrM5mL0+VkttEQVcoh0cuIpLXyRrxNSYLrZvo/3p7riN4Dsrxx0wsh2b63SwYaYRqyvam6TfWh66iw/ld/Wd1aWyWT/7PfyyPWMg5VuLr/UfOrF9lViJn3XLIEA/gVYRtGSh5wOxrOYQeW16BnjQScSXeuRDLVNYFkSSAOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yra6Lbru; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-212348d391cso306535ad.2;
-        Wed, 20 Nov 2024 11:05:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732129530; x=1732734330; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gd7WOFiznCPMFUhnI5iH+6xGVNMYkxpQsmPsD6u9+zI=;
-        b=Yra6LbruqWG9q89zOPLDd0wwCeOH/j9qf9hsu5bDKKomAihvKWPju6ZdOs/LBSiUnN
-         +Lu9ZZB7PnE5sZ+zfe+Z+69b4zqcoPsKQlmcK8FNP2IvhmLtBSmLkbZ2bBDSKEDSyud8
-         urDmaIxXJh9JPZULZB8YcBFw3h+D12YAClknglzycuOAVOzTrnlsJxNz0bU1W0e00fYx
-         kwZkE/60jWInu9D/c+Ou6KufNZYiMak8LpGGd9tTxgPyQ9yJp2zuRfBk2atNWsTaT01j
-         roek2C9LzmNs5dBuGaJ24UV9QDIgAW+NyVDvRDjoZ51xdXFFASUeaYmqjmfNJAgUSLYU
-         JjSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732129530; x=1732734330;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gd7WOFiznCPMFUhnI5iH+6xGVNMYkxpQsmPsD6u9+zI=;
-        b=C/uCYsrfG/MkKbabTAEFWC+7nxhz4fwpBFx3lZwxruiCH9/7KNQ24nohGGPraxMFe6
-         eW/HLZEHsCV+AavClIw+LBlrSWdTkO19qKPrExwV6cUX8ujmP9tA50hHCFzdP3XvPGDV
-         4TYYEwkdUVZbn8X/B8TDI7U4BMWwnkXYRUveOn4v7DLj+DakGqykFYgrhgP2ty8W9TgX
-         cIMaK+c5Znb4VdseesSxhKyGkpDcLKdCaPCJevuSHWfYH0ZGwORKvR7EX/9dZTz3GecF
-         Pwapr9YmB1Z86WUJ39eU/LTAFBLqHti7DiNWhw/NgHBuwggUhFSRdvqh9JR/7+5Cea1C
-         AC3A==
-X-Forwarded-Encrypted: i=1; AJvYcCU2F+kio1e1ogazPJq6j0i1HGA0eAqu2gcUks687q/mxwwbciH9vRJhTdHmkJWSQ4neN57QcV3f@vger.kernel.org, AJvYcCUK82DPnxKbzf9908qGTDGooWLfORN1W8EIcav+K0HA/wb5N/E2j18omop07c+V71XSaNclFtJngADrgGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcefsuJbtV7+QvsgTGSiViiWxttqy4gtNpIRSbXmw2wUFSgcKU
-	X7wtYz/vJJCVOxtFj94FMRoWrlqK91KUTBtf678ebm54tHDyxoUB
-X-Google-Smtp-Source: AGHT+IH1zyGelybEsC18ngnaSAx9rUe1LaPZlFpgnIHWcfvZPSzTlaxdPS8WJl77iJAJ8uNWNRuaAQ==
-X-Received: by 2002:a17:902:e74a:b0:211:6b23:9aa8 with SMTP id d9443c01a7336-2126b0139c5mr54005255ad.36.1732129529685;
-        Wed, 20 Nov 2024 11:05:29 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f348e4sm93137075ad.125.2024.11.20.11.05.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Nov 2024 11:05:29 -0800 (PST)
-Message-ID: <cbd45b90-668a-4a2e-abb0-66b43b49ce94@gmail.com>
-Date: Wed, 20 Nov 2024 11:05:27 -0800
+	 In-Reply-To:Content-Type; b=tpHV69ZNuRW5s8+RPZxoFDzyl9vTFiJkcSUmd6gG3d+pEjrhmSorjXwoxrov5N7cJRFo93Po1EFd8tfxXpuGcfOSl/H4ZKQ4wMKLvhkAToLLz2IqMW0LGoO3DCyo0J7Z6hsb08NW3xv+5X7YxR2pZmz2AVSDB+eWVEPCFNtDufQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IauYsWIL; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732129942; x=1763665942;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rBAOjiX/W/LhNtzozjW87P7Hdw+S32E9dRry2kowNOg=;
+  b=IauYsWILDyiqyilEOTZf14q8blz3p7rkdZ+w03/ZMPak4rzHvOPFAAKK
+   2GUChE7HHTT+155t05KKF9gESICD/RHSrlJZjhLfpHt30m904dU2o9cUJ
+   RDrPWsmEOA9ZPkIJ+KwaRFNMMpUXtlpw54eWFdzVjTex2BgAtVuq0iDgC
+   GLss5SRAknxZjlfBIGfRrkr4OVMlEtm0C+6tHZ9+dYM+uLwPwqQgduPgQ
+   t2wD4NJJt/pFULi+2JBC5wwEeMtTd+6K/vehdkpcK7hOoUMq+be7AEzIl
+   F04nPK3aoqBN7sKom70GH1PYJBvLwJj5EVpyxQGWQFd5aJSiB3hmJNwFt
+   Q==;
+X-CSE-ConnectionGUID: uXxnbsFrQXuPjYgAG34z4w==
+X-CSE-MsgGUID: H3ntK/lJRF+nquamECvmkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="32457767"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; 
+   d="scan'208";a="32457767"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 11:12:20 -0800
+X-CSE-ConnectionGUID: NKtJkHzOSRSKjA/JqbhcZQ==
+X-CSE-MsgGUID: FLV4j7kvRrqLyAOJFscWjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; 
+   d="scan'208";a="120954838"
+Received: from hcaldwel-desk1.amr.corp.intel.com (HELO [10.124.223.114]) ([10.124.223.114])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 11:12:18 -0800
+Message-ID: <c5f9c185-11b1-4bc8-96be-a81895c2a096@intel.com>
+Date: Wed, 20 Nov 2024 11:12:17 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,77 +67,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/82] 6.6.63-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241120125629.623666563@linuxfoundation.org>
+Subject: Re: [PATCH v3] x86/cpu: Add INTEL_LUNARLAKE_M to X86_BUG_MONITOR
+To: Len Brown <lenb@kernel.org>, peterz@infradead.org, tglx@linutronix.de,
+ x86@kernel.org
+Cc: rafael@kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, Len Brown <len.brown@intel.com>,
+ stable@vger.kernel.org
+References: <a4aa8842a3c3bfdb7fe9807710eef159cbf0e705.1731463305.git.len.brown@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <a4aa8842a3c3bfdb7fe9807710eef159cbf0e705.1731463305.git.len.brown@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/20/24 04:56, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.63 release.
-> There are 82 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 11/12/24 18:07, Len Brown wrote:
+> From: Len Brown <len.brown@intel.com>
 > 
-> Responses should be made by Fri, 22 Nov 2024 12:56:17 +0000.
-> Anything received after that time might be too late.
+> Under some conditions, MONITOR wakeups on Lunar Lake processors
+> can be lost, resulting in significant user-visible delays.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.63-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+> always sends an IPI, avoiding this potential delay.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+This kinda implies that X86_BUG_MONITOR only does one thing.  What about
+the two other places in the tree that check it.  Are those relevant?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219364
+> 
+> Cc: stable@vger.kernel.org # 6.11
+> Signed-off-by: Len Brown <len.brown@intel.com>
+
+This obviously conflicts with the VFM infrastructure, but shouldn't this
+also get backported to even older stable kernels?
+
+I thought the "# 6.11" was to tell folks where it is *needed*, not where
+it actually applies.
 
