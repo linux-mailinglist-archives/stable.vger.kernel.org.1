@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-94139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871F09D3B43
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4A79D3B45
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405FE1F21A42
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90B71F21B31
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F011AA1F6;
-	Wed, 20 Nov 2024 12:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F2D1AA1FC;
+	Wed, 20 Nov 2024 12:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+gb+HBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me2eeuMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449811A4F1B;
-	Wed, 20 Nov 2024 12:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A341991AA;
+	Wed, 20 Nov 2024 12:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107504; cv=none; b=aLzKZBwCX1ZgyrYSzsq6JOpy8p+9bGaNNM7xn7+su9YEyZFgzSpy7VKgBLtwf5zJpqn9pd7dvz2L1oYQygTBWRyC5+ELF2+fDjLsZH9Q0px1OFp0QsIuBfK5ctw2n5RGoB4hWuOyyeubJG+8eQLtGJrhrrLbarPf26GAKoQiHZU=
+	t=1732107505; cv=none; b=T0wrvrqpCMly7Qp8+ohBzuw+Nwqm4g0TK9f3JASXLQLmTyECrCdBx33ASx09peKB+RxmKMB7PLuYre1dgryK2GCV593UW0LHiUcHskBnfLcU2LxXH18KRxoBuz+CEGUYETo/ax6Pw9nL3Aqa56bwVD/BSn4aWNb7p6L/uFLRjGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107504; c=relaxed/simple;
-	bh=7jbB/vRt/R3ZC28WjjdhEEpUkI8FOuzehrY5CJf9Yuk=;
+	s=arc-20240116; t=1732107505; c=relaxed/simple;
+	bh=gySCtsuYN/J9d289uDYNrJr1Ry7Nxmb1SxUr8SD5pSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQgW9HNaoLDhM67jiLQUdpALBCbk7P10+86dnoRbLdKptQ4M9WR8LbQbpSSHG3YxfI+Vpmq341/VNEExqUk/sDjLmm1hHofxoK/ZAzE9RtGFIjUdBVHHhuEg8oYpy4iLWXJ4ucwatrRDPKnCFhurVxPBUcnXcZUaoFFbSBe1gvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+gb+HBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C982BC4CED1;
-	Wed, 20 Nov 2024 12:58:23 +0000 (UTC)
+	 MIME-Version; b=S0Rc5UyS3sIf/XyJwE3fFm8katBZ7Dw4oNezNt1JTT3eYbFR0iH2VTaD6mzCQfKviRIUO1yicUpBNFq5MWO8dScouUkaOeVyLRvcITjHVFPa71kUctD1r/nxNxdCVRzMtP0EIa2aAwTBRQtmZITl8cqTpmFLjraNXPlGkpSentE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me2eeuMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D12C4CECD;
+	Wed, 20 Nov 2024 12:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107503;
-	bh=7jbB/vRt/R3ZC28WjjdhEEpUkI8FOuzehrY5CJf9Yuk=;
+	s=korg; t=1732107505;
+	bh=gySCtsuYN/J9d289uDYNrJr1Ry7Nxmb1SxUr8SD5pSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+gb+HBhjaldbCRPpTegsMXoJ5wxg4bSVZVYt8zhtkeqYf6bjDSuK8GqK50pXO5nl
-	 EiInVN4eXUVM6qsMqu2kkByujK91yvpPe1p3NZ+eGKcHhI3JINIjJkMi6uJIRVe7wX
-	 GbSHdtz76mSpk7viMLOSWR0LpmbcxaWs6ZDI/HzU=
+	b=Me2eeuMjd2r1kh1zHQRfTbdY/MXPd6fyJnCl2A2+dgj8A3S0R7L/KBQspCUube2BS
+	 RtvrHd+Ixo4F7x28fguPwRXniT8FMfq3SCynnewMHmf7r6dYDP+JXuumKUUNXfHvut
+	 Pj3i56TkxLcZJ+xNx46YTdeDCzC1nf4HI5m0zV8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 029/107] drm/vmwgfx: avoid null_ptr_deref in vmw_framebuffer_surface_create_handle
-Date: Wed, 20 Nov 2024 13:56:04 +0100
-Message-ID: <20241120125630.337289370@linuxfoundation.org>
+Subject: [PATCH 6.11 030/107] net: ti: icssg-prueth: Fix 1 PPS sync
+Date: Wed, 20 Nov 2024 13:56:05 +0100
+Message-ID: <20241120125630.359797649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
 References: <20241120125629.681745345@linuxfoundation.org>
@@ -66,36 +68,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 93d1f41a82de382845af460bf03bcb17dcbf08c5 ]
+[ Upstream commit dc065076ee7768377d7c16af7d1b0767782d8c98 ]
 
-The 'vmw_user_object_buffer' function may return NULL with incorrect
-inputs. To avoid possible null pointer dereference, add a check whether
-the 'bo' is NULL in the vmw_framebuffer_surface_create_handle.
+The first PPS latch time needs to be calculated by the driver
+(in rounded off seconds) and configured as the start time
+offset for the cycle. After synchronizing two PTP clocks
+running as master/slave, missing this would cause master
+and slave to start immediately with some milliseconds
+drift which causes the PPS signal to never synchronize with
+the PTP master.
 
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241029083429.1185479-1-chenridong@huaweicloud.com
+Fixes: 186734c15886 ("net: ti: icssg-prueth: add packet timestamping and ptp support")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
+Link: https://patch.msgid.link/20241111095842.478833-1-m-malladi@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 13 +++++++++++--
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h | 12 ++++++++++++
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 63b8d7591253c..10d596cb4b402 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1265,6 +1265,8 @@ static int vmw_framebuffer_surface_create_handle(struct drm_framebuffer *fb,
- 	struct vmw_framebuffer_surface *vfbs = vmw_framebuffer_to_vfbs(fb);
- 	struct vmw_bo *bo = vmw_user_object_buffer(&vfbs->uo);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 33cb3590a5cde..55d12679b24b7 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -15,6 +15,7 @@
+ #include <linux/genalloc.h>
+ #include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
++#include <linux/io-64-nonatomic-hi-lo.h>
+ #include <linux/kernel.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+@@ -389,6 +390,8 @@ static int prueth_perout_enable(void *clockops_data,
+ 	struct prueth_emac *emac = clockops_data;
+ 	u32 reduction_factor = 0, offset = 0;
+ 	struct timespec64 ts;
++	u64 current_cycle;
++	u64 start_offset;
+ 	u64 ns_period;
  
-+	if (WARN_ON(!bo))
-+		return -EINVAL;
- 	return drm_gem_handle_create(file_priv, &bo->tbo.base, handle);
+ 	if (!on)
+@@ -427,8 +430,14 @@ static int prueth_perout_enable(void *clockops_data,
+ 	writel(reduction_factor, emac->prueth->shram.va +
+ 		TIMESYNC_FW_WC_SYNCOUT_REDUCTION_FACTOR_OFFSET);
+ 
+-	writel(0, emac->prueth->shram.va +
+-		TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
++	current_cycle = icssg_read_time(emac->prueth->shram.va +
++					TIMESYNC_FW_WC_CYCLECOUNT_OFFSET);
++
++	/* Rounding of current_cycle count to next second */
++	start_offset = roundup(current_cycle, MSEC_PER_SEC);
++
++	hi_lo_writeq(start_offset, emac->prueth->shram.va +
++		     TIMESYNC_FW_WC_SYNCOUT_START_TIME_CYCLECOUNT_OFFSET);
+ 
+ 	return 0;
  }
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index 4d1c895dacdb6..169949acf2539 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -316,6 +316,18 @@ static inline int prueth_emac_slice(struct prueth_emac *emac)
+ extern const struct ethtool_ops icssg_ethtool_ops;
+ extern const struct dev_pm_ops prueth_dev_pm_ops;
  
++static inline u64 icssg_read_time(const void __iomem *addr)
++{
++	u32 low, high;
++
++	do {
++		high = readl(addr + 4);
++		low = readl(addr);
++	} while (high != readl(addr + 4));
++
++	return low + ((u64)high << 32);
++}
++
+ /* Classifier helpers */
+ void icssg_class_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac);
+ void icssg_class_set_host_mac_addr(struct regmap *miig_rt, const u8 *mac);
 -- 
 2.43.0
 
