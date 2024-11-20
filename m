@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-94225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BB59D3B9C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7B79D3BC8
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D429283BBD
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43787284225
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD3E1AB6DA;
-	Wed, 20 Nov 2024 12:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A2F1B0F0C;
+	Wed, 20 Nov 2024 13:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+f2PHgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELrJkS34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F7D1AB539;
-	Wed, 20 Nov 2024 12:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794721C305A;
+	Wed, 20 Nov 2024 13:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107569; cv=none; b=oqLKPp8uWZM6JvHrwxL6fP9hqaK9+aZDRLi+7WrEghQzKl8EURAjkhuy/UQgfwWX6S6WAVdkVqzgXySwKbs1xgaLsyWgHAAb3wvh38Tck0JtBBo3/nn2AQ4uXAHnIR6UuMQAlpTY9G64zFJrUzpvjriyd7D+moeL7klFVQTf1CM=
+	t=1732107600; cv=none; b=MSr320GEkUzFDz+7wxk55aYXN1W2uMN1Buk6i14qvqIlVLfgJB3jfiaFfRpKHn/nlSsrEBq4yBaPk9sXiHWkA/ZN3nhxDIfNc3dHVUNb8Swx25BVEeYBhfDfIbJdGv7IVrFkzidZLXfT4WDk2lPT/i021ksgFc7zvrAEJ9yCtX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107569; c=relaxed/simple;
-	bh=bwK9uRzmqhorJX8OkXGUyHq8Lkbk2ITv4K0U2OmReeQ=;
+	s=arc-20240116; t=1732107600; c=relaxed/simple;
+	bh=RGNApLX6C1IG50/0kYa/xefMh9p0cgyl2+I2sRXHKZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5m7SNMpUu9GTiI7V6nVmveH2RJKzfgTO0jdySlnpEgaCpkj/oASNuV5zxjmqbJPAoxJSn6FFkpcb3gazWLBbadShCR2fNpGb/uQyrHDrtajjCp5ZFml1ltWOALlvmNsrkKgDmf9cMS1GdOdhUVJBFkfK0tbwShCJTvD/JHVVWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+f2PHgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1550CC4CECD;
-	Wed, 20 Nov 2024 12:59:29 +0000 (UTC)
+	 MIME-Version; b=TNlc6PqMUtFLxpXc5QfKdYAK1P007tM3jLiYuNUHbjgk41mZruJrLXudOORgkALErnbGeOMm00NTcAMQpuxYlNT94AMvk6QREOJ6InegGVSjzZewrn0lXaprXNmKw3sc8+S0EAup9dZyd66dZpZs8kiWugU2VFwGE7OMjzsmq/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELrJkS34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B17DC4CED8;
+	Wed, 20 Nov 2024 13:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107569;
-	bh=bwK9uRzmqhorJX8OkXGUyHq8Lkbk2ITv4K0U2OmReeQ=;
+	s=korg; t=1732107600;
+	bh=RGNApLX6C1IG50/0kYa/xefMh9p0cgyl2+I2sRXHKZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+f2PHgqL6MLsvurwMMvI/lrvu0EUtuWDblFwdgJhrI3Wuhc+rPYibjxZ/Gac6JrT
-	 QPrpI9/1VDBbMk+RtjebvXYKp3psgvZ8yDmlS6vzGLC2GsguiPqr40LgeB7wZlGbAe
-	 VGtgHOjfAsQA17FDpa2Qwi5UaVHlZdq41ctk50TQ=
+	b=ELrJkS34bBLlRouYiAY/5jrfp9FbncwubS9RH8DqLa/gGSRT43Mqzl0dPqhp5IXzA
+	 FDsfFrZSvoVPYGv3a0vC0ZfZ//PNGpA/16GjsQ07su+DfcJR65evQF0XIIffK1oQB4
+	 JXoXGRB8zH9l2E0e5K6fuQgiS6jwiCDdsAbKFCUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 084/107] drm/xe: handle flat ccs during hibernation on igpu
+	Andre Przywara <andre.przywara@arm.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 49/82] mmc: sunxi-mmc: Fix A100 compatible description
 Date: Wed, 20 Nov 2024 13:56:59 +0100
-Message-ID: <20241120125631.584618546@linuxfoundation.org>
+Message-ID: <20241120125630.716314454@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-commit be7eeaba2a11d7c16a9dc034a25f224f1343f303 upstream.
+commit 85b580afc2c215394e08974bf033de9face94955 upstream.
 
-Starting from LNL, CCS has moved over to flat CCS model where there is
-now dedicated memory reserved for storing compression state. On
-platforms like LNL this reserved memory lives inside graphics stolen
-memory, which is not treated like normal RAM and is therefore skipped by
-the core kernel when creating the hibernation image. Currently if
-something was compressed and we enter hibernation all the corresponding
-CCS state is lost on such HW, resulting in corrupted memory. To fix this
-evict user buffers from TT -> SYSTEM to ensure we take a snapshot of the
-raw CCS state when entering hibernation, where upon resuming we can
-restore the raw CCS state back when next validating the buffer. This has
-been confirmed to fix display corruption on LNL when coming back from
-hibernation.
+It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
+blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
+And while this alone would make a trivial fix, the H616 falls back to
+the A100 compatible string, so we have to now match the H616 compatible
+string explicitly against the description advertising 64K DMA blocks.
 
-Fixes: cbdc52c11c9b ("drm/xe/xe2: Support flat ccs")
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3409
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112162827.116523-2-matthew.auld@intel.com
-(cherry picked from commit c8b3c6db941299d7cc31bd9befed3518fdebaf68)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+As the A100 is now compatible with the D1 description, let the A100
+compatible string point to that block instead, and introduce an explicit
+match against the H616 string, pointing to the old description.
+Also remove the redundant setting of clk_delays to NULL on the way.
+
+Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo_evict.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sunxi-mmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo_evict.c
-+++ b/drivers/gpu/drm/xe/xe_bo_evict.c
-@@ -38,10 +38,21 @@ int xe_bo_evict_all(struct xe_device *xe
- 		return 0;
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i
+ 	.needs_new_timings = true,
+ };
  
- 	/* User memory */
--	for (mem_type = XE_PL_VRAM0; mem_type <= XE_PL_VRAM1; ++mem_type) {
-+	for (mem_type = XE_PL_TT; mem_type <= XE_PL_VRAM1; ++mem_type) {
- 		struct ttm_resource_manager *man =
- 			ttm_manager_type(bdev, mem_type);
- 
-+		/*
-+		 * On igpu platforms with flat CCS we need to ensure we save and restore any CCS
-+		 * state since this state lives inside graphics stolen memory which doesn't survive
-+		 * hibernation.
-+		 *
-+		 * This can be further improved by only evicting objects that we know have actually
-+		 * used a compression enabled PAT index.
-+		 */
-+		if (mem_type == XE_PL_TT && (IS_DGFX(xe) || !xe_device_has_flat_ccs(xe)))
-+			continue;
-+
- 		if (man) {
- 			ret = ttm_resource_manager_evict_all(bdev, man);
- 			if (ret)
+-static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
++static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
+ 	.idma_des_size_bits = 16,
+ 	.idma_des_shift = 2,
+-	.clk_delays = NULL,
+ 	.can_calibrate = true,
+ 	.mask_data0 = true,
+ 	.needs_new_timings = true,
+@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_m
+ 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+-	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
++	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
++	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 
 
 
