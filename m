@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890A89D3C5D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:12:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0789D3C3D
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 781ADB2CC8C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:08:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9ED1F25ADE
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5931A7AF5;
-	Wed, 20 Nov 2024 13:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173E21A9B42;
+	Wed, 20 Nov 2024 13:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dN1lJj90"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="najRmnP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40801A0BD6
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 13:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AAA1A0BD6
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 13:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107887; cv=none; b=d0ld8EFKez6FplxNafKvtwGNgs0CE2QcK28wPnbxIxAdOu/DVamFiMQxLVnOggOXtRFKBDUxzsas1iECpzVPmddcgH9GIFl45ySn9iqOm+TcQixKPxRUkjoPfkjM2DRElKIlH2G0IymWcTUhx08y/wpWXen5aURbV7yaGBMP3ow=
+	t=1732107889; cv=none; b=YWcX1lSms0Rmx1eQtCM/tIz2zRM0MolpKuRg9ktJC3ukRhJ27/k1R5uiBTGKdtulIbBLzE/henwEzLQlxjPMATgC9QgachkX0Yxup1Mwq7oH7IQiewcuEDbqbIf03rM67/kvFrj0F+2S8vl6lhhaCK8J14k8Vst2g9ERntWhmZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107887; c=relaxed/simple;
-	bh=JSCRrJ0vGVECMvPCy8VRRiFu+2CcgLz0qMvswZ0czHM=;
+	s=arc-20240116; t=1732107889; c=relaxed/simple;
+	bh=5RaQhiUrgvQ5HsIG3BNpExRZDKxOith1NEn6UOtKkBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S30XxF9F4YgaOp7+zkqLmEetV9+xRWZDGT5D3dwazpc+qDXL5usa/b8t0h13dKaGML92/fADHt8NZyNsN7JZXggpOfoB0oW+jXszEloNvEYQxLdHmZ7hojK3kqqrDPF6lqabZibSleg8N+XzuIxdLH1gTfP77FTfc9dwWiQ9AjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dN1lJj90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E579DC4CECD;
-	Wed, 20 Nov 2024 13:04:46 +0000 (UTC)
+	 MIME-Version; b=QQOoc6Kw1tfz86AZumY/uImxPKpnyQfNOm6zjtoKhRRPZUeiGVn6myJMn14CdTxWZ8Wz0UwATVPRPYBnUKSPiKJ0NsisYIHd/Jk8l3JlcfdpbCZU2wD5JcXbDOZ8DNyZAYppWvQ01IpmeV65QOx0vObrcjz5a4mWRtCIMWeNZfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=najRmnP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC151C4CECD;
+	Wed, 20 Nov 2024 13:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732107887;
-	bh=JSCRrJ0vGVECMvPCy8VRRiFu+2CcgLz0qMvswZ0czHM=;
+	s=k20201202; t=1732107889;
+	bh=5RaQhiUrgvQ5HsIG3BNpExRZDKxOith1NEn6UOtKkBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dN1lJj90MCHYeUOs2Vn+uOalPTqqZBuW1YPc0ceE/GIuxG3nXmwVPOAsyTspxvvFX
-	 tdl0EdO5RyHM9gcGrt2COQogYdvMU0ZovtnCmc3eKOROaupsDNUXSUs0EIkksRJA0B
-	 +uAleqsrK6x93+sZCTEnq18sTRSSsR6zXDxwY2g3WRKDLJutWtknJjpFy1s5Dxx2I9
-	 Gf2BuI7ibQlcLi5y7D866KkcSapM7YPbUlmtrSZOefSQRy1czYJmruXdbUzIImEp+5
-	 V+CGR8qvwMamMKQTypdDxS0Q65xz6sLE5dbaVH7B75rYfG9z9EaYgGb1O2DkU3/Uw9
-	 sWenKN7S4iRMQ==
+	b=najRmnP89Vj/Zgv8HI4Kb5Gvh5zRAvOqjv18QjFPjZGTJoKVmbGUBbXpwbTi+Uai0
+	 eRhikviwYyvgCgN49PfhHy2WIY1/TU2XTK8Tdf/AuG8c7I7MLCBOVzvI25kRtOgaVw
+	 5oXngHVtKy9QixxcVsHlVrQ0Tcn2xGlKrjfDrCyCJ7MlbSLpWiS0LT1tA+QkEhZaTY
+	 Q+QPQAXfH9MSs5vt5wD0zxbkEQGxWjeKQgLGZHuEoyKDNBCjVZs1yHq23dHyrq+Yen
+	 7Dj0giu8pZXgmZMLuiG12jjSTWstxzos/UHuJEyUhqTF2tr7W7DapiyaBtrIjw3Hnr
+	 RejLBkfkNwZtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 6.1.y 3/3] null_blk: Fix return value of nullb_device_power_store()
-Date: Wed, 20 Nov 2024 08:04:45 -0500
-Message-ID: <20241120075627-fc65c1ac85b00e8f@stable.kernel.org>
+Subject: Re: [PATCH v2 6.1.y 1/3] null_blk: Remove usage of the deprecated ida_simple_xx() API
+Date: Wed, 20 Nov 2024 08:04:47 -0500
+Message-ID: <20241120074550-187de7518df15aa6@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241120032841.28236-4-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241120032841.28236-2-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,52 +63,62 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: d9ff882b54f99f96787fa3df7cd938966843c418
+The upstream commit SHA1 provided is correct: 95931a245b44ee04f3359ec432e73614d44d8b38
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Damien Le Moal <dlemoal@kernel.org>
+Commit author: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
 
 Status in newer kernel trees:
 6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: e0aba0c6d521)
+6.6.y | Present (different SHA1: b2b02202f87d)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-20 07:50:08.726024900 -0500
-+++ /tmp/tmp.mzeJOcYvZi	2024-11-20 07:50:08.723707071 -0500
+--- -	2024-11-20 07:40:44.222155724 -0500
++++ /tmp/tmp.aIhRvR57Io	2024-11-20 07:40:44.215907652 -0500
 @@ -1,3 +1,5 @@
-+commit d9ff882b54f99f96787fa3df7cd938966843c418 upstream.
++[ Upstream commit 95931a245b44ee04f3359ec432e73614d44d8b38 ]
 +
- When powering on a null_blk device that is not already on, the return
- value ret that is initialized to be count is reused to check the return
- value of null_add_dev(), leading to nullb_device_power_store() to return
-@@ -10,15 +12,17 @@
- Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
- Link: https://lore.kernel.org/r/20240527043445.235267-1-dlemoal@kernel.org
+ ida_alloc() and ida_free() should be preferred to the deprecated
+ ida_simple_get() and ida_simple_remove().
+ 
+@@ -6,15 +8,16 @@
+ Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+ Link: https://lore.kernel.org/r/bf257b1078475a415cdc3344c6a750842946e367.1705222845.git.christophe.jaillet@wanadoo.fr
  Signed-off-by: Jens Axboe <axboe@kernel.dk>
-+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-  drivers/block/null_blk/main.c | 1 +
-  1 file changed, 1 insertion(+)
+  drivers/block/null_blk/main.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
  
  diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
--index eb023d2673693..631dca2e4e844 100644
-+index e838eed4aacf..e66cace433cb 100644
+-index 9f7695f00c2db..36755f263e8ec 100644
++index 4d78b5583dc6..f58778b57375 100644
  --- a/drivers/block/null_blk/main.c
  +++ b/drivers/block/null_blk/main.c
--@@ -494,6 +494,7 @@ static ssize_t nullb_device_power_store(struct config_item *item,
-+@@ -470,6 +470,7 @@ static ssize_t nullb_device_power_store(struct config_item *item,
+-@@ -1840,7 +1840,7 @@ static void null_del_dev(struct nullb *nullb)
++@@ -1764,7 +1764,7 @@ static void null_del_dev(struct nullb *nullb)
   
-  		set_bit(NULLB_DEV_FL_CONFIGURED, &dev->flags);
-  		dev->power = newp;
-@@ -26,3 +30,6 @@
-  	} else if (dev->power && !newp) {
-  		if (test_and_clear_bit(NULLB_DEV_FL_UP, &dev->flags)) {
-  			dev->power = newp;
+  	dev = nullb->dev;
+  
+@@ -23,8 +26,8 @@
+  
+  	list_del_init(&nullb->list);
+  
+-@@ -2174,7 +2174,7 @@ static int null_add_dev(struct nullb_device *dev)
+- 	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
++@@ -2103,7 +2103,7 @@ static int null_add_dev(struct nullb_device *dev)
++ 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, nullb->q);
+  
+  	mutex_lock(&lock);
+ -	rv = ida_simple_get(&nullb_indexes, 0, 0, GFP_KERNEL);
+@@ -32,3 +35,6 @@
+  	if (rv < 0) {
+  		mutex_unlock(&lock);
+  		goto out_cleanup_zone;
 +-- 
 +2.43.0
 +
