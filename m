@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-94246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45399D3BCF
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DC29D3B69
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8161EB2966C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E54F28176E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463A01A4F19;
-	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C021B0109;
+	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcmTgNK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnYh1KcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F1B1C1F2B;
-	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A148F1A9B2A;
+	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107585; cv=none; b=r1No7q9XF3UkU6LtNiKiEZDForesFysYc4iDHjzgWx8oIJ+hK9rPGJh1AgzhpkUpDXknLt1E2eSh93gpouFiXbXEVkwSFjsz+IkKVZWbesX4duWHrowv8bsIXkROOLk+cSoYCFKUHy3BwJzch+52/EJ8Eg3iILcmAr2TTYMy6MA=
+	t=1732107530; cv=none; b=gKHAMgFVqYRj5ILeiPouDoP7jAzph3KRql6CmUVaFBmvciyIgBwhXwHHqmVY7ez7EsjEDRGvOS9DFAfLhJdxoRsqfBjPldM8KX9MwWaeYZk8efKLph0ZcT6FBXwLtRJQaGrD8vqlKDKmRyvEqtQm4iej5xC6jaatoJHGnmt/n8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107585; c=relaxed/simple;
-	bh=2aWOiMDrWPazcOBMG4C9oJUAOcDYSVKOG9pLdan6OUI=;
+	s=arc-20240116; t=1732107530; c=relaxed/simple;
+	bh=xwoH31GqDcpTfBo4AsvGrm+bxZ3Y2rYlNlc933kWcTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EV3LfyZ8MYCKPCsYzqxBnU10xEs6L9Q7+dh+Zc3CLRGbBtZEOKhoGgBfFzy+ojJdZKIeY0b+8LBmkof/ScvCprnKp98X/n9IWrsZvNFTZj8uxFbDpQ4WEGlhc/cMC+1DxS7WEPwP8E65eZbu2GsR6c4660toouZeBN1EEWP0UJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcmTgNK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97C4C4CECD;
-	Wed, 20 Nov 2024 12:59:44 +0000 (UTC)
+	 MIME-Version; b=mKs7GkVybcqnMIYX+vqABADUpsMmtqKAkJCJUJfSVKYIEuvJRHgoGAWLrNNw2QeD71h3VWmTmB0WHowMFx6wKoCriLMBpPFDpTuNX34z8l86KJZn0exQKP7dxABUKQCYdo/nIqBKS0FMNYssva9pXtRxga9DHTCUCNGcfb2vSk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnYh1KcP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76749C4CED6;
+	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107584;
-	bh=2aWOiMDrWPazcOBMG4C9oJUAOcDYSVKOG9pLdan6OUI=;
+	s=korg; t=1732107530;
+	bh=xwoH31GqDcpTfBo4AsvGrm+bxZ3Y2rYlNlc933kWcTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcmTgNK9CAKDT7U2hrTZw6XrhrPv4s4/MI2U98LLRiFhAXia30BTHJadlDOdLt40t
-	 qY60Ynid0mVBsVYawCFnRIYYbxsd7X4pTOmLmUkpOo+JRRfaCc9D6spfRbCA84OgZk
-	 Zbl1ZLxhBC3ma+F+91tPyywKmGgKKhXw0vx+cdH4=
+	b=xnYh1KcPhB9ql/1DKUJcD/WBNO2QYFIAQcjiic4+p5LU4HJ4xJQafayk+j9rccafz
+	 rCajjIh/7/++Ppex6QKCN1GVmnpXbPgeRJ3QuiznCcQkIe+i4ca0yAdQGqsySQijlV
+	 XDMgZYplka63qRkVyV7u7VR2WrZBzGiYXaJVHfjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Motiejus=20Jak=C3=85`tys?= <motiejus@jakstys.lt>,
-	SeongJae Park <sj@kernel.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Wladislav Wiebe <wladislav.kw@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 27/82] tools/mm: fix compile error
-Date: Wed, 20 Nov 2024 13:56:37 +0100
-Message-ID: <20241120125630.222366412@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 063/107] ALSA: hda/realtek - update set GPIO3 to default for Thinkpad with ALC1318
+Date: Wed, 20 Nov 2024 13:56:38 +0100
+Message-ID: <20241120125631.097891404@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Motiejus JakÅ`tys <motiejus@jakstys.lt>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit a39326767c55c00c7c313333404cbcb502cce8fe ]
+commit 2143c8ae423dbc3f036cae8d18a5a3c272df3deb upstream.
 
-Add a missing semicolon.
+If user no update BIOS, the speaker will no sound.
+This patch support old BIOS to have sound from speaker.
 
-Link: https://lkml.kernel.org/r/20241112171655.1662670-1-motiejus@jakstys.lt
-Fixes: ece5897e5a10 ("tools/mm: -Werror fixes in page-types/slabinfo")
-Signed-off-by: Motiejus JakÅ`tys <motiejus@jakstys.lt>
-Closes: https://github.com/NixOS/nixpkgs/issues/355369
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Wladislav Wiebe <wladislav.kw@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1e707769df07 ("ALSA: hda/realtek - Set GPIO3 to default at S4 state for Thinkpad with ALC1318")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/mm/page-types.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
-index 2a4ca4dd2da80..69f00eab1b8c7 100644
---- a/tools/mm/page-types.c
-+++ b/tools/mm/page-types.c
-@@ -421,7 +421,7 @@ static void show_page(unsigned long voffset, unsigned long offset,
- 	if (opt_file)
- 		printf("%lx\t", voffset);
- 	if (opt_list_cgroup)
--		printf("@%" PRIu64 "\t", cgroup)
-+		printf("@%" PRIu64 "\t", cgroup);
- 	if (opt_list_mapcnt)
- 		printf("%" PRIu64 "\t", mapcnt);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7436,7 +7436,6 @@ static void alc287_alc1318_playback_pcm_
+ 				   struct snd_pcm_substream *substream,
+ 				   int action)
+ {
+-	alc_write_coef_idx(codec, 0x10, 0x8806); /* Change MLK to GPIO3 */
+ 	switch (action) {
+ 	case HDA_GEN_PCM_ACT_OPEN:
+ 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
+@@ -7450,7 +7449,6 @@ static void alc287_alc1318_playback_pcm_
+ static void alc287_s4_power_gpio3_default(struct hda_codec *codec)
+ {
+ 	if (is_s4_suspend(codec)) {
+-		alc_write_coef_idx(codec, 0x10, 0x8806); /* Change MLK to GPIO3 */
+ 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
+ 	}
+ }
+@@ -7459,9 +7457,17 @@ static void alc287_fixup_lenovo_thinkpad
+ 			       const struct hda_fixup *fix, int action)
+ {
+ 	struct alc_spec *spec = codec->spec;
++	static const struct coef_fw coefs[] = {
++		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC300),
++		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
++		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC301),
++		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
++	};
  
--- 
-2.43.0
-
+ 	if (action != HDA_FIXUP_ACT_PRE_PROBE)
+ 		return;
++	alc_update_coef_idx(codec, 0x10, 1<<11, 1<<11);
++	alc_process_coef_fw(codec, coefs);
+ 	spec->power_hook = alc287_s4_power_gpio3_default;
+ 	spec->gen.pcm_playback_hook = alc287_alc1318_playback_pcm_hook;
+ }
 
 
 
