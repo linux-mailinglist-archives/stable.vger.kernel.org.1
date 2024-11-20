@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-94206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525BA9D3B8C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BFE9D3BD6
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7D61F22179
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37108284DFC
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F941AB521;
-	Wed, 20 Nov 2024 12:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E311A76C8;
+	Wed, 20 Nov 2024 13:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyWpBH0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuZg4yGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DB01AA1C3;
-	Wed, 20 Nov 2024 12:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4571B3B28;
+	Wed, 20 Nov 2024 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107555; cv=none; b=Cs1BX5CcmaSghCmka3SJt6lgzri+OhD8InxpYrffFNsBVNeVWyRs4EAzlIqMtAdmk1mDwHxT/geTzcfvTD5GG+BBt+V0ASZsvYjzP+V3xixXflR9BtBTCYCidO4MhQDi5ftLHCrzIstN8W4J0gF775LA3sNv3qKV3Kq+LmQ46wc=
+	t=1732107609; cv=none; b=IWNjiXezEqyygIjZ6tnzd5L8J/nZKXGDIIw/wmvLswBQp7QlaGr/MiNfaPg6CPfpnNwrUoUUUcxVz1YKYwfpck95HTPxFBHAqwqKmtLkJ62E7zrYct1Lt8TwVNrlkzyTvTqWn+zRVleoCUcIkIOMaG35s5sncTtbE3ikiB6OQRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107555; c=relaxed/simple;
-	bh=wgTxN7rkd0S/zc//PWUO+qxSogO5zJfJmbC3vFZTFmM=;
+	s=arc-20240116; t=1732107609; c=relaxed/simple;
+	bh=7bDZCEgWrnYmWFHtidhxWAdAeRHPPiL5uGZfgERUJ8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJhkn59d9ZxBsqHH47JMSV3i4t7Lrl2Nsalyt+DbfBNoGVh34rkvfxau9BfaMNk/hpyvNBtPSt/3g2GIok/CodvYWD3seHAwP1QOHpUvm5k6lRsggSVJVjl72tJqtM1HQNYwI3s7pjTDEpgHEvwnoWi1jHIUwbfaNW7TDL2rEP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyWpBH0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B338BC4CED2;
-	Wed, 20 Nov 2024 12:59:14 +0000 (UTC)
+	 MIME-Version; b=sBoC8/Xwsri+PCORnbyLCC8JZi7PX/ExrxxAzp6mIda0ZoR+9b3p1plXVgT6hDu1ldWBKo9cqmloFe70W2jN8qP5U0Jbo6dUuKWJNPi9c1oaT8+pp3kLakQLmOnO0mNmR6b4fmYqUEFs73mquQiydQFDjubXP1+PjV/bVspRYK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuZg4yGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68640C4CECD;
+	Wed, 20 Nov 2024 13:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107554;
-	bh=wgTxN7rkd0S/zc//PWUO+qxSogO5zJfJmbC3vFZTFmM=;
+	s=korg; t=1732107609;
+	bh=7bDZCEgWrnYmWFHtidhxWAdAeRHPPiL5uGZfgERUJ8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyWpBH0Fbc4zFYx3deBcmAZQKoqCLBlWmpkbu5DxaKPZdqOs2Wg6wVRvooeues/J2
-	 tfgVwc9JlTw2ZRCl5NnMxyybnw1MkdrQQaRlx1PKjRTtCTH3d0j4VM8F2K8rjXL3pE
-	 UVBuD/zEA1zS+L2TGee5FXP8giJIPL2/IQKVWlO4=
+	b=MuZg4yGtmqEoWixEWHSK0ZteDAM25Nx1TJiPHRFGnbSH+UoNaE1oeP1NgOXVPXTIm
+	 91PgN7h3LSN9dXd1K7t3hDGBTPilsmiGWSgxOYKqRYkpBF8G7f1mYu3vronYPFa4JQ
+	 lkRIseRjFiZjVRcKNE0Mx5AD1DaF5kbCE4KnQfp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <tim.huang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 095/107] drm/amd/pm: print pp_dpm_mclk in ascending order on SMU v14.0.0
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.6 60/82] media: dvbdev: fix the logic when DVB_DYNAMIC_MINORS is not set
 Date: Wed, 20 Nov 2024 13:57:10 +0100
-Message-ID: <20241120125631.863480631@linuxfoundation.org>
+Message-ID: <20241120125630.964490786@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit df0279e2a1c0735e8ca80c5df8d9f8f9fc120b4a upstream.
+commit a4aebaf6e6efff548b01a3dc49b4b9074751c15b upstream.
 
-Currently, the pp_dpm_mclk values are reported in descending order
-on SMU IP v14.0.0/1/4. Adjust to ascending order for consistency
-with other clock interfaces.
+When CONFIG_DVB_DYNAMIC_MINORS, ret is not initialized, and a
+semaphore is left at the wrong state, in case of errors.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d4be16ccfd5bf822176740a51ff2306679a2247e)
-Cc: stable@vger.kernel.org
+Make the code simpler and avoid mistakes by having just one error
+check logic used weather DVB_DYNAMIC_MINORS is used or not.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202410201717.ULWWdJv8-lkp@intel.com/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://lore.kernel.org/r/9e067488d8935b8cf00959764a1fa5de85d65725.1730926254.git.mchehab+huawei@kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/dvb-core/dvbdev.c |   15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-@@ -1132,7 +1132,7 @@ static int smu_v14_0_common_get_dpm_leve
- static int smu_v14_0_0_print_clk_levels(struct smu_context *smu,
- 					enum smu_clk_type clk_type, char *buf)
- {
--	int i, size = 0, ret = 0;
-+	int i, idx, ret = 0, size = 0;
- 	uint32_t cur_value = 0, value = 0, count = 0;
- 	uint32_t min, max;
- 
-@@ -1168,7 +1168,8 @@ static int smu_v14_0_0_print_clk_levels(
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -530,6 +530,9 @@ int dvb_register_device(struct dvb_adapt
+ 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
+ 		if (!dvb_minors[minor])
  			break;
- 
- 		for (i = 0; i < count; i++) {
--			ret = smu_v14_0_common_get_dpm_freq_by_index(smu, clk_type, i, &value);
-+			idx = (clk_type == SMU_MCLK) ? (count - i - 1) : i;
-+			ret = smu_v14_0_common_get_dpm_freq_by_index(smu, clk_type, idx, &value);
- 			if (ret)
- 				break;
- 
++#else
++	minor = nums2minor(adap->num, type, id);
++#endif
+ 	if (minor >= MAX_DVB_MINORS) {
+ 		if (new_node) {
+ 			list_del(&new_node->list_head);
+@@ -543,17 +546,7 @@ int dvb_register_device(struct dvb_adapt
+ 		mutex_unlock(&dvbdev_register_lock);
+ 		return -EINVAL;
+ 	}
+-#else
+-	minor = nums2minor(adap->num, type, id);
+-	if (minor >= MAX_DVB_MINORS) {
+-		dvb_media_device_free(dvbdev);
+-		list_del(&dvbdev->list_head);
+-		kfree(dvbdev);
+-		*pdvbdev = NULL;
+-		mutex_unlock(&dvbdev_register_lock);
+-		return ret;
+-	}
+-#endif
++
+ 	dvbdev->minor = minor;
+ 	dvb_minors[minor] = dvb_device_get(dvbdev);
+ 	up_write(&minor_rwsem);
 
 
 
