@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-94203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22E69D3B89
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBFC9D3BD5
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DA9281B8B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A58285109
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4EA1BBBC5;
-	Wed, 20 Nov 2024 12:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA321C876B;
+	Wed, 20 Nov 2024 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eG/okq+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRfbrKs/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987D11AAE3B;
-	Wed, 20 Nov 2024 12:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094AB1C7B69;
+	Wed, 20 Nov 2024 13:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107552; cv=none; b=YUCGQDiWYhaZSAvVZRMAlomDm/BfW5URGCRhTFFbNhBHfChiYGihIuuoXoDjA+a+hYiEyv583QCji6sxWhAPLwrwFtDQ7BF4XyKYg4ZYkkQCAQ2anzfWaD0xsog/prfqterwcEw0knxnqSODhQj+DadES1WHS02wI35T8wke/XQ=
+	t=1732107609; cv=none; b=taqYrzQ50IWaR7fmpeZz2NPaBVI6IX78Rsc5bQilbAmcRcm+As3J8WpefcVhL8E8ATU10rD5CYwwumGEKc4+Ai7JM28mCd3P/e/ybYWpeYe+/Dm5SgPR/IW4LzMfsHZd/dh7Q6fMmQkQ59NRLAWxbhnnIXP/pBPk6Rd+43ANIE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107552; c=relaxed/simple;
-	bh=qUGqCumYOecAmSTcMYwpPXgS4TNidTZL+BR2Jl/ZqQw=;
+	s=arc-20240116; t=1732107609; c=relaxed/simple;
+	bh=OfDqWWqIQY4MydF5uhiLSK76wcvnle6E6a1+j2jG1ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DMIa4TWI01KuwabAGk3VHWf5aHyuGuve2WiOooRuCvp05h+dJ3emIj6708MBqgTgxjHSMXIETgijYFZS0v0vrkwmRmgafAXnhyrpGc+XBZzd6NfkiRQ8BgDZqhRRyasr6LtmgY9Ia2am6P9QEkpXlGhYCsx75OjQ6sPludhhIJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eG/okq+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682CBC4CED8;
-	Wed, 20 Nov 2024 12:59:12 +0000 (UTC)
+	 MIME-Version; b=eZKrH3pyPZHd9H2is7yOFZxZWbt66xxZmjBgHuzQkW69gF/G1mhkCuxs5kKjtuQG6FKJ4ZWNkf7VczuefOTewJ+HLERMAu3Q6TJ/hyKXb4tYpJliwIHL/WWWhxejCEvq5FoHNRq0zW05wP5MQfyWiEg43tqrOIgenLtsrOp7fks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRfbrKs/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E030DC4CED1;
+	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107552;
-	bh=qUGqCumYOecAmSTcMYwpPXgS4TNidTZL+BR2Jl/ZqQw=;
+	s=korg; t=1732107608;
+	bh=OfDqWWqIQY4MydF5uhiLSK76wcvnle6E6a1+j2jG1ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eG/okq+zN9vC0xG+U00F+lJLehg4271+zIgFViUlJB7M38swLdsK+ggfXQ0kw8aid
-	 5iJuNZR9Uj7U5hQOjZWxsMr6dgqHyZTZuYxPn/NreOiv/tAt5ENfIkVHzPwmvI234c
-	 dDTZc3+0ggdU1CNKBfSRnXI6Y/+UH+XABxo3vYyE=
+	b=uRfbrKs/zYpuxWDSPj7agRMNGRIHZKpZ35NQoIfLWuTxLzVS8H6kDu/mXoSenq7Kj
+	 xvooVcKhEBwDctyV/v+tdCYKv4Re6ll0IeyPHAjmrvCdVOUqWRXzGVn2oBrhVDb6Ej
+	 DABYjhQmpXbLdP6aS7Z8ru45vEab5VLQUKss/gUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 093/107] drm/amdgpu: fix check in gmc_v9_0_get_vm_pte()
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 58/82] staging: vchiq_arm: Use devm_kzalloc() for vchiq_arm_state allocation
 Date: Wed, 20 Nov 2024 13:57:08 +0100
-Message-ID: <20241120125631.812057350@linuxfoundation.org>
+Message-ID: <20241120125630.916750050@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-commit 0e5ac88fb918297a7484b67f2b484d43bed3fbbe upstream.
+[ Upstream commit 404b739e895522838f1abdc340c554654d671dde ]
 
-The coherency flags can only be determined when the BO is locked and that
-in turn is only guaranteed when the mapping is validated.
+The struct vchiq_arm_state 'platform_state' is currently allocated
+dynamically using kzalloc(). Unfortunately, it is never freed and is
+subjected to memory leaks in the error handling paths of the probe()
+function.
 
-Fix the check, move the resource check into the function and add an assert
-that the BO is locked.
+To address the issue, use device resource management helper
+devm_kzalloc(), to ensure cleanup after its allocation.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: d1a372af1c3d ("drm/amdgpu: Set MTYPE in PTE based on BO flags")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1b4ca8546f5b5c482717bedb8e031227b1541539)
+Fixes: 71bad7f08641 ("staging: add bcm2708 vchiq driver")
 Cc: stable@vger.kernel.org
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20241016130225.61024-2-umang.jain@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1124,8 +1124,10 @@ static void gmc_v9_0_get_coherence_flags
- 					 uint64_t *flags)
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 0a97fb237f5e7..92aa98bbdc662 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -577,7 +577,7 @@ vchiq_platform_init_state(struct vchiq_state *state)
  {
- 	struct amdgpu_device *bo_adev = amdgpu_ttm_adev(bo->tbo.bdev);
--	bool is_vram = bo->tbo.resource->mem_type == TTM_PL_VRAM;
--	bool coherent = bo->flags & (AMDGPU_GEM_CREATE_COHERENT | AMDGPU_GEM_CREATE_EXT_COHERENT);
-+	bool is_vram = bo->tbo.resource &&
-+		bo->tbo.resource->mem_type == TTM_PL_VRAM;
-+	bool coherent = bo->flags & (AMDGPU_GEM_CREATE_COHERENT |
-+				     AMDGPU_GEM_CREATE_EXT_COHERENT);
- 	bool ext_coherent = bo->flags & AMDGPU_GEM_CREATE_EXT_COHERENT;
- 	bool uncached = bo->flags & AMDGPU_GEM_CREATE_UNCACHED;
- 	struct amdgpu_vm *vm = mapping->bo_va->base.vm;
-@@ -1133,6 +1135,8 @@ static void gmc_v9_0_get_coherence_flags
- 	bool snoop = false;
- 	bool is_local;
+ 	struct vchiq_arm_state *platform_state;
  
-+	dma_resv_assert_held(bo->tbo.base.resv);
-+
- 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
- 	case IP_VERSION(9, 4, 1):
- 	case IP_VERSION(9, 4, 2):
-@@ -1251,9 +1255,8 @@ static void gmc_v9_0_get_vm_pte(struct a
- 		*flags &= ~AMDGPU_PTE_VALID;
- 	}
+-	platform_state = kzalloc(sizeof(*platform_state), GFP_KERNEL);
++	platform_state = devm_kzalloc(state->dev, sizeof(*platform_state), GFP_KERNEL);
+ 	if (!platform_state)
+ 		return -ENOMEM;
  
--	if (bo && bo->tbo.resource)
--		gmc_v9_0_get_coherence_flags(adev, mapping->bo_va->base.bo,
--					     mapping, flags);
-+	if ((*flags & AMDGPU_PTE_VALID) && bo)
-+		gmc_v9_0_get_coherence_flags(adev, bo, mapping, flags);
- }
- 
- static void gmc_v9_0_override_vm_pte_flags(struct amdgpu_device *adev,
+-- 
+2.43.0
+
 
 
 
