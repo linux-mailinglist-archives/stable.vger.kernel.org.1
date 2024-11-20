@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-94359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590909D3C20
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527799D3C22
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0847A1F24EE2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A8D283FE1
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038651AA1DC;
-	Wed, 20 Nov 2024 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838A01CB331;
+	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iy5UdOgc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRGG9LLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26AB1BDA80;
-	Wed, 20 Nov 2024 13:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FD71BE870;
+	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107695; cv=none; b=IE45dw5KP+OvtIHJEIWfRF0QPsvk041iZIZQSMYiVjmj1QPzNVokAt2W5xhNJ2LPYxgdDXFhmdiNCErO571zCsMbEKjSh8TR8J7FIh4qEH50E+qk0LLMQeDYqKg+QPEwesRUZJMXIW0cjHSUnje7AKiDlv2k1k+aoXMl17juxnA=
+	t=1732107697; cv=none; b=h903eH1PWa1rg0aILnCQirE3Hy96fNljfu8EVWHO4vyl9KN2C0lN0Kez/coOHarq6l3yy1GX8/Nh7D5w4/eDTKp1XEfBhzcNytYiXuhzlgkaqsChQVm85/8oJCsX2z/1MNrk0iOkdpqFaL4fQUTM7pGPZ7hM15Y7NMZ/k3vJuNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107695; c=relaxed/simple;
-	bh=nkuglvUNFKLoPtCTjI3/n7PfKxhbZsfnvpeU6fUfTsQ=;
+	s=arc-20240116; t=1732107697; c=relaxed/simple;
+	bh=WbA83DzP4mf8rrRpr63FQ6q7pVtjmuMz0OgaUxpzP1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kg9Kp+unvaknsCARXR/zl9U3U0zUn62FsYyqhlKVgXcDyfu1ztv1RI9pZ8R9g3iXMRZmTfuGgGdw+50fBCz08CNdHTeAa6nk0/Uqv/sK4f8KfvfkknfAhigFuUcEwM77WpuCzyOzq1gb8clIUV6c5sdmJ1Src5mXASn+AIJrpx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iy5UdOgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A70CC4CECD;
-	Wed, 20 Nov 2024 13:01:35 +0000 (UTC)
+	 MIME-Version; b=ksATtQk+hC8a8LmZ1/qCuhZzz+dsVrPvuznztPCPvu3TOrN1nJWgLRzDV1KR7k38ngmA2EfZ24YSAw6pig39bAaptJbOqiOvXy8sDUuJnFl7Rvpy3yOBL2Idc0gi3mMtUkAqPyUSFT6BZTqhzJQ0ohjA2bNr5tRY4cdhXCEVUr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRGG9LLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190ACC4CECD;
+	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107695;
-	bh=nkuglvUNFKLoPtCTjI3/n7PfKxhbZsfnvpeU6fUfTsQ=;
+	s=korg; t=1732107697;
+	bh=WbA83DzP4mf8rrRpr63FQ6q7pVtjmuMz0OgaUxpzP1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iy5UdOgc4KQ2vQ6lggtsXYO84lasd0SxGIkjhSnhqNys9/VN4QfA98MCgiMeaWTl9
-	 eTHW3/6XqSVxbhbExIkEFR4cW+KmHY5WU+T0mMb6uYtDdliz8yaSvBZFZPEwQLeuGs
-	 7lrCfsCD1kRGxQfbf2gXFtiSJnlr83exj1Hyl8nE=
+	b=vRGG9LLFZpBFbTxFvtNzpDZsmb3nDKrIargowpDiGdm4MAhTFvHnn70GmTnnVJH7W
+	 rFobrXedCGjg1qf/YMxt8P82OBXlkrQSVlnYBaqrCZJaCNarc2KugkagV4GhYxUufQ
+	 khmpai7TeAGTwx0nDA1xIRl+6bAqZk8CjI+WkMyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 55/73] net: add copy_safe_from_sockptr() helper
-Date: Wed, 20 Nov 2024 13:58:41 +0100
-Message-ID: <20241120125810.931234007@linuxfoundation.org>
+Subject: [PATCH 6.1 56/73] nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies
+Date: Wed, 20 Nov 2024 13:58:42 +0100
+Message-ID: <20241120125810.957785477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -69,82 +71,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6309863b31dd80317cd7d6824820b44e254e2a9c ]
+[ Upstream commit 7a87441c9651ba37842f4809224aca13a554a26f ]
 
-copy_from_sockptr() helper is unsafe, unless callers
-did the prior check against user provided optlen.
+syzbot reported unsafe calls to copy_from_sockptr() [1]
 
-Too many callers get this wrong, lets add a helper to
-fix them and avoid future copy/paste bugs.
+Use copy_safe_from_sockptr() instead.
 
-Instead of :
+[1]
 
-   if (optlen < sizeof(opt)) {
-       err = -EINVAL;
-       break;
-   }
-   if (copy_from_sockptr(&opt, optval, sizeof(opt)) {
-       err = -EFAULT;
-       break;
-   }
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
+ BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
+ BUG: KASAN: slab-out-of-bounds in nfc_llcp_setsockopt+0x6c2/0x850 net/nfc/llcp_sock.c:255
+Read of size 4 at addr ffff88801caa1ec3 by task syz-executor459/5078
 
-Use :
-
-   err = copy_safe_from_sockptr(&opt, sizeof(opt),
-                                optval, optlen);
-   if (err)
-       break;
+CPU: 0 PID: 5078 Comm: syz-executor459 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  print_address_description mm/kasan/report.c:377 [inline]
+  print_report+0x169/0x550 mm/kasan/report.c:488
+  kasan_report+0x143/0x180 mm/kasan/report.c:601
+  copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
+  copy_from_sockptr include/linux/sockptr.h:55 [inline]
+  nfc_llcp_setsockopt+0x6c2/0x850 net/nfc/llcp_sock.c:255
+  do_sock_setsockopt+0x3b1/0x720 net/socket.c:2311
+  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
+  __do_sys_setsockopt net/socket.c:2343 [inline]
+  __se_sys_setsockopt net/socket.c:2340 [inline]
+  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
+ do_syscall_64+0xfd/0x240
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7f7fac07fd89
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 91 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff660eb788 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f7fac07fd89
+RDX: 0000000000000000 RSI: 0000000000000118 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
+R10: 0000000020000a80 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240408082845.3957374-2-edumazet@google.com
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240408082845.3957374-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7a87441c9651 ("nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sockptr.h |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ net/nfc/llcp_sock.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/include/linux/sockptr.h
-+++ b/include/linux/sockptr.h
-@@ -50,11 +50,36 @@ static inline int copy_from_sockptr_offs
- 	return 0;
- }
+--- a/net/nfc/llcp_sock.c
++++ b/net/nfc/llcp_sock.c
+@@ -252,10 +252,10 @@ static int nfc_llcp_setsockopt(struct so
+ 			break;
+ 		}
  
-+/* Deprecated.
-+ * This is unsafe, unless caller checked user provided optlen.
-+ * Prefer copy_safe_from_sockptr() instead.
-+ */
- static inline int copy_from_sockptr(void *dst, sockptr_t src, size_t size)
- {
- 	return copy_from_sockptr_offset(dst, src, 0, size);
- }
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = copy_safe_from_sockptr(&opt, sizeof(opt),
++					     optval, optlen);
++		if (err)
+ 			break;
+-		}
  
-+/**
-+ * copy_safe_from_sockptr: copy a struct from sockptr
-+ * @dst:   Destination address, in kernel space. This buffer must be @ksize
-+ *         bytes long.
-+ * @ksize: Size of @dst struct.
-+ * @optval: Source address. (in user or kernel space)
-+ * @optlen: Size of @optval data.
-+ *
-+ * Returns:
-+ *  * -EINVAL: @optlen < @ksize
-+ *  * -EFAULT: access to userspace failed.
-+ *  * 0 : @ksize bytes were copied
-+ */
-+static inline int copy_safe_from_sockptr(void *dst, size_t ksize,
-+					 sockptr_t optval, unsigned int optlen)
-+{
-+	if (optlen < ksize)
-+		return -EINVAL;
-+	return copy_from_sockptr(dst, optval, ksize);
-+}
-+
- static inline int copy_to_sockptr_offset(sockptr_t dst, size_t offset,
- 		const void *src, size_t size)
- {
+ 		if (opt > LLCP_MAX_RW) {
+ 			err = -EINVAL;
+@@ -274,10 +274,10 @@ static int nfc_llcp_setsockopt(struct so
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = copy_safe_from_sockptr(&opt, sizeof(opt),
++					     optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt > LLCP_MAX_MIUX) {
+ 			err = -EINVAL;
 
 
 
