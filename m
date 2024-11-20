@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-94285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27E69D3C4F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:11:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD0D9D3B92
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B135EB2AB74
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 263041F21DAA
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8848D1C9B7B;
-	Wed, 20 Nov 2024 13:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F761BC06E;
+	Wed, 20 Nov 2024 12:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8jyeSEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfkpEkmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F6F1A0BD6;
-	Wed, 20 Nov 2024 13:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590951A9B5A;
+	Wed, 20 Nov 2024 12:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107614; cv=none; b=eMcWQFiWD2Lv+QkpXK2p5WF4HIgDmhUiY7JoS//Jp+2RRUS/ZH+benjpx0s8WRjAndyPdoe6b+7J45NUxTmY1GL5UWQkHUDzbwpQ1BkiC5ZErrfZXxtcwcqbqLJuLabYjO2y45f26+IZWzbQ72ibnS+CYoS42F/5VTcPmK2aL/c=
+	t=1732107559; cv=none; b=nnZ8NAS5qf6VJ+jhh8CyGQ6cCVqixJwp76AElTTkxJ83oSEkZAxe6uc04c32TBgDHwGsjDkRj7HaruXbZ29/nrM76E1BCQlwHmzrSkm1bNPt3LmzFSjmZ0Zioz0AxNOVD0SMLZRlmPuiF04twZTpRko7xA+zskxTz243AKwojiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107614; c=relaxed/simple;
-	bh=VZGrDq2+p3uT+bNtOzGOhEXTiPWRrA+MCjDmJFL6OEk=;
+	s=arc-20240116; t=1732107559; c=relaxed/simple;
+	bh=yjm1v/yAnh6qdh9cOGqmuNsAyU6k2dGw5U/isvmAz6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFiQgW4DjdTPNk7uNhfXmvMJhWKaKGi/UFGJ0izVL8ATQk9w9eXmyiujoRoZa+mDTJSYYlrsBWZOjuf+j8zZRHNHRcIWlvmmEGwSMxXlgKnT0cUmE7efEgPLOi7GQAe2OH2fTeV+po3h1j5jsf6y4xsL0XKC20nhw+PwBgraIYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8jyeSEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCC1C4CECD;
-	Wed, 20 Nov 2024 13:00:14 +0000 (UTC)
+	 MIME-Version; b=a7r409TgrY/r8g+jwxLFkyjZ1fhF4/kJggPGEc6UH0/AAdXwYL3uUIv8Cd1VLW7JsGoK2K1s/spbTFOOjHYB6c8dMLSSCsk5/IG45q9nrXbFeLlEWTkVBThv/ST7e8wR35uahagBTfnUU3r66Q3XndCmOO6hW9ErcLtaaJARGcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfkpEkmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31950C4CED6;
+	Wed, 20 Nov 2024 12:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107614;
-	bh=VZGrDq2+p3uT+bNtOzGOhEXTiPWRrA+MCjDmJFL6OEk=;
+	s=korg; t=1732107559;
+	bh=yjm1v/yAnh6qdh9cOGqmuNsAyU6k2dGw5U/isvmAz6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8jyeSEg2+MigmhD229t6DLCEQeDP+Qn8doh5Ty+lnwV08JFsmSgu0U0gZ/iZGuHE
-	 taVmz+sG6Z6VG/Aq9xxBaMNYLcvSGwUxTCAo1c9FhB+uGhczeASzQMSs/29h2kvnSb
-	 mP3UXcMRxB7O9eWzzAySAletXROr436MKchT9p2k=
+	b=QfkpEkmPYexwSmRGaOsy5bcssh/tbU0a9o3Au5Z7uxkkxJa6bWK9a9s9UP4EsYAfm
+	 KDr32Z8yVyaiNMfcSsNWNp23+ZsTv7Bdq8SMYFA2CZYxxPHPRDDStvfPAscZPH06HL
+	 gP23Z86KsUeq8SCowfjL2zSqJ0RmkWVS1I54PFWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 66/82] mptcp: define more local variables sk
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamish Claxton <hamishclaxton@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	aurabindo.pillai@amd.com
+Subject: [PATCH 6.11 101/107] drm/amd/display: Fix failure to read vram info due to static BP_RESULT
 Date: Wed, 20 Nov 2024 13:57:16 +0100
-Message-ID: <20241120125631.098909193@linuxfoundation.org>
+Message-ID: <20241120125632.010642215@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Hamish Claxton <hamishclaxton@gmail.com>
 
-commit 14cb0e0bf39bd10429ba14e9e2f905f1144226fc upstream.
+commit 4bb2f52ac01b8d45d64c7c04881207722e5e6fe4 upstream.
 
-'(struct sock *)msk' is used several times in mptcp_nl_cmd_announce(),
-mptcp_nl_cmd_remove() or mptcp_userspace_pm_set_flags() in pm_userspace.c,
-it's worth adding a local variable sk to point it.
+The static declaration causes the check to fail.  Remove it.
 
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-8-db8f25f798eb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 06afe09091ee ("mptcp: add userspace_pm_lookup_addr_by_id helper")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
+Fixes: 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamish Claxton <hamishclaxton@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: aurabindo.pillai@amd.com
+Cc: hamishclaxton@gmail.com
+(cherry picked from commit 91314e7dfd83345b8b820b782b2511c9c32866cd)
+Cc: stable@vger.kernel.org # 6.11.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -183,6 +183,7 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 	struct mptcp_pm_addr_entry addr_val;
- 	struct mptcp_sock *msk;
- 	int err = -EINVAL;
-+	struct sock *sk;
- 	u32 token_val;
- 
- 	if (!addr || !token) {
-@@ -198,6 +199,8 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 		return err;
- 	}
- 
-+	sk = (struct sock *)msk;
-+
- 	if (!mptcp_pm_is_userspace(msk)) {
- 		GENL_SET_ERR_MSG(info, "invalid request; userspace PM not selected");
- 		goto announce_err;
-@@ -221,7 +224,7 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 		goto announce_err;
- 	}
- 
--	lock_sock((struct sock *)msk);
-+	lock_sock(sk);
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (mptcp_pm_alloc_anno_list(msk, &addr_val.addr)) {
-@@ -231,11 +234,11 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 	}
- 
- 	spin_unlock_bh(&msk->pm.lock);
--	release_sock((struct sock *)msk);
-+	release_sock(sk);
- 
- 	err = 0;
-  announce_err:
--	sock_put((struct sock *)msk);
-+	sock_put(sk);
- 	return err;
- }
- 
-@@ -282,6 +285,7 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 	struct mptcp_sock *msk;
- 	LIST_HEAD(free_list);
- 	int err = -EINVAL;
-+	struct sock *sk;
- 	u32 token_val;
- 	u8 id_val;
- 
-@@ -299,6 +303,8 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 		return err;
- 	}
- 
-+	sk = (struct sock *)msk;
-+
- 	if (!mptcp_pm_is_userspace(msk)) {
- 		GENL_SET_ERR_MSG(info, "invalid request; userspace PM not selected");
- 		goto remove_err;
-@@ -309,7 +315,7 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 		goto remove_err;
- 	}
- 
--	lock_sock((struct sock *)msk);
-+	lock_sock(sk);
- 
- 	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
- 		if (entry->addr.id == id_val) {
-@@ -320,7 +326,7 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 
- 	if (!match) {
- 		GENL_SET_ERR_MSG(info, "address with specified id not found");
--		release_sock((struct sock *)msk);
-+		release_sock(sk);
- 		goto remove_err;
- 	}
- 
-@@ -328,15 +334,15 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 
- 	mptcp_pm_remove_addrs(msk, &free_list);
- 
--	release_sock((struct sock *)msk);
-+	release_sock(sk);
- 
- 	list_for_each_entry_safe(match, entry, &free_list, list) {
--		sock_kfree_s((struct sock *)msk, match, sizeof(*match));
-+		sock_kfree_s(sk, match, sizeof(*match));
- 	}
- 
- 	err = 0;
-  remove_err:
--	sock_put((struct sock *)msk);
-+	sock_put(sk);
- 	return err;
- }
- 
-@@ -558,6 +564,7 @@ int mptcp_userspace_pm_set_flags(struct
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -3122,7 +3122,7 @@ static enum bp_result bios_parser_get_vr
+ 		struct dc_vram_info *info)
  {
- 	struct mptcp_sock *msk;
- 	int ret = -EINVAL;
-+	struct sock *sk;
- 	u32 token_val;
+ 	struct bios_parser *bp = BP_FROM_DCB(dcb);
+-	static enum bp_result result = BP_RESULT_BADBIOSTABLE;
++	enum bp_result result = BP_RESULT_BADBIOSTABLE;
+ 	struct atom_common_table_header *header;
+ 	struct atom_data_revision revision;
  
- 	token_val = nla_get_u32(token);
-@@ -566,6 +573,8 @@ int mptcp_userspace_pm_set_flags(struct
- 	if (!msk)
- 		return ret;
- 
-+	sk = (struct sock *)msk;
-+
- 	if (!mptcp_pm_is_userspace(msk))
- 		goto set_flags_err;
- 
-@@ -573,11 +582,11 @@ int mptcp_userspace_pm_set_flags(struct
- 	    rem->addr.family == AF_UNSPEC)
- 		goto set_flags_err;
- 
--	lock_sock((struct sock *)msk);
-+	lock_sock(sk);
- 	ret = mptcp_pm_nl_mp_prio_send_ack(msk, &loc->addr, &rem->addr, bkup);
--	release_sock((struct sock *)msk);
-+	release_sock(sk);
- 
- set_flags_err:
--	sock_put((struct sock *)msk);
-+	sock_put(sk);
- 	return ret;
- }
 
 
 
