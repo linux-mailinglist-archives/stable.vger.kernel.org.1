@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-94204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DD39D3B8A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2249D3BD4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 133B31F21EC9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676F71F23B73
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C82F1BA272;
-	Wed, 20 Nov 2024 12:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4271607AC;
+	Wed, 20 Nov 2024 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6mSl+lu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5ZJ9u2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FD1AA1C3;
-	Wed, 20 Nov 2024 12:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE9A1C877E;
+	Wed, 20 Nov 2024 13:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107553; cv=none; b=PaNXV3FaiENGQV3H9JxHEsmCZFrfyZnIqgsrwlFWYZuLIjwYgNetiwrPf5D+g8L/+1LbAi2IGXPqEsuON2TF1S3W99s5ECv9G2SwzwokRzGnt8dTjRTKH/3KvXvWXV5Ktc45uYUJTEy6BIOXemFHqzTTYjFhfxB4PMEu0J50r6U=
+	t=1732107609; cv=none; b=rgGfRACwnGk2HStQPFnOdv4PD1UvLlmKFPcIMrkgr+AZr+hHk6tUy4VuCVO7Agc8rDa1o7ZCGVzGDKTwK936ZkNwrn2GRV0nQb+Uj19TPfodcVGbHL1SggnMFKBO7gh8Ef2TjYregC7PTwNO03WWHivHTT53QwRphyEUROVXFpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107553; c=relaxed/simple;
-	bh=8/zKHBZ8mJuwovPq7IY9Obe5R3JP33TRKIp2fTgpcyo=;
+	s=arc-20240116; t=1732107609; c=relaxed/simple;
+	bh=OT+rNTsveNed2DpCGccUKAUTncorZ1GwBiLcaZ4KFco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwfvUj0aw9WGid02Tfy77HGUL8ZXLw09JFncLDgiHyxq8i3uQbUfxploZnPuaew5zVCVeaWAfe8c6mfxSbBNBBDZtHIhRsktbDe/b5GYhMH8z+vyIpxtjyFllZx5Oca3YLBfgAkOyfAS5x5O+yX2j3bGTu02t9DBdwI+2AaqmEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6mSl+lu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECB5C4CECD;
-	Wed, 20 Nov 2024 12:59:13 +0000 (UTC)
+	 MIME-Version; b=chT0fwb13Pp6+n7/KlOdpZ0bCd2iUEpVXUdeIhW3GluzzGJskxcvhiGRtMFpyEgLriXfC0KY9jwvxleZYdm9DMT/glVZIqVh26wQ1P8Qfp7Kca4/CI+xcEzV9rPNqg2vHqFaBf6iQ8sC8CUuWoxH/CduAggmxh50eJpU6ysvMLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5ZJ9u2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9155CC4CED2;
+	Wed, 20 Nov 2024 13:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107553;
-	bh=8/zKHBZ8mJuwovPq7IY9Obe5R3JP33TRKIp2fTgpcyo=;
+	s=korg; t=1732107608;
+	bh=OT+rNTsveNed2DpCGccUKAUTncorZ1GwBiLcaZ4KFco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6mSl+luwXxOeR22cLAWK4InOELXM1HICLLmPeYiakSZbQcAUK5E2QUrWdyOOW+mn
-	 nRaqh1MB89EVIqqZtZtugxToSTI5R65bBcR0nWwFboS5dvgaOqVt++1Z5Ed1PuWxdv
-	 rYwWzsgoMlfda+CjCZJSFeaiYfUNFDM183ZU0Sr8=
+	b=A5ZJ9u2xX6bGu9ffUBYB2VrjZK5upVKW+R9dx19txR8LiQWXgiXlA2sdMa9R1UWKl
+	 znCfEsxnOcSkm/JmpvzL/rDp/RZ6u17XtNdt6rUNnHglibvu3LbZ+8oQyM7DbQxC7f
+	 k3CaaoV+fw0njpUJsKGUigUebTYcvEc1dxM5RPVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 094/107] drm/amdgpu: Fix video caps for H264 and HEVC encode maximum size
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH 6.6 59/82] lib/buildid: Fix build ID parsing logic
 Date: Wed, 20 Nov 2024 13:57:09 +0100
-Message-ID: <20241120125631.837852261@linuxfoundation.org>
+Message-ID: <20241120125630.942098795@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit d641a151fcaf0d043075b214b469a14abab25af2 upstream.
+The parse_build_id_buf does not account Elf32_Nhdr header size
+when getting the build id data pointer and returns wrong build
+id data as result.
 
-H264 supports 4096x4096 starting from Polaris.
-HEVC also supports 4096x4096, with VCN 3 and newer 8192x4352
-is supported.
+This is problem only for stable trees that merged c83a80d8b84f
+fix, the upstream build id code was refactored and returns proper
+build id.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 69e9a9e65b1ea542d07e3fdd4222b46e9f5a3a29)
-Cc: stable@vger.kernel.org
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Fixes: c83a80d8b84f ("lib/buildid: harden build ID parsing logic")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c    |   12 ++++++------
- drivers/gpu/drm/amd/amdgpu/soc15.c |    4 ++--
- drivers/gpu/drm/amd/amdgpu/soc21.c |   12 ++++++------
- drivers/gpu/drm/amd/amdgpu/soc24.c |    2 +-
- drivers/gpu/drm/amd/amdgpu/vi.c    |    8 ++++----
- 5 files changed, 19 insertions(+), 19 deletions(-)
+ lib/buildid.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -67,8 +67,8 @@ static const struct amd_ip_funcs nv_comm
- 
- /* Navi */
- static const struct amdgpu_video_codec_info nv_video_codecs_encode_array[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 0)},
- };
- 
- static const struct amdgpu_video_codecs nv_video_codecs_encode = {
-@@ -94,8 +94,8 @@ static const struct amdgpu_video_codecs
- 
- /* Sienna Cichlid */
- static const struct amdgpu_video_codec_info sc_video_codecs_encode_array[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2160, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 7680, 4352, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- };
- 
- static const struct amdgpu_video_codecs sc_video_codecs_encode = {
-@@ -136,8 +136,8 @@ static const struct amdgpu_video_codecs
- 
- /* SRIOV Sienna Cichlid, not const since data is controlled by host */
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_encode_array[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2160, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 7680, 4352, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- };
- 
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_decode_array_vcn0[] = {
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -90,8 +90,8 @@ static const struct amd_ip_funcs soc15_c
- /* Vega, Raven, Arcturus */
- static const struct amdgpu_video_codec_info vega_video_codecs_encode_array[] =
- {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 0)},
- };
- 
- static const struct amdgpu_video_codecs vega_video_codecs_encode =
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -49,13 +49,13 @@ static const struct amd_ip_funcs soc21_c
- 
- /* SOC21 */
- static const struct amdgpu_video_codec_info vcn_4_0_0_video_codecs_encode_array_vcn0[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
- };
- 
- static const struct amdgpu_video_codec_info vcn_4_0_0_video_codecs_encode_array_vcn1[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- };
- 
-@@ -96,14 +96,14 @@ static const struct amdgpu_video_codecs
- 
- /* SRIOV SOC21, not const since data is controlled by host */
- static struct amdgpu_video_codec_info sriov_vcn_4_0_0_video_codecs_encode_array_vcn0[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
- };
- 
- static struct amdgpu_video_codec_info sriov_vcn_4_0_0_video_codecs_encode_array_vcn1[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- };
- 
- static struct amdgpu_video_codecs sriov_vcn_4_0_0_video_codecs_encode_vcn0 = {
---- a/drivers/gpu/drm/amd/amdgpu/soc24.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc24.c
-@@ -48,7 +48,7 @@
- static const struct amd_ip_funcs soc24_common_ip_funcs;
- 
- static const struct amdgpu_video_codec_info vcn_5_0_0_video_codecs_encode_array_vcn0[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
- };
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -136,15 +136,15 @@ static const struct amdgpu_video_codec_i
- 	{
- 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC,
- 		.max_width = 4096,
--		.max_height = 2304,
--		.max_pixels_per_frame = 4096 * 2304,
-+		.max_height = 4096,
-+		.max_pixels_per_frame = 4096 * 4096,
- 		.max_level = 0,
- 	},
- 	{
- 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC,
- 		.max_width = 4096,
--		.max_height = 2304,
--		.max_pixels_per_frame = 4096 * 2304,
-+		.max_height = 4096,
-+		.max_pixels_per_frame = 4096 * 4096,
- 		.max_level = 0,
- 	},
- };
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned c
+ 		    name_sz == note_name_sz &&
+ 		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
+ 		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
+-			data = note_start + note_off + ALIGN(note_name_sz, 4);
++			data = note_start + note_off + sizeof(Elf32_Nhdr) + ALIGN(note_name_sz, 4);
+ 			memcpy(build_id, data, desc_sz);
+ 			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
+ 			if (size)
 
 
 
