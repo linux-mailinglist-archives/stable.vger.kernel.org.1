@@ -1,204 +1,301 @@
-Return-Path: <stable+bounces-94091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FBB9D328B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 04:29:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A729D328D
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 04:29:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74FD7283F81
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 03:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADA9283FD3
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 03:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E6A156649;
-	Wed, 20 Nov 2024 03:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4027F155CA5;
+	Wed, 20 Nov 2024 03:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LvQWIfOa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2054.outbound.protection.outlook.com [40.107.94.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1061840BE5
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 03:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2373740BE5;
+	Wed, 20 Nov 2024 03:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732073349; cv=fail; b=CU8zbUFGwb+KOAmPArWZYgOn9c1ldjPUDQDqFvA4kyjWTQJWSLn8XkP0aXEDToZeThP6S800HYDirWEpPmRd3Ua1kh0KczRj6sE20j16JztyvDVLuLX95/Ky3hiRlB6ubri/Z/DDuIW2ZdX2qcLaK2s+Xvq4LYiMSvMbOw5JANs=
+	t=1732073355; cv=fail; b=CvnQrdVQxPPmyU8/IXqmH/+lnpRQQEFIKFi5COCIs9QA8j0HNMsdEw1qHBWx68+ItEOJKKdb/ogbfZDsjvXiUYhE/BXb0VvTDKXMQh4mp6iWeAuLbAx8mcee6TW7MdpKZo4yH252CCvDJoo+onfCmuqmXZLedUQMJ8uxjbTv52U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732073349; c=relaxed/simple;
-	bh=Z+iBe+NIvtcT+D2GAApfGazm0te18HQuaN1BjVcnHJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OcYMRraIfB2qVeU3KdTCD0khQEnXRhJg8Kj5FKsVsxDWxQaEUAaztNvb6PxTSQtiZrQ+VJfWey7VgMhqn1H9M1nf3UmJtryDfWv9lugDyflaglneBgLx9flXd8aF0yQXFMe83gyMSRIjQmwMf7os7NFm63lgVOqMDQyYbVYGvxk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AK2t1AI006989;
-	Wed, 20 Nov 2024 03:28:54 GMT
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04lp2046.outbound.protection.outlook.com [104.47.73.46])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xgm0kv6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Nov 2024 03:28:53 +0000 (GMT)
+	s=arc-20240116; t=1732073355; c=relaxed/simple;
+	bh=GWqje6QTjWqFQ1S4ALbcMqBlhyAv6M/YKDcPOlYnSig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SFryxO5l36hufNNR4qG7TUYoDMkbBPJRWMPzMKxnc1cL+Q3If2dnbXLAlijCW9jwp0WO8DUPmLG8qzUbsXoYabYX6meHbsJxR6e7NKx4z4FSy29Jxr911ruvlHLpNl9e2w4Vrfxoz/dRMT9pcBihBll8hxZk+gQCDLX4of0DVog=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LvQWIfOa; arc=fail smtp.client-ip=40.107.94.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vQL6hOrTAfHCe3zkSp/HKdzyqPrQvw3XgS55S4qyQjt9kTvEKvWTdFATScwFW63nH+1LT9RnBD8z/WnoK0Sq3NZXD6Ds/InCIMn2PDOUxET456BKTQewNKoc7J7Mp2qlvCkLFiQuSQOnzvSjWCHk4liT5HgsHRJjgSEO4pk4l5NLDUmhNFLi70z2Sr5DPimqlTJ+oFKdiB7EB2YYNqbXKM9qEMGVjp7Cv/RmqXYruz/YTRkrcO1Q1gq3khPAdJnwXpCAtbHQdEVzeRH3NDvKj7/N5Qi6WjKfoR6BYiu06k4ej/pcitIR8uDjyL9kgHPcD1w15W6CJMsTJLkku8C0kQ==
+ b=HiNbtIg1VUARRQhoulEjunAmkmg/Rc83RgW/yLci++nQCLeevAEc3rHwE4eSkMVMUvAN1hoIIamANOW+uX5sgkhyV+bmIyj7cGd+CQuq0EU/gRQY6vGqwD4Or48bcPqprsVtztPGVn+sUVAOBV/m0PEO1Is+FbxJMvrIxpupkQln6uGaIzmwtzzxSJSWFqCmzXz0R/5b4dwFLlJSwFGHlBv6XaSWw6fB5MhaHHY1GTRVvIOzhdIfR2umPW80mOUH5jPmECJmeRKpBAoPv/GwGAvVSDVqyzeDs/cZ5dhl4A5ceqADJWQ0P7kjMVe4l6Q4lyR/owxlynXtwtALHiiaDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ad7x0fql0+wSJnTU/6ZzBSoq3cPM4W0k/cOfeAbH+tw=;
- b=cR/lhjTVRkzpoDz8acq0oe5Hbeg+aDlbPXvnIiCOwNt2ltETFs9NvueYbZL3dA4xObaFbtkFeXbRTw1mgIgXweSkWoWaARH4JDanwzdLaExY2Z4TzgiJjU7iVPaJpLcZx+vIvkalEcxROsWFPzljphORX9qFFs+ZLKezOv4idTTNCY6oHePqnS4scjqMWFgBn1M495LvqPrDETOwtorkWL/4WmW1XL48TIPrPoe2LeKA6dwRxmTvOWzAs4fNw6zdaVqEuANkxJo2aLmmF8SvkWFBIJCQBzLn/MbBNewSxCy1X25b9evtkyICTGU5Wcdk/g+16EzRXQy7dy1JAyBQjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by DS0PR11MB7192.namprd11.prod.outlook.com (2603:10b6:8:13a::22) with
+ bh=/mHCt/8vt3QqwS5+HTUNujtRHT7AFFZstcNq1dmXIwk=;
+ b=bNoydlwRaiKDgFp4LlA6/7d8jLV9lH6RpHmq1JLyLIEcV/xdnfG406+irap4Xo+Qu+3VV6lolHCuYFjz8wPkqpcQHONJJeQHglRbOu9jYbXGm+pcemWbpc0MDeGC26JLrVNw3X+PgDAb6NThqOrYZisYF5RAg34/PMlUqFJktTIB/341FKIy/dgCbGtfeSlWcjGLt6JsKxFj75LKQt0ZwjFyJd8A3aYuFnCScDhdnL94y/qjmthfY6nTqnX5cLv9WS8yS0AAh6ExmhGp++67O+oW8qJsLZQVyCSBlsomr2WWs8FnTrY6E3mJy/UdCXCfy6N8PkCKoVgSBjk7yGGFdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/mHCt/8vt3QqwS5+HTUNujtRHT7AFFZstcNq1dmXIwk=;
+ b=LvQWIfOaAPx703oVWeZlUzkODob+A/ByzxN4vhqJoN4zuFAa4GfAeVGOUImfNNoTZYTUv9bOEABSxQCQCQX7+NMxLHuDtnLVfmokcVp92J1592+hl7tDywD7vPvmaX/nnn3w5qUN9LBjxgmnmUkxQCYnIW9S1mJ+mlnpyP10pwh2vbHdMswrffVN6PkC6hQyr3kxoFW25wuCrxXWHV/sHa4vHLj2e7PALMmH8i9e6mJ/vC4ZwJwZiP7Csv7FCAdsdAqbofuGFBciYleE6+L4+gU2ounwGFtQRBOOZDB6C+hjTdL5N8ORCoBA7F4QfPtTJXpJZ4+ndqZ377xV5Hg/eQ==
+Received: from SJ0PR05CA0071.namprd05.prod.outlook.com (2603:10b6:a03:332::16)
+ by SN7PR12MB7226.namprd12.prod.outlook.com (2603:10b6:806:2a9::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.14; Wed, 20 Nov
- 2024 03:28:48 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8158.023; Wed, 20 Nov 2024
- 03:28:48 +0000
-From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-To: yukuai1@huaweicloud.com, christophe.jaillet@wanadoo.fr, yukuai3@huawei.com,
-        dlemoal@kernel.org
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH v2 6.1.y 3/3] null_blk: Fix return value of nullb_device_power_store()
-Date: Wed, 20 Nov 2024 11:28:41 +0800
-Message-ID: <20241120032841.28236-4-xiangyu.chen@eng.windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241120032841.28236-1-xiangyu.chen@eng.windriver.com>
-References: <20241120032841.28236-1-xiangyu.chen@eng.windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0177.jpnprd01.prod.outlook.com
- (2603:1096:400:2b2::16) To MW4PR11MB5824.namprd11.prod.outlook.com
- (2603:10b6:303:187::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24; Wed, 20 Nov
+ 2024 03:29:08 +0000
+Received: from CY4PEPF0000EDD6.namprd03.prod.outlook.com
+ (2603:10b6:a03:332:cafe::b7) by SJ0PR05CA0071.outlook.office365.com
+ (2603:10b6:a03:332::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.14 via Frontend
+ Transport; Wed, 20 Nov 2024 03:29:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000EDD6.mail.protection.outlook.com (10.167.241.202) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8158.14 via Frontend Transport; Wed, 20 Nov 2024 03:29:07 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 19 Nov
+ 2024 19:28:52 -0800
+Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 19 Nov
+ 2024 19:28:52 -0800
+Message-ID: <171354c3-c276-48c8-9a80-795f4aa7a471@nvidia.com>
+Date: Tue, 19 Nov 2024 19:28:51 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup: handle NULL pages in unpin_user_pages()
+To: David Hildenbrand <david@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>
+CC: LKML <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, Oscar Salvador
+	<osalvador@suse.de>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Dave Airlie
+	<airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Matthew Wilcox
+	<willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe
+	<jgg@nvidia.com>, Peter Xu <peterx@redhat.com>, Arnd Bergmann
+	<arnd@arndb.de>, Daniel Vetter <daniel.vetter@ffwll.ch>, Dongwon Kim
+	<dongwon.kim@intel.com>, Hugh Dickins <hughd@google.com>, Junxiao Chang
+	<junxiao.chang@intel.com>, <stable@vger.kernel.org>
+References: <20241119044923.194853-1-jhubbard@nvidia.com>
+ <64d5e357-94b5-48b4-b6cf-0a7a578f82ae@redhat.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <64d5e357-94b5-48b4-b6cf-0a7a578f82ae@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|DS0PR11MB7192:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa21d99c-804b-4a28-1b6e-08dd091371fe
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD6:EE_|SN7PR12MB7226:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f28c34b-a337-4756-b249-08dd09137dc7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KHHhi6OEa66lCSt9M8utt/DkTxoob59DWraIIURgf9iowE7Hbj+UDjUshSUI?=
- =?us-ascii?Q?ecPvcj49f7d0npjAmzyWQ6Hca6mTz0nynazmY+PJ/l0xelmTFKTh/btxFRVB?=
- =?us-ascii?Q?NRHLjRePx4J+8VmFBvzrNm2pJXZws5GV/krfm2mg2lHrAwXjo7f9lCv+uEjQ?=
- =?us-ascii?Q?FvKD21cF1sdAJltWCp8948A6IEtvIjpGTOrRjZItXwuAENyxIpDSfMat6A0N?=
- =?us-ascii?Q?+MgRcxP0PkxqcUjjXIPEhl3e/tJ3jyuSAWDV0ucykaxMPhC/Yh+uklbfYdC9?=
- =?us-ascii?Q?dAJJk/KTgVhp8YroZVLlnRNwZ9j2fiU+9OoFWLVxvujjkApc2rCotXFmXxDQ?=
- =?us-ascii?Q?TuhU9ehb4CMDKkE7DkTxeagMkYRiI31z5nPOc8KOaDL3JO62d1mAglViWNcN?=
- =?us-ascii?Q?80QnQVF8hCjj4Hn1P5QQDwiKqoIWVTK/3fHuU0EpXU0hL0ymLnlHbSYQmr2f?=
- =?us-ascii?Q?o4s9q4v4qqqGNNGbE879po9Egyy7jQ5WwlhUXhYXrr0lvCj0OQhFCKglsxN0?=
- =?us-ascii?Q?I6AqBG7jCVDLZi5wpInbjHAt4J5xUN8j3DTxqjFF7KYeLG/2vV/G7IB/07As?=
- =?us-ascii?Q?NqVhvcy769VN75Hk2s5OtgiiUCKVHbx2QpRvsC5/W3AmpvRvh3cFnhYArnKj?=
- =?us-ascii?Q?A2UEsJ1cxUGZD1idEiCL0rfrD/92weUs/1jxCPWzVTYMOYrwM32RtyrH1hmx?=
- =?us-ascii?Q?mH0NKw/jgexK35sldmunkVhQ5k41ZkFeFbZWOzVPMAUCYD9j/NzEfXrxwVXj?=
- =?us-ascii?Q?kXaPyQMJ+G9HgKKKU1d82Esbqyzy8LUbRYswddB2lq0nMVd52RUXW5mncwQG?=
- =?us-ascii?Q?BvJu6Juq8F/wGtaM1Y3Kbqs+ktQwF0UwotHUBuwCFL/T5Ru5iNVef5wI6Bdz?=
- =?us-ascii?Q?tun74dV1i8jFq1VNMvDVmQY2T7S7ZUYZKCBILWhbpUMKRgzvM5HA7qO5gArP?=
- =?us-ascii?Q?Pxc1Shk7GQIpLifLK5ucwSjdcV7KG/TR2kxyyrGY5ZbIJmKFXzxieVxgoxbE?=
- =?us-ascii?Q?GteGckKAy5Ejo0abgbqlEJL014N1mHaWxctl3IN3yuknABAp4Vcws/qzMEwN?=
- =?us-ascii?Q?qAPdyYsuTRTVo+X8pO5HuFCFfD7jqAhsLu1EnUYvNlFudDvxZdZ8D864NgRt?=
- =?us-ascii?Q?7/apHP09uiKX5cYtf011wFLevFvsmQatlnA6rxNm5Hdpfd0GkQuSqt2vlxKo?=
- =?us-ascii?Q?veIQZQTO5HVmPsk/4cSQJiUh58HHGPjbgZ8oy7y5z7z5iN7AcuASPxYcSTNA?=
- =?us-ascii?Q?N+zhjceaYz01eaukRwmPfGpGy85/SBK5IjpIRienCS/e9Y5v1p4tKrAcdoA6?=
- =?us-ascii?Q?ECoMnggxzN6OxtZDTqVOWEycHe/pO/15XUoFh6+VKp+NdVriR2gSwEv5pfZt?=
- =?us-ascii?Q?VLpFuaw=3D?=
+	=?utf-8?B?RHdxdDloMkpwSzhjMHlJMFpEL1ZZSHEwK2Y1U3lWd1BnTy9DdktDWktpVE4w?=
+ =?utf-8?B?WUNpbitVRlNZa3FPN1dDdEhFeGI5TU1NRit6YVArcDRVYTN1ZGJialZPRlRx?=
+ =?utf-8?B?SkRCS1pZQXY3dFZsNEx1bzh0QS9oOXRaVGZ6V2ZDWFJqdUVLTno0dHVXTm45?=
+ =?utf-8?B?Rk82RDZ4QmZKNG05QWlDc3hOMVNHWHRxekplVTR2UnQvUUF1QnczeGkyN01j?=
+ =?utf-8?B?SkRhZDMrVFc0eGNjSnNpaW56Z2QxMmNPd3FXK0trUWRyekZQR2JJdzlWZWtx?=
+ =?utf-8?B?ODR1SGFlbHY3bFZyY1pBdDhRT2k0Z1JGQUpTNUMzSnIyTklUWkZGWnpFNVhs?=
+ =?utf-8?B?ZUVUN2MrRWN3S0tWaVljRXl6R0NXUndnR1REcE5hREIvdlNJZFdJZ2Z1aHFD?=
+ =?utf-8?B?TDlKamlscjZINTdkNTdGRmFsNlAxcUl2V1JyUmxvcDRQSml3bE9BRmNJTi9u?=
+ =?utf-8?B?ZXR1NXZNSyt3YWpNaEh3S2xPMHJ6L2Q1a3MwTUpkVUVCYUg3MEdmSXdQR2dF?=
+ =?utf-8?B?NklTT2dYeFF1enJxQkRtTGpFenlXVjJsTWxHUWY0VndqOFE3TVFTM0xQbUsw?=
+ =?utf-8?B?cGFILzZMM2Q5RWkyVlExN0tPWVNZM3M3M0hzTzNWYWFvVW44aXlHa3ZycS91?=
+ =?utf-8?B?N3RiRS8zOW1zTURyTHFSbmNhMkUxK2Z2NDlaVmYxMEdZeElGdlBaZCs3S3pX?=
+ =?utf-8?B?V1ZHUHl1WGdLNU1kckJSaytjRk0wYmdZcU5kMldPdkgvWkY5N1NWZDVueFVW?=
+ =?utf-8?B?ZWhOaDl5Q0xheTRVUUdsb1dFYU4yVVlpT3VhZlFGNEFHaGFxUFM5bnRQdTVt?=
+ =?utf-8?B?MHJ2WUJQenRMdGRtQzcwMmt2dDFlTmp0aW04c3QvMlkxWmNseHRXT1pWSEhG?=
+ =?utf-8?B?SWJ4ZjZndzVZOGsrTnhFaVhjWVowQUdjd3lzTE1ISmVVcDNPc0Ezby9ET3lY?=
+ =?utf-8?B?V0NnRU1WVGkvekxZalhRVWsxemtmRUhVbE5FcXRMR2JkQittWjFGOWNkYkg1?=
+ =?utf-8?B?K0VNUnJwZitLcUtBdkFrQWpuZ2ZVVU9sSXJaSWpER2orUW8yeElpLy9Rak5C?=
+ =?utf-8?B?RmFDUEsvOXFTckZUUzF0YU1tQ2NQZDR5OVFwOURjek1pam42YXNQWXo0ZGVm?=
+ =?utf-8?B?cmgzc2ZqeGZJZ3RzVWhiLytlczBncm53QkRYL2tkSUNWQzJwWllJMUJsWXQy?=
+ =?utf-8?B?SFRUQW8vdG5UUlpxWXo4cllyVFA0M0cyUHZOM3ZmZEJHU3dUUlh0RituaWo4?=
+ =?utf-8?B?YlVzaXdRa0FudFY2ZkcyOUpHZ0dWR1o5TjNYekZHcjdJZWFxbEQ2T0w4SHpG?=
+ =?utf-8?B?ai9hbyt6blJ0YnQ2dCtXYXVCaEpVem4yRWlXdDdOdmQzcHUzNzdJUzNKQ2tr?=
+ =?utf-8?B?WEN6K29CTit4NTl6WnZrSzdRTE5HNFNVcy8wNlVMVitSUDBFMW5hU1k0SFM1?=
+ =?utf-8?B?aUZ5TGIwQkxSVHRuN05zT1d2OGlmQ25wQmp5MHFZWjZNRDlydmg0WW03NVRi?=
+ =?utf-8?B?d0o1Z1MvRHlRUG44MDNtRmNKczBOTWZkVWNSSThTN3RLNWRLbXRyTzRVdWRa?=
+ =?utf-8?B?aFd4RVZTSXlUVi9KRHYwdnBiTm10a1JOa2IvZlV0SW9ZanpseG03RFZqa3V5?=
+ =?utf-8?B?V2g0WUczWjZ5cWJDeUR5VURrWjlSTU5JcThQRWdhajJaVE9TV0VrRkVvVTFU?=
+ =?utf-8?B?cFh6a040YnF1NDQ0TkRXWkJLbGtMTXB4YVJ3VVdEWklhZjRBellJVFRidWJ3?=
+ =?utf-8?B?ZFNLZjVLQ2Frb1ZadFpZd0NwU29tTTFMVTltYXRBSVowUDhlUnJHM1QvWnJn?=
+ =?utf-8?B?OHZUY2FRdE5wMTQ0R2p4RHdPMUQwL0tDditTUUQ4bHFLL29Xb0MrQ05MOHpn?=
+ =?utf-8?B?RFZ4UDBwOHNaTERBbFN5L0dSck9kRkcyeUJNNVZMcnBNN1E9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AQKNk4otwNs9eE/wVW/iiZ8UplVzH7ADzFI4Q85Z0+HKTTyCEUiVW5wPRuAW?=
- =?us-ascii?Q?vrQoJ0kR8dUMIN4QorN01WbRSW9wqAs+kdA8COOs5aOzPGFk2P3QLal+qK9O?=
- =?us-ascii?Q?5Xh+BbuHdT4PqGXnTGV0fCqLEn5CALJmq5ApheWPzmZ5pKo67dElkDD8nS4J?=
- =?us-ascii?Q?cjQ2TpZj54t/vDZA9DZelvQ2/7MfSwsiKC7HOpTv7bomyBlUNAz1uGF5xLR0?=
- =?us-ascii?Q?CbFBPMVpRGjyUXx1rcZXEH38gevkuXJxR7d68pT6LJWMuBOEsCkDeZM+F0Cl?=
- =?us-ascii?Q?5pi7rDPhJfXr8zeUAKsEaLk1XUOfpfdFIrUdxURyiM3r1bRsZb7W3kjqlHc9?=
- =?us-ascii?Q?typQBr6/vkGAIwwZZniTLeiV27vOABvcFQJV8u55WU02iJKZrrMNgR46Odyw?=
- =?us-ascii?Q?c+mbqNeTNVrQ8wrHUaCUMLsJf0060gRrEzjX03/E/6rrW6IwqanrshA78QOI?=
- =?us-ascii?Q?JqYlpuNlQpTC+B3BrpjJvRtF/cJsJ6Qn0mLayGeshbzHNg/Uznyq66YthBRV?=
- =?us-ascii?Q?kshRgNS8uZc/e+I5kJ5idpUazp2ifOCtyixlHV8BbV7CUXojdgcwHlKOANsX?=
- =?us-ascii?Q?ve2QQ61/7Nd17zDA/QRDVlfrmAk50I3uGmxchh5MRAyde6VXa0NwKofl94Mx?=
- =?us-ascii?Q?Z78v/7qfxhmVno6T0Om5CzNcB31rFHuXozFtWG79oj8GhOGCBT0c38M+93O8?=
- =?us-ascii?Q?bfaD39fzugbKOJowL7UByjTS9ZkB/t3w5LWc4To/NBPVrj495FcL2fgt081E?=
- =?us-ascii?Q?zTP66epxcNlzsU4I8cq8D5G1rk3QKuOhkWIzfojWUfSYKIdxBVMW/KnjQFu4?=
- =?us-ascii?Q?QGvy2YdOMjFeCBJ3j2/4seDIu4vuTIY2L0FP4EhrwdByx7KnyHRSY5PY9U9J?=
- =?us-ascii?Q?HdaplUsh/WpPvn5hQaduf6d2vmlSKbeifKizZSrhlFia2eMwj15pRnFXwY7i?=
- =?us-ascii?Q?BQ25uRTULBck8xHV10aqVlj9Pp0ztsYAJ6AJMt7t0S5n13b7E60/GGSiTm7G?=
- =?us-ascii?Q?2xw/epq/8M4bDxUfImV+PzceG9XzPoDKMOetAsmubEjmeSO4G/CsQ1Iy9MHl?=
- =?us-ascii?Q?amr84UDrJ4j+zr0oKO8zBAi5p3uu44AUfwo2D7okUTWwLI8d7+ayESrSkVTF?=
- =?us-ascii?Q?KszyDf65JChX+FJ3Uv4IKuyCuuQGk695r28BFYfh52O1wip2A+MsuSS/XFOz?=
- =?us-ascii?Q?7wVMotvnWxpehLpucD4LTBLonjSePfMSRIr1Eyfyxko+tApRejmH5TKg7Tf6?=
- =?us-ascii?Q?NEBO2CDHrIo9o9QR8uFybDwT5VdpZvHidX/LbI0PRoC0U35U6jRd84RujDXc?=
- =?us-ascii?Q?NTI3k8+4RcgvyjAYnqUp9otfgOb0gHkA3E+xap9PKUrahN42K1ZKyai7w8qc?=
- =?us-ascii?Q?RYu57wxm5tmhi4Stu1xTu+1hOfemF8VFkT1CNZZDnLskXPgzqLFDTQOJDo5X?=
- =?us-ascii?Q?MIF8EkeBKXpe1P87/3/f1KFvyRoJaLEQdyt+eUfEZkj6K5M0hS819HUAhgEl?=
- =?us-ascii?Q?Qd3hgf4lYIPOZEzeW9L3uHQhSKdXaQerh8loDjc1GEJ5jpIAK9jSHpOdEi5l?=
- =?us-ascii?Q?Pwm4fRmjyrmOugHYVDVBRB0zU7zMNl30KULVkWghwdXQOVwJIkGzuhzAIJvu?=
- =?us-ascii?Q?WA=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa21d99c-804b-4a28-1b6e-08dd091371fe
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2024 03:28:47.9642
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2024 03:29:07.4496
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oQW4cTZKgO/c1fgyxMOZkZ5bYJ1a2y6OxZZV1YZH/iGYj0eLuuW7c/3nUK/CzVsJPKpGL1vA7sjHwdpN4GTJec/Ras0tlitRdPDn11GQZiA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7192
-X-Proofpoint-ORIG-GUID: lwJ6eID2CEfRijsKWLXuqNAQqX45p-hz
-X-Proofpoint-GUID: lwJ6eID2CEfRijsKWLXuqNAQqX45p-hz
-X-Authority-Analysis: v=2.4 cv=E4efprdl c=1 sm=1 tr=0 ts=673d5775 cx=c_pps a=wXDgSYWbwZencpnnUUTq5g==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=VwQbUJbxAAAA:8
- a=i0EeH86SAAAA:8 a=hD80L64hAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=Puq4y9IwgNPiuzXzUAcA:9 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-19_16,2024-11-18_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411200026
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f28c34b-a337-4756-b249-08dd09137dc7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD6.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7226
 
-From: Damien Le Moal <dlemoal@kernel.org>
+On 11/19/24 6:33 AM, David Hildenbrand wrote:
+> On 19.11.24 05:49, John Hubbard wrote:
+>> The recent addition of "pofs" (pages or folios) handling to gup has a
+>> flaw: it assumes that unpin_user_pages() handles NULL pages in the
+>> pages** array. That's not the case, as I discovered when I ran on a new
+>> configuration on my test machine.
+>>
+>> Fix this by skipping NULL pages in unpin_user_pages(), just like
+>> unpin_folios() already does.
+>>
+>> Details: when booting on x86 with "numa=fake=2 movablecore=4G" on Linux
+>> 6.12, and running this:
+>>
+>>      tools/testing/selftests/mm/gup_longterm
+>>
+>> ...I get the following crash:
+>>
+>> BUG: kernel NULL pointer dereference, address: 0000000000000008
+>> RIP: 0010:sanity_check_pinned_pages+0x3a/0x2d0
+>> ...
+>> Call Trace:
+>>   <TASK>
+>>   ? __die_body+0x66/0xb0
+>>   ? page_fault_oops+0x30c/0x3b0
+>>   ? do_user_addr_fault+0x6c3/0x720
+>>   ? irqentry_enter+0x34/0x60
+>>   ? exc_page_fault+0x68/0x100
+>>   ? asm_exc_page_fault+0x22/0x30
+>>   ? sanity_check_pinned_pages+0x3a/0x2d0
+>>   unpin_user_pages+0x24/0xe0
+>>   check_and_migrate_movable_pages_or_folios+0x455/0x4b0
+>>   __gup_longterm_locked+0x3bf/0x820
+>>   ? mmap_read_lock_killable+0x12/0x50
+>>   ? __pfx_mmap_read_lock_killable+0x10/0x10
+>>   pin_user_pages+0x66/0xa0
+>>   gup_test_ioctl+0x358/0xb20
+>>   __se_sys_ioctl+0x6b/0xc0
+>>   do_syscall_64+0x7b/0x150
+>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>
+>> Fixes: 94efde1d1539 ("mm/gup: avoid an unnecessary allocation call for FOLL_LONGTERM cases")
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+>> Cc: Dave Airlie <airlied@redhat.com>
+>> Cc: Gerd Hoffmann <kraxel@redhat.com>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Christoph Hellwig <hch@infradead.org>
+>> Cc: Jason Gunthorpe <jgg@nvidia.com>
+>> Cc: Peter Xu <peterx@redhat.com>
+>> Cc: Arnd Bergmann <arnd@arndb.de>
+>> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+>> Cc: Dongwon Kim <dongwon.kim@intel.com>
+>> Cc: Hugh Dickins <hughd@google.com>
+>> Cc: Junxiao Chang <junxiao.chang@intel.com>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> ---
+>>
+>> Hi,
+>>
+>> I got a nasty shock when I tried out a new test machine setup last
+>> night--I wish I'd noticed the problem earlier! But anyway, this should
+>> make it all better...
+>>
+>> I've asked Greg K-H to hold off on including commit 94efde1d1539
+>> ("mm/gup: avoid an unnecessary allocation call for FOLL_LONGTERM cases")
+>> in linux-stable (6.11.y), but if this fix-to-the-fix looks good, then
+>> maybe both fixes can ultimately end up in stable.
+>>
+> 
+> Ouch!
+> 
+>> thanks,
+>> John Hubbard
+>>
+>>   mm/gup.c | 17 +++++++++++++++--
+>>   1 file changed, 15 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index ad0c8922dac3..6e417502728a 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -52,7 +52,12 @@ static inline void sanity_check_pinned_pages(struct page **pages,
+>>        */
+>>       for (; npages; npages--, pages++) {
+>>           struct page *page = *pages;
+>> -        struct folio *folio = page_folio(page);
+>> +        struct folio *folio;
+>> +
+>> +        if (!page)
+>> +            continue;
+>> +
+>> +        folio = page_folio(page);
+>>           if (is_zero_page(page) ||
+>>               !folio_test_anon(folio))
+>> @@ -248,9 +253,14 @@ static inline struct folio *gup_folio_range_next(struct page *start,
+>>   static inline struct folio *gup_folio_next(struct page **list,
+>>           unsigned long npages, unsigned long i, unsigned int *ntails)
+>>   {
+>> -    struct folio *folio = page_folio(list[i]);
+>> +    struct folio *folio;
+>>       unsigned int nr;
+>> +    if (!list[i])
+>> +        return NULL;
+>> +
+> 
+> I don't particularly enjoy returning NULL here, if we don't teach the other users of that function about that possibility. There are two other users.
+> 
+> Also: we are not setting "ntails" to 1. I think the callers uses that as "nr" to advance npages. So the caller has to make sure to set "nr = 1" in case it sees "NULL".
+> 
+> Alternatively ...
+> 
+>> +    folio = page_folio(list[i]);
+>> +
+>>       for (nr = i + 1; nr < npages; nr++) {
+>>           if (page_folio(list[nr]) != folio)
+>>               break;
+>> @@ -410,6 +420,9 @@ void unpin_user_pages(struct page **pages, unsigned long npages)
+>>       sanity_check_pinned_pages(pages, npages);
+>>       for (i = 0; i < npages; i += nr) {
+> 
+> ... handle it here
+> 
+> if (!pages[i]) {
+>      nr = 1;
+>      continue;
+> }
+> 
+> No strong opinion. But I think we should either update all callers to deal with returning NULL from this function, and set "nr = 1".
+> 
 
-commit d9ff882b54f99f96787fa3df7cd938966843c418 upstream.
+Yes, that makes sense. I'll send a v2 shortly with one or the other
+approach implemented. I appreciate the review feedback as always!
 
-When powering on a null_blk device that is not already on, the return
-value ret that is initialized to be count is reused to check the return
-value of null_add_dev(), leading to nullb_device_power_store() to return
-null_add_dev() return value (0 on success) instead of "count".
-So make sure to set ret to be equal to count when there are no errors.
-
-Fixes: a2db328b0839 ("null_blk: fix null-ptr-dereference while configuring 'power' and 'submit_queues'")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Link: https://lore.kernel.org/r/20240527043445.235267-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
----
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index e838eed4aacf..e66cace433cb 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -470,6 +470,7 @@ static ssize_t nullb_device_power_store(struct config_item *item,
- 
- 		set_bit(NULLB_DEV_FL_CONFIGURED, &dev->flags);
- 		dev->power = newp;
-+		ret = count;
- 	} else if (dev->power && !newp) {
- 		if (test_and_clear_bit(NULLB_DEV_FL_UP, &dev->flags)) {
- 			dev->power = newp;
+thanks,
 -- 
-2.43.0
+John Hubbard
 
 
