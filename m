@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-94257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C139D3BB9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342D69D3B76
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748E31F219F4
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7941B29218
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70F1AA78C;
-	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FB91B4F2D;
+	Wed, 20 Nov 2024 12:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNxgdNY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ovj7/f4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D01AA783;
-	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE715853A;
+	Wed, 20 Nov 2024 12:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107593; cv=none; b=DHDhCt6U0VgD3WTKVSSmCPrQ2qGbaKbYFm8phirKpKnJBWd4U1h24NCIoS4DGu2wbKQsGVEEkz+nhA6Xn2csh3BEVI0M/urptc3ob519rBS2HSsdQilXMTCkgUFx4SHGtCpGGjRBZ8o16P7OaMVDA8LzP+FgcG8HfV6XAOYAxpI=
+	t=1732107538; cv=none; b=RnWciJT1+7OoVK/CcN/QBIZZCpZ2SX8xVBx+4FJqWDbPxkIaYOOCPT0Stpn7pnfhCbqlo/llO8xld8HkjG3KNBSy4RGhkq6NaBvP+uiSueyomYJNlF7abo+MosnG1aC79riufEFRX2YAy71T9CyuLYvXAKSQEUcEMkVqlFGe7TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107593; c=relaxed/simple;
-	bh=VLrOYnrP5gtP+BgcZ+F42GtQE1KJG+/Y23lPDCFwTEQ=;
+	s=arc-20240116; t=1732107538; c=relaxed/simple;
+	bh=emaWHrKVAJMpbiG+Ush8Rk4dlXrjL9urXMpgTvgmhLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5c8Nvuq5DUS1V+ERYTqoQN4WYccRjXcTZJRtQzeP72xDxR8y1KtRjIXAsxpsRYSgyDlbxw1/MiGci0LNC9n/CFpdEgk8XEbVPdazRg1IE7ykrGumXPhQYFwbgswk4gc4PGt6JglqayxJuIwdQpa2KIRD/Y+DrVauvcNO7qxy4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNxgdNY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FF5C4CECD;
-	Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
+	 MIME-Version; b=bGPN1LnKLwsoOxcAWOgdfBXcv4Y4zC0w4Y1IkPzIG251UsYP0rxdzsPlxXX7BOUDARamxDOkSy9d4zxDKDUSLR7BxJ+RUQhm0iQNmqonx8rs73vezSZ/4Ih9EE08eSRGvM+E1BE9G1nMjGQY05+7V+SJsLhziyVL9vHpkGUwYk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ovj7/f4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B63EC4CED1;
+	Wed, 20 Nov 2024 12:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107593;
-	bh=VLrOYnrP5gtP+BgcZ+F42GtQE1KJG+/Y23lPDCFwTEQ=;
+	s=korg; t=1732107538;
+	bh=emaWHrKVAJMpbiG+Ush8Rk4dlXrjL9urXMpgTvgmhLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNxgdNY8S+EFlfNW4Mer0aITp3vDWhBbUA1RU8iMekNA4ms8Rm+cYoILeEDz9kGJj
-	 mqmgjwnBlARw2E5wnyXrwDMQbthpJ/VAi78Srg/2zK1mC01Fr/rWJTbpd1t9f21BXR
-	 0IzcM7WKdhYK3p8C3fDpIGIZ3jOm/CdRnf/fTgCU=
+	b=Ovj7/f4Nrpz+QXF7uDuI/zYXslZn+oR+8NBt14Wxpjd9MZV7qa0OaOzjnUZnju2AC
+	 gBxoW9mkOxqBFeB9NKi5LjLu+wSZbtTAq1chWp2OF0+4xo828ZAipdTClb0EHxuYDX
+	 MXiH013KpF4+qNCsF7AMDCUXSQKd6HUP/c/AQfyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Yong He <zhuangel570@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 37/82] KVM: x86: Unconditionally set irr_pending when updating APICv state
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.11 072/107] LoongArch: Add WriteCombine shadow mapping in KASAN
 Date: Wed, 20 Nov 2024 13:56:47 +0100
-Message-ID: <20241120125630.448025207@linuxfoundation.org>
+Message-ID: <20241120125631.305954704@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Kanglong Wang <wangkanglong@loongson.cn>
 
-commit d3ddef46f22e8c3124e0df1f325bc6a18dadff39 upstream.
+commit 139d42ca51018c1d43ab5f35829179f060d1ab31 upstream.
 
-Always set irr_pending (to true) when updating APICv status to fix a bug
-where KVM fails to set irr_pending when userspace sets APIC state and
-APICv is disabled, which ultimate results in KVM failing to inject the
-pending interrupt(s) that userspace stuffed into the vIRR, until another
-interrupt happens to be emulated by KVM.
+Currently, the kernel couldn't boot when ARCH_IOREMAP, ARCH_WRITECOMBINE
+and KASAN are enabled together. Because DMW2 is used by kernel now which
+is configured as 0xa000000000000000 for WriteCombine, but KASAN has no
+segment mapping for it. This patch fix this issue.
 
-Only the APICv-disabled case is flawed, as KVM forces apic->irr_pending to
-be true if APICv is enabled, because not all vIRR updates will be visible
-to KVM.
+Solution: Add the relevant definitions for WriteCombine (DMW2) in KASAN.
 
-Hit the bug with a big hammer, even though strictly speaking KVM can scan
-the vIRR and set/clear irr_pending as appropriate for this specific case.
-The bug was introduced by commit 755c2bf87860 ("KVM: x86: lapic: don't
-touch irr_pending in kvm_apic_update_apicv when inhibiting it"), which as
-the shortlog suggests, deleted code that updated irr_pending.
-
-Before that commit, kvm_apic_update_apicv() did indeed scan the vIRR, with
-with the crucial difference that kvm_apic_update_apicv() did the scan even
-when APICv was being *disabled*, e.g. due to an AVIC inhibition.
-
-        struct kvm_lapic *apic = vcpu->arch.apic;
-
-        if (vcpu->arch.apicv_active) {
-                /* irr_pending is always true when apicv is activated. */
-                apic->irr_pending = true;
-                apic->isr_count = 1;
-        } else {
-                apic->irr_pending = (apic_search_irr(apic) != -1);
-                apic->isr_count = count_vectors(apic->regs + APIC_ISR);
-        }
-
-And _that_ bug (clearing irr_pending) was introduced by commit b26a695a1d78
-("kvm: lapic: Introduce APICv update helper function"), prior to which KVM
-unconditionally set irr_pending to true in kvm_apic_set_state(), i.e.
-assumed that the new virtual APIC state could have a pending IRQ.
-
-Furthermore, in addition to introducing this issue, commit 755c2bf87860
-also papered over the underlying bug: KVM doesn't ensure CPUs and devices
-see APICv as disabled prior to searching the IRR.  Waiting until KVM
-emulates an EOI to update irr_pending "works", but only because KVM won't
-emulate EOI until after refresh_apicv_exec_ctrl(), and there are plenty of
-memory barriers in between.  I.e. leaving irr_pending set is basically
-hacking around bad ordering.
-
-So, effectively revert to the pre-b26a695a1d78 behavior for state restore,
-even though it's sub-optimal if no IRQs are pending, in order to provide a
-minimal fix, but leave behind a FIXME to document the ugliness.  With luck,
-the ordering issue will be fixed and the mess will be cleaned up in the
-not-too-distant future.
-
-Fixes: 755c2bf87860 ("KVM: x86: lapic: don't touch irr_pending in kvm_apic_update_apicv when inhibiting it")
 Cc: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Reported-by: Yong He <zhuangel570@gmail.com>
-Closes: https://lkml.kernel.org/r/20241023124527.1092810-1-alexyonghe%40tencent.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20241106015135.2462147-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 8e02c3b782ec ("LoongArch: Add writecombine support for DMW-based ioremap()")
+Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |   29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ arch/loongarch/include/asm/kasan.h |   11 ++++++++++-
+ arch/loongarch/mm/kasan_init.c     |    5 +++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2603,19 +2603,26 @@ void kvm_apic_update_apicv(struct kvm_vc
- {
- 	struct kvm_lapic *apic = vcpu->arch.apic;
+--- a/arch/loongarch/include/asm/kasan.h
++++ b/arch/loongarch/include/asm/kasan.h
+@@ -25,6 +25,7 @@
+ /* 64-bit segment value. */
+ #define XKPRANGE_UC_SEG		(0x8000)
+ #define XKPRANGE_CC_SEG		(0x9000)
++#define XKPRANGE_WC_SEG		(0xa000)
+ #define XKVRANGE_VC_SEG		(0xffff)
  
--	if (apic->apicv_active) {
--		/* irr_pending is always true when apicv is activated. */
--		apic->irr_pending = true;
-+	/*
-+	 * When APICv is enabled, KVM must always search the IRR for a pending
-+	 * IRQ, as other vCPUs and devices can set IRR bits even if the vCPU
-+	 * isn't running.  If APICv is disabled, KVM _should_ search the IRR
-+	 * for a pending IRQ.  But KVM currently doesn't ensure *all* hardware,
-+	 * e.g. CPUs and IOMMUs, has seen the change in state, i.e. searching
-+	 * the IRR at this time could race with IRQ delivery from hardware that
-+	 * still sees APICv as being enabled.
-+	 *
-+	 * FIXME: Ensure other vCPUs and devices observe the change in APICv
-+	 *        state prior to updating KVM's metadata caches, so that KVM
-+	 *        can safely search the IRR and set irr_pending accordingly.
-+	 */
-+	apic->irr_pending = true;
-+
-+	if (apic->apicv_active)
- 		apic->isr_count = 1;
--	} else {
--		/*
--		 * Don't clear irr_pending, searching the IRR can race with
--		 * updates from the CPU as APICv is still active from hardware's
--		 * perspective.  The flag will be cleared as appropriate when
--		 * KVM injects the interrupt.
--		 */
-+	else
- 		apic->isr_count = count_vectors(apic->regs + APIC_ISR);
--	}
-+
- 	apic->highest_isr_cache = -1;
- }
+ /* Cached */
+@@ -41,10 +42,17 @@
+ #define XKPRANGE_UC_SHADOW_SIZE		(XKPRANGE_UC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
+ #define XKPRANGE_UC_SHADOW_END		(XKPRANGE_UC_KASAN_OFFSET + XKPRANGE_UC_SHADOW_SIZE)
  
++/* WriteCombine */
++#define XKPRANGE_WC_START		WRITECOMBINE_BASE
++#define XKPRANGE_WC_SIZE		XRANGE_SIZE
++#define XKPRANGE_WC_KASAN_OFFSET	XKPRANGE_UC_SHADOW_END
++#define XKPRANGE_WC_SHADOW_SIZE		(XKPRANGE_WC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
++#define XKPRANGE_WC_SHADOW_END		(XKPRANGE_WC_KASAN_OFFSET + XKPRANGE_WC_SHADOW_SIZE)
++
+ /* VMALLOC (Cached or UnCached)  */
+ #define XKVRANGE_VC_START		MODULES_VADDR
+ #define XKVRANGE_VC_SIZE		round_up(KFENCE_AREA_END - MODULES_VADDR + 1, PGDIR_SIZE)
+-#define XKVRANGE_VC_KASAN_OFFSET	XKPRANGE_UC_SHADOW_END
++#define XKVRANGE_VC_KASAN_OFFSET	XKPRANGE_WC_SHADOW_END
+ #define XKVRANGE_VC_SHADOW_SIZE		(XKVRANGE_VC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
+ #define XKVRANGE_VC_SHADOW_END		(XKVRANGE_VC_KASAN_OFFSET + XKVRANGE_VC_SHADOW_SIZE)
+ 
+@@ -55,6 +63,7 @@
+ 
+ #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
+ #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
++#define XKPRANGE_WC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_WC_KASAN_OFFSET)
+ #define XKVRANGE_VC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKVRANGE_VC_KASAN_OFFSET)
+ 
+ extern bool kasan_early_stage;
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -55,6 +55,9 @@ void *kasan_mem_to_shadow(const void *ad
+ 		case XKPRANGE_UC_SEG:
+ 			offset = XKPRANGE_UC_SHADOW_OFFSET;
+ 			break;
++		case XKPRANGE_WC_SEG:
++			offset = XKPRANGE_WC_SHADOW_OFFSET;
++			break;
+ 		case XKVRANGE_VC_SEG:
+ 			offset = XKVRANGE_VC_SHADOW_OFFSET;
+ 			break;
+@@ -79,6 +82,8 @@ const void *kasan_shadow_to_mem(const vo
+ 
+ 	if (addr >= XKVRANGE_VC_SHADOW_OFFSET)
+ 		return (void *)(((addr - XKVRANGE_VC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKVRANGE_VC_START);
++	else if (addr >= XKPRANGE_WC_SHADOW_OFFSET)
++		return (void *)(((addr - XKPRANGE_WC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKPRANGE_WC_START);
+ 	else if (addr >= XKPRANGE_UC_SHADOW_OFFSET)
+ 		return (void *)(((addr - XKPRANGE_UC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKPRANGE_UC_START);
+ 	else if (addr >= XKPRANGE_CC_SHADOW_OFFSET)
 
 
 
