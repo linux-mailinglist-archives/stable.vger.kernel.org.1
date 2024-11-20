@@ -1,53 +1,79 @@
-Return-Path: <stable+bounces-94093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B569D335C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 07:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C349D3387
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 07:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A7283E97
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 06:03:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8691E281AEF
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 06:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774F71531F0;
-	Wed, 20 Nov 2024 06:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193D11581F2;
+	Wed, 20 Nov 2024 06:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZVk6w30w"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0DA27447
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 06:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDD6156C62
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 06:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732082619; cv=none; b=OU4KwEVOpE4V2ZIs7jQ7qslV688W9Wjbka0P5Qj7F/SsQzx50Y/P7MBDz2u4JlCUO+VVOzL4Q6l1PfoahyWypS+MBXehtF+V7Khx4x5zXWhjbQIiHA1vtJHlVcVf3PoQmYEnxP809dNpameJ3shtJpO3jsRGQ4x1z5tYxDmTdR4=
+	t=1732083927; cv=none; b=uiXL7TDIv2x1/RrRpCvak9lC/SG+3n5Dn5QIm38hp4QDf5jF+HVvtnN9LGJp/eySm8xZroQVHlBSx3T5DMLfICe9eT0uB6uPGzd2tt8xqrRnpF5GX8OaJI2o4qt5Mk2hEpFx0YuOhX1lMttwNGDyXDUPiPiTOUoozA8Ir7+90j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732082619; c=relaxed/simple;
-	bh=xe2UuTOo1ONej21wZd5ahb+d5O1UCMDckf5BP34lT9U=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UykrKWWJ3hd/iXWL/0qaIuCG4FqlGj7FagKVKUfAIZMqy6UNakB6JFSJsRSpeZq5GG7nzxNxdpcxEdWJtKOtLb6knbR2XxsAYhk13Ze/qqAIoyZDJcMp7m/2op/NJAFmH0o45Tc8Xzd/uJ8ToMIlPHXU23TAIUvzixu9mV0e4jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AK5o3w7031115;
-	Wed, 20 Nov 2024 06:03:34 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xgm0kyjt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 20 Nov 2024 06:03:33 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 19 Nov 2024 22:03:32 -0800
-Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 19 Nov 2024 22:03:31 -0800
-From: Bin Lan <bin.lan.cn@windriver.com>
-To: <eli.billauer@gmail.com>, <stable@vger.kernel.org>
-Subject: [PATCH 6.1] char: xillybus: Prevent use-after-free due to race condition
-Date: Wed, 20 Nov 2024 14:03:52 +0800
-Message-ID: <20241120060352.3115727-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1732083927; c=relaxed/simple;
+	bh=R017cpge8ees2gqYK6x3gZ7yFo6Pw6vwX/ZyOP/0MNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oRxBrdOB8JPLW+7mhebggsoxBJVSJa/crkzgevHn95ECp9hkdc3bV5LIZLBtCYS0eust0XoRGV5DTdt++3pdNSSCri0IJqEdWfeDYkCNWhsYCoEkoMHeROvg10cXpR4Ty+6ZxMFSZDa5e9WYhhdrVax4mDIu5pfqGbrOeVKKgXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZVk6w30w; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7fb632bfc0eso2767244a12.0
+        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 22:25:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1732083925; x=1732688725; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QTmi6jByBjzNktXwXkJRmpSHct0ei4O8K+9JqDiETss=;
+        b=ZVk6w30warozuAQ2/pcqEIk89tr70uN+ln/CTbVyNnJXIfkaN57k0AYZLdLp0g2KOM
+         36jjY98wdCSkbP9fkoiOCy6xV4oeFVjH3jB01jBa+q/ZUERW+aw10sBujP0AzTCN4vbZ
+         OC9HdfvTOvhhOmCfJbey3hn/0o/ZPzXZS09mY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732083925; x=1732688725;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QTmi6jByBjzNktXwXkJRmpSHct0ei4O8K+9JqDiETss=;
+        b=wObwdKo3nPJY5UqExMED3DGTTIv0/5JDptkrmtjvpnYvcdAyaRIB1TAW/lIhtcbu/7
+         tc5SybFwOcWuEcU3Cs9orWh5pRPXZHfl+iwR8XqRHiFxHXc3lwzkSJqXvZ9PymYUzVgf
+         AjUFSQrLZJNgbxOwf9D3YMTXwBKVFw1DsncUvEL89hDXlD0rTrTC8f6xVmQYE8Uk2MTf
+         IcfhQ8hpoeYXYdujNi2mStIK/Hj26UXKk40arYfJUQIP/bRABjvmYH1yjpV9tjWWKlmh
+         cRprZW3VKOZjZbn8UujXsPLBe8TXPFtVQbMeuWBaYpqE4D+kVVxqIR1xEWvg/sexbMwb
+         eyRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsMc9ACw9hs0pvjJiYp4piMlLfw7LCxox4OnsYuV3K1VzOh1GHqK3F8q7me8OYbqObhZb7AbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuRKi2kTv4s89/zEK//FFr+qfZo/aBDYsnvMt7nXRLswhFZLSk
+	mVpZjnkr9m+d15ZbOB40L2lw23O8tE9jwsO1hsqLBlIZFg4dFEUda0MD/8sDkA==
+X-Google-Smtp-Source: AGHT+IGiwmdc/aUVbve0b+8Rm2RprkONKeB9ZnpHILarTBjNfALPsI6VOgfIsP96w9G1VB+vrxirUQ==
+X-Received: by 2002:a05:6a20:244a:b0:1d9:c615:944e with SMTP id adf61e73a8af0-1ddadff9cdcmr2873506637.4.1732083925669;
+        Tue, 19 Nov 2024 22:25:25 -0800 (PST)
+Received: from localhost ([100.107.238.250])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2ead03c939csm488386a91.52.2024.11.19.22.25.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Nov 2024 22:25:25 -0800 (PST)
+From: Gwendal Grignou <gwendal@chromium.org>
+To: alim.akhtar@samsung.com,
+	avri.altman@wdc.com,
+	quic_cang@quicinc.com,
+	daejun7.park@samsung.com
+Cc: linux-scsi@vger.kernel.org,
+	Gwendal Grignou <gwendal@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: ufs: core: sysfs: Prevent div by zero
+Date: Tue, 19 Nov 2024 22:25:22 -0800
+Message-ID: <20241120062522.917157-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,137 +81,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: OOyqbs0-R4m7OLu4zrrYX47TmBm4zQSJ
-X-Proofpoint-GUID: OOyqbs0-R4m7OLu4zrrYX47TmBm4zQSJ
-X-Authority-Analysis: v=2.4 cv=E4efprdl c=1 sm=1 tr=0 ts=673d7bb5 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=xcIDifnWtur65-UD1b8A:9
- a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-20_02,2024-11-20_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411200043
 
-From: Eli Billauer <eli.billauer@gmail.com>
+Prevent a division by 0 when monitoring is not enabled.
 
-[ Upstream commit 282a4b71816b6076029017a7bab3a9dcee12a920 ]
+Fixes: 1d8613a23f3c ("scsi: ufs: core: Introduce HBA performance monitor sysfs nodes")
 
-The driver for XillyUSB devices maintains a kref reference count on each
-xillyusb_dev structure, which represents a physical device. This reference
-count reaches zero when the device has been disconnected and there are no
-open file descriptors that are related to the device. When this occurs,
-kref_put() calls cleanup_dev(), which clears up the device's data,
-including the structure itself.
-
-However, when xillyusb_open() is called, this reference count becomes
-tricky: This function needs to obtain the xillyusb_dev structure that
-relates to the inode's major and minor (as there can be several such).
-xillybus_find_inode() (which is defined in xillybus_class.c) is called
-for this purpose. xillybus_find_inode() holds a mutex that is global in
-xillybus_class.c to protect the list of devices, and releases this
-mutex before returning. As a result, nothing protects the xillyusb_dev's
-reference counter from being decremented to zero before xillyusb_open()
-increments it on its own behalf. Hence the structure can be freed
-due to a rare race condition.
-
-To solve this, a mutex is added. It is locked by xillyusb_open() before
-the call to xillybus_find_inode() and is released only after the kref
-counter has been incremented on behalf of the newly opened inode. This
-protects the kref reference counters of all xillyusb_dev structs from
-being decremented by xillyusb_disconnect() during this time segment, as
-the call to kref_put() in this function is done with the same lock held.
-
-There is no need to hold the lock on other calls to kref_put(), because
-if xillybus_find_inode() finds a struct, xillyusb_disconnect() has not
-made the call to remove it, and hence not made its call to kref_put(),
-which takes place afterwards. Hence preventing xillyusb_disconnect's
-call to kref_put() is enough to ensure that the reference doesn't reach
-zero before it's incremented by xillyusb_open().
-
-It would have been more natural to increment the reference count in
-xillybus_find_inode() of course, however this function is also called by
-Xillybus' driver for PCIe / OF, which registers a completely different
-structure. Therefore, xillybus_find_inode() treats these structures as
-void pointers, and accordingly can't make any changes.
-
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
-Link: https://lore.kernel.org/r/20221030094209.65916-1-eli.billauer@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/char/xillybus/xillyusb.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ drivers/ufs/core/ufs-sysfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/char/xillybus/xillyusb.c b/drivers/char/xillybus/xillyusb.c
-index 3a2a0fb3d928..45771b1a3716 100644
---- a/drivers/char/xillybus/xillyusb.c
-+++ b/drivers/char/xillybus/xillyusb.c
-@@ -185,6 +185,14 @@ struct xillyusb_dev {
- 	struct mutex process_in_mutex; /* synchronize wakeup_all() */
- };
+diff --git a/drivers/ufs/core/ufs-sysfs.c b/drivers/ufs/core/ufs-sysfs.c
+index c95906443d5f9..3692b39b35e78 100644
+--- a/drivers/ufs/core/ufs-sysfs.c
++++ b/drivers/ufs/core/ufs-sysfs.c
+@@ -485,6 +485,9 @@ static ssize_t read_req_latency_avg_show(struct device *dev,
+ 	struct ufs_hba *hba = dev_get_drvdata(dev);
+ 	struct ufs_hba_monitor *m = &hba->monitor;
  
-+/*
-+ * kref_mutex is used in xillyusb_open() to prevent the xillyusb_dev
-+ * struct from being freed during the gap between being found by
-+ * xillybus_find_inode() and having its reference count incremented.
-+ */
++	if (!m->nr_req[READ])
++		return sysfs_emit(buf, "0\n");
 +
-+static DEFINE_MUTEX(kref_mutex);
-+
- /* FPGA to host opcodes */
- enum {
- 	OPCODE_DATA = 0,
-@@ -1234,9 +1242,16 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
- 	int rc;
- 	int index;
- 
-+	mutex_lock(&kref_mutex);
-+
- 	rc = xillybus_find_inode(inode, (void **)&xdev, &index);
--	if (rc)
-+	if (rc) {
-+		mutex_unlock(&kref_mutex);
- 		return rc;
-+	}
-+
-+	kref_get(&xdev->kref);
-+	mutex_unlock(&kref_mutex);
- 
- 	chan = &xdev->channels[index];
- 	filp->private_data = chan;
-@@ -1272,8 +1287,6 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
- 	    ((filp->f_mode & FMODE_WRITE) && chan->open_for_write))
- 		goto unmutex_fail;
- 
--	kref_get(&xdev->kref);
--
- 	if (filp->f_mode & FMODE_READ)
- 		chan->open_for_read = 1;
- 
-@@ -1410,6 +1423,7 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
- 	return rc;
- 
- unmutex_fail:
-+	kref_put(&xdev->kref, cleanup_dev);
- 	mutex_unlock(&chan->lock);
- 	return rc;
+ 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[READ]),
+ 						 m->nr_req[READ]));
  }
-@@ -2244,7 +2258,9 @@ static void xillyusb_disconnect(struct usb_interface *interface)
+@@ -552,6 +555,9 @@ static ssize_t write_req_latency_avg_show(struct device *dev,
+ 	struct ufs_hba *hba = dev_get_drvdata(dev);
+ 	struct ufs_hba_monitor *m = &hba->monitor;
  
- 	xdev->dev = NULL;
- 
-+	mutex_lock(&kref_mutex);
- 	kref_put(&xdev->kref, cleanup_dev);
-+	mutex_unlock(&kref_mutex);
++	if (!m->nr_req[WRITE])
++		return sysfs_emit(buf, "0\n");
++
+ 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[WRITE]),
+ 						 m->nr_req[WRITE]));
  }
- 
- static struct usb_driver xillyusb_driver = {
 -- 
-2.43.0
+2.47.0.338.g60cca15819-goog
 
 
