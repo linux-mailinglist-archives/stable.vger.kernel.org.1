@@ -1,108 +1,93 @@
-Return-Path: <stable+bounces-94431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732879D3F48
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 16:44:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC389D3FCB
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 17:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9FE2B25A61
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:11:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D36CAB386D3
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3DA1C7269;
-	Wed, 20 Nov 2024 14:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z49uxsyk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6931BDA84;
+	Wed, 20 Nov 2024 15:04:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D331B9B50;
-	Wed, 20 Nov 2024 14:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D57E1BDA8A;
+	Wed, 20 Nov 2024 15:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732114742; cv=none; b=talgwYOC4KoKuUEV3iabw02861f39MLQ98JEDllWLaxidXE6RGK10Mrh0SUhbuOKfg/vMR+VdlxBl9DRLWVnHqSxSnjDfPCx3nB4CbigWOLKJHTu10syCI/i+DznUTy5YTGLEArZTpNimsFFWAJXB5C+Pc+W78gSTZ+K0TcHOz0=
+	t=1732115043; cv=none; b=Q8CL5z17oo8I636pgX2t7x9MnXrkg1pXb10XRiCXWyO3y+dXKazkLX868q3ddd+Y4XDuZL23yp04eLXiuONy6iYq47U2siu953y9dF6kNsuNZfisnBMspoajcV1eKZ9fwF2i5nEx4lffuc7QKOB3XiXZTgUMZ1bUTNLmOznmjVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732114742; c=relaxed/simple;
-	bh=RPTB3KechpAl4PhGA4iJyVy8SRU9IhGNpYs5OQEcPNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RnhEh0VsRuL408c9Pp/xt4u7UdJUGGcPMxaOVjFN3fjlH/VkGZWftRptwBGCG7aJygPB5ZaiUygs06xcIU8S2SLML+an4cOe6WNS/ZNo0tw/KdHmQPXyKr2y6xptXhWxopmSoFePyDBtO4HrKHyudvz9d6kdnUh97yM9f6REBlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z49uxsyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF356C4CECD;
-	Wed, 20 Nov 2024 14:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732114741;
-	bh=RPTB3KechpAl4PhGA4iJyVy8SRU9IhGNpYs5OQEcPNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z49uxsykhLQB7sEOgYKjGs1sZMYD0MFU6xVt+IolhVmMwMfQs6EZN2UR5TEmfSkQd
-	 RCO3ys2Ac4e11LboYxI+t79HACWj561UjP9kym0bObm4b7Ujpcpq+wNZDHIC6umrk0
-	 vIYTu3NbVSZuKqjEWaufHTAlG0PXUuBBziOBOpK4=
-Date: Wed, 20 Nov 2024 15:58:36 +0100
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Cc: "sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
-	"shivani.agarwal@broadcom.com" <shivani.agarwal@broadcom.com>
-Subject: Re: 5.10.225 stable kernel cgroup_mutex not held assertion failure
-Message-ID: <2024112022-staleness-caregiver-0707@gregkh>
-References: <20240920092803.101047-1-shivani.agarwal@broadcom.com>
- <4f827551507ed31b0a876c6a14cdca3209c432ae.camel@oracle.com>
- <2024110612-lapping-rebate-ed25@gregkh>
- <6455422802d8334173251dbb96527328e08183cf.camel@oracle.com>
- <c10d6cc49868dd3c471c53fc3c4aba61c33edead.camel@oracle.com>
+	s=arc-20240116; t=1732115043; c=relaxed/simple;
+	bh=r4SAF2cOTdm2jyFOyWzCgGU+1QEheHgmCpKyv0+ymno=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z0WBetfsj+qG+h5fUesOXrlNqpux0cF83PAEz8Ox6ylyqhIobjJmSOFPxCtSDsN9ttyyAhEfJiKRD77XxsLRhQZ9cnGiJJmXpHwfp3hf/WCtL/X01YCm630mWU3aBkcRBPPYKHuor3QHJdB3UNKpP8MWJi1yb4ff/2GvuyiJN0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+X-CSE-ConnectionGUID: C/0++ZR+QH2Ah413ePAsOw==
+X-CSE-MsgGUID: YEsMYqFkQK6G2IUnl9lYNA==
+X-IronPort-AV: E=Sophos;i="6.12,170,1728918000"; 
+   d="scan'208";a="229423401"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 21 Nov 2024 00:03:52 +0900
+Received: from lenovo-p330.. (unknown [132.158.152.97])
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 7A97D4005B44;
+	Thu, 21 Nov 2024 00:03:39 +0900 (JST)
+From: Chris Brandt <chris.brandt@renesas.com>
+To: Biju Das <biju.das.jz@bp.renesas.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	Chris Brandt <chris.brandt@renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm: renesas: rz-du: Increase supported resolutions
+Date: Wed, 20 Nov 2024 10:03:28 -0500
+Message-Id: <20241120150328.4131525-1-chris.brandt@renesas.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c10d6cc49868dd3c471c53fc3c4aba61c33edead.camel@oracle.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 20, 2024 at 02:46:32PM +0000, Siddh Raman Pant wrote:
-> On Wed, Nov 06 2024 at 11:54:32 +0530, Siddh Raman Pant wrote:
-> > On Wed, Nov 06 2024 at 11:40:39 +0530, gregkh@linuxfoundation.org
-> > wrote:
-> > > On Wed, Oct 30, 2024 at 07:29:38AM +0000, Siddh Raman Pant wrote:
-> > > > Hello maintainers,
-> > > > 
-> > > > On Fri, 20 Sep 2024 02:28:03 -0700, Shivani Agarwal wrote:
-> > > > > Thanks Fedor.
-> > > > > 
-> > > > > Upstream commit 1be59c97c83c is merged in 5.4 with commit 10aeaa47e4aa and
-> > > > > in 4.19 with commit 27d6dbdc6485. The issue is reproducible in 5.4 and 4.19
-> > > > > also.
-> > > > > 
-> > > > > I am sending the backport patch of d23b5c577715 and a7fb0423c201 for 5.4 and
-> > > > > 4.19 in the next email.
-> > > > 
-> > > > Please backport these changes to stable.
-> > > > 
-> > > > "cgroup/cpuset: Prevent UAF in proc_cpuset_show()" has already been
-> > > > backported and bears CVE-2024-43853. As reported, we may already have
-> > > > introduced another problem due to the missing backport.
-> > > 
-> > > What exact commits are needed here?  Please submit backported and tested
-> > > commits and we will be glad to queue them up.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > Please see the following thread where Shivani posted the patches:
-> > 
-> > https://lore.kernel.org/all/20240920092803.101047-1-shivani.agarwal@broadcom.com/
-> > 
-> > Thanks,
-> > Siddh
-> 
-> Ping...
+The supported resolutions were misrepresented in earlier versions of
+hardware manuals.
 
-I don't understand what you want here, sorry.
+Fixes: 768e9e61b3b9 ("drm: renesas: Add RZ/G2L DU Support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
+---
+ drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-greg k-h
+diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c
+index b99217b4e05d..90c6269ccd29 100644
+--- a/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c
++++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c
+@@ -311,11 +311,11 @@ int rzg2l_du_modeset_init(struct rzg2l_du_device *rcdu)
+ 	dev->mode_config.helper_private = &rzg2l_du_mode_config_helper;
+ 
+ 	/*
+-	 * The RZ DU uses the VSP1 for memory access, and is limited
+-	 * to frame sizes of 1920x1080.
++	 * The RZ DU was designed to support a frame size of 1920x1200 (landscape)
++	 * or 1200x1920 (portrait).
+ 	 */
+ 	dev->mode_config.max_width = 1920;
+-	dev->mode_config.max_height = 1080;
++	dev->mode_config.max_height = 1920;
+ 
+ 	rcdu->num_crtcs = hweight8(rcdu->info->channels_mask);
+ 
+-- 
+2.34.1
+
 
