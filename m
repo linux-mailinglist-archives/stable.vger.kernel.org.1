@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-94183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F079D3B75
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C139D3BB9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47044B22281
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748E31F219F4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DE91AA7AE;
-	Wed, 20 Nov 2024 12:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70F1AA78C;
+	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8aSxVsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNxgdNY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F515853A;
-	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D01AA783;
+	Wed, 20 Nov 2024 12:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107537; cv=none; b=GKUqxCpAtZyE3IMrOltZGp5EMVjvKHU2e+Dh8G3zFH4znW8nM7JzewXKUVEKdXd0gfNYMSxuGo5pW0dotqSZww/OQxZJYOTOeLdQCMjLuhXM0PYYNsnPLIPDDcrq2VJFbqyMBBwZtLNtfXYGOJLOjHCl1uY27ZeRWyx2kHFCmn8=
+	t=1732107593; cv=none; b=DHDhCt6U0VgD3WTKVSSmCPrQ2qGbaKbYFm8phirKpKnJBWd4U1h24NCIoS4DGu2wbKQsGVEEkz+nhA6Xn2csh3BEVI0M/urptc3ob519rBS2HSsdQilXMTCkgUFx4SHGtCpGGjRBZ8o16P7OaMVDA8LzP+FgcG8HfV6XAOYAxpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107537; c=relaxed/simple;
-	bh=RD1uMX6XRiJfjlpLVkjo/DPJ8rebGUL4rrDEN1Hbzg8=;
+	s=arc-20240116; t=1732107593; c=relaxed/simple;
+	bh=VLrOYnrP5gtP+BgcZ+F42GtQE1KJG+/Y23lPDCFwTEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFgfV6lH5tSPeUlDivEr/6nNgyO2WA9UTF1KSVZj58W+X2ZDYAm0tWC77APHxbGImmz+ljS+7FgpkvavF1GhlVKsF0s8OvxnjuEWGOrUIB8tV8kbQhhtN4KntFiXiRzN/rB3Wh5Qxpf/cTajqT6yD8QVZacEG9AUGW0SgN1xQVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8aSxVsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A692EC4CECD;
-	Wed, 20 Nov 2024 12:58:57 +0000 (UTC)
+	 MIME-Version; b=q5c8Nvuq5DUS1V+ERYTqoQN4WYccRjXcTZJRtQzeP72xDxR8y1KtRjIXAsxpsRYSgyDlbxw1/MiGci0LNC9n/CFpdEgk8XEbVPdazRg1IE7ykrGumXPhQYFwbgswk4gc4PGt6JglqayxJuIwdQpa2KIRD/Y+DrVauvcNO7qxy4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNxgdNY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FF5C4CECD;
+	Wed, 20 Nov 2024 12:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107537;
-	bh=RD1uMX6XRiJfjlpLVkjo/DPJ8rebGUL4rrDEN1Hbzg8=;
+	s=korg; t=1732107593;
+	bh=VLrOYnrP5gtP+BgcZ+F42GtQE1KJG+/Y23lPDCFwTEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8aSxVsL5m631v+zJcnpXIn6jwnIJ+N/6IoK+lFIv5hG5G2thjCl2Y+Rh9UPCY2Fv
-	 JW7SD4vGIsGuAPUTbTNl9UvxkBiERAgOCbaJbDYDRMm3IaomOvfL3s4+yDpIpwLwNM
-	 e5v7IahuTdUDUMUFDdywt4vcJP+CFkhZ2LhEqTVY=
+	b=UNxgdNY8S+EFlfNW4Mer0aITp3vDWhBbUA1RU8iMekNA4ms8Rm+cYoILeEDz9kGJj
+	 mqmgjwnBlARw2E5wnyXrwDMQbthpJ/VAi78Srg/2zK1mC01Fr/rWJTbpd1t9f21BXR
+	 0IzcM7WKdhYK3p8C3fDpIGIZ3jOm/CdRnf/fTgCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 071/107] LoongArch: Disable KASAN if PGDIR_SIZE is too large for cpu_vabits
-Date: Wed, 20 Nov 2024 13:56:46 +0100
-Message-ID: <20241120125631.282723620@linuxfoundation.org>
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Yong He <zhuangel570@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 37/82] KVM: x86: Unconditionally set irr_pending when updating APICv state
+Date: Wed, 20 Nov 2024 13:56:47 +0100
+Message-ID: <20241120125630.448025207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 227ca9f6f6aeb8aa8f0c10430b955f1fe2aeab91 upstream.
+commit d3ddef46f22e8c3124e0df1f325bc6a18dadff39 upstream.
 
-If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
-overflow UINTPTR_MAX because KASAN_SHADOW_START/KASAN_SHADOW_END are
-aligned up by PGDIR_SIZE. And then the overflowed KASAN_SHADOW_END looks
-like a user space address.
+Always set irr_pending (to true) when updating APICv status to fix a bug
+where KVM fails to set irr_pending when userspace sets APIC state and
+APICv is disabled, which ultimate results in KVM failing to inject the
+pending interrupt(s) that userspace stuffed into the vIRR, until another
+interrupt happens to be emulated by KVM.
 
-For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too large
-for Loongson-2K series whose cpu_vabits = 39.
+Only the APICv-disabled case is flawed, as KVM forces apic->irr_pending to
+be true if APICv is enabled, because not all vIRR updates will be visible
+to KVM.
 
-Since CONFIG_4KB_4LEVEL is completely legal for CPUs with cpu_vabits <=
-39, we just disable KASAN via early return in kasan_init(). Otherwise we
-get a boot failure.
+Hit the bug with a big hammer, even though strictly speaking KVM can scan
+the vIRR and set/clear irr_pending as appropriate for this specific case.
+The bug was introduced by commit 755c2bf87860 ("KVM: x86: lapic: don't
+touch irr_pending in kvm_apic_update_apicv when inhibiting it"), which as
+the shortlog suggests, deleted code that updated irr_pending.
 
-Moreover, we change KASAN_SHADOW_END from the first address after KASAN
-shadow area to the last address in KASAN shadow area, in order to avoid
-the end address exactly overflow to 0 (which is a legal case). We don't
-need to worry about alignment because pgd_addr_end() can handle it.
+Before that commit, kvm_apic_update_apicv() did indeed scan the vIRR, with
+with the crucial difference that kvm_apic_update_apicv() did the scan even
+when APICv was being *disabled*, e.g. due to an AVIC inhibition.
 
+        struct kvm_lapic *apic = vcpu->arch.apic;
+
+        if (vcpu->arch.apicv_active) {
+                /* irr_pending is always true when apicv is activated. */
+                apic->irr_pending = true;
+                apic->isr_count = 1;
+        } else {
+                apic->irr_pending = (apic_search_irr(apic) != -1);
+                apic->isr_count = count_vectors(apic->regs + APIC_ISR);
+        }
+
+And _that_ bug (clearing irr_pending) was introduced by commit b26a695a1d78
+("kvm: lapic: Introduce APICv update helper function"), prior to which KVM
+unconditionally set irr_pending to true in kvm_apic_set_state(), i.e.
+assumed that the new virtual APIC state could have a pending IRQ.
+
+Furthermore, in addition to introducing this issue, commit 755c2bf87860
+also papered over the underlying bug: KVM doesn't ensure CPUs and devices
+see APICv as disabled prior to searching the IRR.  Waiting until KVM
+emulates an EOI to update irr_pending "works", but only because KVM won't
+emulate EOI until after refresh_apicv_exec_ctrl(), and there are plenty of
+memory barriers in between.  I.e. leaving irr_pending set is basically
+hacking around bad ordering.
+
+So, effectively revert to the pre-b26a695a1d78 behavior for state restore,
+even though it's sub-optimal if no IRQs are pending, in order to provide a
+minimal fix, but leave behind a FIXME to document the ugliness.  With luck,
+the ordering issue will be fixed and the mess will be cleaned up in the
+not-too-distant future.
+
+Fixes: 755c2bf87860 ("KVM: x86: lapic: don't touch irr_pending in kvm_apic_update_apicv when inhibiting it")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Reported-by: Yong He <zhuangel570@gmail.com>
+Closes: https://lkml.kernel.org/r/20241023124527.1092810-1-alexyonghe%40tencent.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20241106015135.2462147-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/kasan.h |    2 +-
- arch/loongarch/mm/kasan_init.c     |   15 +++++++++++++--
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ arch/x86/kvm/lapic.c |   29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
---- a/arch/loongarch/include/asm/kasan.h
-+++ b/arch/loongarch/include/asm/kasan.h
-@@ -51,7 +51,7 @@
- /* KAsan shadow memory start right after vmalloc. */
- #define KASAN_SHADOW_START		round_up(KFENCE_AREA_END, PGDIR_SIZE)
- #define KASAN_SHADOW_SIZE		(XKVRANGE_VC_SHADOW_END - XKPRANGE_CC_KASAN_OFFSET)
--#define KASAN_SHADOW_END		round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE)
-+#define KASAN_SHADOW_END		(round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE) - 1)
- 
- #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
- #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -218,7 +218,7 @@ static void __init kasan_map_populate(un
- asmlinkage void __init kasan_early_init(void)
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2603,19 +2603,26 @@ void kvm_apic_update_apicv(struct kvm_vc
  {
- 	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_START, PGDIR_SIZE));
--	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, PGDIR_SIZE));
-+	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END + 1, PGDIR_SIZE));
- }
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
  
- static inline void kasan_set_pgd(pgd_t *pgdp, pgd_t pgdval)
-@@ -233,7 +233,7 @@ static void __init clear_pgds(unsigned l
- 	 * swapper_pg_dir. pgd_clear() can't be used
- 	 * here because it's nop on 2,3-level pagetable setups
- 	 */
--	for (; start < end; start += PGDIR_SIZE)
-+	for (; start < end; start = pgd_addr_end(start, end))
- 		kasan_set_pgd((pgd_t *)pgd_offset_k(start), __pgd(0));
- }
- 
-@@ -243,6 +243,17 @@ void __init kasan_init(void)
- 	phys_addr_t pa_start, pa_end;
- 
- 	/*
-+	 * If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
-+	 * overflow UINTPTR_MAX and then looks like a user space address.
-+	 * For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too
-+	 * large for Loongson-2K series whose cpu_vabits = 39.
-+	 */
-+	if (KASAN_SHADOW_END < vm_map_base) {
-+		pr_warn("PGDIR_SIZE too large for cpu_vabits, KernelAddressSanitizer disabled.\n");
-+		return;
-+	}
-+
+-	if (apic->apicv_active) {
+-		/* irr_pending is always true when apicv is activated. */
+-		apic->irr_pending = true;
 +	/*
- 	 * PGD was populated as invalid_pmd_table or invalid_pud_table
- 	 * in pagetable_init() which depends on how many levels of page
- 	 * table you are using, but we had to clean the gpd of kasan
++	 * When APICv is enabled, KVM must always search the IRR for a pending
++	 * IRQ, as other vCPUs and devices can set IRR bits even if the vCPU
++	 * isn't running.  If APICv is disabled, KVM _should_ search the IRR
++	 * for a pending IRQ.  But KVM currently doesn't ensure *all* hardware,
++	 * e.g. CPUs and IOMMUs, has seen the change in state, i.e. searching
++	 * the IRR at this time could race with IRQ delivery from hardware that
++	 * still sees APICv as being enabled.
++	 *
++	 * FIXME: Ensure other vCPUs and devices observe the change in APICv
++	 *        state prior to updating KVM's metadata caches, so that KVM
++	 *        can safely search the IRR and set irr_pending accordingly.
++	 */
++	apic->irr_pending = true;
++
++	if (apic->apicv_active)
+ 		apic->isr_count = 1;
+-	} else {
+-		/*
+-		 * Don't clear irr_pending, searching the IRR can race with
+-		 * updates from the CPU as APICv is still active from hardware's
+-		 * perspective.  The flag will be cleared as appropriate when
+-		 * KVM injects the interrupt.
+-		 */
++	else
+ 		apic->isr_count = count_vectors(apic->regs + APIC_ISR);
+-	}
++
+ 	apic->highest_isr_cache = -1;
+ }
+ 
 
 
 
