@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-94400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C1A9D3D16
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFBE9D3D19
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E99FB28EF6
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC44CB290C1
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A231C3F0B;
-	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985D51C4A3C;
+	Wed, 20 Nov 2024 14:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrfXi9vn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZETreamO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A331C32FF;
-	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5186E1C4A18;
+	Wed, 20 Nov 2024 14:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111594; cv=none; b=JYQPJ4yTFf9vKpcn6tM8ITl2sPmcj9QW6ZyUlcS6a3/E5jhRcU+WISWsdthL1//8QwMoUkBpm311UQZapHFVklkuAW0BHP4rmnqeLgJrRsKGPKmxhNAOgVXsPmGDlJey7kMr/ARGNngrcoWq58S3VkzDUEsUNYUOpkog7zatXXc=
+	t=1732111596; cv=none; b=RvVhR5FfwriqLQYgQfE9ouc3IxuqZCGYiVgKsG04WHHl7GeoOk84nyxoVc6dHvBM7nU2vZQ82k0ehePefgKG7771lgzLX/s/WM/AlceukWgjXFw4PW6HN0CW0eLek+9C7WsaOyGf8r+UiwCE3ug8XTkywsNlQYcY4sT1g+9a87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111594; c=relaxed/simple;
-	bh=snK4haJGbbF0ladFXJRDOWEkiDsVD/apKtbr/fWv7JU=;
+	s=arc-20240116; t=1732111596; c=relaxed/simple;
+	bh=Ht1v6VZM0OpLQY36dqQ+vUEe14WDKDbfPqGqSliSrWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpH3oXAfSJInipfPTN22Gj0ayiCxPJujmR3nzGz8rvU4wHGQ2fvhbCLGuqbEQmucD9kN88i+2Lt05vCoLSZRIxqxdA8M3fjdzMQThK9+HSuLuXbj3/aYuVbBu9MzYC7vDpUqIuvSjUxBnjwH4z6Z6xyijBUCnIhm1Beif11h0Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrfXi9vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D97C4CECD;
-	Wed, 20 Nov 2024 14:06:32 +0000 (UTC)
+	 MIME-Version; b=Cc67jO/7mnIiajxbgGAArjA86+Bj+emCpcR6OTahHbnHZFEClRKSn18fWnZrI36q9U9tYE8PQ5pbFXJsBaWoVXbloe0wpmtUyV5ypN3VfgzFddSmeQoa0uxtymTutrFftHi2se402QyKunak/tq5YHSuIWqO8cgPzkCCjMt7RwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZETreamO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDABC4CECD;
+	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111594;
-	bh=snK4haJGbbF0ladFXJRDOWEkiDsVD/apKtbr/fWv7JU=;
+	s=k20201202; t=1732111596;
+	bh=Ht1v6VZM0OpLQY36dqQ+vUEe14WDKDbfPqGqSliSrWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrfXi9vnePm6UyBYnED+lnoz9J0bquH4uedjObYscR6tSFvYpFJ494Tj40d4V8DNL
-	 1XxtJ5x1pRq+awrBpIgnSwwQ7X9pIgiqnJjd1b6lqng3Jbk7RGCCx6afZnXODe2ebp
-	 xqbKH/mT+JNqW2RaxI8OJPhY/a3A8rVCmDPZ85+mtzRuNAAWYP4yzC3Xpbu5NoVa6L
-	 ZhKVCScHpMZcJQg8g01D6kmNIjBsILWaQ2b1njPujXzpZSY2Sbrvn06qQoqd+IsbyV
-	 pLiEY6TNOApyjNdy7eR1yLyBsYGa51crbhzMKwa2X7nQTYbttcg+Fvrm0XJysHOBAX
-	 rP5JWbD24H16A==
+	b=ZETreamOPU5JW9TUlu9C8gAJe4JyBO3o2atAOwBVqTN3Q5zDMcJr8WOq72+FnqOpA
+	 affbsH5ik7Kk69i5PvsSs7QlSlhYTRdqe5zIgoA1HcUSVY+gn4wK5CZ7+fA0KQkkk2
+	 9BDnA8/AQNa0KWQ2ZUA0zJop33NBZLthvdlk5bqf9RrZTds8v08IYkg/8NNf2WitNk
+	 rUeTlTVx/qN2w70T7tKP0Cnbwvxivl6YD40q0mPn2HnbBxG3wQ7Ebv4XMV9VdAzzCX
+	 i5MvFaawwspaQPiRCMgOgWRpe99B08cY/rQejWgH9V39k0rxtWuRMbxxtNJnWiHVRu
+	 5PvdfQGvxaFtw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+Cc: Breno Leitao <leitao@debian.org>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 09/10] drm/xe: Restore system memory GGTT mappings
-Date: Wed, 20 Nov 2024 09:05:34 -0500
-Message-ID: <20241120140556.1768511-9-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 10/10] ipmr: Fix access to mfc_cache_list without lock held
+Date: Wed, 20 Nov 2024 09:05:35 -0500
+Message-ID: <20241120140556.1768511-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120140556.1768511-1-sashal@kernel.org>
 References: <20241120140556.1768511-1-sashal@kernel.org>
@@ -74,94 +69,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.9
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit dd886a63d6e2ce5c16e662c07547c067ad7d91f5 ]
+[ Upstream commit e28acc9c1ccfcb24c08e020828f69d0a915b06ae ]
 
-GGTT mappings reside on the device and this state is lost during suspend
-/ d3cold thus this state must be restored resume regardless if the BO is
-in system memory or VRAM.
+Accessing `mr_table->mfc_cache_list` is protected by an RCU lock. In the
+following code flow, the RCU read lock is not held, causing the
+following error when `RCU_PROVE` is not held. The same problem might
+show up in the IPv6 code path.
 
-v2:
- - Unnecessary parentheses around bo->placements[0] (Checkpatch)
+	6.12.0-rc5-kbuilder-01145-gbac17284bdcb #33 Tainted: G            E    N
+	-----------------------------
+	net/ipv4/ipmr_base.c:313 RCU-list traversed in non-reader section!!
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241031182257.2949579-1-matthew.brost@intel.com
-(cherry picked from commit a19d1db9a3fa89fabd7c83544b84f393ee9b851f)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+	rcu_scheduler_active = 2, debug_locks = 1
+		   2 locks held by RetransmitAggre/3519:
+		    #0: ffff88816188c6c0 (nlk_cb_mutex-ROUTE){+.+.}-{3:3}, at: __netlink_dump_start+0x8a/0x290
+		    #1: ffffffff83fcf7a8 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_dumpit+0x6b/0x90
+
+	stack backtrace:
+		    lockdep_rcu_suspicious
+		    mr_table_dump
+		    ipmr_rtm_dumproute
+		    rtnl_dump_all
+		    rtnl_dumpit
+		    netlink_dump
+		    __netlink_dump_start
+		    rtnetlink_rcv_msg
+		    netlink_rcv_skb
+		    netlink_unicast
+		    netlink_sendmsg
+
+This is not a problem per see, since the RTNL lock is held here, so, it
+is safe to iterate in the list without the RCU read lock, as suggested
+by Eric.
+
+To alleviate the concern, modify the code to use
+list_for_each_entry_rcu() with the RTNL-held argument.
+
+The annotation will raise an error only if RTNL or RCU read lock are
+missing during iteration, signaling a legitimate problem, otherwise it
+will avoid this false positive.
+
+This will solve the IPv6 case as well, since ip6mr_rtm_dumproute() calls
+this function as well.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241108-ipmr_rcu-v2-1-c718998e209b@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c       | 14 +++++++++++---
- drivers/gpu/drm/xe/xe_bo_evict.c |  1 -
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ net/ipv4/ipmr_base.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index e147ef1d0578f..c096e5c06f726 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -869,8 +869,8 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
- 	if (WARN_ON(!xe_bo_is_pinned(bo)))
- 		return -EINVAL;
+diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
+index 271dc03fc6dbd..f0af12a2f70bc 100644
+--- a/net/ipv4/ipmr_base.c
++++ b/net/ipv4/ipmr_base.c
+@@ -310,7 +310,8 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
+ 	if (filter->filter_set)
+ 		flags |= NLM_F_DUMP_FILTERED;
  
--	if (WARN_ON(!xe_bo_is_vram(bo)))
--		return -EINVAL;
-+	if (!xe_bo_is_vram(bo))
-+		return 0;
- 
- 	ret = ttm_bo_mem_space(&bo->ttm, &placement, &new_mem, &ctx);
- 	if (ret)
-@@ -920,6 +920,7 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
- 		.interruptible = false,
- 	};
- 	struct ttm_resource *new_mem;
-+	struct ttm_place *place = &bo->placements[0];
- 	int ret;
- 
- 	xe_bo_assert_held(bo);
-@@ -933,6 +934,9 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
- 	if (WARN_ON(xe_bo_is_vram(bo) || !bo->ttm.ttm))
- 		return -EINVAL;
- 
-+	if (!mem_type_is_vram(place->mem_type))
-+		return 0;
-+
- 	ret = ttm_bo_mem_space(&bo->ttm, &bo->placement, &new_mem, &ctx);
- 	if (ret)
- 		return ret;
-@@ -1740,7 +1744,10 @@ int xe_bo_pin(struct xe_bo *bo)
- 			place->fpfn = (xe_bo_addr(bo, 0, PAGE_SIZE) -
- 				       vram_region_gpu_offset(bo->ttm.resource)) >> PAGE_SHIFT;
- 			place->lpfn = place->fpfn + (bo->size >> PAGE_SHIFT);
-+		}
- 
-+		if (mem_type_is_vram(place->mem_type) ||
-+		    bo->flags & XE_BO_FLAG_GGTT) {
- 			spin_lock(&xe->pinned.lock);
- 			list_add_tail(&bo->pinned_link, &xe->pinned.kernel_bo_present);
- 			spin_unlock(&xe->pinned.lock);
-@@ -1801,7 +1808,8 @@ void xe_bo_unpin(struct xe_bo *bo)
- 	    bo->flags & XE_BO_FLAG_INTERNAL_TEST)) {
- 		struct ttm_place *place = &(bo->placements[0]);
- 
--		if (mem_type_is_vram(place->mem_type)) {
-+		if (mem_type_is_vram(place->mem_type) ||
-+		    bo->flags & XE_BO_FLAG_GGTT) {
- 			spin_lock(&xe->pinned.lock);
- 			xe_assert(xe, !list_empty(&bo->pinned_link));
- 			list_del_init(&bo->pinned_link);
-diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
-index 541b49007d738..32043e1e5a863 100644
---- a/drivers/gpu/drm/xe/xe_bo_evict.c
-+++ b/drivers/gpu/drm/xe/xe_bo_evict.c
-@@ -159,7 +159,6 @@ int xe_bo_restore_kernel(struct xe_device *xe)
- 		 * should setup the iosys map.
- 		 */
- 		xe_assert(xe, !iosys_map_is_null(&bo->vmap));
--		xe_assert(xe, xe_bo_is_vram(bo));
- 
- 		xe_bo_put(bo);
- 
+-	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list) {
++	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list,
++				lockdep_rtnl_is_held()) {
+ 		if (e < s_e)
+ 			goto next_entry;
+ 		if (filter->dev &&
 -- 
 2.43.0
 
