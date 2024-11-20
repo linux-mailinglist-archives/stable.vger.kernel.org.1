@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-94384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9E09D3C34
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:07:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728F39D3C28
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CFC287B54
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7251F251BD
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925D11CB51A;
-	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244A61CB339;
+	Wed, 20 Nov 2024 13:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFemKhBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELdOsY9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DF51AA782;
-	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C1A1AB6FD;
+	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107715; cv=none; b=gomP0+J/hGGjqou/E3/1etlp3AIXe5/RWN4zfeIeRKi+yVvlgVCnFG/skdxT9adeCRj4HGPmaOUGLc62LStPwi0CT1D0EISEUK+8X7dAyiJ7DciorFGTC7QdqkwcRO7VE7+6IjyWuNBO492NnQiTtm3Xc+MRNv2ZbsinIwqvz3w=
+	t=1732107702; cv=none; b=MTpeJPlOjA0/5jpS5eSCbR7poFOCX4h30wfIWEhu1u+uLskGB8eKcjMVRCUgHjkCTkyeHEA+DHvMhXN+u+Mx6kzsmFB54uGnUED3FMTBwKZtVGAOFkSc1hpoGRiamN55imJm2OF5Xi+tu+zhcgsfnJpEoCT7w0yNJicS9LhFya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107715; c=relaxed/simple;
-	bh=7GEFDIXHD1s3So54glhHE7n+zavhQnQS6aA9+A7ng4U=;
+	s=arc-20240116; t=1732107702; c=relaxed/simple;
+	bh=yVjI7VfFE+U78TzQ1SQmw65dN9Sfgcg+PCL0YoIvck0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHBrGTfM9B1DulOgdIHr97WNBMV94olFP6xQjfKw1Yw2w7WluwraVhxv79bNxsDMlVi+b2fYc28zQgdLtPRqTGXReH6aXnU7fpkGahaULcEa+P0SEK02PlccJhcu+1v9kn12L51vC5ajw/icaQ6rIrrwAWyzmlqUBfwGFKZgAgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFemKhBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F352C4CED1;
-	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
+	 MIME-Version; b=F8l003jcBYzgm5Y9K26YZFWRTz2q/cgiubZJbMLli7wMXMZCoQVsq89MOANpG+eKdX5vna34vcJ4tvuAtpsiiqu6VIjPNnI7yKv/dPP9wAEV+3AI1XaGQZRwZF5pgVqIWHJ3qp8oRy31RHtUwDRqPIXOc/VROhrzPSyY0VlZ2AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELdOsY9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8061C4CED1;
+	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107715;
-	bh=7GEFDIXHD1s3So54glhHE7n+zavhQnQS6aA9+A7ng4U=;
+	s=korg; t=1732107702;
+	bh=yVjI7VfFE+U78TzQ1SQmw65dN9Sfgcg+PCL0YoIvck0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFemKhBI+RAREE/PHlXHX4TiZd2K13e1cobL6VeR3+G5birDD54V4JHatQGnBI7ub
-	 NFz4MYeVLRSb0zxXhdwJRrzKq0C95IhgGeY+fc8f8TuSXTcaDzfTSHFsZ2wihXBNQL
-	 qhed7ogUirSX01e0TjI0PWy87q/6zkzrMlwD8IYc=
+	b=ELdOsY9v5alLxgzCopYGEVjGiT4nHy6X6fAQST17DnWUxTrDzBqXOtDEygkCnjtBQ
+	 Ya6mJCdtprb6V9eUJPbBXg2JVn7q14tSP0aOqJ6OuBR/A8El3diCVOhDauMpZ9adjU
+	 LKej6Yt2bAwmtYYodEona8+VdAT7pv/1bSjoK0jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	ericvh@kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com,
-	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 57/73] fs/9p: fix uninitialized values during inode evict
-Date: Wed, 20 Nov 2024 13:58:43 +0100
-Message-ID: <20241120125810.980718603@linuxfoundation.org>
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.1 58/73] ipvs: properly dereference pe in ip_vs_add_service
+Date: Wed, 20 Nov 2024 13:58:44 +0100
+Message-ID: <20241120125811.003148264@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -66,65 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Van Hensbergen <ericvh@kernel.org>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit 6630036b7c228f57c7893ee0403e92c2db2cd21d ]
+[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
 
-If an iget fails due to not being able to retrieve information
-from the server then the inode structure is only partially
-initialized.  When the inode gets evicted, references to
-uninitialized structures (like fscache cookies) were being
-made.
+Use pe directly to resolve sparse warning:
 
-This patch checks for a bad_inode before doing anything other
-than clearing the inode from the cache.  Since the inode is
-bad, it shouldn't have any state associated with it that needs
-to be written back (and there really isn't a way to complete
-those anyways).
+  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
 
-Reported-by: syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-(cherry picked from commit 1b4cb6e91f19b81217ad98142ee53a1ab25893fd)
-[Xiangyu: CVE-2024-36923 Minor conflict resolution due to missing 4eb31178 ]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ Resolve minor conflicts to fix CVE-2024-42322 ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/vfs_inode.c |   23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ net/netfilter/ipvs/ip_vs_ctl.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -392,17 +392,20 @@ void v9fs_evict_inode(struct inode *inod
- 	struct v9fs_inode *v9inode = V9FS_I(inode);
- 	__le32 version;
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1382,18 +1382,18 @@ ip_vs_add_service(struct netns_ipvs *ipv
+ 		sched = NULL;
+ 	}
  
--	truncate_inode_pages_final(&inode->i_data);
--	version = cpu_to_le32(v9inode->qid.version);
--	fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
-+	if (!is_bad_inode(inode)) {
-+		truncate_inode_pages_final(&inode->i_data);
-+		version = cpu_to_le32(v9inode->qid.version);
-+		fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
- 				      &version);
--	clear_inode(inode);
--	filemap_fdatawrite(&inode->i_data);
+-	/* Bind the ct retriever */
+-	RCU_INIT_POINTER(svc->pe, pe);
+-	pe = NULL;
 -
--	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
--	/* clunk the fid stashed in writeback_fid */
--	p9_fid_put(v9inode->writeback_fid);
--	v9inode->writeback_fid = NULL;
-+		clear_inode(inode);
-+		filemap_fdatawrite(&inode->i_data);
-+		if (v9fs_inode_cookie(v9inode))
-+			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-+		/* clunk the fid stashed in writeback_fid */
-+		p9_fid_put(v9inode->writeback_fid);
-+		v9inode->writeback_fid = NULL;
-+	} else
-+		clear_inode(inode);
- }
+ 	/* Update the virtual service counters */
+ 	if (svc->port == FTPPORT)
+ 		atomic_inc(&ipvs->ftpsvc_counter);
+ 	else if (svc->port == 0)
+ 		atomic_inc(&ipvs->nullsvc_counter);
+-	if (svc->pe && svc->pe->conn_out)
++	if (pe && pe->conn_out)
+ 		atomic_inc(&ipvs->conn_out_counter);
  
- static int v9fs_test_inode(struct inode *inode, void *data)
++	/* Bind the ct retriever */
++	RCU_INIT_POINTER(svc->pe, pe);
++	pe = NULL;
++
+ 	ip_vs_start_estimator(ipvs, &svc->stats);
+ 
+ 	/* Count only IPv4 services for old get/setsockopt interface */
 
 
 
