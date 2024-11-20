@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0789D3C3D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144539D3C63
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9ED1F25ADE
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:08:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85706B2CCC6
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173E21A9B42;
-	Wed, 20 Nov 2024 13:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3196A1A4F12;
+	Wed, 20 Nov 2024 13:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="najRmnP8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfDRXgBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AAA1A0BD6
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 13:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50F71A0BD6
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 13:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107889; cv=none; b=YWcX1lSms0Rmx1eQtCM/tIz2zRM0MolpKuRg9ktJC3ukRhJ27/k1R5uiBTGKdtulIbBLzE/henwEzLQlxjPMATgC9QgachkX0Yxup1Mwq7oH7IQiewcuEDbqbIf03rM67/kvFrj0F+2S8vl6lhhaCK8J14k8Vst2g9ERntWhmZ8=
+	t=1732107892; cv=none; b=STv2c1u7BrvaSQjGL4UsPFkE1pj2mczwvukr6QSsJrk0m8sO5xHNumAeblwqzYfY1a0reVlS3v3Daip9tVHmq2m5/onqKriUiJR2oKQDnqVkodsF34p+2Br4tTwlTKjqbYwctjJC/NKEPaicfizl8mPgjcoEdH4Q3C+/zl5qVO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107889; c=relaxed/simple;
-	bh=5RaQhiUrgvQ5HsIG3BNpExRZDKxOith1NEn6UOtKkBc=;
+	s=arc-20240116; t=1732107892; c=relaxed/simple;
+	bh=YRlRW2dr/X35MbMORERt540JIGotj+fIL5Rws6l+Iqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQOoc6Kw1tfz86AZumY/uImxPKpnyQfNOm6zjtoKhRRPZUeiGVn6myJMn14CdTxWZ8Wz0UwATVPRPYBnUKSPiKJ0NsisYIHd/Jk8l3JlcfdpbCZU2wD5JcXbDOZ8DNyZAYppWvQ01IpmeV65QOx0vObrcjz5a4mWRtCIMWeNZfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=najRmnP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC151C4CECD;
-	Wed, 20 Nov 2024 13:04:48 +0000 (UTC)
+	 MIME-Version; b=iwVOqo7gt1pRdLMK8e/AX36pOt4KUTKZl4ISfd5ugpkC9pmpw+ejKeNNM5sJ+kFa+XiIagjO1lbw9mp6QGFCdLtEC7lB/flYyRV0QtxSGVx3sdAxK6F8dG1ZRkPN01M1JxOggqCAu7z4bTTnJ0auw79TsSY6NdNwt//3ghc5198=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfDRXgBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E74C4CECD;
+	Wed, 20 Nov 2024 13:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732107889;
-	bh=5RaQhiUrgvQ5HsIG3BNpExRZDKxOith1NEn6UOtKkBc=;
+	s=k20201202; t=1732107891;
+	bh=YRlRW2dr/X35MbMORERt540JIGotj+fIL5Rws6l+Iqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=najRmnP89Vj/Zgv8HI4Kb5Gvh5zRAvOqjv18QjFPjZGTJoKVmbGUBbXpwbTi+Uai0
-	 eRhikviwYyvgCgN49PfhHy2WIY1/TU2XTK8Tdf/AuG8c7I7MLCBOVzvI25kRtOgaVw
-	 5oXngHVtKy9QixxcVsHlVrQ0Tcn2xGlKrjfDrCyCJ7MlbSLpWiS0LT1tA+QkEhZaTY
-	 Q+QPQAXfH9MSs5vt5wD0zxbkEQGxWjeKQgLGZHuEoyKDNBCjVZs1yHq23dHyrq+Yen
-	 7Dj0giu8pZXgmZMLuiG12jjSTWstxzos/UHuJEyUhqTF2tr7W7DapiyaBtrIjw3Hnr
-	 RejLBkfkNwZtQ==
+	b=KfDRXgBJZ1JCM3jTaYITJxvtGKy5KeJtYXpDgaYMhUY7MnD1ElA0agUZ8uFpS7m4X
+	 b99T7YVgq7b3Mj+xT/1Ck7oKNSxPw989phpr2WiIkGd8jZDA45zgLs/dRiDXTekB1k
+	 beuvZD6uzZSN/duICE0HzpRLuXQ/oG5zNkcUM9IvnaMkjoraxJlysWRv97ICO2y5ue
+	 49MRUsJXQQHvzNuZjzWVQ+oAS2bQcbj8YgOw4fH+C9J8N/Eqejqxg5WtP00WHmXsru
+	 SjVCAECFc/Wqhud8EQlzRrFFz/++g7M5tQ+IzR2xfqxRaCZRX9VInxWBcANAgzWLCI
+	 8+10p0BnySKGA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 6.1.y 1/3] null_blk: Remove usage of the deprecated ida_simple_xx() API
-Date: Wed, 20 Nov 2024 08:04:47 -0500
-Message-ID: <20241120074550-187de7518df15aa6@stable.kernel.org>
+Subject: Re: [PATCH 6.1] char: xillybus: Prevent use-after-free due to race condition
+Date: Wed, 20 Nov 2024 08:04:49 -0500
+Message-ID: <20241120080303-16fc19393c62f43c@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241120032841.28236-2-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241120060352.3115727-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,62 +63,87 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 95931a245b44ee04f3359ec432e73614d44d8b38
+The upstream commit SHA1 provided is correct: 282a4b71816b6076029017a7bab3a9dcee12a920
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Backport author: Bin Lan <bin.lan.cn@windriver.com>
+Commit author: Eli Billauer <eli.billauer@gmail.com>
 
 
 Status in newer kernel trees:
 6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: b2b02202f87d)
+6.6.y | Present (exact SHA1)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-20 07:40:44.222155724 -0500
-+++ /tmp/tmp.aIhRvR57Io	2024-11-20 07:40:44.215907652 -0500
+--- -	2024-11-20 07:57:09.359392384 -0500
++++ /tmp/tmp.xddhwSQUsX	2024-11-20 07:57:09.349600178 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 95931a245b44ee04f3359ec432e73614d44d8b38 ]
++[ Upstream commit 282a4b71816b6076029017a7bab3a9dcee12a920 ]
 +
- ida_alloc() and ida_free() should be preferred to the deprecated
- ida_simple_get() and ida_simple_remove().
- 
-@@ -6,15 +8,16 @@
- Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
- Link: https://lore.kernel.org/r/bf257b1078475a415cdc3344c6a750842946e367.1705222845.git.christophe.jaillet@wanadoo.fr
- Signed-off-by: Jens Axboe <axboe@kernel.dk>
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+ The driver for XillyUSB devices maintains a kref reference count on each
+ xillyusb_dev structure, which represents a physical device. This reference
+ count reaches zero when the device has been disconnected and there are no
+@@ -41,15 +43,16 @@
+ Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
+ Link: https://lore.kernel.org/r/20221030094209.65916-1-eli.billauer@gmail.com
+ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
  ---
-  drivers/block/null_blk/main.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+  drivers/char/xillybus/xillyusb.c | 22 +++++++++++++++++++---
+  1 file changed, 19 insertions(+), 3 deletions(-)
  
- diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
--index 9f7695f00c2db..36755f263e8ec 100644
-+index 4d78b5583dc6..f58778b57375 100644
- --- a/drivers/block/null_blk/main.c
- +++ b/drivers/block/null_blk/main.c
--@@ -1840,7 +1840,7 @@ static void null_del_dev(struct nullb *nullb)
-+@@ -1764,7 +1764,7 @@ static void null_del_dev(struct nullb *nullb)
+ diff --git a/drivers/char/xillybus/xillyusb.c b/drivers/char/xillybus/xillyusb.c
+-index 39bcbfd908b46..5a5afa14ca8cb 100644
++index 3a2a0fb3d928..45771b1a3716 100644
+ --- a/drivers/char/xillybus/xillyusb.c
+ +++ b/drivers/char/xillybus/xillyusb.c
+-@@ -184,6 +184,14 @@ struct xillyusb_dev {
++@@ -185,6 +185,14 @@ struct xillyusb_dev {
+  	struct mutex process_in_mutex; /* synchronize wakeup_all() */
+  };
   
-  	dev = nullb->dev;
+@@ -64,7 +67,7 @@
+  /* FPGA to host opcodes */
+  enum {
+  	OPCODE_DATA = 0,
+-@@ -1237,9 +1245,16 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
++@@ -1234,9 +1242,16 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
+  	int rc;
+  	int index;
   
-@@ -23,8 +26,8 @@
+@@ -82,7 +85,7 @@
   
-  	list_del_init(&nullb->list);
+  	chan = &xdev->channels[index];
+  	filp->private_data = chan;
+-@@ -1275,8 +1290,6 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
++@@ -1272,8 +1287,6 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
+  	    ((filp->f_mode & FMODE_WRITE) && chan->open_for_write))
+  		goto unmutex_fail;
   
--@@ -2174,7 +2174,7 @@ static int null_add_dev(struct nullb_device *dev)
-- 	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
-+@@ -2103,7 +2103,7 @@ static int null_add_dev(struct nullb_device *dev)
-+ 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, nullb->q);
+@@ -91,7 +94,7 @@
+  	if (filp->f_mode & FMODE_READ)
+  		chan->open_for_read = 1;
   
-  	mutex_lock(&lock);
- -	rv = ida_simple_get(&nullb_indexes, 0, 0, GFP_KERNEL);
-@@ -32,3 +35,6 @@
-  	if (rv < 0) {
-  		mutex_unlock(&lock);
-  		goto out_cleanup_zone;
+-@@ -1413,6 +1426,7 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
++@@ -1410,6 +1423,7 @@ static int xillyusb_open(struct inode *inode, struct file *filp)
+  	return rc;
+  
+  unmutex_fail:
+@@ -99,7 +102,7 @@
+  	mutex_unlock(&chan->lock);
+  	return rc;
+  }
+-@@ -2227,7 +2241,9 @@ static void xillyusb_disconnect(struct usb_interface *interface)
++@@ -2244,7 +2258,9 @@ static void xillyusb_disconnect(struct usb_interface *interface)
+  
+  	xdev->dev = NULL;
+  
+@@ -109,3 +112,6 @@
+  }
+  
+  static struct usb_driver xillyusb_driver = {
 +-- 
 +2.43.0
 +
