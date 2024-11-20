@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-94395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7DF9D3D0C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:07:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA9A9D3D0F
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2DDC1F2415A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:07:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3A51B266F3
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA32E1BC067;
-	Wed, 20 Nov 2024 14:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38631BCA01;
+	Wed, 20 Nov 2024 14:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t14aAPgu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nxmp+UEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B901AC438;
-	Wed, 20 Nov 2024 14:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E281A4F1B;
+	Wed, 20 Nov 2024 14:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111572; cv=none; b=eSSy817pipPewO1YU3QmnYlx+SfD9od4B/gby8jgmzHgBKl5AOzxTPHT/6nZEPRjxdpEbkgLkWZbINhPgiFakEDQlNv4rqhs64xPvA2UrQyLYSKnqlZFv5x0ZYLOQOGW64DwQA2d9FWL760y03zgSAUz4ze9Q4nabRBDXqOafPc=
+	t=1732111580; cv=none; b=WMZSQckB2bprDaXH/9Ja0ONOCJggj54tiOLBU1ezL1QJw8fUZtI4xUhT7W28PiiDuTiM+dEFg9+HogUtL5Rb5et+5TNHPMheUhyEPZJRl0r/unj9JqyFF5Fyv7UJ8LumRZKj21abmKzHziFzr7NpRbZhuFX+tWUVHLdHoNWAUWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111572; c=relaxed/simple;
-	bh=lIAlocuKqS1NJ3w6AEa/UsMB8AexBQJ9zTN26akowPU=;
+	s=arc-20240116; t=1732111580; c=relaxed/simple;
+	bh=q1jZB0Y3D3QaQ6qJhaPFxFesXLoLz4odukHwSav9Imw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F2N0BprcZJ9GGE4pZDPIlOfAMNxrpJLvt2jNssLQ3iphlgP8DoI2m7061j5PRXnWB/Y5ox+CRkFocTlfSIH7pCc5pj2uuHJVJ1pBg/zdTmdwULUtvHEGrp00OZIWKygragfyIVRv1rpyru1bRdB8XWzHhSGxvKNnsf+qvJtiEiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t14aAPgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169CBC4CED1;
-	Wed, 20 Nov 2024 14:06:08 +0000 (UTC)
+	 MIME-Version; b=CSD4mhBGlNDAsSvN3nEgNh5RfEMna6Aogis0S2QyTSgXu3aZa8dubnlGhD4ZkhnXxk7EKupvYHNErVRuNF6G1Itw1UcbMS4QJMv5PllFqOQ+Ux/w7A1KykgX0Q4Sv5xNbcG4PSwiwDPQGv7X32mvuE8gFU1FZQ9HGMyWih6NJiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nxmp+UEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98161C4CECD;
+	Wed, 20 Nov 2024 14:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111572;
-	bh=lIAlocuKqS1NJ3w6AEa/UsMB8AexBQJ9zTN26akowPU=;
+	s=k20201202; t=1732111577;
+	bh=q1jZB0Y3D3QaQ6qJhaPFxFesXLoLz4odukHwSav9Imw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t14aAPguzIoWZ6PnnqhwezYX3NJkZjP1PdqMtk7CtC/iQHY6Z5LKYgvYWfjgh5K51
-	 hkKs/C3avpyRrMUfZjbSvJ8N08T+rIo3iKwZBOlhQp8VFUQ/y3WkC32e+Q36TYlcaU
-	 33Z0uhyuHPMz4pyWtNA5YON5IE+DUznvNISa+oGvYmPCNGdIrFqdhLGdBRF8DW16Da
-	 V+qakYXwVC3oEOXH1dfp2LBCrB8BB78Pxad2lPckmsuytrwH0TiG4L+ps0iPEPyCjV
-	 UPCiUsl5nZn3B6Yl6vzat6u/mmbpdgL9XtkCzmfITRPnIAeB6+88Ca4YHzT2hZKbPo
-	 GgSz5SoTkwZ8w==
+	b=Nxmp+UEld1aimjR0eSLdpdeincNpWmbmUVwIvI/9I7VboFaHrZdHFoPvIb2Y7TC54
+	 8pZtDuVx3nayn5RRfColFBWFXxLT39E0VXySYaJ2ivNmXR0qzjbG4YsdIqtWoH/2/T
+	 45p7LLtGifLjav+ycuWYOu0wPXL4aKA3EKqSqkYCn8UL/DMTZk+L1b16ipM4n1cYdd
+	 eQ1IspiAE3DHyLpUjRfcTFdPFri+M7SxwBZwlQhhgYIlrzdsdUy/Jp07XvBqXONLuC
+	 /OJXbojt8/5/9TM5lFkG3yU+qahOJkgz2BZ3Myn9TnEio2S9KuM9xl30c85YZJG9Hs
+	 j1CTH94fVkxDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yuli Wang <wangyuli@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	arnd@arndb.de,
-	tglx@linutronix.de,
-	max.kellermann@ionos.com,
-	vincenzo.frascino@arm.com,
-	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 04/10] LoongArch: Define a default value for VM_DATA_DEFAULT_FLAGS
-Date: Wed, 20 Nov 2024 09:05:29 -0500
-Message-ID: <20241120140556.1768511-4-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	andy.shevchenko@gmail.com,
+	u.kleine-koenig@pengutronix.de,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 05/10] ASoC: max9768: Fix event generation for playback mute
+Date: Wed, 20 Nov 2024 09:05:30 -0500
+Message-ID: <20241120140556.1768511-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120140556.1768511-1-sashal@kernel.org>
 References: <20241120140556.1768511-1-sashal@kernel.org>
@@ -71,40 +69,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.9
 Content-Transfer-Encoding: 8bit
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit c859900a841b0a6cd9a73d16426465e44cdde29c ]
+[ Upstream commit 2ae6da569e34e1d26c5275442d17ffd75fd343b3 ]
 
-This is a trivial cleanup, commit c62da0c35d58518d ("mm/vma: define a
-default value for VM_DATA_DEFAULT_FLAGS") has unified default values of
-VM_DATA_DEFAULT_FLAGS across different platforms.
+The max9768 has a custom control for playback mute which unconditionally
+returns 0 from the put() operation, rather than returning 1 on change to
+ensure notifications are generated to userspace. Check to see if the value
+has changed and return appropriately.
 
-Apply the same consistency to LoongArch.
-
-Suggested-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241112-asoc-max9768-event-v1-1-ba5d50599787@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/page.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/soc/codecs/max9768.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
-index e85df33f11c77..8f21567a3188b 100644
---- a/arch/loongarch/include/asm/page.h
-+++ b/arch/loongarch/include/asm/page.h
-@@ -113,10 +113,7 @@ struct page *tlb_virt_to_page(unsigned long kaddr);
- extern int __virt_addr_valid(volatile void *kaddr);
- #define virt_addr_valid(kaddr)	__virt_addr_valid((volatile void *)(kaddr))
+diff --git a/sound/soc/codecs/max9768.c b/sound/soc/codecs/max9768.c
+index e4793a5d179ef..8af3c7e5317fb 100644
+--- a/sound/soc/codecs/max9768.c
++++ b/sound/soc/codecs/max9768.c
+@@ -54,10 +54,17 @@ static int max9768_set_gpio(struct snd_kcontrol *kcontrol,
+ {
+ 	struct snd_soc_component *c = snd_soc_kcontrol_component(kcontrol);
+ 	struct max9768 *max9768 = snd_soc_component_get_drvdata(c);
++	bool val = !ucontrol->value.integer.value[0];
++	int ret;
  
--#define VM_DATA_DEFAULT_FLAGS \
--	(VM_READ | VM_WRITE | \
--	 ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
--	 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
+-	gpiod_set_value_cansleep(max9768->mute, !ucontrol->value.integer.value[0]);
++	if (val != gpiod_get_value_cansleep(max9768->mute))
++		ret = 1;
++	else
++		ret = 0;
  
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
+-	return 0;
++	gpiod_set_value_cansleep(max9768->mute, val);
++
++	return ret;
+ }
+ 
+ static const DECLARE_TLV_DB_RANGE(volume_tlv,
 -- 
 2.43.0
 
