@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-94174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DC29D3B69
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509729D3BC0
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E54F28176E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7071B24B5C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C021B0109;
-	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272DD1ACDE3;
+	Wed, 20 Nov 2024 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnYh1KcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yESrGd+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A148F1A9B2A;
-	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92E41AD9EE;
+	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107530; cv=none; b=gKHAMgFVqYRj5ILeiPouDoP7jAzph3KRql6CmUVaFBmvciyIgBwhXwHHqmVY7ez7EsjEDRGvOS9DFAfLhJdxoRsqfBjPldM8KX9MwWaeYZk8efKLph0ZcT6FBXwLtRJQaGrD8vqlKDKmRyvEqtQm4iej5xC6jaatoJHGnmt/n8E=
+	t=1732107585; cv=none; b=s9+Tt9iUHaVEqD6Fs55DqyTr/YJVpx5ZOvWRjMhtaN+2Ulis0I1k61qiOWyytL9adoKE/pzHnPgCW3GXaleYKJLOQEUswfjgNwMyEjJKSxTdQjo7t3Gw1E1cxijfTFtTvvTJMmI+Le2h+K4c3ZcH95pfO1BdoNIPJFZ8Jan8+lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107530; c=relaxed/simple;
-	bh=xwoH31GqDcpTfBo4AsvGrm+bxZ3Y2rYlNlc933kWcTo=;
+	s=arc-20240116; t=1732107585; c=relaxed/simple;
+	bh=Iylf0lCKR8HypGHKmOlPZcMXMYi+y41TtrkJk0h5nXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKs7GkVybcqnMIYX+vqABADUpsMmtqKAkJCJUJfSVKYIEuvJRHgoGAWLrNNw2QeD71h3VWmTmB0WHowMFx6wKoCriLMBpPFDpTuNX34z8l86KJZn0exQKP7dxABUKQCYdo/nIqBKS0FMNYssva9pXtRxga9DHTCUCNGcfb2vSk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnYh1KcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76749C4CED6;
-	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fgsdYjzu73baPPCMHLNTndwvwo23ypsVYNE5jo82NDaSuj39tA84LxzEpZeski8hU4QAzbxrt88QENcxPG8d4wuO06k5Iv75qK/m4lLfu2yVI0hwMh6itDahmx5Rhhnxsmy4buTCH5iAbi9rtd7SR12ujck2+4Kd2Qi2IawF8/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yESrGd+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACABFC4CECD;
+	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107530;
-	bh=xwoH31GqDcpTfBo4AsvGrm+bxZ3Y2rYlNlc933kWcTo=;
+	s=korg; t=1732107585;
+	bh=Iylf0lCKR8HypGHKmOlPZcMXMYi+y41TtrkJk0h5nXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnYh1KcPhB9ql/1DKUJcD/WBNO2QYFIAQcjiic4+p5LU4HJ4xJQafayk+j9rccafz
-	 rCajjIh/7/++Ppex6QKCN1GVmnpXbPgeRJ3QuiznCcQkIe+i4ca0yAdQGqsySQijlV
-	 XDMgZYplka63qRkVyV7u7VR2WrZBzGiYXaJVHfjw=
+	b=yESrGd+W3x8uJ2PZE3riUncZlP/c0tFTbwP3MfrFFC1ShTe5CdmoyJMh8LJbO+ceL
+	 N3Dr6NOFif8ctiRr6hiqnUaif7ON8y8Ex0B0/PgWyft8KRNc19IaoNsaxlr4m2Lj1e
+	 55dFPQVRkZiNdRVHJJg9tJsuZf8XIV69c8eeNZK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 063/107] ALSA: hda/realtek - update set GPIO3 to default for Thinkpad with ALC1318
+	Baoquan He <bhe@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 28/82] x86/mm: Fix a kdump kernel failure on SME system when CONFIG_IMA_KEXEC=y
 Date: Wed, 20 Nov 2024 13:56:38 +0100
-Message-ID: <20241120125631.097891404@linuxfoundation.org>
+Message-ID: <20241120125630.245114920@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +61,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Baoquan He <bhe@redhat.com>
 
-commit 2143c8ae423dbc3f036cae8d18a5a3c272df3deb upstream.
+commit 8d9ffb2fe65a6c4ef114e8d4f947958a12751bbe upstream.
 
-If user no update BIOS, the speaker will no sound.
-This patch support old BIOS to have sound from speaker.
+The kdump kernel is broken on SME systems with CONFIG_IMA_KEXEC=y enabled.
+Debugging traced the issue back to
 
-Fixes: 1e707769df07 ("ALSA: hda/realtek - Set GPIO3 to default at S4 state for Thinkpad with ALC1318")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec").
+
+Testing was previously not conducted on SME systems with CONFIG_IMA_KEXEC
+enabled, which led to the oversight, with the following incarnation:
+
+...
+  ima: No TPM chip found, activating TPM-bypass!
+  Loading compiled-in module X.509 certificates
+  Loaded X.509 cert 'Build time autogenerated kernel key: 18ae0bc7e79b64700122bb1d6a904b070fef2656'
+  ima: Allocated hash algorithm: sha256
+  Oops: general protection fault, probably for non-canonical address 0xcfacfdfe6660003e: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc2+ #14
+  Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.20.0 05/03/2023
+  RIP: 0010:ima_restore_measurement_list
+  Call Trace:
+   <TASK>
+   ? show_trace_log_lvl
+   ? show_trace_log_lvl
+   ? ima_load_kexec_buffer
+   ? __die_body.cold
+   ? die_addr
+   ? exc_general_protection
+   ? asm_exc_general_protection
+   ? ima_restore_measurement_list
+   ? vprintk_emit
+   ? ima_load_kexec_buffer
+   ima_load_kexec_buffer
+   ima_init
+   ? __pfx_init_ima
+   init_ima
+   ? __pfx_init_ima
+   do_one_initcall
+   do_initcalls
+   ? __pfx_kernel_init
+   kernel_init_freeable
+   kernel_init
+   ret_from_fork
+   ? __pfx_kernel_init
+   ret_from_fork_asm
+   </TASK>
+  Modules linked in:
+  ---[ end trace 0000000000000000 ]---
+  ...
+  Kernel panic - not syncing: Fatal exception
+  Kernel Offset: disabled
+  Rebooting in 10 seconds..
+
+Adding debug printks showed that the stored addr and size of ima_kexec buffer
+are not decrypted correctly like:
+
+  ima: ima_load_kexec_buffer, buffer:0xcfacfdfe6660003e, size:0xe48066052d5df359
+
+Three types of setup_data info
+
+  — SETUP_EFI,
+  - SETUP_IMA, and
+  - SETUP_RNG_SEED
+
+are passed to the kexec/kdump kernel. Only the ima_kexec buffer
+experienced incorrect decryption. Debugging identified a bug in
+early_memremap_is_setup_data(), where an incorrect range calculation
+occurred due to the len variable in struct setup_data ended up only
+representing the length of the data field, excluding the struct's size,
+and thus leading to miscalculation.
+
+Address a similar issue in memremap_is_setup_data() while at it.
+
+  [ bp: Heavily massage. ]
+
+Fixes: b3c72fc9a78e ("x86/boot: Introduce setup_indirect")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240911081615.262202-3-bhe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/mm/ioremap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7436,7 +7436,6 @@ static void alc287_alc1318_playback_pcm_
- 				   struct snd_pcm_substream *substream,
- 				   int action)
- {
--	alc_write_coef_idx(codec, 0x10, 0x8806); /* Change MLK to GPIO3 */
- 	switch (action) {
- 	case HDA_GEN_PCM_ACT_OPEN:
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
-@@ -7450,7 +7449,6 @@ static void alc287_alc1318_playback_pcm_
- static void alc287_s4_power_gpio3_default(struct hda_codec *codec)
- {
- 	if (is_s4_suspend(codec)) {
--		alc_write_coef_idx(codec, 0x10, 0x8806); /* Change MLK to GPIO3 */
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
- 	}
- }
-@@ -7459,9 +7457,17 @@ static void alc287_fixup_lenovo_thinkpad
- 			       const struct hda_fixup *fix, int action)
- {
- 	struct alc_spec *spec = codec->spec;
-+	static const struct coef_fw coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC300),
-+		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC301),
-+		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
-+	};
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -655,7 +655,8 @@ static bool memremap_is_setup_data(resou
+ 		paddr_next = data->next;
+ 		len = data->len;
  
- 	if (action != HDA_FIXUP_ACT_PRE_PROBE)
- 		return;
-+	alc_update_coef_idx(codec, 0x10, 1<<11, 1<<11);
-+	alc_process_coef_fw(codec, coefs);
- 	spec->power_hook = alc287_s4_power_gpio3_default;
- 	spec->gen.pcm_playback_hook = alc287_alc1318_playback_pcm_hook;
- }
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			memunmap(data);
+ 			return true;
+ 		}
+@@ -717,7 +718,8 @@ static bool __init early_memremap_is_set
+ 		paddr_next = data->next;
+ 		len = data->len;
+ 
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			early_memunmap(data, sizeof(*data));
+ 			return true;
+ 		}
 
 
 
