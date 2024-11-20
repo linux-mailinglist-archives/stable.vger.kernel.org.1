@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-94178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830B59D3B70
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260479D3BB4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 215A7B22B08
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E082528230B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C0A1A9B48;
-	Wed, 20 Nov 2024 12:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0406E1A76DE;
+	Wed, 20 Nov 2024 12:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+AVzBUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS+IiQwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD51B1B3727;
-	Wed, 20 Nov 2024 12:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82271AA1E6;
+	Wed, 20 Nov 2024 12:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107533; cv=none; b=MO5ITHxZp/yI2ZZrbZhESkMWlM0aXKOkeyh2HtaibKjl0AF6Mkq04CiL/xI0JBBOCfWoFuyOckA41i6AahDvjdw0zR6UIVFBqbqku7tzdWig24FshnGgZq4y9mB5THY7DakBrL4y3cxIgkK17kvsSCVZQlovdfl/KtJ+bdOB168=
+	t=1732107588; cv=none; b=vCji5zAmCWwERCRA7j1C+KwacUl34wESIw0Zb0Gwat+/E16kUIHnoPFX2MbAIlNAsvTuVHUtG2vLsGfwgWgJaBIuooftXFlfxKFsYPvLlQYiIj9a2a+8iWcd+fEDoLmyv7DD5eX3S0/SF27llnZr1SJsPK61v02IsSZ3sXEbo5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107533; c=relaxed/simple;
-	bh=p1swoldLTwGQh3eyx3dn52C5lfRPahhfHVmhpNNBmyw=;
+	s=arc-20240116; t=1732107588; c=relaxed/simple;
+	bh=cyvv44L/x++9tW9RBp9mnUWFXIKj7rfwbTue36dNfvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/dOBcBjx3Gq5t8hYzvzEGf/NV4g9dgF1y8ATDRyk8QePVksBFRcRVg4Ksg3l99e5xI6krMceBZkJUZ/z1qYa+5x/YSx5l6VpJW9/obsfcmtz8jddg4DtFR/2ayXG0u+S/WazUFMx2+N2Esy/PzheI1HvHznBtYUMs2Zl+eUqAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+AVzBUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894A9C4CED1;
-	Wed, 20 Nov 2024 12:58:53 +0000 (UTC)
+	 MIME-Version; b=ncO+BqbsVIQy08YWI7EniwnFLjWD8Ha0sZ8EjAfm6uYQ/n0tcmRJNojMRdR4OPNBcS4xclLiUpTnYfr1XpidslMts5ekZkGtBvwCLjZnwYQFxm8h2/M+E+mcsXR20MifMlTwbU15VK8H5TSQb2mDtbd9qsmtRY3C4mOamubuIVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS+IiQwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90749C4CECD;
+	Wed, 20 Nov 2024 12:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107533;
-	bh=p1swoldLTwGQh3eyx3dn52C5lfRPahhfHVmhpNNBmyw=;
+	s=korg; t=1732107588;
+	bh=cyvv44L/x++9tW9RBp9mnUWFXIKj7rfwbTue36dNfvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+AVzBUndeJN2r5tljlA2lagL9Gec1GmbWeq4gpawCt33MHUFABk9COmuvF6Ruwg7
-	 N3OEkM/5uXNqRjHZSosbpYFs4WIe1+PuJwxgRtAA19iq2RSPthnfA3Oul53IMqffIq
-	 IV7IxSeZHCeOI/sEKsU3T07oOcPLZJNfO9ouMc9c=
+	b=sS+IiQwF4iI0csnLPp+Vj2l5I7izGt8gGsTkYa+ws0UK8is7iHjoXmKFT4s2Cixtn
+	 aJv8jsBbyP0uF6qFQdQC+6HBPOcR0uCZlAriftVOwYkyNDutSBSo91LhEwpOrw4RbR
+	 ivyVQFtnYGBm+8T3dhGjqjOB83lY0C+YFJeRqALc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 066/107] mptcp: hold pm lock when deleting entry
+	Hugh Dickins <hughd@google.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 31/82] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
 Date: Wed, 20 Nov 2024 13:56:41 +0100
-Message-ID: <20241120125631.164389504@linuxfoundation.org>
+Message-ID: <20241120125630.313017665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit f642c5c4d528d11bd78b6c6f84f541cd3c0bea86 upstream.
+commit d1aa0c04294e29883d65eac6c2f72fe95cc7c049 upstream.
 
-When traversing userspace_pm_local_addr_list and deleting an entry from
-it in mptcp_pm_nl_remove_doit(), msk->pm.lock should be held.
+Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
+suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
+NFS.
 
-This patch holds this lock before mptcp_userspace_pm_lookup_addr_by_id()
-and releases it after list_move() in mptcp_pm_nl_remove_doit().
+As Hugh commented, "added just to silence a syzbot sanitizer splat: added
+where there has never been any practical problem".
 
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241112-net-mptcp-misc-6-12-pm-v1-2-b835580cefa8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
+Fixes: d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()")
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/shmem.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -325,14 +325,17 @@ int mptcp_pm_nl_remove_doit(struct sk_bu
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1158,9 +1158,7 @@ static int shmem_getattr(struct mnt_idma
+ 	stat->attributes_mask |= (STATX_ATTR_APPEND |
+ 			STATX_ATTR_IMMUTABLE |
+ 			STATX_ATTR_NODUMP);
+-	inode_lock_shared(inode);
+ 	generic_fillattr(idmap, request_mask, inode, stat);
+-	inode_unlock_shared(inode);
  
- 	lock_sock(sk);
- 
-+	spin_lock_bh(&msk->pm.lock);
- 	match = mptcp_userspace_pm_lookup_addr_by_id(msk, id_val);
- 	if (!match) {
- 		GENL_SET_ERR_MSG(info, "address with specified id not found");
-+		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
- 		goto out;
- 	}
- 
- 	list_move(&match->list, &free_list);
-+	spin_unlock_bh(&msk->pm.lock);
- 
- 	mptcp_pm_remove_addrs(msk, &free_list);
- 
+ 	if (shmem_is_huge(inode, 0, false, NULL, 0))
+ 		stat->blksize = HPAGE_PMD_SIZE;
 
 
 
