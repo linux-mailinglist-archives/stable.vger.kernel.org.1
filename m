@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-94398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2825B9D3D12
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320C39D3D14
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3AB1F23EF1
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC3E2834D9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2371BD9D7;
-	Wed, 20 Nov 2024 14:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3C1C1F3F;
+	Wed, 20 Nov 2024 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfutD6s2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5+Ja0kd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568891A2C0B;
-	Wed, 20 Nov 2024 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6611AA793;
+	Wed, 20 Nov 2024 14:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111588; cv=none; b=mBU1jKVpydxRm0HaAtQhp+7TLQ4dsz2oTXiIQ9uaMVniL1Sk+iuEm/N5l9DWB9vPhB60WYwn7pO4oLSpFX0EGXilO9N1iEoWXOVb4K9uzErJMEAvM4v38l3sg1DXfek5V7Z0fc81YRDWK9pwEAcYwAfxuk5BWuzN3uzQymmUa7c=
+	t=1732111592; cv=none; b=sjT58Wfp+yyS1WgvHU4xKZVLh5zww2enVEPxmd0hciSuWWUpWyBOrfZcDIgMgcsmUe6/YuptrS2DXaPDW9xnpEQf7kA+MiHZ/npLE5lYBYx3aLvNA6SFpehSopmIqRiOEiPU1DtW5NGx8TtnleCyjSTGSV4u/WSbPKc/Xn/g3WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111588; c=relaxed/simple;
-	bh=rAPJ3CsyNt0xoIeocO8Oj1jzcSTExIhRjL94487yK10=;
+	s=arc-20240116; t=1732111592; c=relaxed/simple;
+	bh=KuoIMBg67mYDfTqIN7sr1wrRw2U2x4tiGcaH/+aG0tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLw9V9GmjeG2MDIZ/KTzxnx48uNxVp09Ua9iARlYYElEpNb9B+ZnIm0ly/rEZCsIcMWMBcuq14BP3QEjDyJpaCb/BTVo0SpbyG/0Sy7MsykIvKMox2XtdVX/7Ufygegws5sZ+gkXu46jJdbyrC+0Bv82dAo8FWLt0r+peiUGVVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfutD6s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB14DC4CECD;
-	Wed, 20 Nov 2024 14:06:26 +0000 (UTC)
+	 MIME-Version; b=JiUJy2WuSczx+oybtEyjnjycs1KjgMyhZEx0Ep0gQZypfv3x09Fh75wsWOpUlQJUP8xgIpPJrzC6RwGGIpe/WK0KVa4Jj6LtI44XuxgFXWIPBqyrpItnPb8xEVIr7opHQ6y7//vtQQF0Rs+DTLA7y/RVbZIvz8I50T9KLlK0pFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5+Ja0kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AACDC4CED3;
+	Wed, 20 Nov 2024 14:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111587;
-	bh=rAPJ3CsyNt0xoIeocO8Oj1jzcSTExIhRjL94487yK10=;
+	s=k20201202; t=1732111591;
+	bh=KuoIMBg67mYDfTqIN7sr1wrRw2U2x4tiGcaH/+aG0tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfutD6s2a9K0pxcYhWlgjEtERadoL9h55J5opCf6nylcQ3BEM8/B4+Hs+3qbqm7Nh
-	 PWIuDKojwhCFJZN1G8M517q/fLA0JdcFtup6stIr67Jk8fhR62ET9W3cbRj6dsoM6K
-	 hk8jHdMIGVxI6n78gxS1XUe3GiWa3Cy/oQs9zec+am94cLgvbO1ZsDjsUpC4ZlDVQ4
-	 8sNon9D/zN6Qn/FUI3I9dXXlZrmPeSnmiyr8AeKgpp4eOlJx6T6SWXAV4jv6J85DbI
-	 xuEO1WE0usuydnZ6pyHGz5Z0khjkGvVbcKtBQK9I4OUNjTDYNeytW9UCqNjYrz+OQX
-	 Jbtry3Z8I6f2Q==
+	b=p5+Ja0kdax5E92QJzJS5ZPYFLRA3ghv2tVkTFBd/b3sJo69yDwi7qyk25TJtrAw50
+	 8z8Kfk79REAWF4hUKUMJWfTuKUyhVZKaqWXdGQTg3h1o4bDG8/GJuP0cZML5FKIeN4
+	 3/GF5635dFPVsTihLIrZ3K3sJCAhHzIRUi3ZJTkdYfXDsrjnPISAu5iF7zMmxkU4Do
+	 qZCK4K2UEqgY9jmWrAUtcMZc3dQPr7LgFzScMKytdHeLbFfvhi09gqpaY0IDAFkAns
+	 C+RqitjKWCYzFfOOFByZ9FlZvfIGlJah+A1Hh5Qhmkc2Zx3KCvLgV92y5pTGrUsNxy
+	 drSEzadU24zqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Harith G <harith.g@alifsemi.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Russell King <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>,
 	linux@armlinux.org.uk,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 07/10] ARM: 9420/1: smp: Fix SMP for xip kernels
-Date: Wed, 20 Nov 2024 09:05:32 -0500
-Message-ID: <20241120140556.1768511-7-sashal@kernel.org>
+	arnd@arndb.de,
+	samitolvanen@google.com,
+	linux-arm-kernel@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 08/10] ARM: 9434/1: cfi: Fix compilation corner case
+Date: Wed, 20 Nov 2024 09:05:33 -0500
+Message-ID: <20241120140556.1768511-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120140556.1768511-1-sashal@kernel.org>
 References: <20241120140556.1768511-1-sashal@kernel.org>
@@ -67,82 +71,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.9
 Content-Transfer-Encoding: 8bit
 
-From: Harith G <harith.g@alifsemi.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 9e9b0cf9319b4db143014477b0bc4b39894248f1 ]
+[ Upstream commit 4aea16b7cfb76bd3361858ceee6893ef5c9b5570 ]
 
-Fix the physical address calculation of the following to get smp working
-on xip kernels.
-- secondary_data needed for secondary cpu bootup.
-- secondary_startup address passed through psci.
-- identity mapped code region needed for enabling mmu for secondary cpus.
+When enabling expert mode CONFIG_EXPERT and using that power
+user mode to disable the branch prediction hardening
+!CONFIG_HARDEN_BRANCH_PREDICTOR, the assembly linker
+in CLANG notices that some assembly in proc-v7.S does
+not have corresponding C call sites, i.e. the prototypes
+in proc-v7-bugs.c are enclosed in ifdef
+CONFIG_HARDEN_BRANCH_PREDICTOR so this assembly:
 
-Signed-off-by: Harith George <harith.g@alifsemi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
+SYM_TYPED_FUNC_START(cpu_v7_hvc_switch_mm)
+
+Results in:
+
+ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_smc_switch_mm
+>>> referenced by proc-v7.S:94 (.../arch/arm/mm/proc-v7.S:94)
+>>> arch/arm/mm/proc-v7.o:(.text+0x108) in archive vmlinux.a
+
+ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_hvc_switch_mm
+>>> referenced by proc-v7.S:105 (.../arch/arm/mm/proc-v7.S:105)
+>>> arch/arm/mm/proc-v7.o:(.text+0x124) in archive vmlinux.a
+
+Fix this by adding an additional requirement that
+CONFIG_HARDEN_BRANCH_PREDICTOR has to be enabled to compile
+these assembly calls.
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202411041456.ZsoEiD7T-lkp@intel.com/
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/head.S     | 4 ++++
- arch/arm/kernel/psci_smp.c | 7 +++++++
- arch/arm/mm/idmap.c        | 7 +++++++
- 3 files changed, 18 insertions(+)
+ arch/arm/mm/proc-v7.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
-index 1ec35f065617e..e573adfe73b28 100644
---- a/arch/arm/kernel/head.S
-+++ b/arch/arm/kernel/head.S
-@@ -407,7 +407,11 @@ ENTRY(secondary_startup)
- 	/*
- 	 * Use the page tables supplied from  __cpu_up.
- 	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	ldr	r3, =(secondary_data + PLAT_PHYS_OFFSET - PAGE_OFFSET)
-+#else
- 	adr_l	r3, secondary_data
-+#endif
- 	mov_l	r12, __secondary_switched
- 	ldrd	r4, r5, [r3, #0]		@ get secondary_data.pgdir
- ARM_BE8(eor	r4, r4, r5)			@ Swap r5 and r4 in BE:
-diff --git a/arch/arm/kernel/psci_smp.c b/arch/arm/kernel/psci_smp.c
-index d4392e1774848..3bb0c4dcfc5c9 100644
---- a/arch/arm/kernel/psci_smp.c
-+++ b/arch/arm/kernel/psci_smp.c
-@@ -45,8 +45,15 @@ extern void secondary_startup(void);
- static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
- {
- 	if (psci_ops.cpu_on)
-+#ifdef CONFIG_XIP_KERNEL
-+		return psci_ops.cpu_on(cpu_logical_map(cpu),
-+			((phys_addr_t)(&secondary_startup)
-+			- XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+			+ CONFIG_XIP_PHYS_ADDR));
-+#else
- 		return psci_ops.cpu_on(cpu_logical_map(cpu),
- 					virt_to_idmap(&secondary_startup));
-+#endif
- 	return -ENODEV;
- }
+diff --git a/arch/arm/mm/proc-v7.S b/arch/arm/mm/proc-v7.S
+index 5fb9a6aecb001..2cd9333426794 100644
+--- a/arch/arm/mm/proc-v7.S
++++ b/arch/arm/mm/proc-v7.S
+@@ -94,7 +94,7 @@ SYM_TYPED_FUNC_START(cpu_v7_dcache_clean_area)
+ 	ret	lr
+ SYM_FUNC_END(cpu_v7_dcache_clean_area)
  
-diff --git a/arch/arm/mm/idmap.c b/arch/arm/mm/idmap.c
-index 448e57c6f6534..4a833e89782aa 100644
---- a/arch/arm/mm/idmap.c
-+++ b/arch/arm/mm/idmap.c
-@@ -84,8 +84,15 @@ static void identity_mapping_add(pgd_t *pgd, const char *text_start,
- 	unsigned long addr, end;
- 	unsigned long next;
- 
-+#ifdef CONFIG_XIP_KERNEL
-+	addr = (phys_addr_t)(text_start) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+	end = (phys_addr_t)(text_end) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+#else
- 	addr = virt_to_idmap(text_start);
- 	end = virt_to_idmap(text_end);
-+#endif
- 	pr_info("Setting up static identity map for 0x%lx - 0x%lx\n", addr, end);
- 
- 	prot |= PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AF;
+-#ifdef CONFIG_ARM_PSCI
++#if defined(CONFIG_ARM_PSCI) && defined(CONFIG_HARDEN_BRANCH_PREDICTOR)
+ 	.arch_extension sec
+ SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
+ 	stmfd	sp!, {r0 - r3}
 -- 
 2.43.0
 
