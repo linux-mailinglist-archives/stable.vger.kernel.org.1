@@ -1,229 +1,165 @@
-Return-Path: <stable+bounces-94469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DD29D4342
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 21:49:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E9A9D4379
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 22:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D5BF28382C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 20:49:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68D1B223F2
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 21:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A1C1C1ABC;
-	Wed, 20 Nov 2024 20:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC231B5ED8;
+	Wed, 20 Nov 2024 21:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P2c2bhcg"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="umgXeC4i"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298D514D70E
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 20:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A062B183CB8
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 21:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732135771; cv=none; b=ucyTFLO7DkKrQVY1kaa5hjByjC+rrgmMyI9F/3yPOZTBu7wmjvQug3nryBaJJzqPGrgPM2nmVgngE9w0KdkiY5QT9BuXuH4uzTOhT3vEdzUQDJVp/Bt3biBJKw2FETuUZuBm2MF1oMgJZsvDrEAGXRn7T1cOs3AsagOyIuzAm1g=
+	t=1732138148; cv=none; b=GaFruorIPZtKLJx9rIq6jELtL7IRLzoilEpY9KchZB33cQHIKBOodkk8bBoSBxySCcnm0UXoQhif0VHykMmgURvhTvf0lARsjMBrEm44zeDHH9yVMBA6w57nyNeyF7iE/dwmy8I+/FyqNLncqm3lQGn4ZtQk9lRzsyFg5XIzwqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732135771; c=relaxed/simple;
-	bh=49gpMjMK0KbJYgzQGKj8+N5Bcy86akKMXvxuNOX2HfI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=f+kWvFpN+5CXRq5mFG4CYxZ0jQrbkC9vEedGxWHcOkszz0VQg3ZpN009UitsjZLrumZwQ/6sPFZo+clBKb606BLNqcxkw33013SG2l68Y8wCYYXlDKQXiD4LKlkdj20Ijt+qD76aiqLbK03R3haTv4IuI62f15qNBtzUTpXH/ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P2c2bhcg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732135767;
+	s=arc-20240116; t=1732138148; c=relaxed/simple;
+	bh=AH7jBkvW3vmQevUwT1qZe6oh5eRiuiDeIP9puuoH2g0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFK12/igTO7kgt0d7Xt/CCJWf9BfJzsIdFLU5+h41P6y9Gy//9/9PkHVs0mcqww37vmMBeMpddTes5mwBnPTbVYAeFuBT9TunP3I218Qg4dRzW9m4tsHGdftTR13N0in5qWXHIyjHTtgOMDNOgt74CJDAORxILfth74jb3TG53s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=umgXeC4i; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id B81CA14C1E1;
+	Wed, 20 Nov 2024 22:29:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1732138143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=65aCN31L2Uzgi8/twZ1wh4L1IUXMovfHxYERMVKuxzY=;
-	b=P2c2bhcghk0hPMTKp0ux/BZ5YkfRPiMD6Zlw33XgIsKjLhZIYejebkix2VgSagx29UU+GI
-	cmB5a9XCkEsbXms+HQ3Qldcyxb1cws5PmNdjyCUMx8rGrbC/I3Vf7480kRs32Rsc2FeFUS
-	5leM6Lj8CEUAydRmPVSFOlsXi7U6gxU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-y8LI4KzHPR-tC34wmLc9AQ-1; Wed, 20 Nov 2024 15:49:25 -0500
-X-MC-Unique: y8LI4KzHPR-tC34wmLc9AQ-1
-X-Mimecast-MFC-AGG-ID: y8LI4KzHPR-tC34wmLc9AQ
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso720735e9.1
-        for <stable@vger.kernel.org>; Wed, 20 Nov 2024 12:49:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732135764; x=1732740564;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=65aCN31L2Uzgi8/twZ1wh4L1IUXMovfHxYERMVKuxzY=;
-        b=ep/+1ahQAP0NAcusDkesxQ82Ycou/hif1oqc1TW2JZsj0xRuIqVxkH1Y9FXhY5Ngyx
-         9pG0yDxNJ6MUVQ8U7C4LtlUlNTUsrtrRq4rvwNQLOpLzJWLELcbXyboYu85hQXHCASXI
-         WWYvR99Aor6LZy1ywhKIFgoyiTDUIoB6kqbvKCgFfR7c0bb1pUFy1vOSFA56cwY/bwj/
-         VaHY3oTdp3kN88aQ5bKrofX4IjVe80BGpazErAgj/iXW4P9BH+5vhi2YrxhKvyE/7z/7
-         HPxFiniu4aEA7GEvaO1y/wnP74jyozIeLuADSait1xfjYzzTFwtd3/mRmgukZcgGkWNY
-         PKCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWl2ecWkS5r1ZTZOIYvelGhhCGpCi4k2nkMe7bx+rLpOog4Eii7iI4sR2tt/Ss0eF7s3eIRMxA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycK3K2r4YzVsCjyXzkCaYQhzt89pcEeflbnvSWgaGW7qmSnsup
-	fNl/G7bFwQnTWUPIh5GAuCNqbSrkM6irb0lnlG+CLVXNVTMhX/j85lbJeohPjeZNrDy2cyeGE9/
-	W7BKQRj0pzMxBaqwx5z6E4beUUYBln+keaog7W10mh5l3V4Cdt71NUQ==
-X-Gm-Gg: ASbGncvcy24a+wgCVSghRg8AWud7ZL7hCT+AlJgbp28uYVCz4HlWdSQtYOOJq3Cgago
-	t6hA0VY+AmNh7JIFUc/9NwzJ+UmEAJoMaScbGEWtgOEK58wrYvT0xUIB9kjbDW3xW0VWBiJFejM
-	qGdLhZr3BE9TeW67haJRU4cxOPmQwsqeBuGKzazoAtKrNB8TwyApDpi3BrtGO/2p/JB940qldlo
-	Pp6k471+OlPH8t71EIxiS1aYMfYvBVxga82FcuEIiRwBupFRKM1Uk6693g6KM1vGU44ojq+CXSt
-	UiIV6kzD+uPQsOyF6xPMwg6949QoncRLkBzrOMJL7nhFJrxzlcttuQ8Hlmd9MMnvqZZu2GyW325
-	PDA==
-X-Received: by 2002:a05:600c:1c09:b0:42f:4f6:f8f3 with SMTP id 5b1f17b1804b1-433489869e2mr36177675e9.7.1732135764598;
-        Wed, 20 Nov 2024 12:49:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFHvWc7PcAErLlsng6fj5s+LO5P60jHvbcO0WyjMVDPm8mPmUZZtMNo/JM5+oDeir5x70qHsQ==
-X-Received: by 2002:a05:600c:1c09:b0:42f:4f6:f8f3 with SMTP id 5b1f17b1804b1-433489869e2mr36177535e9.7.1732135764281;
-        Wed, 20 Nov 2024 12:49:24 -0800 (PST)
-Received: from ?IPV6:2003:cb:c705:4200:ce79:acf6:d832:60df? (p200300cbc7054200ce79acf6d83260df.dip0.t-ipconnect.de. [2003:cb:c705:4200:ce79:acf6:d832:60df])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-433b46343e7sm30820385e9.33.2024.11.20.12.49.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Nov 2024 12:49:22 -0800 (PST)
-Message-ID: <652fef9b-116e-426e-98e1-d8b742bbfe85@redhat.com>
-Date: Wed, 20 Nov 2024 21:49:20 +0100
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QpBeDvQksNg01sH+Wzi0SHUbla6WiWqM9PQqY8u5gPQ=;
+	b=umgXeC4iOmTTUmV1dgALJ1ehGtwZMRzyy5BnORN5sMRzYtGwm0HMdNSsHwch/tGMCaku8n
+	sk6Bwb2/zSPUaQ5/U6NNehRKMmp9dWKn5hbo3LvjhlYfxZXdkHXhAul2fdzNj+05/dFS44
+	5hmrIOxY3+0Bm34ctJce1niJIgeLSpuFgu4joCEPNRcbp3m84zpCTZp3+G8geKnmNmsbkG
+	CgbXDmhWbkM9XMUt2dyIS127mzFn7RxOCAEvnNvuUEKJ6awgs71bzLtUGF1TD4KmPDH7+z
+	Nx1uxUwPV/PMaqo5+mBo5DXhnDhqFYrD05ydOxbG2tJ0gSr6kQ+yWvIhsm81cQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4cec0879;
+	Wed, 20 Nov 2024 21:28:58 +0000 (UTC)
+Date: Thu, 21 Nov 2024 06:28:43 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Ulrich Teichert <ulrich.teichert@kumkeo.de>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"y0un9n132@gmail.com" <y0un9n132@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
+ 64-bit systems
+Message-ID: <Zz5Ui1lf3cu0bBlN@codewreck.org>
+References: <20240827143838.192435816@linuxfoundation.org>
+ <20240827143844.891898677@linuxfoundation.org>
+ <Zz0_-iJH1WaR3BUZ@codewreck.org>
+ <Zz2JQzi-5pTP_WPx@eldamar.lan>
+ <Zz2YrA740TRgl_13@codewreck.org>
+ <eaf6cfe58733416c928a8ff0d1d1b1ec@kumkeo.de>
+ <202411201000.F3313C02@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/mempolicy: fix migrate_to_node() assuming there is
- at least one VMA in a MM
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com,
- stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@linux.com>
-References: <20241120201151.9518-1-david@redhat.com>
- <lguepu5d2szipdzjid5ccf5m56tdquuo47bzy7ohrjk7fh53q5@6z73dfwdbn4n>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <lguepu5d2szipdzjid5ccf5m56tdquuo47bzy7ohrjk7fh53q5@6z73dfwdbn4n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <202411201000.F3313C02@keescook>
 
-On 20.11.24 21:27, Liam R. Howlett wrote:
-> * David Hildenbrand <david@redhat.com> [241120 15:12]:
->> We currently assume that there is at least one VMA in a MM, which isn't
->> true.
->>
->> So we might end up having find_vma() return NULL, to then de-reference
->> NULL. So properly handle find_vma() returning NULL.
->>
->> This fixes the report:
->>
->> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
->> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->> CPU: 1 UID: 0 PID: 6021 Comm: syz-executor284 Not tainted 6.12.0-rc7-syzkaller-00187-gf868cd251776 #0
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
->> RIP: 0010:migrate_to_node mm/mempolicy.c:1090 [inline]
->> RIP: 0010:do_migrate_pages+0x403/0x6f0 mm/mempolicy.c:1194
->> Code: ...
->> RSP: 0018:ffffc9000375fd08 EFLAGS: 00010246
->> RAX: 0000000000000000 RBX: ffffc9000375fd78 RCX: 0000000000000000
->> RDX: ffff88807e171300 RSI: dffffc0000000000 RDI: ffff88803390c044
->> RBP: ffff88807e171428 R08: 0000000000000014 R09: fffffbfff2039ef1
->> R10: ffffffff901cf78f R11: 0000000000000000 R12: 0000000000000003
->> R13: ffffc9000375fe90 R14: ffffc9000375fe98 R15: ffffc9000375fdf8
->> FS:  00005555919e1380(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
->> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> CR2: 00005555919e1ca8 CR3: 000000007f12a000 CR4: 00000000003526f0
->> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->> Call Trace:
->>   <TASK>
->>   kernel_migrate_pages+0x5b2/0x750 mm/mempolicy.c:1709
->>   __do_sys_migrate_pages mm/mempolicy.c:1727 [inline]
->>   __se_sys_migrate_pages mm/mempolicy.c:1723 [inline]
->>   __x64_sys_migrate_pages+0x96/0x100 mm/mempolicy.c:1723
->>   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->>   do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
->>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->>
->> Fixes: 39743889aaf7 ("[PATCH] Swap Migration V5: sys_migrate_pages interface")
->> Reported-by: syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com
->> Closes: https://lore.kernel.org/lkml/673d2696.050a0220.3c9d61.012f.GAE@google.com/T/
->> Cc: <stable@vger.kernel.org>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Christoph Lameter <cl@linux.com>
->> Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
+Thank you for the replies,
+
+Kees Cook wrote on Wed, Nov 20, 2024 at 10:08:04AM -0800:
+> It seems like the correct first step is to revert the brk change. It's
+> still not clear to me why the change is causing a problem -- I assume it
+> is colliding with some other program area.
 > 
-> I hate the extra check because syzbot can cause this as this should
-> basically never happen in real life, but it seems we have to add it.
+> Is the problem strictly with qemu-user-static? (i.e. it was GCC running
+> in qemu-user-static so the crash is qemu, not GCC) That should help me
+> narrow down the issue. There must be some built-in assumption. And it's
+> aarch64 within x86_64 where it happens (is the program within qemu also
+> aarch64 or is it arm32)?
 
-I think the reproducer achieves it by doing an MADV_DONTFORK on all VMAs 
-and then fork'ing. Likely it doesn't make sense to have a new MM without 
-any VMAs, because it cannot do anything reasonable.
+As far as I'm aware I've only seen qemu-user-static fail for aarch64
+(e.g. the arm32 variant works fine, didn't try other arches) in this
+particular configuration (the debian bookworm package has been built
+with --static-pie which is known to cause problems)
 
-But then, I'm not 100% sure if there are other creative ways to 
-obtain/achieve the same.
+It's also fixed in newer versions of qemu, even with --static-pie,
+because they reworked the way they detect program mapppins in qemu
+commit dd55885516 ("linux-user: Rewrite non-fixed probe_guest_base")
+and that also fixed the issue (in qemu 8.1.0)
 
-$ git grep "find_vma(mm, 0)"
-mm/mempolicy.c: vma = find_vma(mm, 0);
+So, in short there are many fixes available; it's a qemu bug that
+assumed something about the memory layout and broke with this kaslr
+patch (and for some reason only happened on non-pie static build)
 
-Apart from that there seems to be
-kernel/bpf/task_iter.c where we do
-	curr_vma = find_vma(curr_mm, 0);
 
-and properly check for NULL later.
+mjt will at the very least rebuild the package with pie enabled, because
+it's known to cause other issues with aarch64 and that was an oversight
+in the first place, so this issue will go away for debian without any
+further work.
 
-So this one sticks out, and is not on anything that I consider a fast 
-path ... easy fix. :)
+This is the background behind me saying that this probably should be
+reverted in stable branches (to avoid other surprises with old
+userspace), but master can probably keep this commit if it brings
+tangible security benefits (and I think it does)
 
-Thanks!
+See the debian qemu-side of the bug for details:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087822
 
+
+> Is there an simple reproducer?
+
+Unfortunately I couldn't get it to reproduce easily, but I think it's
+just a matter of finding the right binary that does problematic mappings
+(e.g. running true in a loop didn't work but running gcc in a loop did)
+
+The most reliable reproducer I've been using is building a reasonably
+large program, we were working on modemmanager at the time so that's
+what I used; if usually fails between 100-300/500 of the build:
+----
+$ docker run -ti --rm --platform linux/arm64/v8 docker.io/arm64v8/alpine:3.20 sh
+/ # apk add bash-completion-dev dbus-dev elogind-dev gobject-introspection-dev gtk-doc libgudev-dev libmbim-dev libqmi-dev linux-headers meson vala clang abuild alpine-sdk curl
+/ # curl -O https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/1.22.0/ModemManager-1.22.0.tar.gz
+/ # tar xf ModemManager-1.22.0.tar.gz
+/ # cd ModemManager-1.22.0/
+/ # abuild-meson \
+        -Db_lto=true \
+        -Dsystemdsystemunitdir=no \
+        -Ddbus_policy_dir=/usr/share/dbus-1/system.d \
+        -Dgtk_doc=true \
+        -Dsystemd_journal=false \
+        -Dsystemd_suspend_resume=true \
+        -Dvapi=true \
+        -Dpolkit=no \
+        . output
+/ # meson compile -C output
+----
+
+If you take any of the command that failed from this build and run it in
+a loop, it'll also eventually fail after a couple hundred of
+invocations, but if your loop doesn't involve any parallelism that'll be
+slower to reproduce.
+
+Note it requires qemu to be broken as well, so you'll have best chances
+with a debian bookworm (VM is fine; a chroot or podman instead of docker
+is also fine; in the chroot case ninja requires at least /dev (and
+possibly /proc) mounted)
+
+
+Thanks,
 -- 
-Cheers,
-
-David / dhildenb
-
+Dominique Martinet | Asmadeus
 
