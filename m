@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-94242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C449D3BAD
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C48A89D3B66
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278DC284141
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F44CB22040
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3363D1C1F11;
-	Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241941AE864;
+	Wed, 20 Nov 2024 12:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuQt/pkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO1wafMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70BD1A7262;
-	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61511A706F;
+	Wed, 20 Nov 2024 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107582; cv=none; b=dQVALRYc+e1BHFMIQPRao804wmzWKnq6Z3xhwA0c1ZeUNaqBg18ZRE8qouQo6oVBnxk73UEfJ72N5c418cfGfNGA0OCE1zlVHx9IhJ2XleEgDOTS6GPH74+jidfmicXv81bmSZXWE9VVbTHmKWXZ+8GxW4M9vIa/+oKhkS9cEfE=
+	t=1732107526; cv=none; b=qykk6tbnAcM2wrDGqluADLgRoVlSMh3Hg0LuRFwT6mB1fgX0PDr3JFnHlNTz2y3BazZAlC+eJEtM75PxnoJRW/wyOnPHNniR74ad6M9NuVKC/ZSiU3bjEIDF53iKDIpdtfwKkYGaJvR9f34KSeKjlu9dphs/3jtz4Trwx5OGOos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107582; c=relaxed/simple;
-	bh=i6jPMdquwlpoQ1yiEG6F/GuxOrhYi3bpVfGIk7bWZeA=;
+	s=arc-20240116; t=1732107526; c=relaxed/simple;
+	bh=2M96kvo5Ae3JFPdGjdJ9aKmatyVzO5h6cJznkGNiYno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQS/l9y6bLbdRdFQTMIczNVQRHwQ+W1p4JuSWPkUJBt+EtKET0aMyvaQGfM9x+lctQKluVvD83m3aznFuL0QXLYm0AMs82JEmDE7V6WlPtugaunIjdfg70VekyUoaLLRH8i7FE6PZnUslJjrCPdjgJNzdZ72j4/0PxA0F9o1R9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuQt/pkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB64FC4CECD;
-	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
+	 MIME-Version; b=mj5BRYoZUQ1JKYMcsSwHgizNgJ+v+w8DqY4u83z7Ie2rMhgTovKyKRAXeALCqhUHacT66tzTP1Sw+NiP13hWfXQwV0LNmSAwS5bf9jDBKymVLW7U0xZsJ4Gvv9vWFeU9VneSMwkJzD/XNlMdzTJBhcWaDDfnoOQndSjvlA1T2DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PO1wafMH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBC3C4CECD;
+	Wed, 20 Nov 2024 12:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107581;
-	bh=i6jPMdquwlpoQ1yiEG6F/GuxOrhYi3bpVfGIk7bWZeA=;
+	s=korg; t=1732107526;
+	bh=2M96kvo5Ae3JFPdGjdJ9aKmatyVzO5h6cJznkGNiYno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuQt/pkXqUxQM8gUWCacy2Yi6X+W40t3KkKOtgnPFPmSiPH7d5t02qW0oeWvI38Bq
-	 35Azr9/ELlWSHpyy51o7Z/hZ647idt5uPcp13FL0L0RLC8Cr9i/v4FY/xJ24ygmO6x
-	 fvtAph/ysYkh2Ksdc9t2/ELGo8Y27d64sfgWjuSY=
+	b=PO1wafMHeD2Bp2EFISBjQ9k+G5XLu6zUmIK2JVMsNkxHkP750dDBF37W03aiRoDjn
+	 IqTevLUizMs17Qe8Mb1U4ZvEswk5pcwZEKw1vGSlZeEAQkRWDkRSOqWhJkaroIIOLj
+	 O/fAIaSnfB1ybszfVq+jgQNaj2Z6mpf5gNAFKdF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/82] stmmac: dwmac-intel-plat: fix call balance of tx_clk handling routines
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Ubisectech Sirius <bugreport@valiantsec.com>,
+	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 058/107] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
 Date: Wed, 20 Nov 2024 13:56:33 +0100
-Message-ID: <20241120125630.131656879@linuxfoundation.org>
+Message-ID: <20241120125630.986793208@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 5b366eae71937ae7412365340b431064625f9617 ]
+commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
 
-If the clock dwmac->tx_clk was not enabled in intel_eth_plat_probe,
-it should not be disabled in any path.
+Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
 
-Conversely, if it was enabled in intel_eth_plat_probe, it must be disabled
-in all error paths to ensure proper cleanup.
+This series fixes null pointer dereference bugs that occur when using
+nilfs2 and two block-related tracepoints.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-Fixes: 9efc9b2b04c7 ("net: stmmac: Add dwmac-intel-plat for GBE driver")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Link: https://patch.msgid.link/20241108173334.2973603-1-mordan@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch (of 2):
+
+It has been reported that when using "block:block_touch_buffer"
+tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
+NULL pointer dereference, or a general protection fault when KASAN is
+enabled.
+
+This happens because since the tracepoint was added in touch_buffer(), it
+references the dev_t member bh->b_bdev->bd_dev regardless of whether the
+buffer head has a pointer to a block_device structure.  In the current
+implementation, the block_device structure is set after the function
+returns to the caller.
+
+Here, touch_buffer() is used to mark the folio/page that owns the buffer
+head as accessed, but the common search helper for folio/page used by the
+caller function was optimized to mark the folio/page as accessed when it
+was reimplemented a long time ago, eliminating the need to call
+touch_buffer() here in the first place.
+
+So this solves the issue by eliminating the touch_buffer() call itself.
+
+Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
+Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
+Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
+Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
+Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../stmicro/stmmac/dwmac-intel-plat.c         | 25 +++++++++++++------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ fs/nilfs2/page.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-index 70edc5232379f..134f6506df99a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-@@ -111,7 +111,12 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 			if (IS_ERR(dwmac->tx_clk))
- 				return PTR_ERR(dwmac->tx_clk);
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -39,7 +39,6 @@ static struct buffer_head *__nilfs_get_f
+ 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
+ 	bh = get_nth_bh(bh, block - first_block);
  
--			clk_prepare_enable(dwmac->tx_clk);
-+			ret = clk_prepare_enable(dwmac->tx_clk);
-+			if (ret) {
-+				dev_err(&pdev->dev,
-+					"Failed to enable tx_clk\n");
-+				return ret;
-+			}
- 
- 			/* Check and configure TX clock rate */
- 			rate = clk_get_rate(dwmac->tx_clk);
-@@ -122,7 +127,7 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 				if (ret) {
- 					dev_err(&pdev->dev,
- 						"Failed to set tx_clk\n");
--					return ret;
-+					goto err_tx_clk_disable;
- 				}
- 			}
- 		}
-@@ -136,7 +141,7 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 			if (ret) {
- 				dev_err(&pdev->dev,
- 					"Failed to set clk_ptp_ref\n");
--				return ret;
-+				goto err_tx_clk_disable;
- 			}
- 		}
- 	}
-@@ -152,12 +157,15 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
--	if (ret) {
--		clk_disable_unprepare(dwmac->tx_clk);
--		return ret;
--	}
-+	if (ret)
-+		goto err_tx_clk_disable;
- 
- 	return 0;
-+
-+err_tx_clk_disable:
-+	if (dwmac->data->tx_clk_en)
-+		clk_disable_unprepare(dwmac->tx_clk);
-+	return ret;
+-	touch_buffer(bh);
+ 	wait_on_buffer(bh);
+ 	return bh;
  }
- 
- static void intel_eth_plat_remove(struct platform_device *pdev)
-@@ -165,7 +173,8 @@ static void intel_eth_plat_remove(struct platform_device *pdev)
- 	struct intel_dwmac *dwmac = get_stmmac_bsp_priv(&pdev->dev);
- 
- 	stmmac_pltfr_remove(pdev);
--	clk_disable_unprepare(dwmac->tx_clk);
-+	if (dwmac->data->tx_clk_en)
-+		clk_disable_unprepare(dwmac->tx_clk);
- }
- 
- static struct platform_driver intel_eth_plat_driver = {
--- 
-2.43.0
-
 
 
 
