@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-94268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25F29D3BD1
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0E29D3B80
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7C51F2264C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E431F220A4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831E1C68BD;
-	Wed, 20 Nov 2024 13:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E171B6541;
+	Wed, 20 Nov 2024 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYs+yUmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmvoc/D6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FFC1C4A24;
-	Wed, 20 Nov 2024 13:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1851A9B5A;
+	Wed, 20 Nov 2024 12:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107601; cv=none; b=Y9rKqAgaoZ3oC/loi5Yq5CNzUVpCDESEPkVD8L20+BSXdFA9I6bSviJKtF2fTgPQaWluDQOKe9MPE+XgzsnMp+VwWDVCRc+RHgtnMx8z1wrMPS+5ws22rSJV8kq3Ph1E7SIHh5NNSTU/Z9YL8vyPmZbgHWHwE1SqtAfGYsf6kb0=
+	t=1732107546; cv=none; b=JL/skg0uOvTPOh9HT4KB75xvOYvr7wh2xCVtBtasW63JqhwZVUTkOAWpnVlr1ZEM+SbUKN7Jn7QI7y6+aoSazIXoRYKc1bUz2dnH1/deV019/ctNzH3h64OQM7+GL50PlA1sukFvtAMNDkfnuAKCip8f8Oiw12IRI9xiW9/8Vi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107601; c=relaxed/simple;
-	bh=OuHpIowSIJGbTTxftgDSCNwWO5L2y4KtgYo1LaH3OaU=;
+	s=arc-20240116; t=1732107546; c=relaxed/simple;
+	bh=3k+sMIyyINBVFg/3O15eqRqPgPhMex8NkWJmaiE7KMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxKkg5Bv2UAH3Hw4iosQTOomk2YNyhG6OFB8v5nk6bnO16IGJVlexKKwkp3X4ABHym26iI8p7lyrTxD6K59JZlEfZMuT0eYDZuaA1qUun2L04cZGvBwQIb1RneuXzsK4x++8GwYKW/EdaFQzxxz6UKv2WwZs6oaj1TP8QCl9xhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYs+yUmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07807C4CECD;
-	Wed, 20 Nov 2024 13:00:01 +0000 (UTC)
+	 MIME-Version; b=mL9imEsPafFQbtiISwtj3OfRH4IV5A7cauMX+2nurzpOZGE2jia5sWGVScA9/T9k0FZqEwnJURaQBuch5upfoCwcob3+iiw9NLl/OX3XBl1emTsRczU7uiFtAxVy7pg5GMEahiNoMoeL38qfkaY44yod3BgCWujhfxEZJ3Bv1qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmvoc/D6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D06C4CECD;
+	Wed, 20 Nov 2024 12:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107601;
-	bh=OuHpIowSIJGbTTxftgDSCNwWO5L2y4KtgYo1LaH3OaU=;
+	s=korg; t=1732107546;
+	bh=3k+sMIyyINBVFg/3O15eqRqPgPhMex8NkWJmaiE7KMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYs+yUmpQ4fumZ9FJuroNiUhlgDMuVGPvgLpPxV+jWJf5C3xH4MG4OpVWXer2NZ+8
-	 YYjK7p7/fXOcyI+MlE2yxS1iFCfr+dotA1dvXcw6T4Pmy9zgJR1dVV8sF8K1uaDFHD
-	 CLWs5CPwu5uc9Aal4vT7DCNeIz4Zwh+vDXbb1hv8=
+	b=mmvoc/D6Zyzrod4dxyH1rVzg2jVSBSCdnlXVmKSxWrDwRCLC1X7Y6Bf6g+OrETT6/
+	 mhtvBxQzvcQGFs841ed4gGl3CO5Z8o+NHKTelmMRYx6gJo+QhmGG4urKKDrFcbyf+f
+	 vjGuoYXsoVvTjWasmMJsgqt9+pqsgCuiXkOzFAnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 50/82] drm/bridge: tc358768: Fix DSI command tx
+	John Harrison <john.c.harrison@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 085/107] drm/xe/oa: Fix "Missing outer runtime PM protection" warning
 Date: Wed, 20 Nov 2024 13:57:00 +0100
-Message-ID: <20241120125630.737194029@linuxfoundation.org>
+Message-ID: <20241120125631.612610728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 32c4514455b2b8fde506f8c0962f15c7e4c26f1d upstream.
+commit c0403e4ceecaefbeaf78263dffcd3e3f06a19f6b upstream.
 
-Wait for the command transmission to be completed in the DSI transfer
-function polling for the dc_start bit to go back to idle state after the
-transmission is started.
+Fix the following drm_WARN:
 
-This is documented in the datasheet and failures to do so lead to
-commands corruption.
+[953.586396] xe 0000:00:02.0: [drm] Missing outer runtime PM protection
+...
+<4> [953.587090]  ? xe_pm_runtime_get_noresume+0x8d/0xa0 [xe]
+<4> [953.587208]  guc_exec_queue_add_msg+0x28/0x130 [xe]
+<4> [953.587319]  guc_exec_queue_fini+0x3a/0x40 [xe]
+<4> [953.587425]  xe_exec_queue_destroy+0xb3/0xf0 [xe]
+<4> [953.587515]  xe_oa_release+0x9c/0xc0 [xe]
 
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
+Suggested-by: John Harrison <john.c.harrison@intel.com>
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Fixes: e936f885f1e9 ("drm/xe/oa/uapi: Expose OA stream fd")
 Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240926141246.48282-1-francesco@dolcini.it
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926141246.48282-1-francesco@dolcini.it
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241109032003.3093811-1-ashutosh.dixit@intel.com
+(cherry picked from commit b107c63d2953907908fd0cafb0e543b3c3167b75)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -125,6 +125,9 @@
- #define TC358768_DSI_CONFW_MODE_CLR	(6 << 29)
- #define TC358768_DSI_CONFW_ADDR_DSI_CONTROL	(0x3 << 24)
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 2804f14f8f29..78823f53d290 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -1206,9 +1206,11 @@ static int xe_oa_release(struct inode *inode, struct file *file)
+ 	struct xe_oa_stream *stream = file->private_data;
+ 	struct xe_gt *gt = stream->gt;
  
-+/* TC358768_DSICMD_TX (0x0600) register */
-+#define TC358768_DSI_CMDTX_DC_START	BIT(0)
-+
- static const char * const tc358768_supplies[] = {
- 	"vddc", "vddmipi", "vddio"
- };
-@@ -229,6 +232,21 @@ static void tc358768_update_bits(struct
- 		tc358768_write(priv, reg, tmp);
- }
++	xe_pm_runtime_get(gt_to_xe(gt));
+ 	mutex_lock(&gt->oa.gt_lock);
+ 	xe_oa_destroy_locked(stream);
+ 	mutex_unlock(&gt->oa.gt_lock);
++	xe_pm_runtime_put(gt_to_xe(gt));
  
-+static void tc358768_dsicmd_tx(struct tc358768_priv *priv)
-+{
-+	u32 val;
-+
-+	/* start transfer */
-+	tc358768_write(priv, TC358768_DSICMD_TX, TC358768_DSI_CMDTX_DC_START);
-+	if (priv->error)
-+		return;
-+
-+	/* wait transfer completion */
-+	priv->error = regmap_read_poll_timeout(priv->regmap, TC358768_DSICMD_TX, val,
-+					       (val & TC358768_DSI_CMDTX_DC_START) == 0,
-+					       100, 100000);
-+}
-+
- static int tc358768_sw_reset(struct tc358768_priv *priv)
- {
- 	/* Assert Reset */
-@@ -516,8 +534,7 @@ static ssize_t tc358768_dsi_host_transfe
- 		}
- 	}
- 
--	/* start transfer */
--	tc358768_write(priv, TC358768_DSICMD_TX, 1);
-+	tc358768_dsicmd_tx(priv);
- 
- 	ret = tc358768_clear_error(priv);
- 	if (ret)
+ 	/* Release the reference the OA stream kept on the driver */
+ 	drm_dev_put(&gt_to_xe(gt)->drm);
+-- 
+2.47.0
+
 
 
 
