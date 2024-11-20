@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-94205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE6B9D3B8B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572F39D3BE6
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A261B28386D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EDC1F23C60
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3861AB513;
-	Wed, 20 Nov 2024 12:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE371AAE2B;
+	Wed, 20 Nov 2024 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDOcaTGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIk0FsjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B81AA1C3;
-	Wed, 20 Nov 2024 12:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECC91B5821;
+	Wed, 20 Nov 2024 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107554; cv=none; b=ZmJ9UYBfWPlk5tIpThz2JtotBohAsNRyZUb/Vwp80TThrqEB3Nlg/+GvwypxLNmFAQ1YMqm7HJTqZiL8fEHIRrSEzb7+AGfwUc0blqksFh1fBHLet+MLS26uegGbLqSr3Y9r0ScG0VRP/M+k7EooL7gmMJutkW5bA8gcaCYzfcg=
+	t=1732107624; cv=none; b=E//GNm9H8hnYfMNJiPIcNX/7FERi6y58vipOJMh+02mocx4zzXLebIj0jT5EO5e/nEB6OyfFmcgL6x/1U3uQ9so68fBpHkDRqds5WuLcDKB1GQ/PC3SrHPzsGwtDRHM9fbnxOENsOGPg0My60DPBPVaIWxk86ZPq/NzFvSYWzvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107554; c=relaxed/simple;
-	bh=g/HJMmyTWSxwgu4pQTr0UUSeDMvkHpN7ipt+zgzlOS0=;
+	s=arc-20240116; t=1732107624; c=relaxed/simple;
+	bh=uBctpCBxbv73vOzSz3BSu7n4b5JhAkkba+v6N/P2toc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJipui5npM1ltbOeNDaxnmmB3korZE2fOUbpQD7a7qacaBQDOqQxxTH/mhOuXNh1+L/8ILNWsNofJ6n3kUcueHWrDmRb5LiiUzmc6FVFxyD8PWQhO5HBy/Q5V9Natdxn9t0dbkX6lLsCu59L93M+UI9yl2IdzN407FTZuv26CEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDOcaTGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDE5C4CECD;
-	Wed, 20 Nov 2024 12:59:13 +0000 (UTC)
+	 MIME-Version; b=GGneerAFKNUxjas8SI16RxsOsV9alovBmujPy7LSdKH79AEByCLIk44OzJZgmXHfY4Vcjv0s4mqy/6TGA35qK4Tt7lOtOqRlPo6UYcbc0ilD76KalBeRPY7JLJZs3tYahyPBPGFv54nrzHRVVYuvEOQQrSV6JBBOP9zqFmgMGcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIk0FsjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC57C4CECD;
+	Wed, 20 Nov 2024 13:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107553;
-	bh=g/HJMmyTWSxwgu4pQTr0UUSeDMvkHpN7ipt+zgzlOS0=;
+	s=korg; t=1732107624;
+	bh=uBctpCBxbv73vOzSz3BSu7n4b5JhAkkba+v6N/P2toc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDOcaTGtevJDdeGgYgT2s6ok+I4wQYsG3uYfD2eoHBdBVVieL+m9RG7Amb7pOLgJR
-	 Rj2S15bhme2ovmhYvjIgtqdFCwGXJBRz0E/NbbPH4EvmwXCtk1r69Q23qM+A0vexo5
-	 chiqAFRROUduT5uVUOt+oqZ4RXYGg8M87nNhuKNc=
+	b=NIk0FsjHEybroazY1fF6HLNukc8qMykTRSY5wsDH+tmEyY4fv8G9XG3SX2I3GFbcd
+	 bG4G+Dl9Zos+RTEYF51PBLTyhfGMbfZBrSNoWnMrCgpm8yHX6ULzihB2kCWv2vtyCe
+	 RZwoS1RlODE3xoleMO3U/uoV207O2jwo7ZQkLcTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	aurabindo.pillai@amd.com,
-	hamishclaxton@gmail.com
-Subject: [PATCH 6.11 077/107] Revert "drm/amd/display: parse umc_info or vram_info based on ASIC"
+	Maksym Glubokiy <maxgl.kernel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 42/82] ALSA: hda/realtek: fix mute/micmute LEDs for a HP EliteBook 645 G10
 Date: Wed, 20 Nov 2024 13:56:52 +0100
-Message-ID: <20241120125631.415135645@linuxfoundation.org>
+Message-ID: <20241120125630.560266787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Maksym Glubokiy <maxgl.kernel@gmail.com>
 
-commit 5f77ee21eb44e37e371bcea195ea9403b95d1399 upstream.
+commit 96409eeab8cdd394e03ec494ea9547edc27f7ab4 upstream.
 
-This reverts commit 694c79769cb384bca8b1ec1d1e84156e726bd106.
+HP EliteBook 645 G10 uses ALC236 codec and need the
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make mute LED and
+micmute LED work.
 
-This was not the root cause.  Revert.
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: aurabindo.pillai@amd.com
-Cc: hamishclaxton@gmail.com
-(cherry picked from commit 3c2296b1eec55b50c64509ba15406142d4a958dc)
-Cc: stable@vger.kernel.org # 6.11.x
+Signed-off-by: Maksym Glubokiy <maxgl.kernel@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241112154815.10888-1-maxgl.kernel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -3127,9 +3127,7 @@ static enum bp_result bios_parser_get_vr
- 	struct atom_data_revision revision;
- 
- 	// vram info moved to umc_info for DCN4x
--	if (dcb->ctx->dce_version >= DCN_VERSION_4_01 &&
--		dcb->ctx->dce_version < DCN_VERSION_MAX &&
--		info && DATA_TABLES(umc_info)) {
-+	if (info && DATA_TABLES(umc_info)) {
- 		header = GET_IMAGE(struct atom_common_table_header,
- 					DATA_TABLES(umc_info));
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9996,6 +9996,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin Client U89", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8b5f, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b65, "HP ProBook 455 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b66, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
 
 
 
