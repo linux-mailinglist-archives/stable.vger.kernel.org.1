@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-94186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C9A9D3B77
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430349D3BBA
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9856F283AE5
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7FB3B29B6C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9101AA794;
-	Wed, 20 Nov 2024 12:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E15B19F43A;
+	Wed, 20 Nov 2024 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQkecq31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N5xR1Xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB031DFEF;
-	Wed, 20 Nov 2024 12:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF361AA1E6;
+	Wed, 20 Nov 2024 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107540; cv=none; b=k1mSEEVMAJvrAoqyYIWK6mOHhHYb/+2Ij2ccKmXr1CRjetWYiJDo709hCCfTjI5hh2TZ7eZHHGFktqlrgadN+Rj+1q3bXdvJbse5yal3xedk5MSUw99nSB8REQfTuayXzORaWd806Sqt1WLggTwBbH642egeVx4EJnujVQ6k6jQ=
+	t=1732107587; cv=none; b=QMSW56oy3muXM5z5RU/OS4gp9cXTXcYqQtvxCsMWkXCZhiJQsEGDowy4CfVq0bHE6MVe1e0ycmIOgkHLs7ItvZQaymK3EwNGjS1AKJ/fPi2GH4l/tv/PnudJgTnkKnGn/E82/zt3KZmz6r44rK/BjLHQyrDL8xMTwcUCYUvHC2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107540; c=relaxed/simple;
-	bh=jD+cvABDb8sAX/pQ5jKk6vbjjiH2aLSpuhlgCEMECXI=;
+	s=arc-20240116; t=1732107587; c=relaxed/simple;
+	bh=UqdDIT162igGTqMlcBP5NUskahxV0/4lOu7admy2o7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4WyChCSK1lZZxkyUln2tBP+HY1S8lwBLokkbbuG6CSWgYh//Iq2+A+MTjQDsGdpa4hMWM59ObFJ28EjnOI+mp8dDymK2q3DHJhMYlf69RaE7snmjvaW65VKa3FBT1Pb48gYIQGTrTg3uYrxo+RPtRGClbsYK6+2H7+H79kpoBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQkecq31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046BEC4CED1;
-	Wed, 20 Nov 2024 12:58:59 +0000 (UTC)
+	 MIME-Version; b=V8t9YWVMsqzCjG9hAaHHI0Uko3U66ioyH/KZUbG+OVSxx8mjTljVwFRat37eLLuETURwvwp2uohjJgRV/RPqG2fZsAzhuwB7naHXwoqaYgeNw1xY1CgXD/mw1Fqkqgwm8rHQ1TNqyT/63cLJbIoffU6WgTsSQ8OC0Hfvuq4WjW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2N5xR1Xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE6FC4CECD;
+	Wed, 20 Nov 2024 12:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107540;
-	bh=jD+cvABDb8sAX/pQ5jKk6vbjjiH2aLSpuhlgCEMECXI=;
+	s=korg; t=1732107587;
+	bh=UqdDIT162igGTqMlcBP5NUskahxV0/4lOu7admy2o7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQkecq31gOjfdrVaqXQJGEE4/mhIOiqQIAedOEvWgXY+vna/S6FksT34NZoe4PuaC
-	 /2DMDMW90m4HH4/b2KgjfWBK1zzcuZikVC9DTZ2DQ09kVrnYcwbn/EoP8M7+VpmEON
-	 tt009Yx1lMQvaoOQMkA8w0nYdSuYoeoClNys+TFc=
+	b=2N5xR1XxNJG2XhEamT9nEaDK5NEWbvxyXus8Ve+cr+/uyiXYj4rLsrGjpwlBrh1/d
+	 BuMXgNT6dA3B258ahbTNB0ewTE15bfgCkKPTTY07qsmxbYp24WW7alQR1XCKGcDp96
+	 Cx5lehTWXy2LO0+XaIoIvVhWG/DXJtmqQBsgZPVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Hickey <bugfood-c@fatooh.org>,
-	James Courtier-Dutton <james.dutton@gmail.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 038/107] drm/amd/display: Fix Panel Replay not update screen correctly
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 03/82] net: vertexcom: mse102x: Fix tx_bytes calculation
 Date: Wed, 20 Nov 2024 13:56:13 +0100
-Message-ID: <20241120125630.538701046@linuxfoundation.org>
+Message-ID: <20241120125629.698677457@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,190 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit bd8a9576617439bdc907c9ce0875909aea4221cb upstream.
+[ Upstream commit e68da664d379f352d41d7955712c44e0a738e4ab ]
 
-[Why]
-In certain use case such as KDE login screen, there will be no atomic
-commit while do the frame update.
-If the Panel Replay enabled, it will cause the screen not updated and
-looks like system hang.
+The tx_bytes should consider the actual size of the Ethernet frames
+without the SPI encapsulation. But we still need to take care of
+Ethernet padding.
 
-[How]
-Delay few atomic commits before enabled the Panel Replay just like PSR.
-
-Fixes: be64336307a6c ("drm/amd/display: Re-enable panel replay feature")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3686
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3682
-Tested-By: Corey Hickey <bugfood-c@fatooh.org>
-Tested-By: James Courtier-Dutton <james.dutton@gmail.com>
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ca628f0eddd73adfccfcc06b2a55d915bca4a342)
-Cc: stable@vger.kernel.org # 6.11+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20241108114343.6174-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |  111 ++++++++---------
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |    5 
- 2 files changed, 59 insertions(+), 57 deletions(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8830,6 +8830,56 @@ static void amdgpu_dm_update_cursor(stru
- 	}
- }
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index dd766e175f7db..8f67c39f479ee 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -437,13 +437,15 @@ static void mse102x_tx_work(struct work_struct *work)
+ 	mse = &mses->mse102x;
  
-+static void amdgpu_dm_enable_self_refresh(struct amdgpu_crtc *acrtc_attach,
-+					  const struct dm_crtc_state *acrtc_state,
-+					  const u64 current_ts)
-+{
-+	struct psr_settings *psr = &acrtc_state->stream->link->psr_settings;
-+	struct replay_settings *pr = &acrtc_state->stream->link->replay_settings;
-+	struct amdgpu_dm_connector *aconn =
-+		(struct amdgpu_dm_connector *)acrtc_state->stream->dm_stream_context;
+ 	while ((txb = skb_dequeue(&mse->txq))) {
++		unsigned int len = max_t(unsigned int, txb->len, ETH_ZLEN);
 +
-+	if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
-+		if (pr->config.replay_supported && !pr->replay_feature_enabled)
-+			amdgpu_dm_link_setup_replay(acrtc_state->stream->link, aconn);
-+		else if (psr->psr_version != DC_PSR_VERSION_UNSUPPORTED &&
-+			     !psr->psr_feature_enabled)
-+			if (!aconn->disallow_edp_enter_psr)
-+				amdgpu_dm_link_setup_psr(acrtc_state->stream);
-+	}
-+
-+	/* Decrement skip count when SR is enabled and we're doing fast updates. */
-+	if (acrtc_state->update_type == UPDATE_TYPE_FAST &&
-+	    (psr->psr_feature_enabled || pr->config.replay_supported)) {
-+		if (aconn->sr_skip_count > 0)
-+			aconn->sr_skip_count--;
-+
-+		/* Allow SR when skip count is 0. */
-+		acrtc_attach->dm_irq_params.allow_sr_entry = !aconn->sr_skip_count;
-+
-+		/*
-+		 * If sink supports PSR SU/Panel Replay, there is no need to rely on
-+		 * a vblank event disable request to enable PSR/RP. PSR SU/RP
-+		 * can be enabled immediately once OS demonstrates an
-+		 * adequate number of fast atomic commits to notify KMD
-+		 * of update events. See `vblank_control_worker()`.
-+		 */
-+		if (acrtc_attach->dm_irq_params.allow_sr_entry &&
-+#ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
-+		    !amdgpu_dm_crc_window_is_activated(acrtc_state->base.crtc) &&
-+#endif
-+		    (current_ts - psr->psr_dirty_rects_change_timestamp_ns) > 500000000) {
-+			if (pr->replay_feature_enabled && !pr->replay_allow_active)
-+				amdgpu_dm_replay_enable(acrtc_state->stream, true);
-+			if (psr->psr_version >= DC_PSR_VERSION_SU_1 &&
-+			    !psr->psr_allow_active && !aconn->disallow_edp_enter_psr)
-+				amdgpu_dm_psr_enable(acrtc_state->stream);
-+		}
-+	} else {
-+		acrtc_attach->dm_irq_params.allow_sr_entry = false;
-+	}
-+}
-+
- static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 				    struct drm_device *dev,
- 				    struct amdgpu_display_manager *dm,
-@@ -9158,9 +9208,12 @@ static void amdgpu_dm_commit_planes(stru
- 			bundle->stream_update.abm_level = &acrtc_state->abm_level;
+ 		mutex_lock(&mses->lock);
+ 		ret = mse102x_tx_pkt_spi(mse, txb, work_timeout);
+ 		mutex_unlock(&mses->lock);
+ 		if (ret) {
+ 			mse->ndev->stats.tx_dropped++;
+ 		} else {
+-			mse->ndev->stats.tx_bytes += txb->len;
++			mse->ndev->stats.tx_bytes += len;
+ 			mse->ndev->stats.tx_packets++;
+ 		}
  
- 		mutex_lock(&dm->dc_lock);
--		if ((acrtc_state->update_type > UPDATE_TYPE_FAST) &&
--				acrtc_state->stream->link->psr_settings.psr_allow_active)
--			amdgpu_dm_psr_disable(acrtc_state->stream);
-+		if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
-+			if (acrtc_state->stream->link->replay_settings.replay_allow_active)
-+				amdgpu_dm_replay_disable(acrtc_state->stream);
-+			if (acrtc_state->stream->link->psr_settings.psr_allow_active)
-+				amdgpu_dm_psr_disable(acrtc_state->stream);
-+		}
- 		mutex_unlock(&dm->dc_lock);
- 
- 		/*
-@@ -9201,57 +9254,7 @@ static void amdgpu_dm_commit_planes(stru
- 			dm_update_pflip_irq_state(drm_to_adev(dev),
- 						  acrtc_attach);
- 
--		if (acrtc_state->update_type > UPDATE_TYPE_FAST) {
--			if (acrtc_state->stream->link->replay_settings.config.replay_supported &&
--					!acrtc_state->stream->link->replay_settings.replay_feature_enabled) {
--				struct amdgpu_dm_connector *aconn =
--					(struct amdgpu_dm_connector *)acrtc_state->stream->dm_stream_context;
--				amdgpu_dm_link_setup_replay(acrtc_state->stream->link, aconn);
--			} else if (acrtc_state->stream->link->psr_settings.psr_version != DC_PSR_VERSION_UNSUPPORTED &&
--					!acrtc_state->stream->link->psr_settings.psr_feature_enabled) {
--
--				struct amdgpu_dm_connector *aconn = (struct amdgpu_dm_connector *)
--					acrtc_state->stream->dm_stream_context;
--
--				if (!aconn->disallow_edp_enter_psr)
--					amdgpu_dm_link_setup_psr(acrtc_state->stream);
--			}
--		}
--
--		/* Decrement skip count when SR is enabled and we're doing fast updates. */
--		if (acrtc_state->update_type == UPDATE_TYPE_FAST &&
--		    acrtc_state->stream->link->psr_settings.psr_feature_enabled) {
--			struct amdgpu_dm_connector *aconn =
--				(struct amdgpu_dm_connector *)acrtc_state->stream->dm_stream_context;
--
--			if (aconn->sr_skip_count > 0)
--				aconn->sr_skip_count--;
--
--			/* Allow SR when skip count is 0. */
--			acrtc_attach->dm_irq_params.allow_sr_entry = !aconn->sr_skip_count;
--
--			/*
--			 * If sink supports PSR SU/Panel Replay, there is no need to rely on
--			 * a vblank event disable request to enable PSR/RP. PSR SU/RP
--			 * can be enabled immediately once OS demonstrates an
--			 * adequate number of fast atomic commits to notify KMD
--			 * of update events. See `vblank_control_worker()`.
--			 */
--			if (acrtc_state->stream->link->psr_settings.psr_version >= DC_PSR_VERSION_SU_1 &&
--			    acrtc_attach->dm_irq_params.allow_sr_entry &&
--#ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
--			    !amdgpu_dm_crc_window_is_activated(acrtc_state->base.crtc) &&
--#endif
--			    !acrtc_state->stream->link->psr_settings.psr_allow_active &&
--			    !aconn->disallow_edp_enter_psr &&
--			    (timestamp_ns -
--			    acrtc_state->stream->link->psr_settings.psr_dirty_rects_change_timestamp_ns) >
--			    500000000)
--				amdgpu_dm_psr_enable(acrtc_state->stream);
--		} else {
--			acrtc_attach->dm_irq_params.allow_sr_entry = false;
--		}
--
-+		amdgpu_dm_enable_self_refresh(acrtc_attach, acrtc_state, timestamp_ns);
- 		mutex_unlock(&dm->dc_lock);
- 	}
- 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -266,11 +266,10 @@ static void amdgpu_dm_crtc_vblank_contro
- 	 * where the SU region is the full hactive*vactive region. See
- 	 * fill_dc_dirty_rects().
- 	 */
--	if (vblank_work->stream && vblank_work->stream->link) {
-+	if (vblank_work->stream && vblank_work->stream->link && vblank_work->acrtc) {
- 		amdgpu_dm_crtc_set_panel_sr_feature(
- 			vblank_work, vblank_work->enable,
--			vblank_work->acrtc->dm_irq_params.allow_sr_entry ||
--			vblank_work->stream->link->replay_settings.replay_feature_enabled);
-+			vblank_work->acrtc->dm_irq_params.allow_sr_entry);
- 	}
- 
- 	if (dm->active_vblank_irq_count == 0) {
+-- 
+2.43.0
+
 
 
 
