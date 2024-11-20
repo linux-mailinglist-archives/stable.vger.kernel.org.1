@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-94197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F2B9D3B83
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728719D3C44
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50B6D282878
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDD7B2A5EB
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7471B85C1;
-	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1051C7281;
+	Wed, 20 Nov 2024 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzWHoeOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNvbYRxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB411A9B5A;
-	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2C21C7B63;
+	Wed, 20 Nov 2024 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107548; cv=none; b=Vqtzhjs52n51Wobd01iB1Br5aEoEcJpyCCAefyLCWjIvMD0awttGL+w9Bt5DnSTtmg/tNZxG8FL+GFXs/UzqmLv3I248DmQPTu9bmZtia0o1Oo6x/8fWRPNq9cFhuEp3zb9A0fkxrq1BA37128xZob4bBEwl6KdJp0VtK9YWwP8=
+	t=1732107603; cv=none; b=XNaSbeIrXmyOf4FD/BkqbIH2z/8ies+UhWtnQ3/o/3YH5xH3C5znVgMPpDzNjnan1sjyUEuaqVHCOW1FOF8eH0skeEVh7U1LCc+Tho/sZjk09pfSirnWHVRvV7rvBqfL2m6pUV+br2+5VoEWLAcbuqnAL2b/6MledpNk60yFCXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107548; c=relaxed/simple;
-	bh=p6tgGSMsTkr79QyczEF27tdKyWbd8KJGGrkiHb5V08s=;
+	s=arc-20240116; t=1732107603; c=relaxed/simple;
+	bh=j2Kdf1KkKWxLUumArBbboCwyjHNixrHnIeOFcCUX1xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reu61PqJ0/TGCYcY94i2b+D5UtRYTdBsKKrIdJRBkbvNsgldeYzz4vtQzXFpveFTO5rD4H8C72OzPMZ9lo3yJOk/HGGqYL2lqHqn9nUDXkWbFA48SjBq1bRXtK9WcfR+xzLNm9lsGpvkds+J/vf55ybAP5G/JcSvHMtP0lLtuwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzWHoeOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F6C4CED6;
-	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
+	 MIME-Version; b=ZEaRlzSPfNOggmd6DkBkyWM9axIcFBqA1NHZfqGtEw+u8aQeMvRYDS7ag4A7fI3WLsm31C81Ebz+JDLAm613TsGJijaTevgE8z3mLr38pHbQdX9oK8mvdLWd71taxoMJWnRfBg62f0HBS9ZFDoiw6n+St+h0e1TE3Mdtm6rxEsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNvbYRxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13580C4CED1;
+	Wed, 20 Nov 2024 13:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107548;
-	bh=p6tgGSMsTkr79QyczEF27tdKyWbd8KJGGrkiHb5V08s=;
+	s=korg; t=1732107603;
+	bh=j2Kdf1KkKWxLUumArBbboCwyjHNixrHnIeOFcCUX1xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzWHoeOzFx4TyWAPT6sOlwflslQNfcZZZR1zRGtDnkTe6iqx2hsacMX5F/TUd8MJi
-	 o1y4SGFZwY833qxCd0+kty8WuLvlmHvv0uhlJGh47uq0zevOxCal7RDk7oesHkY8jY
-	 VrHSw4yLnuciy1EoXRCgR3vNjQTd7zEdkpedRsv4=
+	b=qNvbYRxQwU4htyjdLnsNGwPv0NcvTnOlV6USGCpztDAzaZ/IjETrHZI31Z8nMIdVD
+	 VYENBN2RNprT7el6oc3yXznubLQ28Y4r8zEPRvcCOeTR64QSWlv4XD2Ddfn2zNR1Zx
+	 Iu5JiDAaMhQ5sbruVt+rNiLKZGqR8jbsYeB7qNwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>
-Subject: [PATCH 6.11 087/107] pmdomain: arm: Use FLAG_DEV_NAME_FW to ensure unique names
-Date: Wed, 20 Nov 2024 13:57:02 +0100
-Message-ID: <20241120125631.665728688@linuxfoundation.org>
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 53/82] drm/amd: Fix initialization mistake for NBIO 7.7.0
+Date: Wed, 20 Nov 2024 13:57:03 +0100
+Message-ID: <20241120125630.803962325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit 0bf020344204a2c1067b7562b6a247e6c689e28b upstream.
+commit 7013a8268d311fded6c7a6528fc1de82668e75f6 upstream.
 
-The domain attributes returned by the perf protocol can end up reporting
-identical names across domains, resulting in debugfs node creation failure.
-Use the GENPD_FLAG_DEV_NAME_FW to ensure the genpd providers end up with an
-unique name.
+There is a strapping issue on NBIO 7.7.0 that can lead to spurious PME
+events while in the D0 state.
 
-Logs: [X1E reports 'NCC' for all its scmi perf domains]
-debugfs: Directory 'NCC' with parent 'pm_genpd' already present!
-debugfs: Directory 'NCC' with parent 'pm_genpd' already present!
-
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20241112161142.28974-1-mario.limonciello@amd.com
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 447a54a0f79c9a409ceaa17804bdd2e0206397b9)
 Cc: stable@vger.kernel.org
-Message-ID: <20241030125512.2884761-6-quic_sibis@quicinc.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/arm/scmi_perf_domain.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/pmdomain/arm/scmi_perf_domain.c
-+++ b/drivers/pmdomain/arm/scmi_perf_domain.c
-@@ -125,7 +125,8 @@ static int scmi_perf_domain_probe(struct
- 		scmi_pd->ph = ph;
- 		scmi_pd->genpd.name = scmi_pd->info->name;
- 		scmi_pd->genpd.flags = GENPD_FLAG_ALWAYS_ON |
--				       GENPD_FLAG_OPP_TABLE_FW;
-+				       GENPD_FLAG_OPP_TABLE_FW |
-+				       GENPD_FLAG_DEV_NAME_FW;
- 		scmi_pd->genpd.set_performance_state = scmi_pd_set_perf_state;
- 		scmi_pd->genpd.attach_dev = scmi_pd_attach_dev;
- 		scmi_pd->genpd.detach_dev = scmi_pd_detach_dev;
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
+@@ -247,6 +247,12 @@ static void nbio_v7_7_init_registers(str
+ 	if (def != data)
+ 		WREG32_SOC15(NBIO, 0, regBIF0_PCIE_MST_CTRL_3, data);
+ 
++	switch (adev->ip_versions[NBIO_HWIP][0]) {
++	case IP_VERSION(7, 7, 0):
++		data = RREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4) & ~BIT(23);
++		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4, data);
++		break;
++	}
+ }
+ 
+ static void nbio_v7_7_update_medium_grain_clock_gating(struct amdgpu_device *adev,
 
 
 
