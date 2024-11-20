@@ -1,126 +1,104 @@
-Return-Path: <stable+bounces-94115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0BB9D3B29
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:56:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A809D3B3B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95FD1F22295
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:56:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178301F21B44
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001DA1A4F12;
-	Wed, 20 Nov 2024 12:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6D41A9B5A;
+	Wed, 20 Nov 2024 12:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XjCQoDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyFYkJM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F77D1DFEF;
-	Wed, 20 Nov 2024 12:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89571A4F12;
+	Wed, 20 Nov 2024 12:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107385; cv=none; b=THATyBV341gadCxTA9Uviz/a/I0a7AzRwJZe4puBlpWKQQ17VSOv5AJjy6W89VgEgaq+3KBjPgDSqqBTOkMmDPdxHp1Sy8ARjyWKyovlbzQKAGc0XrbMmxsS2r8q3xXcslOC30AY2lmzeZiM8XRt0eR5qzSiuc29+mWduTONQB8=
+	t=1732107497; cv=none; b=WfdYEdS3s0upV1mjOlknulWCubpR7QL2h+lW5L97kYxq4U/tIKhNMeVphZAd2AYJtkLr8s7r41ySfKrYXPZWVkq3CREK3plwmcZ8lVz7Y/i0ypErSnZwJOj8l3wZF+2xiwHM1FCCnqiXrUerI8YAqCP/EFmfc5uUOoNmecEE/Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107385; c=relaxed/simple;
-	bh=OmmppcBnBAOqTLsXY/hhk6hLRcj/o2lOl3O3Ptzq98A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lJda0DwdrvPLovRQ7/geWtOL3ZWrONTk9dlj1YR3g7WpKVNWVJhrDVQVOxi7zX4op0oOAyQMcXGt6+8roSO8x+TvVP4jcn0Gmz0rIkY2SlsOAdK+ZZlfpAYMu+fAlMX+YM44hFZ0e/xz5PqrDq/SFqHWCzZH9e9h2vS+j9WqIEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XjCQoDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080F7C4CECD;
-	Wed, 20 Nov 2024 12:56:25 +0000 (UTC)
+	s=arc-20240116; t=1732107497; c=relaxed/simple;
+	bh=zRiHoOdZkbZMUVCg6EoUZf3EsG+FlD0SOtvrXyiLgf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gMukfJkph7jHea+L05zXqOTn/zr0zteNt9AjlTvQd9fLTgB58zV0ZlKdx7R6RbpyTzKVSYygWnRbE0JqQPers0OSQsn6kOVom9YdG81rvoeJrIVgtFzLRPdSbuWKvtPr5/Vgt33eLj1tPH9Iknfxu/iLUt7xpOCVNeaNwN5D0jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyFYkJM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAB1C4CECD;
+	Wed, 20 Nov 2024 12:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107385;
-	bh=OmmppcBnBAOqTLsXY/hhk6hLRcj/o2lOl3O3Ptzq98A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=0XjCQoDc2I9a4+Gm77gE7MUMp0nYdSHYqzDXvu80TOE+85N13kUZ6GreAPi1IWxM6
-	 8PN+SHBLOys+oQYVDiM1ogu7v5ki1jcFFwl1905wLuTDWabs0/NxiFlekxNFabdGc2
-	 Y0ggFasCU6y6n246NWLY6xpR8KpRcTLBdEZK25Jw=
+	s=korg; t=1732107497;
+	bh=zRiHoOdZkbZMUVCg6EoUZf3EsG+FlD0SOtvrXyiLgf4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XyFYkJM6ZGedh5qFqV27/TQj0LdWXPUxgrhgt7cQonVO0drjwXUWyoTJ3xnxwoo60
+	 NZlB0MmUvk2HGB4huI1Y8y8rReaF+ZLuCAAxVIrkvBaZaq6VVyL8vMxBICbgH7kzav
+	 Sm+SYHXvhPLBaIKIr1a0bZ79lTKz/Crx4egS1Pjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.12 0/3] 6.12.1-rc1 review
-Date: Wed, 20 Nov 2024 13:55:54 +0100
-Message-ID: <20241120124100.444648273@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 020/107] Bluetooth: hci_core: Fix calling mgmt_device_connected
+Date: Wed, 20 Nov 2024 13:55:55 +0100
+Message-ID: <20241120125630.132903787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.1-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.1-rc1
-X-KernelTest-Deadline: 2024-11-22T12:41+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.12.1 release.
-There are 3 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Fri, 22 Nov 2024 12:40:53 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.1-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-thanks,
+[ Upstream commit 7967dc8f797f454d4f4acec15c7df0cdf4801617 ]
 
-greg k-h
+Since 61a939c68ee0 ("Bluetooth: Queue incoming ACL data until
+BT_CONNECTED state is reached") there is no long the need to call
+mgmt_device_connected as ACL data will be queued until BT_CONNECTED
+state.
 
--------------
-Pseudo-Shortlog of commits:
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219458
+Link: https://github.com/bluez/bluez/issues/1014
+Fixes: 333b4fd11e89 ("Bluetooth: L2CAP: Fix uaf in l2cap_connect")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/bluetooth/hci_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.1-rc1
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 6e07350817bec..eeb4f025ca3bf 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3788,8 +3788,6 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 	hci_dev_lock(hdev);
+ 	conn = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (conn && hci_dev_test_flag(hdev, HCI_MGMT))
+-		mgmt_device_connected(hdev, conn, NULL, 0);
+ 	hci_dev_unlock(hdev);
+ 
+ 	if (conn) {
+-- 
+2.43.0
 
-Liam R. Howlett <Liam.Howlett@Oracle.com>
-    mm/mmap: fix __mmap_region() error handling in rare merge failure case
-
-Benoit Sevens <bsevens@google.com>
-    media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
-
-Hyunwoo Kim <v4bel@theori.io>
-    hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
-
-
--------------
-
-Diffstat:
-
- Makefile                           |  4 ++--
- drivers/media/usb/uvc/uvc_driver.c |  2 +-
- mm/mmap.c                          | 13 ++++++++++++-
- net/vmw_vsock/hyperv_transport.c   |  1 +
- 4 files changed, 16 insertions(+), 4 deletions(-)
 
 
 
