@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-94226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8989D3B9F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A33D9D3C26
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDDA41F225F2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42EDBB2A7E2
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408071BC9F7;
-	Wed, 20 Nov 2024 12:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60F01C8FB7;
+	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVg2g7dz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d40zKLrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F81AB539;
-	Wed, 20 Nov 2024 12:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642991A2567;
+	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107570; cv=none; b=ZYIEWf4xSQid3meTtso86M1hOHwmcF1BRzYfb72tPp+fNBAHFWRzup6nW9kZu9gxlqboVPc4aAmLPEEdHWjmO+cdLYa3JrJkhqaZOBOC9H41XH+gBEiWXQ9gPSncbagDDjQPchAUMjivITFaYM3s6BUaW5nqmkOCGoGOW0gh+oo=
+	t=1732107607; cv=none; b=XfFLn3cY7FQVkRLOqnkR4Et1IAmElRs37iNk1XvRDU9//09Vk/s3fap9N/9ds+7HMzgMxSfovo1uS4iiYzTw5jQnjOWDGtuZnXQQ1pcKlE4Nk2P8xji+8MNE/vk2y2hyhweZcfddveC2cQkPyyUpRbfM6TlUUnOtA1hphoQW/jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107570; c=relaxed/simple;
-	bh=V1c6JubxB/wcbIe5pmyb/SF/rQuuhCnVQWhwzrflgNo=;
+	s=arc-20240116; t=1732107607; c=relaxed/simple;
+	bh=Db+j9w9+vn34e2stwH2tk/8i+ewMNvADcoNHS9CH+1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4gY2AdjX8zsmvY1MNAVjqaaWnErHGpdyf0DCswO5Q5nMiWw9jkv9UwARcFiDTwQ/kcPMtdjCScoQeuuKb+yBPtOZUDz72KUI9+9KC3EOC9wMuhbl82HFgA503XSCV8ytFj8knLQxSxRzSV4u020EmV7EccmAxMgnHBwoN8rJQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVg2g7dz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C165EC4CED2;
-	Wed, 20 Nov 2024 12:59:29 +0000 (UTC)
+	 MIME-Version; b=LGKGFuFbCa338c0qNRgWfa0kuGsxE3Bvsl0/TqPrfLmGMnqnfRuGwtqHIKeX6YPgmuXApcMVE89jD4V7neNPiAMiXgKenoNjQFW9me5nNUJ3vOFPRt2lp0uSOoC/tI2azc7DuZhLye6SlbR069ogJSIUS7Iqq4+LRCdmsz1h4ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d40zKLrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A36BC4CED1;
+	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107569;
-	bh=V1c6JubxB/wcbIe5pmyb/SF/rQuuhCnVQWhwzrflgNo=;
+	s=korg; t=1732107607;
+	bh=Db+j9w9+vn34e2stwH2tk/8i+ewMNvADcoNHS9CH+1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVg2g7dzN7EJ7qxiiARsgdMCyCV3Kg4tMnwMsghBJ4+Njh5H1zt2okB+1YQe2ZHju
-	 atu4IB3XZObYukRqmi3ekbaHRd2Etpqn4iqvmHNtGgTjCznqP1Ltlv8JyGr3VFlFTo
-	 O7lMkHX6B7+duR2Rdqlxh6NGpsp1zHBjyKmJb6lA=
+	b=d40zKLrTqyaPZNny6rVYUlg9U3LQehj0SpW+slVO1q5ETuXJI/gRTaloYQ8JW3UOS
+	 NR8EfMFAq7hNC58n32wOknWhw4Taz1rBCbv62xy6JEEGSb2Mvx9qlZjtrjg8rg7Iwb
+	 R6pLzA7S0sqCRa/NeDnRYCg83jC72zbt3+3+Fy88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.ibm.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <shuah@kernel.org>,
+	Hajime Tazaki <thehajime@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 075/107] selftests: hugetlb_dio: fixup check for initial conditions to skip in the start
+Subject: [PATCH 6.6 40/82] nommu: pass NULL argument to vma_iter_prealloc()
 Date: Wed, 20 Nov 2024 13:56:50 +0100
-Message-ID: <20241120125631.371988303@linuxfoundation.org>
+Message-ID: <20241120125630.516241559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Hajime Tazaki <thehajime@gmail.com>
 
-commit fae1980347bfd23325099b69db6638b94149a94c upstream.
+commit 247d720b2c5d22f7281437fd6054a138256986ba upstream.
 
-This test verifies that a hugepage, used as a user buffer for DIO
-operations, is correctly freed upon unmapping.  To test this, we read the
-count of free hugepages before and after the mmap, DIO, and munmap
-operations, then check if the free hugepage count is the same.
+When deleting a vma entry from a maple tree, it has to pass NULL to
+vma_iter_prealloc() in order to calculate internal state of the tree, but
+it passed a wrong argument.  As a result, nommu kernels crashed upon
+accessing a vma iterator, such as acct_collect() reading the size of vma
+entries after do_munmap().
 
-Reading free hugepages before the test was removed by commit 0268d4579901
-('selftests: hugetlb_dio: check for initial conditions to skip at the
-start'), causing the test to always fail.
+This commit fixes this issue by passing a right argument to the
+preallocation call.
 
-This patch adds back reading the free hugepages before starting the test.
-With this patch, the tests are now passing.
-
-Test results without this patch:
-
-./tools/testing/selftests/mm/hugetlb_dio
-TAP version 13
-1..4
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 1 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 2 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 3 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 4 : Huge pages not freed!
- # Totals: pass:0 fail:4 xfail:0 xpass:0 skip:0 error:0
-
-Test results with this patch:
-
-/tools/testing/selftests/mm/hugetlb_dio
-TAP version 13
-1..4
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 1 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 2 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 3 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 4 : Huge pages freed successfully !
-
-# Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Link: https://lkml.kernel.org/r/20241110064903.23626-1-donettom@linux.ibm.com
-Fixes: 0268d4579901 ("selftests: hugetlb_dio: check for initial conditions to skip in the start")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>
+Link: https://lkml.kernel.org/r/20241108222834.3625217-1-thehajime@gmail.com
+Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/hugetlb_dio.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/nommu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
-index 60001c142ce9..432d5af15e66 100644
---- a/tools/testing/selftests/mm/hugetlb_dio.c
-+++ b/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -44,6 +44,13 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 	if (fd < 0)
- 		ksft_exit_fail_perror("Error opening file\n");
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -584,7 +584,7 @@ static int delete_vma_from_mm(struct vm_
+ 	VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
  
-+	/* Get the free huge pages before allocation */
-+	free_hpage_b = get_free_hugepages();
-+	if (free_hpage_b == 0) {
-+		close(fd);
-+		ksft_exit_skip("No free hugepage, exiting!\n");
-+	}
-+
- 	/* Allocate a hugetlb page */
- 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
- 	if (orig_buffer == MAP_FAILED) {
--- 
-2.47.0
-
+ 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
+-	if (vma_iter_prealloc(&vmi, vma)) {
++	if (vma_iter_prealloc(&vmi, NULL)) {
+ 		pr_warn("Allocation of vma tree for process %d failed\n",
+ 		       current->pid);
+ 		return -ENOMEM;
 
 
 
