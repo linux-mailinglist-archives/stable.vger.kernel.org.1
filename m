@@ -1,119 +1,101 @@
-Return-Path: <stable+bounces-94081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B829D31F9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 02:49:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75C89D320B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 03:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 511791F23690
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 01:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E612281FFB
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 02:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC97450EE;
-	Wed, 20 Nov 2024 01:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8311F6EB7C;
+	Wed, 20 Nov 2024 02:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="cH9LsnSo"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="WtBX6dvO"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8041D555
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 01:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9939ACC;
+	Wed, 20 Nov 2024 02:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732067353; cv=none; b=jZNNb3L/M6Eipx/Beg6BNHXHhhKg1VM0obGgc1XSGB88V6SX388OBYSsq8p6uhry8zDetPxvkYvKFV/R6IWObqMoL23KkmvgR0mUxrXeHodlvbt6WOKGSDdfKNvbdIH2sU4fLKIb6emLC+tqBlB+w6ij24HWgScNj3hcmz+ZxFE=
+	t=1732068534; cv=none; b=N6DjnIWZlF4AXvO8p9jel4lHRwntowazoxRBGmMUrSq8dmb9QPd9ahl+JPPQ/dvGo8lg4G2E3T63VXGdYEQCuPq0xVSHx3dhvsRWtM4xRctYwq1aGX6skAAKBwxAy2F7oBUNhMrtNFNHS9LFaihmteEqd0Drk5kTAbUjxaoQbQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732067353; c=relaxed/simple;
-	bh=EAKpdeyDJm1SlvzUANfvdhriFje3XuVI6ZzJj4LNyi4=;
+	s=arc-20240116; t=1732068534; c=relaxed/simple;
+	bh=0G9xqB8ZIVEdNzw42qgAjYDc6kCXvIHjzIgN5O4aQE8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fmSTClEiODRBuuQcrBRIDSAKtFRakHoL6IVdni/3x9pRZizag5CAdMYWJf1QxT+O7ySg9a7oZ0jDkAa29CucsKD5H3exgB+XNZM5tmTfrI9qPsDOKe4voGjMpolShH5geJDX6wsI43JEhl2jPgyB6J2Sy7EyAdJW1LsuZn4/tEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=cH9LsnSo; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id A318214C1E1;
-	Wed, 20 Nov 2024 02:48:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1732067342;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2PViwLu+dg0P9GG0f2zwqi+Mq2PnJu2tWgniJP7nDrk=;
-	b=cH9LsnSoFs+oB3EWSGWLxMU3U4Kj+0TzfjEb9LXFQXQf1Y+ZHjB0rXbbSTWOJ9rSmVpHeS
-	lze/GqaRKXb9YRnh5THmanqxrPKT6AUlRMeG7CGmWdzlfTDALzRv5zX3+cgCCU82aaXe9S
-	PabVm8VCDJGwiCo74I7AArg6waUpVLGnRm+xWbsUJGpStFPcgtMyepui0e7Wz8tqtNuUQE
-	Vlc4MLgxv9OruY8yRnBkTfg0xmBr/s0FDgMtO5qM1MrgCeFgcCFDC0DqcHsQaA1Fj7fuxQ
-	c9HOOvL8SDJiSN0BaWShU77DQb2TTqCwiHtroZKDWyTJF/w+VeIBUX68WJBT/g==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4cfbaec6;
-	Wed, 20 Nov 2024 01:48:57 +0000 (UTC)
-Date: Wed, 20 Nov 2024 10:48:42 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
- 64-bit systems
-Message-ID: <Zz0_-iJH1WaR3BUZ@codewreck.org>
-References: <20240827143838.192435816@linuxfoundation.org>
- <20240827143844.891898677@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CNPxVFaSj8+cwWRPOGa2r6SLha3BZu98rvDJ2FfwriONmntqieYLLZLyupSz5/eK9uCHu92DShmKsL89Hi0Sj9k4eVhzMkoRTN9K1cAXXzJzL/sS3PtL1EwmDIFWz62MP5DfiPs/GfZnn9b9knzS/RTj1AGX5/ULZCBWLKs+ZtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=WtBX6dvO; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=EoKXj/IRh35Cf3Umy93Mvyit2mCVDr48IlOQcgDFWtg=; b=WtBX6dvOtCrGQUwuFXix9QeM/c
+	Ytl67DmCmHapJUPYFGi1GuZ5CvZykEtPkHskAoyg3RRGeHV8VvhAUNhCwcNW4+2w7H3oomgXY42tV
+	AhXAYqQ8y7MeaKeiNLR/X6uPth2JCpbRn5Lqn75tJEQ55r0V6gWdid915GBchhCCLxy3GezKVoteK
+	V22COoJblqUcBrDsgB+xxZdFTfaQO4SvkW33l6XJp9ddinGAzk9REIZRpEbnDw/KdawqTwgPSd5fo
+	ndiLfg8Jgs9UZKNoKT5+hNoT5+scpgEwz1GrRwHudoibdibVWEYSp75PfjXjf/ORI4DV/AIi505Pp
+	Oax1TzNw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tDa97-0000000H8Sr-0F7f;
+	Wed, 20 Nov 2024 02:08:45 +0000
+Date: Wed, 20 Nov 2024 02:08:45 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Jeongjun Park <aha310510@gmail.com>, brauner@kernel.org, jack@suse.cz,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: prevent data-race due to missing inode_lock when
+ calling vfs_getattr
+Message-ID: <20241120020845.GK3387508@ZenIV>
+References: <20241117165540.GF3387508@ZenIV>
+ <E79FF080-A233-42F6-80EB-543384A0C3AC@gmail.com>
+ <20241118070330.GG3387508@ZenIV>
+ <3pgol63eo77aourqigop3wrub7i3m5rvubusbwb4iy5twldfww@4lhilngahtxg>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240827143844.891898677@linuxfoundation.org>
+In-Reply-To: <3pgol63eo77aourqigop3wrub7i3m5rvubusbwb4iy5twldfww@4lhilngahtxg>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi all,
+On Wed, Nov 20, 2024 at 02:44:17AM +0100, Mateusz Guzik wrote:
 
-this patch introduces a regression in some versions of qemu-aarch64 (at
-least as built by debian):
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087822
-
-It doesn't look like it still is a problem with newer versions of qemu
-so I'm not sure if this should be reverted on master, but it took me a bit
-of time to track this down to this commit as my reproducer isn't great,
-so it might make sense to revert this commit on stable branches?
-
-(I don't remember the policies on "don't break userspace", but qemu-user
-is a bit of a special case here so I'll leave that up to Greg)
-
-
-I've confirmed that this bug occurs on top of the latest v6.1.118 and
-goes away reverting this.
-(I've also checked the problem also occurs on master and reverting the
-patch also works around the issue there at this point)
-
-
-Thank you,
-Dominique.
-
-[leaving subject below for context, no more text after this]
-Greg Kroah-Hartman wrote on Tue, Aug 27, 2024 at 04:38:03PM +0200:
-> From: Kees Cook <keescook@chromium.org>
+> > Pardon me, but I am unable to follow your reasoning.
+> > 
 > 
-> [ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
-> 
-> In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
-> defined to use a 32MB range (13 bits of entropy), but was never increased
-> when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
-> 32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
-> 
-> Update x86_64 to match the entropy used by arm64 and other 64-bit
-> architectures.
-> 
-> Reported-by: y0un9n132@gmail.com
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Acked-by: Jiri Kosina <jkosina@suse.com>
-> Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-> Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> I suspect the argument is that the overhead of issuing a syscall is big
+> enough that the extra cost of taking the lock trip wont be visible, but
+> that's not accurate -- atomics are measurable when added to syscalls,
+> even on modern CPUs.
 
--- 
-Dominique Martinet
+Blocking is even more noticable, and the sucker can be contended.  And not
+just by chmod() et.al. - write() will do it, for example.
+
+> Nonetheless, as an example say an inode is owned by 0:0 and is being
+> chowned to 1:1 and this is handled by setattr_copy.
+> 
+> The ids are updated one after another:
+> [snip]
+>         i_uid_update(idmap, attr, inode);
+>         i_gid_update(idmap, attr, inode);
+> [/snip]
+> 
+> So at least in principle it may be someone issuing getattr in parallel
+> will happen to spot 1:0 (as opposed to 0:0 or 1:1), which was never set
+> on the inode and is merely an artifact of hitting the timing.
+> 
+> This would be a bug, but I don't believe this is serious enough to
+> justify taking the inode lock to get out of. 
+
+If anything, such scenarios would be more interesting for permission checks...
 
