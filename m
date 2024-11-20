@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-94131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9099D3B3C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6E79D3B2C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75332282AB9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92C62B27E84
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5391AA1C8;
-	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EE91A4F09;
+	Wed, 20 Nov 2024 12:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDQT071P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5WMpUJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B48F1A4F12;
-	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AD91DFEF;
+	Wed, 20 Nov 2024 12:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107498; cv=none; b=oInKEfXGYR1e5EBpHJHAOOHj4Zk+RAo96LxJ2BCD3vJoojhvlIUDNfF7fggDo5gWswfk/aFVwJLMiXgbc5ENtKrUh30dnAkBiYp4Sz0ABpb0R0boc5mQfPTbBBBJkSbeCVz0usGgZt7qvf+vdEY7vUSxW3W0UxouhpCILuu63EM=
+	t=1732107393; cv=none; b=ukDEuc3Fftcvo2kMlY6LcQYlPC1fdvL7rPzKMpDVN+uf/PpuCpP5AeHRhkJRc6rxhl+TiPj7ppoy0f4rDP5a0y88Bdd6zQbupBNxwUFuqtkP21AIW7+lLj2xzuwgG40NtTAJ+thZvRdm/xkHUwLx2Id/vtnlVYQOhPn+S75Yq18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107498; c=relaxed/simple;
-	bh=nbmvPW6fFrI5A2ZrqFOUQBZpqF4opBvhh8li251wS00=;
+	s=arc-20240116; t=1732107393; c=relaxed/simple;
+	bh=m6IC4S/OFmIC7Rv0cRxnR0hkSm7Pr15Ari4zJK3DIA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwI+p5aoeUZR8rlWczRyo07YJ9TT93YNTmBPSmHPRLswwKr3G7BLINggoph38SyFUo2wUUiayvI5MuMg9hUSqfQB209vkLAYLNsQz68gzVWmN2F2vSj3Cr32xpijbahqxKnldjBt4D3fxjU8X5Pf5Vriv2OcCzi5trZRRjmXLT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDQT071P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E65C4CECD;
-	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
+	 MIME-Version; b=H267RYVTde9Nlk8sLgubh815E7+1IyraTI0529umlGzExzjlpsTmEfGmY+SCgv2JxY2aroFpp61yxPffNOLJMz5IHJr0ICH51xuo05IAJSSy70vDfWOyOo5MXeSdlGcfuHpDpnlmq9nfxgmOn4C0lwf2jBLbSfivnRzwDin9+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5WMpUJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF90C4CECD;
+	Wed, 20 Nov 2024 12:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107498;
-	bh=nbmvPW6fFrI5A2ZrqFOUQBZpqF4opBvhh8li251wS00=;
+	s=korg; t=1732107393;
+	bh=m6IC4S/OFmIC7Rv0cRxnR0hkSm7Pr15Ari4zJK3DIA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDQT071PJCjKZyy2bJffag4+DK0HQxTuCX4rYpVe8Sej3wnavjnDY+k7cUTz1mVVS
-	 9plVVJ6AUFxeLT2jUXWzCM6QKy3P6nzbTySXEmTktls/GsHA1m2d8XHB4JDYGFrQ2i
-	 KdVFmub2S34ib31rVWT0m/z6MmCx0nZWcxz0n7wk=
+	b=r5WMpUJ9T7Kv4KiiW81783A4AAzoYNo1013JOqBox8YhFFDOo6eZl0BZV5NkWOhtx
+	 EGHGv/1c1/QlmJFxZyNaRTyN0Gz6x9n8H6yydJ4exuzadhXdKUd6Sshay2Hr5DmNH7
+	 jpdkKtwKkAOrBxizyqr8S4PFAe4i4suV7N+cr+6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 021/107] Bluetooth: btintel: Direct exception event to bluetooth stack
-Date: Wed, 20 Nov 2024 13:55:56 +0100
-Message-ID: <20241120125630.154689631@linuxfoundation.org>
+	syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.12 3/3] mm/mmap: fix __mmap_region() error handling in rare merge failure case
+Date: Wed, 20 Nov 2024 13:55:57 +0100
+Message-ID: <20241120124100.526989773@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120124100.444648273@linuxfoundation.org>
+References: <20241120124100.444648273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 
-[ Upstream commit d5359a7f583ab9b7706915213b54deac065bcb81 ]
+The mmap_region() function tries to install a new vma, which requires a
+pre-allocation for the maple tree write due to the complex locking
+scenarios involved.
 
-Have exception event part of HCI traces which helps for debug.
+Recent efforts to simplify the error recovery required the relocation of
+the preallocation of the maple tree nodes (via vma_iter_prealloc()
+calling mas_preallocate()) higher in the function.
 
-snoop traces:
-> HCI Event: Vendor (0xff) plen 79
-        Vendor Prefix (0x8780)
-      Intel Extended Telemetry (0x03)
-        Unknown extended telemetry event type (0xde)
-        01 01 de
-        Unknown extended subevent 0x07
-        01 01 de 07 01 de 06 1c ef be ad de ef be ad de
-        ef be ad de ef be ad de ef be ad de ef be ad de
-        ef be ad de 05 14 ef be ad de ef be ad de ef be
-        ad de ef be ad de ef be ad de 43 10 ef be ad de
-        ef be ad de ef be ad de ef be ad de
+The relocation of the preallocation meant that, if there was a file
+associated with the vma and the driver call (mmap_file()) modified the
+vma flags, then a new merge of the new vma with existing vmas is
+attempted.
 
-Fixes: af395330abed ("Bluetooth: btintel: Add Intel devcoredump support")
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During the attempt to merge the existing vma with the new vma, the vma
+iterator is used - the same iterator that would be used for the next
+write attempt to the tree.  In the event of needing a further allocation
+and if the new allocations fails, the vma iterator (and contained maple
+state) will cleaned up, including freeing all previous allocations and
+will be reset internally.
+
+Upon returning to the __mmap_region() function, the error is available
+in the vma_merge_struct and can be used to detect the -ENOMEM status.
+
+Hitting an -ENOMEM scenario after the driver callback leaves the system
+in a state that undoing the mapping is worse than continuing by dipping
+into the reserve.
+
+A preallocation should be performed in the case of an -ENOMEM and the
+allocations were lost during the failure scenario.  The __GFP_NOFAIL
+flag is used in the allocation to ensure the allocation succeeds after
+implicitly telling the driver that the mapping was happening.
+
+The range is already set in the vma_iter_store() call below, so it is
+not necessary and is dropped.
+
+Reported-by: syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/x/log.txt?x=17b0ace8580000
+Fixes: 5de195060b2e2 ("mm: resolve faulty mmap_region() error path behaviour")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/mmap.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 1ccbb51575153..24d2f4f37d0fd 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -3288,13 +3288,12 @@ static int btintel_diagnostics(struct hci_dev *hdev, struct sk_buff *skb)
- 	case INTEL_TLV_TEST_EXCEPTION:
- 		/* Generate devcoredump from exception */
- 		if (!hci_devcd_init(hdev, skb->len)) {
--			hci_devcd_append(hdev, skb);
-+			hci_devcd_append(hdev, skb_clone(skb, GFP_ATOMIC));
- 			hci_devcd_complete(hdev);
- 		} else {
- 			bt_dev_err(hdev, "Failed to generate devcoredump");
--			kfree_skb(skb);
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1491,7 +1491,18 @@ static unsigned long __mmap_region(struc
+ 				vm_flags = vma->vm_flags;
+ 				goto file_expanded;
+ 			}
+-			vma_iter_config(&vmi, addr, end);
++
++			/*
++			 * In the unlikely even that more memory was needed, but
++			 * not available for the vma merge, the vma iterator
++			 * will have no memory reserved for the write we told
++			 * the driver was happening.  To keep up the ruse,
++			 * ensure the allocation for the store succeeds.
++			 */
++			if (vmg_nomem(&vmg)) {
++				mas_preallocate(&vmi.mas, vma,
++						GFP_KERNEL|__GFP_NOFAIL);
++			}
  		}
--		return 0;
-+	break;
- 	default:
- 		bt_dev_err(hdev, "Invalid exception type %02X", tlv->val[0]);
- 	}
--- 
-2.43.0
-
+ 
+ 		vm_flags = vma->vm_flags;
 
 
 
