@@ -1,178 +1,108 @@
-Return-Path: <stable+bounces-94430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0D29D3E94
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 16:09:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 732879D3F48
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 16:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121CE1F27447
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9FE2B25A61
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1B11DF25A;
-	Wed, 20 Nov 2024 14:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3DA1C7269;
+	Wed, 20 Nov 2024 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C+1F921w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z49uxsyk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255AE1DEFDD
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 14:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D331B9B50;
+	Wed, 20 Nov 2024 14:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732114616; cv=none; b=BlTgYcwRw7F2V/x2Fji+hJ5RUtzwPXDliQ+3UdA6+cLN3kk9YY/cT7b5FjY/k9Amgh4zl33vs/N3qALTlOwf1lJJN2AW4Rs6fLvTa1lPfo16zYPG2wljyiqsDz0kgK3cUyrUp0hxxq2+bySls4ZwXiYRybvZF50i77O92WaSt48=
+	t=1732114742; cv=none; b=talgwYOC4KoKuUEV3iabw02861f39MLQ98JEDllWLaxidXE6RGK10Mrh0SUhbuOKfg/vMR+VdlxBl9DRLWVnHqSxSnjDfPCx3nB4CbigWOLKJHTu10syCI/i+DznUTy5YTGLEArZTpNimsFFWAJXB5C+Pc+W78gSTZ+K0TcHOz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732114616; c=relaxed/simple;
-	bh=Sdrpx2VPHJkkk8R9qLhdWl2/2DIy6v4cR2cwXM8ZlxU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CFO9wHxP/Qgi/1Cant8KwP9kcc5JNlIDeZdVM+7juZh9bDQsLB2JKWvwlK7ZmHAbM/e6+0IqfnvCEI18kLBITQWIQWRQYNh7LSF3oNFzQWlz344iaj+lZfqoXCFa6kRiGYLVD3lFIYQpDpqJU8zuI4sGVxJAegLlMsq8OYiDExo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C+1F921w; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ff550d37a6so26493911fa.0
-        for <stable@vger.kernel.org>; Wed, 20 Nov 2024 06:56:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732114612; x=1732719412; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3NBsV/rg/DvM7RipSshL11jcFCJtCro+s6m5KThfTUg=;
-        b=C+1F921wLH97NjKiGYUo3kD/ZBtTgmz4cORSOi0eTfFNAWVbkVdxGx4zSWRdY5lb44
-         OErxKvmWm5xsHYrsbQ0qXvdnZJjHqobrqc/yZXqmV2p/zaLm4TlmH97LM7lqF3iMEkRW
-         a8vvyylHD96nNA8K/Gu8jRmw4OT6EGN2EpCkA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732114612; x=1732719412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3NBsV/rg/DvM7RipSshL11jcFCJtCro+s6m5KThfTUg=;
-        b=nAuPXG/luVknyoHWVEBn3sNieYbBk4PyBMkAj2wOFPwBEbJnKOMpG0tAYSv1jlwQte
-         cgoX0mA8cC3VRAe0Y9SoBvl7NedPIqJl1dPsl17yvltRpKyO95mg/1+fS7+OmLyixiRM
-         rolLlvPBuI6dVGHXDq9vcDTa/MMe7D7/7OosdfoJHvWfgJNrKcHfaEc/OJZPb2JSWSrI
-         kjP0WMx/NSm8C0khHh4woPOEFbsZlVSELfYLtz/Psin8RYG2UbpBsAlOe+5HG0667FrM
-         FtP7qhgwYTyHmJSTUINAxiYv/3L/OHdGbXLWd67vtdHU1JuJiLXBsN/NUxHshxN4Xp1o
-         AQqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxbkcEI13G8UUdLG75hjPt0ELFPha97gMYshxJLU9p0Fbc/ZRW+oZDXjWziGSm3LU9gZjJCL8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfHIiJEDa1mCYmc6OoCvUT1pttQwNdeo2L3tCip9+Rj3MB17FY
-	9Gqnqrf0A3AUXr9QZDEgDSRyOaUp5NJ6MXRi9WK2WajLXxv+Ew7+flSE6oYSWzugAAAy54WNj7y
-	zHIHkgbzNgQ9OVEeK24fe++EZbYbk05gQKmU=
-X-Google-Smtp-Source: AGHT+IE34no18QMiQZWPw8C1ekAOHMd7xhhyFqGs9+uBMiogoqk1//tsHgwT+WkuzpTcz4PGs/pTNf6Y7b/DV/9f2jI=
-X-Received: by 2002:a05:651c:12c4:b0:2fb:607b:4cde with SMTP id
- 38308e7fff4ca-2ff8dcd2f96mr16013621fa.39.1732114612186; Wed, 20 Nov 2024
- 06:56:52 -0800 (PST)
+	s=arc-20240116; t=1732114742; c=relaxed/simple;
+	bh=RPTB3KechpAl4PhGA4iJyVy8SRU9IhGNpYs5OQEcPNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RnhEh0VsRuL408c9Pp/xt4u7UdJUGGcPMxaOVjFN3fjlH/VkGZWftRptwBGCG7aJygPB5ZaiUygs06xcIU8S2SLML+an4cOe6WNS/ZNo0tw/KdHmQPXyKr2y6xptXhWxopmSoFePyDBtO4HrKHyudvz9d6kdnUh97yM9f6REBlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z49uxsyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF356C4CECD;
+	Wed, 20 Nov 2024 14:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1732114741;
+	bh=RPTB3KechpAl4PhGA4iJyVy8SRU9IhGNpYs5OQEcPNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z49uxsykhLQB7sEOgYKjGs1sZMYD0MFU6xVt+IolhVmMwMfQs6EZN2UR5TEmfSkQd
+	 RCO3ys2Ac4e11LboYxI+t79HACWj561UjP9kym0bObm4b7Ujpcpq+wNZDHIC6umrk0
+	 vIYTu3NbVSZuKqjEWaufHTAlG0PXUuBBziOBOpK4=
+Date: Wed, 20 Nov 2024 15:58:36 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Cc: "sashal@kernel.org" <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+	"shivani.agarwal@broadcom.com" <shivani.agarwal@broadcom.com>
+Subject: Re: 5.10.225 stable kernel cgroup_mutex not held assertion failure
+Message-ID: <2024112022-staleness-caregiver-0707@gregkh>
+References: <20240920092803.101047-1-shivani.agarwal@broadcom.com>
+ <4f827551507ed31b0a876c6a14cdca3209c432ae.camel@oracle.com>
+ <2024110612-lapping-rebate-ed25@gregkh>
+ <6455422802d8334173251dbb96527328e08183cf.camel@oracle.com>
+ <c10d6cc49868dd3c471c53fc3c4aba61c33edead.camel@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104154252.1463188-1-ukaszb@chromium.org> <5iacpnq5akk3gk7kdg5wkbaohbtwtuc6cl7xyubsh2apkteye3@2ztqtkpoauyg>
-In-Reply-To: <5iacpnq5akk3gk7kdg5wkbaohbtwtuc6cl7xyubsh2apkteye3@2ztqtkpoauyg>
-From: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>
-Date: Wed, 20 Nov 2024 15:56:41 +0100
-Message-ID: <CALwA+Nb31ukU2Ox782Mq+ucBvEqm9_SioSAE23ifhX7DsHayhA@mail.gmail.com>
-Subject: Re: [PATCH v1] usb: typec: ucsi: Fix completion notifications
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>, Benson Leung <bleung@chromium.org>, 
-	Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c10d6cc49868dd3c471c53fc3c4aba61c33edead.camel@oracle.com>
 
-On Mon, Nov 18, 2024 at 6:58=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Mon, Nov 04, 2024 at 03:42:52PM +0000, =C5=81ukasz Bartosik wrote:
-> > OPM                         PPM                         LPM
-> >  |        1.send cmd         |                           |
-> >  |-------------------------->|                           |
-> >  |                           |--                         |
-> >  |                           |  | 2.set busy bit in CCI  |
-> >  |                           |<-                         |
-> >  |      3.notify the OPM     |                           |
-> >  |<--------------------------|                           |
-> >  |                           | 4.send cmd to be executed |
-> >  |                           |-------------------------->|
-> >  |                           |                           |
-> >  |                           |      5.cmd completed      |
-> >  |                           |<--------------------------|
-> >  |                           |                           |
-> >  |                           |--                         |
-> >  |                           |  | 6.set cmd completed    |
-> >  |                           |<-       bit in CCI        |
-> >  |                           |                           |
-> >  |   7.handle notification   |                           |
-> >  |   from point 3, read CCI  |                           |
-> >  |<--------------------------|                           |
-> >  |                           |                           |
-> >  |     8.notify the OPM      |                           |
-> >  |<--------------------------|                           |
-> >  |                           |                           |
-> >
-> > When the PPM receives command from the OPM (p.1) it sets the busy bit
-> > in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
-> > command to be executed by the LPM (p.4). When the PPM receives command
-> > completion from the LPM (p.5) it sets command completion bit in the CCI
-> > (p.6) and sends notification to the OPM (p.8). If command execution by
-> > the LPM is fast enough then when the OPM starts handling the notificati=
-on
-> > from p.3 in p.7 and reads the CCI value it will see command completion =
-bit
-> > and will call complete(). Then complete() might be called again when th=
-e
-> > OPM handles notification from p.8.
->
-> I think the change is fine, but I'd like to understand, what code path
-> causes the first read from the OPM side before the notification from
-> the PPM?
->
+On Wed, Nov 20, 2024 at 02:46:32PM +0000, Siddh Raman Pant wrote:
+> On Wed, Nov 06 2024 at 11:54:32 +0530, Siddh Raman Pant wrote:
+> > On Wed, Nov 06 2024 at 11:40:39 +0530, gregkh@linuxfoundation.org
+> > wrote:
+> > > On Wed, Oct 30, 2024 at 07:29:38AM +0000, Siddh Raman Pant wrote:
+> > > > Hello maintainers,
+> > > > 
+> > > > On Fri, 20 Sep 2024 02:28:03 -0700, Shivani Agarwal wrote:
+> > > > > Thanks Fedor.
+> > > > > 
+> > > > > Upstream commit 1be59c97c83c is merged in 5.4 with commit 10aeaa47e4aa and
+> > > > > in 4.19 with commit 27d6dbdc6485. The issue is reproducible in 5.4 and 4.19
+> > > > > also.
+> > > > > 
+> > > > > I am sending the backport patch of d23b5c577715 and a7fb0423c201 for 5.4 and
+> > > > > 4.19 in the next email.
+> > > > 
+> > > > Please backport these changes to stable.
+> > > > 
+> > > > "cgroup/cpuset: Prevent UAF in proc_cpuset_show()" has already been
+> > > > backported and bears CVE-2024-43853. As reported, we may already have
+> > > > introduced another problem due to the missing backport.
+> > > 
+> > > What exact commits are needed here?  Please submit backported and tested
+> > > commits and we will be glad to queue them up.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > Please see the following thread where Shivani posted the patches:
+> > 
+> > https://lore.kernel.org/all/20240920092803.101047-1-shivani.agarwal@broadcom.com/
+> > 
+> > Thanks,
+> > Siddh
+> 
+> Ping...
 
-The read from the OPM in p.7 is a result of notification in p.3 but I agree
-it is misleading since you pointed it out. I will reorder p.7 and p.8.
+I don't understand what you want here, sorry.
 
-Thanks,
-Lukasz
-
-> >
-> > This fix replaces test_bit() with test_and_clear_bit()
-> > in ucsi_notify_common() in order to call complete() only
-> > once per request.
-> >
-> > Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command=
- handling")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: =C5=81ukasz Bartosik <ukaszb@chromium.org>
-> > ---
-> >  drivers/usb/typec/ucsi/ucsi.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucs=
-i.c
-> > index e0f3925e401b..7a9b987ea80c 100644
-> > --- a/drivers/usb/typec/ucsi/ucsi.c
-> > +++ b/drivers/usb/typec/ucsi/ucsi.c
-> > @@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
-> >               ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
-> >
-> >       if (cci & UCSI_CCI_ACK_COMPLETE &&
-> > -         test_bit(ACK_PENDING, &ucsi->flags))
-> > +         test_and_clear_bit(ACK_PENDING, &ucsi->flags))
-> >               complete(&ucsi->complete);
-> >
-> >       if (cci & UCSI_CCI_COMMAND_COMPLETE &&
-> > -         test_bit(COMMAND_PENDING, &ucsi->flags))
-> > +         test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
-> >               complete(&ucsi->complete);
-> >  }
-> >  EXPORT_SYMBOL_GPL(ucsi_notify_common);
-> > --
-> > 2.47.0.199.ga7371fff76-goog
-> >
->
-> --
-> With best wishes
-> Dmitry
+greg k-h
 
