@@ -1,129 +1,139 @@
-Return-Path: <stable+bounces-94099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEF9D353B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 09:18:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243E59D3554
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 09:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BCA9B24D51
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4041F21DEE
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C07156F39;
-	Wed, 20 Nov 2024 08:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89B8170A3D;
+	Wed, 20 Nov 2024 08:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rn5TAIqp"
+	dkim=pass (2048-bit key) header.d=kumkeo.de header.i=@kumkeo.de header.b="lrrBICDP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgw400.mail.berlinercloud.net (mgw400.mail.berlinercloud.net [194.29.227.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5977200CB;
-	Wed, 20 Nov 2024 08:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BB916EBEE
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 08:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.29.227.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732090724; cv=none; b=PDO9hXfGF8JkIBZ1X36UP8q+EWzgGmiikx7t+VpDAMspGz0pskynFYH7/Uvfiatus7232l/1q+iYTmtOfEBwck3rGHZfNuyCvtxYmGM7uLcgRPaKTpmn5naKhh3LJt+Bc3FbAoV0eMKLWagkVv8cIo0VuuIMK9queEbVXBgQGX0=
+	t=1732091168; cv=none; b=C1zqQYWJ8VXASpWxMfTZzVLgmXwbiPum+ttD+Q79cWA5LU6sFDzItgp57gDVGpC1WPYFdMrOC65BJyLpXqlIl+ITjdFc1P2SnTBkDHlpGfcyPSkMupkvq0PeZl9/npUCMSR0l6soNOWe02fjhtecleGnSjWxZ5DC3CVpn3I1ghQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732090724; c=relaxed/simple;
-	bh=8b23fimKmndiXTou2v0A2ca4nGlMAUjHBQGaAzvrsO0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s1YnsiZ4YpqKq8MzgQV2QJ9EAeQXz6PFWzg84M+DchG80Infb/mmbNx6H5Djq9Qhr3VpOyX1M5pxL1hpTGeCTT8FDKXMS9oz+eIVIi4VdB8skpFoncw+1nHRxBfYjhpbs5r6swAE7eM90TvkQXeH4eQ9q9fETCEXZRwZytGOof8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rn5TAIqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AD4C4CED0;
-	Wed, 20 Nov 2024 08:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732090724;
-	bh=8b23fimKmndiXTou2v0A2ca4nGlMAUjHBQGaAzvrsO0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rn5TAIqp1p/IXH31gLKRH4YNtlKqy087CpReAwzPXR3vj96sFQ8X9pu5dOH0r7bOF
-	 v7hJxbnxbTZ4kzEnwLw6ojhX6N/MjoSli/d30xP+WKgMMh9Tx92x2I7Utl/2rf9GPE
-	 PR+b+G8p300LgLnmvymtwSZvLVw6AkVWM+Row6yRcVrKy7lshkjaDXyPwughTd7ghV
-	 2dvWXr7scgXMh5P71oC6mup7DJYXBIch8PsLlJKzQH2uCa8jofR5CBBj/K8Wi48MWh
-	 25lW82QDCwSDCMq6k8TEQmW4sS1NadLa62CVtkfByWiJLKUD2+17D4/wKWy3tzxSV+
-	 1vCvM7cjKWr+w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tDfv6-00EOz6-3T;
-	Wed, 20 Nov 2024 08:18:41 +0000
-Date: Wed, 20 Nov 2024 08:18:39 +0000
-Message-ID: <86v7wiuxls.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: kvmarm@lists.linux.dev,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Colton Lewis <coltonlewis@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
-In-Reply-To: <20241120005230.2335682-2-oliver.upton@linux.dev>
-References: <20241120005230.2335682-1-oliver.upton@linux.dev>
-	<20241120005230.2335682-2-oliver.upton@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1732091168; c=relaxed/simple;
+	bh=OdqGtApa574oa+JDCsp8wbdRiz1gWpYxQxPKwpUAhYE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OBcfWu4V9yu2rAl6++eDuyEUtoyUD/HKvKAHh1Rs0QOdgjWU2BqUaVpbOA1z29Cw3JLex8jZVZk6TfuZqewKp1VFyn7dvgAKadTeMceKh5TMXIegKK094731iAF8/729Sz0qjCTv5PX5WgQOojthoSv7Dz0LTkMsGmdkATjaDW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kumkeo.de; spf=pass smtp.mailfrom=kumkeo.de; dkim=pass (2048-bit key) header.d=kumkeo.de header.i=@kumkeo.de header.b=lrrBICDP; arc=none smtp.client-ip=194.29.227.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kumkeo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kumkeo.de
+X-TM-AS-ERS: 172.18.2.115-127.5.254.253
+X-TM-AS-SMTP: 1.0 bWd3MzUwLm1haWwuYmVybGluZXJjbG91ZC5uZXQ= dWxyaWNoLnRlaWNoZ
+	XJ0QGt1bWtlby5kZQ==
+X-DDEI-TLS-USAGE: Used
+Received: from mgw350.mail.berlinercloud.net (unknown [172.18.2.115])
+	by mgw400.mail.berlinercloud.net (Postfix) with ESMTPS;
+	Wed, 20 Nov 2024 09:25:58 +0100 (CET)
+X-DDEI-TLS-USAGE: Used
+Received: from mail.kumkeo.de (unknown [172.18.2.1])
+	by mgw350.mail.berlinercloud.net (Postfix) with ESMTPS;
+	Wed, 20 Nov 2024 09:25:58 +0100 (CET)
+Received: from kumex2.kumkeo.de (172.18.20.16) by kumex2.kumkeo.de
+ (172.18.20.16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 20 Nov
+ 2024 09:25:57 +0100
+Received: from kumex2.kumkeo.de ([fe80::6572:2554:d711:1795]) by
+ kumex2.kumkeo.de ([fe80::6572:2554:d711:1795%2]) with mapi id 15.01.2507.039;
+ Wed, 20 Nov 2024 09:25:57 +0100
+From: Ulrich Teichert <ulrich.teichert@kumkeo.de>
+To: Dominique Martinet <asmadeus@codewreck.org>, Salvatore Bonaccorso
+	<carnil@debian.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "patches@lists.linux.dev"
+	<patches@lists.linux.dev>, "y0un9n132@gmail.com" <y0un9n132@gmail.com>, "Kees
+ Cook" <keescook@chromium.org>, Thomas Gleixner <tglx@linutronix.de>, "Jiri
+ Kosina" <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: AW: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
+ 64-bit systems
+Thread-Topic: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
+ 64-bit systems
+Thread-Index: AQHbOyM/ORYYqoFd/ke2q7rGpiMvkrK/0jK3
+Date: Wed, 20 Nov 2024 08:25:57 +0000
+Message-ID: <eaf6cfe58733416c928a8ff0d1d1b1ec@kumkeo.de>
+References: <20240827143838.192435816@linuxfoundation.org>
+ <20240827143844.891898677@linuxfoundation.org>
+ <Zz0_-iJH1WaR3BUZ@codewreck.org>
+ <Zz2JQzi-5pTP_WPx@eldamar.lan>,<Zz2YrA740TRgl_13@codewreck.org>
+In-Reply-To: <Zz2YrA740TRgl_13@codewreck.org>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3197-9.1.2019-28808.006
+x-tm-as-result: No-10--16.656800-8.000000
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tm-snts-smtp: DCE1CEED649190E95C54F8AF029E46E8AC9DB78594E3C853B73BE31A034DC1F72000:9
+x-c2processedorg: c2164c60-77f9-4731-9233-294e5719f64e
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, mizhang@google.com, coltonlewis@google.com, rananta@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+X-DDEI-PROCESSED-RESULT: Safe
+X-TMASE-Version: DDEI-5.1-9.1.1004-28808.006
+X-TMASE-Result: 10--14.801200-10.000000
+X-TMASE-MatchedRID: WyuTQeNUcY0zEoEUvSEINfHkpkyUphL9pPMmjQJmXyEtferJ/d7Abz9B
+	BAgMnMgelxPsRwiY5LwAf/HImzvCGN/K1ikJIsLOMKPrF7dK57ORgLeuORRdEo5V1ACIyZtnI7c
+	nzSpYxIOAVtbAzV2zqJI60+HRZpMO9MoRcH4eD7hsWedgrJMQ/kEe5VjFzwNbyIKHzIGoT627Al
+	zDQluRGwd4WtFglqZuWHpfQd/qEd8IlyLfFl8CZysIuzCLc2mNDVuL2vYqrd45Nq0T4/ElUqW8W
+	Sf5267x4s1HPpjzp9kdablShYBTXhgHZ8655DOP0gVVXNgaM0qcIZLVZAQa0HhSEE8tGW+Gx3Aa
+	4oibyxkLbigRnpKlKSBuGJWwgxAr0t0ccteCeDcJ3JnPbkSAeQs7YRilFXpK71o8zC656/Q562r
+	IhW5dAVgpWCbva+Mm
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-TMASE-INERTIA: 0-0;;;;
+X-TMASE-XGENCLOUD: c85819c8-dfe3-4205-b4b0-97f51b7442e6-0-0-200-0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kumkeo.de;
+	s=bcsel2403; t=1732091158; x=1732523158;
+	bh=OdqGtApa574oa+JDCsp8wbdRiz1gWpYxQxPKwpUAhYE=; l=1844;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+	b=lrrBICDP2yj3r/++fmFtSWgHHxMilw9yI6kTYfmkp//5wtklMDNDVIBfC7aftkUse
+	 GtpxcM5G8AhzfQOZq4NKS7mKkOtoAVMw1ZMoTxcNBUvxU7Bz4JcdaC9dzuIw5ZVVa1
+	 CCHs+WWL8se8AVOBPkzr70Dl49r5IvbsDHwimscGIV2z2mxo/1SzxPx+fB/kbFUyh2
+	 GwFfxCSgb+kJD3ufihasxStzpexivCDsnx178+VKFWxBurmGv32qDABOB8HF2+xDAT
+	 HK8emmWOualGgpfEfm154BVFK6wDAWEGvk2o5oFG2BlwBYTiRg6+t8EzH7L8errVoX
+	 KQsrGSa5xLzaw==
 
-On Wed, 20 Nov 2024 00:52:29 +0000,
-Oliver Upton <oliver.upton@linux.dev> wrote:
-> 
-> From: Raghavendra Rao Ananta <rananta@google.com>
-> 
-> DDI0487K D13.1.1 describes the PMU overflow condition, which evaluates
-
-nit: DDI0487K.a, and D13.3.1.
-
-> to true if any counter's global enable (PMCR_EL0.E), overflow flag
-> (PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
-> Of note, this does not require a counter to be enabled
-> (i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
-> 
-> Align kvm_pmu_overflow_status() with the reality of the architecture
-> and stop using PMCNTENSET_EL0 as part of the overflow condition. The
-> bug was discovered while running an SBSA PMU test [*], which only sets
-> PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
-> Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
-> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-> [ oliver: massaged changelog ]
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> ---
->  arch/arm64/kvm/pmu-emul.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-> index 8ad62284fa23..3855cc9d0ca5 100644
-> --- a/arch/arm64/kvm/pmu-emul.c
-> +++ b/arch/arm64/kvm/pmu-emul.c
-> @@ -381,7 +381,6 @@ static u64 kvm_pmu_overflow_status(struct kvm_vcpu *vcpu)
->  
->  	if ((kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E)) {
->  		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
-> -		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
->  		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
->  	}
->  
-
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+SGkgRG9taW5pcXVlICYgYWxsLA0KDQo+U2FsdmF0b3JlIEJvbmFjY29yc28gd3JvdGUgb24gV2Vk
+LCBOb3YgMjAsIDIwMjQgYXQgMDg6MDE6MjNBTSArMDEwMDoNCj4+IEludGVyZXN0aWdseSB0aGVy
+ZSBpcyBhbm90aGVyIHJlcG9ydCBpbiBEZWJpYW4gd2hpY2ggaWRlbnRpZmllcyB0aGUNCj4+IGJh
+Y2twb3J0IG9mIHVwc3RyZWFtIGNvbW1pdCA0NGM3NjgyNWQ2ZWVmZWU5ZWI3Y2UwNmMzOGUxYTY2
+MzJhYzdlYjdkDQo+PiB0byBjYXVzZSBpc3N1ZXMgaW4gdGhlIDYuMS55IHNlcmllczoNCj4+DQo+
+PiBodHRwczovL2J1Z3MuZGViaWFuLm9yZy8xMDg1NzYyDQo+PiAgaHR0cHM6Ly9sb3JlLmtlcm5l
+bC5vcmcvcmVncmVzc2lvbnMvMThmMzRkNjM2MzkwNDU0MTgwMjQwZTZhNjFhZjkyMTdAa3Vta2Vv
+LmRlL1QvI3UNCg0KPlRoYW5rcyBmb3IgdGhlIGhlYWRzIHVwIQ0KDQo+VGhpcyB3b3VsZCBhcHBl
+YXIgdG8gYmUgdGhlIHNhbWUgYnVnIChydW5uaW5nIHFlbXUtYWFyY2g2NCBpbiB1c2VyIG1vZGUN
+Cj5vbiBhbiB4ODYgbWFjaGluZSkgPw0KPkkndmUgYWRkZWQgVWxyaWNoIGluIHJlY2lwaWVudHMg
+dG8gY29uZmlybSBoZSdzIHVzaW5nIHFlbXUtdXNlci1zdGF0aWMNCj5saWtlIEkgd2FzLg0KDQpw
+YnVpbGRlciB1c2VzIHFlbXUgaW5zaWRlIHRoZSBBUk02NCBjaHJvb3QsIHllcy4gSSBkb24ndCBr
+bm93IHdoaWNoIHZhcmlldHkgb2YgcWVtdSwgdGhvdWdoLg0KDQo+U2hhbWUgSSBkaWRuJ3Qgbm90
+aWNlIGFsbCBoaXMgd29yaywgdGhhdCB3b3VsZCBoYXZlIHNhdmVkIG1lIHNvbWUNCj50aW1lIDop
+DQoNCldlbGwsIGF0IGxlYXN0IHdlIG5vdyBoYXZlIGNvbmZpcm1hdGlvbiBmcm9tIHR3byBkaWZm
+ZXJlbnQgZ2l0IGJpc2VjdHMgZG9uZSBieQ0KdHdvIGRpZmZlcmVudCBkZXZlbG9wZXJzLCBwb2lu
+dGluZyB0byB0aGUgc2FtZSBjb21taXQgOy0pDQoNCkhUSCwNClVsaQ0KDQpNaXQgZnJldW5kbGlj
+aGVuIEdyw7zDn2VuIC8gS2luZCByZWdhcmRzDQoNCkRpcGwuLUluZm9ybS4gVWxyaWNoIFRlaWNo
+ZXJ0DQpTZW5pb3IgU29mdHdhcmUgRGV2ZWxvcGVyDQoNCmUuYnMga3Vta2VvIEdtYkgNCkhlaWRl
+bmthbXBzd2VnIDgyYQ0KMjAwOTcgSGFtYnVyZw0KR2VybWFueQ0KDQpUOiArNDkgNDAgMjg0Njc2
+MS0wDQpGOiArNDkgNDAgMjg0Njc2MS05OQ0KDQp1bHJpY2gudGVpY2hlcnRAa3Vta2VvLmRlDQp3
+d3cua3Vta2VvLmRlDQoNCkFtdHNnZXJpY2h0IEhhbWJ1cmcgLyBIYW1idXJnIERpc3RyaWN0IENv
+dXJ0LCBIUkIgMTg3NzEyDQpHZXNjaMOkZnRzZsO8aHJlciAvIE1hbmFnaW5nIERpcmVjdG9yOiBN
+aWNoYWVsIExlaXRuZXI7IEfDvG50ZXIgSGFnc3BpZWwNCg==
 
