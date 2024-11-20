@@ -1,130 +1,154 @@
-Return-Path: <stable+bounces-94095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6CCA9D33F0
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:03:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E519D33F1
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 08:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB46282DE8
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 07:03:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC20AB2333B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 07:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8328B18B46A;
-	Wed, 20 Nov 2024 07:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E783A15533F;
+	Wed, 20 Nov 2024 07:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATb3DBs/"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="EBDDeOLX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9298F181B8D
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 07:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A144D1662F1;
+	Wed, 20 Nov 2024 07:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732086089; cv=none; b=SIwusNxCun/8EQ7hvSH/w7ZSrv9INUt6dBKdnG+1Ly2X8TsMzQH0mGHErIg7wNYhE/JdaXz+YYclTiJIjcc+gWsoP2R1iuca4Jup7AJf/jWu3E7ZIemECG3c7tvAglvuG8C5ik7qlKUIsgwiaolQiYWtbaRXueO4zvvSIZei0OQ=
+	t=1732086149; cv=none; b=KCON0ib/nUwz883/bMflRax7jB0Y732dy9O9RJOHIw5nRvJqnV5WhCPcMTB9dK3DLJUUvw8ogu4GwDneAvMSJXtYdXRlPlfV90XQzjOjvb9eNE3OURpJ4V+6YBXJmT0q7LUB21nNaAr9rGYXJzEGF9KXEloXMFneG9MVd8MTTnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732086089; c=relaxed/simple;
-	bh=YfY9O7wSH3eO92M+fpGPgneosedEVw+4tWw9KEXSXxw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQ5Kw75414vUI5H2X7ly4SS2FtcAPpjJmsEdX65XM6Fc1yaIjX0ZMcH/iCVCkntC8tOpJYWfNQbtlzR0pS4FZQx+XJvTMWo+AaX8KhgoI0XTZpd/ryNwCXp65FWoARwn9xC/hg7TUsVgt9yeAe3zmmgrf29qi5cQZUFJsVS51O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATb3DBs/; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9a6b4ca29bso761739866b.3
-        for <stable@vger.kernel.org>; Tue, 19 Nov 2024 23:01:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732086086; x=1732690886; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wuhGZa1wphlMJu5BT/9fX23QNVaQXhewHRgLxFfqZUY=;
-        b=ATb3DBs/Hu8GkvOO22S2bOSvc6wiG62VSZwZorKsazgBvfp5jhdajM4eMcTEkVEMKY
-         9avSU1zXJDvl7vVPEF8xoMasxf7EH6RIauLbmL4SmTy7oh5POkNKC2uN162gtZByzrUd
-         0oodT5TUPjIUz9MPvelqtlDyK6kbFXdaQqpgf4MhPkuyp72xejPXe63UEBxBYZBfCgUP
-         2rnwnyXosQZKTJ9vCZ/zg1DmIlCbsIw9dAcZbaAN8wC8FJ57+reE/VP6k0TwBLmoxA3h
-         XahDRzad5zylP/9bZ7GRZJUFt9Qvpt9+6ihmSV8N9VjkSM/a+wkMRFsAHixPFbPXuDrW
-         yf8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732086086; x=1732690886;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wuhGZa1wphlMJu5BT/9fX23QNVaQXhewHRgLxFfqZUY=;
-        b=EXkkcc7cARdeYtlbx7+ta4PYTaDzaMhXBl4Eu/TrCPr5/TIaAiqZujRMJtUJoJqtm7
-         mMUGy3y1RLfi37zQfftRQkODychcc+SdNfkCuZboJffblFXwuCkOGbYvqchDrvl5ZMqH
-         QCMvXGFa/jGUWl+0os3b8GtPSSmpXqxsB4+yZAqdM7BXJ7HNBXC5Ol7Y1k76C2yfXZfv
-         SCPM2VRucz9xC8SEzEpRuJToSWO3mIkRhvRs6mZVkZU6M9v04z4IBji/w2xsHMUFE3NW
-         QRJkwO5Di/PVcd1OQFDNYXBby4I3MV7TIZMAmK++wLvo8TQf6ts8ibZxzTGUWgVhWDXT
-         fiGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcHBM/i4yuUwT+zNxUzf2wnHGfXH/RTFeZLTHiysOnUz/F8oxKYGCXg6lxTMeRSSYDoOmNifQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztlXm0mdXMyZfY0aRqt1SqI1nNTi9S1yAJKMTHpeXHIQQBybpA
-	PO7TP9MpPaSPz+EAr22xMuRlf7KDR5s66RU6/T3gr4NMNPP3NvP8uU4d+BWC
-X-Google-Smtp-Source: AGHT+IGQ/p9RGsj/UtKWUzs6dPt72UBwcdLUCoTcS5a12Ok5zybtRplyc9AOLKJDgxlyx+B/wkPMzA==
-X-Received: by 2002:a17:907:84c:b0:aa4:9b6a:bd77 with SMTP id a640c23a62f3a-aa4dd551bbcmr156944366b.17.1732086085636;
-        Tue, 19 Nov 2024 23:01:25 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e044b59sm726873866b.143.2024.11.19.23.01.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 23:01:24 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 007E4BE2EE7; Wed, 20 Nov 2024 08:01:23 +0100 (CET)
-Date: Wed, 20 Nov 2024 08:01:23 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
- 64-bit systems
-Message-ID: <Zz2JQzi-5pTP_WPx@eldamar.lan>
-References: <20240827143838.192435816@linuxfoundation.org>
- <20240827143844.891898677@linuxfoundation.org>
- <Zz0_-iJH1WaR3BUZ@codewreck.org>
+	s=arc-20240116; t=1732086149; c=relaxed/simple;
+	bh=p6j4fO9kqZpC1/2B/+caYj1VwLD2k++uOfBQkCfzKSI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=mQvaAFJ+96YFsIC0Bxc+Ia5z2XV8H+0XaMY8irxDQTS4Mmv6wvng2SYsximjU/aA1Mn3wqzjbxTlrXaWWWBGa3HD0wEzn+0RVtBzjHOT29e7iYrHKt9GIQxClE16SlJ8vBZiyn/xVwLZMR1WHLEdTIQfMD5qRbuGdnQ93g4G7vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=EBDDeOLX; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 08B952621F;
+	Wed, 20 Nov 2024 07:02:18 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id 954323E8A5;
+	Wed, 20 Nov 2024 08:02:09 +0100 (CET)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id C8E9340085;
+	Wed, 20 Nov 2024 07:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1732086128; bh=p6j4fO9kqZpC1/2B/+caYj1VwLD2k++uOfBQkCfzKSI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EBDDeOLXr/bmvUlrNr/TEVbb/rgjjWvMIFhICj9WDU25MGjAuglPdruQyO43D79wl
+	 D5bPZG4N9NX4bvM4k8rBc5iFsFh3lbpDItP6Q19ms/T+dGOdxvSLfpajf1soxEOgM8
+	 Nx6ePsF9XsIc9P58eiSkNF6PLOIMz+eHny2UHGYg=
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 89064414F1;
+	Wed, 20 Nov 2024 07:02:07 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zz0_-iJH1WaR3BUZ@codewreck.org>
+Date: Wed, 20 Nov 2024 15:02:07 +0800
+From: Mingcong Bai <jeffbai@aosc.io>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>, Huacai
+ Chen <chenhuacai@kernel.org>, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda: Poll jack events for LS7A HD-Audio
+In-Reply-To: <20241115150653.2819100-1-chenhuacai@loongson.cn>
+References: <20241115150653.2819100-1-chenhuacai@loongson.cn>
+Message-ID: <c47281ea4b3f68cb8c3b0f3582e62fab@aosc.io>
+X-Sender: jeffbai@aosc.io
+Organization: Anthon Open Source Community
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[chenhuacai.loongson.cn:server fail,stable.vger.kernel.org:server fail];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_EQ_ENVFROM(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[]
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: C8E9340085
 
-Hi,
+Hi Huacai,
 
-On Wed, Nov 20, 2024 at 10:48:42AM +0900, Dominique Martinet wrote:
-> Hi all,
+在 2024-11-15 23:06，Huacai Chen 写道：
+> LS7A HD-Audio disable interrupts and use polling mode due to hardware
+> drawbacks. As a result, unsolicited jack events are also unusable. If
+> we want to support headphone hotplug, we need to also poll jack events.
 > 
-> this patch introduces a regression in some versions of qemu-aarch64 (at
-> least as built by debian):
-> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087822
-> 
-> It doesn't look like it still is a problem with newer versions of qemu
-> so I'm not sure if this should be reverted on master, but it took me a bit
-> of time to track this down to this commit as my reproducer isn't great,
-> so it might make sense to revert this commit on stable branches?
-> 
-> (I don't remember the policies on "don't break userspace", but qemu-user
-> is a bit of a special case here so I'll leave that up to Greg)
-> 
-> 
-> I've confirmed that this bug occurs on top of the latest v6.1.118 and
-> goes away reverting this.
-> (I've also checked the problem also occurs on master and reverting the
-> patch also works around the issue there at this point)
+> Here we use 1500ms as the poll interval if no module parameter specify
+> it.
 
-Interestigly there is another report in Debian which identifies the
-backport of upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d
-to cause issues in the 6.1.y series:
+A little late since Takashi Iwai already queued this patch, but for the 
+sake of the record, I have tested this patch and found that it resolved 
+the issue where hot-plugged (plugged in after boot) headphones were not 
+detected on the following boards:
 
-https://bugs.debian.org/1085762
-https://lore.kernel.org/regressions/18f34d636390454180240e6a61af9217@kumkeo.de/T/#u
+- Loongson XA61200
+- Loongson XA612A0
+- Loongson Loongson-3A5000-HV-7A2000-1w-V0.1-EVB
+- ASUS XC-LS3A6M
 
-Regards,
-Salvatore
+Hooray.
+
+But I would also like to note that this issue was only reproducible on 
+Loongson (or Loongson-drived, in the case of that ASUS board) firmware. 
+However, with the XA61200 board, when using Byosoft's firmware 
+(https://github.com/loongson/Firmware/blob/main/6000Series/PC/XA61200/Byosoft_3A6000_7A2000_CRB_R0103.bin), 
+audio jack hot-plugging works with or without this patch. So I do 
+suspect that there are still a firmware issue at play.
+
+Bottom line - this patch should have fixed audio jack hot-plugging for 
+most users.
+
+Best Regards,
+Mingcong Bai
+
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  sound/pci/hda/hda_intel.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+> index b4540c5cd2a6..5060d5428caf 100644
+> --- a/sound/pci/hda/hda_intel.c
+> +++ b/sound/pci/hda/hda_intel.c
+> @@ -1867,6 +1867,8 @@ static int azx_first_init(struct azx *chip)
+>  		bus->polling_mode = 1;
+>  		bus->not_use_interrupts = 1;
+>  		bus->access_sdnctl_in_dword = 1;
+> +		if (!chip->jackpoll_interval)
+> +			chip->jackpoll_interval = msecs_to_jiffies(1500);
+>  	}
+> 
+>  	err = pcim_iomap_regions(pci, 1 << 0, "ICH HD audio");
 
