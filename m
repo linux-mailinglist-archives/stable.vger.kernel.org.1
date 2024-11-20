@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-94280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5449D3BD7
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:03:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA60A9D3B8D
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12C91F23C20
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7080D283AF8
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0142F1C877E;
-	Wed, 20 Nov 2024 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF1D1BBBE8;
+	Wed, 20 Nov 2024 12:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAm05oxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17d0so6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E5D1B3B2E;
-	Wed, 20 Nov 2024 13:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0FD1AA1C3;
+	Wed, 20 Nov 2024 12:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107610; cv=none; b=cKbguQ8rprOTnZIeD0ZlBzPi/Q6lvZrgM8kAJWRQbqti2jwsdOYvZUJJR9nsou1PR6BhZgkpDiTiss6zlX7BZXBVbpzs0MRKg88KtYu+Cn346ruWSt3LqbpjLSBQpdBSDQVvmVuATGRwCXwDaQ/5D5jLDbS8Zyy2O5L3rW4iRc0=
+	t=1732107555; cv=none; b=jgMairfFkM8Ec8cKk1A8fKi8YhhcDxQT+E+59Me973lpBt2nER3dPKHNThFddy3Y0QVWrW37Q+5sLuRYM/7rd9IYAB1ckP+r1XxbArPQi6WlYkppA80NdgXiVLxC6aL9+/S7tGJDBmFlc4ryf1Rxq0upjugNR4U/dQhIl6haHRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107610; c=relaxed/simple;
-	bh=J5MxQuhjcZh6MzZ6KpQgq9TkWiRZg184dNRt1AChD98=;
+	s=arc-20240116; t=1732107555; c=relaxed/simple;
+	bh=vtppHxGOuvM8wNrj8lpbQ32lfYGbNNwPR7bAdOrL+ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ttt0+gEE+bOYCGgS4Mt5WqzfD8NDKlZSqVsUxvH4//1AokyIYtNol726JW8vsynbimQYDlEKFa4nsni/6qKp/WT+hFPgRDwt8KqxOcjtjHyba5PFWhN/jSmq7kDx05LTwObYwenFlMFe0yM1ArrKJbyb2j1XUJSjsIMO41qBXJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAm05oxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D00C4CECD;
-	Wed, 20 Nov 2024 13:00:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UP7dsBJ3tysJl6sq0b6m9GCNARFK8gHCCezRruU2fCdvrTfg89XE+1TNlI1qiqjpjjQSLB+HUHgsfWhqnIH2QP+g0Q9zoHzvgeb/bY2Pr6EvTF3fAa7PvqlvrxnUcwprNpVgPU1jNjhDvTPY2SC6le4tQc6pxmZTiOAJ4P1YhOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17d0so6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B29C4CECD;
+	Wed, 20 Nov 2024 12:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107610;
-	bh=J5MxQuhjcZh6MzZ6KpQgq9TkWiRZg184dNRt1AChD98=;
+	s=korg; t=1732107555;
+	bh=vtppHxGOuvM8wNrj8lpbQ32lfYGbNNwPR7bAdOrL+ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAm05oxY5W2qiRBFb6r91lqA8DSbO2rcJVRZ4DYv+YpnN3BeBwCzO9OMoP+XO+Dl0
-	 ltATNNZo1AoumK60gyx28Vg94oQHKrIsgh50nYNKWUnPHHlRNY1e7a1QaikAdBsn2O
-	 X6yM0SMhEktFTZXFA026FZiy3n9+9MmAe9LQMmwI=
+	b=17d0so6V8AfpEWrAX+nMqNxJL0IzsaKenJouLyxiN9cBncCYTsftpxZM1DJO4p43c
+	 nqgyS2vUoh1jXc+LgauaTLVna7rnaMjUc1iu1vncBcPY84tX0jzaAq1if5qdqO+amP
+	 z6MyDvse7q1gG9bkXDXH+UdLM8IZwSTStJpor6qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 61/82] NFSD: initialize copy->cp_clp early in nfsd4_copy for use by trace point
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.11 096/107] drm/amdgpu: enable GTT fallback handling for dGPUs only
 Date: Wed, 20 Nov 2024 13:57:11 +0100
-Message-ID: <20241120125630.986427442@linuxfoundation.org>
+Message-ID: <20241120125631.888448161@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 15d1975b7279693d6f09398e0e2e31aca2310275 ]
+commit 5a67c31669a3aca814a99428328d2be40d82b333 upstream.
 
-Prepare for adding server copy trace points.
+That is just a waste of time on APUs.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Tested-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Stable-dep-of: 9ed666eba4e0 ("NFSD: Async COPY result needs to return a write verifier")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3704
+Fixes: 216c1282dde3 ("drm/amdgpu: use GTT only as fallback for VRAM|GTT")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e8fc090d322346e5ce4c4cfe03a8100e31f61c3c)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1798,6 +1798,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 	__be32 status;
- 	struct nfsd4_copy *async_copy = NULL;
- 
-+	copy->cp_clp = cstate->clp;
- 	if (nfsd4_ssc_is_inter(copy)) {
- 		if (!inter_copy_offload_enable || nfsd4_copy_is_sync(copy)) {
- 			status = nfserr_notsupp;
-@@ -1812,7 +1813,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 			return status;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -180,7 +180,8 @@ void amdgpu_bo_placement_from_domain(str
+ 		 * When GTT is just an alternative to VRAM make sure that we
+ 		 * only use it as fallback and still try to fill up VRAM first.
+ 		 */
+-		if (domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM)
++		if (domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM &&
++		    !(adev->flags & AMD_IS_APU))
+ 			places[c].flags |= TTM_PL_FLAG_FALLBACK;
+ 		c++;
  	}
- 
--	copy->cp_clp = cstate->clp;
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
 
 
 
