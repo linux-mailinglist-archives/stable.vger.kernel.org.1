@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-94404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E8E9D3D1F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33C99D3D20
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5723E283CE2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9975F28438D
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664CB1C7B99;
-	Wed, 20 Nov 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB201BC068;
+	Wed, 20 Nov 2024 14:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKG1FURj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5BYoflZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6AA1BAEFC;
-	Wed, 20 Nov 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A091AC89A;
+	Wed, 20 Nov 2024 14:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111618; cv=none; b=Ddfvs1Hms79a9CB0WDdUIb2nzZOeVpbd0Nghs2Web6mHi+Qz8KwPFips1EF2TBinsfva+4tvfMmZbM7plBw6JnzsPx2JGQcLO55Kk+uJd4c8EqoZ/I9znDTf+XZmg7F0mfJTMHgCWsgVnKwILTcUCim4TN1Y6vrrk/esayyWdLI=
+	t=1732111625; cv=none; b=BsMz6u6q6yHQIkwT8tiPuutHyEpO5up4XUr3PPbMkuIPEIZUTI+68xLvT2fZh1GZkYTb3L8nF655zfekrRb+XjCersDF4VEaLr3SzTG2RjbmtlR759Ac4PLSUEt6+n0wM/NnDuTIoqhNwTstCzwqGYeXmb2hp4wW7DaAQiyk/8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111618; c=relaxed/simple;
-	bh=g/fDauAIwxP9y+zEDZ7jVmGSEPPMIjIzGldIfN7Ozfw=;
+	s=arc-20240116; t=1732111625; c=relaxed/simple;
+	bh=rAPJ3CsyNt0xoIeocO8Oj1jzcSTExIhRjL94487yK10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dr2Z+b/wIc0Yhi+VUcxDv01S+o5n3dmg0rSCWFhASfeetVntWBtRKose+1l5OfnhlBY+Y+VIjLeiGY13dJVdx+8GhBbd0ot5A2/TmjErRcaGOtuUFLxpmBQBAtzMxzmvmHoiIp85La5/VIn7oGYOIZioiGOWHrySXzictx4ntxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKG1FURj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA59C4CECD;
-	Wed, 20 Nov 2024 14:06:56 +0000 (UTC)
+	 MIME-Version; b=fsnsijiq+pTOwVx6l2GTWCxLB6j355eE9TYlMuyixysGQHqtpDwFUp0eRVMpBzMVHuIuxR3CPfazt5lfuRxCl4u2D9lEPqSO/pV219pg72KbaGT1MjG9twV5cCYBhFxb5CtnSeNhDa/5LWXH7SlfuHZGrTSpRMyxgAaxXVPU6Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5BYoflZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596BC4CECD;
+	Wed, 20 Nov 2024 14:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111618;
-	bh=g/fDauAIwxP9y+zEDZ7jVmGSEPPMIjIzGldIfN7Ozfw=;
+	s=k20201202; t=1732111624;
+	bh=rAPJ3CsyNt0xoIeocO8Oj1jzcSTExIhRjL94487yK10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKG1FURj1eorEl/tUP/2ZA32OP+pFEkrm7xJyFpZAadGQ2QSr+txqjbHZAaMMq0Bq
-	 MCPTHlmhq+EX/voFRNt7mo03wYjsQn2XKbC8gfFPg7Uh8lWXCtI1MrOAGDFPMlTFBC
-	 3gtFZ5CY4GnN6dHOkhTDo8FhtPh6wAKSN6R36fFLrVKisuNez88e3G6homA6YGrP9z
-	 nSdfsRCLwibj1y+WdDbKdxmMe5MJt0RcZ4ofdrOd7mH59FIhSfeYCt68RqGRv33wrR
-	 lV4hFtMvMGqTiAzKqcg2pgNqAxNGaPylTqLpDvgykhKS1RGcA10FKIusuVQStinO/0
-	 ZKHHm/o8vH8Gg==
+	b=V5BYoflZJ6RrsFkgjIqkDCpOKGNFbSPnMP+FEcg+ClC3KeHUrz63qvzckgAZSZ8Li
+	 D7T/yFQinnXaRwZ6wdAZnQXbV8QO1YF5PMChf4nw4Hu9F+rWis3uRmwdNIiLLmVnQw
+	 3d+ltJM2fxQajGJ1lEFabBsmfgv9zl6F3nJnx7U5aSS8s0IYxAcvMxJEE0CjyaHCNS
+	 9E8aQOeShIACv9yal1hGk85DeeM+ToDRIkEOhWiSjOG+lVGdKiQBd3DYayD5K8cVux
+	 spLxMjBoXuypj90lrITVljuJ88n9GFA7XDuiDaqupJckvcKygeN8Z7G3sgvA21hsYf
+	 n3A1Mq9FQR4jA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eryk Zagorski <erykzagorski@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Harith G <harith.g@alifsemi.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	lina@asahilina.net,
-	cyan.vtb@gmail.com,
-	soyjuanarbol@gmail.com,
-	mbarriolinares@gmail.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 3/6] ALSA: usb-audio: Fix Yamaha P-125 Quirk Entry
-Date: Wed, 20 Nov 2024 09:06:33 -0500
-Message-ID: <20241120140647.1768984-3-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 4/6] ARM: 9420/1: smp: Fix SMP for xip kernels
+Date: Wed, 20 Nov 2024 09:06:34 -0500
+Message-ID: <20241120140647.1768984-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120140647.1768984-1-sashal@kernel.org>
 References: <20241120140647.1768984-1-sashal@kernel.org>
@@ -71,54 +67,82 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.62
 Content-Transfer-Encoding: 8bit
 
-From: Eryk Zagorski <erykzagorski@gmail.com>
+From: Harith G <harith.g@alifsemi.com>
 
-[ Upstream commit 6f891ca15b017707840c9e7f5afd9fc6cfd7d8b1 ]
+[ Upstream commit 9e9b0cf9319b4db143014477b0bc4b39894248f1 ]
 
-This patch switches the P-125 quirk entry to use a composite quirk as the
-P-125 supplies both MIDI and Audio like many of the other Yamaha
-keyboards
+Fix the physical address calculation of the following to get smp working
+on xip kernels.
+- secondary_data needed for secondary cpu bootup.
+- secondary_startup address passed through psci.
+- identity mapped code region needed for enabling mmu for secondary cpus.
 
-Signed-off-by: Eryk Zagorski <erykzagorski@gmail.com>
-Link: https://patch.msgid.link/20241111164520.9079-2-erykzagorski@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Harith George <harith.g@alifsemi.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/arm/kernel/head.S     | 4 ++++
+ arch/arm/kernel/psci_smp.c | 7 +++++++
+ arch/arm/mm/idmap.c        | 7 +++++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 75cde5779f38d..d1bd8e0d60252 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -324,7 +324,6 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
--YAMAHA_DEVICE(0x1718, "P-125"),
+diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
+index 1ec35f065617e..e573adfe73b28 100644
+--- a/arch/arm/kernel/head.S
++++ b/arch/arm/kernel/head.S
+@@ -407,7 +407,11 @@ ENTRY(secondary_startup)
+ 	/*
+ 	 * Use the page tables supplied from  __cpu_up.
+ 	 */
++#ifdef CONFIG_XIP_KERNEL
++	ldr	r3, =(secondary_data + PLAT_PHYS_OFFSET - PAGE_OFFSET)
++#else
+ 	adr_l	r3, secondary_data
++#endif
+ 	mov_l	r12, __secondary_switched
+ 	ldrd	r4, r5, [r3, #0]		@ get secondary_data.pgdir
+ ARM_BE8(eor	r4, r4, r5)			@ Swap r5 and r4 in BE:
+diff --git a/arch/arm/kernel/psci_smp.c b/arch/arm/kernel/psci_smp.c
+index d4392e1774848..3bb0c4dcfc5c9 100644
+--- a/arch/arm/kernel/psci_smp.c
++++ b/arch/arm/kernel/psci_smp.c
+@@ -45,8 +45,15 @@ extern void secondary_startup(void);
+ static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
  {
- 	USB_DEVICE(0x0499, 0x1503),
- 	QUIRK_DRIVER_INFO {
-@@ -391,6 +390,19 @@ YAMAHA_DEVICE(0x1718, "P-125"),
- 		}
- 	}
- },
-+{
-+	USB_DEVICE(0x0499, 0x1718),
-+	QUIRK_DRIVER_INFO {
-+		/* .vendor_name = "Yamaha", */
-+		/* .product_name = "P-125", */
-+		QUIRK_DATA_COMPOSITE {
-+			{ QUIRK_DATA_STANDARD_AUDIO(1) },
-+			{ QUIRK_DATA_STANDARD_AUDIO(2) },
-+			{ QUIRK_DATA_MIDI_YAMAHA(3) },
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- YAMAHA_DEVICE(0x2000, "DGP-7"),
- YAMAHA_DEVICE(0x2001, "DGP-5"),
- YAMAHA_DEVICE(0x2002, NULL),
+ 	if (psci_ops.cpu_on)
++#ifdef CONFIG_XIP_KERNEL
++		return psci_ops.cpu_on(cpu_logical_map(cpu),
++			((phys_addr_t)(&secondary_startup)
++			- XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++			+ CONFIG_XIP_PHYS_ADDR));
++#else
+ 		return psci_ops.cpu_on(cpu_logical_map(cpu),
+ 					virt_to_idmap(&secondary_startup));
++#endif
+ 	return -ENODEV;
+ }
+ 
+diff --git a/arch/arm/mm/idmap.c b/arch/arm/mm/idmap.c
+index 448e57c6f6534..4a833e89782aa 100644
+--- a/arch/arm/mm/idmap.c
++++ b/arch/arm/mm/idmap.c
+@@ -84,8 +84,15 @@ static void identity_mapping_add(pgd_t *pgd, const char *text_start,
+ 	unsigned long addr, end;
+ 	unsigned long next;
+ 
++#ifdef CONFIG_XIP_KERNEL
++	addr = (phys_addr_t)(text_start) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++		+ CONFIG_XIP_PHYS_ADDR;
++	end = (phys_addr_t)(text_end) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++		+ CONFIG_XIP_PHYS_ADDR;
++#else
+ 	addr = virt_to_idmap(text_start);
+ 	end = virt_to_idmap(text_end);
++#endif
+ 	pr_info("Setting up static identity map for 0x%lx - 0x%lx\n", addr, end);
+ 
+ 	prot |= PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AF;
 -- 
 2.43.0
 
