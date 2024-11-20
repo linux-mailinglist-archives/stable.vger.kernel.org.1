@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728F39D3C28
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6969D3C2E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7251F251BD
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 789B81F25340
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244A61CB339;
-	Wed, 20 Nov 2024 13:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5CF1BFDE7;
+	Wed, 20 Nov 2024 13:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELdOsY9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1wEEzEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C1A1AB6FD;
-	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1211CB507;
+	Wed, 20 Nov 2024 13:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107702; cv=none; b=MTpeJPlOjA0/5jpS5eSCbR7poFOCX4h30wfIWEhu1u+uLskGB8eKcjMVRCUgHjkCTkyeHEA+DHvMhXN+u+Mx6kzsmFB54uGnUED3FMTBwKZtVGAOFkSc1hpoGRiamN55imJm2OF5Xi+tu+zhcgsfnJpEoCT7w0yNJicS9LhFya4=
+	t=1732107709; cv=none; b=GpK8PZog4hpZky8nl7nmMumDvSG6cnRRjmqBsHbY4TnZJSUS+D+5y/8ANZfS1GPZdEaH0tszJdTSwOAQbD8dvX5+h8Onrv6oGiM2Ac/sEp+//cT69FAvGCH/KXSa4NxFKRQt64CUAXSGpe/rzbOQTz0dEWx/dQkL6eW9I3Rdi0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107702; c=relaxed/simple;
-	bh=yVjI7VfFE+U78TzQ1SQmw65dN9Sfgcg+PCL0YoIvck0=;
+	s=arc-20240116; t=1732107709; c=relaxed/simple;
+	bh=Fg7W1N9K2pKtBuBbuJ9k7YEm7gqdKCF4qFK8dX6gyac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8l003jcBYzgm5Y9K26YZFWRTz2q/cgiubZJbMLli7wMXMZCoQVsq89MOANpG+eKdX5vna34vcJ4tvuAtpsiiqu6VIjPNnI7yKv/dPP9wAEV+3AI1XaGQZRwZF5pgVqIWHJ3qp8oRy31RHtUwDRqPIXOc/VROhrzPSyY0VlZ2AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELdOsY9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8061C4CED1;
-	Wed, 20 Nov 2024 13:01:42 +0000 (UTC)
+	 MIME-Version; b=IsjX1frNNGnDbl+2oX7WJo6xWPYLpnGhrKnxcClGmvOWqkH84FLBOGSY6dAqnwFSAnc4RhRK3Fzles+r5iBhUsjJc+gP02lW3NYbrrhuCkjgF6ebbhVDZcp2/K5aww6oGFDgs+F7jnLex9yr0kflOCEIjVPPlYpDPuLOuC16xvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1wEEzEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B962C4CED1;
+	Wed, 20 Nov 2024 13:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107702;
-	bh=yVjI7VfFE+U78TzQ1SQmw65dN9Sfgcg+PCL0YoIvck0=;
+	s=korg; t=1732107709;
+	bh=Fg7W1N9K2pKtBuBbuJ9k7YEm7gqdKCF4qFK8dX6gyac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELdOsY9v5alLxgzCopYGEVjGiT4nHy6X6fAQST17DnWUxTrDzBqXOtDEygkCnjtBQ
-	 Ya6mJCdtprb6V9eUJPbBXg2JVn7q14tSP0aOqJ6OuBR/A8El3diCVOhDauMpZ9adjU
-	 LKej6Yt2bAwmtYYodEona8+VdAT7pv/1bSjoK0jQ=
+	b=Y1wEEzEadUCI8/PZ4pIzmHi65uuAzmGPZnH3o3weHZwqR2zoWBNSh1lBZYNrdOH2F
+	 2pHj7HA9brx3uaY+qmOOCppykyoeMmv+4EHPxfwRQj3zmo++zPEBx7vcACV1ZthUzs
+	 K0YL54cVTstY4hyC8J+8jEaAMRWe0CAyw9n1WA+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 58/73] ipvs: properly dereference pe in ip_vs_add_service
-Date: Wed, 20 Nov 2024 13:58:44 +0100
-Message-ID: <20241120125811.003148264@linuxfoundation.org>
+	syzbot+a7d2b1d5d1af83035567@syzkaller.appspotmail.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 59/73] net/sched: taprio: extend minimum interval restriction to entire cycle too
+Date: Wed, 20 Nov 2024 13:58:45 +0100
+Message-ID: <20241120125811.026649855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -68,52 +68,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+[ Upstream commit fb66df20a7201e60f2b13d7f95d031b31a8831d3 ]
 
-Use pe directly to resolve sparse warning:
+It is possible for syzbot to side-step the restriction imposed by the
+blamed commit in the Fixes: tag, because the taprio UAPI permits a
+cycle-time different from (and potentially shorter than) the sum of
+entry intervals.
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+We need one more restriction, which is that the cycle time itself must
+be larger than N * ETH_ZLEN bit times, where N is the number of schedule
+entries. This restriction needs to apply regardless of whether the cycle
+time came from the user or was the implicit, auto-calculated value, so
+we move the existing "cycle == 0" check outside the "if "(!new->cycle_time)"
+branch. This way covers both conditions and scenarios.
 
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ Resolve minor conflicts to fix CVE-2024-42322 ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Add a selftest which illustrates the issue triggered by syzbot.
+
+Fixes: b5b73b26b3ca ("taprio: Fix allowing too small intervals")
+Reported-by: syzbot+a7d2b1d5d1af83035567@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/0000000000007d66bc06196e7c66@google.com/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240527153955.553333-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/sched/sch_taprio.c                                         |   10 ++--
+ tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json |   22 ++++++++++
+ 2 files changed, 27 insertions(+), 5 deletions(-)
 
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1382,18 +1382,18 @@ ip_vs_add_service(struct netns_ipvs *ipv
- 		sched = NULL;
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -915,11 +915,6 @@ static int parse_taprio_schedule(struct
+ 		list_for_each_entry(entry, &new->entries, list)
+ 			cycle = ktime_add_ns(cycle, entry->interval);
+ 
+-		if (!cycle) {
+-			NL_SET_ERR_MSG(extack, "'cycle_time' can never be 0");
+-			return -EINVAL;
+-		}
+-
+ 		if (cycle < 0 || cycle > INT_MAX) {
+ 			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
+ 			return -EINVAL;
+@@ -928,6 +923,11 @@ static int parse_taprio_schedule(struct
+ 		new->cycle_time = cycle;
  	}
  
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
- 
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
++	if (new->cycle_time < new->num_entries * length_to_duration(q, ETH_ZLEN)) {
++		NL_SET_ERR_MSG(extack, "'cycle_time' is too small");
++		return -EINVAL;
++	}
 +
- 	ip_vs_start_estimator(ipvs, &svc->stats);
+ 	return 0;
+ }
  
- 	/* Count only IPv4 services for old get/setsockopt interface */
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/taprio.json
+@@ -133,6 +133,28 @@
+         ]
+     },
+     {
++        "id": "831f",
++        "name": "Add taprio Qdisc with too short cycle-time",
++        "category": [
++            "qdisc",
++            "taprio"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 8\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH root handle 1: taprio num_tc 2 queues 1@0 1@1 sched-entry S 01 200000 sched-entry S 02 200000 cycle-time 100 clockid CLOCK_TAI",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc taprio 1: root refcnt",
++        "matchCount": "0",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
+         "id": "3e1e",
+         "name": "Add taprio Qdisc with an invalid cycle-time",
+         "category": [
 
 
 
