@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-94399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320C39D3D14
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C1A9D3D16
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 15:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC3E2834D9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E99FB28EF6
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3C1C1F3F;
-	Wed, 20 Nov 2024 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A231C3F0B;
+	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5+Ja0kd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrfXi9vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6611AA793;
-	Wed, 20 Nov 2024 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A331C32FF;
+	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111592; cv=none; b=sjT58Wfp+yyS1WgvHU4xKZVLh5zww2enVEPxmd0hciSuWWUpWyBOrfZcDIgMgcsmUe6/YuptrS2DXaPDW9xnpEQf7kA+MiHZ/npLE5lYBYx3aLvNA6SFpehSopmIqRiOEiPU1DtW5NGx8TtnleCyjSTGSV4u/WSbPKc/Xn/g3WQ=
+	t=1732111594; cv=none; b=JYQPJ4yTFf9vKpcn6tM8ITl2sPmcj9QW6ZyUlcS6a3/E5jhRcU+WISWsdthL1//8QwMoUkBpm311UQZapHFVklkuAW0BHP4rmnqeLgJrRsKGPKmxhNAOgVXsPmGDlJey7kMr/ARGNngrcoWq58S3VkzDUEsUNYUOpkog7zatXXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111592; c=relaxed/simple;
-	bh=KuoIMBg67mYDfTqIN7sr1wrRw2U2x4tiGcaH/+aG0tc=;
+	s=arc-20240116; t=1732111594; c=relaxed/simple;
+	bh=snK4haJGbbF0ladFXJRDOWEkiDsVD/apKtbr/fWv7JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiUJy2WuSczx+oybtEyjnjycs1KjgMyhZEx0Ep0gQZypfv3x09Fh75wsWOpUlQJUP8xgIpPJrzC6RwGGIpe/WK0KVa4Jj6LtI44XuxgFXWIPBqyrpItnPb8xEVIr7opHQ6y7//vtQQF0Rs+DTLA7y/RVbZIvz8I50T9KLlK0pFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5+Ja0kd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AACDC4CED3;
-	Wed, 20 Nov 2024 14:06:30 +0000 (UTC)
+	 MIME-Version; b=XpH3oXAfSJInipfPTN22Gj0ayiCxPJujmR3nzGz8rvU4wHGQ2fvhbCLGuqbEQmucD9kN88i+2Lt05vCoLSZRIxqxdA8M3fjdzMQThK9+HSuLuXbj3/aYuVbBu9MzYC7vDpUqIuvSjUxBnjwH4z6Z6xyijBUCnIhm1Beif11h0Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrfXi9vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D97C4CECD;
+	Wed, 20 Nov 2024 14:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111591;
-	bh=KuoIMBg67mYDfTqIN7sr1wrRw2U2x4tiGcaH/+aG0tc=;
+	s=k20201202; t=1732111594;
+	bh=snK4haJGbbF0ladFXJRDOWEkiDsVD/apKtbr/fWv7JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5+Ja0kdax5E92QJzJS5ZPYFLRA3ghv2tVkTFBd/b3sJo69yDwi7qyk25TJtrAw50
-	 8z8Kfk79REAWF4hUKUMJWfTuKUyhVZKaqWXdGQTg3h1o4bDG8/GJuP0cZML5FKIeN4
-	 3/GF5635dFPVsTihLIrZ3K3sJCAhHzIRUi3ZJTkdYfXDsrjnPISAu5iF7zMmxkU4Do
-	 qZCK4K2UEqgY9jmWrAUtcMZc3dQPr7LgFzScMKytdHeLbFfvhi09gqpaY0IDAFkAns
-	 C+RqitjKWCYzFfOOFByZ9FlZvfIGlJah+A1Hh5Qhmkc2Zx3KCvLgV92y5pTGrUsNxy
-	 drSEzadU24zqg==
+	b=lrfXi9vnePm6UyBYnED+lnoz9J0bquH4uedjObYscR6tSFvYpFJ494Tj40d4V8DNL
+	 1XxtJ5x1pRq+awrBpIgnSwwQ7X9pIgiqnJjd1b6lqng3Jbk7RGCCx6afZnXODe2ebp
+	 xqbKH/mT+JNqW2RaxI8OJPhY/a3A8rVCmDPZ85+mtzRuNAAWYP4yzC3Xpbu5NoVa6L
+	 ZhKVCScHpMZcJQg8g01D6kmNIjBsILWaQ2b1njPujXzpZSY2Sbrvn06qQoqd+IsbyV
+	 pLiEY6TNOApyjNdy7eR1yLyBsYGa51crbhzMKwa2X7nQTYbttcg+Fvrm0XJysHOBAX
+	 rP5JWbD24H16A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
-	arnd@arndb.de,
-	samitolvanen@google.com,
-	linux-arm-kernel@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 08/10] ARM: 9434/1: cfi: Fix compilation corner case
-Date: Wed, 20 Nov 2024 09:05:33 -0500
-Message-ID: <20241120140556.1768511-8-sashal@kernel.org>
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 09/10] drm/xe: Restore system memory GGTT mappings
+Date: Wed, 20 Nov 2024 09:05:34 -0500
+Message-ID: <20241120140556.1768511-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241120140556.1768511-1-sashal@kernel.org>
 References: <20241120140556.1768511-1-sashal@kernel.org>
@@ -71,59 +74,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.9
 Content-Transfer-Encoding: 8bit
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 4aea16b7cfb76bd3361858ceee6893ef5c9b5570 ]
+[ Upstream commit dd886a63d6e2ce5c16e662c07547c067ad7d91f5 ]
 
-When enabling expert mode CONFIG_EXPERT and using that power
-user mode to disable the branch prediction hardening
-!CONFIG_HARDEN_BRANCH_PREDICTOR, the assembly linker
-in CLANG notices that some assembly in proc-v7.S does
-not have corresponding C call sites, i.e. the prototypes
-in proc-v7-bugs.c are enclosed in ifdef
-CONFIG_HARDEN_BRANCH_PREDICTOR so this assembly:
+GGTT mappings reside on the device and this state is lost during suspend
+/ d3cold thus this state must be restored resume regardless if the BO is
+in system memory or VRAM.
 
-SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
-SYM_TYPED_FUNC_START(cpu_v7_hvc_switch_mm)
+v2:
+ - Unnecessary parentheses around bo->placements[0] (Checkpatch)
 
-Results in:
-
-ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_smc_switch_mm
->>> referenced by proc-v7.S:94 (.../arch/arm/mm/proc-v7.S:94)
->>> arch/arm/mm/proc-v7.o:(.text+0x108) in archive vmlinux.a
-
-ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_hvc_switch_mm
->>> referenced by proc-v7.S:105 (.../arch/arm/mm/proc-v7.S:105)
->>> arch/arm/mm/proc-v7.o:(.text+0x124) in archive vmlinux.a
-
-Fix this by adding an additional requirement that
-CONFIG_HARDEN_BRANCH_PREDICTOR has to be enabled to compile
-these assembly calls.
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202411041456.ZsoEiD7T-lkp@intel.com/
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241031182257.2949579-1-matthew.brost@intel.com
+(cherry picked from commit a19d1db9a3fa89fabd7c83544b84f393ee9b851f)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/proc-v7.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo.c       | 14 +++++++++++---
+ drivers/gpu/drm/xe/xe_bo_evict.c |  1 -
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mm/proc-v7.S b/arch/arm/mm/proc-v7.S
-index 5fb9a6aecb001..2cd9333426794 100644
---- a/arch/arm/mm/proc-v7.S
-+++ b/arch/arm/mm/proc-v7.S
-@@ -94,7 +94,7 @@ SYM_TYPED_FUNC_START(cpu_v7_dcache_clean_area)
- 	ret	lr
- SYM_FUNC_END(cpu_v7_dcache_clean_area)
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index e147ef1d0578f..c096e5c06f726 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -869,8 +869,8 @@ int xe_bo_evict_pinned(struct xe_bo *bo)
+ 	if (WARN_ON(!xe_bo_is_pinned(bo)))
+ 		return -EINVAL;
  
--#ifdef CONFIG_ARM_PSCI
-+#if defined(CONFIG_ARM_PSCI) && defined(CONFIG_HARDEN_BRANCH_PREDICTOR)
- 	.arch_extension sec
- SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
- 	stmfd	sp!, {r0 - r3}
+-	if (WARN_ON(!xe_bo_is_vram(bo)))
+-		return -EINVAL;
++	if (!xe_bo_is_vram(bo))
++		return 0;
+ 
+ 	ret = ttm_bo_mem_space(&bo->ttm, &placement, &new_mem, &ctx);
+ 	if (ret)
+@@ -920,6 +920,7 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+ 		.interruptible = false,
+ 	};
+ 	struct ttm_resource *new_mem;
++	struct ttm_place *place = &bo->placements[0];
+ 	int ret;
+ 
+ 	xe_bo_assert_held(bo);
+@@ -933,6 +934,9 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+ 	if (WARN_ON(xe_bo_is_vram(bo) || !bo->ttm.ttm))
+ 		return -EINVAL;
+ 
++	if (!mem_type_is_vram(place->mem_type))
++		return 0;
++
+ 	ret = ttm_bo_mem_space(&bo->ttm, &bo->placement, &new_mem, &ctx);
+ 	if (ret)
+ 		return ret;
+@@ -1740,7 +1744,10 @@ int xe_bo_pin(struct xe_bo *bo)
+ 			place->fpfn = (xe_bo_addr(bo, 0, PAGE_SIZE) -
+ 				       vram_region_gpu_offset(bo->ttm.resource)) >> PAGE_SHIFT;
+ 			place->lpfn = place->fpfn + (bo->size >> PAGE_SHIFT);
++		}
+ 
++		if (mem_type_is_vram(place->mem_type) ||
++		    bo->flags & XE_BO_FLAG_GGTT) {
+ 			spin_lock(&xe->pinned.lock);
+ 			list_add_tail(&bo->pinned_link, &xe->pinned.kernel_bo_present);
+ 			spin_unlock(&xe->pinned.lock);
+@@ -1801,7 +1808,8 @@ void xe_bo_unpin(struct xe_bo *bo)
+ 	    bo->flags & XE_BO_FLAG_INTERNAL_TEST)) {
+ 		struct ttm_place *place = &(bo->placements[0]);
+ 
+-		if (mem_type_is_vram(place->mem_type)) {
++		if (mem_type_is_vram(place->mem_type) ||
++		    bo->flags & XE_BO_FLAG_GGTT) {
+ 			spin_lock(&xe->pinned.lock);
+ 			xe_assert(xe, !list_empty(&bo->pinned_link));
+ 			list_del_init(&bo->pinned_link);
+diff --git a/drivers/gpu/drm/xe/xe_bo_evict.c b/drivers/gpu/drm/xe/xe_bo_evict.c
+index 541b49007d738..32043e1e5a863 100644
+--- a/drivers/gpu/drm/xe/xe_bo_evict.c
++++ b/drivers/gpu/drm/xe/xe_bo_evict.c
+@@ -159,7 +159,6 @@ int xe_bo_restore_kernel(struct xe_device *xe)
+ 		 * should setup the iosys map.
+ 		 */
+ 		xe_assert(xe, !iosys_map_is_null(&bo->vmap));
+-		xe_assert(xe, xe_bo_is_vram(bo));
+ 
+ 		xe_bo_put(bo);
+ 
 -- 
 2.43.0
 
