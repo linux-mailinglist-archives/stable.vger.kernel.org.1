@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-94276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A33D9D3C26
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44BE9D3C1F
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42EDBB2A7E2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 493DBB2AC37
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60F01C8FB7;
-	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191601B4F2D;
+	Wed, 20 Nov 2024 13:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d40zKLrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSP+1ZYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642991A2567;
-	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8CC19F41C;
+	Wed, 20 Nov 2024 13:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107607; cv=none; b=XfFLn3cY7FQVkRLOqnkR4Et1IAmElRs37iNk1XvRDU9//09Vk/s3fap9N/9ds+7HMzgMxSfovo1uS4iiYzTw5jQnjOWDGtuZnXQQ1pcKlE4Nk2P8xji+8MNE/vk2y2hyhweZcfddveC2cQkPyyUpRbfM6TlUUnOtA1hphoQW/jI=
+	t=1732107615; cv=none; b=b4GpJMMSZy9sH/tFmJQZUnS1ylTS3OEQyVsxfgGI8nSeWUhLPHjASmikbY5aJIVlbHJOfqq3TsGOLbbsszsjcBxaRpBUx2Xe7L5AXhw1n7Xj3QKuT0KypkpiCQNLlY15nQhS4iz3CEIHlFWhsqThBlB5ARm1o7UzUaF8FCQCk6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107607; c=relaxed/simple;
-	bh=Db+j9w9+vn34e2stwH2tk/8i+ewMNvADcoNHS9CH+1A=;
+	s=arc-20240116; t=1732107615; c=relaxed/simple;
+	bh=JIz9enraK5EHTQp4TF9PtbF42/jC1CIaYUlzSSae8HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGKGFuFbCa338c0qNRgWfa0kuGsxE3Bvsl0/TqPrfLmGMnqnfRuGwtqHIKeX6YPgmuXApcMVE89jD4V7neNPiAMiXgKenoNjQFW9me5nNUJ3vOFPRt2lp0uSOoC/tI2azc7DuZhLye6SlbR069ogJSIUS7Iqq4+LRCdmsz1h4ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d40zKLrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A36BC4CED1;
-	Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
+	 MIME-Version; b=KFptCtW7Z4z19LiOo0Y9aqBEeRo2lmo/Op4wOOKxDWLxzA8oLS4dPAga0utYJquHCVVgIUX1sqdn85MFPs1hkXUXonkP7ubtwurUHa1JXJ2VnN/0nUqMdEonLUR8gUlWOpTu4VT1foSxAKh8r7Agf9jJvjq3rxtxvgfUpeOoYnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSP+1ZYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914BEC4CECD;
+	Wed, 20 Nov 2024 13:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107607;
-	bh=Db+j9w9+vn34e2stwH2tk/8i+ewMNvADcoNHS9CH+1A=;
+	s=korg; t=1732107615;
+	bh=JIz9enraK5EHTQp4TF9PtbF42/jC1CIaYUlzSSae8HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d40zKLrTqyaPZNny6rVYUlg9U3LQehj0SpW+slVO1q5ETuXJI/gRTaloYQ8JW3UOS
-	 NR8EfMFAq7hNC58n32wOknWhw4Taz1rBCbv62xy6JEEGSb2Mvx9qlZjtrjg8rg7Iwb
-	 R6pLzA7S0sqCRa/NeDnRYCg83jC72zbt3+3+Fy88=
+	b=cSP+1ZYhfee/eKxb32blrkPtGZoxm5fDgcib9x5UlIJut9M12ZOqBs4ENeVbaN/Et
+	 jNqgHo6+yx1zBY4gLZY6WyWtRVtsZgJhTDjAEzf9a087zm0eJUhYXEVgFVpitaKWRC
+	 dlGgh8+Yu8xoNO1SZDqLjrma45cVhTn7q9pFPOv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hajime Tazaki <thehajime@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 40/82] nommu: pass NULL argument to vma_iter_prealloc()
-Date: Wed, 20 Nov 2024 13:56:50 +0100
-Message-ID: <20241120125630.516241559@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 41/82] ALSA: hda/realtek - Fixed Clevo platform headset Mic issue
+Date: Wed, 20 Nov 2024 13:56:51 +0100
+Message-ID: <20241120125630.538404550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
 References: <20241120125629.623666563@linuxfoundation.org>
@@ -66,41 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hajime Tazaki <thehajime@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 247d720b2c5d22f7281437fd6054a138256986ba upstream.
+commit 42ee87df8530150d637aa48363b72b22a9bbd78f upstream.
 
-When deleting a vma entry from a maple tree, it has to pass NULL to
-vma_iter_prealloc() in order to calculate internal state of the tree, but
-it passed a wrong argument.  As a result, nommu kernels crashed upon
-accessing a vma iterator, such as acct_collect() reading the size of vma
-entries after do_munmap().
+Clevo platform with ALC255 Headset Mic was disable by default.
+Assigned verb table for Mic pin will enable it.
 
-This commit fixes this issue by passing a right argument to the
-preallocation call.
-
-Link: https://lkml.kernel.org/r/20241108222834.3625217-1-thehajime@gmail.com
-Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/b2dcac3e09ef4f82b36d6712194e1ea4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/nommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -584,7 +584,7 @@ static int delete_vma_from_mm(struct vm_
- 	VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11064,6 +11064,8 @@ static const struct snd_hda_pin_quirk al
+ 		{0x1a, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
+ 		{0x19, 0x40000000}),
++	SND_HDA_PIN_QUIRK(0x10ec0255, 0x1558, "Clevo", ALC2XX_FIXUP_HEADSET_MIC,
++		{0x19, 0x40000000}),
+ 	{}
+ };
  
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
--	if (vma_iter_prealloc(&vmi, vma)) {
-+	if (vma_iter_prealloc(&vmi, NULL)) {
- 		pr_warn("Allocation of vma tree for process %d failed\n",
- 		       current->pid);
- 		return -ENOMEM;
 
 
 
