@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-94337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161349D3C16
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00C49D3C0E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A03FB2BA83
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA721F24A6A
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FD91CACC1;
-	Wed, 20 Nov 2024 13:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6961CACE5;
+	Wed, 20 Nov 2024 13:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApuKJ0Sk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkTOLmfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FC91C9EDB;
-	Wed, 20 Nov 2024 13:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2201CACDC;
+	Wed, 20 Nov 2024 13:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107678; cv=none; b=NM+N0YRjyMQNsS6laWzaX974+6z8ZXIt1hsRKr3RaR9L2gJ+r8J3Q0eTQE69+b/2SfmsspclBoysKE0/UXw/A25EKml/fBaIj5eAW2vZ52oNd8WnLpAmSyV7b3igC45MjWDC/NcX+DXMpqUSha1mwquTWDoLSuVBW6/dSFO9GEc=
+	t=1732107679; cv=none; b=LaLw28BfiVTw2juE+5eU13iMQaeSoOQ8fxioec/69Y+WGQ6rehBuFIScAlFnlm91HKHQSf4lusd04ZtWktzoUfAQ4We42CD7afzPK8A8iNy9BPAAL8rWVeDLYtnxi93mbBtKUovDbstNjre5m4qlmsuwis+QBXTm/Kav/KCqGds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107678; c=relaxed/simple;
-	bh=0UOLAat4n5DLyO+KWKairEA7L70jLQtvrt+LJjB8Eek=;
+	s=arc-20240116; t=1732107679; c=relaxed/simple;
+	bh=bl0njdsLTwiAH5PxDikXOtaPbQqqBdoslq5hqWIc9Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSJ2OdsWPIMUGVNr2GnP/bdiVCjFLHdkRdb7hrOLRzcuxu4ZQaQQfmyqr1njCqcZ79C+kYGaSUkkrepLIBmWV6l7KH5q0mdp8rYhTLX4x4xaKCSqd9h1Np3OEBD3b37KAdeDv3ydMmYOnR/AbFfEPxtP65AEZCwvCEm6kYbMxfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApuKJ0Sk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6749C4CECD;
-	Wed, 20 Nov 2024 13:01:17 +0000 (UTC)
+	 MIME-Version; b=VFmIkfYVUA9rxbUZqxE2vzfNKeT7eYDh9UCcivyiOZCBa0hKX3D9GfrWhQJEkARMkJujXsLScPjSpeNSE/hrNZ3MtuxpJhCtM0WHBmbMT/o0bahUC9EBNDVa/NdgOJGYwS4WRBFmrHykxZtqv0xqG8NYMo3WOkb4evcm4iZwqB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkTOLmfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAF0C4CECD;
+	Wed, 20 Nov 2024 13:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107677;
-	bh=0UOLAat4n5DLyO+KWKairEA7L70jLQtvrt+LJjB8Eek=;
+	s=korg; t=1732107679;
+	bh=bl0njdsLTwiAH5PxDikXOtaPbQqqBdoslq5hqWIc9Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApuKJ0SkcBRLUZYVVH9Rwq3NGFEzBo55X2/nUyKMpu6dtiXQaTXMaeMEYfvunl8zJ
-	 7oNBHRWlKsBgzp4j9ptQCeX0RnSD+ccYZfO66xGSM7deU0uaoH7cytBdgZHrEyfJo9
-	 n83SHg3dVVRFDdZLEaWP9wZ5nTyL/JP2L0MeZ4Y4=
+	b=jkTOLmfACsNGEAjEWVGgvKpHXsysbTKpxm7qlFKTKtCrIePGTrPA24FTNRkCyhc7n
+	 /arQvKoQG5HMmmRTNjXhiZO9amNZFUw8Er7iWmN76LgBSfT0KmSgWjR4Sq+2XJ2Q65
+	 vLr4/iQkjPzcFzV1+1yGEuukAXR5eHjXw/cGs1HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/73] staging: vchiq_arm: Use devm_kzalloc() for vchiq_arm_state allocation
-Date: Wed, 20 Nov 2024 13:58:21 +0100
-Message-ID: <20241120125810.453918434@linuxfoundation.org>
+Subject: [PATCH 6.1 36/73] fs/ntfs3: Additional check in ntfs_file_release
+Date: Wed, 20 Nov 2024 13:58:22 +0100
+Message-ID: <20241120125810.476413367@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -66,41 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Umang Jain <umang.jain@ideasonboard.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 404b739e895522838f1abdc340c554654d671dde ]
+[ Upstream commit 031d6f608290c847ba6378322d0986d08d1a645a ]
 
-The struct vchiq_arm_state 'platform_state' is currently allocated
-dynamically using kzalloc(). Unfortunately, it is never freed and is
-subjected to memory leaks in the error handling paths of the probe()
-function.
-
-To address the issue, use device resource management helper
-devm_kzalloc(), to ensure cleanup after its allocation.
-
-Fixes: 71bad7f08641 ("staging: add bcm2708 vchiq driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20241016130225.61024-2-umang.jain@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/file.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index bb1342223ad0d..456a9508fb911 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -571,7 +571,7 @@ vchiq_platform_init_state(struct vchiq_state *state)
- {
- 	struct vchiq_arm_state *platform_state;
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index aedd4f5f459e6..70b38465aee36 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1214,8 +1214,16 @@ static int ntfs_file_release(struct inode *inode, struct file *file)
+ 	int err = 0;
  
--	platform_state = kzalloc(sizeof(*platform_state), GFP_KERNEL);
-+	platform_state = devm_kzalloc(state->dev, sizeof(*platform_state), GFP_KERNEL);
- 	if (!platform_state)
- 		return -ENOMEM;
+ 	/* If we are last writer on the inode, drop the block reservation. */
+-	if (sbi->options->prealloc && ((file->f_mode & FMODE_WRITE) &&
+-				      atomic_read(&inode->i_writecount) == 1)) {
++	if (sbi->options->prealloc &&
++	    ((file->f_mode & FMODE_WRITE) &&
++	     atomic_read(&inode->i_writecount) == 1)
++	   /*
++	    * The only file when inode->i_fop = &ntfs_file_operations and
++	    * init_rwsem(&ni->file.run_lock) is not called explicitly is MFT.
++	    *
++	    * Add additional check here.
++	    */
++	    && inode->i_ino != MFT_REC_MFT) {
+ 		ni_lock(ni);
+ 		down_write(&ni->file.run_lock);
  
 -- 
 2.43.0
