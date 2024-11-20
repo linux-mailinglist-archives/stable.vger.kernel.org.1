@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-94155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2549D3B57
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096D69D3BA4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D381281D65
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB561282E63
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DA91AB512;
-	Wed, 20 Nov 2024 12:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A1C1BDA83;
+	Wed, 20 Nov 2024 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saquaVdy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKDgSQjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02481AB51E;
-	Wed, 20 Nov 2024 12:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F761BD9CC;
+	Wed, 20 Nov 2024 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107516; cv=none; b=uD4tRUnNGWsKXFDURMwrt8E2LrSlA3a0OVDgbla05VJNQcIAglyP0r3iZaHiCbc0lE9L6+ZSOH+vo8A93BtAagNTlN6EuC4Pnf/LNR1m3DqoP+A0SG+y6QSq2Tnm9C3/9SCZsvKpSLh33EEwjOAI6ujARoh8Yf8NLzUV10sfENA=
+	t=1732107571; cv=none; b=Pe7X2/gguZVAbcc8EOqwWdmjrBJ+XIhRZhr4Zx/Qw3GHHXIU0wdUD2Yxfm5aKiukrYUXGDk4f0Fx2O2hg/9ZB3h/UJr4+6Sl+nqOyxd4Wz8Im6SIyqhxGXObpSdxK4eSioAynaa9tVDD21JLwezXKZtiX+wZ5+Nf28rXkzstVMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107516; c=relaxed/simple;
-	bh=qM5VcE9hnP6sXSAhCdOSknCja/bVx5yqjzbhg7JmaMo=;
+	s=arc-20240116; t=1732107571; c=relaxed/simple;
+	bh=S3az6dTGuOns76O+/+kTlCPmRFtjzop4rdjWsKbOMQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2O214mqNMykBGW9NssvGcTRfhr2tyTDfnvfv7WWbka/MQGc4UqlsjP3KdLeY3rfWqB+jp+Ecyhzz1Dlzsa0eDl5N/RIg+TVoxeb3wW0/bOwOxZ4E6zIQp0wiF2KNZHlAhy5yb4asoOhsG8xFyFQslztXPQEp/n5C58ZOVUxRxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saquaVdy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B9BC4CECD;
-	Wed, 20 Nov 2024 12:58:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O1ZVF3GKLooCCgupo0yppbENmnUobyKLK/adOQf+UEgHGLYYSjdlCyKkqXYNtlHzy/hvl8CEegn20H0aQ9gIFvVHS7yWm3lSUJnvediZ0BvWgpI8lIoPrjkemORy6zzk1gaY3IMRTH6G40fsPPXhEV/f7j6r17Xle+ZKI8/2bB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKDgSQjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FED4C4CECD;
+	Wed, 20 Nov 2024 12:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107515;
-	bh=qM5VcE9hnP6sXSAhCdOSknCja/bVx5yqjzbhg7JmaMo=;
+	s=korg; t=1732107571;
+	bh=S3az6dTGuOns76O+/+kTlCPmRFtjzop4rdjWsKbOMQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saquaVdycvIqlOCZMTSKT0f6R9VVJce9qwXnMzfDByFpavJ72wBYk9c8iqJhmeXP3
-	 G3ghGv3Z0nf9mtnpt7f67vKcANdNZucxdTLSmSTpjGKuc6+9uEyPmtDl0CsxTWHgSY
-	 A2ew4ABox/Y8Mgh/wuwlUwRrKl4W2TFtaxgIB+d4=
+	b=PKDgSQjMfMMyLK0m1dpmqHckAxiFE9/Dz7/e8Ec+V7d9zox6tQKMQDOqJEQ301ZdH
+	 Ou3MKA820kT0EZdKVS3j6tPGUrIFynPnuwqI3FwLpeB4EH9mdHEiemWTXBMY/kTqU+
+	 6Im4sEOLbaOfVPCTrsqDQ+SQr6ktL/wgczhzt2N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-	Andrew Yang <andrew.yang@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Casper Li <casper.li@mediatek.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chinwen Chang <chinwen.chang@mediatek.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 045/107] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+	Moshe Shemesh <moshe@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 10/82] net/mlx5e: CT: Fix null-ptr-deref in add rule err flow
 Date: Wed, 20 Nov 2024 13:56:20 +0100
-Message-ID: <20241120125630.694733916@linuxfoundation.org>
+Message-ID: <20241120125629.849107811@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 upstream.
+[ Upstream commit e99c6873229fe0482e7ceb7d5600e32d623ed9d9 ]
 
-When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
-object_is_on_stack() function may produce incorrect results due to the
-presence of tags in the obj pointer, while the stack pointer does not have
-tags.  This discrepancy can lead to incorrect stack object detection and
-subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
+In error flow of mlx5_tc_ct_entry_add_rule(), in case ct_rule_add()
+callback returns error, zone_rule->attr is used uninitiated. Fix it to
+use attr which has the needed pointer value.
 
-Example of the warning:
+Kernel log:
+ BUG: kernel NULL pointer dereference, address: 0000000000000110
+ RIP: 0010:mlx5_tc_ct_entry_add_rule+0x2b1/0x2f0 [mlx5_core]
+…
+ Call Trace:
+  <TASK>
+  ? __die+0x20/0x70
+  ? page_fault_oops+0x150/0x3e0
+  ? exc_page_fault+0x74/0x140
+  ? asm_exc_page_fault+0x22/0x30
+  ? mlx5_tc_ct_entry_add_rule+0x2b1/0x2f0 [mlx5_core]
+  ? mlx5_tc_ct_entry_add_rule+0x1d5/0x2f0 [mlx5_core]
+  mlx5_tc_ct_block_flow_offload+0xc6a/0xf90 [mlx5_core]
+  ? nf_flow_offload_tuple+0xd8/0x190 [nf_flow_table]
+  nf_flow_offload_tuple+0xd8/0x190 [nf_flow_table]
+  flow_offload_work_handler+0x142/0x320 [nf_flow_table]
+  ? finish_task_switch.isra.0+0x15b/0x2b0
+  process_one_work+0x16c/0x320
+  worker_thread+0x28c/0x3a0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xb8/0xf0
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x2d/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
-Hardware name: linux,dummy-virt (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __debug_object_init+0x330/0x364
-lr : __debug_object_init+0x330/0x364
-sp : ffff800082ea7b40
-x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
-x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
-x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
-x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
-x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
-x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
-x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
-x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
-x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
-Call trace:
- __debug_object_init+0x330/0x364
- debug_object_init_on_stack+0x30/0x3c
- schedule_hrtimeout_range_clock+0xac/0x26c
- schedule_hrtimeout+0x1c/0x30
- wait_task_inactive+0x1d4/0x25c
- kthread_bind_mask+0x28/0x98
- init_rescuer+0x1e8/0x280
- workqueue_init+0x1a0/0x3cc
- kernel_init_freeable+0x118/0x200
- kernel_init+0x28/0x1f0
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
-------------[ cut here ]------------
-
-Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
-Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-Cc: Andrew Yang <andrew.yang@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Casper Li <casper.li@mediatek.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chinwen Chang <chinwen.chang@mediatek.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7fac5c2eced3 ("net/mlx5: CT: Avoid reusing modify header context for natted entries")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241107183527.676877-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/task_stack.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -9,6 +9,7 @@
- #include <linux/sched.h>
- #include <linux/magic.h>
- #include <linux/refcount.h>
-+#include <linux/kasan.h>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index 8c4e3ecef5901..65cee5c6f1dd6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -854,7 +854,7 @@ mlx5_tc_ct_entry_add_rule(struct mlx5_tc_ct_priv *ct_priv,
+ 	return 0;
  
- #ifdef CONFIG_THREAD_INFO_IN_TASK
- 
-@@ -89,6 +90,7 @@ static inline int object_is_on_stack(con
- {
- 	void *stack = task_stack_page(current);
- 
-+	obj = kasan_reset_tag(obj);
- 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
- }
- 
+ err_rule:
+-	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, zone_rule->attr, zone_rule->mh);
++	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, attr, zone_rule->mh);
+ 	mlx5_put_label_mapping(ct_priv, attr->ct_attr.ct_labels_id);
+ err_mod_hdr:
+ 	kfree(attr);
+-- 
+2.43.0
+
 
 
 
