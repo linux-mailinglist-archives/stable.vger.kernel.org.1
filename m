@@ -1,117 +1,126 @@
-Return-Path: <stable+bounces-94128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910E49D3B3A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0BB9D3B29
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B917B285C9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95FD1F22295
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD59919F487;
-	Wed, 20 Nov 2024 12:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001DA1A4F12;
+	Wed, 20 Nov 2024 12:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+n5O96y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XjCQoDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7501DFEF;
-	Wed, 20 Nov 2024 12:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F77D1DFEF;
+	Wed, 20 Nov 2024 12:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107496; cv=none; b=RIpc3uVVUtd78mrulMdu0TasseMKdSEilY2kP3g1RM6E+UrcqRnHDNAVd2dK4nf9j2rzaP+Aur+YBjeVhxwV+tHLm2eruQGSAXS6ft1djPsZpu7irSADZpG43rxacE8N+0oLienXSVjH0L9xFU0sTQ1N7WKwIclT/rxsz21xENs=
+	t=1732107385; cv=none; b=THATyBV341gadCxTA9Uviz/a/I0a7AzRwJZe4puBlpWKQQ17VSOv5AJjy6W89VgEgaq+3KBjPgDSqqBTOkMmDPdxHp1Sy8ARjyWKyovlbzQKAGc0XrbMmxsS2r8q3xXcslOC30AY2lmzeZiM8XRt0eR5qzSiuc29+mWduTONQB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107496; c=relaxed/simple;
-	bh=GjLC3r2jKwRXNKuFzVgw4zxMhWZ2R1bXwxa0O21++MQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLMbHsRn7OCiNiREnHbgahTLqX9mprvo9l7y278Q8+AbL+VoREAGJQe7KT+sVWlAUhTHGASV/3kORyToetpFghNv3gHmRzUl1SabDUp0w++G7Lpj5RuVbQkD7h8Ryoni0mTDomQ52wsDBkC/1DbydokNYKqdUwf5LU+E7X6X16g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+n5O96y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0374C4CED6;
-	Wed, 20 Nov 2024 12:58:15 +0000 (UTC)
+	s=arc-20240116; t=1732107385; c=relaxed/simple;
+	bh=OmmppcBnBAOqTLsXY/hhk6hLRcj/o2lOl3O3Ptzq98A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lJda0DwdrvPLovRQ7/geWtOL3ZWrONTk9dlj1YR3g7WpKVNWVJhrDVQVOxi7zX4op0oOAyQMcXGt6+8roSO8x+TvVP4jcn0Gmz0rIkY2SlsOAdK+ZZlfpAYMu+fAlMX+YM44hFZ0e/xz5PqrDq/SFqHWCzZH9e9h2vS+j9WqIEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XjCQoDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080F7C4CECD;
+	Wed, 20 Nov 2024 12:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107496;
-	bh=GjLC3r2jKwRXNKuFzVgw4zxMhWZ2R1bXwxa0O21++MQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+n5O96yxm9R3OEa6vQ9RV7K6Xe9Ado0/JovahiFfgtarsxglAHXNDo3YM24C3tA4
-	 ey/Cc20C/S6jsHdtzkNVwlizaLaIjYFv6U4kGKKKsPRuBHPRXdimR8HbYY2dtcSu5+
-	 G0+awIHCKCGSA31OQzTYvX85i95+Y1AhXC/3OYCI=
+	s=korg; t=1732107385;
+	bh=OmmppcBnBAOqTLsXY/hhk6hLRcj/o2lOl3O3Ptzq98A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=0XjCQoDc2I9a4+Gm77gE7MUMp0nYdSHYqzDXvu80TOE+85N13kUZ6GreAPi1IWxM6
+	 8PN+SHBLOys+oQYVDiM1ogu7v5ki1jcFFwl1905wLuTDWabs0/NxiFlekxNFabdGc2
+	 Y0ggFasCU6y6n246NWLY6xpR8KpRcTLBdEZK25Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 019/107] drivers: perf: Fix wrong put_cpu() placement
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.12 0/3] 6.12.1-rc1 review
 Date: Wed, 20 Nov 2024 13:55:54 +0100
-Message-ID: <20241120125630.109356471@linuxfoundation.org>
+Message-ID: <20241120124100.444648273@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.1-rc1
+X-KernelTest-Deadline: 2024-11-22T12:41+00:00
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.12.1 release.
+There are 3 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Fri, 22 Nov 2024 12:40:53 +0000.
+Anything received after that time might be too late.
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
-[ Upstream commit 57f7c7dc78cd09622b12920d92b40c1ce11b234e ]
+thanks,
 
-Unfortunately, the wrong patch version was merged which places the
-put_cpu() after enabling a static key, which is not safe as pointed by
-Will [1], so move put_cpu() before to avoid this.
+greg k-h
 
-Fixes: 2840dadf0dde ("drivers: perf: Fix smp_processor_id() use in preemptible code")
-Reported-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/all/20240827125335.GD4772@willie-the-truck/ [1]
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20241112113422.617954-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/perf/riscv_pmu_sbi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index 671dc55cbd3a8..bc562c759e1e9 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -1380,8 +1380,9 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
- 			goto out_unregister;
- 
- 		cpu = get_cpu();
--
- 		ret = pmu_sbi_snapshot_setup(pmu, cpu);
-+		put_cpu();
-+
- 		if (ret) {
- 			/* Snapshot is an optional feature. Continue if not available */
- 			pmu_sbi_snapshot_free(pmu);
-@@ -1395,7 +1396,6 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
- 			 */
- 			static_branch_enable(&sbi_pmu_snapshot_available);
- 		}
--		put_cpu();
- 	}
- 
- 	register_sysctl("kernel", sbi_pmu_sysctl_table);
--- 
-2.43.0
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.1-rc1
 
+Liam R. Howlett <Liam.Howlett@Oracle.com>
+    mm/mmap: fix __mmap_region() error handling in rare merge failure case
+
+Benoit Sevens <bsevens@google.com>
+    media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
+
+Hyunwoo Kim <v4bel@theori.io>
+    hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+
+
+-------------
+
+Diffstat:
+
+ Makefile                           |  4 ++--
+ drivers/media/usb/uvc/uvc_driver.c |  2 +-
+ mm/mmap.c                          | 13 ++++++++++++-
+ net/vmw_vsock/hyperv_transport.c   |  1 +
+ 4 files changed, 16 insertions(+), 4 deletions(-)
 
 
 
