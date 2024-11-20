@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-94366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8427D9D3C25
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6189D3C01
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4856A2875D5
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6511F24397
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2181CB335;
-	Wed, 20 Nov 2024 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6821BC068;
+	Wed, 20 Nov 2024 13:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxznsOIp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/wF3TKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8E71BF7E5;
-	Wed, 20 Nov 2024 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED241BBBED;
+	Wed, 20 Nov 2024 13:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107701; cv=none; b=Oz1IuQWmbwAx/KtUTj68Hrtp7x1gQvCvbV6EbGr1vSbwWp51H2htBFkIm3BKq6Jga4fBS6mzmLZV5XtvtnBapFnNQWw6ylcLdFQsPlU1fG+hIpEZydoon1Ove3r2FcVRwbjf5wMq+g5NHRaV6Bkbdoys2YmWQGbLk6iuPVsCjzw=
+	t=1732107671; cv=none; b=f1kNED+9J6vj0khDgkH4GkS7/cQqpdPi1tZLVYTIK1H8v1Kplpo7tDuoW+FeLs4LcKGlwvnGe3R/M/xQzv61Um5qR7I9MZy62mcWczA5mJjuf9pHxgSkX2PjbJaqO5WtYdIUZ2K1WHCOJOyQkxKtjN4UTnlZ5+mdF1gDKPi7D1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107701; c=relaxed/simple;
-	bh=db/U3qvMoF6/OJ6Fl6kMQo6lAukDRHcZ6jHgbLifCS8=;
+	s=arc-20240116; t=1732107671; c=relaxed/simple;
+	bh=KdBhprWoyKzCwcIuF2nziNuOQtH//Ef0WF5nMaY0xgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAmBaKwep1MtpJXuxSSEFbK9tCgrcvHvcqLTaDiMZ9HIPstr4DT0ujdHG2gRxfqcgV/UsgrSORcQbx+KmImBOihOq0zU7srPwzuwj4rkZYO1583E8puojyHySwVle+a7AjTGcatqy6Ra1G3VXErOb/I03o/FhnBKQrxnUxL/jJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxznsOIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C9EC4CECD;
-	Wed, 20 Nov 2024 13:01:40 +0000 (UTC)
+	 MIME-Version; b=QE+u4ThkoxzMeQEJ2q2+662Rgcq0lKUsKHiw7nWAG3NVl/j3UH8b11nMeXFQMCo9iL3QGG5Cyx/Aor27RpP76APRr4TnvmhgKraUl2dRDFxAfdUKii/uWuEDXTaBhJJrCLNc5EyIc1fS8lVSzgsq1LKj1ubqQozkA9CuAGSN0h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/wF3TKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB23AC4CECD;
+	Wed, 20 Nov 2024 13:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107701;
-	bh=db/U3qvMoF6/OJ6Fl6kMQo6lAukDRHcZ6jHgbLifCS8=;
+	s=korg; t=1732107670;
+	bh=KdBhprWoyKzCwcIuF2nziNuOQtH//Ef0WF5nMaY0xgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxznsOIpRo4PYP4TDAtEWVW+QZ1B9ieg4kDtBJ+O5b9NtiRz6fvbSRfVLRZp0uc3r
-	 P+zaE5P4D7Vyvw09YL/ElWlPmF0BXqySSWg97HwXhqHETvYNeDzSJKdSLw5ZxRaByI
-	 cUfS6RWNKHP9bpq1PCuvJWc9jJv0fIhtQR6xaB0s=
+	b=o/wF3TKGH2OAoLyhNTo3fp/7nduyRW1nyEwJniNCB4NXT440SkHR/ZuJDFQwPZOJo
+	 c96od1DqkvEaGjQGpDaU4YlZmCX6ntgpT+6Wn2NBBRYhRD1RaVh+oxR5LVFy3AGSTp
+	 nGZ29Q9PncNZtQlw2Gs8TGj/qApam8HHBlozKsoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Ubisectech Sirius <bugreport@valiantsec.com>,
-	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 25/73] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
-Date: Wed, 20 Nov 2024 13:58:11 +0100
-Message-ID: <20241120125810.216016629@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 26/73] ALSA: hda/realtek - Fixed Clevo platform headset Mic issue
+Date: Wed, 20 Nov 2024 13:58:12 +0100
+Message-ID: <20241120125810.239240981@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -68,64 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
+commit 42ee87df8530150d637aa48363b72b22a9bbd78f upstream.
 
-Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
+Clevo platform with ALC255 Headset Mic was disable by default.
+Assigned verb table for Mic pin will enable it.
 
-This series fixes null pointer dereference bugs that occur when using
-nilfs2 and two block-related tracepoints.
-
-
-This patch (of 2):
-
-It has been reported that when using "block:block_touch_buffer"
-tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
-NULL pointer dereference, or a general protection fault when KASAN is
-enabled.
-
-This happens because since the tracepoint was added in touch_buffer(), it
-references the dev_t member bh->b_bdev->bd_dev regardless of whether the
-buffer head has a pointer to a block_device structure.  In the current
-implementation, the block_device structure is set after the function
-returns to the caller.
-
-Here, touch_buffer() is used to mark the folio/page that owns the buffer
-head as accessed, but the common search helper for folio/page used by the
-caller function was optimized to mark the folio/page as accessed when it
-was reimplemented a long time ago, eliminating the need to call
-touch_buffer() here in the first place.
-
-So this solves the issue by eliminating the touch_buffer() call itself.
-
-Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
-Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
-Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
-Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
-Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/b2dcac3e09ef4f82b36d6712194e1ea4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c |    1 -
- 1 file changed, 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
- 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
- 	bh = nilfs_page_get_nth_block(page, block - first_block);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10872,6 +10872,8 @@ static const struct snd_hda_pin_quirk al
+ 		{0x1a, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
+ 		{0x19, 0x40000000}),
++	SND_HDA_PIN_QUIRK(0x10ec0255, 0x1558, "Clevo", ALC2XX_FIXUP_HEADSET_MIC,
++		{0x19, 0x40000000}),
+ 	{}
+ };
  
--	touch_buffer(bh);
- 	wait_on_buffer(bh);
- 	return bh;
- }
 
 
 
