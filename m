@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-94117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6E79D3B2C
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:56:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DC99D3B3D
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92C62B27E84
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D55C01F21AC0
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EE91A4F09;
-	Wed, 20 Nov 2024 12:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4752C1AA1C3;
+	Wed, 20 Nov 2024 12:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5WMpUJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbBJ0Xqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AD91DFEF;
-	Wed, 20 Nov 2024 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049651A4F12;
+	Wed, 20 Nov 2024 12:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107393; cv=none; b=ukDEuc3Fftcvo2kMlY6LcQYlPC1fdvL7rPzKMpDVN+uf/PpuCpP5AeHRhkJRc6rxhl+TiPj7ppoy0f4rDP5a0y88Bdd6zQbupBNxwUFuqtkP21AIW7+lLj2xzuwgG40NtTAJ+thZvRdm/xkHUwLx2Id/vtnlVYQOhPn+S75Yq18=
+	t=1732107499; cv=none; b=tnWFGCn/DK1h0LnliH8vXKdHdUAq04mRqL03GkLiPftHf+mNFgzdweqDGMixxydEs9NQGWbrLPwOrCiSEoldiK958QBBc6miZKD1e0kn9jLMpz9d88zr4eP6g+KtCE1vD/qbQKUX2mefpie92m+TgLkvoK/lnFV09Jy9L5J/yo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107393; c=relaxed/simple;
-	bh=m6IC4S/OFmIC7Rv0cRxnR0hkSm7Pr15Ari4zJK3DIA4=;
+	s=arc-20240116; t=1732107499; c=relaxed/simple;
+	bh=aBJHE97SdiSWXqQ8Kgq3UKew4vtHnXzriNvoG6w8/4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H267RYVTde9Nlk8sLgubh815E7+1IyraTI0529umlGzExzjlpsTmEfGmY+SCgv2JxY2aroFpp61yxPffNOLJMz5IHJr0ICH51xuo05IAJSSy70vDfWOyOo5MXeSdlGcfuHpDpnlmq9nfxgmOn4C0lwf2jBLbSfivnRzwDin9+yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5WMpUJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF90C4CECD;
-	Wed, 20 Nov 2024 12:56:33 +0000 (UTC)
+	 MIME-Version; b=RBTaK4BroiP898PyQCKdHUDqJi+oa3cmZ6Fs8GZxOfJJzlDNZFbeRP17eIYcNJMEYoFDYuOhkr2aFXSSUAihSzDhNArJclw8dOa36OKJhYU6ZFJBm4k2EhqEpk30tPgMaKHhy6TWj6jOSMF2rM+lzEPb+JKiBdcRU6kmpQedcdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbBJ0Xqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5EBC4CECD;
+	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107393;
-	bh=m6IC4S/OFmIC7Rv0cRxnR0hkSm7Pr15Ari4zJK3DIA4=;
+	s=korg; t=1732107498;
+	bh=aBJHE97SdiSWXqQ8Kgq3UKew4vtHnXzriNvoG6w8/4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5WMpUJ9T7Kv4KiiW81783A4AAzoYNo1013JOqBox8YhFFDOo6eZl0BZV5NkWOhtx
-	 EGHGv/1c1/QlmJFxZyNaRTyN0Gz6x9n8H6yydJ4exuzadhXdKUd6Sshay2Hr5DmNH7
-	 jpdkKtwKkAOrBxizyqr8S4PFAe4i4suV7N+cr+6U=
+	b=ZbBJ0Xqk5tQ4mHMR19d+Ugf+uFDNyMKlrIeF6rJLUNCWAbzTcljqFwOj2iAKGsdpq
+	 lDTbGDNecTaF3pfwQekwzSdcHuLgCuQNE74nXsDKMzWFps+CZ0NLgMjev/4tq2kv2C
+	 w/MYvKTAd9UViD3dUfRYELST0lFFGNUMx7VB9PPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.12 3/3] mm/mmap: fix __mmap_region() error handling in rare merge failure case
+	Akash Goel <akash.goel@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 022/107] drm/panthor: Fix handling of partial GPU mapping of BOs
 Date: Wed, 20 Nov 2024 13:55:57 +0100
-Message-ID: <20241120124100.526989773@linuxfoundation.org>
+Message-ID: <20241120125630.178040469@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120124100.444648273@linuxfoundation.org>
-References: <20241120124100.444648273@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+From: Akash Goel <akash.goel@arm.com>
 
-The mmap_region() function tries to install a new vma, which requires a
-pre-allocation for the maple tree write due to the complex locking
-scenarios involved.
+[ Upstream commit 3387e043918e154ca08d83954966a8b087fe2835 ]
 
-Recent efforts to simplify the error recovery required the relocation of
-the preallocation of the maple tree nodes (via vma_iter_prealloc()
-calling mas_preallocate()) higher in the function.
+This commit fixes the bug in the handling of partial mapping of the
+buffer objects to the GPU, which caused kernel warnings.
 
-The relocation of the preallocation meant that, if there was a file
-associated with the vma and the driver call (mmap_file()) modified the
-vma flags, then a new merge of the new vma with existing vmas is
-attempted.
+Panthor didn't correctly handle the case where the partial mapping
+spanned multiple scatterlists and the mapping offset didn't point
+to the 1st page of starting scatterlist. The offset variable was
+not cleared after reaching the starting scatterlist.
 
-During the attempt to merge the existing vma with the new vma, the vma
-iterator is used - the same iterator that would be used for the next
-write attempt to the tree.  In the event of needing a further allocation
-and if the new allocations fails, the vma iterator (and contained maple
-state) will cleaned up, including freeing all previous allocations and
-will be reset internally.
+Following warning messages were seen.
+WARNING: CPU: 1 PID: 650 at drivers/iommu/io-pgtable-arm.c:659 __arm_lpae_unmap+0x254/0x5a0
+<snip>
+pc : __arm_lpae_unmap+0x254/0x5a0
+lr : __arm_lpae_unmap+0x2cc/0x5a0
+<snip>
+Call trace:
+ __arm_lpae_unmap+0x254/0x5a0
+ __arm_lpae_unmap+0x108/0x5a0
+ __arm_lpae_unmap+0x108/0x5a0
+ __arm_lpae_unmap+0x108/0x5a0
+ arm_lpae_unmap_pages+0x80/0xa0
+ panthor_vm_unmap_pages+0xac/0x1c8 [panthor]
+ panthor_gpuva_sm_step_unmap+0x4c/0xc8 [panthor]
+ op_unmap_cb.isra.23.constprop.30+0x54/0x80
+ __drm_gpuvm_sm_unmap+0x184/0x1c8
+ drm_gpuvm_sm_unmap+0x40/0x60
+ panthor_vm_exec_op+0xa8/0x120 [panthor]
+ panthor_vm_bind_exec_sync_op+0xc4/0xe8 [panthor]
+ panthor_ioctl_vm_bind+0x10c/0x170 [panthor]
+ drm_ioctl_kernel+0xbc/0x138
+ drm_ioctl+0x210/0x4b0
+ __arm64_sys_ioctl+0xb0/0xf8
+ invoke_syscall+0x4c/0x110
+ el0_svc_common.constprop.1+0x98/0xf8
+ do_el0_svc+0x24/0x38
+ el0_svc+0x34/0xc8
+ el0t_64_sync_handler+0xa0/0xc8
+ el0t_64_sync+0x174/0x178
+<snip>
+panthor : [drm] drm_WARN_ON(unmapped_sz != pgsize * pgcount)
+WARNING: CPU: 1 PID: 650 at drivers/gpu/drm/panthor/panthor_mmu.c:922 panthor_vm_unmap_pages+0x124/0x1c8 [panthor]
+<snip>
+pc : panthor_vm_unmap_pages+0x124/0x1c8 [panthor]
+lr : panthor_vm_unmap_pages+0x124/0x1c8 [panthor]
+<snip>
+panthor : [drm] *ERROR* failed to unmap range ffffa388f000-ffffa3890000 (requested range ffffa388c000-ffffa3890000)
 
-Upon returning to the __mmap_region() function, the error is available
-in the vma_merge_struct and can be used to detect the -ENOMEM status.
-
-Hitting an -ENOMEM scenario after the driver callback leaves the system
-in a state that undoing the mapping is worse than continuing by dipping
-into the reserve.
-
-A preallocation should be performed in the case of an -ENOMEM and the
-allocations were lost during the failure scenario.  The __GFP_NOFAIL
-flag is used in the allocation to ensure the allocation succeeds after
-implicitly telling the driver that the mapping was happening.
-
-The range is already set in the vma_iter_store() call below, so it is
-not necessary and is dropped.
-
-Reported-by: syzbot+bc6bfc25a68b7a020ee1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/x/log.txt?x=17b0ace8580000
-Fixes: 5de195060b2e2 ("mm: resolve faulty mmap_region() error path behaviour")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Signed-off-by: Akash Goel <akash.goel@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241111134720.780403-1-akash.goel@arm.com
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mmap.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1491,7 +1491,18 @@ static unsigned long __mmap_region(struc
- 				vm_flags = vma->vm_flags;
- 				goto file_expanded;
- 			}
--			vma_iter_config(&vmi, addr, end);
-+
-+			/*
-+			 * In the unlikely even that more memory was needed, but
-+			 * not available for the vma merge, the vma iterator
-+			 * will have no memory reserved for the write we told
-+			 * the driver was happening.  To keep up the ruse,
-+			 * ensure the allocation for the store succeeds.
-+			 */
-+			if (vmg_nomem(&vmg)) {
-+				mas_preallocate(&vmi.mas, vma,
-+						GFP_KERNEL|__GFP_NOFAIL);
-+			}
- 		}
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index d18f32640a79f..64378e8f124bd 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -990,6 +990,8 @@ panthor_vm_map_pages(struct panthor_vm *vm, u64 iova, int prot,
  
- 		vm_flags = vma->vm_flags;
+ 		if (!size)
+ 			break;
++
++		offset = 0;
+ 	}
+ 
+ 	return panthor_vm_flush_range(vm, start_iova, iova - start_iova);
+-- 
+2.43.0
+
 
 
 
