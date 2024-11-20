@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-94236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39469D3BCC
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ACE9D3B5F
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0841DB2999E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E6E0B290F9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859581AC447;
-	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CC31A76BB;
+	Wed, 20 Nov 2024 12:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gerqy+dA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/jsZGJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446571AA1E6;
-	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711C1A4F19;
+	Wed, 20 Nov 2024 12:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107577; cv=none; b=nY0o1+Kv5j1BK69ZAdx5DktSCJGbaQXs90W1agXcI5bibFEq6I9uZzh4AygmV3ny2Xfl8WtfyOsLG12fQTmSkmvPmy9g3+ePxjFMWL2dsXqBqgtvI27Rf5haMZ8ET074d4a8q75lLjEtkg1t6PKE2/FzJVkFvKM1runQ1Bpr/bk=
+	t=1732107522; cv=none; b=HQAIL79+ZvZWKH/hWcWMvUfjHvl/iv/d0lL15wJDbvJShOGNySgoGyezm+HknUfIQf0Gcr4+z4kyOp+p8eQPvJe2Bspu8R2FOzhUXKM3lu35rfHEgeEaD7K1MKJVq9c9h4rWzr2TPxiLDjHS2wo+inISQism8OoYFOldqCjbu04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107577; c=relaxed/simple;
-	bh=iwtrMIB16FUEqaD9mGel1Q4TKyi/CAKyW036pQy5sho=;
+	s=arc-20240116; t=1732107522; c=relaxed/simple;
+	bh=la762hvUdGugMzGpRRb2sSF55DX6i2pZI18Wqp7yPiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I8mvNQJGwoF7m5hxgkS4Ntr7YmTRGRpRPlFs2EJfR31WriBrjnKJQFCzAHvcW8SUTj/coIMXha+F/AX3Hh7PpLQk9lBFRA/SUpLjeEGc5IAUkh9u7RRnRtGhsYTJz7eWT9NtDs5+GHhP1WrwqhclSISG+8poP5isempyjzZBTMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gerqy+dA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CC2C4CECD;
-	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
+	 MIME-Version; b=CE4CIk92wkgbyYUqNpWXedaoKi3CzrBFLSq29HjN1VcU61tIyPfZ2FtPM2RaV5QcRmxpYeXuvngZcfzErB5hprpZzNSBv2cW2sxsueyKIGWTdBSmVjnqdXgtBxZg2RQ1dqICP5Gcymx78rq/SVJsR79huOgrI7LVhe2olUHqGcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/jsZGJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6EEC4CECD;
+	Wed, 20 Nov 2024 12:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107577;
-	bh=iwtrMIB16FUEqaD9mGel1Q4TKyi/CAKyW036pQy5sho=;
+	s=korg; t=1732107522;
+	bh=la762hvUdGugMzGpRRb2sSF55DX6i2pZI18Wqp7yPiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gerqy+dAYrHuYE8rXWjwKjzuT4Qd6TGamkogdVqPZEI3H9ytbgIeat6oKHpZq0XLx
-	 Dji+BMWxZO4YODbeNIXcG8WuQd8zqdfQcsppFkfdxQeRXYR/TvpwzafpcrkP4dZnHx
-	 yKI5541ulIzqhs5lVlKlpVUN1MoEaTk6V7z+mg+c=
+	b=P/jsZGJ0vKLUX86WDL9bvgpywCU5uKHZriVGkXp5dbsJl4jSzY4LMzGv8hI3skg7t
+	 7vCRMSHfbaGwxAdy2FxrUGCXoJrTGQki8axqGDN2k2j9reDSDOvA8vr1s5muZA9s5p
+	 LYhJXZAwkGGFDzJkx64p9d/jVlTcrInveTsK39XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/82] net: stmmac: dwmac-mediatek: Fix inverted handling of mediatek,mac-wol
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.11 053/107] evm: stop avoidably reading i_writecount in evm_file_release
 Date: Wed, 20 Nov 2024 13:56:28 +0100
-Message-ID: <20241120125630.023536437@linuxfoundation.org>
+Message-ID: <20241120125630.872157258@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Mateusz Guzik <mjguzik@gmail.com>
 
-[ Upstream commit a03b18a71c128846360cc81ac6fdb0e7d41597b4 ]
+commit 699ae6241920b0fa837fa57e61f7d5b0e2e65b58 upstream.
 
-The mediatek,mac-wol property is being handled backwards to what is
-described in the binding: it currently enables PHY WOL when the property
-is present and vice versa. Invert the driver logic so it matches the
-binding description.
+The EVM_NEW_FILE flag is unset if the file already existed at the time
+of open and this can be checked without looking at i_writecount.
 
-Fixes: fd1d62d80ebc ("net: stmmac: replace the use_phy_wol field with a flag")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://patch.msgid.link/20241109-mediatek-mac-wol-noninverted-v2-1-0e264e213878@collabora.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Not accessing it reduces traffic on the cacheline during parallel open
+of the same file and drop the evm_file_release routine from second place
+to bottom of the profile.
+
+Fixes: 75a323e604fc ("evm: Make it independent from 'integrity' LSM")
+Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/integrity/evm/evm_main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-index cd796ec04132d..634ea6b33ea3c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-@@ -589,9 +589,9 @@ static int mediatek_dwmac_common_data(struct platform_device *pdev,
+--- a/security/integrity/evm/evm_main.c
++++ b/security/integrity/evm/evm_main.c
+@@ -1084,7 +1084,8 @@ static void evm_file_release(struct file
+ 	if (!S_ISREG(inode->i_mode) || !(mode & FMODE_WRITE))
+ 		return;
  
- 	plat->mac_interface = priv_plat->phy_mode;
- 	if (priv_plat->mac_wol)
--		plat->flags |= STMMAC_FLAG_USE_PHY_WOL;
--	else
- 		plat->flags &= ~STMMAC_FLAG_USE_PHY_WOL;
-+	else
-+		plat->flags |= STMMAC_FLAG_USE_PHY_WOL;
- 	plat->riwt_off = 1;
- 	plat->maxmtu = ETH_DATA_LEN;
- 	plat->host_dma_width = priv_plat->variant->dma_bit_mask;
--- 
-2.43.0
-
+-	if (iint && atomic_read(&inode->i_writecount) == 1)
++	if (iint && iint->flags & EVM_NEW_FILE &&
++	    atomic_read(&inode->i_writecount) == 1)
+ 		iint->flags &= ~EVM_NEW_FILE;
+ }
+ 
 
 
 
