@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-94222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7979D3B99
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8829D3BE8
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3B71F21BBF
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117EF285C66
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CEE1AB6E2;
-	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60601B5ED6;
+	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbOGgAbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxD2TWT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70031AB6C0;
-	Wed, 20 Nov 2024 12:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BDB1A0BD6;
+	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107567; cv=none; b=INJ4/noPCR7sVWPu5xFUpPrJeI32hrmYkVSjQtEI8iJ99PgE7hwiRLgBFHwNsxsHfwUq7oeQl2w2i9NV0vKpP/0vD+4H8MHF81rXzpmyuNW3Ky9BMwxX4mbgQg00Cv7amU4xsdHaeSlONNTRRii3V9cu8OY8xsyKb1AZgAW3YC0=
+	t=1732107627; cv=none; b=TIb+81Xh4jzz8drms0lFwEUs4GsCBJvPO/+5fwUPu1qznOUG76oYobA7MD8Eekzy/JE86NDvgB48LDROTuftrvmsIKGWyprmwo8Y0At2iIKQAcJBupjF1nmf89R4+l8By32FmmZrONaBm3ZaVtwXHNJSV8HMDwVPGi3dnSC0QmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107567; c=relaxed/simple;
-	bh=86Hucs/Lg0Y5ySq1ZjdaROGdZWxX+1T6C15qbiMWDGA=;
+	s=arc-20240116; t=1732107627; c=relaxed/simple;
+	bh=w16YvXK2iG65DsUiIVVs8iMVtUnwCsAePY8pAOkeXsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYF92fOH5yXWOVbkE47KFBYH1Pu+CkBGmUUDp1+PJC1J6nsYNCyJXYn+hNGjL6PeVro7G6c4ZIOHor+kMLaD1DOhO7gfjIu/ybqVEjZl1e/3LS1JdSbEUl64x75SPibtO4HQbzZd8IUElqopz2U68bk65osP02NmUzzIzAzVPYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbOGgAbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9A2C4CED6;
-	Wed, 20 Nov 2024 12:59:26 +0000 (UTC)
+	 MIME-Version; b=UoAc+dv0I6F/uyuLNmlt5h8HVy/Q3eEd0U24KrPdA9T36n1a4X8FC59qXk39nSEsAegtFnyRVkGD1ZhOHWntPs8tAHKvxEJVbRls18cUf5rSKSPNrWjg+QjTTU5oVCPgK0/UJ5JVMss20h/oYia77wDLsRMHxNgN68yVfTSOewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxD2TWT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8DBC4CECD;
+	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107566;
-	bh=86Hucs/Lg0Y5ySq1ZjdaROGdZWxX+1T6C15qbiMWDGA=;
+	s=korg; t=1732107627;
+	bh=w16YvXK2iG65DsUiIVVs8iMVtUnwCsAePY8pAOkeXsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbOGgAbC06ido3ILR9QMPwvB3kT2elPV90bnb5eVBoyBTgcBHDtXC8wOJngmhzlAX
-	 THJDZ6Tx3lsY5FsNK/sZx5ZYvze/7SKsdkA6vYj7Rn66UjDOjR7gqjzd2iZIAWuvYZ
-	 Sn5K628W3UQiVEoBCmi/iYIsH0Zeu9cRi61WBJKY=
+	b=BxD2TWT8/sb0QS6xBlFFhNyYSp6ChRxfshd8LN1Gsq+gWvfeyHl+Ow1asZR27v2Ml
+	 x0FaQMxgkZITDTCE7TKFhN9YhLyzYWJW1Xe4orIbEtSzMBb7sS2l+ayfk95RlsgZbE
+	 h33P2+dOBZzYPK0JCQhSf4+vPsXuwc8e3qpjVsXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 081/107] firmware: arm_scmi: Report duplicate opps as firmware bugs
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 46/82] LoongArch: Disable KASAN if PGDIR_SIZE is too large for cpu_vabits
 Date: Wed, 20 Nov 2024 13:56:56 +0100
-Message-ID: <20241120125631.511959563@linuxfoundation.org>
+Message-ID: <20241120125630.646637614@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e2261bb81e0db86c3c866734cf93232a58464ecd upstream.
+commit 227ca9f6f6aeb8aa8f0c10430b955f1fe2aeab91 upstream.
 
-Duplicate opps reported by buggy SCP firmware currently show up
-as warnings even though the only functional impact is that the
-level/index remain inaccessible. Make it less scary for the end
-user by using dev_info instead, along with FW_BUG tag.
+If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
+overflow UINTPTR_MAX because KASAN_SHADOW_START/KASAN_SHADOW_END are
+aligned up by PGDIR_SIZE. And then the overflowed KASAN_SHADOW_END looks
+like a user space address.
 
-Suggested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too large
+for Loongson-2K series whose cpu_vabits = 39.
+
+Since CONFIG_4KB_4LEVEL is completely legal for CPUs with cpu_vabits <=
+39, we just disable KASAN via early return in kasan_init(). Otherwise we
+get a boot failure.
+
+Moreover, we change KASAN_SHADOW_END from the first address after KASAN
+shadow area to the last address in KASAN shadow area, in order to avoid
+the end address exactly overflow to 0 (which is a legal case). We don't
+need to worry about alignment because pgd_addr_end() can handle it.
+
 Cc: stable@vger.kernel.org
-Message-ID: <20241030125512.2884761-4-quic_sibis@quicinc.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/perf.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/kasan.h |    2 +-
+ arch/loongarch/mm/kasan_init.c     |   15 +++++++++++++--
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -387,7 +387,7 @@ process_response_opp(struct device *dev,
+--- a/arch/loongarch/include/asm/kasan.h
++++ b/arch/loongarch/include/asm/kasan.h
+@@ -51,7 +51,7 @@
+ /* KAsan shadow memory start right after vmalloc. */
+ #define KASAN_SHADOW_START		round_up(KFENCE_AREA_END, PGDIR_SIZE)
+ #define KASAN_SHADOW_SIZE		(XKVRANGE_VC_SHADOW_END - XKPRANGE_CC_KASAN_OFFSET)
+-#define KASAN_SHADOW_END		round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE)
++#define KASAN_SHADOW_END		(round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE) - 1)
  
- 	ret = xa_insert(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
- 	if (ret) {
--		dev_warn(dev, "Failed to add opps_by_lvl at %d for %s - ret:%d\n",
-+		dev_info(dev, FW_BUG "Failed to add opps_by_lvl at %d for %s - ret:%d\n",
- 			 opp->perf, dom->info.name, ret);
- 		return ret;
- 	}
-@@ -409,7 +409,7 @@ process_response_opp_v4(struct device *d
+ #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
+ #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -218,7 +218,7 @@ static void __init kasan_map_populate(un
+ asmlinkage void __init kasan_early_init(void)
+ {
+ 	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_START, PGDIR_SIZE));
+-	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, PGDIR_SIZE));
++	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END + 1, PGDIR_SIZE));
+ }
  
- 	ret = xa_insert(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
- 	if (ret) {
--		dev_warn(dev, "Failed to add opps_by_lvl at %d for %s - ret:%d\n",
-+		dev_info(dev, FW_BUG "Failed to add opps_by_lvl at %d for %s - ret:%d\n",
- 			 opp->perf, dom->info.name, ret);
- 		return ret;
- 	}
+ static inline void kasan_set_pgd(pgd_t *pgdp, pgd_t pgdval)
+@@ -233,7 +233,7 @@ static void __init clear_pgds(unsigned l
+ 	 * swapper_pg_dir. pgd_clear() can't be used
+ 	 * here because it's nop on 2,3-level pagetable setups
+ 	 */
+-	for (; start < end; start += PGDIR_SIZE)
++	for (; start < end; start = pgd_addr_end(start, end))
+ 		kasan_set_pgd((pgd_t *)pgd_offset_k(start), __pgd(0));
+ }
+ 
+@@ -243,6 +243,17 @@ void __init kasan_init(void)
+ 	phys_addr_t pa_start, pa_end;
+ 
+ 	/*
++	 * If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
++	 * overflow UINTPTR_MAX and then looks like a user space address.
++	 * For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too
++	 * large for Loongson-2K series whose cpu_vabits = 39.
++	 */
++	if (KASAN_SHADOW_END < vm_map_base) {
++		pr_warn("PGDIR_SIZE too large for cpu_vabits, KernelAddressSanitizer disabled.\n");
++		return;
++	}
++
++	/*
+ 	 * PGD was populated as invalid_pmd_table or invalid_pud_table
+ 	 * in pagetable_init() which depends on how many levels of page
+ 	 * table you are using, but we had to clean the gpd of kasan
 
 
 
