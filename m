@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-94259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB939D3BCD
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A659D3B7A
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75CD5B24710
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08B80283AAE
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6861C3036;
-	Wed, 20 Nov 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A01E1AA7BF;
+	Wed, 20 Nov 2024 12:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9WUbcqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdymbXuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8C41A9B42;
-	Wed, 20 Nov 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421151DFEF;
+	Wed, 20 Nov 2024 12:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107594; cv=none; b=lYsOHXCfcv4uJHHt9mKwsujY11mxtQTM5r7UTj5ZJq3MA2W8hA0C/SoV34o22LsMt9AB/My6Vgfoz/1ASIsknL787fPA/3CeomDETHSGqMOV3ci8dltQ4TiEP1JuQkvvJ1rzXgAneZiQXKwCsNAhsTf1Im1sbwTapH0bQFvgPRk=
+	t=1732107542; cv=none; b=MNcdxXVzgehn1F4XM991uxA0pZKZ95K4bVfkkSYA5y7m6dXfDJjcCxuiZLWJyAj2wf+ZZmMnxejvAgvI2wq3Cpj9Lc0Ly34/lrICrBmfCTcFOoRI6sFekdk7rL1yRIemDYwcenopsgUd3PI+74srnDuCrhh33dEvLjY/VMxD1R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107594; c=relaxed/simple;
-	bh=ttgpIFd57SIKMZ1929aIWI8Q7rDLLwpWoWPzeD1cWDg=;
+	s=arc-20240116; t=1732107542; c=relaxed/simple;
+	bh=COKaUunbj+OnATXnBjJejagYXCJP9BXboDwfATU1vWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8Dxe0SmahZe2lLM4UA3Orf0z1rbyeTkb4LbWuHosmsDo6rbUutEcCqpUuBFqQYOqoaN/5r211YI+/LivvWKvkap8Fati01Nbbf8ATv1/xBQW4fGSGvm7EzZnd/Be96uAmbVd/GgIpoKaLcpL2adj+BcAA5yULGogWy4VJ9pNOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9WUbcqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5EBC4CECD;
-	Wed, 20 Nov 2024 12:59:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ooaNT6DtuGcV9Wgu/+nVN9mWc5q91GBfloc0QyhzTlOFqPFhR7xwQwdN0QbCqKMuky618Uzp3XfRZsQQ6U9oY17NqkeifJBsQsphzDPFTT07T0FSVsog/lj+OJLCH83Uljw10PF1/c2Nog12UHygIh6CvFUJfQXWpkAu3DboTY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdymbXuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E305C4CECD;
+	Wed, 20 Nov 2024 12:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107594;
-	bh=ttgpIFd57SIKMZ1929aIWI8Q7rDLLwpWoWPzeD1cWDg=;
+	s=korg; t=1732107542;
+	bh=COKaUunbj+OnATXnBjJejagYXCJP9BXboDwfATU1vWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9WUbcqSK4CWFy39jJK2wYQQCwBdFSRptmsha1Qy9nsUSXce0j9bD0SFaUNOJHmwV
-	 ixCdEEJgSgh911g50e4gnEZHjqnNXhOF5S5L7vePfZN5JT8u03BY9HWMhkfpv6j4Ji
-	 aU14U6XqZCrbDT59P1mXNu3UJkcQZRjJWdlx7J6I=
+	b=ZdymbXuCwOnFq4vBVpA7netuPOLun+oYANk3B9U8UABYwYhOPoe5XgUlVo91Dkxg7
+	 nil25JZk1De6Zd0Gj1dc/dutO6piZx4gfSxv9zx4wOIT2uh6TfDGjIggUZ5VccKMeo
+	 ZkCn+kdjJYdEvDa/47/Es8KMK3iJniSlJ+PzHHAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 05/82] mptcp: error out earlier on disconnect
+	Baoquan He <bhe@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.11 040/107] x86/mm: Fix a kdump kernel failure on SME system when CONFIG_IMA_KEXEC=y
 Date: Wed, 20 Nov 2024 13:56:15 +0100
-Message-ID: <20241120125629.744634698@linuxfoundation.org>
+Message-ID: <20241120125630.580946116@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +61,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 581302298524e9d77c4c44ff5156a6cd112227ae ]
+commit 8d9ffb2fe65a6c4ef114e8d4f947958a12751bbe upstream.
 
-Eric reported a division by zero splat in the MPTCP protocol:
+The kdump kernel is broken on SME systems with CONFIG_IMA_KEXEC=y enabled.
+Debugging traced the issue back to
 
-Oops: divide error: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6094 Comm: syz-executor317 Not tainted
-6.12.0-rc5-syzkaller-00291-g05b92660cdfe #0
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 09/13/2024
-RIP: 0010:__tcp_select_window+0x5b4/0x1310 net/ipv4/tcp_output.c:3163
-Code: f6 44 01 e3 89 df e8 9b 75 09 f8 44 39 f3 0f 8d 11 ff ff ff e8
-0d 74 09 f8 45 89 f4 e9 04 ff ff ff e8 00 74 09 f8 44 89 f0 99 <f7> 7c
-24 14 41 29 d6 45 89 f4 e9 ec fe ff ff e8 e8 73 09 f8 48 89
-RSP: 0018:ffffc900041f7930 EFLAGS: 00010293
-RAX: 0000000000017e67 RBX: 0000000000017e67 RCX: ffffffff8983314b
-RDX: 0000000000000000 RSI: ffffffff898331b0 RDI: 0000000000000004
-RBP: 00000000005d6000 R08: 0000000000000004 R09: 0000000000017e67
-R10: 0000000000003e80 R11: 0000000000000000 R12: 0000000000003e80
-R13: ffff888031d9b440 R14: 0000000000017e67 R15: 00000000002eb000
-FS: 00007feb5d7f16c0(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007feb5d8adbb8 CR3: 0000000074e4c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-__tcp_cleanup_rbuf+0x3e7/0x4b0 net/ipv4/tcp.c:1493
-mptcp_rcv_space_adjust net/mptcp/protocol.c:2085 [inline]
-mptcp_recvmsg+0x2156/0x2600 net/mptcp/protocol.c:2289
-inet_recvmsg+0x469/0x6a0 net/ipv4/af_inet.c:885
-sock_recvmsg_nosec net/socket.c:1051 [inline]
-sock_recvmsg+0x1b2/0x250 net/socket.c:1073
-__sys_recvfrom+0x1a5/0x2e0 net/socket.c:2265
-__do_sys_recvfrom net/socket.c:2283 [inline]
-__se_sys_recvfrom net/socket.c:2279 [inline]
-__x64_sys_recvfrom+0xe0/0x1c0 net/socket.c:2279
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7feb5d857559
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48
-89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d
-01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007feb5d7f1208 EFLAGS: 00000246 ORIG_RAX: 000000000000002d
-RAX: ffffffffffffffda RBX: 00007feb5d8e1318 RCX: 00007feb5d857559
-RDX: 000000800000000e RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007feb5d8e1310 R08: 0000000000000000 R09: ffffffff81000000
-R10: 0000000000000100 R11: 0000000000000246 R12: 00007feb5d8e131c
-R13: 00007feb5d8ae074 R14: 000000800000000e R15: 00000000fffffdef
+  b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec").
 
-and provided a nice reproducer.
+Testing was previously not conducted on SME systems with CONFIG_IMA_KEXEC
+enabled, which led to the oversight, with the following incarnation:
 
-The root cause is the current bad handling of racing disconnect.
-After the blamed commit below, sk_wait_data() can return (with
-error) with the underlying socket disconnected and a zero rcv_mss.
+...
+  ima: No TPM chip found, activating TPM-bypass!
+  Loading compiled-in module X.509 certificates
+  Loaded X.509 cert 'Build time autogenerated kernel key: 18ae0bc7e79b64700122bb1d6a904b070fef2656'
+  ima: Allocated hash algorithm: sha256
+  Oops: general protection fault, probably for non-canonical address 0xcfacfdfe6660003e: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc2+ #14
+  Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.20.0 05/03/2023
+  RIP: 0010:ima_restore_measurement_list
+  Call Trace:
+   <TASK>
+   ? show_trace_log_lvl
+   ? show_trace_log_lvl
+   ? ima_load_kexec_buffer
+   ? __die_body.cold
+   ? die_addr
+   ? exc_general_protection
+   ? asm_exc_general_protection
+   ? ima_restore_measurement_list
+   ? vprintk_emit
+   ? ima_load_kexec_buffer
+   ima_load_kexec_buffer
+   ima_init
+   ? __pfx_init_ima
+   init_ima
+   ? __pfx_init_ima
+   do_one_initcall
+   do_initcalls
+   ? __pfx_kernel_init
+   kernel_init_freeable
+   kernel_init
+   ret_from_fork
+   ? __pfx_kernel_init
+   ret_from_fork_asm
+   </TASK>
+  Modules linked in:
+  ---[ end trace 0000000000000000 ]---
+  ...
+  Kernel panic - not syncing: Fatal exception
+  Kernel Offset: disabled
+  Rebooting in 10 seconds..
 
-Catch the error and return without performing any additional
-operations on the current socket.
+Adding debug printks showed that the stored addr and size of ima_kexec buffer
+are not decrypted correctly like:
 
-Reported-by: Eric Dumazet <edumazet@google.com>
-Fixes: 419ce133ab92 ("tcp: allow again tcp_disconnect() when threads are waiting")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/8c82ecf71662ecbc47bf390f9905de70884c9f2d.1731060874.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ima: ima_load_kexec_buffer, buffer:0xcfacfdfe6660003e, size:0xe48066052d5df359
+
+Three types of setup_data info
+
+  — SETUP_EFI,
+  - SETUP_IMA, and
+  - SETUP_RNG_SEED
+
+are passed to the kexec/kdump kernel. Only the ima_kexec buffer
+experienced incorrect decryption. Debugging identified a bug in
+early_memremap_is_setup_data(), where an incorrect range calculation
+occurred due to the len variable in struct setup_data ended up only
+representing the length of the data field, excluding the struct's size,
+and thus leading to miscalculation.
+
+Address a similar issue in memremap_is_setup_data() while at it.
+
+  [ bp: Heavily massage. ]
+
+Fixes: b3c72fc9a78e ("x86/boot: Introduce setup_indirect")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240911081615.262202-3-bhe@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/mm/ioremap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index cd6f8d655c185..e99ef1e67e957 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2168,7 +2168,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		cmsg_flags = MPTCP_CMSG_INQ;
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -655,7 +655,8 @@ static bool memremap_is_setup_data(resou
+ 		paddr_next = data->next;
+ 		len = data->len;
  
- 	while (copied < len) {
--		int bytes_read;
-+		int err, bytes_read;
- 
- 		bytes_read = __mptcp_recvmsg_mskq(msk, msg, len - copied, flags, &tss, &cmsg_flags);
- 		if (unlikely(bytes_read < 0)) {
-@@ -2230,9 +2230,16 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			memunmap(data);
+ 			return true;
  		}
+@@ -717,7 +718,8 @@ static bool __init early_memremap_is_set
+ 		paddr_next = data->next;
+ 		len = data->len;
  
- 		pr_debug("block timeout %ld\n", timeo);
--		sk_wait_data(sk, &timeo, NULL);
-+		mptcp_rcv_space_adjust(msk, copied);
-+		err = sk_wait_data(sk, &timeo, NULL);
-+		if (err < 0) {
-+			err = copied ? : err;
-+			goto out_err;
-+		}
- 	}
- 
-+	mptcp_rcv_space_adjust(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
-@@ -2248,8 +2255,6 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	pr_debug("msk=%p rx queue empty=%d:%d copied=%d\n",
- 		 msk, skb_queue_empty_lockless(&sk->sk_receive_queue),
- 		 skb_queue_empty(&msk->receive_queue), copied);
--	if (!(flags & MSG_PEEK))
--		mptcp_rcv_space_adjust(msk, copied);
- 
- 	release_sock(sk);
- 	return copied;
--- 
-2.43.0
-
+-		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
++		if ((phys_addr > paddr) &&
++		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
+ 			early_memunmap(data, sizeof(*data));
+ 			return true;
+ 		}
 
 
 
