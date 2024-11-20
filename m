@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-94116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCAF9D3B2B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:56:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9099D3B3C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 150C92802A1
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75332282AB9
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BEB1A2C0B;
-	Wed, 20 Nov 2024 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5391AA1C8;
+	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aU7kWiM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDQT071P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56F31A2C25;
-	Wed, 20 Nov 2024 12:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B48F1A4F12;
+	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107392; cv=none; b=RTNCPErVE8elWlH8EcV1dFjRuL46TaunlwmFFAABN9sYSLnQKaYTbhTTMDxb4Kvy+P0ucXtbeelR1eK58YnC6daNDO+UTWKLseifcNyglHKLXm+w43xSVPLHQFS0cFnV4KU7LDgAAc5K3GpYcRYrSn1/zwiN/bCRMqqrad1jCPU=
+	t=1732107498; cv=none; b=oInKEfXGYR1e5EBpHJHAOOHj4Zk+RAo96LxJ2BCD3vJoojhvlIUDNfF7fggDo5gWswfk/aFVwJLMiXgbc5ENtKrUh30dnAkBiYp4Sz0ABpb0R0boc5mQfPTbBBBJkSbeCVz0usGgZt7qvf+vdEY7vUSxW3W0UxouhpCILuu63EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107392; c=relaxed/simple;
-	bh=bm8wfbm+He6fD+0Fp/sOOWr5Yg6s37EdglFrc3V+E9E=;
+	s=arc-20240116; t=1732107498; c=relaxed/simple;
+	bh=nbmvPW6fFrI5A2ZrqFOUQBZpqF4opBvhh8li251wS00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVcq7jZQPIuwY+ad1FS6HdSpbI+1s55wLNAZYdB4O98dhQUL/gNFAa8VpujbutnJc/y1IYyyvtS1VnBhf2evtPRhrGxLB1K6CPfMvgMuMlDj5XTy99fBkEpi9svNrlW7Waz+RVjpPJFoNNaQRD1kosYki9A63bgC8j3tOfsvZOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aU7kWiM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B4FC4CECD;
-	Wed, 20 Nov 2024 12:56:32 +0000 (UTC)
+	 MIME-Version; b=lwI+p5aoeUZR8rlWczRyo07YJ9TT93YNTmBPSmHPRLswwKr3G7BLINggoph38SyFUo2wUUiayvI5MuMg9hUSqfQB209vkLAYLNsQz68gzVWmN2F2vSj3Cr32xpijbahqxKnldjBt4D3fxjU8X5Pf5Vriv2OcCzi5trZRRjmXLT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDQT071P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E65C4CECD;
+	Wed, 20 Nov 2024 12:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107392;
-	bh=bm8wfbm+He6fD+0Fp/sOOWr5Yg6s37EdglFrc3V+E9E=;
+	s=korg; t=1732107498;
+	bh=nbmvPW6fFrI5A2ZrqFOUQBZpqF4opBvhh8li251wS00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aU7kWiM6ns/VOW/yrPazmBrUi0I3VEeGzoRD77hgrlstSrpi+k+/8NqMB9XaOET5y
-	 Cu2xLkOVZvsNn9zHCp4yMQFtKcycAD9DYdJr3LoNsZub9C4z+RABsZgwmehZjEhphs
-	 Ppx/aogjdiXz4A8aqz+rJw6WIJuxEMMcC9QzNHBg=
+	b=ZDQT071PJCjKZyy2bJffag4+DK0HQxTuCX4rYpVe8Sej3wnavjnDY+k7cUTz1mVVS
+	 9plVVJ6AUFxeLT2jUXWzCM6QKy3P6nzbTySXEmTktls/GsHA1m2d8XHB4JDYGFrQ2i
+	 KdVFmub2S34ib31rVWT0m/z6MmCx0nZWcxz0n7wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benoit Sevens <bsevens@google.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 2/3] media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 021/107] Bluetooth: btintel: Direct exception event to bluetooth stack
 Date: Wed, 20 Nov 2024 13:55:56 +0100
-Message-ID: <20241120124100.503739172@linuxfoundation.org>
+Message-ID: <20241120125630.154689631@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120124100.444648273@linuxfoundation.org>
-References: <20241120124100.444648273@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoit Sevens <bsevens@google.com>
+From: Kiran K <kiran.k@intel.com>
 
-commit ecf2b43018da9579842c774b7f35dbe11b5c38dd upstream.
+[ Upstream commit d5359a7f583ab9b7706915213b54deac065bcb81 ]
 
-This can lead to out of bounds writes since frames of this type were not
-taken into account when calculating the size of the frames buffer in
-uvc_parse_streaming.
+Have exception event part of HCI traces which helps for debug.
 
-Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
-Signed-off-by: Benoit Sevens <bsevens@google.com>
-Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+snoop traces:
+> HCI Event: Vendor (0xff) plen 79
+        Vendor Prefix (0x8780)
+      Intel Extended Telemetry (0x03)
+        Unknown extended telemetry event type (0xde)
+        01 01 de
+        Unknown extended subevent 0x07
+        01 01 de 07 01 de 06 1c ef be ad de ef be ad de
+        ef be ad de ef be ad de ef be ad de ef be ad de
+        ef be ad de 05 14 ef be ad de ef be ad de ef be
+        ad de ef be ad de ef be ad de 43 10 ef be ad de
+        ef be ad de ef be ad de ef be ad de
+
+Fixes: af395330abed ("Bluetooth: btintel: Add Intel devcoredump support")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btintel.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -371,7 +371,7 @@ static int uvc_parse_format(struct uvc_d
- 	 * Parse the frame descriptors. Only uncompressed, MJPEG and frame
- 	 * based formats have frame descriptors.
- 	 */
--	while (buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
-+	while (ftype && buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
- 	       buffer[2] == ftype) {
- 		unsigned int maxIntervalIndex;
- 
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 1ccbb51575153..24d2f4f37d0fd 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -3288,13 +3288,12 @@ static int btintel_diagnostics(struct hci_dev *hdev, struct sk_buff *skb)
+ 	case INTEL_TLV_TEST_EXCEPTION:
+ 		/* Generate devcoredump from exception */
+ 		if (!hci_devcd_init(hdev, skb->len)) {
+-			hci_devcd_append(hdev, skb);
++			hci_devcd_append(hdev, skb_clone(skb, GFP_ATOMIC));
+ 			hci_devcd_complete(hdev);
+ 		} else {
+ 			bt_dev_err(hdev, "Failed to generate devcoredump");
+-			kfree_skb(skb);
+ 		}
+-		return 0;
++	break;
+ 	default:
+ 		bt_dev_err(hdev, "Invalid exception type %02X", tlv->val[0]);
+ 	}
+-- 
+2.43.0
+
 
 
 
