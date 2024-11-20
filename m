@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-94283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566189D3C4E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:11:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2C99D3B90
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E262B2AA59
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CAD283C08
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D721C9B65;
-	Wed, 20 Nov 2024 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4408E1AB512;
+	Wed, 20 Nov 2024 12:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNPIFm5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPq/44OA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAEB1B3B2E;
-	Wed, 20 Nov 2024 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032D91A9B5A;
+	Wed, 20 Nov 2024 12:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107612; cv=none; b=sgTfWZEYN6RvG7VUIRuUbbijT9UedyouS8Aiy3jutrvcGACUXt3xWkGSOQpBVKdkUtL5yOiWk2z4F3dfO2DaqyhfZe+G/jNTjfb0TtArcgAAamNk1Vq2jFX0SWXyClnUt/1BjjlrbZdUlU6XvzngkA+SyMrJAzcgq6OK2jIaHlc=
+	t=1732107558; cv=none; b=hKjES3CW2vGqM8RQRCXdJ4EbAz33e22UMl9DO+vY0JCZJ2PPayQHSspAAegkIjbQ29D+BTjbcVh+m4R0/ItXpZbKodLoXjtVjoG2I2vNSoipBBDyRdfew3qJDHwsOSUn6nfQ8xLyqNxUFiunfy7Y2QqwVhwM4HSQqo6LzFNRWQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107612; c=relaxed/simple;
-	bh=uLc3fAiXvmXvetb+vecjabVfEYU7RtA7s/mMRDAyh+E=;
+	s=arc-20240116; t=1732107558; c=relaxed/simple;
+	bh=X6zsUkBjza/5jP+kfz1gX3zQIaZSH8I6qfwhYbrlwSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GETT47A863437pxNjI9NfNGt2Jo7C4GDpgPUk8GtA2Mgn44mciFRYOoctcG+fgejzS6luoeQQg4TdHZxF9T2j5tp0z85j0iWdHwpt6hidD8be7020TjYwTBX+2JtmHEhUSR2MU8dlaVGISusIlJZeBY8OuXbwa6WEqhjX5rVobY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNPIFm5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802FCC4CECD;
-	Wed, 20 Nov 2024 13:00:12 +0000 (UTC)
+	 MIME-Version; b=k54HdU8Uq48JzPBd1LIC1tkZ6A/Qsg2DDW8o1ENjaZb+k2b0G+0pR7bhKb+Klb7er+TquqIvQljsKsrmJsb6jqdMhlf0dRjgWL9VOUQdNzEZF9UGGP3Aw6B3L2vMJr3bRfGIPqVz2WY0tW3FX7nJu/m4qCI86E0B3YQf3FLFZUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPq/44OA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B7EC4CED2;
+	Wed, 20 Nov 2024 12:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107612;
-	bh=uLc3fAiXvmXvetb+vecjabVfEYU7RtA7s/mMRDAyh+E=;
+	s=korg; t=1732107557;
+	bh=X6zsUkBjza/5jP+kfz1gX3zQIaZSH8I6qfwhYbrlwSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNPIFm5Jr7W1GpmY9hKGURhTKAh/+8sPHZ8CeG7X3Yfky7AkdTXPm8Bm/4bnK9PrD
-	 8dmdGcHy0EZrvrtTg3ucJH2gLT30HISv7g4wKQww0OgqqT1UcrcanSnKyL7P4Q8hTX
-	 FxySr7/UQj4rwzsMdwrulT6FpUCp2WSGhpdWPsYc=
+	b=aPq/44OAg2mit3kgc15Ias/czXKInllQXKu4svL7vpz9A9b6m/TFGQVzQTjn8b38r
+	 0oWVzM/k3FiCssGy11tKlYnEoQnE35L72CG4tqFHusWMjXUPqLxZL4cgPvBLYndTRo
+	 kWFP0mi2sXc+lKh5M96bIWInSQ1dnrGeMz5Iom5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 64/82] NFSD: Initialize struct nfsd4_copy earlier
+	Austin Zheng <austin.zheng@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 099/107] drm/amd/display: Require minimum VBlank size for stutter optimization
 Date: Wed, 20 Nov 2024 13:57:14 +0100
-Message-ID: <20241120125631.053618552@linuxfoundation.org>
+Message-ID: <20241120125631.962881432@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit 63fab04cbd0f96191b6e5beedc3b643b01c15889 ]
+commit 9fc0cbcb6e45d6fc96ffd3bb7b6d6d28d693ff4d upstream.
 
-Ensure the refcount and async_copies fields are initialized early.
-cleanup_async_copy() will reference these fields if an error occurs
-in nfsd4_copy(). If they are not correctly initialized, at the very
-least, a refcount underflow occurs.
+If the nominal VBlank is too small, optimizing for stutter can cause
+the prefetch bandwidth to increase drasticaly, resulting in higher
+clock and power requirements. Only optimize if it is >3x the stutter
+latency.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Fixes: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Austin Zheng <austin.zheng@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 003215f962cdf2265f126a3f4c9ad20917f87fca)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c |   11 ++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1816,14 +1816,14 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 		if (!async_copy)
- 			goto out_err;
- 		async_copy->cp_nn = nn;
-+		INIT_LIST_HEAD(&async_copy->copies);
-+		refcount_set(&async_copy->refcount, 1);
- 		/* Arbitrary cap on number of pending async copy operations */
- 		if (atomic_inc_return(&nn->pending_async_copies) >
- 				(int)rqstp->rq_pool->sp_nrthreads) {
- 			atomic_dec(&nn->pending_async_copies);
- 			goto out_err;
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
+@@ -30,6 +30,7 @@
+ #include "dml2_pmo_dcn4_fams2.h"
+ 
+ static const double MIN_VACTIVE_MARGIN_PCT = 0.25; // We need more than non-zero margin because DET buffer granularity can alter vactive latency hiding
++static const double MIN_BLANK_STUTTER_FACTOR = 3.0;
+ 
+ static const enum dml2_pmo_pstate_strategy base_strategy_list_1_display[][PMO_DCN4_MAX_DISPLAYS] = {
+ 	// VActive Preferred
+@@ -2004,6 +2005,7 @@ bool pmo_dcn4_fams2_init_for_stutter(str
+ 	struct dml2_pmo_instance *pmo = in_out->instance;
+ 	bool stutter_period_meets_z8_eco = true;
+ 	bool z8_stutter_optimization_too_expensive = false;
++	bool stutter_optimization_too_expensive = false;
+ 	double line_time_us, vblank_nom_time_us;
+ 
+ 	unsigned int i;
+@@ -2025,10 +2027,15 @@ bool pmo_dcn4_fams2_init_for_stutter(str
+ 		line_time_us = (double)in_out->base_display_config->display_config.stream_descriptors[i].timing.h_total / (in_out->base_display_config->display_config.stream_descriptors[i].timing.pixel_clock_khz * 1000) * 1000000;
+ 		vblank_nom_time_us = line_time_us * in_out->base_display_config->display_config.stream_descriptors[i].timing.vblank_nom;
+ 
+-		if (vblank_nom_time_us < pmo->soc_bb->power_management_parameters.z8_stutter_exit_latency_us) {
++		if (vblank_nom_time_us < pmo->soc_bb->power_management_parameters.z8_stutter_exit_latency_us * MIN_BLANK_STUTTER_FACTOR) {
+ 			z8_stutter_optimization_too_expensive = true;
+ 			break;
  		}
--		INIT_LIST_HEAD(&async_copy->copies);
--		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
- 		if (!async_copy->cp_src)
- 			goto out_err;
++
++		if (vblank_nom_time_us < pmo->soc_bb->power_management_parameters.stutter_enter_plus_exit_latency_us * MIN_BLANK_STUTTER_FACTOR) {
++			stutter_optimization_too_expensive = true;
++			break;
++		}
+ 	}
+ 
+ 	pmo->scratch.pmo_dcn4.num_stutter_candidates = 0;
+@@ -2044,7 +2051,7 @@ bool pmo_dcn4_fams2_init_for_stutter(str
+ 		pmo->scratch.pmo_dcn4.z8_vblank_optimizable = false;
+ 	}
+ 
+-	if (pmo->soc_bb->power_management_parameters.stutter_enter_plus_exit_latency_us > 0) {
++	if (!stutter_optimization_too_expensive && pmo->soc_bb->power_management_parameters.stutter_enter_plus_exit_latency_us > 0) {
+ 		pmo->scratch.pmo_dcn4.optimal_vblank_reserved_time_for_stutter_us[pmo->scratch.pmo_dcn4.num_stutter_candidates] = (unsigned int)pmo->soc_bb->power_management_parameters.stutter_enter_plus_exit_latency_us;
+ 		pmo->scratch.pmo_dcn4.num_stutter_candidates++;
+ 	}
 
 
 
