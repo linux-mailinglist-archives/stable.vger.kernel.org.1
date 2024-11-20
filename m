@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-94241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920959D3BAC
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236649D3B64
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57E6A28403F
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19C71F21C97
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A46A1AA782;
-	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEE61AE014;
+	Wed, 20 Nov 2024 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qj7XhAGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mn61w/pk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480FF1A7262;
-	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B01A706F;
+	Wed, 20 Nov 2024 12:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107581; cv=none; b=EbPW0qA1U9GcF9a1B+8XV5/34o6KgVjXfk2u1ix/6J4TuY3JxbIjQoDp8V25zcbMKYvztHGdl4OuunYjodEYV2tH1drBXMUGqarf9SlBoqlo6TJ+Za00Kcu/tCqHrEpluyAqnr6+kOIbCsl1kxb4qKDMYODT1HSFVUKkCwbke1k=
+	t=1732107526; cv=none; b=J3rjbhkGRErDNsEf41gixZ/8tJKYM5F0HJwuFoAjGpcNx+oclpRhjoJqRtbxrNgR91kEPZKqKCk2UytIqePbmLWdQmDgEKhVbhgiT+P+M5MwjLcG5JDTT5EZklHZoJXjGmP679onhVxvMQGZgTr2BEdxXWJ6P6mXkP58+WNjxdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107581; c=relaxed/simple;
-	bh=97WX+sZJqbMNoO6BQfJhl/yUh1AE3sowOGh3YUEVhrY=;
+	s=arc-20240116; t=1732107526; c=relaxed/simple;
+	bh=OxTMeCrdfw03CzRm5ZjmZOF8uX889Mux3TmDuAC8n7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUPEOuvfzfMG1hspxuV7J4d5slWQjYFB66Wp/omLKf3puQOd8K2WSPzCJgFVc3RCGe9VQIMAGydMO4opDHz6LZheMQVUa/MMjzOOuuRbYKsdvkKPEsDF6OhPxh9hA7kgv2bYFeZK7mlPwS9d0WbMjkv0nOv0JLk7szgAilSkzNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qj7XhAGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DC7C4CECD;
-	Wed, 20 Nov 2024 12:59:41 +0000 (UTC)
+	 MIME-Version; b=SeA6hN3leAB0BXEAed5AQxSSYlt4WKGxk5fcAuCB+Kyn8D9ZnZoExXwvOoS69XyZPWMOoIMly3KeJh9AJwh7lQ8FygWJfqZeNWNFptdkjIVGSqTM4IuBJJtrnY7U9Ob0KD/mBeGr8RrwqxwzxnG1aQInURu8cJA+MPLq1YdkBvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mn61w/pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F81C4CECD;
+	Wed, 20 Nov 2024 12:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107581;
-	bh=97WX+sZJqbMNoO6BQfJhl/yUh1AE3sowOGh3YUEVhrY=;
+	s=korg; t=1732107526;
+	bh=OxTMeCrdfw03CzRm5ZjmZOF8uX889Mux3TmDuAC8n7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qj7XhAGrrJ2Ap4fYZXKa/LCuKTlMEEnAb7ROV/JU3E+oQC8tA5gZys4PnAcBny2xF
-	 ikacha+AZEDn6sv8mCtGpqYhuCpQevbcZRBZI+be7ZaRZ2NHFun1Kq/p+Y130dRtVB
-	 ARlUZQKTmcfcu+/edMQ3EZ3TJo6x6scAUcjP6NuU=
+	b=Mn61w/pkZU/RwAld3VK/5VUtxzg2iVIAWUIhUQutih9OIVPFVIadvRSfcq2kAtK47
+	 Zn9nTK2aUj0cywfWwrgXaAtsOhWErUWIMWwlNGjgIicmpya2g+0qfZkuKataA0ysl1
+	 EUAZsQmGtKRu2GEEuRu7pcidu7VBZBCf2EO1dMOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 22/82] net: stmmac: rename stmmac_pltfr_remove_no_dt to stmmac_pltfr_remove
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.11 057/107] KVM: VMX: Bury Intel PT virtualization (guest/host mode) behind CONFIG_BROKEN
 Date: Wed, 20 Nov 2024 13:56:32 +0100
-Message-ID: <20241120125630.110279802@linuxfoundation.org>
+Message-ID: <20241120125630.963757771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 2c9fc838067b02cb3e6057fef5cd7cf1c04a95aa ]
+commit aa0d42cacf093a6fcca872edc954f6f812926a17 upstream.
 
-Now, all users of the old stmmac_pltfr_remove() are converted to the
-devres helper, it's time to rename stmmac_pltfr_remove_no_dt() back to
-stmmac_pltfr_remove() and remove the old stmmac_pltfr_remove().
+Hide KVM's pt_mode module param behind CONFIG_BROKEN, i.e. disable support
+for virtualizing Intel PT via guest/host mode unless BROKEN=y.  There are
+myriad bugs in the implementation, some of which are fatal to the guest,
+and others which put the stability and health of the host at risk.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5b366eae7193 ("stmmac: dwmac-intel-plat: fix call balance of tx_clk handling routines")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For guest fatalities, the most glaring issue is that KVM fails to ensure
+tracing is disabled, and *stays* disabled prior to VM-Enter, which is
+necessary as hardware disallows loading (the guest's) RTIT_CTL if tracing
+is enabled (enforced via a VMX consistency check).  Per the SDM:
+
+  If the logical processor is operating with Intel PT enabled (if
+  IA32_RTIT_CTL.TraceEn = 1) at the time of VM entry, the "load
+  IA32_RTIT_CTL" VM-entry control must be 0.
+
+On the host side, KVM doesn't validate the guest CPUID configuration
+provided by userspace, and even worse, uses the guest configuration to
+decide what MSRs to save/load at VM-Enter and VM-Exit.  E.g. configuring
+guest CPUID to enumerate more address ranges than are supported in hardware
+will result in KVM trying to passthrough, save, and load non-existent MSRs,
+which generates a variety of WARNs, ToPA ERRORs in the host, a potential
+deadlock, etc.
+
+Fixes: f99e3daf94ff ("KVM: x86: Add Intel PT virtualization work mode")
+Cc: stable@vger.kernel.org
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Tested-by: Adrian Hunter <adrian.hunter@intel.com>
+Message-ID: <20241101185031.1799556-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../stmicro/stmmac/dwmac-intel-plat.c         |  2 +-
- .../ethernet/stmicro/stmmac/dwmac-visconti.c  |  3 +--
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 23 +++----------------
- .../ethernet/stmicro/stmmac/stmmac_platform.h |  1 -
- 4 files changed, 5 insertions(+), 24 deletions(-)
+ arch/x86/kvm/vmx/vmx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-index d1aec2ca2b429..70edc5232379f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-@@ -164,7 +164,7 @@ static void intel_eth_plat_remove(struct platform_device *pdev)
- {
- 	struct intel_dwmac *dwmac = get_stmmac_bsp_priv(&pdev->dev);
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -217,9 +217,11 @@ module_param(ple_window_shrink, uint, 04
+ static unsigned int ple_window_max        = KVM_VMX_DEFAULT_PLE_WINDOW_MAX;
+ module_param(ple_window_max, uint, 0444);
  
--	stmmac_pltfr_remove_no_dt(pdev);
-+	stmmac_pltfr_remove(pdev);
- 	clk_disable_unprepare(dwmac->tx_clk);
- }
+-/* Default is SYSTEM mode, 1 for host-guest mode */
++/* Default is SYSTEM mode, 1 for host-guest mode (which is BROKEN) */
+ int __read_mostly pt_mode = PT_MODE_SYSTEM;
++#ifdef CONFIG_BROKEN
+ module_param(pt_mode, int, S_IRUGO);
++#endif
  
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
-index 45f5d66a11c26..a5a5cfa989c6e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-visconti.c
-@@ -256,8 +256,7 @@ static int visconti_eth_dwmac_probe(struct platform_device *pdev)
+ struct x86_pmu_lbr __ro_after_init vmx_lbr_caps;
  
- static void visconti_eth_dwmac_remove(struct platform_device *pdev)
- {
--	stmmac_pltfr_remove_no_dt(pdev);
--
-+	stmmac_pltfr_remove(pdev);
- 	visconti_eth_clock_remove(pdev);
- }
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 30d5e635190e6..b4fdd40be63cb 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -810,7 +810,7 @@ static void devm_stmmac_pltfr_remove(void *data)
- {
- 	struct platform_device *pdev = data;
- 
--	stmmac_pltfr_remove_no_dt(pdev);
-+	stmmac_pltfr_remove(pdev);
- }
- 
- /**
-@@ -837,12 +837,12 @@ int devm_stmmac_pltfr_probe(struct platform_device *pdev,
- EXPORT_SYMBOL_GPL(devm_stmmac_pltfr_probe);
- 
- /**
-- * stmmac_pltfr_remove_no_dt
-+ * stmmac_pltfr_remove
-  * @pdev: pointer to the platform device
-  * Description: This undoes the effects of stmmac_pltfr_probe() by removing the
-  * driver and calling the platform's exit() callback.
-  */
--void stmmac_pltfr_remove_no_dt(struct platform_device *pdev)
-+void stmmac_pltfr_remove(struct platform_device *pdev)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct stmmac_priv *priv = netdev_priv(ndev);
-@@ -851,23 +851,6 @@ void stmmac_pltfr_remove_no_dt(struct platform_device *pdev)
- 	stmmac_dvr_remove(&pdev->dev);
- 	stmmac_pltfr_exit(pdev, plat);
- }
--EXPORT_SYMBOL_GPL(stmmac_pltfr_remove_no_dt);
--
--/**
-- * stmmac_pltfr_remove
-- * @pdev: platform device pointer
-- * Description: this function calls the main to free the net resources
-- * and calls the platforms hook and release the resources (e.g. mem).
-- */
--void stmmac_pltfr_remove(struct platform_device *pdev)
--{
--	struct net_device *ndev = platform_get_drvdata(pdev);
--	struct stmmac_priv *priv = netdev_priv(ndev);
--	struct plat_stmmacenet_data *plat = priv->plat;
--
--	stmmac_pltfr_remove_no_dt(pdev);
--	stmmac_remove_config_dt(pdev, plat);
--}
- EXPORT_SYMBOL_GPL(stmmac_pltfr_remove);
- 
- /**
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-index c5565b2a70acc..bb07a99e1248b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
-@@ -32,7 +32,6 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
- int devm_stmmac_pltfr_probe(struct platform_device *pdev,
- 			    struct plat_stmmacenet_data *plat,
- 			    struct stmmac_resources *res);
--void stmmac_pltfr_remove_no_dt(struct platform_device *pdev);
- void stmmac_pltfr_remove(struct platform_device *pdev);
- extern const struct dev_pm_ops stmmac_pltfr_pm_ops;
- 
--- 
-2.43.0
-
 
 
 
