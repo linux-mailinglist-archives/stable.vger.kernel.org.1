@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-94163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15BE9D3B5E
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A39469D3BCC
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A079B1F21D73
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0841DB2999E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3790D1AD9EE;
-	Wed, 20 Nov 2024 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859581AC447;
+	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXt/8aCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gerqy+dA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE21A4F19;
-	Wed, 20 Nov 2024 12:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446571AA1E6;
+	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107523; cv=none; b=NXa2FhuVDcwioTxN0elZDUomvmCOfqC2f5D7MGqzCnvjR/bCLBCn82Xu6NvAmaG4/1hkv+zCWFHcfXwdpJglOFsnlTY2F5Pke326HuR4ndk7f5DU9BV69vpUN6qh4HZrTnsYR/bkoZzsrdFXtOyraXpeQvE8EMO7GjE/z85awu4=
+	t=1732107577; cv=none; b=nY0o1+Kv5j1BK69ZAdx5DktSCJGbaQXs90W1agXcI5bibFEq6I9uZzh4AygmV3ny2Xfl8WtfyOsLG12fQTmSkmvPmy9g3+ePxjFMWL2dsXqBqgtvI27Rf5haMZ8ET074d4a8q75lLjEtkg1t6PKE2/FzJVkFvKM1runQ1Bpr/bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107523; c=relaxed/simple;
-	bh=jXwm8+blZSpdgP3w4IMjh+4FrG/6SjMpvSf5IOdhD9E=;
+	s=arc-20240116; t=1732107577; c=relaxed/simple;
+	bh=iwtrMIB16FUEqaD9mGel1Q4TKyi/CAKyW036pQy5sho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+Mv5fh97TIaNr2VkaI7UfHA4f9HMzHmdc0wWDyuRZCr4G6rychbc6bSc6Rup68Kd2OrFYPCoYNWpOTajy1d+mrpJcxF6AqKkeftoO3WFIfZZBk3f8At3zUMLlA5Ux6cRAlfGiuXmac7SxqiQKAWg6Aq4VSbLdtiuShmtI5g/WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXt/8aCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7048EC4CED2;
-	Wed, 20 Nov 2024 12:58:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I8mvNQJGwoF7m5hxgkS4Ntr7YmTRGRpRPlFs2EJfR31WriBrjnKJQFCzAHvcW8SUTj/coIMXha+F/AX3Hh7PpLQk9lBFRA/SUpLjeEGc5IAUkh9u7RRnRtGhsYTJz7eWT9NtDs5+GHhP1WrwqhclSISG+8poP5isempyjzZBTMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gerqy+dA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CC2C4CECD;
+	Wed, 20 Nov 2024 12:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107521;
-	bh=jXwm8+blZSpdgP3w4IMjh+4FrG/6SjMpvSf5IOdhD9E=;
+	s=korg; t=1732107577;
+	bh=iwtrMIB16FUEqaD9mGel1Q4TKyi/CAKyW036pQy5sho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXt/8aCC6u5RnLF4DlTZANiZXEge7VJ+FNDU6OeH3apjgUobpDN7g6sYbFbLDf5PX
-	 /47ZxlectwcFEa0aBhuBmJjntT+reqV4NGeBcc3gfc/9xVyvl8Y36CMIEv3M9RUZ23
-	 t/YciSDDNTaHsRJkEXvEStSNjLwhKJPOkXlJ4lps=
+	b=gerqy+dAYrHuYE8rXWjwKjzuT4Qd6TGamkogdVqPZEI3H9ytbgIeat6oKHpZq0XLx
+	 Dji+BMWxZO4YODbeNIXcG8WuQd8zqdfQcsppFkfdxQeRXYR/TvpwzafpcrkP4dZnHx
+	 yKI5541ulIzqhs5lVlKlpVUN1MoEaTk6V7z+mg+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	"Enrico Bravi (PhD at polito.it)" <enrico.bravi@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.11 052/107] ima: fix buffer overrun in ima_eventdigest_init_common
-Date: Wed, 20 Nov 2024 13:56:27 +0100
-Message-ID: <20241120125630.849424288@linuxfoundation.org>
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 18/82] net: stmmac: dwmac-mediatek: Fix inverted handling of mediatek,mac-wol
+Date: Wed, 20 Nov 2024 13:56:28 +0100
+Message-ID: <20241120125630.023536437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit 923168a0631bc42fffd55087b337b1b6c54dcff5 upstream.
+[ Upstream commit a03b18a71c128846360cc81ac6fdb0e7d41597b4 ]
 
-Function ima_eventdigest_init() calls ima_eventdigest_init_common()
-with HASH_ALGO__LAST which is then used to access the array
-hash_digest_size[] leading to buffer overrun. Have a conditional
-statement to handle this.
+The mediatek,mac-wol property is being handled backwards to what is
+described in the binding: it currently enables PHY WOL when the property
+is present and vice versa. Invert the driver logic so it matches the
+binding description.
 
-Fixes: 9fab303a2cb3 ("ima: fix violation measurement list record")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Tested-by: Enrico Bravi (PhD at polito.it) <enrico.bravi@huawei.com>
-Cc: stable@vger.kernel.org # 5.19+
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fd1d62d80ebc ("net: stmmac: replace the use_phy_wol field with a flag")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://patch.msgid.link/20241109-mediatek-mac-wol-noninverted-v2-1-0e264e213878@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_template_lib.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/security/integrity/ima/ima_template_lib.c
-+++ b/security/integrity/ima/ima_template_lib.c
-@@ -318,15 +318,21 @@ static int ima_eventdigest_init_common(c
- 				      hash_algo_name[hash_algo]);
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+index cd796ec04132d..634ea6b33ea3c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+@@ -589,9 +589,9 @@ static int mediatek_dwmac_common_data(struct platform_device *pdev,
  
--	if (digest)
-+	if (digest) {
- 		memcpy(buffer + offset, digest, digestsize);
+ 	plat->mac_interface = priv_plat->phy_mode;
+ 	if (priv_plat->mac_wol)
+-		plat->flags |= STMMAC_FLAG_USE_PHY_WOL;
 -	else
-+	} else {
- 		/*
- 		 * If digest is NULL, the event being recorded is a violation.
- 		 * Make room for the digest by increasing the offset by the
--		 * hash algorithm digest size.
-+		 * hash algorithm digest size. If the hash algorithm is not
-+		 * specified increase the offset by IMA_DIGEST_SIZE which
-+		 * fits SHA1 or MD5
- 		 */
--		offset += hash_digest_size[hash_algo];
-+		if (hash_algo < HASH_ALGO__LAST)
-+			offset += hash_digest_size[hash_algo];
-+		else
-+			offset += IMA_DIGEST_SIZE;
-+	}
- 
- 	return ima_write_template_field_data(buffer, offset + digestsize,
- 					     fmt, field_data);
+ 		plat->flags &= ~STMMAC_FLAG_USE_PHY_WOL;
++	else
++		plat->flags |= STMMAC_FLAG_USE_PHY_WOL;
+ 	plat->riwt_off = 1;
+ 	plat->maxmtu = ETH_DATA_LEN;
+ 	plat->host_dma_width = priv_plat->variant->dma_bit_mask;
+-- 
+2.43.0
+
 
 
 
