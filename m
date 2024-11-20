@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-94196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EC69D3B82
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DD89D3C15
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F300B283AF8
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A105B2A2E6
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEED91B654A;
-	Wed, 20 Nov 2024 12:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD4B1C75F9;
+	Wed, 20 Nov 2024 13:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRk8nnGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8TcA/uw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1521A9B5A;
-	Wed, 20 Nov 2024 12:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D251C7292;
+	Wed, 20 Nov 2024 13:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107547; cv=none; b=h4vr/sViEIHz4wH+tbQgF5XxmSlWCOuJG4mkAAXRKWsUjv7/gsmwSfUwC/tWyhBxNR+/IvOzXLljSyIeyRSxfWTWT64W32ToiOJqYwzJuBzzI3NoYO3c/exDGAwt3OutzKaXuhEMH6Tlg6omE60Va+N2iykUQd2R6F4mLdGHbFU=
+	t=1732107602; cv=none; b=V/Qo9/30XnnHQC6pxAX0Y5eLeifsfc6zmao0ZvIjKTJwWSaz3mP2XonJZmOYbs5ApizYqf1I9it04EiOh1GgnHyfTjFBObFdgWIIcqeGUgd+4PPcQxigtQebFCstRq6oA9bxqqzfggW0KNOD4lVlAGL/PBAhAkH+pkhLlVkjXcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107547; c=relaxed/simple;
-	bh=dY1kb0QkLwlquYIy0w1DyhLl593jWnz1wgQaUu+whKI=;
+	s=arc-20240116; t=1732107602; c=relaxed/simple;
+	bh=wW7/2LmtAjY4abSW+EX/W2eqbUPG0qPqf4An+JQvf/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfDMsqA4ONie6cxTfYIUHSRFpCw2JmLbM1ljJTqLGebVaQ3ZFMQRnHCZsIsTZxOxSPhnWveqYolmErbFw5haFtM3s44zRpshWo+KtNocRqMr/8iTGKAz0zylS9kGypqWEJ9itcx8fzNwhNJfgQi0GPBe3OLrjxfD0nvftSw9etE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRk8nnGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EA5C4CECD;
-	Wed, 20 Nov 2024 12:59:07 +0000 (UTC)
+	 MIME-Version; b=dsxDZiNULpO79nYzi2sIQ3FRjtvn5te4Z6hlPtEkZ7xB2619BKswuBJdHYLk1HNNi/7VN5DTZtML2yxdhE6h2ANvYt9AF+I9nMdfmfgEVTQUxt+0FEiBl6m4G8Itg1iW+TWFH1hBNfIDeEXLdgCLdpc6UZUhDd+3IPN1wMOQ1w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8TcA/uw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3B2C4CED8;
+	Wed, 20 Nov 2024 13:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107547;
-	bh=dY1kb0QkLwlquYIy0w1DyhLl593jWnz1wgQaUu+whKI=;
+	s=korg; t=1732107601;
+	bh=wW7/2LmtAjY4abSW+EX/W2eqbUPG0qPqf4An+JQvf/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRk8nnGCNo1XPrW1Px2pHLXZiAFaMquJ/8H41shpfRELIbG1Fol/1DRDNkr2vpLzp
-	 bCX42RzXpaNYlkXH2rdHGSXa6wbOIPO8IAes2uMWa6h2nj3i7Fg9Qp4Sbp4qmyOwM9
-	 hytcvJy/u053jnOFVRaaoZeAzKUpoYQwCVs0KmwU=
+	b=H8TcA/uwfhblQvHw8DUhCw/8WnvuzVWRzdmsjcnhyEXBQNtumqSaMDMpR+EOo2Z6a
+	 7RnfKZEThZ/PD+QDflDvSGidrpMWdPtsven8r2DsPxWTbOyh7hjnwVDXhe8tufkP43
+	 knJWwENkwzh2xEf58wwUgaNXWzA6bSaN85Hvz4DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peng Fan <peng.fan@nxp.com>,
 	Stefan Wahren <wahrenst@gmx.net>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 086/107] pmdomain: imx93-blk-ctrl: correct remove path
+Subject: [PATCH 6.6 51/82] pmdomain: imx93-blk-ctrl: correct remove path
 Date: Wed, 20 Nov 2024 13:57:01 +0100
-Message-ID: <20241120125631.638323246@linuxfoundation.org>
+Message-ID: <20241120125630.759762280@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
 +++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-@@ -313,7 +313,9 @@ static void imx93_blk_ctrl_remove(struct
+@@ -313,7 +313,9 @@ static int imx93_blk_ctrl_remove(struct
  
  	of_genpd_del_provider(pdev->dev.of_node);
  
