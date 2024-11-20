@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-94173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845339D3B6A
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45399D3BCF
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05BB2B219BD
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8161EB2966C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373971AA795;
-	Wed, 20 Nov 2024 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463A01A4F19;
+	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvA1qFkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcmTgNK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9BE1A9B2A;
-	Wed, 20 Nov 2024 12:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F1B1C1F2B;
+	Wed, 20 Nov 2024 12:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107530; cv=none; b=pwpIrNgyeH15zA/Gjst4ByYJCL+8/9HTbTXETawnOxRVtxoBrAZxLp0W0r+k9KzdohXXogY2rIJd6YNCbRDRQZZU7XoymwPNCXs2Wz2UG2zr4LF6TvtJggxdpR/GHLPp3RHE1BFExF+OclRtmV6bTaVKxeEVjYOPgBNISW7QQok=
+	t=1732107585; cv=none; b=r1No7q9XF3UkU6LtNiKiEZDForesFysYc4iDHjzgWx8oIJ+hK9rPGJh1AgzhpkUpDXknLt1E2eSh93gpouFiXbXEVkwSFjsz+IkKVZWbesX4duWHrowv8bsIXkROOLk+cSoYCFKUHy3BwJzch+52/EJ8Eg3iILcmAr2TTYMy6MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107530; c=relaxed/simple;
-	bh=vIAaEV7X0yiEGbhNmeZqqktxlPM9dALCzGasAB4Wcx8=;
+	s=arc-20240116; t=1732107585; c=relaxed/simple;
+	bh=2aWOiMDrWPazcOBMG4C9oJUAOcDYSVKOG9pLdan6OUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p690zSBEDZGlt2mPWNpiNmEtP9BHzgAzBfdied1D1SufA9dhRcNV6A5cODwNOWFaOPc6J/W4xY96Gib6qSvqbpiwHV6n45+mAGAYyRl6Uh1FynbeeuY+FryHlVvnI2yVOr/wkxHQX4tEfA3TTGH0aKyWfIBQIyMNRfL/BmeqhGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvA1qFkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C305AC4CED6;
-	Wed, 20 Nov 2024 12:58:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EV3LfyZ8MYCKPCsYzqxBnU10xEs6L9Q7+dh+Zc3CLRGbBtZEOKhoGgBfFzy+ojJdZKIeY0b+8LBmkof/ScvCprnKp98X/n9IWrsZvNFTZj8uxFbDpQ4WEGlhc/cMC+1DxS7WEPwP8E65eZbu2GsR6c4660toouZeBN1EEWP0UJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcmTgNK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97C4C4CECD;
+	Wed, 20 Nov 2024 12:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107529;
-	bh=vIAaEV7X0yiEGbhNmeZqqktxlPM9dALCzGasAB4Wcx8=;
+	s=korg; t=1732107584;
+	bh=2aWOiMDrWPazcOBMG4C9oJUAOcDYSVKOG9pLdan6OUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvA1qFklW/h+bfqtauzhGJh0ppv1RXZLaFWj3euTdTUKdCYITsF9YnMivoCcB3PFO
-	 nxJ/TIm3H+TBWInSSoE+t/Ar4/3LjQeIRJJQdpwdEGgGWkofJyP9ONGxH9OrUOvj8O
-	 i+I4fcn/twwyGzFAjHWjC+1dbXspWibkARoNRoRk=
+	b=gcmTgNK9CAKDT7U2hrTZw6XrhrPv4s4/MI2U98LLRiFhAXia30BTHJadlDOdLt40t
+	 qY60Ynid0mVBsVYawCFnRIYYbxsd7X4pTOmLmUkpOo+JRRfaCc9D6spfRbCA84OgZk
+	 Zbl1ZLxhBC3ma+F+91tPyywKmGgKKhXw0vx+cdH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 062/107] ALSA: hda/realtek - Fixed Clevo platform headset Mic issue
+	=?UTF-8?q?Motiejus=20Jak=C3=85`tys?= <motiejus@jakstys.lt>,
+	SeongJae Park <sj@kernel.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Wladislav Wiebe <wladislav.kw@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 27/82] tools/mm: fix compile error
 Date: Wed, 20 Nov 2024 13:56:37 +0100
-Message-ID: <20241120125631.076088829@linuxfoundation.org>
+Message-ID: <20241120125630.222366412@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
-References: <20241120125629.681745345@linuxfoundation.org>
+In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
+References: <20241120125629.623666563@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +64,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Motiejus JakÅ`tys <motiejus@jakstys.lt>
 
-commit 42ee87df8530150d637aa48363b72b22a9bbd78f upstream.
+[ Upstream commit a39326767c55c00c7c313333404cbcb502cce8fe ]
 
-Clevo platform with ALC255 Headset Mic was disable by default.
-Assigned verb table for Mic pin will enable it.
+Add a missing semicolon.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/b2dcac3e09ef4f82b36d6712194e1ea4@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20241112171655.1662670-1-motiejus@jakstys.lt
+Fixes: ece5897e5a10 ("tools/mm: -Werror fixes in page-types/slabinfo")
+Signed-off-by: Motiejus JakÅ`tys <motiejus@jakstys.lt>
+Closes: https://github.com/NixOS/nixpkgs/issues/355369
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Acked-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: Wladislav Wiebe <wladislav.kw@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/mm/page-types.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11664,6 +11664,8 @@ static const struct snd_hda_pin_quirk al
- 		{0x1a, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
- 		{0x19, 0x40000000}),
-+	SND_HDA_PIN_QUIRK(0x10ec0255, 0x1558, "Clevo", ALC2XX_FIXUP_HEADSET_MIC,
-+		{0x19, 0x40000000}),
- 	{}
- };
+diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+index 2a4ca4dd2da80..69f00eab1b8c7 100644
+--- a/tools/mm/page-types.c
++++ b/tools/mm/page-types.c
+@@ -421,7 +421,7 @@ static void show_page(unsigned long voffset, unsigned long offset,
+ 	if (opt_file)
+ 		printf("%lx\t", voffset);
+ 	if (opt_list_cgroup)
+-		printf("@%" PRIu64 "\t", cgroup)
++		printf("@%" PRIu64 "\t", cgroup);
+ 	if (opt_list_mapcnt)
+ 		printf("%" PRIu64 "\t", mapcnt);
  
+-- 
+2.43.0
+
 
 
 
