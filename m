@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-94302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8829D3BE8
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735E49D3B9A
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117EF285C66
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DBDA1F22CF4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60601B5ED6;
-	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D951BC9ED;
+	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxD2TWT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+obKvZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BDB1A0BD6;
-	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A011A7045;
+	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107627; cv=none; b=TIb+81Xh4jzz8drms0lFwEUs4GsCBJvPO/+5fwUPu1qznOUG76oYobA7MD8Eekzy/JE86NDvgB48LDROTuftrvmsIKGWyprmwo8Y0At2iIKQAcJBupjF1nmf89R4+l8By32FmmZrONaBm3ZaVtwXHNJSV8HMDwVPGi3dnSC0QmE=
+	t=1732107567; cv=none; b=U89+cvEw089A0qPnO8LnsV2fVu1XOOqj6V09ralf6Z3tLlEF0qjQaq1hoCEjpOIw6hlcaQOQi30+K8LtPeQNFw9Cj1yI8SdR0xL9ehdC7pSA2gbFy5ym7kDGAfLkU+KkwvCfAg50KVZ6olQ2J42V0bguVaPIK2EQ9kfuLtS461U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107627; c=relaxed/simple;
-	bh=w16YvXK2iG65DsUiIVVs8iMVtUnwCsAePY8pAOkeXsQ=;
+	s=arc-20240116; t=1732107567; c=relaxed/simple;
+	bh=Sz4w4gwHdhPKkfckhkeaTYUx8na9vXn8b2Kp5aB/vUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoAc+dv0I6F/uyuLNmlt5h8HVy/Q3eEd0U24KrPdA9T36n1a4X8FC59qXk39nSEsAegtFnyRVkGD1ZhOHWntPs8tAHKvxEJVbRls18cUf5rSKSPNrWjg+QjTTU5oVCPgK0/UJ5JVMss20h/oYia77wDLsRMHxNgN68yVfTSOewU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxD2TWT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8DBC4CECD;
-	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
+	 MIME-Version; b=J+BB4E8nb9QD5JYG6UWi3TfIvK/y6ZeNh2PGfUfGCUIufdY52BsYoz/BQikdLqNpt2GZfGzeN8LZfzGLjcqyodqpecr01YpMtKVE0J33hOEXjHuUuJ01HPww8fS1shKqMIpoTUOlclqmQGNdZhyOJJZuz+2dxfPAjLGcGJvkEiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+obKvZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8E9C4CED1;
+	Wed, 20 Nov 2024 12:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107627;
-	bh=w16YvXK2iG65DsUiIVVs8iMVtUnwCsAePY8pAOkeXsQ=;
+	s=korg; t=1732107567;
+	bh=Sz4w4gwHdhPKkfckhkeaTYUx8na9vXn8b2Kp5aB/vUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxD2TWT8/sb0QS6xBlFFhNyYSp6ChRxfshd8LN1Gsq+gWvfeyHl+Ow1asZR27v2Ml
-	 x0FaQMxgkZITDTCE7TKFhN9YhLyzYWJW1Xe4orIbEtSzMBb7sS2l+ayfk95RlsgZbE
-	 h33P2+dOBZzYPK0JCQhSf4+vPsXuwc8e3qpjVsXE=
+	b=R+obKvZ3OJZ4w979cXzNYnEkd73CpB/Ke5yueFx7RJcMH6JlulnSdDRWDKLvdHaDW
+	 MtsCTk9p3F09+BiYOH4oTEzwYu1SjWkratrb5xF4KfuUMRzecLfrqed/BnynIaZzbq
+	 H/jf+tYTth6t3oipEdJdqZgJZJDz0JwKIzSjgVGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 46/82] LoongArch: Disable KASAN if PGDIR_SIZE is too large for cpu_vabits
-Date: Wed, 20 Nov 2024 13:56:56 +0100
-Message-ID: <20241120125630.646637614@linuxfoundation.org>
+	Andre Przywara <andre.przywara@arm.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.11 082/107] mmc: sunxi-mmc: Fix A100 compatible description
+Date: Wed, 20 Nov 2024 13:56:57 +0100
+Message-ID: <20241120125631.538027637@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Andre Przywara <andre.przywara@arm.com>
 
-commit 227ca9f6f6aeb8aa8f0c10430b955f1fe2aeab91 upstream.
+commit 85b580afc2c215394e08974bf033de9face94955 upstream.
 
-If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
-overflow UINTPTR_MAX because KASAN_SHADOW_START/KASAN_SHADOW_END are
-aligned up by PGDIR_SIZE. And then the overflowed KASAN_SHADOW_END looks
-like a user space address.
+It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
+blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
+And while this alone would make a trivial fix, the H616 falls back to
+the A100 compatible string, so we have to now match the H616 compatible
+string explicitly against the description advertising 64K DMA blocks.
 
-For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too large
-for Loongson-2K series whose cpu_vabits = 39.
+As the A100 is now compatible with the D1 description, let the A100
+compatible string point to that block instead, and introduce an explicit
+match against the H616 string, pointing to the old description.
+Also remove the redundant setting of clk_delays to NULL on the way.
 
-Since CONFIG_4KB_4LEVEL is completely legal for CPUs with cpu_vabits <=
-39, we just disable KASAN via early return in kasan_init(). Otherwise we
-get a boot failure.
-
-Moreover, we change KASAN_SHADOW_END from the first address after KASAN
-shadow area to the last address in KASAN shadow area, in order to avoid
-the end address exactly overflow to 0 (which is a legal case). We don't
-need to worry about alignment because pgd_addr_end() can handle it.
-
+Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/kasan.h |    2 +-
- arch/loongarch/mm/kasan_init.c     |   15 +++++++++++++--
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sunxi-mmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/asm/kasan.h
-+++ b/arch/loongarch/include/asm/kasan.h
-@@ -51,7 +51,7 @@
- /* KAsan shadow memory start right after vmalloc. */
- #define KASAN_SHADOW_START		round_up(KFENCE_AREA_END, PGDIR_SIZE)
- #define KASAN_SHADOW_SIZE		(XKVRANGE_VC_SHADOW_END - XKPRANGE_CC_KASAN_OFFSET)
--#define KASAN_SHADOW_END		round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE)
-+#define KASAN_SHADOW_END		(round_up(KASAN_SHADOW_START + KASAN_SHADOW_SIZE, PGDIR_SIZE) - 1)
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i
+ 	.needs_new_timings = true,
+ };
  
- #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
- #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -218,7 +218,7 @@ static void __init kasan_map_populate(un
- asmlinkage void __init kasan_early_init(void)
- {
- 	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_START, PGDIR_SIZE));
--	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, PGDIR_SIZE));
-+	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END + 1, PGDIR_SIZE));
- }
- 
- static inline void kasan_set_pgd(pgd_t *pgdp, pgd_t pgdval)
-@@ -233,7 +233,7 @@ static void __init clear_pgds(unsigned l
- 	 * swapper_pg_dir. pgd_clear() can't be used
- 	 * here because it's nop on 2,3-level pagetable setups
- 	 */
--	for (; start < end; start += PGDIR_SIZE)
-+	for (; start < end; start = pgd_addr_end(start, end))
- 		kasan_set_pgd((pgd_t *)pgd_offset_k(start), __pgd(0));
- }
- 
-@@ -243,6 +243,17 @@ void __init kasan_init(void)
- 	phys_addr_t pa_start, pa_end;
- 
- 	/*
-+	 * If PGDIR_SIZE is too large for cpu_vabits, KASAN_SHADOW_END will
-+	 * overflow UINTPTR_MAX and then looks like a user space address.
-+	 * For example, PGDIR_SIZE of CONFIG_4KB_4LEVEL is 2^39, which is too
-+	 * large for Loongson-2K series whose cpu_vabits = 39.
-+	 */
-+	if (KASAN_SHADOW_END < vm_map_base) {
-+		pr_warn("PGDIR_SIZE too large for cpu_vabits, KernelAddressSanitizer disabled.\n");
-+		return;
-+	}
-+
-+	/*
- 	 * PGD was populated as invalid_pmd_table or invalid_pud_table
- 	 * in pagetable_init() which depends on how many levels of page
- 	 * table you are using, but we had to clean the gpd of kasan
+-static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
++static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
+ 	.idma_des_size_bits = 16,
+ 	.idma_des_shift = 2,
+-	.clk_delays = NULL,
+ 	.can_calibrate = true,
+ 	.mask_data0 = true,
+ 	.needs_new_timings = true,
+@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_m
+ 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+-	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
++	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
++	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 
 
 
