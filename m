@@ -1,165 +1,136 @@
-Return-Path: <stable+bounces-94470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E9A9D4379
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 22:29:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE089D4404
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 23:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68D1B223F2
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 21:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84BF282D1C
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 22:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC231B5ED8;
-	Wed, 20 Nov 2024 21:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272CB1AAE00;
+	Wed, 20 Nov 2024 22:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="umgXeC4i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LG+T1rTz"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A062B183CB8
-	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 21:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28A155A34
+	for <stable@vger.kernel.org>; Wed, 20 Nov 2024 22:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732138148; cv=none; b=GaFruorIPZtKLJx9rIq6jELtL7IRLzoilEpY9KchZB33cQHIKBOodkk8bBoSBxySCcnm0UXoQhif0VHykMmgURvhTvf0lARsjMBrEm44zeDHH9yVMBA6w57nyNeyF7iE/dwmy8I+/FyqNLncqm3lQGn4ZtQk9lRzsyFg5XIzwqs=
+	t=1732142488; cv=none; b=ndAw1ogxZjrWVqAUPa/4s3lCI6OIeuKqIs3rnf2+1L6agAY0jvuR+pvihAF5h49rOFWDwiHrLI2wx6BMRuGg8aiZpFYAuBsLZ0FNUYrj5/27NEy/n8jS9sIm7GspiqfQm9Hrzae1qEAaq3N1uay1J5dWYRrYVbpoPPyulx+/HJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732138148; c=relaxed/simple;
-	bh=AH7jBkvW3vmQevUwT1qZe6oh5eRiuiDeIP9puuoH2g0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WFK12/igTO7kgt0d7Xt/CCJWf9BfJzsIdFLU5+h41P6y9Gy//9/9PkHVs0mcqww37vmMBeMpddTes5mwBnPTbVYAeFuBT9TunP3I218Qg4dRzW9m4tsHGdftTR13N0in5qWXHIyjHTtgOMDNOgt74CJDAORxILfth74jb3TG53s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=umgXeC4i; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id B81CA14C1E1;
-	Wed, 20 Nov 2024 22:29:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1732138143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QpBeDvQksNg01sH+Wzi0SHUbla6WiWqM9PQqY8u5gPQ=;
-	b=umgXeC4iOmTTUmV1dgALJ1ehGtwZMRzyy5BnORN5sMRzYtGwm0HMdNSsHwch/tGMCaku8n
-	sk6Bwb2/zSPUaQ5/U6NNehRKMmp9dWKn5hbo3LvjhlYfxZXdkHXhAul2fdzNj+05/dFS44
-	5hmrIOxY3+0Bm34ctJce1niJIgeLSpuFgu4joCEPNRcbp3m84zpCTZp3+G8geKnmNmsbkG
-	CgbXDmhWbkM9XMUt2dyIS127mzFn7RxOCAEvnNvuUEKJ6awgs71bzLtUGF1TD4KmPDH7+z
-	Nx1uxUwPV/PMaqo5+mBo5DXhnDhqFYrD05ydOxbG2tJ0gSr6kQ+yWvIhsm81cQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4cec0879;
-	Wed, 20 Nov 2024 21:28:58 +0000 (UTC)
-Date: Thu, 21 Nov 2024 06:28:43 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Ulrich Teichert <ulrich.teichert@kumkeo.de>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"y0un9n132@gmail.com" <y0un9n132@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: Re: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for
- 64-bit systems
-Message-ID: <Zz5Ui1lf3cu0bBlN@codewreck.org>
-References: <20240827143838.192435816@linuxfoundation.org>
- <20240827143844.891898677@linuxfoundation.org>
- <Zz0_-iJH1WaR3BUZ@codewreck.org>
- <Zz2JQzi-5pTP_WPx@eldamar.lan>
- <Zz2YrA740TRgl_13@codewreck.org>
- <eaf6cfe58733416c928a8ff0d1d1b1ec@kumkeo.de>
- <202411201000.F3313C02@keescook>
+	s=arc-20240116; t=1732142488; c=relaxed/simple;
+	bh=rhe1nocJ5vnC2eO4igZA3YRpvGxfMh7+CcE0cy0JrF0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Agm1UPV92tHscGgK4qGouNbddwTRThmGTxO/XV370efLT5CCHLZVmfS3LLXJALmlH/WDtXusXaECB0IhnyZklnnXgk2scvYVTA3sTSuri/15MGexmzhY2tgSxTf3R/fFSE1PdxfHM+lpS9MQcGg01BjWZq4IP2eJBITG4ptm3xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LG+T1rTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59CDC4CECD;
+	Wed, 20 Nov 2024 22:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732142488;
+	bh=rhe1nocJ5vnC2eO4igZA3YRpvGxfMh7+CcE0cy0JrF0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LG+T1rTzwIaH9Zm6rhdhkXl5wjf8xuWlOVWf1LzSX6kQ928tP5zjvSpwVRo8oZbO3
+	 n8tuXx7USpO1zEA3NBE8UpGkzoHOihLNhNehPmoN5uADzOQc4Dgh5s47zrMHfNgZps
+	 t49IcC7y6pIXrYyY0fmSldANnFjHGgPX/bKwugGbcQ2wCPQdGti6UFj1Ev15/7NRUT
+	 Z6EL0YUuBX07yuf8Eh3Rhm2q4i3hckOZYqKfqpDNtGMAzAaDbnIr5dsZx9jZWabWlR
+	 ltpakyPnUqpVSONtMY9tj7n5NAiWZelvgSoaW8QGLFJSxIkJ46N655t0rdqwf7pCOc
+	 QE92aDkokPe/A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: cel@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4] NFSD: Force all NFSv4.2 COPY requests to be synchronous
+Date: Wed, 20 Nov 2024 17:07:53 -0500
+Message-ID: <20241120154356-25780d81bae31e10@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241120191315.6907-2-cel@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202411201000.F3313C02@keescook>
+Content-Transfer-Encoding: 8bit
 
-Thank you for the replies,
+[ Sasha's backport helper bot ]
 
-Kees Cook wrote on Wed, Nov 20, 2024 at 10:08:04AM -0800:
-> It seems like the correct first step is to revert the brk change. It's
-> still not clear to me why the change is causing a problem -- I assume it
-> is colliding with some other program area.
-> 
-> Is the problem strictly with qemu-user-static? (i.e. it was GCC running
-> in qemu-user-static so the crash is qemu, not GCC) That should help me
-> narrow down the issue. There must be some built-in assumption. And it's
-> aarch64 within x86_64 where it happens (is the program within qemu also
-> aarch64 or is it arm32)?
+Hi,
 
-As far as I'm aware I've only seen qemu-user-static fail for aarch64
-(e.g. the arm32 variant works fine, didn't try other arches) in this
-particular configuration (the debian bookworm package has been built
-with --static-pie which is known to cause problems)
+The upstream commit SHA1 provided is correct: 8d915bbf39266bb66082c1e4980e123883f19830
 
-It's also fixed in newer versions of qemu, even with --static-pie,
-because they reworked the way they detect program mapppins in qemu
-commit dd55885516 ("linux-user: Rewrite non-fixed probe_guest_base")
-and that also fixed the issue (in qemu 8.1.0)
-
-So, in short there are many fixes available; it's a qemu bug that
-assumed something about the memory layout and broke with this kaslr
-patch (and for some reason only happened on non-pie static build)
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: cel@kernel.org
+Commit author: Chuck Lever <chuck.lever@oracle.com>
 
 
-mjt will at the very least rebuild the package with pie enabled, because
-it's known to cause other issues with aarch64 and that was an oversight
-in the first place, so this issue will go away for debian without any
-further work.
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
+5.4.y | Not found
 
-This is the background behind me saying that this probably should be
-reverted in stable branches (to avoid other surprises with old
-userspace), but master can probably keep this commit if it brings
-tangible security benefits (and I think it does)
+Note: The patch differs from the upstream commit:
+---
+--- -	2024-11-20 15:40:02.161540833 -0500
++++ /tmp/tmp.PdmCvDR3aZ	2024-11-20 15:40:02.153931894 -0500
+@@ -1,3 +1,5 @@
++[ Upstream commit 8d915bbf39266bb66082c1e4980e123883f19830 ]
++
+ We've discovered that delivering a CB_OFFLOAD operation can be
+ unreliable in some pretty unremarkable situations. Examples
+ include:
+@@ -28,16 +30,18 @@
+ COPY result is returned in that case, and the client can present
+ a fresh COPY request for the remainder.
+ 
++Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49974
++[ cel: adjusted to apply to origin/linux-5.4.y ]
+ Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+ ---
+  fs/nfsd/nfs4proc.c | 7 +++++++
+  1 file changed, 7 insertions(+)
+ 
+ diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+-index ea3cc3e870a7f..46bd20fe5c0f4 100644
++index e38f873f98a7..27e9754ad3b9 100644
+ --- a/fs/nfsd/nfs4proc.c
+ +++ b/fs/nfsd/nfs4proc.c
+-@@ -1807,6 +1807,13 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
++@@ -1262,6 +1262,13 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+  	__be32 status;
+  	struct nfsd4_copy *async_copy = NULL;
+  
+@@ -46,8 +50,11 @@
+ +	 * requests to be synchronous to avoid client application
+ +	 * hangs waiting for COPY completion.
+ +	 */
+-+	nfsd4_copy_set_sync(copy, true);
+++	copy->cp_synchronous = 1;
+ +
+- 	copy->cp_clp = cstate->clp;
+- 	if (nfsd4_ssc_is_inter(copy)) {
+- 		trace_nfsd_copy_inter(copy);
++ 	status = nfsd4_verify_copy(rqstp, cstate, &copy->cp_src_stateid,
++ 				   &copy->nf_src, &copy->cp_dst_stateid,
++ 				   &copy->nf_dst);
++-- 
++2.47.0
++
+---
 
-See the debian qemu-side of the bug for details:
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087822
+Results of testing on various branches:
 
-
-> Is there an simple reproducer?
-
-Unfortunately I couldn't get it to reproduce easily, but I think it's
-just a matter of finding the right binary that does problematic mappings
-(e.g. running true in a loop didn't work but running gcc in a loop did)
-
-The most reliable reproducer I've been using is building a reasonably
-large program, we were working on modemmanager at the time so that's
-what I used; if usually fails between 100-300/500 of the build:
-----
-$ docker run -ti --rm --platform linux/arm64/v8 docker.io/arm64v8/alpine:3.20 sh
-/ # apk add bash-completion-dev dbus-dev elogind-dev gobject-introspection-dev gtk-doc libgudev-dev libmbim-dev libqmi-dev linux-headers meson vala clang abuild alpine-sdk curl
-/ # curl -O https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/1.22.0/ModemManager-1.22.0.tar.gz
-/ # tar xf ModemManager-1.22.0.tar.gz
-/ # cd ModemManager-1.22.0/
-/ # abuild-meson \
-        -Db_lto=true \
-        -Dsystemdsystemunitdir=no \
-        -Ddbus_policy_dir=/usr/share/dbus-1/system.d \
-        -Dgtk_doc=true \
-        -Dsystemd_journal=false \
-        -Dsystemd_suspend_resume=true \
-        -Dvapi=true \
-        -Dpolkit=no \
-        . output
-/ # meson compile -C output
-----
-
-If you take any of the command that failed from this build and run it in
-a loop, it'll also eventually fail after a couple hundred of
-invocations, but if your loop doesn't involve any parallelism that'll be
-slower to reproduce.
-
-Note it requires qemu to be broken as well, so you'll have best chances
-with a debian bookworm (VM is fine; a chroot or podman instead of docker
-is also fine; in the chroot case ninja requires at least /dev (and
-possibly /proc) mounted)
-
-
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
