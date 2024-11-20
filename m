@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-94235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06EB9D3BBB
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:02:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15BE9D3B5E
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73786B2994B
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A079B1F21D73
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 12:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02791A2C0B;
-	Wed, 20 Nov 2024 12:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3790D1AD9EE;
+	Wed, 20 Nov 2024 12:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp4qC4Mw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXt/8aCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2271ABEB5;
-	Wed, 20 Nov 2024 12:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE21A4F19;
+	Wed, 20 Nov 2024 12:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107576; cv=none; b=lpaVNu/oYPs7evxVcFU9El2q+W5eqLQIHETIf4DvCfBLEYjjbW7Iz/KVPOSaOuUDYePLhOZGHlWNuo+maNxkcHKPWwzDX2hY6niEKfI47kLmfEkqjKAchc+R8UBdiOzr2u/gqFg3s7Aru/AENX4/ugDXOkB9+SYRrmyzNBhKdMc=
+	t=1732107523; cv=none; b=NXa2FhuVDcwioTxN0elZDUomvmCOfqC2f5D7MGqzCnvjR/bCLBCn82Xu6NvAmaG4/1hkv+zCWFHcfXwdpJglOFsnlTY2F5Pke326HuR4ndk7f5DU9BV69vpUN6qh4HZrTnsYR/bkoZzsrdFXtOyraXpeQvE8EMO7GjE/z85awu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107576; c=relaxed/simple;
-	bh=vuR7x51rPdpPZn1L13tIMncd4I2lHLn44sdNDqhP/4Y=;
+	s=arc-20240116; t=1732107523; c=relaxed/simple;
+	bh=jXwm8+blZSpdgP3w4IMjh+4FrG/6SjMpvSf5IOdhD9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRSfdvq1QEcavPw5uaFuG5NzJx7bQsdhUFvVeaEkd7+SJfZKwLoh1ERSr42YrYTcbTlItjmvnZMyrCrEiYxXhFuO5TyWXhip4iRLPXOHPsco1pcgoJsoY4mkWnW+K8nvmVPyYIXxYFWCoieMxhwn7JTpYI384X1Oe2kMS5+hiNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp4qC4Mw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A9EC4CECD;
-	Wed, 20 Nov 2024 12:59:36 +0000 (UTC)
+	 MIME-Version; b=Z+Mv5fh97TIaNr2VkaI7UfHA4f9HMzHmdc0wWDyuRZCr4G6rychbc6bSc6Rup68Kd2OrFYPCoYNWpOTajy1d+mrpJcxF6AqKkeftoO3WFIfZZBk3f8At3zUMLlA5Ux6cRAlfGiuXmac7SxqiQKAWg6Aq4VSbLdtiuShmtI5g/WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXt/8aCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7048EC4CED2;
+	Wed, 20 Nov 2024 12:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107576;
-	bh=vuR7x51rPdpPZn1L13tIMncd4I2lHLn44sdNDqhP/4Y=;
+	s=korg; t=1732107521;
+	bh=jXwm8+blZSpdgP3w4IMjh+4FrG/6SjMpvSf5IOdhD9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yp4qC4Mw1/gjyG4Os7V0igVaEJecIw5QXrQvvm/ao0KhFCqe2lEmElIB7hNs5v7+q
-	 2MZuIb9XwzGF/5VdwFGHowdnUNznNtxivRyAFSIW5WPDP3CDJIN5JZsVW7nqE4bQxT
-	 fPdObPZdZaL75cmlsHpZaSCnPVQBs3zUSjNOq9dg=
+	b=IXt/8aCC6u5RnLF4DlTZANiZXEge7VJ+FNDU6OeH3apjgUobpDN7g6sYbFbLDf5PX
+	 /47ZxlectwcFEa0aBhuBmJjntT+reqV4NGeBcc3gfc/9xVyvl8Y36CMIEv3M9RUZ23
+	 t/YciSDDNTaHsRJkEXvEStSNjLwhKJPOkXlJ4lps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/82] samples: pktgen: correct dev to DEV
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Enrico Bravi (PhD at polito.it)" <enrico.bravi@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.11 052/107] ima: fix buffer overrun in ima_eventdigest_init_common
 Date: Wed, 20 Nov 2024 13:56:27 +0100
-Message-ID: <20241120125630.001013240@linuxfoundation.org>
+Message-ID: <20241120125630.849424288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 3342dc8b4623d835e7dd76a15cec2e5a94fe2f93 ]
+commit 923168a0631bc42fffd55087b337b1b6c54dcff5 upstream.
 
-In the pktgen_sample01_simple.sh script, the device variable is uppercase
-'DEV' instead of lowercase 'dev'. Because of this typo, the script cannot
-enable UDP tx checksum.
+Function ima_eventdigest_init() calls ima_eventdigest_init_common()
+with HASH_ALGO__LAST which is then used to access the array
+hash_digest_size[] leading to buffer overrun. Have a conditional
+statement to handle this.
 
-Fixes: 460a9aa23de6 ("samples: pktgen: add UDP tx checksum support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/20241112030347.1849335-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9fab303a2cb3 ("ima: fix violation measurement list record")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Tested-by: Enrico Bravi (PhD at polito.it) <enrico.bravi@huawei.com>
+Cc: stable@vger.kernel.org # 5.19+
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/pktgen/pktgen_sample01_simple.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/integrity/ima/ima_template_lib.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/samples/pktgen/pktgen_sample01_simple.sh b/samples/pktgen/pktgen_sample01_simple.sh
-index cdb9f497f87da..66cb707479e6c 100755
---- a/samples/pktgen/pktgen_sample01_simple.sh
-+++ b/samples/pktgen/pktgen_sample01_simple.sh
-@@ -76,7 +76,7 @@ if [ -n "$DST_PORT" ]; then
-     pg_set $DEV "udp_dst_max $UDP_DST_MAX"
- fi
+--- a/security/integrity/ima/ima_template_lib.c
++++ b/security/integrity/ima/ima_template_lib.c
+@@ -318,15 +318,21 @@ static int ima_eventdigest_init_common(c
+ 				      hash_algo_name[hash_algo]);
+ 	}
  
--[ ! -z "$UDP_CSUM" ] && pg_set $dev "flag UDPCSUM"
-+[ ! -z "$UDP_CSUM" ] && pg_set $DEV "flag UDPCSUM"
+-	if (digest)
++	if (digest) {
+ 		memcpy(buffer + offset, digest, digestsize);
+-	else
++	} else {
+ 		/*
+ 		 * If digest is NULL, the event being recorded is a violation.
+ 		 * Make room for the digest by increasing the offset by the
+-		 * hash algorithm digest size.
++		 * hash algorithm digest size. If the hash algorithm is not
++		 * specified increase the offset by IMA_DIGEST_SIZE which
++		 * fits SHA1 or MD5
+ 		 */
+-		offset += hash_digest_size[hash_algo];
++		if (hash_algo < HASH_ALGO__LAST)
++			offset += hash_digest_size[hash_algo];
++		else
++			offset += IMA_DIGEST_SIZE;
++	}
  
- # Setup random UDP port src range
- pg_set $DEV "flag UDPSRC_RND"
--- 
-2.43.0
-
+ 	return ima_write_template_field_data(buffer, offset + digestsize,
+ 					     fmt, field_data);
 
 
 
