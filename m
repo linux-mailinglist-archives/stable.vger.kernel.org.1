@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-94361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527799D3C22
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:06:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9E09D3C34
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A8D283FE1
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:06:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CFC287B54
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838A01CB331;
-	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925D11CB51A;
+	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRGG9LLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFemKhBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FD71BE870;
-	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DF51AA782;
+	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107697; cv=none; b=h903eH1PWa1rg0aILnCQirE3Hy96fNljfu8EVWHO4vyl9KN2C0lN0Kez/coOHarq6l3yy1GX8/Nh7D5w4/eDTKp1XEfBhzcNytYiXuhzlgkaqsChQVm85/8oJCsX2z/1MNrk0iOkdpqFaL4fQUTM7pGPZ7hM15Y7NMZ/k3vJuNI=
+	t=1732107715; cv=none; b=gomP0+J/hGGjqou/E3/1etlp3AIXe5/RWN4zfeIeRKi+yVvlgVCnFG/skdxT9adeCRj4HGPmaOUGLc62LStPwi0CT1D0EISEUK+8X7dAyiJ7DciorFGTC7QdqkwcRO7VE7+6IjyWuNBO492NnQiTtm3Xc+MRNv2ZbsinIwqvz3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107697; c=relaxed/simple;
-	bh=WbA83DzP4mf8rrRpr63FQ6q7pVtjmuMz0OgaUxpzP1k=;
+	s=arc-20240116; t=1732107715; c=relaxed/simple;
+	bh=7GEFDIXHD1s3So54glhHE7n+zavhQnQS6aA9+A7ng4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksATtQk+hC8a8LmZ1/qCuhZzz+dsVrPvuznztPCPvu3TOrN1nJWgLRzDV1KR7k38ngmA2EfZ24YSAw6pig39bAaptJbOqiOvXy8sDUuJnFl7Rvpy3yOBL2Idc0gi3mMtUkAqPyUSFT6BZTqhzJQ0ohjA2bNr5tRY4cdhXCEVUr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRGG9LLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190ACC4CECD;
-	Wed, 20 Nov 2024 13:01:37 +0000 (UTC)
+	 MIME-Version; b=HHBrGTfM9B1DulOgdIHr97WNBMV94olFP6xQjfKw1Yw2w7WluwraVhxv79bNxsDMlVi+b2fYc28zQgdLtPRqTGXReH6aXnU7fpkGahaULcEa+P0SEK02PlccJhcu+1v9kn12L51vC5ajw/icaQ6rIrrwAWyzmlqUBfwGFKZgAgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFemKhBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F352C4CED1;
+	Wed, 20 Nov 2024 13:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107697;
-	bh=WbA83DzP4mf8rrRpr63FQ6q7pVtjmuMz0OgaUxpzP1k=;
+	s=korg; t=1732107715;
+	bh=7GEFDIXHD1s3So54glhHE7n+zavhQnQS6aA9+A7ng4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRGG9LLFZpBFbTxFvtNzpDZsmb3nDKrIargowpDiGdm4MAhTFvHnn70GmTnnVJH7W
-	 rFobrXedCGjg1qf/YMxt8P82OBXlkrQSVlnYBaqrCZJaCNarc2KugkagV4GhYxUufQ
-	 khmpai7TeAGTwx0nDA1xIRl+6bAqZk8CjI+WkMyc=
+	b=WFemKhBI+RAREE/PHlXHX4TiZd2K13e1cobL6VeR3+G5birDD54V4JHatQGnBI7ub
+	 NFz4MYeVLRSb0zxXhdwJRrzKq0C95IhgGeY+fc8f8TuSXTcaDzfTSHFsZ2wihXBNQL
+	 qhed7ogUirSX01e0TjI0PWy87q/6zkzrMlwD8IYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	ericvh@kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
+	syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com,
 	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 56/73] nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies
-Date: Wed, 20 Nov 2024 13:58:42 +0100
-Message-ID: <20241120125810.957785477@linuxfoundation.org>
+Subject: [PATCH 6.1 57/73] fs/9p: fix uninitialized values during inode evict
+Date: Wed, 20 Nov 2024 13:58:43 +0100
+Message-ID: <20241120125810.980718603@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241120125809.623237564@linuxfoundation.org>
 References: <20241120125809.623237564@linuxfoundation.org>
@@ -69,91 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Van Hensbergen <ericvh@kernel.org>
 
-[ Upstream commit 7a87441c9651ba37842f4809224aca13a554a26f ]
+[ Upstream commit 6630036b7c228f57c7893ee0403e92c2db2cd21d ]
 
-syzbot reported unsafe calls to copy_from_sockptr() [1]
+If an iget fails due to not being able to retrieve information
+from the server then the inode structure is only partially
+initialized.  When the inode gets evicted, references to
+uninitialized structures (like fscache cookies) were being
+made.
 
-Use copy_safe_from_sockptr() instead.
+This patch checks for a bad_inode before doing anything other
+than clearing the inode from the cache.  Since the inode is
+bad, it shouldn't have any state associated with it that needs
+to be written back (and there really isn't a way to complete
+those anyways).
 
-[1]
-
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
- BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
- BUG: KASAN: slab-out-of-bounds in nfc_llcp_setsockopt+0x6c2/0x850 net/nfc/llcp_sock.c:255
-Read of size 4 at addr ffff88801caa1ec3 by task syz-executor459/5078
-
-CPU: 0 PID: 5078 Comm: syz-executor459 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
-  copy_from_sockptr include/linux/sockptr.h:55 [inline]
-  nfc_llcp_setsockopt+0x6c2/0x850 net/nfc/llcp_sock.c:255
-  do_sock_setsockopt+0x3b1/0x720 net/socket.c:2311
-  __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
-  __do_sys_setsockopt net/socket.c:2343 [inline]
-  __se_sys_setsockopt net/socket.c:2340 [inline]
-  __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
- do_syscall_64+0xfd/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-RIP: 0033:0x7f7fac07fd89
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 91 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff660eb788 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f7fac07fd89
-RDX: 0000000000000000 RSI: 0000000000000118 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
-R10: 0000000020000a80 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240408082845.3957374-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+(cherry picked from commit 1b4cb6e91f19b81217ad98142ee53a1ab25893fd)
+[Xiangyu: CVE-2024-36923 Minor conflict resolution due to missing 4eb31178 ]
 Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/llcp_sock.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/9p/vfs_inode.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/net/nfc/llcp_sock.c
-+++ b/net/nfc/llcp_sock.c
-@@ -252,10 +252,10 @@ static int nfc_llcp_setsockopt(struct so
- 			break;
- 		}
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -392,17 +392,20 @@ void v9fs_evict_inode(struct inode *inod
+ 	struct v9fs_inode *v9inode = V9FS_I(inode);
+ 	__le32 version;
  
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt),
-+					     optval, optlen);
-+		if (err)
- 			break;
--		}
+-	truncate_inode_pages_final(&inode->i_data);
+-	version = cpu_to_le32(v9inode->qid.version);
+-	fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
++	if (!is_bad_inode(inode)) {
++		truncate_inode_pages_final(&inode->i_data);
++		version = cpu_to_le32(v9inode->qid.version);
++		fscache_clear_inode_writeback(v9fs_inode_cookie(v9inode), inode,
+ 				      &version);
+-	clear_inode(inode);
+-	filemap_fdatawrite(&inode->i_data);
+-
+-	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
+-	/* clunk the fid stashed in writeback_fid */
+-	p9_fid_put(v9inode->writeback_fid);
+-	v9inode->writeback_fid = NULL;
++		clear_inode(inode);
++		filemap_fdatawrite(&inode->i_data);
++		if (v9fs_inode_cookie(v9inode))
++			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
++		/* clunk the fid stashed in writeback_fid */
++		p9_fid_put(v9inode->writeback_fid);
++		v9inode->writeback_fid = NULL;
++	} else
++		clear_inode(inode);
+ }
  
- 		if (opt > LLCP_MAX_RW) {
- 			err = -EINVAL;
-@@ -274,10 +274,10 @@ static int nfc_llcp_setsockopt(struct so
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt),
-+					     optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt > LLCP_MAX_MIUX) {
- 			err = -EINVAL;
+ static int v9fs_test_inode(struct inode *inode, void *data)
 
 
 
