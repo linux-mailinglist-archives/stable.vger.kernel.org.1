@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-94254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB40A9D3BDF
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D63A9D3B73
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3B12B29A8D
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:02:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43AB2281A20
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ED31C1F3E;
-	Wed, 20 Nov 2024 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9615A1AA7B7;
+	Wed, 20 Nov 2024 12:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aDNjjcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdHp6ObT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0041A1A7AFD;
-	Wed, 20 Nov 2024 12:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540761AA7B1;
+	Wed, 20 Nov 2024 12:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107591; cv=none; b=jOEB6lk4o0yQf8IAFHa+cjueffzEZ7gkSkk1oMmAEcV0hiy6RcnDs8jJa1R6FNXBmy4hc2nTHmCNH8hN4atoEowg0uyWxZNhQu6dYbg2oqecCoAweN3ygFxgjTSp5aMo5k1nLZhu1eAk+fw7n9rSb6yQX01yjDnWYrdc0CpSmMg=
+	t=1732107536; cv=none; b=pIwlo6NkrmXs7SIawbcahJniH45o3AnlipMfZraKMfU4TncgPp3gicGh1X5Ny57rmG5sbWFYAdZodqbas3HeJsi1R/mB3I/DgvRdtizVbU+LOd6QlJMNM2QR/eGoIRvEUfX8qyd49UrSGE1r7vZed8lbQVbd9X7+XwqdkwyTLrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107591; c=relaxed/simple;
-	bh=IkMDTci/vZj+FOEv0MbBuOzjQW6xVBH689Y5clI9Axg=;
+	s=arc-20240116; t=1732107536; c=relaxed/simple;
+	bh=+TdOmpcQCoxWdjYjSd9qjPDHVvAWj9mMzJ95uViqUKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxiyG6feu21BdkTh1ovu1WdwI7TouR3KCAbETqcYemi/qtTxoGjFjDzEgXdAp42PWW/5NRkKbiizprxLzr5TNiDQqjyZCsD/uvUOCfBOi/jdCLQ42+qHvB70IO3dIXUUtAbOBq0jS3qpMZt2nAjVfubvXG+OP64CmU1j1pvd5Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aDNjjcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14B8C4CECD;
-	Wed, 20 Nov 2024 12:59:50 +0000 (UTC)
+	 MIME-Version; b=S0g/ATcge1jx/EDxWMcRcKLtdPPKKTrk+9HHDJAkfDZPBCIlxC0wu6lxcKMWKT+50N5FnDHLFwlDiIdYIQr8KJJrGpxQUfnWuULgdBeJ+3vXoHFI5RCJtUNdEw59pnkKvhfwOs085TkdSZHtK2DeDM9qADis//TXAI1Djo5h9RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdHp6ObT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25770C4CED1;
+	Wed, 20 Nov 2024 12:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107590;
-	bh=IkMDTci/vZj+FOEv0MbBuOzjQW6xVBH689Y5clI9Axg=;
+	s=korg; t=1732107536;
+	bh=+TdOmpcQCoxWdjYjSd9qjPDHVvAWj9mMzJ95uViqUKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aDNjjczTzE6ya3ZYRkNmxZr/J79P7F0MfjXmuA5ZXJz5aY0OrAzsEwmRR27tBQzg
-	 jOiE4bLqrwN5hMLjLjsS7zcE8ZqgIllyx7K0ibQ4h0SZwMlB4LZ0FVzWLMHjHhXata
-	 FXFX1DARNk1p9ef7yOR2tlIYQ4ylI/X/d1CDuoMI=
+	b=sdHp6ObT9rIB0w2Mh/CoWfVf+3cF6cewdqWw96GgwaE4O0LhGDvvHwcqgvgRfmuPq
+	 OcfXLNd78qggN++SvclZX9aX4bLDPvvJ86c8U8RnEQxG6FSVp1kq+srPOfkqcMTD9R
+	 MiLeUrnY84h2cuZscvCnp1uJPXTFMCQtwSD/a5Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Angus Chen <angus.chen@jaguarmicro.com>,
-	Xiaoguang Wang <lege.wang@jaguarmicro.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 6.6 34/82] vp_vdpa: fix id_table array not null terminated error
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
+	Ubisectech Sirius <bugreport@valiantsec.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 069/107] nilfs2: fix null-ptr-deref in block_dirty_buffer tracepoint
 Date: Wed, 20 Nov 2024 13:56:44 +0100
-Message-ID: <20241120125630.381800349@linuxfoundation.org>
+Message-ID: <20241120125631.237183211@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoguang Wang <lege.wang@jaguarmicro.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 4e39ecadf1d2a08187139619f1f314b64ba7d947 upstream.
+commit 2026559a6c4ce34db117d2db8f710fe2a9420d5a upstream.
 
-Allocate one extra virtio_device_id as null terminator, otherwise
-vdpa_mgmtdev_get_classes() may iterate multiple times and visit
-undefined memory.
+When using the "block:block_dirty_buffer" tracepoint, mark_buffer_dirty()
+may cause a NULL pointer dereference, or a general protection fault when
+KASAN is enabled.
 
-Fixes: ffbda8e9df10 ("vdpa/vp_vdpa : add vdpa tool support in vp_vdpa")
-Cc: stable@vger.kernel.org
-Suggested-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Angus Chen <angus.chen@jaguarmicro.com>
-Signed-off-by: Xiaoguang Wang <lege.wang@jaguarmicro.com>
-Message-Id: <20241105133518.1494-1-lege.wang@jaguarmicro.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+This happens because, since the tracepoint was added in
+mark_buffer_dirty(), it references the dev_t member bh->b_bdev->bd_dev
+regardless of whether the buffer head has a pointer to a block_device
+structure.
+
+In the current implementation, nilfs_grab_buffer(), which grabs a buffer
+to read (or create) a block of metadata, including b-tree node blocks,
+does not set the block device, but instead does so only if the buffer is
+not in the "uptodate" state for each of its caller block reading
+functions.  However, if the uptodate flag is set on a folio/page, and the
+buffer heads are detached from it by try_to_free_buffers(), and new buffer
+heads are then attached by create_empty_buffers(), the uptodate flag may
+be restored to each buffer without the block device being set to
+bh->b_bdev, and mark_buffer_dirty() may be called later in that state,
+resulting in the bug mentioned above.
+
+Fix this issue by making nilfs_grab_buffer() always set the block device
+of the super block structure to the buffer head, regardless of the state
+of the buffer's uptodate flag.
+
+Link: https://lkml.kernel.org/r/20241106160811.3316-3-konishi.ryusuke@gmail.com
+Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Ubisectech Sirius <bugreport@valiantsec.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/virtio_pci/vp_vdpa.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/nilfs2/btnode.c  |    2 --
+ fs/nilfs2/gcinode.c |    4 +---
+ fs/nilfs2/mdt.c     |    1 -
+ fs/nilfs2/page.c    |    1 +
+ 4 files changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/vdpa/virtio_pci/vp_vdpa.c
-+++ b/drivers/vdpa/virtio_pci/vp_vdpa.c
-@@ -591,7 +591,11 @@ static int vp_vdpa_probe(struct pci_dev
- 		goto mdev_err;
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -68,7 +68,6 @@ nilfs_btnode_create_block(struct address
+ 		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+-	bh->b_bdev = inode->i_sb->s_bdev;
+ 	bh->b_blocknr = blocknr;
+ 	set_buffer_mapped(bh);
+ 	set_buffer_uptodate(bh);
+@@ -133,7 +132,6 @@ int nilfs_btnode_submit_block(struct add
+ 		goto found;
+ 	}
+ 	set_buffer_mapped(bh);
+-	bh->b_bdev = inode->i_sb->s_bdev;
+ 	bh->b_blocknr = pblocknr; /* set block address for read */
+ 	bh->b_end_io = end_buffer_read_sync;
+ 	get_bh(bh);
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -83,10 +83,8 @@ int nilfs_gccache_submit_read_data(struc
+ 		goto out;
  	}
  
--	mdev_id = kzalloc(sizeof(struct virtio_device_id), GFP_KERNEL);
-+	/*
-+	 * id_table should be a null terminated array, so allocate one additional
-+	 * entry here, see vdpa_mgmtdev_get_classes().
-+	 */
-+	mdev_id = kcalloc(2, sizeof(struct virtio_device_id), GFP_KERNEL);
- 	if (!mdev_id) {
- 		err = -ENOMEM;
- 		goto mdev_id_err;
-@@ -611,8 +615,8 @@ static int vp_vdpa_probe(struct pci_dev
- 		goto probe_err;
- 	}
+-	if (!buffer_mapped(bh)) {
+-		bh->b_bdev = inode->i_sb->s_bdev;
++	if (!buffer_mapped(bh))
+ 		set_buffer_mapped(bh);
+-	}
+ 	bh->b_blocknr = pbn;
+ 	bh->b_end_io = end_buffer_read_sync;
+ 	get_bh(bh);
+--- a/fs/nilfs2/mdt.c
++++ b/fs/nilfs2/mdt.c
+@@ -89,7 +89,6 @@ static int nilfs_mdt_create_block(struct
+ 	if (buffer_uptodate(bh))
+ 		goto failed_bh;
  
--	mdev_id->device = mdev->id.device;
--	mdev_id->vendor = mdev->id.vendor;
-+	mdev_id[0].device = mdev->id.device;
-+	mdev_id[0].vendor = mdev->id.vendor;
- 	mgtdev->id_table = mdev_id;
- 	mgtdev->max_supported_vqs = vp_modern_get_num_queues(mdev);
- 	mgtdev->supported_features = vp_modern_get_features(mdev);
+-	bh->b_bdev = sb->s_bdev;
+ 	err = nilfs_mdt_insert_new_block(inode, block, bh, init_block);
+ 	if (likely(!err)) {
+ 		get_bh(bh);
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -63,6 +63,7 @@ struct buffer_head *nilfs_grab_buffer(st
+ 		folio_put(folio);
+ 		return NULL;
+ 	}
++	bh->b_bdev = inode->i_sb->s_bdev;
+ 	return bh;
+ }
+ 
 
 
 
