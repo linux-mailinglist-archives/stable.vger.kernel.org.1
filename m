@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-94303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0291E9D3BE9
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:04:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C189D3B9B
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB048285B91
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92F7281BA4
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8671B5ED4;
-	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99F81BC9FC;
+	Wed, 20 Nov 2024 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckA7OnDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxAkndmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856A1A0BD6;
-	Wed, 20 Nov 2024 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A571AB6F8;
+	Wed, 20 Nov 2024 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107628; cv=none; b=Tmbv3JBAwApJxahsS19DRHPviPukYc/aOWL0nPN2JQj3Dj9hPgRGaWpcM6JAmlwrbutPBs/zSVAxe2FPZXdfR8Ku/HunDU2Ks5OX92xBVfpOhq09Jz/9iJ6xAzGpV/2HKC4cEQ81cIFa7wkwSHjfyDsvU9n9slwFV/w1s5LZ3HY=
+	t=1732107568; cv=none; b=u0+2hNefGKjGqI3V2610fBujYoDddYguLMiOs82+IfFvPrKd+5a+RCF8v/nlXmnU9kpuVl38IVVNclQoXdxgiz79K0mwhjdp7hyPEKIcgVdOb6x4cGjYgswyDhaofm1nyAayc6RhDkjpVHLxKN6Kt7znOLf+aYT2Sl3ZVbAdwcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107628; c=relaxed/simple;
-	bh=MabJgEQTIGsADFOpN8xRgaZ+9uplwjC33cC8RmP1afc=;
+	s=arc-20240116; t=1732107568; c=relaxed/simple;
+	bh=iE4sq2GWaJLTXW20rNg4IotZ4DvvH3U0axHW1G9+dCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqzFXqeH1/OCxdjDE4hJyKLhmRl48yWsbDQ8yHUfFI9fgXc6BqyPRe+SoVHvyR2KMXxy+4y/idirQHTseIxOo8rP0ZqAqvNt8ZviZtV2CYma/IKjm+fUsLPbFc90srvdkx4SEdKi5VExxXGeSIYpoSPzMSJ0w+e5PIvLWGbYLK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckA7OnDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF7CC4CECD;
-	Wed, 20 Nov 2024 13:00:27 +0000 (UTC)
+	 MIME-Version; b=UsdmmMwXwkFQngOnWmiXaf9oRWKU1VEBAuDjrQ+dxjlHmE0saOgwF6Q8y9b4xtrHs2gjDctCSAxQ1qvn0HDgwy7MNZOq+NOOXm9zpzwHnnh6kEB0R9UHk34zVe8peSz68KpE5gA1MP9Jz3oey91BUwEpsW7CP3YG/D8law7V3ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxAkndmA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC71C4CED6;
+	Wed, 20 Nov 2024 12:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107628;
-	bh=MabJgEQTIGsADFOpN8xRgaZ+9uplwjC33cC8RmP1afc=;
+	s=korg; t=1732107568;
+	bh=iE4sq2GWaJLTXW20rNg4IotZ4DvvH3U0axHW1G9+dCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckA7OnDgOB5MXOykk0IcSOh6ZrAYlmZR9rwXIkN5+utAdCiDa+QybtqV1WZct5N3I
-	 B4RWIHdRahuNl+Dzlv77sa9pBuVVLeVdsfbSZqQ/3KsPvW19lqKXB7Rz89eS9uYYQZ
-	 DGQlvOf/PQQQrjB00KfGyXB97JBpF289sbDHqriY=
+	b=oxAkndmAhBUsG+OFUSwzRKasTckmWmvzb/RkjRHfn4dhEvvW4XzCibjerfVT9uGIe
+	 fIyiQhQO5pFgT6krSi3FJOx0sKteTWhG/PZw6s9jYMU5JF4ealhvMgJPqv7h9BDBRf
+	 YiFKXVxZ+UsefwzqH5nWSGY0Bb6czsV/Ymua36Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 47/82] LoongArch: Make KASAN work with 5-level page-tables
-Date: Wed, 20 Nov 2024 13:56:57 +0100
-Message-ID: <20241120125630.671856856@linuxfoundation.org>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.11 083/107] drm/bridge: tc358768: Fix DSI command tx
+Date: Wed, 20 Nov 2024 13:56:58 +0100
+Message-ID: <20241120125631.560728076@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit a410656643ce4844ba9875aa4e87a7779308259b upstream.
+commit 32c4514455b2b8fde506f8c0962f15c7e4c26f1d upstream.
 
-Make KASAN work with 5-level page-tables, including:
-1. Implement and use __pgd_none() and kasan_p4d_offset().
-2. As done in kasan_pmd_populate() and kasan_pte_populate(), restrict
-   the loop conditions of kasan_p4d_populate() and kasan_pud_populate()
-   to avoid unnecessary population.
+Wait for the command transmission to be completed in the DSI transfer
+function polling for the dc_start bit to go back to idle state after the
+transmission is started.
 
+This is documented in the datasheet and failures to do so lead to
+commands corruption.
+
+Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240926141246.48282-1-francesco@dolcini.it
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240926141246.48282-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/kasan_init.c |   26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -13,6 +13,13 @@
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -125,6 +125,9 @@
+ #define TC358768_DSI_CONFW_MODE_CLR	(6 << 29)
+ #define TC358768_DSI_CONFW_ADDR_DSI_CONTROL	(0x3 << 24)
  
- static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
- 
-+#ifdef __PAGETABLE_P4D_FOLDED
-+#define __pgd_none(early, pgd) (0)
-+#else
-+#define __pgd_none(early, pgd) (early ? (pgd_val(pgd) == 0) : \
-+(__pa(pgd_val(pgd)) == (unsigned long)__pa(kasan_early_shadow_p4d)))
-+#endif
++/* TC358768_DSICMD_TX (0x0600) register */
++#define TC358768_DSI_CMDTX_DC_START	BIT(0)
 +
- #ifdef __PAGETABLE_PUD_FOLDED
- #define __p4d_none(early, p4d) (0)
- #else
-@@ -142,6 +149,19 @@ static pud_t *__init kasan_pud_offset(p4
- 	return pud_offset(p4dp, addr);
+ static const char * const tc358768_supplies[] = {
+ 	"vddc", "vddmipi", "vddio"
+ };
+@@ -229,6 +232,21 @@ static void tc358768_update_bits(struct
+ 		tc358768_write(priv, reg, tmp);
  }
  
-+static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node, bool early)
++static void tc358768_dsicmd_tx(struct tc358768_priv *priv)
 +{
-+	if (__pgd_none(early, pgdp_get(pgdp))) {
-+		phys_addr_t p4d_phys = early ?
-+			__pa_symbol(kasan_early_shadow_p4d) : kasan_alloc_zeroed_page(node);
-+		if (!early)
-+			memcpy(__va(p4d_phys), kasan_early_shadow_p4d, sizeof(kasan_early_shadow_p4d));
-+		pgd_populate(&init_mm, pgdp, (p4d_t *)__va(p4d_phys));
-+	}
++	u32 val;
 +
-+	return p4d_offset(pgdp, addr);
++	/* start transfer */
++	tc358768_write(priv, TC358768_DSICMD_TX, TC358768_DSI_CMDTX_DC_START);
++	if (priv->error)
++		return;
++
++	/* wait transfer completion */
++	priv->error = regmap_read_poll_timeout(priv->regmap, TC358768_DSICMD_TX, val,
++					       (val & TC358768_DSI_CMDTX_DC_START) == 0,
++					       100, 100000);
 +}
 +
- static void __init kasan_pte_populate(pmd_t *pmdp, unsigned long addr,
- 				      unsigned long end, int node, bool early)
+ static int tc358768_sw_reset(struct tc358768_priv *priv)
  {
-@@ -178,19 +198,19 @@ static void __init kasan_pud_populate(p4
- 	do {
- 		next = pud_addr_end(addr, end);
- 		kasan_pmd_populate(pudp, addr, next, node, early);
--	} while (pudp++, addr = next, addr != end);
-+	} while (pudp++, addr = next, addr != end && __pud_none(early, READ_ONCE(*pudp)));
- }
+ 	/* Assert Reset */
+@@ -516,8 +534,7 @@ static ssize_t tc358768_dsi_host_transfe
+ 		}
+ 	}
  
- static void __init kasan_p4d_populate(pgd_t *pgdp, unsigned long addr,
- 					    unsigned long end, int node, bool early)
- {
- 	unsigned long next;
--	p4d_t *p4dp = p4d_offset(pgdp, addr);
-+	p4d_t *p4dp = kasan_p4d_offset(pgdp, addr, node, early);
+-	/* start transfer */
+-	tc358768_write(priv, TC358768_DSICMD_TX, 1);
++	tc358768_dsicmd_tx(priv);
  
- 	do {
- 		next = p4d_addr_end(addr, end);
- 		kasan_pud_populate(p4dp, addr, next, node, early);
--	} while (p4dp++, addr = next, addr != end);
-+	} while (p4dp++, addr = next, addr != end && __p4d_none(early, READ_ONCE(*p4dp)));
- }
- 
- static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
+ 	ret = tc358768_clear_error(priv);
+ 	if (ret)
 
 
 
