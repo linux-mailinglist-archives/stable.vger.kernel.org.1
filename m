@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-94270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1DC9D3C05
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:05:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F2B9D3B83
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 14:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88ECDB2A4FB
-	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50B6D282878
+	for <lists+stable@lfdr.de>; Wed, 20 Nov 2024 13:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85BE1C7B81;
-	Wed, 20 Nov 2024 13:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7471B85C1;
+	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfMNah1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzWHoeOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A971C7B63;
-	Wed, 20 Nov 2024 13:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB411A9B5A;
+	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732107602; cv=none; b=CQT1Cuei6V73yHJfs7ow+SadfXaI14Q1dX5JcQWcXHGyGXy/gRCSaj6OMrbdTrIjCR+WXELejWBvtTRe7VYCnn5jMdQYEBUSTSD4ml5d5Jkho/8Im4gGUNj+eQi+rRGVp+2JMM/aswxMBFZ0KaUgU+GPcF7wZTVBXXViiJxU6KE=
+	t=1732107548; cv=none; b=Vqtzhjs52n51Wobd01iB1Br5aEoEcJpyCCAefyLCWjIvMD0awttGL+w9Bt5DnSTtmg/tNZxG8FL+GFXs/UzqmLv3I248DmQPTu9bmZtia0o1Oo6x/8fWRPNq9cFhuEp3zb9A0fkxrq1BA37128xZob4bBEwl6KdJp0VtK9YWwP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732107602; c=relaxed/simple;
-	bh=kz9sCQU/kM2LWfqM/B3IyK0DRU9yaTX4AQcXcDEP+Vg=;
+	s=arc-20240116; t=1732107548; c=relaxed/simple;
+	bh=p6tgGSMsTkr79QyczEF27tdKyWbd8KJGGrkiHb5V08s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlNFKUCbtMrJFKHZ1zjUSUQdy35ZvawGF5zX/pmULFvtM9TIs8PiW/QB+gA6JVxLtgvtKwBscHZZf8qLxdh8B4EQXF2lebCpNh8+tq6meQmFmAoxknnRjXJGphSDaO14Gh1h/Vt1whGgGhB9evTXSv2NBw7eu5r2Ugv9LL1esBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfMNah1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E3DC4CECD;
-	Wed, 20 Nov 2024 13:00:02 +0000 (UTC)
+	 MIME-Version; b=reu61PqJ0/TGCYcY94i2b+D5UtRYTdBsKKrIdJRBkbvNsgldeYzz4vtQzXFpveFTO5rD4H8C72OzPMZ9lo3yJOk/HGGqYL2lqHqn9nUDXkWbFA48SjBq1bRXtK9WcfR+xzLNm9lsGpvkds+J/vf55ybAP5G/JcSvHMtP0lLtuwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzWHoeOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F6C4CED6;
+	Wed, 20 Nov 2024 12:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1732107602;
-	bh=kz9sCQU/kM2LWfqM/B3IyK0DRU9yaTX4AQcXcDEP+Vg=;
+	s=korg; t=1732107548;
+	bh=p6tgGSMsTkr79QyczEF27tdKyWbd8KJGGrkiHb5V08s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfMNah1MDkwCIY3B9pUwb0Sgad8JVLX0LhSTbEWfz75rgUBBGV4C0+JVeMaN8bHTV
-	 5B8+8yai1Be2gTBcwXV1TdNKttXauPLbSAWdX5hrq/PfjxD9GxuYEYhZpaEg3MrTez
-	 WGyIaJKSJyhSeqcZ58Tu20SThNBv054H/xjLcwE4=
+	b=YzWHoeOzFx4TyWAPT6sOlwflslQNfcZZZR1zRGtDnkTe6iqx2hsacMX5F/TUd8MJi
+	 o1y4SGFZwY833qxCd0+kty8WuLvlmHvv0uhlJGh47uq0zevOxCal7RDk7oesHkY8jY
+	 VrHSw4yLnuciy1EoXRCgR3vNjQTd7zEdkpedRsv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.6 52/82] nouveau: fw: sync dma after setup is called.
+	Johan Hovold <johan+linaro@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>
+Subject: [PATCH 6.11 087/107] pmdomain: arm: Use FLAG_DEV_NAME_FW to ensure unique names
 Date: Wed, 20 Nov 2024 13:57:02 +0100
-Message-ID: <20241120125630.781619507@linuxfoundation.org>
+Message-ID: <20241120125631.665728688@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-References: <20241120125629.623666563@linuxfoundation.org>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+References: <20241120125629.681745345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-commit 21ec425eaf2cb7c0371f7683f81ad7d9679b6eb5 upstream.
+commit 0bf020344204a2c1067b7562b6a247e6c689e28b upstream.
 
-When this code moved to non-coherent allocator the sync was put too
-early for some firmwares which called the setup function, move the
-sync down after the setup function.
+The domain attributes returned by the perf protocol can end up reporting
+identical names across domains, resulting in debugfs node creation failure.
+Use the GENPD_FLAG_DEV_NAME_FW to ensure the genpd providers end up with an
+unique name.
 
-Reported-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Tested-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Fixes: 9b340aeb26d5 ("nouveau/firmware: use dma non-coherent allocator")
+Logs: [X1E reports 'NCC' for all its scmi perf domains]
+debugfs: Directory 'NCC' with parent 'pm_genpd' already present!
+debugfs: Directory 'NCC' with parent 'pm_genpd' already present!
+
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241114004603.3095485-1-airlied@gmail.com
+Message-ID: <20241030125512.2884761-6-quic_sibis@quicinc.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/falcon/fw.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/pmdomain/arm/scmi_perf_domain.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c b/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
-index a1c8545f1249..cac6d64ab67d 100644
---- a/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
-@@ -89,11 +89,6 @@ nvkm_falcon_fw_boot(struct nvkm_falcon_fw *fw, struct nvkm_subdev *user,
- 		nvkm_falcon_fw_dtor_sigs(fw);
- 	}
- 
--	/* after last write to the img, sync dma mappings */
--	dma_sync_single_for_device(fw->fw.device->dev,
--				   fw->fw.phys,
--				   sg_dma_len(&fw->fw.mem.sgl),
--				   DMA_TO_DEVICE);
- 
- 	FLCNFW_DBG(fw, "resetting");
- 	fw->func->reset(fw);
-@@ -105,6 +100,12 @@ nvkm_falcon_fw_boot(struct nvkm_falcon_fw *fw, struct nvkm_subdev *user,
- 			goto done;
- 	}
- 
-+	/* after last write to the img, sync dma mappings */
-+	dma_sync_single_for_device(fw->fw.device->dev,
-+				   fw->fw.phys,
-+				   sg_dma_len(&fw->fw.mem.sgl),
-+				   DMA_TO_DEVICE);
-+
- 	ret = fw->func->load(fw);
- 	if (ret)
- 		goto done;
--- 
-2.47.0
-
+--- a/drivers/pmdomain/arm/scmi_perf_domain.c
++++ b/drivers/pmdomain/arm/scmi_perf_domain.c
+@@ -125,7 +125,8 @@ static int scmi_perf_domain_probe(struct
+ 		scmi_pd->ph = ph;
+ 		scmi_pd->genpd.name = scmi_pd->info->name;
+ 		scmi_pd->genpd.flags = GENPD_FLAG_ALWAYS_ON |
+-				       GENPD_FLAG_OPP_TABLE_FW;
++				       GENPD_FLAG_OPP_TABLE_FW |
++				       GENPD_FLAG_DEV_NAME_FW;
+ 		scmi_pd->genpd.set_performance_state = scmi_pd_set_perf_state;
+ 		scmi_pd->genpd.attach_dev = scmi_pd_attach_dev;
+ 		scmi_pd->genpd.detach_dev = scmi_pd_detach_dev;
 
 
 
