@@ -1,182 +1,163 @@
-Return-Path: <stable+bounces-94547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC19D510C
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 17:57:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7695F9D51FA
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 18:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE30C287BC1
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 16:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B951F21742
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 17:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311FF1A0BD7;
-	Thu, 21 Nov 2024 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4301B5829;
+	Thu, 21 Nov 2024 17:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="au0hzHBv"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XPJhU6Aw"
 X-Original-To: stable@vger.kernel.org
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11020088.outbound.protection.outlook.com [52.101.85.88])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AF19924A;
-	Thu, 21 Nov 2024 16:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732208250; cv=fail; b=BCsxAeOqvFW6RBYlDvZOfpC5fyPWV93WoskU5lFKO4Osp7Ftix+Yo3MDl74LUFSifwPGm0nrg5kMq2JVtGeaka3aoYLnbJlqTfiehKmX7q9w8w47XL6tnu2l/F+2cpyRlpN0nMiHha2xl5Ynwv9tliYgKyG0XqizE5k2iUJ8+Mo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732208250; c=relaxed/simple;
-	bh=2QeEMRi3XrKsR609ajjqVUSlImcIw5XgDR81ivfgbsA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jokr0NjwId9u9k80JiK6kQZnSEeRGLYjAXVOqEEglLr8xyph9rImvwl/f2W7ODK8KrA8FR9xUp6E+K5MJdPvYOA6s+bvDs2GafSROxbm9aMDvokvFZLK3hy75fV+XG22AZAdbv2nq14wvf0r0EbJ2i2Yp76BnPyRBD3sFNYoro8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=au0hzHBv; arc=fail smtp.client-ip=52.101.85.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GLcI3cGLq7/N3/dyHJ/2lxsUDncInD4rs1oF/A5XGzc7OPtmxHBRACGkGRTpigKpie+CvGoxEYslGbpYqfZLfkH5AOfoscIa+ky1JnepRZXISmpGj5QYOWF5Bwibh+89qW6QVnVj5fZuvYT8hm0W3f4wLqz46Zn559rTa6hayjHk8uebZ0+8o76hxtmum784hrPcJbKM2IrnzEi60AlSuxrBQWhWmIS7I3siw2yVJkP52X8oyyqD90QU4U78zd+7E6l+mQANB0YxbsmTKjSYsoA3xZ9Ll0/HgTb1GCtZfyv68lP48s/UbOXTj3AFXBKvmGOyRAbXQt43cg34Wru8UQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2QeEMRi3XrKsR609ajjqVUSlImcIw5XgDR81ivfgbsA=;
- b=NVrqzRy7SLx5aUIrvZCjMKlMolokafMXU9KgeyELWKrYXFz5ZhM8JzQJUmMSEV6llomlNthDg8mSPmOLhR+/2T4rlNP/j5TUegDZ5U4eYNh0fw9wqJyj6L6GjOqj/Sz9kwdqzcOGwym9uj798IwMai1YS/2YGrxuEpG9M0G32Ulhn2KjKZpzSunUPOr8mhsSth04KQpirbOXX2EG9Zl0zasO3YIdT8bCasIUxO8rfSx2YhbClYplEoRwK+d26B/K2kQxYiHabapRcgJZe0pZUu0VksFQGcUlGf9gSi24v6wERK1jrPkKYhzrA7X68+6O8LuMrACmuRyU8a47FeXtzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2QeEMRi3XrKsR609ajjqVUSlImcIw5XgDR81ivfgbsA=;
- b=au0hzHBv9LvWQkIm7RFMWBFRMC1qFR60jZrDew48U1jSij7i7jh3sCNt+40zPAHk75soQhvOsTzMpw4x+zd6ALDSoqVAwECtQIihrnT+lXxMuM9YmE8up+YuONrgS4bp+/2nrviVf2rcJlizQOK9ODGw3wWIaS4J1rE373fTx1s=
-Received: from IA3PR21MB4269.namprd21.prod.outlook.com (2603:10b6:208:51f::13)
- by MN0PR21MB3145.namprd21.prod.outlook.com (2603:10b6:208:379::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.17; Thu, 21 Nov
- 2024 16:57:24 +0000
-Received: from IA3PR21MB4269.namprd21.prod.outlook.com
- ([fe80::2ad3:451a:7a41:c069]) by IA3PR21MB4269.namprd21.prod.outlook.com
- ([fe80::2ad3:451a:7a41:c069%5]) with mapi id 15.20.8182.014; Thu, 21 Nov 2024
- 16:57:24 +0000
-From: Hardik Garg <Hardik.Garg@microsoft.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux@roeck-us.net"
-	<linux@roeck-us.net>, "shuah@kernel.org" <shuah@kernel.org>,
-	"patches@kernelci.org" <patches@kernelci.org>, "lkft-triage@lists.linaro.org"
-	<lkft-triage@lists.linaro.org>, "pavel@denx.de" <pavel@denx.de>,
-	"jonathanh@nvidia.com" <jonathanh@nvidia.com>, "f.fainelli@gmail.com"
-	<f.fainelli@gmail.com>, "sudipm.mukherjee@gmail.com"
-	<sudipm.mukherjee@gmail.com>, "srw@sladewatkins.net" <srw@sladewatkins.net>,
-	"rwarsow@gmx.de" <rwarsow@gmx.de>, "conor@kernel.org" <conor@kernel.org>,
-	"broonie@kernel.org" <broonie@kernel.org>
-Subject: Re: [PATCH 6.6 00/82] 6.6.63-rc1 review
-Thread-Topic: [PATCH 6.6 00/82] 6.6.63-rc1 review
-Thread-Index: AQHbPDZw/ocSU6EQo0GmPZVTicOUng==
-Date: Thu, 21 Nov 2024 16:57:24 +0000
-Message-ID:
- <IA3PR21MB4269055CB087A46C7AB887CFE1222@IA3PR21MB4269.namprd21.prod.outlook.com>
-References: <20241120125629.623666563@linuxfoundation.org>
-In-Reply-To: <20241120125629.623666563@linuxfoundation.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-11-21T16:57:23.733Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR21MB4269:EE_|MN0PR21MB3145:EE_
-x-ms-office365-filtering-correlation-id: 50472667-8430-4f6e-1c4c-08dd0a4d92b9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?WvX/Cudw/p7DjpHj13Mlo5hkl5HVDltffhQBaYTwC9qDXgBqBdC5mASqQ1?=
- =?iso-8859-1?Q?erzRfAfDLXsAlNrMDOpmWyT/BUlG6PNe2nni1gl5sp+UwpalFPXSmVnTEK?=
- =?iso-8859-1?Q?wcX15WB7QMMxAaScHtZeAyyv7oy/h1wy8K8kxLYNEei8Uudo9HPX3c4DrK?=
- =?iso-8859-1?Q?+z94MKSw6tQbWNGKOn95Ltr4xvNyXu9GEOejm9/Q9HaSXPXBFb0rMGwAJn?=
- =?iso-8859-1?Q?0LgbfuJaI0VPxlySkJaD8CcI5/glCBk+jGxVbgFAKvxLwYOmqYuP/CDnrm?=
- =?iso-8859-1?Q?jIZkxy2kLZvZL00W+zSW4C3GeMuB80JfslbYgwnp6zNVmJt+f2lP3BGfmh?=
- =?iso-8859-1?Q?61P8iInTRoTklqTUEZ5Y8ZU6y5IVwKoAN8Z2yvrbUEoLnlZ7huqAFNwBf4?=
- =?iso-8859-1?Q?RN12bQG5XABM/nnh8wJHEKecg51fOl8kHqVHF8pO2N73eIsrXXC8ji4iWh?=
- =?iso-8859-1?Q?lG+HPsStjOWW1LXUrWBf3a3McmnnuT+kwmXF9obqbglSbmT3jUhh0HHa2m?=
- =?iso-8859-1?Q?ZVLbGIZ+qYA/BNMxn+13kcnP5Dk6yan1r1OXyk1KvIijTKJDtlbBANE3jI?=
- =?iso-8859-1?Q?vc2Koey+iuO7ykHIP0sMlp6qmUwQJ+aClHTVuf0Q+Y17ottxmbHL7pjzYG?=
- =?iso-8859-1?Q?D/oRk+8DYXwEFZfpLacQ9cVI9ftD6vG51tRvayR1RDprjJXosYlDDMQABi?=
- =?iso-8859-1?Q?1trd4eHlmESnTJdckChlzfCOsYs2Lsyz22Mh1fx0nmhMPMm4fpowZJMePX?=
- =?iso-8859-1?Q?t6HEzLSK6UZJpsYD0taHxF8KiIexZwOBzeMObkNMfkObcGUfE2qo830v0+?=
- =?iso-8859-1?Q?Q3pR5mWtOU1ouFO9/n9+m2A1EXkFfj2HNHQwmffCpU8Jc6k1dnyUde9u1u?=
- =?iso-8859-1?Q?b0QWz2vgnAlsnIkKHAupfHsfIgLNm2+9qokWErNnIwXe7YZS/713HMaxc+?=
- =?iso-8859-1?Q?o7o0ndQ+t6v5+vb7x+UG0513F9JxocDH0L3LKVx9fERpHZvUzscTAx7hkL?=
- =?iso-8859-1?Q?rRc3TjL1z7mUSp7GGSx8V0FWmAwCjY8fx1Pc/LbY7Wy71qiiVq3qCZCCJX?=
- =?iso-8859-1?Q?Zwo7JRO6Wqd/3nTp66LpNnctrFZSzkkCX6jUalrv6rW0PzTY5dqYwwKDrE?=
- =?iso-8859-1?Q?fOveBWqqoHzRyFEanFnwolhg+JM0lkcywFMyvAhg15zlIyxzmh7A/qcrRP?=
- =?iso-8859-1?Q?HZQzui5oXyuDYaYO7EcvQ1sObUh3gRhm19+HVH2No6aQfh9WDY2Hy0ziT5?=
- =?iso-8859-1?Q?WGrow7SXXvQMFXuYA4RrqqE2U8QbahUX+4cUewHeV3hK6z91pCfi87ehUB?=
- =?iso-8859-1?Q?wMbtr5P5BWKLX9oVjksxoRTjEWhTHjsIR7/hIOJQntBtSvxuv+Qzgfu0aB?=
- =?iso-8859-1?Q?AOwzEz9B7R7Z43Z3wS4JA48VE6hOUZlKoj4slWDCkiK1j7ILJrOpM=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR21MB4269.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?CEO11xOkfKjdakyWlRv0XqKkaLLk2Ucgs6bK+7RwcW9pb6tc38W/aJICAf?=
- =?iso-8859-1?Q?zctRCToa7BW7e9nXCgT76QOe7H7f605dDZIG5i9q5h+ctlurl+9D7Yk60U?=
- =?iso-8859-1?Q?i4sWREHMwL65+xge72tIkitlzVIXBqERQCjA/CCb8979cPk+zeJDQvH2zZ?=
- =?iso-8859-1?Q?NkxIpkgyrAHJKvcdZfxCb1xIgionjR/0KAsJE9scfnFnaUldmqUOLUhitg?=
- =?iso-8859-1?Q?H/3FZsUZ7sLYhw6wNVewqZu1/p1XcZFccv29ufaGFvJHlGp6UPMUsReOuv?=
- =?iso-8859-1?Q?2nlCjIm6W+kUe4CTq10ppuCJXT0MD0v88Ays8mU6iKe2IhZDy5STF3SUy8?=
- =?iso-8859-1?Q?qjrCZA4FKaUYIOm76uZi6C55xjLWcdWtu9gKjz5ZpPbxCzNhQKGYnrib29?=
- =?iso-8859-1?Q?N5HYMRFbQQs4EMmcFIa8gzsAWLduzBq1dlRYfJkxcJp60/ZT+QOv3iniox?=
- =?iso-8859-1?Q?HLwI+bvEjsIZRYzGs8EUbSuA83wlbBjuVn2rCeG65xI8AMTyZZHtMZkN90?=
- =?iso-8859-1?Q?hXKvoh6oi/U06VMGWO0uhgYJAAXF8PVOtZjrqJOhKaKSWLtx3QZo/WV+q4?=
- =?iso-8859-1?Q?r7gcZQMSRM/7ojPJwy7sls3eXdzE4tcvCG6q+ReWfIwfWDDk6eD/N50/NC?=
- =?iso-8859-1?Q?vc1PYcWqydBaXXQiT0WnhAAgXXHRK38VEhHAHmxGco/aTJkIYET6yJYzp4?=
- =?iso-8859-1?Q?qSniN1eSi87fk4PqIL7SY3KXow7IV74jvJmtGfyvUd9TICmArbGnMBMFol?=
- =?iso-8859-1?Q?yH+jWxgJFP/0YU56d7c5x22XKTKo8MC6S3euaLoxYwYyGr22L11hFDt6Iv?=
- =?iso-8859-1?Q?hOIDJ3q8xfSMaM4oxN1NLVoBk9bZfkTXE9T3U+Vgp2rh2naCBtEYcC/cQD?=
- =?iso-8859-1?Q?5o77wA2JpaknY/L0jd9pRcsuoe926eBRK7eiVRebXX/F5Tq5NA6z0OhnIw?=
- =?iso-8859-1?Q?9NhJXhlGUZ7Fa+PtzILpMcJtux2zuP6WfmL8VzOVfbjkFx07IkMm7LOS4T?=
- =?iso-8859-1?Q?rgoTmrfOi3OWBkb6BsGD3hLEe9TF3qXbpMoJOQeHS51ZE57ZAii83G9xZH?=
- =?iso-8859-1?Q?OGaFjVj1mwuSv73MsEuOdPz2HJw36nHjZ7RLalFqi7MBaNKlnxSdJKR/EY?=
- =?iso-8859-1?Q?610v1sC5h+tlBr7nINNA6iQziIYFjsUOXf+h71oiEZNJNFm+fxOOR4z8wQ?=
- =?iso-8859-1?Q?9/rPMbdrdYPVqjfChuiIKMD39f3y/XD9Jp4A3HU33hnebfsFv//xrWCeYE?=
- =?iso-8859-1?Q?wIfHPhOg96wEDPyde/ceKeakgVc6wwv9Zu79w4bJgnwi17C3OQTtyi91Dt?=
- =?iso-8859-1?Q?qKoc9jj4lG2f2yuuUKtCbmt4Mvf0WtGcxC8aubIou6BR6VVEe6VI2e646y?=
- =?iso-8859-1?Q?IW1ShOyKwNu6Y2NbZNvUlX5bSL4M9Hgkgs+M+DKrDe+vDeNwUtApp5624J?=
- =?iso-8859-1?Q?EDn9aF7lX2w8lwzYY7ENmMxSPlMhuC5xqiiOMCzIlskM429gXKvVOWSTxG?=
- =?iso-8859-1?Q?PhMVANFMFhf6ujoCRzdKQkAK6d4DR9y2Mgq81Dwy7lBIQjA/9kOAh60rUf?=
- =?iso-8859-1?Q?EhqNLd/vZDuUEzg2bwV6sKa5z91W0VMGADseVr+2HfhOU/C7XZIR0xwAIN?=
- =?iso-8859-1?Q?wF7n7/e+axAX6gqfWv/jQnzjaA+GTL+Zoe?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D3A188907;
+	Thu, 21 Nov 2024 17:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732210907; cv=none; b=kL8y/tIziA9JAj9raAsh4959aFNO+STbJpETWiQpTssTCMEYvxhul4+RscVLc9NkeRk5PCoi9j1OTZz64nPSPONWat9fDofIq8JaJU9qx4Oar7fqr8s3Yw7A+dGSwGSKUcQ/rz17X0sYL3cVsxesBXM7ZVUT1I18NmU8oD+OdXg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732210907; c=relaxed/simple;
+	bh=3MDNYNBVQxoC/C2zKV4LcrVyC0GAlf77KRLnvIIXazo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iIQQltjFGKCLTRHtULSu9CFiCr2ic9O7FZV3LjL+hR5aYfKygtOEMJE2TTf+G+oP4aGchTMmXfLqX4l06/HCLXXK5lbF09gzrVvedDUjrIoObBupwfcooa/UPfkWKTP8cG64tPUQDGvH8rDpjE9C2iwmXa2H4QZQ3/t7qWCfWGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XPJhU6Aw; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CD1472000A;
+	Thu, 21 Nov 2024 17:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732210896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rt80qnAyyepZvbd8DfB3ShuvRFOqvgROOwcu9fM6x3U=;
+	b=XPJhU6AwXFGRUUnfGQvejV+oHxkMvweUkwv9ULqvHbQa8KI16HGZgTZzN7fv0AWbOGlv9k
+	Ykr621Z3EWSQFd0/Eh4GQ5JaBq19W19D1tx0V82mCLr56bacduLtP9ITRqEX3GjJvSvt9V
+	uixNsJpbWe4tnkysNvTuVA+/5DnMevlnv6uLbVS+q4olykwKN8OSRYr5av9Ycaaytja792
+	vvAB1aZOjvs8cZtuR+kon8EIZ89Mk6DHMm3EEXEKzpHJjptxGjMGNM2FVEnDLEVi4ljdD8
+	zb6YH3vlOoQTG6XstKJeBVuEHA85FLbEQoTmTtKrLn9gRCEAo4310ZykbKN5qQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+Date: Thu, 21 Nov 2024 18:41:10 +0100
+Message-Id: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR21MB4269.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50472667-8430-4f6e-1c4c-08dd0a4d92b9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2024 16:57:24.6448
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9gdeyaPCDALtzZowA/1BQpAQAXueB7twXmjPbkRhDwj6xKSkOdnPFn0ncFvd9cCnh9iDBIRCk1FaCvCS4NDKcA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR21MB3145
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALZwP2cC/x3MTQ5AMBBA4avIrE1i6ifiKmJROpigpEUk4u7K8
+ nuLd4NnJ+yhim5wfIqX1QZQHEE3ajswigkGlaiMSBF+RVs03B4DynKV2M0T7o4ZW5OqXOuyKHq
+ CMNgc93L987p5nhenn/rUbAAAAA==
+X-Change-ID: 20241121-ge-ian-debug-imx8-clk-tree-bd325aa866f1
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Ying Liu <victor.liu@nxp.com>, 
+ Marek Vasut <marex@denx.de>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Abel Vesa <abel.vesa@linaro.org>, 
+ Herve Codina <herve.codina@bootlin.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ian Ray <ian.ray@ge.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-The kernel, modules, BPF tool, and kselftest tool for 6.6.63-rc1 builds suc=
-cessfully on both amd64 and arm64 Azure Linux VMs.=0A=
-=0A=
-Tested-by: Hardik Garg hargar@linux.microsoft.com=0A=
-=0A=
-=0A=
-=0A=
-Thanks,=0A=
-Hardik=
+Recent changes in the clock tree have set CLK_SET_RATE_PARENT to the two
+LCDIF pixel clocks. The idea is, instead of using assigned-clock
+properties to set upstream PLL rates to high frequencies and hoping that
+a single divisor (namely media_disp[12]_pix) will be close enough in
+most cases, we should tell the clock core to use the PLL to properly
+derive an accurate pixel clock rate in the first place. Here is the
+situation.
+
+[Before ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")]
+
+Before setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, the sequence of events was:
+- PLL is assigned to a high rate,
+- media_disp[12]_pix is set to approximately freq A by using a single divisor,
+- media_ldb is set to approximately freq 7*A by using another single divisor.
+=> The display was working, but the pixel clock was inaccurate.
+
+[After ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate")]
+
+After setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, the
+sequence of events became:
+- media_disp[12]_pix is set to freq A by using a divisor of 1 and
+  setting video_pll1 to freq A.
+- media_ldb is trying to compute its divisor to set freq 7*A, but the
+  upstream PLL is to low, it does not recompute it, so it ends up
+  setting a divisor of 1 and being at freq A instead of 7*A.
+=> The display is sadly no longer working
+
+[After applying PATCH "clk: imx: clk-imx8mp: Allow LDB serializer clock reconfigure parent rate"]
+
+This is a commit from Marek, which is, I believe going in the right
+direction, so I am including it. Just with this change, the situation is
+slightly different, but the result is the same:
+- media_disp[12]_pix is set to freq A by using a divisor of 1 and
+  setting video_pll1 to freq A.
+- media_ldb is set to 7*A by using a divisor of 1 and setting video_pll1
+  to freq 7*A.
+  /!\ This as the side effect of changing media_disp[12]_pix from freq A
+  to freq 7*A.
+=> The display is still not working
+
+[After applying this series]
+
+The goal of the following patches is to prevent clock subtree walks to
+"just recalculate" the pixel clocks, ignoring the fact that they should
+no longer change. They should adapt their divisors to the new upstream
+rates instead. As a result, the display pipeline is working again.
+
+Note: if more than one display is connected, we need the LDB driver to
+act accordingly, thus the LDB driver must be adapted. Also, if accurate
+pixel clocks are not possible with two different displays, we will still
+need (at least for now) to make sure one of them is reparented to
+another PLL, like the audio PLL (but audio PLL are of a different kind,
+and are slightly less accurate).
+
+So this series aims at fixing the i.MX8MP display pipeline for simple
+setups. Said otherwise, returning to the same level of support as
+before, but with (hopefully) more accurate frequencies. I believe this
+approach manages to fix both Marek situation and all people using a
+straightforward LCD based setup. For more complex setups, we need more
+smartness from DRM and clk, but this is gonna take a bit of time.
+
+---
+Marek Vasut (1):
+      clk: imx: clk-imx8mp: Allow LDB serializer clock reconfigure parent rate
+
+Miquel Raynal (4):
+      clk: Add a helper to determine a clock rate
+      clk: Split clk_calc_subtree()
+      clk: Add flag to prevent frequency changes when walking subtrees
+      clk: imx: imx8mp: Prevent media clocks to be incompatibly changed
+
+ drivers/clk/clk.c            | 39 ++++++++++++++++++++++++++++++++-------
+ drivers/clk/imx/clk-imx8mp.c |  6 +++---
+ include/linux/clk-provider.h |  2 ++
+ 3 files changed, 37 insertions(+), 10 deletions(-)
+---
+base-commit: 62facaf164585923d081eedcb6871f4ff3c2e953
+change-id: 20241121-ge-ian-debug-imx8-clk-tree-bd325aa866f1
+
+Best regards,
+-- 
+Miquel Raynal <miquel.raynal@bootlin.com>
+
 
