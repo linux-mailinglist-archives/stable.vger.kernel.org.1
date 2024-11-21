@@ -1,226 +1,204 @@
-Return-Path: <stable+bounces-94529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA069D4F1A
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:51:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E433D9D4F43
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0EC9280F13
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:51:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AA2DB28E7E
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560FB1E1C33;
-	Thu, 21 Nov 2024 14:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PcEVUWq3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D32C1DE2DF;
+	Thu, 21 Nov 2024 14:49:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3208D1E1A3E
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 14:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D091F1ABEB4;
+	Thu, 21 Nov 2024 14:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732200265; cv=none; b=Rn9mqJTgCkLm6otCSVdmIWs7CbFicLu5ekCvBZq5ndrIEF4+JCSdMyCCQURK2Lic8MHqQLMonIcrfOh5Vv5Mq+goWBGizwAM28oQL5mrVjO5b9N95FcW5YekmXVWibl937lwT4EPpSwS7VP2E3p3EeBmwyvvkrJggvz7M72mBVk=
+	t=1732200588; cv=none; b=uZNqgtEvZWdIFlq2aDzxB0r35fL/o2Z5mqjalBMSkYn2/SYuxxOM2kUt+o+znz+THhvD4SpDOUcMXzWW0XNSJ/+WHZ7VvRFx1vVlyOpoog8e5Q5VzogbyqYYDIOME9EffV0Spg1pHqBTr6O3eOkyVjNIMib+4o8SuiMxk3EZtyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732200265; c=relaxed/simple;
-	bh=h2LubFAKVLo+zmNruMTv15zxKSBqH4BSN9eJ8pEiXnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6vgsvw2IUmg1/2ZwqOurJRA6Z9R+juOH5bVSWDG17ou+ijYT72fyN84HrMi/vDmtj5hsWzjCd5ZY7ILifiMBjMlO/rnUV2oB6ruJ7OcgsgXqPVoKllLFYFUEzssCZ2v7SGam6swJ3rwt8G3QBZb50vSNgVWO4RFyVopstwF8DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PcEVUWq3; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7b1b224f6c6so62918785a.3
-        for <stable@vger.kernel.org>; Thu, 21 Nov 2024 06:44:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732200262; x=1732805062; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nDOrQbm1R4JuLI2d5IX/F/F3/7FDqPUiQgMfFyQdfCE=;
-        b=PcEVUWq3v1LP02G7wjECRIBxZUBZXCmfjFS3x+0uTT3oF3j0XQ6aj8Xs+nPsjikULe
-         loKDDvcsUnKy1AGJLy14N0M3RzhZLlon49ZQ2eR+CfyZQfjXZfYNm1TfMQh766za6qPE
-         cCNbLBZwkYid4HNkLHG1GEJsVGQS4XqOzDKIPS3HSuCuZ2tF5A0TUqS3jiEbw4XS/cLY
-         OdifYUbpe29r0ZHZ2Ww5u5+OwfdKFZN7U515Rm0G1s3yOTnDQ28DnJBYM9I7HHP+MPyF
-         Q0kkNXn8k+due0glUi4SIIDSCC35sQpLXVkpBk+Fmm2BSJxjUAnarvbqk8hfZ28s0ox6
-         9e9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732200262; x=1732805062;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nDOrQbm1R4JuLI2d5IX/F/F3/7FDqPUiQgMfFyQdfCE=;
-        b=tUZp+soxdMhL/JXg3ia4M1wphOAfhrCN2lnC2yxhtM4dMHBbYscsAjXhORqGMdB8kh
-         ngmdmdp/7J1/jPyT3HXh/N/TAplRPfpwkAXvE5YW3Z7osX+jXRErtY5iW6TH/O9RaVSk
-         FxpfskItmjtfZa5Xs/AxDVLxDXmJz49oqhyJJDFlzwTt/tR3WFRgHVHUXw8yX1R9I9p1
-         htkPOO3c4AhA68gpeF9tchyUjJBiAHxGpfUnV8bcUKfIR2ZgFJ0YfXImIBTOgrX+acGk
-         HGhTXdKlNrizJcxyY+aEoJEIHwkLYzCRIV4+9ceG0ZYwGD/HSKEaPjGf7QfzVCqhkKAm
-         ENRQ==
-X-Gm-Message-State: AOJu0YxFIqkr5wRfWQhE+QRZMW8lG35jlNyqRWDVdnha3mdNtcfYkbsU
-	J6osb6rK2Q2wmXMg3ld4aL3OZ3QtAztsbq+iQh34e2M2YVATMLseu44S
-X-Gm-Gg: ASbGnct7kpIJvyrk5e4vA97pR2q/8ldYHMXJ+V7Fe/lwX2sU79OtrFSpkPeZgx2T0ha
-	tsiEFDb2nR2XCsCZWm+ahWvo/AjrIgtHsxzyN/TEoK3JUkvczeZznZtRAPBahmkqpySDF/FyJjr
-	8xLVE6OBiW4MyL/PSQ4ooTRQk+DYNfsOjDWm8jfNFReFQiAv4YSech1R02w+B0qO35oKf0vM2H2
-	fq7A43/37GMpAuZW/dZwkyi85sJKac=
-X-Google-Smtp-Source: AGHT+IG29t2BAa4/LYzFJcqU4gwwSF/r1K4eWlP5YFAipoDHYS55vuBr0SxXYLCsv4uFBCeLOiFgmw==
-X-Received: by 2002:a05:620a:4153:b0:7b1:5070:ca94 with SMTP id af79cd13be357-7b42327fd5bmr931588185a.1.1732200261741;
-        Thu, 21 Nov 2024 06:44:21 -0800 (PST)
-Received: from citadel.lan ([2600:6c4a:4d3f:6d5c::1019])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b479d2dc5bsm218018585a.24.2024.11.21.06.44.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2024 06:44:21 -0800 (PST)
-From: Brian Gerst <brgerst@gmail.com>
-To: stable@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15.y] x86/stackprotector: Work around strict Clang TLS symbol requirements
-Date: Thu, 21 Nov 2024 09:44:14 -0500
-Message-ID: <20241121144414.3607863-1-brgerst@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <2024111737-undead-acutely-d4b1@gregkh>
-References: <2024111737-undead-acutely-d4b1@gregkh>
+	s=arc-20240116; t=1732200588; c=relaxed/simple;
+	bh=HX6kL5Cp7xP9ixBQ+OnEw7ZCJCn5c6NB942vvpiUZnI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gv/inmukaWznuwX5oEq8oLehLD5GGP8/Qq0nHwcf2+EkTbLef48EowZzKxvDJKinoHAWj6IgiVKyfePukuJgg3rnAhGyfR/FaXZumT41/gjslDvXJHfJ2lQASMQ1ufSDUBdOAJEIKPgh4KkeF0cXVRpN47CwlmQVqPhrg7AWZ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F191C12FC;
+	Thu, 21 Nov 2024 06:50:13 -0800 (PST)
+Received: from [10.1.26.55] (010265703453.arm.com [10.1.26.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC0743F5A1;
+	Thu, 21 Nov 2024 06:49:40 -0800 (PST)
+Message-ID: <57477eba-ef6a-454b-85d1-d0244f6116d1@arm.com>
+Date: Thu, 21 Nov 2024 14:49:39 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iommu/arm-smmu: Defer probe of clients after smmu
+ device bound
+To: Pratyush Brahma <quic_pbrahma@quicinc.com>, Will Deacon <will@kernel.org>
+Cc: catalin.marinas@arm.com, kernel-team@android.com, joro@8bytes.org,
+ jgg@ziepe.ca, jsnitsel@redhat.com, robdclark@chromium.org,
+ quic_c_gdjako@quicinc.com, dmitry.baryshkov@linaro.org,
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, quic_charante@quicinc.com,
+ stable@vger.kernel.org, Prakash Gupta <quic_guptap@quicinc.com>
+References: <20241004090428.2035-1-quic_pbrahma@quicinc.com>
+ <173021496151.4097715.14758035881649445798.b4-ty@kernel.org>
+ <0952ca36-c5d9-462a-ab7b-b97154c56919@arm.com>
+ <1d3dcd91-d246-4db3-9717-9edfe405f431@quicinc.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <1d3dcd91-d246-4db3-9717-9edfe405f431@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On 2024-11-19 7:10 pm, Pratyush Brahma wrote:
+> 
+> On 11/7/2024 8:31 PM, Robin Murphy wrote:
+>> On 29/10/2024 4:15 pm, Will Deacon wrote:
+>>> On Fri, 04 Oct 2024 14:34:28 +0530, Pratyush Brahma wrote:
+>>>> Null pointer dereference occurs due to a race between smmu
+>>>> driver probe and client driver probe, when of_dma_configure()
+>>>> for client is called after the iommu_device_register() for smmu driver
+>>>> probe has executed but before the driver_bound() for smmu driver
+>>>> has been called.
+>>>>
+>>>> Following is how the race occurs:
+>>>>
+>>>> [...]
+>>>
+>>> Applied to will (for-joerg/arm-smmu/updates), thanks!
+>>>
+>>> [1/1] iommu/arm-smmu: Defer probe of clients after smmu device bound
+>>>        https://git.kernel.org/will/c/229e6ee43d2a
+>>
+>> I've finally got to the point of proving to myself that this isn't the
+>> right fix, since once we do get __iommu_probe_device() working properly
+>> in the correct order, iommu_device_register() then runs into the same
+>> condition itself. Diff below should make this issue go away - I'll write
+>> up proper patches once I've tested it a little more.
+>>
+>> Thanks,
+>> Robin.
+>>
+>> ----->8-----
+>> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/ 
+>> iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+>> index 737c5b882355..b7dcb1494aa4 100644
+>> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+>> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+>> @@ -3171,8 +3171,8 @@ static struct platform_driver arm_smmu_driver;
+>>  static
+>>  struct arm_smmu_device *arm_smmu_get_by_fwnode(struct fwnode_handle 
+>> *fwnode)
+>>  {
+>> -    struct device *dev = 
+>> driver_find_device_by_fwnode(&arm_smmu_driver.driver,
+>> -                              fwnode);
+>> +    struct device *dev = 
+>> bus_find_device_by_fwnode(&platform_bus_type, fwnode);
+>> +      put_device(dev);
+>>      return dev ? dev_get_drvdata(dev) : NULL;
+>>  }
+>> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/ 
+>> arm/arm-smmu/arm-smmu.c
+>> index 8321962b3714..aba315aa6848 100644
+>> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+>> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+>> @@ -1411,8 +1411,8 @@ static bool arm_smmu_capable(struct device *dev, 
+>> enum iommu_cap cap)
+>>  static
+>>  struct arm_smmu_device *arm_smmu_get_by_fwnode(struct fwnode_handle 
+>> *fwnode)
+>>  {
+>> -    struct device *dev = 
+>> driver_find_device_by_fwnode(&arm_smmu_driver.driver,
+>> -                              fwnode);
+>> +    struct device *dev = 
+>> bus_find_device_by_fwnode(&platform_bus_type, fwnode);
+> I think it would still follow this path:
+> 
+> bus_find_device_by_fwnode() -> bus_find_device() -> next_device()
+> 
+> next_device() would always return null until the driver is bound to the 
+> device which
 
-GCC and Clang both implement stack protector support based on Thread Local
-Storage (TLS) variables, and this is used in the kernel to implement per-task
-stack cookies, by copying a task's stack cookie into a per-CPU variable every
-time it is scheduled in.
+No, this is traversing the bus list, *not* the driver list, that's the 
+whole point. The SMMU device must exist on the platform bus before the 
+driver can bind, since the bus is responsible for matching the driver in 
+the first place.
 
-Both now also implement -mstack-protector-guard-symbol=, which permits the TLS
-variable to be specified directly. This is useful because it will allow to
-move away from using a fixed offset of 40 bytes into the per-CPU area on
-x86_64, which requires a lot of special handling in the per-CPU code and the
-runtime relocation code.
+> happens much later in really_probe() after the iommu_device_register() 
+> would be called
+> even as per this patch. That way the race would still occur, wouldn't it?
+> Can you please help me understand what I may be missing here?
+> Are you saying that these additional patches are required along with the 
+> fix I've
+> posted?
 
-However, while GCC is rather lax in its implementation of this command line
-option, Clang actually requires that the provided symbol name refers to a TLS
-variable (i.e., one declared with __thread), although it also permits the
-variable to be undeclared entirely, in which case it will use an implicit
-declaration of the right type.
+I'm saying my change makes there be no race, i.e. the "if (!smmu)" case 
+can never be true, and so no longer needs working around.
 
-The upshot of this is that Clang will emit the correct references to the stack
-cookie variable in most cases, e.g.,
+Thanks,
+Robin.
 
-  10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
-                     10f: R_386_32   __stack_chk_guard
-
-However, if a non-TLS definition of the symbol in question is visible in the
-same compilation unit (which amounts to the whole of vmlinux if LTO is
-enabled), it will drop the per-CPU prefix and emit a load from a bogus
-address.
-
-Work around this by using a symbol name that never occurs in C code, and emit
-it as an alias in the linker script.
-
-Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1854
-Link: https://lore.kernel.org/r/20241105155801.1779119-2-brgerst@gmail.com
-(cherry picked from commit 577c134d311b9b94598d7a0c86be1f431f823003)
----
- arch/x86/Makefile                     |  3 ++-
- arch/x86/entry/entry.S                | 15 +++++++++++++++
- arch/x86/include/asm/asm-prototypes.h |  3 +++
- arch/x86/kernel/cpu/common.c          |  2 ++
- arch/x86/kernel/vmlinux.lds.S         |  3 +++
- 5 files changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 9c09bbd390ce..f8a7d2a65434 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -81,7 +81,8 @@ ifeq ($(CONFIG_X86_32),y)
- 
- 	ifeq ($(CONFIG_STACKPROTECTOR),y)
- 		ifeq ($(CONFIG_SMP),y)
--			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
-+			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
-+					 -mstack-protector-guard-symbol=__ref_stack_chk_guard
- 		else
- 			KBUILD_CFLAGS += -mstack-protector-guard=global
- 		endif
-diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
-index f4419afc7147..23f9efbe9d70 100644
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -48,3 +48,18 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
- 
- .popsection
- 
-+#ifndef CONFIG_X86_64
-+/*
-+ * Clang's implementation of TLS stack cookies requires the variable in
-+ * question to be a TLS variable. If the variable happens to be defined as an
-+ * ordinary variable with external linkage in the same compilation unit (which
-+ * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
-+ * segment register prefix from the references, resulting in broken code. Work
-+ * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
-+ * entirely in the C code, and use an alias emitted by the linker script
-+ * instead.
-+ */
-+#ifdef CONFIG_STACKPROTECTOR
-+EXPORT_SYMBOL(__ref_stack_chk_guard);
-+#endif
-+#endif
-diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-index 5cdccea45554..390b13db24b8 100644
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -18,3 +18,6 @@
- extern void cmpxchg8b_emu(void);
- #endif
- 
-+#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
-+extern unsigned long __ref_stack_chk_guard;
-+#endif
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f0cc4c616ceb..5db433cfaaa7 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2000,8 +2000,10 @@ EXPORT_PER_CPU_SYMBOL(cpu_current_top_of_stack);
- 
- #ifdef CONFIG_STACKPROTECTOR
- DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
-+#ifndef CONFIG_SMP
- EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- #endif
-+#endif
- 
- #endif	/* CONFIG_X86_64 */
- 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 351c604de263..ab36dacb4cc5 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -490,6 +490,9 @@ SECTIONS
- 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
- }
- 
-+/* needed for Clang - see arch/x86/entry/entry.S */
-+PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
-+
- /*
-  * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
-  */
-
-base-commit: 0a51d2d4527b43c5e467ffa6897deefeaf499358
--- 
-2.47.0
+>> +
+>>      put_device(dev);
+>>      return dev ? dev_get_drvdata(dev) : NULL;
+>>  }
+>> @@ -2232,21 +2232,6 @@ static int arm_smmu_device_probe(struct 
+>> platform_device *pdev)
+>>                      i, irq);
+>>      }
+>>
+>> -    err = iommu_device_sysfs_add(&smmu->iommu, smmu->dev, NULL,
+>> -                     "smmu.%pa", &smmu->ioaddr);
+>> -    if (err) {
+>> -        dev_err(dev, "Failed to register iommu in sysfs\n");
+>> -        return err;
+>> -    }
+>> -
+>> -    err = iommu_device_register(&smmu->iommu, &arm_smmu_ops,
+>> -                    using_legacy_binding ? NULL : dev);
+>> -    if (err) {
+>> -        dev_err(dev, "Failed to register iommu\n");
+>> -        iommu_device_sysfs_remove(&smmu->iommu);
+>> -        return err;
+>> -    }
+>> -
+>>      platform_set_drvdata(pdev, smmu);
+>>
+>>      /* Check for RMRs and install bypass SMRs if any */
+>> @@ -2255,6 +2240,18 @@ static int arm_smmu_device_probe(struct 
+>> platform_device *pdev)
+>>      arm_smmu_device_reset(smmu);
+>>      arm_smmu_test_smr_masks(smmu);
+>>
+>> +    err = iommu_device_sysfs_add(&smmu->iommu, smmu->dev, NULL,
+>> +                     "smmu.%pa", &smmu->ioaddr);
+>> +    if (err)
+>> +        return dev_err_probe(dev, err, "Failed to register iommu in 
+>> sysfs\n");
+>> +
+>> +    err = iommu_device_register(&smmu->iommu, &arm_smmu_ops,
+>> +                    using_legacy_binding ? NULL : dev);
+>> +    if (err) {
+>> +        iommu_device_sysfs_remove(&smmu->iommu);
+>> +        return dev_err_probe(dev, err, "Failed to register iommu\n");
+>> +    }
+>> +
+>>      /*
+>>       * We want to avoid touching dev->power.lock in fastpaths unless
+>>       * it's really going to do something useful - pm_runtime_enabled()
+> 
 
 
