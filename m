@@ -1,136 +1,148 @@
-Return-Path: <stable+bounces-94523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A26A9D4E4C
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED169D4E6D
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3364B2832F8
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:09:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FE9B283DBE
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC741D90BC;
-	Thu, 21 Nov 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7DF1D9A54;
+	Thu, 21 Nov 2024 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="cW2UUk8U"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="EKm1ZzKW"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61441CD3F;
-	Thu, 21 Nov 2024 14:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18F21D932F
+	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 14:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732198147; cv=none; b=qknsUFj6u25qogOjbcIcDzoqioh1Pt3y1hRM0CQNH7cMCFnQXgokY5dEzAdn4vhQDDp71TLIcMPC0edI3kcaKynxFionMLzw8uHMq0iRGYY9l9Eh7i9pBU8tPaoiJYIRVhbAvBedSlbZ0vA6+UdLjitZRll00A/Gwy8UmPBjVJk=
+	t=1732198503; cv=none; b=lTLBSBTXz4+Q9PeRHkJijpZFDWrFxrKc4NIRHlfCcMiNj1Q4eH9/eC/SJ7lGhvl4de0rLLAOnjdidHM5iMhhX9aPUa7g7QyEeVM62ub5/xd7+h5Hxpsjr/N2UKiUQe7Y9vo+ds2kPrjnFuQ1SilyFVL9S1ezy90Tu/V5fXgQV6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732198147; c=relaxed/simple;
-	bh=g1rwzESXivDkv7cCFGj4dT0bWSWh+LNVXIJ81A9nmcU=;
+	s=arc-20240116; t=1732198503; c=relaxed/simple;
+	bh=erThW1OGyGmnngei9Q/m2VLvSn8gzUyk3dmtRCfhvtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PPtkK9zOVpQi4arqKx/Ed2A7gUkxkvRGnCSS2kbFFb+lI5vll/LNKvtonut+QTdiaMnpMf9zDL1mfjVtxNrMNhbhKbRlV0lqedwQdzRqCavVF/qbH2oDuxS2YkXDnzxUCguwLtpt+ezZmcL+zjttyvIqHGICyuBzP/ecwL8H/m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=cW2UUk8U; arc=none smtp.client-ip=212.227.126.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1732198091; x=1732802891; i=christian@heusel.eu;
-	bh=uBEcrrM2FNBINt3gRIVBxDSXWMqMDQ3vGFG2CCfV/DY=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cW2UUk8U9HJn2imUhgUr0yBmTUxAE6gpjyEZg1c4pHFUpqhgBvVf/+eseIGUP8Ef
-	 CY3gHAi7RoqXe2gP/E9BsEW5yO4OleJvp+OnuxSKDuyGRUlsfonrgJz0QYHO58HxU
-	 mv+348ZoIoyxidCQYkGJjpp4SFu+goCnHlYZZKF6BfH//hNZuLZuRzHZVNzyLL6+U
-	 +F+bjVfc+JZZBzopqM4ikmvSToBHUp8BTCxZakcAda7KYCaDyDYxE/vRYacWZ6POC
-	 URjRqIvthVMX7Ms4k31c1PBILw9kza3PZlWzA2ceWCVq7H2RNUmFUY7zF9peQ4aGr
-	 KnurUZtEIJp+K5GgZQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue012
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MNfgZ-1tOLFA0JP1-00Sjye; Thu, 21
- Nov 2024 15:08:11 +0100
-Date: Thu, 21 Nov 2024 15:08:08 +0100
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 0/3] 6.12.1-rc1 review
-Message-ID: <cd96588e-ee42-48cd-bb68-b7e7fd7c6f15@heusel.eu>
-References: <20241120124100.444648273@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cB8TMXmF3jQS/f1TerqIAYFOrDmwqaQGMmpEozGN/8ujFWpV660y8eYUhdUHhmGQqn5oNy+tiiIdPzeKH55nBgHoAERGGAI82qq+zg7yNwYYn0ZgJifNd8DoSb8xMynF8X/9eJo4kS4upatXp6Kvr+Z8gStWjG5pbR+pSWFAthA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=EKm1ZzKW; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b1418058bbso53644585a.3
+        for <stable@vger.kernel.org>; Thu, 21 Nov 2024 06:15:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1732198501; x=1732803301; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjKzNa4Wt9P5AMmEq40asXaTN0r0As03Gh+lkx3j2Nw=;
+        b=EKm1ZzKWcDi/VSb7ugbGEdvQpFEl22YQsXxQXBvIpIAHH/aRc70X+i4VqA+g+f/vDa
+         /9LXFyizda20XZZVMVxxLFEP0iTpLO2PUQRN3fMGytBDE2Q3Uh+JG+IaMUBkEhHmFslO
+         +9Y7wrXCzxFCKZ7wR3ACunlTjQQge4afQq1/MkDruobiUzzFo3azW1LoUkpRNq4alI/Y
+         I2kVqqEbgL2+Plt3c4HSPAsNUfrs/jsR6hULl7lzMFPuZ4kO3M0sg+Dl/6Nx8ULsKPfv
+         A60QMeZWtINfW5EGhpfAUL6QLeacJw8cbXupto1nVBm+GRA7FeSEDBEG3bTR0TOtVliB
+         AYPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732198501; x=1732803301;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PjKzNa4Wt9P5AMmEq40asXaTN0r0As03Gh+lkx3j2Nw=;
+        b=iri/EOOyZZpD67VVWHjN8VKD3mTIxMZqnV10oygGHJhtNNGUTCgjFvIDougGkb+8Sk
+         fO5JVKt9yoqJpSfeQhLX9r++AtIK1itUlIlJ/LapDTrQiQUq47d9rmggGMO2jIOhexH5
+         o71NORwrl6J1Fx5rIa9YURP9t3yJaTdNJdjmn8uFlth/mMCTwRw2nZ10FlQ2xGhhkt3b
+         CyN3XfL7VEZpreLywWSNufJaDG2q+1GrhzJh+WbMJLJqCDmSMCxwv/UEMx4fTdiKsLSy
+         jmnbaAAOS6JOfF5vNJKu1bZL0+PW414jYQfbBcYy8FVTxzkpjM93ULVak+YPnH2lAmLk
+         kdHA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+O5pgX/ufYioUNmqg45HLlYTzyMlp3suA6igwsELFMqgUPBE6inEIfbHI7gUOkPBHBif78DE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYGlvT4vutUn6u0zBZwb2OKbj3/pmxQ8tvnhB8GyYDGQ+V3kxQ
+	Lbbc0KbDDNJRjzRxZSDdsApsQi+LerQuQGY1kgo22TOn2JIRZFEMehBQO6Dhkw==
+X-Gm-Gg: ASbGncsmciCx+jfqBrG9X2ZRHjx6MPzjoAkD4ctZVAo7GQDbBneSwTf+D33kAboriaE
+	3Pg9HzVSJXutvEhl7aTfRFUgBTHIG4SeITtf6xB/2vFW4gEr6bJJbqnwczv8KL4Ta/eHdrHgDQl
+	d6EUjqTRNtzLVRHZlaI46K6M0l91xSlX2Vyft+eo2CbdOauPK4ns0QGQahMxG7VzpA03kOgz0CJ
+	G6ow1o7WcX2iOgYhrLfjhbBYOhBEbhXQ1bvnGJE5fZ9Jxjzows=
+X-Google-Smtp-Source: AGHT+IEjivB/S41tjWIV/c8AS6tlp/Mnmwua/auantw80dON5nrXFhojr6Y6q+wWhOW2Zgz/hnhLlA==
+X-Received: by 2002:a05:620a:44d5:b0:7b1:7da1:e733 with SMTP id af79cd13be357-7b42edbd036mr1042684585a.30.1732198500717;
+        Thu, 21 Nov 2024 06:15:00 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::24f4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b48524101dsm213697485a.100.2024.11.21.06.14.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2024 06:15:00 -0800 (PST)
+Date: Thu, 21 Nov 2024 09:14:56 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Vitalii Mordan <mordan@ispras.ru>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-sh@vger.kernel.org, Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Vadim Mutilin <mutilin@ispras.ru>, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: ehci-hcd: fix call balance of clocks handling
+ routines
+Message-ID: <23e85b98-92bc-46a5-a36f-fd5d7cfa944d@rowland.harvard.edu>
+References: <20241121114700.2100520-1-mordan@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="lkaeemx33m2gftfe"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241120124100.444648273@linuxfoundation.org>
-X-Provags-ID: V03:K1:yLQo9LvKV8jI/sXtRg454Qe92i8uZWbeEabu45DSTb5T5MvjSKz
- 6VvRn5iTNvgWPu2gnVcEpWAIcJAOa0CI4g2jV/hhRsWsfIeMYnXdU1tahXO27kZEUFN6/lI
- gj1+E8YsM1y8MgXjRwrR5Jj/rredmZtssergOIOYdUFIoAMKNupYQi3EvSAQz70GPWc/Auo
- uOLLWo8tDqHjjetUZdnRQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3IoPf8XdMdU=;XsN1V10/ovgE16+Dd48m4KwyykI
- hrW9ZwzOGCVlCxDKltk/8tIlaMS8p5hBwXweiI6XIr9644IWovyBPy7vtOwJMWtFTo/CK1xV2
- y4jhQ5cw5KTAOu5bkac6KdzGVM861lrIcnKbWzhMJ3XAo3ZNbK4k5xEEQ1VnuJyMQa/9WWnUS
- AXMAKnToKxe6vZ/PJf4tY7eLLycOGEVJ/TNxPj1tnWmHZBZgy9VuO7D2wcmSq1fwazOD8Hepw
- UQ9WAr8keNCqttJNlVpoLXSJOcWe/TbdljBeMV/pj/Uun+4jLB2BMknjkNHmymUhV8PbaT6j1
- s24xa7oudcs85JT/h9zaVIqj5wxXt64FCXmh7RQ1GSZtk8d4Gqf150MsHBaHdTQV7mMPIjovG
- aVtnBdSkD1csmT4EaWkIHQ2FEFpsKzCw45kTJyhUNNvyJYiiCA3O+uH2pdniRYlmu5j1F5Ws1
- 930j8Zz4/iMy7IVSVCyiaNANtbI1Dw65Ff3asMPbG8KgjZazsqxxcy9DKBTXamL0IE0bWBc0W
- cmnqlNMWqSsfL8Dk/ADvGzWb/u9cVA3uXaENHFrGP+kRPMsZCC/fn+UiG0N743Kj55v1XnypL
- PUlSprk+wxpYYcfCYYp0WuA2pPXHMQRF1628M6Nt8M3tXiV5z/EfEDdj6TZh6sMnpuHY53MB5
- z0J0dSTtkxI47bOm1FVTGvWq12LcL49U++HmsXcXjYpz1ijJaqqoMNBBBPEI3aw4eyfTQazJv
- pxLwGJMhUF8Q99a4hEaULzppOjAJ9HL7HFpGAHoM11TxBJzxl10QnqhIjUv+UHt8l7Ve+LvgV
- n2Hb8Rj9g4wjGUFrYWwlIIsy9IZXjNCfB3CkV/55pCMowjTk4D4uoPKmpr3yNe74Uu
+In-Reply-To: <20241121114700.2100520-1-mordan@ispras.ru>
 
+On Thu, Nov 21, 2024 at 02:47:00PM +0300, Vitalii Mordan wrote:
+> If the clocks priv->iclk and priv->fclk were not enabled in ehci_hcd_sh_probe,
+> they should not be disabled in any path.
+> 
+> Conversely, if they was enabled in ehci_hcd_sh_probe, they must be disabled
+> in all error paths to ensure proper cleanup.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Klever.
+> 
+> Fixes: 63c845522263 ("usb: ehci-hcd: Add support for SuperH EHCI.")
+> Cc: stable@vger.kernel.org # ff30bd6a6618: sh: clk: Fix clk_enable() to return 0 on NULL clk
+> Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+> ---
 
---lkaeemx33m2gftfe
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.12 0/3] 6.12.1-rc1 review
-MIME-Version: 1.0
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
-On 24/11/20 01:55PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.1 release.
-> There are 3 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Fri, 22 Nov 2024 12:40:53 +0000.
-> Anything received after that time might be too late.
->=20
-
-Tested-by: Christian Heusel <christian@heusel.eu>
-
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant)=20
-
---lkaeemx33m2gftfe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmc/PsgACgkQwEfU8yi1
-JYULOQ/+KI8jCz3zHVYYj6ee5T9ZA6+PsHLu/iWqtlLg6PX9jt+dbfPyicLmoGT/
-lBtve513WsnGwbecXpCjBqjXfWSfH2EqLfsKaL86RWcJmhPzkHw1CG/PEyI046px
-HFrEMFgn7o1+GWie+vyWlFvlv/M1ODCxAgww8Wq765AqALdJcfF+HyZueqQ6777e
-MjztluqEoeczT8yVQkfv16xWOaQUl7UzJZhMmozx0KXGuONRo2cpvPwOKcWLd82y
-7CdHDpZ/nVfV5mNwzzHDlK80Bp5F7J13WFxd8p3RB9bT0cRM6t6ju+1S9Rh8X74R
-ZloktyMnYivcRZhDsmZiUNm5OuL+MIx/AskP08ZolapPiqhAfGEKz4Gaw6uT/s/n
-rQOF0tOlv/ZodrXydFRJeEoi8jqy6B0I2PUO7NDeYrBWBT42PKo2lbtYgw3Wz7XT
-m2j7hkRJIli4Ay0/V+q6cTXIydGUxngroHfOf2SLkCWlCXOzPNl/z2oYn5UYT3Zq
-DZnAQz7f4WNAIk1D8JUU+UVRMnEDPDE2RRQoscH5X+ePoiutKdj7Ajx9PvljQ1lL
-Kcj91vuggu1jpuO9HpasoiDN79Q427T0pd+3qFTfwW8ofm4BUVvOVvtzNU08sUDB
-b3DuY4fZdBJqjNDYqEHeEWvGQwhXpcp0XwdmVKROxc3qNho1llk=
-=sBNF
------END PGP SIGNATURE-----
-
---lkaeemx33m2gftfe--
+>  drivers/usb/host/ehci-sh.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/host/ehci-sh.c b/drivers/usb/host/ehci-sh.c
+> index d31d9506e41a..77460aac6dbd 100644
+> --- a/drivers/usb/host/ehci-sh.c
+> +++ b/drivers/usb/host/ehci-sh.c
+> @@ -119,8 +119,12 @@ static int ehci_hcd_sh_probe(struct platform_device *pdev)
+>  	if (IS_ERR(priv->iclk))
+>  		priv->iclk = NULL;
+>  
+> -	clk_enable(priv->fclk);
+> -	clk_enable(priv->iclk);
+> +	ret = clk_enable(priv->fclk);
+> +	if (ret)
+> +		goto fail_request_resource;
+> +	ret = clk_enable(priv->iclk);
+> +	if (ret)
+> +		goto fail_iclk;
+>  
+>  	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
+>  	if (ret != 0) {
+> @@ -136,6 +140,7 @@ static int ehci_hcd_sh_probe(struct platform_device *pdev)
+>  
+>  fail_add_hcd:
+>  	clk_disable(priv->iclk);
+> +fail_iclk:
+>  	clk_disable(priv->fclk);
+>  
+>  fail_request_resource:
+> -- 
+> 2.25.1
+> 
 
