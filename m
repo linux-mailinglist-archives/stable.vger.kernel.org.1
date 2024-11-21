@@ -1,197 +1,92 @@
-Return-Path: <stable+bounces-94557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B5E9D55D8
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 23:53:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC1E9D5613
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 00:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C49661F21FFB
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 22:53:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1052B241A3
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 23:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C901DDC1F;
-	Thu, 21 Nov 2024 22:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E061DE2DE;
+	Thu, 21 Nov 2024 23:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vQawWu5Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWvmZpuK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22E023098E
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 22:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF981DE2BE;
+	Thu, 21 Nov 2024 23:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732229630; cv=none; b=n/ycjPHqcWkKUAATfk8ez3GF0aSVTa/VuXedrSyHUxEfFWSz/iKlUVOqLoliAPKvEbUpAaq1+ShPwTmdqCHA6ArVTQ+RcLoodpUJjIyR/SO7OO269BHbPOQozwiwTMxeTch9lSvENW4FCX0qIPC0WzD1rysOX/YV8e1R4raZOvU=
+	t=1732230683; cv=none; b=jI01EqOKeTRCHL9IJbaZ44XSz/1S2gC4R/esE5mO5LcAbV2okiTS94JVxD2QjjSttN5S8AtkboFo2BHGGIwCQcRpqOh/SVyVCZTVl8FDqq1nCtAED2CbDURClvRWEujgo9Uly1Mzm1ePu0gwtKB+2HlmQ6oUt3h0C07Wzi7jRJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732229630; c=relaxed/simple;
-	bh=zS+XS8ogUVZ6A8yFN6IeLpIsHgWd7UUfIiqVVoPp4wo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b3RzYz27DujCtvb67mt8EumR8nRuGFlxk8d8kI+a7dAm1wostqTtrH8Y8OoDwQwqRHQ70e8ggWD7YQ+OrQLka3QyPLKSQt5OJzWA2lcmmcINQvRJQ5mevgyxn2hrqZJITX6NDbiaU46B0+/4U/pvhV1TG510DkLr6X6LOc/RaKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vQawWu5Q; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53c779ef19cso1686327e87.3
-        for <stable@vger.kernel.org>; Thu, 21 Nov 2024 14:53:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732229627; x=1732834427; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NAGNZNP1x0dn4FJ/bV16PujKmWclfcTAJHMzWwhkGUg=;
-        b=vQawWu5Q2NfMddBk5qgkTUl6C0vC12XI274J4n6VR+wrmsiOuvdLn8BvcFZ6QpIVXG
-         UWZh6d+1akdN66XsUmOqKDeukK3LNR05UXM2aaEK6pYNpq3aTMcAhG2wpVl0HygEEaST
-         GX98CrCwc9Z6fs78dyzyV5EUCPl0JlCexrFmskKXb3vxRoUoUX4MbHLRN2XqQpOEGj8X
-         YB3OhfhSgF/Emw1QIoml+RJAYSuQr0YQFbXRH0yXgLjTldA0cwSGfX4ZxJif6lea2tZq
-         SxNsU4Va6J3qsZViN2FXst7Cs3IbLtmRTzY3/dkodk2/zEUYO3KqBZnu1D34qTRv8urL
-         9eHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732229627; x=1732834427;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAGNZNP1x0dn4FJ/bV16PujKmWclfcTAJHMzWwhkGUg=;
-        b=utN7JABw+fNhRmuiV6ZlOx2NnlpT2lnXzWXTNJAhn20TMDp2cWeULVLZj/waT7369+
-         Nq6b4xmX+WDgAUAbLpEwtQ7hMecZ4e5hzPVgXNWLVYgpClJPbSVf8iRbB8sWG7+z+Q7v
-         fHZ4Z6kJgBO0loq73ubzQkbmFK54Fu11fty26/l2LvAKWbdJSUOJgQgp411BHEMrtTI2
-         JKXl+v92QcOrZjJtxlMFc33d2/iWcs73UbcnY3xl3dMstCmylY/km/O5VBkgRkaIlbBA
-         gXWdajBLKtCd2HdjUtLiUreCh1V9KhK7AGDJH3OWJE/knkINJ/KlMwt1BI2JUbK7G0o2
-         TzZw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1zxzlGIFuSR6ijxetewzYXMc8KCHKvfY5hOEf9su5VTyhDdpXLuh4Q/ztSHmqcQG3OMN3Sss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwI50PnAj9Y3L0W36vcBqus8L3/X3yBsu3nqmzVYh0pIxuHtxAZ
-	mp1n1pgWkgWSarGZxf0bVVHegqErYR8VLVvnx00nyqqhZlLv6bbadBpt616HqzQ=
-X-Gm-Gg: ASbGncsM6CXagENATgnZHZbhx9fkmaf7iJG1Mu4PBmVMQ+2kjl6zG6qmXllDeeo//Bl
-	dmOnM1lk4B793Q4KH48A6CXP+PZiFXaCT1wgh08zMX0z6eXkCdnZDMf11DA1WuRRpFlP4E4nwjC
-	/o8V/MWdf+qwvHxxuVnI6ldnnZjpP+nBVoVrlCuat/6lKIlCx2esYYr8sDHFOgU71cPi0NNBDW2
-	KM4mQbRj/duVTs98J5ZPmxNc7tx9Ek3YST0nyEM06LO95k8O/FD4c06eHSc9SswcLOC18mQhm69
-	ZbVbXs2qkdFPaviF755oWPLij9DbPw==
-X-Google-Smtp-Source: AGHT+IEQHrSbbNkvcznYbVoG3t7wpxI2u6VB/SpC0Aklv7XdGqUhhOod5Es1rnlg867zgwKNCABXgg==
-X-Received: by 2002:a05:6512:6d6:b0:53d:cbab:8afa with SMTP id 2adb3069b0e04-53dd33682c5mr293735e87.0.1732229627027;
-        Thu, 21 Nov 2024 14:53:47 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd2497df2sm102486e87.245.2024.11.21.14.53.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2024 14:53:45 -0800 (PST)
-Date: Fri, 22 Nov 2024 00:53:44 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: =?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abhishek Pandit-Subedi <abhishekpandit@chromium.org>, 
-	Benson Leung <bleung@chromium.org>, Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: ucsi: Fix completion notifications
-Message-ID: <yphjztfvehbqd4xbdo7wtdfd4d3ziibq6hytuuxnoypdpsr462@zwl2cfj6f5kw>
-References: <20241104154252.1463188-1-ukaszb@chromium.org>
- <5iacpnq5akk3gk7kdg5wkbaohbtwtuc6cl7xyubsh2apkteye3@2ztqtkpoauyg>
- <CALwA+Nb31ukU2Ox782Mq+ucBvEqm9_SioSAE23ifhX7DsHayhA@mail.gmail.com>
+	s=arc-20240116; t=1732230683; c=relaxed/simple;
+	bh=G9Bz8tOnOEohCsDxnfCcjtd93YjrNlQ6mHDYYxDioIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rPWG10BT1fGYLJ0+UcI0sptv8HMWUqVPGxo1idBZRaJllTix/PBfaBltbsZPTvVM5cmFAIcJk2NHKO19Xo5dJBYtF3Wqh7lTG3UzA4xX5DwW50nxuIc3XZ2k2UaAtpiCL/KSIKu9zQT6GED0arIqAjsTXggKJGf/7ikS2Kb+BGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWvmZpuK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C6C4CECC;
+	Thu, 21 Nov 2024 23:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732230683;
+	bh=G9Bz8tOnOEohCsDxnfCcjtd93YjrNlQ6mHDYYxDioIY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LWvmZpuKjIy/alM8rlYfbbiCPG2LVbb41ol0kgj8f0bSGzXD5QBmOu8dTRA+SbR6x
+	 bvqVp3mRUmzLQffaD+kB+WXqRYmKApYVlscjDJy7ennAdTwpydosnHgOynQtVs4run
+	 mpLest+mnFeZ9m8bbtSdrETQWqg9S2lZeTapFswsMvJiLTgQM/pkIh36r7/j5Z8Omm
+	 aXj3/ibNoaJiPKvHAH0NrrTAIDRywFlz97MxpbV4DroQtn+SP1gJnPTQMQqesFwwEK
+	 crkoaAvxn6d1FCPX9FXTLBKhoAue91XzGpbFF+ZwWk/JYzrn4QUErl+NqQDare7UJF
+	 l3iFyp/BJuuRg==
+From: Jiri Olsa <jolsa@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH] fs/proc/kcore.c: Clear ret value in read_kcore_iter after successful iov_iter_zero
+Date: Fri, 22 Nov 2024 00:11:18 +0100
+Message-ID: <20241121231118.3212000-1-jolsa@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALwA+Nb31ukU2Ox782Mq+ucBvEqm9_SioSAE23ifhX7DsHayhA@mail.gmail.com>
 
-On Wed, Nov 20, 2024 at 03:56:41PM +0100, Łukasz Bartosik wrote:
-> On Mon, Nov 18, 2024 at 6:58 PM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
-> >
-> > On Mon, Nov 04, 2024 at 03:42:52PM +0000, Łukasz Bartosik wrote:
-> > > OPM                         PPM                         LPM
-> > >  |        1.send cmd         |                           |
-> > >  |-------------------------->|                           |
-> > >  |                           |--                         |
-> > >  |                           |  | 2.set busy bit in CCI  |
-> > >  |                           |<-                         |
-> > >  |      3.notify the OPM     |                           |
-> > >  |<--------------------------|                           |
-> > >  |                           | 4.send cmd to be executed |
-> > >  |                           |-------------------------->|
-> > >  |                           |                           |
-> > >  |                           |      5.cmd completed      |
-> > >  |                           |<--------------------------|
-> > >  |                           |                           |
-> > >  |                           |--                         |
-> > >  |                           |  | 6.set cmd completed    |
-> > >  |                           |<-       bit in CCI        |
-> > >  |                           |                           |
-> > >  |   7.handle notification   |                           |
-> > >  |   from point 3, read CCI  |                           |
-> > >  |<--------------------------|                           |
-> > >  |                           |                           |
-> > >  |     8.notify the OPM      |                           |
-> > >  |<--------------------------|                           |
-> > >  |                           |                           |
-> > >
-> > > When the PPM receives command from the OPM (p.1) it sets the busy bit
-> > > in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
-> > > command to be executed by the LPM (p.4). When the PPM receives command
-> > > completion from the LPM (p.5) it sets command completion bit in the CCI
-> > > (p.6) and sends notification to the OPM (p.8). If command execution by
-> > > the LPM is fast enough then when the OPM starts handling the notification
-> > > from p.3 in p.7 and reads the CCI value it will see command completion bit
-> > > and will call complete(). Then complete() might be called again when the
-> > > OPM handles notification from p.8.
-> >
-> > I think the change is fine, but I'd like to understand, what code path
-> > causes the first read from the OPM side before the notification from
-> > the PPM?
-> >
-> 
-> The read from the OPM in p.7 is a result of notification in p.3 but I agree
-> it is misleading since you pointed it out. I will reorder p.7 and p.8.
+If iov_iter_zero succeeds after failed copy_from_kernel_nofault,
+we need to reset the ret value to zero otherwise it will be returned
+as final return value of read_kcore_iter.
 
-Ack, thanks for the explanation. Do you think that it also might be
-beneficial to call reinit_completion() when sending the command? I think
-we discussed this change few months ago on the ML, but I failed to send
-the patch...
+This fixes objdump -d dump over /proc/kcore for me.
 
-> 
-> Thanks,
-> Lukasz
-> 
-> > >
-> > > This fix replaces test_bit() with test_and_clear_bit()
-> > > in ucsi_notify_common() in order to call complete() only
-> > > once per request.
-> > >
-> > > Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command handling")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-> > > ---
-> > >  drivers/usb/typec/ucsi/ucsi.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> > > index e0f3925e401b..7a9b987ea80c 100644
-> > > --- a/drivers/usb/typec/ucsi/ucsi.c
-> > > +++ b/drivers/usb/typec/ucsi/ucsi.c
-> > > @@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
-> > >               ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
-> > >
-> > >       if (cci & UCSI_CCI_ACK_COMPLETE &&
-> > > -         test_bit(ACK_PENDING, &ucsi->flags))
-> > > +         test_and_clear_bit(ACK_PENDING, &ucsi->flags))
-> > >               complete(&ucsi->complete);
-> > >
-> > >       if (cci & UCSI_CCI_COMMAND_COMPLETE &&
-> > > -         test_bit(COMMAND_PENDING, &ucsi->flags))
-> > > +         test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
-> > >               complete(&ucsi->complete);
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(ucsi_notify_common);
-> > > --
-> > > 2.47.0.199.ga7371fff76-goog
-> > >
-> >
-> > --
-> > With best wishes
-> > Dmitry
+Cc: stable@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+---
+ fs/proc/kcore.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 51446c59388f..c82c408e573e 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -600,6 +600,7 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 					ret = -EFAULT;
+ 					goto out;
+ 				}
++				ret = 0;
+ 			/*
+ 			 * We know the bounce buffer is safe to copy from, so
+ 			 * use _copy_to_iter() directly.
 -- 
-With best wishes
-Dmitry
+2.47.0
+
 
