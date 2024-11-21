@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710079D50CF
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 17:43:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BD59D50D0
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 17:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 239B51F22769
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 16:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841E51F22D34
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 16:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C5F197A87;
-	Thu, 21 Nov 2024 16:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC8719E7D1;
+	Thu, 21 Nov 2024 16:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xp+1nvA6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+IFGHk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66A741C79
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D408941C79
+	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 16:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732207392; cv=none; b=O6ZW7THsUw2T2X+MH4NAilhuIu7v6sK9qmw3IC09+gVJ1zOPNPjjySBH7sHkXwxZx2YgTUXFK7z0tPKJPdzLLhjGEyffhqk5GWllLEbQyYaKC9/NVafKtGrbMrvhTnMcB/Pvh58YbqtUSDiZvYjfIXRoh6BJACkIG6PtvYDY+RA=
+	t=1732207393; cv=none; b=PRybEjxUCmOvu5raYsSFloHwzmRkBZGNotp7rweHf5zZXyygIwoJ8OXvHAzwGQPGL9G+KBkgTs17dEDWWyG0Lr4ocdODOUX0EFj33Rvwd16Gq3g6j0PUzyyxmmb0CXfuOPXN1TTok2KkUVJGJWoJutap/xoE7XttvIphfuQjSvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732207392; c=relaxed/simple;
-	bh=pMGYrXbB2zEJ+LsGMfci6caqXOTSuZlr0+xOJyn60fY=;
+	s=arc-20240116; t=1732207393; c=relaxed/simple;
+	bh=XC5VLIsfdmnu2hWB4GsrRt1MjGSNUIQGNauc6J9Xf/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc8EN7epZN1KlIAk7iuUmF/Xw8v83ZewnkZuBMNHkYkkDbjwilmqGVJQ6Wrqan8hVyiOmf847zUQkXL4cVPnIfcGwnOcnUNzj3jY5UkTT73M7YbLGauezzitebfQFimeIbyxeuchO3NGSKMTt7wvUB9n3hPl1EkLXt+sBA+GaR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xp+1nvA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C81C4CECC;
-	Thu, 21 Nov 2024 16:43:10 +0000 (UTC)
+	 MIME-Version; b=IlJn0oyVdJSm0RHMS90A6y4YyslxmBBtND5R2kwEPRUYRweEyDN2iwzlajGBMP38iAAHVFsO2viPC4g7n4JKnORSHOUiebAXlYicBkIzRGP8ec66LRNv5jwXshjCXAihrM8/cSVgdjRjmHukriQgRvDT54sx8kv+5fkYRWYqnfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+IFGHk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27012C4CECC;
+	Thu, 21 Nov 2024 16:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732207391;
-	bh=pMGYrXbB2zEJ+LsGMfci6caqXOTSuZlr0+xOJyn60fY=;
+	s=k20201202; t=1732207393;
+	bh=XC5VLIsfdmnu2hWB4GsrRt1MjGSNUIQGNauc6J9Xf/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xp+1nvA68rNW9KgaXdSO/UA0zWECBM7wvh1X3TnPV0UyH+DnIJXt/mSATssthPqro
-	 OU4vwPVPTYGTbKChqhUJ5PGrQrmPuYDh1HuPJC4zaROhFDdExPrqTmqE5Up4f2q3ET
-	 XP4h9MvY9EW7QCHn212fLlgvQRsIPY7HI78sTywaxH0PYSuXJplMDCF5pRNrYXxFLm
-	 GoZA8v03286xLBQkY5EuQoO6wt1QTwbykGE2g3Hw3LRq9+bV6WT+OanPLiuFjwckc0
-	 8TgSvkgGPwfVmoQQCl4RwHCJ8coIQNcZiCA6j4GOd+jR5oXWXvCq7pWSqHhMN4iour
-	 9Q0XRcNl7kcbw==
+	b=E+IFGHk7rFihJdPJ+xo1jhi+AoXWXKqNfuxMTshKFpodr/I+euYFd+wMiief5RbZk
+	 +XenrCbpB+sm1UVrfyPzFQ8kSCEmi1823AjJxd2JrWy4Bz7KbWmB2Iw0Qouz5FARHQ
+	 RCRqb+6H9sOaneZc0xOdfV4F5073qC8nRXg/3guw7cCBk0Ss6tIWJn7NzCLycwuHCY
+	 LnzxjUk2BtmPNp+lI/QJBmZlhMfRZFd1S+pRZjp0LQpoNUj8/w7Q/Y8kxev4GJp6V/
+	 xQ0eCmW4+rj+rKhTnsNINn3Dfr4yV8jnB6KX/WnUGTiIz6cSd912GPwfRfGvjp5AkU
+	 ZprKx7fAV6bFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Brian Gerst <brgerst@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] x86/stackprotector: Work around strict Clang TLS symbol requirements
-Date: Thu, 21 Nov 2024 11:43:09 -0500
-Message-ID: <20241121112813-16abb8aa4cbf6ae8@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] x86/stackprotector: Work around strict Clang TLS symbol requirements
+Date: Thu, 21 Nov 2024 11:43:11 -0500
+Message-ID: <20241121113219-34a471134e9afcb2@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241121144414.3607863-1-brgerst@gmail.com>
+In-Reply-To:  <20241121150337.3667598-1-brgerst@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,12 +75,11 @@ Status in newer kernel trees:
 6.11.y | Present (different SHA1: 43d5fb3ac23e)
 6.6.y | Not found
 6.1.y | Not found
-5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-21 11:24:09.939218101 -0500
-+++ /tmp/tmp.Xbl1nnd3OX	2024-11-21 11:24:09.929523096 -0500
+--- -	2024-11-21 11:28:15.623532559 -0500
++++ /tmp/tmp.nNyuaQrZAT	2024-11-21 11:28:15.614010384 -0500
 @@ -38,40 +38,37 @@
  Cc: stable@vger.kernel.org
  Link: https://github.com/ClangBuiltLinux/linux/issues/1854
@@ -99,11 +98,11 @@ Note: The patch differs from the upstream commit:
  
  diff --git a/arch/x86/Makefile b/arch/x86/Makefile
 -index cd75e78a06c10..5b773b34768d1 100644
-+index 9c09bbd390ce..f8a7d2a65434 100644
++index 3419ffa2a350..a88eede6e7db 100644
  --- a/arch/x86/Makefile
  +++ b/arch/x86/Makefile
 -@@ -142,9 +142,10 @@ ifeq ($(CONFIG_X86_32),y)
-+@@ -81,7 +81,8 @@ ifeq ($(CONFIG_X86_32),y)
++@@ -113,7 +113,8 @@ ifeq ($(CONFIG_X86_32),y)
   
 -     ifeq ($(CONFIG_STACKPROTECTOR),y)
 -         ifeq ($(CONFIG_SMP),y)
@@ -156,11 +155,11 @@ Note: The patch differs from the upstream commit:
  +#endif
  diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
 -index a5f221ea56888..f43bb974fc66d 100644
-+index f0cc4c616ceb..5db433cfaaa7 100644
++index 7f922a359ccc..b4e999048e9a 100644
  --- a/arch/x86/kernel/cpu/common.c
  +++ b/arch/x86/kernel/cpu/common.c
 -@@ -2089,8 +2089,10 @@ void syscall_init(void)
-+@@ -2000,8 +2000,10 @@ EXPORT_PER_CPU_SYMBOL(cpu_current_top_of_stack);
++@@ -2158,8 +2158,10 @@ EXPORT_PER_CPU_SYMBOL(cpu_current_top_of_stack);
   
   #ifdef CONFIG_STACKPROTECTOR
   DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
@@ -169,13 +168,13 @@ Note: The patch differs from the upstream commit:
   
  diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
 -index b8c5741d2fb48..feb8102a9ca78 100644
-+index 351c604de263..ab36dacb4cc5 100644
++index 78ccb5ec3c0e..c1e776ed71b0 100644
  --- a/arch/x86/kernel/vmlinux.lds.S
  +++ b/arch/x86/kernel/vmlinux.lds.S
 -@@ -491,6 +491,9 @@ SECTIONS
 - . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
 - 	   "kernel image bigger than KERNEL_IMAGE_SIZE");
-+@@ -490,6 +490,9 @@ SECTIONS
++@@ -486,6 +486,9 @@ SECTIONS
 + 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
 + }
   
@@ -188,7 +187,7 @@ Note: The patch differs from the upstream commit:
 +  * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
 +  */
 +
-+base-commit: 0a51d2d4527b43c5e467ffa6897deefeaf499358
++base-commit: b67dc5c9ade9dc354b790eb64aa6a665d0a54ecd
 +-- 
 +2.47.0
 +
@@ -198,5 +197,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
