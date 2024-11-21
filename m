@@ -1,56 +1,83 @@
-Return-Path: <stable+bounces-94518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7198E9D4CF9
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 13:38:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4309D4D10
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 13:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 294E91F213F1
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 12:38:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38305B22409
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 12:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3511E1D5CE0;
-	Thu, 21 Nov 2024 12:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FBED1D79B0;
+	Thu, 21 Nov 2024 12:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2EGJirN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QHeafUcQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E980C1D47C0
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 12:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD92D1D47A0;
+	Thu, 21 Nov 2024 12:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732192729; cv=none; b=aurATgP+EPW09j/nDo5hRFztH8KnpB6xix6jNyHzLeoc1uUyiq3iPxMd8r0KWqkK8TkfD1XV7dQU4mqApwkcn26bx64tS7d2dXplSGnoZbOkKAcBEQayublMjoTDoOB+rbK7XRzhDIdj3CCFgVP7m2ReG8pQ/Ft8phqLR9BVUaE=
+	t=1732192887; cv=none; b=qCDPINhVYzUCvGN50dm4FuPEr9mdg5EyhLmzMS40uWIfI7/gX81RW0sBfTYpj2879+ePTCu0gpjkom2YQ22JiDWX9Q6ZHtmaaEJ5R++DFJuVb/gZMJRqVWW3iDbhn1gKWSg9FXUgg/BTmR1F2ocKol0PoqdgEhpSLZqeW0SXYbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732192729; c=relaxed/simple;
-	bh=odyV+d2Ue7SKnQWJHkjZGRbtp8p/EfKCNZ2Rd1O7/CU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nygc8RRsbFxoaTWeRykE/6ECx75wbeJz745bl0xgiMWKBmZ/UmRShkM8LJAxXcm1aQIUxP6NOk8QI1l2b43M1QJBBm2Ri9zJGHos9zpno8DbfwbSZyaOm7C+DWhbyNHXPlYamggUHb0/nEGMxvVFPH8iachhxO/3hI2Oj8uxaIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2EGJirN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6A7C4CECC;
-	Thu, 21 Nov 2024 12:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732192728;
-	bh=odyV+d2Ue7SKnQWJHkjZGRbtp8p/EfKCNZ2Rd1O7/CU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2EGJirNb91y2pxRAnD3RTgsQz06GnPT+NePCt6r84R98TkMVdt/3uUozwEJQzMs/
-	 2zG3tqyrNsw2GG8DJQ/sTUgpHSHvaVMsUueANdMGFen7RuYSL6WK0hW9re9nyHxtB1
-	 +/KNabogMDS1H5IOhCo3uenRawQUteePARmIpDGtSL/M6E5kaUsV3XJl5nmFVRt+YG
-	 bWcffiWjIKZGdaulNeft9EKvLoGXnJgjRfFtglk/oglKTrsqAudQQoOMQrCKfWPqzY
-	 StqGsziOngfaa1AKEP6hLRjc9x9SfgpzIFZTtCAgZt/w0lm150wrDxF3Tk+PPnbp0G
-	 G37yB0+y+BuZQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] s390/pkey: Wipe copies of clear-key structures on failure
-Date: Thu, 21 Nov 2024 07:38:46 -0500
-Message-ID: <20241121065925-b77d67e2692505a6@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241121081222.3792207-1-bin.lan.cn@windriver.com>
-References: 
+	s=arc-20240116; t=1732192887; c=relaxed/simple;
+	bh=g3tfuA/UG+Z4V3lBLAMG7NiB9Eo1EihREvq4FOeAhSU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LL97B8Gqyr3Xf5NoOgSJjleHBUqMWcOUBj8ZDP/eZpkfab7TG91+CWMXEd8wh1C2auJfX3wzX+dcz3eK3GdjRbhgWMrqZ2FJZL4iTTvRqTzkKZ9IH6d/huLbeJSTjw8uJS/BzM/8o7+QPyYYHDMY2rPL2m06mQqHUTu1KBahPRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QHeafUcQ; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21269c8df64so8636775ad.2;
+        Thu, 21 Nov 2024 04:41:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732192885; x=1732797685; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=saHVPgloWCW73BS5krIAOvOiq0B6Gy9Xs2EnFsiEW50=;
+        b=QHeafUcQMVTS3MWMvK+hohuiYqj5t981MYc0VXAPXMuuyfqaqjAE3pzuxzMZAOzYRH
+         ru+XjZwUibwW5AQwPLKQT44KbK5WMMVxdBidiJQDD+8kkNNXEt7dD5pYYdQ4nUC/xSYP
+         zsKnJven/oz+Z9c65GzsN072hh3q1VF2XzLY/INeL/6gXgna0TmANMaEqgUBQ0HlbOfT
+         ya5TUO59WhVKYkHUfsv0DNplHyp1Z2mxmDKrrQnOQGCZZiQPtgOaVYtDmvH9smlzIhTX
+         2B+R/BrFBekm0lo3zl/PXHJ/EUaM8AIfY6UZlu+DM1LVfmeKm/dLjWDX+R/xUorI1Enx
+         zG5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732192885; x=1732797685;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=saHVPgloWCW73BS5krIAOvOiq0B6Gy9Xs2EnFsiEW50=;
+        b=mOmK0UbW1/vhUuwkdTSmjxzfJqisbXWELFtK5X8PxTtxdxKgVJUxmJbEK8bpfAQDkI
+         EhipT+/1LlPCOVp2ERdIrUjy7nN5OyECvsaOAP5rmXuficRCsoCOwBWD3YFi9wayT9tH
+         SfvXF/JO9678Wn8YSy9Oumo3pXQXVU4tbBna/BHMPnyeP2zHXNq+42xkBBQ4sJSad6qr
+         hjvSAZNW/S27LaoENFCIfdSMHD+OfFmiqIU36Y4aauqTbqhyR/YDYJPpQuN0ETnVtW1o
+         Qgt+x77CLGhuKPhQR2ZH261lWneTjdxjcWv++5eHgVqlw2XfyNV5eb6wRITJMsXDeJu4
+         HT3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVsv4wrV8uvhE8ZgD+jtyVORZVlrG+x3a0uKAeG9PEvUssG0bJpR4gKnXobe5VGvXEu972D8wGA@vger.kernel.org, AJvYcCXoGnoxDVUgpQuDZs/D6WPg05pS/WB0c4c+8ULJB4lUnYX2z0Rdprtdfws9QEl6Cn28TrWenhCyGQbTn+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlGNAzYxVf7Qw2xVPjkVUFkMMUrRo235brP0GFMpNYF7MrcUUY
+	c/X7Rgsdo4NTklwKfdTjbey9UNs5Gzsx8tmIJkdpXSowhZtTvMjT
+X-Google-Smtp-Source: AGHT+IHl71Cge81GkaeyNHyHp3L72kyzIqbjDHv1+AQUG60ivlEurQACwb+xPMKLWp5j7BQriPcwtw==
+X-Received: by 2002:a17:902:f652:b0:20c:d428:adf4 with SMTP id d9443c01a7336-2126a435e67mr96831535ad.38.1732192884795;
+        Thu, 21 Nov 2024 04:41:24 -0800 (PST)
+Received: from kernelexploit-virtual-machine.localdomain ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-212883f3298sm12589775ad.244.2024.11.21.04.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2024 04:41:24 -0800 (PST)
+From: Jeongjun Park <aha310510@gmail.com>
+To: akpm@linux-foundation.org
+Cc: dave@stgolabs.net,
+	willy@infradead.org,
+	Liam.Howlett@oracle.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH] mm/huge_memory: Fix to make vma_adjust_trans_huge() use find_vma() correctly
+Date: Thu, 21 Nov 2024 21:41:13 +0900
+Message-Id: <20241121124113.66166-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,99 +86,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+vma_adjust_trans_huge() uses find_vma() to get the VMA, but find_vma() uses
+the returned pointer without any verification, even though it may return NULL.
+In this case, NULL pointer dereference may occur, so to prevent this,
+vma_adjust_trans_huge() should be fix to verify the return value of find_vma().
 
-Hi,
-
-The upstream commit SHA1 provided is correct: d65d76a44ffe74c73298ada25b0f578680576073
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Holger Dengler <dengler@linux.ibm.com>
-
-
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Not found
-
-Note: The patch differs from the upstream commit:
+Cc: <stable@vger.kernel.org>
+Fixes: 685405020b9f ("mm/khugepaged: stop using vma linked list")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
---- -	2024-11-21 06:54:04.315780402 -0500
-+++ /tmp/tmp.dzrYUeNwaI	2024-11-21 06:54:04.312033373 -0500
-@@ -1,3 +1,5 @@
-+[ Upstream commit d65d76a44ffe74c73298ada25b0f578680576073 ]
-+
- Wipe all sensitive data from stack for all IOCTLs, which convert a
- clear-key into a protected- or secure-key.
- 
-@@ -6,18 +8,20 @@
- Acked-by: Heiko Carstens <hca@linux.ibm.com>
- Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
- Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-+[ Resolve minor conflicts to fix CVE-2024-42156 ]
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
- ---
-  drivers/s390/crypto/pkey_api.c | 16 +++++++++-------
-  1 file changed, 9 insertions(+), 7 deletions(-)
- 
- diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
--index 179287157c2fe..1aa78a74fbade 100644
-+index d2ffdf2491da..70fcb5c40cfe 100644
- --- a/drivers/s390/crypto/pkey_api.c
- +++ b/drivers/s390/crypto/pkey_api.c
--@@ -1374,9 +1374,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-+@@ -1366,9 +1366,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-  		rc = cca_clr2seckey(kcs.cardnr, kcs.domain, kcs.keytype,
-  				    kcs.clrkey.clrkey, kcs.seckey.seckey);
-- 		pr_debug("%s cca_clr2seckey()=%d\n", __func__, rc);
-+ 		DEBUG_DBG("%s cca_clr2seckey()=%d\n", __func__, rc);
- -		if (rc)
- -			break;
- -		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
-@@ -25,10 +29,10 @@
-  			rc = -EFAULT;
-  		memzero_explicit(&kcs, sizeof(kcs));
-  		break;
--@@ -1409,9 +1407,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-+@@ -1401,9 +1399,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-  				      kcp.protkey.protkey,
-  				      &kcp.protkey.len, &kcp.protkey.type);
-- 		pr_debug("%s pkey_clr2protkey()=%d\n", __func__, rc);
-+ 		DEBUG_DBG("%s pkey_clr2protkey()=%d\n", __func__, rc);
- -		if (rc)
- -			break;
- -		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
-@@ -36,7 +40,7 @@
-  			rc = -EFAULT;
-  		memzero_explicit(&kcp, sizeof(kcp));
-  		break;
--@@ -1562,11 +1558,14 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-+@@ -1555,11 +1551,14 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-  		if (copy_from_user(&kcs, ucs, sizeof(kcs)))
-  			return -EFAULT;
-  		apqns = _copy_apqns_from_user(kcs.apqns, kcs.apqn_entries);
-@@ -52,7 +56,7 @@
-  			return -ENOMEM;
-  		}
-  		rc = pkey_clr2seckey2(apqns, kcs.apqn_entries,
--@@ -1576,15 +1575,18 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-+@@ -1569,15 +1568,18 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-  		kfree(apqns);
-  		if (rc) {
-  			kfree(kkey);
-@@ -71,3 +75,6 @@
-  				return -EFAULT;
-  			}
-  		}
-+-- 
-+2.43.0
-+
----
+ mm/huge_memory.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 5734d5d5060f..db55b8abae2e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2941,9 +2941,12 @@ void vma_adjust_trans_huge(struct vm_area_struct *vma,
+ 	 */
+ 	if (adjust_next > 0) {
+ 		struct vm_area_struct *next = find_vma(vma->vm_mm, vma->vm_end);
+-		unsigned long nstart = next->vm_start;
+-		nstart += adjust_next;
+-		split_huge_pmd_if_needed(next, nstart);
++
++		if (likely(next)) {
++			unsigned long nstart = next->vm_start;
++			nstart += adjust_next;
++			split_huge_pmd_if_needed(next, nstart);
++		}
+ 	}
+ }
+ 
+--
 
