@@ -1,154 +1,214 @@
-Return-Path: <stable+bounces-94503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFAF9D4892
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 09:12:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41109D48B4
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 09:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BAB41F2271B
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 08:12:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5456BB23980
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 08:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6400C1C9B8C;
-	Thu, 21 Nov 2024 08:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F99E1CB9E6;
+	Thu, 21 Nov 2024 08:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="iWTGYf2l"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011053.outbound.protection.outlook.com [40.107.74.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C1B1CACDC
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 08:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732176730; cv=none; b=bI3n7nrIpERLBI6jD1F17ENgsoWOt+Ds+XoTx6dhnIIigJ8oWSKoY21yuM8koMArDIGHhCnuCFusqasKV9AF58CZY/SNJ3yDHC60V1seAnsAUuEhdGEGK2GzOE1tLPk3cKSS1t6/7onufZzT8oaG0WrjI9Frj/N6PEQ9UY9bmTI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732176730; c=relaxed/simple;
-	bh=4KbSoZBMONX9yuA0w9jTpvBgncA61f6KYrqlZq8krfE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ChSdXVwKTUvRDfNFreOJwZp+MY/9H6q+MD5PWe64gDVQenPXi+idfdY45pRjQ/MFiV6j3R9VX0sMbC2suAlGViTGUKApFHAPU+HfJwz0buRsvogoBxgDYWNjezRhbUGoIiAtIDeHt4GryIQip0tGv8/BbwjGelCc2aeS6SK2BoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AL5i1LV018516;
-	Thu, 21 Nov 2024 08:12:05 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xgm0nbv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 21 Nov 2024 08:12:05 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 21 Nov 2024 00:12:03 -0800
-Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 21 Nov 2024 00:12:02 -0800
-From: Bin Lan <bin.lan.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <dengler@linux.ibm.com>, <freude@linux.ibm.com>, <ifranzki@linux.ibm.com>
-Subject: [PATCH 6.6] s390/pkey: Wipe copies of clear-key structures on failure
-Date: Thu, 21 Nov 2024 16:12:22 +0800
-Message-ID: <20241121081222.3792207-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396951CB9E2;
+	Thu, 21 Nov 2024 08:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732177258; cv=fail; b=MPchKNOfjzu+va+ZIKZqqvjHR9ToAMHZS/wCTokay/kGxUAnuhOs8ZG2oeUpf/yMesri4olU1XAlZcxe0LlVl6lrYDQpiX6QvdT36rpieyc+6jYcc4/A1htC6cY8fmFrZBMu0l6FTThoBaMl4uw74AhGAxTwdgUXDA/qPkFSuEM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732177258; c=relaxed/simple;
+	bh=mh3HBwSdoZ46xz5fJMd9orcRHKwt86AGQt9LJRZffXM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qS69ethQg6M9tI1+EoCUDH24b1r6G/wJJgEw+crH2Rpuh8YAanH1GqAj8seMkyWCHnipfk1VMV99WIWdx+kWYm+xkW7XhDBkP1kCaCMaUw47QPTo/8wrtm+os+ps284IekecdRG6WnIgH+5G9LYH4KUjDx3Fjnl0HtY1ubNLOoQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=iWTGYf2l; arc=fail smtp.client-ip=40.107.74.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=c6FdubniFX3KATFhsyRJ9RQ/jzm/gqlomFRKi1myqMe93mjiLdQmO0SuEO6fLLMczAIl7LY50N+Ecvx0traSIsIA1IpW0KewTf9zrEHtUPTMSKm0e4pMhV3RtZt1e9ljc6CGTYk3tsZB+eKrWbgePq0AnFr3OCAiHP9U7dI4hxC2TEz3qW4DI4w4MbXp03xy0hg91xlYvCwHCu2zsBU3ZjH7wPLKJFxK4NMvEKLD2aFmb4prviCPYs0uL7c3uH+squsWi3OW8g4exPtpSQ+kvrkdXIOzvfuAjEnapIfPakUBzYd04rGHhIan7muz5Pv19gWIqZW8Cw5O71BpPqgXNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VJgdFhWlzRL1lPoc3KPHfVRM9vvUb8axUqywpjRm3XU=;
+ b=VVsXX03qUbxZtSPRzhe2K8my61xbCbQB9uxt4Oldvl4+hkpCAdcutwwvDKTbl+TmnQdFZSRJZ/TC2Q3RPuceQqza2xPctnqFBmjaLm9JV/OudICQ2OYgsiMcw+gISlrDuN5kV/1mPKWVou8X2/tsPL84o/M+qq537d0QHuqJPDyPxZVCESeVemCAKITWwWQQUSjPIXmyUmkKfxLkxibH+I8Pq3qbt/gx9q+duFiaXN843qs/TZTCRHcJ1RnaKvjznSlOlB+LXLxJ6zS/ZeCQD4Jw7lwMNCRNYZA87BdVeAYfCciHpAioZ3+tDGFRLopSl0ep+pXdgLL3Jq+wlVY9KQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VJgdFhWlzRL1lPoc3KPHfVRM9vvUb8axUqywpjRm3XU=;
+ b=iWTGYf2lNstXWX+apiJsscsC7L98KEjnLq2WM/ao/XINS5QQZtL5WSoqCfp5y7IdtwCN22uDvk1UXEIqHdr21QHTBP+nCYhNH5A9YS+n3HVycuCcJutu7GacyQ5n1MCv8C6rluf9kA0PAI6qQUgNlQDTOan64Wc2d/pjpdLdwww=
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com (2603:1096:400:3c0::7)
+ by TYWPR01MB12124.jpnprd01.prod.outlook.com (2603:1096:400:447::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.21; Thu, 21 Nov
+ 2024 08:20:45 +0000
+Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::7497:30af:3081:1479]) by TYCPR01MB11332.jpnprd01.prod.outlook.com
+ ([fe80::7497:30af:3081:1479%4]) with mapi id 15.20.8158.023; Thu, 21 Nov 2024
+ 08:20:45 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Chris Brandt <Chris.Brandt@renesas.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	Chris Brandt <Chris.Brandt@renesas.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] drm: renesas: rz-du: Increase supported resolutions
+Thread-Topic: [PATCH] drm: renesas: rz-du: Increase supported resolutions
+Thread-Index: AQHbO11syy9ggiKAbUeH3lMn2+lbMrLBZWuQ
+Date: Thu, 21 Nov 2024 08:20:44 +0000
+Message-ID:
+ <TYCPR01MB1133282D199A38F438E25E8E386222@TYCPR01MB11332.jpnprd01.prod.outlook.com>
+References: <20241120150328.4131525-1-chris.brandt@renesas.com>
+In-Reply-To: <20241120150328.4131525-1-chris.brandt@renesas.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB11332:EE_|TYWPR01MB12124:EE_
+x-ms-office365-filtering-correlation-id: a508be5e-bf1b-4570-e625-08dd0a056575
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?TThXphEPWLIhPzB5pgTM4AydcNJQNNrefwub7TM3wBM3y2hxpR61ZmV9xpGV?=
+ =?us-ascii?Q?V1vmmlNYq++MGHlsDe6utdHZ79/zWWSDcD7C8MqTz6YMG9NQN0YB27D26D/q?=
+ =?us-ascii?Q?pIMSvb4fYLDltoqvatauRx888YvMGbsnNaAbU1PejlCTedsUVG9F/oC5YDoS?=
+ =?us-ascii?Q?2IKWMOAL8wMNGzYMyAEXEbIW0xyD7pCC2v0HLShUFq8k3va2+kFdBQnBEb38?=
+ =?us-ascii?Q?UeAvx5FpnIKzUxHWJiYir0nJqwxBY6ISh83EVXoGghxQtBgrki+sK8icVn2H?=
+ =?us-ascii?Q?zlSAVFVT6kQIWIRYaSkBUnFDsRdNMjCQxQ+6MosqOhnglOBRqpg4kY78whet?=
+ =?us-ascii?Q?iuwVIHQgngZaVW/6MDD9MraiiYbuaefvi+71VyzR99AQ7yzIsD01tdkqAEMB?=
+ =?us-ascii?Q?cqktA7r+KZnQ4n2FYOU307/Zw3RYJNgmhQsLTwApj8GSwNE43b91dEJzPATJ?=
+ =?us-ascii?Q?5ceu/8FGKfwdBE29KJHRFb918ucUhQ2/ugXP41kxy5z5myqbRbqtcA9yAC5Y?=
+ =?us-ascii?Q?yakoq0S7roIrSC+ERvBPB4SbuG0cM3hGY3JLOpNeVtBQAFB7ubYB8ZtEFkI6?=
+ =?us-ascii?Q?CI4A3T36XnJGhDTED06e0OBH6AUqtbt5qMibg0e/H8FfWDv5426noTlMCX+H?=
+ =?us-ascii?Q?VllicIFM8BnZvxPa9A2Wc/QUlabClXPZqSfIivtCnS3ys6CUjGdUNysTNKYg?=
+ =?us-ascii?Q?hsr3vlmTtLgPkN4vfVD263BeUB8X10Ju7KntwLSPhvt7y22xF3ERwx64omDj?=
+ =?us-ascii?Q?NPz0uu0IdEyXduTta1WJVS7QRremiFMRhSeD7K1LzABc+hWhwBqxHHibc5d2?=
+ =?us-ascii?Q?k02nhhGaBalN7sjIWm12s2IrYlxaq+dUbrbiJC0y5hUp2fgBhg2Vo1FxXvKl?=
+ =?us-ascii?Q?A8OBUwiPlKRUHh9q+o4iVVMo10Nx+Do6Gx9kjjJ02rSiuuN47GoZZBSsI9R1?=
+ =?us-ascii?Q?ociLQiS1C8QeVSpVnLARA9aDwriv5dNjw/fO2NbNunuypJjWMjVZy61A36K3?=
+ =?us-ascii?Q?0te1Oujshg+g7mdhamET2b8Ra/4qFBDS2QmFCS2EUa/67E06ckk7+zYpjETw?=
+ =?us-ascii?Q?3WneA4A1dnr1kHMj58/NYkwA05j7sYlxwuUcBQzs/ZzR9hp7TSbX5/t6UcfT?=
+ =?us-ascii?Q?iIKuP+RB2F1eRZYieyGLmGJTp24HOMr4BqVTwZbsb2OHoLWVH7Q5nK6B2zJm?=
+ =?us-ascii?Q?5hHYMQC/5TGB2Fhk7GPIzV4cIYPiXBMmGkZPHZD1luYS4sM48OCwsngEEEnp?=
+ =?us-ascii?Q?eQ8gLmlv3A2DM6sNK6IQuRubsWTiZjK2zliaCDe1vKBNQONNnz5NG2xZnvB9?=
+ =?us-ascii?Q?JAv5EI1vqvy1aU/73MdIhGf1hNycYl+n9RLV1jUy5zhlRNkZg8e8IbFu5Eu8?=
+ =?us-ascii?Q?UyiaWrA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11332.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?9oGQ3S8PT9d9s7Rr9oM4DyJwMSqqiM5Jydzpya+hNc3+/iSdZIAeJ3Lf4Eqp?=
+ =?us-ascii?Q?oWeQC0wVniqPjQlE1B63QygnIWuEqqJFL2HmtN90+pSWVM9nuuG495tlEjvU?=
+ =?us-ascii?Q?w7mM/N3a9UTdwLgJZjIBAxw29u5wwKgPFcmWa7/ZShxy8iWowmiyjrwEeeHe?=
+ =?us-ascii?Q?iPtroe83cm8UBVTG2wlgDWAXIi+wO/WRgAGfARGE1LA8TMyzcGNjlClXtW8/?=
+ =?us-ascii?Q?VCDFYZTjZj1v+UHG95/6xGtSgAOiF3bc0d9yaR2pEDSfDOckegcBLz3wghiK?=
+ =?us-ascii?Q?zI9TgRG6j0i4AsEfsFoafAo1iiZqlCGRXZiyaupokg8CAQNp5YaV84/b+9Pp?=
+ =?us-ascii?Q?IROZv+0NqYo/W4Y6EY/zIG6f0eeDy4DlE5e6+4QtgWrY4RUSWdKTm2gezcvj?=
+ =?us-ascii?Q?idWOYT3VM7nF5HtKoIBCbnaAvSiO9WlQK+ZEnaydeeY5dI/Ke6/2VOqTQ3wq?=
+ =?us-ascii?Q?cxn/mzjHsVzeGoMzd8rgNFALAgVkBzwCGAeUsiLcWRBp9tVO40k96zjps3vJ?=
+ =?us-ascii?Q?oxCCHy40dh9fgth4+uF7Fjs7B4ohu9rUa2sOgo08Go8AjWNMhJOkRzMijrxA?=
+ =?us-ascii?Q?47g77SaF90GSNSqLRXdEmmziQZ+pHj3i3qOLzoiGwNg3HKLxMO7SjFovWMsh?=
+ =?us-ascii?Q?F4gzwtxrQ/SAhNViGX86Xqm3ZieIsqhK3WExCpWZJtPtO75GgNqmKZ46xkv+?=
+ =?us-ascii?Q?s7VjtAu93i6bwO45row8XbVzMKdqptY2PiaHb5McJC704jjF/tu+jKlWIHK3?=
+ =?us-ascii?Q?uapqTN80c5cNP7wawp3OHzM9wY1xGNP4v8uyeTSy2dB3zj/p/1DyDwwF3iwJ?=
+ =?us-ascii?Q?I7rFktMJperRmXJL+fQ4YIpBRubxWnuX6NfPVogbZIdlz4NYHjen4tC/oxCG?=
+ =?us-ascii?Q?svfc3/tIqiwFS+hBPMrRWS5F/6xscEzVX2Z8Go5i4e+hHRu6vGZ1O+v2r5TS?=
+ =?us-ascii?Q?MJm0ZWC6YzcI+yvnMMRa20rd58B69r9DAMyL3G2CP53USZjxSmOU+5LX9n9F?=
+ =?us-ascii?Q?m8uXr/B6fXXogbVZ2hmBxsetSLlQcfQ5G4duX541XANpgr7TPrk5XJcAqkTy?=
+ =?us-ascii?Q?Sz3GDSn1fffiB5nHCYEC68EBQPBrDmRiGai9tmxVVXQl2VyUjdf/TssOoeWt?=
+ =?us-ascii?Q?Du5nKlsLL2SAdSXiy9axR8r6LBPIb1Hm3umz5iscTkQWCSvPQeRiS5y2yJPE?=
+ =?us-ascii?Q?gwia0l/cqqf2H2qDInBaE7MeI+n+2v+uoQG/1U3jiEg+1UTPTEBgYIilNpor?=
+ =?us-ascii?Q?04MaeorfQqaV0JGXdqQ0KlfndWTjZpv30GdT0pcqWBkqmeTuvOTk9oxajp3A?=
+ =?us-ascii?Q?n6azcugOjbV7BK/9kkS0REZtO/LEOSIXZWqHUVACo3F2wIlApTlnCYfG8jw8?=
+ =?us-ascii?Q?WK4+Vla31WfBxWAWjNIdHDYcAdV1r5EdzwGmeP6YmXNQxqnOgpciJijYW+s3?=
+ =?us-ascii?Q?0Tyi1SNknym78yC9xU8aNjaZ3yI5iDCPPsQC8EegmT4LJyVSApSlj4uSPK8D?=
+ =?us-ascii?Q?LnGtl04fHbj6qvE8OiuQR+i1hC/70EjkQF1sEp6RSwhwtQrcMvUYyPNMCsDe?=
+ =?us-ascii?Q?DzL5RQoen7rZN3aSz1tCSmpeX0af2MF5MTwtgpT2?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: QkPUbrPgoqoPs682Ww8yS232UeEJ2DZr
-X-Proofpoint-GUID: QkPUbrPgoqoPs682Ww8yS232UeEJ2DZr
-X-Authority-Analysis: v=2.4 cv=E4efprdl c=1 sm=1 tr=0 ts=673eeb55 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VlfZXiiP6vEA:10 a=VnNF1IyMAAAA:8 a=t7CeM3EgAAAA:8 a=_TdOzBteYNlyqZi9DD4A:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-21_06,2024-11-20_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411210063
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11332.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a508be5e-bf1b-4570-e625-08dd0a056575
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2024 08:20:44.9337
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hKQojI5690f4S57x6HkT/Lo8iSkLScmAEyqnWrm9nIvzDsNQKDuUZp8131yLR/0KfWINWYqlKTAHNe3isZsqWIbJBEwl0w9BNsAnFdF5GJE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB12124
 
-From: Holger Dengler <dengler@linux.ibm.com>
+Hi Chris Brandt,
 
-[ Upstream commit d65d76a44ffe74c73298ada25b0f578680576073 ]
+Thanks for the patch.
 
-Wipe all sensitive data from stack for all IOCTLs, which convert a
-clear-key into a protected- or secure-key.
+> -----Original Message-----
+> From: Chris Brandt <chris.brandt@renesas.com>
+> Sent: 20 November 2024 15:03
+> Subject: [PATCH] drm: renesas: rz-du: Increase supported resolutions
+>=20
+> The supported resolutions were misrepresented in earlier versions of hard=
+ware manuals.
+>=20
+> Fixes: 768e9e61b3b9 ("drm: renesas: Add RZ/G2L DU Support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
 
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-[ Resolve minor conflicts to fix CVE-2024-42156 ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
----
- drivers/s390/crypto/pkey_api.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index d2ffdf2491da..70fcb5c40cfe 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1366,9 +1366,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		rc = cca_clr2seckey(kcs.cardnr, kcs.domain, kcs.keytype,
- 				    kcs.clrkey.clrkey, kcs.seckey.seckey);
- 		DEBUG_DBG("%s cca_clr2seckey()=%d\n", __func__, rc);
--		if (rc)
--			break;
--		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
-+		if (!rc && copy_to_user(ucs, &kcs, sizeof(kcs)))
- 			rc = -EFAULT;
- 		memzero_explicit(&kcs, sizeof(kcs));
- 		break;
-@@ -1401,9 +1399,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 				      kcp.protkey.protkey,
- 				      &kcp.protkey.len, &kcp.protkey.type);
- 		DEBUG_DBG("%s pkey_clr2protkey()=%d\n", __func__, rc);
--		if (rc)
--			break;
--		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
-+		if (!rc && copy_to_user(ucp, &kcp, sizeof(kcp)))
- 			rc = -EFAULT;
- 		memzero_explicit(&kcp, sizeof(kcp));
- 		break;
-@@ -1555,11 +1551,14 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		if (copy_from_user(&kcs, ucs, sizeof(kcs)))
- 			return -EFAULT;
- 		apqns = _copy_apqns_from_user(kcs.apqns, kcs.apqn_entries);
--		if (IS_ERR(apqns))
-+		if (IS_ERR(apqns)) {
-+			memzero_explicit(&kcs, sizeof(kcs));
- 			return PTR_ERR(apqns);
-+		}
- 		kkey = kzalloc(klen, GFP_KERNEL);
- 		if (!kkey) {
- 			kfree(apqns);
-+			memzero_explicit(&kcs, sizeof(kcs));
- 			return -ENOMEM;
- 		}
- 		rc = pkey_clr2seckey2(apqns, kcs.apqn_entries,
-@@ -1569,15 +1568,18 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		kfree(apqns);
- 		if (rc) {
- 			kfree(kkey);
-+			memzero_explicit(&kcs, sizeof(kcs));
- 			break;
- 		}
- 		if (kcs.key) {
- 			if (kcs.keylen < klen) {
- 				kfree(kkey);
-+				memzero_explicit(&kcs, sizeof(kcs));
- 				return -EINVAL;
- 			}
- 			if (copy_to_user(kcs.key, kkey, klen)) {
- 				kfree(kkey);
-+				memzero_explicit(&kcs, sizeof(kcs));
- 				return -EFAULT;
- 			}
- 		}
--- 
-2.43.0
+Cheers,
+Biju
+
+> ---
+>  drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c b/drivers/gpu/d=
+rm/renesas/rz-
+> du/rzg2l_du_kms.c
+> index b99217b4e05d..90c6269ccd29 100644
+> --- a/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c
+> +++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c
+> @@ -311,11 +311,11 @@ int rzg2l_du_modeset_init(struct rzg2l_du_device *r=
+cdu)
+>  	dev->mode_config.helper_private =3D &rzg2l_du_mode_config_helper;
+>=20
+>  	/*
+> -	 * The RZ DU uses the VSP1 for memory access, and is limited
+> -	 * to frame sizes of 1920x1080.
+> +	 * The RZ DU was designed to support a frame size of 1920x1200 (landsca=
+pe)
+> +	 * or 1200x1920 (portrait).
+>  	 */
+>  	dev->mode_config.max_width =3D 1920;
+> -	dev->mode_config.max_height =3D 1080;
+> +	dev->mode_config.max_height =3D 1920;
+>=20
+>  	rcdu->num_crtcs =3D hweight8(rcdu->info->channels_mask);
+>=20
+> --
+> 2.34.1
 
 
