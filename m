@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7479D466A
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 05:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515F89D466C
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 05:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F441F22734
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 04:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE1861F2152F
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 04:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1A313BACC;
-	Thu, 21 Nov 2024 04:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B02136671;
+	Thu, 21 Nov 2024 04:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/MljClQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iN/wpvuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E98A78C9C
-	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 04:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE82446A1
+	for <stable@vger.kernel.org>; Thu, 21 Nov 2024 04:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732161634; cv=none; b=Mgf3yIgR4OUnM1ppP+7GgsEaQwrF+V5n4ia0KJ7oBWfwBJja4mArgzFHxkrG6wvH1QKxf/EEODT9GRZUy6AugqU+jBQ5wFXc3vkkBeLSx8+8y1dReSEAkUHCcI6y3L+dg3PemRwvbr4kWcqIkkdV98Z+EZlTXG8gvfFCPKUfMjQ=
+	t=1732161640; cv=none; b=p1SNRDFYq+jKzwOnDg7ojWKGMFFb2/OqyxgC1WZCCkpQvc49Yg427+33ZCCpVSxoDkD5HyGaHUOAYrfzB6Q0nQ+lq0q2s5YqTAylg94tZeIpy2fpv49WwHk/Au5yZY7AhKQmNxcFkydz8tpRvhoh5YryBaFf8bOexlh135FVfeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732161634; c=relaxed/simple;
-	bh=J20lVkWioZAE+nAlBTN5B7wP5upJvuRcMEHFreqwjZQ=;
+	s=arc-20240116; t=1732161640; c=relaxed/simple;
+	bh=5FQgbK9NwshJ0eD+ddM5dxlK3GwyuKgFzqQBjCn7Tv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hkKd5Dw9jS5RUdhFIAGQYfT7ljzVbgK9uhxR17tGb1ccxD4ykPYpmjHvzVw9Zpne3LV1BDbY+ewK7srXkG9woU10coxLC6wzgK3eWNy2JPB0JDGZhnU0fn9doQPxUSpicQGFp18qYKq3/bhF/YCFw97+EPGQzayPW/0i7NfzDbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/MljClQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B937C4CECC;
-	Thu, 21 Nov 2024 04:00:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LLXD7K3/F/+MVw8c0XX6UaGmzQz/rRadED0fqfl6PIv2tTqgn3HVJqK9ZftNfMuBo5J9nEonN1tN5NOrrhTQeYme7X3q9oHQmBGFAz0IP0/4bbpo4bWxEA23QXy6I3L3VZ/tF3cSnB8yHkN6dW00a4qQf4SHlodpxk8RuaRTAqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iN/wpvuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F05FC4CECC;
+	Thu, 21 Nov 2024 04:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732161633;
-	bh=J20lVkWioZAE+nAlBTN5B7wP5upJvuRcMEHFreqwjZQ=;
+	s=k20201202; t=1732161638;
+	bh=5FQgbK9NwshJ0eD+ddM5dxlK3GwyuKgFzqQBjCn7Tv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/MljClQIu1GHwAQ6ldwRp0oU1//7PsnBSUJ8jeDvSAjoorIDcs+uVcLl1skaadJt
-	 YmYLbzuNffNYli+lwgN5H8+3RA+L09MixO7G4mW2S8ic362iWIqLI43Ho4R1sx4U91
-	 ndc8N5ObR5EsyGE9E8UNX2TpDqbsvafm/3fmGsir/BSYFMwS43Ah/r9qdvFAlctjJ5
-	 coo7gWsfpRdCmoef6i0DTn8dmlANomAzJ8GzC4VhvQm1XyUpKnpIiD4HgZ8z475kmO
-	 WVyWELRgRoezV9UuSt7Ry1PwG3rtW7nXm+uIUL4+oKZ82M5JKoNQZs3G1RTO1xMnKK
-	 LlKTmzbuyxakw==
+	b=iN/wpvuF25f9nX9EfCP0122M7z9kFxjDbjuLK49Bb8U9Ud1IbzS4SXTxaLIb6jehM
+	 DDqrKj9Iwg/Uw+IqlvMheLePqdTUj6xz7mN9DdIQ9zp4D0tcnb7szh1AMKpX6c6VHp
+	 KPfcrVruB4khi0WMXJIIeZFiqwagmor0WJZqI1Ky2YHgispnhnC9I+/5tbXYIr9eVq
+	 DLA09nmwtmhqm1rtjfRklG7/DUUXMV+Ogm+W0zqnxl822Et2fcP7t4DrOYJAHvUaiD
+	 1hFJmrMSsLaPwg+/xGSCukc6Jkgj8cmzNoP2MHXX+a3BzSCQAPzZ8HezQcEytX+Tv/
+	 Dr91lPhPY0nxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] i2c: lpi2c: Avoid calling clk_get_rate during transfer
-Date: Wed, 20 Nov 2024 22:26:57 -0500
-Message-ID: <20241120222607-5c2e675390173b75@stable.kernel.org>
+Subject: Re: [PATCH 6.6] i2c: lpi2c: Avoid calling clk_get_rate during transfer
+Date: Wed, 20 Nov 2024 22:27:01 -0500
+Message-ID: <20241120221943-de0fdb59652c360b@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241121031715.3223129-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241121032751.3225795-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,11 +73,13 @@ Commit author: Alexander Stein <alexander.stein@ew.tq-group.com>
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-20 22:19:46.512390713 -0500
-+++ /tmp/tmp.iHtz9hU7o1	2024-11-20 22:19:46.508471414 -0500
+--- -	2024-11-20 22:14:04.767206166 -0500
++++ /tmp/tmp.dfA5216Jw0	2024-11-20 22:14:04.757393564 -0500
 @@ -1,3 +1,5 @@
 +[ Upstream commit 4268254a39484fc11ba991ae148bacbe75d9cc0a ]
 +
@@ -145,12 +147,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.11.y       |  Failed     |  N/A       |
 | stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-| stable/linux-4.19.y       |  Failed     |  N/A       |
 
