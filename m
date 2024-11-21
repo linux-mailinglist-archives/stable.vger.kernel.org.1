@@ -1,164 +1,147 @@
-Return-Path: <stable+bounces-94525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA9E9D4E86
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:17:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799739D4E88
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 15:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03A9EB26066
-	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:17:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04A06B2163B
+	for <lists+stable@lfdr.de>; Thu, 21 Nov 2024 14:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9E21D88D1;
-	Thu, 21 Nov 2024 14:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D674A1D3593;
+	Thu, 21 Nov 2024 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFBO2pNb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="klmx4jTI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A773E1D63FD;
-	Thu, 21 Nov 2024 14:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A379433D9;
+	Thu, 21 Nov 2024 14:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732198649; cv=none; b=XZ0zUF08onWRZXrzpScA1pl7w4Qit2gc/jlCSTYyEtQsYnrAAw9A8cezNq8OVe4ntQI0vBla+h2TGdD/cViAshDhlgxyykO8cLGkIM6ati0hAIk/EpePPQyYD2heSli+F2DY1lCghxRHuC3+1Di4/Y+bGBJnwHI9jJosJApaxaI=
+	t=1732198703; cv=none; b=aTGafalCcgHpZomvab/1U0J4Rce7dne5Mn580fc51YxOelfc3ymYnNKMBd91yNQo5mA5LlR4YkZd3ylFSI0sP4t/OZKiuPoz7eLyuMVh2Sx5/VaJ+4gfdkhHNS1OFuoG3I2JOlXEnP2QL+QigGr/1DJRt1wIIio8Gc2E1y7OkeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732198649; c=relaxed/simple;
-	bh=Nwing6hxd7cbL8mrx1UFhwO+4wTLgqqgFjW37N/tBsY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GgDlLtbMg9vTh7d0yOMIJrPwdhg9jC0f1vHUM96311FSTFVJD/v+2Qb89vIRstjpZBbmWgcnBq6sfFZKUt1Jhn5rUI1Ro8GZFfi2gstkklLGIWCYXf4dA5W13D56r1eA0Kvjc+Mwa1sav1JCwmS4VlFIMPscOvvrs6CjMHj7+KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFBO2pNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2882C4CECC;
-	Thu, 21 Nov 2024 14:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732198649;
-	bh=Nwing6hxd7cbL8mrx1UFhwO+4wTLgqqgFjW37N/tBsY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WFBO2pNbkJJdN3p7N5UR1GeTs2j6WYsbgzGfuu+5SGkRUCMTRmfBooHBQHQM/Fsg2
-	 k9Zr14TBDhpekulan4sDjdyDiGe054/+vJ9NYTAP77515vh6ZgBuesca6wwOesiboQ
-	 aCrH2TzvD44QIcYNG59RfppvjzC/dgUc5oy80PlHtUiqdXk2J+MIX76aJzpYZSHyaj
-	 z5tHo5O2mUbCN25lZL+wiXfHhnWzuZ7Ed1CXzMLME7qT81YdoPwMEkLEmAIFubXkbK
-	 doltu3cGGVfqHr01kx4nvU6VFrC8b1a2UhsQv35/4W5nEZvBtHoSpYHB/dYH+Q+Ts6
-	 qZvui8KMW5T6g==
-From: Chao Yu <chao@kernel.org>
-To: jaegeuk@kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Chao Yu <chao@kernel.org>,
-	stable@vger.kernel.org,
-	Piergiorgio Sartor <piergiorgio.sartor@nexgo.de>
-Subject: [PATCH] f2fs: fix to drop all discards after creating snapshot on lvm device
-Date: Thu, 21 Nov 2024 22:17:16 +0800
-Message-Id: <20241121141716.3018855-1-chao@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1732198703; c=relaxed/simple;
+	bh=ZUMsJx+5O8f/eLQMDGl/N2/wmI/7flRQsYvpNlQOEC8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iJQo5xAOjpEbGID6Sb4jzcgtEGHq95QHb4A2j3ncIxAqmIBNrF4qoKLKKfCmqDmtgzDWi4LkCLmjLHnYOnwzvJnMPxVaHnzeH0eUGbcKIqhhC+U5xkdh3e7iJNJonIDLkVXQuzUGmoiEmjSUnq5D1Q/CdQndNPT2a31Df6SLXJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=klmx4jTI; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7f45ab88e7fso769563a12.1;
+        Thu, 21 Nov 2024 06:18:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732198701; x=1732803501; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CALR2H2D3U/mYafWaLcVRPmC0di/XIaiP/+GiuvQ46Q=;
+        b=klmx4jTITRJ45x7jdxqmvsWZKsR3WpOBCqETuJXf5mR9RBu4vCMaqf8AHNTqMpG6iD
+         3kPrmGDMcYqq4l2FjA/AKhvrnvOQ0SqG//o7j+/IOUUsmNxvVM/gvdWnkTIekyYr5g47
+         9JGONGlHwi4IE/QqDtaWMYtoAVOcweHXtw2jkEbq/os7iKtTy1N9098NuI+gGkGQtivT
+         5okC2xGDjswT2hBWD37BfMsuBZcdaAKK2poMeVg9mxRwI3sDsKDLbl87uTZWx+wHmyRO
+         9/nTdHL3SvVjjqtcc9l7eyW4jwCJWyfgsb0u253Z+s10aRd0i0t488/X7jamgIul0J4e
+         CTvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732198701; x=1732803501;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CALR2H2D3U/mYafWaLcVRPmC0di/XIaiP/+GiuvQ46Q=;
+        b=FTq8NTxooi3bLjBFlnQnr79vmLu4x99uSR7CilSOV8y++UyvY1D6BIfPrPmspzGhpc
+         9oKMA5rp9R9BEm771RgkbQu4oBMn40o+QAl4L4mkfqGzyR6PXOx2RN0SsIUR39AZlgAK
+         mrYxB64FlcPGxZbGDCXTe/QgltnE3FLYyReaPavticNDvCvs7w/kPPPtAEuIfyKLRHaD
+         6kyRBYyX8LwE81oJKfB96aKLD9EnhZmHtRtjjj1n8s7jr4zXlmh6MHFpXXRhCOJtmdtr
+         S8O2aDYxsQca9a3NMG6pWBxvAU8V+Y/7mAZl5Ohiq2DJiNsbif4GQ2QxN4eXvdZPjCOl
+         TPNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVBuMk/jnKGRsM1zndZHcvWa12Vg8SckeROW/S0q8lbXI3yqXuNM76rBeebVnk/ncyUFG5X33+@vger.kernel.org, AJvYcCWu4PCsWKmrZ9G2xbUl9v5Q/+KFHopM3vN4RngsYTTSo6FOIUTAqux9BcdV+XNjDIbboVShmRRumTBZn2A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1mvvdA4g+sBT9fo/d/nzdLZfqT0o/4YaYsbxLvtBOubThsdbH
+	qGgzrVxnUkDd3ai9rusoffkkYUF/cV4Zs2590nchdMIG5KokJ83DI/KoWZVNItKL/H8UpaAaP7S
+	9zPzA4/U2UkocIP0Da7ZLz6OidE8=
+X-Gm-Gg: ASbGncteyai3VywgVkKnYsL/hp1Ygd+SUPeKwo02rFEgZ2Knmf72psbOjgfdfBxCE5t
+	AF3eLhNX5NsoTXlG2HAeTkydQOz1qy+zHsg==
+X-Google-Smtp-Source: AGHT+IF6cviDJenkMJV9ucQ1uvKXIxjAuYkLgfqhfhoGebSGpWKKCIG8IV0WPgRrVISfm4ttZcsY3HS0egDnHFDyrto=
+X-Received: by 2002:a17:90b:17c3:b0:2ea:7752:d5e4 with SMTP id
+ 98e67ed59e1d1-2eaca709ca6mr8700345a91.15.1732198701486; Thu, 21 Nov 2024
+ 06:18:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241121124113.66166-1-aha310510@gmail.com> <26b82074-891f-4e26-b0a7-328ee2fa08d3@redhat.com>
+ <25ead85f-2716-4362-8fb5-3422699e308c@redhat.com>
+In-Reply-To: <25ead85f-2716-4362-8fb5-3422699e308c@redhat.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Thu, 21 Nov 2024 23:18:12 +0900
+Message-ID: <CAO9qdTE8WO100AJo_bgM+J5yCpTtv=tRniNV2Rq3YAwQjx3JrA@mail.gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: Fix to make vma_adjust_trans_huge() use
+ find_vma() correctly
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, dave@stgolabs.net, willy@infradead.org, 
+	Liam.Howlett@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Piergiorgio reported a bug in bugzilla as below:
+David Hildenbrand <david@redhat.com> wrote:
+>
+> On 21.11.24 14:44, David Hildenbrand wrote:
+> > On 21.11.24 13:41, Jeongjun Park wrote:
+> >> vma_adjust_trans_huge() uses find_vma() to get the VMA, but find_vma() uses
+> >> the returned pointer without any verification, even though it may return NULL.
+> >> In this case, NULL pointer dereference may occur, so to prevent this,
+> >> vma_adjust_trans_huge() should be fix to verify the return value of find_vma().
+> >>
+> >> Cc: <stable@vger.kernel.org>
+> >> Fixes: 685405020b9f ("mm/khugepaged: stop using vma linked list")
+> >
+> > If that's an issue, wouldn't it have predated that commit?
+> >
+> > struct vm_area_struct *next = vma->vm_next;
+> > unsigned long nstart = next->vm_start;
+> >
+> > Would have also assumed that there is a next VMA that can be
+> > dereferenced, no?
+> >
+>
+> And looking into the details, we only assume that there is a next VMA if
+> we are explicitly told to by the caller of vma_adjust_trans_huge() using
+> "adjust_next".
+>
+> There is only one such caller,
+> vma_merge_existing_range()->commit_merge() where we set adj_start ->
+> "adjust_next" where we seem to have a guarantee that there is a next VMA.
 
-------------[ cut here ]------------
-WARNING: CPU: 2 PID: 969 at fs/f2fs/segment.c:1330
-RIP: 0010:__submit_discard_cmd+0x27d/0x400 [f2fs]
-Call Trace:
- __issue_discard_cmd+0x1ca/0x350 [f2fs]
- issue_discard_thread+0x191/0x480 [f2fs]
- kthread+0xcf/0x100
- ret_from_fork+0x31/0x50
- ret_from_fork_asm+0x1a/0x30
+I also thought that it would not be a problem in general cases, but I think
+that there may be a special case (for example, a race condition...?) that can
+occur in certain conditions, although I have not found it yet.
 
-w/ below testcase, it can reproduce this bug quickly:
-- pvcreate /dev/vdb
-- vgcreate myvg1 /dev/vdb
-- lvcreate -L 1024m -n mylv1 myvg1
-- mount /dev/myvg1/mylv1 /mnt/f2fs
-- dd if=/dev/zero of=/mnt/f2fs/file bs=1M count=20
-- sync
-- rm /mnt/f2fs/file
-- sync
-- lvcreate -L 1024m -s -n mylv1-snapshot /dev/myvg1/mylv1
-- umount /mnt/f2fs
+In addition, most functions except this one unconditionally check the return
+value of find_vma(), so I think it would be better to handle the return value
+of find_vma() consistently in this function as well, rather than taking the
+risk and leaving it alone just because it seems to be okay.
 
-The root cause is: it will update discard_max_bytes of mounted lvm
-device to zero after creating snapshot on this lvm device, then,
-__submit_discard_cmd() will pass parameter @nr_sects w/ zero value
-to __blkdev_issue_discard(), it returns a NULL bio pointer, result
-in panic.
+Regards,
 
-This patch changes as below for fixing:
-1. Let's drop all remained discards in f2fs_unfreeze() if snapshot
-of lvm device is created.
-2. Checking discard_max_bytes before submitting discard during
-__submit_discard_cmd().
+Jeongjun Park
 
-Cc: stable@vger.kernel.org
-Fixes: 35ec7d574884 ("f2fs: split discard command in prior to block layer")
-Reported-by: Piergiorgio Sartor <piergiorgio.sartor@nexgo.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219484
-Signed-off-by: Chao Yu <chao@kernel.org>
----
- fs/f2fs/segment.c | 16 +++++++++-------
- fs/f2fs/super.c   | 12 ++++++++++++
- 2 files changed, 21 insertions(+), 7 deletions(-)
-
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 7bdfe08ce9ea..af3fb3f6d9b5 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -1290,16 +1290,18 @@ static int __submit_discard_cmd(struct f2fs_sb_info *sbi,
- 						wait_list, issued);
- 			return 0;
- 		}
--
--		/*
--		 * Issue discard for conventional zones only if the device
--		 * supports discard.
--		 */
--		if (!bdev_max_discard_sectors(bdev))
--			return -EOPNOTSUPP;
- 	}
- #endif
- 
-+	/*
-+	 * stop issuing discard for any of below cases:
-+	 * 1. device is conventional zone, but it doesn't support discard.
-+	 * 2. device is regulare device, after snapshot it doesn't support
-+	 * discard.
-+	 */
-+	if (!bdev_max_discard_sectors(bdev))
-+		return -EOPNOTSUPP;
-+
- 	trace_f2fs_issue_discard(bdev, dc->di.start, dc->di.len);
- 
- 	lstart = dc->di.lstart;
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index c0670cd61956..fc7d463dee15 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1760,6 +1760,18 @@ static int f2fs_freeze(struct super_block *sb)
- 
- static int f2fs_unfreeze(struct super_block *sb)
- {
-+	struct f2fs_sb_info *sbi = F2FS_SB(sb);
-+
-+	/*
-+	 * It will update discard_max_bytes of mounted lvm device to zero
-+	 * after creating snapshot on this lvm device, let's drop all
-+	 * remained discards.
-+	 * We don't need to disable real-time discard because discard_max_bytes
-+	 * will recover after removal of snapshot.
-+	 */
-+	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
-+		f2fs_issue_discard_timeout(sbi);
-+
- 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
- 	return 0;
- }
--- 
-2.40.1
-
+>
+> So I don't think there is an issue here (although the code does look
+> confusing ...).
+>
+> Not sure, though, if a
+>
+> if (WARN_ON_ONCE(!next))
+>         return;
+>
+> would be reasonable.
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
 
