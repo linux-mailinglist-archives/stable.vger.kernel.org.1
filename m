@@ -1,103 +1,93 @@
-Return-Path: <stable+bounces-94611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AA39D6035
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527A89D6055
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF151F21D60
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 14:13:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1E71F232FB
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 14:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242CB46434;
-	Fri, 22 Nov 2024 14:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689A37E0E8;
+	Fri, 22 Nov 2024 14:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nfV6R0FI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TX1ZsGJT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8765B4A01;
-	Fri, 22 Nov 2024 14:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1237580C;
+	Fri, 22 Nov 2024 14:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732284828; cv=none; b=c/YPhtFvQpuMiEjZCWFgrYUQtQS/jLrVjXbLFRxl7QGcmcNaoQ63lUxoint4/H8RIWah2eOCKbBw1oSNsYKebA+9rTGk9cx5psgVj0jmm2NJkbVGDHPeoUDMm35n9I6Kv3PmvOVyIR+SekP+NzezcS8BgpYrpXOefymESJdkvm8=
+	t=1732286054; cv=none; b=ahp0EaD5h4TSiiXxqqLX8DfAE011ER54xoA5tcavS1gAm739ol29hEhbB9nv86sAtCR3XNg6NEuB/DT9ZTMe06u+4fFPyTvPWIH96RjtuL1xlKlO2hzNQjpABxdFwh1fvqmNhzQ5J9royyoWA8X5sh+bJ8VK6Md+l/Yovl84Q/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732284828; c=relaxed/simple;
-	bh=tC/OWioCUX/fp6QqWFU9Xo4YC5HhhdV5m4rgzkWdOZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MzUFCUp2sCl+eme0oMEsMzhJMjT+0Jsz1yWlG6hAWdlAv/syr5sOQxTL77WHvLz3JMliwNWlBDamHofw4nqULsvU79PbnewuIn3RrEKn8B7hKRv/g680hN1AlzP1fqUQcQDL5fWMYf4v8mdFCsW7DJO+0z5Z1RrEV1T8bn6NqX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nfV6R0FI; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732284828; x=1763820828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tC/OWioCUX/fp6QqWFU9Xo4YC5HhhdV5m4rgzkWdOZY=;
-  b=nfV6R0FIWAEbrHEP2Mrp7nfddNVkvWv5ZprMqfMjJOVB0lvj0TiFYyzi
-   vaQFKtiR93OmyDCPnTj4GgaxDkpAZSvBJjDL33EQpugHiY2a1uBe0tx9W
-   e28FbUqgltYJrLaWaznvJRKJ1ZelOyRr4eR119WkgJCS9ddZJ903QYPGS
-   1CuXCSP66c1I98gbP6R0R2KNDEGZKSYtRBYEnoEliLFt9yWB3T5WPt5uM
-   BBLR1nT9YSaJklAK5qP7yB8KLKGzlwv8i4arcWqePpZbq9GKUhvgyy0Bg
-   JUP1Diz/41mPzX02cMqis8djhhPoaKLNpkdVJJakZKbGbOLUhZbvf1ueo
-   g==;
-X-CSE-ConnectionGUID: VuPifvZBQKmqVq7gCtNm5g==
-X-CSE-MsgGUID: x+gw3WqET8anDrSbQDDOPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="32302664"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="32302664"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 06:13:48 -0800
-X-CSE-ConnectionGUID: TSzuK4itT7uwGIE5SU9gLQ==
-X-CSE-MsgGUID: NbRFCr5+S1SZIMX3pTB90g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="90226536"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 06:13:44 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tEUPl-0000000HR60-2nLE;
-	Fri, 22 Nov 2024 16:13:41 +0200
-Date: Fri, 22 Nov 2024 16:13:41 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Wolfram Sang <wsa@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	s=arc-20240116; t=1732286054; c=relaxed/simple;
+	bh=sKt2lY9FZaDQIPP+tg6QnKOT6bguFN3JVTFOTuBaCC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L9sa+uECTpOIuGBw20wzQXfudCZ2hCwqGZufen1DjmJvPKPSRg/RbqVclhU4N9T1+3InyjAOEViF/+aiuj9XYkf/HYw8aYdonSF+c55sQbAlUVHczDkc4UkHljfhWF+x39R6neKGGRJzlqDJ6wGxMQCb2ay8XNW84MzdgMks6dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TX1ZsGJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDFFC4CECF;
+	Fri, 22 Nov 2024 14:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1732286053;
+	bh=sKt2lY9FZaDQIPP+tg6QnKOT6bguFN3JVTFOTuBaCC0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TX1ZsGJTppX5FBGTj35Eq6m6C/o3UHlcwXE5dfsyGtvWWixoGNWzVqZYkhybN1B9j
+	 Ml2uUFHbjWgXfoSUh1IniRgUJu2KHJszbyvbf6S41pqhAhMBoTYuWeB3dBPRdGktMe
+	 hUItWAjkkaDvTxldrsJA7HbmfNb1W2S0OORHWHes=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] i2c: atr: A few i2c-atr fixes
-Message-ID: <Z0CRlaNtKgApH9SI@smile.fi.intel.com>
-References: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.12.1
+Date: Fri, 22 Nov 2024 15:33:45 +0100
+Message-ID: <2024112234-circle-number-6388@gregkh>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 22, 2024 at 02:26:17PM +0200, Tomi Valkeinen wrote:
-> The last two are perhaps not strictly fixes, as they essentially add
-> support for nested ATRs. The first one is a fix, thus stable is in cc.
+I'm announcing the release of the 6.12.1 kernel.
 
-Other than SoB chain issues, code wise LGTM,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+All users of the 6.12 kernel series must upgrade.
 
--- 
-With Best Regards,
-Andy Shevchenko
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                           |    2 +-
+ drivers/media/usb/uvc/uvc_driver.c |    2 +-
+ mm/mmap.c                          |   13 ++++++++++++-
+ net/vmw_vsock/hyperv_transport.c   |    1 +
+ 4 files changed, 15 insertions(+), 3 deletions(-)
+
+Benoit Sevens (1):
+      media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.1
+
+Hyunwoo Kim (1):
+      hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+
+Liam R. Howlett (1):
+      mm/mmap: fix __mmap_region() error handling in rare merge failure case
 
 
