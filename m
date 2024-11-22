@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30039D6003
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 14:52:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378349D6004
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 14:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 321B2B231B0
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:52:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AA7BB224AD
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB677083F;
-	Fri, 22 Nov 2024 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5F473501;
+	Fri, 22 Nov 2024 13:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VkjP7pdk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjKGCj2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF712E7F
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6CF12E7F
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 13:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732283510; cv=none; b=P6wLZJ7ggHAZaaRHwVmTaEDlG/AQJpL/IbS3GdSb/NxCpQibLRqsD4/fKzGewWNVqklx0W2V68ZWSVCg+x2SbnZ5GQ7/uXLFVX7WYMTCPQMrFtpbuKoUEuj5Pf35I4M1RSq/5QlHvD/ArbCfNvFVc2LzLR9MvHdChHer2mfiyzs=
+	t=1732283512; cv=none; b=BT3/dLGurmJMTaEk6EnfIkiCfBe4O8wxWdye4W0zNyvb0wD8yYr/dMIgiPOy1Y353Pw+zXnN7j8djklwGb9E/OwMj34lGHhEewH/hiq+VZjwiNWrDfWcxqVXdXNidxYLASYPvjbmjbHYXz2SwUV/kt+XClUShPxH3S5wLZZCJrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732283510; c=relaxed/simple;
-	bh=d8PE0xuu+0T6zsiyZPvTR42il1pubvKmFVMftRMxP0k=;
+	s=arc-20240116; t=1732283512; c=relaxed/simple;
+	bh=b06kHRAaCF0am7imBtytRwXZ1zW6G/BnRq3D28QCbTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1bXxUWSgHQGb/RBauKJ3eBNnn4YQe6BUNTZh4jh0WE0gr/QbWeZL3u1jsnq7vqmLSm5S39VpMeZ/l7uXS8t4RH5ezVjI/LgShk2GQ6TpGQ4ra+jWW/CqfdV/FaTTQl+Z7TTXAouF4JRtYKNf3hiT/ufHXo2hX7CAk46O9pr99A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VkjP7pdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97AFC4CECE;
-	Fri, 22 Nov 2024 13:51:49 +0000 (UTC)
+	 MIME-Version; b=P6MSvmrytOmAqKesaA/tpFg2dNMvsUsEh5jV/UzeYQbLu14wVY9BQyl7035Z3D3srfaYPNBcACieTW7YXm5XEP1RqnrZdwXlMOnth1PKKghAdwE5NeXojoTsUX6pH3Qe6vBRfGzrd70KYKdrIY2eh0ruDwILtjOak7FxCGKWX88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjKGCj2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BE7C4CECF;
+	Fri, 22 Nov 2024 13:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732283510;
-	bh=d8PE0xuu+0T6zsiyZPvTR42il1pubvKmFVMftRMxP0k=;
+	s=k20201202; t=1732283512;
+	bh=b06kHRAaCF0am7imBtytRwXZ1zW6G/BnRq3D28QCbTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkjP7pdkDxhflpHoe0a5HxKTyHT9Zwi2X0NH77cQA+7z/4Yz8ZZd0vvNCDGUKDMFA
-	 qeGZU6KsN00wV9telf18vbzqKP/OkkLj9ARpkaFCGE9JjdTdXmBSUt2GSQUuwpctsZ
-	 hehPs8FG0Vro6J+0I6EJcPN7Uudg7B1LfVSM4dVByfYg1K5RWvnGX9KX02+AXUDsxr
-	 gWGRXMWwXtRwj+z9efPNU5sYgsk+CJ4/XBM2a6oz+UBjkb7dSz5f36Ae8Tu8R+2uzE
-	 cPUKj4O2Rm1pT+PkeJ8frYUfE7NJmQ+cr5pt8k9iI4wSmoxDzFjmjUqqzOoYOKMixs
-	 c5q/Dp/jlQc2w==
+	b=EjKGCj2B5Iw+osmXZy7vXD1qrddZnrgxGsA5qYYtyYJM94Img88VOeWxnt+zUVN2+
+	 ctUwIFH7q2lSz/D3OEBSp1A6Hm/FHdBd6hviEU+NYq4HMIAuwmhUSzIXxWXYyVfRoP
+	 cXFtPMGK1N5qaoQqvYMYy9P65OcFnfMzcWLiBE01VZb9WfP3Y8Gxe90lShTjAs/xbP
+	 80rc7JlFrEdLQvSak13NdycgAp56TNa72L8aSlkuu2gGi/TgUXhM38D8XvDWnnNsn5
+	 62mLkXvrNvwdfbUQxJD6ZUdpUYlqvVWrekvWSdJ1oUgf+f/A2GarhQkMJuHTaRJ1Sf
+	 hmns/B8ZGvlog==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] serial: sc16is7xx: fix invalid FIFO access with special register set
-Date: Fri, 22 Nov 2024 08:51:51 -0500
-Message-ID: <20241122083859-cb96d612097100e8@stable.kernel.org>
+Subject: Re: [PATCH 6.1] net: fix crash when config small gso_max_size/gso_ipv4_max_size
+Date: Fri, 22 Nov 2024 08:51:53 -0500
+Message-ID: <20241122084559-4fde08dbbd648221@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241122071656.3885283-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241122031809.3853183-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,70 +63,64 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 7d3b793faaab1305994ce568b59d61927235f57b
+The upstream commit SHA1 provided is correct: 9ab5cf19fb0e4680f95e506d6c544259bf1111c4
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Commit author: Wang Liang <wangliang74@huawei.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Not found
+6.11.y | Present (different SHA1: e72fd1389a53)
+6.6.y | Present (different SHA1: ac5977001eee)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-22 08:33:28.655200931 -0500
-+++ /tmp/tmp.UrRvkZ4s0A	2024-11-22 08:33:28.646962417 -0500
+--- -	2024-11-22 08:40:39.766289882 -0500
++++ /tmp/tmp.58u8agz5Rn	2024-11-22 08:40:39.760746269 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 7d3b793faaab1305994ce568b59d61927235f57b ]
++[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
 +
- When enabling access to the special register set, Receiver time-out and
- RHR interrupts can happen. In this case, the IRQ handler will try to read
- from the FIFO thru the RHR register at address 0x00, but address 0x00 is
-@@ -22,25 +24,28 @@
- Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
- Link: https://lore.kernel.org/r/20240723125302.1305372-3-hugo@hugovil.com
- Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-+[ Resolve minor conflicts ]
+ Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
+ in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
+ because sk->sk_gso_max_size would be much bigger than device limits.
+@@ -18,15 +20,17 @@
+ Reviewed-by: Eric Dumazet <edumazet@google.com>
+ Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
+ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
++[ Resolve minor conflicts to fix CVE-2024-50258 ]
 +Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
  ---
-- drivers/tty/serial/sc16is7xx.c | 4 ++++
-- 1 file changed, 4 insertions(+)
-+ drivers/tty/serial/sc16is7xx.c | 5 +++++
-+ 1 file changed, 5 insertions(+)
+- net/core/rtnetlink.c | 4 ++--
+- 1 file changed, 2 insertions(+), 2 deletions(-)
++ net/core/rtnetlink.c | 2 +-
++ 1 file changed, 1 insertion(+), 1 deletion(-)
  
- diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
--index 58696e05492ca..b4c1798a1df2a 100644
-+index a723df9b37dd..c07baf5d5a9c 100644
- --- a/drivers/tty/serial/sc16is7xx.c
- +++ b/drivers/tty/serial/sc16is7xx.c
--@@ -592,6 +592,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
-+@@ -545,6 +545,9 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
-  			      SC16IS7XX_MCR_CLKSEL_BIT,
-  			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
-  
-++
- +	mutex_lock(&one->efr_lock);
- +
-- 	/* Backup LCR and access special register set (DLL/DLH) */
-- 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
-+ 	/* Open the LCR divisors for configuration */
-  	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
--@@ -606,6 +608,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
-- 	/* Restore LCR and access to general register set */
-+ 			     SC16IS7XX_LCR_CONF_MODE_A);
-+@@ -558,6 +561,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
-+ 	/* Put LCR back to the normal mode */
-  	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
-  
- +	mutex_unlock(&one->efr_lock);
-@@ -48,3 +53,6 @@
-  	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
-  }
-  
+ diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+-index e30e7ea0207d0..2ba5cd965d3fa 100644
++index afb52254a47e..45c54fb9ad03 100644
+ --- a/net/core/rtnetlink.c
+ +++ b/net/core/rtnetlink.c
+-@@ -2032,7 +2032,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
++@@ -1939,7 +1939,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+  	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
+  	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
+  	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
+@@ -35,12 +39,6 @@
+  	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+  	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
+  	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+-@@ -2057,7 +2057,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+- 	[IFLA_TSO_MAX_SIZE]	= { .type = NLA_REJECT },
+- 	[IFLA_TSO_MAX_SEGS]	= { .type = NLA_REJECT },
+- 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
+--	[IFLA_GSO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
+-+	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
+- 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
+- };
+- 
 +-- 
 +2.43.0
 +
