@@ -1,176 +1,323 @@
-Return-Path: <stable+bounces-94632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A209D6467
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 20:07:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A773D9D648E
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 20:26:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B0E283462
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 19:07:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EDEF1606B4
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 19:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB371DF250;
-	Fri, 22 Nov 2024 19:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954D01DF24D;
+	Fri, 22 Nov 2024 19:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBC/nEAl"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395001632C9
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 19:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E5F64A8F
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 19:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732302450; cv=none; b=AuaUQw+25SW/I2Po6o81FPq2gW7PoxYUn2LTCP/k768Eqw2DjjUFOKdUPjXtYARSzQv40amDYC9STelHPohlbpMALql/F8n9p3xsSEJ4P22z2etU6SeK6iWKTYvPDoEgIW8gn4LjgVJsdEFeZtLhZXxTJMsvy5tkgBXDYslo1yo=
+	t=1732303583; cv=none; b=dwIWV4HVjydSWZEh4YflPJOQexAft1QjZGMFnD9y8rTprAy2A4TAH7WZ3js27z2z6j+CaOpZGNF+sVVkKwLPZpz97eh9lEeuFRh2fO0vDHMyM6oWIFDK66QBpvr5bInrtAAPySE5O9w+9BIi2hDo9ct7S/TvrE+4i7vLhdS75TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732302450; c=relaxed/simple;
-	bh=rj8oaKqavdn8ZuuGIHe/zuWcG/wwuIthrYkaB9p/GtI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hvJWMjTsItw+HxBRLSlwyYUM4xK4Suq/McUSP5D9yxtGfcQkQEvq1kMFwWzEc/5OHCSBIpAkUGtYVosMZ+i76Pfrf59VyDWRe1SmF9TDNWJ139dVBVGw73Mvvdqs3rvb4IgdPHyoA8Clft3AUW6JEW+h5tc+CQRhHM+7dtm5trw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id 6D21D233A5;
-	Fri, 22 Nov 2024 22:07:19 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org
-Cc: lvc-project@linuxtesting.org,
-	nickel@altlinux.org,
-	dutyrok@altlinux.org,
-	gerben@altlinux.org,
-	kovalev@altlinux.org
-Subject: [PATCH 5.10.y] scsi: core: Fix scsi_mode_sense() buffer length handling
-Date: Fri, 22 Nov 2024 22:07:02 +0300
-Message-Id: <20241122190702.230010-2-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20241122190702.230010-1-kovalev@altlinux.org>
-References: <20241122190702.230010-1-kovalev@altlinux.org>
+	s=arc-20240116; t=1732303583; c=relaxed/simple;
+	bh=PXL5b+A1gbG8Q2hfDqBEP8b3R/ZSEYfS+rLwQDVAj08=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UXrrYV6hqTJKF5MaA/oj0jyc8u+MM3vNfewK0M+VRMGDiidltwKq390qyBkvSBek4w2o76yvbyfhQV/qqEaa7ZM7VVJ1ul0/7ZRuCnCGJ+DUhZZg5bu5GtsiuMnwp+2gfUw4Ny+5ck089GvxfIwf7I5MY8EYJvH58zV9DQg06fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBC/nEAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467E2C4CECE;
+	Fri, 22 Nov 2024 19:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732303582;
+	bh=PXL5b+A1gbG8Q2hfDqBEP8b3R/ZSEYfS+rLwQDVAj08=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kBC/nEAlfdwbgWU+dHPDdZ2ZKUCO2DDmVU01xbF0QKeNa+RUY/6ufVC4nRAohNIMS
+	 dU7oL5chFnGLMzVZxsp2M2idXBrrhiUuui7XOte2nFU+zl+zh/757uCBwECGjtT7lx
+	 aqldV4nCimVIgBACu3UuNhTbz7Oz01epLsYrCunM49P9+pB6wYa6Qz8Kyg797bdX9f
+	 qpMMaK6jD/TZXWmt2wcLEpQ7gTRIvCtUMGj0aT7LbCI/xwhX2O/SPQpRik6J2U3KCG
+	 bYqBhgtmA1CMMNOtclWLu7gEjUV1UCfcaIS4uGEreTomY6jhU56I/qBtZBVuSE/D5I
+	 L9jPt4bw+t3Ow==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] xhci: dbc: Fix STALL transfer event handling
+Date: Fri, 22 Nov 2024 14:26:20 -0500
+Message-ID: <20241122123135-6b1f0b22c638f323@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241122154146.3694205-1-mathias.nyman@linux.intel.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <damien.lemoal@wdc.com>
+[ Sasha's backport helper bot ]
 
-commit 17b49bcbf8351d3dbe57204468ac34f033ed60bc upstream.
+Hi,
 
-Several problems exist with scsi_mode_sense() buffer length handling:
+The upstream commit SHA1 provided is correct: 9044ad57b60b0556d42b6f8aa218a68865e810a4
 
- 1) The allocation length field of the MODE SENSE(10) command is 16-bits,
-    occupying bytes 7 and 8 of the CDB. With this command, access to mode
-    pages larger than 255 bytes is thus possible. However, the CDB
-    allocation length field is set by assigning len to byte 8 only, thus
-    truncating buffer length larger than 255.
 
- 2) If scsi_mode_sense() is called with len smaller than 8 with
-    sdev->use_10_for_ms set, or smaller than 4 otherwise, the buffer length
-    is increased to 8 and 4 respectively, and the buffer is zero filled
-    with these increased values, thus corrupting the memory following the
-    buffer.
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
 
-Fix these 2 problems by using put_unaligned_be16() to set the allocation
-length field of MODE SENSE(10) CDB and by returning an error when len is
-too small.
-
-Furthermore, if len is larger than 255B, always try MODE SENSE(10) first,
-even if the device driver did not set sdev->use_10_for_ms. In case of
-invalid opcode error for MODE SENSE(10), access to mode pages larger than
-255 bytes are not retried using MODE SENSE(6). To avoid buffer length
-overflows for the MODE_SENSE(10) case, check that len is smaller than 65535
-bytes.
-
-While at it, also fix the folowing:
-
- * Use get_unaligned_be16() to retrieve the mode data length and block
-   descriptor length fields of the mode sense reply header instead of using
-   an open coded calculation.
-
- * Fix the kdoc dbd argument explanation: the DBD bit stands for Disable
-   Block Descriptor, which is the opposite of what the dbd argument
-   description was.
-
-Link: https://lore.kernel.org/r/20210820070255.682775-2-damien.lemoal@wdc.com
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Note: The patch differs from the upstream commit:
 ---
- drivers/scsi/scsi_lib.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+--- -	2024-11-22 11:40:04.900767226 -0500
++++ /tmp/tmp.eypkTL84u1	2024-11-22 11:40:04.892785429 -0500
+@@ -28,18 +28,16 @@
+ Closes: https://lore.kernel.org/linux-usb/20240725074857.623299-1-ukaszb@chromium.org/
+ Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+ Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+-Link: https://lore.kernel.org/r/20240905143300.1959279-2-mathias.nyman@linux.intel.com
+-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ---
+- drivers/usb/host/xhci-dbgcap.c | 133 ++++++++++++++++++++-------------
++ drivers/usb/host/xhci-dbgcap.c | 132 ++++++++++++++++++++-------------
+  drivers/usb/host/xhci-dbgcap.h |   2 +-
+- 2 files changed, 83 insertions(+), 52 deletions(-)
++ 2 files changed, 83 insertions(+), 51 deletions(-)
+ 
+ diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+-index 161c09953c4e0..241d7aa1fbc20 100644
++index b40d9238d447..69067015f0d5 100644
+ --- a/drivers/usb/host/xhci-dbgcap.c
+ +++ b/drivers/usb/host/xhci-dbgcap.c
+-@@ -173,16 +173,18 @@ static void xhci_dbc_giveback(struct dbc_request *req, int status)
++@@ -158,16 +158,18 @@ static void xhci_dbc_giveback(struct dbc_request *req, int status)
+  	spin_lock(&dbc->lock);
+  }
+  
+@@ -61,7 +59,7 @@
+  	xhci_dbc_giveback(req, -ESHUTDOWN);
+  }
+  
+-@@ -649,7 +651,6 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
++@@ -637,7 +639,6 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
+  	case DS_DISABLED:
+  		return;
+  	case DS_CONFIGURED:
+@@ -69,8 +67,8 @@
+  		if (dbc->driver->disconnect)
+  			dbc->driver->disconnect(dbc);
+  		break;
+-@@ -669,6 +670,23 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
+- 	pm_runtime_put_sync(dbc->dev); /* note, was self.controller */
++@@ -657,6 +658,23 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
++ 	}
+  }
+  
+ +static void
+@@ -93,7 +91,7 @@
+  static void
+  dbc_handle_port_status(struct xhci_dbc *dbc, union xhci_trb *event)
+  {
+-@@ -697,6 +715,7 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
++@@ -685,6 +703,7 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+  	struct xhci_ring	*ring;
+  	int			ep_id;
+  	int			status;
+@@ -101,7 +99,7 @@
+  	u32			comp_code;
+  	size_t			remain_length;
+  	struct dbc_request	*req = NULL, *r;
+-@@ -706,8 +725,30 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
++@@ -694,8 +713,30 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+  	ep_id		= TRB_TO_EP_ID(le32_to_cpu(event->generic.field[3]));
+  	dep		= (ep_id == EPID_OUT) ?
+  				get_out_ep(dbc) : get_in_ep(dbc);
+@@ -132,7 +130,7 @@
+  	switch (comp_code) {
+  	case COMP_SUCCESS:
+  		remain_length = 0;
+-@@ -718,31 +759,49 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
++@@ -706,31 +747,49 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+  	case COMP_TRB_ERROR:
+  	case COMP_BABBLE_DETECTED_ERROR:
+  	case COMP_USB_TRANSACTION_ERROR:
+@@ -198,7 +196,7 @@
+  	ring->num_trbs_free++;
+  	req->actual = req->length - remain_length;
+  	xhci_dbc_giveback(req, status);
+-@@ -762,7 +821,6 @@ static void inc_evt_deq(struct xhci_ring *ring)
++@@ -750,7 +809,6 @@ static void inc_evt_deq(struct xhci_ring *ring)
+  static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+  {
+  	dma_addr_t		deq;
+@@ -206,7 +204,7 @@
+  	union xhci_trb		*evt;
+  	u32			ctrl, portsc;
+  	bool			update_erdp = false;
+-@@ -814,43 +872,17 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
++@@ -802,43 +860,17 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+  			return EVT_DISC;
+  		}
+  
+@@ -253,16 +251,8 @@
+  	default:
+  		dev_err(dbc->dev, "Unknown DbC state %d\n", dbc->state);
+  		break;
+-@@ -939,7 +971,6 @@ static const char * const dbc_state_strings[DS_MAX] = {
+- 	[DS_ENABLED] = "enabled",
+- 	[DS_CONNECTED] = "connected",
+- 	[DS_CONFIGURED] = "configured",
+--	[DS_STALLED] = "stalled",
+- };
+- 
+- static ssize_t dbc_show(struct device *dev,
+ diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+-index 0118c6288a3cc..97c5dc290138b 100644
++index 76170d7a7e7c..2de0dc49a3e9 100644
+ --- a/drivers/usb/host/xhci-dbgcap.h
+ +++ b/drivers/usb/host/xhci-dbgcap.h
+ @@ -81,7 +81,6 @@ enum dbc_state {
+@@ -270,10 +260,10 @@
+  	DS_CONNECTED,
+  	DS_CONFIGURED,
+ -	DS_STALLED,
+- 	DS_MAX
+  };
+  
+-@@ -90,6 +89,7 @@ struct dbc_ep {
++ struct dbc_ep {
++@@ -89,6 +88,7 @@ struct dbc_ep {
+  	struct list_head		list_pending;
+  	struct xhci_ring		*ring;
+  	unsigned int			direction:1;
+@@ -281,3 +271,6 @@
+  };
+  
+  #define DBC_QUEUE_SIZE			16
++-- 
++2.25.1
++
+---
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 64ae7bc2de604..0a9db3464fd48 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -2068,7 +2068,7 @@ EXPORT_SYMBOL_GPL(scsi_mode_select);
- /**
-  *	scsi_mode_sense - issue a mode sense, falling back from 10 to six bytes if necessary.
-  *	@sdev:	SCSI device to be queried
-- *	@dbd:	set if mode sense will allow block descriptors to be returned
-+ *	@dbd:	set to prevent mode sense from returning block descriptors
-  *	@modepage: mode page being requested
-  *	@buffer: request buffer (may not be smaller than eight bytes)
-  *	@len:	length of request buffer.
-@@ -2103,18 +2103,18 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 		sshdr = &my_sshdr;
- 
-  retry:
--	use_10_for_ms = sdev->use_10_for_ms;
-+	use_10_for_ms = sdev->use_10_for_ms || len > 255;
- 
- 	if (use_10_for_ms) {
--		if (len < 8)
--			len = 8;
-+		if (len < 8 || len > 65535)
-+			return -EINVAL;
- 
- 		cmd[0] = MODE_SENSE_10;
--		cmd[8] = len;
-+		put_unaligned_be16(len, &cmd[7]);
- 		header_length = 8;
- 	} else {
- 		if (len < 4)
--			len = 4;
-+			return -EINVAL;
- 
- 		cmd[0] = MODE_SENSE;
- 		cmd[4] = len;
-@@ -2139,8 +2139,14 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 			if ((sshdr->sense_key == ILLEGAL_REQUEST) &&
- 			    (sshdr->asc == 0x20) && (sshdr->ascq == 0)) {
- 				/*
--				 * Invalid command operation code
-+				 * Invalid command operation code: retry using
-+				 * MODE SENSE(6) if this was a MODE SENSE(10)
-+				 * request, except if the request mode page is
-+				 * too large for MODE SENSE single byte
-+				 * allocation length field.
- 				 */
-+				if (len > 255)
-+					return -EIO;
- 				sdev->use_10_for_ms = 0;
- 				goto retry;
- 			}
-@@ -2158,12 +2164,11 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
- 			data->longlba = 0;
- 			data->block_descriptor_length = 0;
- 		} else if (use_10_for_ms) {
--			data->length = buffer[0]*256 + buffer[1] + 2;
-+			data->length = get_unaligned_be16(&buffer[0]) + 2;
- 			data->medium_type = buffer[2];
- 			data->device_specific = buffer[3];
- 			data->longlba = buffer[4] & 0x01;
--			data->block_descriptor_length = buffer[6]*256
--				+ buffer[7];
-+			data->block_descriptor_length = get_unaligned_be16(&buffer[6]);
- 		} else {
- 			data->length = buffer[0] + 1;
- 			data->medium_type = buffer[1];
--- 
-2.33.8
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+| stable/linux-6.11.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Success    |  Failed    |
+| stable/linux-6.1.y        |  Success    |  Failed    |
+| stable/linux-5.15.y       |  Success    |  Failed    |
+| stable/linux-5.10.y       |  Success    |  Failed    |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
+| stable/linux-4.19.y       |  Failed     |  N/A       |
+
+Build Errors:
+Build error for stable/linux-6.6.y:
+    lib/test_dhry.o: warning: objtool: dhry() falls through to next function dhry_run_set.cold()
+    drivers/usb/host/xhci-dbgcap.c: In function 'dbc_show':
+    drivers/usb/host/xhci-dbgcap.c:976:14: error: 'DS_STALLED' undeclared (first use in this function); did you mean 'DS_ENABLED'?
+      976 |         case DS_STALLED:
+          |              ^~~~~~~~~~
+          |              DS_ENABLED
+    drivers/usb/host/xhci-dbgcap.c:976:14: note: each undeclared identifier is reported only once for each function it appears in
+    make[5]: *** [scripts/Makefile.build:243: drivers/usb/host/xhci-dbgcap.o] Error 1
+    make[5]: Target 'drivers/usb/host/' not remade because of errors.
+    make[4]: *** [scripts/Makefile.build:480: drivers/usb/host] Error 2
+    make[4]: Target 'drivers/usb/' not remade because of errors.
+    make[3]: *** [scripts/Makefile.build:480: drivers/usb] Error 2
+    make[3]: Target 'drivers/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:480: drivers] Error 2
+    make[2]: Target './' not remade because of errors.
+    make[1]: *** [/home/sasha/build/linus-next/Makefile:1921: .] Error 2
+    make[1]: Target '__all' not remade because of errors.
+    make: *** [Makefile:234: __sub-make] Error 2
+    make: Target '__all' not remade because of errors.
+
+Build error for stable/linux-6.1.y:
+    drivers/usb/host/xhci-dbgcap.c: In function 'dbc_show':
+    drivers/usb/host/xhci-dbgcap.c:976:14: error: 'DS_STALLED' undeclared (first use in this function); did you mean 'DS_ENABLED'?
+      976 |         case DS_STALLED:
+          |              ^~~~~~~~~~
+          |              DS_ENABLED
+    drivers/usb/host/xhci-dbgcap.c:976:14: note: each undeclared identifier is reported only once for each function it appears in
+    make[4]: *** [scripts/Makefile.build:250: drivers/usb/host/xhci-dbgcap.o] Error 1
+    make[4]: Target 'drivers/usb/host/' not remade because of errors.
+    make[3]: *** [scripts/Makefile.build:503: drivers/usb/host] Error 2
+    make[3]: Target 'drivers/usb/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:503: drivers/usb] Error 2
+    make[2]: Target 'drivers/' not remade because of errors.
+    make[1]: *** [scripts/Makefile.build:503: drivers] Error 2
+    make[1]: Target './' not remade because of errors.
+    make: *** [Makefile:2009: .] Error 2
+    make: Target '__all' not remade because of errors.
+
+Build error for stable/linux-5.15.y:
+    drivers/usb/host/xhci-dbgcap.c: In function 'dbc_show':
+    drivers/usb/host/xhci-dbgcap.c:976:14: error: 'DS_STALLED' undeclared (first use in this function); did you mean 'DS_ENABLED'?
+      976 |         case DS_STALLED:
+          |              ^~~~~~~~~~
+          |              DS_ENABLED
+    drivers/usb/host/xhci-dbgcap.c:976:14: note: each undeclared identifier is reported only once for each function it appears in
+    make[3]: *** [scripts/Makefile.build:289: drivers/usb/host/xhci-dbgcap.o] Error 1
+    make[3]: Target '__build' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:552: drivers/usb/host] Error 2
+    make[2]: Target '__build' not remade because of errors.
+    make[1]: *** [scripts/Makefile.build:552: drivers/usb] Error 2
+    make[1]: Target '__build' not remade because of errors.
+    make: *** [Makefile:1906: drivers] Error 2
+    make: Target '__all' not remade because of errors.
+
+Build error for stable/linux-5.10.y:
+    In file included from ./include/linux/kernel.h:15,
+                     from ./include/linux/list.h:9,
+                     from ./include/linux/kobject.h:19,
+                     from ./include/linux/of.h:17,
+                     from ./include/linux/clk-provider.h:9,
+                     from drivers/clk/qcom/clk-rpmh.c:6:
+    drivers/clk/qcom/clk-rpmh.c: In function 'clk_rpmh_bcm_send_cmd':
+    ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer types lacks a cast [-Wcompare-distinct-pointer-types]
+       20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+          |                                   ^~
+    ./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
+       26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+          |                  ^~~~~~~~~~~
+    ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
+       36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+          |                               ^~~~~~~~~~
+    ./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
+       45 | #define min(x, y)       __careful_cmp(x, y, <)
+          |                         ^~~~~~~~~~~~~
+    drivers/clk/qcom/clk-rpmh.c:273:21: note: in expansion of macro 'min'
+      273 |         cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
+          |                     ^~~
+    In file included from ./include/linux/mm.h:30,
+                     from ./include/linux/pagemap.h:8,
+                     from ./include/linux/buffer_head.h:14,
+                     from fs/udf/udfdecl.h:12,
+                     from fs/udf/super.c:41:
+    fs/udf/super.c: In function 'udf_fill_partdesc_info':
+    ./include/linux/overflow.h:70:22: warning: comparison of distinct pointer types lacks a cast [-Wcompare-distinct-pointer-types]
+       70 |         (void) (&__a == &__b);                  \
+          |                      ^~
+    fs/udf/super.c:1155:21: note: in expansion of macro 'check_add_overflow'
+     1155 |                 if (check_add_overflow(map->s_partition_len,
+          |                     ^~~~~~~~~~~~~~~~~~
+    drivers/usb/host/xhci-dbgcap.c: In function 'dbc_show':
+    drivers/usb/host/xhci-dbgcap.c:1029:14: error: 'DS_STALLED' undeclared (first use in this function); did you mean 'DS_ENABLED'?
+     1029 |         case DS_STALLED:
+          |              ^~~~~~~~~~
+          |              DS_ENABLED
+    drivers/usb/host/xhci-dbgcap.c:1029:14: note: each undeclared identifier is reported only once for each function it appears in
+    make[3]: *** [scripts/Makefile.build:286: drivers/usb/host/xhci-dbgcap.o] Error 1
+    make[3]: Target '__build' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:503: drivers/usb/host] Error 2
+    make[2]: Target '__build' not remade because of errors.
+    make[1]: *** [scripts/Makefile.build:503: drivers/usb] Error 2
+    make[1]: Target '__build' not remade because of errors.
+    make: *** [Makefile:1832: drivers] Error 2
+    make: Target '__all' not remade because of errors.
 
