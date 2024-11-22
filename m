@@ -1,130 +1,145 @@
-Return-Path: <stable+bounces-94570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144959D596A
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:32:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171119D5977
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 700F6B21260
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 06:32:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94818B217E1
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 06:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796C3156C40;
-	Fri, 22 Nov 2024 06:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A14F165EE3;
+	Fri, 22 Nov 2024 06:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NYp/1fHE"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="Tk+f+zhq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356782582;
-	Fri, 22 Nov 2024 06:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732257121; cv=none; b=MWLsjcHhT/Mp0m0cThv5WK9VGE9Z9tB8YUjHSKYiDqVT4T3bBOhL8eZh6ha5FyDclsn/PO1AWrzdMDKVKYqd/difD/evanMOtJtXLSnGayBoPrwq13af7JGPYsTC2Zjjh6RYVHFmeBxPXygyN5VhE+UMkcnpIe/B+SKjfMdmx14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732257121; c=relaxed/simple;
-	bh=KeeCZfXqK0ofg1e9izwao4kKcz80oKRDdCc+p86Vg4A=;
-	h=Date:To:From:Subject:Message-Id; b=JLetO5MKpf9GGcxwXwMS0dMLVL9hZA0I98yUPRe2iXKDqMFQu9aQLlFG6T5mzAC4gojKbNLg6R9nEZCcIp58SzHdfjFmlqKdai+TAXnHhRaA02CVCYx5h2fnFm/3qWzmmL3BXhhZ+YZnhsb5tFmEEqzmkVSXH7/eGzEx6GLHz2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NYp/1fHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE9AC4CECE;
-	Fri, 22 Nov 2024 06:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732257120;
-	bh=KeeCZfXqK0ofg1e9izwao4kKcz80oKRDdCc+p86Vg4A=;
-	h=Date:To:From:Subject:From;
-	b=NYp/1fHEvI5VzL1679dB/5uH9lxsnJZVNGKvHE00875PSMbgex9u2QArc1XorderV
-	 iUp2tP77F7oOZcrh4PqQCMX7xAoe9gJkX0xeOwImK11XioCh50KnZG2RRuRfpH8iNe
-	 +DKw5cUOD74wr2aw6Qf9K+kC2nWmXkMI5zl2tOyI=
-Date: Thu, 21 Nov 2024 22:31:56 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241122063159.EDE9AC4CECE@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD9E15ADA6;
+	Fri, 22 Nov 2024 06:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732257756; cv=pass; b=i6cNmmrKQzNaF8txLLVzfRltX2+V0K5pzRfaye6mO4YldYjLIt7VBDU/df0xjcu5xRfqYsOvFbDpRdg9pJhSXQQSZLxALWCioKCCD2g/zXQEj0dMy9kQ7vvcYrKVQyzgjsj/I/o5wMCs/pdsm/fe6+AwOkpq0uuZVSTSy1ZM5Fc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732257756; c=relaxed/simple;
+	bh=ccS5uzdA+NpcFx+0susH6B6MQETEJMM9B7dY3s7kHHI=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XLF3LAmuPy/V8oZV1emVVd5TlbsOM+bFnsStHSwhiGYFCkIUywVX7fVJW3TYJ2lUZJ6+FO5jotF1n34uaThUPNNamPVavpIdSor29w4GzIarb6Efm09KCteGjMC3wkFczidNDC94WvMAbjHKOEMcdxFE3Gc6BeA1YSu/ecQ2xGs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=Tk+f+zhq; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1732257718; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=F8V/3SxLThF4uDzf4ZAvZeYemCZQqLWvKE7O86BbdaSas5BI1JaVipBxql3N1hCskT9nGVQiFI4Q3r6TQbGMLNr/kc/skjtIf+wdiQ42e/kEiOkCMzqxi4j0hRbkSNNnyOKqWYkH3NFrBRZBqmHqLdaSYYxdE5EnJAHGs2UCVSY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732257718; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TFCY7JSiulxOM4RxH9esu0nVAam2cJYGCZxPLxjBqtA=; 
+	b=oHD9rwDH97e103oeu3PuqbCQRWtZruQFfSomekaw4K4pK5vuNyIN4kgv8KhDTm+MTsDmJFy75VXuPspPq3faT5l6+1KpIEGZNP1WxeJjd9jg+MPsiDTRUVihMdWT79aip5Fx7GEC4vm/UGq6jhxwXs/MvMkpQNV3bG67BYEY4dw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732257718;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=TFCY7JSiulxOM4RxH9esu0nVAam2cJYGCZxPLxjBqtA=;
+	b=Tk+f+zhq15pZZrrE4rOVnbtihpKEp21LtWLzXr0KCNApHlb8S4xIrUVZYmQgSf05
+	A9xvkfErFI9U0n1HXgEgk3RMspL2yjgLkYq+mzXSDY7U1txrdTudOByMpv2hAa7RfhN
+	bCFFF/RJDz6QacuENO6hm6Sdy4vFDlB2FI6GBxeQ=
+Received: by mx.zohomail.com with SMTPS id 1732257715792597.6815558261044;
+	Thu, 21 Nov 2024 22:41:55 -0800 (PST)
+Message-ID: <8519e35a-c374-46a4-b814-cd8a19cda276@collabora.com>
+Date: Fri, 22 Nov 2024 11:41:50 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.11 000/107] 6.11.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20241120125629.681745345@linuxfoundation.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20241120125629.681745345@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+
+On 11/20/24 5:55 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.10 release.
+> There are 107 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 Nov 2024 12:56:14 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> -------------
+Hi,
+
+Please find the KernelCI report below :-
+
+OVERVIEW
+
+        Builds: 37 passed, 0 failed
+
+    Boot tests: 504 passed, 1 failed
+
+    CI systems: broonie, maestro
+
+REVISION
+
+    Commit
+        name: v6.11.9-108-gc9b39c48bf4a
+        hash: c9b39c48bf4a40a9445a429ca741a25ba6961cca
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
 
 
-The patch titled
-     Subject: nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch
+BUILDS
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch
+    No build failures found
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+BOOT TESTS
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+    Failures
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+      arm64:(defconfig)
+      -mt8186-corsola-steelix-sku131072
+      CI system: maestro
+	[    9.936547] UBSAN: invalid-load in drivers/gpu/drm/drm_fbdev_dma.c:169:13
+	https://kcidb.kernelci.org/d/test/test?var-datasource=edquppk2ghfcwc&var-origin=maestro&var-build_architecture=$__all&var-build_config_name=$__all&var-id=maestro:673df795923416c0c988c20b&from=now-100y&to=now&timezone=browser&var-test_path=&var-issue_presence=$__all
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
 
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
-Date: Wed, 20 Nov 2024 02:23:37 +0900
+See complete and up-to-date report at:
 
-Syzbot reported that when searching for records in a directory where the
-inode's i_size is corrupted and has a large value, memory access outside
-the folio/page range may occur, or a use-after-free bug may be detected if
-KASAN is enabled.
+    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=c9b39c48bf4a40a9445a429ca741a25ba6961cca&var-patchset_hash=
 
-This is because nilfs_last_byte(), which is called by nilfs_find_entry()
-and others to calculate the number of valid bytes of directory data in a
-page from i_size and the page index, loses the upper 32 bits of the 64-bit
-size information due to an inappropriate type of local variable to which
-the i_size value is assigned.
 
-This caused a large byte offset value due to underflow in the end address
-calculation in the calling nilfs_find_entry(), resulting in memory access
-that exceeds the folio/page size.
+Tested-by: kernelci.org bot <bot@kernelci.org>
 
-Fix this issue by changing the type of the local variable causing the bit
-loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
-is also of type "unsigned int", but it is truncated so as not to exceed
-PAGE_SIZE and no bit loss occurs, so no change is required.
-
-Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
-Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/nilfs2/dir.c~nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry
-+++ a/fs/nilfs2/dir.c
-@@ -70,7 +70,7 @@ static inline unsigned int nilfs_chunk_s
-  */
- static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
- {
--	unsigned int last_byte = inode->i_size;
-+	u64 last_byte = inode->i_size;
- 
- 	last_byte -= page_nr << PAGE_SHIFT;
- 	if (last_byte > PAGE_SIZE)
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch
-
+Thanks,
+KernelCI team
 
