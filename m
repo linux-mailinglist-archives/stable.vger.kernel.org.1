@@ -1,124 +1,145 @@
-Return-Path: <stable+bounces-94596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A4C9D5EC0
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:26:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495B99D5F79
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 14:04:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C85283373
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 12:26:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC961F2216D
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0DB1DE8A7;
-	Fri, 22 Nov 2024 12:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB621DED42;
+	Fri, 22 Nov 2024 13:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="aFwrKQPG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K/P1owA2"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DE41DE2DA;
-	Fri, 22 Nov 2024 12:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC6E1EB39
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 13:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732278407; cv=none; b=GCpWpcjC7JQ9ywRjRPzcxzzizL7UsbBLt71ViD3W7aMP9MDzmZWkXNP5AGFjfwcWk81wX3X3ioeeMZVYahPmSFWBSHyZeRWrOAiA1L5sikB1cktKWGGw+xTTonTWNedG2tfn2t2dl5wtuAKg0hqLN1V+caB1YmvrS+6ab/zP7q8=
+	t=1732280641; cv=none; b=V88oWm3V9RpcoozRHOIClugqiqDhfoKsLYEwT98oWh3P4wDDoC5g3lipl+1KfHpJjoMhNq/++ZpKlYuaXKpRM/2ILfr/56DGZnzeRANtJardy3NdliBZK26cOLbHfigdEc1OxOST1i0ZbyHnELSnY4AtBgpRubvAbdwRTxS+0/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732278407; c=relaxed/simple;
-	bh=IQNWzrAH1iBv5O3e7R2BGgKJIK7yXJflYT7NUyp5gWw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FWgSZV4HRV8RkVOWje/c3+58xNd5ymhvEcjlXblBjsQOnVRbpcFTTLbP1J+HzThtrahErcOmLS/TvQA3F5c0z641l66cQi2ifSmmL727gpodJInrgIgdyFcJtqW560c2jfOsym/qRq8Ue6iHPDn+RyLZQOc/4G+RoSonbjCGisA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=aFwrKQPG; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 724D7F86;
-	Fri, 22 Nov 2024 13:26:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1732278379;
-	bh=IQNWzrAH1iBv5O3e7R2BGgKJIK7yXJflYT7NUyp5gWw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=aFwrKQPGcFrKx1Qm7EXg2iBsQ3XewcTzrzvtteiSc0Mb/4qstKNgXe4GfHc7bjS3y
-	 r0w2g519HKDI3n2WO0W3RmIP7yH63Q/fwwVzo9Z687jjKAOISweGxGxZMKKZ4c24bC
-	 R8un0ys9JrfUw6pDNVpJedoHDQ8GTCoMAKXN4Dd8=
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Fri, 22 Nov 2024 14:26:18 +0200
-Subject: [PATCH v2 1/3] i2c: atr: Fix client detach
+	s=arc-20240116; t=1732280641; c=relaxed/simple;
+	bh=HkyjLPb734aAZvIolW+OLEzvFcUc7H4APut784A9G7U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N3/XzzJt1y4pkEjHJrwz9Sp+NG4TP1oTrK9wDGfde2ZaRsUE50PXtriuOpMSbJ7yytpeCCCJZNXULMZaT+CJpi05loi7Xyv5HWjnY9UxTOoVgP9euul0cjHfj1zVvASvdzJBiyvbkMwRuqDwJ3AKoY2welfmjOsQXiLUUoAvIcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K/P1owA2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732280637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ft4564hHBGkICUTkZjOLlmPFHPv4/CYfCDRSgrLHfNA=;
+	b=K/P1owA2WyQkFBA27jWS8Jgg9Ij0UYZ/80iZgEixAT22sheVfNKAZn9d/3CJ/Mv7ejyOMY
+	n3qn1sO+EjAtGQv9py0uCvofWoEMuVoNbquOBx+rohHoWc1lQWTSsZl0P98EUDcNrUimzT
+	vJ9RukJC53s2/ZNhlC8mKEqJH5Be9B8=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-qHLVCp-wPyeTBgUeqGclBg-1; Fri, 22 Nov 2024 08:03:56 -0500
+X-MC-Unique: qHLVCp-wPyeTBgUeqGclBg-1
+X-Mimecast-MFC-AGG-ID: qHLVCp-wPyeTBgUeqGclBg
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a6b9f3239dso24593125ab.0
+        for <stable@vger.kernel.org>; Fri, 22 Nov 2024 05:03:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732280636; x=1732885436;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ft4564hHBGkICUTkZjOLlmPFHPv4/CYfCDRSgrLHfNA=;
+        b=qbWiGyLZhqjwXwcTdVm/PjNZiy8sFyNBt8R7RrZc3Nz00KJG0q24f85lCWjnYOqRBd
+         OC+e2nXCunouv1hkrdFkxV88AjPIYRQptZfBBOM9Gt1GXHwmAkLCyHWIl651mfUBUC+s
+         jp5kFS/f8ZWuFo8iLZN4U6YsYvcNVUTGokU65feC7Liy/2QIdMMWVKIulh56XRCHIofN
+         iGAENUwzYcYdnm8YNt/V/Pq1KknMh/AAw1i+kilX+X/bVLCbS/u1EgkaezUXIWeGkRvg
+         VHuDdFZo8umk9Y7CD1YyxbWwndOcJSRRSFaNW56r06iP6FES1to710XrIiv8Eovagmpc
+         fNKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEC3OHspL0tVYLPvgfsLUnj4q9SnS7DNjf+tmtdwEjReyPwWib96acCRxxpWQ2g4m+3Ondc9o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU5Vg1Tta8bVa5F10yAJtScbl2hTkyfERwDz3kIbPGZX7cfoMV
+	We/GkVad8DCdzmKdGe/XUld4bVUUEKo8dHmXHvaCxSoCZsFWd6RUiC2aC64ebkJy/CkBjoAwxxy
+	yKYghBpa0PcGlM9B/EA98z26MhVAOHrb3lXIYTGIyGC7R1ycN6gUEa1jjEi23jck9JxdZa58KW3
+	WyK7kFqFrWY+kBqJtFO7gZEUZYzQpu
+X-Gm-Gg: ASbGnctxw66VMx/CoVVvnUBXLsk7hczyBmRhE0I9L0MI4AvYIydw3ixTwqX5RxWqTRO
+	9ic7GWc1vGHMF9LctzgZxCnFCzSD6+psp
+X-Received: by 2002:a05:6e02:4416:10b0:3a7:a4ec:6cfc with SMTP id e9e14a558f8ab-3a7a4ec6eb1mr6221875ab.8.1732280635683;
+        Fri, 22 Nov 2024 05:03:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjBIujeBiiBto12x7Ie0ZkLS7jCkUl1dIw1psG2/yNOJ8YhDHEILctT4OBs1UgwnhG2+2a8NNiGBzHeq0VFf0=
+X-Received: by 2002:a05:6e02:4416:10b0:3a7:a4ec:6cfc with SMTP id
+ e9e14a558f8ab-3a7a4ec6eb1mr6221485ab.8.1732280635355; Fri, 22 Nov 2024
+ 05:03:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-i2c-atr-fixes-v2-1-0acd325b6916@ideasonboard.com>
-References: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
-In-Reply-To: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Wolfram Sang <wsa@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Cosmin Tanislav <demonsingur@gmail.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1208;
- i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=Jmofkmp04A8WontjwcBtEvvZ4qvWTZniF5VxGkU4/yM=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnQHh7xqCe0gcDoAE6qj7Ocv+4zTEfYyAfARISQ
- DBF2DWTbFeJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ0B4ewAKCRD6PaqMvJYe
- 9flkD/43MaZQnc3ShdbKozlEhQ1X6fPbuzKvkSM/Zj2vr6Iff3tE1e5J5/8ogrVGZJO3rp5JDo6
- NgIM+7aFCsAD8wi7WnDxP5sb5aTab/89cXoL0dxnAX+XnWcU7XpzHbjlaeNkAfdalNAh9j1xQhU
- S09EroGWVU9xWbcyUdOYuhQhm6ByNhxToZ40inu0tOExIZr7A9qjhIDLQQzgCdKGXdZq1NNK6O6
- teqG9MYulj3Zh0z5nvnn0cdaC+bZoBTyHGvBY7DvtT1uStvCPP7yHgpY/CPzHIdrIj5c/4n8wcq
- +IHZ9be/gpMsDd+5wH5v5jw4xKt0lKnTXDewjM33HpWEVlJy/b+Cdiw/2mvXILcH2Nmk5ZQykuF
- G+qFUvqrb0diWht0rK/r5EEcxrsQbKRTi8+Ly+CLJzCVNNnMQm9r2ktTDcm+amwe+wM3fZ7zf/Z
- 9cyNsIpF293zVB5laUt8j9kQdFtOKMEqnaMdu9fRSr1OfBptOK0m5uRk6zsMFLM0W1QFg7nFYfq
- 8/26FC9Yy4IR1mRYPs5mE5vT+KembsAWn8VacJTB5EtUI2rgQKwEt6QZCTvTQZij5iAwPsX+oOc
- rrB/mERtANq9EaDH0WxzDA7o1Omc4oqWGfWQ5Y04eAWMxN4a+LRvAIifPZ3HKn53ZmDZERlMFdt
- f5xElXnTOxj+SYA==
-X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
- fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
+References: <20241112185217.48792-1-nsaenz@amazon.com> <20241112185217.48792-2-nsaenz@amazon.com>
+In-Reply-To: <20241112185217.48792-2-nsaenz@amazon.com>
+From: Dave Young <dyoung@redhat.com>
+Date: Fri, 22 Nov 2024 21:03:49 +0800
+Message-ID: <CALu+AoTnrPPFkRZpYDpYxt1gAoQuo_O7YZeLvTZO4qztxgSXHw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Matt Fleming <matt@codeblueprint.co.uk>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stanspas@amazon.de, nh-open-source@amazon.com, 
+	stable@vger.kernel.org, kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Hi,
 
-i2c-atr catches the BUS_NOTIFY_DEL_DEVICE event on the bus and removes
-the translation by calling i2c_atr_detach_client().
+On Wed, 13 Nov 2024 at 02:53, Nicolas Saenz Julienne <nsaenz@amazon.com> wrote:
+>
+> Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+> routine, kexec_enter_virtual_mode(), which replays the mappings made by
+> the original kernel. Unfortunately, that function fails to reinstate
+> EFI's memory attributes, which would've otherwise been set after
+> entering virtual mode. Remediate this by calling
+> efi_runtime_update_mappings() within kexec's routine.
 
-However, BUS_NOTIFY_DEL_DEVICE happens when the device is about to be
-removed from this bus, i.e. before removal, and thus before calling
-.remove() on the driver. If the driver happens to do any i2c
-transactions in its remove(), they will fail.
+In the function __map_region(), there are playing with the flags
+similar to the efi_runtime_update_mappings though it looks a little
+different.  Is this extra callback really necessary?
 
-Fix this by catching BUS_NOTIFY_REMOVED_DEVICE instead, thus removing
-the translation only after the device is actually removed.
+Have you seen a real bug happened?
 
-Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
----
- drivers/i2c/i2c-atr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-atr.c b/drivers/i2c/i2c-atr.c
-index f21475ae5921..0d54d0b5e327 100644
---- a/drivers/i2c/i2c-atr.c
-+++ b/drivers/i2c/i2c-atr.c
-@@ -412,7 +412,7 @@ static int i2c_atr_bus_notifier_call(struct notifier_block *nb,
- 				dev_name(dev), ret);
- 		break;
- 
--	case BUS_NOTIFY_DEL_DEVICE:
-+	case BUS_NOTIFY_REMOVED_DEVICE:
- 		i2c_atr_detach_client(client->adapter, client);
- 		break;
- 
-
--- 
-2.43.0
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TABLE")
+> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+>
+> ---
+>
+> Notes:
+> - Tested with QEMU/OVMF.
+>
+>  arch/x86/platform/efi/efi.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 375ebd78296a..a7ff189421c3 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -765,6 +765,7 @@ static void __init kexec_enter_virtual_mode(void)
+>
+>         efi_sync_low_kernel_mappings();
+>         efi_native_runtime_setup();
+> +       efi_runtime_update_mappings();
+>  #endif
+>  }
+>
+> --
+> 2.40.1
+>
+>
+Thanks
+Dave
 
 
