@@ -1,169 +1,133 @@
-Return-Path: <stable+bounces-94580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315999D5AE7
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 09:18:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38B99D5B20
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 09:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80F12B238EA
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 08:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC831F22D83
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 08:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F4E18BBA2;
-	Fri, 22 Nov 2024 08:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC55018787D;
+	Fri, 22 Nov 2024 08:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="A86UuIKc"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O3CLSVmz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A80418A92E
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 08:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B65165EE6;
+	Fri, 22 Nov 2024 08:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732263473; cv=none; b=NpbGQHc5zRJnWnHzUklo2RiAlLrpia/t8hmWBtzeXrYjFgQwGDR98TxSRl+Qabx+SJPE/T56wUqERFbTST5us9AYp32N/biIJeVrvk7vMzNG9hlT9zUW9IhykXwNdo3C4veTE3ak/Xe5LlSPd6A4UGDXz4P2rshwRZHGiqM5TZk=
+	t=1732264831; cv=none; b=Hz1h1u66XIj83BCj6egET272XKzcnCS32ban1QKrzt6MLoNu9DpjdOHsIFsXLcLAF0O2DHxkYAN58IKf21toOjZmdjfat3Q7UvyCDWWoXDVOSnWFsDe9JJXLYvRbOIQA2hLwpUMWySfzuOvsZLXawHVrzSRhh3po18IMWQH/OlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732263473; c=relaxed/simple;
-	bh=boBUZED71KdfqGSGw6POXs81i1ZDX0l63rl2uX3ndUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNak9Nq0dwXDUfTQf+pokfuYkzM7UJ5QjsvkSUDZPYdqWqvYhAcuwiwUo7Yb3o4wI0IcbScpx1P+69n4RIbzN19VD6ePIo6ge5bTJomsbjkaj+FYuSCRa3+5yO7FNU3rpwO1W1tEH/xHUlRHP37gfspiPayR9e75WORiGHi/vn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=A86UuIKc; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-382433611d0so1460850f8f.3
-        for <stable@vger.kernel.org>; Fri, 22 Nov 2024 00:17:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1732263470; x=1732868270; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3LYPzAVO9GrxpJTZAkUlAwOS3/mbRjtzYaoHCe2V1hE=;
-        b=A86UuIKcJOWnfh6BTs2k6URjFs6JPYkje4N9UR42Y5w6AeZjAJAIOyZ/HkCz06Oc/+
-         EDC77sO7/Cbre4vovx8E9Ti35Mi/AwAp6bgtudslxQ8UEZERUloWohDuus5/mTQ1XEbN
-         Y34K/fUwGzrP4XAfH06qY7xwO4VJjGDL8OJunFQ622uq6Oy46qdyQPAE+Iw6e9G2Phnm
-         1UKINkxuQAo62KkcMBl1UhDm9EvFKdh4Q9Kf4HKAv0cP2xM/Kk9RLj5qizSGqahz7l/P
-         fRwTeGnGPWPoiAHXzn6a+2Ya86EssNz3dBzggB5cnU/kRz3d+unpO/4Q4kLBUqRksCc2
-         J7qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732263470; x=1732868270;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3LYPzAVO9GrxpJTZAkUlAwOS3/mbRjtzYaoHCe2V1hE=;
-        b=im59MxmjrbqIahYIWGPUT727DTY2phbJ5Jiq5lowN+IqIO+EXAeu2ruSI2jZoXCaAn
-         cvdUxsfBgQbqY66NdOy55PmxPxn87kHJ22LiPh0OJrX4KgEdmn4Et8+n1b0xP0vSP3sf
-         e+ExryqCFqf0hGxzZ1Ly/ml1xj9kA7g6VUlknRLUooxRmBLMJR+8FL1rr5SwMJKBc74c
-         XSNMFixQLCaXh0Kox2+3qF/EpxzVardaJXiDG55Xd+0/hx1jS3keqDsnHf8z5p9bs0fH
-         I9KmeduSNGuzY76a6crYTgSLP90YjNlnAxoWD3k7t4xlk80fGU4T8Xsft2ckw6hS4JkI
-         JLNw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/+AGxiH8MFY1GjuhxFlhfjVsvymvxYJtzCbKCM0AwtJ22arvrL0sG59IxyE+LDkKrqk81xSQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6Xr4PyMzim9IJ2X8q02/17dRo7RDbQ7F4yHOnpII+d60iYZO0
-	MdYdXVMt8LBDB2DJI+VIGU9mcfp4fjWXgs8W4fPgiZTYZJJFnSVUAjNPL1jbDMQ=
-X-Gm-Gg: ASbGncsHVtOIi9f9vkwNa99/iMxrr4XL3VVs1L5d7LkzXnh4YWLjeEPvaZkAPjzYrfb
-	BdoNi+WeHErt8pbtKSpKDAKNzSVeXF7QS/wtmW5Fg6SDwZBfDKPne9nud+5f4OifxelIzaTE5qz
-	E8ON3rIk/V5EDICqP/Im5QJl8ZKohek1u1osbTBLjuapKCAYr0X7axl5WruEuKmL+rJXTO85ySO
-	H0MAG2iUqKablqVUGZEz8h3egyXfIfHpf3oVkomU6xrxDlaCYIPZJ1Gww==
-X-Google-Smtp-Source: AGHT+IG24uth11H3seaGIlK86z9Idb5xroXboR3d9BNbuTnG7ATgertZjJsq4KPOn8S8cOPUQJ6gqw==
-X-Received: by 2002:a05:6000:2d02:b0:382:504d:31d with SMTP id ffacd0b85a97d-38260bc79f6mr1467237f8f.40.1732263469676;
-        Fri, 22 Nov 2024 00:17:49 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fbc44f7sm1755264f8f.82.2024.11.22.00.17.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2024 00:17:49 -0800 (PST)
-Message-ID: <bf8aa2ca-8a5e-4484-8f93-c74b7c6e0db9@tuxon.dev>
-Date: Fri, 22 Nov 2024 10:17:46 +0200
+	s=arc-20240116; t=1732264831; c=relaxed/simple;
+	bh=NuIAn4WN9tuE3Z3+e4/LD9vBt0vhTMGMlYSG0sjGT6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lovGkoGvILFUNpANtoUQwnhK0g51xkiD6Rnb0oaNcLNan8lQ8zqFuuP9j5Tzff5uAa7ihcEq63eFVVCpgPS9B9BGmPGr1WCMLfce6I5f8YLVPJZAJSYzdyps7KZQQm15Qgx19g0yIfAb1Vi2yxCwF5nZT2d3OtwnQP3el2rZI5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O3CLSVmz; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM1qP5U006973;
+	Fri, 22 Nov 2024 08:40:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=SaePHCRKhD41eZpCkKUbZZLRBivcQk
+	LiOz/uWyQXTGQ=; b=O3CLSVmz1Ekch1T9i3lpmR0eDkHoWv+tTb1tMfy7NjXRyR
+	FfqkcPPpOkGMpQ18kbWSPv6dB6pLIcV3Y1g+anyUeJeUYz2whK0fys6KDtX+QjU3
+	D6EvY2ROoNGgm8Hqfnfns2dDdeCybcbvpA0GG+zXRX5ZDKp+OeViftnWOR0L7B3G
+	9lIpSKuh7SZvP0ZKLCy1IL5zNIwXhicnAoQUTpOSxRJLgc+Wmd04yJh/jRy7HEDp
+	w7yj9bZDwG+PI1xdcIdNNSZCL0CMGvXy+9sbuB8B5V/5X21pqyFuPoDFq9EaMbqf
+	880br+vhgRZAtbMoLP0eTU17xSscBm/Zt1a6tjJw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xyu26pde-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 08:40:26 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM3Cocp025906;
+	Fri, 22 Nov 2024 08:40:25 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42y8e1jff4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 08:40:25 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AM8eNo512321172
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 Nov 2024 08:40:24 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E22DC2004E;
+	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36AC120043;
+	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.16.13])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
+Date: Fri, 22 Nov 2024 09:40:17 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Christian Brauner <brauner@kernel.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/kcore.c: Clear ret value in read_kcore_iter
+ after successful iov_iter_zero
+Message-ID: <Z0BDcVpUjtbWmYTv@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20241121231118.3212000-1-jolsa@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] serial: sh-sci: Check if TX data was written to
- device in .tx_empty()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: geert+renesas@glider.be, magnus.damm@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
- sboyd@kernel.org, jirislaby@kernel.org, p.zabel@pengutronix.de,
- lethal@linux-sh.org, g.liakhovetski@gmx.de,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-serial@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20241115134401.3893008-1-claudiu.beznea.uj@bp.renesas.com>
- <20241115134401.3893008-3-claudiu.beznea.uj@bp.renesas.com>
- <2024112128-faceted-moonstone-027f@gregkh>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <2024112128-faceted-moonstone-027f@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241121231118.3212000-1-jolsa@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pMlr2yiv_z5t_79X43YJrR_QMOwYgNvr
+X-Proofpoint-ORIG-GUID: pMlr2yiv_z5t_79X43YJrR_QMOwYgNvr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ bulkscore=0 spamscore=0 mlxlogscore=778 adultscore=0 mlxscore=0
+ clxscore=1011 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411220070
 
-Hi, Greg,
-
-On 21.11.2024 23:32, Greg KH wrote:
-> On Fri, Nov 15, 2024 at 03:43:55PM +0200, Claudiu wrote:
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
->> is called. The uart_suspend_port() calls 3 times the
->> struct uart_port::ops::tx_empty() before shutting down the port.
->>
->> According to the documentation, the struct uart_port::ops::tx_empty()
->> API tests whether the transmitter FIFO and shifter for the port is
->> empty.
->>
->> The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
->> transmit FIFO through the FDR (FIFO Data Count Register). The data units
->> in the FIFOs are written in the shift register and transmitted from there.
->> The TEND bit in the Serial Status Register reports if the data was
->> transmitted from the shift register.
->>
->> In the previous code, in the tx_empty() API implemented by the sh-sci
->> driver, it is considered that the TX is empty if the hardware reports the
->> TEND bit set and the number of data units in the FIFO is zero.
->>
->> According to the HW manual, the TEND bit has the following meaning:
->>
->> 0: Transmission is in the waiting state or in progress.
->> 1: Transmission is completed.
->>
->> It has been noticed that when opening the serial device w/o using it and
->> then switch to a power saving mode, the tx_empty() call in the
->> uart_port_suspend() function fails, leading to the "Unable to drain
->> transmitter" message being printed on the console. This is because the
->> TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
->> TEND=0 has double meaning (waiting state, in progress) we can't
->> determined the scenario described above.
->>
->> Add a software workaround for this. This sets a variable if any data has
->> been sent on the serial console (when using PIO) or if the DMA callback has
->> been called (meaning something has been transmitted). In the tx_empty()
->> API the status of the DMA transaction is also checked and if it is
->> completed or in progress the code falls back in checking the hardware
->> registers instead of relying on the software variable.
->>
->> Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Fri, Nov 22, 2024 at 12:11:18AM +0100, Jiri Olsa wrote:
+> If iov_iter_zero succeeds after failed copy_from_kernel_nofault,
+> we need to reset the ret value to zero otherwise it will be returned
+> as final return value of read_kcore_iter.
 > 
-> Why is this bug/regression fix burried in a long series?  It should be
-> sent individually so that it could be applied on its own as it is not
-> related to the other ones, right?
-
-It is related to the suspend to RAM support added in this series.
-
+> This fixes objdump -d dump over /proc/kcore for me.
 > 
-> Or are you ok with waiting for this to show up in 6.14-rc1?
-
-I'll resend it individually.
-
-Thank you,
-Claudiu Beznea
-
+> Cc: stable@vger.kernel.org
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Fixes: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  fs/proc/kcore.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> thanks,
-> 
-> greg k-h
+> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+> index 51446c59388f..c82c408e573e 100644
+> --- a/fs/proc/kcore.c
+> +++ b/fs/proc/kcore.c
+> @@ -600,6 +600,7 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+>  					ret = -EFAULT;
+>  					goto out;
+>  				}
+> +				ret = 0;
+>  			/*
+>  			 * We know the bounce buffer is safe to copy from, so
+>  			 * use _copy_to_iter() directly.
+
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+
+Thank you, Jiri!
 
