@@ -1,190 +1,118 @@
-Return-Path: <stable+bounces-94595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FAE9D5E9C
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:11:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A069D5EC1
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 13:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF42B236CA
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 12:11:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69619283312
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 12:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5961D9595;
-	Fri, 22 Nov 2024 12:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D2F1DE8AF;
+	Fri, 22 Nov 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HpvgWNg4"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="aE6N5Aaw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF901DEFD4;
-	Fri, 22 Nov 2024 12:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D751ABEB0;
+	Fri, 22 Nov 2024 12:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732277444; cv=none; b=neZYnmEs/tznf5uD46jqzGpjrO1Sg9+oDc285ehdwrTZOKfAG2aC5F+ie193eAIFb6hOmPD70lBAL2x9vEinTuG5JYQYS5QWFsvSvwpHbD4TAjS0axOYXWYuUw24przW+eFrxkP+XZUABIh92iX11EYcV46Q7Qut26ud9zuqocs=
+	t=1732278407; cv=none; b=oMdldeAjVj+s6DmPHvq9I1ixqfmYInLClpbTl69VFfeBRscSFl2GOu9VGxSPR3UT0gKfQ9pZ2aYic06sjoCrk5euRJbhCCG4K+HCapI0tJu4yrYxnIazBb7FQDzkRlPNpHBfLpdhqfna9pchXS7E2r+t+KWujTxZ+TzzWt2GJqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732277444; c=relaxed/simple;
-	bh=CrHJRhc2L7/itwiFwP/i12zUFtqwAjbrddJEbwlp7g4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X5fYqtZcFs0su7eSaWIWOw+xGvCCiCfkGX3L1KAn2L1V9Z63r3receS8VQNmwetWIuNN2D+ZWcfrHkLo09emDiBkz3QHTphvXsC18ffL08Kil4nSi1Xw2mmkY71VRu8wYgDOU4hlS5AeCSkddEQtrqzRZJaHqP0B8hArtyTCthk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HpvgWNg4; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732277443; x=1763813443;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CrHJRhc2L7/itwiFwP/i12zUFtqwAjbrddJEbwlp7g4=;
-  b=HpvgWNg4XoUqAA95vyim5wu8yjlAhXAk3cZ/YknWe0dqHL7Cuv4lwqV3
-   UacvHJKzMQYc6BEdIzsdDFgwt5X80X2SlY6AUAAbIi9AAAc07eAzpeeDG
-   afGy5pJ0cdwpA75UwqzjDBj/115np5Qn25vxgg8Slws1DVyFVjdrQk2+f
-   1f+PCYw3hdMtiBPB7aXni2QDrd+Q1MqBBBFX9trdfM3fGJ8xvpf72fzZt
-   XeHbVrJCBIFIj6L3Ay7aFBFLaIQ8SAbYRA8RLAoma1hzBvOqx3oJDW0Uj
-   4DNAjlsGByGB/nl4sgkSmyL32hcOMmQGPf/okyqossHHSdf0Y+HGxGx0D
-   Q==;
-X-CSE-ConnectionGUID: Tgtr7nipTh2Md8PhWlBDXw==
-X-CSE-MsgGUID: XPACY/e+Q8OoujekwhsxLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20019736"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="20019736"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 04:10:43 -0800
-X-CSE-ConnectionGUID: yS5ZS9evRImeP3At4EuUFA==
-X-CSE-MsgGUID: ioAKk3kzS1u03gyM5JQueA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="95354729"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa004.fm.intel.com with ESMTP; 22 Nov 2024 04:10:40 -0800
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	bjorn@kernel.org,
-	maciej.fijalkowski@intel.com,
-	jordyzomer@google.com,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH v2 bpf 2/2] bpf: fix OOB devmap writes when deleting elements
-Date: Fri, 22 Nov 2024 13:10:30 +0100
-Message-Id: <20241122121030.716788-3-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20241122121030.716788-1-maciej.fijalkowski@intel.com>
-References: <20241122121030.716788-1-maciej.fijalkowski@intel.com>
+	s=arc-20240116; t=1732278407; c=relaxed/simple;
+	bh=5OIR8lomOsDhd2IzlIS7HBTEiwHrDrY4r4nYsF6PaSc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NfHmdR+ZsGEpIdlfKcwYld5pFuJ5UkJ2NczUkOpRIU+wU/ef3baZN08dYcTqvZN7QQWLwQk9A2Lk45WibRb2zYFw5FuVvrq20ZZqqcQHk1eEe13oBDMR8fZ79Bo9glw8JZKcndu45uCc3jCnH9E0Htt2tlysC5IgWSsggUkOMrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=aE6N5Aaw; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A9513514;
+	Fri, 22 Nov 2024 13:26:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732278378;
+	bh=5OIR8lomOsDhd2IzlIS7HBTEiwHrDrY4r4nYsF6PaSc=;
+	h=From:Subject:Date:To:Cc:From;
+	b=aE6N5Aawsnyz3JKdP8xzQ289zEtyWaZ6Wlf6TSfJE0+yKHD4tO11e9b4S3VE3Z8tM
+	 Fl0tTpN8lLghVaw2/PLC/q643bQtze3xYWvaMFVPD3xtA6q31xDxpcEJ+5Zd+Knv6O
+	 oVf0gPgi/9XWYGYRJ0oQQ8xeKgQzNR7UO4uiRcAk=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH v2 0/3] i2c: atr: A few i2c-atr fixes
+Date: Fri, 22 Nov 2024 14:26:17 +0200
+Message-Id: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGl4QGcC/12MQQrCMBBFr1Jm7UhmMJW68h7SRZpM7SxMJClFK
+ b27seDG5fuf91YoklUKXJoVsixaNMUKfGjATy7eBTVUBjZ8ImJCZY9uzjjqSwq2wfLQjXY0nqA
+ 6zyz7UZVbX3nSMqf83vMLfddfif9KC6HBlr0lL+fODHLVIK6kOCSXw9GnB/Tbtn0Ae9gFl7EAA
+ AA=
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Cosmin Tanislav <demonsingur@gmail.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=909;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=5OIR8lomOsDhd2IzlIS7HBTEiwHrDrY4r4nYsF6PaSc=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnQHh4vEGwa+xBzSPxkJL53B78OchhZzT1K3pXv
+ 59xVew34oqJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ0B4eAAKCRD6PaqMvJYe
+ 9Qu2D/9Dhl0902HxJ0No1PXIZQjP/wYb3WLxJ5wsSgU59ErU5QygpovZ3tGfyG4kqRDbcszs0jM
+ fcFbcHShAxVR/WXhZnurWmuU1qyYL3lDO4lmodD2DumxdgchVId42cu01QXmqH8fz5DAz/b3s1Z
+ g7BmYquuB+Rkj2HWHlVB+3Tl3KbCp9aqPcURh4ZY2oelemBswSoEF+HIJT7P2AwCwGDbxPSX/AO
+ PJ2+lZFLEOsnIgTqCQ7wn/g69bTaambplVmRcWIrJ1pNfV3wi7puXp3G0V8ZNeXOxYLYZ4SkSxd
+ ZG9ASG8J4vZvKQoiNO5iBbbRFD5dGLNqZlODmdNw1TrMOADFKaAEvNsfoCRG9g6YXxJJSSfWt1U
+ jztqSai9Wu8nnVpnIG3LgbaPxDu1sdaly77PwNMXuQAGWQqLg55DnNtXX66kpzTc+1nhg3juCeW
+ oyP0N2nOoBo36tzqLipnxtVY0iqwTu8miYe8B8xIx/Ar7YbdJ63ASkQdSKCXCmZXiXqAupWy0Hl
+ 3pLe5H9oc4hxhd0f+alKMP51IZw+988OEGp1OUJbaBQW7qLH+BMj0rZVOlicRfu8One23ZJ5vZ5
+ egYj++M90bollEtZ+LeDxsduL1BlG6TDYwkxt8M6sNXfsIl7igOlHnHekk8xbn3WVFuHgGR7Y6I
+ Gcuw/7As69pgmhQ==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-index used for accessing map entry, due to being a signed integer,
-causes the OOB writes. Fix is simple as changing the type from int to
-u32, however, when compared to XSKMAP case, one more thing needs to be
-addressed.
+The last two are perhaps not strictly fixes, as they essentially add
+support for nested ATRs. The first one is a fix, thus stable is in cc.
 
-When map is released from system via dev_map_free(), we iterate through
-all of the entries and an iterator variable is also an int, which
-implies OOB accesses. Again, change it to be u32.
+ Tomi
 
-Example splat below:
-
-[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-[  160.731662] #PF: supervisor read access in kernel mode
-[  160.736876] #PF: error_code(0x0000) - not-present page
-[  160.742095] PGD 0 P4D 0
-[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  160.874092] PKRU: 55555554
-[  160.876847] Call Trace:
-[  160.879338]  <TASK>
-[  160.881477]  ? __die+0x20/0x60
-[  160.884586]  ? page_fault_oops+0x15a/0x450
-[  160.888746]  ? search_extable+0x22/0x30
-[  160.892647]  ? search_bpf_extables+0x5f/0x80
-[  160.896988]  ? exc_page_fault+0xa9/0x140
-[  160.900973]  ? asm_exc_page_fault+0x22/0x30
-[  160.905232]  ? dev_map_free+0x77/0x170
-[  160.909043]  ? dev_map_free+0x58/0x170
-[  160.912857]  bpf_map_free_deferred+0x51/0x90
-[  160.917196]  process_one_work+0x142/0x370
-[  160.921272]  worker_thread+0x29e/0x3b0
-[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-[  160.929157]  kthread+0xd4/0x110
-[  160.932355]  ? kthread_park+0x80/0x80
-[  160.936079]  ret_from_fork+0x2d/0x50
-[  160.943396]  ? kthread_park+0x80/0x80
-[  160.950803]  ret_from_fork_asm+0x11/0x20
-[  160.958482]  </TASK>
-
-Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 ---
- kernel/bpf/devmap.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Changes in v2:
+- Use mutext_init_with_key()
+- Rearrange the series so that the fix is the first patch
+- Link to v1: https://lore.kernel.org/r/20241122-i2c-atr-fixes-v1-0-62c51ce790be@ideasonboard.com
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index 7878be18e9d2..3aa002a47a96 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
- static void dev_map_free(struct bpf_map *map)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
--	int i;
-+	u32 i;
- 
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
-@@ -821,7 +821,7 @@ static long dev_map_delete_elem(struct bpf_map *map, void *key)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 
- 	if (k >= map->max_entries)
- 		return -EINVAL;
-@@ -838,7 +838,7 @@ static long dev_map_hash_delete_elem(struct bpf_map *map, void *key)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 	unsigned long flags;
- 	int ret = -ENOENT;
- 
+---
+Cosmin Tanislav (1):
+      i2c: atr: Allow unmapped addresses from nested ATRs
+
+Tomi Valkeinen (2):
+      i2c: atr: Fix client detach
+      i2c: atr: Fix lockdep for nested ATRs
+
+ drivers/i2c/i2c-atr.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+---
+base-commit: adc218676eef25575469234709c2d87185ca223a
+change-id: 20241121-i2c-atr-fixes-6d52b9f5f0c1
+
+Best regards,
 -- 
-2.34.1
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
 
