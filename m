@@ -1,132 +1,111 @@
-Return-Path: <stable+bounces-94576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EF99D59C8
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 08:16:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EA39D5A6B
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 08:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BA6A1F22EA9
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:16:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD571B23D71
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A67158205;
-	Fri, 22 Nov 2024 07:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A4A189B97;
+	Fri, 22 Nov 2024 07:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="IETxJzIg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211B16BE01
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 07:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5789188592;
+	Fri, 22 Nov 2024 07:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732259803; cv=none; b=MHCwqRUUIW29xKGwGGx0/xXLKBmbxyneEWLzFLkAEfIk0ob6Kk8rDKC98uNLfXaiN/dmtdYX/IDrusFj7F240FSjYq9uicruAdDWqfsdk+MBVPtePwMx7zSkxBX9C0elGqhlxZXrYr6Wir7whXZRvVPU6F3jczjYrkmOEvZlMq0=
+	t=1732261935; cv=none; b=F/viwGcJwjTHgGsnqHbCiZaoYAlce3vaeMS9YyfY0dShhycKMk5oCT/GStTheMrzT8R0rcu3A/uTZhVGBd4A7PeTD6aTtHvo1n5XqJ7ss1ti2i/CSgG0C0iFMYFfEFBRNb1jqIWns24FUmqhV2bhYPAeJqsXRF7W3CSZia67va8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732259803; c=relaxed/simple;
-	bh=7YuNPK5Gtq7fPeawgv2ZDxPDt7EwjPala/OVmNUibf4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z8IKWNOgj6XnLqQddHP28L1uA8Rar9ed/sP2MEO2VMf2ZWLkbpF9MhEItG5iuYb50G7Z8Z1eoTKpMpRbc3NihWrs682N+IY8zQf06gDCyWsKcRnTbhKidl8TvDbyOAFWk1EKxMStpmqxn9PLuQJ4f8Ow/D3Dhew0E7bEmhG0iCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM7BFad014924;
-	Thu, 21 Nov 2024 23:16:39 -0800
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42xusq6brr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 21 Nov 2024 23:16:38 -0800 (PST)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 21 Nov 2024 23:16:38 -0800
-Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 21 Nov 2024 23:16:37 -0800
-From: Bin Lan <bin.lan.cn@windriver.com>
-To: <stable@vger.kernel.org>, <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1] serial: sc16is7xx: fix invalid FIFO access with special register set
-Date: Fri, 22 Nov 2024 15:16:56 +0800
-Message-ID: <20241122071656.3885283-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1732261935; c=relaxed/simple;
+	bh=mZj7FnKAVErRfFltYoWX7/xSElAseIuMvSbGoMTLv8Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SM2Lsj3OwMw/LdvtbkT4Tb7kAMDXsc8r1+WcTrJM0sOZ6AUG2vy1pQRwqSmxiUHr61yklpitcSNwqSQN27VQo5eSizTNPvH+/DxmlIVRKbMr+i4OnPimkJ5sGeiIDXHiomIe5uHHWfVFI3RNwAPOr7raeLdNMtHCpYn7lHzigDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=IETxJzIg; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9E4164C7;
+	Fri, 22 Nov 2024 08:51:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732261911;
+	bh=mZj7FnKAVErRfFltYoWX7/xSElAseIuMvSbGoMTLv8Y=;
+	h=From:Subject:Date:To:Cc:From;
+	b=IETxJzIgTY1rLCUNoqQw3jBITcVOnXlynicaWje4fvbDAxozNOi8+pfX2pXNQwlfG
+	 Jna1wiO7ZvtGHT4YQ0TZL0xrKJ2KrLSyUM1CuUdZJYzOstipUk9KTcIpQR/s+vQdlu
+	 Nbqe0gv371zkcFs+AuPVAKvFNeb+hHaBDLee0Uuk=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 0/3] i2c: atr: A few i2c-atr fixes
+Date: Fri, 22 Nov 2024 09:51:37 +0200
+Message-Id: <20241122-i2c-atr-fixes-v1-0-62c51ce790be@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: Lmv6v2WwK3EcCrcULuF0CJcn-ZFeQi76
-X-Proofpoint-ORIG-GUID: Lmv6v2WwK3EcCrcULuF0CJcn-ZFeQi76
-X-Authority-Analysis: v=2.4 cv=d9mnygjE c=1 sm=1 tr=0 ts=67402fd6 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=ANv9NCA0AAAA:8 a=PjLayv2rAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8
- a=jPX3o1wNCZPjv_iFlU4A:9 a=Hn0ac7NHSattSG0oRJar:22 a=qJi-GwaokQ_QderyKa0y:22 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-22_02,2024-11-21_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 impostorscore=0
- phishscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999 spamscore=0
- bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411220059
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAk4QGcC/x3LMQqAMAxA0atIZgNNsIJeRRy0TTVLlVZEKN7d4
+ vj4/AJZkkqGsSmQ5NasR6ygtgG3L3ETVF8NbLgjYkJlh8uVMOgjGXtveR2CDcYR1OdM8oe6TPP
+ 7fmL/rltfAAAA
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Cosmin Tanislav <demonsingur@gmail.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=697;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=mZj7FnKAVErRfFltYoWX7/xSElAseIuMvSbGoMTLv8Y=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnQDgk26NSbVJAgKNj9VyJXXqUcYmsXrS9IvwJi
+ erCi53biiKJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ0A4JAAKCRD6PaqMvJYe
+ 9RAOD/9uj+Gb7qnlHZdN/lXHC4fYLGEJFjsZyM5LAV9bbSddpR7ArivNWUxMhOhus6iUo8AGsY6
+ 4ZAGPporn7H6a9m5yjXm4g3ckmH0FdJYH6ulsEbozjgdGtRdNFKXZstymcNzURZF5dftlhsbjfM
+ ko035LMvLEERRoBYx3o6fvb+OJYff1vNjtR0wNXXJ2xaQwEPU3aIDbm61x2S9EFFA9PVX0DN5sR
+ BHUFL+DyMPkLc1YHsum9KhJ0f9NMxC+PU0Q64xvI9CqNbsx36Bxr/CJvXtcmdPWk32OEtfKnXe8
+ PmFBmBiHrfB784T9R/A9wyZKlkaw2Dt9PNq+Cd+OAsbtS1SlDo62aMLo2TzmF55MK6gZ4ZxuFiJ
+ JrolUKvJ7TcasN5e8MURe6zuq1xH6ahOQVTorM1b0c5BmWCjc5DOQRm3lOEuV2kx1rEQbDZr/lN
+ UHAtFHUJsZuoVq/dG1kKN7J1WFlOvLLRXrmXhH0PH8991vi0ryTY6eP5bCO8mN5qBKywK8CvLKG
+ snuT8L0ie4hyKGYxBE3Ku46Fq1VdciDjZH9LnMpnYUMkwjL4SVv4qGvRJCTw57OfudjetqqaI/7
+ dVhr1qxPf0xxtQQ4TGcBpo7cLdHPqFPnQXK9hEwjjf7kCr4s+AVx2updrU3xnudPjk4Pv1x+wi0
+ 7vjOyHQCX8g1xHA==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+The first two are perhaps not strictly fixes, as they essentially add
+support for nested ATRs. The third one is a fix, thus stable is in cc.
 
-[ Upstream commit 7d3b793faaab1305994ce568b59d61927235f57b ]
+ Tomi
 
-When enabling access to the special register set, Receiver time-out and
-RHR interrupts can happen. In this case, the IRQ handler will try to read
-from the FIFO thru the RHR register at address 0x00, but address 0x00 is
-mapped to DLL register, resulting in erroneous FIFO reading.
-
-Call graph example:
-    sc16is7xx_startup(): entry
-    sc16is7xx_ms_proc(): entry
-    sc16is7xx_set_termios(): entry
-    sc16is7xx_set_baud(): DLH/DLL = $009C --> access special register set
-    sc16is7xx_port_irq() entry            --> IIR is 0x0C
-    sc16is7xx_handle_rx() entry
-    sc16is7xx_fifo_read(): --> unable to access FIFO (RHR) because it is
-                               mapped to DLL (LCR=LCR_CONF_MODE_A)
-    sc16is7xx_set_baud(): exit --> Restore access to general register set
-
-Fix the problem by claiming the efr_lock mutex when accessing the Special
-register set.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240723125302.1305372-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Resolve minor conflicts ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 ---
- drivers/tty/serial/sc16is7xx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Cosmin Tanislav (1):
+      i2c: atr: Allow unmapped addresses from nested ATRs
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index a723df9b37dd..c07baf5d5a9c 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -545,6 +545,9 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
- 			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
- 
-+
-+	mutex_lock(&one->efr_lock);
-+
- 	/* Open the LCR divisors for configuration */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
- 			     SC16IS7XX_LCR_CONF_MODE_A);
-@@ -558,6 +561,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	/* Put LCR back to the normal mode */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
-+	mutex_unlock(&one->efr_lock);
-+
- 	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
- }
- 
+Tomi Valkeinen (2):
+      i2c: atr: Fix lockdep for nested ATRs
+      i2c: atr: Fix client detach
+
+ drivers/i2c/i2c-atr.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+---
+base-commit: adc218676eef25575469234709c2d87185ca223a
+change-id: 20241121-i2c-atr-fixes-6d52b9f5f0c1
+
+Best regards,
 -- 
-2.43.0
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
 
