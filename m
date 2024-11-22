@@ -1,104 +1,135 @@
-Return-Path: <stable+bounces-94624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7248D9D6145
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 16:20:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34DF9D6146
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 16:21:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 185C8B21444
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2737816036C
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD2C171D2;
-	Fri, 22 Nov 2024 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A63D2AF04;
+	Fri, 22 Nov 2024 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="iYrn48c4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ma1GLpGc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAB62309BF
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 15:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17282309BF;
+	Fri, 22 Nov 2024 15:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732288814; cv=none; b=UuaPoa5C4WDqSX3T+b7/UTldGEHkLiBQc28oh4C4rpeAsx2Cg3mG0J18YmzJfa7vzrvQXgzFlpkCuWgRvFfNhbkoErku+z0tl7TqieHjhidTsBHJ76sQa9wwGZzsvBHjI7q6U2k2avERUOI6ifhkuaFRhgVR7KHnsOAcv5gIL1E=
+	t=1732288866; cv=none; b=MN/ENGx0cZOOSbToZmRDwQiCvC/2q+NZhBGYq7b/l+VgQD9iOaBpa9ASr7b57pzF+Xj/6qbaAn+rO1UMcQ2SzL+az7t+JL7GmvMC1A07Iiob6fR3Jrzvls1w/r/6EVTEXHpV7FOtt8PnDzeOqk+kXJbBRWFs7EubRcZ0CMoCHfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732288814; c=relaxed/simple;
-	bh=hkK4S1wTDkim03MNLf0U1fKc8DjPLO0A2wyFdU+pA/o=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RWdjwe0UWHIJEaF9Yryq9XFNwZfzrv+l5XWnfRzXhCiTQil6VPrfAp8PWpIiWdnJ9x8WGemGHLR2uBCMDCDthppA12QemF1KAuBXMDlPIydTSWlJXNzj3GXcQAju8fckp75ig06MPZc/C47FHAjwcmnwQuaMJ4I9jlY3yem2J9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=iYrn48c4; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1732288813; x=1763824813;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=5eDWqC8BUhYmf+XO67PxFqEI/s9NFauR1AI8q9xOkpc=;
-  b=iYrn48c4unNO0yYkFls1Rp2k814f+RSwmPLW6oHV2a1N/n6w2RqEuBpf
-   hDlsAh6xuuvVVU5VwN9O4VJcic3GQ+Atnbl0mWZ3Gz9o9tjvtW4YthMdG
-   d5ZDLjkHzpTdOMxjh6xpfTE0uCWKSan7UGCv2mnpK9mbLtFpCw5s3/7Nr
-   k=;
-X-IronPort-AV: E=Sophos;i="6.12,176,1728950400"; 
-   d="scan'208";a="249288255"
-Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 15:20:09 +0000
-Received: from EX19MTAUEB001.ant.amazon.com [10.0.29.78:59908]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.12.16:2525] with esmtp (Farcaster)
- id e2a895a3-772f-4d81-8b2b-6c8bf49e4cad; Fri, 22 Nov 2024 15:20:09 +0000 (UTC)
-X-Farcaster-Flow-ID: e2a895a3-772f-4d81-8b2b-6c8bf49e4cad
-Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 22 Nov 2024 15:20:08 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 22 Nov 2024 15:20:03 +0000
-Received: from email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com
- (10.124.125.6) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Fri, 22 Nov 2024 15:20:03 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com [10.15.1.225])
-	by email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com (Postfix) with ESMTP id B661B40385;
-	Fri, 22 Nov 2024 15:20:03 +0000 (UTC)
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id 734B9204C; Fri, 22 Nov 2024 16:20:03 +0100 (CET)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: <stable@vger.kernel.org>
-Subject: Re: [PATCH] cifs: Fix buffer overflow when parsing NFS reparse points
-In-Reply-To: <20241122095529-423c0f305d9962cd@stable.kernel.org> (Sasha
-	Levin's message of "Fri, 22 Nov 2024 09:56:00 -0500")
-References: <20241122095529-423c0f305d9962cd@stable.kernel.org>
-Date: Fri, 22 Nov 2024 16:20:03 +0100
-Message-ID: <lrkyqserjxplo.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1732288866; c=relaxed/simple;
+	bh=7pz32RbN7KvAwY8Z4VR7ySVX87cMIOLDDNQdlcRElAg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQKgNcI8YYCTryj+Atdsp/4ySnRzaxhV5eIf2fFu+qWJoyoyqqo2GTRrfRRtdjyBVInFAV5eYrZFEMnWfLaucsj4xyeCo2LtqSrakZVNJB3JCXO/kHW+tHVI3nGxscjK6PanEoP8z7uLxHIC72c1S4jZ1BEdsDCxKEo0pHJ7CSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ma1GLpGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5EDC4CECE;
+	Fri, 22 Nov 2024 15:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732288866;
+	bh=7pz32RbN7KvAwY8Z4VR7ySVX87cMIOLDDNQdlcRElAg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ma1GLpGcU49K7V4i4V697Y2v1F+5gFEzWWYfG5ikQE+epTRKFWCKoH1EKhBUlvgg5
+	 Rmuxt/3KU1BnX25bq4mq4g/MgfNMmzgnc3Oz6kOk/ENKy4N0brAfguPHD6jmQ6fu+a
+	 2Gc4fcqjhh4EkAyn8gWE5c06MQwMBq5ZRiGINmHPhF9nO7yBjnolYua+7MfjyPeQ18
+	 NLTTzKlS3ZC3p/iuWeIRAJ0od+DZuaxN2wuVP+e2tY1c94VMmdNMZXYdLj/oWLG9Oj
+	 z4miGV/9poZHenA3v3hzPb8qGGkOcXCoxFRhj1jbf3w9hm51XJGkYvPW3wEXf8VEvL
+	 8W/a3r9HB3mWg==
+Date: Fri, 22 Nov 2024 10:21:04 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>, linux@armlinux.org.uk,
+	arnd@arndb.de, samitolvanen@google.com,
+	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.6 5/6] ARM: 9434/1: cfi: Fix compilation corner
+ case
+Message-ID: <Z0ChYA7bsmnZRI2d@sashalap>
+References: <20241120140647.1768984-1-sashal@kernel.org>
+ <20241120140647.1768984-5-sashal@kernel.org>
+ <20241120151338.GA3158726@thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241120151338.GA3158726@thelio-3990X>
 
-Sasha Levin <sashal@kernel.org> writes:
+On Wed, Nov 20, 2024 at 08:13:38AM -0700, Nathan Chancellor wrote:
+>Hi Sasha,
+>
+>On Wed, Nov 20, 2024 at 09:06:35AM -0500, Sasha Levin wrote:
+>> From: Linus Walleij <linus.walleij@linaro.org>
+>>
+>> [ Upstream commit 4aea16b7cfb76bd3361858ceee6893ef5c9b5570 ]
+>>
+>> When enabling expert mode CONFIG_EXPERT and using that power
+>> user mode to disable the branch prediction hardening
+>> !CONFIG_HARDEN_BRANCH_PREDICTOR, the assembly linker
+>> in CLANG notices that some assembly in proc-v7.S does
+>> not have corresponding C call sites, i.e. the prototypes
+>> in proc-v7-bugs.c are enclosed in ifdef
+>> CONFIG_HARDEN_BRANCH_PREDICTOR so this assembly:
+>>
+>> SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
+>> SYM_TYPED_FUNC_START(cpu_v7_hvc_switch_mm)
+>>
+>> Results in:
+>>
+>> ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_smc_switch_mm
+>> >>> referenced by proc-v7.S:94 (.../arch/arm/mm/proc-v7.S:94)
+>> >>> arch/arm/mm/proc-v7.o:(.text+0x108) in archive vmlinux.a
+>>
+>> ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_hvc_switch_mm
+>> >>> referenced by proc-v7.S:105 (.../arch/arm/mm/proc-v7.S:105)
+>> >>> arch/arm/mm/proc-v7.o:(.text+0x124) in archive vmlinux.a
+>>
+>> Fix this by adding an additional requirement that
+>> CONFIG_HARDEN_BRANCH_PREDICTOR has to be enabled to compile
+>> these assembly calls.
+>>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202411041456.ZsoEiD7T-lkp@intel.com/
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+>> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  arch/arm/mm/proc-v7.S | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm/mm/proc-v7.S b/arch/arm/mm/proc-v7.S
+>> index 193c7aeb67039..bea11f9bfe856 100644
+>> --- a/arch/arm/mm/proc-v7.S
+>> +++ b/arch/arm/mm/proc-v7.S
+>> @@ -93,7 +93,7 @@ ENTRY(cpu_v7_dcache_clean_area)
+>>  	ret	lr
+>>  ENDPROC(cpu_v7_dcache_clean_area)
+>>
+>> -#ifdef CONFIG_ARM_PSCI
+>> +#if defined(CONFIG_ARM_PSCI) && defined(CONFIG_HARDEN_BRANCH_PREDICTOR)
+>>  	.arch_extension sec
+>>  ENTRY(cpu_v7_smc_switch_mm)
+>
+>This patch is unnecessary in branches prior to 6.10 (when ARM started
+>supporting kCFI) because SYM_TYPED_FUNC_START() is not used here. I
+>would just drop it for 6.6 and earlier.
 
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | stable/linux-6.12.y       |  Failed     |  N/A       |
-> | stable/linux-6.11.y       |  Failed     |  N/A       |
-> | stable/linux-6.6.y        |  Failed     |  N/A       |
-> | stable/linux-6.1.y        |  Success    |  Success   |
-> | stable/linux-5.15.y       |  Failed     |  N/A       |
-> | stable/linux-5.10.y       |  Failed     |  N/A       |
-> | stable/linux-5.4.y        |  Failed     |  N/A       |
-> | stable/linux-4.19.y       |  Failed     |  N/A       |
+Ack, will do.
 
-Ah Yes, for 5.15 and less, it should be patched to fs/cifs/smb2ops.c
-instead of fs/smb/client/smb2ops.c, I'll send a separate patch for them.
-
--MNAdam
+-- 
+Thanks,
+Sasha
 
