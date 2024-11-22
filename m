@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-94568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D189D5950
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:20:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CB49D5969
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 07:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C84228165E
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 06:20:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3F85B20D3C
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 06:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73631632E2;
-	Fri, 22 Nov 2024 06:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C12F16BE14;
+	Fri, 22 Nov 2024 06:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qvIL+JG9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fxY09lPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8228215688C;
-	Fri, 22 Nov 2024 06:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72CA22081;
+	Fri, 22 Nov 2024 06:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732256409; cv=none; b=WLof5BePZyUUyuxFgjykvd7DAloRTONZgd7Sf5jxe67u7HLY2+jV1POgoJZwhCwrtuMqqxLlZTWcQAX/C58uawf1E+eO7iUVmW3TFcbUqe5K0CMvM6gVKqwgJn8mUr2vwymtOaDJViKD2XVxtuJ4Ollv8zMdhsONEbszGNyGsFs=
+	t=1732256961; cv=none; b=SlQ+0lzbrgkuDXgubBr4l262nePrnkp4cycfAJ2GzS+U/pHGwDb1h4Nmwn/BAFirbC4Xwcl/lKZedO+uiTno8BTy3pEp95DV6G9MN/oAXqkBc0alEOVK77K8Fc8z3DM0U+dIBHYRGcj/uxR/7yo5g+N6ehfB304G6qgQjuteTgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732256409; c=relaxed/simple;
-	bh=faZCg7QNYZVCkfc5FqyfjhfHD5IKD9wmVRaisy99XRY=;
-	h=Date:To:From:Subject:Message-Id; b=jyuqIdl8qgQ54mwxEDvb1razTBvqhw87w5VQ4B7H157m1PP7hoafWJDuDCVdN28Qw0Gbpsm1+gK2nfyCIDoDSANr4jxOOJN064K7o6GOO0ZU2rq3nj7cnXl6xtZaSI9d5Gol0AwU4epwlZkzlY27djOVE+mUJvHtSG/3SzadsQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qvIL+JG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BDFC4CECF;
-	Fri, 22 Nov 2024 06:20:08 +0000 (UTC)
+	s=arc-20240116; t=1732256961; c=relaxed/simple;
+	bh=rzFBx4VLmeUs/UI1rjEJ5lDc1PmG9LRavihD9L0ix48=;
+	h=Date:To:From:Subject:Message-Id; b=ZTLWdUXzvOrzhZ8bFgbbQsO3W3OEnNoTgORs5Pc3Cv4WiFWTBH87XRaQIeu9wt1Tfa2aSGjoe8+ZAQcUpNooHJbQS445gwpUA2U+7PZZKK+jVF8pu7YEN1zwWQHEFT1DMc49B4F3smbWuJO9G9QCc9H3sNh7nYyLt6A8sd78Nnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fxY09lPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CBC4CED3;
+	Fri, 22 Nov 2024 06:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732256409;
-	bh=faZCg7QNYZVCkfc5FqyfjhfHD5IKD9wmVRaisy99XRY=;
+	s=korg; t=1732256960;
+	bh=rzFBx4VLmeUs/UI1rjEJ5lDc1PmG9LRavihD9L0ix48=;
 	h=Date:To:From:Subject:From;
-	b=qvIL+JG9qSOh8N8egxJvepI/ny8RFlf1heE0XKzgIFy0OtU4iiZXGNIEEMZzG4A1q
-	 ZGlrmHaDJti4+9oYgSd/sxUI3slmzD0EXnKXsn3gqQS9OUBlnCQ/iBaNw25jwuQT42
-	 k2Ggk+obdk57a82/uqTfGeETrxJ8Jed5ERU1sivM=
-Date: Thu, 21 Nov 2024 22:20:06 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,Liam.Howlett@Oracle.com,cl@linux.com,david@redhat.com,akpm@linux-foundation.org
+	b=fxY09lPbYojscSb69iaeqZ96f9whshgJE0jpiQSUWzSyy4ViEkyvN9LqpPQSZebUW
+	 tbEwqW/iHYBAiaR8syoRt9Dh07cVi240uPIalMB9/LQghrCks9+wyZwjcHaktJ3+Ut
+	 yuE33jg8Nc66ivVJY8vi94ZWNm2kgn335I20B1JQ=
+Date: Thu, 21 Nov 2024 22:29:16 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,dvyukov@google.com,andreyknvl@gmail.com,jkangas@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mempolicy-fix-migrate_to_node-assuming-there-is-at-least-one-vma-in-a-mm.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241122062008.A6BDFC4CECF@smtp.kernel.org>
+Subject: + kasan-make-report_lock-a-raw-spinlock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241122062919.7D1CBC4CED3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM
+     Subject: kasan: make report_lock a raw spinlock
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-mempolicy-fix-migrate_to_node-assuming-there-is-at-least-one-vma-in-a-mm.patch
+     kasan-make-report_lock-a-raw-spinlock.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-fix-migrate_to_node-assuming-there-is-at-least-one-vma-in-a-mm.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-make-report_lock-a-raw-spinlock.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,78 +73,70 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM
-Date: Wed, 20 Nov 2024 21:11:51 +0100
+From: Jared Kangas <jkangas@redhat.com>
+Subject: kasan: make report_lock a raw spinlock
+Date: Tue, 19 Nov 2024 13:02:34 -0800
 
-We currently assume that there is at least one VMA in a MM, which isn't
-true.
+If PREEMPT_RT is enabled, report_lock is a sleeping spinlock and must not
+be locked when IRQs are disabled.  However, KASAN reports may be triggered
+in such contexts.  For example:
 
-So we might end up having find_vma() return NULL, to then de-reference
-NULL.  So properly handle find_vma() returning NULL.
+        char *s = kzalloc(1, GFP_KERNEL);
+        kfree(s);
+        local_irq_disable();
+        char c = *s;  /* KASAN report here leads to spin_lock() */
+        local_irq_enable();
 
-This fixes the report:
+Make report_spinlock a raw spinlock to prevent rescheduling when
+PREEMPT_RT is enabled.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 6021 Comm: syz-executor284 Not tainted 6.12.0-rc7-syzkaller-00187-gf868cd251776 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-RIP: 0010:migrate_to_node mm/mempolicy.c:1090 [inline]
-RIP: 0010:do_migrate_pages+0x403/0x6f0 mm/mempolicy.c:1194
-Code: ...
-RSP: 0018:ffffc9000375fd08 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffc9000375fd78 RCX: 0000000000000000
-RDX: ffff88807e171300 RSI: dffffc0000000000 RDI: ffff88803390c044
-RBP: ffff88807e171428 R08: 0000000000000014 R09: fffffbfff2039ef1
-R10: ffffffff901cf78f R11: 0000000000000000 R12: 0000000000000003
-R13: ffffc9000375fe90 R14: ffffc9000375fe98 R15: ffffc9000375fdf8
-FS:  00005555919e1380(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555919e1ca8 CR3: 000000007f12a000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- kernel_migrate_pages+0x5b2/0x750 mm/mempolicy.c:1709
- __do_sys_migrate_pages mm/mempolicy.c:1727 [inline]
- __se_sys_migrate_pages mm/mempolicy.c:1723 [inline]
- __x64_sys_migrate_pages+0x96/0x100 mm/mempolicy.c:1723
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Link: https://lkml.kernel.org/r/20241120201151.9518-1-david@redhat.com
-Fixes: 39743889aaf7 ("[PATCH] Swap Migration V5: sys_migrate_pages interface")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/673d2696.050a0220.3c9d61.012f.GAE@google.com/T/
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Christoph Lameter <cl@linux.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Link: https://lkml.kernel.org/r/20241119210234.1602529-1-jkangas@redhat.com
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/mempolicy.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ mm/kasan/report.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/mempolicy.c~mm-mempolicy-fix-migrate_to_node-assuming-there-is-at-least-one-vma-in-a-mm
-+++ a/mm/mempolicy.c
-@@ -1080,6 +1080,10 @@ static long migrate_to_node(struct mm_st
+--- a/mm/kasan/report.c~kasan-make-report_lock-a-raw-spinlock
++++ a/mm/kasan/report.c
+@@ -200,7 +200,7 @@ static inline void fail_non_kasan_kunit_
  
- 	mmap_read_lock(mm);
- 	vma = find_vma(mm, 0);
-+	if (!vma) {
-+		mmap_read_unlock(mm);
-+		return 0;
-+	}
+ #endif /* CONFIG_KUNIT */
  
- 	/*
- 	 * This does not migrate the range, but isolates all pages that
+-static DEFINE_SPINLOCK(report_lock);
++static DEFINE_RAW_SPINLOCK(report_lock);
+ 
+ static void start_report(unsigned long *flags, bool sync)
+ {
+@@ -211,7 +211,7 @@ static void start_report(unsigned long *
+ 	lockdep_off();
+ 	/* Make sure we don't end up in loop. */
+ 	report_suppress_start();
+-	spin_lock_irqsave(&report_lock, *flags);
++	raw_spin_lock_irqsave(&report_lock, *flags);
+ 	pr_err("==================================================================\n");
+ }
+ 
+@@ -221,7 +221,7 @@ static void end_report(unsigned long *fl
+ 		trace_error_report_end(ERROR_DETECTOR_KASAN,
+ 				       (unsigned long)addr);
+ 	pr_err("==================================================================\n");
+-	spin_unlock_irqrestore(&report_lock, *flags);
++	raw_spin_unlock_irqrestore(&report_lock, *flags);
+ 	if (!test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags))
+ 		check_panic_on_warn("KASAN");
+ 	switch (kasan_arg_fault) {
 _
 
-Patches currently in -mm which might be from david@redhat.com are
+Patches currently in -mm which might be from jkangas@redhat.com are
 
-mm-mempolicy-fix-migrate_to_node-assuming-there-is-at-least-one-vma-in-a-mm.patch
+kasan-make-report_lock-a-raw-spinlock.patch
 
 
