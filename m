@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859789D648F
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 20:26:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B069D64A5
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 20:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F758B2223F
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 19:26:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DC67B22C8F
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 19:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F06D1DF972;
-	Fri, 22 Nov 2024 19:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DCD1DE4E4;
+	Fri, 22 Nov 2024 19:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptzVirLR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtoSPed9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CED264A8F
-	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 19:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DE8158DA3
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 19:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732303587; cv=none; b=WshtafJ65f4PH9j6zhvdBLTwCbMh6nzGzg55S4ls0ygq1wMnCYAvbjrHMQMHqJdXTMc3//+0URHQ50587YPOX+AAIxROIyM6vDUk/O9k3EbeTfvW1gBOM0yGmAS8iPMeZ0FOguvGkoo8IknbGngknj/EnPs8bcOTyEmah9b1ecg=
+	t=1732304396; cv=none; b=hx9EsIeMm98x19f15SBAvxhYAbeGjGtwea+weQRNQLaReW0EjQF+Zogs2TcnJ7mBZyp7swD0TduOkEnDUtrI3HrM+DFRmWpobTtvU4s53JQSF3TAmw1ow67390nYqjYFdwSwTCcq2IZFDRRiXCDz9XpqGlaKUty7GjX15Nk/nV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732303587; c=relaxed/simple;
-	bh=feduIjuhQgRBbHdz+xnmAKsLuukgIzLs2wawcIbNeJA=;
+	s=arc-20240116; t=1732304396; c=relaxed/simple;
+	bh=q8CIqHww585PWMBfeBnAtTPkgJ0RvruHPjm+w85wXXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VyHftvQhTgt1/zrmhCfl6C0zor+8KhfnFh9NY5yGa/DMOntoIZieaYgJcXPEFzb3caUUWkqQ+BhG9cXd5XUtvoJ3w4SXqvS5h+sV9NKL/UfirhClLPlSPx7UkoOncwStjlCgEKETa644p8ExQUNbDrhn6JYiDAoXYB2n5XfC/EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptzVirLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3A8C4CECE;
-	Fri, 22 Nov 2024 19:26:25 +0000 (UTC)
+	 MIME-Version; b=sYbWNHmV9LsdIY+CY/NHqkMXrrfQdvXV34EptiqnNsR8bdVeVTqGaEHDDd3R164twK1r0aAeDuJcHdDej3qtByvckPcs2F9je5h84H3P6dc7qZ+pOmcezRLNMvMI79t3ReqRieceg1PjaigNFPrdUs9uDSo8wwUlGnAlTU39S7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtoSPed9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF1CC4CECE;
+	Fri, 22 Nov 2024 19:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732303585;
-	bh=feduIjuhQgRBbHdz+xnmAKsLuukgIzLs2wawcIbNeJA=;
+	s=k20201202; t=1732304396;
+	bh=q8CIqHww585PWMBfeBnAtTPkgJ0RvruHPjm+w85wXXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptzVirLRTonJ0BPECagJZO/54eIBnQrOpWbHdBwDi30zpJU7aTXSMqaj/F0m7kC4t
-	 0ZgdGgSxsbFbvCCpKUNIA9TbSpAI6kjSQUAszmMOFQijjEGGgua1/GinpCqhbzY+ti
-	 5pX4T/nXqygRrZYXcv2NTjPPYdsrhNp3t1rEaVgzHu2jj6gFtcI3W2Oq5ZHlMS+N70
-	 7JjkUTDthThyKNIxg42e1QI6eQ32SgGDt6iHtv5VKWBcg1eVUiy3yOjXlzSPr5Oc7b
-	 KHymJ6EPO1wWa/CBthV0Grq7767GCg/WCw5v71KJOR83FiOJUPZf+quJ9hKqykFwuf
-	 8OvrSDtkwp3Nw==
+	b=WtoSPed9QMLVOxHrwtxWJawIOFjOiORea1C8UogZ1mEEERtOp//L58Ucan/gNWIl8
+	 hWk5DTvB2Qhl5LUbigjnP1k/S/0yW019LMeWxR0UAt+bn5++L14wTfED4hEaM3caOh
+	 QDS0owGlQFMdDrlUqct0HzfX6/YAPjQV/TbiVGqfdruU+KxBGHJD0Gd9L8Zpb72UwZ
+	 74NumN6eR0EEovF8n4dbIa0GDvOjdzYRkumrAylx1pQIURsGQWADlMguGWdRT/cxhN
+	 /eumU5V5uz4s+Pj5vAhlm8Rwpmhfwe1cH0BafXBhJGByfruh3Fg5JuMeKN3XnaG6wZ
+	 GBK6uvVVju3Kg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mahmoud Adam <mngyadam@amazon.com>,
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4/5.10/5.15] cifs: Fix buffer overflow when parsing NFS reparse points
-Date: Fri, 22 Nov 2024 14:26:23 -0500
-Message-ID: <20241122125348-1a37cb03c30264bf@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] scsi: core: Fix scsi_mode_sense() buffer length handling
+Date: Fri, 22 Nov 2024 14:39:54 -0500
+Message-ID: <20241122143809-33d114b3a6eaee8b@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241122152943.76044-1-mngyadam@amazon.com>
+In-Reply-To:  <20241122190702.230010-2-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,105 +57,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 [ Sasha's backport helper bot ]
 
 Hi,
 
-Found matching upstream commit: e2a8910af01653c1c268984855629d71fb81f404
+The upstream commit SHA1 provided is correct: 17b49bcbf8351d3dbe57204468ac34f033ed60bc
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Mahmoud Adam <mngyadam@amazon.com>
-Commit author: Pali Rohár <pali@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
+Commit author: Damien Le Moal <damien.lemoal@wdc.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: c173d47b69f0)
-6.6.y | Present (different SHA1: c6db81c550ce)
-6.1.y | Not found
-5.15.y | Not found
+6.11.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (different SHA1: e15de347faf4)
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-22 12:31:36.852804062 -0500
-+++ /tmp/tmp.ZKhxfvejkU	2024-11-22 12:31:36.843027135 -0500
+--- -	2024-11-22 14:28:14.472822873 -0500
++++ /tmp/tmp.ZvzLslfZma	2024-11-22 14:28:14.464095287 -0500
 @@ -1,3 +1,5 @@
-+upstream e2a8910af01653c1c268984855629d71fb81f404 commit.
++commit 17b49bcbf8351d3dbe57204468ac34f033ed60bc upstream.
 +
- ReparseDataLength is sum of the InodeType size and DataBuffer size.
- So to get DataBuffer size it is needed to subtract InodeType's size from
- ReparseDataLength.
-@@ -18,48 +20,31 @@
- Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
- Signed-off-by: Pali Rohár <pali@kernel.org>
- Signed-off-by: Steve French <stfrench@microsoft.com>
-+[use variable name symlink_buf, the other buf->InodeType accesses are
-+not used in current version so skip]
-+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
- ---
-- fs/smb/client/reparse.c | 15 ++++++++++++++-
-- 1 file changed, 14 insertions(+), 1 deletion(-)
-+This fixes CVE-2024-49996.
-+ fs/cifs/smb2ops.c | 6 ++++++
-+ 1 file changed, 6 insertions(+)
+ Several problems exist with scsi_mode_sense() buffer length handling:
  
--diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
--index 3b48a093cfb1f..8ea7a848aa393 100644
----- a/fs/smb/client/reparse.c
--+++ b/fs/smb/client/reparse.c
--@@ -320,9 +320,16 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
-- 	unsigned int len;
-- 	u64 type;
-+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-+index 6c30fff8a029e..ee9a1e6550e3c 100644
-+--- a/fs/cifs/smb2ops.c
-++++ b/fs/cifs/smb2ops.c
-+@@ -2971,6 +2971,12 @@ parse_reparse_posix(struct reparse_posix_data *symlink_buf,
+  1) The allocation length field of the MODE SENSE(10) command is 16-bits,
+@@ -36,15 +38,16 @@
+ Link: https://lore.kernel.org/r/20210820070255.682775-2-damien.lemoal@wdc.com
+ Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+ Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
++Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+ ---
+  drivers/scsi/scsi_lib.c | 25 +++++++++++++++----------
+  1 file changed, 15 insertions(+), 10 deletions(-)
+ 
+ diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+-index 572673873ddf8..701d8e8480f22 100644
++index 64ae7bc2de604..0a9db3464fd48 100644
+ --- a/drivers/scsi/scsi_lib.c
+ +++ b/drivers/scsi/scsi_lib.c
+-@@ -2075,7 +2075,7 @@ EXPORT_SYMBOL_GPL(scsi_mode_select);
++@@ -2068,7 +2068,7 @@ EXPORT_SYMBOL_GPL(scsi_mode_select);
+  /**
+   *	scsi_mode_sense - issue a mode sense, falling back from 10 to six bytes if necessary.
+   *	@sdev:	SCSI device to be queried
+@@ -53,7 +56,7 @@
+   *	@modepage: mode page being requested
+   *	@buffer: request buffer (may not be smaller than eight bytes)
+   *	@len:	length of request buffer.
+-@@ -2110,18 +2110,18 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
++@@ -2103,18 +2103,18 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
+  		sshdr = &my_sshdr;
   
--+	len = le16_to_cpu(buf->ReparseDataLength);
--+	if (len < sizeof(buf->InodeType)) {
-+ 	/* See MS-FSCC 2.1.2.6 for the 'NFS' style reparse tags */
-+ 	len = le16_to_cpu(symlink_buf->ReparseDataLength);
-++	if (len < sizeof(symlink_buf->InodeType)) {
- +		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
- +		return -EIO;
- +	}
- +
--+	len -= sizeof(buf->InodeType);
--+
-- 	switch ((type = le64_to_cpu(buf->InodeType))) {
-- 	case NFS_SPECFILE_LNK:
---		len = le16_to_cpu(buf->ReparseDataLength);
-- 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
-- 							       len, true,
-- 							       cifs_sb->local_nls);
--@@ -482,12 +489,18 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
-- 	u32 tag = data->reparse.tag;
-++	len -= sizeof(symlink_buf->InodeType);
+   retry:
+@@ -77,7 +80,7 @@
   
-- 	if (tag == IO_REPARSE_TAG_NFS && buf) {
--+		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
--+			return false;
-- 		switch (le64_to_cpu(buf->InodeType)) {
-- 		case NFS_SPECFILE_CHR:
--+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
--+				return false;
-- 			fattr->cf_mode |= S_IFCHR;
-- 			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
-- 			break;
-- 		case NFS_SPECFILE_BLK:
--+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
--+				return false;
-- 			fattr->cf_mode |= S_IFBLK;
-- 			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
-- 			break;
-+ 	if (le64_to_cpu(symlink_buf->InodeType) != NFS_SPECFILE_LNK) {
-+ 		cifs_dbg(VFS, "%lld not a supported symlink type\n",
+  		cmd[0] = MODE_SENSE;
+  		cmd[4] = len;
+-@@ -2145,9 +2145,15 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
++@@ -2139,8 +2139,14 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
+  			if ((sshdr->sense_key == ILLEGAL_REQUEST) &&
+  			    (sshdr->asc == 0x20) && (sshdr->ascq == 0)) {
+  				/*
+@@ -88,24 +91,26 @@
+ +				 * too large for MODE SENSE single byte
+ +				 * allocation length field.
+  				 */
+- 				if (use_10_for_ms) {
+-+					if (len > 255)
+-+						return -EIO;
+- 					sdev->use_10_for_ms = 0;
+- 					goto retry;
+- 				}
+-@@ -2171,12 +2177,11 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
+- 		data->longlba = 0;
+- 		data->block_descriptor_length = 0;
+- 	} else if (use_10_for_ms) {
+--		data->length = buffer[0]*256 + buffer[1] + 2;
+-+		data->length = get_unaligned_be16(&buffer[0]) + 2;
+- 		data->medium_type = buffer[2];
+- 		data->device_specific = buffer[3];
+- 		data->longlba = buffer[4] & 0x01;
+--		data->block_descriptor_length = buffer[6]*256
+--			+ buffer[7];
+-+		data->block_descriptor_length = get_unaligned_be16(&buffer[6]);
+- 	} else {
+- 		data->length = buffer[0] + 1;
+- 		data->medium_type = buffer[1];
+++				if (len > 255)
+++					return -EIO;
++ 				sdev->use_10_for_ms = 0;
++ 				goto retry;
++ 			}
++@@ -2158,12 +2164,11 @@ scsi_mode_sense(struct scsi_device *sdev, int dbd, int modepage,
++ 			data->longlba = 0;
++ 			data->block_descriptor_length = 0;
++ 		} else if (use_10_for_ms) {
++-			data->length = buffer[0]*256 + buffer[1] + 2;
+++			data->length = get_unaligned_be16(&buffer[0]) + 2;
++ 			data->medium_type = buffer[2];
++ 			data->device_specific = buffer[3];
++ 			data->longlba = buffer[4] & 0x01;
++-			data->block_descriptor_length = buffer[6]*256
++-				+ buffer[7];
+++			data->block_descriptor_length = get_unaligned_be16(&buffer[6]);
++ 		} else {
++ 			data->length = buffer[0] + 1;
++ 			data->medium_type = buffer[1];
 +-- 
-+2.40.1
++2.33.8
 +
 ---
 
@@ -163,7 +179,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
 | stable/linux-5.10.y       |  Success    |  Success   |
-| stable/linux-5.4.y        |  Success    |  Success   |
 
