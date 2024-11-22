@@ -1,83 +1,117 @@
-Return-Path: <stable+bounces-94581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38B99D5B20
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 09:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3959D5CDC
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 11:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC831F22D83
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 08:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 790451F21EF5
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 10:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC55018787D;
-	Fri, 22 Nov 2024 08:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739BC1D8A08;
+	Fri, 22 Nov 2024 10:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="O3CLSVmz"
+	dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b="fFwTyCiS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from cornsilk.maple.relay.mailchannels.net (cornsilk.maple.relay.mailchannels.net [23.83.214.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B65165EE6;
-	Fri, 22 Nov 2024 08:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732264831; cv=none; b=Hz1h1u66XIj83BCj6egET272XKzcnCS32ban1QKrzt6MLoNu9DpjdOHsIFsXLcLAF0O2DHxkYAN58IKf21toOjZmdjfat3Q7UvyCDWWoXDVOSnWFsDe9JJXLYvRbOIQA2hLwpUMWySfzuOvsZLXawHVrzSRhh3po18IMWQH/OlU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732264831; c=relaxed/simple;
-	bh=NuIAn4WN9tuE3Z3+e4/LD9vBt0vhTMGMlYSG0sjGT6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lovGkoGvILFUNpANtoUQwnhK0g51xkiD6Rnb0oaNcLNan8lQ8zqFuuP9j5Tzff5uAa7ihcEq63eFVVCpgPS9B9BGmPGr1WCMLfce6I5f8YLVPJZAJSYzdyps7KZQQm15Qgx19g0yIfAb1Vi2yxCwF5nZT2d3OtwnQP3el2rZI5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O3CLSVmz; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM1qP5U006973;
-	Fri, 22 Nov 2024 08:40:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=SaePHCRKhD41eZpCkKUbZZLRBivcQk
-	LiOz/uWyQXTGQ=; b=O3CLSVmz1Ekch1T9i3lpmR0eDkHoWv+tTb1tMfy7NjXRyR
-	FfqkcPPpOkGMpQ18kbWSPv6dB6pLIcV3Y1g+anyUeJeUYz2whK0fys6KDtX+QjU3
-	D6EvY2ROoNGgm8Hqfnfns2dDdeCybcbvpA0GG+zXRX5ZDKp+OeViftnWOR0L7B3G
-	9lIpSKuh7SZvP0ZKLCy1IL5zNIwXhicnAoQUTpOSxRJLgc+Wmd04yJh/jRy7HEDp
-	w7yj9bZDwG+PI1xdcIdNNSZCL0CMGvXy+9sbuB8B5V/5X21pqyFuPoDFq9EaMbqf
-	880br+vhgRZAtbMoLP0eTU17xSscBm/Zt1a6tjJw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xyu26pde-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 08:40:26 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM3Cocp025906;
-	Fri, 22 Nov 2024 08:40:25 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42y8e1jff4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Nov 2024 08:40:25 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AM8eNo512321172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 Nov 2024 08:40:24 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E22DC2004E;
-	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36AC120043;
-	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.16.13])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 22 Nov 2024 08:40:23 +0000 (GMT)
-Date: Fri, 22 Nov 2024 09:40:17 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Christian Brauner <brauner@kernel.org>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/kcore.c: Clear ret value in read_kcore_iter
- after successful iov_iter_zero
-Message-ID: <Z0BDcVpUjtbWmYTv@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20241121231118.3212000-1-jolsa@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B241C8FD3
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 10:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.214.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732269824; cv=pass; b=CCIfJW66+GuXw36lZ86K0yEwlhQLjt/RtYk4rfGcKBdkCfyO+/hQSuBJMAJ14CI81K7M9tyjjSv0mWS0XHH23yI6NRDlmjb+Yhm6Sa7dRa+ysmNW9Sqm70gflfMgolR65r+Tl1kRmAMHJ4POwocF5JK7wL367HARALaCT/y7J/o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732269824; c=relaxed/simple;
+	bh=zXZVhUhg6UMftYuU/yfEsyfdQ6I3CUmNscYeG0Epq8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=SCgEaRfj9vAn8yjWoE0xi8pS3pzPBwt3OlnunfZkhmurEvchpYlER1kx78WM8k40OE+hxbHBbsl8tu9Evw4PgNQ4BJZDMj5DDLwmkDKD8MUYQTDE5rclO8pAixdVlgPZaZs5Trs1e3PSVtYAWEqjPtC67Ws4Ne62JOUSg4/vpJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com; spf=pass smtp.mailfrom=templeofstupid.com; dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b=fFwTyCiS; arc=pass smtp.client-ip=23.83.214.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 4255D440AB
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 08:46:24 +0000 (UTC)
+Received: from pdx1-sub0-mail-a207.dreamhost.com (trex-5.trex.outbound.svc.cluster.local [100.118.24.228])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id EB1D34447D
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 08:46:23 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1732265183; a=rsa-sha256;
+	cv=none;
+	b=YdkLMUbQ1lwo6+yhwuwKuXcJQyUBPoQHHskr/InQFLYlyO/Nf0mIsynjSVG4Eujpq0jGHB
+	OWgj0Hxn26loTLAXsG1yeNW5iiXF/NHkMWZ9+uCLQNfU1SfmmTqdZZwnleMY8IKjFkC/M7
+	fRdjUtWoe2NYjBUA37pSipbD0zEY+Gsr+j9yTQoN6rwkF6VhMrXUBIO+JxGMPKctlvThlc
+	1ZSWSB12lmu3Rg1WtNHh8N0H8/u4/uDDb1plmWp7+cBTHRegj6OVfPhPaTlgkNXMNnk82B
+	xxJSXzPwPf797LK+FTL2Wn8n7r1QQbULaWS3X+HFwkIcUsxAIlL0ZAiRJSlpGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1732265183;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=HZAEqfrjCbTuothITkBDCZ7mGcsd2bpnUTM5j+JGGGQ=;
+	b=cpb76luEDbIqXC0dakpaLfHflhcqPxSB1zTg017Fk6Zu8XYp+HtaNPzDUIKnEfLeTefQKd
+	KGe9KKUP2iZeh3m7NwgpwjRaij+kmsFT7qoro6+GFvAMEgr+A872dwLhw64OCfu8l/OJxm
+	VOIA/zi8hNZmli/bBoLvLoMzmq9rvhCvgKHj9APQS/9BPtzOIbPIaaubSwsKY63e+fZtXH
+	MKyJ6TfLEfcWa2s6ZsME4aN/dle2CUPEM1sVxjeREkzHzM2Jrc8IGdgWpGbdclOKcVgiou
+	hVMENBfNIijHYxGu6Wt+Iq7ENcize864P3g8uLQSX+MVJ7kej7jNSqHDCyBTvA==
+ARC-Authentication-Results: i=1;
+	rspamd-868968d99d-w9fng;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MailChannels-Auth-Id: dreamhost
+X-Juvenile-Company: 18a2da5a00bb807a_1732265184186_732349599
+X-MC-Loop-Signature: 1732265184186:1080469290
+X-MC-Ingress-Time: 1732265184186
+Received: from pdx1-sub0-mail-a207.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.118.24.228 (trex/7.0.2);
+	Fri, 22 Nov 2024 08:46:24 +0000
+Received: from kmjvbox.templeofstupid.com (c-73-70-109-47.hsd1.ca.comcast.net [73.70.109.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kjlx@templeofstupid.com)
+	by pdx1-sub0-mail-a207.dreamhost.com (Postfix) with ESMTPSA id 4Xvpbz5GTFzVL
+	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 00:46:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
+	s=dreamhost; t=1732265183;
+	bh=HZAEqfrjCbTuothITkBDCZ7mGcsd2bpnUTM5j+JGGGQ=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=fFwTyCiSpGl5OeJ9E7BkO0AicT7JgL384u2qz0lZTkeT/YzTuzhho/yyIlPNHCkUn
+	 HMX6k+0Si2lmKu/4WX/djbP6Xikuk/jpLbU+TlqSQwrdqCterssi+79wbxquAy2qok
+	 bdF+4/RYQqo/btpCvS+IzkACSIt/7bbtuqKfN+TR9KXVSqBJwotK7H+1uzqmLfjV7r
+	 h6v8oRT0Y4l6z5TRuEWJKIKxh+2t7TIkgFmFynHjL5mxaPioo+0V5QjXejeJ8LnO+i
+	 HoF1DwHsWU4xgppJH9/RPyf8G3lndmSdz1NtUxNO/d/k07YwgBszXPM76vdjrEi+Cs
+	 0OrKTh11HmVaw==
+Received: from johansen (uid 1000)
+	(envelope-from kjlx@templeofstupid.com)
+	id e006b
+	by kmjvbox.templeofstupid.com (DragonFly Mail Agent v0.12);
+	Fri, 22 Nov 2024 00:46:22 -0800
+Date: Fri, 22 Nov 2024 00:46:22 -0800
+From: Krister Johansen <kjlx@templeofstupid.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	stable@vger.kernel.org
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>, rcu@vger.kernel.org,
+	David Reaver <me@davidreaver.com>
+Subject: [PATCH stable 5.15/5.10 0/2] rcu-tasks: Idle tasks on offline CPUs
+ are in quiescent states
+Message-ID: <cover.1732237776.git.kjlx@templeofstupid.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,48 +120,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241121231118.3212000-1-jolsa@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: pMlr2yiv_z5t_79X43YJrR_QMOwYgNvr
-X-Proofpoint-ORIG-GUID: pMlr2yiv_z5t_79X43YJrR_QMOwYgNvr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- bulkscore=0 spamscore=0 mlxlogscore=778 adultscore=0 mlxscore=0
- clxscore=1011 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411220070
 
-On Fri, Nov 22, 2024 at 12:11:18AM +0100, Jiri Olsa wrote:
-> If iov_iter_zero succeeds after failed copy_from_kernel_nofault,
-> we need to reset the ret value to zero otherwise it will be returned
-> as final return value of read_kcore_iter.
-> 
-> This fixes objdump -d dump over /proc/kcore for me.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Fixes: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> ---
->  fs/proc/kcore.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-> index 51446c59388f..c82c408e573e 100644
-> --- a/fs/proc/kcore.c
-> +++ b/fs/proc/kcore.c
-> @@ -600,6 +600,7 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
->  					ret = -EFAULT;
->  					goto out;
->  				}
-> +				ret = 0;
->  			/*
->  			 * We know the bounce buffer is safe to copy from, so
->  			 * use _copy_to_iter() directly.
+Paul, Neeraj, and Stable Team:
+I've run into a case with rcu_tasks_postscan where the warning introduced as
+part of 46aa886c4("rcu-tasks: Fix IPI failure handling in
+trc_wait_for_one_reader") is getting triggered when trc_wait_for_one_reader
+sends an IPI to a CPU that is offline.  This is occurring on a platform that has
+hotplug slots available but not populated.  I don't believe the bug is caused by
+this change, but I do think that Paul's commit that confines the postscan
+operation to just the active CPUs would help prevent this from happening.
 
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Would the RCU maintainers be amenable to having this patch backported to the
+5.10 and 5.15 branches as well?  I've attached cherry-picks of the relevant
+commits to minimize the additional work needed.
 
-Thank you, Jiri!
+Thanks,
+
+-K
+
+Paul E. McKenney (1):
+  rcu-tasks: Idle tasks on offline CPUs are in quiescent states
+
+ kernel/rcu/tasks.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.25.1
+
 
