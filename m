@@ -1,135 +1,133 @@
-Return-Path: <stable+bounces-94625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34DF9D6146
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 16:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F829D6160
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 16:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2737816036C
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 946D8160410
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 15:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A63D2AF04;
-	Fri, 22 Nov 2024 15:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871C860890;
+	Fri, 22 Nov 2024 15:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ma1GLpGc"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="HA/B51wb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17282309BF;
-	Fri, 22 Nov 2024 15:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC5534CF5;
+	Fri, 22 Nov 2024 15:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732288866; cv=none; b=MN/ENGx0cZOOSbToZmRDwQiCvC/2q+NZhBGYq7b/l+VgQD9iOaBpa9ASr7b57pzF+Xj/6qbaAn+rO1UMcQ2SzL+az7t+JL7GmvMC1A07Iiob6fR3Jrzvls1w/r/6EVTEXHpV7FOtt8PnDzeOqk+kXJbBRWFs7EubRcZ0CMoCHfk=
+	t=1732289501; cv=none; b=HXIUwSEOqXVP35QZtkJ4J6b4ayTa5n2sK/MmFZx61FPQnnK59t+Esg+v4/VYXX88rlzWm2bV/lZkDAmq5gH3FyOqVb7q6Yxqw0GIoyAEM6hObHR3D6EkUK2L1i28FQD39pGf9b8ilfEIlfdzVuz9srwebDk2/r2QM0KrjEthEI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732288866; c=relaxed/simple;
-	bh=7pz32RbN7KvAwY8Z4VR7ySVX87cMIOLDDNQdlcRElAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fQKgNcI8YYCTryj+Atdsp/4ySnRzaxhV5eIf2fFu+qWJoyoyqqo2GTRrfRRtdjyBVInFAV5eYrZFEMnWfLaucsj4xyeCo2LtqSrakZVNJB3JCXO/kHW+tHVI3nGxscjK6PanEoP8z7uLxHIC72c1S4jZ1BEdsDCxKEo0pHJ7CSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ma1GLpGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5EDC4CECE;
-	Fri, 22 Nov 2024 15:21:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732288866;
-	bh=7pz32RbN7KvAwY8Z4VR7ySVX87cMIOLDDNQdlcRElAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ma1GLpGcU49K7V4i4V697Y2v1F+5gFEzWWYfG5ikQE+epTRKFWCKoH1EKhBUlvgg5
-	 Rmuxt/3KU1BnX25bq4mq4g/MgfNMmzgnc3Oz6kOk/ENKy4N0brAfguPHD6jmQ6fu+a
-	 2Gc4fcqjhh4EkAyn8gWE5c06MQwMBq5ZRiGINmHPhF9nO7yBjnolYua+7MfjyPeQ18
-	 NLTTzKlS3ZC3p/iuWeIRAJ0od+DZuaxN2wuVP+e2tY1c94VMmdNMZXYdLj/oWLG9Oj
-	 z4miGV/9poZHenA3v3hzPb8qGGkOcXCoxFRhj1jbf3w9hm51XJGkYvPW3wEXf8VEvL
-	 8W/a3r9HB3mWg==
-Date: Fri, 22 Nov 2024 10:21:04 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>, linux@armlinux.org.uk,
-	arnd@arndb.de, samitolvanen@google.com,
-	linux-arm-kernel@lists.infradead.org, llvm@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.6 5/6] ARM: 9434/1: cfi: Fix compilation corner
- case
-Message-ID: <Z0ChYA7bsmnZRI2d@sashalap>
-References: <20241120140647.1768984-1-sashal@kernel.org>
- <20241120140647.1768984-5-sashal@kernel.org>
- <20241120151338.GA3158726@thelio-3990X>
+	s=arc-20240116; t=1732289501; c=relaxed/simple;
+	bh=hCFHgMLo7sNYwDywbs1fYqLz3c9Z/HbwJFsp1ejUIp4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AxQnoH3B15BjgeNF9hFlYLjedpxO2WwRpbelF1HKT4YRhKAqgXXY7ji4fCuWyCOyzwNXpzPAHh6EBfUG/Lzi974afcYZgOoBjkvlxiTVDiZ60KjI337mpil0Phgv4DohfhutaaoniSiz8H4MoUpS/TtJmszPEc1tV27pzVQMB6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=HA/B51wb; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1732289499; x=1763825499;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Tsn9RFmGQbXdrr+mw0qy7JKc6sqBehJRetVocjosvZY=;
+  b=HA/B51wbNjOUZb1IyY9T9l67q7M6bNpIa+rhBeWFjiJ3L/YDMGCslaOA
+   uNjafCgHmYJbPybpJcC1eSyYK7mL0wMBKEGG6ZnkYqhUPDUsfud4AUty0
+   IAa67CPq7hwwiKo8uea1vWB6/IQJkvPwNTX+et6rbvPjiDUYmPx93U0Zb
+   U=;
+X-IronPort-AV: E=Sophos;i="6.12,176,1728950400"; 
+   d="scan'208";a="445178229"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 15:31:34 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:58234]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.101:2525] with esmtp (Farcaster)
+ id c2b526e1-9df4-4ab2-9649-033129729f2e; Fri, 22 Nov 2024 15:31:34 +0000 (UTC)
+X-Farcaster-Flow-ID: c2b526e1-9df4-4ab2-9649-033129729f2e
+Received: from EX19MTAUWC002.ant.amazon.com (10.250.64.143) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Fri, 22 Nov 2024 15:31:34 +0000
+Received: from email-imr-corp-prod-iad-all-1a-8c151b82.us-east-1.amazon.com
+ (10.25.36.210) by mail-relay.amazon.com (10.250.64.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Fri, 22 Nov 2024 15:31:34 +0000
+Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com [10.15.1.225])
+	by email-imr-corp-prod-iad-all-1a-8c151b82.us-east-1.amazon.com (Postfix) with ESMTP id 9F6C740DC6;
+	Fri, 22 Nov 2024 15:31:33 +0000 (UTC)
+Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
+	id 5DB702404; Fri, 22 Nov 2024 16:31:33 +0100 (CET)
+From: Mahmoud Adam <mngyadam@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <stfrench@microsoft.com>, <pali@kernel.org>, <stable@vger.kernel.org>,
+	<linux-cifs@vger.kernel.org>
+Subject: [PATCH 5.4/5.10/5.15] cifs: Fix buffer overflow when parsing NFS reparse points
+Date: Fri, 22 Nov 2024 16:29:43 +0100
+Message-ID: <20241122152943.76044-1-mngyadam@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241120151338.GA3158726@thelio-3990X>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 20, 2024 at 08:13:38AM -0700, Nathan Chancellor wrote:
->Hi Sasha,
->
->On Wed, Nov 20, 2024 at 09:06:35AM -0500, Sasha Levin wrote:
->> From: Linus Walleij <linus.walleij@linaro.org>
->>
->> [ Upstream commit 4aea16b7cfb76bd3361858ceee6893ef5c9b5570 ]
->>
->> When enabling expert mode CONFIG_EXPERT and using that power
->> user mode to disable the branch prediction hardening
->> !CONFIG_HARDEN_BRANCH_PREDICTOR, the assembly linker
->> in CLANG notices that some assembly in proc-v7.S does
->> not have corresponding C call sites, i.e. the prototypes
->> in proc-v7-bugs.c are enclosed in ifdef
->> CONFIG_HARDEN_BRANCH_PREDICTOR so this assembly:
->>
->> SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
->> SYM_TYPED_FUNC_START(cpu_v7_hvc_switch_mm)
->>
->> Results in:
->>
->> ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_smc_switch_mm
->> >>> referenced by proc-v7.S:94 (.../arch/arm/mm/proc-v7.S:94)
->> >>> arch/arm/mm/proc-v7.o:(.text+0x108) in archive vmlinux.a
->>
->> ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_hvc_switch_mm
->> >>> referenced by proc-v7.S:105 (.../arch/arm/mm/proc-v7.S:105)
->> >>> arch/arm/mm/proc-v7.o:(.text+0x124) in archive vmlinux.a
->>
->> Fix this by adding an additional requirement that
->> CONFIG_HARDEN_BRANCH_PREDICTOR has to be enabled to compile
->> these assembly calls.
->>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202411041456.ZsoEiD7T-lkp@intel.com/
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
->> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
->> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  arch/arm/mm/proc-v7.S | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/mm/proc-v7.S b/arch/arm/mm/proc-v7.S
->> index 193c7aeb67039..bea11f9bfe856 100644
->> --- a/arch/arm/mm/proc-v7.S
->> +++ b/arch/arm/mm/proc-v7.S
->> @@ -93,7 +93,7 @@ ENTRY(cpu_v7_dcache_clean_area)
->>  	ret	lr
->>  ENDPROC(cpu_v7_dcache_clean_area)
->>
->> -#ifdef CONFIG_ARM_PSCI
->> +#if defined(CONFIG_ARM_PSCI) && defined(CONFIG_HARDEN_BRANCH_PREDICTOR)
->>  	.arch_extension sec
->>  ENTRY(cpu_v7_smc_switch_mm)
->
->This patch is unnecessary in branches prior to 6.10 (when ARM started
->supporting kCFI) because SYM_TYPED_FUNC_START() is not used here. I
->would just drop it for 6.6 and earlier.
+From: Pali Rohár <pali@kernel.org>
 
-Ack, will do.
+upstream e2a8910af01653c1c268984855629d71fb81f404 commit.
 
+ReparseDataLength is sum of the InodeType size and DataBuffer size.
+So to get DataBuffer size it is needed to subtract InodeType's size from
+ReparseDataLength.
+
+Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
+at position after the end of the buffer because it does not subtract
+InodeType size from the length. Fix this problem and correctly subtract
+variable len.
+
+Member InodeType is present only when reparse buffer is large enough. Check
+for ReparseDataLength before accessing InodeType to prevent another invalid
+memory access.
+
+Major and minor rdev values are present also only when reparse buffer is
+large enough. Check for reparse buffer size before calling reparse_mkdev().
+
+Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[use variable name symlink_buf, the other buf->InodeType accesses are
+not used in current version so skip]
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+---
+This fixes CVE-2024-49996.
+ fs/cifs/smb2ops.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index 6c30fff8a029e..ee9a1e6550e3c 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -2971,6 +2971,12 @@ parse_reparse_posix(struct reparse_posix_data *symlink_buf,
+ 
+ 	/* See MS-FSCC 2.1.2.6 for the 'NFS' style reparse tags */
+ 	len = le16_to_cpu(symlink_buf->ReparseDataLength);
++	if (len < sizeof(symlink_buf->InodeType)) {
++		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
++		return -EIO;
++	}
++
++	len -= sizeof(symlink_buf->InodeType);
+ 
+ 	if (le64_to_cpu(symlink_buf->InodeType) != NFS_SPECFILE_LNK) {
+ 		cifs_dbg(VFS, "%lld not a supported symlink type\n",
 -- 
-Thanks,
-Sasha
+2.40.1
+
 
