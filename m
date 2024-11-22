@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-94667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EAB9D6536
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 22:08:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33E59D6534
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 22:08:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2898916194D
-	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 21:08:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36FAAB23663
+	for <lists+stable@lfdr.de>; Fri, 22 Nov 2024 21:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F0A1DFDAE;
-	Fri, 22 Nov 2024 21:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F61DEFFC;
+	Fri, 22 Nov 2024 21:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nBcRmik9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LxLIQNxp"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96EB1DFDA2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06DF1DFDBF
 	for <stable@vger.kernel.org>; Fri, 22 Nov 2024 21:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732309677; cv=none; b=WR9PC5eY0IoOKnlydDWtdP0RWf5pU/fFOtenKIfr3sw3zLrqZ8L3KGnxEoXmuwGuyQXpGu58sv9N+ptrvR0hCznTTH0Czq1yh+5KueU6FYgsIa6BgUOVoOCZjG/tg3gEv+m6uf/F4vuPhMEaAtqrlMyo10x/FJVQmWiZBP+diKU=
+	t=1732309676; cv=none; b=J1RNhCiZvIOqqINxBX8ahi6nn/VfJS5WoVMM/vDzJvkynjaejCSA7I92GAY5YSaOdWY5ExWQrSFPSjtrGoP+jPRwRr8W2TI6XzxcdDL2NwMyplAor+GQSac0OvciwHq7hYKRwTSsS2lOBCJ1tj/nYucDyK8wogrOCGm8AmB/zMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732309677; c=relaxed/simple;
-	bh=LtknylRL/lo8D7FJWpWhpHXYfNsmxJArrHridOai6BM=;
+	s=arc-20240116; t=1732309676; c=relaxed/simple;
+	bh=0pJIEOOK9D1TVxpvnoebRbS5HIlLbuutsSPLoz2yCgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeTa906aTpBiRcWiGRDEKdJy4n37x0RYFt9temNEPplli94z+LyvfXEZYbYkVpuvutoAEQMqYXlOQG8sir4ex2tINU9ybz0uvF5nRGGNkKJXQM5PgbBbjXbtFMH5pxz/KWy4m4MxfeF5YbG4BNWK3zemrPK9K1EdTM/imqK7sVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nBcRmik9; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=FAqxL584T2xg4OeaiiLEOrYNCYU93OLLqUMnjgOr8aDfmzSm6WpTU9fmCuwYy2cv8fOVBgtXtMgNwaKtw7qnoqj0UU654V7QOFY2slNzR3Rx4okVx9XYoGugPU1qe6HtSDN5BjoIUScNg4AwMB+WUGECeYFronuFFcVxnII31Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LxLIQNxp; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,39 +36,38 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1732309675; x=1763845675;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LtknylRL/lo8D7FJWpWhpHXYfNsmxJArrHridOai6BM=;
-  b=nBcRmik9LM0f3LzG1U0xCIUyURZzoMeqWkIs3lX/sglvOWjlDOGT6fSU
-   iktTQmjt5+ly9wzvatQfkC8z/ZGcNXDaHjZTt8LIfdBub6gXl3MH9s6yk
-   At5b09hiijyvAK2/j1iRWqV4xXgedppedjBxzjmptT07n2JtDvUS1hWOq
-   vEYNXaxHLHiUkgMcqH3yRoQbpECr38fjGdmQPgXQD7KgGgz3tB1gps96J
-   h7GWozDKj+OyDYvaOamFnXlYRDs6LXLPQ9c/evNdkM5liocoO69czQdVB
-   wvoXAnB1+8SporrxX5w4WjMyZeNbgUUqsEEM2EIn0pX5dxdqFe/9/ZfTk
+  bh=0pJIEOOK9D1TVxpvnoebRbS5HIlLbuutsSPLoz2yCgI=;
+  b=LxLIQNxpK2qFCB1prf5HUtzgPxxaDwnNDhYVA8LLd2h3ifD+w+RreLp0
+   8iAVF3mggqwqQ+RHQ6hg0Luth9Ve1wPxUm9+BuOnjV0ds89UNT+q4VkwP
+   z6vJV/5rda1ih0GHb5vxOVD4FOkNtplDGGjT1pNr4bGmT8LWaIj6ng2DC
+   hbK2io20+j4XscFm9wEj/6zyYm16aRGYj7aVZEIjjKh4He+2Q7DKrqQiP
+   jKzcwpr/XQITIQlGUNX038iay2db7Y6mSnc+E4zy/AjgwJ+2P5WMTiR1Y
+   ReJG7nWe5HPkYJ180yuyA5T355mcKvY9xSOB0WmNQPnM7vo8Yv9y/PIDU
    g==;
-X-CSE-ConnectionGUID: P/7ZT61ASBOKh5deh/0erA==
-X-CSE-MsgGUID: g+sHSIHFQlKiiDUHYwyMeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="43878286"
+X-CSE-ConnectionGUID: a4B0l0QyQgWYIcGslLWXTg==
+X-CSE-MsgGUID: V8rv7P/ASqC1yjBcR6LTlw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="43878287"
 X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="43878286"
+   d="scan'208";a="43878287"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 13:07:44 -0800
-X-CSE-ConnectionGUID: zPkrd04rS4GvIUECiSJPng==
-X-CSE-MsgGUID: EzbaQISMSz2o5udBOXR7Fw==
+X-CSE-ConnectionGUID: KWombwIHTbSCk3L0x47KHA==
+X-CSE-MsgGUID: nMIgh4+NTF6ZGde4X2L1eA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="95457297"
+   d="scan'208";a="95457300"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
   by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 13:07:44 -0800
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: stable@vger.kernel.org
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Vitasta Wattal <vitasta.wattal@intel.com>,
+	Aradhya Bhatia <aradhya.bhatia@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
 	Matt Roper <matthew.d.roper@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 29/31] drm/xe/bmg: improve cache flushing behaviour
-Date: Fri, 22 Nov 2024 13:07:17 -0800
-Message-ID: <20241122210719.213373-30-lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 30/31] drm/xe/xe2lpg: Extend Wa_15016589081 for xe2lpg
+Date: Fri, 22 Nov 2024 13:07:18 -0800
+Message-ID: <20241122210719.213373-31-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241122210719.213373-1-lucas.demarchi@intel.com>
 References: <20241122210719.213373-1-lucas.demarchi@intel.com>
@@ -80,82 +79,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Aradhya Bhatia <aradhya.bhatia@intel.com>
 
-commit 6df106e93f79fb7dc90546a2d93bb3776b42863e upstream.
+commit 4ceead37ca9f5e555fe46e8528bd14dd1d2728e8 upstream.
 
-The BSpec says that EN_L3_RW_CCS_CACHE_FLUSH must be toggled
-on for manual global invalidation to take effect and actually flush
-device cache, however this also turns on flushing for things like
-pipecontrol, which occurs between submissions for compute/render. This
-sounds like massive overkill for our needs, where we already have the
-manual flushing on the display side with the global invalidation. Some
-observations on BMG:
+Add workaround (wa) 15016589081 which applies to Xe2_v3_LPG_MD.
 
-1. Disabling l2 caching for host writes and stubbing out the driver
-   global invalidation but keeping EN_L3_RW_CCS_CACHE_FLUSH enabled, has
-   no impact on wb-transient-vs-display IGT, which makes sense since the
-   pipecontrol is now flushing the device cache after the render copy.
-   Without EN_L3_RW_CCS_CACHE_FLUSH the test then fails, which is also
-   expected since device cache is now dirty and display engine can't see
-   the writes.
+Xe2_v3_LPG_MD is a Lunar Lake platform with GFX version: 20.04.
+This wa is type: permanent, and hence is applicable on all steppings.
 
-2. Disabling EN_L3_RW_CCS_CACHE_FLUSH, but keeping the driver global
-   invalidation also has no impact on wb-transient-vs-display. This
-   suggests that the global invalidation still works as expected and is
-   flushing the device cache without EN_L3_RW_CCS_CACHE_FLUSH turned on.
-
-With that drop EN_L3_RW_CCS_CACHE_FLUSH. This helps some workloads since
-we no longer flush the device cache between submissions as part of
-pipecontrol.
-
-Edit: We now also have clarification from HW side that BSpec was indeed
-wrong here.
-
-v2:
-  - Rebase and update commit message.
-
-BSpec: 71718
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Vitasta Wattal <vitasta.wattal@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241007074541.33937-2-matthew.auld@intel.com
-(cherry picked from commit 67ec9f87bd6c57db1251bb2244d242f7ca5a0b6a)
-[ Fix conflict due to changed xe_mmio_write32() signature ]
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241009065542.283151-1-aradhya.bhatia@intel.com
+(cherry picked from commit 8fb1da9f9bfb02f710a7f826d50781b0b030cf53)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h | 3 ---
- drivers/gpu/drm/xe/xe_gt.c           | 1 -
- 2 files changed, 4 deletions(-)
+ drivers/gpu/drm/xe/xe_wa.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-index 224ab4a425258..bd604b9f08e4f 100644
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -393,9 +393,6 @@
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index e2d7ccc6f144b..28c514b2aa3a1 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -710,6 +710,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 			     DIS_PARTIAL_AUTOSTRIP |
+ 			     DIS_AUTOSTRIP))
+ 	},
++	{ XE_RTP_NAME("15016589081"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(2004), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
++	},
  
- #define XE2_GLOBAL_INVAL			XE_REG(0xb404)
- 
--#define SCRATCH1LPFC				XE_REG(0xb474)
--#define   EN_L3_RW_CCS_CACHE_FLUSH		REG_BIT(0)
--
- #define XE2LPM_L3SQCREG2			XE_REG_MCR(0xb604)
- 
- #define XE2LPM_L3SQCREG3			XE_REG_MCR(0xb608)
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index ba9f50c1faa67..a4a5c012a1b0b 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -108,7 +108,6 @@ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
- 		return;
- 
- 	if (!xe_gt_is_media_type(gt)) {
--		xe_mmio_write32(gt, SCRATCH1LPFC, EN_L3_RW_CCS_CACHE_FLUSH);
- 		reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
- 		reg |= CG_DIS_CNTLBUS;
- 		xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
+ 	/* Xe2_HPG */
+ 	{ XE_RTP_NAME("15010599737"),
 -- 
 2.47.0
 
