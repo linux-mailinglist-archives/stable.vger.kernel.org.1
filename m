@@ -1,101 +1,124 @@
-Return-Path: <stable+bounces-94675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340189D6815
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 08:39:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E0C9D68FD
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 13:21:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8AA282F64
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 07:39:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C62AD161445
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 12:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85D515CD78;
-	Sat, 23 Nov 2024 07:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B3317A583;
+	Sat, 23 Nov 2024 12:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3GP7hyW"
 X-Original-To: stable@vger.kernel.org
-Received: from manchmal.in-ulm.de (manchmal.in-ulm.de [217.10.9.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024D29405
-	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 07:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.9.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EBE20E3;
+	Sat, 23 Nov 2024 12:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732347553; cv=none; b=ZKa6MxxEYy44/LTF65YM1sNkSe80UIfC5nUbLpbRQdUKTJk2+XztrzkLm0SAU4AAT/gC70B/T5Hlb5tJfNXEsJQEV5OoE+ZCW3tO+dl1sh3HS61+MlBrRsO3Xr1RlILkquVWqW1jyAqSc3Hv8m2d8SGbZVAtMOjwut5Gwjh6WUw=
+	t=1732364459; cv=none; b=DuGcGP/JKbT7vE2yHqypM4YNAHhzOOcSziNwDMtvuRIFsA8imb4EeCpHyRUemOAU9cBm/wW5D/sPUiM5dz0HwFyCQqrCgFajl8xKXwmyP/ZrzbW7Eb+CkP71U7coGeSb9xLp929/Gy3lZqPEw+qglmM6n9h0Moo2T0y1ig5sDh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732347553; c=relaxed/simple;
-	bh=dEjdMJImIgCAVD3pxTfPQLqmpTV1lamIMRJmNDkAA2s=;
+	s=arc-20240116; t=1732364459; c=relaxed/simple;
+	bh=ChIgCQEgpQUlDyNAj42KbHsG7tPfZ6kxOQMBnO1CVNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smU0kEMx6ybwyO5VKbbHMhsPnsc/UU3tu7KUih4VxLET36F5OzHwGQrHoQOFKld/zEpFWiQiuPbalXd/xGiwrKQgOstl4Vc7oB1qas0q/j81nWM7ZHYuSsDCrfJUzQJj6Zcj5xRFYuRmDdrGOnljxbypPsT7R1k/6uU6QaDRuSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de; spf=pass smtp.mailfrom=manchmal.in-ulm.de; arc=none smtp.client-ip=217.10.9.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manchmal.in-ulm.de
-Date: Sat, 23 Nov 2024 08:32:40 +0100
-From: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-To: the Hide <thehideat23@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re:
-Message-ID: <1732346861@msgid.manchmal.in-ulm.de>
-References: <8db6485d-0062-4155-a623-f44b3f4c079f@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eqc/fH5M4p+Bc4/qldPaV8LSuF+L4OdrpN8sefEakD6rp49hjemsU1ooWRTcBEDHqjlJ6DX/zcb/wATcv5m3dEktzjjKRgXC28HOU3XvM5x5X1csFicJJBViLNySZhnEWY+s4aa4eybSegK5PRdKJBrPItSfBjF6nluhwnuvjKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3GP7hyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410D0C4CECD;
+	Sat, 23 Nov 2024 12:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732364459;
+	bh=ChIgCQEgpQUlDyNAj42KbHsG7tPfZ6kxOQMBnO1CVNA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H3GP7hyWq9FOmNmfIP8/fYcpbdhTzKY+aPqENMOqUgn5j9fKrRGlD4b5fZMiilKMZ
+	 olTLuhmr0Gzh8twfTm4K+EwrJ2NoGRhIHPM+lxmTvUIUjKCbyOXrhQD9EUSQN1R7TC
+	 +HRV23hRPdNsrTMRSKxsLC8Ur4fBuPFERvYzRAMkpdL30KTFN2zBS70btYSWkAZd6P
+	 6mIImJJjgHmFdXViXUcDAYQGcP6qjFjX8ojU1bu68faNczu/LiAGChZ8CuOErRsgiY
+	 xd6noHJWO+R6PF8FkzF5IMO48XCFNkDHacqQeS9lWZ8Qau5yXUF6TBv8f83CWr4/4R
+	 Qml8CFwalTv2Q==
+Received: by pali.im (Postfix)
+	id 8EA66476; Sat, 23 Nov 2024 13:20:50 +0100 (CET)
+Date: Sat, 23 Nov 2024 13:20:50 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Mahmoud Adam <mngyadam@amazon.com>
+Cc: gregkh@linuxfoundation.org, stfrench@microsoft.com,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH] cifs: Fix buffer overflow when parsing NFS reparse points
+Message-ID: <20241123122050.23euwjcjsuqwiodx@pali>
+References: <20241122134410.124563-1-mngyadam@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2QlCYD1iD6nwmjI2"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8db6485d-0062-4155-a623-f44b3f4c079f@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241122134410.124563-1-mngyadam@amazon.com>
+User-Agent: NeoMutt/20180716
 
+On Friday 22 November 2024 14:44:10 Mahmoud Adam wrote:
+> From: Pali Rohár <pali@kernel.org>
+> 
+> upstream e2a8910af01653c1c268984855629d71fb81f404 commit.
+> 
+> ReparseDataLength is sum of the InodeType size and DataBuffer size.
+> So to get DataBuffer size it is needed to subtract InodeType's size from
+> ReparseDataLength.
+> 
+> Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
+> at position after the end of the buffer because it does not subtract
+> InodeType size from the length. Fix this problem and correctly subtract
+> variable len.
+> 
+> Member InodeType is present only when reparse buffer is large enough. Check
+> for ReparseDataLength before accessing InodeType to prevent another invalid
+> memory access.
+> 
+> Major and minor rdev values are present also only when reparse buffer is
+> large enough. Check for reparse buffer size before calling reparse_mkdev().
+> 
+> Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> [use variable name symlink_buf, the other buf->InodeType accesses are
+> not used in current version so skip]
+> Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+> ---
+> This fixes CVE-2024-49996, and applies cleanly on 5.4->6.1, 6.6 and
+> later already has the fix.
 
---2QlCYD1iD6nwmjI2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Interesting... I have not know that there is CVE number for this issue.
+Have you asked for assigning CVE number? Or was it there before?
 
-the Hide wrote...
-
-> Who should I contact regarding the following error
->=20
->=20
-> E: Malformed entry 5 in list file
-> /etc/apt/sources.list.d/additional-repositories.list (Component)
-> E: The list of sources could not be read.
-> E: _cache->open() failed, please report.
-
-
-Assuming you're using Debian and not some derivatve: Some Debian users
-mailing list, like <https://lists.debian.org/debian-user/>
-
-=46rom the above error message I assume there's a format error in
-/etc/apt/sources.list.d/additional-repositories.list - so it was wise to
-include the content of that file in a message to that list.
-
-If it's actually a bug in apt, the Debian bug tracker was the place to
-go. This list here however is about development of the Linux kernel, the
-stable releases, so not quite the right place.
-
-    Christoph
-
---2QlCYD1iD6nwmjI2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEWXMI+726A12MfJXdxCxY61kUkv0FAmdBhRQACgkQxCxY61kU
-kv3n+hAAuMmZwsYeaOR+dKeOmfO8SxUa6T+pRLLWGcXsW0AyYUAAcOkI0yeDE9Qo
-i6KB/XV4FfEd1r2BnBbmKUQcmQcQsPqh2gGAHy2IrBgpPNjzlO3IXjLyj7avHY77
-pY+5/iWQEU8zvQ0rzm/N6qgGLZoK347A3cLfQV0482rs7/g6vWkmr1vtaqJw1x0f
-B5q/3Ff4aBQ5avuIEQPC0DgcHNh1RemC67w6VrmBYP0jGPtI3BodJGZbEqSzpTgI
-JQR6y6adOHBuf2gs70xU+rxZSaPmW627LnD8Lmfc9klLVQtHCwSqhk3y8xgKJs1f
-BZ0RAtBBziqLMjvCWshRWWG4MW2Ar7aX0x+iN8vbAzIHALRyV3Zryni3PItMMkyw
-i90B6q3h2pNvR43yF7rvJAY7um31WGpnWy06UNg0wMomx9VBeWSulhfqK//W08FE
-m8U4Ua1rmJtz6wi6F9hQAn4X5ZeI+rNaPH+lMDw+9vFbzR2GKe7NTi2DY/yPo98m
-JweWypbGaW+yWYEwoI0sLgUjTulu1qRWVtyEdQyUyxEDCuJaoFL4ufm7SQVqsvug
-0z5Koy+AEeDAThwBmp/+fjTUqtjD8Ac7oFNtN5G+wXs582q34CyTEgfS0R4xQIAi
-7F/TNjfd0GSU/D6HLp3/T6rN5TT2LULvW3QgtS3Eoaxy//ncAC8=
-=E66f
------END PGP SIGNATURE-----
-
---2QlCYD1iD6nwmjI2--
+>  fs/smb/client/smb2ops.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+> index d1e5ff9a3cd39..fcfbc096924a8 100644
+> --- a/fs/smb/client/smb2ops.c
+> +++ b/fs/smb/client/smb2ops.c
+> @@ -2897,6 +2897,12 @@ parse_reparse_posix(struct reparse_posix_data *symlink_buf,
+>  
+>  	/* See MS-FSCC 2.1.2.6 for the 'NFS' style reparse tags */
+>  	len = le16_to_cpu(symlink_buf->ReparseDataLength);
+> +	if (len < sizeof(symlink_buf->InodeType)) {
+> +		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
+> +		return -EIO;
+> +	}
+> +
+> +	len -= sizeof(symlink_buf->InodeType);
+>  
+>  	if (le64_to_cpu(symlink_buf->InodeType) != NFS_SPECFILE_LNK) {
+>  		cifs_dbg(VFS, "%lld not a supported symlink type\n",
+> -- 
+> 2.40.1
+> 
 
