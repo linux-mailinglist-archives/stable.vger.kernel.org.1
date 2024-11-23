@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-94681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB5D9D6971
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 15:30:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD799D6972
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 15:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F38F1615FE
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 14:30:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AE721616F1
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 14:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF7D249EB;
-	Sat, 23 Nov 2024 14:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725132746B;
+	Sat, 23 Nov 2024 14:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNoEXyAT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ye+uW6Uk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9121F957
-	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 14:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CCF22EED
+	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 14:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732372241; cv=none; b=mxhk6R+pLpM3Agf31kooxseUpv6aTjmglzyG6jlEqmedvWjgH6xzvFYA8JiNLz4B5pvFuSIFR1g6e8ANVvSieA+G6xcj0nuh8w8VMs/CYZhorg4VwS0ZHtvsAed28EUHcsufcN/98QW0sa9jZi+ZJRBqZxsqC1+NN+E8SouNYnQ=
+	t=1732372243; cv=none; b=u0FMzMyz7Fnyr0fF9qCKJDaeHS+tFz9XD5Fbsi1zQ6znnazmzbVAy4R/IDPsxISzStVJw1rs9KMGuan9UJlYG0wL29C/qnnXeddQzuT4/4oDWqxmsMXtZ3G60HyPd1URERE5pkSQG9EIe16tW/Afr3xoaqBCP5wP6Up+KHb4bxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732372241; c=relaxed/simple;
-	bh=cUlvQDlJfXDUAJmMEFrl7CPHzlL6hzo7SfmNF2gt8ns=;
+	s=arc-20240116; t=1732372243; c=relaxed/simple;
+	bh=W/GBxqvEngzSn/CbsxlQ9LL28CkSN60Iqn6GGtnHclk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AR1akEu5My7KORcsEzG/L4eF2FZ5NzAOU39tjvrSCy2SDSH45idhkBXXL+UeVBNREkjPbj2Njp/PPnAar0LR1LuIWLFjhQvrEMzpoEXYuUfHp8Crkyu+Qu2A7dJkyufg8hAXvoXotb4LtyPI04Hy2unzFNTtPlPYwZrszzGfNEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNoEXyAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E223C4CECD;
-	Sat, 23 Nov 2024 14:30:40 +0000 (UTC)
+	 MIME-Version; b=RtZNCW+kSidWxefXN+wUQZLS6Bb71Ra0rqxtXJ/kASIj4FF5V5w5Xzyqa2Qx37cPb7h37ovvMjIVVJwAed6ObM7Z2HE/6nz0QoH8VfRCLZTXPXXtLNhQvWIsGjwNw4FqqqjTTyCCX1k32iOJdt71R2yvpR3iLNZAUwPOflL1s0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ye+uW6Uk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5A1C4CECD;
+	Sat, 23 Nov 2024 14:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732372240;
-	bh=cUlvQDlJfXDUAJmMEFrl7CPHzlL6hzo7SfmNF2gt8ns=;
+	s=k20201202; t=1732372242;
+	bh=W/GBxqvEngzSn/CbsxlQ9LL28CkSN60Iqn6GGtnHclk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNoEXyATAlxKEFvd2AanSh65N9YCvNVY3676GZfNi/vcq3ktegx+l7JF+EmS9z7+G
-	 uD723rv5kX40C/KzVRYrwwqTIkoWDUYnrpa3irMrQvDtXNhuXgLHYH5Ozk/rzc17qy
-	 wDbb0x1XycvBx3FtWaM5YE+50nVYzbI/hP27NyHAPiAp3C/vKnjv9VWpIi6t9tWG13
-	 IJjWQZDZ4cNnU8bAorJO3iJblWkgrMyVQ+QzKgTEsDSUCB7gbvSkcTcCMUy8sAxOxr
-	 3sstmS+CUbEPnMrxgqSJu7P0Q1fljpwjLRGtZjJDUmH7YZBEdfJG0dSQ4owznIExTx
-	 +sTTlO2466Q+A==
+	b=Ye+uW6UkaForm8z0K5WDz5MxpHPmMP8LCBifbBzLLi/z/8817+z34GktK4vHX41xV
+	 Uz2hymCjRZ6cTcDUedSKrDotpxhrnEVOnHXtrGqQWvgeBo4sSuAjBN1ZhV2TQev9Tz
+	 q/O3Z/tOKE7MaaZptNh97JexHXyYf5xG9eZobNnMVjBvJZWMl/ZaNl9i6YZ8bSNdTN
+	 RxLtdVe4rrDrfRT10KwQsG0kugxvVd72nWXJ9Pd1KhBKbXryaQXvKkWfTkyUhB4IHX
+	 encoMFz2e1V5oatMWgcgwYfny+no3W5SR1xYegL3diQY+2ZMramEL06wd/x5pTbKJ1
+	 AhxTssXlK1NyA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.11 01/31] drm/xe/migrate: Handle clear ccs logic for xe2 dgfx
-Date: Sat, 23 Nov 2024 09:30:38 -0500
-Message-ID: <20241123083456-400083e420760b67@stable.kernel.org>
+Subject: Re: [PATCH 6.11 07/31] drm/xe/migrate: Add kunit to test clear functionality
+Date: Sat, 23 Nov 2024 09:30:40 -0500
+Message-ID: <20241123092624-90cbaec93d75456d@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241122210719.213373-2-lucas.demarchi@intel.com>
+In-Reply-To:  <20241122210719.213373-8-lucas.demarchi@intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 108c972a11c5f6e37be58207460d9bcac06698db
+The upstream commit SHA1 provided is correct: 54f07cfc016226c3959e0b3b7ed306124d986ce4
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lucas De Marchi <lucas.demarchi@intel.com>
@@ -76,64 +76,26 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-23 08:22:04.287621219 -0500
-+++ /tmp/tmp.piLgrFj0iY	2024-11-23 08:22:04.278840217 -0500
+--- -	2024-11-23 09:22:46.652978735 -0500
++++ /tmp/tmp.PlkTLzjdk1	2024-11-23 09:22:46.648420454 -0500
 @@ -1,3 +1,5 @@
-+commit 108c972a11c5f6e37be58207460d9bcac06698db upstream.
++commit 54f07cfc016226c3959e0b3b7ed306124d986ce4 upstream.
 +
- For Xe2 dGPU, we clear the bo by modifying the VRAM using an
- uncompressed pat index which then indirectly updates the
- compression status as uncompressed i.e zeroed CCS.
-@@ -13,15 +15,16 @@
- Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+ This test verifies if the main and ccs data are cleared during bo creation.
+ The motivation to use Kunit instead of IGT is that, although we can verify
+ whether the data is zero following bo creation,
+@@ -18,6 +20,7 @@
+ Acked-by: Nirmoy Das <nirmoy.das@intel.com>
  Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
- Link: https://patchwork.freedesktop.org/patch/msgid/8dd869dd8dda5e17ace28c04f1a48675f5540874.1721250309.git.akshata.jahagirdar@intel.com
+ Link: https://patchwork.freedesktop.org/patch/msgid/c07603439b88cfc99e78c0e2069327e65d5aa87d.1721250309.git.akshata.jahagirdar@intel.com
 +Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
  ---
-  drivers/gpu/drm/xe/xe_migrate.c | 11 ++++++++---
-  1 file changed, 8 insertions(+), 3 deletions(-)
- 
- diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
--index fa23a7e7ec435..85eec95c9bc27 100644
-+index a849c48d8ac90..8315cb02f370d 100644
- --- a/drivers/gpu/drm/xe/xe_migrate.c
- +++ b/drivers/gpu/drm/xe/xe_migrate.c
--@@ -347,6 +347,11 @@ static u32 xe_migrate_usm_logical_mask(struct xe_gt *gt)
-+@@ -348,6 +348,11 @@ static u32 xe_migrate_usm_logical_mask(struct xe_gt *gt)
-  	return logical_mask;
-  }
+  drivers/gpu/drm/xe/tests/xe_migrate.c | 276 ++++++++++++++++++++++++++
+  1 file changed, 276 insertions(+)
+@@ -311,3 +314,6 @@
+  	{}
+  };
   
-@@ -33,7 +36,7 @@
-  /**
-   * xe_migrate_init() - Initialize a migrate context
-   * @tile: Back-pointer to the tile we're initializing for.
--@@ -420,7 +425,7 @@ struct xe_migrate *xe_migrate_init(struct xe_tile *tile)
-+@@ -421,7 +426,7 @@ struct xe_migrate *xe_migrate_init(struct xe_tile *tile)
-  		return ERR_PTR(err);
-  
-  	if (IS_DGFX(xe)) {
-@@ -42,7 +45,7 @@
-  			/* min chunk size corresponds to 4K of CCS Metadata */
-  			m->min_chunk_size = SZ_4K * SZ_64K /
-  				xe_device_ccs_bytes(xe, SZ_64K);
--@@ -1034,7 +1039,7 @@ struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
-+@@ -1035,7 +1040,7 @@ struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
-  					clear_system_ccs ? 0 : emit_clear_cmd_len(gt), 0,
-  					avail_pts);
-  
-@@ -51,7 +54,7 @@
-  			batch_size += EMIT_COPY_CCS_DW;
-  
-  		/* Clear commands */
--@@ -1062,7 +1067,7 @@ struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
-+@@ -1063,7 +1068,7 @@ struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
-  		if (!clear_system_ccs)
-  			emit_clear(gt, bb, clear_L0_ofs, clear_L0, XE_PAGE_SIZE, clear_vram);
-  
-@@ -60,3 +63,6 @@
-  			emit_copy_ccs(gt, bb, clear_L0_ofs, true,
-  				      m->cleared_mem_ofs, false, clear_L0);
-  			flush_flags = MI_FLUSH_DW_CCS;
 +-- 
 +2.47.0
 +
@@ -143,5 +105,116 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.11.y       |  Success    |  Success   |
+| stable/linux-6.11.y       |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-6.11.y:
+    In file included from drivers/gpu/drm/xe/xe_migrate.c:1496:
+    drivers/gpu/drm/xe/tests/xe_migrate.c: In function 'blt_copy':
+    drivers/gpu/drm/xe/tests/xe_migrate.c:402:63: error: incompatible type for argument 3 of 'pte_update_size'
+      402 |                 batch_size += pte_update_size(m, src_is_vram, src_is_vram, src, &src_it, &src_L0,
+          |                                                               ^~~~~~~~~~~
+          |                                                               |
+          |                                                               bool {aka _Bool}
+    drivers/gpu/drm/xe/xe_migrate.c:493:49: note: expected 'struct ttm_resource *' but argument is of type 'bool' {aka '_Bool'}
+      493 |                            struct ttm_resource *res,
+          |                            ~~~~~~~~~~~~~~~~~~~~~^~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:402:76: error: passing argument 4 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      402 |                 batch_size += pte_update_size(m, src_is_vram, src_is_vram, src, &src_it, &src_L0,
+          |                                                                            ^~~
+          |                                                                            |
+          |                                                                            struct ttm_resource *
+    drivers/gpu/drm/xe/xe_migrate.c:494:50: note: expected 'struct xe_res_cursor *' but argument is of type 'struct ttm_resource *'
+      494 |                            struct xe_res_cursor *cur,
+          |                            ~~~~~~~~~~~~~~~~~~~~~~^~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:402:81: error: passing argument 5 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      402 |                 batch_size += pte_update_size(m, src_is_vram, src_is_vram, src, &src_it, &src_L0,
+          |                                                                                 ^~~~~~~
+          |                                                                                 |
+          |                                                                                 struct xe_res_cursor *
+    drivers/gpu/drm/xe/xe_migrate.c:495:33: note: expected 'u64 *' {aka 'long long unsigned int *'} but argument is of type 'struct xe_res_cursor *'
+      495 |                            u64 *L0, u64 *L0_ofs, u32 *L0_pt,
+          |                            ~~~~~^~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:403:47: error: passing argument 7 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      403 |                                               &src_L0_ofs, &src_L0_pt, 0, 0,
+          |                                               ^~~~~~~~~~~
+          |                                               |
+          |                                               u64 * {aka long long unsigned int *}
+    drivers/gpu/drm/xe/xe_migrate.c:495:55: note: expected 'u32 *' {aka 'unsigned int *'} but argument is of type 'u64 *' {aka 'long long unsigned int *'}
+      495 |                            u64 *L0, u64 *L0_ofs, u32 *L0_pt,
+          |                                                  ~~~~~^~~~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:403:60: error: passing argument 8 of 'pte_update_size' makes integer from pointer without a cast [-Wint-conversion]
+      403 |                                               &src_L0_ofs, &src_L0_pt, 0, 0,
+          |                                                            ^~~~~~~~~~
+          |                                                            |
+          |                                                            u32 * {aka unsigned int *}
+    drivers/gpu/drm/xe/xe_migrate.c:496:32: note: expected 'u32' {aka 'unsigned int'} but argument is of type 'u32 *' {aka 'unsigned int *'}
+      496 |                            u32 cmd_size, u32 pt_ofs, u32 avail_pts)
+          |                            ~~~~^~~~~~~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:402:31: error: too many arguments to function 'pte_update_size'
+      402 |                 batch_size += pte_update_size(m, src_is_vram, src_is_vram, src, &src_it, &src_L0,
+          |                               ^~~~~~~~~~~~~~~
+    drivers/gpu/drm/xe/xe_migrate.c:491:12: note: declared here
+      491 | static u32 pte_update_size(struct xe_migrate *m,
+          |            ^~~~~~~~~~~~~~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:406:63: error: incompatible type for argument 3 of 'pte_update_size'
+      406 |                 batch_size += pte_update_size(m, dst_is_vram, dst_is_vram, dst, &dst_it, &src_L0,
+          |                                                               ^~~~~~~~~~~
+          |                                                               |
+          |                                                               bool {aka _Bool}
+    drivers/gpu/drm/xe/xe_migrate.c:493:49: note: expected 'struct ttm_resource *' but argument is of type 'bool' {aka '_Bool'}
+      493 |                            struct ttm_resource *res,
+          |                            ~~~~~~~~~~~~~~~~~~~~~^~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:406:76: error: passing argument 4 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      406 |                 batch_size += pte_update_size(m, dst_is_vram, dst_is_vram, dst, &dst_it, &src_L0,
+          |                                                                            ^~~
+          |                                                                            |
+          |                                                                            struct ttm_resource *
+    drivers/gpu/drm/xe/xe_migrate.c:494:50: note: expected 'struct xe_res_cursor *' but argument is of type 'struct ttm_resource *'
+      494 |                            struct xe_res_cursor *cur,
+          |                            ~~~~~~~~~~~~~~~~~~~~~~^~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:406:81: error: passing argument 5 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      406 |                 batch_size += pte_update_size(m, dst_is_vram, dst_is_vram, dst, &dst_it, &src_L0,
+          |                                                                                 ^~~~~~~
+          |                                                                                 |
+          |                                                                                 struct xe_res_cursor *
+    drivers/gpu/drm/xe/xe_migrate.c:495:33: note: expected 'u64 *' {aka 'long long unsigned int *'} but argument is of type 'struct xe_res_cursor *'
+      495 |                            u64 *L0, u64 *L0_ofs, u32 *L0_pt,
+          |                            ~~~~~^~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:407:47: error: passing argument 7 of 'pte_update_size' from incompatible pointer type [-Wincompatible-pointer-types]
+      407 |                                               &dst_L0_ofs, &dst_L0_pt, 0,
+          |                                               ^~~~~~~~~~~
+          |                                               |
+          |                                               u64 * {aka long long unsigned int *}
+    drivers/gpu/drm/xe/xe_migrate.c:495:55: note: expected 'u32 *' {aka 'unsigned int *'} but argument is of type 'u64 *' {aka 'long long unsigned int *'}
+      495 |                            u64 *L0, u64 *L0_ofs, u32 *L0_pt,
+          |                                                  ~~~~~^~~~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:407:60: error: passing argument 8 of 'pte_update_size' makes integer from pointer without a cast [-Wint-conversion]
+      407 |                                               &dst_L0_ofs, &dst_L0_pt, 0,
+          |                                                            ^~~~~~~~~~
+          |                                                            |
+          |                                                            u32 * {aka unsigned int *}
+    drivers/gpu/drm/xe/xe_migrate.c:496:32: note: expected 'u32' {aka 'unsigned int'} but argument is of type 'u32 *' {aka 'unsigned int *'}
+      496 |                            u32 cmd_size, u32 pt_ofs, u32 avail_pts)
+          |                            ~~~~^~~~~~~~
+    drivers/gpu/drm/xe/tests/xe_migrate.c:406:31: error: too many arguments to function 'pte_update_size'
+      406 |                 batch_size += pte_update_size(m, dst_is_vram, dst_is_vram, dst, &dst_it, &src_L0,
+          |                               ^~~~~~~~~~~~~~~
+    drivers/gpu/drm/xe/xe_migrate.c:491:12: note: declared here
+      491 | static u32 pte_update_size(struct xe_migrate *m,
+          |            ^~~~~~~~~~~~~~~
+    make[6]: *** [scripts/Makefile.build:244: drivers/gpu/drm/xe/xe_migrate.o] Error 1
+    make[6]: Target 'drivers/gpu/drm/xe/' not remade because of errors.
+    make[5]: *** [scripts/Makefile.build:485: drivers/gpu/drm/xe] Error 2
+    make[5]: Target 'drivers/gpu/drm/' not remade because of errors.
+    make[4]: *** [scripts/Makefile.build:485: drivers/gpu/drm] Error 2
+    make[4]: Target 'drivers/gpu/' not remade because of errors.
+    make[3]: *** [scripts/Makefile.build:485: drivers/gpu] Error 2
+    make[3]: Target 'drivers/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:485: drivers] Error 2
+    make[2]: Target './' not remade because of errors.
+    make[1]: *** [/home/sasha/build/linus-next/Makefile:1926: .] Error 2
+    make[1]: Target '__all' not remade because of errors.
+    make: *** [Makefile:224: __sub-make] Error 2
+    make: Target '__all' not remade because of errors.
 
