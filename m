@@ -1,181 +1,140 @@
-Return-Path: <stable+bounces-94689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BE79D6A50
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 17:48:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7732D9D6AA3
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 18:47:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F41E8161947
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 17:47:49 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521D929CEB;
+	Sat, 23 Nov 2024 17:47:48 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D3DFB2138B
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 16:48:52 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCEC42AA9;
-	Sat, 23 Nov 2024 16:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="feUlVgxR"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00684566A
-	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 16:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBE317C2;
+	Sat, 23 Nov 2024 17:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732380527; cv=none; b=AmdmJ/L5a5VdW12H9HASReT1qFlRH3gp6gAl12xQ2+sdXqrYnBC1EEYveZk2GFNCAdXIgSIkXwaZvKjo8jjndRBYIf6PUBv2MNQMbY33DCmy60BA/+8RnZ/dcD0rZ/ZLIZFeI1koi603S3RQLZXA9sJKIJ2Nt+gkuomK/05GKzI=
+	t=1732384068; cv=none; b=d2XrErAPKeTD/UmwO/GukyUG+ArmBLVZMmYpGytX7EY65W+OpUGKSuc05uNgd56Qouu4/Mx10oySsz2W8Z9owDhI2BhEctEwnXpZ0nUmRDiGa2NpYz1QPJVri5+zULYe2SwoT7CG9mmKeHLrjNxvUIQPd8kNml5kHQbUUyS0ryE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732380527; c=relaxed/simple;
-	bh=bPB9eaSNCqsVmCoU8496Fg3t0VKNkqB0lpvtKPdzsL8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WW5YoYC9MsdBZ3OLNl/oc1V012uTmyI2rEIfbXCHXVk4870gWD3O+6S9sSbvq7kHsrOQoQJfDRzDN5WKzhNdm1f36PnlKlrLdjGcE7aXQDwzl2z/1iG+mGHBnytCp98bgab/hADoym25VMIcDVYVqpLAvaEV4ZpzDPN3Dq0seEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=feUlVgxR; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa51b8c5f4dso200885366b.2
-        for <stable@vger.kernel.org>; Sat, 23 Nov 2024 08:48:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1732380524; x=1732985324; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=k/ndLfFTb5zT9K/yGcAbC6fybuoZmORzsbyGlmdLoKg=;
-        b=feUlVgxRNt+E4F4agQRQKzlusEWVkxlZn755AhZb9ivD2i4qlXaPvt7XL6cMPrHVN1
-         8QUNe+whqRZTYhMo1So0G26/FCB4LMAsxBweh1T45o6VyAvbjMqzv88I5NC/Us/zhF8N
-         ACvEFwfPBXTjMcaRjvSDwTDVUIv0WgYTgE3/AAx86G0lwTHeaE1LbSYAdjJrDHyrF8zA
-         WuRdWSvhF4e6x4w6tTTNBUXhd09syVUhqwyZsoWVmUSuBl+A8hVwxe1f+hKj6g4gNeyQ
-         wSTxKNz0I5xrGr5307FLOSHyrvzUAe6e0qwVIni/8CRTUgAvJwM8HSLT077FlM9JbyCd
-         oGAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732380524; x=1732985324;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k/ndLfFTb5zT9K/yGcAbC6fybuoZmORzsbyGlmdLoKg=;
-        b=CqpoudjLYbOAynah7mXJSmvPRpces1SOdicXK8nHbS7/MBYd9D12bG2KPXnqb5SQjL
-         0N8vLhPhVfocEsaJvanMCCTWJ5Wdx6Cj+922uVWxBFANh/y2Hlv0URAgVwdMO7nnsckv
-         aBuZhA3+cisuKBf/LsyxTvJkHQKKaib5CX8zaWENvOTTMi5mh2YqNPtH0k5Ais9PTbp0
-         BuCThI+m3USU6RX1YWDeznUVM+6UB67NM9lgNdnsfjxffhrQAcGD3EM5WuFIdviP9yE/
-         D9faVO89wDw4THVjnsfNASDzIi/TinNTPOi1rwJsQPvlmZC7PJOqb6c9xl215HchBXEx
-         Rlnw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0LNKBFvzyU1wZ764tbKp8Rp5dzUnjUmAMzmYxbuWxzvR8BykBaq12VwadQ9SCdmP57erj9IU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7087WK++058Tp/hZd1YRFzulp/QEWRBcvX5D6M6eQiOY2I+zZ
-	3iFeo/QYa5iAhlaN/xerd6z2b2OmH5DKcsMtgZ7eP4ca/sMPuOBbIM0Xqu7e6sw=
-X-Gm-Gg: ASbGncuECM50SeEaI3y/xke1l2hRAwoDynxNoI816EaOL57blmosrw2c8avq0oLCXO8
-	goGjD6cic4jxK/XtK1gc4tFBnwFi5w9ck+F2/sNKbd6tXsF+jihWSLiO2JjhycBsfwR4iVC5GwM
-	G24kInD0YGfBkzy5Aezj6CoKbJen0hgDkpl01Uhb1jWBZKDOKVseEqdHEACkRoV4jZ8gV+bkYnU
-	xwgYwNyOYJzaPj/8rBfEZqt1wWCAYWtPVLCg7zJFA==
-X-Google-Smtp-Source: AGHT+IE0WxFzdJ3aRVO6sc51DU+Q3HyYpOYu9hEWkX9XdWHUI/131Nu2Ndnr2qsURTGOYhh4lIW+zA==
-X-Received: by 2002:a17:906:1da9:b0:aa5:3950:10ea with SMTP id a640c23a62f3a-aa5395015ddmr157637166b.36.1732380524096;
-        Sat, 23 Nov 2024 08:48:44 -0800 (PST)
-Received: from cloudflare.com ([2a09:bac5:506b:2dc::49:18c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b28f8d7sm249430666b.22.2024.11.23.08.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2024 08:48:43 -0800 (PST)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,  David Ahern
- <dsahern@kernel.org>,  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski
- <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  netdev@vger.kernel.org,  kernel-team@cloudflare.com,  Ivan Babrou
- <ivan@cloudflare.com>,  stable@vger.kernel.org
-Subject: USO tests with packetdrill? (was [PATCH net v2] udp: Compute L4
- checksum as usual when not segmenting the skb)
-In-Reply-To: <20241011-uso-swcsum-fixup-v2-1-6e1ddc199af9@cloudflare.com>
-	(Jakub Sitnicki's message of "Fri, 11 Oct 2024 14:17:30 +0200")
-References: <20241011-uso-swcsum-fixup-v2-1-6e1ddc199af9@cloudflare.com>
-Date: Sat, 23 Nov 2024 17:48:42 +0100
-Message-ID: <87h67xsxp1.fsf@cloudflare.com>
+	s=arc-20240116; t=1732384068; c=relaxed/simple;
+	bh=lMObQn8yBdrVaEnBzcu44IiGjvVTLgfyH5x+62U3p5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=giRshpW52bstRxPSPbTWPsyxMHyExcTPLC+B2BIwXj0A5dfH2KzuBvyiAxewEgJ4/TfBSk7NxjFXhmjzNicqEm9H/qC75EJui1DYOq/3xpf6oNWiLHWr2wt9NQeniK6LLb02Svk5B1m2DdlaJPlEe3awRdxYXkdb08aBG//6hdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id AF0DC1C00B2; Sat, 23 Nov 2024 18:47:41 +0100 (CET)
+Date: Sat, 23 Nov 2024 18:47:41 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Pavel Machek <pavel@denx.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-stable <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"patches@kernelci.org" <patches@kernelci.org>,
+	"lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+	"sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
+	"srw@sladewatkins.net" <srw@sladewatkins.net>,
+	"rwarsow@gmx.de" <rwarsow@gmx.de>,
+	"conor@kernel.org" <conor@kernel.org>,
+	"hargar@microsoft.com" <hargar@microsoft.com>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>
+Subject: Re: [PATCH 6.1 00/73] 6.1.119-rc1 review
+Message-ID: <Z0IVPdzqPMSWuCoU@duo.ucw.cz>
+References: <20241120125809.623237564@linuxfoundation.org>
+ <Z0GDhId6mYswr+K0@duo.ucw.cz>
+ <4EA31082-AA71-4E14-B63D-A7AE2480ABA6@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="qCT1nQSgHcYnHj3y"
+Content-Disposition: inline
+In-Reply-To: <4EA31082-AA71-4E14-B63D-A7AE2480ABA6@oracle.com>
 
-Hi Willem,
 
-On Fri, Oct 11, 2024 at 02:17 PM +02, Jakub Sitnicki wrote:
-> If:
->
->   1) the user requested USO, but
->   2) there is not enough payload for GSO to kick in, and
->   3) the egress device doesn't offer checksum offload, then
->
-> we want to compute the L4 checksum in software early on.
->
-> In the case when we are not taking the GSO path, but it has been requested,
-> the software checksum fallback in skb_segment doesn't get a chance to
-> compute the full checksum, if the egress device can't do it. As a result we
-> end up sending UDP datagrams with only a partial checksum filled in, which
-> the peer will discard.
->
-> Fixes: 10154dbded6d ("udp: Allow GSO transmit from devices with no checksum offload")
-> Reported-by: Ivan Babrou <ivan@cloudflare.com>
-> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-> Acked-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
+--qCT1nQSgHcYnHj3y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm finally circling back to add a regression test for the above fix.
+Hi!
 
-Instead of extending the selftest/net/udpgso.sh test case, I want to
-propose a different approach. I would like to check if the UDP packets
-packets are handed over to the netdevice with the expected checksum
-(complete or partial, depending on the device features), instead of
-testing for side-effects (packet dropped due to bad checksum).
+> >> This is the start of the stable review cycle for the 6.1.119 release.
+> >> There are 73 patches in this series, all will be posted as a response
+> >> to this one.  If anyone has any issues with these being applied, please
+> >> let me know.
+> >=20
+> >> Chuck Lever <chuck.lever@oracle.com>
+> >>    NFSD: Limit the number of concurrent async COPY operations
+> >=20
+> > @@ -1782,10 +1783,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4=
+_compound_state *cstate,
+> >        if (nfsd4_copy_is_async(copy)) {
+> > -               status =3D nfserrno(-ENOMEM);
+> >                async_copy =3D kzalloc(sizeof(struct nfsd4_copy), GFP_KE=
+RNEL);
+> >                if (!async_copy)
+> >                        goto out_err;
+> >=20
+> > This is wrong. Status is success from previous code, and you are now
+> > returning it in case of error.
+>=20
+> This "status =3D" line was removed because the out_err: label
+> unconditionally sets status =3D nfserr_jukebox.
 
-For that we could use packetdrill. We would need to extend it a bit to
-allow specifying a UDP checksum in the script, but otherwise it would
-make writing such tests rather easy. For instance, the regression test
-for this fix could be as simple as:
+Aha, I see, sorry, I missed that detail.
 
----8<---
-// Check if sent datagrams with length below GSO size get checksummed correctly
+> > (Also, the atomic dance does not work. It will not allow desired
+> > concurency in case of races. Semaphore is canonical solution for
+> > this.)
+>=20
+> I'm not certain which "atomic dance" you are referring to here.
+> Do you mean:
+>=20
+> 1792                 if (atomic_inc_return(&nn->pending_async_copies) >
+> 1793                                 (int)rqstp->rq_pool->sp_nrthreads)
+> 1794                         goto out_err;
+>=20
+> The cap doesn't have to be perfect; it just has to make sure
+> that the pending value doesn't underflow or overflow. Note
+> that this code is updated in a later patch.
 
---ip_version=ipv4
---local_ip=192.168.0.1
+The cap is not perfect, indeed. I'll take your word it does not matter.
 
-`
-ethtool -K tun0 tx-checksumming off >/dev/null
-`
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-0   socket(..., SOCK_DGRAM, IPPROTO_UDP) = 3
-+0  bind(3, ..., ...) = 0
-+0  connect(3, ..., ...) = 0
+--qCT1nQSgHcYnHj3y
+Content-Type: application/pgp-signature; name="signature.asc"
 
-+0  write(3, ..., 1000) = 1000
-+0  > udp sum 0x3643 (1000) // expect complete checksum
+-----BEGIN PGP SIGNATURE-----
 
-+0  setsockopt(3, IPPROTO_UDP, UDP_SEGMENT, [1280], 4) = 0
-+0  write(3, ..., 1000) = 1000
-+0  > udp sum 0x3643 (1000) // expect complete checksum
---->8---
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ0IVPQAKCRAw5/Bqldv6
+8haSAKC0qWimwT3VUEQTpsD4n03YHfIHQgCfRpVrg+vN5u91ju9p+WrXvjMdFDE=
+=VxGh
+-----END PGP SIGNATURE-----
 
-(I'd actually like to have a bit mode of syntax sugar there, so we can
-simply specify "sum complete" and have packetdrill figure out the
-expected checksum value. Then IP address pinning wouldn't be needed.)
-
-If we ever regress, the failure will be straightforward to understand.
-Here's what I got when running the above test with the fix reverted:
-
-~ # packetdrill dgram_below_gso_size.pkt
-dgram_below_gso_size.pkt:19: error handling packet: live packet field l4_csum: expected: 13891 (0x3643) vs actual: 34476 (0x86ac)
-script packet:  0.000168 udp sum 0x3643 (1000)
-actual packet:  0.000166 udp sum 0x86ac (1000)
-~ #
-
-My patched packetdrill PoC is at:
-
-https://github.com/jsitnicki/packetdrill/commits/udp-segment/rfc1/
-
-If we want to go with the packetdrill-based test, that raises the
-question where do keep it? In the packetdrill repo? Or with the rest of
-the selftests/net?
-
-Using the packetdrill repo would make it easier to synchronize the
-development of packetdrill features with the tests that use them. But we
-would also have to hook it up to netdev CI.
-
-WDYT?
-
--jkbs
+--qCT1nQSgHcYnHj3y--
 
