@@ -1,96 +1,132 @@
-Return-Path: <stable+bounces-94671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26679D6711
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 02:39:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984D89D6806
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 08:21:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6026916159B
-	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 01:39:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 126B8B218E5
+	for <lists+stable@lfdr.de>; Sat, 23 Nov 2024 07:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33613B65C;
-	Sat, 23 Nov 2024 01:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC64E17D896;
+	Sat, 23 Nov 2024 07:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GsM25amo"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Uk05GTB8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD724817
-	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 01:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1CA165F1A
+	for <stable@vger.kernel.org>; Sat, 23 Nov 2024 07:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732325975; cv=none; b=cGwPb3/LfuM0Y04Wc1VD5IkndCkG5QlfJ+XSdISKSXRJYX+LtFgk9mxU6/zZ09v4HoAGw+nCEjGf/fkj2g7F5XhOxqJ8B4Cs8f9v1Q0HUBm8iMFSxO76n+eammsfm6SaQyX0tgEYGOj/TcjNcMszq4MqM/Sc58eU99g2Hdcjusg=
+	t=1732346488; cv=none; b=HI+w28I9TYBLM+TXmDwftuxlqY4BeLDkVNkFUjIMu5gxIGIOlWeTSUPJwVDvlsk49CH+JzBlhlsIdPsgNVvPLA9NoqdLVCeb2Bfauw4xbuMaPwjnM4ccW0nphQgBBA+2hUEdyU3QffFoAm1rli5K8qlVLolxCw5J8iIQrHjUu3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732325975; c=relaxed/simple;
-	bh=BJZkEaEZqhd9ZDf9x1IO1g6b6v7pgHIk+IkHAIgdrIY=;
-	h=Message-ID:Date:MIME-Version:To:From:Content-Type; b=Cs0hnw6SO5P3dyP7ki+uZeygAic79UVn2vaMz3+pgTFnClGJ8Wl5BhPN2DnL6aLy2zMf0VrPEDSk7GbFfkpx6XU1fUXK0AISzadjRC5+Eo3DULFVGm6s68Zwc+jM2OirptEvBIX5nYJ5KqkPjZlORzvXdNWBj8Zy+Uv6xNWkUCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GsM25amo; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7f450f7f11dso2066045a12.2
-        for <stable@vger.kernel.org>; Fri, 22 Nov 2024 17:39:33 -0800 (PST)
+	s=arc-20240116; t=1732346488; c=relaxed/simple;
+	bh=+Uh18BnwWLPB7ox5dDwpLR/2M4WjGNtc7pg5MyVHUEY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oYjrBf/zAqmoqo0Opdy0noBkCALJSeuxufsSKd4Y5e6kEBpzAVKZhqNuWU3+1Tb2PCS7wLDYKhnE8GVci5B2zB7rbmQwxEZsaagi/UDz3Ck0DbDnSQBQsT+MxUHLb2XSB6OKGxbR2JEbzqjfZvpLqDc78j38KnhPbk4SPgi8Rvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Uk05GTB8; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cf6f367f97so3314620a12.0
+        for <stable@vger.kernel.org>; Fri, 22 Nov 2024 23:21:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732325972; x=1732930772; darn=vger.kernel.org;
-        h=content-transfer-encoding:from:to:content-language:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sGPIAbQ8Yjd9paYyymwyU7UOo/bs1h1NkCC+cVxSWvk=;
-        b=GsM25amollvY6X+Q5MA5bMF0VfcTRkrxAMgaEb7buf35KybSRBBOuPe3wAc3hwcbVB
-         9b3IhAlf+kUA2x6/YliI/bnYLdER1fDJhH2g5RzrlfOdlAhx89VZtQoD3612kYZOw0mr
-         J9RL1C4g7KYib85r8lFct8uH3t5Fd5Gm/lkfCTP76UqLwlVIkqiQrQJ2DUbII+iG665S
-         Y4PNf/NYBwH8abDdQGTPrvsbx093zBK4fhaYEmhRs63Xl64QPuedsx9CVhOgYrZ3hQUp
-         0J9rjZQR6iUNMFgN30/x2qhzfSiNJaPuiWa3E9d/Qym9nKnmg8Y3n6cex/FuBzDFrf1q
-         jEDg==
+        d=ionos.com; s=google; t=1732346484; x=1732951284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/YTNmEWfSDtA7h9QFVeEH/ye6CcFDrvL5f8PLeF/T+E=;
+        b=Uk05GTB8nUAMRYjwQvNPtk8cpgWtM72DeYgoQl6V+I+VxYK9UJja+pzd3XeKoB0TcJ
+         E3KfMXbp0gsMqUZwvs/r54HryN5+awdj5BlQvcNZ4DNtepozyP26+iutPXhuu+kT3lXi
+         Y5oqNJPgaVmwjI8icDHZH19aNMlz1G4iB+XPX+NbNtV3OM50Y1LETOYzLNjIkm3QkDSs
+         q2yiZliz2N7e3ZEsR5P+j9rDeMAwX1RBS3xEvLvb5ZKP2gxpNE6ESSGaxXurXl1XLPJ1
+         y45QHho7KNouBRpvt+59WEv/QW7vVzOPYt4W0Bm6Fo4kYMTGAaZsYHuyUpQsmCD8bYsH
+         uJAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732325972; x=1732930772;
-        h=content-transfer-encoding:from:to:content-language:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sGPIAbQ8Yjd9paYyymwyU7UOo/bs1h1NkCC+cVxSWvk=;
-        b=kRlu0m1EgQtzdnGcB9axicy1Gn8SibWYTFjTp9zTf3fWm5FKQ+mUzcLywgurM1xtTw
-         1iUjRis12drUpJo4xGphnW+qDo6r+ufjoDwUD9xIPRqTI3qe9SCH7EtyvSn5ZYCncesI
-         7iB01p8+LCjZmLp6rOXwzLwLxXIECwq3qNrKerASDzWVEXTNJPuh7WvdMRS46zkVR+zh
-         1ctqp8f/FfrC3e5f5yWA2ZQomNvpLiX0I6l9PXnXJK2tZJ84GeiNFzFFfHPOxDdIeMlJ
-         I0DNr6BBOpJaDPaBTBGpzT0Z9JIZ0iEoyhnbnpQTjdH9I5pOx/ye4VSEU51pGVzCuww9
-         /ElQ==
-X-Gm-Message-State: AOJu0YzoxzvWV4GN5ZvzFTm8zeEvR71haScSLZGvEyDUpfQiZ8pl0GbD
-	9LECIDzAmr4HTRVuoYJegteErUDmSAgA1EXEB9hhm/K818G5QSlH/2ROV8tA
-X-Gm-Gg: ASbGncvCJYXdgWyTqIG830PvQNQhq27XtWi7xdjza2D2RClvIC47z5Jl9wLrM6bhkpm
-	1+noxnctNyDBU9DOcD0cTTmoNHAgCswfAaMv2XYjLmrb0sndU7np3yTHtMaYEavsfVlw463RrWn
-	QcN+plV8PKKujlJNIIC2GLFLOco+wkkK8hY4dQo75SVDQkoOaH7/QPF/jvzFbuKCjWd7iq8sEZo
-	4UXlIDJxYsJNqi3VRvQqET8/XE0DVWPRukjkQMyMHBRHlrIXmmbtKw=
-X-Google-Smtp-Source: AGHT+IGlaGwhXTEiRpHFidJKs3SkZwLT4lqAFaKPcf4zFPgq1thKwz1OIE06bMnRnHaQj8IUsF+Ajg==
-X-Received: by 2002:a05:6a20:6a1e:b0:1db:ebe0:449d with SMTP id adf61e73a8af0-1e09e5ff9bemr7075505637.43.1732325972071;
-        Fri, 22 Nov 2024 17:39:32 -0800 (PST)
-Received: from [192.168.1.52] ([1.146.179.225])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fbcbfc08efsm2342819a12.16.2024.11.22.17.39.30
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2024 17:39:31 -0800 (PST)
-Message-ID: <8db6485d-0062-4155-a623-f44b3f4c079f@gmail.com>
-Date: Sat, 23 Nov 2024 09:39:24 +0800
+        d=1e100.net; s=20230601; t=1732346484; x=1732951284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/YTNmEWfSDtA7h9QFVeEH/ye6CcFDrvL5f8PLeF/T+E=;
+        b=iJZvJH+QdH/u1vJGgEJFU1j2bhvId9jCepaec6Ydytxtlgigm4aRAlv6GkyYB1Z73p
+         l1yAQzR8J8CJWEuqZrRd+HFElcTFUU9ChqEYOs+3C4bYFXY6qpaePeSFtZUXh5I/922g
+         YmPT7kYhjmTbCEr1VdX7uH+x5NULgArC4gHzllfMXOIfBTQFGhunv6Hn2lYRWDeA4UO9
+         mQ0Jg/J0Ml5hpSK9Oya1bIHwUu+pQHLn4zDyqGmgsbtBE5HvaCgm9KzTuzGFPoVcL1NS
+         25EGExv+cSujysltz/IheMuU5NGxSX9VCpWMB3S1VSw249rRpQX8m9G0P2ibzQSvs6KY
+         Z5jw==
+X-Gm-Message-State: AOJu0Ywl3rIlMIrz3ElXM9zTUuNbkKB45WykZc+DztoqU5UHZ+D3lcge
+	43kStLGdfyjTGnHZgNu4eeZ8A2orcnvN1mKYP7HBVY5qvcu26UocLVjgbOrkSOU=
+X-Gm-Gg: ASbGncsLmJ4knzhaJ1mNC+ddR2CpqRfzOyn4RzJFkyXi0eM1SKm2uZvhrbz8D5CYg7r
+	KGcLaTGaxUJ9sQ3AmPrLyQ9kiDhCFwooEEjPkUvw1zVgXGC9aBKubdxVBrvdcrNRenbdARuetGu
+	DqkjnqfdgLKWAoNKFmPIIGp4nwKYteY0gogfgxQ2HmEbNTqn67IJekMbSpnF7p/fETMxVP3Swzv
+	anRokSGehqk5ueLhz+EEVwGeMkCILGId0bM9z2o4hqVz3QhyOMU1LOWeg1bG53BO6t0L5nDGzfM
+	MQSiYOLslql3AL2aL2Fnpk8iCq8vO7r2NN2+1onq4gq72Hzmyw==
+X-Google-Smtp-Source: AGHT+IHXLdLmo1tmtjgCD0qXUsxAXVAd8FLm9qOjaiXqI+c53wWX0tVyWhZvrhtWm4ABhSfP9OWgKg==
+X-Received: by 2002:a05:6402:5212:b0:5cf:bb9e:cca7 with SMTP id 4fb4d7f45d1cf-5d0207b2521mr4251606a12.28.1732346483822;
+        Fri, 22 Nov 2024 23:21:23 -0800 (PST)
+Received: from raven.intern.cm-ag (p200300dc6f12b600023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f12:b600:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01ffd96e4sm1590029a12.60.2024.11.22.23.21.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2024 23:21:23 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: xiubli@redhat.com,
+	idryomov@gmail.com,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH 1/2] fs/ceph/mds_client: pass cred pointer to ceph_mds_auth_match()
+Date: Sat, 23 Nov 2024 08:21:20 +0100
+Message-ID: <20241123072121.1897163-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-AU
-To: stable@vger.kernel.org
-From: the Hide <thehideat23@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Who should I contact regarding the following error
+This eliminates a redundant get_current_cred() call, because
+ceph_mds_check_access() has already obtained this pointer.
 
+As a side effect, this also fixes a reference leak in
+ceph_mds_auth_match(): by omitting the get_current_cred() call, no
+additional cred reference is taken.
 
-E: Malformed entry 5 in list file 
-/etc/apt/sources.list.d/additional-repositories.list (Component)
-E: The list of sources could not be read.
-E: _cache->open() failed, please report.
+Fixes: 596afb0b8933 ("ceph: add ceph_mds_check_access() helper")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/ceph/mds_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index 6baec1387f7d..e8a5994de8b6 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -5615,9 +5615,9 @@ void send_flush_mdlog(struct ceph_mds_session *s)
+ 
+ static int ceph_mds_auth_match(struct ceph_mds_client *mdsc,
+ 			       struct ceph_mds_cap_auth *auth,
++			       const struct cred *cred,
+ 			       char *tpath)
+ {
+-	const struct cred *cred = get_current_cred();
+ 	u32 caller_uid = from_kuid(&init_user_ns, cred->fsuid);
+ 	u32 caller_gid = from_kgid(&init_user_ns, cred->fsgid);
+ 	struct ceph_client *cl = mdsc->fsc->client;
+@@ -5740,7 +5740,7 @@ int ceph_mds_check_access(struct ceph_mds_client *mdsc, char *tpath, int mask)
+ 	for (i = 0; i < mdsc->s_cap_auths_num; i++) {
+ 		struct ceph_mds_cap_auth *s = &mdsc->s_cap_auths[i];
+ 
+-		err = ceph_mds_auth_match(mdsc, s, tpath);
++		err = ceph_mds_auth_match(mdsc, s, cred, tpath);
+ 		if (err < 0) {
+ 			return err;
+ 		} else if (err > 0) {
+-- 
+2.45.2
 
 
