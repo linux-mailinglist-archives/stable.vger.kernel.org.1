@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-95041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A749B9D7285
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:10:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD2A9D75E1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 17:28:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 298871649A0
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:10:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D783B346BE
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789E51FCF63;
-	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5301FCF78;
+	Sun, 24 Nov 2024 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwngCBtF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgIcOM/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232071FCF55;
-	Sun, 24 Nov 2024 13:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11F1FCF65;
+	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455793; cv=none; b=EIyJqefcjs4vYY+QlgcV6AFV6oDNmuBLtUAtQSc4BcyUdQ3cRgmScM3o5E1FnWXHxnvWC5z9Jt7Xi0apSFG+uOdCTbdwS8JPe+T7v1qJYawfuy1gLSrwd9fcgtu0t7PBIJq61AVw7i6YSWTmN4msZZDZX9ll58u7XJ28TsBFk3o=
+	t=1732455793; cv=none; b=EwC80eIr1o7fRi6LapsRE5bdvIsSTJRzzCFMT9jbOaaEzb4jpWXOII34YiWqNqm3VXMnGm4h+7SuktXzfXsoD91D9KaioC4IKclWwNlMsoW+uCbMoJOTbgADplEnDPny/HUTN8h7dKktj/LbMWwk/kgskF+a9rjrI/sRxcz4o+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732455793; c=relaxed/simple;
-	bh=rwE/gYKz3gp1O/Dn0YwKDHifPt1Cbk3jgQE3nvep8Mg=;
+	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7T0RvJBWd/fWIJB2J1G6Wr4DqoCMVA6LF8ib1j0wc6bf1KJ2iEwbpaMQQElRH/MjIL5L4RP2oSrTpo/XShJkO1+WCyiQQXDKpze+CcOVgldiC2rMtz2YbgqsEpWDUyqNLRfd7V4uOrPN6E73aKEFpoajcs9P/x3662I7MU4ARY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwngCBtF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CBAC4CED3;
-	Sun, 24 Nov 2024 13:43:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fBvbo6RofKQSLwmjj3hyrQ8T0zg0GG2Nuglfxe386rnc6/3FCRt/+znhxRcRIYxwkY9yF3+2Quq3WEorzI2YkoHLhA/6ndDMSTpaPNfBE3gNJAuiMEYmY2RelJawiV+TUZd+r1GnvlqYXItcddPUrqrCHwSwXIWuml6LTgbdM0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgIcOM/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA57C4CECC;
+	Sun, 24 Nov 2024 13:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455791;
-	bh=rwE/gYKz3gp1O/Dn0YwKDHifPt1Cbk3jgQE3nvep8Mg=;
+	s=k20201202; t=1732455793;
+	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwngCBtFCB8enBIR7jDVfZo0fPJYYDZCvoNGHZB2RCj9ly2rE5vUmw7DpF039qyxI
-	 mT6kSfM4LBqZgWhUtrDxM9ZBlSC6A3CDepqO3BncgjpOdtqVWOfGht26c0ScqNvPWc
-	 3urhGQREOikY2aMORpvHzBGlliZzBMzqaZyXYvOIFe/ZJhyGsvCpW6/p4JADMdI6em
-	 fJ+PWwsDWzH+knBma9OZzmthuimqsH3lQjHMpE13vq3vhjVBgGJmBld05rWsMfFJI+
-	 JM3rvkn3V3w65PupFsh8kZgV2TPfiZw7QRm9pFUzzqiR7jiqXSWb2FrZCaBVVbSqf3
-	 eEO8jIAOlHHAA==
+	b=MgIcOM/u+BCXFmx9jNppUukgcKnXs9nHIxKZbjfSKxOpisM4l0RZW+hfA5UnDusq9
+	 LO2W7AsRMKl9UVJ395dYUUNBPgNrviCKuN4n1d67gajo440gkO87fKPKVunochI484
+	 8gCAxICaz8uwYFz8g6klXkrRN/TOnXouqbyWG4riLqyVlXWmR0MmAt9DyFlkYyO8AO
+	 79OJDjMfNpwXaZpQ0YSGmqaqwDGCeCpRuOsWkwKsthyN4XFGcHqZTGmEsbclqDFwnk
+	 ncrm3C0Cot7D2NhvodzznugQnxIXRveYV18j9NKxuUBNGwZpFfJ3PEET34IMAKWRY0
+	 N5e0Xk3065yzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Kang Yang <quic_kangyang@quicinc.com>,
+	David Ruth <druth@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 38/87] net: inet6: do not leave a dangling sk pointer in inet6_create()
-Date: Sun, 24 Nov 2024 08:38:16 -0500
-Message-ID: <20241124134102.3344326-38-sashal@kernel.org>
+	kvalo@kernel.org,
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 39/87] wifi: ath10k: avoid NULL pointer error during sdio remove
+Date: Sun, 24 Nov 2024 08:38:17 -0500
+Message-ID: <20241124134102.3344326-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -65,78 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
+[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
 
-sock_init_data() attaches the allocated sk pointer to the provided sock
-object. If inet6_create() fails later, the sk object is released, but the
-sock object retains the dangling sk pointer, which may cause use-after-free
-later.
+When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+is set to yes, kernel panic will happen:
+Call trace:
+ destroy_workqueue+0x1c/0x258
+ ath10k_sdio_remove+0x84/0x94
+ sdio_bus_remove+0x50/0x16c
+ device_release_driver_internal+0x188/0x25c
+ device_driver_detach+0x20/0x2c
 
-Clear the sock sk pointer on error.
+This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
+ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
+will finally be called in ath10k_core_destroy(). This function will free
+struct cfg80211_registered_device *rdev and all its members, including
+wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
+workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After device release, destroy_workqueue() will use NULL pointer then the
+kernel panic happen.
+
+Call trace:
+ath10k_sdio_remove
+  ->ath10k_core_unregister
+    ……
+    ->ath10k_core_stop
+      ->ath10k_hif_stop
+        ->ath10k_sdio_irq_disable
+    ->ath10k_hif_power_down
+      ->del_timer_sync(&ar_sdio->sleep_timer)
+  ->ath10k_core_destroy
+    ->ath10k_mac_destroy
+      ->ieee80211_free_hw
+        ->wiphy_free
+    ……
+          ->wiphy_dev_release
+  ->destroy_workqueue
+
+Need to call destroy_workqueue() before ath10k_core_destroy(), free
+the work queue buffer first and then free pointer of work queue by
+ath10k_core_destroy(). This order matches the error path order in
+ath10k_sdio_probe().
+
+No work will be queued on sdio workqueue between it is destroyed and
+ath10k_core_destroy() is called. Based on the call_stack above, the
+reason is:
+Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
+ath10k_sdio_irq_disable() will queue work on sdio workqueue.
+Sleep timer will be deleted before ath10k_core_destroy() in
+ath10k_hif_power_down().
+ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
+ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
+bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/af_inet6.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 90d2c7e3f5e92..3b06997f58342 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -252,31 +252,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 		 */
- 		inet->inet_sport = htons(inet->inet_num);
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 08a6f36a6be9c..6805357ee29e6 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -3,7 +3,7 @@
+  * Copyright (c) 2004-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
+- * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
+ #include <linux/module.h>
+@@ -2648,9 +2648,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+ 
+ 	netif_napi_del(&ar->napi);
+ 
+-	ath10k_core_destroy(ar);
+-
+ 	destroy_workqueue(ar_sdio->workqueue);
++
++	ath10k_core_destroy(ar);
  }
  
- static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 -- 
 2.43.0
 
