@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-94830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7389D7069
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:33:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9A29D6F7D
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43D60B30187
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:11:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74210281583
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FEA1D89E4;
-	Sun, 24 Nov 2024 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D71C1DC075;
+	Sun, 24 Nov 2024 12:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dk/rQ0oe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDqjouV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E501AA78B;
-	Sun, 24 Nov 2024 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40891D9A56;
+	Sun, 24 Nov 2024 12:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452688; cv=none; b=a/b24xXzS7tsVx4ttCZqte7wmnfncjV9rdZLaqxmqZVQhq/CHKS3QPeQnkNfJ6X99D7kJA23qLDnqilf0LL4/vUgRbymmbDrLBj177ed0wv03W1sbFMvK45aWZDtZmSIDantAqiEcV+XSp5jGeQw0+tFx75z1i6o9C2ePdhgfZw=
+	t=1732452689; cv=none; b=uXmj7GuYD6oFTQiu3CFZJQRCHEBhZzOQEnlT3/VqOHCloOipnbw69RFdxqnMJMFo0wJ6Cg0wiYO0QKMHIeZU/cC2iq0FIRUTTK/d7WAfuqFOqiHyYYvk8RqfKeFREnWzsM0CqQcA44cEMNMto03TWAjSC2DMwwMyi/DupPyAE6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452688; c=relaxed/simple;
-	bh=r9UHBgJlSBenZzEj8ZbrIVDOfkVGTV/88zxZVPmAKaA=;
+	s=arc-20240116; t=1732452689; c=relaxed/simple;
+	bh=Xxv5gIz4KuTZ8A+S6NdUUAYDcH1uP5tA7L8XsLb29Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=As4qVsRnjQHbs+ecDh+3UkZA0G3gdJ26nnainSupEb78sASYVbvuvrnDROoBxO0ghGViIK/DDyAz7HeLqGzDMhb1BOy9TdNGWG2flZfFPf2r5/srZDubH4G4pzprkL2zng+NW7SQKxNoLwmCUJyCWQGiNCUeAiRav4n3/RdxacI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dk/rQ0oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3017DC4CED1;
-	Sun, 24 Nov 2024 12:51:27 +0000 (UTC)
+	 MIME-Version; b=U1Z01jRXNtiXJCD+Mm35Z8GjgzdRhhIEJwxRnZdjqOZumOPVv6chQyLYRZPLiveMSqeGGODEpP6JmbC8OQET6oDo+vpt6N+SURaPKwc5tzD2I5DQoeNkkXTN4yXsS6VLLKYb6aADghg+P0jj0P2olI2xQ9M38+Elk4YI3i+bYO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDqjouV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE001C4CECC;
+	Sun, 24 Nov 2024 12:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452688;
-	bh=r9UHBgJlSBenZzEj8ZbrIVDOfkVGTV/88zxZVPmAKaA=;
+	s=k20201202; t=1732452689;
+	bh=Xxv5gIz4KuTZ8A+S6NdUUAYDcH1uP5tA7L8XsLb29Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk/rQ0oeFXe6brT2jZgDSWp4x8OyNe25uU/cBOxfUnyl+14VUYymcT4WwyiwGuL5/
-	 kcNcMoKKo6upIA0+XL8Og5gOSPwwDaAHbjcDl78ZLtbLWrBwwV5aD6yMHxDHmX4ZPE
-	 1aeAF15/L8ACqG6o06VNXyE9iTzNrMbi7WhvoDiYgHtgBJhqyWw9mvfHLnv+25Xw19
-	 sc36iVEnT/by/NNg/fkVxkQIl+KogQEFdBAQlQmYjiZKlywzIr7L0LMa1MvoMKjdSE
-	 l7QmduCybZSP9Xe8EuffOawClWhZrfqHbV24HMtUAvN9u0JCZj3mh70Z/Y+54JNlb0
-	 gKflQRvq+EWeg==
+	b=PDqjouV1rv0Pw72L9qhdqc9gJfZELNf0m/EC78UXXjazCF6YCtQTSm52FMI4rcuJA
+	 LBhgT7Y7r7FS7yLgbHyqZoCdEb1jW2pbrtgY0bc0n2NR6SrlLzLEQ5Z+yCR8Blc453
+	 V8XMIdonZYLJf/cbkUovTGZvTN1E4bFPeyP206Gmg6EouO1jshQdaFpDbRAb357+lO
+	 5krVw3sGnu3s6cZzq12qF6GUxp5zCWeXzsO2TVhdUrlZnhv48tOjKDEE3cN3PUzuSm
+	 CIzE76URsn+j02iPLZIEUI5oE7trg0w8xBVTt7hPXDBYKM+ytdqdVOqoRadBp04wTj
+	 MGah8oKpylBqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stefan Wahren <wahrenst@gmx.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Benjamin Tissoires <bentiss@kernel.org>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 02/20] spi: spi-fsl-lpspi: Adjust type of scldiv
-Date: Sun, 24 Nov 2024 07:50:32 -0500
-Message-ID: <20241124125124.3339648-2-sashal@kernel.org>
+	jikos@kernel.org,
+	linux-input@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 03/20] HID: add per device quirk to force bind to hid-generic
+Date: Sun, 24 Nov 2024 07:50:33 -0500
+Message-ID: <20241124125124.3339648-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125124.3339648-1-sashal@kernel.org>
 References: <20241124125124.3339648-1-sashal@kernel.org>
@@ -67,56 +67,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
+[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
 
-The target value of scldiv is just a byte, but its calculation in
-fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
-the result and avoid overflows. After that this needs range check
-adjustments, but this should make the code less opaque.
+We already have the possibility to force not binding to hid-generic and
+rely on a dedicated driver, but we couldn't do the other way around.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is useful for BPF programs where we are fixing the report descriptor
+and the events, but want to avoid a specialized driver to come after BPF
+which would unwind everything that is done there.
+
+Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/hid-core.c    | 5 +++--
+ drivers/hid/hid-generic.c | 3 +++
+ include/linux/hid.h       | 2 ++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 977e8b55c82b7..196cc68f2057b 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv, div;
-+	unsigned int perclk_rate, div;
- 	u8 prescale_max;
- 	u8 prescale;
-+	int scldiv;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 3fcf098f4f569..df78171e76d45 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2649,9 +2649,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
+ 	/*
+ 	 * hid-generic implements .match(), so we must be dealing with a
+ 	 * different HID driver here, and can simply check if
+-	 * hid_ignore_special_drivers is set or not.
++	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
++	 * are set or not.
+ 	 */
+-	return !hid_ignore_special_drivers;
++	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
+ }
  
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
- 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
-@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
+diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
+index f9db991d3c5a2..88882c1bfffe7 100644
+--- a/drivers/hid/hid-generic.c
++++ b/drivers/hid/hid-generic.c
+@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
+ 	if (ignore_special_driver)
+ 		return true;
  
- 	for (prescale = 0; prescale <= prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
--		if (scldiv < 256) {
-+		if (scldiv >= 0 && scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
- 		}
- 	}
++	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
++		return true;
++
+ 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
+ 		return false;
  
--	if (scldiv >= 256)
-+	if (scldiv < 0 || scldiv >= 256)
- 		return -EINVAL;
- 
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 1533c9dcd3a67..dc19b29c12683 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -359,6 +359,7 @@ struct hid_item {
+  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
+  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
+  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
++ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
+  * | @HID_QUIRK_FULLSPEED_INTERVAL:
+  * | @HID_QUIRK_NO_INIT_REPORTS:
+  * | @HID_QUIRK_NO_IGNORE:
+@@ -384,6 +385,7 @@ struct hid_item {
+ #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
+ #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
+ #define HID_QUIRK_NOINVERT			BIT(21)
++#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
+ #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
+ #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
+ #define HID_QUIRK_NO_IGNORE			BIT(30)
 -- 
 2.43.0
 
