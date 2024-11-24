@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-94805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBCF9D6F54
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:07:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B259D6F5B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10CF8B25303
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:04:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D22BB251D3
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCAB1E7C10;
-	Sun, 24 Nov 2024 12:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D089E196C7B;
+	Sun, 24 Nov 2024 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNw2GwzG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFmeaxfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4306D1E7C09;
-	Sun, 24 Nov 2024 12:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF4E16EBE8;
+	Sun, 24 Nov 2024 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452470; cv=none; b=OwpDY12HCXOB+NDtmTbAL9gTJrWl/Hx9diKQrrrnPi4pvs0hEE0Ctskve15lbANyKhL7wAmtksn+u+zQf8U/vZDTqPxHLs6vgY/XLwMgQdzLAoFFuU4LiVlbuXWuGAg5mErCeBGpVn163AbF9BTM3ljeEUbrvs6oHVdOi/YgtsY=
+	t=1732452561; cv=none; b=ib4rqKVILf/RQemAvEvPcDWbcsiTwVPd0Z2uUjtWO+FAcZIBH1rrzsElejKlmTF+zY74cEQcC7nmNZrfy+OThMW8hUJPdWuRGQw0+PZHQFLR5Tgw5sHkHqFQUEkDa7RZaXlnyF6cUiueBI5Xaa7NTZxZQNEcZnH5lAPOKqoOd4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452470; c=relaxed/simple;
-	bh=O8T2JipCKJ2boPqKFdo/Fhpy25Wjx9Jy45Ra3HSpHL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C0QAk+RPDt2ZjG/tfLbKYWePQAohFNuRiS1iQ0tBpxkS0Vmrpx0jGPq75hMlbHlPdTZHNsDpqQuTto85OtsACq31lFZhpqlsLuyOAqc8UG4yPbm7tVgFgYFHm/Xuct0UpwrF/6AOr8Fm1s/9OKz0HfH+p5/O/AgKHK1KHGwKZD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNw2GwzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F6AC4CECC;
-	Sun, 24 Nov 2024 12:47:48 +0000 (UTC)
+	s=arc-20240116; t=1732452561; c=relaxed/simple;
+	bh=eTeBQf1Wo6ia4RtNUcO2BnjPEZ1uNdYxUUEKDWbt6r8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OO07UidrNSWENnrnPnsi/5ns1dWBBN4EG7sREi7D7LjtGko90cm13kTgr+WOG8Md6oAXskoZ+t2HXXI+49QN6uuvfP5AD/heFZ5L3e6feY5bUTxzLve6wPFAXKF16Y/ZFujN55g/MeZFk12pOkNuHHlfDgsKtwwXwz02Ut/hkps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFmeaxfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79818C4CECC;
+	Sun, 24 Nov 2024 12:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452470;
-	bh=O8T2JipCKJ2boPqKFdo/Fhpy25Wjx9Jy45Ra3HSpHL0=;
+	s=k20201202; t=1732452561;
+	bh=eTeBQf1Wo6ia4RtNUcO2BnjPEZ1uNdYxUUEKDWbt6r8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=nNw2GwzG75IfvWlKTerjJUMza/dA8eI9RXhh5BDbws9KZmMvejMisVChEzXw/jwK6
-	 KRr1DxJItfEwqZba++TKPUAatG6NK9woo+/QviXkWWJ9vepAkrBQXL1G+Yh8vDKi8T
-	 /Z0wvszIM6zVlCITrRKsrxrpuGdt8tWLLmr6nrNkP0nyrFZTt8Cp+nZAPge39dw8i4
-	 vCdcbrB3lYmMc+sDCkY20PY9hcTLVrGa+ntlJ66H9MTBfKEkYn84TOhu1CS7413vkL
-	 y5Pd2g8m2sFUx2X+hQTLfBVAuG1dsFVMMpmBy3ozSNyWHbHcuQdoxsjcJGSZ+sw6+y
-	 WrM0mEXnhVtew==
+	b=ZFmeaxfoJtuNx3EzMxdVJsucX9qgYnNu8h/ZcTT60PtOL6FynvjL27O6NCZlftVHX
+	 S1ldDkgIEh+EDz+U6I0EUwrnpseNSUHDvmPKPqdqxgTzMRQtaHmRwg9O8d3GVTeaKM
+	 rJbYoCoCDwllRI6O7vt0G5lNheTGaLRGkqeJmD9JOEVeguPM9Vj5+TVZTlDgwer99/
+	 /2mbRBAm5crMrTVU67Bj8tkCh3do6JQB00JcjlsigiESlFy4ASibOG5A2pJmGmSeNA
+	 +Xx8A57O86PU4otPIzCJ5LGgxzzU2g1+k6UT54CdhigWZG2OJmQpreCa4hxjkNugFk
+	 5Hw9M+Gb0nmOg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Herve Codina <herve.codina@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mhiramat@kernel.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19] uprobes: sanitiize xol_free_insn_slot()
-Date: Sun, 24 Nov 2024 07:47:47 -0500
-Message-ID: <20241124124747.3338709-1-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/23] gpio: free irqs that are still requested when the chip is being removed
+Date: Sun, 24 Nov 2024 07:48:12 -0500
+Message-ID: <20241124124919.3338752-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,81 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.324
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit c7b4133c48445dde789ed30b19ccb0448c7593f7 ]
+[ Upstream commit ec8b6f55b98146c41dcf15e8189eb43291e35e89 ]
 
-1. Clear utask->xol_vaddr unconditionally, even if this addr is not valid,
-   xol_free_insn_slot() should never return with utask->xol_vaddr != NULL.
+If we remove a GPIO chip that is also an interrupt controller with users
+not having freed some interrupts, we'll end up leaking resources as
+indicated by the following warning:
 
-2. Add a comment to explain why do we need to validate slot_addr.
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'gpio'
 
-3. Simplify the validation above. We can simply check offset < PAGE_SIZE,
-   unsigned underflows are fine, it should work if slot_addr < area->vaddr.
+As there's no way of notifying interrupt users about the irqchip going
+away and the interrupt subsystem is not plugged into the driver model and
+so not all cases can be handled by devlinks, we need to make sure to free
+all interrupts before the complete the removal of the provider.
 
-4. Kill the unnecessary "slot_nr >= UINSNS_PER_PAGE" check, slot_nr must
-   be valid if offset < PAGE_SIZE.
-
-The next patches will cleanup this function even more.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240929144235.GA9471@redhat.com
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20240919135104.3583-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/gpio/gpiolib.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 3ca91daddc9f5..e4156acc004d3 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1332,8 +1332,8 @@ static unsigned long xol_get_insn_slot(struct uprobe *uprobe)
- static void xol_free_insn_slot(struct task_struct *tsk)
- {
- 	struct xol_area *area;
--	unsigned long vma_end;
- 	unsigned long slot_addr;
-+	unsigned long offset;
- 
- 	if (!tsk->mm || !tsk->mm->uprobes_state.xol_area || !tsk->utask)
- 		return;
-@@ -1342,24 +1342,21 @@ static void xol_free_insn_slot(struct task_struct *tsk)
- 	if (unlikely(!slot_addr))
- 		return;
- 
-+	tsk->utask->xol_vaddr = 0;
- 	area = tsk->mm->uprobes_state.xol_area;
--	vma_end = area->vaddr + PAGE_SIZE;
--	if (area->vaddr <= slot_addr && slot_addr < vma_end) {
--		unsigned long offset;
--		int slot_nr;
--
--		offset = slot_addr - area->vaddr;
--		slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
--		if (slot_nr >= UINSNS_PER_PAGE)
--			return;
-+	offset = slot_addr - area->vaddr;
-+	/*
-+	 * slot_addr must fit into [area->vaddr, area->vaddr + PAGE_SIZE).
-+	 * This check can only fail if the "[uprobes]" vma was mremap'ed.
-+	 */
-+	if (offset < PAGE_SIZE) {
-+		int slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
- 
- 		clear_bit(slot_nr, area->bitmap);
- 		atomic_dec(&area->slot_count);
- 		smp_mb__after_atomic(); /* pairs with prepare_to_wait() */
- 		if (waitqueue_active(&area->wq))
- 			wake_up(&area->wq);
--
--		tsk->utask->xol_vaddr = 0;
- 	}
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 2b02655abb56e..44372f8647d51 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -14,6 +14,7 @@
+ #include <linux/idr.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+@@ -713,6 +714,45 @@ bool gpiochip_line_is_valid(const struct gpio_chip *gc,
  }
+ EXPORT_SYMBOL_GPL(gpiochip_line_is_valid);
  
++static void gpiod_free_irqs(struct gpio_desc *desc)
++{
++	int irq = gpiod_to_irq(desc);
++	struct irq_desc *irqd = irq_to_desc(irq);
++	void *cookie;
++
++	for (;;) {
++		/*
++		 * Make sure the action doesn't go away while we're
++		 * dereferencing it. Retrieve and store the cookie value.
++		 * If the irq is freed after we release the lock, that's
++		 * alright - the underlying maple tree lookup will return NULL
++		 * and nothing will happen in free_irq().
++		 */
++		scoped_guard(mutex, &irqd->request_mutex) {
++			if (!irq_desc_has_action(irqd))
++				return;
++
++			cookie = irqd->action->dev_id;
++		}
++
++		free_irq(irq, cookie);
++	}
++}
++
++/*
++ * The chip is going away but there may be users who had requested interrupts
++ * on its GPIO lines who have no idea about its removal and have no way of
++ * being notified about it. We need to free any interrupts still in use here or
++ * we'll leak memory and resources (like procfs files).
++ */
++static void gpiochip_free_remaining_irqs(struct gpio_chip *gc)
++{
++	struct gpio_desc *desc;
++
++	for_each_gpio_desc_with_flag(gc, desc, FLAG_USED_AS_IRQ)
++		gpiod_free_irqs(desc);
++}
++
+ static void gpiodev_release(struct device *dev)
+ {
+ 	struct gpio_device *gdev = to_gpio_device(dev);
+@@ -1125,6 +1165,7 @@ void gpiochip_remove(struct gpio_chip *gc)
+ 	/* FIXME: should the legacy sysfs handling be moved to gpio_device? */
+ 	gpiochip_sysfs_unregister(gdev);
+ 	gpiochip_free_hogs(gc);
++	gpiochip_free_remaining_irqs(gc);
+ 
+ 	scoped_guard(mutex, &gpio_devices_lock)
+ 		list_del_rcu(&gdev->list);
 -- 
 2.43.0
 
