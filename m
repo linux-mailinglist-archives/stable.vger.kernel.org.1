@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-95144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2D79D73AD
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:45:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E689D76D0
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:43:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 129ED166462
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:45:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068BDB3DFF7
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DB522E9FE;
-	Sun, 24 Nov 2024 13:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9051B87DC;
+	Sun, 24 Nov 2024 13:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixXQ0+vj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AALT3wf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00122E9F3;
-	Sun, 24 Nov 2024 13:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00751B87D0;
+	Sun, 24 Nov 2024 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456134; cv=none; b=d1o0hS7wufyuDBWch9+UZqxXuPIvxzggS6WCE+PJX8Qs112Zhhlcyts85S0z9fD+s1mPn9H7+RPwe185LSkFmpSmWm9QIje5Wn3W0WD3gGlhnIwr1l+I+IGWixOES3Q050zn9B7IhP/47yjPgV2sNLVN7Fc+jrmPsdtHqvtgYVQ=
+	t=1732456136; cv=none; b=hjZj64cqm82A5ogRlpPhYUGSxQFCphbK0ufqqIWmDB4E8qW4vMGYBJzahkaYKIOxa8F7vzSkprsWllSVX6xz9aSKy7qqrsPqR2WCSR/69XqoATHD8LRI7VpZ45RnnWhRy229GcolhTfbDu8nsezuOCgVjpwBkJfsuLCnXYpEjAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456134; c=relaxed/simple;
-	bh=5htpbNVlVssuaDXD5ZQBYFnRPksov76uNiMXsIOOPjQ=;
+	s=arc-20240116; t=1732456136; c=relaxed/simple;
+	bh=hosWer0wZknNWSVpixY2RwGXm8piDaeKDh4woSPxqhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gj5NMsN5MKISCm7eGFfg0SEi0pE6WWAwdci4BlXQTqBKEWrsRZuVz14ttR2FAqY9I5vA7M8agc7h0bjYfLqvpw8fvFKi/G+aiLInUxyonggmaYHBMdXJcTPncl07FsQ3Q657hn2dqVMHZVZwnVjmwwgiA7Xo8nEzkaDJyeiL9iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixXQ0+vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C48C4CECC;
-	Sun, 24 Nov 2024 13:48:53 +0000 (UTC)
+	 MIME-Version; b=N1bB48RLbMJaAD3PJNcdmcwr6YtiwnSz+8qdBy/YEEJ8cFQpBz1+OvXesX8eXbtvfQWi9gPtyrPB7v7FewF/T60b8kC+eI/gJuZZe/55I4m7PfyNuaKG5oay0AYKDkIOwgag/cI3MXHnC6e3Htm33rBnFZ5bGq8uqrXZEcIg468=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AALT3wf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BFEC4CED3;
+	Sun, 24 Nov 2024 13:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456134;
-	bh=5htpbNVlVssuaDXD5ZQBYFnRPksov76uNiMXsIOOPjQ=;
+	s=k20201202; t=1732456136;
+	bh=hosWer0wZknNWSVpixY2RwGXm8piDaeKDh4woSPxqhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixXQ0+vjN7BQ9aCGOOXWilN9prMcKyTEnefCMXqfL+d/kJvn6iwJJklIIJb5bN7SS
-	 1i6gb8O6utpJVwq0lm2e4wSz3CpzWIk0OLlFZzZnywC0UGqWi2TbqvH/TwdsQTx44L
-	 uU52xRXz63DXSK44lPO/IjpOTo+XujeLGkPGv2JXfw2cwcJI7u2SGQ68Bu4wTCR7sV
-	 4pstZ1pV2oEBiGmFLrMUsvmw1lo6YBHW7g5cdrPlDubFNmmyvfCePb+AA8mtYo3/7J
-	 Ln6Fb3oyuAzfSAcmzf0rvnmckgzGE2agI5OwXwGKFVNxFqko4qBTog405CBvxLdPU2
-	 27ivzrg13caxA==
+	b=AALT3wf2cpbk96FXmh5I6Xm0ZrdHziNOdPQloOUpgbCMFh/0f5tGgpY2UpkucHWDb
+	 X+8hlqZysZfUKtz7NVj116uSzYQl2ostDrO8kkr69oJH5ltMvB9MW4eRs07EQB5OpG
+	 p87dBB8AUfaRtVUmEDcJaenHFfRSKCt00EcOhw7u7fm83jktO2kdeTLbM5PpDPtAw7
+	 oRXVZvFTOekcA84v/ZkTt3napMuHXUQHKjhB1gDuh0aOYtGn3acVGeuc2YnI92zzeA
+	 O1fXRX8QIJJYGPh82//cvIOTKlVGmwu6la17MZoNkH2eUdcbQiRMxP6tE7f8VpXkec
+	 BzsVUwKF6RHHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com,
+Cc: Danil Pylaev <danstiv404@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
 	johan.hedberg@gmail.com,
 	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 54/61] Bluetooth: hci_core: Fix not checking skb length on hci_acldata_packet
-Date: Sun, 24 Nov 2024 08:45:29 -0500
-Message-ID: <20241124134637.3346391-54-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 55/61] Bluetooth: Add new quirks for ATS2851
+Date: Sun, 24 Nov 2024 08:45:30 -0500
+Message-ID: <20241124134637.3346391-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
 References: <20241124134637.3346391-1-sashal@kernel.org>
@@ -68,62 +73,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Danil Pylaev <danstiv404@gmail.com>
 
-[ Upstream commit 3fe288a8214e7dd784d1f9b7c9e448244d316b47 ]
+[ Upstream commit 94464a7b71634037b13d54021e0dfd0fb0d8c1f0 ]
 
-This fixes not checking if skb really contains an ACL header otherwise
-the code may attempt to access some uninitilized/invalid memory past the
-valid skb->data.
+This adds quirks for broken extended create connection,
+and write auth payload timeout.
 
-Reported-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
-Tested-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ea290ba76d8c1eb1ac2
+Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ include/net/bluetooth/hci.h      | 14 ++++++++++++++
+ include/net/bluetooth/hci_core.h | 10 ++++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 3cf4dd9cad8a3..30519d47e8a69 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3735,18 +3735,22 @@ static void hci_tx_work(struct work_struct *work)
- /* ACL data packet */
- static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	struct hci_acl_hdr *hdr = (void *) skb->data;
-+	struct hci_acl_hdr *hdr;
- 	struct hci_conn *conn;
- 	__u16 handle, flags;
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 2129d071c3725..77a3040a3f29d 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -297,6 +297,20 @@ enum {
+ 	 */
+ 	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
  
--	skb_pull(skb, HCI_ACL_HDR_SIZE);
-+	hdr = skb_pull_data(skb, sizeof(*hdr));
-+	if (!hdr) {
-+		bt_dev_err(hdev, "ACL packet too small");
-+		goto drop;
-+	}
++	/*
++	 * When this quirk is set, the HCI_OP_LE_EXT_CREATE_CONN command is
++	 * disabled. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, which erroneously claims to support it.
++	 */
++	HCI_QUIRK_BROKEN_EXT_CREATE_CONN,
++
++	/*
++	 * When this quirk is set, the command WRITE_AUTH_PAYLOAD_TIMEOUT is
++	 * skipped. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, due to a race condition in pairing process.
++	 */
++	HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT,
++
+ 	/* When this quirk is set, MSFT extension monitor tracking by
+ 	 * address filter is supported. Since tracking quantity of each
+ 	 * pattern is limited, this feature supports tracking multiple
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 0f50c0cefcb7d..4185eb679180d 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1852,8 +1852,8 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 			   !test_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &(dev)->quirks))
  
- 	handle = __le16_to_cpu(hdr->handle);
- 	flags  = hci_flags(handle);
- 	handle = hci_handle(handle);
+ /* Use ext create connection if command is supported */
+-#define use_ext_conn(dev) ((dev)->commands[37] & 0x80)
+-
++#define use_ext_conn(dev) (((dev)->commands[37] & 0x80) && \
++	!test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, &(dev)->quirks))
+ /* Extended advertising support */
+ #define ext_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_EXT_ADV))
  
--	BT_DBG("%s len %d handle 0x%4.4x flags 0x%4.4x", hdev->name, skb->len,
--	       handle, flags);
-+	bt_dev_dbg(hdev, "len %d handle 0x%4.4x flags 0x%4.4x", skb->len,
-+		   handle, flags);
+@@ -1866,8 +1866,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+  * C24: Mandatory if the LE Controller supports Connection State and either
+  * LE Feature (LL Privacy) or LE Feature (Extended Advertising) is supported
+  */
+-#define use_enhanced_conn_complete(dev) (ll_privacy_capable(dev) || \
+-					 ext_adv_capable(dev))
++#define use_enhanced_conn_complete(dev) ((ll_privacy_capable(dev) || \
++					 ext_adv_capable(dev)) && \
++					 !test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, \
++						 &(dev)->quirks))
  
- 	hdev->stat.acl_rx++;
- 
-@@ -3765,6 +3769,7 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
- 			   handle);
- 	}
- 
-+drop:
- 	kfree_skb(skb);
- }
- 
+ /* Periodic advertising support */
+ #define per_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_PERIODIC_ADV))
 -- 
 2.43.0
 
