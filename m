@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-95208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161AD9D7432
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:02:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A999D7433
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:02:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEC0D167435
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:01:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D73286382
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E69323B57D;
-	Sun, 24 Nov 2024 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57FD1F9F5E;
+	Sun, 24 Nov 2024 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzhIvx1V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cN1fNwP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA7C23B576;
-	Sun, 24 Nov 2024 13:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915621F9F55;
+	Sun, 24 Nov 2024 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456357; cv=none; b=op94iaBLYiig0L2oW6rI1mHnRSj/qDYu+V6V/4M4FUYP+HcaLrtEpyEv57riTNfq4RZdtLTXSQBdnR52LhokwAGnrIynYZjxNtL/sDjnIWOQLOlSvX9qva+kDI3CQWXY1nZIkjhIyVFQOIyW2UsmR0JguhuFg6s1s+fasnj2l/A=
+	t=1732456359; cv=none; b=p/28zVLKBVILSY9sNuElHltjGVWQbieD5EeFmHm7Iq3zHqGcYAe+lhgmFOpdYGAIyj50PUK5aVwcQuwazf8jOGGcnGfnb2yGXiNHoTKaqB/b7TUEKfDoIr3hHFG6JHWn2ieqOak5a+Pxntm8yIpbXQ2tSvb91KmtI0UqnEUOG3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456357; c=relaxed/simple;
-	bh=ipkFevY1MfQBNTOgrt4MBIXh/391alCnzqOLL4k8CIY=;
+	s=arc-20240116; t=1732456359; c=relaxed/simple;
+	bh=WGw09AWYlDW4Tj+kA36wNsgUuXtaslfT2UbfcXqHTYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PS6hp9nOciQDE7HHLRmTfwexw+9HKSE6c/5b/xaS2xdJxlvLl+Wx0gDsBCSBGG5pl8EuVbB/h2ls97TtkHojMQIZ6WKe7Aog1gudCDPnoi8NgsURH2RO04RWBVBivNYg1KUusiANPbFpX0bNWQn+zgHsBw/R/VMpyt5UCvJ+4bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzhIvx1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AF2C4CECC;
-	Sun, 24 Nov 2024 13:52:36 +0000 (UTC)
+	 MIME-Version; b=CpFRjBlgqC8RGtChIap1o9yJdwo78OGC6YLO0wrcZH/mR3wTHs3wNMqdL9RFIC0Wb61dTHgK6XWvr0B7iM2TFbRnb/sdtK6Fy72hGV3S+VJqPCWEuzpxs0xegqDylLQc3h+V6meLXe6xKPKJa32bemS2xDqHr6AWGws5eTH2JTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cN1fNwP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A25C4CECC;
+	Sun, 24 Nov 2024 13:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456357;
-	bh=ipkFevY1MfQBNTOgrt4MBIXh/391alCnzqOLL4k8CIY=;
+	s=k20201202; t=1732456359;
+	bh=WGw09AWYlDW4Tj+kA36wNsgUuXtaslfT2UbfcXqHTYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzhIvx1V5KJMVIPSQMcby+s13FLCdsfu+KQ7ZTDAzQmHiSp/1ZEli7mSOZPSedbgo
-	 G0nX5Ulilgpy53jRy3qklmKLJfHoIVLjFajn4Pv0WF2HPO1wjZCVfd9aiEBTBRJldk
-	 2WmafB4M25sMps82DyeWXBBUPL1H7T0xSpHhkUOt/mnqAjsI+3cbtUXNdIz96/vlSx
-	 JntmuHMF9lPnDZ3HxWejvoravL5nUuRlnRUcKhG9PGAbZ2AIR2SnzkVtuiyn1biwxj
-	 IyvVPeqQrChxqB2Ns/HTcdJt6PKP/vBd9VYEwosN2cyu5WgesAGGnZNgU3UHDCnsNS
-	 yPm6FVdgrhACw==
+	b=cN1fNwP48n5EkijmPdL6H5u/gKTyXzddUuN15z2rnAYmeeQxF+UqDksY8FhbBH0IC
+	 uqeE5sSWpXk/awKSEhbxCpkFS0EsZwZ1Gn+8e1RcRz7zzBkA9rhaD6wRWvQcPDNK8b
+	 SQWoL/onXtk2TnS0e9qXwELw7SjsIbix3N49N3OFGef4FCPW2MAZf38nIRyHKmpElS
+	 Qdg7OQEMjYnSGZ2vscBGm90J5STZ7kr7bROjfwZ8dWHhTXL/kG60msHaUDR8nvfPPL
+	 2WEvOWTO0RdlPmFnBALU4WyMPSUk4WTxhbXVr8U909ka6r7lPfGeZiC/dSaJ8DiDOu
+	 9uhAHawTAqpJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Elena Salomatkina <esalomatkina@ispras.ru>,
+Cc: Ignat Korchagin <ignat@cloudflare.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	vinicius.gomes@intel.com,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
+	willemdebruijn.kernel@gmail.com,
 	davem@davemloft.net,
-	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 09/36] net/sched: cbs: Fix integer overflow in cbs_set_port_rate()
-Date: Sun, 24 Nov 2024 08:51:23 -0500
-Message-ID: <20241124135219.3349183-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 10/36] af_packet: avoid erroring out after sock_init_data() in packet_create()
+Date: Sun, 24 Nov 2024 08:51:24 -0500
+Message-ID: <20241124135219.3349183-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135219.3349183-1-sashal@kernel.org>
 References: <20241124135219.3349183-1-sashal@kernel.org>
@@ -72,38 +71,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Elena Salomatkina <esalomatkina@ispras.ru>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 397006ba5d918f9b74e734867e8fddbc36dc2282 ]
+[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
 
-The subsequent calculation of port_rate = speed * 1000 * BYTES_PER_KBIT,
-where the BYTES_PER_KBIT is of type LL, may cause an overflow.
-At least when speed = SPEED_20000, the expression to the left of port_rate
-will be greater than INT_MAX.
+After sock_init_data() the allocated sk object is attached to the provided
+sock object. On error, packet_create() frees the sk object leaving the
+dangling pointer in the sock object on return. Some other code may try
+to use this pointer and cause use-after-free.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
-Link: https://patch.msgid.link/20241013124529.1043-1-esalomatkina@ispras.ru
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-index 459cc240eda9c..e0ced550808a5 100644
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -310,7 +310,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
- {
- 	struct ethtool_link_ksettings ecmd;
- 	int speed = SPEED_10;
--	int port_rate;
-+	s64 port_rate;
- 	int err;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index d1ae1d9133d30..dd38cf0c9040d 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3384,18 +3384,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (sock->type == SOCK_PACKET)
+ 		sock->ops = &packet_ops_spkt;
  
- 	err = __ethtool_get_link_ksettings(dev, &ecmd);
++	po = pkt_sk(sk);
++	err = packet_alloc_pending(po);
++	if (err)
++		goto out_sk_free;
++
+ 	sock_init_data(sock, sk);
+ 
+-	po = pkt_sk(sk);
+ 	init_completion(&po->skb_completion);
+ 	sk->sk_family = PF_PACKET;
+ 	po->num = proto;
+ 	po->xmit = dev_queue_xmit;
+ 
+-	err = packet_alloc_pending(po);
+-	if (err)
+-		goto out2;
+-
+ 	packet_cached_dev_reset(po);
+ 
+ 	sk->sk_destruct = packet_sock_destruct;
+@@ -3428,7 +3428,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	sock_prot_inuse_add(net, &packet_proto, 1);
+ 
+ 	return 0;
+-out2:
++out_sk_free:
+ 	sk_free(sk);
+ out:
+ 	return err;
 -- 
 2.43.0
 
