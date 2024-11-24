@@ -1,122 +1,217 @@
-Return-Path: <stable+bounces-95325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD659D77AA
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 20:07:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0989F161DA4
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 19:07:37 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763D314375C;
-	Sun, 24 Nov 2024 19:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HJEKVx+0"
-X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF8F9D7814
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 21:28:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B1F17BA6;
-	Sun, 24 Nov 2024 19:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3307282144
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 20:28:40 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20BE156960;
+	Sun, 24 Nov 2024 20:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIRt6Y7e"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDC5163;
+	Sun, 24 Nov 2024 20:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732475254; cv=none; b=l3aKzJFWo92EZcTgvoFIjMREQGjkzHP87TNOMRQPtYSLBJcsuaKEPGoQsOn4UnRCAyYxUQquSj42hCHAX5rRT62x31iEdY3hBJSyGQS5bCO9r0lqpBbC+bL4FOMk+Ztz/Q5e254zsjZKafG5o2vIKSvKz5+D2OwosAwj3wui724=
+	t=1732480116; cv=none; b=IM5AWSf5YOjJxmnP3SrsQs5E88CK7wZjq/vCbpDhXY8MklaMSOX1awnlNpf3xbaHioQzWVBYGNeLoVm/0x8hAn8YtEm3fsdGpR17u2hlqu4TJ8WXW2KBGjzqv9yCUvey3peZ5x82kwAqdVDItZxo/AeHJq47UFzWxK8SShBX1Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732475254; c=relaxed/simple;
-	bh=esIeKPZ5uMUcixde5dcDskkQnFhBhetH5uV6GOY/E54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=li1sPRgMEY25i3Up+v8GaAC7LtKJTyaKnYX2v8F6V13Kb/+81tdhTStZJQRkoFEElr7QAMy2BdUnzEIO1m4MxLdQhE3n6v542NhWNp6oPOzXNPN0n30Bd3SuxpVSVMKFvrvp7ocoWgfA2YiwGH9U+mH3RyYWjGCpijjpPr1zOGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HJEKVx+0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AO9Q1TI013221;
-	Sun, 24 Nov 2024 19:07:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Bkre2WeoGiPhovYus2RkV3ZM5DAJZ4Ku2XTeN1DLg+M=; b=HJEKVx+0D67xsjSp
-	9RpCLAS+OHmQ6u5PiLD+Q+wdS2ppmbMTCT/EuX40FlM1mHRrdiu58m0yhZ5xDiLV
-	xetOZXBFDeEOmyio4hb58W7215cxWBqlzdLQYTBa/Dn/XEvMT3lpx9HU85NFswyj
-	KT33I+wvYXNmVp8VTiXfUJGX9eNhUEmAv9pCJJ2mE86YFqWG7e6xqB6eKVaNKDv2
-	tMYQuTf6c4Yq1dhZOChU/595R5JHejU/MnaNcUvmPoltuqzw7lRwIU8YC4etA5ju
-	iRSigIucMWQrcwGZI/Ea8B2t1yUfRFbCCIQpbQS7bg4Id82ieHJNMP4pBkJ8v4Fn
-	3OJuRw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4337e6tmvw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 24 Nov 2024 19:07:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AOJ7MKS000470
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 24 Nov 2024 19:07:22 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 24 Nov
- 2024 11:07:21 -0800
-Message-ID: <51afee37-2c90-d31a-978c-5681dccd5ccb@quicinc.com>
-Date: Sun, 24 Nov 2024 12:07:20 -0700
+	s=arc-20240116; t=1732480116; c=relaxed/simple;
+	bh=0Je9YPam0AieU+g/MAjzikhB6nBC0viQCKBhZr7Q3YU=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Td0kCEqP5mCKz6+R3qLUBV2V0aRjOjfTmUyLii12KolelUJP1BgUmUvk2pzedwAziRJhJfp59GlhdQxR7jQd1FtT0v+b3qRCeU0VLSUrcXfrRbOJFdSc7W5Ri0oTz5QGR9gVgwnsX2/WJNXg8YpHUJoLQu/G8eETjbLDEQhUYRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIRt6Y7e; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d40bdbb59dso29684576d6.3;
+        Sun, 24 Nov 2024 12:28:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732480114; x=1733084914; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Az3U59pd8rnLpI+8mN2vKBtnG79d4T1IBg4APDcgsBA=;
+        b=UIRt6Y7e3qmVgu3dWSFD/TjjSbXLJlg9TkQ9bQzZCg1TFksjGkO0tcCxjhMEE0S0tN
+         d2/JxNq48VJndmfTVUo1cIefcZtT4OJVV1PeiGd/OTjwnrgDNxJh3iVKKckDEB949r6V
+         AMEj9n/AW9qB2dMKZ9Tps2ZTrO05OY67RC9p+W3RTvhHIHsQL9ZNsbgDdKLHgvZKSs/L
+         +p78jB1VW7AaZ0hB+UQ7xQBb96ejP6o87D3DDenhbYKUFJ6cn4brjYe6hoBkujWjRtkP
+         bheo7cdzII6ncggFsC5SXc6nBJZj6ZWjE2dYSM7DRxcL9sKhDnnW0a0VjSQFiItyZhFi
+         dJyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732480114; x=1733084914;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Az3U59pd8rnLpI+8mN2vKBtnG79d4T1IBg4APDcgsBA=;
+        b=EQakIxLh29oiSt/EwVVIECvDHfUHKONCkaJFDrP4xOIgDK83lLfJ55SCwsYnyHlH/c
+         OYpzWrHFAWvOQdwLxkKU/EzKKuCwpEZiHEY/Hu7NePko1xYCzmnJ4twHHNHBx8a/OV+c
+         S2vw/3i2DKTJXZezgYKeY47i276LfIKsW0/j2Y20A+LLWVT8qrYZfYSOsRdjrzBvH2ye
+         P0/AWec6iMzqJZWalDg5Ka5kb+pngcBbS4tR1KJrhej8FwgQ+7+jilZq3rsrBJfLBcUP
+         qcPo8RJsiWS4Hv9ktqrdNCuPVf/LAAG6xYBCgP0Hmg+SsTnOjzmTewXSdlVfp+Dxd/Hb
+         rcrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWO8oN0nwe9imMVL5U12BEDOSkA93u0xyGUIlGsMjCNbnFECXsLhwSzT6RsfpK6SSQ3rpPt6vs=@vger.kernel.org, AJvYcCXtTxFA2Ty2PDyqCzGU7czJqTfl5MEgOFjRaV8wg1knbulocgXHldc/ZivygkDglAbUq01k2yL4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTYNHdamFVcLF2MQXHyXePECKTQL3lSUE5ez0P2BVsgnS/2Fi8
+	kJRRMASNFz41c7XqsatJVMD72asacyHMAn20Bi1RarXjZ8VLtzVH
+X-Gm-Gg: ASbGncsjBXojZKYf+lgvdS4o2wVyTmJLiQza18zihgYftbgpKUZYpG49tWSNSYHNi1W
+	fzL9eOCq9QjlFgKokjO4SZSQlSDKqMU/ZPoZhHBcr9h8fQePRwv1k/z/1cQboo8mMshCejHtCT1
+	hiJh5RYJLYJWP7rQjlYi/QRX8/U657vz5TCQrCE1Mgo80EptCtrB3n6ZLaQNexnZ6XJ+0lqKEjJ
+	KwkZ6wx38nXarLW/Gzr6fSA1H5eCUSYJO0TYYP44o+u7uLFoQRQG4IKVxhWJMmpvVQvBzSjBOlV
+	7l6CG6evJ5jxHjEh3w/pkQ==
+X-Google-Smtp-Source: AGHT+IGpt1b+FnQ2WR52hOg1PAbzA8Qfe9WcYSEkfRqTfRRnoVtfrqsNqaJIyYC1piiapvi0lbWqdg==
+X-Received: by 2002:a05:6214:252a:b0:6d4:246a:7362 with SMTP id 6a1803df08f44-6d4514b4545mr185037816d6.42.1732480113637;
+        Sun, 24 Nov 2024 12:28:33 -0800 (PST)
+Received: from localhost (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b23b1esm35098756d6.85.2024.11.24.12.28.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2024 12:28:32 -0800 (PST)
+Date: Sun, 24 Nov 2024 15:28:31 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ David Ahern <dsahern@kernel.org>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ netdev@vger.kernel.org, 
+ kernel-team@cloudflare.com, 
+ Ivan Babrou <ivan@cloudflare.com>, 
+ stable@vger.kernel.org, 
+ ncardwell@google.com
+Message-ID: <67438c6fe292b_2f7566294d0@willemb.c.googlers.com.notmuch>
+In-Reply-To: <87h67xsxp1.fsf@cloudflare.com>
+References: <20241011-uso-swcsum-fixup-v2-1-6e1ddc199af9@cloudflare.com>
+ <87h67xsxp1.fsf@cloudflare.com>
+Subject: Re: USO tests with packetdrill? (was [PATCH net v2] udp: Compute L4
+ checksum as usual when not segmenting the skb)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH AUTOSEL 6.12 033/107] accel/qaic: Add AIC080 support
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-CC: Troy Hanson <quic_thanson@quicinc.com>,
-        Jacek Lawrynowicz
-	<jacek.lawrynowicz@linux.intel.com>,
-        <ogabbay@kernel.org>, <corbet@lwn.net>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-doc@vger.kernel.org>
-References: <20241124133301.3341829-1-sashal@kernel.org>
- <20241124133301.3341829-33-sashal@kernel.org>
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20241124133301.3341829-33-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: P6p515Ej5zV_wAaxb-O7SdWDXz9JZpjc
-X-Proofpoint-ORIG-GUID: P6p515Ej5zV_wAaxb-O7SdWDXz9JZpjc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1031
- lowpriorityscore=0 spamscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411240168
 
-On 11/24/2024 6:28 AM, Sasha Levin wrote:
-> From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Jakub Sitnicki wrote:
+> Hi Willem,
 > 
-> [ Upstream commit b8128f7815ff135f0333c1b46dcdf1543c41b860 ]
+> On Fri, Oct 11, 2024 at 02:17 PM +02, Jakub Sitnicki wrote:
+> > If:
+> >
+> >   1) the user requested USO, but
+> >   2) there is not enough payload for GSO to kick in, and
+> >   3) the egress device doesn't offer checksum offload, then
+> >
+> > we want to compute the L4 checksum in software early on.
+> >
+> > In the case when we are not taking the GSO path, but it has been requested,
+> > the software checksum fallback in skb_segment doesn't get a chance to
+> > compute the full checksum, if the egress device can't do it. As a result we
+> > end up sending UDP datagrams with only a partial checksum filled in, which
+> > the peer will discard.
+> >
+> > Fixes: 10154dbded6d ("udp: Allow GSO transmit from devices with no checksum offload")
+> > Reported-by: Ivan Babrou <ivan@cloudflare.com>
+> > Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+> > Acked-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Cc: stable@vger.kernel.org
+> > ---
 > 
-> Add basic support for the new AIC080 product. The PCIe Device ID is
-> 0xa080. AIC080 is a lower cost, lower performance SKU variant of AIC100.
->  From the qaic perspective, it is the same as AIC100.
+> I'm finally circling back to add a regression test for the above fix.
 > 
-> Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-> Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-> Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20241004195209.3910996-1-quic_jhugo@quicinc.com
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Instead of extending the selftest/net/udpgso.sh test case, I want to
+> propose a different approach. I would like to check if the UDP packets
+> packets are handed over to the netdevice with the expected checksum
+> (complete or partial, depending on the device features), instead of
+> testing for side-effects (packet dropped due to bad checksum).
+> 
+> For that we could use packetdrill. We would need to extend it a bit to
+> allow specifying a UDP checksum in the script, but otherwise it would
+> make writing such tests rather easy. For instance, the regression test
+> for this fix could be as simple as:
+> 
+> ---8<---
+> // Check if sent datagrams with length below GSO size get checksummed correctly
+> 
+> --ip_version=ipv4
+> --local_ip=192.168.0.1
+> 
+> `
+> ethtool -K tun0 tx-checksumming off >/dev/null
+> `
+> 
+> 0   socket(..., SOCK_DGRAM, IPPROTO_UDP) = 3
+> +0  bind(3, ..., ...) = 0
+> +0  connect(3, ..., ...) = 0
+> 
+> +0  write(3, ..., 1000) = 1000
+> +0  > udp sum 0x3643 (1000) // expect complete checksum
+> 
+> +0  setsockopt(3, IPPROTO_UDP, UDP_SEGMENT, [1280], 4) = 0
+> +0  write(3, ..., 1000) = 1000
+> +0  > udp sum 0x3643 (1000) // expect complete checksum
+> --->8---
+> 
+> (I'd actually like to have a bit mode of syntax sugar there, so we can
+> simply specify "sum complete" and have packetdrill figure out the
+> expected checksum value. Then IP address pinning wouldn't be needed.)
+> 
+> If we ever regress, the failure will be straightforward to understand.
+> Here's what I got when running the above test with the fix reverted:
+> 
+> ~ # packetdrill dgram_below_gso_size.pkt
+> dgram_below_gso_size.pkt:19: error handling packet: live packet field l4_csum: expected: 13891 (0x3643) vs actual: 34476 (0x86ac)
+> script packet:  0.000168 udp sum 0x3643 (1000)
+> actual packet:  0.000166 udp sum 0x86ac (1000)
+> ~ #
+> 
+> My patched packetdrill PoC is at:
+> 
+> https://github.com/jsitnicki/packetdrill/commits/udp-segment/rfc1/
+> 
+> If we want to go with the packetdrill-based test, that raises the
+> question where do keep it? In the packetdrill repo? Or with the rest of
+> the selftests/net?
+> 
+> Using the packetdrill repo would make it easier to synchronize the
+> development of packetdrill features with the tests that use them. But we
+> would also have to hook it up to netdev CI.
+> 
+> WDYT?
 
-Sasha, it feels like autosel was a bit aggressive here.  This is an 
-enablement patch for new hardware, and not a bug fix.  Therefore, it 
-does not appear to be stable material to me.
++1. Packetdrill is great environment for such tests. Packetdrill tests
+are also concise and easy to read.
 
-Am I missing something?
+I recently imported an initial batch of packetdrill tests to ksft and
+with that the netdev CI. We have a patch series with the remaining
+.pkt files on github ready for when the merge window opens.
 
--Jeff
+Any changes to packetdrill itself need to go to github, as that does
+not ship with the kernel.
+
+I encourage .pkt files to go there too. But I suspect that that won't
+be enforceable, and we do want the review on netdev@ first.
+
+One issue with testing optional features may be that packetdrill runs
+by default on a tun device (though it can also run across two NICs as
+a two machine test).
+
+Tun supports NETIF_F_GSO_UDP_L4, so that should be no concern in this
+case.
+
+One small request: to avoid confusion with CHECKSUM_COMPLETE, please
+use something else to mean fully computed checksums on the egress
+path (which, somewhat non-obviously, would be CHECKSUM_NONE). Perhaps
+SUM_PSEUDO and SUM_FULL?
+
 
