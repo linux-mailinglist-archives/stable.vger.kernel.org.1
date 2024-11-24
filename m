@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-94920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D2D9D70BE
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:39:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286989D70C4
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:39:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346872847EB
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:39:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A807D1635CD
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67641B85DB;
-	Sun, 24 Nov 2024 13:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B9A1BD014;
+	Sun, 24 Nov 2024 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCaQmJjr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIzP0nzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B2B1B983E;
-	Sun, 24 Nov 2024 13:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923D51BD000;
+	Sun, 24 Nov 2024 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455246; cv=none; b=YaJmgCb3mWoGN/38jQQ3ALTK7+3GlqFtUIm6PSPuII+tSqTh1QwqHDZqvUCD6mOFiZzu78+GoY8nkdKH0tK79IrzsfZE4nqEw+xiavdNnc3hnX75PbJNl14SkE6RLXAQ4c9oXdzt64gQERnYjsLfwEy3L2Bblv/cqjr66OXomNo=
+	t=1732455262; cv=none; b=QZLX5e7RfA8/Mg8bzjIfgBHImfpxqEFLx9BcSn7FF63mcP3fhFvKkysRiOZW+0WW0k1YGI7JZiYUxgzAbYY5WWwxd4hEJF8ZuFNdd31dBeNDPtEXIOkn+c33f1nUE3XnHOJbopT68HHCzn0h7cvLpyBuzUSk2Y+lmr15nDN4XKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455246; c=relaxed/simple;
-	bh=YWcXZRQ2PKExhrtCcwa9G+/k0ID6VBR1cc2YfPNI5Es=;
+	s=arc-20240116; t=1732455262; c=relaxed/simple;
+	bh=zzcGZEcBvu46gqYKE+Crh2xmqW8IfEQBqq8SNuuGXBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlLH8Kr/x2IzFmtjUuIf28yC02G+W0Pod3iJ+RXtEJZ7lLN9V9+ElUlyf2NLFmmRqCXlqN2glqNAdW8M/5I0Z/Hj9fC1ZfY4OmDL3jBP/V//FXEfnC14Nf3ivWeUh4ANrWQXHoyiW7vYT6sUxfHFigyTRWrqOQvnYWwZEY83Sl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCaQmJjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38C8C4CED1;
-	Sun, 24 Nov 2024 13:34:03 +0000 (UTC)
+	 MIME-Version; b=t5MWp/MgpVb5lX9hQ4wYyz8Aietnm7FTpSZcZuseDSDc5eXxTkOHxfH08op4ongifC16NRVWeY9bJxtQS6Ka6Cnhvwbsq0DCz8wcbXw010YO/tbPmxpa5guBKBhgZzE/1OsViGZJOBs3br6moqIwRHGE+g5qe597iP2eQDPYctA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIzP0nzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09EBC4CEDB;
+	Sun, 24 Nov 2024 13:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455245;
-	bh=YWcXZRQ2PKExhrtCcwa9G+/k0ID6VBR1cc2YfPNI5Es=;
+	s=k20201202; t=1732455262;
+	bh=zzcGZEcBvu46gqYKE+Crh2xmqW8IfEQBqq8SNuuGXBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCaQmJjru9Iry2OB7/K71pN6HLmfPoDRd5ZQUkme8Qk4wDKVZv9ZRaAshZCrHM9BV
-	 H1DcJ+bW3h6wKl5xVfUIp9FE9mJDkbeDwhUrj5TNj5e4sXUmACGqg+7Cq/vXM9haxZ
-	 mgqcl5STZy39GdZYfUfbrPkVEPzWxhkRL50JQ2sDjRIfDKPJ2WiVsr40wCY4jzx8U8
-	 Szwvm3beQTVOz03mOv4mBZt5Q1c/fpdPSf+eO3+/wIygt9OviCWhsgSR4T+R12J4oi
-	 G6EDrLSf4kdFQUpAvO3rL6RmPVu1Fip8MrhBJOKK252GDeeeiXVufRa0Zt48JItdqv
-	 fs88lU2/cuNUQ==
+	b=iIzP0nzWg8WNtKLLAkvAg6kpeZcjZ5ti2c9CE6rtShn9INiKkeQjajE/X82t6T/W5
+	 go5TqvKGDcshgVAPNb1OhBKypNBqhx3gQzPml37H1cnwRHJZhyD8bXnCjxWEqafbW7
+	 VJrsfgv/EIgGPFs/qfr30MKA8FY6YpSWA1S8mg1VJcccNgGCIp0i3No7LStX8UuS9F
+	 PCzDGuobYwBj9ZsWhyyr9wGX5maiL8J9/R12P1F6w9wBIEwO3ajauCA38qszioW1vv
+	 gH/FchF2fFI76G1tBHBrll7JqB8Sy1EVMY7Et3sN1i9IjJ3pfvtTfW6PK0U0z5JsLI
+	 6jvppUOBlNNBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>,
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
 	Matt Atwood <matthew.s.atwood@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
 	Matt Roper <matthew.d.roper@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	lucas.demarchi@intel.com,
 	thomas.hellstrom@linux.intel.com,
@@ -59,11 +56,17 @@ Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>,
 	tzimmermann@suse.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	jose.souza@intel.com,
+	niranjana.vishwanathapura@intel.com,
+	ashutosh.dixit@intel.com,
+	tejas.upadhyay@intel.com,
+	shekhar.chauhan@intel.com,
+	daniele.ceraolospurio@intel.com,
 	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 024/107] drm/xe/ptl: L3bank mask is not available on the media GT
-Date: Sun, 24 Nov 2024 08:28:44 -0500
-Message-ID: <20241124133301.3341829-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 025/107] drm/xe/xe3: Add initial set of workarounds
+Date: Sun, 24 Nov 2024 08:28:45 -0500
+Message-ID: <20241124133301.3341829-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -78,190 +81,135 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit 9ab440a9d0426cf7842240891cc457155db1a97e ]
+[ Upstream commit 081cb8948cfe322076cd23f22f85ba68f73e2c4b ]
 
-On PTL platforms with media version 30.00, the fuse registers for
-reporting L3 bank availability to the GT just read out as ~0 and do not
-provide proper values.  Xe does not use the L3 bank mask for anything
-internally; it only passes the mask through to userspace via the GT
-topology query.
+Implement the initial set of workarounds for Xe3 IPs.
 
-Since we don't have any way to get the real L3 bank mask, we don't want
-to pass garbage to userspace.  Passing a zeroed mask or a copy of the
-primary GT's L3 bank mask would also be inaccurate and likely to cause
-confusion for userspace.  The best approach is to simply not include L3
-in the list of masks returned by the topology query in cases where we
-aren't able to provide a meaningful value.  This won't change the
-behavior for any existing platforms (where we can always obtain L3 masks
-successfully for all GTs), it will only prevent us from mis-reporting
-bad information on upcoming platform(s).
-
-There's a good chance this will become a formal workaround in the
-future, but for now we don't have a lineage number so "no_media_l3" is
-used in place of a lineage as the OOB workaround descriptor.
-
-v2:
- - Re-calculate query size to properly match data returned. (Gustavo)
- - Update kerneldoc to clarify that the L3bank mask may not be included
-   in the query results if the hardware doesn't make it available.
-   (Gustavo)
-
-Cc: Matt Atwood <matthew.s.atwood@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Co-developed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Acked-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241007154143.2021124-2-matthew.d.roper@intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008204626.55802-2-matthew.s.atwood@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_topology.c | 14 ++++++++++
- drivers/gpu/drm/xe/xe_query.c       | 42 +++++++++++++++++++++--------
- drivers/gpu/drm/xe/xe_wa_oob.rules  |  1 +
- include/uapi/drm/xe_drm.h           |  4 ++-
- 4 files changed, 49 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_engine_regs.h |  1 +
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h     |  3 ++
+ drivers/gpu/drm/xe/xe_wa.c               | 47 ++++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_wa_oob.rules       |  1 +
+ 4 files changed, 52 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_topology.c b/drivers/gpu/drm/xe/xe_gt_topology.c
-index 0662f71c6ede7..3e113422b88de 100644
---- a/drivers/gpu/drm/xe/xe_gt_topology.c
-+++ b/drivers/gpu/drm/xe/xe_gt_topology.c
-@@ -5,6 +5,7 @@
+diff --git a/drivers/gpu/drm/xe/regs/xe_engine_regs.h b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+index 81b71903675e0..7c78496e6213c 100644
+--- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+@@ -186,6 +186,7 @@
  
- #include "xe_gt_topology.h"
+ #define VDBOX_CGCTL3F10(base)			XE_REG((base) + 0x3f10)
+ #define   IECPUNIT_CLKGATE_DIS			REG_BIT(22)
++#define   RAMDFTUNIT_CLKGATE_DIS		REG_BIT(9)
  
-+#include <generated/xe_wa_oob.h>
- #include <linux/bitmap.h>
- #include <linux/compiler.h>
+ #define VDBOX_CGCTL3F18(base)			XE_REG((base) + 0x3f18)
+ #define   ALNUNIT_CLKGATE_DIS			REG_BIT(13)
+diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+index bd604b9f08e4f..5404de2aea545 100644
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -286,6 +286,9 @@
+ #define   GAMTLBVEBOX0_CLKGATE_DIS		REG_BIT(16)
+ #define   LTCDD_CLKGATE_DIS			REG_BIT(10)
  
-@@ -12,6 +13,7 @@
- #include "xe_assert.h"
- #include "xe_gt.h"
- #include "xe_mmio.h"
-+#include "xe_wa.h"
- 
- static void
- load_dss_mask(struct xe_gt *gt, xe_dss_mask_t mask, int numregs, ...)
-@@ -129,6 +131,18 @@ load_l3_bank_mask(struct xe_gt *gt, xe_l3_bank_mask_t l3_bank_mask)
- 	struct xe_device *xe = gt_to_xe(gt);
- 	u32 fuse3 = xe_mmio_read32(gt, MIRROR_FUSE3);
- 
-+	/*
-+	 * PTL platforms with media version 30.00 do not provide proper values
-+	 * for the media GT's L3 bank registers.  Skip the readout since we
-+	 * don't have any way to obtain real values.
-+	 *
-+	 * This may get re-described as an official workaround in the future,
-+	 * but there's no tracking number assigned yet so we use a custom
-+	 * OOB workaround descriptor.
-+	 */
-+	if (XE_WA(gt, no_media_l3))
-+		return;
++#define UNSLCGCTL9454				XE_REG(0x9454)
++#define   LSCFE_CLKGATE_DIS			REG_BIT(4)
 +
- 	if (GRAPHICS_VER(xe) >= 20) {
- 		xe_l3_bank_mask_t per_node = {};
- 		u32 meml3_en = REG_FIELD_GET(XE2_NODE_ENABLE_MASK, fuse3);
-diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
-index 848da8e68c7a8..1c96375bd7df7 100644
---- a/drivers/gpu/drm/xe/xe_query.c
-+++ b/drivers/gpu/drm/xe/xe_query.c
-@@ -9,6 +9,7 @@
- #include <linux/sched/clock.h>
+ #define XEHP_SLICE_UNIT_LEVEL_CLKGATE		XE_REG_MCR(0x94d4)
+ #define   L3_CR2X_CLKGATE_DIS			REG_BIT(17)
+ #define   L3_CLKGATE_DIS			REG_BIT(16)
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index 353936a0f877d..37e592b2bf062 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -251,6 +251,34 @@ static const struct xe_rtp_entry_sr gt_was[] = {
+ 	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
+ 	},
  
- #include <drm/ttm/ttm_placement.h>
-+#include <generated/xe_wa_oob.h>
- #include <uapi/drm/xe_drm.h>
- 
- #include "regs/xe_engine_regs.h"
-@@ -23,6 +24,7 @@
- #include "xe_macros.h"
- #include "xe_mmio.h"
- #include "xe_ttm_vram_mgr.h"
-+#include "xe_wa.h"
- 
- static const u16 xe_to_user_engine_class[] = {
- 	[XE_ENGINE_CLASS_RENDER] = DRM_XE_ENGINE_CLASS_RENDER,
-@@ -458,12 +460,23 @@ static int query_hwconfig(struct xe_device *xe,
- 
- static size_t calc_topo_query_size(struct xe_device *xe)
- {
--	return xe->info.gt_count *
--		(4 * sizeof(struct drm_xe_query_topology_mask) +
--		 sizeof_field(struct xe_gt, fuse_topo.g_dss_mask) +
--		 sizeof_field(struct xe_gt, fuse_topo.c_dss_mask) +
--		 sizeof_field(struct xe_gt, fuse_topo.l3_bank_mask) +
--		 sizeof_field(struct xe_gt, fuse_topo.eu_mask_per_dss));
-+	struct xe_gt *gt;
-+	size_t query_size = 0;
-+	int id;
++	/* Xe3_LPG */
 +
-+	for_each_gt(gt, xe, id) {
-+		query_size += 3 * sizeof(struct drm_xe_query_topology_mask) +
-+			sizeof_field(struct xe_gt, fuse_topo.g_dss_mask) +
-+			sizeof_field(struct xe_gt, fuse_topo.c_dss_mask) +
-+			sizeof_field(struct xe_gt, fuse_topo.eu_mask_per_dss);
++	{ XE_RTP_NAME("14021871409"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0)),
++	  XE_RTP_ACTIONS(SET(UNSLCGCTL9454, LSCFE_CLKGATE_DIS))
++	},
 +
-+		/* L3bank mask may not be available for some GTs */
-+		if (!XE_WA(gt, no_media_l3))
-+			query_size += sizeof(struct drm_xe_query_topology_mask) +
-+				sizeof_field(struct xe_gt, fuse_topo.l3_bank_mask);
-+	}
++	/* Xe3_LPM */
 +
-+	return query_size;
- }
++	{ XE_RTP_NAME("16021867713"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F1C(0), MFXPIPE_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++	{ XE_RTP_NAME("16021865536"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F10(0), IECPUNIT_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++	{ XE_RTP_NAME("14021486841"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000), MEDIA_STEP(A0, B0),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F10(0), RAMDFTUNIT_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++
+ 	{}
+ };
  
- static int copy_mask(void __user **ptr,
-@@ -516,11 +529,18 @@ static int query_gt_topology(struct xe_device *xe,
- 		if (err)
- 			return err;
+@@ -567,6 +595,13 @@ static const struct xe_rtp_entry_sr engine_was[] = {
+ 			     XE_RTP_ACTION_FLAG(ENGINE_BASE)))
+ 	},
  
--		topo.type = DRM_XE_TOPO_L3_BANK;
--		err = copy_mask(&query_ptr, &topo, gt->fuse_topo.l3_bank_mask,
--				sizeof(gt->fuse_topo.l3_bank_mask));
--		if (err)
--			return err;
-+		/*
-+		 * If the kernel doesn't have a way to obtain a correct L3bank
-+		 * mask, then it's better to omit L3 from the query rather than
-+		 * reporting bogus or zeroed information to userspace.
-+		 */
-+		if (!XE_WA(gt, no_media_l3)) {
-+			topo.type = DRM_XE_TOPO_L3_BANK;
-+			err = copy_mask(&query_ptr, &topo, gt->fuse_topo.l3_bank_mask,
-+					sizeof(gt->fuse_topo.l3_bank_mask));
-+			if (err)
-+				return err;
-+		}
++	/* Xe3_LPG */
++
++	{ XE_RTP_NAME("14021402888"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001), FUNC(xe_rtp_match_first_render_or_compute)),
++	  XE_RTP_ACTIONS(SET(HALF_SLICE_CHICKEN7, CLEAR_OPTIMIZATION_DISABLE))
++	},
++
+ 	{}
+ };
  
- 		topo.type = gt->fuse_topo.eu_type == XE_GT_EU_TYPE_SIMD16 ?
- 			DRM_XE_TOPO_SIMD16_EU_PER_DSS :
+@@ -742,6 +777,18 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
+ 	},
+ 
++	/* Xe3_LPG */
++	{ XE_RTP_NAME("14021490052"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0),
++		       ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(FF_MODE,
++			     DIS_MESH_PARTIAL_AUTOSTRIP |
++			     DIS_MESH_AUTOSTRIP),
++			 SET(VFLSKPD,
++			     DIS_PARTIAL_AUTOSTRIP |
++			     DIS_AUTOSTRIP))
++	},
++
+ 	{}
+ };
+ 
 diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
-index 920ca50601466..0154fbe154e9a 100644
+index 0154fbe154e9a..264d6e116499c 100644
 --- a/drivers/gpu/drm/xe/xe_wa_oob.rules
 +++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
-@@ -37,3 +37,4 @@
+@@ -33,6 +33,7 @@
+ 		GRAPHICS_VERSION(2004)
+ 22019338487	MEDIA_VERSION(2000)
+ 		GRAPHICS_VERSION(2001)
++		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0)
+ 22019338487_display	PLATFORM(LUNARLAKE)
  16023588340	GRAPHICS_VERSION(2001)
  14019789679	GRAPHICS_VERSION(1255)
- 		GRAPHICS_VERSION_RANGE(1270, 2004)
-+no_media_l3	MEDIA_VERSION(3000)
-diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-index b6fbe4988f2e9..c4182e95a6195 100644
---- a/include/uapi/drm/xe_drm.h
-+++ b/include/uapi/drm/xe_drm.h
-@@ -512,7 +512,9 @@ struct drm_xe_query_gt_list {
-  *    containing the following in mask:
-  *    ``DSS_COMPUTE    ff ff ff ff 00 00 00 00``
-  *    means 32 DSS are available for compute.
-- *  - %DRM_XE_TOPO_L3_BANK - To query the mask of enabled L3 banks
-+ *  - %DRM_XE_TOPO_L3_BANK - To query the mask of enabled L3 banks.  This type
-+ *    may be omitted if the driver is unable to query the mask from the
-+ *    hardware.
-  *  - %DRM_XE_TOPO_EU_PER_DSS - To query the mask of Execution Units (EU)
-  *    available per Dual Sub Slices (DSS). For example a query response
-  *    containing the following in mask:
 -- 
 2.43.0
 
