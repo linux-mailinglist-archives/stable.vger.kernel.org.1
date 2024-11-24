@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-94870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A921F9D6FE2
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:21:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC9C9D6FE6
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A595281430
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:21:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BE3A281E44
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0BA1AF0BC;
-	Sun, 24 Nov 2024 12:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28291B0F0F;
+	Sun, 24 Nov 2024 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFXHlX57"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxsUatkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17D18DF6E;
-	Sun, 24 Nov 2024 12:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457C18FC83;
+	Sun, 24 Nov 2024 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452936; cv=none; b=jdpjtSdkjYkI7amL6PDG9h0+c5FNqVOh6vA3Yl2HLGMclL2D4I1GSsAqdU4fuaW+CrVp4zxF/WMkiNZnn6JHiGaPahz3yZ72O0Ibq0y5OFIuWZ4NU7lUqbXbSEIoE7rz/QOSrgEU0aM8fLTb3roHWf8cnoNqG3OT59AE3C4118I=
+	t=1732452948; cv=none; b=JJi08B4YbIG4vi8iuahi23DjLSlZBJ/LjTAznkOJDAfzaGHcpXu5JxITdq+E+iB6MA7dvIjfb/aQoZ32ZDBb2GOP4NDCcCQ2Wlcdn8GtBAi5EzSLRtxmxTn3E+zcsrXnke9wBt0lAAd4Q48rAZFb8foZySw7Wg7PtkiwF7vxfH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452936; c=relaxed/simple;
-	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
+	s=arc-20240116; t=1732452948; c=relaxed/simple;
+	bh=rlXomFu5qGiZb/ofgdWpVidsWgeKhD/JGHu9T92/iwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I82fhLlYl6rHQBRKnIS/FTI/RBDZCECw5EDqIL3aG35/zUL+4t6qQuOjMvFrOoo7+q104zRyFwyjAkunkbU9PBD6hDuRC+/ARus8O/LMkwHkqNK7AXWtBNLkrKI1W7XVKK1fUqgO79ZKvBuM92U4FtQ7OlvSPiyjCY8688nDbI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFXHlX57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F66C4CECC;
-	Sun, 24 Nov 2024 12:55:34 +0000 (UTC)
+	 MIME-Version; b=eyTt+m9nuxeUfXmMF5gqvB+HPVvITGN+cGrpRU7H7yo+ngMQ0KRcudxmx48qRwQ226aQkjqCWTEqQ197L8uCzDpJXR2ATcG74NBuQmICRp+Jq9f/Ih7yn709BoYcCqE+RfS4nSN1UND24LvcGE7SS6mkc9BsCSju2gu8raR7wwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxsUatkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051C9C4CECC;
+	Sun, 24 Nov 2024 12:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452935;
-	bh=Gi4S+XoGOa1N8NVG9aViLxho10X6kxajzcJV2M2Iu7c=;
+	s=k20201202; t=1732452948;
+	bh=rlXomFu5qGiZb/ofgdWpVidsWgeKhD/JGHu9T92/iwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFXHlX57jCMKXaB9M+Rtavtrn1I0L7Nwhkl8+9f23eFIEQhCGDHiBqbP7ZeUZEPTl
-	 Efxx3ecNN7Ak/QdN7H/XCLYOQM+jlVkXbpADlA2cN49Fhzlu8yyb8MVbCA/VXabujw
-	 OC0ZW32vbeL5LJNtTIvS5prMaVqQ4DmJLBLJQ7Tdtbm1GBq26FXJToBEZuZIibH1ri
-	 mamad39GysynzDljYHrBRYEZCRFR2P42Vbu5aCV6O8RZ/r515Hodud5/Jdgl5c18Il
-	 zvQckbum6v84OWHxshl3epqxiBWegwcOunDx3nGzCFS6Si3ElUCHDDAtdRmvSDJpR+
-	 BX8lKLqdFvQpA==
+	b=dxsUatkgovSTFjxnyjnlNyVVsG+OJ2ofrsYtNzzAkO6TO/zupxpEIc4NMh7NqCdwk
+	 ipluOUdM1aEsCDXGvg7QIWRT8RReBN5cAKFk6lqfWNrNKlebZs9WlL3DeqTDLhK+h5
+	 4z5MgrFBH0+LZJoQPWz36OzMQn6OTLG4T8Gel3Z3ZSznKZtIGpomf7RLVWUxcl2FKh
+	 VpBxNsF8TXpbow4WGaNoJpiCiEXwHgPu5Q/lTbFEr+1ZHiWTMRAcX4df8ETw75Igcl
+	 cTXuZvbfuWWeo4K6kJrLwfm1la7VkMB8mlcbB78WzN9b+wPWK6UlyaOtj0c2MGZrfg
+	 oarjsltFnNMXw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+Cc: Benjamin Tissoires <bentiss@kernel.org>,
+	Tatsuyuki Ishi <ishitatsuyuki@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	arnd@arndb.de,
-	quic_jjohnson@quicinc.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 6/9] soc: imx8m: Probe the SoC driver as platform driver
-Date: Sun, 24 Nov 2024 07:54:20 -0500
-Message-ID: <20241124125515.3340625-6-sashal@kernel.org>
+	jikos@kernel.org,
+	linux-input@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 7/9] HID: bpf: Fix NKRO on Mistel MD770
+Date: Sun, 24 Nov 2024 07:54:21 -0500
+Message-ID: <20241124125515.3340625-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125515.3340625-1-sashal@kernel.org>
 References: <20241124125515.3340625-1-sashal@kernel.org>
@@ -69,269 +68,189 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Marek Vasut <marex@denx.de>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit 9cc832d37799dbea950c4c8a34721b02b8b5a8ff ]
+[ Upstream commit 9bc089307e8dff7797233308372b4a90ce8f79be ]
 
-With driver_async_probe=* on kernel command line, the following trace is
-produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
-calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
-driver is not yet probed. This was not detected during regular testing
-without driver_async_probe.
+Mistel MD770 keyboard (using Holtek Semiconductor, Inc. controller) has
+a quirk in report descriptor in one of its interfaces (more detail in
+the source file). Fix up the descriptor to allow NKRO to work again.
 
-Convert the SoC code to platform driver and instantiate a platform device
-in its current device_initcall() to probe the platform driver. Rework
-.soc_revision callback to always return valid error code and return SoC
-revision via parameter. This way, if anything in the .soc_revision callback
-return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
-retried later.
+Tested by loading the BPF program and confirming that 8 simultaneous
+keypresses work.
 
-"
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
-CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
-Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : imx8mm_soc_revision+0xdc/0x180
-lr : imx8mm_soc_revision+0xd0/0x180
-sp : ffff8000821fbcc0
-x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
-x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
-x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
-x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
-x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
-x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
-x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
-x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
-x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
-Call trace:
- imx8mm_soc_revision+0xdc/0x180
- imx8_soc_init+0xb0/0x1e0
- do_one_initcall+0x94/0x1a8
- kernel_init_freeable+0x240/0x2a8
- kernel_init+0x28/0x140
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-SoC: i.MX8MP revision 1.1
-"
-
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218495
+Link: https://gitlab.freedesktop.org/libevdev/udev-hid-bpf/-/merge_requests/122
+Signed-off-by: Tatsuyuki Ishi <ishitatsuyuki@gmail.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Link: https://patch.msgid.link/20241017-import_bpf_6-13-v2-1-6a7acb89a97f@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
- 1 file changed, 85 insertions(+), 22 deletions(-)
+ drivers/hid/bpf/progs/Mistel__MD770.bpf.c | 154 ++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
+ create mode 100644 drivers/hid/bpf/progs/Mistel__MD770.bpf.c
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index 08197b03955dd..a160854a19178 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -30,7 +30,7 @@
- 
- struct imx8_soc_data {
- 	char *name;
--	u32 (*soc_revision)(void);
-+	int (*soc_revision)(u32 *socrev);
- };
- 
- static u64 soc_uid;
-@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
- static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
- #endif
- 
--static u32 __init imx8mq_soc_revision(void)
-+static int imx8mq_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *ocotp_base;
- 	u32 magic;
- 	u32 rev;
- 	struct clk *clk;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
+diff --git a/drivers/hid/bpf/progs/Mistel__MD770.bpf.c b/drivers/hid/bpf/progs/Mistel__MD770.bpf.c
+new file mode 100644
+index 0000000000000..fb8b5a6968b12
+--- /dev/null
++++ b/drivers/hid/bpf/progs/Mistel__MD770.bpf.c
+@@ -0,0 +1,154 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2024 Tatsuyuki Ishi
++ */
 +
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return 0;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
- 	soc_uid <<= 32;
- 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
- 
-+	*socrev = rev;
++#include "vmlinux.h"
++#include "hid_bpf.h"
++#include "hid_bpf_helpers.h"
++#include <bpf/bpf_tracing.h>
 +
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
- 	iounmap(ocotp_base);
- 	of_node_put(np);
- 
--	return rev;
-+	return 0;
++#define VID_HOLTEK	0x04D9
++#define PID_MD770	0x0339
++#define RDESC_SIZE	203
 +
-+err_clk:
-+	iounmap(ocotp_base);
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
--static void __init imx8mm_soc_uid(void)
-+static int imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
- 	struct clk *clk;
-+	int ret = 0;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
- 	if (!np)
--		return;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
++HID_BPF_CONFIG(
++	HID_DEVICE(BUS_USB, HID_GROUP_GENERIC, VID_HOLTEK, PID_MD770)
++);
 +
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
- 
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
++/*
++ * The Mistel MD770 keyboard reports the first 6 simultaneous key presses
++ * through the first interface, and anything beyond that through a second
++ * interface. Unfortunately, the second interface's report descriptor has an
++ * error, causing events to be malformed and ignored. This HID-BPF driver
++ * fixes the descriptor to allow NKRO to work again.
++ *
++ * For reference, this is the original report descriptor:
++ *
++ * 0x05, 0x01,        // Usage Page (Generic Desktop)        0
++ * 0x09, 0x80,        // Usage (System Control)              2
++ * 0xa1, 0x01,        // Collection (Application)            4
++ * 0x85, 0x01,        //  Report ID (1)                      6
++ * 0x19, 0x81,        //  Usage Minimum (129)                8
++ * 0x29, 0x83,        //  Usage Maximum (131)                10
++ * 0x15, 0x00,        //  Logical Minimum (0)                12
++ * 0x25, 0x01,        //  Logical Maximum (1)                14
++ * 0x95, 0x03,        //  Report Count (3)                   16
++ * 0x75, 0x01,        //  Report Size (1)                    18
++ * 0x81, 0x02,        //  Input (Data,Var,Abs)               20
++ * 0x95, 0x01,        //  Report Count (1)                   22
++ * 0x75, 0x05,        //  Report Size (5)                    24
++ * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               26
++ * 0xc0,              // End Collection                      28
++ * 0x05, 0x0c,        // Usage Page (Consumer Devices)       29
++ * 0x09, 0x01,        // Usage (Consumer Control)            31
++ * 0xa1, 0x01,        // Collection (Application)            33
++ * 0x85, 0x02,        //  Report ID (2)                      35
++ * 0x15, 0x00,        //  Logical Minimum (0)                37
++ * 0x25, 0x01,        //  Logical Maximum (1)                39
++ * 0x95, 0x12,        //  Report Count (18)                  41
++ * 0x75, 0x01,        //  Report Size (1)                    43
++ * 0x0a, 0x83, 0x01,  //  Usage (AL Consumer Control Config) 45
++ * 0x0a, 0x8a, 0x01,  //  Usage (AL Email Reader)            48
++ * 0x0a, 0x92, 0x01,  //  Usage (AL Calculator)              51
++ * 0x0a, 0x94, 0x01,  //  Usage (AL Local Machine Browser)   54
++ * 0x09, 0xcd,        //  Usage (Play/Pause)                 57
++ * 0x09, 0xb7,        //  Usage (Stop)                       59
++ * 0x09, 0xb6,        //  Usage (Scan Previous Track)        61
++ * 0x09, 0xb5,        //  Usage (Scan Next Track)            63
++ * 0x09, 0xe2,        //  Usage (Mute)                       65
++ * 0x09, 0xea,        //  Usage (Volume Down)                67
++ * 0x09, 0xe9,        //  Usage (Volume Up)                  69
++ * 0x0a, 0x21, 0x02,  //  Usage (AC Search)                  71
++ * 0x0a, 0x23, 0x02,  //  Usage (AC Home)                    74
++ * 0x0a, 0x24, 0x02,  //  Usage (AC Back)                    77
++ * 0x0a, 0x25, 0x02,  //  Usage (AC Forward)                 80
++ * 0x0a, 0x26, 0x02,  //  Usage (AC Stop)                    83
++ * 0x0a, 0x27, 0x02,  //  Usage (AC Refresh)                 86
++ * 0x0a, 0x2a, 0x02,  //  Usage (AC Bookmarks)               89
++ * 0x81, 0x02,        //  Input (Data,Var,Abs)               92
++ * 0x95, 0x01,        //  Report Count (1)                   94
++ * 0x75, 0x0e,        //  Report Size (14)                   96
++ * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               98
++ * 0xc0,              // End Collection                      100
++ * 0x05, 0x01,        // Usage Page (Generic Desktop)        101
++ * 0x09, 0x02,        // Usage (Mouse)                       103
++ * 0xa1, 0x01,        // Collection (Application)            105
++ * 0x09, 0x01,        //  Usage (Pointer)                    107
++ * 0xa1, 0x00,        //  Collection (Physical)              109
++ * 0x85, 0x03,        //   Report ID (3)                     111
++ * 0x05, 0x09,        //   Usage Page (Button)               113
++ * 0x19, 0x01,        //   Usage Minimum (1)                 115
++ * 0x29, 0x08,        //   Usage Maximum (8)                 117
++ * 0x15, 0x00,        //   Logical Minimum (0)               119
++ * 0x25, 0x01,        //   Logical Maximum (1)               121
++ * 0x75, 0x01,        //   Report Size (1)                   123
++ * 0x95, 0x08,        //   Report Count (8)                  125
++ * 0x81, 0x02,        //   Input (Data,Var,Abs)              127
++ * 0x05, 0x01,        //   Usage Page (Generic Desktop)      129
++ * 0x09, 0x30,        //   Usage (X)                         131
++ * 0x09, 0x31,        //   Usage (Y)                         133
++ * 0x16, 0x01, 0x80,  //   Logical Minimum (-32767)          135
++ * 0x26, 0xff, 0x7f,  //   Logical Maximum (32767)           138
++ * 0x75, 0x10,        //   Report Size (16)                  141
++ * 0x95, 0x02,        //   Report Count (2)                  143
++ * 0x81, 0x06,        //   Input (Data,Var,Rel)              145
++ * 0x09, 0x38,        //   Usage (Wheel)                     147
++ * 0x15, 0x81,        //   Logical Minimum (-127)            149
++ * 0x25, 0x7f,        //   Logical Maximum (127)             151
++ * 0x75, 0x08,        //   Report Size (8)                   153
++ * 0x95, 0x01,        //   Report Count (1)                  155
++ * 0x81, 0x06,        //   Input (Data,Var,Rel)              157
++ * 0x05, 0x0c,        //   Usage Page (Consumer Devices)     159
++ * 0x0a, 0x38, 0x02,  //   Usage (AC Pan)                    161
++ * 0x95, 0x01,        //   Report Count (1)                  164
++ * 0x81, 0x06,        //   Input (Data,Var,Rel)              166
++ * 0xc0,              //  End Collection                     168
++ * 0xc0,              // End Collection                      169
++ * 0x05, 0x01,        // Usage Page (Generic Desktop)        170
++ * 0x09, 0x06,        // Usage (Keyboard)                    172
++ * 0xa1, 0x01,        // Collection (Application)            174
++ * 0x85, 0x04,        //  Report ID (4)                      176
++ * 0x05, 0x07,        //  Usage Page (Keyboard)              178
++ * 0x95, 0x01,        //  Report Count (1)                   180
++ * 0x75, 0x08,        //  Report Size (8)                    182
++ * 0x81, 0x03,        //  Input (Cnst,Var,Abs)               184
++ * 0x95, 0xe8,        //  Report Count (232)                 186
++ * 0x75, 0x01,        //  Report Size (1)                    188
++ * 0x15, 0x00,        //  Logical Minimum (0)                190
++ * 0x25, 0x01,        //  Logical Maximum (1)                192
++ * 0x05, 0x07,        //  Usage Page (Keyboard)              194
++ * 0x19, 0x00,        //  Usage Minimum (0)                  196
++ * 0x29, 0xe7,        //  Usage Maximum (231)                198
++ * 0x81, 0x00,        //  Input (Data,Arr,Abs)               200  <- change to 0x81, 0x02 (Data,Var,Abs)
++ * 0xc0,              // End Collection                      202
++ */
 +
-+err_clk:
- 	iounmap(ocotp_base);
-+err_iomap:
- 	of_node_put(np);
-+
-+	return ret;
- }
- 
--static u32 __init imx8mm_soc_revision(void)
-+static int imx8mm_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *anatop_base;
--	u32 rev;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	anatop_base = of_iomap(np, 0);
--	WARN_ON(!anatop_base);
-+	if (!anatop_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
- 
--	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
-+	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
- 
- 	iounmap(anatop_base);
- 	of_node_put(np);
- 
--	imx8mm_soc_uid();
-+	return imx8mm_soc_uid();
- 
--	return rev;
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
- static const struct imx8_soc_data imx8mq_soc_data = {
-@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
- 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
- 	"unknown"
- 
--static int __init imx8_soc_init(void)
-+static int imx8m_soc_probe(struct platform_device *pdev)
- {
- 	struct soc_device_attribute *soc_dev_attr;
- 	struct soc_device *soc_dev;
-@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
- 	data = id->data;
- 	if (data) {
- 		soc_dev_attr->soc_id = data->name;
--		if (data->soc_revision)
--			soc_rev = data->soc_revision();
-+		if (data->soc_revision) {
-+			ret = data->soc_revision(&soc_rev);
-+			if (ret)
-+				goto free_soc;
-+		}
- 	}
- 
- 	soc_dev_attr->revision = imx8_revision(soc_rev);
-@@ -251,4 +282,36 @@ static int __init imx8_soc_init(void)
- 	kfree(soc_dev_attr);
- 	return ret;
- }
-+
-+static struct platform_driver imx8m_soc_driver = {
-+	.probe = imx8m_soc_probe,
-+	.driver = {
-+		.name = "imx8m-soc",
-+	},
-+};
-+
-+static int __init imx8_soc_init(void)
++SEC(HID_BPF_RDESC_FIXUP)
++int BPF_PROG(hid_rdesc_fixup_mistel_md770, struct hid_bpf_ctx *hctx)
 +{
-+	struct platform_device *pdev;
-+	int ret;
++	__u8 *data = hid_bpf_get_data(hctx, 0, HID_MAX_DESCRIPTOR_SIZE);
 +
-+	/* No match means this is non-i.MX8M hardware, do nothing. */
-+	if (!of_match_node(imx8_soc_match, of_root))
-+		return 0;
++	if (!data)
++		return 0; /* EPERM check */
 +
-+	ret = platform_driver_register(&imx8m_soc_driver);
-+	if (ret) {
-+		pr_err("Failed to register imx8m-soc platform driver: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
-+	if (IS_ERR(pdev)) {
-+		pr_err("Failed to register imx8m-soc platform device: %ld\n", PTR_ERR(pdev));
-+		platform_driver_unregister(&imx8m_soc_driver);
-+		return PTR_ERR(pdev);
-+	}
++	if (data[201] == 0x00)
++		data[201] = 0x02;
 +
 +	return 0;
 +}
- device_initcall(imx8_soc_init);
++
++HID_BPF_OPS(mistel_md770) = {
++	.hid_rdesc_fixup = (void *)hid_rdesc_fixup_mistel_md770,
++};
++
++SEC("syscall")
++int probe(struct hid_bpf_probe_args *ctx)
++{
++	ctx->retval = ctx->rdesc_size != RDESC_SIZE;
++	if (ctx->retval)
++		ctx->retval = -EINVAL;
++
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.43.0
 
