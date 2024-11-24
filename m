@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-95308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E70A9D7581
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:49:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2D79D7525
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:29:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D0B8C40807
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7508C166B4E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58F324D909;
-	Sun, 24 Nov 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2003624E58C;
+	Sun, 24 Nov 2024 13:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fb9Vu2QN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Th3iWFlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C2D1EABAC;
-	Sun, 24 Nov 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D054424E589;
+	Sun, 24 Nov 2024 13:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456653; cv=none; b=JVpelxpafmULsAGlWEFP31bqUHL3B3nKqjb0XO42cNuz3v8ECCI36/fREEkJDZ1eM0w6oO9vbWXNoRT7HEPd1Dx7hlfL2EcZeCqdh2v1hLQglA8dX3PnOGh4nVqZo/P7cbqEbC5qdIsjt01ReBH0sE28j3SQ02Pc92gSh92QaVk=
+	t=1732456655; cv=none; b=BWsRbYcHQB+MUoDoW7hJf5UPd27P4OGqBL3sBk8709Az2mTUYYMHPateo9LHdz/R6e7ZwE6DnqEazWtJngPh5uwFySAll1HqMAtHQTlTQk1MHNBt4oOojlGsapyL/Z4dGhFuoF0gx4EJvZTMQ1DULA/wtz4S54GljYpiNSKm/30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456653; c=relaxed/simple;
-	bh=OjXQeUT86j6QKuAEdC1oE0IZg6ca8uAkpSl5XRepojo=;
+	s=arc-20240116; t=1732456655; c=relaxed/simple;
+	bh=iNbmMf2FVfiFgUQvZi4s/vvglrLrQa18tavvRQLvihw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEJlhmn2gAuP/b4GQ2Gml3wpbzzJInvfjgUgYQTJApNb5VzgIeIa+nMP2qLfoG8Qp9hSWCIybN9Mg8EhkOR8U6Y/yD8cZYfWPspmeGQnfubW02tv7SC4iH6oeka803WnM4Vu3KvXZ49hOkmSyQHMaHgRyF211NTBW8Ox8IQELck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fb9Vu2QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F50C4CED1;
-	Sun, 24 Nov 2024 13:57:31 +0000 (UTC)
+	 MIME-Version; b=cW/NojJNMFF1YzclWwRPreAzZ6BVlb0hXj4y6nJcq2kCFegm8okPnj2JIFmXBIkVUvm14HB069ObBjaIeVqc9gR1D1jmw9mV4tpyRfd0egQhoiE1Q2oMeWRVxb5SphvzEBpxnfOGYE4nFuLBcN7LIm8wG2ZwWj3elfr713V5Tjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Th3iWFlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC97FC4CED1;
+	Sun, 24 Nov 2024 13:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456652;
-	bh=OjXQeUT86j6QKuAEdC1oE0IZg6ca8uAkpSl5XRepojo=;
+	s=k20201202; t=1732456655;
+	bh=iNbmMf2FVfiFgUQvZi4s/vvglrLrQa18tavvRQLvihw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fb9Vu2QNKAgUodUdGpOlsDubNRnToC5T6K1e+ltYki8tCnciS/Nd//6BZFmeya99d
-	 Y3VwbroZ/2Da4soXEpdDzAYJv9szJvhxLOxpeO/LhTE/JXfnpJlskrSXmXQL4tkeDd
-	 C/kce115dtPt/Y1W+q/CCjH4bfoIa+dE3saNkKr6a7fZvFccBZDRfkIaSPVV/0xApo
-	 x70OhnXf1Bksp1h/ucC7HcGANqECa0FjxOn7/3RzhdmRABOH+XLb/tPJL6afQW9Wgp
-	 vgy7/snU79TpfLYDAS2XPj624HMM7yaH7m5uMTBbNVe985SVETf7GqLqIM0BLjnC4c
-	 +YxCVhbb5dFnw==
+	b=Th3iWFlPb4tY+eA2hENg4+YwJIFwTAL6QBxwWmBO+fI1xYKz078/BX6TkTrrRqNl4
+	 u67QveFDZ6B8lARJg3bt+EQnii/a/CjJHmyHihgRLnyyErhXYytTG+wOqkW/MF+kxf
+	 6960AjU6V0KfjPp83W2KgZ7tLsACNuYDBe7Wr0rvZLuDuFQb+6Pty2/Uw02YOi4Xk1
+	 dB6L/RuVIcYZ7WegFwXxF1aXkbPbKfW0HgYFFqA7zyqATK2zhuq84tfaMrOFU91hOg
+	 AZPJaavHHNJR0CyK+RFzyioO9zZDQoyELdVGuc9N5czpsRmfA3AYqw6Xp5pftYqaqg
+	 /lQxp9qQ8yJdg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+Cc: Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jirislaby@kernel.org,
-	mickflemm@gmail.com,
-	mcgrof@kernel.org,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 12/21] wifi: ath5k: add PCI ID for Arcadyan devices
-Date: Sun, 24 Nov 2024 08:56:45 -0500
-Message-ID: <20241124135709.3351371-12-sashal@kernel.org>
+	shaggy@kernel.org,
+	eadavis@qq.com,
+	jfs-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 4.19 13/21] jfs: array-index-out-of-bounds fix in dtReadFirst
+Date: Sun, 24 Nov 2024 08:56:46 -0500
+Message-ID: <20241124135709.3351371-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
 References: <20241124135709.3351371-1-sashal@kernel.org>
@@ -69,32 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+The value of stbl can be sometimes out of bounds due
+to a bad filesystem. Added a check with appopriate return
+of error code in that case.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dtree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 75526d8cc82c4..bce3f67275414 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -48,6 +48,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index ea2c8f0fe832c..a2186b6f274a7 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -3395,6 +3395,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
+ 
+ 		/* get the leftmost entry */
+ 		stbl = DT_GETSTBL(p);
++
++		if (stbl[0] < 0 || stbl[0] > 127) {
++			DT_PUTPAGE(mp);
++			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
++			return -EIO;
++		}
++
+ 		xd = (pxd_t *) & p->slot[stbl[0]];
+ 
+ 		/* get the child page block address */
 -- 
 2.43.0
 
