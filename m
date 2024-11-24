@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-94831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9A29D6F7D
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:11:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF029D6F81
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:11:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74210281583
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:11:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D771B161A51
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D71C1DC075;
-	Sun, 24 Nov 2024 12:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762081AA78B;
+	Sun, 24 Nov 2024 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDqjouV1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIlIcq65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40891D9A56;
-	Sun, 24 Nov 2024 12:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE8F1EF08C;
+	Sun, 24 Nov 2024 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452689; cv=none; b=uXmj7GuYD6oFTQiu3CFZJQRCHEBhZzOQEnlT3/VqOHCloOipnbw69RFdxqnMJMFo0wJ6Cg0wiYO0QKMHIeZU/cC2iq0FIRUTTK/d7WAfuqFOqiHyYYvk8RqfKeFREnWzsM0CqQcA44cEMNMto03TWAjSC2DMwwMyi/DupPyAE6M=
+	t=1732452691; cv=none; b=k0752x6OUBB2LzDZX5/7L6VyzaTFMHzRSKKA8dukbxaM1VSBjdY69Eq/5dEcLtFyn6nc/9352d/GfhP6hypLzBdy83S9glPK4h3dPtSl4sFezs9T7eGuD7yl8fdur8FxDUx3RV3BzaTAGlblxzr60K4QZaQgORc4hhYlfdjje/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452689; c=relaxed/simple;
-	bh=Xxv5gIz4KuTZ8A+S6NdUUAYDcH1uP5tA7L8XsLb29Mw=;
+	s=arc-20240116; t=1732452691; c=relaxed/simple;
+	bh=ajdsWg+Dft+j8o8QJgxW8oR7m2qgoLX5ndNO7YFv+WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1Z01jRXNtiXJCD+Mm35Z8GjgzdRhhIEJwxRnZdjqOZumOPVv6chQyLYRZPLiveMSqeGGODEpP6JmbC8OQET6oDo+vpt6N+SURaPKwc5tzD2I5DQoeNkkXTN4yXsS6VLLKYb6aADghg+P0jj0P2olI2xQ9M38+Elk4YI3i+bYO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDqjouV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE001C4CECC;
-	Sun, 24 Nov 2024 12:51:28 +0000 (UTC)
+	 MIME-Version; b=fHZyCdp+C8EUUFflyauKTPyQ1wLpubbNzMvfLqKVTGPm4WmAEH90LdK570VYfUZkOQG+X00btMSWhQ2jE+3Mlj9z3vNuSB+71yvHe1zksn+al/ngoKzh79zDkQ7mx/61GzTSSZym8NSR3EnA0PhejsV32yrtXINz/AG5yfzcW8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIlIcq65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADC4C4CECC;
+	Sun, 24 Nov 2024 12:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452689;
-	bh=Xxv5gIz4KuTZ8A+S6NdUUAYDcH1uP5tA7L8XsLb29Mw=;
+	s=k20201202; t=1732452691;
+	bh=ajdsWg+Dft+j8o8QJgxW8oR7m2qgoLX5ndNO7YFv+WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDqjouV1rv0Pw72L9qhdqc9gJfZELNf0m/EC78UXXjazCF6YCtQTSm52FMI4rcuJA
-	 LBhgT7Y7r7FS7yLgbHyqZoCdEb1jW2pbrtgY0bc0n2NR6SrlLzLEQ5Z+yCR8Blc453
-	 V8XMIdonZYLJf/cbkUovTGZvTN1E4bFPeyP206Gmg6EouO1jshQdaFpDbRAb357+lO
-	 5krVw3sGnu3s6cZzq12qF6GUxp5zCWeXzsO2TVhdUrlZnhv48tOjKDEE3cN3PUzuSm
-	 CIzE76URsn+j02iPLZIEUI5oE7trg0w8xBVTt7hPXDBYKM+ytdqdVOqoRadBp04wTj
-	 MGah8oKpylBqg==
+	b=EIlIcq65yiy70J/ztgwjvJzrwG4P9il+rZzZiu76QtE5ZnjLtsj8XloGQ9Zqta3zt
+	 v0yQU2szOTt3Nj6UZecl/ylpeEYzp4ywtIXjo0z/Pr48mKpiwFb/N2QRvf5dhvoy6D
+	 pK4Pk0wdIjwuvFLkvoAvxJep6eTp/QNA6qcOzSwBBY8I/vwCfzXH21T+4CqZ46+YWo
+	 X9N+IiV2eL9iwEJUHsE+G5x2n81VzvBx9ro37lqblH2wRiRGryaD+MYJO6EfkJzvAw
+	 Y8b6Yzh+Dotd+o6ZlDHkZB75YfgfvkiUWgFGXcgM1a5SIh+42VJ593FsSnRRNg85T8
+	 BNuEIXngLcKNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Tissoires <bentiss@kernel.org>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 03/20] HID: add per device quirk to force bind to hid-generic
-Date: Sun, 24 Nov 2024 07:50:33 -0500
-Message-ID: <20241124125124.3339648-3-sashal@kernel.org>
+	konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 04/20] soc: qcom: pd-mapper: Add QCM6490 PD maps
+Date: Sun, 24 Nov 2024 07:50:34 -0500
+Message-ID: <20241124125124.3339648-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125124.3339648-1-sashal@kernel.org>
 References: <20241124125124.3339648-1-sashal@kernel.org>
@@ -67,78 +67,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
+[ Upstream commit 31a95fe0851afbbc697b6be96c8a81a01d65aa5f ]
 
-We already have the possibility to force not binding to hid-generic and
-rely on a dedicated driver, but we couldn't do the other way around.
+The QCM6490 is a variant of SC7280, with the usual set of protection
+domains, and hence the need for a PD-mapper. In particular USB Type-C
+port management and battery management is pmic_glink based.
 
-This is useful for BPF programs where we are fixing the report descriptor
-and the events, but want to avoid a specialized driver to come after BPF
-which would unwind everything that is done there.
+Add an entry to the kernel, to avoid the need for userspace to provide
+this service.
 
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241004-qcm6490-pd-mapper-v1-1-d6f4bc3bffa3@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c    | 5 +++--
- drivers/hid/hid-generic.c | 3 +++
- include/linux/hid.h       | 2 ++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/qcom_pd_mapper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 3fcf098f4f569..df78171e76d45 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2649,9 +2649,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
- 	/*
- 	 * hid-generic implements .match(), so we must be dealing with a
- 	 * different HID driver here, and can simply check if
--	 * hid_ignore_special_drivers is set or not.
-+	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
-+	 * are set or not.
- 	 */
--	return !hid_ignore_special_drivers;
-+	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
- }
- 
- static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
-diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
-index f9db991d3c5a2..88882c1bfffe7 100644
---- a/drivers/hid/hid-generic.c
-+++ b/drivers/hid/hid-generic.c
-@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
- 	if (ignore_special_driver)
- 		return true;
- 
-+	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
-+		return true;
-+
- 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
- 		return false;
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 1533c9dcd3a67..dc19b29c12683 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -359,6 +359,7 @@ struct hid_item {
-  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
-  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
-  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
-+ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
-  * | @HID_QUIRK_FULLSPEED_INTERVAL:
-  * | @HID_QUIRK_NO_INIT_REPORTS:
-  * | @HID_QUIRK_NO_IGNORE:
-@@ -384,6 +385,7 @@ struct hid_item {
- #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
- #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
- #define HID_QUIRK_NOINVERT			BIT(21)
-+#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
- #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
- #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
- #define HID_QUIRK_NO_IGNORE			BIT(30)
+diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
+index 2228595a3dc5a..153eceb6e8f8b 100644
+--- a/drivers/soc/qcom/qcom_pd_mapper.c
++++ b/drivers/soc/qcom/qcom_pd_mapper.c
+@@ -527,6 +527,7 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+ 	{ .compatible = "qcom,msm8996", .data = msm8996_domains, },
+ 	{ .compatible = "qcom,msm8998", .data = msm8998_domains, },
+ 	{ .compatible = "qcom,qcm2290", .data = qcm2290_domains, },
++	{ .compatible = "qcom,qcm6490", .data = sc7280_domains, },
+ 	{ .compatible = "qcom,qcs404", .data = qcs404_domains, },
+ 	{ .compatible = "qcom,sc7180", .data = sc7180_domains, },
+ 	{ .compatible = "qcom,sc7280", .data = sc7280_domains, },
 -- 
 2.43.0
 
