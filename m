@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-95114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701569D7367
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F239D736F
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 352F3283673
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7E2A284C9C
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474EF228370;
-	Sun, 24 Nov 2024 13:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA29622839D;
+	Sun, 24 Nov 2024 13:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZRrLLH1M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqSs1B/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F349F228369;
-	Sun, 24 Nov 2024 13:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9CE228390;
+	Sun, 24 Nov 2024 13:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456059; cv=none; b=H5IzKsCUblAipdFY9R1ST9TN7ffP/v8NQSSPuSQR8DnHG0g6EdL5il/yaUuqC+m1qR0rGS6/tyDgeJJxco7chkcPA97HGUOV0rrsvSuo0lvDX50t6qYnc/q1Q+uTR7Vj6zUlFL9gNfoPlKHhkef4EosaUb354dOvDTsvzh2ZvXw=
+	t=1732456060; cv=none; b=dnRRWWBJrFdR1g9X1PWqqfdxjeP4vbeymjrTlRdBq67VqztjWKaqtKKn1P+LMlKDAZ+Hte7FA7Wy0Mikf3svz2xrph+vpYyAs/kUN+1XdKnZYAKFFkIq7e1V67orunDaslNauzRTupMoJ6qCsQEjBQJ15w8vUATEOWDmTwdkSMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456059; c=relaxed/simple;
-	bh=EiUnMsAYYWhG+UbW1hF/ADVOUWcobG1nkR1NnCL4Gas=;
+	s=arc-20240116; t=1732456060; c=relaxed/simple;
+	bh=CdC234Rp69TohLVwJq0ITZs9+9p//HgEzz6nOQhcquI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJ8EUSIhnKDjYLVZh2QkBrOmLYc6TecUdx3hP3yUis/lHi0KNIVB1uHhqOo5p1Yb9hf55g/tUqcDJpYfgJ6UAAHQG6fwUEPjUs+seb0LRmtGmP5IKzL/uHiqRWcI+ceDnOXgOcX1Osu15tSQnBF0q+JLuMKl+XlK5UKyMZNMpz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZRrLLH1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B9DC4CECC;
-	Sun, 24 Nov 2024 13:47:37 +0000 (UTC)
+	 MIME-Version; b=rMJaXHxUylZldg5P0fW56LxvcPZtJ0mqXwKUmu9XbVZ1v1l+NSh2Y0FSwDtJojVOqBDUmvop020V9hox95ETBW8GskoS0hR5LuoT9HtddXjw2f4nGVk2y6i+iGsiBqtw/ts3PtGWxhCdLOjaaFre/lQnltRYH+QKknr986owZNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqSs1B/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10098C4CED1;
+	Sun, 24 Nov 2024 13:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456058;
-	bh=EiUnMsAYYWhG+UbW1hF/ADVOUWcobG1nkR1NnCL4Gas=;
+	s=k20201202; t=1732456060;
+	bh=CdC234Rp69TohLVwJq0ITZs9+9p//HgEzz6nOQhcquI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRrLLH1M4Q1IM6CUdMCiYk8qAK+Zd/42RYtFF6WlpdYIcx++gEpYS/aWqxlJ30ll2
-	 QVabmjA7vzoatm84PLThQxC1d1D5nEmwjI4QC2u+cgeZaiHjqm/tme2BEfjwAsdtc9
-	 E4TRg/iBaMQcXIRGqexxXA9vqfK90ByAWlxxMeGQOpQYOmE87y+QHBC2qf/t5CoiOO
-	 qDfp74UI9yiw8a1kbEPxF7Ohgk4oEJcCTfhx3cK6qGUJaJYxOMkYudeE2MZPyG3sFw
-	 RMsWKgZMbtg88sW9FRhbAP4PZZ/aiccdxFo1yy/artfBu0Bu4igeSYK1W+igTcgiC1
-	 0Pd4NXWpRwbWg==
+	b=rqSs1B/rvRdde1TxjB2ygvNirKRw1z6prIqoi+O3QrBMm+I5+TraI/6sddTUC12kv
+	 Lbm823IgR3tfOu+UKMQ8Zy2+IwOFA05MKapY6EdPysvTkFo2upJIHB2GVUdPuJNo5/
+	 Hiw1e3AFR8JGkxL7vl3Ke2YUGDuUv4iFr2xa992R/gy/JPsdHF8iEDd8NJWVlOjPwi
+	 g6SeggQKmoEF/fGoqLaFUIYFwp9h+d7UbuGBPStOXonQS5YOc67SPoY7PzLvqR7/Fh
+	 Qw4BAEfn5dfZfymshHlVe/kO0kYc4dShTIZ9s9O2EktY8upeN3N+ZvLXSk02tLlWn7
+	 eNBXCSuVbF42A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,9 +53,9 @@ Cc: Ignat Korchagin <ignat@cloudflare.com>,
 	dsahern@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 24/61] net: inet: do not leave a dangling sk pointer in inet_create()
-Date: Sun, 24 Nov 2024 08:44:59 -0500
-Message-ID: <20241124134637.3346391-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 25/61] net: inet6: do not leave a dangling sk pointer in inet6_create()
+Date: Sun, 24 Nov 2024 08:45:00 -0500
+Message-ID: <20241124134637.3346391-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
 References: <20241124134637.3346391-1-sashal@kernel.org>
@@ -72,32 +72,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 9365fa510c6f82e3aa550a09d0c5c6b44dbc78ff ]
+[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If inet_create() fails later, the sk object is freed, but the
-sock object retains the dangling pointer, which may create use-after-free
+sock_init_data() attaches the allocated sk pointer to the provided sock
+object. If inet6_create() fails later, the sk object is released, but the
+sock object retains the dangling sk pointer, which may cause use-after-free
 later.
 
-Clear the sk pointer in the sock object on error.
+Clear the sock sk pointer on error.
 
 Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-7-ignat@cloudflare.com
+Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c | 22 ++++++++++------------
+ net/ipv6/af_inet6.c | 22 ++++++++++------------
  1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 3feff7f738a48..f336b2ddf9724 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -375,32 +375,30 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index b9c50cceba568..3b31bc5a5fdce 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -250,31 +250,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 		 */
  		inet->inet_sport = htons(inet->inet_num);
- 		/* Add to protocol hash chains. */
  		err = sk->sk_prot->hash(sk);
 -		if (err) {
 -			sk_common_release(sk);
@@ -106,7 +106,6 @@ index 3feff7f738a48..f336b2ddf9724 100644
 +		if (err)
 +			goto out_sk_release;
  	}
- 
  	if (sk->sk_prot->init) {
  		err = sk->sk_prot->init(sk);
 -		if (err) {
@@ -137,7 +136,7 @@ index 3feff7f738a48..f336b2ddf9724 100644
 +	goto out;
  }
  
- 
+ static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
 -- 
 2.43.0
 
