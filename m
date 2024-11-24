@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-94868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950809D6FDC
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:21:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7182B9D7305
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A251280217
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:21:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6BBCB2DF9B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A066819066E;
-	Sun, 24 Nov 2024 12:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186371AF0C2;
+	Sun, 24 Nov 2024 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkjRpROU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5C5hgYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6681AF0A9;
-	Sun, 24 Nov 2024 12:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E8E1AF0BC;
+	Sun, 24 Nov 2024 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452925; cv=none; b=lNFljmc2GjK96T5WKxnGY83yFY6cc5wzLzkBLjaRVLfg3OvlznkcpbJH6P/fb7Ha3WlUt/d7kuLge4nE55PXvF8DmfyjjQ8MH9I/ONgmWYFfLxkXqi9TbZWafJxuiLlwEGNXag+kNGreer1HDYhR5z5kQdhjh0Ok6x6CFO1+h5E=
+	t=1732452932; cv=none; b=f5R48D0gwSoNZddy4utzIVn8Y88un4Fgp8YaQw97Ixwms4xCx4GK3SRSZC5AG1PeKwGHZFGNMtR8zIad3g8TrgDPclGCjXonY8HEAxGQ+qtKU0sj5KAbaXcRsglcF/ANjo8hln1jjLBp9jHGCH1Nep3pT4rHx9VLxU74zANQmLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452925; c=relaxed/simple;
-	bh=EnkAdan4+3pCTuYiTGcXxGke+TUu8G2a0dJueH2IVYI=;
+	s=arc-20240116; t=1732452932; c=relaxed/simple;
+	bh=vE44sDdIAb8+0czepuBEPz/2qXBJb4KcrvkfzJnNW4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EC0LpzdRs/1w9Ae1udk5vPlW/R8lBWgH4QGXgqTCr8pfYWqO1y8ARuW2RO12/7sVxd5LtSSqMFVWtDO6dpz06xYBWgXflpw9VGrkkZueUeOjwy6lg5K0Kg38QV5IFkXaOY2QyKEtxSgnckQvISsoi6qyuLTtA/t465BXWrFs320=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkjRpROU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE46C4CECC;
-	Sun, 24 Nov 2024 12:55:24 +0000 (UTC)
+	 MIME-Version; b=qyaSVhMNY8N9EBp+Dna5hvFQC/TP3LjgxAAOFlHEu4h/RV2DZdI4cxm1itxZONrfue1yBJw2+JpwzJ8N4W342UOLF0pljdIZOzG+oNWXEW4J/unFXnTLINDQfEBPPT2B50vhoENOjmXg7UMlMxXDQjLCt2JQpcLolZgoQUswxoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5C5hgYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06916C4CECC;
+	Sun, 24 Nov 2024 12:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452925;
-	bh=EnkAdan4+3pCTuYiTGcXxGke+TUu8G2a0dJueH2IVYI=;
+	s=k20201202; t=1732452932;
+	bh=vE44sDdIAb8+0czepuBEPz/2qXBJb4KcrvkfzJnNW4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkjRpROUEE92jenbxtm0B5qNBiywIJ18RNL+4wI1tY/KFgJH2PThlhoqI+nnQKUdK
-	 XBTmJxBatnmLCsiCBwTgSdZ6KUTb5zH1w9T1buj0MGAV6QDcsg5DB1CBDML9J0Pc0o
-	 GdRxDF7Fjlpiy2SMakD6/KhedM5/SFWFUqa3b7l1/aULsLhuu6AjtgVkL54gmgTsr5
-	 Z+pBUwHZxnAiXc/QpElvE+c25bnJs2rwyDQxdDbCYG7QFYz1CNXYRLnUeydqM1WfCY
-	 EULacpxQvlDO+3zXkdWC/e0UHImVTEPQMm5dMI5NXdSYxxyvuLzhA/TdaNZ0YNpmYz
-	 M8A8apmbojEIQ==
+	b=H5C5hgYPaSg1F652rKOXjnpqUyfOAr2v11KdAQEMFi3M+YjOFy+ZueFwWbrr6jnz+
+	 qiNoI/7SGUaqsHtdSsNZNCUHqwamVd5jfAPHtpDJ3wPxDKFA3NE+WXUpHFMLY0F5I/
+	 ewHYc0BnsLr3xNRz3Q5I/7C5e6ebvHsK+2NoRFh7OyVL2ffiXzMqXW+vQhigJ9fe7C
+	 BlKuRDieG8IRFwgNiIUzbVrzoyR994D2sSeTqFTR1EZAGSZY8+NCSoINQONenqJH6H
+	 mzoUZsZM+WBVayC1EsOeXvUBIKsERQVsLxqCc16xv7sIGqgYOtMIrzlk5uVPk7Sjzb
+	 LzL95m/C2sRcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rohan Barar <rohan.barar@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+Cc: Keita Aihara <keita.aihara@sony.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	hverkuil@xs4all.nl,
-	f.langufo.l@gmail.com,
-	linux@treblig.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 4/9] media: cx231xx: Add support for Dexatek USB Video Grabber 1d19:6108
-Date: Sun, 24 Nov 2024 07:54:18 -0500
-Message-ID: <20241124125515.3340625-4-sashal@kernel.org>
+	avri.altman@wdc.com,
+	adrian.hunter@intel.com,
+	jonathan@raspberrypi.com,
+	dsimic@manjaro.org,
+	cw9316.lee@samsung.com,
+	victor.shih@genesyslogic.com.tw,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 5/9] mmc: core: Add SD card quirk for broken poweroff notification
+Date: Sun, 24 Nov 2024 07:54:19 -0500
+Message-ID: <20241124125515.3340625-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125515.3340625-1-sashal@kernel.org>
 References: <20241124125515.3340625-1-sashal@kernel.org>
@@ -69,48 +71,112 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Rohan Barar <rohan.barar@gmail.com>
+From: Keita Aihara <keita.aihara@sony.com>
 
-[ Upstream commit 61a830bc0ea69a05d8a4534f825c6aa618263649 ]
+[ Upstream commit cd068d51594d9635bf6688fc78717572b78bce6a ]
 
-Add Dexatek Technology Ltd USB Video Grabber 1d19:6108 to the cx231xx
-driver. This device is sold under the name "BAUHN DVD Maker (DK8723)" by
-ALDI in Australia.
+GIGASTONE Gaming Plus microSD cards manufactured on 02/2022 report that
+they support poweroff notification and cache, but they are not working
+correctly.
 
-This device is similar to 1d19:6109, which is already included in cx231xx.
+Flush Cache bit never gets cleared in sd_flush_cache() and Poweroff
+Notification Ready bit also never gets set to 1 within 1 second from the
+end of busy of CMD49 in sd_poweroff_notify().
 
-Both video and audio capture function correctly after installing the
-patched cx231xx driver.
+This leads to I/O error and runtime PM error state.
 
-Patch Changelog
-v1:
- - Initial submission.
-v2:
- - Fix SoB + Improve subject.
-v3:
- - Rephrase message to not exceed 75 characters per line.
- - Removed reference to external GitHub URL.
+I observed that the same card manufactured on 01/2024 works as expected.
 
-Signed-off-by: Rohan Barar <rohan.barar@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This problem seems similar to the Kingston cards fixed with
+commit c467c8f08185 ("mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston
+Canvas Go Plus from 11/2019") and should be handled using quirks.
+
+CID for the problematic card is here.
+12345641535443002000000145016200
+
+Manufacturer ID is 0x12 and defined as CID_MANFID_GIGASTONE as of now,
+but would like comments on what naming is appropriate because MID list
+is not public and not sure it's right.
+
+Signed-off-by: Keita Aihara <keita.aihara@sony.com>
+Link: https://lore.kernel.org/r/20240913094417.GA4191647@sony.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/cx231xx/cx231xx-cards.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/core/card.h   | 7 +++++++
+ drivers/mmc/core/quirks.h | 9 +++++++++
+ drivers/mmc/core/sd.c     | 2 +-
+ include/linux/mmc/card.h  | 1 +
+ 4 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/cx231xx/cx231xx-cards.c b/drivers/media/usb/cx231xx/cx231xx-cards.c
-index 92efe6c1f47ba..bda729b42d05f 100644
---- a/drivers/media/usb/cx231xx/cx231xx-cards.c
-+++ b/drivers/media/usb/cx231xx/cx231xx-cards.c
-@@ -994,6 +994,8 @@ const unsigned int cx231xx_bcount = ARRAY_SIZE(cx231xx_boards);
+diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+index b7754a1b8d978..8476754b1b170 100644
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -82,6 +82,7 @@ struct mmc_fixup {
+ #define CID_MANFID_SANDISK_SD   0x3
+ #define CID_MANFID_ATP          0x9
+ #define CID_MANFID_TOSHIBA      0x11
++#define CID_MANFID_GIGASTONE    0x12
+ #define CID_MANFID_MICRON       0x13
+ #define CID_MANFID_SAMSUNG      0x15
+ #define CID_MANFID_APACER       0x27
+@@ -284,4 +285,10 @@ static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
+ {
+ 	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
+ }
++
++static inline int mmc_card_broken_sd_poweroff_notify(const struct mmc_card *c)
++{
++	return c->quirks & MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY;
++}
++
+ #endif
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 4b327b4815262..12c90b567ce38 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -25,6 +25,15 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
+ 		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
+ 		   MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
  
- /* table of devices that work with this driver */
- struct usb_device_id cx231xx_id_table[] = {
-+	{USB_DEVICE(0x1D19, 0x6108),
-+	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
- 	{USB_DEVICE(0x1D19, 0x6109),
- 	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
- 	{USB_DEVICE(0x0572, 0x5A3C),
++	/*
++	 * GIGASTONE Gaming Plus microSD cards manufactured on 02/2022 never
++	 * clear Flush Cache bit and set Poweroff Notification Ready bit.
++	 */
++	_FIXUP_EXT("ASTC", CID_MANFID_GIGASTONE, 0x3456, 2022, 2,
++		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
++		   MMC_QUIRK_BROKEN_SD_CACHE | MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY,
++		   EXT_CSD_REV_ANY),
++
+ 	END_FIXUP
+ };
+ 
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index 30f6dbaa712ff..819af50ae175c 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -1118,7 +1118,7 @@ static int sd_parse_ext_reg_power(struct mmc_card *card, u8 fno, u8 page,
+ 	card->ext_power.rev = reg_buf[0] & 0xf;
+ 
+ 	/* Power Off Notification support at bit 4. */
+-	if (reg_buf[1] & BIT(4))
++	if ((reg_buf[1] & BIT(4)) && !mmc_card_broken_sd_poweroff_notify(card))
+ 		card->ext_power.feature_support |= SD_EXT_POWER_OFF_NOTIFY;
+ 
+ 	/* Power Sustenance support at bit 5. */
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 7b12eebc5586d..afa575e362a47 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -296,6 +296,7 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
+ #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
+ #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
++#define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
+ 
+ 	bool			written_flag;	/* Indicates eMMC has been written since power on */
+ 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 -- 
 2.43.0
 
