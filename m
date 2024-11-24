@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-95314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6A39D767F
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:16:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12949D7641
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB52B2C062
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:30:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5731C41840
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B41B24F271;
-	Sun, 24 Nov 2024 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B1C24F86E;
+	Sun, 24 Nov 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+m6b6NV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sh0GrsQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E2524F25C;
-	Sun, 24 Nov 2024 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B90F24F865;
+	Sun, 24 Nov 2024 13:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456670; cv=none; b=gZg7fD4AO0hBElNCVrK3GMJHsijxxydgdvk7C+sM2MqdhdDCW7xbgcqpRboC7tFxurbrFzPJpRsWeY7T6Awm6eETwA2JQvNRkFsZL9wD3dTsu41PBLwS/kKzArXENanzZmtQro6+ArfoJiTEA/SbvnIO9+A5J2toP20gHYDDNb8=
+	t=1732456673; cv=none; b=lAmJzang35bKLeJqwTMei8inYdJ+enxaMMaN1yGU+2iHvGDv9OdR17IVyApUjsdZdAziazZhb9UfWXrUoLN7fPjP9MF2q0uz+zTkqKAeOnICixnS9H56uqdrjcP7GIhZYvdQKcBxXj6KTuZqqtSPoxHFLmCvCualSg3Snx3okM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456670; c=relaxed/simple;
-	bh=tzdgRpBlFIm+PD09acrAcKWHIEWDJIX3DFIlN8uYEeU=;
+	s=arc-20240116; t=1732456673; c=relaxed/simple;
+	bh=BFeR1cWFnvSicGeL2bpHwm1RKoo9wNWqA25Kn7GBg54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecHaLwS7UgxdJSVtS/8Zc7FuVz1iGHLcEkGz5EaR3NBqPmx0RsiKIK3E1zHQIFfVUTPqxGhTNXd0MnLfFDyhbYJbnRnKGQ71rFhUPXMYwDTNlmWmkh9WiJiUTzRY5Ybd+0mbwG0Tl79n97bnTPh6UXhoVsTYW5tpH0vVQFcIzWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+m6b6NV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CDDC4CECC;
-	Sun, 24 Nov 2024 13:57:47 +0000 (UTC)
+	 MIME-Version; b=fOgaQ8MzOjeo2bR+MC0ghnMd605IRAfmBLoIj2j/HRXAfVXZwZZrWBLwQ08LIb88VvBGYhqXo+BHIWtltH7Nu5tm28pgIJUSIIhR9oU0JOulDiul+Y9HdNCyuYoPOb56PNBqpseicKnxBl7R7Krc/p9PH8XAfLcFxAMGmF5QJL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sh0GrsQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5135AC4CECC;
+	Sun, 24 Nov 2024 13:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456669;
-	bh=tzdgRpBlFIm+PD09acrAcKWHIEWDJIX3DFIlN8uYEeU=;
+	s=k20201202; t=1732456672;
+	bh=BFeR1cWFnvSicGeL2bpHwm1RKoo9wNWqA25Kn7GBg54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+m6b6NVtPmBpGDYdfL1kxUHHtmSVb888UmwYOyqb1L6lPi3hGUhbOv9mYWk/xvch
-	 UHM0bNcQKQjq8qNhJ6gEoOnMLVEwSCofbl3n7LdVmBrGKhMK80XSUE8s+96hrLCV5s
-	 flIQq8JCxVbRTtSd/fMHHUQM3DJ0dVYuqoOmFk9HDBVDor3oYQbbO3aSF7euvqfGOd
-	 +mOn9IotpTmBGe9z1Toyvxl42na1tma5nAPg25zlXYe1/UILE4JWVCtmr8ZLVgyzeo
-	 l2irCY5cbVBsF9K2lvEfW8xK76DirD1Mxudf8kSjhnhFjHoddhQVK1OaA6Q2FWtMmk
-	 GbFnpQ1STFmlQ==
+	b=sh0GrsQ6VuHiIzidpDYecrR6DCtJWDOYSamCTB+114U2WdUBLgE2EKFi0uD7okLmT
+	 gu5c/N8+tUreWGky4cOXmXw+B3homMu3tajxGfcBB29wIgbShNZvxDJIh9o7OdXeIJ
+	 eSnw7usRO63vPvJtXLUu3oZMYg7gBkWHbICSKvABiI/GIVXr2AxjA4ADSrSJl8T8I1
+	 SytvNmpVUaSiuCK8Hl3OwElL+uIVak0CdLutaE0p6cuZOq3+S7ulJzrgP+Q+g7erlm
+	 lOlM5Ic5iJJFeCk9V41rp1pIz5M8IrJzxETANUTQkvdTZtMTft1Xo0TlGx3ULxRouP
+	 vPazgzz2Kk8yg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Norbert van Bolhuis <nvbolhuis@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Jonas Karlman <jonas@kwiboo.se>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	arend.vanspriel@broadcom.com,
-	erick.archer@outlook.com,
-	sebastian.reichel@collabora.com,
-	saikrishnag@marvell.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	jbrunet@baylibre.com,
+	herve.codina@bootlin.com,
 	krzysztof.kozlowski@linaro.org,
-	jacobe.zang@wesion.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH AUTOSEL 4.19 18/21] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
-Date: Sun, 24 Nov 2024 08:56:51 -0500
-Message-ID: <20241124135709.3351371-18-sashal@kernel.org>
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 19/21] ASoC: hdmi-codec: reorder channel allocation list
+Date: Sun, 24 Nov 2024 08:56:52 -0500
+Message-ID: <20241124135709.3351371-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
 References: <20241124135709.3351371-1-sashal@kernel.org>
@@ -73,49 +72,208 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
+[ Upstream commit 82ff5abc2edcfba0c0f1a1be807795e2876f46e9 ]
 
-This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-are sent from the pkt queue.
+The ordering in hdmi_codec_get_ch_alloc_table_idx() results in
+wrong channel allocation for a number of cases, e.g. when ELD
+reports FL|FR|LFE|FC|RL|RR or FL|FR|LFE|FC|RL|RR|RC|RLC|RRC:
 
-The problem is the number of entries in the pre-allocated sgtable, it is
-nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-is added for each original SKB if tailroom isn't enough to hold tail_pad.
-At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-NULL and this causes the oops.
+ca_id 0x01 with speaker mask FL|FR|LFE is selected instead of
+ca_id 0x03 with speaker mask FL|FR|LFE|FC for 4 channels
 
-The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-the worst-case.
-Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-additional bytes of memory.
+and
 
-Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
+ca_id 0x04 with speaker mask FL|FR|RC gets selected instead of
+ca_id 0x0b with speaker mask FL|FR|LFE|FC|RL|RR for 6 channels
+
+Fix this by reordering the channel allocation list with most
+specific speaker masks at the top.
+
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Link: https://patch.msgid.link/20241115044344.3510979-1-christianshewitt@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/hdmi-codec.c | 140 +++++++++++++++++++---------------
+ 1 file changed, 77 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 710dc59c5d34d..532733db4de85 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
+diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
+index 7994e8ddc7d21..e7f483611513f 100644
+--- a/sound/soc/codecs/hdmi-codec.c
++++ b/sound/soc/codecs/hdmi-codec.c
+@@ -196,84 +196,97 @@ static const struct snd_pcm_chmap_elem hdmi_codec_8ch_chmaps[] = {
+ /*
+  * hdmi_codec_channel_alloc: speaker configuration available for CEA
+  *
+- * This is an ordered list that must match with hdmi_codec_8ch_chmaps struct
++ * This is an ordered list where ca_id must exist in hdmi_codec_8ch_chmaps
+  * The preceding ones have better chances to be selected by
+  * hdmi_codec_get_ch_alloc_table_idx().
+  */
+ static const struct hdmi_codec_cea_spk_alloc hdmi_codec_channel_alloc[] = {
+ 	{ .ca_id = 0x00, .n_ch = 2,
+-	  .mask = FL | FR},
+-	/* 2.1 */
+-	{ .ca_id = 0x01, .n_ch = 4,
+-	  .mask = FL | FR | LFE},
+-	/* Dolby Surround */
++	  .mask = FL | FR },
++	{ .ca_id = 0x03, .n_ch = 4,
++	  .mask = FL | FR | LFE | FC },
+ 	{ .ca_id = 0x02, .n_ch = 4,
+ 	  .mask = FL | FR | FC },
+-	/* surround51 */
++	{ .ca_id = 0x01, .n_ch = 4,
++	  .mask = FL | FR | LFE },
+ 	{ .ca_id = 0x0b, .n_ch = 6,
+-	  .mask = FL | FR | LFE | FC | RL | RR},
+-	/* surround40 */
+-	{ .ca_id = 0x08, .n_ch = 6,
+-	  .mask = FL | FR | RL | RR },
+-	/* surround41 */
+-	{ .ca_id = 0x09, .n_ch = 6,
+-	  .mask = FL | FR | LFE | RL | RR },
+-	/* surround50 */
++	  .mask = FL | FR | LFE | FC | RL | RR },
+ 	{ .ca_id = 0x0a, .n_ch = 6,
+ 	  .mask = FL | FR | FC | RL | RR },
+-	/* 6.1 */
+-	{ .ca_id = 0x0f, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RL | RR | RC },
+-	/* surround71 */
++	{ .ca_id = 0x09, .n_ch = 6,
++	  .mask = FL | FR | LFE | RL | RR },
++	{ .ca_id = 0x08, .n_ch = 6,
++	  .mask = FL | FR | RL | RR },
++	{ .ca_id = 0x07, .n_ch = 6,
++	  .mask = FL | FR | LFE | FC | RC },
++	{ .ca_id = 0x06, .n_ch = 6,
++	  .mask = FL | FR | FC | RC },
++	{ .ca_id = 0x05, .n_ch = 6,
++	  .mask = FL | FR | LFE | RC },
++	{ .ca_id = 0x04, .n_ch = 6,
++	  .mask = FL | FR | RC },
+ 	{ .ca_id = 0x13, .n_ch = 8,
+ 	  .mask = FL | FR | LFE | FC | RL | RR | RLC | RRC },
+-	/* others */
+-	{ .ca_id = 0x03, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC },
+-	{ .ca_id = 0x04, .n_ch = 8,
+-	  .mask = FL | FR | RC},
+-	{ .ca_id = 0x05, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC },
+-	{ .ca_id = 0x06, .n_ch = 8,
+-	  .mask = FL | FR | FC | RC },
+-	{ .ca_id = 0x07, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RC },
+-	{ .ca_id = 0x0c, .n_ch = 8,
+-	  .mask = FL | FR | RC | RL | RR },
+-	{ .ca_id = 0x0d, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | RC },
+-	{ .ca_id = 0x0e, .n_ch = 8,
+-	  .mask = FL | FR | FC | RL | RR | RC },
+-	{ .ca_id = 0x10, .n_ch = 8,
+-	  .mask = FL | FR | RL | RR | RLC | RRC },
+-	{ .ca_id = 0x11, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1f, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
+ 	{ .ca_id = 0x12, .n_ch = 8,
+ 	  .mask = FL | FR | FC | RL | RR | RLC | RRC },
+-	{ .ca_id = 0x14, .n_ch = 8,
+-	  .mask = FL | FR | FLC | FRC },
+-	{ .ca_id = 0x15, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FLC | FRC },
+-	{ .ca_id = 0x16, .n_ch = 8,
+-	  .mask = FL | FR | FC | FLC | FRC },
+-	{ .ca_id = 0x17, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | FLC | FRC },
+-	{ .ca_id = 0x18, .n_ch = 8,
+-	  .mask = FL | FR | RC | FLC | FRC },
+-	{ .ca_id = 0x19, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC | FLC | FRC },
+-	{ .ca_id = 0x1a, .n_ch = 8,
+-	  .mask = FL | FR | RC | FC | FLC | FRC },
+-	{ .ca_id = 0x1b, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
+-	{ .ca_id = 0x1c, .n_ch = 8,
+-	  .mask = FL | FR | RL | RR | FLC | FRC },
+-	{ .ca_id = 0x1d, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
+ 	{ .ca_id = 0x1e, .n_ch = 8,
+ 	  .mask = FL | FR | FC | RL | RR | FLC | FRC },
+-	{ .ca_id = 0x1f, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
++	{ .ca_id = 0x11, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1d, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
++	{ .ca_id = 0x10, .n_ch = 8,
++	  .mask = FL | FR | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1c, .n_ch = 8,
++	  .mask = FL | FR | RL | RR | FLC | FRC },
++	{ .ca_id = 0x0f, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR | RC },
++	{ .ca_id = 0x1b, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
++	{ .ca_id = 0x0e, .n_ch = 8,
++	  .mask = FL | FR | FC | RL | RR | RC },
++	{ .ca_id = 0x1a, .n_ch = 8,
++	  .mask = FL | FR | RC | FC | FLC | FRC },
++	{ .ca_id = 0x0d, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | RC },
++	{ .ca_id = 0x19, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC | FLC | FRC },
++	{ .ca_id = 0x0c, .n_ch = 8,
++	  .mask = FL | FR | RC | RL | RR },
++	{ .ca_id = 0x18, .n_ch = 8,
++	  .mask = FL | FR | RC | FLC | FRC },
++	{ .ca_id = 0x17, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | FLC | FRC },
++	{ .ca_id = 0x16, .n_ch = 8,
++	  .mask = FL | FR | FC | FLC | FRC },
++	{ .ca_id = 0x15, .n_ch = 8,
++	  .mask = FL | FR | LFE | FLC | FRC },
++	{ .ca_id = 0x14, .n_ch = 8,
++	  .mask = FL | FR | FLC | FRC },
++	{ .ca_id = 0x0b, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR },
++	{ .ca_id = 0x0a, .n_ch = 8,
++	  .mask = FL | FR | FC | RL | RR },
++	{ .ca_id = 0x09, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR },
++	{ .ca_id = 0x08, .n_ch = 8,
++	  .mask = FL | FR | RL | RR },
++	{ .ca_id = 0x07, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RC },
++	{ .ca_id = 0x06, .n_ch = 8,
++	  .mask = FL | FR | FC | RC },
++	{ .ca_id = 0x05, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC },
++	{ .ca_id = 0x04, .n_ch = 8,
++	  .mask = FL | FR | RC },
++	{ .ca_id = 0x03, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC },
++	{ .ca_id = 0x02, .n_ch = 8,
++	  .mask = FL | FR | FC },
++	{ .ca_id = 0x01, .n_ch = 8,
++	  .mask = FL | FR | LFE },
+ };
  
- 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
- 		      sdiodev->settings->bus.sdio.txglomsz);
--	nents += (nents >> 4) + 1;
-+	nents *= 2;
+ struct hdmi_codec_priv {
+@@ -380,7 +393,8 @@ static int hdmi_codec_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
+ 	struct hdmi_codec_priv *hcp = info->private_data;
  
- 	WARN_ON(nents > sdiodev->max_segment_count);
+-	map = info->chmap[hcp->chmap_idx].map;
++	if (hcp->chmap_idx != HDMI_CODEC_CHMAP_IDX_UNKNOWN)
++		map = info->chmap[hcp->chmap_idx].map;
  
+ 	for (i = 0; i < info->max_channels; i++) {
+ 		if (hcp->chmap_idx == HDMI_CODEC_CHMAP_IDX_UNKNOWN)
 -- 
 2.43.0
 
