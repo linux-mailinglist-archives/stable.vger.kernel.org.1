@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-95077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293F29D730A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:26:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6939D730D
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 952141657FD
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:26:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCBA2165449
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861B52101AD;
-	Sun, 24 Nov 2024 13:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5BC212EFE;
+	Sun, 24 Nov 2024 13:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azzdcQzv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3Pz68Ax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D9A2101A1;
-	Sun, 24 Nov 2024 13:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C4A212EF4;
+	Sun, 24 Nov 2024 13:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455910; cv=none; b=aDOXHl7UkvLSvd/u74JwpLP0DNw8SuyVgNHN/mmn6nRXrn2j+2sfLYqEEIWqtiIeD6Mn80fzczKsk+Y+8P7nSXOOwSYLgucQSPTniN8KF/yFZUvVuj62ys0mH9p7v14A4yMHTthoqdfMblWF9biqyKACpkqC77HyGt+W2pYoMJk=
+	t=1732455911; cv=none; b=STbByf6DPw78jH0Lm/jjKJsyIDSJHTqnBqcOLLHWyNhRiqSKoB39o2IPJCsUO4A4HwqIT0JzMeTYmb/Xww1ijJKaSNb0osr+P4GVzt0MJEfSgdypU/I0KVZgksnH9AzLkhm3R2XIKS3ghXPiw4bG3Dmbmm1BaaOfW0dg/7Psy9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455910; c=relaxed/simple;
-	bh=frMsR8PTOxaQrnnDp39CBVkRcossL8PMqqCmGH4P73Y=;
+	s=arc-20240116; t=1732455911; c=relaxed/simple;
+	bh=Za9kCBxWoL4z2LTmVf0IGghmPVV7WbHS9v++BgVF4Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGovDmU2LSoHdmkNradwbvJRLXO/VtOAe/0zeksNrHLnr/2S1WxUOixiIGtoY7a/mbkJlJHsjMQQ2xHA6J6SbqjDFQtHeXVLMWY+u93Es/YEEcNXd1fX/a6klqJTAWwrNXWb7/utc3Oig48ayeXV4fu4qFuYONrjjW+s13pXykA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azzdcQzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729E8C4CED6;
-	Sun, 24 Nov 2024 13:45:08 +0000 (UTC)
+	 MIME-Version; b=cYJEmFPMajdR+t/vL3P00hM+vMfbJJcmyelXLjC3HbRulPRlfvHmn/g9fwHMzuwBddzScRLPf9P6ShXKs0+KTqSau3lx/X3v0bAPgL6fzRkutuFctVCg4NWQGaxAqDY29DGQaT1OxyCFmKA7sn1mH47IfYFLkFCFvWEaH+hpx0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3Pz68Ax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94389C4CECC;
+	Sun, 24 Nov 2024 13:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455910;
-	bh=frMsR8PTOxaQrnnDp39CBVkRcossL8PMqqCmGH4P73Y=;
+	s=k20201202; t=1732455911;
+	bh=Za9kCBxWoL4z2LTmVf0IGghmPVV7WbHS9v++BgVF4Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azzdcQzvwhFP7RBiTXLFutrUUVEUVYrF5JH/mTBCmeUNfv/vxKyqxKzpVZTYQ9LJF
-	 ib43Y6tmm7HTi+jw8QhJmekK/2JkEol17lWflIGyjCFUEgcqEiJpfc4+mcsIwyluD3
-	 0+rUvbh4CEsYnXMQ8yobnjuLTJFDuBLLMpqjBnEucdpxA7PVxw4Mp/ISd0duBwrK0L
-	 gHcW29oO9zaU0zfMI/qCHVCXc33zP7DQyDQrEK/18M9rbQPiW3x+Kg4d4/ijvvnhA2
-	 AdPUSTyaOeES4SbYggZGv2f+0riQkngrjp/TmnJioayTGQwgAbuwFt+v0K1GHmgHRb
-	 LIZ6sQ4jJRbBw==
+	b=M3Pz68AxXAn4i2rfpby1G8399nuVWh2ez30G+91m51iFiKiaFxlLs9b9cwoSKlFqv
+	 mB01d2p0kiCcUgcmBxR0eHjWzWoLdZ7GGMnhv1usKPu0/J42pPF0ANu4yVjkh03UlG
+	 RiNT6vp1b+Fz1dRHihVVPomLwe48C7bifbM2DseasNgN96JDygiu/X1Vztco485vnV
+	 2S4VGrVF4655UWqnURGOwHvX1K+EProaJidLQ0em2qY85Eax9Iy6YHt/X0GppAorJh
+	 YmbVSp2xiaDOqDUpwFcC2/Rw3/HoZLjwjhqkF5+lLB3FYDytllSQ9uH87I4UCDXi0L
+	 AuRqXUVmllR/A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	florian.fainelli@broadcom.com,
-	alsi@bang-olufsen.dk,
-	rmk+kernel@armlinux.org.uk,
-	michal.vokac@ysoft.com,
-	javier.carrasco.cruz@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 74/87] dsa: qca8k: Use nested lock to avoid splat
-Date: Sun, 24 Nov 2024 08:38:52 -0500
-Message-ID: <20241124134102.3344326-74-sashal@kernel.org>
+	jdelvare@suse.com,
+	wsa+renesas@sang-engineering.com,
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 75/87] i2c: i801: Add support for Intel Panther Lake
+Date: Sun, 24 Nov 2024 08:38:53 -0500
+Message-ID: <20241124134102.3344326-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -74,37 +67,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 078e0d596f7b5952dad8662ace8f20ed2165e2ce ]
+[ Upstream commit bd492b58371295d3ae26162b9666be584abad68a ]
 
-qca8k_phy_eth_command() is used to probe the child MDIO bus while the
-parent MDIO is locked. This causes lockdep splat, reporting a possible
-deadlock. It is not an actually deadlock, because different locks are
-used. By making use of mutex_lock_nested() we can avoid this false
-positive.
+Add SMBus PCI IDs on Intel Panther Lake-P and -U.
 
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241110175955.3053664-1-andrew@lunn.ch
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-8xxx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/i2c/busses/i2c-i801.rst | 1 +
+ drivers/i2c/busses/Kconfig            | 1 +
+ drivers/i2c/busses/i2c-i801.c         | 6 ++++++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index f8d8c70642c4f..59b4a7240b583 100644
---- a/drivers/net/dsa/qca/qca8k-8xxx.c
-+++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -673,7 +673,7 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
- 	 * We therefore need to lock the MDIO bus onto which the switch is
- 	 * connected.
- 	 */
--	mutex_lock(&priv->bus->mdio_lock);
-+	mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
+diff --git a/Documentation/i2c/busses/i2c-i801.rst b/Documentation/i2c/busses/i2c-i801.rst
+index c840b597912c8..47e8ac5b7099f 100644
+--- a/Documentation/i2c/busses/i2c-i801.rst
++++ b/Documentation/i2c/busses/i2c-i801.rst
+@@ -49,6 +49,7 @@ Supported adapters:
+   * Intel Meteor Lake (SOC and PCH)
+   * Intel Birch Stream (SOC)
+   * Intel Arrow Lake (SOC)
++  * Intel Panther Lake (SOC)
  
- 	/* Actually start the request:
- 	 * 1. Send mdio master packet
+    Datasheets: Publicly available at the Intel website
+ 
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index a22f9125322a7..e14281aed1acf 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -160,6 +160,7 @@ config I2C_I801
+ 	    Meteor Lake (SOC and PCH)
+ 	    Birch Stream (SOC)
+ 	    Arrow Lake (SOC)
++	    Panther Lake (SOC)
+ 
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-i801.
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 299fe9d3afab0..75dab01d43a75 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -81,6 +81,8 @@
+  * Meteor Lake PCH-S (PCH)	0x7f23	32	hard	yes	yes	yes
+  * Birch Stream (SOC)		0x5796	32	hard	yes	yes	yes
+  * Arrow Lake-H (SOC)		0x7722	32	hard	yes	yes	yes
++ * Panther Lake-H (SOC)		0xe322	32	hard	yes	yes	yes
++ * Panther Lake-P (SOC)		0xe422	32	hard	yes	yes	yes
+  *
+  * Features supported by this driver:
+  * Software PEC				no
+@@ -261,6 +263,8 @@
+ #define PCI_DEVICE_ID_INTEL_CANNONLAKE_H_SMBUS		0xa323
+ #define PCI_DEVICE_ID_INTEL_COMETLAKE_V_SMBUS		0xa3a3
+ #define PCI_DEVICE_ID_INTEL_METEOR_LAKE_SOC_S_SMBUS	0xae22
++#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_H_SMBUS	0xe322
++#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_P_SMBUS	0xe422
+ 
+ struct i801_mux_config {
+ 	char *gpio_chip;
+@@ -1055,6 +1059,8 @@ static const struct pci_device_id i801_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ 0, }
+ };
+ 
 -- 
 2.43.0
 
