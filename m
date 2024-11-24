@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-94864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1229D747E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:10:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AE59D6FD1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:20:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C99B284E4
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:20:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00F7616255E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304EA1F9EB9;
-	Sun, 24 Nov 2024 12:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E4518A6BA;
+	Sun, 24 Nov 2024 12:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ob56p15+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+yqRyZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBCF1F9EAF;
-	Sun, 24 Nov 2024 12:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEB41370;
+	Sun, 24 Nov 2024 12:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452863; cv=none; b=jk6FfxE2y2WN7TES85OigFIXm9zUdr+htDRdx9l4Mn9fQcFpXkMHSShNBPIX3lhbFNCMhvMzPcMxVC9s0NbEAmhXX+xKefmZ4fYQQ9PCNiJo73d4Fg4Z11/W4B3lfg2kanyUUc1Ub8NY60qavgrYb6p6nwb7G7R9h9iGmwehLqI=
+	t=1732452918; cv=none; b=DlJmMIBrFjMY+9NX14LJl4SBpf5ib7rb+fH9n46/VHkihddA2Dc6DdSIaWgda87yi3nyW6FS0Bd54/oenXuYoa7KeZ1aZmY1gF+wdbSmnCpeA1NcmJnLgUY9c44OZPTnabr+pOJ8yrINSsHHp6OnUIfwanYHWpXCCniPd8WlF50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452863; c=relaxed/simple;
-	bh=lQBxi7a5NH0P9gCmKDRsP5zVofxPURCCeWe85cO3Th4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P/DbLsznhZWr2po/iykS7A0A6DgrZ/AGk2K0MUUKAfEkjobiSFO4wLqoLzPDo916J5XlMQwDvy3YehVKF0s4lBOH7OyYMhh9t9B6B4CAPYEMDM7UVO1+YVaWuF1/AOKpHzYpKDxYUQqdNrU31KxkA8JxFoFbnuzBh6OxJNzFTiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ob56p15+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17F7C4CECC;
-	Sun, 24 Nov 2024 12:54:21 +0000 (UTC)
+	s=arc-20240116; t=1732452918; c=relaxed/simple;
+	bh=05xlpYf9NnAq/toADcgyfMLxclZVwF+c65xgPgbGHW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B9YBLNDwe1mRTnIxECw3NFCHc70ybhgqM+yeSiSu5c7n2oaXRMRgv+llAi9bXxn+XwSEg1/cO44GfFEC1+fPG7NpsLtcQPkO3+KqzBoSd6vIZq0e50s+M6Q54X0CC3nLHickYOlKvmTlvOrR094Q61RNpGROJ1eIlb2j+JRzpe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+yqRyZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB63CC4CECC;
+	Sun, 24 Nov 2024 12:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452862;
-	bh=lQBxi7a5NH0P9gCmKDRsP5zVofxPURCCeWe85cO3Th4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ob56p15+Cf6mvI4AnqXZyAfjZwtlSQFYvtvRyA1vFzAkdbMyKa7sEnmPbMSc6HUWh
-	 Po+yLGQU8/nIw0kwgOZuRxkODxtLNd6rjNXK9NGs4UHbH7mf0kYv2j0BPCZSvIx4ud
-	 GPS5VibkD5D736ikkjEBFWsQxzsCEsbHfY5hpBWIp/47mD4smx5oc2LTezPdVNVoDS
-	 nPbq9OallWlXSN8fJ3RQNoWPYTJSuO8Hix88KeOwOzbVdMFVxUFvPWvTJx5fv2x65o
-	 KAwx4hpaLeKCn0zc0e9Xecjlf/nmXlGbNofZjNj4djC5bSyjBzG6vRKZx1QIbc39Yq
-	 cR1txfe1UgcfA==
+	s=k20201202; t=1732452918;
+	bh=05xlpYf9NnAq/toADcgyfMLxclZVwF+c65xgPgbGHW4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u+yqRyZrGr3nyosKOgKUmA7i89jfJlxTAfjc23YWDUd4/wuhQbjMLhhi+8bbZAUDf
+	 1KcvTUHmIxEJG/KuW6L64/tv8hrq0fTrMYPHS81TlRqJuDFItyAdV3kElQ2yIyG5kb
+	 PSFhSFHpy11XuftsS5Erp0N5zOkrU5vTyQwEXP4qSWcvG3Bm+AU6BEA6p6dwvYKA+/
+	 2HYIjgEfw06zL8Z83n7W/YJe4AltNShGb3xZRGdCUEcKTZx/p3R/rzeQtowYTaDhPw
+	 XLQQlVaG70RvaU3J8nu2DScPzYWJpWuFdcGYHMeW5jW2FIrVerhbglqgSVPvBACs1b
+	 /Ep7obMKHG+Qw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Callahan Kovacs <callahankovacs@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Dmitry Perchanov <dmitry.perchanov@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 16/16] HID: magicmouse: Apple Magic Trackpad 2 USB-C driver support
-Date: Sun, 24 Nov 2024 07:52:34 -0500
-Message-ID: <20241124125311.3340223-16-sashal@kernel.org>
+	mchehab@kernel.org,
+	hverkuil@xs4all.nl,
+	sakari.ailus@linux.intel.com,
+	jacopo.mondi@ideasonboard.com,
+	naush@raspberrypi.com,
+	jeanmichel.hautbois@ideasonboard.com,
+	benjamin.gaignard@collabora.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/9] media: v4l: Add luma 16-bit interlaced pixel format
+Date: Sun, 24 Nov 2024 07:54:15 -0500
+Message-ID: <20241124125515.3340625-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124125311.3340223-1-sashal@kernel.org>
-References: <20241124125311.3340223-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,205 +67,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
-Content-Type: text/plain; charset=UTF-8
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Callahan Kovacs <callahankovacs@gmail.com>
+From: Dmitry Perchanov <dmitry.perchanov@intel.com>
 
-[ Upstream commit 87a2f10395c82c2b4687bb8611a6c5663a12f9e7 ]
+[ Upstream commit a8f2cdd27d114ed6c3354a0e39502e6d56215804 ]
 
-Adds driver support for the USB-C model of Apple's Magic Trackpad 2.
+The formats added by this patch are:
 
-The 2024 USB-C model is compatible with the existing Magic Trackpad 2
-driver but has a different hardware ID.
+        V4L2_PIX_FMT_Y16I
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219470
-Signed-off-by: Callahan Kovacs <callahankovacs@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Interlaced lumina format primary use in RealSense Depth cameras with
+stereo stream for left and right image sensors.
+
+Signed-off-by: Dmitry Perchanov <dmitry.perchanov@intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/568efbd75290e286b8ad9e7347b5f43745121020.camel@intel.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        |  1 +
- drivers/hid/hid-magicmouse.c | 56 ++++++++++++++++++++++++++----------
- 2 files changed, 42 insertions(+), 15 deletions(-)
+ .../userspace-api/media/v4l/pixfmt-y16i.rst   | 73 +++++++++++++++++++
+ .../userspace-api/media/v4l/yuv-formats.rst   |  1 +
+ drivers/media/v4l2-core/v4l2-ioctl.c          |  1 +
+ include/uapi/linux/videodev2.h                |  1 +
+ 4 files changed, 76 insertions(+)
+ create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 1a05e22685895..f16940f3d93d4 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -94,6 +94,7 @@
- #define USB_DEVICE_ID_APPLE_MAGICMOUSE2	0x0269
- #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD	0x030e
- #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2	0x0265
-+#define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC	0x0324
- #define USB_DEVICE_ID_APPLE_FOUNTAIN_ANSI	0x020e
- #define USB_DEVICE_ID_APPLE_FOUNTAIN_ISO	0x020f
- #define USB_DEVICE_ID_APPLE_GEYSER_ANSI	0x0214
-diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
-index c9c968d4b36a3..9bb8daf7f7860 100644
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -224,7 +224,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
- 		touch_minor = tdata[4];
- 		state = tdata[7] & TOUCH_STATE_MASK;
- 		down = state != TOUCH_STATE_NONE;
--	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		   input->id.product ==
-+			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		id = tdata[8] & 0xf;
- 		x = (tdata[1] << 27 | tdata[0] << 19) >> 19;
- 		y = -((tdata[3] << 30 | tdata[2] << 22 | tdata[1] << 14) >> 19);
-@@ -256,8 +258,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
- 	/* If requested, emulate a scroll wheel by detecting small
- 	 * vertical touch motions.
- 	 */
--	if (emulate_scroll_wheel && (input->id.product !=
--			USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)) {
-+	if (emulate_scroll_wheel &&
-+	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
-+	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		unsigned long now = jiffies;
- 		int step_x = msc->touches[id].scroll_x - x;
- 		int step_y = msc->touches[id].scroll_y - y;
-@@ -356,7 +359,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
- 		input_report_abs(input, ABS_MT_POSITION_X, x);
- 		input_report_abs(input, ABS_MT_POSITION_Y, y);
- 
--		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
-+		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		    input->id.product ==
-+			    USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
- 			input_report_abs(input, ABS_MT_PRESSURE, pressure);
- 
- 		if (report_undeciphered) {
-@@ -364,7 +369,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
- 			    input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
- 				input_event(input, EV_MSC, MSC_RAW, tdata[7]);
- 			else if (input->id.product !=
--					USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
-+					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
-+				 input->id.product !=
-+					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
- 				input_event(input, EV_MSC, MSC_RAW, tdata[8]);
- 		}
- 	}
-@@ -490,7 +497,9 @@ static int magicmouse_raw_event(struct hid_device *hdev,
- 		magicmouse_emit_buttons(msc, clicks & 3);
- 		input_report_rel(input, REL_X, x);
- 		input_report_rel(input, REL_Y, y);
--	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		   input->id.product ==
-+			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		input_mt_sync_frame(input);
- 		input_report_key(input, BTN_MOUSE, clicks & 1);
- 	} else { /* USB_DEVICE_ID_APPLE_MAGICTRACKPAD */
-@@ -542,7 +551,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
- 			__set_bit(REL_WHEEL_HI_RES, input->relbit);
- 			__set_bit(REL_HWHEEL_HI_RES, input->relbit);
- 		}
--	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		   input->id.product ==
-+			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		/* If the trackpad has been connected to a Mac, the name is
- 		 * automatically personalized, e.g., "José Expósito's Trackpad".
- 		 * When connected through Bluetooth, the personalized name is
-@@ -618,7 +629,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
- 				  MOUSE_RES_X);
- 		input_abs_set_res(input, ABS_MT_POSITION_Y,
- 				  MOUSE_RES_Y);
--	} else if (input->id.product ==  USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		   input->id.product ==
-+			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		input_set_abs_params(input, ABS_MT_PRESSURE, 0, 253, 0, 0);
- 		input_set_abs_params(input, ABS_PRESSURE, 0, 253, 0, 0);
- 		input_set_abs_params(input, ABS_MT_ORIENTATION, -3, 4, 0, 0);
-@@ -657,7 +670,8 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
- 	input_set_events_per_packet(input, 60);
- 
- 	if (report_undeciphered &&
--	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
-+	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		__set_bit(EV_MSC, input->evbit);
- 		__set_bit(MSC_RAW, input->mscbit);
- 	}
-@@ -682,7 +696,9 @@ static int magicmouse_input_mapping(struct hid_device *hdev,
- 
- 	/* Magic Trackpad does not give relative data after switching to MT */
- 	if ((hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD ||
--	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
-+	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	     hi->input->id.product ==
-+		     USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
- 	    field->flags & HID_MAIN_ITEM_RELATIVE)
- 		return -1;
- 
-@@ -718,7 +734,8 @@ static int magicmouse_enable_multitouch(struct hid_device *hdev)
- 	int ret;
- 	int feature_size;
- 
--	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	    hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		if (hdev->vendor == BT_VENDOR_ID_APPLE) {
- 			feature_size = sizeof(feature_mt_trackpad2_bt);
- 			feature = feature_mt_trackpad2_bt;
-@@ -763,7 +780,8 @@ static int magicmouse_fetch_battery(struct hid_device *hdev)
- 
- 	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
- 	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2))
-+	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
-+	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
- 		return -1;
- 
- 	report_enum = &hdev->report_enum[hdev->battery_report_type];
-@@ -832,7 +850,9 @@ static int magicmouse_probe(struct hid_device *hdev,
- 
- 	if (id->vendor == USB_VENDOR_ID_APPLE &&
- 	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 && hdev->type != HID_TYPE_USBMOUSE)))
-+	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
-+	      hdev->type != HID_TYPE_USBMOUSE)))
- 		return 0;
- 
- 	if (!msc->input) {
-@@ -847,7 +867,8 @@ static int magicmouse_probe(struct hid_device *hdev,
- 	else if (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
- 		report = hid_register_report(hdev, HID_INPUT_REPORT,
- 			MOUSE2_REPORT_ID, 0);
--	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
-+	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+		 id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
- 		if (id->vendor == BT_VENDOR_ID_APPLE)
- 			report = hid_register_report(hdev, HID_INPUT_REPORT,
- 				TRACKPAD2_BT_REPORT_ID, 0);
-@@ -917,7 +938,8 @@ static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 	 */
- 	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
- 	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
-+	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
- 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
-@@ -948,6 +970,10 @@ static const struct hid_device_id magic_mice[] = {
- 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
- 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
-+	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE,
-+		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
-+		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, magic_mice);
+diff --git a/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst b/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
+new file mode 100644
+index 0000000000000..74ba9e910a38f
+--- /dev/null
++++ b/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
+@@ -0,0 +1,73 @@
++.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
++
++.. _V4L2-PIX-FMT-Y16I:
++
++**************************
++V4L2_PIX_FMT_Y16I ('Y16I')
++**************************
++
++Interleaved grey-scale image, e.g. from a stereo-pair
++
++
++Description
++===========
++
++This is a grey-scale image with a depth of 16 bits per pixel, but with pixels
++from 2 sources interleaved and unpacked. Each pixel is stored in a 16-bit word
++in the little-endian order. The first pixel is from the left source.
++
++**Pixel unpacked representation.**
++Left/Right pixels 16-bit unpacked - 16-bit for each interleaved pixel.
++
++.. flat-table::
++    :header-rows:  0
++    :stub-columns: 0
++
++    * - Y'\ :sub:`0L[7:0]`
++      - Y'\ :sub:`0L[15:8]`
++      - Y'\ :sub:`0R[7:0]`
++      - Y'\ :sub:`0R[15:8]`
++
++**Byte Order.**
++Each cell is one byte.
++
++.. flat-table::
++    :header-rows:  0
++    :stub-columns: 0
++
++    * - start + 0:
++      - Y'\ :sub:`00Llow`
++      - Y'\ :sub:`00Lhigh`
++      - Y'\ :sub:`00Rlow`
++      - Y'\ :sub:`00Rhigh`
++      - Y'\ :sub:`01Llow`
++      - Y'\ :sub:`01Lhigh`
++      - Y'\ :sub:`01Rlow`
++      - Y'\ :sub:`01Rhigh`
++    * - start + 8:
++      - Y'\ :sub:`10Llow`
++      - Y'\ :sub:`10Lhigh`
++      - Y'\ :sub:`10Rlow`
++      - Y'\ :sub:`10Rhigh`
++      - Y'\ :sub:`11Llow`
++      - Y'\ :sub:`11Lhigh`
++      - Y'\ :sub:`11Rlow`
++      - Y'\ :sub:`11Rhigh`
++    * - start + 16:
++      - Y'\ :sub:`20Llow`
++      - Y'\ :sub:`20Lhigh`
++      - Y'\ :sub:`20Rlow`
++      - Y'\ :sub:`20Rhigh`
++      - Y'\ :sub:`21Llow`
++      - Y'\ :sub:`21Lhigh`
++      - Y'\ :sub:`21Rlow`
++      - Y'\ :sub:`21Rhigh`
++    * - start + 24:
++      - Y'\ :sub:`30Llow`
++      - Y'\ :sub:`30Lhigh`
++      - Y'\ :sub:`30Rlow`
++      - Y'\ :sub:`30Rhigh`
++      - Y'\ :sub:`31Llow`
++      - Y'\ :sub:`31Lhigh`
++      - Y'\ :sub:`31Rlow`
++      - Y'\ :sub:`31Rhigh`
+diff --git a/Documentation/userspace-api/media/v4l/yuv-formats.rst b/Documentation/userspace-api/media/v4l/yuv-formats.rst
+index 24b34cdfa6fea..78ee406d76479 100644
+--- a/Documentation/userspace-api/media/v4l/yuv-formats.rst
++++ b/Documentation/userspace-api/media/v4l/yuv-formats.rst
+@@ -269,5 +269,6 @@ image.
+     pixfmt-yuv-luma
+     pixfmt-y8i
+     pixfmt-y12i
++    pixfmt-y16i
+     pixfmt-uv8
+     pixfmt-m420
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index 6876ec25bc512..05c9820598478 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -1317,6 +1317,7 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
+ 	case V4L2_PIX_FMT_IPU3_Y10:	descr = "10-bit greyscale (IPU3 Packed)"; break;
+ 	case V4L2_PIX_FMT_Y8I:		descr = "Interleaved 8-bit Greyscale"; break;
+ 	case V4L2_PIX_FMT_Y12I:		descr = "Interleaved 12-bit Greyscale"; break;
++	case V4L2_PIX_FMT_Y16I:		descr = "Interleaved 16-bit Greyscale"; break;
+ 	case V4L2_PIX_FMT_Z16:		descr = "16-bit Depth"; break;
+ 	case V4L2_PIX_FMT_INZI:		descr = "Planar 10:16 Greyscale Depth"; break;
+ 	case V4L2_PIX_FMT_CNF4:		descr = "4-bit Depth Confidence (Packed)"; break;
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 45fa03882ef18..08046beeeb049 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -767,6 +767,7 @@ struct v4l2_pix_format {
+ #define V4L2_PIX_FMT_S5C_UYVY_JPG v4l2_fourcc('S', '5', 'C', 'I') /* S5C73M3 interleaved UYVY/JPEG */
+ #define V4L2_PIX_FMT_Y8I      v4l2_fourcc('Y', '8', 'I', ' ') /* Greyscale 8-bit L/R interleaved */
+ #define V4L2_PIX_FMT_Y12I     v4l2_fourcc('Y', '1', '2', 'I') /* Greyscale 12-bit L/R interleaved */
++#define V4L2_PIX_FMT_Y16I     v4l2_fourcc('Y', '1', '6', 'I') /* Greyscale 16-bit L/R interleaved */
+ #define V4L2_PIX_FMT_Z16      v4l2_fourcc('Z', '1', '6', ' ') /* Depth data 16-bit */
+ #define V4L2_PIX_FMT_MT21C    v4l2_fourcc('M', 'T', '2', '1') /* Mediatek compressed block mode  */
+ #define V4L2_PIX_FMT_MM21     v4l2_fourcc('M', 'M', '2', '1') /* Mediatek 8-bit block mode, two non-contiguous planes */
 -- 
 2.43.0
 
