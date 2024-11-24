@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-95183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFF39D73F9
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:55:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612EA9D73FC
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55C028B58E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:55:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 270F3284963
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068BD1E1C2E;
-	Sun, 24 Nov 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823B8236916;
+	Sun, 24 Nov 2024 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z8LuKRRB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUtYDHCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EFB1F8729;
-	Sun, 24 Nov 2024 13:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31123690D;
+	Sun, 24 Nov 2024 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456261; cv=none; b=S2Zr7RtkrdCgezIxfR1/EKYrJ2jLXgw5in0OYoPoywM1NJlvN//cCAWkRFCr0gm9PJgV/JavUOZh7QQYJUhgc3qG37tPbKbUyr7WNZO4hMnvqsMmRDuTPqnI4tWalBlGH8uTDWMk+DqIueKikG1SqUi4qoJliICfO2z1WBU09gU=
+	t=1732456264; cv=none; b=u5oiUPAVEfz6jtnDI+Jr6IqiLzYCdv9mpIWnVxfHudkz3g/47gmjZ20xsqhvm4oicv+ItiCH5Dkyjx42l16kGB1bfZvDfDvXgIs4tfSpIHm24J9Tp9mo9JTh9iGN5I4YY59e/1dnms3pyVjxt53Grz75NZwlW3A0486zl2slxcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456261; c=relaxed/simple;
-	bh=VP0taqpeoaeCL5uOvCJOIqfJ5CCdeNL8ReskrgAZ3Zw=;
+	s=arc-20240116; t=1732456264; c=relaxed/simple;
+	bh=GPWL1EoADPh4U369AvLTJZQRfBf1SjUW476Qa27QLl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBtZGh2I3kGeuKyjlt2ehzxLVt8f1tn2boYe+3IEQ4v0AHR3o0MUoVGwG4FbUfvalSJ0CGchATupNnoFN+01Tpnze7n/LS7oFO02aX82jGmXgJ+6LPVmCK0Wz9rY7cMxhdt+mhZMbENCf6kHCDy1nJNthl+l7s5SSGimR1K9Z5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z8LuKRRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9693C4CECC;
-	Sun, 24 Nov 2024 13:50:59 +0000 (UTC)
+	 MIME-Version; b=Lb8ohN5EYky5YtJhDhVfyO8ofV2i+R11SRTCkGKnVH2yJjhz/fpP4k5JlAE0neJjLxmgCvMzwFI8Fw5wzt4S34L8IzsXhaVEcZTLMz0srOndRb4pXjJUb1z7TO1dIrtWOA6IzamZc7nki//M1pPYxwPbHdF151SElXAhk5zNuLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUtYDHCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B279C4CED6;
+	Sun, 24 Nov 2024 13:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456261;
-	bh=VP0taqpeoaeCL5uOvCJOIqfJ5CCdeNL8ReskrgAZ3Zw=;
+	s=k20201202; t=1732456264;
+	bh=GPWL1EoADPh4U369AvLTJZQRfBf1SjUW476Qa27QLl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8LuKRRBQv1meQmG2Vc5ynCdDCcP0ENVGyeJh+Jlyv5I3ABBhWGs8kYbBYT2KTxUf
-	 ojc3G+SmmGIJDOM0u1yMgE0wt9vgY3Ykfx1a3G44so/B6HbwZXqxDx9vintuzybABE
-	 N4AbhAQK7pT813UyzkZzjbE9dRyAAThXqEAhvKAtE2n9K6v5QzMK0142JqP1O0S/F0
-	 bVEhm68yS/X3ZHWFn0+Ucm44bqaSu6vPI28NCfukQp4VkGgrD9hLi8zu87FfT7Y8LK
-	 xeO2pi7u95k3V7Im62wGhd9NbzZSta3llV1VyNcqPRPTIj/O6il7UnVYEzIBnnqOG4
-	 4UjWBO55jTSZg==
+	b=oUtYDHChWTOyvA8Mlju/v1Dq7xOev8m9eyxewGwgAaRHXLgfAuGLm2+jyVMA9Rsg7
+	 Cko+TZU4IumdgD/WiVWUfLsteWHaHhgNE2NV51gBi52E5TfXCE2lru6p2D/54UTJwq
+	 awoD6ttOEawEZkz3JGZ9FwmFS4E/tl/h/wHuHbkXCghNQRJL4YWr1yvEtr2evqQ3UC
+	 tkq44WYytIhsw8UfOsmExg7F3TBrgykgwKpXWbwqNQQ2iFKBou+xsvC/CnYzNWAn0B
+	 hDjROcGZPoAPpfHWt5YuPU4BTP+z9peuJw+erxZKBrVQysXArFjAVSKIFpy7IXKqtF
+	 UDfg1JM8kdYxA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com,
+	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
-	rbrasga@uci.edu,
-	aha310510@gmail.com,
-	peili.dev@gmail.com,
-	niharchaithanya@gmail.com,
 	eadavis@qq.com,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.1 32/48] jfs: fix shift-out-of-bounds in dbSplit
-Date: Sun, 24 Nov 2024 08:48:55 -0500
-Message-ID: <20241124134950.3348099-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 33/48] jfs: fix array-index-out-of-bounds in jfs_readdir
+Date: Sun, 24 Nov 2024 08:48:56 -0500
+Message-ID: <20241124134950.3348099-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134950.3348099-1-sashal@kernel.org>
 References: <20241124134950.3348099-1-sashal@kernel.org>
@@ -74,35 +70,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ]
+[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
 
-When dmt_budmin is less than zero, it causes errors
-in the later stages. Added a check to return an error beforehand
-in dbAllocCtl itself.
+The stbl might contain some invalid values. Added a check to
+return error code in that case.
 
-Reported-by: syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ca8a249162c4b9a7d0
+Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
 Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/jfs/jfs_dtree.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index a6b1d748df16b..30a56c37d9ecf 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1820,6 +1820,9 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 69fd936fbdb37..8f85177f284b5 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -2891,6 +2891,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
+ 		stbl = DT_GETSTBL(p);
  
-+		if (dp->tree.budmin < 0)
-+			return -EIO;
+ 		for (i = index; i < p->header.nextindex; i++) {
++			if (stbl[i] < 0 || stbl[i] > 127) {
++				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++					i, stbl[i], (long)ip->i_ino, (long long)bn);
++				free_page(dirent_buf);
++				DT_PUTPAGE(mp);
++				return -EIO;
++			}
 +
- 		/* try to allocate the blocks.
- 		 */
- 		rc = dbAllocDmapLev(bmp, dp, (int) nblocks, l2nb, results);
+ 			d = (struct ldtentry *) & p->slot[stbl[i]];
+ 
+ 			if (((long) jfs_dirent + d->namlen + 1) >
 -- 
 2.43.0
 
