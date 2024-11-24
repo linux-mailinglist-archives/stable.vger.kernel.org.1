@@ -1,64 +1,76 @@
-Return-Path: <stable+bounces-94954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E7C9D752D
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9B99D716A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3263B44F03
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:48:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1536628590E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0871E048D;
-	Sun, 24 Nov 2024 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712651ABEB8;
+	Sun, 24 Nov 2024 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTf+1NVb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOOkvGCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FFB1E04B8;
-	Sun, 24 Nov 2024 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D01F1A76D0;
+	Sun, 24 Nov 2024 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455369; cv=none; b=IZuHZRqZgl/S6/SwjkDCSjPskneegLyNTaLgG7xrdqr1A2uhDZpQazeHdyxqaH8Gmsh3VE+50HbBF5hDTA6r0XMc+zyZiZpOACWPOJ9MZnkfQ5092vR9NxzQCxz2hX3FaxB2u7Hj0QAjEe1lWiCwzO8vYTeE1l9J6A8CVoYf//Q=
+	t=1732455374; cv=none; b=UqbgmYDyexJvUzPG3XaN+yXlNxdXmvC7UVEr0PJJWB+We+N7Ba+KsdkCOLZzNlZDvoW20CbRC6RiUuE9jZuIuGhi0cnrz8o1Bk3K/hXIgk0i6l+Y5BY8XTzV2MXjAJUenPWogbjiersISK6dVqIle/078PNwjKeq/wKNdj2Hj1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455369; c=relaxed/simple;
-	bh=w23f07CrIy+GznCKbCOqwJH7ze1gmeI/5uXAH1UokYs=;
+	s=arc-20240116; t=1732455374; c=relaxed/simple;
+	bh=ABW8IDQzptZt8hgjem9Zz0lXmf5YPyWvyj+fMjBrMEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXjE3vYYwNce9YIi66LBtuqjqTNOJztnU3vIjptOmm4qBfg+1u45QaEbjROsHarm03vAaW3mLJvo/qfCoIvx+QuaGCVh8j3k9AT3BQctReeU5wycEa3MsQNijGntkfuLTgrVar9IcxqQitwtLkT2a9prxfQkjyDs2yVNOfA+QeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTf+1NVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABB7C4CECC;
-	Sun, 24 Nov 2024 13:36:07 +0000 (UTC)
+	 MIME-Version; b=K43t0iW0Refk+tmBqVFlHQRufmb/SjV01H0ZyC/dsx6shZn9XBCnTPlDWtuGMv2fQy8b7Kgn17S5yPtQPyNSp81STEiPgTGe11ZJonHX4dUffJBi2+pd9tsBZQV+4KdUGYnsPOjBC61X2/Uj+bNbby/pMFOJtGnPk5y+MVukOSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOOkvGCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCBAC4CECC;
+	Sun, 24 Nov 2024 13:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455369;
-	bh=w23f07CrIy+GznCKbCOqwJH7ze1gmeI/5uXAH1UokYs=;
+	s=k20201202; t=1732455374;
+	bh=ABW8IDQzptZt8hgjem9Zz0lXmf5YPyWvyj+fMjBrMEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTf+1NVbG/aAjD4ZvhgX92Dpos3Vgc18DptZHyA1LEZY8VQVZQFXT190ugvzVfkQD
-	 +GUpzrXzdJ3nfQ6AMZrA0GmGZO7eKGFi3ShKbXjN4MjVz6dTOOsM9tLLgZf6p5BI5O
-	 qp9D8Gtgd+ZL439Ay3unx4SbJDoM+s9AxEGO6aT0udX+g6qBrn3tFGTqIgEWJsKAvx
-	 wUo7K3+ZECPQsAFCvx5jdWJRPEUMgMyAt1sopeqT27BcWYRDXUplSZPIzJH5TurhST
-	 RxtgnENJWTvXU6eEN14eMlwv/3+8Tdnvd3EkIRXak4P0XeuvjJ/sirap4Fg7RKm97t
-	 uaDK+BpbRhTnw==
+	b=fOOkvGCw6sOq9okQa/GpTAB4s3sPHuECjbEUw2ysEy8qGe6pkmgQdxJRLeG7ctm5t
+	 M94VR44e+hp3pXmRI3mx3bwwXuzyL+vM6SCbs8wN2xqK3fyZvvN9UHHplrqyIhJZFU
+	 hrehCCPd4GmgkJRHzMMvdoJXfwxzjOlDGpKLDBpu8CEBfoxlgH+Y58fV2geW5807GQ
+	 4qbEzghOU+mzsTwR/cgZA21+CPrUSwi60u6dwn6ruwlAppffuWU1O6o1Zmn5+TUtlt
+	 BXsClB1B3GzikD29FBJG53ovLiZbrdKwigTM5i9FrNbFJprbbx5ya4P7C6YKexPuPL
+	 bqbm6ZmYnyiBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philipp Stanner <pstanner@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+Cc: Leo Chen <leo.chen@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ltuikov89@gmail.com,
-	matthew.brost@intel.com,
-	dakr@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	Charlene.Liu@amd.com,
+	chiahsuan.chung@amd.com,
+	hamza.mahfooz@amd.com,
+	Nicholas.Susanto@amd.com,
+	sungjoon.kim@amd.com,
+	roman.li@amd.com,
+	zhongwei.zhang@amd.com,
+	michael.strauss@amd.com,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 058/107] drm/sched: memset() 'job' in drm_sched_job_init()
-Date: Sun, 24 Nov 2024 08:29:18 -0500
-Message-ID: <20241124133301.3341829-58-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 059/107] drm/amd/display: Adding array index check to prevent memory corruption
+Date: Sun, 24 Nov 2024 08:29:19 -0500
+Message-ID: <20241124133301.3341829-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -68,57 +80,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Leo Chen <leo.chen@amd.com>
 
-[ Upstream commit 2320c9e6a768d135c7b0039995182bb1a4e4fd22 ]
+[ Upstream commit 2c437d9a0b496168e1a1defd17b531f0a526dbe9 ]
 
-drm_sched_job_init() has no control over how users allocate struct
-drm_sched_job. Unfortunately, the function can also not set some struct
-members such as job->sched.
+[Why & How]
+Array indices out of bound caused memory corruption. Adding checks to
+ensure that array index stays in bound.
 
-This could theoretically lead to UB by users dereferencing the struct's
-pointer members too early.
-
-It is easier to debug such issues if these pointers are initialized to
-NULL, so dereferencing them causes a NULL pointer exception.
-Accordingly, drm_sched_entity_init() does precisely that and initializes
-its struct with memset().
-
-Initialize parameter "job" to 0 in drm_sched_job_init().
-
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021105028.19794-2-pstanner@redhat.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Leo Chen <leo.chen@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index e97c6c60bc96e..416590ea0dc3d 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -803,6 +803,14 @@ int drm_sched_job_init(struct drm_sched_job *job,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index b46a3afe48ca7..7d68006137a97 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -257,11 +257,11 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
+ 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	uint32_t host_router_bw_kbps[MAX_HOST_ROUTERS_NUM] = { 0 };
+ 	int i;
+-
+ 	for (i = 0; i < context->stream_count; ++i) {
+ 		const struct dc_stream_state *stream = context->streams[i];
+ 		const struct dc_link *link = stream->link;
+-		uint8_t lowest_dpia_index = 0, hr_index = 0;
++		uint8_t lowest_dpia_index = 0;
++		unsigned int hr_index = 0;
  
-+	/*
-+	 * We don't know for sure how the user has allocated. Thus, zero the
-+	 * struct so that unallowed (i.e., too early) usage of pointers that
-+	 * this function does not set is guaranteed to lead to a NULL pointer
-+	 * exception instead of UB.
-+	 */
-+	memset(job, 0, sizeof(*job));
-+
- 	job->entity = entity;
- 	job->credits = credits;
- 	job->s_fence = drm_sched_fence_alloc(entity, owner);
+ 		if (!link)
+ 			continue;
+@@ -271,6 +271,8 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
+ 			continue;
+ 
+ 		hr_index = (link->link_index - lowest_dpia_index) / 2;
++		if (hr_index >= MAX_HOST_ROUTERS_NUM)
++			continue;
+ 		host_router_bw_kbps[hr_index] += dc_bandwidth_in_kbps_from_timing(
+ 			&stream->timing, dc_link_get_highest_encoding_format(link));
+ 	}
 -- 
 2.43.0
 
