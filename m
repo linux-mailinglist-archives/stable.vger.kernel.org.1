@@ -1,64 +1,68 @@
-Return-Path: <stable+bounces-95054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612D59D72A1
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:14:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409FA9D756B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278D5284FA0
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:14:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A735B62D6A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C94201256;
-	Sun, 24 Nov 2024 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FF3201279;
+	Sun, 24 Nov 2024 13:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLfD7txI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/VwsT6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3311991CD;
-	Sun, 24 Nov 2024 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940B02010FF;
+	Sun, 24 Nov 2024 13:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455824; cv=none; b=qCG+KxIe3B5mjFIkdVvfd6ddTJ1Xg1orTl6likuVDOyllXrFSukBYmMpnPIcNmhbDnz1aAGoQVoq9tEDu7cfgQ1sqMU5K/Q+/x1hvnvx0ZBQavVpCg+ewamypya89X9OdPpWaIW2lHaRJD7KGhIp5Dqbn4JZXw0RyQ2MxqCKHIg=
+	t=1732455828; cv=none; b=JoUGgLdwBuVJFs+Tl+NwGD4jRhHyHmYJcyKzKEx3dvI94PMFx72IgoxDCb+vcV1dOWRETU1CJsTHCKMqhuAIGW79Ly43GsPLyEsek6cGy7ndeLiTNhTcpY40eur+x6fsxVL49iiutsg3toPx7OABb3jRD9oDtMp5HH9gNtLcEkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455824; c=relaxed/simple;
-	bh=bzb2TBt1W/ozaEIEoBDYJUxkHrtoOt8XHyvRmkMDDec=;
+	s=arc-20240116; t=1732455828; c=relaxed/simple;
+	bh=21WVm3dO3/TO0fBAOe3DyGrgkuDjEUrcY21ZgfP+JRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clJF7wAyeJRhtssdnPaN4IGrNLNbhN95JuKQtEyvCdvxqoCqHqzqqF81Na1JfqgTy2QVW3CtmY79swNof358ozkhXErleDjTDAZ1cC6RFS3+OQxmdDUrVn5bM1GPmPNmh2hDgd5VmvLdu16hf5tJMoIzMTbLowWRCkOQ9kA3wmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLfD7txI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74A0C4CECC;
-	Sun, 24 Nov 2024 13:43:42 +0000 (UTC)
+	 MIME-Version; b=l3+z7JXcySYJulBvpPcg+iW+f+2QqJbmlZWbQm6p1A5y7wQezp2d7TiJ0W4TmAVSjU+H5Te6ECqU+3KIDItddepkg84qYM4snKVEe43yQkjwQ1nFaULhYs2DWj0pGlcdVZf5sR/WLzouNOKG+9ZqXHwuaKm9xm/rd1FADgfy0Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/VwsT6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F57C4CED3;
+	Sun, 24 Nov 2024 13:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455824;
-	bh=bzb2TBt1W/ozaEIEoBDYJUxkHrtoOt8XHyvRmkMDDec=;
+	s=k20201202; t=1732455828;
+	bh=21WVm3dO3/TO0fBAOe3DyGrgkuDjEUrcY21ZgfP+JRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLfD7txIYqKnzgubn8Zp0OKp5fcX2f+mZVcCtdBRXxldFq2DaRqtHxi4GZvxvswd+
-	 O6SDvQ3y/HjEBLA61ktRyHxX2hf6wJV7IpgPJpg/YWcXpG9DN4ZAFj1kA5aZdVqhTm
-	 HXY58amjfCOEXNcz8JRZ3Dl8R5IgCgI8dTg+Gh1exe8fLM1iE4NnHPxM71rMfPJang
-	 mbAMHF9wuKpF84Thz4nFVwx0UfZLtLUhWKnBGPtgVfmdv8yHQPeQ4bxjjMUE8jZ/ao
-	 wmY5BRwxHw7FsXPxjF2QFpnyaBkhb9RzuJZ1He234UDJX1XefhN48CKfs11RkAMew4
-	 zVE4+ke+N9R8A==
+	b=Y/VwsT6KqAxsxX8zH6NZ+jcln3devmJ54ntb+FjD/mzskImJ7esfWNH55K4An9NCn
+	 5IDxVDPNG255L3UWcXKRPwsNVKHI+wkixXx91xInXrssAeudVRIemSvRduiXxxxIlV
+	 ADeNRBDz4hM+glI1MDWmGioxiYDXyRQiylAhbMF7IQBcs+CG0ubwj2DR68CXTmtSi+
+	 jrCx3DICHQxvzAi+b4JykYe16HdFsNQueCGsRqketSjWDQFc5QizEGEOR0QUrPfg37
+	 5kYnRwVcbJVBCKAnXvbzEVHpFLrCFvKFyzCwjGisQDefqzxB8h04suBFSM3CKQU9Qo
+	 CSHBhU7heUKhw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Lang Yu <lang.yu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	andrew@lunn.ch,
-	maxime.chevallier@bootlin.com,
-	danieller@nvidia.com,
-	hengqi@linux.alibaba.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 51/87] netlink: specs: Add missing bitset attrs to ethtool spec
-Date: Sun, 24 Nov 2024 08:38:29 -0500
-Message-ID: <20241124134102.3344326-51-sashal@kernel.org>
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Frank.Min@amd.com,
+	mdaenzer@redhat.com,
+	Hawking.Zhang@amd.com,
+	Philip.Yang@amd.com,
+	shashank.sharma@amd.com,
+	Arunpravin.PaneerSelvam@amd.com,
+	Amaranath.Somalapuram@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 52/87] drm/amdgpu: refine error handling in amdgpu_ttm_tt_pin_userptr
+Date: Sun, 24 Nov 2024 08:38:30 -0500
+Message-ID: <20241124134102.3344326-52-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -73,43 +77,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Donald Hunter <donald.hunter@gmail.com>
+From: Lang Yu <lang.yu@amd.com>
 
-[ Upstream commit b0b3683419b45e2971b6d413c506cb818b268d35 ]
+[ Upstream commit 46186667f98fb7158c98f4ff5da62c427761ffcd ]
 
-There are a couple of attributes missing from the 'bitset' attribute-set
-in the ethtool netlink spec. Add them to the spec.
+Free sg table when dma_map_sgtable() failed to avoid memory leak.
 
-Reported-by: Kory Maincent <kory.maincent@bootlin.com>
-Closes: https://lore.kernel.org/netdev/20241017180551.1259bf5c@kmaincent-XPS-13-7390/
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Tested-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20241018090630.22212-1-donald.hunter@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Lang Yu <lang.yu@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/ethtool.yaml | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index ea21fe135b97e..c6cfa1665d5b0 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -88,7 +88,12 @@ attribute-sets:
-         name: bits
-         type: nest
-         nested-attributes: bitset-bits
--
-+      -
-+        name: value
-+        type: binary
-+      -
-+        name: mask
-+        type: binary
-   -
-     name: string
-     attributes:
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index b8bc7fa8c3750..92b5d5aec8a83 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -812,7 +812,7 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 	/* Map SG to device */
+ 	r = dma_map_sgtable(adev->dev, ttm->sg, direction, 0);
+ 	if (r)
+-		goto release_sg;
++		goto release_sg_table;
+ 
+ 	/* convert SG to linear array of pages and dma addresses */
+ 	drm_prime_sg_to_dma_addr_array(ttm->sg, gtt->ttm.dma_address,
+@@ -820,6 +820,8 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 
+ 	return 0;
+ 
++release_sg_table:
++	sg_free_table(ttm->sg);
+ release_sg:
+ 	kfree(ttm->sg);
+ 	ttm->sg = NULL;
 -- 
 2.43.0
 
