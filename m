@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-95106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44779D734D
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:34:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41FE9D7354
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:35:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DFB1282FC2
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3708166069
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09F83DABE1;
-	Sun, 24 Nov 2024 13:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACA33DABF9;
+	Sun, 24 Nov 2024 13:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/PCdHZX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwvi2dqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7E4233D69;
-	Sun, 24 Nov 2024 13:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273FA3DABF2;
+	Sun, 24 Nov 2024 13:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456043; cv=none; b=QIRz/khax4vqybzUSo4RAEdHznp5FJ+gQvOFTCHA1iYOJhk03qQO5SjWVjziaZbqG9O/H1NHw6iXQzDuFDH8wtJIuzIZKdd/m1U3DYsD2uInZcHpJmOChYU21RxJ6ZydwqeaCisVW6f6mYAJt60jDkQNzcpIEdmtJEBQAETpKiA=
+	t=1732456045; cv=none; b=MvfjNB3F9VaKCRwphXOZs3hnK9KujQ8L1UE04YPrn3BRyI3lt11TLSsnj3PJYHCSK7eKwGCiAIPpA1RulZjA/PA+f3V+jUlhb0aH6kxLM/4606+maV/mHwQXa1JVaqR4qOSEADpbVv/wmm7uGwjvqd2ynab3kjS4aoKMHeERVyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456043; c=relaxed/simple;
-	bh=Qhy7JANXNyHFsvnfHh6X07Ap8VC7xwwVuNn9E51Pc2M=;
+	s=arc-20240116; t=1732456045; c=relaxed/simple;
+	bh=IAZ0QUWI6Ait6vHvW2kKtuHXTus0/7hdaGQEhMfjM7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pU3pxcIAPXsvhXFmKxTxsjGAw0bTdxDkwywR+pbnzPCEc+n/6T3eSZRWhr/oV+9wr3x4AmZFx+x6/mnd5GOg2fUfG/cQGkFu+hOMrQxeO71qSNj+YLYp5NICUTthFgHea0/C4q/2ekoYE1i9FcS79TGFu0gqOq28vls03M82Q3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/PCdHZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C99C4CECC;
-	Sun, 24 Nov 2024 13:47:21 +0000 (UTC)
+	 MIME-Version; b=RcVhXzyHao1oBsiASdGLMYWuIfFlJkP6zwQcl/ysoKQX877pd3rCgEbSho75ulLAqv3tBv3K93IlneXocIsCw6COwRERWNTgH11KQBQ9m/4kaQqJK90VBBdwURImGzpOlGxkbh5BTeNwuJf2s1f26hltxgaophDjB40OOQqeDf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwvi2dqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906EBC4CED1;
+	Sun, 24 Nov 2024 13:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456043;
-	bh=Qhy7JANXNyHFsvnfHh6X07Ap8VC7xwwVuNn9E51Pc2M=;
+	s=k20201202; t=1732456045;
+	bh=IAZ0QUWI6Ait6vHvW2kKtuHXTus0/7hdaGQEhMfjM7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/PCdHZXjE7IqNBBxJU8dOSPedHqYfEK7pn1xnbGS55oj1phiLJTfSdZtXM63eJQ0
-	 OiMtMzyBtC8BRfleBG2Fhsz+uPUWwPNfCs9UZBI9Rpi4xf5QqoZRq48e589mmNcQ6V
-	 nL+9TQ3yRMofCQDwnF2UaCa6Kp437s/zjuEwLswLxm97sLnd4wbVlrEx+/HRR8pfW6
-	 10MfxnkTPZWH6xtQdiMBiRBf43DLbVkOC5Ca8aYyj53A8NM7o6dafGB3Be/zNm79cD
-	 MCe08j4Na9jxNJWXtCD1EUIbL/mtIkKXtYio4GYzw1ZwLLey8hrQoJTL5sovSQM3N1
-	 ktogV7I60/saw==
+	b=nwvi2dqaRW9ADZavg6LerKZj7QM/2TENYikPbH/5hARNwMMDt3SNwd/z3NCq5ocY7
+	 pf4s6YEs7zZT8fVHj8LjM/2za+eCJha/YUuV1Z2aIcgpyLCPomueQi03tB/JK7RRDo
+	 NOEG4BIz0NIk6lf1mBUziUYbQ/+zG14Xua454UNTb5o0gZoZygZZ3qCTe++mZIKxjU
+	 eiEuX2CYkNTvEZlGJsKpOL1859QAu5/9/ZQKbgKzRdnpbXV4ECVKWRH1lGv59eR992
+	 fNH2WpXTqjwVij1ZhyhMnvZq72YEDol2LKXf0+jtea4uii+vyVRapflcjPKmysZ0Fl
+	 yEtpLL8ePPpwA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,15 +49,16 @@ Cc: Simon Horman <horms@kernel.org>,
 	Daniel Machon <daniel.machon@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	pantelis.antoniou@gmail.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	u.kleine-koenig@baylibre.com,
+	linuxppc-dev@lists.ozlabs.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 16/61] net: fec_mpc52xx_phy: Use %pa to format resource_size_t
-Date: Sun, 24 Nov 2024 08:44:51 -0500
-Message-ID: <20241124134637.3346391-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 17/61] net: ethernet: fs_enet: Use %pa to format resource_size_t
+Date: Sun, 24 Nov 2024 08:44:52 -0500
+Message-ID: <20241124134637.3346391-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
 References: <20241124134637.3346391-1-sashal@kernel.org>
@@ -74,7 +75,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 020bfdc4ed94be472138c891bde4d14241cf00fd ]
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
 The correct format string for resource_size_t is %pa which
 acts on the address of the variable to be formatted [1].
@@ -85,9 +86,9 @@ Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
 
 Flagged by gcc-14 as:
 
-drivers/net/ethernet/freescale/fec_mpc52xx_phy.c: In function 'mpc52xx_fec_mdio_probe':
-drivers/net/ethernet/freescale/fec_mpc52xx_phy.c:97:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-   97 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
       |                                             ~^   ~~~~~~~~~
       |                                              |      |
       |                                              |      resource_size_t {aka long long unsigned int}
@@ -101,26 +102,26 @@ Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
 Signed-off-by: Simon Horman <horms@kernel.org>
 Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-1-dcc9afb8858b@kernel.org
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_mpc52xx_phy.c | 2 +-
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-index 39689826cc8ff..ce253aac5344c 100644
---- a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-+++ b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-@@ -94,7 +94,7 @@ static int mpc52xx_fec_mdio_probe(struct platform_device *of)
- 		goto out_free;
- 	}
- 
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index f965a2329055e..2f4442072d059 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
 -	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
 +	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
- 	bus->priv = priv;
  
- 	bus->parent = dev;
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
 -- 
 2.43.0
 
