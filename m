@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-94850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5124E9D6FAA
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:16:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824089D6FAC
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0609280FF4
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:16:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43BDB2812E2
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA921DFD89;
-	Sun, 24 Nov 2024 12:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0401DFE1C;
+	Sun, 24 Nov 2024 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkAkrakP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCqnE0Gk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161801DF995;
-	Sun, 24 Nov 2024 12:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FB21AC882;
+	Sun, 24 Nov 2024 12:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452796; cv=none; b=isakSFDv93fh68a+05hwv0hR3KwLy0ojhHnG7sk/82kUALRvf6Qa93kp39sewRL9wrXRVIFXXv1cSw+MhIeQOWtGx2mWUfSx2zfQ7eZ9tBH85PTmSMy3fIxHxhdYUyEEjfBZqK+l4SXMPCtp9BFlRFzJgGgNcYzP+8OVJukzbD4=
+	t=1732452813; cv=none; b=soAzq15J3uTV9zfydKSvaQZiiwegRnS7uJ48Du58CzBoGoYkLlU4OxaBRRtSgqj27C0wleLjRlpdcKkt3DLc3wUmVDoEzbyLE6PQdL34sdRPjp6S1FELdCykke9wgmgDjThUbXdZhbVXZPZnKN0SSPLzkKRPP+ZmGoruFxl0FG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452796; c=relaxed/simple;
-	bh=u+V4ZwMWattHbE2lijblnBZNyGlEbljdrTzGLrj4FCc=;
+	s=arc-20240116; t=1732452813; c=relaxed/simple;
+	bh=CQj7Ah5AyiraJ7TPu2782qx7eULz3rfKD1EQg3BvFmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElyqDXhH6LTYr2J1kt3RTSGiGj5kGlhrxK1MeTnyaD4UM8wruFQWaLAPt9tcu6hxcsnY6U+QYetjO/uZr2AX88/s54+TbxIwQ5sFWRBaAdxa5feXXum3+zw4mQpfFCvzbVYTbkKqAujr6K0R3PheOYIw9e2a46iNd3ngirE4Vho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkAkrakP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BD6C4CECC;
-	Sun, 24 Nov 2024 12:53:14 +0000 (UTC)
+	 MIME-Version; b=bjU7bbojqrCBzdq7MEmT8YiXgdV6cr097t64Bs1RaTygKw+G3iLhtFVks8u9NTTY3XyPqlnJgcDpp7h5kyV+m2Nk3d4xgeGbeVI052tCNvdz3HG3PQNl9rAssLUDwcEi7pg5P7kUj/zHu098kcYkAn1W+GSCZ5qe8IklUmuIn54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCqnE0Gk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3402DC4CECC;
+	Sun, 24 Nov 2024 12:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452795;
-	bh=u+V4ZwMWattHbE2lijblnBZNyGlEbljdrTzGLrj4FCc=;
+	s=k20201202; t=1732452813;
+	bh=CQj7Ah5AyiraJ7TPu2782qx7eULz3rfKD1EQg3BvFmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkAkrakPXYW6meXXhgSMKB602vi7wyScgZrGaqpfQMKg+CUWVKWeutE2z+/R9966P
-	 RyN3uicgIGVTdmQB9gXUooMzOz2A/vLNuK+lu3Nr/CTYsXS1JBGLkPw/2KfHwyrNMN
-	 3Mf/57q/mf6i1Hrd2r4h8r25Cn/eD4IcI9oWMwHK9+A63IfsC16LEHUkAl3vgwkAM5
-	 Gsa6OrvTimkC6jA1yGNSQODxD57i/0p5ebvAFwtyt/H5TeVfjpdEYL4xipmSL5aQ22
-	 QQZE/nm22u8IsEkdOjrxjbt/wqJMnj3rdeFktnZfStLkQ/zfgVtgc/tDTbKtA2lcq0
-	 c5ughLpqs15xQ==
+	b=bCqnE0Gk/76AB1IbH747C+ODkhdIh7TwX0LIPA6QPdb/lcWQBVJltlf9dsZ2SPs7c
+	 KIV3vnk9Ofg1jGxl6WcQWQJEIIcwZRA/T11QDsBqWuGGIOM3QR2ukob9TG5d4JYyyJ
+	 aoQ2NlG6N6C7GM46zG5PBzxdWC34jZ9IKbc5c9iHyOMxN6inmaw3k+B/KK8iM/SPhi
+	 qER93+SY+iL7O6y/4cULjTN1NbqlBY8thkd+JJl6WufyTdViU0DIeHq4l3AoASlj8e
+	 Fu6w7lK426snLE/UP1lDXah6U+W5VcLILGE96Sr1mkaeYYLjTxT0iSjgh9L5KP6uS7
+	 dRkIW6ddmWyFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Tissoires <bentiss@kernel.org>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
+Cc: Dmitry Perchanov <dmitry.perchanov@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/16] HID: add per device quirk to force bind to hid-generic
-Date: Sun, 24 Nov 2024 07:52:20 -0500
-Message-ID: <20241124125311.3340223-2-sashal@kernel.org>
+	mchehab@kernel.org,
+	hverkuil@xs4all.nl,
+	sakari.ailus@linux.intel.com,
+	jacopo.mondi@ideasonboard.com,
+	naush@raspberrypi.com,
+	jeanmichel.hautbois@ideasonboard.com,
+	benjamin.gaignard@collabora.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/16] media: v4l: Add luma 16-bit interlaced pixel format
+Date: Sun, 24 Nov 2024 07:52:21 -0500
+Message-ID: <20241124125311.3340223-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124125311.3340223-1-sashal@kernel.org>
 References: <20241124125311.3340223-1-sashal@kernel.org>
@@ -67,78 +73,145 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Dmitry Perchanov <dmitry.perchanov@intel.com>
 
-[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
+[ Upstream commit a8f2cdd27d114ed6c3354a0e39502e6d56215804 ]
 
-We already have the possibility to force not binding to hid-generic and
-rely on a dedicated driver, but we couldn't do the other way around.
+The formats added by this patch are:
 
-This is useful for BPF programs where we are fixing the report descriptor
-and the events, but want to avoid a specialized driver to come after BPF
-which would unwind everything that is done there.
+        V4L2_PIX_FMT_Y16I
 
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Interlaced lumina format primary use in RealSense Depth cameras with
+stereo stream for left and right image sensors.
+
+Signed-off-by: Dmitry Perchanov <dmitry.perchanov@intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/568efbd75290e286b8ad9e7347b5f43745121020.camel@intel.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c    | 5 +++--
- drivers/hid/hid-generic.c | 3 +++
- include/linux/hid.h       | 2 ++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ .../userspace-api/media/v4l/pixfmt-y16i.rst   | 73 +++++++++++++++++++
+ .../userspace-api/media/v4l/yuv-formats.rst   |  1 +
+ drivers/media/v4l2-core/v4l2-ioctl.c          |  1 +
+ include/uapi/linux/videodev2.h                |  1 +
+ 4 files changed, 76 insertions(+)
+ create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 1467c5a732db4..558f3988fb2cf 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2607,9 +2607,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
- 	/*
- 	 * hid-generic implements .match(), so we must be dealing with a
- 	 * different HID driver here, and can simply check if
--	 * hid_ignore_special_drivers is set or not.
-+	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
-+	 * are set or not.
- 	 */
--	return !hid_ignore_special_drivers;
-+	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
- }
- 
- static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
-diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
-index f9db991d3c5a2..88882c1bfffe7 100644
---- a/drivers/hid/hid-generic.c
-+++ b/drivers/hid/hid-generic.c
-@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
- 	if (ignore_special_driver)
- 		return true;
- 
-+	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
-+		return true;
+diff --git a/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst b/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
+new file mode 100644
+index 0000000000000..74ba9e910a38f
+--- /dev/null
++++ b/Documentation/userspace-api/media/v4l/pixfmt-y16i.rst
+@@ -0,0 +1,73 @@
++.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
 +
- 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
- 		return false;
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 3b08a29572298..af55a25db91b0 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -359,6 +359,7 @@ struct hid_item {
-  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
-  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
-  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
-+ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
-  * | @HID_QUIRK_FULLSPEED_INTERVAL:
-  * | @HID_QUIRK_NO_INIT_REPORTS:
-  * | @HID_QUIRK_NO_IGNORE:
-@@ -384,6 +385,7 @@ struct hid_item {
- #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
- #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
- #define HID_QUIRK_NOINVERT			BIT(21)
-+#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
- #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
- #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
- #define HID_QUIRK_NO_IGNORE			BIT(30)
++.. _V4L2-PIX-FMT-Y16I:
++
++**************************
++V4L2_PIX_FMT_Y16I ('Y16I')
++**************************
++
++Interleaved grey-scale image, e.g. from a stereo-pair
++
++
++Description
++===========
++
++This is a grey-scale image with a depth of 16 bits per pixel, but with pixels
++from 2 sources interleaved and unpacked. Each pixel is stored in a 16-bit word
++in the little-endian order. The first pixel is from the left source.
++
++**Pixel unpacked representation.**
++Left/Right pixels 16-bit unpacked - 16-bit for each interleaved pixel.
++
++.. flat-table::
++    :header-rows:  0
++    :stub-columns: 0
++
++    * - Y'\ :sub:`0L[7:0]`
++      - Y'\ :sub:`0L[15:8]`
++      - Y'\ :sub:`0R[7:0]`
++      - Y'\ :sub:`0R[15:8]`
++
++**Byte Order.**
++Each cell is one byte.
++
++.. flat-table::
++    :header-rows:  0
++    :stub-columns: 0
++
++    * - start + 0:
++      - Y'\ :sub:`00Llow`
++      - Y'\ :sub:`00Lhigh`
++      - Y'\ :sub:`00Rlow`
++      - Y'\ :sub:`00Rhigh`
++      - Y'\ :sub:`01Llow`
++      - Y'\ :sub:`01Lhigh`
++      - Y'\ :sub:`01Rlow`
++      - Y'\ :sub:`01Rhigh`
++    * - start + 8:
++      - Y'\ :sub:`10Llow`
++      - Y'\ :sub:`10Lhigh`
++      - Y'\ :sub:`10Rlow`
++      - Y'\ :sub:`10Rhigh`
++      - Y'\ :sub:`11Llow`
++      - Y'\ :sub:`11Lhigh`
++      - Y'\ :sub:`11Rlow`
++      - Y'\ :sub:`11Rhigh`
++    * - start + 16:
++      - Y'\ :sub:`20Llow`
++      - Y'\ :sub:`20Lhigh`
++      - Y'\ :sub:`20Rlow`
++      - Y'\ :sub:`20Rhigh`
++      - Y'\ :sub:`21Llow`
++      - Y'\ :sub:`21Lhigh`
++      - Y'\ :sub:`21Rlow`
++      - Y'\ :sub:`21Rhigh`
++    * - start + 24:
++      - Y'\ :sub:`30Llow`
++      - Y'\ :sub:`30Lhigh`
++      - Y'\ :sub:`30Rlow`
++      - Y'\ :sub:`30Rhigh`
++      - Y'\ :sub:`31Llow`
++      - Y'\ :sub:`31Lhigh`
++      - Y'\ :sub:`31Rlow`
++      - Y'\ :sub:`31Rhigh`
+diff --git a/Documentation/userspace-api/media/v4l/yuv-formats.rst b/Documentation/userspace-api/media/v4l/yuv-formats.rst
+index 24b34cdfa6fea..78ee406d76479 100644
+--- a/Documentation/userspace-api/media/v4l/yuv-formats.rst
++++ b/Documentation/userspace-api/media/v4l/yuv-formats.rst
+@@ -269,5 +269,6 @@ image.
+     pixfmt-yuv-luma
+     pixfmt-y8i
+     pixfmt-y12i
++    pixfmt-y16i
+     pixfmt-uv8
+     pixfmt-m420
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index f4d9d62790940..436935fe14bdd 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -1314,6 +1314,7 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
+ 	case V4L2_PIX_FMT_IPU3_Y10:	descr = "10-bit greyscale (IPU3 Packed)"; break;
+ 	case V4L2_PIX_FMT_Y8I:		descr = "Interleaved 8-bit Greyscale"; break;
+ 	case V4L2_PIX_FMT_Y12I:		descr = "Interleaved 12-bit Greyscale"; break;
++	case V4L2_PIX_FMT_Y16I:		descr = "Interleaved 16-bit Greyscale"; break;
+ 	case V4L2_PIX_FMT_Z16:		descr = "16-bit Depth"; break;
+ 	case V4L2_PIX_FMT_INZI:		descr = "Planar 10:16 Greyscale Depth"; break;
+ 	case V4L2_PIX_FMT_CNF4:		descr = "4-bit Depth Confidence (Packed)"; break;
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 78260e5d9985f..184824ce75330 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -793,6 +793,7 @@ struct v4l2_pix_format {
+ #define V4L2_PIX_FMT_S5C_UYVY_JPG v4l2_fourcc('S', '5', 'C', 'I') /* S5C73M3 interleaved UYVY/JPEG */
+ #define V4L2_PIX_FMT_Y8I      v4l2_fourcc('Y', '8', 'I', ' ') /* Greyscale 8-bit L/R interleaved */
+ #define V4L2_PIX_FMT_Y12I     v4l2_fourcc('Y', '1', '2', 'I') /* Greyscale 12-bit L/R interleaved */
++#define V4L2_PIX_FMT_Y16I     v4l2_fourcc('Y', '1', '6', 'I') /* Greyscale 16-bit L/R interleaved */
+ #define V4L2_PIX_FMT_Z16      v4l2_fourcc('Z', '1', '6', ' ') /* Depth data 16-bit */
+ #define V4L2_PIX_FMT_MT21C    v4l2_fourcc('M', 'T', '2', '1') /* Mediatek compressed block mode  */
+ #define V4L2_PIX_FMT_MM21     v4l2_fourcc('M', 'M', '2', '1') /* Mediatek 8-bit block mode, two non-contiguous planes */
 -- 
 2.43.0
 
