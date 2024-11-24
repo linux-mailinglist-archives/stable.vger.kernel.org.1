@@ -1,162 +1,114 @@
-Return-Path: <stable+bounces-94694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918239D6D82
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 11:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B51D29D6DBA
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 11:47:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C9C5B20F8B
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 10:05:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6837CB2101C
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 10:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BC318A6DF;
-	Sun, 24 Nov 2024 10:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E671836D9;
+	Sun, 24 Nov 2024 10:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="A0CZfEhQ"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="evH6d2ll"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC6018870B
-	for <stable@vger.kernel.org>; Sun, 24 Nov 2024 10:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED86BA38
+	for <stable@vger.kernel.org>; Sun, 24 Nov 2024 10:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732442716; cv=none; b=ePZzDjeQCD3nbP1x17MIogLt6JVUoTSgPhdXuujKmKtVk8p8/N+CKMHOFlpMlm1VbIGyeeKZzDB46RoNQjXWvsC9XJw0xVjUSaNtQYBHZc2dTJ8g2lUOnvTi17ePV/UCGUzLbSSiYQ5RSLduoRTWV/9YVBNvSM6NfBts0P42jdw=
+	t=1732445270; cv=none; b=SAlQstLT4v26ZmAZURgztAnz2NuTK16+/+k+Y0EwVEdUWdGCcmWNKvG7qe/ktyM/jkgZ71QHA0KZmMQSIbtR7rOMXrKp1dcKIS/biv10BGmqzP0EUR33WCbpXt7j8YRfl6cf4U/dK0MkHRJvOsN2opY1Z4tilOhnncyaP9CkG8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732442716; c=relaxed/simple;
-	bh=00GKzIkIov7sWC7YYf/fsmzjuTtHwftcYafHQRVNIQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFD+92sC8ibiVed1LSNEzTEZLlG1z5J6dwgJQLjOOX+cusnJWebVw1GSwYdCMUov9U5dCypqbRr/SJpXTPODAq7zHkdzgcFBY3deIAeyUW/RJXGx0mOdbCjsUPrTU3YV//p5pAqqjsDufLl7SMZv+jFJua1ea87xZNqvyKRD1fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=A0CZfEhQ; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa543c4db92so73574966b.0
-        for <stable@vger.kernel.org>; Sun, 24 Nov 2024 02:05:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1732442712; x=1733047512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lk2GE1arbul51a1ynLU7Q9xhqGMt1ZdTPnPwO47t9KY=;
-        b=A0CZfEhQgZuNQ8XUXPzjnRT3zv6xBUgrbIEApsB8YDOs+8YIt6aLdgPxacHdQ6fGrE
-         4rbfMu2q8qqYnuLIAR1xVGQ9TpkMSD0a2KZh3sQp6U8s85NT1p6PzRiDkCkcxacIPULI
-         PpyvC6I2LjBos1zcw2mVC3LUUUKHC7J65nGvJZfOsfIeULRJyQyWZxMRcDKWVhB8hCG3
-         jyJM+Ee0ouYLEjtxx49p3j3PxwwUv75dSK0CSD725e4iBtgnBuarA8bLlmM/ZWv+uNTR
-         FiJGb/+P4PLKzu9MD7zgH900QuuWIWC04chcWChMeq5TUNYpN6x14sCDQiQf1UNgirm2
-         JSrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732442712; x=1733047512;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lk2GE1arbul51a1ynLU7Q9xhqGMt1ZdTPnPwO47t9KY=;
-        b=kZTzKJH9+lgWtFgzW2MzSWX1ZE/jlun3yafCrtq8Vcbup4rhEGRQUcaamRL/QOZ2MV
-         2lRz0VZWf1Am9JDZlurwfhSZ0xTcYatGbpDXka/AgYRo/Vzd4SR8TDTWdoMWPTCAef8F
-         ZtXVMrNos5U8h4RQipwlxOurVdwDicBPG1msJ7jXoGHBRBSolFCYl6KxdmwyHne8WzSh
-         Hv5VyUghFe7hwqo8DHtBcJlSoEZRleT37GI3m1PmTsTBalRbKMqxPFL75GKJmMiHt6Fv
-         b5CRmJmBlTcCUBMGKe5VHtSEKASI/alZWJcAr08s/x2IOObE0G4G5GP/KP9A6W7kW+A2
-         uRoA==
-X-Gm-Message-State: AOJu0YwTmd7umn3DT5aG50eDhgK8Ct/m5blX1T1f5MIGVi2P8P9OozTP
-	P+pHJf5wLjkhxht9IE143DFkgwbth5QErJi9rkGN4x9sJl4bTs6FrUlS4iaChVw=
-X-Gm-Gg: ASbGncvaXSdLPeHdqOt+AvesSpZSYW6xZcDJ6h5gzqLfGvZfaN8s5lm3/W1Q/ykyCm8
-	whkFcfgc2CTo1hDRX6Il1IsfwDrxkGMuUc45HQF879gFQtjb/opK4bKCWuB4aKNuWNBoSH9Yjgg
-	FfnGgN1yKYtDr6VyYDSzRCkNOsmxmEcAigBDY+Zv7L7cYyrYuRH/Lknl90/JXjRCzIh1Okt6K+x
-	D9MRJnD630n28RFyZ8lvmU5QX2hTql4pzxIOHUwHh6p6WJro9fLH1kIVi+VlsBXWCo+wnuRpfoy
-	9W91eEr8n+S38LCfXirM
-X-Google-Smtp-Source: AGHT+IHzhjRJgC4zyn46rADf4coPj01YWTVyf6AHNKqiCSQA366o1m7GZGOpC6OvPXD6QZ4IdkHEbQ==
-X-Received: by 2002:a17:907:770d:b0:aa5:29ef:3aa6 with SMTP id a640c23a62f3a-aa529ef3b9fmr468828366b.23.1732442711875;
-        Sun, 24 Nov 2024 02:05:11 -0800 (PST)
-Received: from localhost (host-79-49-220-127.retail.telecomitalia.it. [79.49.220.127])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b57bda2sm325822466b.146.2024.11.24.02.05.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Nov 2024 02:05:11 -0800 (PST)
-From: Andrea della Porta <andrea.porta@suse.com>
-To: Andrea della Porta <andrea.porta@suse.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczynski <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2 2/2] of: address: Preserve the flags portion on 1:1 dma-ranges mapping
-Date: Sun, 24 Nov 2024 11:05:37 +0100
-Message-ID: <e51ae57874e58a9b349c35e2e877425ebc075d7a.1732441813.git.andrea.porta@suse.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1732441813.git.andrea.porta@suse.com>
-References: <cover.1732441813.git.andrea.porta@suse.com>
+	s=arc-20240116; t=1732445270; c=relaxed/simple;
+	bh=NKcvrgQblVhpCWvZpJql03YBkg3PZMqQ1bsWOZP46cE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Y2dQ+xf6MZqNclS9B9doWQPTX4vd4IV/HvqKMU5taB4qhZWTD8gPJiyAfKE87lO1O5MqHzXhLl2QF3eEszuAKpGqG5ID53fPvnnCB5Gp61NKZ5cZXssoKHpipvIMtwP1ysopgoDgO43JUkO/YPuHelfcPUXGwUMM13Z9Sij2kkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=evH6d2ll; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 76D11A037C;
+	Sun, 24 Nov 2024 11:47:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=90GNKDec0+zVp9FDEDmd
+	gu4rNvbDtjbCT/v8UZRI17I=; b=evH6d2llLG6+aSi8GoLgAeyz1uMmTJZmUcDB
+	g9bUF3Oxb/0bIqRgtlV4XWAmNhty/qyJgyAf16R8YMTN1+xayKp4R4RIJ6wqbTOy
+	omB4tan8/dEm4Tp6vRU1Hm6JH5+vGwt4DHF4vkAb6Xs87l8HPIgweStLNMr3zgeT
+	3wMsGqPmS+E7v22QjfdCsnY6yXD2VYHWMWDzRQaRq8OkW5/WbN8CYhx5CwnStLxC
+	Hs3YZZ6s/94yNqdXkfTb4Ek6T/SVMCtiXzdT2+IRCowuLmXypBj/SlpZcdCHy6hv
+	sjoBJHNFMj6NQMyMcSemzJF7JaPACSpWljLh8VNGWPr9AP1y5d6CC0pbp5a0OXDs
+	jXze449nSVHW7Rs58ithJpLhCh9rGzVKVt8t6dJYF6SP4MkWW5WMEblBEyUSsCSo
+	9yBcv7+l7y4htCBoJ0dJrjLs2Aznge11+jEYWviQSFMfAR6Dp64/yrq9KNumwzkA
+	C3jWWhVQF5lwr5ZxJFvJctL0+OPjdbFgGylRra101vxFyklbo1P9jfqUvoxoY42v
+	zIJXxJnla2Y+elmoJLYoWwfHrXOANv6vQv7e6LMB6LM9hfjNSx+NCnTzXb6i8wWn
+	hJxf1xSBEM0BQNSJgXGKyB3zjOH9+jbg1BWr09UQP7LW0dOils098zCRk/Wgw6xf
+	lgkXNqM=
+Message-ID: <fa9bdf83-cfbc-4d80-b4c3-dc04d2e89857@prolan.hu>
+Date: Sun, 24 Nov 2024 11:47:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 1/3] net: fec: Move `fec_ptp_read()` to the top of the
+ file
+To: Sasha Levin <sashal@kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20241122083920-54de22158a92c75d@stable.kernel.org>
+ <30b031c5-b3f4-44e4-9217-c364651ab28e@prolan.hu> <Z0HoasOBIo1y_vjc@sashalap>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <Z0HoasOBIo1y_vjc@sashalap>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94855607D67
 
-A missing or empty dma-ranges in a DT node implies a 1:1 mapping for dma
-translations. In this specific case, the current behaviour is to zero out
-the entire specifier so that the translation could be carried on as an
-offset from zero. This includes address specifier that has flags (e.g.
-PCI ranges).
+On 2024. 11. 23. 15:36, Sasha Levin wrote:
+> On Fri, Nov 22, 2024 at 02:56:40PM +0100, Csókás Bence wrote:
+>> Hi,
+>>
+>> On 2024. 11. 22. 14:51, Sasha Levin wrote:
+>>> [ Sasha's backport helper bot ]
+>>>
+>>> Hi,
+>>>
+>>> Found matching upstream commit: 4374a1fe580a14f6152752390c678d90311df247
+>>>
+>>> WARNING: Author mismatch between patch and found commit:
+>>> Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= 
+>>> <csokas.bence@prolan.hu>
+>>> Commit author: Csókás, Bence <csokas.bence@prolan.hu>
+>>>
+>>>
+>>> Status in newer kernel trees:
+>>> 6.12.y | Present (exact SHA1)
+>>> 6.11.y | Present (different SHA1: 97f35652e0e8)
+>>> 6.6.y | Present (different SHA1: 1e1eb62c40e1)
+>>
+>> 1/3 and 2/3 of this series was already applied by Greg, only 3/3 was not.
+>>
+>> commit: bf8ca67e2167 ("net: fec: refactor PPS channel configuration")
+> 
+> Dare I ask why we need it to begin with? Commit message says:
+> 
+>      Preparation patch to allow for PPS channel configuration, no 
+> functional
+>      change intended.
 
-Once the flags portion has been zeroed, the translation chain is broken
-since the mapping functions will check the upcoming address specifier
-against mismatching flags, always failing the 1:1 mapping and its entire
-purpose of always succeeding.
+We have patches that depend on it, that we need to maintain on top of 6.6.y.
 
-Set to zero only the address portion while passing the flags through.
-
-Fixes: dbbdee94734b ("of/address: Merge all of the bus translation code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-Tested-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/of/address.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 286f0c161e33..b3479586bd4d 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -455,7 +455,8 @@ static int of_translate_one(struct device_node *parent, struct of_bus *bus,
- 	}
- 	if (ranges == NULL || rlen == 0) {
- 		offset = of_read_number(addr, na);
--		memset(addr, 0, pna * 4);
-+		/* set address to zero, pass flags through */
-+		memset(addr + pbus->flag_cells, 0, (pna - pbus->flag_cells) * 4);
- 		pr_debug("empty ranges; 1:1 translation\n");
- 		goto finish;
- 	}
--- 
-2.35.3
+Bence
 
 
