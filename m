@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-95202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB8F9D7425
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:00:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533679D7671
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:13:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2019A166598
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:00:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AB8B356C5
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDD519DF66;
-	Sun, 24 Nov 2024 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A3C1E260B;
+	Sun, 24 Nov 2024 13:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="syWNvvrU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hp1K5VjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA671F95BC;
-	Sun, 24 Nov 2024 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801101E2605;
+	Sun, 24 Nov 2024 13:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456345; cv=none; b=QErnIc/2Y3B9z9iu/YMeeBxEO4/DON47sAJXwovgLrlnwyP+g9akU1YT0Ll0MYg2dYzmMDIUFJL5Wiylqv6f5M1WvpVUTXXv+heDpssH3T78465D2OQThai+T8cM5PE5wWBgdLPx8KP5ukCVGTVA9H6HLSW927Rnj4hqpUkRbvk=
+	t=1732456347; cv=none; b=AUjTtFGefRaQADRIl9PnsrJ4/UwoU6rDYYwJAclliacFew/8wFO1GZFuh2UWbNd6WW0e5TkcOVU5zJyrAGAhUmGRrBCLjrYaIcirx1PUIHB3nmi7T/XsQspiKJpMLDw1IJSRmdLor/DnT0w+8+cBlo2f7jMLUq3lSLzKLvvZXb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456345; c=relaxed/simple;
-	bh=9JaCCIdUZHjSxva3xUAum/147aWyXEHfeQTyh23xfpE=;
+	s=arc-20240116; t=1732456347; c=relaxed/simple;
+	bh=+dGWbWYce8ne2vfZcQ4Aogy79GqVwJep0ojU6GjFDwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Knb3W6YnPpYAkBd3eLpUIc+0UIpRCWwBLRJWlGCQmZODndE0fUueib/ofxMG17kDvEZJgtYTl/CUx2ftVHwPyEs0kXmkpv6/euJ7lsQOeWqa9wDQ1biIOUtyZifYgb0ruvszl1y0DE9Fd1nRmlowoxRogzdJeRn5BTtgtUSHtKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=syWNvvrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17682C4CED1;
-	Sun, 24 Nov 2024 13:52:23 +0000 (UTC)
+	 MIME-Version; b=rqiE5QIvl8RD3p0BvAHAU2xB8/r4XKRHPgR+BfZ6ve9kNmPJtkFeYx46PxWEITj44Ep8la+52cDFVCapFI90PYtBahDK1uGaMGCU1aDwSyQZX3jmbYHeoZh/gY1ZBUWzrxZsbO6NE/4EOdyU/gRqBFXxpoiSWvHdasUCibqVYNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hp1K5VjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37F1C4CED6;
+	Sun, 24 Nov 2024 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456345;
-	bh=9JaCCIdUZHjSxva3xUAum/147aWyXEHfeQTyh23xfpE=;
+	s=k20201202; t=1732456347;
+	bh=+dGWbWYce8ne2vfZcQ4Aogy79GqVwJep0ojU6GjFDwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=syWNvvrUEczx3hKDzQC5u9lUImL0bcHWZXA5W7p4Yq+7LpuvLPgv8ehWrEDRxWRdN
-	 0lyEdN9x10/PeDr2HXlLT2wtsovWkzvHvAZbVoHcP2f5RJhiiHtbJoeXH9l7ierA04
-	 DK909fL8KHG/cMGIOt2pFZbKF/WqcNOspr6l09imV0qfZrsOJLMHzjNkZ0uuATFeMu
-	 7Tiudhq/bUQmUxt4wk5u/AMDNB17IdMKI9RiJp8UiM6Ob/j4a+Uf0KnxgChCtmbIl5
-	 SqM0KM9eEEuHEsGSu1nNutToqJw9cU6uyouxo8pMap+SeTq7/jxcclem0tSHZt7ohG
-	 IWMGNfEwHZPQg==
+	b=Hp1K5VjBF8OctOhx40QJnvcFGanun07XTFSq3tBZ4Cz+4kdwIfxGi+TfF6HGP5C2K
+	 UkprOhv/dY0lpASUQN11CxHRXPWSrooKDkVO21DAEoOgyMnTsdXofRIfe7MMiq17lR
+	 AXyx+PQHlMt8lTmO8pBGJ1LMp5cSVKHg9vYytL0aZQzjBrBWU7VOgJOcZO9bmuJtm0
+	 eZjGkWw2ikpZmYuiXfjTEVKqigspsKcWsOb8HK4ZYV8s77tdonHzKAOBqjRhIQWJ/v
+	 bOZoqc4UzIitFURUDiBGtQ3TX0+AKhDdayOuppBekkBOjbY5jeQGxKGF8ZfcyPrkYd
+	 Ujb3boSYPHlfw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Liao Chen <liaochen4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 03/36] drm/mcde: Enable module autoloading
-Date: Sun, 24 Nov 2024 08:51:17 -0500
-Message-ID: <20241124135219.3349183-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 04/36] drm/radeon/r600_cs: Fix possible int overflow in r600_packet3_check()
+Date: Sun, 24 Nov 2024 08:51:18 -0500
+Message-ID: <20241124135219.3349183-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135219.3349183-1-sashal@kernel.org>
 References: <20241124135219.3349183-1-sashal@kernel.org>
@@ -71,34 +70,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
+[ Upstream commit a1e2da6a5072f8abe5b0feaa91a5bcd9dc544a04 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+It is possible, although unlikely, that an integer overflow will occur
+when the result of radeon_get_ib_value() is shifted to the left.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Avoid it by casting one of the operands to larger data type (u64).
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mcde/mcde_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/r600_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
-index e60566a5739c7..be14d7961f2e4 100644
---- a/drivers/gpu/drm/mcde/mcde_drv.c
-+++ b/drivers/gpu/drm/mcde/mcde_drv.c
-@@ -475,6 +475,7 @@ static const struct of_device_id mcde_of_match[] = {
- 	},
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, mcde_of_match);
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 6ade5dd470d5f..7fe2c49854987 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -2106,7 +2106,7 @@ static int r600_packet3_check(struct radeon_cs_parser *p,
+ 				return -EINVAL;
+ 			}
  
- static struct platform_driver mcde_driver = {
- 	.driver = {
+-			offset = radeon_get_ib_value(p, idx+1) << 8;
++			offset = (u64)radeon_get_ib_value(p, idx+1) << 8;
+ 			if (offset != track->vgt_strmout_bo_offset[idx_value]) {
+ 				DRM_ERROR("bad STRMOUT_BASE_UPDATE, bo offset does not match: 0x%llx, 0x%x\n",
+ 					  offset, track->vgt_strmout_bo_offset[idx_value]);
 -- 
 2.43.0
 
