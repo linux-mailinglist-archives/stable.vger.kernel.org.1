@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-95246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A0A9D7488
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:11:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CDB9D748A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34662282F3B
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:11:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86342845C4
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514C71FC119;
-	Sun, 24 Nov 2024 13:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CDD2429FC;
+	Sun, 24 Nov 2024 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIH+/sZP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ScuGeRtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38721FC118;
-	Sun, 24 Nov 2024 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B22429F2;
+	Sun, 24 Nov 2024 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456472; cv=none; b=VeLSfIODKT3v1rlNBSjp6RfuqNX8ewpP1SLdGlvbBCRsQuzLr6CBklh60f+IGmwFLVccAr+tWhlFUd1h4nHzfwsG7UynTFUFzbIV+nzoAiGBFkofJrazFJmbP9gvXOsfwF4pA2QKWPDPh01+PorcdP4954HWl+cI2kwNwhpR3Mk=
+	t=1732456473; cv=none; b=f8pfODBiZ86awIaUhLUeowsWVpTM3pILs4/eEDWNR7w+xMvg3NXBYcrpBdFEmZOI64E0ODv6IXqrqPqF2dPSAPPYZuKQm51ArB6zAuqIZLeLpPFoTKB2Zy+QRS7TPA+nBcVLM90+d6jbHVsv46p7G9+Jk8hQ0GdvATDf5BTbN+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456472; c=relaxed/simple;
-	bh=BX53M5ImCt7cmLZgxt6msll3beRVbgYBYhHYm0vhaHg=;
+	s=arc-20240116; t=1732456473; c=relaxed/simple;
+	bh=FdEuquO+BMJ7NLsyf8rIrSzWWVSJsKTgjOe5gfM1TU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CANOkfcT8otTfGwx0nv5CaJUcQmCFxbZImMf0xkuWhp/1WWFESEhRH+Y150AXlVd1/ymeEqUBywd0EZ3VJOAfUDVHb4KAAlD4uhbqt/Muot+1kObM3Kmo0KWJzp/m7pOGngJrmpZ/M8HmOPCiY2jwxieny3dtN5E9CwIBH8aM1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIH+/sZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5990C4CED1;
-	Sun, 24 Nov 2024 13:54:30 +0000 (UTC)
+	 MIME-Version; b=Qi48Cv2x6GC1ryzQVB75Til4szA9nDP/K8W4dFMdN/LRkQWydeK04SyHQYQGwCO13gOl16e7JxpcvyzEF17HFP2fgXempL3RPiImjJnwGLsavN0eUwm1ngj9CBs5bswuBVVYxYm+46/RNDEnseDm3TejV0WTrS/KkUlwsHuis0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ScuGeRtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CBAC4CECC;
+	Sun, 24 Nov 2024 13:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456471;
-	bh=BX53M5ImCt7cmLZgxt6msll3beRVbgYBYhHYm0vhaHg=;
+	s=k20201202; t=1732456473;
+	bh=FdEuquO+BMJ7NLsyf8rIrSzWWVSJsKTgjOe5gfM1TU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIH+/sZPtWD85wEV5Kx8NxKm4TCYzeKDtKh0XC7MCzgyMF7o72Fj7uAv/WJUXZvNk
-	 GzNOd/cEcYI2qL7rGE+95sr6ji7Zv4fNUaZVpfSR+XiOSnHpLtLfChZ93N6lNtObrz
-	 KmYySxoAnD8g0twMQfOXKAw/yuM3Z9NGeCUMfeo3qqdqEuvzqzeRwJNig1BztUR06n
-	 Z3hiLz7Qcj/oY6VEx/n1WJ7xQJs89Gy+E5gE1gViFq7SC8E+k31Dc7cwsMeRzYhGIg
-	 jjCb7dxZl9trs0Vmt4MTqHp7nIRCs2VYiCd4od9gy19GguYGO7E2IIjbPs5bcvbSCz
-	 q+qITAP3Qx7wg==
+	b=ScuGeRtrNiRLZoFkeyWfjmwWZsZbHXY1jnTOojUVISjA3kwa2jFibtoNeSp9S2Hlu
+	 8X2FThyr9uqb4MvaeFWt0cuEX6cfIighPlsQiM5slFOICYMtIByK1mBb/BzY8IrdAw
+	 NJcWaZoM/XIgRB1sBkc4Su8FsHV1FMqIOaTeTkJnqyZfTJScNkQOpfolpHm8WcDleh
+	 phSspBta+gxa0Bn/DUeqpKuv4zwpWRm+xsHDuMUS5p/im3fEy3JfGkBqyzOzVwpdIw
+	 O4bl8fFwTAG9tuLXgXdFDghOg1xJYiokUck6Lt8scBt4ZGEYY/ygi8Ogb+30GjbyZ1
+	 DB0qeJUe3hEFQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ignat Korchagin <ignat@cloudflare.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 11/33] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
-Date: Sun, 24 Nov 2024 08:53:23 -0500
-Message-ID: <20241124135410.3349976-11-sashal@kernel.org>
+	socketcan@hartkopp.net,
+	linux-can@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 12/33] net: af_can: do not leave a dangling sk pointer in can_create()
+Date: Sun, 24 Nov 2024 08:53:24 -0500
+Message-ID: <20241124135410.3349976-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135410.3349976-1-sashal@kernel.org>
 References: <20241124135410.3349976-1-sashal@kernel.org>
@@ -72,35 +71,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
+[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
 
-bt_sock_alloc() allocates the sk object and attaches it to the provided
-sock object. On error l2cap_sock_alloc() frees the sk object, but the
-dangling pointer is still attached to the sock object, which may create
-use-after-free in other code.
+On error can_create() frees the allocated sk object, but sock_init_data()
+has already attached it to the provided sock object. This will leave a
+dangling sk pointer in the sock object and may cause use-after-free later.
 
 Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 1 +
+ net/can/af_can.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 93afa52c04660..cbaefbba6f4db 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1864,6 +1864,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	chan = l2cap_chan_create();
- 	if (!chan) {
- 		sk_free(sk);
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 79f24c6f43c8c..de47c16b134bf 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
+ 		/* release sk on errors */
+ 		sock_orphan(sk);
+ 		sock_put(sk);
 +		sock->sk = NULL;
- 		return NULL;
  	}
  
+  errout:
 -- 
 2.43.0
 
