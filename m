@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-94768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4779D6EEE
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:57:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E029D6F15
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:00:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDB20162B06
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:55:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D2D7B23FA8
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9F61B2182;
-	Sun, 24 Nov 2024 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F241B3959;
+	Sun, 24 Nov 2024 12:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqTm90za"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9I0qmT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2F91B0F31;
-	Sun, 24 Nov 2024 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698A11B3946;
+	Sun, 24 Nov 2024 12:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452328; cv=none; b=Pidalg/c4Yv7d86CJVL45B5XBMGOWTvu5OCPolfWu4GvAz246GoV+E54hAm27yMWIXIHTdvfnL0ccXicV8YQeTSnUk2kdMtpvu2SDyGnJJ8hQ0McpVFe0tjFq1k2wFSjn+V6ermyeevg1x51ChvvlhzbBMRXsV4NRYvEuIeB+ro=
+	t=1732452335; cv=none; b=sDLTyGCmHdxe8iGPUwslEJ3AO3ZK7SPV5EJdSl8pi3IvP/PxdyLa5xtRFgVNgz144qNJoW4XrUJJ9fBnzgqf3opqYZB3fZsLlDhTfLdpl1ZtV9txKsn7swQf27bxd4PDsJF/otr1nbcBP6P/obaxw99aMioccUBzCALDc2FyAhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452328; c=relaxed/simple;
-	bh=JARJ7MlqaJlJzU7OrtcD3lfGrOAaDkKG7o7NIu4VXnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh2dRI7uTfmp9vl9/WfpL6eqnawt6C8EL4+aWTB6wsUbpYiDLSND0x7ywOypf53Zi7cAEPZTowx8dCBVwdYRBj0fiz2FG7lBcPrin1KXmh+WulxVvc3skZA7q+nNL/9jVtCXESigwRdBHX8pniR+CyVcByf5TkCVkyRpSLpu5Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqTm90za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9E8C4CED8;
-	Sun, 24 Nov 2024 12:45:27 +0000 (UTC)
+	s=arc-20240116; t=1732452335; c=relaxed/simple;
+	bh=oirgsQnHBfGFNBrWVg1xmJLEkU3WZRxplluiMQ+96mc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QYC5+/lOng0EN2citW3YsYKEYyPQ8V30RlqNeV+CBWwYM6UOWtjzNV3HXbonHjw+eSQPLY+O7efbgXCFsa1Xt/lDutaMiSRGTUOq9dr4MvLEqf0/d0IUuCnqyrjcRI85WeswRzjIvYivY+CZ+01LoLYkWL5fwZYM7l6D/LmGU5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9I0qmT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D4EC4CECC;
+	Sun, 24 Nov 2024 12:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452328;
-	bh=JARJ7MlqaJlJzU7OrtcD3lfGrOAaDkKG7o7NIu4VXnc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqTm90zayKhTlgydAMN9M8q52VQf72nzVUnXvZ6irmnjHSFPnHTfRNlmeKGIg0Yy3
-	 yOP+Rxw7NpRO25GjtlBvXOYF4W0dKzjSQBKGjGkQe8ly0mplQ1i8OYrT7Lm2Tg9GkY
-	 OuuPODudDR/NrRHX7V0vTka1+UV46Wk8oq/yms9UZtIjhrmz03UcuK43InRfFv8tGz
-	 i+H4LJYl5mwU788/mTCEfjrOZuyGDojr8C7fPpo+AHzJGo7Q/BgCZ0iczr6t1mbG+6
-	 cs+OWE9K3wqDwjfTIyFjkZ+nNbdsCa4xumNxF5MjIFsWT3yvs4ClJ/pXitRICHLygU
-	 gctIm+KKjGx+Q==
+	s=k20201202; t=1732452334;
+	bh=oirgsQnHBfGFNBrWVg1xmJLEkU3WZRxplluiMQ+96mc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G9I0qmT9s5rGsPX9Y/fN09rtpJcn7RQuoTldRL8tZTyzmS3Xq0My20QFo6WYb1p/5
+	 7jQknUyNnrlCl/uo/2lgbhJJj5WlRkfBtlkgNVKiDeAqZ4nseRrnCfd3Dt47WH2wQF
+	 colqjlnBjSmcErbImdSz8le8N3yf91KFiVWV8vIah2K8kBkpP8XRXLDSlDiz+8m/8Y
+	 hQP1WU5eAJ/uG4QWoYMaswusLhZfNkN7MNop9IsNDsiyxxcnL084tCQwAH8DLQ7yjA
+	 ZQMnDOkmOVhOFrzV9UJjH98/Xiqpx/kV46CrxY26Og5CVeuQjGnIw2x6PnU+bl57Om
+	 smGQtQ4lZbddw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jonathan Denose <jdenose@google.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 6/6] ACPI: video: force native for Apple MacbookPro11,2 and Air7,2
-Date: Sun, 24 Nov 2024 07:45:11 -0500
-Message-ID: <20241124124516.3337485-6-sashal@kernel.org>
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 1/6] crypto: ecdsa - Avoid signed integer overflow on signature decoding
+Date: Sun, 24 Nov 2024 07:45:23 -0500
+Message-ID: <20241124124532.3337626-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124516.3337485-1-sashal@kernel.org>
-References: <20241124124516.3337485-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,66 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.1
+X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Denose <jdenose@google.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 295991836b23c12ddb447f7f583a17fd3616ad7d ]
+[ Upstream commit 3b0565c703503f832d6cd7ba805aafa3b330cb9d ]
 
-There is a bug in the Macbook Pro 11,2 and Air 7,2 firmware similar to
-what is described in:
+When extracting a signature component r or s from an ASN.1-encoded
+integer, ecdsa_get_signature_rs() subtracts the expected length
+"bufsize" from the ASN.1 length "vlen" (both of unsigned type size_t)
+and stores the result in "diff" (of signed type ssize_t).
 
-commit 7dc918daaf29 ("ACPI: video: force native for Apple MacbookPro9,2")
+This results in a signed integer overflow if vlen > SSIZE_MAX + bufsize.
 
-This bug causes their backlights not to come back after resume.
+The kernel is compiled with -fno-strict-overflow, which implies -fwrapv,
+meaning signed integer overflow is not undefined behavior.  And the
+function does check for overflow:
 
-Add DMI quirks to select the working native Intel firmware interface
-such that the backlght comes back on after resume.
+       if (-diff >= bufsize)
+               return -EINVAL;
 
-Signed-off-by: Jonathan Denose <jdenose@google.com>
-Link: https://patch.msgid.link/20241112222516.1.I7fa78e6acbbed56ed5677f5e2dacc098a269d955@changeid
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+So the code is fine in principle but not very obvious.  In the future it
+might trigger a false-positive with CONFIG_UBSAN_SIGNED_WRAP=y.
+
+Avoid by comparing the two unsigned variables directly and erroring out
+if "vlen" is too large.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ crypto/ecdsa.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 015bd8e66c1cf..d507d5e084354 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -549,6 +549,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple MacBook Air 7,2 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir7,2"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Apple MacBook Air 9,1 */
-@@ -565,6 +573,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro9,2"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple MacBook Pro 11,2 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro11,2"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
- 	 .callback = video_detect_force_native,
+diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+index d5a10959ec281..80ef16ae6a40b 100644
+--- a/crypto/ecdsa.c
++++ b/crypto/ecdsa.c
+@@ -36,29 +36,24 @@ static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
+ 				  const void *value, size_t vlen, unsigned int ndigits)
+ {
+ 	size_t bufsize = ndigits * sizeof(u64);
+-	ssize_t diff = vlen - bufsize;
+ 	const char *d = value;
+ 
+-	if (!value || !vlen)
++	if (!value || !vlen || vlen > bufsize + 1)
+ 		return -EINVAL;
+ 
+-	/* diff = 0: 'value' has exacly the right size
+-	 * diff > 0: 'value' has too many bytes; one leading zero is allowed that
+-	 *           makes the value a positive integer; error on more
+-	 * diff < 0: 'value' is missing leading zeros
++	/*
++	 * vlen may be 1 byte larger than bufsize due to a leading zero byte
++	 * (necessary if the most significant bit of the integer is set).
+ 	 */
+-	if (diff > 0) {
++	if (vlen > bufsize) {
+ 		/* skip over leading zeros that make 'value' a positive int */
+ 		if (*d == 0) {
+ 			vlen -= 1;
+-			diff--;
+ 			d++;
+-		}
+-		if (diff)
++		} else {
+ 			return -EINVAL;
++		}
+ 	}
+-	if (-diff >= bufsize)
+-		return -EINVAL;
+ 
+ 	ecc_digits_from_bytes(d, vlen, dest, ndigits);
+ 
 -- 
 2.43.0
 
