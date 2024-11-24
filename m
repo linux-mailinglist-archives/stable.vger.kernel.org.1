@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-94779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA279D6F3E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:05:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4259D6F06
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5F8AB2731A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF749280F12
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77321E1A36;
-	Sun, 24 Nov 2024 12:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DCC1E1C17;
+	Sun, 24 Nov 2024 12:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDKptgiK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJtHwxMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BA189F39;
-	Sun, 24 Nov 2024 12:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C81BDAA1;
+	Sun, 24 Nov 2024 12:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452360; cv=none; b=cYHGTviwK0x+QBJm3aH+F4fayFz7pXRumQqYeONqCQwFw6QQhKnDtHdXsHUp5/fK3BGYaK+R7N5L2BjTsLe0GLvB8zitcLE2cD5P11hxnVx2t5UG771mj+9Gq+2KvJ8UhwejXIGr5lNrfeNhbcEzyVrJeTZFkWepr+JTNSC4kdQ=
+	t=1732452363; cv=none; b=qqS9174Mwi3Kdy/TsuXADKyl6EPk2+oEG+V1DQfNHYR5cdiYb2e4vX5Uls3AwGyva008fqdaQQXCwiaisP7JDwY/LiOiHqJaBw0VW9Fp5JAu9IuN++K1sN73KXzDhgU4tdfn8twO3apxqGrMB0d46evNZi3ob5xxeESCow3krz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452360; c=relaxed/simple;
-	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z9waCRYqxWfDPKTaifvhQGBApw+6ygrVoCGlNvkqbtLz/zLfYUIu2pDoX6PPRNXAuBeiFiAscpzRtahWaVBM7logfvUkfQCWukXopA2YmPAtjfz5gDpu/GyvFBT1XkxtsyM0KKbukWR7JJtoOcG8tTjF46wTos1McIjH+BmlWWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDKptgiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81FEC4CECC;
-	Sun, 24 Nov 2024 12:45:58 +0000 (UTC)
+	s=arc-20240116; t=1732452363; c=relaxed/simple;
+	bh=ER/TrgD1m4ShjWIkfP2C75UZ40CV5OXNahh1dFNzNmA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DKQuVsf5KdetmkYU5nFpK4lH9pgxk0tI86ZZyrUOPLiU3v/Vuz4PnS1Av+58l2/8HK/pVUFSAjz/gTHW2dDd6Eg0LdhTvaehm+5yjSlDs6INham+QqyjrkmPsbC1RNWnJQlyli2+UgV7VCK3jBpTyiYN0o3GoA84HbsXGwFe76M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJtHwxMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094D4C4CECC;
+	Sun, 24 Nov 2024 12:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452360;
-	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
+	s=k20201202; t=1732452363;
+	bh=ER/TrgD1m4ShjWIkfP2C75UZ40CV5OXNahh1dFNzNmA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=tDKptgiKkR/Xu2/S/I4l7fYwIWQJIiB6sKyKHC3j8zmzTX49O7DruVrWWNfeMtPpk
-	 L85be6Jz3Z6fdMjmpHIm1QC7gEabXiZ58HMTJOLvmF6XJZAjnFl+AuawW4lKiyfa0C
-	 WonVkqLOBlgfrIUnMkzObm4hRjrz81DwUCQT7N4DDKqY+xvLtnmN9UfPrNgs4Bep85
-	 zRqw54GXYW0VHsY3/Ct0ptcLJiWjd2R2609PYdNj2SLLMS6kYLb1M3WVToON5lQ4zv
-	 Z63y43GjcKkaBH8+lIT3h/VBU3WlE/RUld7NV5lxJUK+iiDrovm0v3fhswR8ZrBjDG
-	 f4UKyOr/ShnHg==
+	b=pJtHwxMqCuhBz4eqywTRDCwIjdDRJput2ItZFmkz3Ge1u8yYcla/Fxs5fW9oLYclI
+	 MW3Xj/NpdMfZT1rPgPmUG/RKN6pupJ5bOnpodQnALZbma6wvq7n2CgA28rRG5P47WR
+	 NWBAaKP94fGBMkE8aMhYUzERcsrtHT0XiODMzvMDCE6tMZE7XeJzynNNcK3T4jhJKH
+	 MKxLcugev+0ESdiA4ptpn87/0jnSNnVLCI2P2KXrBeJmM712jRvAruIiFWxUIzIsAn
+	 lEsJEO1gAOUXnWPA/WyrEyrTdo0sy5r/5phoHFS11JqPWYlYnJ1ggI7lmYK5D06xYK
+	 uom8sb4d6SLVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Marco Elver <elver@google.com>,
 	rostedt@goodmis.org,
 	kasan-dev@googlegroups.com,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15] kcsan: Turn report_filterlist_lock into a raw_spinlock
-Date: Sun, 24 Nov 2024 07:45:57 -0500
-Message-ID: <20241124124557.3337874-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Date: Sun, 24 Nov 2024 07:46:00 -0500
+Message-ID: <20241124124600.3337916-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.173
+X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
 From: Marco Elver <elver@google.com>
@@ -126,10 +126,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 36 insertions(+), 38 deletions(-)
 
 diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 1d1d1b0e42489..f4623910fb1f2 100644
+index 62a52be8f6ba9..6a4ecd1a6fa5b 100644
 --- a/kernel/kcsan/debugfs.c
 +++ b/kernel/kcsan/debugfs.c
-@@ -46,14 +46,8 @@ static struct {
+@@ -41,14 +41,8 @@ static struct {
  	int		used;		/* number of elements used */
  	bool		sorted;		/* if elements are sorted */
  	bool		whitelist;	/* if list is a blacklist or whitelist */
@@ -146,7 +146,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  
  /*
   * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-@@ -110,7 +104,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+@@ -105,7 +99,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
  		return false;
  	func_addr -= offset; /* Get function start */
  
@@ -155,7 +155,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  	if (report_filterlist.used == 0)
  		goto out;
  
-@@ -127,7 +121,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+@@ -122,7 +116,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
  		ret = !ret;
  
  out:
@@ -164,7 +164,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  	return ret;
  }
  
-@@ -135,9 +129,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
+@@ -130,9 +124,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
  {
  	unsigned long flags;
  
@@ -176,7 +176,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  }
  
  /* Returns 0 on success, error-code otherwise. */
-@@ -145,6 +139,9 @@ static ssize_t insert_report_filterlist(const char *func)
+@@ -140,6 +134,9 @@ static ssize_t insert_report_filterlist(const char *func)
  {
  	unsigned long flags;
  	unsigned long addr = kallsyms_lookup_name(func);
@@ -186,7 +186,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  	ssize_t ret = 0;
  
  	if (!addr) {
-@@ -152,32 +149,33 @@ static ssize_t insert_report_filterlist(const char *func)
+@@ -147,32 +144,33 @@ static ssize_t insert_report_filterlist(const char *func)
  		return -ENOENT;
  	}
  
@@ -242,7 +242,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  	}
  
  	/* Note: deduplicating should be done in userspace. */
-@@ -185,9 +183,9 @@ static ssize_t insert_report_filterlist(const char *func)
+@@ -180,9 +178,9 @@ static ssize_t insert_report_filterlist(const char *func)
  		kallsyms_lookup_name(func);
  	report_filterlist.sorted = false;
  
@@ -254,7 +254,7 @@ index 1d1d1b0e42489..f4623910fb1f2 100644
  	return ret;
  }
  
-@@ -204,13 +202,13 @@ static int show_info(struct seq_file *file, void *v)
+@@ -199,13 +197,13 @@ static int show_info(struct seq_file *file, void *v)
  	}
  
  	/* show filter functions, and filter type */
