@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-94969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF609D7573
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:42:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5209F9D7619
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 17:46:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0BE1B46D91
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:51:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14B3EB203E0
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985021E2605;
-	Sun, 24 Nov 2024 13:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D3A1E260F;
+	Sun, 24 Nov 2024 13:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YosMuW1l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9GWz3oN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537611E231F;
-	Sun, 24 Nov 2024 13:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A301E2606;
+	Sun, 24 Nov 2024 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455449; cv=none; b=cI1vCsfS2/pAwB1RHeCdd59w+2QJcQsHVPiUZ+Fv//aFOshpzTH3TnQQJKVOgndz7psXLcE/cNLmkIcyqNwbcnuLEy/T9Ca19/vt8m7h9g7Y0eQMMacZ/6OiAruJwl5AgT+DmYbHEVO379Y0JnraIzKgjwE+1/LSDigSYvIEPZU=
+	t=1732455449; cv=none; b=AScBG5jmmdXbrH2QEur2apfoDTPpGgquyI48XSzuzv10wzlagnZF6xy8SjOt+eOHzkRcI78ez+HDxvvPG9efv/VBnjws7d5mohwTO9Ts4C9/jf2UnFMiy9E/AL2GmkS/832NZ6epOBAdRMfbsLNOxQoem/QfFSNQ73BookqkQWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732455449; c=relaxed/simple;
-	bh=BO6XiJPNfT8ipKf07nKW33xa4VrXBD/jl7rU5wBBQJI=;
+	bh=FKkLCagGZZI+0/8piRcbpFI14zgHSDxcKrCvRX5yhws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3MvNTkNF7Y/AyjW/535eRYUVeEBhndcCbjfnH72rvp3vnMSaOTA1I9ODH2RW+hb7X5r8gbIq9/qWFX/EmQvcTzetdMA8jBcInrHW0b4Ygtxlql6QzxdPi5pS76Sb0UzoyuKH0EXaT6ObP61lkyeAEztB0c74dREp8DSsfv4C60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YosMuW1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C8BC4CECC;
-	Sun, 24 Nov 2024 13:37:26 +0000 (UTC)
+	 MIME-Version; b=ljET+DJp2hE3Jp28ecxHLGA2kVflVaScel6JCMUML3Nx3wnjgugS9GERy/zAYHL3nzFoauAWP8goSnknkRh+pXaZID2ug4RsvBjEFqpohWWnNs1u1JPtvwHIDTawGaBLT+MCmllXd8EpW6i7eXEaKNYU3Tx+t8ypV5R63jdUwuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9GWz3oN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C74BC4CED1;
+	Sun, 24 Nov 2024 13:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455447;
-	bh=BO6XiJPNfT8ipKf07nKW33xa4VrXBD/jl7rU5wBBQJI=;
+	s=k20201202; t=1732455449;
+	bh=FKkLCagGZZI+0/8piRcbpFI14zgHSDxcKrCvRX5yhws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YosMuW1l+/wUcnpNUUG/LQzRyizMKb2eM7UjhK8kBnDSAZ++iAByFrstNTt7NpJF5
-	 Xcpx7UJOEKGluxzh6mwuIraXyrU6qgbJXF1dJRS5eK4XUl6cMgPu+ypExK0GKDuz/Z
-	 K36G25Dq4BmLE7z5l8eA52oFmMXhZN6XGZNMSdNAZ+p8xHk1B4C+tF23/xOxktO7Tb
-	 suTSXPbw18BEsa1u41yeOl5SC2ZEtteHr/6fG1PsUceDevk0sUoTeGa6OXggIgQeJB
-	 PdhM2Tpx39E1TZNqw8BMBAXoLJA0IBfu2tY78m3Th543thhej6j3mLdhSCu6k6eO9r
-	 fM51OVkwAdvzw==
+	b=N9GWz3oNVutMBv2S7trkZcK7oQEJdJHzElazX71JLU5DJoYA4FxdL8BJnuqDTMmyW
+	 NbzbOHSEtx7SoBcFs1n85JLv4OFZwAuiU4jTWsuanJ1DnMjbdD2LEAB9BlDD3LW/B/
+	 orBmBySd9zkpWQxO0WU7rVomEmT3Y87rQN4boZIQ8tDg39Cd5JZgh3fy57ux/ObKrO
+	 9DHJlyd1W/cIKP2MSsiI8SRE3wlufDkZgch0R2SeX4vPHIKUo6U+ouJ8MzFVXKWqf4
+	 6kxecP2Kyyknotx6bs1l51iwKpJekEdu/uFsOTblmDPpUUqtVqX8DDxsOSOY5jfkGI
+	 lvFoLU5AH4wzg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nihar Chaithanya <niharchaithanya@gmail.com>,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+Cc: Aleksandr Mishin <amishin@t-argos.ru>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shaggy@kernel.org,
-	rbrasga@uci.edu,
-	aha310510@gmail.com,
-	eadavis@qq.com,
-	peili.dev@gmail.com,
-	ghanshyam1898@gmail.com,
-	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.12 073/107] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
-Date: Sun, 24 Nov 2024 08:29:33 -0500
-Message-ID: <20241124133301.3341829-73-sashal@kernel.org>
+	madalin.bucur@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 074/107] fsl/fman: Validate cell-index value obtained from Device Tree
+Date: Sun, 24 Nov 2024 08:29:34 -0500
+Message-ID: <20241124133301.3341829-74-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -72,37 +71,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit bd50c4125c98bd1a86f8e514872159700a9c678c ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+Cell-index value is obtained from Device Tree and then used to calculate
+the index for accessing arrays port_mfl[], mac_mfl[] and intr_mng[].
+In case of broken DT due to any error cell-index can contain any value
+and it is possible to go beyond the array boundaries which can lead
+at least to memory corruption.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Validate cell-index value obtained from Device Tree.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://patch.msgid.link/20241028065824.15452-1-amishin@t-argos.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/fman/fman.c | 1 -
+ drivers/net/ethernet/freescale/fman/fman.h | 3 +++
+ drivers/net/ethernet/freescale/fman/mac.c  | 5 +++++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 39957361a7eed..f9009e4f9ffd8 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index d96028f01770c..fb416d60dcd72 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -24,7 +24,6 @@
+ 
+ /* General defines */
+ #define FMAN_LIODN_TBL			64	/* size of LIODN table */
+-#define MAX_NUM_OF_MACS			10
+ #define FM_NUM_OF_FMAN_CTRL_EVENT_REGS	4
+ #define BASE_RX_PORTID			0x08
+ #define BASE_TX_PORTID			0x28
+diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
+index 2ea575a46675b..74eb62eba0d7f 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.h
++++ b/drivers/net/ethernet/freescale/fman/fman.h
+@@ -74,6 +74,9 @@
+ #define BM_MAX_NUM_OF_POOLS		64 /* Buffers pools */
+ #define FMAN_PORT_MAX_EXT_POOLS_NUM	8  /* External BM pools per Rx port */
+ 
++/* General defines */
++#define MAX_NUM_OF_MACS			10
 +
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+ struct fman; /* FMan data */
+ 
+ /* Enum for defining port types */
+diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
+index 11da139082e1b..1916a2ac48b9f 100644
+--- a/drivers/net/ethernet/freescale/fman/mac.c
++++ b/drivers/net/ethernet/freescale/fman/mac.c
+@@ -259,6 +259,11 @@ static int mac_probe(struct platform_device *_of_dev)
+ 		err = -EINVAL;
+ 		goto _return_dev_put;
+ 	}
++	if (val >= MAX_NUM_OF_MACS) {
++		dev_err(dev, "cell-index value is too big for %pOF\n", mac_node);
++		err = -EINVAL;
++		goto _return_dev_put;
++	}
+ 	priv->cell_index = (u8)val;
+ 
+ 	/* Get the MAC address */
 -- 
 2.43.0
 
