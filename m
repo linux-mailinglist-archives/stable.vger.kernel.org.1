@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-95194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEA39D740E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:57:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B034E9D7414
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:58:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80940281F9C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:57:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A339A165147
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E732389F3;
-	Sun, 24 Nov 2024 13:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A17238F68;
+	Sun, 24 Nov 2024 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGdCoZZa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwoBYgtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58842389EC;
-	Sun, 24 Nov 2024 13:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCCD1E2317;
+	Sun, 24 Nov 2024 13:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456296; cv=none; b=XYS/awmESUU2QBaWvDTdH9nEi+Q4uJgBEFGW1UfWN6uHqJT5zNgG0y0hSzqskJTEw29i67DS+Qkqw8nnoe62MX28l/8XU7NXxVbuBOyrc47rTd3L1y/BWjpMZNXT4QOf0AQWcHgjiE3uAJWWq9AJ/jlL3DTHZAIin2vjYgRc478=
+	t=1732456298; cv=none; b=cuf8QZx/lA/mUcrhhqTTtJjnWXkRRpDgd/HC8HLc8/E0e8MawgM0AxTvojWzxI1DKNAAD0zye3q0o8cjNM/t+SMDqigaNOLiHuOG/0GJirdbFn2jVeSnBeAGJBiJsd0jQEDIE7/5QWF49aDMdf7AWCbp0nCQSfm5qrlj0FmxNZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456296; c=relaxed/simple;
-	bh=QMVdWNUR7vAdFtVo19qnWoi0hw6HxIESqN+fOoVrt9Q=;
+	s=arc-20240116; t=1732456298; c=relaxed/simple;
+	bh=P3xeDvBAparxvrvnb4QO/f6mT7L9L0794cMCIByUdPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sofyMoC4OSW44lqGyUEeIB5VyeschB72bA2Z9O11zNf+G+L4ITbpoW8G14JjKMmuqcIU+Jj+E3mfamIGtd/KsbxZnsD5z0Affi6p2EdxvsZwqzkf85zmrA+3qbrS4bQyD/K+0b7YJvvQu2KZIrvGTLvXVsRtSnn/6ddN2iUGDQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGdCoZZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D152C4CECC;
-	Sun, 24 Nov 2024 13:51:35 +0000 (UTC)
+	 MIME-Version; b=IhKnyQqtlMfY6SKwJJPUxWuhIdt0ZhewoOdJCdG0F6fSPgz5jETdzXY0G+vAZwwlJNz+sgd8h4UC2/XCYKyb2Km6jOXfZ50DupeH1RTUB/j/BrGV32jiKFgy/gA1gf/cVLmQ0LVVHpohFWZ5B1fUpF2yFVffOB6WUMYrzHbmyOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwoBYgtQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B3DC4CED9;
+	Sun, 24 Nov 2024 13:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456296;
-	bh=QMVdWNUR7vAdFtVo19qnWoi0hw6HxIESqN+fOoVrt9Q=;
+	s=k20201202; t=1732456297;
+	bh=P3xeDvBAparxvrvnb4QO/f6mT7L9L0794cMCIByUdPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGdCoZZasaB9HcXHPEsJn702nU5edFMQahMd97dTCRdjz92HCrpN+MzG9nYG3zDqQ
-	 814L7C6cfkOYY/WR6hcedhPhs4tFRBbf+7rbXx8dSa2Y4mcfLflGK2WCGYv9K68hse
-	 vLCSN0hkbI7himAZyEu315yBz/I5lgyRbaJa60+frkxFQClQY5jKTGl3JpTs0qlSPu
-	 /msaT9rnCBaBW6H5DRZ4SjAAPjGtQSpggbsYUNGnEq3aDFEBF8aoVDU0vN7DoNmNrl
-	 oj8OoesbAZhSgAoLLnMxRIiZs7gjeFSYUKIC+1JObRyAXFGyldWaMm/g1MYqAjOyOn
-	 AuJp/6xAiDMPw==
+	b=EwoBYgtQf3uWjd5mHpM6Iv6sxa7h/jpKrCmDNQYBpZkOhGLz5YuJOuhtc/0yllm/A
+	 INh4bhQ05/+EeRx5vjgMWq8B/HEO89KhVCXKdX92PNyBEnMJx7L0TrRIZYyoWn5JQP
+	 4gj/1JZsfpsIFtbIKukrti6Rm+AA9SVV+7rLCdbBwK7nHCdyWIt3zhRsTstEuVgUsk
+	 CG8Z/VuNBEp0h22Vg43FIo1hmvf64lxfQolYZikkxsTajh/8TSYhq84LG+KPM8Gp/V
+	 U8gnZVqm3c+tW1PIXIl8urvv9ca1RWNpaaQJBiXI+st3t6atGDoXw3zTRX196oK1Bz
+	 Y4Z4wC5p6BAvA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
 	luiz.dentz@gmail.com,
 	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 43/48] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
-Date: Sun, 24 Nov 2024 08:49:06 -0500
-Message-ID: <20241124134950.3348099-43-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 44/48] Bluetooth: hci_core: Fix not checking skb length on hci_acldata_packet
+Date: Sun, 24 Nov 2024 08:49:07 -0500
+Message-ID: <20241124134950.3348099-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134950.3348099-1-sashal@kernel.org>
 References: <20241124134950.3348099-1-sashal@kernel.org>
@@ -67,64 +68,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
+[ Upstream commit 3fe288a8214e7dd784d1f9b7c9e448244d316b47 ]
 
-Add the support ID 0489:e123 to usb_device_id table for
-Realtek RTL8852B chip.
+This fixes not checking if skb really contains an ACL header otherwise
+the code may attempt to access some uninitilized/invalid memory past the
+valid skb->data.
 
-The device info from /sys/kernel/debug/usb/devices as below.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e123 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Reported-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Tested-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ea290ba76d8c1eb1ac2
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_core.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0b915f2c76078..4c9747de0d6de 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -549,6 +549,8 @@ static const struct usb_device_id blacklist_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 789f7f4a09089..3cd7c212375fc 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3829,18 +3829,22 @@ static void hci_tx_work(struct work_struct *work)
+ /* ACL data packet */
+ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	struct hci_acl_hdr *hdr = (void *) skb->data;
++	struct hci_acl_hdr *hdr;
+ 	struct hci_conn *conn;
+ 	__u16 handle, flags;
+ 
+-	skb_pull(skb, HCI_ACL_HDR_SIZE);
++	hdr = skb_pull_data(skb, sizeof(*hdr));
++	if (!hdr) {
++		bt_dev_err(hdev, "ACL packet too small");
++		goto drop;
++	}
+ 
+ 	handle = __le16_to_cpu(hdr->handle);
+ 	flags  = hci_flags(handle);
+ 	handle = hci_handle(handle);
+ 
+-	BT_DBG("%s len %d handle 0x%4.4x flags 0x%4.4x", hdev->name, skb->len,
+-	       handle, flags);
++	bt_dev_dbg(hdev, "len %d handle 0x%4.4x flags 0x%4.4x", skb->len,
++		   handle, flags);
+ 
+ 	hdev->stat.acl_rx++;
+ 
+@@ -3859,6 +3863,7 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ 			   handle);
+ 	}
+ 
++drop:
+ 	kfree_skb(skb);
+ }
  
 -- 
 2.43.0
