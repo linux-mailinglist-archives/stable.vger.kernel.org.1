@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-95263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCBA9D74B1
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:16:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B039D74B4
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A3D166F0E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:16:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE665166F7B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C8224573D;
-	Sun, 24 Nov 2024 13:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FCA1FCCE2;
+	Sun, 24 Nov 2024 13:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZetVk/aC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ngaC8VJv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E014B24571F;
-	Sun, 24 Nov 2024 13:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29E91E572E;
+	Sun, 24 Nov 2024 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456516; cv=none; b=WcoeTgNnYzIz92tT1KTgOJYmWA2ymCc3VpY4LmZjE4zUL7OehWgsQjXYomC9YINB3UamT9Qdt9FU/Lnic6Wmt7YVo7uVT8ZD+t77pDGLJ8P0zTiW4qaRM6fv/A7jGEvL5pasMP2q4Cl1uB+g970zQ8ajxO5SR9aWdhdE8M6xwEA=
+	t=1732456517; cv=none; b=j8knk48PZevzHGD1eIg89LtYdBSe+Gc8SAAiFiGbAuiUTyWUipv053p3ZiQf0nssHDVYZP8g1XUSlwXZ20MhuQ8d0FEHkAbcsQ+QqGTQezOnG25Nqj814z8NUE0obdKm2xnXaRq9smN+hI/T2as6fVS6RxEGISAloVNrzOUUeto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456516; c=relaxed/simple;
-	bh=Gl5dMb5qF+W+jWw8poTEZejspiar37EFpQlLQ2P1IhM=;
+	s=arc-20240116; t=1732456517; c=relaxed/simple;
+	bh=YG/qdlg9XPkf1o4xjvlpUkOX3I4WmlswJhfRWDwWXg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRhKCwIRdamJh5D6ahxXuRZCFr8N8PcEVb6VGPVBUe7Tb2slA4Q2Mw1qeBJ6QWVe0A5LcFQWblDPgBK+9v1JEPdup8c1e1ON3ywfTM7aiD+ST9yOK1EIWBdPt/GKcvq8QFfu83ZRZ2eghKuBUcxUipiD3Uv/XaPWcX2wx3IckoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZetVk/aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41BEC4CED3;
-	Sun, 24 Nov 2024 13:55:13 +0000 (UTC)
+	 MIME-Version; b=t2ahmmU2+GvFTT/WNsceXtRQjztidqLA+W2pUpZWbtAPqcpN1SkQkAgITJ2bPpF20x9ns87YOIRG8v9xycIDenKU/sM0smx9tAocNRxEVKqbtMtNG4EX7sg4UgeaTEvibLFKUQLcWh0WBp38MNuuINFcLm4fgcfYuX3ocd627u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ngaC8VJv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92DBC4CECC;
+	Sun, 24 Nov 2024 13:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456515;
-	bh=Gl5dMb5qF+W+jWw8poTEZejspiar37EFpQlLQ2P1IhM=;
+	s=k20201202; t=1732456516;
+	bh=YG/qdlg9XPkf1o4xjvlpUkOX3I4WmlswJhfRWDwWXg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZetVk/aCc/yBlDw+oEAUzsgGh7xG+S7+Ooavz5CkCe3R6TMl27oI2NhYAeGsyaz+z
-	 8F4onMye5AhKWx2Z7wZpCgxZxJhGVKZGHQUYxOUgcucJwNVimY4FCybRZoIu9EkN4y
-	 RDJuCRRB4Ov+/nY+x1KyuxihVDV43i5K+fa3Zers2leRHoepCKuB5zvoABaRb5hLdU
-	 +4JEqZxUfvnFcQ2GGPMSfL++K+0BegHV7PvLMT8PzGQM+cp5aibgmIviINc+imKMS+
-	 YqECtN+3aS5WVXZYjU7g5aXWPq6JadFsWGwh9Z9tcbajo83v08hK+CRcs+7Le76mKw
-	 yWDHywldZWn/g==
+	b=ngaC8VJvitJQe3coLhVIIFP5WdBcF42e8c8YOq0QLygRLS7x2StNdm0lyZJeK5mJp
+	 YtSM3hwuAlRT0YTWRHsPpoYF0qndfs99tWHoZbOIWPlaeNFkAjWwoFKe6MKjoeMG5h
+	 /zTxah6Fwczf7iRpts6HjNP1cleOvX7axhL4YqcaIpygpT4t6qfSZPArgGcdZA7M2f
+	 +OJ9HeCZUFdAChVddN/9LPI64/4i0iTsQkgZTOPHyUuEcpHGksHDi90JEZIE5NtlFI
+	 M9TXh9QKx6BqDacwOEmubVNdrpc4aHYWMNJiUWes+HRqdTUrpU9CRo7G4fuR1vnH5V
+	 bvWrTV9C2Zftg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Norbert van Bolhuis <nvbolhuis@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	arend.vanspriel@broadcom.com,
-	saikrishnag@marvell.com,
-	sebastian.reichel@collabora.com,
-	erick.archer@outlook.com,
-	jacobe.zang@wesion.com,
-	krzysztof.kozlowski@linaro.org,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH AUTOSEL 5.10 28/33] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
-Date: Sun, 24 Nov 2024 08:53:40 -0500
-Message-ID: <20241124135410.3349976-28-sashal@kernel.org>
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 29/33] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
+Date: Sun, 24 Nov 2024 08:53:41 -0500
+Message-ID: <20241124135410.3349976-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135410.3349976-1-sashal@kernel.org>
 References: <20241124135410.3349976-1-sashal@kernel.org>
@@ -73,48 +67,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
+[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
 
-This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-are sent from the pkt queue.
+Add the support ID 0489:e123 to usb_device_id table for
+Realtek RTL8852B chip.
 
-The problem is the number of entries in the pre-allocated sgtable, it is
-nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-is added for each original SKB if tailroom isn't enough to hold tail_pad.
-At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-NULL and this causes the oops.
+The device info from /sys/kernel/debug/usb/devices as below.
 
-The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-the worst-case.
-Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-additional bytes of memory.
+T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e123 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index b6d0bc73923fc..75dc7904a4bd6 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -769,7 +769,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
- 
- 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
- 		      sdiodev->settings->bus.sdio.txglomsz);
--	nents += (nents >> 4) + 1;
-+	nents *= 2;
- 
- 	WARN_ON(nents > sdiodev->max_segment_count);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index d34c7758b93de..cf0a0b3eaf886 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -430,6 +430,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
 -- 
 2.43.0
