@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-94825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FCD9D6F6C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:09:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E7C9D6F71
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD567281A15
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:09:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA56281A53
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD5F1EBFE1;
-	Sun, 24 Nov 2024 12:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3F51EC010;
+	Sun, 24 Nov 2024 12:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gL7Dq8XB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cUyKN9lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006A31EBA18;
-	Sun, 24 Nov 2024 12:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1330E1EC003;
+	Sun, 24 Nov 2024 12:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452645; cv=none; b=uPma16JVNqu1fqr1YYit7tcQBlhjYaKcIBEXrzPc5yQ9Yul1tXEvhsQCDkvhZkVmyidNCYC4rnhPibW1zxLeugs5twIEhOd/ivvTNjI9abSjxwukkEJvdWOYBGLoqRU6bCZDzTTwwAU+RnxAf2QO+Nnn4DhpafTD+8ceYMhu0+g=
+	t=1732452647; cv=none; b=MwUgmdn0XHyrc1/7aR68QAVuBuWulLR+F8ttblAKkd3Vsq+jLSVD4t8pT7T79MHwB4ZHiEpv5u/aAmMv0CRNro/eutBy8yMPsnrr34FCIIWbdEmutr4h8yQKEaLwQi4qp4wMWQeAG+RkZvEWltWfw+GVwxNuWf891mBIpwNnpR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452645; c=relaxed/simple;
-	bh=kCm1YCI6V48RKknhFTwB8m8Gp1l72xVFaMsZCoH7Bus=;
+	s=arc-20240116; t=1732452647; c=relaxed/simple;
+	bh=SUm48HcYKDKR6wUc3VpZvhgjuViI2lQ8T7bFKafhnSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lDAvkdB3tje6tDZq9E78dnAVBqczBNyD7+2ADGbUVRFZVK+QCc/HKtoqKXZB6Q5mNXSlTuYzcaBlU9umB2CNcN0xcO5kJ2ZZd1I0+V/xQFFS8hmzdl5uCWRZ4BREcAq2rAErbpKZewMJF4sJ4y4SZTs2GOF/P7cFis7p9WPVd5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gL7Dq8XB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BF3C4CED3;
-	Sun, 24 Nov 2024 12:50:43 +0000 (UTC)
+	 MIME-Version; b=L75JO/eRkPTN1dVfEjt9kwx+US+mYEGsIS0D26cANCFM9z/oKt1UOUqOn+RWBFtWrKiBnKtIolerSP8b//A1K0985QZHXctYwYBcQ8U21RXg9XUkO54wm51VXYNPVTgKr4bDBnJvxxjhkWG6t3FAJbGrMzSemz53oVFcjefIK/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cUyKN9lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532C0C4CECC;
+	Sun, 24 Nov 2024 12:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452644;
-	bh=kCm1YCI6V48RKknhFTwB8m8Gp1l72xVFaMsZCoH7Bus=;
+	s=k20201202; t=1732452646;
+	bh=SUm48HcYKDKR6wUc3VpZvhgjuViI2lQ8T7bFKafhnSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gL7Dq8XBB553xeNqFZH87O2ol0R7c7zUE4SwmMRlYy7gL4p8JBqjL5JC2kpzh2hIS
-	 h3g0lXVRcnAhjbfPrmdlUFjeF9MDa0HfHUDPMAb1hiMwiXjHeM6ZxrHOWgoZUhyB5p
-	 RLw1qTLudMchO8J2ytzNCQte0urwGH8mNJeBJhEaak2b7W/gkO9/lk+Pf4x1NePJxu
-	 koGNCEztVDyIPiuCq0xdTXsH/pUrg1fiIJSRqYN9NeNqMawK3uOwINW7BJGEPASDyn
-	 Q1bnmRAIzKnWOO02zoFImMN7/cvVvdAAzyTLe0GKWjtBEwp183jnRY7WBefkYVMRzN
-	 8qKeG1BPTRKHw==
+	b=cUyKN9lf8DT3NO8avNQAtAv9BwBjjzpmq3XLWuFPN4Mh+qtEfgYTj8SNn9bQRE+XQ
+	 0+0QzVjw7XLRM1GcBOQ7WMw3bcWxdAtCoCWuHad91x4lfFFHQ4SUOuxMU4WHf593tK
+	 zc53xG41gfOuPnM3qcU6vxgpBCt0dZuYWZKknIGB0jlvZASD7BUnBGL8dUNbOw/XJO
+	 aYCfunNqM+jP4//sCJGDPkgSJB5rQhPgms9dkzg0c39t+fu+4XEw8sq62lGadgjo+N
+	 rWoHfhbOc3g+cINCyiWuoZqV4JP9XrO9lXothzKiG1WPIK4zISwngxQrYwv/XuwcAr
+	 3Oirr1z4g6KJw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Reinette Chatre <reinette.chatre@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	fenghua.yu@intel.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 20/23] selftests/resctrl: Protect against array overflow when reading strings
-Date: Sun, 24 Nov 2024 07:48:31 -0500
-Message-ID: <20241124124919.3338752-20-sashal@kernel.org>
+	daniel@zonque.org,
+	haojian.zhuang@gmail.com,
+	robert.jarzmik@free.fr,
+	linux-arm-kernel@lists.infradead.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 21/23] USB: gadget: pxa27x_udc: Avoid using GPIOF_ACTIVE_LOW
+Date: Sun, 24 Nov 2024 07:48:32 -0500
+Message-ID: <20241124124919.3338752-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124919.3338752-1-sashal@kernel.org>
 References: <20241124124919.3338752-1-sashal@kernel.org>
@@ -63,78 +66,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 46058430fc5d39c114f7e1b9c6ff14c9f41bd531 ]
+[ Upstream commit 62d2a940f29e6aa5a1d844a90820ca6240a99b34 ]
 
-resctrl selftests discover system properties via a variety of sysfs files.
-The MBM and MBA tests need to discover the event and umask with which to
-configure the performance event used to measure read memory bandwidth.
-This is done by parsing the contents of
-/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
-Similarly, the resctrl selftests discover the cache size via
-/sys/bus/cpu/devices/cpu<id>/cache/index<index>/size.
+Avoid using GPIOF_ACTIVE_LOW as it's deprecated and subject to remove.
 
-Take care to do bounds checking when using fscanf() to read the
-contents of files into a string buffer because by default fscanf() assumes
-arbitrarily long strings. If the file contains more bytes than the array
-can accommodate then an overflow will occur.
-
-Provide a maximum field width to the conversion specifier to protect
-against array overflow. The maximum is one less than the array size because
-string input stores a terminating null byte that is not covered by the
-maximum field width.
-
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241104093609.156059-6-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
- tools/testing/selftests/resctrl/resctrlfs.c   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/pxa27x_udc.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index 8c275f6b4dd77..1bba85e4c0675 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -160,7 +160,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+diff --git a/drivers/usb/gadget/udc/pxa27x_udc.c b/drivers/usb/gadget/udc/pxa27x_udc.c
+index 1a6317e4b2a32..ea79f85f8e0bb 100644
+--- a/drivers/usb/gadget/udc/pxa27x_udc.c
++++ b/drivers/usb/gadget/udc/pxa27x_udc.c
+@@ -2355,18 +2355,19 @@ static int pxa_udc_probe(struct platform_device *pdev)
+ 	struct pxa_udc *udc = &memory;
+ 	int retval = 0, gpio;
+ 	struct pxa2xx_udc_mach_info *mach = dev_get_platdata(&pdev->dev);
+-	unsigned long gpio_flags;
  
- 		return -1;
- 	}
--	if (fscanf(fp, "%s", cas_count_cfg) <= 0) {
-+	if (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
- 		ksft_perror("Could not get iMC cas count read");
- 		fclose(fp);
- 
-@@ -178,7 +178,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
- 
- 		return -1;
- 	}
--	if  (fscanf(fp, "%s", cas_count_cfg) <= 0) {
-+	if  (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
- 		ksft_perror("Could not get iMC cas count write");
- 		fclose(fp);
- 
-diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
-index 250c320349a78..a53cd1cb6e0c6 100644
---- a/tools/testing/selftests/resctrl/resctrlfs.c
-+++ b/tools/testing/selftests/resctrl/resctrlfs.c
-@@ -182,7 +182,7 @@ int get_cache_size(int cpu_no, const char *cache_type, unsigned long *cache_size
- 
- 		return -1;
- 	}
--	if (fscanf(fp, "%s", cache_str) <= 0) {
-+	if (fscanf(fp, "%63s", cache_str) <= 0) {
- 		ksft_perror("Could not get cache_size");
- 		fclose(fp);
- 
+ 	if (mach) {
+-		gpio_flags = mach->gpio_pullup_inverted ? GPIOF_ACTIVE_LOW : 0;
+ 		gpio = mach->gpio_pullup;
+ 		if (gpio_is_valid(gpio)) {
+ 			retval = devm_gpio_request_one(&pdev->dev, gpio,
+-						       gpio_flags,
++						       GPIOF_OUT_INIT_LOW,
+ 						       "USB D+ pullup");
+ 			if (retval)
+ 				return retval;
+ 			udc->gpiod = gpio_to_desc(mach->gpio_pullup);
++
++			if (mach->gpio_pullup_inverted ^ gpiod_is_active_low(udc->gpiod))
++				gpiod_toggle_active_low(udc->gpiod);
+ 		}
+ 		udc->udc_command = mach->udc_command;
+ 	} else {
 -- 
 2.43.0
 
