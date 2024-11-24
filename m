@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-95029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644E39D72BE
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:17:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADB79D7262
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E94AB66DFB
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60CEA28A267
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3241F8F16;
-	Sun, 24 Nov 2024 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A61F9425;
+	Sun, 24 Nov 2024 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jo0pzrCQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNoJzJfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9E11F8F12;
-	Sun, 24 Nov 2024 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DD31D357A;
+	Sun, 24 Nov 2024 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455759; cv=none; b=dVp54rj2WLZ8EPnbKNBo1ZZnBwaiEOUmjdhrahYOJcz5fq11M1SFxEQFWhAJNRcWfELbA5KmjzfyryC0FyXZfiMn7tht0r8FdVaHuZ2kps5Xvu4tmjteG3VJatKbpJpDIvleguhmylneW49I4CLaEbEAKiCtSDlNhzXOBWdIir0=
+	t=1732455762; cv=none; b=nY9RUiXTGWY2UKR2OCICHr3WYaR1GsnNtp+ecglS9DBJM+Hb0M4Chn5WQMh4je4mNWdieJh56sykuekEU6Y6r/BCQpcpakcmgUIaQjgL0Mfg0jQYY2/tVZV0/xuYvPece2WSFspCJOt2/jCQ8t29pNvpU+0C7KDJ1C9KCNKGgP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455759; c=relaxed/simple;
-	bh=OkdHnYr9vJDGPA31YXzAqACcCEq8L7JmmfF00fkHucc=;
+	s=arc-20240116; t=1732455762; c=relaxed/simple;
+	bh=s+OAzGTHxef1Z14wQ9FkruNi4WHFXo3WVWtCL0MRYjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1lZlp08TOOzO/RCj7ujjVkA24pBuzUKkM+jCf2yUEN25MHW9gr0m21Sa5qiNwLNW894ky+dl2zvjLxC2Khe+ri1qodSo9YHVjT2de9CoYwBpJdUf+1aE3X4gk/pAS6E4plIqt+EIJqgBfjhF2WIh1PIBOPDQNiECO5D4NppDJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jo0pzrCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D834C4CECC;
-	Sun, 24 Nov 2024 13:42:38 +0000 (UTC)
+	 MIME-Version; b=k0Ek36AI9KYSwRQ6TPuDz2N/feZx7nx6wZspWv9PVlDmgR0MOLD0kmEw2St89/wO41heD60xCR2uap3eMr0uwyE7Ws5CI6coRHI2lfeboHBwgmfdcS2STce1bn9SqBlfrNxvZrxqScey3HALfAPBdnL7kvOSYmGq9JIO8vW1w9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RNoJzJfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0DCC4CED3;
+	Sun, 24 Nov 2024 13:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455759;
-	bh=OkdHnYr9vJDGPA31YXzAqACcCEq8L7JmmfF00fkHucc=;
+	s=k20201202; t=1732455762;
+	bh=s+OAzGTHxef1Z14wQ9FkruNi4WHFXo3WVWtCL0MRYjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jo0pzrCQhRS/zUcbZKN+tcRYGD38FIR20EF951phrrNP9KgbES51HGc1GDDxCFjBv
-	 5WfBzvMti6+cBbr0+TRTCA/trdOcP7xpFEe0qLC9C+0HDJSlZPBdCictNErYPopHQ5
-	 12CQXsz8xBHwRGjADQMx7ILKTDZYSGeiAcae4e+Vi7PUvtOC4hTv9XdNuAGEHqwGvt
-	 jDSNbjVjUS7v1vzMFpFZPRjs6HaeN21tED1cVv+mkQSA8akI4HbD8GY+p1leQVNasq
-	 CakD4B/6ayj1IHHA2/MveMw5VFL44Az1saD3lU1x1rfVYkTH44qSFc+g7Vt99ymq4+
-	 dSHOHBAi9pdCA==
+	b=RNoJzJfpDBTUTuoqtJQPc8sn7nWK9j0dQuSGY3UxB/3jkFJYkfTtxL0PeUcurNWdB
+	 9yfOVi89lT2i6wLXjhFgo/R7MKojv4CowwVfX4QZNCXOdPjT8sKcdKTjVIoR8CJy6P
+	 KI4izTlr3kwQ/VoiMRWUZo/a0hoGAhiPzi+cQhqvAkIvRL+ojKzG+HwDZYoNipTR1g
+	 rxFvKijYbkXrgvk4J+1r88wX/Ln+viE9mGj4uYOMVaI6taaID2dzvNfCnjKGVhdIWt
+	 W1dW6M4GiN6YP/XdrxWF03E+9kthZQqbo5OHcKhC7HnOz0ncprzM+7Di1EUGcezmGl
+	 EVa7UW3FC3NRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Troy Hanson <quic_thanson@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 26/87] samples/bpf: Fix a resource leak
-Date: Sun, 24 Nov 2024 08:38:04 -0500
-Message-ID: <20241124134102.3344326-26-sashal@kernel.org>
+	ogabbay@kernel.org,
+	corbet@lwn.net,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 27/87] accel/qaic: Add AIC080 support
+Date: Sun, 24 Nov 2024 08:38:05 -0500
+Message-ID: <20241124134102.3344326-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -67,37 +70,85 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
+[ Upstream commit b8128f7815ff135f0333c1b46dcdf1543c41b860 ]
 
-The opened file should be closed in show_sockopts(), otherwise resource
-leak will occur that this problem was discovered by reading code
+Add basic support for the new AIC080 product. The PCIe Device ID is
+0xa080. AIC080 is a lower cost, lower performance SKU variant of AIC100.
+From the qaic perspective, it is the same as AIC100.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241004195209.3910996-1-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/test_cgrp2_sock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/accel/qaic/aic080.rst | 14 ++++++++++++++
+ Documentation/accel/qaic/index.rst  |  1 +
+ drivers/accel/qaic/qaic_drv.c       |  4 +++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/accel/qaic/aic080.rst
 
-diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
-index a0811df888f45..8ca2a445ffa15 100644
---- a/samples/bpf/test_cgrp2_sock.c
-+++ b/samples/bpf/test_cgrp2_sock.c
-@@ -178,8 +178,10 @@ static int show_sockopts(int family)
- 		return 1;
- 	}
+diff --git a/Documentation/accel/qaic/aic080.rst b/Documentation/accel/qaic/aic080.rst
+new file mode 100644
+index 0000000000000..d563771ea6ce4
+--- /dev/null
++++ b/Documentation/accel/qaic/aic080.rst
+@@ -0,0 +1,14 @@
++.. SPDX-License-Identifier: GPL-2.0-only
++
++===============================
++ Qualcomm Cloud AI 80 (AIC080)
++===============================
++
++Overview
++========
++
++The Qualcomm Cloud AI 80/AIC080 family of products are a derivative of AIC100.
++The number of NSPs and clock rates are reduced to fit within resource
++constrained solutions. The PCIe Product ID is 0xa080.
++
++As a derivative product, all AIC100 documentation applies.
+diff --git a/Documentation/accel/qaic/index.rst b/Documentation/accel/qaic/index.rst
+index ad19b88d1a669..967b9dd8bacea 100644
+--- a/Documentation/accel/qaic/index.rst
++++ b/Documentation/accel/qaic/index.rst
+@@ -10,4 +10,5 @@ accelerator cards.
+ .. toctree::
  
--	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
-+	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
-+		close(sd);
- 		return 1;
-+	}
+    qaic
++   aic080
+    aic100
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index 580b29ed19021..e18613e9ac3c1 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -34,6 +34,7 @@
  
- 	mark = get_somark(sd);
- 	prio = get_priority(sd);
+ MODULE_IMPORT_NS(DMA_BUF);
+ 
++#define PCI_DEV_AIC080			0xa080
+ #define PCI_DEV_AIC100			0xa100
+ #define QAIC_NAME			"qaic"
+ #define QAIC_DESC			"Qualcomm Cloud AI Accelerators"
+@@ -365,7 +366,7 @@ static struct qaic_device *create_qdev(struct pci_dev *pdev, const struct pci_de
+ 		return NULL;
+ 
+ 	qdev->dev_state = QAIC_OFFLINE;
+-	if (id->device == PCI_DEV_AIC100) {
++	if (id->device == PCI_DEV_AIC080 || id->device == PCI_DEV_AIC100) {
+ 		qdev->num_dbc = 16;
+ 		qdev->dbc = devm_kcalloc(dev, qdev->num_dbc, sizeof(*qdev->dbc), GFP_KERNEL);
+ 		if (!qdev->dbc)
+@@ -609,6 +610,7 @@ static struct mhi_driver qaic_mhi_driver = {
+ };
+ 
+ static const struct pci_device_id qaic_ids[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, PCI_DEV_AIC080), },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, PCI_DEV_AIC100), },
+ 	{ }
+ };
 -- 
 2.43.0
 
