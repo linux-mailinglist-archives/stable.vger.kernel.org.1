@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-94775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCD69D6EFB
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:57:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9D59D6F07
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:59:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C234281789
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:57:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29100162034
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A211BD01E;
-	Sun, 24 Nov 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A081BC9EE;
+	Sun, 24 Nov 2024 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgRJVgIn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unp2/0P7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B1D1BD01D;
-	Sun, 24 Nov 2024 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E2B1BD4FD;
+	Sun, 24 Nov 2024 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452350; cv=none; b=WmMJf9GoueuUdKITY3AINFBlX9g3Gy+PK6hnmV62PGFp0s2ARQOcO9dD7UGu63wMKO023xTPcTA2Jb+lhAKgI6lmp53hiSTp/PeXA6xiA5llREPQtCITnFgOnN7aBk8cnMi9MQhK2+K74AoTLT3qsbSntP5bMa8YI8W2pDZF090=
+	t=1732452351; cv=none; b=LRfJwiFo+Puida6qXpdjOdgBcbBjv0DhXx/kMi9BVPDvnk3ph/1EUKgO4ftjBcLzU3aGGk+jttJeQ+lFsRhoSvVaCRIY0HeoHJ5INhF8EoBaoheLWr6YfmZvbkkEHzKBhP/QtY3RKu4sKxfYoD+TzMU2l0YSwVeGk12Zw1e3OMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452350; c=relaxed/simple;
-	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PH8LHAlkSd/JS70OsTKCjXYjkYvEJMkj74dysO/Na7eLA+IW4s0mjLjeUtrbNzTfcCOGyNwkTPRvTTfiJ/yB3PMcht6MAxzdJ4KXrGog5YPGdlzzUmX+WnnMfO0o1+3GNcHRXX3QUNXpT9CyUH0J7wGOumvkRvUuwh9P1mgvbIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgRJVgIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E80C4CED1;
-	Sun, 24 Nov 2024 12:45:48 +0000 (UTC)
+	s=arc-20240116; t=1732452351; c=relaxed/simple;
+	bh=k7MfGDglnKUYbss0POiLHVKeYeFMjLONHdm4EcpnFEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b4DKmTCJ7kpEqBEpp24553OA7ehX6RcVJVlyY3MGt91GMVJzD10BX6DltKjzhtjN9hq++JUIvYqFnlpD++xFplA3pBEwKg81lgluYTfzxa1+0ADE4+JcGyE38dWbg1U+IQA50IL3c9Xe11cr28mzu4dT7b04fIjviuZ6hvTIAGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unp2/0P7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24178C4CED6;
+	Sun, 24 Nov 2024 12:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452349;
-	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XgRJVgInnSR1t1ufLcZHk2w++Uz/5sSq9osa22MNsjhYQYWdMAJ24pCdArS0vf165
-	 A8zmZRmSgkJLFgQJ9XljVVEZKlUQFQ9MmZ1+tdyioLiVWE1JZ1bwAalu0pyxO7w5mJ
-	 FSsIgCHxhxA74/+lKtlB/mbo2YvGbkcFoPzDK/XoGxApCC5Vt14noly+NtfEk65tCT
-	 RVuSB+5iSRwHdhPA14543AkeBZx/LndCm5JvxSC5hUObnGneeEjD648NxNayxgc+0d
-	 O9pZSrQ9B6DQZVp3y7wsdF8XKOvjUqqNPV0+Pl4g78fYR7GcUl4dJVb9J0YmpsDN45
-	 3gGq/yU3h3z5w==
+	s=k20201202; t=1732452351;
+	bh=k7MfGDglnKUYbss0POiLHVKeYeFMjLONHdm4EcpnFEg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=unp2/0P7znVK2zGQri42b9z40htLlGYOXwYYxZLuV5r87TjkmepMxyzfDhB3k+NuO
+	 O/25bbtyD3sWwFpoRupV0zgmg88iR1/3HSK7tFqs+YhRMMMLnRr99tG9SemBrlS01h
+	 fQovk2r/Vcg75QKsSPjkQH2Y92fBjSwNYWCK2hUyoYjPkensW0Ij3T+0770CBFWkXe
+	 mcUSaR+NYPzbY99unhy2ZmNEmT9LOSyhasMwIBFeDBRmYOKjy+kdyzsVQAQXJRgx+C
+	 N0LTJ4BE7O0F6InwjOd5xLY30EIo2Rbr/rhqUkyS7l9z4txnTS0c0giSGpwnbxsvfi
+	 WTMTDkoLMiRQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marco Elver <elver@google.com>,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+Cc: Sarah Maedel <sarah.maedel@hetzner-cloud.de>,
+	Tommy Giesler <tommy.giesler@hetzner.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	kasan-dev@googlegroups.com,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 1/3] kcsan: Turn report_filterlist_lock into a raw_spinlock
-Date: Sun, 24 Nov 2024 07:45:43 -0500
-Message-ID: <20241124124547.3337766-1-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 2/3] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
+Date: Sun, 24 Nov 2024 07:45:44 -0500
+Message-ID: <20241124124547.3337766-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124124547.3337766-1-sashal@kernel.org>
+References: <20241124124547.3337766-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,210 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Marco Elver <elver@google.com>
+From: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
 
-[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
+[ Upstream commit ccae49e5cf6ebda1a7fa5d2ca99500987c7420c4 ]
 
-Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
-splats like:
+Boards such as
+* Pro WS 665-ACE
+* Pro WS 600M-CL
+have got a nct6775 chip, but by default there's no use of it
+because of resource conflict with WMI method.
 
-| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-| preempt_count: 10002, expected: 0
-| RCU nest depth: 0, expected: 0
-| no locks held by swapper/1/0.
-| irq event stamp: 156674
-| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
-| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
-| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
-| softirqs last disabled at (0): [<0000000000000000>] 0x0
-| Preemption disabled at:
-| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
-| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
-| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
-| Call Trace:
-|  <IRQ>
-|  dump_stack_lvl+0x7e/0xc0
-|  dump_stack+0x1d/0x30
-|  __might_resched+0x1a2/0x270
-|  rt_spin_lock+0x68/0x170
-|  kcsan_skip_report_debugfs+0x43/0xe0
-|  print_report+0xb5/0x590
-|  kcsan_report_known_origin+0x1b1/0x1d0
-|  kcsan_setup_watchpoint+0x348/0x650
-|  __tsan_unaligned_write1+0x16d/0x1d0
-|  hrtimer_interrupt+0x3d6/0x430
-|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
-|  sysvec_apic_timer_interrupt+0x97/0xc0
-|  </IRQ>
+Add affected boards to the WMI monitoring list.
 
-On a detected data race, KCSAN's reporting logic checks if it should
-filter the report. That list is protected by the report_filterlist_lock
-*non-raw* spinlock which may sleep on RT kernels.
-
-Since KCSAN may report data races in any context, convert it to a
-raw_spinlock.
-
-This requires being careful about when to allocate memory for the filter
-list itself which can be done via KCSAN's debugfs interface. Concurrent
-modification of the filter list via debugfs should be rare: the chosen
-strategy is to optimistically pre-allocate memory before the critical
-section and discard if unused.
-
-Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
-Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Marco Elver <elver@google.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
+Co-developed-by: Tommy Giesler <tommy.giesler@hetzner.com>
+Signed-off-by: Tommy Giesler <tommy.giesler@hetzner.com>
+Signed-off-by: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
+Message-ID: <20241018074611.358619-1-sarah.maedel@hetzner-cloud.de>
+[groeck: Change commit message to imperative mood]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 38 deletions(-)
+ drivers/hwmon/nct6775-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 1d1d1b0e42489..f4623910fb1f2 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -46,14 +46,8 @@ static struct {
- 	int		used;		/* number of elements used */
- 	bool		sorted;		/* if elements are sorted */
- 	bool		whitelist;	/* if list is a blacklist or whitelist */
--} report_filterlist = {
--	.addrs		= NULL,
--	.size		= 8,		/* small initial size */
--	.used		= 0,
--	.sorted		= false,
--	.whitelist	= false,	/* default is blacklist */
--};
--static DEFINE_SPINLOCK(report_filterlist_lock);
-+} report_filterlist;
-+static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
- 
- /*
-  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-@@ -110,7 +104,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		return false;
- 	func_addr -= offset; /* Get function start */
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	if (report_filterlist.used == 0)
- 		goto out;
- 
-@@ -127,7 +121,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		ret = !ret;
- 
- out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 	return ret;
- }
- 
-@@ -135,9 +129,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	report_filterlist.whitelist = whitelist;
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- }
- 
- /* Returns 0 on success, error-code otherwise. */
-@@ -145,6 +139,9 @@ static ssize_t insert_report_filterlist(const char *func)
- {
- 	unsigned long flags;
- 	unsigned long addr = kallsyms_lookup_name(func);
-+	unsigned long *delay_free = NULL;
-+	unsigned long *new_addrs = NULL;
-+	size_t new_size = 0;
- 	ssize_t ret = 0;
- 
- 	if (!addr) {
-@@ -152,32 +149,33 @@ static ssize_t insert_report_filterlist(const char *func)
- 		return -ENOENT;
- 	}
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+retry_alloc:
-+	/*
-+	 * Check if we need an allocation, and re-validate under the lock. Since
-+	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
-+	 */
-+	if (data_race(report_filterlist.used == report_filterlist.size)) {
-+		new_size = (report_filterlist.size ?: 4) * 2;
-+		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
-+		if (!new_addrs)
-+			return -ENOMEM;
-+	}
- 
--	if (report_filterlist.addrs == NULL) {
--		/* initial allocation */
--		report_filterlist.addrs =
--			kmalloc_array(report_filterlist.size,
--				      sizeof(unsigned long), GFP_ATOMIC);
--		if (report_filterlist.addrs == NULL) {
--			ret = -ENOMEM;
--			goto out;
--		}
--	} else if (report_filterlist.used == report_filterlist.size) {
--		/* resize filterlist */
--		size_t new_size = report_filterlist.size * 2;
--		unsigned long *new_addrs =
--			krealloc(report_filterlist.addrs,
--				 new_size * sizeof(unsigned long), GFP_ATOMIC);
--
--		if (new_addrs == NULL) {
--			/* leave filterlist itself untouched */
--			ret = -ENOMEM;
--			goto out;
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
-+	if (report_filterlist.used == report_filterlist.size) {
-+		/* Check we pre-allocated enough, and retry if not. */
-+		if (report_filterlist.used >= new_size) {
-+			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+			kfree(new_addrs); /* kfree(NULL) is safe */
-+			delay_free = new_addrs = NULL;
-+			goto retry_alloc;
- 		}
- 
-+		if (report_filterlist.used)
-+			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
-+		delay_free = report_filterlist.addrs; /* free the old list */
-+		report_filterlist.addrs = new_addrs;  /* switch to the new list */
- 		report_filterlist.size = new_size;
--		report_filterlist.addrs = new_addrs;
- 	}
- 
- 	/* Note: deduplicating should be done in userspace. */
-@@ -185,9 +183,9 @@ static ssize_t insert_report_filterlist(const char *func)
- 		kallsyms_lookup_name(func);
- 	report_filterlist.sorted = false;
- 
--out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
-+	kfree(delay_free);
- 	return ret;
- }
- 
-@@ -204,13 +202,13 @@ static int show_info(struct seq_file *file, void *v)
- 	}
- 
- 	/* show filter functions, and filter type */
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	seq_printf(file, "\n%s functions: %s\n",
- 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
- 		   report_filterlist.used == 0 ? "none" : "");
- 	for (i = 0; i < report_filterlist.used; ++i)
- 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
- 	return 0;
- }
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index 706a662dd077d..7e0ac3fcbc050 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -1350,6 +1350,8 @@ static const char * const asus_msi_boards[] = {
+ 	"Pro H610M-CT D4",
+ 	"Pro H610T D4",
+ 	"Pro Q670M-C",
++	"Pro WS 600M-CL",
++	"Pro WS 665-ACE",
+ 	"Pro WS W680-ACE",
+ 	"Pro WS W680-ACE IPMI",
+ 	"Pro WS W790-ACE",
 -- 
 2.43.0
 
