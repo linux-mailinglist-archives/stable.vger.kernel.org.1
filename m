@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-95026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19909D7259
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:06:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12219D7352
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6042A289202
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:06:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A38B669A1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEED1D049D;
-	Sun, 24 Nov 2024 13:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BCE1D1E74;
+	Sun, 24 Nov 2024 13:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtEokPPQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWmad7xr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9421CEEBB;
-	Sun, 24 Nov 2024 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC52C1D0E27;
+	Sun, 24 Nov 2024 13:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455753; cv=none; b=QeW5H7rawFD7o7SqOqISEN3KQaje2ZO3Wdsbs48olxymKfBcJbS9zisel/qpY2m+e2LdUi+a/DfpyfplbA+cQlxJ4ee5+qdg1mMZxOb3p2yonXpQL6D7C/FohkQfAbHBA1XnJNuZ6Xuz4PLsrtcvDYl9srcjKbILDhJHDU1n98I=
+	t=1732455756; cv=none; b=VjLxUKBCG4j/ufhhVOuMdD2IVfBq+Xp79Xe2FhF+UuruIAUnmRH/zOclQeO00sfTOl8kPp69/XclJcudMJVNu16MEkYvavTmmP9uK5UDLviz+zkKQIk6GN0e0qeA2NCK/0x+/5CehyUBoYkmMSj/QnLo0j/SASVnzUTh2r/JkbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455753; c=relaxed/simple;
-	bh=E/4aSo+gtUhV7n16YxO2j4zd9yOLOgI8xAThB9aI1iI=;
+	s=arc-20240116; t=1732455756; c=relaxed/simple;
+	bh=kAmesRA6DX/38zulmfZzoQXn0SUInPhfVYwWEiE2AqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VV3qQVR7uhoTZ6U3GDKg2E0sR0rtJqxiQTG3f6FicwAUW1a6NbYeWKu5CdMI5qIY13W/6JukQlRRbo7G1wognEaedpl46ae/yKHt1LLe4QrYWAOvvpcS74FvkK62vda70YOLZ+fo0FpWdGEGRLeIgidqPjjGGOuitn9eF6tMw5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtEokPPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E94C4CECC;
-	Sun, 24 Nov 2024 13:42:30 +0000 (UTC)
+	 MIME-Version; b=NPqODwbik9hyQ2Q7ksM4e5oo0LrWMoEc8+tRkB5KbG/t1iMSDuomLOV2rTjVbgS+zWhZNDRNO8G5tXUttU+DhA8qbs9hegBeup/CWTiaNjCHxgPbfHFVCiAGuX8P7s8xSYPzxhUKd1TdH2K/wagA6kLel5y1GDY8SuQUGwsHrQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWmad7xr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767DBC4CECC;
+	Sun, 24 Nov 2024 13:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455752;
-	bh=E/4aSo+gtUhV7n16YxO2j4zd9yOLOgI8xAThB9aI1iI=;
+	s=k20201202; t=1732455755;
+	bh=kAmesRA6DX/38zulmfZzoQXn0SUInPhfVYwWEiE2AqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtEokPPQsbQz7nzjyiitVQvSBunE8uaWqGepxG2oejXleUktLH04QHae3q909icFV
-	 +LAyudGBKgJZa/GGu1pu0rxRey7o2dkhATNkMlLQy3Thw+RGAXiavv+ysXnytkJyTI
-	 v0pncfKSAWUMmMCoekjkv2fJa4jhG1VwWatLr46dC2OjpmKoF703yhYeV0kMyBiNok
-	 KDI0TDEgec6UwKoYU6dEbYxR6885TxRnpJNpby8VTrjKByPLpzZrYxb0gEhIuc4bCU
-	 M4dUY7vb1Wgc51vZLeCO1Q/2oCoPDYwsd3PDm8apfTKFn1t5V4LNYHcLW/FA56vubA
-	 ifxrw/BI8bNHA==
+	b=gWmad7xrzvF5OQrdVNp4kaTnMo0tUkwMjykv9qON314rIaO9sVNbnIBF2rXC5S22i
+	 0A0bgRKGbaMHm6dn8SFSDvrgW7VMN2QDjl5P2j6bo8cuUFApNTqAz7MGzEIg1SKuIz
+	 +klCsEmk7rR5Wq2rBjbqUlgqqhAFFBLO5HRnwWop01AFcEKCf0qf/NhVpi1FAWgTY/
+	 SUZNVjWjxfcmc+5+ISY+QpqE6hmHQKUY6qe3v1UKV+Mgko913T9UMVEdXXnAfDm6pG
+	 UXs7T0PMTG3FQZjwgBv8r4Y2jswMPyBZ6WmMYmz2Om3+uk9NJ/qU+5W6UU7cUaEHz3
+	 bMR5d6XFTFlYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,20 +50,13 @@ Cc: Takashi Iwai <tiwai@suse.de>,
 	tiwai@suse.com,
 	bo.liu@senarytech.com,
 	kovalev@altlinux.org,
-	wse@tuxedocomputers.com,
-	jaroslaw.janik@gmail.com,
 	cs@tuxedo.de,
-	songxiebing@kylinos.cn,
 	me@oldherl.one,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	josh@joshuagrisham.com,
-	rf@opensource.cirrus.com,
+	songxiebing@kylinos.cn,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 23/87] ALSA: hda: Use own quirk lookup helper
-Date: Sun, 24 Nov 2024 08:38:01 -0500
-Message-ID: <20241124134102.3344326-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 24/87] ALSA: hda/conexant: Use the new codec SSID matching
+Date: Sun, 24 Nov 2024 08:38:02 -0500
+Message-ID: <20241124134102.3344326-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -80,525 +73,72 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5b1913a79c3e0518d9c5db343fa9fc4edcea041f ]
+[ Upstream commit 1f55e3699fc9ced72400cdca39fe248bf2b288a2 ]
 
-For allowing the primary codec SSID matching (that works around the
-conflicting PCI SSID problems), introduce a new struct hda_quirk,
-which is compatible with the existing struct snd_pci_quirk along with
-new helper functions and macros.
-
-The existing snd_pci_quirk tables are replaced with hda_quirk tables
-accordingly, while keeping SND_PCI_QUIRK() entry definitions as is.
-
-This patch shouldn't bring any behavior change, just some renaming and
-shifting the code.  The actual change for the codec SSID matching will
-follow after this.
+Now we can perform the codec ID matching primarily, and reduce the
+conditional application of the quirk for conflicting PCI SSID between
+System76 and Tuxedo devices.
 
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241008120233.7154-2-tiwai@suse.de
+Link: https://patch.msgid.link/20241008120233.7154-3-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_auto_parser.c     | 61 +++++++++++++++++++++++------
- sound/pci/hda/hda_local.h           | 22 ++++++++++-
- sound/pci/hda/patch_analog.c        |  6 +--
- sound/pci/hda/patch_cirrus.c        |  8 ++--
- sound/pci/hda/patch_conexant.c      |  8 ++--
- sound/pci/hda/patch_cs8409-tables.c |  2 +-
- sound/pci/hda/patch_cs8409.h        |  2 +-
- sound/pci/hda/patch_realtek.c       | 20 +++++-----
- sound/pci/hda/patch_sigmatel.c      | 22 +++++------
- sound/pci/hda/patch_via.c           |  2 +-
- 10 files changed, 106 insertions(+), 47 deletions(-)
+ sound/pci/hda/patch_conexant.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
-diff --git a/sound/pci/hda/hda_auto_parser.c b/sound/pci/hda/hda_auto_parser.c
-index 7c6b1fe8dfcce..8e74be038b0fa 100644
---- a/sound/pci/hda/hda_auto_parser.c
-+++ b/sound/pci/hda/hda_auto_parser.c
-@@ -956,6 +956,28 @@ void snd_hda_pick_pin_fixup(struct hda_codec *codec,
- }
- EXPORT_SYMBOL_GPL(snd_hda_pick_pin_fixup);
- 
-+/* check whether the given quirk entry matches with vendor/device pair */
-+static bool hda_quirk_match(u16 vendor, u16 device, const struct hda_quirk *q)
-+{
-+	if (q->subvendor != vendor)
-+		return false;
-+	return !q->subdevice ||
-+		(device & q->subdevice_mask) == q->subdevice;
-+}
-+
-+/* look through the quirk list and return the matching entry */
-+static const struct hda_quirk *
-+hda_quirk_lookup_id(u16 vendor, u16 device, const struct hda_quirk *list)
-+{
-+	const struct hda_quirk *q;
-+
-+	for (q = list; q->subvendor || q->subdevice; q++) {
-+		if (hda_quirk_match(vendor, device, q))
-+			return q;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * snd_hda_pick_fixup - Pick up a fixup matching with PCI/codec SSID or model string
-  * @codec: the HDA codec
-@@ -975,14 +997,16 @@ EXPORT_SYMBOL_GPL(snd_hda_pick_pin_fixup);
-  */
- void snd_hda_pick_fixup(struct hda_codec *codec,
- 			const struct hda_model_fixup *models,
--			const struct snd_pci_quirk *quirk,
-+			const struct hda_quirk *quirk,
- 			const struct hda_fixup *fixlist)
- {
--	const struct snd_pci_quirk *q;
-+	const struct hda_quirk *q;
- 	int id = HDA_FIXUP_ID_NOT_SET;
- 	const char *name = NULL;
- 	const char *type = NULL;
- 	unsigned int vendor, device;
-+	u16 pci_vendor, pci_device;
-+	u16 codec_vendor, codec_device;
- 
- 	if (codec->fixup_id != HDA_FIXUP_ID_NOT_SET)
- 		return;
-@@ -1013,27 +1037,42 @@ void snd_hda_pick_fixup(struct hda_codec *codec,
- 	if (!quirk)
- 		return;
- 
-+	if (codec->bus->pci) {
-+		pci_vendor = codec->bus->pci->subsystem_vendor;
-+		pci_device = codec->bus->pci->subsystem_device;
-+	}
-+
-+	codec_vendor = codec->core.subsystem_id >> 16;
-+	codec_device = codec->core.subsystem_id & 0xffff;
-+
- 	/* match with the SSID alias given by the model string "XXXX:YYYY" */
- 	if (codec->modelname &&
- 	    sscanf(codec->modelname, "%04x:%04x", &vendor, &device) == 2) {
--		q = snd_pci_quirk_lookup_id(vendor, device, quirk);
-+		q = hda_quirk_lookup_id(vendor, device, quirk);
- 		if (q) {
- 			type = "alias SSID";
- 			goto found_device;
- 		}
- 	}
- 
--	/* match with the PCI SSID */
--	q = snd_pci_quirk_lookup(codec->bus->pci, quirk);
--	if (q) {
--		type = "PCI SSID";
--		goto found_device;
-+	/* match primarily with the PCI SSID */
-+	for (q = quirk; q->subvendor || q->subdevice; q++) {
-+		/* if the entry is specific to codec SSID, check with it */
-+		if (!codec->bus->pci || q->match_codec_ssid) {
-+			if (hda_quirk_match(codec_vendor, codec_device, q)) {
-+				type = "codec SSID";
-+				goto found_device;
-+			}
-+		} else {
-+			if (hda_quirk_match(pci_vendor, pci_device, q)) {
-+				type = "PCI SSID";
-+				goto found_device;
-+			}
-+		}
- 	}
- 
- 	/* match with the codec SSID */
--	q = snd_pci_quirk_lookup_id(codec->core.subsystem_id >> 16,
--				    codec->core.subsystem_id & 0xffff,
--				    quirk);
-+	q = hda_quirk_lookup_id(codec_vendor, codec_device, quirk);
- 	if (q) {
- 		type = "codec SSID";
- 		goto found_device;
-diff --git a/sound/pci/hda/hda_local.h b/sound/pci/hda/hda_local.h
-index 53a5a62b78fa9..b7d926e9eb947 100644
---- a/sound/pci/hda/hda_local.h
-+++ b/sound/pci/hda/hda_local.h
-@@ -292,6 +292,26 @@ struct hda_fixup {
- 	} v;
- };
- 
-+/*
-+ * extended form of snd_pci_quirk:
-+ * for PCI SSID matching, use SND_PCI_QUIRK() like before;
-+ * for codec SSID matching, use the new HDA_CODEC_QUIRK() instead
-+ */
-+struct hda_quirk {
-+	unsigned short subvendor;	/* PCI subvendor ID */
-+	unsigned short subdevice;	/* PCI subdevice ID */
-+	unsigned short subdevice_mask;	/* bitmask to match */
-+	bool match_codec_ssid;		/* match only with codec SSID */
-+	int value;			/* value */
-+#ifdef CONFIG_SND_DEBUG_VERBOSE
-+	const char *name;		/* name of the device (optional) */
-+#endif
-+};
-+
-+#define HDA_CODEC_QUIRK(vend, dev, xname, val) \
-+	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), .name = (xname),\
-+			.match_codec_ssid = true }
-+
- struct snd_hda_pin_quirk {
- 	unsigned int codec;             /* Codec vendor/device ID */
- 	unsigned short subvendor;	/* PCI subvendor ID */
-@@ -351,7 +371,7 @@ void snd_hda_apply_fixup(struct hda_codec *codec, int action);
- void __snd_hda_apply_fixup(struct hda_codec *codec, int id, int action, int depth);
- void snd_hda_pick_fixup(struct hda_codec *codec,
- 			const struct hda_model_fixup *models,
--			const struct snd_pci_quirk *quirk,
-+			const struct hda_quirk *quirk,
- 			const struct hda_fixup *fixlist);
- void snd_hda_pick_pin_fixup(struct hda_codec *codec,
- 			    const struct snd_hda_pin_quirk *pin_quirk,
-diff --git a/sound/pci/hda/patch_analog.c b/sound/pci/hda/patch_analog.c
-index 1e9dadcdc51be..56354fe060a1a 100644
---- a/sound/pci/hda/patch_analog.c
-+++ b/sound/pci/hda/patch_analog.c
-@@ -345,7 +345,7 @@ static const struct hda_fixup ad1986a_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk ad1986a_fixup_tbl[] = {
-+static const struct hda_quirk ad1986a_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x30af, "HP B2800", AD1986A_FIXUP_LAPTOP_IMIC),
- 	SND_PCI_QUIRK(0x1043, 0x1153, "ASUS M9V", AD1986A_FIXUP_LAPTOP_IMIC),
- 	SND_PCI_QUIRK(0x1043, 0x1443, "ASUS Z99He", AD1986A_FIXUP_EAPD),
-@@ -588,7 +588,7 @@ static const struct hda_fixup ad1981_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk ad1981_fixup_tbl[] = {
-+static const struct hda_quirk ad1981_fixup_tbl[] = {
- 	SND_PCI_QUIRK_VENDOR(0x1014, "Lenovo", AD1981_FIXUP_AMP_OVERRIDE),
- 	SND_PCI_QUIRK_VENDOR(0x103c, "HP", AD1981_FIXUP_HP_EAPD),
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Lenovo", AD1981_FIXUP_AMP_OVERRIDE),
-@@ -1061,7 +1061,7 @@ static const struct hda_fixup ad1884_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk ad1884_fixup_tbl[] = {
-+static const struct hda_quirk ad1884_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x2a82, "HP Touchsmart", AD1884_FIXUP_HP_TOUCHSMART),
- 	SND_PCI_QUIRK_VENDOR(0x103c, "HP", AD1884_FIXUP_HP_EAPD),
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Lenovo Thinkpad", AD1884_FIXUP_THINKPAD),
-diff --git a/sound/pci/hda/patch_cirrus.c b/sound/pci/hda/patch_cirrus.c
-index 654724559355e..06e046214a413 100644
---- a/sound/pci/hda/patch_cirrus.c
-+++ b/sound/pci/hda/patch_cirrus.c
-@@ -385,7 +385,7 @@ static const struct hda_model_fixup cs420x_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk cs420x_fixup_tbl[] = {
-+static const struct hda_quirk cs420x_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x10de, 0x0ac0, "MacBookPro 5,3", CS420X_MBP53),
- 	SND_PCI_QUIRK(0x10de, 0x0d94, "MacBookAir 3,1(2)", CS420X_MBP55),
- 	SND_PCI_QUIRK(0x10de, 0xcb79, "MacBookPro 5,5", CS420X_MBP55),
-@@ -634,13 +634,13 @@ static const struct hda_model_fixup cs4208_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk cs4208_fixup_tbl[] = {
-+static const struct hda_quirk cs4208_fixup_tbl[] = {
- 	SND_PCI_QUIRK_VENDOR(0x106b, "Apple", CS4208_MAC_AUTO),
- 	{} /* terminator */
- };
- 
- /* codec SSID matching */
--static const struct snd_pci_quirk cs4208_mac_fixup_tbl[] = {
-+static const struct hda_quirk cs4208_mac_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x106b, 0x5e00, "MacBookPro 11,2", CS4208_MBP11),
- 	SND_PCI_QUIRK(0x106b, 0x6c00, "MacMini 7,1", CS4208_MACMINI),
- 	SND_PCI_QUIRK(0x106b, 0x7100, "MacBookAir 6,1", CS4208_MBA6),
-@@ -818,7 +818,7 @@ static const struct hda_model_fixup cs421x_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk cs421x_fixup_tbl[] = {
-+static const struct hda_quirk cs421x_fixup_tbl[] = {
- 	/* Test Intel board + CDB2410  */
- 	SND_PCI_QUIRK(0x8086, 0x5001, "DP45SG/CDB4210", CS421X_CDB4210),
- 	{} /* terminator */
 diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 3a63749ec17d1..b0a291762ec28 100644
+index b0a291762ec28..7e72df3306259 100644
 --- a/sound/pci/hda/patch_conexant.c
 +++ b/sound/pci/hda/patch_conexant.c
-@@ -1014,7 +1014,7 @@ static const struct hda_fixup cxt_fixups[] = {
+@@ -828,23 +828,6 @@ static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
+ 	{}
+ };
+ 
+-/* pincfg quirk for Tuxedo Sirius;
+- * unfortunately the (PCI) SSID conflicts with System76 Pangolin pang14,
+- * which has incompatible pin setup, so we check the codec SSID (luckily
+- * different one!) and conditionally apply the quirk here
+- */
+-static void cxt_fixup_sirius_top_speaker(struct hda_codec *codec,
+-					 const struct hda_fixup *fix,
+-					 int action)
+-{
+-	/* ignore for incorrectly picked-up pang14 */
+-	if (codec->core.subsystem_id == 0x278212b3)
+-		return;
+-	/* set up the top speaker pin */
+-	if (action == HDA_FIXUP_ACT_PRE_PROBE)
+-		snd_hda_codec_set_pincfg(codec, 0x1d, 0x82170111);
+-}
+-
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -1009,8 +992,11 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.v.pins = cxt_pincfg_sws_js201d,
+ 	},
+ 	[CXT_PINCFG_TOP_SPEAKER] = {
+-		.type = HDA_FIXUP_FUNC,
+-		.v.func = cxt_fixup_sirius_top_speaker,
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1d, 0x82170111 },
++			{ }
++		},
  	},
  };
  
--static const struct snd_pci_quirk cxt5045_fixups[] = {
-+static const struct hda_quirk cxt5045_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x30d5, "HP 530", CXT_FIXUP_HP_530),
- 	SND_PCI_QUIRK(0x1179, 0xff31, "Toshiba P105", CXT_FIXUP_TOSHIBA_P105),
- 	/* HP, Packard Bell, Fujitsu-Siemens & Lenovo laptops have
-@@ -1034,7 +1034,7 @@ static const struct hda_model_fixup cxt5045_fixup_models[] = {
+@@ -1109,8 +1095,8 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
+ 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
+-	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
+-	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
++	HDA_CODEC_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
++	HDA_CODEC_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
  	{}
  };
  
--static const struct snd_pci_quirk cxt5047_fixups[] = {
-+static const struct hda_quirk cxt5047_fixups[] = {
- 	/* HP laptops have really bad sound over 0 dB on NID 0x10.
- 	 */
- 	SND_PCI_QUIRK_VENDOR(0x103c, "HP", CXT_FIXUP_CAP_MIX_AMP_5047),
-@@ -1046,7 +1046,7 @@ static const struct hda_model_fixup cxt5047_fixup_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk cxt5051_fixups[] = {
-+static const struct hda_quirk cxt5051_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x360b, "Compaq CQ60", CXT_PINCFG_COMPAQ_CQ60),
- 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo X200", CXT_PINCFG_LENOVO_X200),
- 	{}
-@@ -1057,7 +1057,7 @@ static const struct hda_model_fixup cxt5051_fixup_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk cxt5066_fixups[] = {
-+static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
-diff --git a/sound/pci/hda/patch_cs8409-tables.c b/sound/pci/hda/patch_cs8409-tables.c
-index 36b411d1a9609..759f48038273d 100644
---- a/sound/pci/hda/patch_cs8409-tables.c
-+++ b/sound/pci/hda/patch_cs8409-tables.c
-@@ -473,7 +473,7 @@ struct sub_codec dolphin_cs42l42_1 = {
-  *                    Arrays Used for all projects using CS8409
-  ******************************************************************************/
- 
--const struct snd_pci_quirk cs8409_fixup_tbl[] = {
-+const struct hda_quirk cs8409_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1028, 0x0A11, "Bullseye", CS8409_BULLSEYE),
- 	SND_PCI_QUIRK(0x1028, 0x0A12, "Bullseye", CS8409_BULLSEYE),
- 	SND_PCI_QUIRK(0x1028, 0x0A23, "Bullseye", CS8409_BULLSEYE),
-diff --git a/sound/pci/hda/patch_cs8409.h b/sound/pci/hda/patch_cs8409.h
-index 937e9387abdc7..5e48115caf096 100644
---- a/sound/pci/hda/patch_cs8409.h
-+++ b/sound/pci/hda/patch_cs8409.h
-@@ -355,7 +355,7 @@ int cs42l42_volume_put(struct snd_kcontrol *kctrl, struct snd_ctl_elem_value *uc
- 
- extern const struct hda_pcm_stream cs42l42_48k_pcm_analog_playback;
- extern const struct hda_pcm_stream cs42l42_48k_pcm_analog_capture;
--extern const struct snd_pci_quirk cs8409_fixup_tbl[];
-+extern const struct hda_quirk cs8409_fixup_tbl[];
- extern const struct hda_model_fixup cs8409_models[];
- extern const struct hda_fixup cs8409_fixups[];
- extern const struct hda_verb cs8409_cs42l42_init_verbs[];
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 833635aaee1d0..e832235d95853 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -1554,7 +1554,7 @@ static const struct hda_fixup alc880_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc880_fixup_tbl[] = {
-+static const struct hda_quirk alc880_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x0f69, "Coeus G610P", ALC880_FIXUP_W810),
- 	SND_PCI_QUIRK(0x1043, 0x10c3, "ASUS W5A", ALC880_FIXUP_ASUS_W5A),
- 	SND_PCI_QUIRK(0x1043, 0x1964, "ASUS Z71V", ALC880_FIXUP_Z71V),
-@@ -1863,7 +1863,7 @@ static const struct hda_fixup alc260_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc260_fixup_tbl[] = {
-+static const struct hda_quirk alc260_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x007b, "Acer C20x", ALC260_FIXUP_GPIO1),
- 	SND_PCI_QUIRK(0x1025, 0x007f, "Acer Aspire 9500", ALC260_FIXUP_COEF),
- 	SND_PCI_QUIRK(0x1025, 0x008f, "Acer", ALC260_FIXUP_GPIO1),
-@@ -2555,7 +2555,7 @@ static const struct hda_fixup alc882_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc882_fixup_tbl[] = {
-+static const struct hda_quirk alc882_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x006c, "Acer Aspire 9810", ALC883_FIXUP_ACER_EAPD),
- 	SND_PCI_QUIRK(0x1025, 0x0090, "Acer Aspire", ALC883_FIXUP_ACER_EAPD),
- 	SND_PCI_QUIRK(0x1025, 0x0107, "Acer Aspire", ALC883_FIXUP_ACER_EAPD),
-@@ -2899,7 +2899,7 @@ static const struct hda_fixup alc262_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc262_fixup_tbl[] = {
-+static const struct hda_quirk alc262_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x170b, "HP Z200", ALC262_FIXUP_HP_Z200),
- 	SND_PCI_QUIRK(0x10cf, 0x1397, "Fujitsu Lifebook S7110", ALC262_FIXUP_FSC_S7110),
- 	SND_PCI_QUIRK(0x10cf, 0x142d, "Fujitsu Lifebook E8410", ALC262_FIXUP_BENQ),
-@@ -3060,7 +3060,7 @@ static const struct hda_model_fixup alc268_fixup_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk alc268_fixup_tbl[] = {
-+static const struct hda_quirk alc268_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x0139, "Acer TravelMate 6293", ALC268_FIXUP_SPDIF),
- 	SND_PCI_QUIRK(0x1025, 0x015b, "Acer AOA 150 (ZG5)", ALC268_FIXUP_INV_DMIC),
- 	/* below is codec SSID since multiple Toshiba laptops have the
-@@ -10143,7 +10143,7 @@ static const struct hda_fixup alc269_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-+static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x0283, "Acer TravelMate 8371", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x029b, "Acer 1810TZ", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0349, "Acer AOD260", ALC269_FIXUP_INV_DMIC),
-@@ -11076,7 +11076,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk alc269_fixup_vendor_tbl[] = {
-+static const struct hda_quirk alc269_fixup_vendor_tbl[] = {
- 	SND_PCI_QUIRK_VENDOR(0x1025, "Acer Aspire", ALC271_FIXUP_DMIC),
- 	SND_PCI_QUIRK_VENDOR(0x103c, "HP", ALC269_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK_VENDOR(0x104d, "Sony VAIO", ALC269_FIXUP_SONY_VAIO),
-@@ -12005,7 +12005,7 @@ static const struct hda_fixup alc861_fixups[] = {
- 	}
- };
- 
--static const struct snd_pci_quirk alc861_fixup_tbl[] = {
-+static const struct hda_quirk alc861_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1253, "ASUS W7J", ALC660_FIXUP_ASUS_W7J),
- 	SND_PCI_QUIRK(0x1043, 0x1263, "ASUS Z35HL", ALC660_FIXUP_ASUS_W7J),
- 	SND_PCI_QUIRK(0x1043, 0x1393, "ASUS A6Rp", ALC861_FIXUP_ASUS_A6RP),
-@@ -12109,7 +12109,7 @@ static const struct hda_fixup alc861vd_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc861vd_fixup_tbl[] = {
-+static const struct hda_quirk alc861vd_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x30bf, "HP TX1000", ALC861VD_FIX_DALLAS),
- 	SND_PCI_QUIRK(0x1043, 0x1339, "ASUS A7-K", ALC660VD_FIX_ASUS_GPIO1),
- 	SND_PCI_QUIRK(0x1179, 0xff31, "Toshiba L30-149", ALC861VD_FIX_DALLAS),
-@@ -12910,7 +12910,7 @@ static const struct hda_fixup alc662_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk alc662_fixup_tbl[] = {
-+static const struct hda_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
- 	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
- 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
-diff --git a/sound/pci/hda/patch_sigmatel.c b/sound/pci/hda/patch_sigmatel.c
-index ae1a34c68c616..bde6b73738583 100644
---- a/sound/pci/hda/patch_sigmatel.c
-+++ b/sound/pci/hda/patch_sigmatel.c
-@@ -1462,7 +1462,7 @@ static const struct hda_model_fixup stac9200_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac9200_fixup_tbl[] = {
-+static const struct hda_quirk stac9200_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_REF),
-@@ -1683,7 +1683,7 @@ static const struct hda_model_fixup stac925x_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac925x_fixup_tbl[] = {
-+static const struct hda_quirk stac925x_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668, "DFI LanParty", STAC_REF),
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_DFI, 0x3101, "DFI LanParty", STAC_REF),
-@@ -1957,7 +1957,7 @@ static const struct hda_model_fixup stac92hd73xx_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac92hd73xx_fixup_tbl[] = {
-+static const struct hda_quirk stac92hd73xx_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 				"DFI LanParty", STAC_92HD73XX_REF),
-@@ -2753,7 +2753,7 @@ static const struct hda_model_fixup stac92hd83xxx_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac92hd83xxx_fixup_tbl[] = {
-+static const struct hda_quirk stac92hd83xxx_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_92HD83XXX_REF),
-@@ -3236,7 +3236,7 @@ static const struct hda_model_fixup stac92hd71bxx_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac92hd71bxx_fixup_tbl[] = {
-+static const struct hda_quirk stac92hd71bxx_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_92HD71BXX_REF),
-@@ -3496,7 +3496,7 @@ static const struct hda_pintbl ecs202_pin_configs[] = {
- };
- 
- /* codec SSIDs for Intel Mac sharing the same PCI SSID 8384:7680 */
--static const struct snd_pci_quirk stac922x_intel_mac_fixup_tbl[] = {
-+static const struct hda_quirk stac922x_intel_mac_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x0000, 0x0100, "Mac Mini", STAC_INTEL_MAC_V3),
- 	SND_PCI_QUIRK(0x106b, 0x0800, "Mac", STAC_INTEL_MAC_V1),
- 	SND_PCI_QUIRK(0x106b, 0x0600, "Mac", STAC_INTEL_MAC_V2),
-@@ -3640,7 +3640,7 @@ static const struct hda_model_fixup stac922x_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac922x_fixup_tbl[] = {
-+static const struct hda_quirk stac922x_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_D945_REF),
-@@ -3968,7 +3968,7 @@ static const struct hda_model_fixup stac927x_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac927x_fixup_tbl[] = {
-+static const struct hda_quirk stac927x_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_D965_REF),
-@@ -4178,7 +4178,7 @@ static const struct hda_model_fixup stac9205_models[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk stac9205_fixup_tbl[] = {
-+static const struct hda_quirk stac9205_fixup_tbl[] = {
- 	/* SigmaTel reference board */
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_INTEL, 0x2668,
- 		      "DFI LanParty", STAC_9205_REF),
-@@ -4255,7 +4255,7 @@ static const struct hda_fixup stac92hd95_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk stac92hd95_fixup_tbl[] = {
-+static const struct hda_quirk stac92hd95_fixup_tbl[] = {
- 	SND_PCI_QUIRK(PCI_VENDOR_ID_HP, 0x1911, "HP Spectre 13", STAC_92HD95_HP_BASS),
- 	{} /* terminator */
- };
-@@ -5002,7 +5002,7 @@ static const struct hda_fixup stac9872_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk stac9872_fixup_tbl[] = {
-+static const struct hda_quirk stac9872_fixup_tbl[] = {
- 	SND_PCI_QUIRK_MASK(0x104d, 0xfff0, 0x81e0,
- 			   "Sony VAIO F/S", STAC_9872_VAIO),
- 	{} /* terminator */
-diff --git a/sound/pci/hda/patch_via.c b/sound/pci/hda/patch_via.c
-index a8ef4bb70dd05..d0893059b1b9b 100644
---- a/sound/pci/hda/patch_via.c
-+++ b/sound/pci/hda/patch_via.c
-@@ -1035,7 +1035,7 @@ static const struct hda_fixup via_fixups[] = {
- 	},
- };
- 
--static const struct snd_pci_quirk vt2002p_fixups[] = {
-+static const struct hda_quirk vt2002p_fixups[] = {
- 	SND_PCI_QUIRK(0x1043, 0x13f7, "Asus B23E", VIA_FIXUP_POWER_SAVE),
- 	SND_PCI_QUIRK(0x1043, 0x1487, "Asus G75", VIA_FIXUP_ASUS_G75),
- 	SND_PCI_QUIRK(0x1043, 0x8532, "Asus X202E", VIA_FIXUP_INTMIC_BOOST),
 -- 
 2.43.0
 
