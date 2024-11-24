@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-94742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4469D6E98
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:49:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759729D6E9B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C202DB25194
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:49:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD542816B3
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1066D1D5AA8;
-	Sun, 24 Nov 2024 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D3D19E819;
+	Sun, 24 Nov 2024 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5Wbx7cL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jbg7qmAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F81D5AA0;
-	Sun, 24 Nov 2024 12:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EC61D5AB8;
+	Sun, 24 Nov 2024 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452091; cv=none; b=pOGa0LsLi2a1l+n3XHNHVIUV7s4svh7EP06pZ4k1OYC9u/tsv447Nz6tq8El3Ma1C0xmpGX2KmbtsPebJMdVaOf1pH6RJKU/HgQUnXXC8fAqa3D5z/fo6pOzTXOD2FCRq+m+dpA3bSNk7dpELE2b3D6dwSKxlX6FB2sg5FXpXHA=
+	t=1732452093; cv=none; b=DeFUGUzF9KrjfxbDz3U7LgApFFg3Ym6+a8v2EoyhhtuPymvVQeEgqfAi39adchKB4zfDGbi32I2feOAsgmgVYPvv7RE7aEWAsMtllSjewfxFW4B3hfS/A2pSTNySxF8lv473cUj+4e6EjSZ+iFcRtyKDeVC3Y4daRz18kvdH1PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452091; c=relaxed/simple;
-	bh=UUHYHnBG5cAPyJVlWiM8ygRmpTF7s2XShHfc1Btr4eM=;
+	s=arc-20240116; t=1732452093; c=relaxed/simple;
+	bh=6I4ppsJNqSfZDmqeUPufxjul3KL2provB5uRQbwLZz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T43xku4Uwumjfm8CDCZ6VwZinBx+jzmxgbNA2XTkSzsFEd2j0ECXVWNMHYnjliPFTb0gndA7hS4tYuXzcMz3l+eknvR1jBJpY2gRpvQeg4FXnUilB6xlNnBbX4nMmt0fwpD514epM9Np2BfVsNPJd1nE3RQFh7Hd8qYYN0CoLak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5Wbx7cL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890A1C4CECC;
-	Sun, 24 Nov 2024 12:41:30 +0000 (UTC)
+	 MIME-Version; b=Ak9ZzFIAT8YyC9IQmQYQ+4UG65xP+FssHItqKsoUvqsSf63K9VXEhrKsyRceaP/kzWA17P9jrsQh/aK95WNodVBq9n62OCRCqknfiJSgWdeROKe2Q2HIYAIHhg1gIyN4vyCiWGBD0SBN1C8Rg9S0U1v42vYSNlc1TBpqUFPYGDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jbg7qmAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC40C4CED1;
+	Sun, 24 Nov 2024 12:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452091;
-	bh=UUHYHnBG5cAPyJVlWiM8ygRmpTF7s2XShHfc1Btr4eM=;
+	s=k20201202; t=1732452093;
+	bh=6I4ppsJNqSfZDmqeUPufxjul3KL2provB5uRQbwLZz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5Wbx7cLxG99b6TnXZ1JGVjF5Xzr+USd4cg+P9U9kLNNAmGaybB3RdLDQ4TnQnpVA
-	 9UXN7W7tQpLBfY+9mIS+D5uG7SimhDC8XDTp4DzG1j1xli2080lpCmMErJuGJPfMGF
-	 vCaSAjJM0o7t50utZEut+qj/BUtSPmExLl1kD4xK6IHs1rLiIBn/PyhHj948D+jloN
-	 j9KDUaS3ckHiuE4/zlPLBe1Um7mngYpl3ACRcAeGFW/mFZbJFy1I3kFX9VNAJgHDI6
-	 Sr2J2PR4tT5ePmQN7SKoPnBd882083OfoavVbxOmRNx082ZmX6GoJPbdoR9OIqE3fv
-	 wKpqtbdXRiOkA==
+	b=Jbg7qmAlZZ7XUU5XKXExucZn8ZcIRaK5h2zTT8HvtdfKHmjgzxaA8WGxGyE33dAnm
+	 9nliN4qtsR5wJTtUVsj85qDQ1imZmQBmZYoTol8eCfl2GDNp80m2glNzpCgn10jAXU
+	 CyOko+q/65IIFOQod/XQiw2RvZKdUciCYa2BcWn7xF/gi2MApyIg2gFndSz+sOY5JC
+	 Hn2nOBzGy7+dZcc0rcitErC4muDQzs6Q9htIkWf7oRCCps2QcSAxEezrdjQ9nrvfHj
+	 QqLwDmhCQ2u3LJND5joukbB0xg2WZt+Nee3sOCPrX4+fgkm1gnAP4bUZEWpNTKMyMK
+	 O/R58olmu9gAA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Richter <tmricht@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Fabian Vogt <fvogt@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	sumanthk@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/7] s390/cpum_sf: Handle CPU hotplug remove during sampling
-Date: Sun, 24 Nov 2024 07:41:13 -0500
-Message-ID: <20241124124126.3336691-2-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/7] btrfs: avoid unnecessary device path update for the same device
+Date: Sun, 24 Nov 2024 07:41:14 -0500
+Message-ID: <20241124124126.3336691-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124126.3336691-1-sashal@kernel.org>
 References: <20241124124126.3336691-1-sashal@kernel.org>
@@ -69,78 +69,124 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
+[ Upstream commit 2e8b6bc0ab41ce41e6dfcc204b6cc01d5abbc952 ]
 
-CPU hotplug remove handling triggers the following function
-call sequence:
+[PROBLEM]
+It is very common for udev to trigger device scan, and every time a
+mounted btrfs device got re-scan from different soft links, we will get
+some of unnecessary device path updates, this is especially common
+for LVM based storage:
 
-   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
-   ...
-   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
+ # lvs
+  scratch1 test -wi-ao---- 10.00g
+  scratch2 test -wi-a----- 10.00g
+  scratch3 test -wi-a----- 10.00g
+  scratch4 test -wi-a----- 10.00g
+  scratch5 test -wi-a----- 10.00g
+  test     test -wi-a----- 10.00g
 
-The s390 CPUMF sampling CPU hotplug handler invokes:
+ # mkfs.btrfs -f /dev/test/scratch1
+ # mount /dev/test/scratch1 /mnt/btrfs
+ # dmesg -c
+ [  205.705234] BTRFS: device fsid 7be2602f-9e35-4ecf-a6ff-9e91d2c182c9 devid 1 transid 6 /dev/mapper/test-scratch1 (253:4) scanned by mount (1154)
+ [  205.710864] BTRFS info (device dm-4): first mount of filesystem 7be2602f-9e35-4ecf-a6ff-9e91d2c182c9
+ [  205.711923] BTRFS info (device dm-4): using crc32c (crc32c-intel) checksum algorithm
+ [  205.713856] BTRFS info (device dm-4): using free-space-tree
+ [  205.722324] BTRFS info (device dm-4): checking UUID tree
 
- s390_pmu_sf_offline_cpu()
- +-->  cpusf_pmu_setup()
-       +--> setup_pmc_cpu()
-            +--> deallocate_buffers()
+So far so good, but even if we just touched any soft link of
+"dm-4", we will get quite some unnecessary device path updates.
 
-This function de-allocates all sampling data buffers (SDBs) allocated
-for that CPU at event initialization. It also clears the
-PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
+ # touch /dev/mapper/test-scratch1
+ # dmesg -c
+ [  469.295796] BTRFS info: devid 1 device path /dev/mapper/test-scratch1 changed to /dev/dm-4 scanned by (udev-worker) (1221)
+ [  469.300494] BTRFS info: devid 1 device path /dev/dm-4 changed to /dev/mapper/test-scratch1 scanned by (udev-worker) (1221)
 
-With the event still being active on the removed CPU, the CPU event
-hotplug support in kernel performance subsystem triggers the
-following function calls on the removed CPU:
+Such device path rename is unnecessary and can lead to random path
+change due to the udev race.
 
-  perf_event_exit_cpu()
-  +--> perf_event_exit_cpu_context()
-       +--> __perf_event_exit_context()
-	    +--> __perf_remove_from_context()
-	         +--> event_sched_out()
-	              +--> cpumsf_pmu_del()
-	                   +--> cpumsf_pmu_stop()
-                                +--> hw_perf_event_update()
+[CAUSE]
+Inside device_list_add(), we are using a very primitive way checking if
+the device has changed, strcmp().
 
-to stop and remove the event. During removal of the event, the
-sampling device driver tries to read out the remaining samples from
-the sample data buffers (SDBs). But they have already been freed
-(and may have been re-assigned). This may lead to a use after free
-situation in which case the samples are most likely invalid. In the
-best case the memory has not been reassigned and still contains
-valid data.
+Which can never handle links well, no matter if it's hard or soft links.
 
-Remedy this situation and check if the CPU is still in reserved
-state (bit PMU_F_RESERVED set). In this case the SDBs have not been
-released an contain valid data. This is always the case when
-the event is removed (and no CPU hotplug off occured).
-If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
+So every different link of the same device will be treated as a different
+device, causing the unnecessary device path update.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+[FIX]
+Introduce a helper, is_same_device(), and use path_equal() to properly
+detect the same block device.
+So that the different soft links won't trigger the rename race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1230641
+Reported-by: Fabian Vogt <fvogt@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index f3b0a106f7227..46a1a85a0e440 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1896,7 +1896,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
- 	event->hw.state |= PERF_HES_STOPPED;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 8c7e74499ed17..9779ab410f8fa 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -671,6 +671,42 @@ u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb)
+ 	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
+ }
  
- 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
--		hw_perf_event_update(event, 1);
-+		/* CPU hotplug off removes SDBs. No samples to extract. */
-+		if (cpuhw->flags & PMU_F_RESERVED)
-+			hw_perf_event_update(event, 1);
- 		event->hw.state |= PERF_HES_UPTODATE;
- 	}
- 	perf_pmu_enable(event->pmu);
++static bool is_same_device(struct btrfs_device *device, const char *new_path)
++{
++	struct path old = { .mnt = NULL, .dentry = NULL };
++	struct path new = { .mnt = NULL, .dentry = NULL };
++	char *old_path = NULL;
++	bool is_same = false;
++	int ret;
++
++	if (!device->name)
++		goto out;
++
++	old_path = kzalloc(PATH_MAX, GFP_NOFS);
++	if (!old_path)
++		goto out;
++
++	rcu_read_lock();
++	ret = strscpy(old_path, rcu_str_deref(device->name), PATH_MAX);
++	rcu_read_unlock();
++	if (ret < 0)
++		goto out;
++
++	ret = kern_path(old_path, LOOKUP_FOLLOW, &old);
++	if (ret)
++		goto out;
++	ret = kern_path(new_path, LOOKUP_FOLLOW, &new);
++	if (ret)
++		goto out;
++	if (path_equal(&old, &new))
++		is_same = true;
++out:
++	kfree(old_path);
++	path_put(&old);
++	path_put(&new);
++	return is_same;
++}
++
+ /*
+  * Handle scanned device having its CHANGING_FSID_V2 flag set and the fs_devices
+  * being created with a disk that has already completed its fsid change. Such
+@@ -889,7 +925,7 @@ static noinline struct btrfs_device *device_list_add(const char *path,
+ 				disk_super->fsid, devid, found_transid, path,
+ 				current->comm, task_pid_nr(current));
+ 
+-	} else if (!device->name || strcmp(device->name->str, path)) {
++	} else if (!device->name || !is_same_device(device, path)) {
+ 		/*
+ 		 * When FS is already mounted.
+ 		 * 1. If you are here and if the device->name is NULL that
 -- 
 2.43.0
 
