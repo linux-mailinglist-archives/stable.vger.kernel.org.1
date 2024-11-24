@@ -1,156 +1,84 @@
-Return-Path: <stable+bounces-94801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD1E9D6F32
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:03:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3809D6F38
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:04:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B75C28185C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:03:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCF81623D1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39031E4924;
-	Sun, 24 Nov 2024 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5CB1E5718;
+	Sun, 24 Nov 2024 12:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/3Jwbn0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFeZLnGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEF11E47DD;
-	Sun, 24 Nov 2024 12:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B9F1E570A;
+	Sun, 24 Nov 2024 12:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452459; cv=none; b=gTX49DFerOzmGTne4H9FLze4szNuUrNRZSfuqa/JEmVSioMB3Wk61TlVzDxKu9urIYn6Eb7IIbE/OlzYFimvw5fajKoWZigRGjhsBpH/kZYn+IYwjoDG+tV5VQ/f5w5dV3C6feNF9a0FxAguhgknTPXGXfmKUTcY7IrGMmKOGmE=
+	t=1732452463; cv=none; b=IYrUlrXLVcGzcgXM4mDM3Ja4Ff66WyGhZUe9ROMJFaGHNjd+jBk8PH212cfrPv+DzKgDJ0enKsNAz2s9DzSiz4QUeQO/Kg+QkESH4Eg8JtE9VZXBPS6lpt8iEOr0cVCz8FZENgY5IP9nfgjWQwt25Rd4gfLvavkcBoxI2i5hC6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452459; c=relaxed/simple;
-	bh=ttCOt0jBDmhYRap4VwYAB2ASolDkL1aMpZHI1JEHGlg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ky2wSeEJifj/WXSJt9sJ98q/l0QUnQuc+yqbktCfQZyGqCrRX5+kG6EeV5ry9o8rKnLljmfFEbuP+MMae1TKdomg/EIS3OywFuipc1oFZR1kbCgeQSaJR9D9Vpb+ZLXdr3a8x4jrvwn9D17R5lfcxYbMi4JWCQmWIlsbvpv4d78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/3Jwbn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FA6C4CECC;
-	Sun, 24 Nov 2024 12:47:37 +0000 (UTC)
+	s=arc-20240116; t=1732452463; c=relaxed/simple;
+	bh=sVwR4ANZ8sCFvhuuZtFfFYVXx8pjT2bMpHswxQ+bGLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dde4U0zB6BbRBYx4IHLShJSgFrvRQ/Z6YiVjnIfzeUQnV8BR2FRjPkeWBvXV2VoEM6iWbZS7wDXpcdGpyXrjJUjTnwA4njbK2cVvLnaCcy3Wo1Fi7r8WRCcvNuhFZhsaJsnQVNjsCz/YcZ4TIe7F3aqmmK0XIyRkHL584KTw9CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFeZLnGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A68C4CEDD;
+	Sun, 24 Nov 2024 12:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452459;
-	bh=ttCOt0jBDmhYRap4VwYAB2ASolDkL1aMpZHI1JEHGlg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/3Jwbn02kgfVUVjghVk1haCdfCtoo6gGlgcMpQ7W09KBAOg3P+WAT/lBABY6ZNji
-	 PN5ZnJscVJOLDgOT1s7K5THsWIWx549v8wAODNaVyD2WWSwr0ddX7GLwbLM+QCEuvJ
-	 Wv7tH7PnoXg5GVhW0a69glDiZDTjYrqk273KtCZ4nvXuBnih209jm2VmVKeZJHT+Vp
-	 vK671xtiePJnso1FV6UF2urN/3YpjD/HPDevQ6+nnpHN9n90uRQnT/nax6udBHyrwo
-	 2KIHkD8aI7faie/QX9Ql2HBY3Ta8y9Zq3JVB2Ia9onabsZzv615mrUIpV5BQEaeWOx
-	 gJz+eMusY0B3Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	rdunlap@infradead.org,
-	paulmck@kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/2] timekeeping: Always check for negative motion
-Date: Sun, 24 Nov 2024 07:47:31 -0500
-Message-ID: <20241124124733.3338551-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124733.3338551-1-sashal@kernel.org>
-References: <20241124124733.3338551-1-sashal@kernel.org>
+	s=k20201202; t=1732452462;
+	bh=sVwR4ANZ8sCFvhuuZtFfFYVXx8pjT2bMpHswxQ+bGLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EFeZLnGGXxlpIz4DBQVa+CRVOx1ZqoJCGjLv2HgTJG0HipJaJJ25fJ7guL9DX2XRL
+	 KcxL3kZPMMyyuRX3l3CQrqk4XbCuUaTIT+iu2D1R+bt6BDFdhmZH1O7BIy6Eg8bGUp
+	 ATLhpcsY63ILP+s8I3eRvH7Y1qORN1AIybiVk9UKZxeRyd/eARhGYA0L4OMgQuF6ym
+	 1uEy8R04/5Y9R26n2bNgZh2xgWbqFJ0vs6uPlF/rmUQxNXYoHOYDnDDG3LAwkIbvNZ
+	 AugcPpzF56OycZSQ8scypesikMLCE6T9QUZ//JfhbVp/LWBHEtWDyku1wu6C/jvBiD
+	 F6a4SCHyRlzTQ==
+Date: Sun, 24 Nov 2024 12:47:34 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
+ Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: inv_icm42600: fix timestamps after suspend if
+ sensor is on
+Message-ID: <20241124124734.3addf58f@jic23-huawei>
+In-Reply-To: <20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com>
+References: <20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.230
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Thomas Gleixner <tglx@linutronix.de>
+On Wed, 13 Nov 2024 21:25:45 +0100
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-[ Upstream commit c163e40af9b2331b2c629fd4ec8b703ed4d4ae39 ]
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Currently suspending while sensors are one will result in timestamping
+> continuing without gap at resume. It can work with monotonic clock but
+> not with other clocks. Fix that by resetting timestamping.
+> 
+> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Applied to the fixes-togreg branch of iio.git.
 
-clocksource_delta() has two variants. One with a check for negative motion,
-which is only selected by x86. This is a historic leftover as this function
-was previously used in the time getter hot paths.
+Thanks,
 
-Since 135225a363ae timekeeping_cycles_to_ns() has unconditional protection
-against this as a by-product of the protection against 64bit math overflow.
-
-clocksource_delta() is only used in the clocksource watchdog and in
-timekeeping_advance(). The extra conditional there is not hurting anyone.
-
-Remove the config option and unconditionally prevent negative motion of the
-readout.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241031120328.599430157@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/Kconfig                   | 1 -
- kernel/time/Kconfig                | 5 -----
- kernel/time/timekeeping_internal.h | 7 -------
- 3 files changed, 13 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 0c802ade80406..e71101ced756e 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -107,7 +107,6 @@ config X86
- 	select ARCH_WANTS_THP_SWAP		if X86_64
- 	select BUILDTIME_TABLE_SORT
- 	select CLKEVT_I8253
--	select CLOCKSOURCE_VALIDATE_LAST_CYCLE
- 	select CLOCKSOURCE_WATCHDOG
- 	select DCACHE_WORD_ACCESS
- 	select EDAC_ATOMIC_SCRUB
-diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-index a09b1d61df6a5..5cbedc0a06efc 100644
---- a/kernel/time/Kconfig
-+++ b/kernel/time/Kconfig
-@@ -17,11 +17,6 @@ config ARCH_CLOCKSOURCE_DATA
- config ARCH_CLOCKSOURCE_INIT
- 	bool
- 
--# Clocksources require validation of the clocksource against the last
--# cycle update - x86/TSC misfeature
--config CLOCKSOURCE_VALIDATE_LAST_CYCLE
--	bool
--
- # Timekeeping vsyscall support
- config GENERIC_TIME_VSYSCALL
- 	bool
-diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
-index 4ca2787d1642e..1d4854d5c386e 100644
---- a/kernel/time/timekeeping_internal.h
-+++ b/kernel/time/timekeeping_internal.h
-@@ -15,7 +15,6 @@ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
- #define tk_debug_account_sleep_time(x)
- #endif
- 
--#ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
- static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
- {
- 	u64 ret = (now - last) & mask;
-@@ -26,12 +25,6 @@ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
- 	 */
- 	return ret & ~(mask >> 1) ? 0 : ret;
- }
--#else
--static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
--{
--	return (now - last) & mask;
--}
--#endif
- 
- /* Semi public for serialization of non timekeeper VDSO updates. */
- extern raw_spinlock_t timekeeper_lock;
--- 
-2.43.0
-
+Jonathan
 
