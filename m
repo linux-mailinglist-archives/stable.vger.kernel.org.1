@@ -1,82 +1,63 @@
-Return-Path: <stable+bounces-95031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06C79D7265
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:07:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F73A9D73F5
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:54:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07C6164533
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:07:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5120B306F1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2EE1D3629;
-	Sun, 24 Nov 2024 13:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576801F9A8E;
+	Sun, 24 Nov 2024 13:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="slA+J4u0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJ35pZKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FDF1D416B;
-	Sun, 24 Nov 2024 13:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF819597F;
+	Sun, 24 Nov 2024 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455770; cv=none; b=rauAb/ap5VsDtP+oZTf6ZOcoByU5Ma1RYRGktu06M18mIC60BbdGjgKQk7LGiLyLli3q7WgoAZGGWXShHccNFoTzg8pXGnSeIXTaKkhhw1TM8TFiABot95q28lj9Glzw3h2sbHdx7zez1q39UC6veBc2ba/+fP7Xehizr3UZZLg=
+	t=1732455774; cv=none; b=pTsD5r4mmO0bJ7Oeu6MKoQ+dlhDMAJczIDkubjC3yefeAAj2ix/3ZOqtRzGfj8gqyvHIzORFGVu81oFCruwBdZraTrtyKCxWH02IBoBM1K6lH51ILK/N6vTBjkhXb7X3KoreE0rlGNyReYC3r9x4ukSBldvcbpHfFpZTsVLJOz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455770; c=relaxed/simple;
-	bh=F+p26doWYpDgZEoHldUcIHGk7EkIGKnXv5DpO/XzrC0=;
+	s=arc-20240116; t=1732455774; c=relaxed/simple;
+	bh=Qhy7JANXNyHFsvnfHh6X07Ap8VC7xwwVuNn9E51Pc2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxE2k095/s5mBAgoosLZzwalzXeMxR/ZmKZ9ftqlWmBAa9TMxypyGL2gVhmg3KRvsJ49iGPh4IKEC1zs4yPNzVmMmOIW/cvBChcwpbgYQvRvR4wIP9fY5NWa1D4Ma3T25hHrtQx5Tp4zl15gbDzzfKapuL7QkBzaWtVPkylxUhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=slA+J4u0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F23C4CECC;
-	Sun, 24 Nov 2024 13:42:46 +0000 (UTC)
+	 MIME-Version; b=KAPTSE1BVBmHvt3PAeZnmwtAMVSXeleFGIf07lYWOhVr91YLBpm7FIYzOyBZSxDa2gBLgftBbFfMk/rY9RQWFbUER57iuKj96JBY5SFwwPytr7WB5DNVOyYLAL97cWlX8CwuERLiEbUdfMZs9rvWQDRi107yjbiH6uHVxre9yNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJ35pZKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F01C4CED3;
+	Sun, 24 Nov 2024 13:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455770;
-	bh=F+p26doWYpDgZEoHldUcIHGk7EkIGKnXv5DpO/XzrC0=;
+	s=k20201202; t=1732455773;
+	bh=Qhy7JANXNyHFsvnfHh6X07Ap8VC7xwwVuNn9E51Pc2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slA+J4u0w2J5tbu4jLYJ4QVAC3FelYgC2PoUS4jYekhdFxeSQnpvd+Sf2ZGad2czX
-	 NzNTjNGy8I8OUSIYam3ZeLn0o+ds4/n8HjI1nQPGANjQZibbc2DGmBzEtI3TbnVppw
-	 gP/JFoxWelfe7TTUw2ZVUCxcc3E3ljtviJBVh5B/7f6CePSp7hLUohnkOx7929SWUD
-	 269QccOwSlrd+yG36X/KRtcr1LfK8z8AO5bIEZLkX/YvtpUeYkNRx+DQ/y8EuaVwC3
-	 3+tr53ek7RZsRPeuzOa91sAU9A3yNjC4Oe4dB+Wsinyoowu50A7l65iWWuaAEsh6RB
-	 CiWGrVRS0Hbww==
+	b=EJ35pZKa/mp917ULgO1YneAeDiNu/4NfJsaaCQ/101+YE3nYW2G9IyhCvwfFTuLeo
+	 ZYF2Bo2iPke8Exdy6GcOnoX8YAJBa2j1hYyRQtanBroB77BmQQNr+R3BdVy8kr/BlH
+	 3B8PuToLkbvIOPPqDxg57ysAVwAoSjnZ2+315IukPd9JGFw4qrAShLXfrgNYqXFxRI
+	 Sd6InyIYhnx6BueFGXWGcqCzfEipElzCs26UYMsC3wx4e7HjnQEblE9IVHKUGQWrsf
+	 elURpI1GV2FhzfKrUIZZp6EvwavM1cbftreJ/zMowxDlvN4E/cunUKDiR0pQGn6pQj
+	 k3q1fVosfxlHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leo Chen <leo.chen@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Simon Horman <horms@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	wayne.lin@amd.com,
-	alvin.lee2@amd.com,
-	dillon.varone@amd.com,
-	srinivasan.shanmugam@amd.com,
-	alex.hung@amd.com,
-	aurabindo.pillai@amd.com,
-	Ovidiu.Bunea@amd.com,
-	Roman.Li@amd.com,
-	samson.tam@amd.com,
-	anthony.koo@amd.com,
-	zaeem.mohamed@amd.com,
-	chiahsuan.chung@amd.com,
-	ChunTao.Tso@amd.com,
-	Syed.Hassan@amd.com,
-	aric.cyr@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 28/87] drm/amd/display: Full exit out of IPS2 when all allow signals have been cleared
-Date: Sun, 24 Nov 2024 08:38:06 -0500
-Message-ID: <20241124134102.3344326-28-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	u.kleine-koenig@baylibre.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 29/87] net: fec_mpc52xx_phy: Use %pa to format resource_size_t
+Date: Sun, 24 Nov 2024 08:38:07 -0500
+Message-ID: <20241124134102.3344326-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -91,75 +72,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Leo Chen <leo.chen@amd.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 0fe33e115fec305c35c66b78ad26e3755ab54b9c ]
+[ Upstream commit 020bfdc4ed94be472138c891bde4d14241cf00fd ]
 
-[Why]
-A race condition occurs between cursor movement and vertical interrupt control
-thread from OS, with both threads trying to exit IPS2.
-Vertical interrupt control thread clears the prev driver allow signal while not fully
-finishing the IPS2 exit process.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-[How]
-We want to detect all the allow signals have been cleared before we perform the full exit.
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Leo Chen <leo.chen@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c: In function 'mpc52xx_fec_mdio_probe':
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c:97:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+   97 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-1-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c    | 6 ++++--
- drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_mpc52xx_phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index ded13026c8ff7..c46100c83d0a7 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -1291,6 +1291,8 @@ static void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
+diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+index 39689826cc8ff..ce253aac5344c 100644
+--- a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
++++ b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+@@ -94,7 +94,7 @@ static int mpc52xx_fec_mdio_probe(struct platform_device *of)
+ 		goto out_free;
+ 	}
  
- 		memset(&new_signals, 0, sizeof(new_signals));
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+ 	bus->priv = priv;
  
-+		new_signals.bits.allow_idle = 1; /* always set */
-+
- 		if (dc->config.disable_ips == DMUB_IPS_ENABLE ||
- 		    dc->config.disable_ips == DMUB_IPS_DISABLE_DYNAMIC) {
- 			new_signals.bits.allow_pg = 1;
-@@ -1386,7 +1388,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		 */
- 		dc_dmub_srv->needs_idle_wake = false;
- 
--		if (prev_driver_signals.bits.allow_ips2 &&
-+		if ((prev_driver_signals.bits.allow_ips2 || prev_driver_signals.all == 0) &&
- 		    (!dc->debug.optimize_ips_handshake ||
- 		     ips_fw->signals.bits.ips2_commit || !ips_fw->signals.bits.in_idle)) {
- 			DC_LOG_IPS(
-@@ -1447,7 +1449,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		}
- 
- 		dc_dmub_srv_notify_idle(dc, false);
--		if (prev_driver_signals.bits.allow_ips1) {
-+		if (prev_driver_signals.bits.allow_ips1 || prev_driver_signals.all == 0) {
- 			DC_LOG_IPS(
- 				"wait for IPS1 commit clear (ips1_commit=%d ips2_commit=%d)",
- 				ips_fw->signals.bits.ips1_commit,
-diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-index 5ff0a865705f5..a11bfef3ab50d 100644
---- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-+++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-@@ -743,7 +743,8 @@ union dmub_shared_state_ips_driver_signals {
- 		uint32_t allow_ips1 : 1; /**< 1 is IPS1 is allowed */
- 		uint32_t allow_ips2 : 1; /**< 1 is IPS1 is allowed */
- 		uint32_t allow_z10 : 1; /**< 1 if Z10 is allowed */
--		uint32_t reserved_bits : 28; /**< Reversed bits */
-+		uint32_t allow_idle : 1; /**< 1 if driver is allowing idle */
-+		uint32_t reserved_bits : 27; /**< Reversed bits */
- 	} bits;
- 	uint32_t all;
- };
+ 	bus->parent = dev;
 -- 
 2.43.0
 
