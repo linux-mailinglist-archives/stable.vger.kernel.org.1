@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-95258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFE89D74A7
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:14:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317589D775A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 19:30:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6894A167D85
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:14:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 801FCB82151
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3965244839;
-	Sun, 24 Nov 2024 13:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1FA240FD1;
+	Sun, 24 Nov 2024 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUAAaaVR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9qrDLH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDDB244837;
-	Sun, 24 Nov 2024 13:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB751E503D;
+	Sun, 24 Nov 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456499; cv=none; b=qOwJA90iqqDWuEbYmxfupi4PoARXUgW0iocNfOoNFOEiBa+OeyK2arVjnyjPiSFH/FvaBJb13MdcfFPSnLxD9I2G5oBrzfBdizf9lEWvzfE81vKfXyw1VQktPPfHhUUxeoCiMWuBtSe43Iq+u0TLclwYLvYMtYG4CFupYx2Iqco=
+	t=1732456501; cv=none; b=YenK/nOH0/T+2XNoqQKHoJiJ4Dkz2dNnq2Rrqv5BXVKTYkF2Wbh2UHm1urvjGF5/sYjKYQMwWzXHHBVzL0th6AM79hkng6SfqOKdSYll4eJo5MypaSBHgo1GYsmJbdnrWrUAqX8v6DxoU4t/lMRjaYt4JtZnYQ8WL9kaCGjwYgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456499; c=relaxed/simple;
-	bh=XCbhBMU/JI1zM9eN8vKJngvuYK2k7hNwSGMKwfth/4M=;
+	s=arc-20240116; t=1732456501; c=relaxed/simple;
+	bh=srJlU4aNNbRgnBmPFIN2NWWKkEiHresnpyZ/UyKAXTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdR6q9UDXbakXlSlVCfuInIBoXNOd9UjykP90f49LKfwK+cKQFEojrbEM0uzsPRYR2yrq92FG3K7lLztOXU0YafvFqmYBPBB7hL3t+ol+zVmulAyqUZiLZSt/QXt901J/ybSfEAUQJE90jbEa1Fo/NoRDY51N+RgBSWwruPEMqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUAAaaVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3754DC4CECC;
-	Sun, 24 Nov 2024 13:54:58 +0000 (UTC)
+	 MIME-Version; b=l6ZdqzSChrlh0cKQEAaxbXB3UBSWOIUyRzwl7J9P0S2QnWhShJnSt6FLOeY7gpWcsCgA2+RAhDfRdu3h84Sqn52kHcTywXweGDXvi92ikT1KAFLP7oAEdy17f1OuKkzjGKwe+Ie+IvkjSRjE1NEmklTuvzcRB7Cb0HEAn5LYvpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9qrDLH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F858C4CED3;
+	Sun, 24 Nov 2024 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456499;
-	bh=XCbhBMU/JI1zM9eN8vKJngvuYK2k7hNwSGMKwfth/4M=;
+	s=k20201202; t=1732456501;
+	bh=srJlU4aNNbRgnBmPFIN2NWWKkEiHresnpyZ/UyKAXTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUAAaaVRem+TkLfLFLwIy0c9xUn9OZlYoHCqijmqmcXL/LaqRI4cKJsDf3N+tnICy
-	 cLCjyl6eLf096ApPYIw+NE613X3en9n3Z+QQY3czaruNZE8rkg/H69GVxLihuuBZ2Q
-	 wse5aIVQVcdtEQi/r3NU9H/ORcZxzfafzT7IzFiKqUboEoSdk8Qg2xfWD0ApBH1aZz
-	 4PPzxitqZnH9VbHbCSMdx5sZ67Ye97bCIBKr5MWLtjN9FnkNHiSEwmmmB+JWxq3xOU
-	 EJT+f2yTfUR69C0vrGCqCpkceJ6y+9hN4h9+c5WcMZLJbi8KrSWsdthWFNDHhCX5l4
-	 Q9c3vp/BGyGYQ==
+	b=b9qrDLH9H3+kpK8iW63kibydp0CB9+wN6ZECNcdvizSe2lsvBloGomLtnI9ZNsiEj
+	 9YqvSwxw30BZbfkS54NyfySL2uxDqavWCQyAbrBn/TnLLWuR7ouPFFp2hBlKEe8u3b
+	 99As4sXnmY0P5VreVr9U8n7+DaNtTpEXwfMa5RgAAg2LjRTnwlAvzh95QCKs7/0o5x
+	 zjVq7pkUQ2lP0l3nw1lhtomYqr+MWlP5ZHdExnGtj0I8J1QRSsBJFmD1riftqbb0O7
+	 CfFwXcj8MfSY1djxXdso8g6KyENNUtVZc+h19K41DlvsnvKz4zrtcOLQ92WzO0WQwl
+	 9HQF39tCznKBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nihar Chaithanya <niharchaithanya@gmail.com>,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+Cc: Wei Fang <wei.fang@nxp.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	shaggy@kernel.org,
-	ghanshyam1898@gmail.com,
-	aha310510@gmail.com,
-	eadavis@qq.com,
-	rbrasga@uci.edu,
-	peili.dev@gmail.com,
-	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 5.10 23/33] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
-Date: Sun, 24 Nov 2024 08:53:35 -0500
-Message-ID: <20241124135410.3349976-23-sashal@kernel.org>
+	claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 24/33] net: enetc: add i.MX95 EMDIO support
+Date: Sun, 24 Nov 2024 08:53:36 -0500
+Message-ID: <20241124135410.3349976-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135410.3349976-1-sashal@kernel.org>
 References: <20241124135410.3349976-1-sashal@kernel.org>
@@ -72,37 +73,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit a52201fb9caa9b33b4d881725d1ec733438b07f2 ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+The verdor ID and device ID of i.MX95 EMDIO are different from LS1028A
+EMDIO, so add new vendor ID and device ID to pci_device_id table to
+support i.MX95 EMDIO.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
+ drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index c61fcf0e88d29..ef220709c7f51 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2953,6 +2953,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
-+
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+index 15f37c5b8dc14..ffa7caabd8c99 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+@@ -4,6 +4,8 @@
+ #include <linux/of_mdio.h>
+ #include "enetc_pf.h"
+ 
++#define NETC_EMDIO_VEN_ID	0x1131
++#define NETC_EMDIO_DEV_ID	0xee00
+ #define ENETC_MDIO_DEV_ID	0xee01
+ #define ENETC_MDIO_DEV_NAME	"FSL PCIe IE Central MDIO"
+ #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
+@@ -94,6 +96,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+ 
+ static const struct pci_device_id enetc_pci_mdio_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
++	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
+ 	{ 0, } /* End of table. */
+ };
+ MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
 -- 
 2.43.0
 
