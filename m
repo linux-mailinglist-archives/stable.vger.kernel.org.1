@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-94712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C959D6E43
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:42:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120D09D6E47
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA425B22AF2
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBED72814A2
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF3C1AF0C4;
-	Sun, 24 Nov 2024 12:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486511B0F1F;
+	Sun, 24 Nov 2024 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRqNwXL8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CF1aBSc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFE51AF0BB;
-	Sun, 24 Nov 2024 12:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BE61AF4E9;
+	Sun, 24 Nov 2024 12:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732451986; cv=none; b=FCg9KocpshW+qP74v7mzmUb8OBF+3djEFN00f92j6B1n1jeThPyrAQneM8fw5gfMnODXn/sqX0UhJNtpp2V3marO9zaPck4mcJ0eiaPX6qOwLVK67vcJim+UNOJe0lHgFh39A+AqblSTiz5bV1bsQFkrhTMReIVmiPSzL2JrayY=
+	t=1732451989; cv=none; b=Kw9X94E2jY/9M1Z9gwcm8oe3cV61ydPwEIk8Yrf+Ax87EQC0t4BfcctEvykZorAe+1tjct0eENtiQDfol0NV3SGd+Hg1u9pWKnzeKq39A9q8c0sCLvngz7RtkIEGzjXeMR58iKbeESBhRxWqBG+xnl3tFY1mWUWXnO4YgJ6mlo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732451986; c=relaxed/simple;
-	bh=1JL38mHsjezLxpbxsehR+pofaJ+iVXsIW6lvakmeT48=;
+	s=arc-20240116; t=1732451989; c=relaxed/simple;
+	bh=81Ni8xHtPktgGt2jnb4WQsNexyhc+xoT9qdsR8aq7bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoJhhllyn9pSJDx3Oc9SSUUdTLytSf6aq8zDLTp10SSBUsxgpqQZ+iu2Ay9TjPt9YteuvTzmsgFWnlmlvOL7SU4ZHqy/uZdbVcGw4iIrMqOz+AtTa6VsWpglK9jdBPlJkkR2jMOemE+tjjf1+AkJvt/nM7lNAOlZrAkDdfjX6k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRqNwXL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD73C4CED6;
-	Sun, 24 Nov 2024 12:39:44 +0000 (UTC)
+	 MIME-Version; b=GQYydmJegPaq8JobNr5BxcmmcbLfIkCfPjmGh3qDboqJAzQiWFoqo8WtVGgX7WIZbKS774a1149CLNPMSkbyaiWV/Ujx6/CS5UqahlBtrI5SjrEAHLVdm2j4cSgGWgIRpUNI3EhrEYz/fq1gA9kHw1kc800pYHPVc3LLHjtjzFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CF1aBSc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB52C4CED1;
+	Sun, 24 Nov 2024 12:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732451985;
-	bh=1JL38mHsjezLxpbxsehR+pofaJ+iVXsIW6lvakmeT48=;
+	s=k20201202; t=1732451988;
+	bh=81Ni8xHtPktgGt2jnb4WQsNexyhc+xoT9qdsR8aq7bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRqNwXL8nJaGHjj4vCQVBtL9/WJxoBp9AyRLCl4lcoVbYTCdKoLrQzvDJLLn/boKP
-	 g5zlNL9/FpvZ0DV1ANFndfvlZeLDfcqmWk2FHelvDfeMGTSo+qAbBsg1cnc7ko3IB5
-	 CO+26QiHiNyfEMnrMoODaiAhhtQ67b2Ue77qrBIgkoHaEl9dhFO3erUIA2yTrajU3O
-	 B51hcS2tdrGqEZGB2SnD+94U/MySN329iCkMjEmADehB+v7w9Jt69p6WM/+lzyX+1I
-	 2sm8z0ukc5sfFs27KbUbVtaTby90+mWDiIElhHK0I7svj0MG6rUN5VSrDHe/5uQnae
-	 yl9RKPfuqia7A==
+	b=CF1aBSc42nqUpGBvyqGjqOlECbnvxRnqNdOEuxeuWAO/RDJclDD7+ONwKOx5zksbf
+	 6FXQBlY0aY0Y2hDMkkFisWvuhkDvGn0ZCkhn+oMLlQHRqGrEE0jzqn5SiDIJKunqaz
+	 FzjuqXOEKMSaZ8YVDNHE95/t3xg2WxWbe9paD2mcdOGSpq87vDr8HFNVPgoY3m8Kob
+	 sBH2TUIdAI0RJxg11Vg/AN4R5ybBV0oNWH+d1ZGLH1Un6/7U2awh4vJrTQiarf7WN8
+	 2JRDjOcqYlPp9mW+tZ/hFQJpoNIFIII0Wqwk/pMfnYYRhJYlEppIazxiiQ7Xpbmntb
+	 X5kujCx4q4//Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: John Garry <john.g.garry@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	song@kernel.org,
-	linux-raid@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 16/19] md/raid1: Handle bio_split() errors
-Date: Sun, 24 Nov 2024 07:38:51 -0500
-Message-ID: <20241124123912.3335344-16-sashal@kernel.org>
+	will@kernel.org,
+	shuah@kernel.org,
+	mark.rutland@arm.com,
+	thiago.bauermann@linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 17/19] kselftest/arm64: Corrupt P0 in the irritator when testing SSVE
+Date: Sun, 24 Nov 2024 07:38:52 -0500
+Message-ID: <20241124123912.3335344-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124123912.3335344-1-sashal@kernel.org>
 References: <20241124123912.3335344-1-sashal@kernel.org>
@@ -68,108 +70,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: John Garry <john.g.garry@oracle.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit b1a7ad8b5c4fa28325ee7b369a2d545d3e16ccde ]
+[ Upstream commit 3e360ef0c0a1fb6ce9a302e40b8057c41ba8a9d2 ]
 
-Add proper bio_split() error handling. For any error, call
-raid_end_bio_io() and return.
+When building for streaming SVE the irritator for SVE skips updates of both
+P0 and FFR. While FFR is skipped since it might not be present there is no
+reason to skip corrupting P0 so switch to an instruction valid in streaming
+mode and move the ifdef.
 
-For the case of an in the write path, we need to undo the increment in
-the rdev pending count and NULLify the r1_bio->bios[] pointers.
-
-For read path failure, we need to undo rdev pending count increment from
-the earlier read_balance() call.
-
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241111112150.3756529-6-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241107-arm64-fp-stress-irritator-v2-3-c4b9622e36ee@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/fp/sve-test.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 6c9d24203f39f..7e023e9303c8a 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1322,7 +1322,7 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	const enum req_op op = bio_op(bio);
- 	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
- 	int max_sectors;
--	int rdisk;
-+	int rdisk, error;
- 	bool r1bio_existed = !!r1_bio;
- 
- 	/*
-@@ -1383,6 +1383,11 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	if (max_sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, max_sectors,
- 					      gfp, &conf->bio_split);
-+
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
- 		bio_chain(split, bio);
- 		submit_bio_noacct(bio);
- 		bio = split;
-@@ -1410,6 +1415,13 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	read_bio->bi_private = r1_bio;
- 	mddev_trace_remap(mddev, read_bio, r1_bio->sector);
- 	submit_bio_noacct(read_bio);
-+	return;
-+
-+err_handle:
-+	atomic_dec(&mirror->rdev->nr_pending);
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R1BIO_Uptodate, &r1_bio->state);
-+	raid_end_bio_io(r1_bio);
- }
- 
- static void raid1_write_request(struct mddev *mddev, struct bio *bio,
-@@ -1417,7 +1429,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- {
- 	struct r1conf *conf = mddev->private;
- 	struct r1bio *r1_bio;
--	int i, disks;
-+	int i, disks, k, error;
- 	unsigned long flags;
- 	struct md_rdev *blocked_rdev;
- 	int first_clone;
-@@ -1576,6 +1588,11 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- 	if (max_sectors < bio_sectors(bio)) {
- 		struct bio *split = bio_split(bio, max_sectors,
- 					      GFP_NOIO, &conf->bio_split);
-+
-+		if (IS_ERR(split)) {
-+			error = PTR_ERR(split);
-+			goto err_handle;
-+		}
- 		bio_chain(split, bio);
- 		submit_bio_noacct(bio);
- 		bio = split;
-@@ -1660,6 +1677,18 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- 
- 	/* In case raid1d snuck in to freeze_array */
- 	wake_up_barrier(conf);
-+	return;
-+err_handle:
-+	for (k = 0; k < i; k++) {
-+		if (r1_bio->bios[k]) {
-+			rdev_dec_pending(conf->mirrors[k].rdev, mddev);
-+			r1_bio->bios[k] = NULL;
-+		}
-+	}
-+
-+	bio->bi_status = errno_to_blk_status(error);
-+	set_bit(R1BIO_Uptodate, &r1_bio->state);
-+	raid_end_bio_io(r1_bio);
- }
- 
- static bool raid1_make_request(struct mddev *mddev, struct bio *bio)
+diff --git a/tools/testing/selftests/arm64/fp/sve-test.S b/tools/testing/selftests/arm64/fp/sve-test.S
+index fff60e2a25add..4fcb492aee1fb 100644
+--- a/tools/testing/selftests/arm64/fp/sve-test.S
++++ b/tools/testing/selftests/arm64/fp/sve-test.S
+@@ -304,9 +304,9 @@ function irritator_handler
+ 	movi	v0.8b, #1
+ 	movi	v9.16b, #2
+ 	movi	v31.8b, #3
+-#ifndef SSVE
+ 	// And P0
+-	rdffr	p0.b
++	ptrue	p0.d
++#ifndef SSVE
+ 	// And FFR
+ 	wrffr	p15.b
+ #endif
 -- 
 2.43.0
 
