@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-95312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48049D771F
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 19:07:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1969D752B
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9309FB2194A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7116A287A3E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4949C1FF81B;
-	Sun, 24 Nov 2024 13:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F0E1EB9FD;
+	Sun, 24 Nov 2024 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkmQyNnv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKEkt07C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BB11FF7F6;
-	Sun, 24 Nov 2024 13:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138141FF808;
+	Sun, 24 Nov 2024 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456665; cv=none; b=S1/iUG/uNeQGDgUC/1zTzJGZGqhASSz59qmIaTzyTrBnpbgvmAczA2oLcdbNQdUPNP9aWtjUP5U5c0NPm6yH7CCf31s8DbCBpJzjs4iXPBWRVcyJHWXg6JCtfQNMxA/jZBob+wqTPMBGCuIjZmi6pogEjzh9Fd9ksILMMzDz4/w=
+	t=1732456666; cv=none; b=IZqVQoFG1AsIoHmh0u70YFyWZzA3x27JRc3Xzuu3sMs/SwGVO4GNsRMwC5DnR+JEDm2/SpFTBL8I7LjR8mZFdhoGFSUcUKU9oITE8KsoCBKpnwAgK78H3nRM1p1ciNu8uoaGJq1ELbLvIs9SL0gilOUDEuUCOZ5LyrLDJDti0PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456665; c=relaxed/simple;
-	bh=Q3NTUcQjhKJe8oHlyi1+hjuoKGBKJhWs1Qq1F51MBWE=;
+	s=arc-20240116; t=1732456666; c=relaxed/simple;
+	bh=rITjNJPCl0Y8kGIrAWcsXQazJIUmkW8z/wHPAcWSIFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmx52fcCmoB6jl0p8DeGJlmpGV6jv6zcewNYrANT27hc/eB2yIw0kMoZ2FESjts/M648hQLnWbhwmNjKW5VjV1Vfz+LAZ4lfcVHfMN/EJag61VdMmJKsNCWlKd2v04Fe4RGfb/n+5CmER3wKC64Gyo/pxp0zl9TC1r6EnsoavI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkmQyNnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D6DC4CED1;
-	Sun, 24 Nov 2024 13:57:43 +0000 (UTC)
+	 MIME-Version; b=oNYt1imEhnG5+mQe9Ba+LFlZZ4YciCnVpBud7YEqOHWmLl2Ph6gI+inyNrFg2fmzwucw+XmXyA0tx0FIpj86yiqdRpJCdnGKjtwCxb1YjKrwf7/8WTTAFfXTJLyBGUvqXocWvhIQcA5aY0s/DV4OTIIP29BNrnXP2jrYFz+Mdw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKEkt07C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD15C4CEDC;
+	Sun, 24 Nov 2024 13:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456664;
-	bh=Q3NTUcQjhKJe8oHlyi1+hjuoKGBKJhWs1Qq1F51MBWE=;
+	s=k20201202; t=1732456665;
+	bh=rITjNJPCl0Y8kGIrAWcsXQazJIUmkW8z/wHPAcWSIFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkmQyNnvUk8Jk3MsvfSanegZW9fv2j5rBMlppkN3CKCEPNw7R1D2QduxNXhdoTmVn
-	 koMCQ+4wIefZvnaJzTaIb0JWoBGE/zH4dHdIoYsjs5dq28urVwGc8BJBJPI2kYg8o/
-	 9qnMJIOnHf+7f2yA4hF4eTAKbJiP5GJJm0IbfLQOwp+oCR4kVAQXjtIAoVNViEGEU8
-	 c9KtHVoixXafOEbcYhgsJr563R9xwPVc1Di2NLBq54Ap5JkWb8ntNqUY2jiJuIVIZ4
-	 scTGzi4kTRfOmJOD/mJXMK0FIlGUYQMlVKw9RGJt9Eb35eDjw6ju+BBnZGJ0CMVB5a
-	 XHqbIgR95RnDw==
+	b=lKEkt07C54BQd97E30uZ/ktvjPEY3kkmaKt9nHjvxwvXj1xxH6bfJaLqFFPYEbP1Z
+	 F633hjZFWg0FJQPtNUYXpJGcWM7HDp5cCUKwf0p15DoDs3FmtZSAxB+hYDVaPjG7Oe
+	 bfypDt00voiOs8cVM6JQnCE/KksCMEpnnBGtVPut21ypj/PX432t6hdsUaxeGbsIF7
+	 rl557BjhodYKGxhM7VqGPd1YmokZeKxcY963+qtEY+Jf2IQ5J/DPk7nrTG0BfA48bZ
+	 WXW3fqY2ztxw9mYBw1d/UR0Qpav4Qp6COLUrpINbg+8urpnlX4wK6dFKgrA0WSZe8v
+	 Yql2scUxwsk4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nihar Chaithanya <niharchaithanya@gmail.com>,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shaggy@kernel.org,
-	rbrasga@uci.edu,
-	ghanshyam1898@gmail.com,
-	eadavis@qq.com,
-	peili.dev@gmail.com,
-	aha310510@gmail.com,
-	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 4.19 16/21] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
-Date: Sun, 24 Nov 2024 08:56:49 -0500
-Message-ID: <20241124135709.3351371-16-sashal@kernel.org>
+	stas.yakovlev@gmail.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 17/21] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
+Date: Sun, 24 Nov 2024 08:56:50 -0500
+Message-ID: <20241124135709.3351371-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
 References: <20241124135709.3351371-1-sashal@kernel.org>
@@ -72,37 +67,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+This patch fixes incorrect code alignment.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 7bb2d0212c90a..7e1cc0e21eff2 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2966,6 +2966,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
-+
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 6df19f03355af..e58a5162c10e3 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -874,8 +874,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 	switch (ieee->iw_mode) {
+ 	case IW_MODE_ADHOC:
+ 		/* our BSS and not from/to DS */
+-		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
++		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+@@ -889,8 +889,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 		break;
+ 	case IW_MODE_INFRA:
+ 		/* our BSS (== from our AP) and from DS */
+-		if (ether_addr_equal(hdr->addr2, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
++		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
 -- 
 2.43.0
 
