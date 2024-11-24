@@ -1,65 +1,69 @@
-Return-Path: <stable+bounces-95003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9269D7231
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:01:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98F29D7232
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:01:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91D6162BBF
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:01:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC502834FE
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9721F668B;
-	Sun, 24 Nov 2024 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1BB187355;
+	Sun, 24 Nov 2024 13:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MatNEzkz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHxT2Skk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DA51F6685;
-	Sun, 24 Nov 2024 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7604A18787A;
+	Sun, 24 Nov 2024 13:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455543; cv=none; b=orsrUoJzgP10mECZgge1mh1fiU6s0xL4Wm5k37G2sOBX0B4USzE1l7nt9OZKLaOg37/RP2M4HR9BVfCp9Fr3ysSZsKl9VZouRf26sNaC6eydCk0+24HwmU7DNqMR/OYbvVmF4wpX38ymGlP75R4my+fEI2bBRfkHqgy2pDX2rzs=
+	t=1732455666; cv=none; b=laGddptAIUY5afqzli5GTgNuN/LEwOc8RgXW3ZIIDqQf3O6jBS0GcYYFn/U9lNErbl00JkjZlCnKmma0u47IXESpd3BJQe7TIJbzxcD5Eo7xm9hO8jOtu6hpErLMWuGdxcrCAU0PP08ZCbCpPF54KCDk9XsW/Ec96ONYg+a1uXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455543; c=relaxed/simple;
-	bh=icEU9xDJi7D98XZ+fKp8tb3nCStikwSgjHKc7Irg7Rk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrkiKC6rmIYkCagMcJh2SbFwhn2W+MVwog27c1/Q/lbX7rgUSJYBvEcBSiyfJS4cLvC0Xv1YigdYMgmQBYn3ffPg00QAhoHOJ35G+vaoRYXraea0qrQ+uJLI6Z3sbyVxjbUpMIkJPOmmL+hLbtqo1VsZURr9/nws3DMok4RKIM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MatNEzkz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC922C4CED3;
-	Sun, 24 Nov 2024 13:39:01 +0000 (UTC)
+	s=arc-20240116; t=1732455666; c=relaxed/simple;
+	bh=cIKtMrcV2rEjOhLuX0Jd/uzPUs7Pfub37mdd5xM0grI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tPi3TO5xdXozfs/WO4E3XbNpYkjXCLhWH6EsIAK+EWYie26LAZqnUsmI6QC91WDF/Wrr/W46ygFgXnE6bcF79BEfERAKFz7l/Fle+4cDm6bMwU4bBdmiTwOJURESRdgLTrUyNg1hW5GBR3DvkLwvlBMExVCCXNFO07HG0XnnZhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHxT2Skk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA686C4CECC;
+	Sun, 24 Nov 2024 13:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455543;
-	bh=icEU9xDJi7D98XZ+fKp8tb3nCStikwSgjHKc7Irg7Rk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MatNEzkzm+7bbnIjg0FHDOCFhZunu8r72544KPoRMaooIPDa6crNkgNwdkhC7aQ/F
-	 F3NDAorpSxTde+U3IYS1Geyn9F7d4hOy/wFTqK6eaP+fWZn+0TIL/B4K7y9GUJb9MB
-	 Fy3kL7oWXzSQCSpzkaHqxevMCpepELbBwLpoHxzq1oJMBxFwkxmL9XLWgI/sY6Nfbm
-	 HDSnkLEDPccypxGwvFzOMdrIW+x5klB/3h0dQA2tv6YXBWqBEisXLseOn/ml2C65ff
-	 u2URFxAY4jLvHF654S/ZDt8t2g4xlJ+jFzNw82EsGr6SSjppbWdwURmFS/znVUppMY
-	 vVbqLxa8Sx2fg==
+	s=k20201202; t=1732455666;
+	bh=cIKtMrcV2rEjOhLuX0Jd/uzPUs7Pfub37mdd5xM0grI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VHxT2SkkbthM1ziVgJI4oUF9IkjsELTTJQmC92Rx7R3d9pe8nrq5/eJKH/FC01xDn
+	 3FAnYLjL4IyK6p+As5rF5f2+dHTQv3bIOZQ5jLQZjFbhYkt5rKbE1YHxFxOM3BrBXv
+	 sXQybXMAmxbBJfyIsHSAv+lOqpOPyGhzMZZcuByLxLxOKc7BspEJLsNw2ofLl4IIbG
+	 dicL8MsWfuVlTe0xU92dzhtSMrsh8RaMLMYYh+Mb5OZRykmMmLS+vY5jW4FOWuU05P
+	 cozW1SzPdZVDSBmby3lLaJ1luhROcHKDW5V2t1EEdEDWPYjd8DMdoUb27C/8vOGfcp
+	 zwicVApleP+Ng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	viro@zeniv.linux.org.uk,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 107/107] netpoll: Use rcu_access_pointer() in __netpoll_setup
-Date: Sun, 24 Nov 2024 08:30:07 -0500
-Message-ID: <20241124133301.3341829-107-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	tursulin@ursulin.net,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 01/87] drm/xe/pciids: separate RPL-U and RPL-P PCI IDs
+Date: Sun, 24 Nov 2024 08:37:39 -0500
+Message-ID: <20241124134102.3344326-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
-References: <20241124133301.3341829-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,45 +72,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.1
+X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
+[ Upstream commit d454902a690db47f1880f963514bbf0fc7a129a8 ]
 
-The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
-accessed directly for a NULL check. While no RCU read lock is held in this
-context, we should still use proper RCU primitives for consistency and
-correctness.
+Avoid including PCI IDs for one platform to the PCI IDs of another. It's
+more clear to deal with them completely separately at the PCI ID macro
+level.
 
-Replace the direct NULL check with rcu_access_pointer(), which is the
-appropriate primitive when only checking for NULL without dereferencing
-the pointer. This function provides the necessary ordering guarantees
-without requiring RCU read-side protection.
-
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/4868d36fbfa8c38ea2d490bca82cf6370b8d65dd.1725443121.git.jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pci.c   | 1 +
+ include/drm/intel/xe_pciids.h | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index aa49b92e9194b..45fb60bc48039 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -626,7 +626,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 5929ac61dbe0a..dde4a929f5873 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -383,6 +383,7 @@ static const struct pci_device_id pciidlist[] = {
+ 	XE_ADLS_IDS(INTEL_VGA_DEVICE, &adl_s_desc),
+ 	XE_ADLP_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
+ 	XE_ADLN_IDS(INTEL_VGA_DEVICE, &adl_n_desc),
++	XE_RPLU_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
+ 	XE_RPLP_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
+ 	XE_RPLS_IDS(INTEL_VGA_DEVICE, &adl_s_desc),
+ 	XE_DG1_IDS(INTEL_VGA_DEVICE, &dg1_desc),
+diff --git a/include/drm/intel/xe_pciids.h b/include/drm/intel/xe_pciids.h
+index 644872a35c352..7ee7524141f10 100644
+--- a/include/drm/intel/xe_pciids.h
++++ b/include/drm/intel/xe_pciids.h
+@@ -120,7 +120,6 @@
  
--	if (!ndev->npinfo) {
-+	if (!rcu_access_pointer(ndev->npinfo)) {
- 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
- 		if (!npinfo) {
- 			err = -ENOMEM;
+ /* RPL-P */
+ #define XE_RPLP_IDS(MACRO__, ...)		\
+-	XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),	\
+ 	MACRO__(0xA720, ## __VA_ARGS__),	\
+ 	MACRO__(0xA7A0, ## __VA_ARGS__),	\
+ 	MACRO__(0xA7A8, ## __VA_ARGS__),	\
 -- 
 2.43.0
 
