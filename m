@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-94964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB769D7556
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:35:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD39D7195
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C590B307ED
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AA92878FA
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422651B140D;
-	Sun, 24 Nov 2024 13:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4105A1E1C32;
+	Sun, 24 Nov 2024 13:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqHTEqLN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYfPJbhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99181E1C08;
-	Sun, 24 Nov 2024 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC08C1E1C24;
+	Sun, 24 Nov 2024 13:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455435; cv=none; b=sUpC6K75FGWzpGpne/QlxfTxilpDlIkWP0SwxBN73lo+53pX8Oaz2ym4T+l2skLHC5/pTWMf6MnCnTTtR5EovgcYSBXfWNx78ACnXURoJXRA2edpJO8ASHfZXt9KQFvnYQstw8WQ53hyOUAzWExjOOKKAkYrFFSt4wxnDUKSD4A=
+	t=1732455436; cv=none; b=OvieCUPdR6E8IDhdA4uen2KjzzRYwrSamnsM6p8/G9TB8VikSuORQq0rFVoztNedVkCfqgvxhuhNZn3fb+Nic/3bPybu5DI77zuFXpet69sJVRfROzeXn/VbpGIo9FTckNRp6KhNYPac2jJR00E+W0zhQHVQDHTS9KoK34UATxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455435; c=relaxed/simple;
-	bh=KZhz5tYPeK/jVYnXQsImtD0gPYrjJ/5xKHiRBK3RG1U=;
+	s=arc-20240116; t=1732455436; c=relaxed/simple;
+	bh=K+dy7J2P2DkGP/rIUHYAhXsBZisveBBB0abmNJ+0Erw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etI5JJb5PibGkXCgkwpMa0Ug0M4E+H9GDuw72oyRFlTfXUoQ19V9MeLmB+HHZhRXAPSdWTmDnOays2rj2r9rgHVGk8pzHEibw2b1nMebKtRNdOANy+ddUxl5eR3xhzVUl/oVoPlpE4ipj5djbz9Nvs+gWS3taYIqaWeQkjA5YlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqHTEqLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CF3C4CECC;
-	Sun, 24 Nov 2024 13:37:13 +0000 (UTC)
+	 MIME-Version; b=JG9ePNbkzd1pkhU+rJCyewZvk3nU8hAKX/ElgthI+omcKJovYjbeNZIPj8w4tSwg1Uo/yDRUKnwiN0CT3Fdet+OjFDNPMoQ3OPgDDgvXjAMR0QAh+JaHcQ0gSqjh/GgieXTfl4OBbOi01hGbBIS697hUyk04z5ltpRII60SzZXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYfPJbhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E060AC4CED7;
+	Sun, 24 Nov 2024 13:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455434;
-	bh=KZhz5tYPeK/jVYnXQsImtD0gPYrjJ/5xKHiRBK3RG1U=;
+	s=k20201202; t=1732455435;
+	bh=K+dy7J2P2DkGP/rIUHYAhXsBZisveBBB0abmNJ+0Erw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqHTEqLN+xGCIpmp5ojvPR0oxe2TGyheF/9QuvtgaFbGf3KN2DxgIfZfiRzNcAyAw
-	 uTv4f3CfCRSUwKkE9ETkdglieJX2iu6FRNKOUvGfdrmoCfrHcuooeISfblp1XmSutG
-	 IKfdfiEWUVYNV38foFXUk9OIWoPjx60XaIy3MgEe5F9asPrEXXVH3FHhD1Dl6fW4i2
-	 3CWD1duiOkJA7PlCHRxBJ7s7bbM9ZmjoQadna9VpBYmUNORYPT0CA23QUew8Fyu+Xe
-	 VkSrDPOHvGtlNe1e0pw8ZGrb9nw7Qp5gSd3iQVXGOrKt8qSHvRqwHmn8OpMlhOAqP8
-	 3BF36u+8h6LuQ==
+	b=AYfPJbhyAq0MncAEsL3onspjS5dpd6PszonRWUJxtPSjo7MnlXdzQoAJzR0yUWf7d
+	 JN13cuODAwqGeNeTM4O9wFNKEw4SEjkQKlJuEU5z9crmPlJC2nkC3PqBSbm4o4QWjX
+	 3hm/xPLMvcaOU7Nd/9E7q8J12WusGhWLKwMjqDTzk1qJkLCnxHoKxySh9392qHHJCL
+	 1AAFpWe6HSg8ufQWHZUYzFybLQnH6tJPMviXGUXzgC9Xn/wWNJErNZHn4jk4J4624G
+	 Vg1kiPP5EOvrpJ7zWyK7P18nag6dIFVq9amJvY64op20IzaGjBFFfRECyX4nn5JPTa
+	 /XSBvi0WDn73g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gang Yan <yangang@kylinos.cn>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Levi Yun <yeoreum.yun@arm.com>,
+	Denis Nikitin <denik@chromium.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>,
-	martineau@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 068/107] mptcp: annotate data-races around subflow->fully_established
-Date: Sun, 24 Nov 2024 08:29:28 -0500
-Message-ID: <20241124133301.3341829-68-sashal@kernel.org>
+	m.szyprowski@samsung.com,
+	iommu@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 069/107] dma-debug: fix a possible deadlock on radix_lock
+Date: Sun, 24 Nov 2024 08:29:29 -0500
+Message-ID: <20241124133301.3341829-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -71,140 +67,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Levi Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 581c8cbfa934aaa555daa4e843242fcecc160f05 ]
+[ Upstream commit 7543c3e3b9b88212fcd0aaf5cab5588797bdc7de ]
 
-We introduce the same handling for potential data races with the
-'fully_established' flag in subflow as previously done for
-msk->fully_established.
+radix_lock() shouldn't be held while holding dma_hash_entry[idx].lock
+otherwise, there's a possible deadlock scenario when
+dma debug API is called holding rq_lock():
 
-Additionally, we make a crucial change: convert the subflow's
-'fully_established' from 'bit_field' to 'bool' type. This is
-necessary because methods for avoiding data races don't work well
-with 'bit_field'. Specifically, the 'READ_ONCE' needs to know
-the size of the variable being accessed, which is not supported in
-'bit_field'. Also, 'test_bit' expect the address of 'bit_field'.
+CPU0                   CPU1                       CPU2
+dma_free_attrs()
+check_unmap()          add_dma_entry()            __schedule() //out
+                                                  (A) rq_lock()
+get_hash_bucket()
+(A) dma_entry_hash
+                                                  check_sync()
+                       (A) radix_lock()           (W) dma_entry_hash
+dma_entry_free()
+(W) radix_lock()
+                       // CPU2's one
+                       (W) rq_lock()
 
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/516
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241021-net-next-mptcp-misc-6-13-v1-2-1ef02746504a@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CPU1 situation can happen when it extending radix tree and
+it tries to wake up kswapd via wake_all_kswapd().
+
+CPU2 situation can happen while perf_event_task_sched_out()
+(i.e. dma sync operation is called while deleting perf_event using
+ etm and etr tmc which are Arm Coresight hwtracing driver backends).
+
+To remove this possible situation, call dma_entry_free() after
+put_hash_bucket() in check_unmap().
+
+Reported-by: Denis Nikitin <denik@chromium.org>
+Closes: https://lists.linaro.org/archives/list/coresight@lists.linaro.org/thread/2WMS7BBSF5OZYB63VT44U5YWLFP5HL6U/#RWM6MLQX5ANBTEQ2PRM7OXCBGCE6NPWU
+Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/diag.c     | 2 +-
- net/mptcp/options.c  | 4 ++--
- net/mptcp/protocol.c | 2 +-
- net/mptcp/protocol.h | 6 +++---
- net/mptcp/subflow.c  | 4 ++--
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ kernel/dma/debug.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
-index 2d3efb405437d..02205f7994d75 100644
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -47,7 +47,7 @@ static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
- 		flags |= MPTCP_SUBFLOW_FLAG_BKUP_REM;
- 	if (sf->request_bkup)
- 		flags |= MPTCP_SUBFLOW_FLAG_BKUP_LOC;
--	if (sf->fully_established)
-+	if (READ_ONCE(sf->fully_established))
- 		flags |= MPTCP_SUBFLOW_FLAG_FULLY_ESTABLISHED;
- 	if (sf->conn_finished)
- 		flags |= MPTCP_SUBFLOW_FLAG_CONNECTED;
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index 370c3836b7712..1603b3702e220 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -461,7 +461,7 @@ static bool mptcp_established_options_mp(struct sock *sk, struct sk_buff *skb,
- 		return false;
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index d570535342cb7..f6f0387761d05 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -1052,9 +1052,13 @@ static void check_unmap(struct dma_debug_entry *ref)
+ 	}
  
- 	/* MPC/MPJ needed only on 3rd ack packet, DATA_FIN and TCP shutdown take precedence */
--	if (subflow->fully_established || snd_data_fin_enable ||
-+	if (READ_ONCE(subflow->fully_established) || snd_data_fin_enable ||
- 	    subflow->snd_isn != TCP_SKB_CB(skb)->seq ||
- 	    sk->sk_state != TCP_ESTABLISHED)
- 		return false;
-@@ -930,7 +930,7 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
- 	/* here we can process OoO, in-window pkts, only in-sequence 4th ack
- 	 * will make the subflow fully established
- 	 */
--	if (likely(subflow->fully_established)) {
-+	if (likely(READ_ONCE(subflow->fully_established))) {
- 		/* on passive sockets, check for 3rd ack retransmission
- 		 * note that msk is always set by subflow_syn_recv_sock()
- 		 * for mp_join subflows
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 48d480982b787..47ee616f69c2d 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3519,7 +3519,7 @@ static void schedule_3rdack_retransmission(struct sock *ssk)
- 	struct tcp_sock *tp = tcp_sk(ssk);
- 	unsigned long timeout;
+ 	hash_bucket_del(entry);
+-	dma_entry_free(entry);
+-
+ 	put_hash_bucket(bucket, flags);
++
++	/*
++	 * Free the entry outside of bucket_lock to avoid ABBA deadlocks
++	 * between that and radix_lock.
++	 */
++	dma_entry_free(entry);
+ }
  
--	if (mptcp_subflow_ctx(ssk)->fully_established)
-+	if (READ_ONCE(mptcp_subflow_ctx(ssk)->fully_established))
- 		return;
- 
- 	/* reschedule with a timeout above RTT, as we must look only for drop */
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 568a72702b080..a93e661ef5c43 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -513,7 +513,6 @@ struct mptcp_subflow_context {
- 		request_bkup : 1,
- 		mp_capable : 1,	    /* remote is MPTCP capable */
- 		mp_join : 1,	    /* remote is JOINing */
--		fully_established : 1,	    /* path validated */
- 		pm_notified : 1,    /* PM hook called for established status */
- 		conn_finished : 1,
- 		map_valid : 1,
-@@ -532,10 +531,11 @@ struct mptcp_subflow_context {
- 		is_mptfo : 1,	    /* subflow is doing TFO */
- 		close_event_done : 1,       /* has done the post-closed part */
- 		mpc_drop : 1,	    /* the MPC option has been dropped in a rtx */
--		__unused : 8;
-+		__unused : 9;
- 	bool	data_avail;
- 	bool	scheduled;
- 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
-+	bool	fully_established;  /* path validated */
- 	u32	remote_nonce;
- 	u64	thmac;
- 	u32	local_nonce;
-@@ -780,7 +780,7 @@ static inline bool __tcp_can_send(const struct sock *ssk)
- static inline bool __mptcp_subflow_active(struct mptcp_subflow_context *subflow)
- {
- 	/* can't send if JOIN hasn't completed yet (i.e. is usable for mptcp) */
--	if (subflow->request_join && !subflow->fully_established)
-+	if (subflow->request_join && !READ_ONCE(subflow->fully_established))
- 		return false;
- 
- 	return __tcp_can_send(mptcp_subflow_tcp_sock(subflow));
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 6170f2fff71e4..860903e064225 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -800,7 +800,7 @@ void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
- 				       const struct mptcp_options_received *mp_opt)
- {
- 	subflow_set_remote_key(msk, subflow, mp_opt);
--	subflow->fully_established = 1;
-+	WRITE_ONCE(subflow->fully_established, true);
- 	WRITE_ONCE(msk->fully_established, true);
- 
- 	if (subflow->is_mptfo)
-@@ -2062,7 +2062,7 @@ static void subflow_ulp_clone(const struct request_sock *req,
- 	} else if (subflow_req->mp_join) {
- 		new_ctx->ssn_offset = subflow_req->ssn_offset;
- 		new_ctx->mp_join = 1;
--		new_ctx->fully_established = 1;
-+		WRITE_ONCE(new_ctx->fully_established, true);
- 		new_ctx->remote_key_valid = 1;
- 		new_ctx->backup = subflow_req->backup;
- 		new_ctx->request_bkup = subflow_req->request_bkup;
+ static void check_for_stack(struct device *dev,
 -- 
 2.43.0
 
