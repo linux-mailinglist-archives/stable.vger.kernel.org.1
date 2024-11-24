@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-95148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881C79D73B2
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9119D73B4
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48FAB282203
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:46:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2C672845E3
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA3622FBEC;
-	Sun, 24 Nov 2024 13:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B412E22FBF9;
+	Sun, 24 Nov 2024 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9LjCNWR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ev5aMOHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62E322FBE5;
-	Sun, 24 Nov 2024 13:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E97B22FBF8;
+	Sun, 24 Nov 2024 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456142; cv=none; b=h+RwnRDuK08OSOMhl9M128gvHr/NGaNlsGOLFcV7XXTI2xiFioXP5dxnPtcMGmWsfsVl8GyEDuwE2LE2aZRYGekTSAIxVW49Pn35nVadFyX3ms9Qt0/nDMOWIcFf5T28Y4vF8yNetOw5DX7iwdAXkk+oFRoG9Dq7ie4Zl5FnSG8=
+	t=1732456144; cv=none; b=KNBJplbjT2P6SyNbhgsY3ooDWZDi/90TU1kONIR3RDYKxKSCjNspvnG7bshxTzv5Gbzi6eVjM71ICj/dQxvSBsjZERrGcKMDImhC/HSNMUkLHKsIIbjfdWrvPd3vVMXWhHVzIJl1TtvZyBKg6cREQNsDv1FwgiSsjx4X67g7zz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456142; c=relaxed/simple;
-	bh=8Rm+C3z4n+Z6XTyCLCM3msjKfuCINIHQoheEAJLEBGE=;
+	s=arc-20240116; t=1732456144; c=relaxed/simple;
+	bh=fKFqPoYIBX7KqlaFGH/qVI1sKDFUgPkpK1kwpJXs4ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBl2sPZ4g8DvcLiV80YYLEZTzzJBTRohHeWlDm4daY8oQDa7/KKAWmqqMUCAaWChfgf9PUWEJau+GoZz81vUzMNixZbugQ5Ty/HjVJR93WNXZFg0q2mKi+XFAI4BXVhsfmzdeC7iQFdi8qSuicB1ZBQ6WBL8Q8w0G8ZrjbwFWS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9LjCNWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08242C4CED6;
-	Sun, 24 Nov 2024 13:49:00 +0000 (UTC)
+	 MIME-Version; b=atRl7A74xNOyjfq9aX9C1w0BJqAe/LtYo2mf7WlBDQuNUYIsd9107JTilHdvtU2HWQ/zs8KpaQ5myGHuFdXTWOkA/SEGIKGd9JSzUrYSWlHJfsjdTbzW1mMxwu4em5pFSKu4CigBss/NFpk05WpHV4p7tpqBUWh7a5qMcpU37uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ev5aMOHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE9EC4CED3;
+	Sun, 24 Nov 2024 13:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456142;
-	bh=8Rm+C3z4n+Z6XTyCLCM3msjKfuCINIHQoheEAJLEBGE=;
+	s=k20201202; t=1732456143;
+	bh=fKFqPoYIBX7KqlaFGH/qVI1sKDFUgPkpK1kwpJXs4ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9LjCNWR59hbdjaZ3z/R7j9TQcZS5JyP6if3bgM7CtRClPZHhfkiD5973Xpceshwq
-	 H/vBhYsALSBZuMJuXFRLsK0OhcPEQvDX11JG+fC0TeJf6dqkqOZr0R2AhCRTO2yeS0
-	 gaFacMDwYwpLRLBB7EBb0mGPeFmjRATAkpz1ewiKYfJPJJSBD75xf79wRBtwPXOsSO
-	 /j7FGylhcs1EcUZmXcpJqR616Ic8MB4r60e55HEpX8RKm38KGERjdPk0YvSjSVcLdo
-	 S8wAqTdm8l1fQmLrVj5dkylj+nZbu1euy5lcSQQ8uP/JvWwzZQzj7HB6T2d6P6zd+/
-	 U80BfMfgQ+9Gw==
+	b=Ev5aMOHK5vXuBTB/62rElTINccJnl2JT5r/GV6c1jnyaGvHqtlYVwFgC9W+WQnPvY
+	 pVsVlQ4ZeVQDGllnUv/UUtuB+0swa7s+NR69+VDl6OLdxqEIP4+dOONF/d7JE4lEq9
+	 SWY7N3op4j6q9iXx6Wfu3cGoZCeEAIIb9qg1GccExb5AMCUo8hthWwgscIqrZ63Axx
+	 MV/I7yicUYZe5WTo+orys+xPiYWT60Kr7OM1woXANX2ecm0hYr4POXjeWqFI3qyVUz
+	 pKcNx9QakbFeUqvrIwfG+AeGT7nGaKEy+0Up3H3FhdeQP77Hk/yEK/ca1uEwlzUeVn
+	 JVTOWF0nyWguw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jonas Karlman <jonas@kwiboo.se>,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	krzysztof.kozlowski@linaro.org,
-	jbrunet@baylibre.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 58/61] ASoC: hdmi-codec: reorder channel allocation list
-Date: Sun, 24 Nov 2024 08:45:33 -0500
-Message-ID: <20241124134637.3346391-58-sashal@kernel.org>
+	jiri@resnulli.us,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 59/61] rocker: fix link status detection in rocker_carrier_init()
+Date: Sun, 24 Nov 2024 08:45:34 -0500
+Message-ID: <20241124134637.3346391-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
 References: <20241124134637.3346391-1-sashal@kernel.org>
@@ -71,208 +70,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 82ff5abc2edcfba0c0f1a1be807795e2876f46e9 ]
+[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
 
-The ordering in hdmi_codec_get_ch_alloc_table_idx() results in
-wrong channel allocation for a number of cases, e.g. when ELD
-reports FL|FR|LFE|FC|RL|RR or FL|FR|LFE|FC|RL|RR|RC|RLC|RRC:
+Since '1 << rocker_port->pport' may be undefined for port >= 32,
+cast the left operand to 'unsigned long long' like it's done in
+'rocker_port_set_enable()' above. Compile tested only.
 
-ca_id 0x01 with speaker mask FL|FR|LFE is selected instead of
-ca_id 0x03 with speaker mask FL|FR|LFE|FC for 4 channels
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-and
-
-ca_id 0x04 with speaker mask FL|FR|RC gets selected instead of
-ca_id 0x0b with speaker mask FL|FR|LFE|FC|RL|RR for 6 channels
-
-Fix this by reordering the channel allocation list with most
-specific speaker masks at the top.
-
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Link: https://patch.msgid.link/20241115044344.3510979-1-christianshewitt@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdmi-codec.c | 140 +++++++++++++++++++---------------
- 1 file changed, 77 insertions(+), 63 deletions(-)
+ drivers/net/ethernet/rocker/rocker_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index 0938671700c62..03290d3ae59cc 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -184,84 +184,97 @@ static const struct snd_pcm_chmap_elem hdmi_codec_8ch_chmaps[] = {
- /*
-  * hdmi_codec_channel_alloc: speaker configuration available for CEA
-  *
-- * This is an ordered list that must match with hdmi_codec_8ch_chmaps struct
-+ * This is an ordered list where ca_id must exist in hdmi_codec_8ch_chmaps
-  * The preceding ones have better chances to be selected by
-  * hdmi_codec_get_ch_alloc_table_idx().
-  */
- static const struct hdmi_codec_cea_spk_alloc hdmi_codec_channel_alloc[] = {
- 	{ .ca_id = 0x00, .n_ch = 2,
--	  .mask = FL | FR},
--	/* 2.1 */
--	{ .ca_id = 0x01, .n_ch = 4,
--	  .mask = FL | FR | LFE},
--	/* Dolby Surround */
-+	  .mask = FL | FR },
-+	{ .ca_id = 0x03, .n_ch = 4,
-+	  .mask = FL | FR | LFE | FC },
- 	{ .ca_id = 0x02, .n_ch = 4,
- 	  .mask = FL | FR | FC },
--	/* surround51 */
-+	{ .ca_id = 0x01, .n_ch = 4,
-+	  .mask = FL | FR | LFE },
- 	{ .ca_id = 0x0b, .n_ch = 6,
--	  .mask = FL | FR | LFE | FC | RL | RR},
--	/* surround40 */
--	{ .ca_id = 0x08, .n_ch = 6,
--	  .mask = FL | FR | RL | RR },
--	/* surround41 */
--	{ .ca_id = 0x09, .n_ch = 6,
--	  .mask = FL | FR | LFE | RL | RR },
--	/* surround50 */
-+	  .mask = FL | FR | LFE | FC | RL | RR },
- 	{ .ca_id = 0x0a, .n_ch = 6,
- 	  .mask = FL | FR | FC | RL | RR },
--	/* 6.1 */
--	{ .ca_id = 0x0f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | RC },
--	/* surround71 */
-+	{ .ca_id = 0x09, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 6,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 6,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 6,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 6,
-+	  .mask = FL | FR | RC },
- 	{ .ca_id = 0x13, .n_ch = 8,
- 	  .mask = FL | FR | LFE | FC | RL | RR | RLC | RRC },
--	/* others */
--	{ .ca_id = 0x03, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC },
--	{ .ca_id = 0x04, .n_ch = 8,
--	  .mask = FL | FR | RC},
--	{ .ca_id = 0x05, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC },
--	{ .ca_id = 0x06, .n_ch = 8,
--	  .mask = FL | FR | FC | RC },
--	{ .ca_id = 0x07, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RC },
--	{ .ca_id = 0x0c, .n_ch = 8,
--	  .mask = FL | FR | RC | RL | RR },
--	{ .ca_id = 0x0d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RC },
--	{ .ca_id = 0x0e, .n_ch = 8,
--	  .mask = FL | FR | FC | RL | RR | RC },
--	{ .ca_id = 0x10, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | RLC | RRC },
--	{ .ca_id = 0x11, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x12, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | RLC | RRC },
--	{ .ca_id = 0x14, .n_ch = 8,
--	  .mask = FL | FR | FLC | FRC },
--	{ .ca_id = 0x15, .n_ch = 8,
--	  .mask = FL | FR | LFE | FLC | FRC },
--	{ .ca_id = 0x16, .n_ch = 8,
--	  .mask = FL | FR | FC | FLC | FRC },
--	{ .ca_id = 0x17, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | FLC | FRC },
--	{ .ca_id = 0x18, .n_ch = 8,
--	  .mask = FL | FR | RC | FLC | FRC },
--	{ .ca_id = 0x19, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FLC | FRC },
--	{ .ca_id = 0x1a, .n_ch = 8,
--	  .mask = FL | FR | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1b, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1c, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x1e, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x11, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x10, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1c, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x0f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | RC },
-+	{ .ca_id = 0x1b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0e, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR | RC },
-+	{ .ca_id = 0x1a, .n_ch = 8,
-+	  .mask = FL | FR | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RC },
-+	{ .ca_id = 0x19, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FLC | FRC },
-+	{ .ca_id = 0x0c, .n_ch = 8,
-+	  .mask = FL | FR | RC | RL | RR },
-+	{ .ca_id = 0x18, .n_ch = 8,
-+	  .mask = FL | FR | RC | FLC | FRC },
-+	{ .ca_id = 0x17, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | FLC | FRC },
-+	{ .ca_id = 0x16, .n_ch = 8,
-+	  .mask = FL | FR | FC | FLC | FRC },
-+	{ .ca_id = 0x15, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FLC | FRC },
-+	{ .ca_id = 0x14, .n_ch = 8,
-+	  .mask = FL | FR | FLC | FRC },
-+	{ .ca_id = 0x0b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR },
-+	{ .ca_id = 0x0a, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR },
-+	{ .ca_id = 0x09, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 8,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 8,
-+	  .mask = FL | FR | RC },
-+	{ .ca_id = 0x03, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC },
-+	{ .ca_id = 0x02, .n_ch = 8,
-+	  .mask = FL | FR | FC },
-+	{ .ca_id = 0x01, .n_ch = 8,
-+	  .mask = FL | FR | LFE },
- };
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index 9e59669a93dd3..2e2826c901fcc 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -2504,7 +2504,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
+ 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
+ 	bool link_up;
  
- struct hdmi_codec_priv {
-@@ -370,7 +383,8 @@ static int hdmi_codec_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
- 	struct hdmi_codec_priv *hcp = info->private_data;
- 
--	map = info->chmap[hcp->chmap_idx].map;
-+	if (hcp->chmap_idx != HDMI_CODEC_CHMAP_IDX_UNKNOWN)
-+		map = info->chmap[hcp->chmap_idx].map;
- 
- 	for (i = 0; i < info->max_channels; i++) {
- 		if (hcp->chmap_idx == HDMI_CODEC_CHMAP_IDX_UNKNOWN)
+-	link_up = link_status & (1 << rocker_port->pport);
++	link_up = link_status & (1ULL << rocker_port->pport);
+ 	if (link_up)
+ 		netif_carrier_on(rocker_port->dev);
+ 	else
 -- 
 2.43.0
 
