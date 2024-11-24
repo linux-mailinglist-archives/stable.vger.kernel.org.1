@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-95259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317589D775A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 19:30:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E2C9D74AE
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 801FCB82151
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:15:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE8462890BE
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1FA240FD1;
-	Sun, 24 Nov 2024 13:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64438241451;
+	Sun, 24 Nov 2024 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9qrDLH9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWspryQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB751E503D;
-	Sun, 24 Nov 2024 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D63A241427;
+	Sun, 24 Nov 2024 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456501; cv=none; b=YenK/nOH0/T+2XNoqQKHoJiJ4Dkz2dNnq2Rrqv5BXVKTYkF2Wbh2UHm1urvjGF5/sYjKYQMwWzXHHBVzL0th6AM79hkng6SfqOKdSYll4eJo5MypaSBHgo1GYsmJbdnrWrUAqX8v6DxoU4t/lMRjaYt4JtZnYQ8WL9kaCGjwYgE=
+	t=1732456506; cv=none; b=AlN0Y+RiqOt4s8XFYWEO0qvb/Qt8n/zixNyjFiWHUA0Ml5ZKF0XUpTekorzp+nAfJtuMWHmaVOdGBVyGK2tO4QEz/iuXahATm8MapTakver86+C0qKv4fd+lQNEOj3m2FxfEj/QIi2WjsBRM0JJEV3YFTD+oqM+wI5muSUiDeb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456501; c=relaxed/simple;
-	bh=srJlU4aNNbRgnBmPFIN2NWWKkEiHresnpyZ/UyKAXTM=;
+	s=arc-20240116; t=1732456506; c=relaxed/simple;
+	bh=bdTFARV6cdbNuxkjqQpVHEGm6exVS8yC+rCCLpYusc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6ZdqzSChrlh0cKQEAaxbXB3UBSWOIUyRzwl7J9P0S2QnWhShJnSt6FLOeY7gpWcsCgA2+RAhDfRdu3h84Sqn52kHcTywXweGDXvi92ikT1KAFLP7oAEdy17f1OuKkzjGKwe+Ie+IvkjSRjE1NEmklTuvzcRB7Cb0HEAn5LYvpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9qrDLH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F858C4CED3;
-	Sun, 24 Nov 2024 13:55:00 +0000 (UTC)
+	 MIME-Version; b=R3IkqzqRJ9zW3q9AWfwAtwTdNwIeWRA0uusXESCnlF3bFQhYws+hP5Bs66tv1VmexIac2HlNikmWB9vn9BR9FAQrM6cU1jEWM4h4poerPR6LZOxDhvHkxcObYFAYlt3ym0cSvzfN21koK9qxCzYhF0dHmcJ6r6OxRXAIrUC0oIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWspryQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B5BC4CED1;
+	Sun, 24 Nov 2024 13:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456501;
-	bh=srJlU4aNNbRgnBmPFIN2NWWKkEiHresnpyZ/UyKAXTM=;
+	s=k20201202; t=1732456506;
+	bh=bdTFARV6cdbNuxkjqQpVHEGm6exVS8yC+rCCLpYusc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9qrDLH9H3+kpK8iW63kibydp0CB9+wN6ZECNcdvizSe2lsvBloGomLtnI9ZNsiEj
-	 9YqvSwxw30BZbfkS54NyfySL2uxDqavWCQyAbrBn/TnLLWuR7ouPFFp2hBlKEe8u3b
-	 99As4sXnmY0P5VreVr9U8n7+DaNtTpEXwfMa5RgAAg2LjRTnwlAvzh95QCKs7/0o5x
-	 zjVq7pkUQ2lP0l3nw1lhtomYqr+MWlP5ZHdExnGtj0I8J1QRSsBJFmD1riftqbb0O7
-	 CfFwXcj8MfSY1djxXdso8g6KyENNUtVZc+h19K41DlvsnvKz4zrtcOLQ92WzO0WQwl
-	 9HQF39tCznKBQ==
+	b=tWspryQRLfCYpEzol9JrYJEyI+69Br5W6YoCaBHkN5ZfoOwVx5iQLg3SIm7fxjAKr
+	 MjvBA1cocF21tPmy1+AvtppYcYU8hc1hQdiBbTcCLbXMnWRuMqHVpcjqqfUNgBSAWT
+	 VLHkj+MFV8Kxmbjw2fsS8WBswjXVB66NzzKWyjA8eXvZ5TpMxxE/HE5rCU+couRqo+
+	 Dwj40F5xSewFpycc3yKrbhNoE8qUGSiZU8o6rDsunEhe6bD71I238mkYCFa7W3rp3c
+	 j9LlBCzh+4A6/y9XqKnhpTSyiZoNsWInSufYfysADbxx8hq4VyNZyS71Z71+VooUNl
+	 qf4xAonwVH3uA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wei Fang <wei.fang@nxp.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Victor Zhao <Victor.Zhao@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 24/33] net: enetc: add i.MX95 EMDIO support
-Date: Sun, 24 Nov 2024 08:53:36 -0500
-Message-ID: <20241124135410.3349976-24-sashal@kernel.org>
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	Hawking.Zhang@amd.com,
+	mario.limonciello@amd.com,
+	Jun.Ma2@amd.com,
+	Yunxiang.Li@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 25/33] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
+Date: Sun, 24 Nov 2024 08:53:37 -0500
+Message-ID: <20241124135410.3349976-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135410.3349976-1-sashal@kernel.org>
 References: <20241124135410.3349976-1-sashal@kernel.org>
@@ -73,42 +76,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-[ Upstream commit a52201fb9caa9b33b4d881725d1ec733438b07f2 ]
+[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
 
-The verdor ID and device ID of i.MX95 EMDIO are different from LS1028A
-EMDIO, so add new vendor ID and device ID to pci_device_id table to
-support i.MX95 EMDIO.
+Under sriov, host driver will save and restore vf pci cfg space during
+reset. And during device init, under sriov, pci_restore_state happens after
+fullaccess released, and it can have race condition with mmio protection
+enable from host side leading to missing interrupts.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+So skip amdgpu_device_cache_pci_state for sriov.
+
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Acked-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 3 +++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-index 15f37c5b8dc14..ffa7caabd8c99 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
-@@ -4,6 +4,8 @@
- #include <linux/of_mdio.h>
- #include "enetc_pf.h"
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e833c02fabff3..2f42471e578ad 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5088,6 +5088,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int r;
  
-+#define NETC_EMDIO_VEN_ID	0x1131
-+#define NETC_EMDIO_DEV_ID	0xee00
- #define ENETC_MDIO_DEV_ID	0xee01
- #define ENETC_MDIO_DEV_NAME	"FSL PCIe IE Central MDIO"
- #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
-@@ -94,6 +96,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
- 
- static const struct pci_device_id enetc_pci_mdio_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
-+	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
- 	{ 0, } /* End of table. */
- };
- MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
++	if (amdgpu_sriov_vf(adev))
++		return false;
++
+ 	r = pci_save_state(pdev);
+ 	if (!r) {
+ 		kfree(adev->pci_state);
 -- 
 2.43.0
 
