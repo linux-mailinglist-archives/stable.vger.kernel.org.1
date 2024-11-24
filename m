@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-95281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EA59D74DA
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:21:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04109D7742
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 19:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7D322812B8
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:21:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E984BB86367
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3181D248F05;
-	Sun, 24 Nov 2024 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBCC248F33;
+	Sun, 24 Nov 2024 13:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjxWWmjH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6dODOgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD53D248362;
-	Sun, 24 Nov 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78715248F2A;
+	Sun, 24 Nov 2024 13:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456575; cv=none; b=cLPJgEb3jmQgaC3q554Jsckp42O8Xg+X/fvRIOYFlKBuLkv5tGxLAyW5/5RDHj2HkNAJNOiy+qEILnUSxCd57YezmnSxPTURnMgWh855b9pYnSq033rI1c2Aamm1MdAmbOcWPyVr4sDd+evJCqIvsXuxoozFu2ue02KmVEjdOJM=
+	t=1732456576; cv=none; b=Q18eNYU175Y6+k2OQL87nW+1MQImdoGe1IXUhLUtwdNHyrc7OvvfucDgALp/ijr7992RwXifXz64h0tQVuZaL+Z2SuIDPm6kzBCzX9977rdrRHr144eQ8TtQDbxV4FY80Pk+91sNES57c4ZAjwVGNYJOqvvfORvSjIiEDHPuwmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456575; c=relaxed/simple;
-	bh=vb6nFAQRKxt/olsyS36qmWgyo11KDXaPGNXwy1cxJag=;
+	s=arc-20240116; t=1732456576; c=relaxed/simple;
+	bh=XPt5bwEzhHstfgtRk4gWbadxbeMnpxIanmB815OBs78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qtlg3UZVL+0l3HKjfTwS4bFmXepZ9NywroFgBCvs80SGw+wWBUw2TdK8rGImifUHbgOcoecn2r4ekf0GHT82/h9LlT1tO3itwReRHaTPpX0H18+jarnvP9QhMQyGyPLMAaFStxXe/40C8ou985PuIbOY6b6Cc34Uv1SvH+ZJdFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjxWWmjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FF7C4CED1;
-	Sun, 24 Nov 2024 13:56:13 +0000 (UTC)
+	 MIME-Version; b=u1xEs9hjkPFFcQvhFC9UBo3E/IrSJ6BV/oI0etCMvuHK31JlT2azVZETAfBuDZTwAcsc3n3MY/uD7YcLp4Y/z6QzmIgdRm+v+EAXnY0w7pPPo9mCBz77tczs2pLKi8CgRzJwkZ80SMt44nDKMTmEIga8pQRPksuxvYkzFlWGfug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6dODOgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BB3C4CECC;
+	Sun, 24 Nov 2024 13:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456574;
-	bh=vb6nFAQRKxt/olsyS36qmWgyo11KDXaPGNXwy1cxJag=;
+	s=k20201202; t=1732456576;
+	bh=XPt5bwEzhHstfgtRk4gWbadxbeMnpxIanmB815OBs78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjxWWmjHNfLHBrOrs8JTUqbCuQwr1ubcuqglfX1NHeDHJOnyHiNaUBu0MNmZBDdaU
-	 CrBk9PaL13zL00hzMF6vvAu2RedNBXElOFFN09DVwaxtW7gLRk8zEFpjQmIKresSOJ
-	 gZQbEG50q7gC04TSALyW7/gUYrn+4/MjdojDIqOrspBVwNC7oYAKTx5Q4cw5wlya1D
-	 RMp823GnCELjtJ3kWA99hyWtKBrkRPKwigvm36l/Jc4YytJLgXqR1lizTZrADeElop
-	 Ni9Y2A/r2bYGO9EzUVNEQwws1GS2PXKQvxnSTOoeL2aWaIFiQAm67PNpdg3QuQxv0h
-	 kwYkzXUkLeTmQ==
+	b=Z6dODOgRRS2BABdiIEHfKO3+QXReJgkbzdMtmpOjndN2/mIV1i0rPsZHlUkUDs1qM
+	 bVraSgj6YVw5ep4E/9cp4hd50c+L+voK+UroR843I30QDIReIO9MzlHqQ8fh63wJA6
+	 5DCmNUY8KHG2u5VpMTI2YMk9yXL1Ey/m0eorVrfCUoy0aVj1kmCghkPexLgR5vCINh
+	 sm690vaEBQCugYwhMw/LqcACqaZmZqEsyivN5s+rVxd9BroB6YPRB5q0EsG5b+kxnz
+	 iM15yxfyIOFjdoL2nb0XD2M6DxZOGQNHKfN4rVR041jvw5Mzpd4N6TFT9VI14gCO4I
+	 o8/pt909Okq0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 13/28] net: inet6: do not leave a dangling sk pointer in inet6_create()
-Date: Sun, 24 Nov 2024 08:55:13 -0500
-Message-ID: <20241124135549.3350700-13-sashal@kernel.org>
+	jirislaby@kernel.org,
+	mickflemm@gmail.com,
+	mcgrof@kernel.org,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 14/28] wifi: ath5k: add PCI ID for SX76X
+Date: Sun, 24 Nov 2024 08:55:14 -0500
+Message-ID: <20241124135549.3350700-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135549.3350700-1-sashal@kernel.org>
 References: <20241124135549.3350700-1-sashal@kernel.org>
@@ -70,73 +69,32 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.286
 Content-Transfer-Encoding: 8bit
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
+[ Upstream commit da0474012402d4729b98799d71a54c35dc5c5de3 ]
 
-sock_init_data() attaches the allocated sk pointer to the provided sock
-object. If inet6_create() fails later, the sk object is released, but the
-sock object retains the dangling sk pointer, which may cause use-after-free
-later.
+This is in two devices made by Gigaset, SX762 and SX763.
 
-Clear the sock sk pointer on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-2-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/af_inet6.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 7ee0bfea9de1d..845d77b0a7f03 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -251,31 +251,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 		 */
- 		inet->inet_sport = htons(inet->inet_num);
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index d5ee32ce9eb3d..b7f62c472b879 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -46,6 +46,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001b) }, /* 5413 Eagle */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
++	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
+ };
 -- 
 2.43.0
 
