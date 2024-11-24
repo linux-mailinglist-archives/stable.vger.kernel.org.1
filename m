@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-95100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCC79D76B4
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:29:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F4B9D7342
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D68DBE347E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:33:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB0C283BA1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5410F227B84;
-	Sun, 24 Nov 2024 13:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D99227BA3;
+	Sun, 24 Nov 2024 13:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xv5qCoQI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OChDbG/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD821C19D;
-	Sun, 24 Nov 2024 13:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C39227B82;
+	Sun, 24 Nov 2024 13:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456015; cv=none; b=FCYgP/ZnBbMje/7i5EiWbkE3OQ5BTLmrkN6eUeFCVYqyK5zOoLDLe9SIA2adgCMNVV4AI7UxbaHSKcAASSeLHr8R8Yossh8ysf3lw6/hGnS6mB5QIpEjvIyjf8DLSFpf5PCbGYsriX3gMtp4rQHSo1qYf2bONwx/dVrPP1vSX3g=
+	t=1732456018; cv=none; b=Mb0eOa2gkdLqq+hexGTtAZDV8nfi8G9dLz3tbrkRN3WrbA3qtvUQTGlpjup13C44t9WmuOSpF9UZGiZ+P7jUlj1cg7N/p0cpJgs45nK66xp6rIZFbXTEWWrbfKZ1j5rb4qPJUrWhjxoIRVsc0a1P0ZErajtfBivKMJHQ/j87H+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456015; c=relaxed/simple;
-	bh=8eDtMxpYkuH4vxN5BukeO7RRsyiwytQ7TOglpbiabXI=;
+	s=arc-20240116; t=1732456018; c=relaxed/simple;
+	bh=v2AETwvszsaxg3r7uA01/4mHUF0zeFnmwO/A5luv1MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkXsADap/zsSX2h62EWIKXrxra//UDWzyFEM/ZkgzKydg5MpF9pFMGpjoul1/fbGX//r547rNqZJw6x5zd4Qr42Jgo+ksrHY37HqIum8dC0j1i5yMj18oiONlxpfmB2NpashWsd9N7YcA0Aa93qg7BTcAOwVrEk6N+TeoiZbtKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xv5qCoQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3367C4CED6;
-	Sun, 24 Nov 2024 13:46:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kYMdMdeCDe/xqfHl5MoUNa1r5KX7jeDJxsYFheuPxXSE1Zvi63W4xeM1/PnzwaSsPqfhPZVqlyPLbdq0G1t29tfAYDj4wbt1guwjEaPy8583jkrzvxgexhuu8Y++FOc1zqSumkCgumodmKX/XNXIps0GxBnIWKaG5U3dmtrdKgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OChDbG/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A70C4CECC;
+	Sun, 24 Nov 2024 13:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456014;
-	bh=8eDtMxpYkuH4vxN5BukeO7RRsyiwytQ7TOglpbiabXI=;
+	s=k20201202; t=1732456018;
+	bh=v2AETwvszsaxg3r7uA01/4mHUF0zeFnmwO/A5luv1MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv5qCoQISjdkmQ4cCKh++JpICzZPttq55RAfqJGv0eJfcQnxF1q5yU7n1znTrDcmt
-	 bdIU4tzwHeMQttkKnDBhDQRyBIXgaTVKw06WPdu2/UnV2JrrzDkHa3FIgzhpaKR1QR
-	 zI+F0LlG7J2GWl1UURNH3X2+jdxbzPDxpDHTQoNNl/hnz9jcoKT3ZY/W5ftaACH5aw
-	 v488Hy9yP8hY3FDv5X5pMpYNtLOHlj2SP/FphAri/Ln9fg+azP5e4GQRmMP1o0TiW5
-	 EY7+BpgxPgqVQr0WsAQIOwMlCGSqgb659JAOahI05tdrBL2Ocl4IVuaeZuKaI+Fc65
-	 9JcqxQcKCL78g==
+	b=OChDbG/uJxVg+14tq/Lp8stFN19DRwN88qNLVvdBjAr1xXxs46AYmwFZj3+MfBIae
+	 jYu2NyXSXNZU9rmk7hZ7objjzb+eMCUM0hw5lXtUPPUBhEmdzW8YRdAjDl8f5kB6xq
+	 fN7dFhBysCihDhCPJqJN0OAVK/1cI3aVvVIDQbKzjsC1t4ElxgMfpX10U8U2NZaxfV
+	 z7PzEkONuow6aZqRfHZmNkzRe/vZIZ4POlOY4xoyE4L/j9KOZVeKUhXq1lqgMvfxVg
+	 xIMc5BwHUmQl5lCEU3bYAyCD8sYE9RjOPKLBARzAWU3nG/z2C9R2fwLcqxto4QowtD
+	 dnvgKqDw7urSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+Cc: Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 10/61] dlm: fix possible lkb_resource null dereference
-Date: Sun, 24 Nov 2024 08:44:45 -0500
-Message-ID: <20241124134637.3346391-10-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dmitry.baryshkov@linaro.org,
+	rdunlap@infradead.org,
+	oleksandr@natalenko.name,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 11/61] drm/display: Fix building with GCC 15
+Date: Sun, 24 Nov 2024 08:44:46 -0500
+Message-ID: <20241124134637.3346391-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134637.3346391-1-sashal@kernel.org>
 References: <20241124134637.3346391-1-sashal@kernel.org>
@@ -60,64 +68,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
+[ Upstream commit a500f3751d3c861be7e4463c933cf467240cca5d ]
 
-This patch fixes a possible null pointer dereference when this function is
-called from request_lock() as lkb->lkb_resource is not assigned yet,
-only after validate_lock_args() by calling attach_lkb(). Another issue
-is that a resource name could be a non printable bytearray and we cannot
-assume to be ASCII coded.
+GCC 15 enables -Werror=unterminated-string-initialization by default.
+This results in the following build error
 
-The log functionality is probably never being hit when DLM is used in
-normal way and no debug logging is enabled. The null pointer dereference
-can only occur on a new created lkb that does not have the resource
-assigned yet, it probably never hits the null pointer dereference but we
-should be sure that other changes might not change this behaviour and we
-actually can hit the mentioned null pointer dereference.
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c: In function ‘is_hdmi_adaptor’:
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c:164:17: error: initializer-string for array of
+ ‘char’ is too long [-Werror=unterminated-string-initialization]
+  164 |                 "DP-HDMI ADAPTOR\x04";
+      |                 ^~~~~~~~~~~~~~~~~~~~~
 
-In this patch we just drop the printout of the resource name, the lkb id
-is enough to make a possible connection to a resource name if this
-exists.
+After discussion with Ville, the fix was to increase the size of
+dp_dual_mode_hdmi_id array by one, so that it can accommodate the NULL
+line character. This should let us build the kernel with GCC 15.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241002092311.942822-1-brahmajit.xyz@gmail.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lock.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/display/drm_dp_dual_mode_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 652c51fbbf768..6712d733fc90b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2698,16 +2698,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+index bd61e20770a5b..719da3610310f 100644
+--- a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+@@ -160,11 +160,11 @@ EXPORT_SYMBOL(drm_dp_dual_mode_write);
  
+ static bool is_hdmi_adaptor(const char hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN])
+ {
+-	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN] =
++	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN + 1] =
+ 		"DP-HDMI ADAPTOR\x04";
+ 
+ 	return memcmp(hdmi_id, dp_dual_mode_hdmi_id,
+-		      sizeof(dp_dual_mode_hdmi_id)) == 0;
++		      DP_DUAL_MODE_HDMI_ID_LEN) == 0;
+ }
+ 
+ static bool is_type1_adaptor(uint8_t adaptor_id)
 -- 
 2.43.0
 
