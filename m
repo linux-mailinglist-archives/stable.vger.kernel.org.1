@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-94988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E729D71FB
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:56:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDE89D7221
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5A028439B
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:56:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 761DCB31A13
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECD21E9094;
-	Sun, 24 Nov 2024 13:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C251EABB4;
+	Sun, 24 Nov 2024 13:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1wblvcR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDWVVV5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8345C1E9093;
-	Sun, 24 Nov 2024 13:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10641EABA9;
+	Sun, 24 Nov 2024 13:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455514; cv=none; b=JBmb9hJgOK52W5qzvw07VCLQlLwmvB2A0o7cez361gTXmRaJIBvce6bwwk+BICoN+CrayXqaV9I9Rnk6K++KzXQdqRzkqZaZkSWe12/Pioma6+6jFid/+pwSIXGCJxXB3YwjSZJRY+3CT7MCNFSxOT/s/S2+26D6gZOPOW4ts3A=
+	t=1732455515; cv=none; b=SgZQcOj6i3lt3vuh27kaAQa1MfQfgi9bleIYBNWnmxMpvqC2D3Ud5SRH5dk+obmV7SwM56q8jM9jgJYmFWqH4pa2FAtb8wau8Ea5ycDYES9nuVmu47iY2bQzC9iuCom9x8Zcu8lste5MhqsIGQTNyuQVQ3rgh8ExgYUNnf3yS8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455514; c=relaxed/simple;
-	bh=laDrs0Vb2L0/CzdXMIjKElRV1JFcqlTDdyHVbdJUJDg=;
+	s=arc-20240116; t=1732455515; c=relaxed/simple;
+	bh=rhEx+TxjxSmGCzxQlQoAtH+QWYgtyLqIu09QUoh5Ges=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDTdw6JKmw5hdScBu83WyWpGt01TwzTux35s9dhoxUlrx10PEUGmOw8Iw72lAnbdBJl5+DQRSpOR9Rfw8/u4VgNM1Dlrc94lm+wLqYm1kIVHdQ5JbQ5VvMvYVdZ4op/mt6Bc7C8GFl2yXMKdaz/DvI6DfJ2WNhdB9Nzvs4/rqNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1wblvcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23983C4CECC;
-	Sun, 24 Nov 2024 13:38:33 +0000 (UTC)
+	 MIME-Version; b=efKyk0GFg28Scw+kj4df5YD4ci1DL6PfYQZur4b8d0/ir+TElN+Mey78n2jk8GtCH6z+ZnaQtoxiFUJJzcI2QXcuO277Ih6opkcr7PMgcGeOOfj06ROrkL66/4OylSxXxGiuxv4wimMsrR4ZXgpI8i+f92h9Vv+8UMCvYOmTfmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDWVVV5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B32C4CED3;
+	Sun, 24 Nov 2024 13:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455514;
-	bh=laDrs0Vb2L0/CzdXMIjKElRV1JFcqlTDdyHVbdJUJDg=;
+	s=k20201202; t=1732455515;
+	bh=rhEx+TxjxSmGCzxQlQoAtH+QWYgtyLqIu09QUoh5Ges=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1wblvcR88d7YU5GuXysMJl89JjtrN31JCDAjYiOLpEry3qEu2pHyECn7ToGEgZVM
-	 qcliE38OZ2sHEQ/YvaepRfxPtL2ZoRBO15z4Zp1ex1iXNkxLS3HikxmTL6CbpXNo8a
-	 QBcKsCPJ4sZkqKaJgyPZGEV0+RA4P3cItXtRAh14zJV0OieU2NAJ2NIHmCEAYDgK4X
-	 rIgxH4GlDpt5YX175/nFG/E6jlcGfFjk8xKZfcjf58HNb5YjxpAumR20E1+ZJhRsJn
-	 MbbagZ40PpBbTJluhgEJNSOLYUahtW7mw7mVF2raoroW8g+QRh+8UGm/KraibwnPAM
-	 Sl/dcYdYTvQkg==
+	b=UDWVVV5mrJpcKBFFWYdnd+U5gzRWbqDYH+Iakc+Ua0jJYluqyvqoszZwZL5RH8oh4
+	 73r1tT6K8uLPgm7fg4oKhYZwKPrK1b96XX/VMoAd8k6dCOyq6acYv/mQzG6ADIOzXe
+	 xbwL93478VsABwjyr6b9w9Rf68fqsjgBlf/H7FY4QAjdEvh6JqQUo9GWN9SCRHT3W7
+	 5eQ3yAtbHS/sOCaM5XUF9WPom7+XOiVhvYe0FPIFaa7aBmQG8fwMbD2CYoioyg/xzB
+	 0Kz/TKsLgpD1vbX+ctnQkeizHOJdJ/CZdD2UVV556DUjsu1/cCZeyNouDWgL8009oB
+	 u6c596gb1Bq+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Markus Elfring <elfring@users.sourceforge.net>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	wsa+renesas@sang-engineering.com,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 092/107] i2c: i801: Add support for Intel Panther Lake
-Date: Sun, 24 Nov 2024 08:29:52 -0500
-Message-ID: <20241124133301.3341829-92-sashal@kernel.org>
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 093/107] Bluetooth: hci_conn: Reduce hci_conn_drop() calls in two functions
+Date: Sun, 24 Nov 2024 08:29:53 -0500
+Message-ID: <20241124133301.3341829-93-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -67,76 +68,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit bd492b58371295d3ae26162b9666be584abad68a ]
+[ Upstream commit d96b543c6f3b78b6440b68b5a5bbface553eff28 ]
 
-Add SMBus PCI IDs on Intel Panther Lake-P and -U.
+An hci_conn_drop() call was immediately used after a null pointer check
+for an hci_conn_link() call in two function implementations.
+Thus call such a function only once instead directly before the checks.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+This issue was transformed by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/i2c/busses/i2c-i801.rst | 1 +
- drivers/i2c/busses/Kconfig            | 1 +
- drivers/i2c/busses/i2c-i801.c         | 6 ++++++
- 3 files changed, 8 insertions(+)
+ net/bluetooth/hci_conn.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/i2c/busses/i2c-i801.rst b/Documentation/i2c/busses/i2c-i801.rst
-index c840b597912c8..47e8ac5b7099f 100644
---- a/Documentation/i2c/busses/i2c-i801.rst
-+++ b/Documentation/i2c/busses/i2c-i801.rst
-@@ -49,6 +49,7 @@ Supported adapters:
-   * Intel Meteor Lake (SOC and PCH)
-   * Intel Birch Stream (SOC)
-   * Intel Arrow Lake (SOC)
-+  * Intel Panther Lake (SOC)
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index c4c74b82ed211..50e65b2f54ee6 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2224,13 +2224,9 @@ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 					  conn->iso_qos.bcast.big);
+ 	if (parent && parent != conn) {
+ 		link = hci_conn_link(parent, conn);
+-		if (!link) {
+-			hci_conn_drop(conn);
+-			return ERR_PTR(-ENOLINK);
+-		}
+-
+-		/* Link takes the refcount */
+ 		hci_conn_drop(conn);
++		if (!link)
++			return ERR_PTR(-ENOLINK);
+ 	}
  
-    Datasheets: Publicly available at the Intel website
+ 	return conn;
+@@ -2320,15 +2316,12 @@ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	}
  
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 6b3ba7e5723aa..2254abda5c46c 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -160,6 +160,7 @@ config I2C_I801
- 	    Meteor Lake (SOC and PCH)
- 	    Birch Stream (SOC)
- 	    Arrow Lake (SOC)
-+	    Panther Lake (SOC)
+ 	link = hci_conn_link(le, cis);
++	hci_conn_drop(cis);
+ 	if (!link) {
+ 		hci_conn_drop(le);
+-		hci_conn_drop(cis);
+ 		return ERR_PTR(-ENOLINK);
+ 	}
  
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-i801.
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 299fe9d3afab0..75dab01d43a75 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -81,6 +81,8 @@
-  * Meteor Lake PCH-S (PCH)	0x7f23	32	hard	yes	yes	yes
-  * Birch Stream (SOC)		0x5796	32	hard	yes	yes	yes
-  * Arrow Lake-H (SOC)		0x7722	32	hard	yes	yes	yes
-+ * Panther Lake-H (SOC)		0xe322	32	hard	yes	yes	yes
-+ * Panther Lake-P (SOC)		0xe422	32	hard	yes	yes	yes
-  *
-  * Features supported by this driver:
-  * Software PEC				no
-@@ -261,6 +263,8 @@
- #define PCI_DEVICE_ID_INTEL_CANNONLAKE_H_SMBUS		0xa323
- #define PCI_DEVICE_ID_INTEL_COMETLAKE_V_SMBUS		0xa3a3
- #define PCI_DEVICE_ID_INTEL_METEOR_LAKE_SOC_S_SMBUS	0xae22
-+#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_H_SMBUS	0xe322
-+#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_P_SMBUS	0xe422
+-	/* Link takes the refcount */
+-	hci_conn_drop(cis);
+-
+ 	cis->state = BT_CONNECT;
  
- struct i801_mux_config {
- 	char *gpio_chip;
-@@ -1055,6 +1059,8 @@ static const struct pci_device_id i801_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
-+	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
-+	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ 0, }
- };
- 
+ 	hci_le_create_cis_pending(hdev);
 -- 
 2.43.0
 
