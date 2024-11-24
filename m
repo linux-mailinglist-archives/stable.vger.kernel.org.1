@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-95086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB2F9D7322
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:29:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B9C9D7328
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:29:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A9C3162DB9
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:29:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA53E286988
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C0F217678;
-	Sun, 24 Nov 2024 13:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07F01D9A41;
+	Sun, 24 Nov 2024 13:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUROZ1tI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NhqOWy5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA9521766C;
-	Sun, 24 Nov 2024 13:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E21E217F45;
+	Sun, 24 Nov 2024 13:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455924; cv=none; b=VAHIP+2GJL+yE1EqhM4gjC9igu25QdxACm5/nNGkqYRuR9QG81fwdvl89Gru2QQbcvs60HuQr6m9Z3nUSEnv2hQCLihqu4B0YleXSicC4vyu8Ek4VWjMvNXfusQMTgFay0Kad3Co06QDu4psuCnHj7GlWtatKVBq5WF2GFOQj0A=
+	t=1732455927; cv=none; b=FIlqmkHNyoNvCX31eeNi6mLSOon06IJgiQRSrtbn8Is3BGArZ3sDU3r3d/rPmXU4KJe/3L3FKcrWACIrGk5jsGFdNnNVx7aliD6Z8vTe4OhLAej6d5PNRmzhIGqvDa4OzzfgjR4hR69pRcGPI7zKXH6KuEZwTMl3yZJ7CTxNIy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455924; c=relaxed/simple;
-	bh=XNh2g6Fx3GlucFkXDpJPfkHQBtoGBgthc0diP7QZqwk=;
+	s=arc-20240116; t=1732455927; c=relaxed/simple;
+	bh=YhTOqHAJ0AK3ht3hI4KB50Qg28IiDDqPP8Gn2lsScQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgNwLKFbH0TZKcutQso91/NfCvY7SCuhIyckERaC9rXPC6I4Bfwnk1aMpVco5qD4QGrupr3IUtJg6sjTqU9AOz+idBchBhTSfSu3wT+ztYm1Drf2h4SNHtaMKmv4y44hWpsNM7FS5chQOFhR/9FKc51AdfG/zKKnPmMGjKdUHTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUROZ1tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF18C4CED1;
-	Sun, 24 Nov 2024 13:45:22 +0000 (UTC)
+	 MIME-Version; b=ZBCMSjRSs16Giz8fVJ4Lip4AuRHs5IhxI+pJG8wjl1IYYbnJ2JHVzt07EMEgryUDkq4B0sTFVo7y/7cSN8KQfsJ4dpKjbtl5pjAACqyVSvh1o+v+zww+dXSgnoFUm5RYYzsRyyf6C6oWkFLhmWWGL0QtaGSjTKtfG7N2uvrb+z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NhqOWy5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B81C4CED1;
+	Sun, 24 Nov 2024 13:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455923;
-	bh=XNh2g6Fx3GlucFkXDpJPfkHQBtoGBgthc0diP7QZqwk=;
+	s=k20201202; t=1732455927;
+	bh=YhTOqHAJ0AK3ht3hI4KB50Qg28IiDDqPP8Gn2lsScQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUROZ1tITitUj+JFWMTlnw3mveoMJKiggd+uhqKYRwIkiN4An/43Yazctm8p8fmmW
-	 dSmkFYihsDD37kmyXGZnha68RPshCG0Kh1F2MjgDnFMphO7eFUZXkWHqjUH59C4/9E
-	 Zw2GkxKxHIGm1qU3d9RBpR+RPpCA/3VNQmI9lABJs7bgjOQsXS82WfcuC9V0wIgjlP
-	 6Zo60YCuVzNlXugFknWZglRGi+NR7rGsKO1sK+RYeN7Q2ZY5B2zHLtJvWZlo8C/ySo
-	 1qIOWI9nnQ2we7TakFk/9jE38zIZwlrBOPzbmkrO+sVtrh5LQNuGRL7G0jndPDJ9hw
-	 qbHH5NchRv0bA==
+	b=NhqOWy5Nea9TVJQtpPiMst95XuCsQbX49g5Jtl+7ThwF4R4WKPZATLm1/Zp+Cxt+j
+	 O4wNBvYwmxHOCZ0sEYs/AL+o+UI2GAb1XNM3ju05TpU0EzD663VLoIWBQqj8JTpEQd
+	 9WPA5Wh2eE6U6XYuEgTwrtp6VtOivwR5QNFNZK0YqlXDHjT4gY+GPZwq9d9sRnqBO2
+	 AzXR6CZ+BJtnyEe16HokfHrA6Ul+POkhwL6T9hyS/Rji2CUkjuVOZ335S9uFLTxX1q
+	 XwdzNMwWFK7YtTV760xV3kF7j90Hqf3H6ANgISbxHVUY6SSGM7CeAlNoiNT2iVkVW5
+	 7t6eLXpKL1FAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hao Qin <hao.qin@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Jonas Karlman <jonas@kwiboo.se>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-bluetooth@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 83/87] Bluetooth: btusb: Add new VID/PID 0489/e111 for MT7925
-Date: Sun, 24 Nov 2024 08:39:01 -0500
-Message-ID: <20241124134102.3344326-83-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	krzysztof.kozlowski@linaro.org,
+	herve.codina@bootlin.com,
+	jbrunet@baylibre.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 84/87] ASoC: hdmi-codec: reorder channel allocation list
+Date: Sun, 24 Nov 2024 08:39:02 -0500
+Message-ID: <20241124134102.3344326-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -71,75 +72,208 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Hao Qin <hao.qin@mediatek.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit faa5fd605d2081b6c9fa2355b59582d4ccd24b16 ]
+[ Upstream commit 82ff5abc2edcfba0c0f1a1be807795e2876f46e9 ]
 
-Add VID 0489 & PID e111 for MediaTek MT7925 USB Bluetooth chip.
+The ordering in hdmi_codec_get_ch_alloc_table_idx() results in
+wrong channel allocation for a number of cases, e.g. when ELD
+reports FL|FR|LFE|FC|RL|RR or FL|FR|LFE|FC|RL|RR|RC|RLC|RRC:
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+ca_id 0x01 with speaker mask FL|FR|LFE is selected instead of
+ca_id 0x03 with speaker mask FL|FR|LFE|FC for 4 channels
 
-T:  Bus=02 Lev=02 Prnt=02 Port=04 Cnt=02 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e111 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+and
 
-Signed-off-by: Hao Qin <hao.qin@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+ca_id 0x04 with speaker mask FL|FR|RC gets selected instead of
+ca_id 0x0b with speaker mask FL|FR|LFE|FC|RL|RR for 6 channels
+
+Fix this by reordering the channel allocation list with most
+specific speaker masks at the top.
+
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Link: https://patch.msgid.link/20241115044344.3510979-1-christianshewitt@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/hdmi-codec.c | 140 +++++++++++++++++++---------------
+ 1 file changed, 77 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index b8c4b0a26d449..cc29b35dbb437 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -691,6 +691,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_VALID_LE_STATES },
+diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
+index 74caae52e1273..d9df29a26f4f2 100644
+--- a/sound/soc/codecs/hdmi-codec.c
++++ b/sound/soc/codecs/hdmi-codec.c
+@@ -185,84 +185,97 @@ static const struct snd_pcm_chmap_elem hdmi_codec_8ch_chmaps[] = {
+ /*
+  * hdmi_codec_channel_alloc: speaker configuration available for CEA
+  *
+- * This is an ordered list that must match with hdmi_codec_8ch_chmaps struct
++ * This is an ordered list where ca_id must exist in hdmi_codec_8ch_chmaps
+  * The preceding ones have better chances to be selected by
+  * hdmi_codec_get_ch_alloc_table_idx().
+  */
+ static const struct hdmi_codec_cea_spk_alloc hdmi_codec_channel_alloc[] = {
+ 	{ .ca_id = 0x00, .n_ch = 2,
+-	  .mask = FL | FR},
+-	/* 2.1 */
+-	{ .ca_id = 0x01, .n_ch = 4,
+-	  .mask = FL | FR | LFE},
+-	/* Dolby Surround */
++	  .mask = FL | FR },
++	{ .ca_id = 0x03, .n_ch = 4,
++	  .mask = FL | FR | LFE | FC },
+ 	{ .ca_id = 0x02, .n_ch = 4,
+ 	  .mask = FL | FR | FC },
+-	/* surround51 */
++	{ .ca_id = 0x01, .n_ch = 4,
++	  .mask = FL | FR | LFE },
+ 	{ .ca_id = 0x0b, .n_ch = 6,
+-	  .mask = FL | FR | LFE | FC | RL | RR},
+-	/* surround40 */
+-	{ .ca_id = 0x08, .n_ch = 6,
+-	  .mask = FL | FR | RL | RR },
+-	/* surround41 */
+-	{ .ca_id = 0x09, .n_ch = 6,
+-	  .mask = FL | FR | LFE | RL | RR },
+-	/* surround50 */
++	  .mask = FL | FR | LFE | FC | RL | RR },
+ 	{ .ca_id = 0x0a, .n_ch = 6,
+ 	  .mask = FL | FR | FC | RL | RR },
+-	/* 6.1 */
+-	{ .ca_id = 0x0f, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RL | RR | RC },
+-	/* surround71 */
++	{ .ca_id = 0x09, .n_ch = 6,
++	  .mask = FL | FR | LFE | RL | RR },
++	{ .ca_id = 0x08, .n_ch = 6,
++	  .mask = FL | FR | RL | RR },
++	{ .ca_id = 0x07, .n_ch = 6,
++	  .mask = FL | FR | LFE | FC | RC },
++	{ .ca_id = 0x06, .n_ch = 6,
++	  .mask = FL | FR | FC | RC },
++	{ .ca_id = 0x05, .n_ch = 6,
++	  .mask = FL | FR | LFE | RC },
++	{ .ca_id = 0x04, .n_ch = 6,
++	  .mask = FL | FR | RC },
+ 	{ .ca_id = 0x13, .n_ch = 8,
+ 	  .mask = FL | FR | LFE | FC | RL | RR | RLC | RRC },
+-	/* others */
+-	{ .ca_id = 0x03, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC },
+-	{ .ca_id = 0x04, .n_ch = 8,
+-	  .mask = FL | FR | RC},
+-	{ .ca_id = 0x05, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC },
+-	{ .ca_id = 0x06, .n_ch = 8,
+-	  .mask = FL | FR | FC | RC },
+-	{ .ca_id = 0x07, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RC },
+-	{ .ca_id = 0x0c, .n_ch = 8,
+-	  .mask = FL | FR | RC | RL | RR },
+-	{ .ca_id = 0x0d, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | RC },
+-	{ .ca_id = 0x0e, .n_ch = 8,
+-	  .mask = FL | FR | FC | RL | RR | RC },
+-	{ .ca_id = 0x10, .n_ch = 8,
+-	  .mask = FL | FR | RL | RR | RLC | RRC },
+-	{ .ca_id = 0x11, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1f, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
+ 	{ .ca_id = 0x12, .n_ch = 8,
+ 	  .mask = FL | FR | FC | RL | RR | RLC | RRC },
+-	{ .ca_id = 0x14, .n_ch = 8,
+-	  .mask = FL | FR | FLC | FRC },
+-	{ .ca_id = 0x15, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FLC | FRC },
+-	{ .ca_id = 0x16, .n_ch = 8,
+-	  .mask = FL | FR | FC | FLC | FRC },
+-	{ .ca_id = 0x17, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | FLC | FRC },
+-	{ .ca_id = 0x18, .n_ch = 8,
+-	  .mask = FL | FR | RC | FLC | FRC },
+-	{ .ca_id = 0x19, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC | FLC | FRC },
+-	{ .ca_id = 0x1a, .n_ch = 8,
+-	  .mask = FL | FR | RC | FC | FLC | FRC },
+-	{ .ca_id = 0x1b, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
+-	{ .ca_id = 0x1c, .n_ch = 8,
+-	  .mask = FL | FR | RL | RR | FLC | FRC },
+-	{ .ca_id = 0x1d, .n_ch = 8,
+-	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
+ 	{ .ca_id = 0x1e, .n_ch = 8,
+ 	  .mask = FL | FR | FC | RL | RR | FLC | FRC },
+-	{ .ca_id = 0x1f, .n_ch = 8,
+-	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
++	{ .ca_id = 0x11, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1d, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
++	{ .ca_id = 0x10, .n_ch = 8,
++	  .mask = FL | FR | RL | RR | RLC | RRC },
++	{ .ca_id = 0x1c, .n_ch = 8,
++	  .mask = FL | FR | RL | RR | FLC | FRC },
++	{ .ca_id = 0x0f, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR | RC },
++	{ .ca_id = 0x1b, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
++	{ .ca_id = 0x0e, .n_ch = 8,
++	  .mask = FL | FR | FC | RL | RR | RC },
++	{ .ca_id = 0x1a, .n_ch = 8,
++	  .mask = FL | FR | RC | FC | FLC | FRC },
++	{ .ca_id = 0x0d, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR | RC },
++	{ .ca_id = 0x19, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC | FLC | FRC },
++	{ .ca_id = 0x0c, .n_ch = 8,
++	  .mask = FL | FR | RC | RL | RR },
++	{ .ca_id = 0x18, .n_ch = 8,
++	  .mask = FL | FR | RC | FLC | FRC },
++	{ .ca_id = 0x17, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | FLC | FRC },
++	{ .ca_id = 0x16, .n_ch = 8,
++	  .mask = FL | FR | FC | FLC | FRC },
++	{ .ca_id = 0x15, .n_ch = 8,
++	  .mask = FL | FR | LFE | FLC | FRC },
++	{ .ca_id = 0x14, .n_ch = 8,
++	  .mask = FL | FR | FLC | FRC },
++	{ .ca_id = 0x0b, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RL | RR },
++	{ .ca_id = 0x0a, .n_ch = 8,
++	  .mask = FL | FR | FC | RL | RR },
++	{ .ca_id = 0x09, .n_ch = 8,
++	  .mask = FL | FR | LFE | RL | RR },
++	{ .ca_id = 0x08, .n_ch = 8,
++	  .mask = FL | FR | RL | RR },
++	{ .ca_id = 0x07, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC | RC },
++	{ .ca_id = 0x06, .n_ch = 8,
++	  .mask = FL | FR | FC | RC },
++	{ .ca_id = 0x05, .n_ch = 8,
++	  .mask = FL | FR | LFE | RC },
++	{ .ca_id = 0x04, .n_ch = 8,
++	  .mask = FL | FR | RC },
++	{ .ca_id = 0x03, .n_ch = 8,
++	  .mask = FL | FR | LFE | FC },
++	{ .ca_id = 0x02, .n_ch = 8,
++	  .mask = FL | FR | FC },
++	{ .ca_id = 0x01, .n_ch = 8,
++	  .mask = FL | FR | LFE },
+ };
  
- 	/* Additional MediaTek MT7925 Bluetooth devices */
-+	{ USB_DEVICE(0x0489, 0xe111), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe113), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH |
- 						     BTUSB_VALID_LE_STATES },
+ struct hdmi_codec_priv {
+@@ -371,7 +384,8 @@ static int hdmi_codec_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
+ 	struct hdmi_codec_priv *hcp = info->private_data;
+ 
+-	map = info->chmap[hcp->chmap_idx].map;
++	if (hcp->chmap_idx != HDMI_CODEC_CHMAP_IDX_UNKNOWN)
++		map = info->chmap[hcp->chmap_idx].map;
+ 
+ 	for (i = 0; i < info->max_channels; i++) {
+ 		if (hcp->chmap_idx == HDMI_CODEC_CHMAP_IDX_UNKNOWN)
 -- 
 2.43.0
 
