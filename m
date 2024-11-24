@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-94778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256D09D6F0C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:59:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA279D6F3E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:05:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFAD7160870
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5F8AB2731A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FE71E1A27;
-	Sun, 24 Nov 2024 12:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77321E1A36;
+	Sun, 24 Nov 2024 12:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjqP2037"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDKptgiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254FB1E1335;
-	Sun, 24 Nov 2024 12:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BA189F39;
+	Sun, 24 Nov 2024 12:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452357; cv=none; b=cxDiDlsUu+1qG1iRFXuRAMaTJ8LgaLmkVDGwV6mHE6VdQKA0JOpjVx6bc6lM+M/9tO4vExS0Zguq8bZ2bGKYUPjcsuNDpt5y1tF2wIM0ZwXhSpz3K8SYmWdxRoEJ4vfamx1/QSUSxkcQIoYA4zXqk+caNVIEPgUpE0cNAM0OA3w=
+	t=1732452360; cv=none; b=cYHGTviwK0x+QBJm3aH+F4fayFz7pXRumQqYeONqCQwFw6QQhKnDtHdXsHUp5/fK3BGYaK+R7N5L2BjTsLe0GLvB8zitcLE2cD5P11hxnVx2t5UG771mj+9Gq+2KvJ8UhwejXIGr5lNrfeNhbcEzyVrJeTZFkWepr+JTNSC4kdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452357; c=relaxed/simple;
+	s=arc-20240116; t=1732452360; c=relaxed/simple;
 	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hGBLsIAxOmot8NLXppyasK5tbr5KQ/E3d85RWmlixTY19zzdMpiuyR77Tq/BJCe4Cz/dysJfPdMNzC48zTCgm73VRHv9Au5nQFae/3hUIhgNyROAuH4ALA939DCfdiqQeMsMfdYQjwO5kZ4BhXyAMudk6lwH/0WWDkzdmEUn0IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjqP2037; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC42FC4CED1;
-	Sun, 24 Nov 2024 12:45:55 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z9waCRYqxWfDPKTaifvhQGBApw+6ygrVoCGlNvkqbtLz/zLfYUIu2pDoX6PPRNXAuBeiFiAscpzRtahWaVBM7logfvUkfQCWukXopA2YmPAtjfz5gDpu/GyvFBT1XkxtsyM0KKbukWR7JJtoOcG8tTjF46wTos1McIjH+BmlWWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDKptgiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81FEC4CECC;
+	Sun, 24 Nov 2024 12:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452357;
+	s=k20201202; t=1732452360;
 	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FjqP2037GPBnr7b+Folr3Eh2FT6dp00UXQfCIXXSENrw3DuMPSknZ7AXKZRr2im00
-	 KrIWTCI/HPyC/JqQzc12A03hkBtpdhIpFWzoNif3LbEhJ0jqCGIhpQ4Ckgm3BDywNF
-	 oWRZUileoyOvD0fCmppLn6SFutDVWy2xilmfbj6Dq7gVXF/znUBPRK1cguoS6OSzTA
-	 yJowkN/+xem8xBDYgJtHGxeFqVpiJK09JGuPPWDwVYHEGGh6SjET+jyuavgWaNdiGU
-	 8ix2OcV1Gp/vuLT20a+4a1dWZWHP3O3VeipYvrBctuVRfp6lYHmaUdklQUlENhhKnc
-	 J1Xhr88HDKqow==
+	b=tDKptgiKkR/Xu2/S/I4l7fYwIWQJIiB6sKyKHC3j8zmzTX49O7DruVrWWNfeMtPpk
+	 L85be6Jz3Z6fdMjmpHIm1QC7gEabXiZ58HMTJOLvmF6XJZAjnFl+AuawW4lKiyfa0C
+	 WonVkqLOBlgfrIUnMkzObm4hRjrz81DwUCQT7N4DDKqY+xvLtnmN9UfPrNgs4Bep85
+	 zRqw54GXYW0VHsY3/Ct0ptcLJiWjd2R2609PYdNj2SLLMS6kYLb1M3WVToON5lQ4zv
+	 Z63y43GjcKkaBH8+lIT3h/VBU3WlE/RUld7NV5lxJUK+iiDrovm0v3fhswR8ZrBjDG
+	 f4UKyOr/ShnHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Marco Elver <elver@google.com>,
 	rostedt@goodmis.org,
 	kasan-dev@googlegroups.com,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1] kcsan: Turn report_filterlist_lock into a raw_spinlock
-Date: Sun, 24 Nov 2024 07:45:54 -0500
-Message-ID: <20241124124554.3337842-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Date: Sun, 24 Nov 2024 07:45:57 -0500
+Message-ID: <20241124124557.3337874-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.119
+X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
 From: Marco Elver <elver@google.com>
