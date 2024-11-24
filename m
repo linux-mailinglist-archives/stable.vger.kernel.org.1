@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-95166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CB59D73D1
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:50:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5AB9D76C8
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 18:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 681E828953A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:50:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC8BFBE6C8D
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5981AF0DD;
-	Sun, 24 Nov 2024 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847F2233565;
+	Sun, 24 Nov 2024 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pN6sWHiH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoNdwaJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99358232D99;
-	Sun, 24 Nov 2024 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7B923355B;
+	Sun, 24 Nov 2024 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456221; cv=none; b=OO469TyDs9UVJyTgh2q504NTKh7H/al2cDmb71hxel2TZI3yoBxtMh/HCFR+KrOZmfBumyIUZRWrIrOSPI1aXcODVLS5FBd55wKXMsqI59DZGKyrN9enwUdXPGfe8DecqSNgbFpcOa4gFxzXNVHADuSvjfS79xLaO9HnwYEgGZA=
+	t=1732456223; cv=none; b=tGCpMV5AzlBN0YKz+zNRCwncDh6u7n387DEI/T+rprcsHlY9LI5d/J1EKrAn/W9U700XnvJYXfmuHQMJlIPscYDX5RMObzkgAP7eh9jgJMQ/NqWIN2ny9SkoiFK/yPz7B+KAKQ1/CR/8Sx+S3ISmkPdBmTT0lzEQ1MUAFlUhjyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456221; c=relaxed/simple;
-	bh=KkpYf8ahpdTMCvArXZvB2+iUqTaGaSYE0sH5JBz9LUI=;
+	s=arc-20240116; t=1732456223; c=relaxed/simple;
+	bh=w9JPbwdPRzEeAVQYLEJ1St/BssbsSv/B8KXtxIjLXTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lo0wpkfFFgB//C7RMi9W9vqLmystUFrBWPgc2KAQvJH881edmiL4+fzd82nv3GBbKvtTgH/sR2+Fb/JqYKIg02OAWWyD3aZQgRe/kgmsmlkMfKPFkrfYwQfngCpE2IauYNfLpuUR+W1SP7+XbBAn4S+T+PEU3mOuDszWJZukR98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pN6sWHiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37919C4CECC;
-	Sun, 24 Nov 2024 13:50:20 +0000 (UTC)
+	 MIME-Version; b=kjHSbdt3Z5ZYECIvR5hn4iwJ0o32BKumAyeSvxWzCd0En7xD8xiPGkp4Lj4ryhKGgUORrCu5wG3TnYNdMKX50KIIYg//vimC4Edft/Zur3cop96DhImxOmp8pF6BuUfwO8JrNNUk5SOG1bLWHigdJsDPCg/Xh11lx6soZcjBXOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IoNdwaJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E931DC4CED1;
+	Sun, 24 Nov 2024 13:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456221;
-	bh=KkpYf8ahpdTMCvArXZvB2+iUqTaGaSYE0sH5JBz9LUI=;
+	s=k20201202; t=1732456223;
+	bh=w9JPbwdPRzEeAVQYLEJ1St/BssbsSv/B8KXtxIjLXTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pN6sWHiHrhWbwzfKZ+OtaqlYRrlskjioJSxFlb3AUSNoBjx9IxvtvcnXPnKImde3g
-	 GzaVIaREBBdYOgfAY6xO1ySXcbr/8SQ46C6realowKSBBTIzDEqhhhGnocQDYZkTwM
-	 Pj+EeAQGvac03BoG2/Meg8/jlIYxQk0v0GkrmkVNce67eSd+O5MtETa1ReqmSmTyIb
-	 cs3Obe2SLWsO8e4CdcF+WuhYx1zptb/tpbZYJult6wfsnXvQwPVmMswyLTFjPjBLhX
-	 KuCrb41vd6H/8RemzxXCfDSvcsbp9D9B/l3/EED4Av1fOG6JYlyhyDK/0t6SbOkg+x
-	 hp8HS1f4HdTJg==
+	b=IoNdwaJGtjeONjmXvjSzakUwXAhJAs/KuBhPwNwNZ3aLr+q6IzQUL01DPbr1UP40W
+	 VixcnqC1Ng1YBqaTLZl+joXGUMYkWtKVUUytv6dF7jvFaELHc+0f94qGaBJibM8Dk9
+	 JOspb9pV/b5Sg2b0ldKDBqmYSO1L6mdVFP+G+l2NjXLGOfwnexqusKeXGe5LCIbwS9
+	 kWOHuEZ3pSSiP2vzJkAFkl/WzAICTkQKhIfisf+swyb6kckNs9DMGc56CVFb6YNh+m
+	 OBxYQVNPqVLJjXdZ5SHqlPMAu8KG3zWowm6wm+ac2DfKEqy98I5yzYHe3LeMFi8669
+	 gGwn3vsw+Lvvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ignat Korchagin <ignat@cloudflare.com>,
-	Eric Dumazet <edumazet@google.com>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	willemdebruijn.kernel@gmail.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 15/48] af_packet: avoid erroring out after sock_init_data() in packet_create()
-Date: Sun, 24 Nov 2024 08:48:38 -0500
-Message-ID: <20241124134950.3348099-15-sashal@kernel.org>
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 16/48] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
+Date: Sun, 24 Nov 2024 08:48:39 -0500
+Message-ID: <20241124134950.3348099-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134950.3348099-1-sashal@kernel.org>
 References: <20241124134950.3348099-1-sashal@kernel.org>
@@ -73,62 +72,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
+[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
 
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling pointer in the sock object on return. Some other code may try
-to use this pointer and cause use-after-free.
+bt_sock_alloc() allocates the sk object and attaches it to the provided
+sock object. On error l2cap_sock_alloc() frees the sk object, but the
+dangling pointer is still attached to the sock object, which may create
+use-after-free in other code.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
+Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index c9c813f731c6e..9da9e41899c65 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3418,18 +3418,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type == SOCK_PACKET)
- 		sock->ops = &packet_ops_spkt;
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index b17782dc513b5..4e965916c17c1 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1920,6 +1920,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
++		sock->sk = NULL;
+ 		return NULL;
+ 	}
  
-+	po = pkt_sk(sk);
-+	err = packet_alloc_pending(po);
-+	if (err)
-+		goto out_sk_free;
-+
- 	sock_init_data(sock, sk);
- 
--	po = pkt_sk(sk);
- 	init_completion(&po->skb_completion);
- 	sk->sk_family = PF_PACKET;
- 	po->num = proto;
- 	po->xmit = dev_queue_xmit;
- 
--	err = packet_alloc_pending(po);
--	if (err)
--		goto out2;
--
- 	packet_cached_dev_reset(po);
- 
- 	sk->sk_destruct = packet_sock_destruct;
-@@ -3462,7 +3462,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	sock_prot_inuse_add(net, &packet_proto, 1);
- 
- 	return 0;
--out2:
-+out_sk_free:
- 	sk_free(sk);
- out:
- 	return err;
 -- 
 2.43.0
 
