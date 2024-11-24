@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-95168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7669D73DD
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:52:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E34B9D73E1
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399B7165C6B
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:51:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D587A166059
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BD61F80E2;
-	Sun, 24 Nov 2024 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203381F80FE;
+	Sun, 24 Nov 2024 13:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9/ELSnI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfuYTyXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCEF1E1A28;
-	Sun, 24 Nov 2024 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9B81F80F6;
+	Sun, 24 Nov 2024 13:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456226; cv=none; b=YDlA9q9S4vfFL8TCyyFmyjZygwQYfXkogvNJRB0zh+w7xMc/Ppf8YGVKSzfVLrg5VpK1MTguYTw5jbdLacGojhx3RrEwge2ghKE8mRmjev+5krCBNa+gZzQPUvnZ4iKmgGKfaJKYh/N6PKn4aNbYQXFqtzBE292eQ1er2RzV/DE=
+	t=1732456227; cv=none; b=JT6bwvKOP4Kb1SiQhoCPHZqMfF6x/n5pjfBFxWGJCLTuHugaESTbPOFt47BoNo/mKxz0y2GgBlyfKnCMyYJj8XyaHSmakQzIXIApu5g9AKY6aawCI6KKT9EUVfc8GPY9CvhmRvAuNKpsMtUSQNgJN6ZQzP4/Ooo5+LyEgC0afQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456226; c=relaxed/simple;
-	bh=jETAs1hLlG5NMPCKGkBYO+lM7/ghq/KRXjS3pPC5aI4=;
+	s=arc-20240116; t=1732456227; c=relaxed/simple;
+	bh=7TKE83EbFR0EOqzF0Q9MNQnyd/fQ0b8Ks//D1/4rEF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suqjxspA164d1ACxUS33EoS9dq8wVt0ElpOurTE1z1a0lckJPS0lK5Yz+/21EM5Tqm4dThh/pD0+zxO6expvqtyzJzj21ocVcj2Q/tqQPYxUFcHA6bYic1Nh0nG580kAEVpAm+9aobfhZhZYN1Mi4IruigEZU50DGkbVSbcpN0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9/ELSnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7FFC4CED3;
-	Sun, 24 Nov 2024 13:50:24 +0000 (UTC)
+	 MIME-Version; b=isjA18ao4N2nVknXQ+rIqOQJn1d0l/08LSY4ex7MII9BSNm+vnifRqJSUyXgbcCJIlN+TdfMULWS3tekbNHco+6OFP8l5HYLzrKPr9zweQFjs+Z2cae0AYQ+thrprTUmJg+FGEE9PyReBacPJ902EKL8KCy6C7rxYTJtHRi4UzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfuYTyXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A972C4CECC;
+	Sun, 24 Nov 2024 13:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456226;
-	bh=jETAs1hLlG5NMPCKGkBYO+lM7/ghq/KRXjS3pPC5aI4=;
+	s=k20201202; t=1732456227;
+	bh=7TKE83EbFR0EOqzF0Q9MNQnyd/fQ0b8Ks//D1/4rEF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9/ELSnIC9B2KjAqAGgKguk8FOwIv9UFYfL0c/DiE2Q2eveasm4t3depTVN1kjA6q
-	 WchDluhsKWtebz8jFLKu5dmXOinMhSZWbNndnmF3m9609zElHF9JM0wlzwrEZodr2K
-	 Ww6YYW2i9nCBbgem7tzkcdzM8mjUz6ahbhFZBkD54KIfiMTXl6wJOsxb6cKz4xFgiw
-	 YJ1MLXi6qt/FknE02+XXBeQNijdYEjLtum5B1gKgmqWpbRHoM0o1moT4KXrdS5Mqt0
-	 lgoG7qFlJaLejn5DS7l3XS9inZdi/WEngwwe9WnFoJVzTZTnGxZAX1ojLzHWV5ksO0
-	 VrGFO7pWpRtmA==
+	b=BfuYTyXZQSr751uBTHf2uBPsEILCJHAn+HJAcqRI963+SWhX1REwAx43O8NsIhHGA
+	 k46SyvUFXBslIlXpwovd9aXgGEXXXUveD+c4I1gGNPhSZmi5WUPAGI2ADolO7b4fIK
+	 GzGih9LfC4kVMouRb3F2meHR+qCORfuiGwnCMwbCa/uxK8y4m6edVrpLaJUu+DcF1g
+	 GWu0ZiyFtVT84usx1oFXsLEuSZcCUcgoMFruxOhm0Qp0k5XR1wycotz9MnBVx+2rMb
+	 8PFUGJSOML3T2NZcDWS4PsUR7wnyDhlrV/r4Gg+msS9ykazU4DdN3qx0gDHmlQszzx
+	 9EeitdaUW0q+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Ignat Korchagin <ignat@cloudflare.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	andrew.shadura@collabora.co.uk,
-	axboe@kernel.dk,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 17/48] Bluetooth: RFCOMM: avoid leaving dangling sk pointer in rfcomm_sock_alloc()
-Date: Sun, 24 Nov 2024 08:48:40 -0500
-Message-ID: <20241124134950.3348099-17-sashal@kernel.org>
+	socketcan@hartkopp.net,
+	linux-can@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 18/48] net: af_can: do not leave a dangling sk pointer in can_create()
+Date: Sun, 24 Nov 2024 08:48:41 -0500
+Message-ID: <20241124134950.3348099-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134950.3348099-1-sashal@kernel.org>
 References: <20241124134950.3348099-1-sashal@kernel.org>
@@ -74,47 +71,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 3945c799f12b8d1f49a3b48369ca494d981ac465 ]
+[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
 
-bt_sock_alloc() attaches allocated sk object to the provided sock object.
-If rfcomm_dlc_alloc() fails, we release the sk object, but leave the
-dangling pointer in the sock object, which may cause use-after-free.
-
-Fix this by swapping calls to bt_sock_alloc() and rfcomm_dlc_alloc().
+On error can_create() frees the allocated sk object, but sock_init_data()
+has already attached it to the provided sock object. This will leave a
+dangling sk pointer in the sock object and may cause use-after-free later.
 
 Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-4-ignat@cloudflare.com
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/can/af_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index cbff37b327340..c32a2374638b7 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -274,13 +274,13 @@ static struct sock *rfcomm_sock_alloc(struct net *net, struct socket *sock,
- 	struct rfcomm_dlc *d;
- 	struct sock *sk;
- 
--	sk = bt_sock_alloc(net, sock, &rfcomm_proto, proto, prio, kern);
--	if (!sk)
-+	d = rfcomm_dlc_alloc(prio);
-+	if (!d)
- 		return NULL;
- 
--	d = rfcomm_dlc_alloc(prio);
--	if (!d) {
--		sk_free(sk);
-+	sk = bt_sock_alloc(net, sock, &rfcomm_proto, proto, prio, kern);
-+	if (!sk) {
-+		rfcomm_dlc_free(d);
- 		return NULL;
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index c69168f11e44a..7d8543e877b44 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
+ 		/* release sk on errors */
+ 		sock_orphan(sk);
+ 		sock_put(sk);
++		sock->sk = NULL;
  	}
  
+  errout:
 -- 
 2.43.0
 
