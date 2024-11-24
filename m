@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-95016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE759D7247
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:04:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED329D73E8
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:53:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B0FF163DB7
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:04:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06CB1B3C521
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648D1CDFBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E699D1F754D;
 	Sun, 24 Nov 2024 13:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tblzdnQK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY2jdrCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75D11F7091;
-	Sun, 24 Nov 2024 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06DF1CDFBC;
+	Sun, 24 Nov 2024 13:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455689; cv=none; b=rWwyJZOwUX8QkmoWRbTaniTDgB6wjkL7LQIfTmshk1fFl3KFOROQPyQbGHzCxCzcebJnIsYYkaYpwEpELHlOpWMfwJn3XqTYv2crO/pFW4AV0PseszL7lTzgb9oSDAXQOV5zi3/lvPJBG2nE8BNUtIw+Tz19AvxuhDY30IAylCc=
+	t=1732455690; cv=none; b=qST3mGrcrlvM7U3MhkyeocKUYWK3/pIcq4U3jdh1zmyezj5C9POPhmwkTde5NVG8/61DrxpfhXEufpzn51/uhc6lVKVir9fYSeAL/ZBi0gkwLLsgieBN3Bw1F11jSPfrO0xuWeIa44YNrqMXtAjBXOx02LT/POKzqWYJG6T8JQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455689; c=relaxed/simple;
-	bh=oSIQvle1ew5pN7VwVsVScLef5rxVvT1ygF1+neTcx7g=;
+	s=arc-20240116; t=1732455690; c=relaxed/simple;
+	bh=exnPifNKMFL2qwocsopuzvq958r8D/QZRvnmi2RFrYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihEuy79DF6XIA7ggQrhQrNyGWDZdPsl/1qEvn8Cu3AbqZvz0k/AsX3tOHgmiY/uZnTBPgEf8yRCrw8Df8IlYIoZ6iz1qfOGcrLfD4Fa2TCZqN60lfFIGwl+y+YkiChJSJzLMW89NwUQZMTvceQ5/mKdyxHkDdHrELAqxV21Tr08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tblzdnQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F34DC4CECC;
-	Sun, 24 Nov 2024 13:41:27 +0000 (UTC)
+	 MIME-Version; b=Of5a3H+6fUa7s3vsEJEE60CNPwmLVyNDtu7j1mcP+BAlEuVtorIv8IUd62+fgDMzjaXrjGjJg+68eEJ+SCXarfhK0BYQiWuxVVaM0M1Wh2JE81uvrgiXJ9yD2FqvtIwUjnKjP2Z79UBq2PcE1/uftw+j7xuOdoopzgxlRczBQW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY2jdrCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA07EC4CED1;
+	Sun, 24 Nov 2024 13:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455689;
-	bh=oSIQvle1ew5pN7VwVsVScLef5rxVvT1ygF1+neTcx7g=;
+	s=k20201202; t=1732455690;
+	bh=exnPifNKMFL2qwocsopuzvq958r8D/QZRvnmi2RFrYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tblzdnQK6RIfUYPaSMzX1hRJhnoGS1bwDkIQx9QSERGQ00xxY6YXeSMJZ9gcWVlIE
-	 YNa9A9db4Gm+8nlfdJli108ucK2uaQSNeXbleQcKog2V7f5fVeQUcMpe2xVR0Y2rAr
-	 jBOlohSAhR6OwUb+iIqOdOCFk/uHpxkMHlkNNju0RaBaptqGw3DR5CUibD6ZiiFF3O
-	 XCVuzJhA/6LHZtczywl8/9ZZ+NPD7AUV5CxbHHa4GyMnYwEmnIpT17JxpSSgbiaqB2
-	 6B6RmooEeZq2ewtdZF3P3OyH9pLdojAte+AQUTuPDad42K2OxpZ7vyoZltnP7xLsaz
-	 jOw5WkEr2QoJQ==
+	b=LY2jdrCu/Xf3nkuZzIjU0qFdVlVSaENZjWNhUcooFzywyD8fLYieANI9/faraXAvN
+	 tUxEXM2XHMjUK/c2RsrG7s08B+Ht6mLFOPE36bRziC0XzihoNJoJ1MDfeErmACSXR5
+	 XwlK/fsq+aRIG/KotAoOmXOSMQTqhKQ4IfcKwiiAJICGYO9rLBzB3E4+X0L/DrbaHD
+	 xUEurHqwY3L5/qKpEhy45ND1z7CiYUzJm68YL8/LeGKar531KK88uKIO34Wq6goS3n
+	 NBe1LuuTqMo7YYLuVhNNDotuAZKjl455byMnlQ1KNnZ3GA+xs79d2JkjV47iwFWAc5
+	 Mx8079nQxPtZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Liao Chen <liaochen4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 13/87] drm/mcde: Enable module autoloading
-Date: Sun, 24 Nov 2024 08:37:51 -0500
-Message-ID: <20241124134102.3344326-13-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 14/87] wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
+Date: Sun, 24 Nov 2024 08:37:52 -0500
+Message-ID: <20241124134102.3344326-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -71,34 +65,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
+[ Upstream commit 630d5d8f2bf6b340202b6bc2c05d794bbd8e4c1c ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+The return value of ieee80211_probereq_get() might be NULL, so check it
+before using to avoid NULL pointer access.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Addresses-Coverity-ID: 1529805 ("Dereference null return value")
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240919081216.28505-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mcde/mcde_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
-index 10c06440c7e73..f1bb38f4e6734 100644
---- a/drivers/gpu/drm/mcde/mcde_drv.c
-+++ b/drivers/gpu/drm/mcde/mcde_drv.c
-@@ -473,6 +473,7 @@ static const struct of_device_id mcde_of_match[] = {
- 	},
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, mcde_of_match);
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index c322148d6daf5..20b2730a9ac11 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -5893,6 +5893,9 @@ static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
  
- static struct platform_driver mcde_driver = {
- 	.driver = {
+ 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif->mac_addr,
+ 					     NULL, 0, req->ie_len);
++		if (!skb)
++			return -ENOMEM;
++
+ 		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
+ 		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
+ 		hdr = (struct ieee80211_hdr *)skb->data;
 -- 
 2.43.0
 
