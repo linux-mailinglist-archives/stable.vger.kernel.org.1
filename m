@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-94809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9113D9D7074
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:34:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016359D6F48
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:05:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E4E5B2D333
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:05:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B6F916051A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743AF194C67;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49251D357B;
 	Sun, 24 Nov 2024 12:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+aX0PId"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LstO8UEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1ED19D089;
-	Sun, 24 Nov 2024 12:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE7C1D2B13;
+	Sun, 24 Nov 2024 12:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452568; cv=none; b=tsE1AX8nv4bH2deg3E8l/D8b3QZi5a06ok+upCB8mazdIboye3lXoi8mu06SFAhLxJw1OGtoI+UPePFrZqAv2n/CdeAw7jY8y1obtpfNCUKYnKCjHSREZ/fs2ppKWLLsxWZXPZsRSj5OJHX2Nt4dGe3SUpxhPAa2OVxkjPOBI0E=
+	t=1732452568; cv=none; b=OAKakDNSRDIvPT0OkrMD7YN1cz6A4ikHAv7qAiqNIY/aPkhypFDTyy7tENzWEB7yhlkSACJKpp351Y+Oj4iqTYYIDkTVMesnDtU7he98zHuA6S3KcAQVga+dLf04TxLGToPnAR586+znZBk0pIcHH1fMlIGG9RXjP6OVv10nj8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732452568; c=relaxed/simple;
-	bh=XyTJIgl/CdCWyIRGBODczdwowRviB1LScjxqhMcCsng=;
+	bh=q2IosYFibw2XMVcu38Wmgkeq5UyjLge6fJKkkWOdRSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVFduUZ/SWtHnLPSclcqAl1A+9juFTG/czPwrWjNmoe03p4hF2HMGA5aMoK49jC5tAHjgc+g0QsXTFGLFlZIiTbIK1z+i06bR6Zbt0wxgLmPas4xmQFHEZxocyYxLYC7CUufW4uoEn0CpGemgmeQciZB9T2V8ihv7gzOHS6wjgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+aX0PId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF83C4CEDB;
-	Sun, 24 Nov 2024 12:49:25 +0000 (UTC)
+	 MIME-Version; b=Q0DO7T7ys50BlVemKdkGKQaeutKYK7ZEyyLM8lJ4fKvydLdVPjnhph4QtVXqmEwT7GJ1OSwnXJ/NQoYBj8bK9DHOVMnkGdlCNvQqs6xjUXTWkMeHxM+TsbJEKGjouimBY2bVykrLoGTryz18zXAW7ePc2t8ZUMvaMEaXE7Laebc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LstO8UEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEC5C4CECC;
+	Sun, 24 Nov 2024 12:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452566;
-	bh=XyTJIgl/CdCWyIRGBODczdwowRviB1LScjxqhMcCsng=;
+	s=k20201202; t=1732452568;
+	bh=q2IosYFibw2XMVcu38Wmgkeq5UyjLge6fJKkkWOdRSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+aX0PId57z9i4vyZXOqjvXY1A2YVlp/nwRAjDuv1aTxHl+pAzUzAUEwiV3jaLMtO
-	 GGC/yCWssd2hVI/3T1Ej392Y72VT+PSBwWcctEDwK+fZYyuKuxf4HFJq1QRJITxnvV
-	 PueRYxkJWtblJLXPpSpwPxtoiXZFk/WHuLo/Q3prUOVopU2jzXl4LtRm9r1V4IxLoU
-	 oufWjdEGYVZfulRenQOvT+bsedz0PTZU6lJp2rq24NqzpSY+5jG6g2ohQ10gxRILCt
-	 3lu35WmrByITktsZ2yhoW6QL7cfrpTNR4pofw40D3U5w0384HbgOtydo+4bP5yecn4
-	 kKW5Po6/MpB0w==
+	b=LstO8UEor4ChAvFNop3Alp1U6yiB8JrEC7xlw/8Hw/3IOqot70xft15YpNLeh4g72
+	 /RzDlVvdH9dEWTt/zmROFMXEwEdjeSWrpWJSj9VVNwUSOfwtelbQhvWstA34LXG4t3
+	 lf8EwGpzpF2BZhj1pOZwVB+MCzoF6UuGYbkybWhuGSA+MLXwCadd1QlW8F6qJNhNMc
+	 1AYfq6DIyHzUEY17uY27A+ovjtKRl8w7OcQ0gCzCeEcpoAynhmOUIr0aeTMp6itGXx
+	 WIXBI5AEgVP6lbW74IcwWiDDzXvhyk2psthZVGZz1P0629BKrNyeih9U0MO0FufFCq
+	 eDK2PqqH98sWw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Tissoires <bentiss@kernel.org>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
+Cc: Maya Matuszczyk <maccraft123mc@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 04/23] HID: add per device quirk to force bind to hid-generic
-Date: Sun, 24 Nov 2024 07:48:15 -0500
-Message-ID: <20241124124919.3338752-4-sashal@kernel.org>
+	konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 05/23] firmware: qcom: scm:  Allow QSEECOM on Lenovo Yoga Slim 7x
+Date: Sun, 24 Nov 2024 07:48:16 -0500
+Message-ID: <20241124124919.3338752-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124919.3338752-1-sashal@kernel.org>
 References: <20241124124919.3338752-1-sashal@kernel.org>
@@ -67,78 +67,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Maya Matuszczyk <maccraft123mc@gmail.com>
 
-[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
+[ Upstream commit c6fa2834afc6a6fe210415ec253a61e6eafdf651 ]
 
-We already have the possibility to force not binding to hid-generic and
-rely on a dedicated driver, but we couldn't do the other way around.
+Allow QSEECOM on Lenovo Yoga Slim 7x, to enable accessing EFI variables.
 
-This is useful for BPF programs where we are fixing the report descriptor
-and the events, but want to avoid a specialized driver to come after BPF
-which would unwind everything that is done there.
-
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240919134421.112643-2-maccraft123mc@gmail.com
+[bjorn: Rewrote commit message]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c    | 5 +++--
- drivers/hid/hid-generic.c | 3 +++
- include/linux/hid.h       | 2 ++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 582fd234eec78..935ccc38d1295 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2674,9 +2674,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
- 	/*
- 	 * hid-generic implements .match(), so we must be dealing with a
- 	 * different HID driver here, and can simply check if
--	 * hid_ignore_special_drivers is set or not.
-+	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
-+	 * are set or not.
- 	 */
--	return !hid_ignore_special_drivers;
-+	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
- }
- 
- static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
-diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
-index d2439399fb357..9e04c6d0fcc87 100644
---- a/drivers/hid/hid-generic.c
-+++ b/drivers/hid/hid-generic.c
-@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
- 	if (ignore_special_driver)
- 		return true;
- 
-+	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
-+		return true;
-+
- 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
- 		return false;
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 121d5b8bc8675..a7d60a1c72a09 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -359,6 +359,7 @@ struct hid_item {
-  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
-  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
-  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
-+ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
-  * | @HID_QUIRK_FULLSPEED_INTERVAL:
-  * | @HID_QUIRK_NO_INIT_REPORTS:
-  * | @HID_QUIRK_NO_IGNORE:
-@@ -384,6 +385,7 @@ struct hid_item {
- #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
- #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
- #define HID_QUIRK_NOINVERT			BIT(21)
-+#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
- #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
- #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
- #define HID_QUIRK_NO_IGNORE			BIT(30)
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 2e4260ba5f793..f019e0b787cb7 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1745,6 +1745,7 @@ static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
+ 	{ .compatible = "lenovo,flex-5g" },
+ 	{ .compatible = "lenovo,thinkpad-t14s" },
+ 	{ .compatible = "lenovo,thinkpad-x13s", },
++	{ .compatible = "lenovo,yoga-slim7x" },
+ 	{ .compatible = "microsoft,romulus13", },
+ 	{ .compatible = "microsoft,romulus15", },
+ 	{ .compatible = "qcom,sc8180x-primus" },
 -- 
 2.43.0
 
