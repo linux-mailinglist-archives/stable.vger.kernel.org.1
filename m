@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-94783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B08C9D6F1F
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:01:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3E79D6F16
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:00:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 926F6B29F9F
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:59:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E81162143
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262D31C07DD;
-	Sun, 24 Nov 2024 12:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894B01E22EB;
+	Sun, 24 Nov 2024 12:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqDmc3l0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVhNeUy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D698A1C4A1E;
-	Sun, 24 Nov 2024 12:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D841E22E3;
+	Sun, 24 Nov 2024 12:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452391; cv=none; b=afiZiEHQqeufpMzIqYvCUheYqGCYAHlhj7+2pkBSB09A9P0UH7iumETVk2mrApaqrMH5wJEwu0hYwU7NzGBElegQSz4fjRMGLqamZHXPhfuguyIVNOUI/6GeUq+pp95r6a2vV31zfTxvHTEF2FTqFq8Z3UiRfRIA79FwEAMEJKo=
+	t=1732452395; cv=none; b=BiXb2Y0PXZd23LcsUuXzFsqEFFp8cEQPFTr8kVc5X199/nkAARu90KjA6V3/HlhD5EgvVd9MMJBqUtZDuPXUSfIbW39LX6LT3MCl52VLw/fAeawe240ovaZ1CrAHnuMgHn6ZvbXzCOeq7Gghhzjek3YWr6Jien+weN/Lx5pwJsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452391; c=relaxed/simple;
-	bh=u96PmWAUuJJWlsjJeNghI9kq5aq3VijlLA8TitqeqBM=;
+	s=arc-20240116; t=1732452395; c=relaxed/simple;
+	bh=OOs4+eiAwIjAgOT+wciiyQs1PkxA178hvLUPZ87+pTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MVPTFJYV6ewKZRawbCvt4FCP+0WrECKMV7bQq2WfQ2I8CNnVe9vPlpy7UvvFbnziDTOnL9kxHqd+5ucPneg17eF3ANzN+IsS4Q1zTdX/ky0FFwLQJ1HgqASD+nRvsm8gbKGn0c6xxsxVG2NmYF2zDLjiQ5U9QORDBKCdKzCDjjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqDmc3l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBD6C4CECC;
-	Sun, 24 Nov 2024 12:46:30 +0000 (UTC)
+	 MIME-Version; b=atEy9sd5mfYpo0ZLLU38Ml+BozMgN6B3uW/fquKJsVnFSkYZclW7KT0TUQYslrWFRr38Krr0o+lCKdQWn7WAz9oPJpeOm6UYjmHtNHD2RR6nhC14apvXPsXDsqABOTgKC8mGMW/Cic4mHMutM39n7TTm6Yarzoy63EdOz6R2Eo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVhNeUy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E46C4CED1;
+	Sun, 24 Nov 2024 12:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452391;
-	bh=u96PmWAUuJJWlsjJeNghI9kq5aq3VijlLA8TitqeqBM=;
+	s=k20201202; t=1732452394;
+	bh=OOs4+eiAwIjAgOT+wciiyQs1PkxA178hvLUPZ87+pTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqDmc3l05URRzOqeGPACkBVfENybsQj2zdiTyxpbMyK3ssIdJaumpE8E30GJwS0fe
-	 BQV3qsrO1Cy5WCk9FUvgB0cHYAljbK8MA6Fu83cjzvPhnztIqywuVJOkkuObLWMsk9
-	 twnXXu/tZJykCQ0TJ7yiEMAQcx11nffkGPmFPQvC9uf8gju8tamMZkeoSHSRVRRed7
-	 SBXFtLhwmSgrp9Kt5S0bn4tIrgiB7cBxnn54+m8s6dPPfdNTlm7ANYcwIZBCQG0KO6
-	 U2XcrQYm+hflewTJYONoyNCZjrraHDjV4V7Wj6pVpnD8MXcUMWHclkeSI9beUp+lTf
-	 H+YgzKDJLtg5w==
+	b=aVhNeUy9lMPWH/oh4RmRvQIjjMbLtGCQddAFiHPLq7tgLk2LY9Ecdrm5MzCyY9tYH
+	 PPbHL5ea5xv7iJqz//i6P/T4guJW6OGHUo6Ed3nbLKybJbwjI5pLxC1xvWkRv/zkmk
+	 l0L3MlqHWfNZtHB1PZVSWColNp0dPgGw94+KDg7DoP8Wf5ttLUKCcuD3HAl2kmWdlS
+	 Wbbh2XXyllU/B9/J9kavGXKnSyMm2R6RcDfd+7MFakNup8XuH/+QL+VxEeyVymOdFm
+	 Lv65tlHFwEu1RgUIbHZYfN3fbEWNSfAtZFJ3oSdN2rH4CkfEVMl97o+cFpBt3scsND
+	 2LDeLQ0MhAGEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	will@kernel.org
-Subject: [PATCH AUTOSEL 6.12 3/5] locking/ww_mutex: Adjust to lockdep nest_lock requirements
-Date: Sun, 24 Nov 2024 07:46:15 -0500
-Message-ID: <20241124124623.3337983-3-sashal@kernel.org>
+	brauner@kernel.org,
+	viro@zeniv.linux.org.uk,
+	dan.j.williams@intel.com,
+	kevin.tian@intel.com,
+	dlechner@baylibre.com,
+	mingo@kernel.org,
+	ubizjak@gmail.com
+Subject: [PATCH AUTOSEL 6.12 4/5] cleanup: Adjust scoped_guard() macros to avoid potential warning
+Date: Sun, 24 Nov 2024 07:46:16 -0500
+Message-ID: <20241124124623.3337983-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124623.3337983-1-sashal@kernel.org>
 References: <20241124124623.3337983-1-sashal@kernel.org>
@@ -61,125 +67,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit 823a566221a5639f6c69424897218e5d6431a970 ]
+[ Upstream commit fcc22ac5baf06dd17193de44b60dbceea6461983 ]
 
-When using mutex_acquire_nest() with a nest_lock, lockdep refcounts the
-number of acquired lockdep_maps of mutexes of the same class, and also
-keeps a pointer to the first acquired lockdep_map of a class. That pointer
-is then used for various comparison-, printing- and checking purposes,
-but there is no mechanism to actively ensure that lockdep_map stays in
-memory. Instead, a warning is printed if the lockdep_map is freed and
-there are still held locks of the same lock class, even if the lockdep_map
-itself has been released.
+Change scoped_guard() and scoped_cond_guard() macros to make reasoning
+about them easier for static analysis tools (smatch, compiler
+diagnostics), especially to enable them to tell if the given usage of
+scoped_guard() is with a conditional lock class (interruptible-locks,
+try-locks) or not (like simple mutex_lock()).
 
-In the context of WW/WD transactions that means that if a user unlocks
-and frees a ww_mutex from within an ongoing ww transaction, and that
-mutex happens to be the first ww_mutex grabbed in the transaction,
-such a warning is printed and there might be a risk of a UAF.
+Add compile-time error if scoped_cond_guard() is used for non-conditional
+lock class.
 
-Note that this is only problem when lockdep is enabled and affects only
-dereferences of struct lockdep_map.
+Beyond easier tooling and a little shrink reported by bloat-o-meter
+this patch enables developer to write code like:
 
-Adjust to this by adding a fake lockdep_map to the acquired context and
-make sure it is the first acquired lockdep map of the associated
-ww_mutex class. Then hold it for the duration of the WW/WD transaction.
+int foo(struct my_drv *adapter)
+{
+	scoped_guard(spinlock, &adapter->some_spinlock)
+		return adapter->spinlock_protected_var;
+}
 
-This has the side effect that trying to lock a ww mutex *without* a
-ww_acquire_context but where a such context has been acquire, we'd see
-a lockdep splat. The test-ww_mutex.c selftest attempts to do that, so
-modify that particular test to not acquire a ww_acquire_context if it
-is not going to be used.
+Current scoped_guard() implementation does not support that,
+due to compiler complaining:
+error: control reaches end of non-void function [-Werror=return-type]
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Technical stuff about the change:
+scoped_guard() macro uses common idiom of using "for" statement to declare
+a scoped variable. Unfortunately, current logic is too hard for compiler
+diagnostics to be sure that there is exactly one loop step; fix that.
+
+To make any loop so trivial that there is no above warning, it must not
+depend on any non-const variable to tell if there are more steps. There is
+no obvious solution for that in C, but one could use the compound
+statement expression with "goto" jumping past the "loop", effectively
+leaving only the subscope part of the loop semantics.
+
+More impl details:
+one more level of macro indirection is now needed to avoid duplicating
+label names;
+I didn't spot any other place that is using the
+"for (...; goto label) if (0) label: break;" idiom, so it's not packed for
+reuse beyond scoped_guard() family, what makes actual macros code cleaner.
+
+There was also a need to introduce const true/false variable per lock
+class, it is used to aid compiler diagnostics reasoning about "exactly
+1 step" loops (note that converting that to function would undo the whole
+benefit).
+
+Big thanks to Andy Shevchenko for help on this patch, both internal and
+public, ranging from whitespace/formatting, through commit message
+clarifications, general improvements, ending with presenting alternative
+approaches - all despite not even liking the idea.
+
+Big thanks to Dmitry Torokhov for the idea of compile-time check for
+scoped_cond_guard() (to use it only with conditional locsk), and general
+improvements for the patch.
+
+Big thanks to David Lechner for idea to cover also scoped_cond_guard().
+
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241009092031.6356-1-thomas.hellstrom@linux.intel.com
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lkml.kernel.org/r/20241018113823.171256-1-przemyslaw.kitszel@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ww_mutex.h       | 14 ++++++++++++++
- kernel/locking/test-ww_mutex.c |  8 +++++---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ include/linux/cleanup.h | 52 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
-index bb763085479af..a401a2f31a775 100644
---- a/include/linux/ww_mutex.h
-+++ b/include/linux/ww_mutex.h
-@@ -65,6 +65,16 @@ struct ww_acquire_ctx {
- #endif
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map dep_map;
-+	/**
-+	 * @first_lock_dep_map: fake lockdep_map for first locked ww_mutex.
-+	 *
-+	 * lockdep requires the lockdep_map for the first locked ww_mutex
-+	 * in a ww transaction to remain in memory until all ww_mutexes of
-+	 * the transaction have been unlocked. Ensure this by keeping a
-+	 * fake locked ww_mutex lockdep map between ww_acquire_init() and
-+	 * ww_acquire_fini().
-+	 */
-+	struct lockdep_map first_lock_dep_map;
- #endif
- #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
- 	unsigned int deadlock_inject_interval;
-@@ -146,7 +156,10 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
- 	debug_check_no_locks_freed((void *)ctx, sizeof(*ctx));
- 	lockdep_init_map(&ctx->dep_map, ww_class->acquire_name,
- 			 &ww_class->acquire_key, 0);
-+	lockdep_init_map(&ctx->first_lock_dep_map, ww_class->mutex_name,
-+			 &ww_class->mutex_key, 0);
- 	mutex_acquire(&ctx->dep_map, 0, 0, _RET_IP_);
-+	mutex_acquire_nest(&ctx->first_lock_dep_map, 0, 0, &ctx->dep_map, _RET_IP_);
- #endif
- #ifdef CONFIG_DEBUG_WW_MUTEX_SLOWPATH
- 	ctx->deadlock_inject_interval = 1;
-@@ -185,6 +198,7 @@ static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
- static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
- {
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	mutex_release(&ctx->first_lock_dep_map, _THIS_IP_);
- 	mutex_release(&ctx->dep_map, _THIS_IP_);
- #endif
- #ifdef DEBUG_WW_MUTEXES
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 10a5736a21c22..5d58b2c0ef98b 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -62,7 +62,8 @@ static int __test_mutex(unsigned int flags)
- 	int ret;
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 038b2d523bf88..9464724b99737 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -285,14 +285,20 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+  *      similar to scoped_guard(), except it does fail when the lock
+  *      acquire fails.
+  *
++ *      Only for conditional locks.
+  */
  
- 	ww_mutex_init(&mtx.mutex, &ww_class);
--	ww_acquire_init(&ctx, &ww_class);
-+	if (flags & TEST_MTX_CTX)
-+		ww_acquire_init(&ctx, &ww_class);
++#define __DEFINE_CLASS_IS_CONDITIONAL(_name, _is_cond)	\
++static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
++
+ #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	__DEFINE_CLASS_IS_CONDITIONAL(_name, false); \
+ 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
+ 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
+ 	{ return *_T; }
  
- 	INIT_WORK_ONSTACK(&mtx.work, test_mutex_work);
- 	init_completion(&mtx.ready);
-@@ -90,7 +91,8 @@ static int __test_mutex(unsigned int flags)
- 		ret = wait_for_completion_timeout(&mtx.done, TIMEOUT);
- 	}
- 	ww_mutex_unlock(&mtx.mutex);
--	ww_acquire_fini(&ctx);
-+	if (flags & TEST_MTX_CTX)
-+		ww_acquire_fini(&ctx);
+ #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
++	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
+ 	EXTEND_CLASS(_name, _ext, \
+ 		     ({ void *_t = _T; if (_T && !(_condlock)) _t = NULL; _t; }), \
+ 		     class_##_name##_t _T) \
+@@ -303,17 +309,40 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+ 	CLASS(_name, __UNIQUE_ID(guard))
  
- 	if (ret) {
- 		pr_err("%s(flags=%x): mutual exclusion failure\n",
-@@ -679,7 +681,7 @@ static int __init test_ww_mutex_init(void)
- 	if (ret)
- 		return ret;
+ #define __guard_ptr(_name) class_##_name##_lock_ptr
++#define __is_cond_ptr(_name) class_##_name##_is_conditional
  
--	ret = stress(2047, hweight32(STRESS_ALL)*ncpus, STRESS_ALL);
-+	ret = stress(2046, hweight32(STRESS_ALL)*ncpus, STRESS_ALL);
- 	if (ret)
- 		return ret;
+-#define scoped_guard(_name, args...)					\
+-	for (CLASS(_name, scope)(args),					\
+-	     *done = NULL; __guard_ptr(_name)(&scope) && !done; done = (void *)1)
+-
+-#define scoped_cond_guard(_name, _fail, args...) \
+-	for (CLASS(_name, scope)(args), \
+-	     *done = NULL; !done; done = (void *)1) \
+-		if (!__guard_ptr(_name)(&scope)) _fail; \
+-		else
+-
++/*
++ * Helper macro for scoped_guard().
++ *
++ * Note that the "!__is_cond_ptr(_name)" part of the condition ensures that
++ * compiler would be sure that for the unconditional locks the body of the
++ * loop (caller-provided code glued to the else clause) could not be skipped.
++ * It is needed because the other part - "__guard_ptr(_name)(&scope)" - is too
++ * hard to deduce (even if could be proven true for unconditional locks).
++ */
++#define __scoped_guard(_name, _label, args...)				\
++	for (CLASS(_name, scope)(args);					\
++	     __guard_ptr(_name)(&scope) || !__is_cond_ptr(_name);	\
++	     ({ goto _label; }))					\
++		if (0) {						\
++_label:									\
++			break;						\
++		} else
++
++#define scoped_guard(_name, args...)	\
++	__scoped_guard(_name, __UNIQUE_ID(label), args)
++
++#define __scoped_cond_guard(_name, _fail, _label, args...)		\
++	for (CLASS(_name, scope)(args); true; ({ goto _label; }))	\
++		if (!__guard_ptr(_name)(&scope)) {			\
++			BUILD_BUG_ON(!__is_cond_ptr(_name));		\
++			_fail;						\
++_label:									\
++			break;						\
++		} else
++
++#define scoped_cond_guard(_name, _fail, args...)	\
++	__scoped_cond_guard(_name, _fail, __UNIQUE_ID(label), args)
+ /*
+  * Additional helper macros for generating lock guards with types, either for
+  * locks that don't have a native type (eg. RCU, preempt) or those that need a
+@@ -369,14 +398,17 @@ static inline class_##_name##_t class_##_name##_constructor(void)	\
+ }
  
+ #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+ __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
+ __DEFINE_LOCK_GUARD_1(_name, _type, _lock)
+ 
+ #define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+ __DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
+ __DEFINE_LOCK_GUARD_0(_name, _lock)
+ 
+ #define DEFINE_LOCK_GUARD_1_COND(_name, _ext, _condlock)		\
++	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true);		\
+ 	EXTEND_CLASS(_name, _ext,					\
+ 		     ({ class_##_name##_t _t = { .lock = l }, *_T = &_t;\
+ 		        if (_T->lock && !(_condlock)) _T->lock = NULL;	\
 -- 
 2.43.0
 
