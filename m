@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-95300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2D09D750C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:26:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C869D750E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:26:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB5E164728
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:26:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7082877A7
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B5624C70C;
-	Sun, 24 Nov 2024 13:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC80F24CD4D;
+	Sun, 24 Nov 2024 13:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q0EUxG8p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7hJx88U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E6A24C705;
-	Sun, 24 Nov 2024 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9550D24CD45;
+	Sun, 24 Nov 2024 13:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456639; cv=none; b=f7XWqsmrdmqKu17n+pW8fGrayNV2uF/K9qJ7xAY0sC66d/DpTULjkSeIrslKZ9/xH4OArn80WsQo5X5iH52N4VBSBZ5XcwGA0E8PPGTWzGPhio1f6nX9E43freOtxE2gPJcWSpMop/iYnit4B75PMAfta7C49rzPNu+4o/Riu8U=
+	t=1732456641; cv=none; b=YTL83a3n3jbFfovUrEJHR64sr5aNxK4m6RnFdjPvzGtANbJ53aP0CeF5WsUdlYaXS18RF1LJIasxRSTmUxTOO6pk+4eb35ZRuQTfYemTgmJ5Agswgjz5JvazWJ1mdrLvcQZl9G1rSY8afDwNrFT5i2xq5sVH8Wws0lcU4jaHA1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456639; c=relaxed/simple;
-	bh=7kJxGYpq5B6gkcecesOBUZjReUx4nZbMinW6ZwXQQO8=;
+	s=arc-20240116; t=1732456641; c=relaxed/simple;
+	bh=6UmNZQznBP0m16qkAj863v5OCr3E8dA6Al0Ybc8uqDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECbQU3CShtrIEm3QQpVQbwYBGpbdxFYIN2Xwi2gOzBaAuwCwvqXGRID3XnRmVKDbWIozTZiDgt89wPzZoyOVTkf/mQ7sY+Va2PGSohW30ak15PbzsnB1SadLqNVwKdifAIG9rNgiyLNKdNIDPiq5T/2OFIJFfFmdbn88pYXJgPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q0EUxG8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7169C4CECC;
-	Sun, 24 Nov 2024 13:57:17 +0000 (UTC)
+	 MIME-Version; b=pvkmtZ0+JyoCCSaK0uKu8uEkJE9sBzKttG1JT1TSnM0PW+106WUxaxJHdvMZEf4kStnLx9UEsxMcAearBdrbsCYPkzhwONlsaBRaYi96uvASvuqINlwDML9t26EBvoah/eKriAdEGlsyv/qsxHTKlLxjzM9Te1mJBL+96Nf/U/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7hJx88U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7694C4CED1;
+	Sun, 24 Nov 2024 13:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456639;
-	bh=7kJxGYpq5B6gkcecesOBUZjReUx4nZbMinW6ZwXQQO8=;
+	s=k20201202; t=1732456641;
+	bh=6UmNZQznBP0m16qkAj863v5OCr3E8dA6Al0Ybc8uqDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0EUxG8piPrclZWVAoqpmjpjhiHP20D+D2R+LHeQZcCKs9Z0sYTGCPyG8li0rAvKu
-	 A99XLr/oD69Qtu7HutwdZ7OSxQ2BjiIpcxgYOYSXxtA3uDxajh7wtXSwoJdNoRKg03
-	 gC+8in/knjT8NXBwyI+mu6EHTa2z5P/JxbeMJ5ab8yYHRcb8EqF1M+feYCy5VHQo69
-	 BjmciJ8sPrcfySTWh/XD+yXYAM4iBiez0KzYhhVCf6um/5Y6AxA4gwubxMEPsDstSZ
-	 kMas5arQqK0QVHuUrtqZLb6zM8uVYzWD4YDMMjVf37SgTrn9cGjm2kDiVFMXeWgGrA
-	 PWS34ESYL5fLA==
+	b=E7hJx88UwYf8Gzy1ATvdH+pgKkncyXVT2igNK3LTCgarhb3uW0JloIdKvzTVvi917
+	 hEHrRONXXyzwPrvNbYDuFIffgqppZfq/FOC8YKdOTX63uJ3R+/42uDb7Bush6J81aS
+	 2FU1lZTOLK6JLqxK8zwlBJ+BJCC5BfASNL5cTIWAx+Q/KVhrXoKD0l2UAs/cDWC4d5
+	 m1bDGE6bge5n8kKrAstQe7uEApJOegChRi9DOyMDfVa4SWdkV5WrB3m8SqIHjzYfRA
+	 0N+sSHZ8VXbSCpLnEmXftTQwlq4h2ZZIq1g+X68rQQ41sQv7SWdEeXpF2gCU9WPOUx
+	 NgxDB7sUKFp0g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Daniel Machon <daniel.machon@microchip.com>,
+Cc: Ignat Korchagin <ignat@cloudflare.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	pantelis.antoniou@gmail.com,
-	andrew+netdev@lunn.ch,
+	willemdebruijn.kernel@gmail.com,
 	davem@davemloft.net,
-	edumazet@google.com,
 	pabeni@redhat.com,
-	linuxppc-dev@lists.ozlabs.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 04/21] net: ethernet: fs_enet: Use %pa to format resource_size_t
-Date: Sun, 24 Nov 2024 08:56:37 -0500
-Message-ID: <20241124135709.3351371-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 05/21] af_packet: avoid erroring out after sock_init_data() in packet_create()
+Date: Sun, 24 Nov 2024 08:56:38 -0500
+Message-ID: <20241124135709.3351371-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
 References: <20241124135709.3351371-1-sashal@kernel.org>
@@ -73,55 +71,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Simon Horman <horms@kernel.org>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
+[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
 
-The correct format string for resource_size_t is %pa which
-acts on the address of the variable to be formatted [1].
+After sock_init_data() the allocated sk object is attached to the provided
+sock object. On error, packet_create() frees the sk object leaving the
+dangling pointer in the sock object on return. Some other code may try
+to use this pointer and cause use-after-free.
 
-[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
-
-Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
-
-Flagged by gcc-14 as:
-
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-      |                                             ~^   ~~~~~~~~~
-      |                                              |      |
-      |                                              |      resource_size_t {aka long long unsigned int}
-      |                                              unsigned int
-      |                                             %llx
-
-No functional change intended.
-Compile tested only.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index 21de56345503f..f743112730194 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
- 	 * we get is an int, and the odds of multiple bitbang mdio buses
- 	 * is low enough that it's not worth going too crazy.
- 	 */
--	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-+	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index b285a6e1a7669..31b2a843611be 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3346,18 +3346,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (sock->type == SOCK_PACKET)
+ 		sock->ops = &packet_ops_spkt;
  
- 	data = of_get_property(np, "fsl,mdio-pin", &len);
- 	if (!data || len != 4)
++	po = pkt_sk(sk);
++	err = packet_alloc_pending(po);
++	if (err)
++		goto out_sk_free;
++
+ 	sock_init_data(sock, sk);
+ 
+-	po = pkt_sk(sk);
+ 	init_completion(&po->skb_completion);
+ 	sk->sk_family = PF_PACKET;
+ 	po->num = proto;
+ 	po->xmit = dev_queue_xmit;
+ 
+-	err = packet_alloc_pending(po);
+-	if (err)
+-		goto out2;
+-
+ 	packet_cached_dev_reset(po);
+ 
+ 	sk->sk_destruct = packet_sock_destruct;
+@@ -3392,7 +3392,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	preempt_enable();
+ 
+ 	return 0;
+-out2:
++out_sk_free:
+ 	sk_free(sk);
+ out:
+ 	return err;
 -- 
 2.43.0
 
