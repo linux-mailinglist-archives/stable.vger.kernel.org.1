@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-95076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC52B9D72FF
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:25:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293F29D730A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66FA01654EA
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 952141657FD
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054A520FA83;
-	Sun, 24 Nov 2024 13:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861B52101AD;
+	Sun, 24 Nov 2024 13:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1QIA39p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azzdcQzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A898B20E336;
-	Sun, 24 Nov 2024 13:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D9A2101A1;
+	Sun, 24 Nov 2024 13:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455906; cv=none; b=OjmKwCEHe2WVju9bBMg+7xjs/teCrrALWNJwCUETcRjw0QSxiPY4r6SnqeTbAXtnLmX/yraAedvmt9HdVA7L0MwAHUezkjBjq+uZUvv4NzE9vyPUBBcEQifw28P/rwB/1TS01gbUhQl96YNLyTZL3sXO4C2G0NzCyVSZ0XKVHL8=
+	t=1732455910; cv=none; b=aDOXHl7UkvLSvd/u74JwpLP0DNw8SuyVgNHN/mmn6nRXrn2j+2sfLYqEEIWqtiIeD6Mn80fzczKsk+Y+8P7nSXOOwSYLgucQSPTniN8KF/yFZUvVuj62ys0mH9p7v14A4yMHTthoqdfMblWF9biqyKACpkqC77HyGt+W2pYoMJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455906; c=relaxed/simple;
-	bh=hdqRIr8JPrP6KkBfW641DB4VEjMrTEqRrJovrjFcl6M=;
+	s=arc-20240116; t=1732455910; c=relaxed/simple;
+	bh=frMsR8PTOxaQrnnDp39CBVkRcossL8PMqqCmGH4P73Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dewr2mEDOcWgFkX9te7QYAQPS0G4m3D0nbB4hLldpi6K+EIqXImK4n8SLm3jlNxpBckV70U5Ia3ilHtfd+MS+5uVOqLgbmp3efCCFzEuWhciXVGQulD5qwlSA0ZvVftsNOebQ0yKrLODb/4y5JwXvPkRrOYzNbDunxfravKbczQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1QIA39p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A86C4CED7;
-	Sun, 24 Nov 2024 13:45:04 +0000 (UTC)
+	 MIME-Version; b=MGovDmU2LSoHdmkNradwbvJRLXO/VtOAe/0zeksNrHLnr/2S1WxUOixiIGtoY7a/mbkJlJHsjMQQ2xHA6J6SbqjDFQtHeXVLMWY+u93Es/YEEcNXd1fX/a6klqJTAWwrNXWb7/utc3Oig48ayeXV4fu4qFuYONrjjW+s13pXykA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azzdcQzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729E8C4CED6;
+	Sun, 24 Nov 2024 13:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455906;
-	bh=hdqRIr8JPrP6KkBfW641DB4VEjMrTEqRrJovrjFcl6M=;
+	s=k20201202; t=1732455910;
+	bh=frMsR8PTOxaQrnnDp39CBVkRcossL8PMqqCmGH4P73Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1QIA39pKDF7oRsatCZpe58glhqxm1CQ/cIMrUBgSqbmg6uhHSGowRgIORtxplWvd
-	 5k/v7J7THxxoKYbxMpwq0Ol1JZ/mxtGTrfPHKjD09ExKPJkYpOKY/3AyejjuQckt0g
-	 TPSfSzREqjAzQwSYSrYsoZmWdymBmzejklKYGfcve3zF7u7Ka9Z0+sMb8QWKLskIFG
-	 /BT/1QwiI7tQG/4VQmPIVmrBLSQ5c/DvHI8Se7vMAq5o5fEbAZ4yXBcis5XlHZAznS
-	 SQwsr+aI0NPHchoLkdGFOrA8EMtVxUGQQXsgEx2L++VFP37Cmujuod1ftqA1AoQDw6
-	 J2UYdBSPcr5Gg==
+	b=azzdcQzvwhFP7RBiTXLFutrUUVEUVYrF5JH/mTBCmeUNfv/vxKyqxKzpVZTYQ9LJF
+	 ib43Y6tmm7HTi+jw8QhJmekK/2JkEol17lWflIGyjCFUEgcqEiJpfc4+mcsIwyluD3
+	 0+rUvbh4CEsYnXMQ8yobnjuLTJFDuBLLMpqjBnEucdpxA7PVxw4Mp/ISd0duBwrK0L
+	 gHcW29oO9zaU0zfMI/qCHVCXc33zP7DQyDQrEK/18M9rbQPiW3x+Kg4d4/ijvvnhA2
+	 AdPUSTyaOeES4SbYggZGv2f+0riQkngrjp/TmnJioayTGQwgAbuwFt+v0K1GHmgHRb
+	 LIZ6sQ4jJRbBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+Cc: Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	matttbe@kernel.org,
-	martineau@kernel.org,
+	olteanv@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 73/87] mptcp: fix possible integer overflow in mptcp_reset_tout_timer
-Date: Sun, 24 Nov 2024 08:38:51 -0500
-Message-ID: <20241124134102.3344326-73-sashal@kernel.org>
+	florian.fainelli@broadcom.com,
+	alsi@bang-olufsen.dk,
+	rmk+kernel@armlinux.org.uk,
+	michal.vokac@ysoft.com,
+	javier.carrasco.cruz@gmail.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 74/87] dsa: qca8k: Use nested lock to avoid splat
+Date: Sun, 24 Nov 2024 08:38:52 -0500
+Message-ID: <20241124134102.3344326-74-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -71,38 +74,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit b169e76ebad22cbd055101ee5aa1a7bed0e66606 ]
+[ Upstream commit 078e0d596f7b5952dad8662ace8f20ed2165e2ce ]
 
-In 'mptcp_reset_tout_timer', promote 'probe_timestamp' to unsigned long
-to avoid possible integer overflow. Compile tested only.
+qca8k_phy_eth_command() is used to probe the child MDIO bus while the
+parent MDIO is locked. This causes lockdep splat, reporting a possible
+deadlock. It is not an actually deadlock, because different locks are
+used. By making use of mutex_lock_nested() we can avoid this false
+positive.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Link: https://patch.msgid.link/20241107103657.1560536-1-d.kandybka@gmail.com
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241110175955.3053664-1-andrew@lunn.ch
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7913ba6b5daa3..31a7302c02a68 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2728,8 +2728,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
- 	if (!fail_tout && !inet_csk(sk)->icsk_mtup.probe_timestamp)
- 		return;
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index f8d8c70642c4f..59b4a7240b583 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -673,7 +673,7 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 	 * We therefore need to lock the MDIO bus onto which the switch is
+ 	 * connected.
+ 	 */
+-	mutex_lock(&priv->bus->mdio_lock);
++	mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
  
--	close_timeout = inet_csk(sk)->icsk_mtup.probe_timestamp - tcp_jiffies32 + jiffies +
--			mptcp_close_timeout(sk);
-+	close_timeout = (unsigned long)inet_csk(sk)->icsk_mtup.probe_timestamp -
-+			tcp_jiffies32 + jiffies + mptcp_close_timeout(sk);
- 
- 	/* the close timeout takes precedence on the fail one, and here at least one of
- 	 * them is active
+ 	/* Actually start the request:
+ 	 * 1. Send mdio master packet
 -- 
 2.43.0
 
