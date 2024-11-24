@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-94761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DEF9D6ED3
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:54:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6949D6EDA
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB862816FD
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:54:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D62BB2399A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759951E04BC;
-	Sun, 24 Nov 2024 12:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8606E1E0B74;
+	Sun, 24 Nov 2024 12:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYZsJA7s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX1LEq27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93A1AD418;
-	Sun, 24 Nov 2024 12:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CA41E0B6E;
+	Sun, 24 Nov 2024 12:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452154; cv=none; b=q7MxGoCgk9ggI1ppbh0fWzL6RQbykbTASdmJOb8j0lu7JBrNqoMo442301U/XgxuzWWsKJWmeNtEPI12nSS5Dg0ZNxJWq1pZnlXGBNzCKq98Ipeeru7PrGrk644+O0JvG96zZzZIVivcqw3OCXVxd4eI18VjG6GwtaThQGyjmV8=
+	t=1732452156; cv=none; b=eoBcSc0DMdfbX2tF6xqkYK84ERqSL21rJb9TTbc5Il+lOwLRiHKbYgL1TZiJfboJXiZcWeAKw1uvSKalylwIKFgGfWv2FPsgG1aQUdcykjNVIr7HyRRQwKpPxJQ33Ed9GMbYpnCqouVStKgASOzsQJEt6MNdmEpICpZ9cHR3RIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452154; c=relaxed/simple;
-	bh=Z5BDYCr6jGz1BfbKgnWKw0OXaNVL3avyWk+A4vvdbVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rShVntirl75X4pgPNjI7rU8QL8T1KYoxQqM3BhY5NZdV/vMIxkPxPZA2KcMJkMpHc9VvvZPJX8loVGX1h9v7DyzzwRVGqhibbXCNDfcEJ2LUnzubXSpJ5ETrA3n5g3fyNL/2wk/hA2o2psjJGEl44M9jbCBv4pbWD4DZRipUnW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYZsJA7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC59C4CECC;
-	Sun, 24 Nov 2024 12:42:32 +0000 (UTC)
+	s=arc-20240116; t=1732452156; c=relaxed/simple;
+	bh=U5cJMnmzukYGPKOjl6IplW7PNAjyX2EZNYMB/z1fB5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bClRrman0THI0lxuSKhWIzoWf0kmrY5gIOL7GIS19ZzFKK3GZV8B2xdnUoek+4e+v1SaY1zFpW6J2bHA+mQdvTyqXN9+QmYrUZ8RSqiONFqVuRZzlJuvWU/thL0R6qmESe6bUHUbaTYc5Ab3E94pViQ1PTb3Y+iroiHzPuUYFZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX1LEq27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E46C4CECC;
+	Sun, 24 Nov 2024 12:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452154;
-	bh=Z5BDYCr6jGz1BfbKgnWKw0OXaNVL3avyWk+A4vvdbVA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qYZsJA7s1hcczN68LSy5rZlAG4Utt1z000PQW3NYXaihXts9k+aiHS2sk1NnlPOmq
-	 HbPpoTMbavsy/xQ3UV/lhkIdB3XDVQYcpRpK8VvgLu4PMAJRCgSw6DjC0R/raJJ0tv
-	 9TcBK9fYoivRz4WyqN3hbb7nnTvxV78vQhYaRNNAqf6FhSJDH5oEWFU5t0zSpB9vQZ
-	 axDvowGH4CKZs1+5Kh3DbLQ6wHF3muBK8O1/PCINrZquYwZ4GHRDYeHNmeQD6UcYQf
-	 QreMp5Tw/DxEaxAk3Wqg4aniChsiJpwtkzT7C2QJBcF4WwYazImL3+tod0g3A3X5Zl
-	 HESTEWOSTLytg==
+	s=k20201202; t=1732452155;
+	bh=U5cJMnmzukYGPKOjl6IplW7PNAjyX2EZNYMB/z1fB5U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bX1LEq27R68zGVd39ywGNFfFQGQO7GJRanaCtuyB7xke2jzrEHBp7V5s1pIAjWMWb
+	 c8h/EogpRgPZO3lMTAjflOqrHbtlkHhskgOjjpG3bLq2fgl8DzdBIFtcV1Z494Dicq
+	 XdVFw2ktDhWm+yQNws8/qW6dqMKNrJCwW21GkBvEqtKpnJos6D1L9Tj/cbZapAOtzI
+	 D+iIGuHwS2Tgbs7AEHDF758f9vfZ0P/hAtzxImbF57MTLR+LIodaHBxdbEhTsyCO3a
+	 A2IgRyNm/4fSe4QKGnypfoFfQGgv6VMq8KQUen4NFs9Qrv/hEWAiZmRYhRYQFryzZI
+	 N6JPYTR/AQzxg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Richter <tmricht@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	sumanthk@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/2] s390/cpum_sf: Handle CPU hotplug remove during sampling
-Date: Sun, 24 Nov 2024 07:42:27 -0500
-Message-ID: <20241124124231.3337202-1-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 2/2] btrfs: fix warning on PTR_ERR() against NULL device at btrfs_control_ioctl()
+Date: Sun, 24 Nov 2024 07:42:28 -0500
+Message-ID: <20241124124231.3337202-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124124231.3337202-1-sashal@kernel.org>
+References: <20241124124231.3337202-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,78 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
+[ Upstream commit 2342d6595b608eec94187a17dc112dd4c2a812fa ]
 
-CPU hotplug remove handling triggers the following function
-call sequence:
+Smatch complains about calling PTR_ERR() against a NULL pointer:
 
-   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
-   ...
-   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
+  fs/btrfs/super.c:2272 btrfs_control_ioctl() warn: passing zero to 'PTR_ERR'
 
-The s390 CPUMF sampling CPU hotplug handler invokes:
+Fix this by calling PTR_ERR() against the device pointer only if it
+contains an error.
 
- s390_pmu_sf_offline_cpu()
- +-->  cpusf_pmu_setup()
-       +--> setup_pmc_cpu()
-            +--> deallocate_buffers()
-
-This function de-allocates all sampling data buffers (SDBs) allocated
-for that CPU at event initialization. It also clears the
-PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
-
-With the event still being active on the removed CPU, the CPU event
-hotplug support in kernel performance subsystem triggers the
-following function calls on the removed CPU:
-
-  perf_event_exit_cpu()
-  +--> perf_event_exit_cpu_context()
-       +--> __perf_event_exit_context()
-	    +--> __perf_remove_from_context()
-	         +--> event_sched_out()
-	              +--> cpumsf_pmu_del()
-	                   +--> cpumsf_pmu_stop()
-                                +--> hw_perf_event_update()
-
-to stop and remove the event. During removal of the event, the
-sampling device driver tries to read out the remaining samples from
-the sample data buffers (SDBs). But they have already been freed
-(and may have been re-assigned). This may lead to a use after free
-situation in which case the samples are most likely invalid. In the
-best case the memory has not been reassigned and still contains
-valid data.
-
-Remedy this situation and check if the CPU is still in reserved
-state (bit PMU_F_RESERVED set). In this case the SDBs have not been
-released an contain valid data. This is always the case when
-the event is removed (and no CPU hotplug off occured).
-If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
-
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index c7f94b5d93968..e51babd0bbc10 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1772,7 +1772,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
- 	event->hw.state |= PERF_HES_STOPPED;
- 
- 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
--		hw_perf_event_update(event, 1);
-+		/* CPU hotplug off removes SDBs. No samples to extract. */
-+		if (cpuhw->flags & PMU_F_RESERVED)
-+			hw_perf_event_update(event, 1);
- 		event->hw.state |= PERF_HES_UPTODATE;
- 	}
- 	perf_pmu_enable(event->pmu);
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index a595439518519..086d6d397f0be 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2283,7 +2283,10 @@ static long btrfs_control_ioctl(struct file *file, unsigned int cmd,
+ 					       &btrfs_root_fs_type);
+ 		if (IS_ERR(device)) {
+ 			mutex_unlock(&uuid_mutex);
+-			ret = PTR_ERR(device);
++			if (IS_ERR(device))
++				ret = PTR_ERR(device);
++			else
++				ret = 0;
+ 			break;
+ 		}
+ 		ret = !(device->fs_devices->num_devices ==
 -- 
 2.43.0
 
