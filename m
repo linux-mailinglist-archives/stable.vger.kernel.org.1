@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-95090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98F79D7478
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:09:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07649D7330
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:31:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45C8EBE20CF
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:30:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B22D165A4F
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D50921948C;
-	Sun, 24 Nov 2024 13:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E43192D61;
+	Sun, 24 Nov 2024 13:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRt22F7M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bu3GSnAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D6C219485;
-	Sun, 24 Nov 2024 13:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C41974EA;
+	Sun, 24 Nov 2024 13:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455935; cv=none; b=nx164lvyDVpLzHiGHKBjeE+Fc/bBu3Jq7XJ48ui4v+8swnwGTfiFdaIBkVrsYTDyg7P1EoM9OENjoTBH/qzGDFzBbOQux62J0ziSpmooOSbSkI0zyXLOiCuAbnqnMC8oeP6GiTttp3bHI9au5+qTUadl5/WpnlLty92r2B6SyDw=
+	t=1732456000; cv=none; b=MsZ38whxCyDlhBf8NrvtlupfLQKIsGcuJNsMzMgP5mjTQybzJGZ6i+15S/+b/ZC3D1dc+G7cl7yCn1igy3yusU6tVSn76yUE+sLYc71tFSb9iusBaM4xwF0OMhRcPtZ8Y09kWUH7Cw6Ax6QZo/i0dY9kNh9RuV27nZGyczz6ZkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455935; c=relaxed/simple;
-	bh=7R/4zkp3mmqZEvUlmwUoJEtoNU7zMbodl275S1AVnKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMkQXaqz01HDYC+8Ht084SR60P3K9qi8NFn7ikAG2FQ8HV5mShNEX98hPFzGVonPCitCkGAszBuhZcm4zU/RwOLkLR+LVI/RMsxj82TQ7FNZzIkEKNeMfe052Doq/Lffnqs2ERTo0LFI+0Rez9SiziLjbINWGUQk+vtwpafj4f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRt22F7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D54C4CED1;
-	Sun, 24 Nov 2024 13:45:33 +0000 (UTC)
+	s=arc-20240116; t=1732456000; c=relaxed/simple;
+	bh=qdiB0thozglpFuFyTlIZMBwLPGTZmLhXJH68DX3ouZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TLAQivow/lMYVl5t/E4MBiqBXou7f2W/UDq5RCw6yTnWSFfNcuGJGqjOKKcN1JOLTs6nUCZixSHsGaUKw6p9zKuBNu5N9YTJqVxDkQiTilxChHZPV9TZu2PobU0+jO5YiI7nXgaJAcG5kWhbhcmXnO9u75pEJnMPAWxmlwZeDjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bu3GSnAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB178C4CED1;
+	Sun, 24 Nov 2024 13:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455935;
-	bh=7R/4zkp3mmqZEvUlmwUoJEtoNU7zMbodl275S1AVnKk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRt22F7MEzT3n4T8Y+s7I9PV8fFI9bZ23lvrGyCHP0m6HH6b46l0a5L4578R985B3
-	 xYMksQH4rilJwrfKMb7HGEF0h2dJ+9gVsJfn61YMu7/4jHoI7yofew8xgfGb/92I9d
-	 hIm7FBIVBQiseR1ibxuHq1NAiFDXvUzYkGTuuZzc6F11FGGUzYfhdvWuuYoXM1w0Do
-	 s0MaBep+9xQNtlbC1HAnG3FHHztMsv+pJkRv7Fqkr9u3wrJPxKXCuD/wfPDMUNejhU
-	 y3+6I+dFNmAjJj8wXF4UGmx/V7M9GEDtkmYvU6XL5R39yUXWck5u8X2cku5yLubkJq
-	 OQYC47ZlS4k3Q==
+	s=k20201202; t=1732455999;
+	bh=qdiB0thozglpFuFyTlIZMBwLPGTZmLhXJH68DX3ouZU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bu3GSnAKhYTk1rnzyvSx1LlcXKhcSht4Vnk0JWVS4hT2f0PsXqNcdRXDU21QESWop
+	 Miq4DtlBIr5WK6wGUlMLqfH6QmAUhJU4tjQMAWaNrJw2obaMpU+WepO4sQYQwdmU+D
+	 mQuZtN6ut3qkEr40lGkK7ie20TBjoVaQbj1sJy3I2Lm8OrqOBGEgPQyPi31+AARzyq
+	 Hh3CO75/PfbhLKc7OBO52JXbF0qvorXmAgn8u465kqmGlMuCsRF5ep1XfcLHx+8pij
+	 M78dPiiZrU4PiK5BE+ZDMppmNXqFWA/LVSICNbRzsCKue3FmVbMAz9RjlQ0POg4jPA
+	 3TuxvJgz2FBrw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Dom Cobley <popcornmix@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	viro@zeniv.linux.org.uk,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 87/87] netpoll: Use rcu_access_pointer() in __netpoll_setup
-Date: Sun, 24 Nov 2024 08:39:05 -0500
-Message-ID: <20241124134102.3344326-87-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 01/61] drm/vc4: hdmi: Avoid log spam for audio start failure
+Date: Sun, 24 Nov 2024 08:44:36 -0500
+Message-ID: <20241124134637.3346391-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
-References: <20241124134102.3344326-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,45 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Dom Cobley <popcornmix@gmail.com>
 
-[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
+[ Upstream commit b4e5646178e86665f5caef2894578600f597098a ]
 
-The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
-accessed directly for a NULL check. While no RCU read lock is held in this
-context, we should still use proper RCU primitives for consistency and
-correctness.
+We regularly get dmesg error reports of:
+[   18.184066] hdmi-audio-codec hdmi-audio-codec.3.auto: ASoC: error at snd_soc_dai_startup on i2s-hifi: -19
+[   18.184098]  MAI: soc_pcm_open() failed (-19)
 
-Replace the direct NULL check with rcu_access_pointer(), which is the
-appropriate primitive when only checking for NULL without dereferencing
-the pointer. This function provides the necessary ordering guarantees
-without requiring RCU read-side protection.
+These are generated for any disconnected hdmi interface when pulseaudio
+attempts to open the associated ALSA device (numerous times). Each open
+generates a kernel error message, generating general log spam.
 
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The error messages all come from _soc_pcm_ret in sound/soc/soc-pcm.c#L39
+which suggests returning ENOTSUPP, rather that ENODEV will be quiet.
+And indeed it is.
+
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-5-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 930acc87c8c08..d2f8d07ca5cfd 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -631,7 +631,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		goto out;
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index c6e986f71a26f..7cabfa1b883d2 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2392,7 +2392,7 @@ static int vc4_hdmi_audio_startup(struct device *dev, void *data)
  	}
  
--	if (!ndev->npinfo) {
-+	if (!rcu_access_pointer(ndev->npinfo)) {
- 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
- 		if (!npinfo) {
- 			err = -ENOMEM;
+ 	if (!vc4_hdmi_audio_can_stream(vc4_hdmi)) {
+-		ret = -ENODEV;
++		ret = -ENOTSUPP;
+ 		goto out_dev_exit;
+ 	}
+ 
 -- 
 2.43.0
 
