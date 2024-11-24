@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-94756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E29D6ED1
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D06C9D6ED5
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1526E162663
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:52:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3DF7162722
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBF51DF97E;
-	Sun, 24 Nov 2024 12:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58961DFE13;
+	Sun, 24 Nov 2024 12:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPYfBpXD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fy4y6FxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8AC1DF961;
-	Sun, 24 Nov 2024 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9808E1DF26B;
+	Sun, 24 Nov 2024 12:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452135; cv=none; b=udzAL6v7NYxFqrctIvSauqW2CClm8o+x8WHHfTb84r7rJn2kcY3oFnOHxgf0+2PSNLoSMeI4XDQcozmAJYWQLDG+s2Pn5YnR5mqvaqXUWZ5U7mPXHLUl3zprSQEkNX28QtzHvgOPMDHG5jnvJqSMw1f9sbAWgyimCmlDtI5bH7Y=
+	t=1732452138; cv=none; b=Y/9rqcB9i5L8ZQtE68Dz4kt8r35xWLJiWDeKLmcB4akzRwCKKt/s/frzprWpuybyw13pgqop6L65KUVt6OFl/x0/P9A3ACo2Dr/HmanL2myxOGR3eUtQYKJlWA2Qxx+nZH3uDI5rQ/z4Jk6xBdWlfCscjR0d4Aasba3CIRDybeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452135; c=relaxed/simple;
-	bh=wQ+vV9+r0GA04N4cnRt5JvKV8b5DK370VKu85jWBr6I=;
+	s=arc-20240116; t=1732452138; c=relaxed/simple;
+	bh=6pfOqibsCE2HGXSmSvgOSWW28Hn3vo3smyAJ7UMWNP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfpME5ov2IbFW2gRpbX7lX1Ic79XDRcNNqhOY70atd+4D0FA31uTIAmrvOBfzE0QFK60jrjmw6qTOcqbjf1hLvs8SXjAcMCVuqGMMhECMdJb/yBilQv9rahv1sE6++GZ/PTG1/er18iPhmoUOTYgAQ+/SL3WGVz35yxkNGU+c90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPYfBpXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B254FC4CECC;
-	Sun, 24 Nov 2024 12:42:14 +0000 (UTC)
+	 MIME-Version; b=sGc3VcMqBmPyypW2NObaVBEvZiFvb1q74aXcRS1lidSej403k6J36hOyzHnlqFbj6S+p63D9bFejlclo5NFpCvMe8DMJgacN2qZX1jj66dC58/LgTrPlFp8iQ2VTMa2avRbX1FPnCvsn3rg/N4aTIjqh25XUsFre7HD+yMywMrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fy4y6FxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510F1C4CECC;
+	Sun, 24 Nov 2024 12:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452135;
-	bh=wQ+vV9+r0GA04N4cnRt5JvKV8b5DK370VKu85jWBr6I=;
+	s=k20201202; t=1732452138;
+	bh=6pfOqibsCE2HGXSmSvgOSWW28Hn3vo3smyAJ7UMWNP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPYfBpXDQEH3y5iAk6PoFS6eY49Ft3HCX4TmaHdEoudlT7tYkLaFta2YXX9ploh5a
-	 zCkrMH0TI+7RtpoUjYfSFhE7LgJA/wr87zB4OXP97vf8MvW9cd/AgLWa5LXx/ZMCBZ
-	 capJ3YYO96D3u3EAiSlwSI4EykOW/NjGqD6BYubLET6/tGgG2nYnCL54pz3pNrCyWY
-	 82mH4nzP1jX2z5LSJRO2fqAvsMmJF9GuhJRU0R39hxA4VV08AawixdCVR1ZacwiHk0
-	 J96N9z2UG5IZOfUWWJhbGSpMlv8ggVlLilt2/XwYNahxvkG7iZR4YOI4X+TT/V0pT6
-	 08PX6WimMqGVg==
+	b=Fy4y6FxOmiyK6hF+ttlhQ/j26840A+x8p26SHZT9PIx6JmGaSzi+24t3lXLkudIgO
+	 Y0ZZq35AL6uo8ZHtegVoEVrx6i6XBPoPScUZNjpnjyFNR/gP0r5ApL/+7iTCUtMoWp
+	 A3Y7NQ0APloWF1RLSTAf+8fgmxJlnhi2dYQ8gHDqC3qGljreORHE8746iOA0Urd+pX
+	 w30+YZcMFoPldp5hYnTvTLlvahJHwWyrXwUQ497qpprt67EiKL2S/L3q/YCoHn3yjr
+	 R+gDiXE34+9cdlV9Cvng9VSHzOTfVW55ySzKCxoGXRtXUQIKHYsRjNrcp8mXXy3xgN
+	 HjJYDbT0wZSgg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/5] btrfs: fix warning on PTR_ERR() against NULL device at btrfs_control_ioctl()
-Date: Sun, 24 Nov 2024 07:42:02 -0500
-Message-ID: <20241124124210.3337020-3-sashal@kernel.org>
+	will@kernel.org,
+	shuah@kernel.org,
+	mark.rutland@arm.com,
+	thiago.bauermann@linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 4/5] kselftest/arm64: Corrupt P0 in the irritator when testing SSVE
+Date: Sun, 24 Nov 2024 07:42:03 -0500
+Message-ID: <20241124124210.3337020-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124210.3337020-1-sashal@kernel.org>
 References: <20241124124210.3337020-1-sashal@kernel.org>
@@ -68,42 +70,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 2342d6595b608eec94187a17dc112dd4c2a812fa ]
+[ Upstream commit 3e360ef0c0a1fb6ce9a302e40b8057c41ba8a9d2 ]
 
-Smatch complains about calling PTR_ERR() against a NULL pointer:
+When building for streaming SVE the irritator for SVE skips updates of both
+P0 and FFR. While FFR is skipped since it might not be present there is no
+reason to skip corrupting P0 so switch to an instruction valid in streaming
+mode and move the ifdef.
 
-  fs/btrfs/super.c:2272 btrfs_control_ioctl() warn: passing zero to 'PTR_ERR'
-
-Fix this by calling PTR_ERR() against the device pointer only if it
-contains an error.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241107-arm64-fp-stress-irritator-v2-3-c4b9622e36ee@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/arm64/fp/sve-test.S | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index ea731fa8bd350..fc6ace10995c4 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2359,7 +2359,10 @@ static long btrfs_control_ioctl(struct file *file, unsigned int cmd,
- 					       &btrfs_root_fs_type);
- 		if (IS_ERR(device)) {
- 			mutex_unlock(&uuid_mutex);
--			ret = PTR_ERR(device);
-+			if (IS_ERR(device))
-+				ret = PTR_ERR(device);
-+			else
-+				ret = 0;
- 			break;
- 		}
- 		ret = !(device->fs_devices->num_devices ==
+diff --git a/tools/testing/selftests/arm64/fp/sve-test.S b/tools/testing/selftests/arm64/fp/sve-test.S
+index 07f14e279a904..7784c684a865b 100644
+--- a/tools/testing/selftests/arm64/fp/sve-test.S
++++ b/tools/testing/selftests/arm64/fp/sve-test.S
+@@ -459,7 +459,8 @@ function irritator_handler
+ 	movi	v9.16b, #2
+ 	movi	v31.8b, #3
+ 	// And P0
+-	rdffr	p0.b
++	ptrue	p0.d
++#ifndef SSVE
+ 	// And FFR
+ 	wrffr	p15.b
+ 
 -- 
 2.43.0
 
