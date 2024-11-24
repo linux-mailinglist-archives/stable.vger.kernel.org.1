@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-94720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C859D6E56
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA1E9D6E58
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37EEF281489
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:44:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B45280E09
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA8D1B395B;
-	Sun, 24 Nov 2024 12:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCEA1B4F2F;
+	Sun, 24 Nov 2024 12:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNOVI10H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJgkAu/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93E91B3953;
-	Sun, 24 Nov 2024 12:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A56B1B4F1E;
+	Sun, 24 Nov 2024 12:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452026; cv=none; b=UU3zVDWwfHIbxRQ7r9BreL2rW5YkwiHA6UXxQI3fMV4kRwKPZzBlMk3HXDnJ2u0mWUdOByqz5AKT9BZaVPZqrJEfZgS5qaZleT8YeHl85yhAcNLpgrZBepAqnE9zJlkHRWIwI+bx8eztvoE2NeaNKheyRk/51RTKFY8iAc80Jg4=
+	t=1732452029; cv=none; b=Q59nCGx85idpHNS0lF/2ARNmLSNfsleVOnWzrF+6kKbHM8x+W6YBlNSxOr9oj/v38kwaWpHeXWNuIjgyoSqEF8x5DxdMP4mcwsW5IyMO02fmt1WG+3HdAU4jYQrdsoeBveH8CRMKFvFYFg5LHet4V0zgFK4GSqzs5vo2fb20kMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452026; c=relaxed/simple;
-	bh=isrIzBVpqEHXAWK+7dtrVVpLZiim/bjAv0AHGXA4NBc=;
+	s=arc-20240116; t=1732452029; c=relaxed/simple;
+	bh=Cy/a9xwEJITcsYxgpLoRotrQ+JwMRODx+dWpWPOJbR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKMpQU28nzC8ppigJHELbZwH013eRcJ/1wy5KY1b+lGd5BN7nsbvpAtgILOBZly+t42FCtdmHajnQOvMq/ceRv7h7qhD/VYWAnRP0I8/jmdh5+47f3GNlpTkYHXx7GkONqSww4+5nmyt837WkunWTzXVTt6Sz2VQ5PrsvkZIvys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNOVI10H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8160FC4CED1;
-	Sun, 24 Nov 2024 12:40:24 +0000 (UTC)
+	 MIME-Version; b=bk+sC8jiCGN7oD2VO5AG0TyxUw50qJGTsjUDzTuDVO5HpZ5omtzP9J7sfwTIDSEKFP+tbG/6+v9yLS8nIzf3vHtb6rbE+1kcCzYDT0qCIkf7IVU4HrIMi85FjmUzCFRKqBN2FLYIVf2GYla902NqC7VPpyEXjLZqLQYqJ1Fn8ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJgkAu/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F73DC4CECC;
+	Sun, 24 Nov 2024 12:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452025;
-	bh=isrIzBVpqEHXAWK+7dtrVVpLZiim/bjAv0AHGXA4NBc=;
+	s=k20201202; t=1732452028;
+	bh=Cy/a9xwEJITcsYxgpLoRotrQ+JwMRODx+dWpWPOJbR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNOVI10H3ZWEmHlLfULf5QlfRjVXAeZw4G+KII4eSiuReRFk/o68pEHTILeV+oPzO
-	 dqntUldKXx+oIku5PQhAeV9mNKQioB0lYbRlwVYu2dkVkiqnFDSyvgB8SxzsiIKpRx
-	 5liFwAky15EJfT/9ysBA9qE6I4KYnUST8U29QUomO1wsAeG5m7jsdrwJycOqvnvUTO
-	 HjgHT1CCF1KiD2bKTsRelsBeawPwZUP7A7JD6HTiFylYYeQwXI2IuEjY3RWAAZweFc
-	 pY7z2ZuwMmu883sikCpd/GpRFjsx0goSJW6sK9wKd348Q8+4geIwZ5zC4Qz0Ybd8La
-	 /uZikzwHVLIzA==
+	b=qJgkAu/lm8c/GBwGtf9zq+vvyi45FrLSROlOatYqwq4UzyiLFFGesML79ZhYs/9sj
+	 kfMMJmRY5cWaRConVpePYopA6VQ8QCecKE2pbELLmq+aeu9RBotGs6iP10kEJ0bxt2
+	 8FMESmNoyvKDKjwAeKPOXgKtaGquOLycoq5g8ymPn7+g3iZWcA2sussE/Cz1Ig9cK+
+	 KlR0aHw3s2eelA/re2g5m41SiwVyaVVQ+ATaQUxWrkgyVVoSKGsHHq2T8/VWiuMb7D
+	 ZobD0JmE1icbut90cugqYt93c9Gn0qPqRvW/8O4anU4D3+aQkqmPghKSh8WZpHZN1T
+	 G0AQZsptjofug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Thomas Richter <tmricht@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	will@kernel.org,
-	shuah@kernel.org,
-	mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 05/16] kselftest/arm64: Log fp-stress child startup errors to stdout
-Date: Sun, 24 Nov 2024 07:39:42 -0500
-Message-ID: <20241124124009.3336072-5-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	sumanthk@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 06/16] s390/cpum_sf: Handle CPU hotplug remove during sampling
+Date: Sun, 24 Nov 2024 07:39:43 -0500
+Message-ID: <20241124124009.3336072-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124009.3336072-1-sashal@kernel.org>
 References: <20241124124009.3336072-1-sashal@kernel.org>
@@ -69,69 +69,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Mark Brown <broonie@kernel.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit dca93d29845dfed60910ba13dbfb6ae6a0e19f6d ]
+[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
 
-Currently if we encounter an error between fork() and exec() of a child
-process we log the error to stderr. This means that the errors don't get
-annotated with the child information which makes diagnostics harder and
-means that if we miss the exit signal from the child we can deadlock
-waiting for output from the child. Improve robustness and output quality
-by logging to stdout instead.
+CPU hotplug remove handling triggers the following function
+call sequence:
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241023-arm64-fp-stress-exec-fail-v1-1-ee3c62932c15@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
+   ...
+   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
+
+The s390 CPUMF sampling CPU hotplug handler invokes:
+
+ s390_pmu_sf_offline_cpu()
+ +-->  cpusf_pmu_setup()
+       +--> setup_pmc_cpu()
+            +--> deallocate_buffers()
+
+This function de-allocates all sampling data buffers (SDBs) allocated
+for that CPU at event initialization. It also clears the
+PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
+
+With the event still being active on the removed CPU, the CPU event
+hotplug support in kernel performance subsystem triggers the
+following function calls on the removed CPU:
+
+  perf_event_exit_cpu()
+  +--> perf_event_exit_cpu_context()
+       +--> __perf_event_exit_context()
+	    +--> __perf_remove_from_context()
+	         +--> event_sched_out()
+	              +--> cpumsf_pmu_del()
+	                   +--> cpumsf_pmu_stop()
+                                +--> hw_perf_event_update()
+
+to stop and remove the event. During removal of the event, the
+sampling device driver tries to read out the remaining samples from
+the sample data buffers (SDBs). But they have already been freed
+(and may have been re-assigned). This may lead to a use after free
+situation in which case the samples are most likely invalid. In the
+best case the memory has not been reassigned and still contains
+valid data.
+
+Remedy this situation and check if the CPU is still in reserved
+state (bit PMU_F_RESERVED set). In this case the SDBs have not been
+released an contain valid data. This is always the case when
+the event is removed (and no CPU hotplug off occured).
+If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
+
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/fp-stress.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/s390/kernel/perf_cpum_sf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/fp-stress.c b/tools/testing/selftests/arm64/fp/fp-stress.c
-index faac24bdefeb9..80f22789504d6 100644
---- a/tools/testing/selftests/arm64/fp/fp-stress.c
-+++ b/tools/testing/selftests/arm64/fp/fp-stress.c
-@@ -79,7 +79,7 @@ static void child_start(struct child_data *child, const char *program)
- 		 */
- 		ret = dup2(pipefd[1], 1);
- 		if (ret == -1) {
--			fprintf(stderr, "dup2() %d\n", errno);
-+			printf("dup2() %d\n", errno);
- 			exit(EXIT_FAILURE);
- 		}
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index 48fa9471660a8..cf9a65cdbedb6 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1922,7 +1922,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
+ 	event->hw.state |= PERF_HES_STOPPED;
  
-@@ -89,7 +89,7 @@ static void child_start(struct child_data *child, const char *program)
- 		 */
- 		ret = dup2(startup_pipe[0], 3);
- 		if (ret == -1) {
--			fprintf(stderr, "dup2() %d\n", errno);
-+			printf("dup2() %d\n", errno);
- 			exit(EXIT_FAILURE);
- 		}
- 
-@@ -107,16 +107,15 @@ static void child_start(struct child_data *child, const char *program)
- 		 */
- 		ret = read(3, &i, sizeof(i));
- 		if (ret < 0)
--			fprintf(stderr, "read(startp pipe) failed: %s (%d)\n",
--				strerror(errno), errno);
-+			printf("read(startp pipe) failed: %s (%d)\n",
-+			       strerror(errno), errno);
- 		if (ret > 0)
--			fprintf(stderr, "%d bytes of data on startup pipe\n",
--				ret);
-+			printf("%d bytes of data on startup pipe\n", ret);
- 		close(3);
- 
- 		ret = execl(program, program, NULL);
--		fprintf(stderr, "execl(%s) failed: %d (%s)\n",
--			program, errno, strerror(errno));
-+		printf("execl(%s) failed: %d (%s)\n",
-+		       program, errno, strerror(errno));
- 
- 		exit(EXIT_FAILURE);
- 	} else {
+ 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
+-		hw_perf_event_update(event, 1);
++		/* CPU hotplug off removes SDBs. No samples to extract. */
++		if (cpuhw->flags & PMU_F_RESERVED)
++			hw_perf_event_update(event, 1);
+ 		event->hw.state |= PERF_HES_UPTODATE;
+ 	}
+ 	perf_pmu_enable(event->pmu);
 -- 
 2.43.0
 
