@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-94824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A89D6F6D
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:09:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FCD9D6F6C
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:09:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB6C161025
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD567281A15
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106EA1EBA06;
-	Sun, 24 Nov 2024 12:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD5F1EBFE1;
+	Sun, 24 Nov 2024 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv19EBVE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gL7Dq8XB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9DB1D6DC4;
-	Sun, 24 Nov 2024 12:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006A31EBA18;
+	Sun, 24 Nov 2024 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452643; cv=none; b=DcJxT/2RM8h3X3ZhN25LyMrQTkqxszdtsz2spV9m1OW2VbGSwbPZRrB8SACSlbDHRFZyok1qZZRB/3Na9JffsUL3cYGiu6FipCbtVtuO1ZCbmbRh3IGM7MEH6QM5gECAUKYRxMZy/EgVrtG6nrkQ6jNCe2Fpz0FJ8ezeMBiUWZg=
+	t=1732452645; cv=none; b=uPma16JVNqu1fqr1YYit7tcQBlhjYaKcIBEXrzPc5yQ9Yul1tXEvhsQCDkvhZkVmyidNCYC4rnhPibW1zxLeugs5twIEhOd/ivvTNjI9abSjxwukkEJvdWOYBGLoqRU6bCZDzTTwwAU+RnxAf2QO+Nnn4DhpafTD+8ceYMhu0+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452643; c=relaxed/simple;
-	bh=sptF3TKXrITAdRPjVBoPDxhiblKSGw6H38L88c260Jc=;
+	s=arc-20240116; t=1732452645; c=relaxed/simple;
+	bh=kCm1YCI6V48RKknhFTwB8m8Gp1l72xVFaMsZCoH7Bus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hojfb7ga1pqa+2ghaOPa3q/PhQLDbv7ubgj7RAwxrwkRWFtaSOSqcuJEaZu7NvoyStuprEcLvhIaj5mq0qQxx6+Kr9nz85BdVdMD9SATEMTW4t+hihyKCK/S6CxYuIx/RPr+fUDpMBWCU1rEQO+K+S7Kv6aIYJguQ/TXmcs6RMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv19EBVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B06C4CECC;
-	Sun, 24 Nov 2024 12:50:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lDAvkdB3tje6tDZq9E78dnAVBqczBNyD7+2ADGbUVRFZVK+QCc/HKtoqKXZB6Q5mNXSlTuYzcaBlU9umB2CNcN0xcO5kJ2ZZd1I0+V/xQFFS8hmzdl5uCWRZ4BREcAq2rAErbpKZewMJF4sJ4y4SZTs2GOF/P7cFis7p9WPVd5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gL7Dq8XB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BF3C4CED3;
+	Sun, 24 Nov 2024 12:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452643;
-	bh=sptF3TKXrITAdRPjVBoPDxhiblKSGw6H38L88c260Jc=;
+	s=k20201202; t=1732452644;
+	bh=kCm1YCI6V48RKknhFTwB8m8Gp1l72xVFaMsZCoH7Bus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mv19EBVEB7xW98OO/3Mng4bvnr18PjMZSYwAyFqIet1Ly8dI98X1GB87+xbIJYhlv
-	 GiLIuIVvCiFXTmK5Z33u5abhfA4CukhI7tU+MsGIjFbyeJMcltMI9STU+HFJNBd0LK
-	 VKZIUiIjb13NQ0fLe+g4FgjRQVUphxLGhpzcfahgE0g+aOJgSurnVkVO8cc85KA9hg
-	 9EHrj1KtyE7ncbbKRL8dRg7OYqYLjQdCWXWLsGr4xA/rRdH3FVtekYal+hE/vwr0nY
-	 yLGTuXFZcJVxf23k6Eu6ygWCXeMrDKM/pCVGNUhfVWifkDzUZsGkywFfN7I6HyrDSw
-	 ZsLkkUi7keI3g==
+	b=gL7Dq8XBB553xeNqFZH87O2ol0R7c7zUE4SwmMRlYy7gL4p8JBqjL5JC2kpzh2hIS
+	 h3g0lXVRcnAhjbfPrmdlUFjeF9MDa0HfHUDPMAb1hiMwiXjHeM6ZxrHOWgoZUhyB5p
+	 RLw1qTLudMchO8J2ytzNCQte0urwGH8mNJeBJhEaak2b7W/gkO9/lk+Pf4x1NePJxu
+	 koGNCEztVDyIPiuCq0xdTXsH/pUrg1fiIJSRqYN9NeNqMawK3uOwINW7BJGEPASDyn
+	 Q1bnmRAIzKnWOO02zoFImMN7/cvVvdAAzyTLe0GKWjtBEwp183jnRY7WBefkYVMRzN
+	 8qKeG1BPTRKHw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.12 19/23] regmap: maple: Provide lockdep (sub)class for maple tree's internal lock
-Date: Sun, 24 Nov 2024 07:48:30 -0500
-Message-ID: <20241124124919.3338752-19-sashal@kernel.org>
+	fenghua.yu@intel.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 20/23] selftests/resctrl: Protect against array overflow when reading strings
+Date: Sun, 24 Nov 2024 07:48:31 -0500
+Message-ID: <20241124124919.3338752-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124919.3338752-1-sashal@kernel.org>
 References: <20241124124919.3338752-1-sashal@kernel.org>
@@ -60,127 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit 1ed9b927e7dd8b8cff13052efe212a8ff72ec51d ]
+[ Upstream commit 46058430fc5d39c114f7e1b9c6ff14c9f41bd531 ]
 
-In some cases when using the maple tree register cache, the lockdep
-validator might complain about invalid deadlocks:
+resctrl selftests discover system properties via a variety of sysfs files.
+The MBM and MBA tests need to discover the event and umask with which to
+configure the performance event used to measure read memory bandwidth.
+This is done by parsing the contents of
+/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
+Similarly, the resctrl selftests discover the cache size via
+/sys/bus/cpu/devices/cpu<id>/cache/index<index>/size.
 
-[7.131886]  Possible interrupt unsafe locking scenario:
+Take care to do bounds checking when using fscanf() to read the
+contents of files into a string buffer because by default fscanf() assumes
+arbitrarily long strings. If the file contains more bytes than the array
+can accommodate then an overflow will occur.
 
-[7.131890]        CPU0                    CPU1
-[7.131893]        ----                    ----
-[7.131896]   lock(&mt->ma_lock);
-[7.131904]                                local_irq_disable();
-[7.131907]                                lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131916]                                lock(&mt->ma_lock);
-[7.131925]   <Interrupt>
-[7.131928]     lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131936]
-                *** DEADLOCK ***
+Provide a maximum field width to the conversion specifier to protect
+against array overflow. The maximum is one less than the array size because
+string input stores a terminating null byte that is not covered by the
+maximum field width.
 
-[7.131939] no locks held by swapper/0/0.
-[7.131944]
-               the shortest dependencies between 2nd lock and 1st lock:
-[7.131950]  -> (&mt->ma_lock){+.+.}-{2:2} {
-[7.131966]     HARDIRQ-ON-W at:
-[7.131973]                       lock_acquire+0x200/0x330
-[7.131986]                       _raw_spin_lock+0x50/0x70
-[7.131998]                       regcache_maple_write+0x68/0xe0
-[7.132010]                       regcache_write+0x6c/0x90
-[7.132019]                       _regmap_read+0x19c/0x1d0
-[7.132029]                       _regmap_update_bits+0xc0/0x148
-[7.132038]                       regmap_update_bits_base+0x6c/0xa8
-[7.132048]                       rk8xx_probe+0x22c/0x3d8
-[7.132057]                       rk8xx_spi_probe+0x74/0x88
-[7.132065]                       spi_probe+0xa8/0xe0
-
-[...]
-
-[7.132675]   }
-[7.132678]   ... key      at: [<ffff800082943c20>] __key.0+0x0/0x10
-[7.132691]   ... acquired at:
-[7.132695]    _raw_spin_lock+0x50/0x70
-[7.132704]    regcache_maple_write+0x68/0xe0
-[7.132714]    regcache_write+0x6c/0x90
-[7.132724]    _regmap_read+0x19c/0x1d0
-[7.132732]    _regmap_update_bits+0xc0/0x148
-[7.132741]    regmap_field_update_bits_base+0x74/0xb8
-[7.132751]    vop2_plane_atomic_update+0x480/0x14d8 [rockchipdrm]
-[7.132820]    drm_atomic_helper_commit_planes+0x1a0/0x320 [drm_kms_helper]
-
-[...]
-
-[7.135112] -> (rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock){-...}-{2:2} {
-[7.135130]    IN-HARDIRQ-W at:
-[7.135136]                     lock_acquire+0x200/0x330
-[7.135147]                     _raw_spin_lock_irqsave+0x6c/0x98
-[7.135157]                     regmap_lock_spinlock+0x20/0x40
-[7.135166]                     regmap_read+0x44/0x90
-[7.135175]                     vop2_isr+0x90/0x290 [rockchipdrm]
-[7.135225]                     __handle_irq_event_percpu+0x124/0x2d0
-
-In the example above, the validator seems to get the scope of
-dependencies wrong, since the regmap instance used in rk8xx-spi driver
-has nothing to do with the instance from vop2.
-
-Improve validation by sharing the regmap's lockdep class with the maple
-tree's internal lock, while also providing a subclass for the latter.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20241031-regmap-maple-lockdep-fix-v2-1-06a3710f3623@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/internal.h       | 1 +
- drivers/base/regmap/regcache-maple.c | 3 +++
- drivers/base/regmap/regmap.c         | 1 +
- 3 files changed, 5 insertions(+)
+ tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
+ tools/testing/selftests/resctrl/resctrlfs.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index 83acccdc10089..bdb450436cbc5 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -59,6 +59,7 @@ struct regmap {
- 			unsigned long raw_spinlock_flags;
- 		};
- 	};
-+	struct lock_class_key *lock_key;
- 	regmap_lock lock;
- 	regmap_unlock unlock;
- 	void *lock_arg; /* This is passed to lock/unlock functions */
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 8d27d3653ea3e..23da7b31d7153 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -355,6 +355,9 @@ static int regcache_maple_init(struct regmap *map)
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index 8c275f6b4dd77..1bba85e4c0675 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -160,7 +160,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
  
- 	mt_init(mt);
- 
-+	if (!mt_external_lock(mt) && map->lock_key)
-+		lockdep_set_class_and_subclass(&mt->ma_lock, map->lock_key, 1);
-+
- 	if (!map->num_reg_defaults)
- 		return 0;
- 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 4ded93687c1f0..53131a7ede0a6 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -745,6 +745,7 @@ struct regmap *__regmap_init(struct device *dev,
- 						   lock_key, lock_name);
- 		}
- 		map->lock_arg = map;
-+		map->lock_key = lock_key;
+ 		return -1;
  	}
+-	if (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count read");
+ 		fclose(fp);
  
- 	/*
+@@ -178,7 +178,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+ 
+ 		return -1;
+ 	}
+-	if  (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if  (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count write");
+ 		fclose(fp);
+ 
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 250c320349a78..a53cd1cb6e0c6 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -182,7 +182,7 @@ int get_cache_size(int cpu_no, const char *cache_type, unsigned long *cache_size
+ 
+ 		return -1;
+ 	}
+-	if (fscanf(fp, "%s", cache_str) <= 0) {
++	if (fscanf(fp, "%63s", cache_str) <= 0) {
+ 		ksft_perror("Could not get cache_size");
+ 		fclose(fp);
+ 
 -- 
 2.43.0
 
