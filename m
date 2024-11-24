@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-94997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF0F9D721B
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:59:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1F49D7220
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:59:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6346B283F09
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75ED416353D
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1741EF0BA;
-	Sun, 24 Nov 2024 13:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707721F12F6;
+	Sun, 24 Nov 2024 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBycQ0mG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCsfWCa6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CC11B85C9;
-	Sun, 24 Nov 2024 13:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EDB18C03D;
+	Sun, 24 Nov 2024 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455528; cv=none; b=uSCBzwGSaK/755ubv+9d6Bt309p4BjRkjTDL7kCM8JoJIRLB4Hf4wMmNe8+gO/CR0o2nhmpkyjP0CKkkxdPNlJQbPsngsHg55VDSXGPFOClGLKziplP/rziCV3Az1Wbzz2SWIf3dntN/v0R1nWqqnEVMTISDHWuo/f2osHd7pIo=
+	t=1732455530; cv=none; b=pOZvAvU+tK4hLeIoZkDLF+gggnC3vG65o22YpjvZis1Ert0S/xY/SyRsv3GEWKgJF9LwQYTCsnWE5SIjU0+rptj+LRrNW3MlbxNi51Ip9NJDM1F6DFZLBmfvOxMTxZ9bexPVposqZqpdMhaCjxTWRXshWLiF6WCylaeUb1WSluA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455528; c=relaxed/simple;
-	bh=8qPqJ9XaSHKO/URX1HHWKKQPUO2Eg46a4tf/bc3qkko=;
+	s=arc-20240116; t=1732455530; c=relaxed/simple;
+	bh=6GFT+OeYx+JT6C9nPLP0P141CUApUlB6QI36hVGW83I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lpoea76A9ITsiIqcKXK7ZUSpBwuEye0CbpG3y//AbZogQYs4Y8ciK8PHmG/zbipG2mX1XxNhSZ/vLMY4vOU66L1VnE3F2IAHsjI7CFZH2mSkNkSS9pEj3GHQVH2osliVExqaA9+knA3cstt5g93YqtddYVNrKHd+9hbD6YveF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBycQ0mG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AA9C4CECC;
-	Sun, 24 Nov 2024 13:38:47 +0000 (UTC)
+	 MIME-Version; b=mFU8J2kpDG/TuM5FFbuTtuTI4U4txOBOwjxRIrZHrujAg3nIteVH2FX7N5nntDEgkcUifRvM1V8fMSWl3AC1IasUtx/6fPU/IhgkJcsD4PkDxRXQYGmALvtEGxPSL/Lomckui1SNIBMBy/v+vsFk+zjFrlyg0gutnGyQP8bikgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCsfWCa6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFB3C4CED1;
+	Sun, 24 Nov 2024 13:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455528;
-	bh=8qPqJ9XaSHKO/URX1HHWKKQPUO2Eg46a4tf/bc3qkko=;
+	s=k20201202; t=1732455530;
+	bh=6GFT+OeYx+JT6C9nPLP0P141CUApUlB6QI36hVGW83I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBycQ0mGuIz1zt6GPjJ6zQwZQ2jDbFGejGtkn7i4wp/Qso1Vh0Mj6Eyuetg1x4dKT
-	 7kQE4PqJHl+gUXqwP5ujVqMdAeiX7SU0uUN0daFtptuDYSV/LSyX94ewz8I5ka+QZH
-	 T0xGXpBWzWhfpoJ5HutsBdvSFjGYvQYrZFzieOyQlUfC+AAw7m/W5evM2VWeO+5ZZj
-	 SdPf1WtVOd0yERbY9OPr8VvoL2DWkpI8g6VLR96clwyQBjEwAlFKZzo37pugr3sDhQ
-	 jSwy6DItSoWJ5wiswEKBDgJVLGRCqJRgkwbE28fgYOGEqCqzzSDoq2gv7+x5j7oFSC
-	 WbYTYfGC6ouVg==
+	b=UCsfWCa6IUlPhXlVR3Doi3O1lIXTFzPe6ISnFv6Qoc9ro6VBjgvj59ZjdHvQMChaG
+	 NTQq3NAyNX1b+vT57zTFIx6eE3w8msHZST3cmfckjnehCtGl5tqbpcBfDQ/0arkRp+
+	 yZZeoBvbtsxizqmeX7PF3BQDSXAASLX7XpC/SwSVbvbXFuAUlMGmxgc0sj2hFwzv9G
+	 xCoe6tm0Xb+4ChPj71Ny6LA0/VwWmqNqVVKYor0Q2OprrQEXKXraPSPSi8brvvrHMA
+	 UP3YjxrGVtyQXX+Wup+66+xdt28tyklvXssmqhFbcWZTwjeMzwTwFfvCB7rrRtquKk
+	 BgMwS3oCxsZtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hao Qin <hao.qin@mediatek.com>,
+Cc: Jonathan McCrohan <jmccrohan@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	marcel@holtmann.org,
 	luiz.dentz@gmail.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-bluetooth@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 101/107] Bluetooth: btusb: Add new VID/PID 0489/e111 for MT7925
-Date: Sun, 24 Nov 2024 08:30:01 -0500
-Message-ID: <20241124133301.3341829-101-sashal@kernel.org>
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 102/107] Bluetooth: btusb: Add new VID/PID 0489/e124 for MT7925
+Date: Sun, 24 Nov 2024 08:30:02 -0500
+Message-ID: <20241124133301.3341829-102-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -71,18 +67,18 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Hao Qin <hao.qin@mediatek.com>
+From: Jonathan McCrohan <jmccrohan@gmail.com>
 
-[ Upstream commit faa5fd605d2081b6c9fa2355b59582d4ccd24b16 ]
+[ Upstream commit 679cb60fd60774798719c3e449874a168642a8e6 ]
 
-Add VID 0489 & PID e111 for MediaTek MT7925 USB Bluetooth chip.
+Add VID 0489 & PID e124 for MediaTek MT7925 USB Bluetooth chip.
 
 The information in /sys/kernel/debug/usb/devices about the Bluetooth
 device is listed as the below.
 
-T:  Bus=02 Lev=02 Prnt=02 Port=04 Cnt=02 Dev#=  4 Spd=480  MxCh= 0
+T:  Bus=01 Lev=01 Prnt=01 Port=08 Cnt=02 Dev#=  3 Spd=480  MxCh= 0
 D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e111 Rev= 1.00
+P:  Vendor=0489 ProdID=e124 Rev= 1.00
 S:  Manufacturer=MediaTek Inc.
 S:  Product=Wireless_Device
 S:  SerialNumber=000000000
@@ -120,7 +116,7 @@ I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
 E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
 E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
 
-Signed-off-by: Hao Qin <hao.qin@mediatek.com>
+Signed-off-by: Jonathan McCrohan <jmccrohan@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -128,18 +124,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index e1e8166c67307..e36818e9d5e11 100644
+index e36818e9d5e11..2a90033c014b7 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -642,6 +642,8 @@ static const struct usb_device_id quirks_table[] = {
+@@ -650,6 +650,8 @@ static const struct usb_device_id quirks_table[] = {
  						     BTUSB_WIDEBAND_SPEECH },
- 
- 	/* Additional MediaTek MT7925 Bluetooth devices */
-+	{ USB_DEVICE(0x0489, 0xe111), .driver_info = BTUSB_MEDIATEK |
+ 	{ USB_DEVICE(0x0489, 0xe11e), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe124), .driver_info = BTUSB_MEDIATEK |
 +						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe113), .driver_info = BTUSB_MEDIATEK |
+ 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
  						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe118), .driver_info = BTUSB_MEDIATEK |
+ 	{ USB_DEVICE(0x13d3, 0x3602), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.43.0
 
