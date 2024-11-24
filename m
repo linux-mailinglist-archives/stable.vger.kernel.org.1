@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-94784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3E79D6F16
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:00:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2179D6F11
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:00:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E81162143
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:59:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7404C281812
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894B01E22EB;
-	Sun, 24 Nov 2024 12:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F5A1917ED;
+	Sun, 24 Nov 2024 12:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVhNeUy9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSYhaMbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D841E22E3;
-	Sun, 24 Nov 2024 12:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E061E2039;
+	Sun, 24 Nov 2024 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452395; cv=none; b=BiXb2Y0PXZd23LcsUuXzFsqEFFp8cEQPFTr8kVc5X199/nkAARu90KjA6V3/HlhD5EgvVd9MMJBqUtZDuPXUSfIbW39LX6LT3MCl52VLw/fAeawe240ovaZ1CrAHnuMgHn6ZvbXzCOeq7Gghhzjek3YWr6Jien+weN/Lx5pwJsY=
+	t=1732452398; cv=none; b=AA2zyPea/7g7m0zVQOvN4gfJJjSBXZB27NXaILcHbj+aVZhbKyYlTMzAgw1hxyO8o3BeYQ85boz+x1B4ybe0k9eKef8DVBGmyYDMiHehovBzIHdVCRlLKZhfmuCS/1vlGAyXYAa9qiGMdramp2H5Y1iyU79K425L++GQFyn+ALU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452395; c=relaxed/simple;
-	bh=OOs4+eiAwIjAgOT+wciiyQs1PkxA178hvLUPZ87+pTo=;
+	s=arc-20240116; t=1732452398; c=relaxed/simple;
+	bh=avy8Ko/HFA85hVi0V0aNqe0BratBVFdkgsMZUcyFfZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atEy9sd5mfYpo0ZLLU38Ml+BozMgN6B3uW/fquKJsVnFSkYZclW7KT0TUQYslrWFRr38Krr0o+lCKdQWn7WAz9oPJpeOm6UYjmHtNHD2RR6nhC14apvXPsXDsqABOTgKC8mGMW/Cic4mHMutM39n7TTm6Yarzoy63EdOz6R2Eo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVhNeUy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E46C4CED1;
-	Sun, 24 Nov 2024 12:46:33 +0000 (UTC)
+	 MIME-Version; b=hOV2XwoOovSGA5mnW03Z5Dk438qSB86d1IOviIvxhEAU5Xtlm255bSF4QK4qNDd4s9DUU3vYmeb+v1RUpIPGOYj35V7D9yR3XHmh3y4hdkPkETvmFAULYMEKVJRCKjxMjAGN/ulpahzzATGF65QZZ9Z+Xkw24KhRGqF5m+TWmTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSYhaMbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823B8C4CECC;
+	Sun, 24 Nov 2024 12:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452394;
-	bh=OOs4+eiAwIjAgOT+wciiyQs1PkxA178hvLUPZ87+pTo=;
+	s=k20201202; t=1732452397;
+	bh=avy8Ko/HFA85hVi0V0aNqe0BratBVFdkgsMZUcyFfZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVhNeUy9lMPWH/oh4RmRvQIjjMbLtGCQddAFiHPLq7tgLk2LY9Ecdrm5MzCyY9tYH
-	 PPbHL5ea5xv7iJqz//i6P/T4guJW6OGHUo6Ed3nbLKybJbwjI5pLxC1xvWkRv/zkmk
-	 l0L3MlqHWfNZtHB1PZVSWColNp0dPgGw94+KDg7DoP8Wf5ttLUKCcuD3HAl2kmWdlS
-	 Wbbh2XXyllU/B9/J9kavGXKnSyMm2R6RcDfd+7MFakNup8XuH/+QL+VxEeyVymOdFm
-	 Lv65tlHFwEu1RgUIbHZYfN3fbEWNSfAtZFJ3oSdN2rH4CkfEVMl97o+cFpBt3scsND
-	 2LDeLQ0MhAGEQ==
+	b=GSYhaMbIR7xnNQuRKm09tpwMSIkcMjS2skBabYecn0bzkhYRFRBLVYWsRjPUIPOqk
+	 J5OywifSocz/rnGsQ2D1tTMBe6Fgn69BO7sdcCHg73B6srOSrqugXrYbZwZiOGh4f/
+	 6/mwWvgDMktUWZUhS46TICoLvbUOKlBst42Uwg/SCCFnss0Img3I1qjDgt/QJrFUiZ
+	 WExpxNykr3C2v6tUCpdWRGaoqMRGE0ptypqgNkxr6rG3DR1BJgoTrpUkcvARfQ7rDU
+	 u2cYdlwKLLNBNqX7lSMPluPjuKWFunHklp1eRNmIPAR+63w5D0psqb1MaTk2vsHHCz
+	 l+e1eDQLX1MWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	brauner@kernel.org,
-	viro@zeniv.linux.org.uk,
-	dan.j.williams@intel.com,
-	kevin.tian@intel.com,
-	dlechner@baylibre.com,
-	mingo@kernel.org,
-	ubizjak@gmail.com
-Subject: [PATCH AUTOSEL 6.12 4/5] cleanup: Adjust scoped_guard() macros to avoid potential warning
-Date: Sun, 24 Nov 2024 07:46:16 -0500
-Message-ID: <20241124124623.3337983-4-sashal@kernel.org>
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	rdunlap@infradead.org,
+	paulmck@kernel.org
+Subject: [PATCH AUTOSEL 6.12 5/5] timekeeping: Always check for negative motion
+Date: Sun, 24 Nov 2024 07:46:17 -0500
+Message-ID: <20241124124623.3337983-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124124623.3337983-1-sashal@kernel.org>
 References: <20241124124623.3337983-1-sashal@kernel.org>
@@ -72,169 +70,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit fcc22ac5baf06dd17193de44b60dbceea6461983 ]
+[ Upstream commit c163e40af9b2331b2c629fd4ec8b703ed4d4ae39 ]
 
-Change scoped_guard() and scoped_cond_guard() macros to make reasoning
-about them easier for static analysis tools (smatch, compiler
-diagnostics), especially to enable them to tell if the given usage of
-scoped_guard() is with a conditional lock class (interruptible-locks,
-try-locks) or not (like simple mutex_lock()).
+clocksource_delta() has two variants. One with a check for negative motion,
+which is only selected by x86. This is a historic leftover as this function
+was previously used in the time getter hot paths.
 
-Add compile-time error if scoped_cond_guard() is used for non-conditional
-lock class.
+Since 135225a363ae timekeeping_cycles_to_ns() has unconditional protection
+against this as a by-product of the protection against 64bit math overflow.
 
-Beyond easier tooling and a little shrink reported by bloat-o-meter
-this patch enables developer to write code like:
+clocksource_delta() is only used in the clocksource watchdog and in
+timekeeping_advance(). The extra conditional there is not hurting anyone.
 
-int foo(struct my_drv *adapter)
-{
-	scoped_guard(spinlock, &adapter->some_spinlock)
-		return adapter->spinlock_protected_var;
-}
+Remove the config option and unconditionally prevent negative motion of the
+readout.
 
-Current scoped_guard() implementation does not support that,
-due to compiler complaining:
-error: control reaches end of non-void function [-Werror=return-type]
-
-Technical stuff about the change:
-scoped_guard() macro uses common idiom of using "for" statement to declare
-a scoped variable. Unfortunately, current logic is too hard for compiler
-diagnostics to be sure that there is exactly one loop step; fix that.
-
-To make any loop so trivial that there is no above warning, it must not
-depend on any non-const variable to tell if there are more steps. There is
-no obvious solution for that in C, but one could use the compound
-statement expression with "goto" jumping past the "loop", effectively
-leaving only the subscope part of the loop semantics.
-
-More impl details:
-one more level of macro indirection is now needed to avoid duplicating
-label names;
-I didn't spot any other place that is using the
-"for (...; goto label) if (0) label: break;" idiom, so it's not packed for
-reuse beyond scoped_guard() family, what makes actual macros code cleaner.
-
-There was also a need to introduce const true/false variable per lock
-class, it is used to aid compiler diagnostics reasoning about "exactly
-1 step" loops (note that converting that to function would undo the whole
-benefit).
-
-Big thanks to Andy Shevchenko for help on this patch, both internal and
-public, ranging from whitespace/formatting, through commit message
-clarifications, general improvements, ending with presenting alternative
-approaches - all despite not even liking the idea.
-
-Big thanks to Dmitry Torokhov for the idea of compile-time check for
-scoped_cond_guard() (to use it only with conditional locsk), and general
-improvements for the patch.
-
-Big thanks to David Lechner for idea to cover also scoped_cond_guard().
-
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lkml.kernel.org/r/20241018113823.171256-1-przemyslaw.kitszel@intel.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/all/20241031120328.599430157@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cleanup.h | 52 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 42 insertions(+), 10 deletions(-)
+ arch/x86/Kconfig                   | 1 -
+ kernel/time/Kconfig                | 5 -----
+ kernel/time/timekeeping_internal.h | 7 -------
+ 3 files changed, 13 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 038b2d523bf88..9464724b99737 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -285,14 +285,20 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
-  *      similar to scoped_guard(), except it does fail when the lock
-  *      acquire fails.
-  *
-+ *      Only for conditional locks.
-  */
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7b9a7e8f39acc..171be04eca1f5 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -145,7 +145,6 @@ config X86
+ 	select ARCH_HAS_PARANOID_L1D_FLUSH
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLKEVT_I8253
+-	select CLOCKSOURCE_VALIDATE_LAST_CYCLE
+ 	select CLOCKSOURCE_WATCHDOG
+ 	# Word-size accesses may read uninitialized data past the trailing \0
+ 	# in strings and cause false KMSAN reports.
+diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+index 8ebb6d5a106be..b0b97a60aaa6f 100644
+--- a/kernel/time/Kconfig
++++ b/kernel/time/Kconfig
+@@ -17,11 +17,6 @@ config ARCH_CLOCKSOURCE_DATA
+ config ARCH_CLOCKSOURCE_INIT
+ 	bool
  
-+#define __DEFINE_CLASS_IS_CONDITIONAL(_name, _is_cond)	\
-+static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
-+
- #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
-+	__DEFINE_CLASS_IS_CONDITIONAL(_name, false); \
- 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
- 	{ return *_T; }
- 
- #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
-+	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
- 	EXTEND_CLASS(_name, _ext, \
- 		     ({ void *_t = _T; if (_T && !(_condlock)) _t = NULL; _t; }), \
- 		     class_##_name##_t _T) \
-@@ -303,17 +309,40 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
- 	CLASS(_name, __UNIQUE_ID(guard))
- 
- #define __guard_ptr(_name) class_##_name##_lock_ptr
-+#define __is_cond_ptr(_name) class_##_name##_is_conditional
- 
--#define scoped_guard(_name, args...)					\
--	for (CLASS(_name, scope)(args),					\
--	     *done = NULL; __guard_ptr(_name)(&scope) && !done; done = (void *)1)
+-# Clocksources require validation of the clocksource against the last
+-# cycle update - x86/TSC misfeature
+-config CLOCKSOURCE_VALIDATE_LAST_CYCLE
+-	bool
 -
--#define scoped_cond_guard(_name, _fail, args...) \
--	for (CLASS(_name, scope)(args), \
--	     *done = NULL; !done; done = (void *)1) \
--		if (!__guard_ptr(_name)(&scope)) _fail; \
--		else
--
-+/*
-+ * Helper macro for scoped_guard().
-+ *
-+ * Note that the "!__is_cond_ptr(_name)" part of the condition ensures that
-+ * compiler would be sure that for the unconditional locks the body of the
-+ * loop (caller-provided code glued to the else clause) could not be skipped.
-+ * It is needed because the other part - "__guard_ptr(_name)(&scope)" - is too
-+ * hard to deduce (even if could be proven true for unconditional locks).
-+ */
-+#define __scoped_guard(_name, _label, args...)				\
-+	for (CLASS(_name, scope)(args);					\
-+	     __guard_ptr(_name)(&scope) || !__is_cond_ptr(_name);	\
-+	     ({ goto _label; }))					\
-+		if (0) {						\
-+_label:									\
-+			break;						\
-+		} else
-+
-+#define scoped_guard(_name, args...)	\
-+	__scoped_guard(_name, __UNIQUE_ID(label), args)
-+
-+#define __scoped_cond_guard(_name, _fail, _label, args...)		\
-+	for (CLASS(_name, scope)(args); true; ({ goto _label; }))	\
-+		if (!__guard_ptr(_name)(&scope)) {			\
-+			BUILD_BUG_ON(!__is_cond_ptr(_name));		\
-+			_fail;						\
-+_label:									\
-+			break;						\
-+		} else
-+
-+#define scoped_cond_guard(_name, _fail, args...)	\
-+	__scoped_cond_guard(_name, _fail, __UNIQUE_ID(label), args)
- /*
-  * Additional helper macros for generating lock guards with types, either for
-  * locks that don't have a native type (eg. RCU, preempt) or those that need a
-@@ -369,14 +398,17 @@ static inline class_##_name##_t class_##_name##_constructor(void)	\
+ # Timekeeping vsyscall support
+ config GENERIC_TIME_VSYSCALL
+ 	bool
+diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
+index 4ca2787d1642e..1d4854d5c386e 100644
+--- a/kernel/time/timekeeping_internal.h
++++ b/kernel/time/timekeeping_internal.h
+@@ -15,7 +15,6 @@ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
+ #define tk_debug_account_sleep_time(x)
+ #endif
+ 
+-#ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
+ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+ {
+ 	u64 ret = (now - last) & mask;
+@@ -26,12 +25,6 @@ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+ 	 */
+ 	return ret & ~(mask >> 1) ? 0 : ret;
  }
+-#else
+-static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+-{
+-	return (now - last) & mask;
+-}
+-#endif
  
- #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
-+__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
- __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
- __DEFINE_LOCK_GUARD_1(_name, _type, _lock)
- 
- #define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
-+__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
- __DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
- __DEFINE_LOCK_GUARD_0(_name, _lock)
- 
- #define DEFINE_LOCK_GUARD_1_COND(_name, _ext, _condlock)		\
-+	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true);		\
- 	EXTEND_CLASS(_name, _ext,					\
- 		     ({ class_##_name##_t _t = { .lock = l }, *_T = &_t;\
- 		        if (_T->lock && !(_condlock)) _T->lock = NULL;	\
+ /* Semi public for serialization of non timekeeper VDSO updates. */
+ extern raw_spinlock_t timekeeper_lock;
 -- 
 2.43.0
 
