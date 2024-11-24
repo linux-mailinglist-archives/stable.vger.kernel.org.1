@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-95240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62349D7562
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:37:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87509D75E8
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 17:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55297C26B37
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:10:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BC54C26D92
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2191FBEAB;
-	Sun, 24 Nov 2024 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52C9241A61;
+	Sun, 24 Nov 2024 13:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxVY6UT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKSy2tbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521521FBEA2;
-	Sun, 24 Nov 2024 13:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCC1B3F3D;
+	Sun, 24 Nov 2024 13:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456460; cv=none; b=cXd6fNV5T62nqfo+RIp1AdH+lp0hWVLJQ2LX8yIHnPBBfVJUKvDRDVkXI2f/6EhhiDVxzmGgP1qgIYgoK/CjqGaHRxWpd6luM8aRu2XHRzTmHRp8JY2I8D1scCstuu5WL/HzznfiJjp68wVgy72FudfYxMj/yiR0ICfzydQXhQg=
+	t=1732456461; cv=none; b=ufmeRCc24dEPGp4zXC1ye192ZZcZ27Kxz4z5k40uabjzC7yC/wlFGR2ZXo1YAupvLL5InSG4SYFWjPQyJKlv0+EzFSQmHKNV9XNmsrDhLLAOVo9QgcKX8MJg4DP/rJg+/Q+9nMHYLzoXVQW8MZ5uqsP0L2RtRtNXUgrRtPnJvD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456460; c=relaxed/simple;
-	bh=u0snkxDIwv2nxbiqT7h6JLTyhIu6adGY5Qj7vAFbXKU=;
+	s=arc-20240116; t=1732456461; c=relaxed/simple;
+	bh=UfvA3jp7HA7D1xdiFW8nzCh+DbA83drGo8aRe/3mfk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VD7t+2a2H6cNloiUh8caK/Ginhn9QvPlk1wl38kOzAnoaEIIipmdoZBMqsVtTewIsMNJArJRJw0bPoIEEZKxBsE0ROw/4WK95ORZeyikDjFEkVdljYZI6kfLrCFdBSFdVB1nalZdCb4YMRwf7a4Xah0ieE9yM5WIFGd3/S6BYMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxVY6UT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89549C4CED1;
-	Sun, 24 Nov 2024 13:54:18 +0000 (UTC)
+	 MIME-Version; b=LPjlcb303WlFlo8fgSGzX8GCIW2TTR5m53rdT9SWzjG8AtoRt9pkJRKri7olsSlzkEd4A/V5k4YQ8StAmpXsIH9YzRbc8XSIjgLXhdRpHvNCZbqH0giTZZafhpnTi1FDNW3Ld4G8zg4bKJpMx4Tcq+LC2cfRIj5lBTepJvMAh8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKSy2tbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9A0C4CED3;
+	Sun, 24 Nov 2024 13:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456459;
-	bh=u0snkxDIwv2nxbiqT7h6JLTyhIu6adGY5Qj7vAFbXKU=;
+	s=k20201202; t=1732456461;
+	bh=UfvA3jp7HA7D1xdiFW8nzCh+DbA83drGo8aRe/3mfk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxVY6UT35FQKIw3kWx6UHhOGSwnwRtmJ7+0J7HcKUr3wn/+ZRkR63I1uLzEZLc2cE
-	 0MtqVLZc/pHP4AjTYdXCFD41XRE3voR/ljCyR9Wl63yCDZPwUmxISedqG/q86BFt9j
-	 6bKQA3Mv+ceCH8paiRHGftirfHiqj7YHtB11Q0YUSoU19o7mPtN44io/dhRczV4gAt
-	 ky73ugWIwOLJwG1Vfx1jjgjSYeFqk0kSL73wxpowdm2G2iIQi9d/oZbBFJIsG+i5/c
-	 PA8NOBmwBzNlHkEqxxYAPpN4/V+J2wb00snaraCfPxAt/9M5RRSof0xO8d0+i8agrc
-	 rG57Xn1e+SKRQ==
+	b=gKSy2tbg73kKQOovr7yYv7xa2wwcN3ymrNhBJmkh1n6qytPaOh1tGNMk00dhWS/UF
+	 zDTSB5dykgG6G2dkQMllMv7kozhGxIeQ2YDtsutL8jVzdgCLCD1K93tg78+HmfYNMp
+	 Uw0f991ACLjWBzBjxYdCfhsI/k4lcByi9DZwX4+iWiwcriwYN7tB7QT1dQO/zNC3Hm
+	 bYsiHpEGhIbpOJbUssMB2nc03Kvu049lWoay52Yx8toDwPvzhzrAUeRXc5I3lmtDDt
+	 ideyTgNHIysHPFPtbENlcgbQXQLOGXW/H9JGTanqF0C8KCoEQrUvmQTOc2joPy24kw
+	 de7sodxVI0ULA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nic_swsd@realtek.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/33] r8169: don't apply UDP padding quirk on RTL8126A
-Date: Sun, 24 Nov 2024 08:53:17 -0500
-Message-ID: <20241124135410.3349976-5-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 06/33] samples/bpf: Fix a resource leak
+Date: Sun, 24 Nov 2024 08:53:18 -0500
+Message-ID: <20241124135410.3349976-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135410.3349976-1-sashal@kernel.org>
 References: <20241124135410.3349976-1-sashal@kernel.org>
@@ -71,55 +67,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
+[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
 
-Vendor drivers r8125/r8126 indicate that this quirk isn't needed
-any longer for RTL8126A. Mimic this in r8169.
+The opened file should be closed in show_sockopts(), otherwise resource
+leak will occur that this problem was discovered by reading code
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ samples/bpf/test_cgrp2_sock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 3aa1dda3406cd..b60add52f4497 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4155,8 +4155,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- {
- 	unsigned int padto = 0, len = skb->len;
+diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
+index b0811da5a00f3..3f56519a1ccd7 100644
+--- a/samples/bpf/test_cgrp2_sock.c
++++ b/samples/bpf/test_cgrp2_sock.c
+@@ -174,8 +174,10 @@ static int show_sockopts(int family)
+ 		return 1;
+ 	}
  
--	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
--	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
-+	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
-+	    skb_transport_header_was_set(skb)) {
- 		unsigned int trans_data_len = skb_tail_pointer(skb) -
- 					      skb_transport_header(skb);
- 
-@@ -4180,9 +4180,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
- 					   struct sk_buff *skb)
- {
--	unsigned int padto;
-+	unsigned int padto = 0;
- 
--	padto = rtl8125_quirk_udp_padto(tp, skb);
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		padto = rtl8125_quirk_udp_padto(tp, skb);
-+		break;
-+	default:
-+		break;
+-	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
++	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
++		close(sd);
+ 		return 1;
 +	}
  
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_34:
+ 	mark = get_somark(sd);
+ 	prio = get_priority(sd);
 -- 
 2.43.0
 
