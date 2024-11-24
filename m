@@ -1,84 +1,145 @@
-Return-Path: <stable+bounces-94802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3809D6F38
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:04:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2557D9D6F34
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:04:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCF81623D1
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:04:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D632F2811A5
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5CB1E5718;
-	Sun, 24 Nov 2024 12:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D091E5733;
+	Sun, 24 Nov 2024 12:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFeZLnGG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9p7dreA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B9F1E570A;
-	Sun, 24 Nov 2024 12:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C45B1E5721;
+	Sun, 24 Nov 2024 12:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452463; cv=none; b=IYrUlrXLVcGzcgXM4mDM3Ja4Ff66WyGhZUe9ROMJFaGHNjd+jBk8PH212cfrPv+DzKgDJ0enKsNAz2s9DzSiz4QUeQO/Kg+QkESH4Eg8JtE9VZXBPS6lpt8iEOr0cVCz8FZENgY5IP9nfgjWQwt25Rd4gfLvavkcBoxI2i5hC6I=
+	t=1732452464; cv=none; b=CS8ACiI7YmR/2q1TXcHpkEpVaUze7p2aoHegzNvHfucq+ARZ5nohhf3zlGVgQL16KXotOGvLlrj1jWii5v0gvIGqDxH0o81Dr4U9mqtJZPOAEFHVt72f4Y2iGDW2ZSgipLH3J4UbETQICVEnMPuKZ5eyFSencGLrCoDiaP0Jgbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452463; c=relaxed/simple;
-	bh=sVwR4ANZ8sCFvhuuZtFfFYVXx8pjT2bMpHswxQ+bGLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dde4U0zB6BbRBYx4IHLShJSgFrvRQ/Z6YiVjnIfzeUQnV8BR2FRjPkeWBvXV2VoEM6iWbZS7wDXpcdGpyXrjJUjTnwA4njbK2cVvLnaCcy3Wo1Fi7r8WRCcvNuhFZhsaJsnQVNjsCz/YcZ4TIe7F3aqmmK0XIyRkHL584KTw9CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFeZLnGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A68C4CEDD;
-	Sun, 24 Nov 2024 12:47:39 +0000 (UTC)
+	s=arc-20240116; t=1732452464; c=relaxed/simple;
+	bh=KGdfZ3LCOqmaNPMHEis9xuXUij/J5QsB+YpIAHqAdek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lExv0sewaqsqBwhTNRXtfL7mPpmXYXOEIpIEUNLgEf8BCgUnSwpvTqGdz+y0k/z/NRoJMrWPTG+BiVJoDEueR8D8EHiYX/1zC2xQ5Zb0XaFfdVhBHxdhj0n6ujmNCh7g5I1Yb6CTsHcTw0UkvYDEriNzv+ysUxOOKP6/pjsRySQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9p7dreA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB758C4CECC;
+	Sun, 24 Nov 2024 12:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452462;
-	bh=sVwR4ANZ8sCFvhuuZtFfFYVXx8pjT2bMpHswxQ+bGLU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EFeZLnGGXxlpIz4DBQVa+CRVOx1ZqoJCGjLv2HgTJG0HipJaJJ25fJ7guL9DX2XRL
-	 KcxL3kZPMMyyuRX3l3CQrqk4XbCuUaTIT+iu2D1R+bt6BDFdhmZH1O7BIy6Eg8bGUp
-	 ATLhpcsY63ILP+s8I3eRvH7Y1qORN1AIybiVk9UKZxeRyd/eARhGYA0L4OMgQuF6ym
-	 1uEy8R04/5Y9R26n2bNgZh2xgWbqFJ0vs6uPlF/rmUQxNXYoHOYDnDDG3LAwkIbvNZ
-	 AugcPpzF56OycZSQ8scypesikMLCE6T9QUZ//JfhbVp/LWBHEtWDyku1wu6C/jvBiD
-	 F6a4SCHyRlzTQ==
-Date: Sun, 24 Nov 2024 12:47:34 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol via B4 Relay
- <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
- Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix timestamps after suspend if
- sensor is on
-Message-ID: <20241124124734.3addf58f@jic23-huawei>
-In-Reply-To: <20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com>
-References: <20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1732452463;
+	bh=KGdfZ3LCOqmaNPMHEis9xuXUij/J5QsB+YpIAHqAdek=;
+	h=From:To:Cc:Subject:Date:From;
+	b=L9p7dreAN+3qLXPhGcPQrGVZhxALjdO2VzrMSljZpyDR3fbopfdEo1QrN4FCoWvC9
+	 75MMa8ppElEko7bzMwy1W3+R2YCtOKWSWb6uGbPdNkofeONzioX+Ob69z63iFrDCki
+	 80yIWeHBLPtvTz5PgtrVh5KpdHv/Jkdj6xBhDDWcN1oEGiMUCpQIAG3iSGVqKHepPM
+	 ddpsDv2hvNlKfYMzbxBsNz3jAMYqjUGe2E0AX4CdBPQr0TDwrw0XiVmnU5/RPKZ8vo
+	 QbHH+pYIMCKeulBOZRqBeXdeHrgwKMhSPFdyqpRQEKaAcKKH0CEvoX6Y2tvZhZim76
+	 NxWIs4axh/YOA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	mhiramat@kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/2] uprobes: sanitiize xol_free_insn_slot()
+Date: Sun, 24 Nov 2024 07:47:38 -0500
+Message-ID: <20241124124741.3338607-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.286
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Nov 2024 21:25:45 +0100
-Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
+From: Oleg Nesterov <oleg@redhat.com>
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Currently suspending while sensors are one will result in timestamping
-> continuing without gap at resume. It can work with monotonic clock but
-> not with other clocks. Fix that by resetting timestamping.
-> 
-> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Applied to the fixes-togreg branch of iio.git.
+[ Upstream commit c7b4133c48445dde789ed30b19ccb0448c7593f7 ]
 
-Thanks,
+1. Clear utask->xol_vaddr unconditionally, even if this addr is not valid,
+   xol_free_insn_slot() should never return with utask->xol_vaddr != NULL.
 
-Jonathan
+2. Add a comment to explain why do we need to validate slot_addr.
+
+3. Simplify the validation above. We can simply check offset < PAGE_SIZE,
+   unsigned underflows are fine, it should work if slot_addr < area->vaddr.
+
+4. Kill the unnecessary "slot_nr >= UINSNS_PER_PAGE" check, slot_nr must
+   be valid if offset < PAGE_SIZE.
+
+The next patches will cleanup this function even more.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240929144235.GA9471@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/events/uprobes.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 6285674412f25..d338eeb30145b 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1640,8 +1640,8 @@ static unsigned long xol_get_insn_slot(struct uprobe *uprobe)
+ static void xol_free_insn_slot(struct task_struct *tsk)
+ {
+ 	struct xol_area *area;
+-	unsigned long vma_end;
+ 	unsigned long slot_addr;
++	unsigned long offset;
+ 
+ 	if (!tsk->mm || !tsk->mm->uprobes_state.xol_area || !tsk->utask)
+ 		return;
+@@ -1650,24 +1650,21 @@ static void xol_free_insn_slot(struct task_struct *tsk)
+ 	if (unlikely(!slot_addr))
+ 		return;
+ 
++	tsk->utask->xol_vaddr = 0;
+ 	area = tsk->mm->uprobes_state.xol_area;
+-	vma_end = area->vaddr + PAGE_SIZE;
+-	if (area->vaddr <= slot_addr && slot_addr < vma_end) {
+-		unsigned long offset;
+-		int slot_nr;
+-
+-		offset = slot_addr - area->vaddr;
+-		slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
+-		if (slot_nr >= UINSNS_PER_PAGE)
+-			return;
++	offset = slot_addr - area->vaddr;
++	/*
++	 * slot_addr must fit into [area->vaddr, area->vaddr + PAGE_SIZE).
++	 * This check can only fail if the "[uprobes]" vma was mremap'ed.
++	 */
++	if (offset < PAGE_SIZE) {
++		int slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
+ 
+ 		clear_bit(slot_nr, area->bitmap);
+ 		atomic_dec(&area->slot_count);
+ 		smp_mb__after_atomic(); /* pairs with prepare_to_wait() */
+ 		if (waitqueue_active(&area->wq))
+ 			wake_up(&area->wq);
+-
+-		tsk->utask->xol_vaddr = 0;
+ 	}
+ }
+ 
+-- 
+2.43.0
+
 
