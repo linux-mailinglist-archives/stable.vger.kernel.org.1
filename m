@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-94777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735129D6FC6
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:19:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256D09D6F0C
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:59:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F01DB2942A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFAD7160870
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499C51E1303;
-	Sun, 24 Nov 2024 12:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FE71E1A27;
+	Sun, 24 Nov 2024 12:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EX2mO73I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjqP2037"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED2B1E103B;
-	Sun, 24 Nov 2024 12:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254FB1E1335;
+	Sun, 24 Nov 2024 12:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452354; cv=none; b=qfcTsOq90RugRg7MVdBAWa9AHoPyWSckkRQUv4WK+9T4iIR2OAzI+XeGam3jrDM0r3gtq3oeu1ArODbkbWzgAsZErFkuhaDqL8foyC1NuBZrtZTxuyLT9GxzU+6m5/UOd9SxR6RUzUSOi3J31A4BJp/JxW24KiG3Rlx8UllP/Vk=
+	t=1732452357; cv=none; b=cxDiDlsUu+1qG1iRFXuRAMaTJ8LgaLmkVDGwV6mHE6VdQKA0JOpjVx6bc6lM+M/9tO4vExS0Zguq8bZ2bGKYUPjcsuNDpt5y1tF2wIM0ZwXhSpz3K8SYmWdxRoEJ4vfamx1/QSUSxkcQIoYA4zXqk+caNVIEPgUpE0cNAM0OA3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452354; c=relaxed/simple;
-	bh=keFLMy8dXblm7eF3VshvoKpwvmyXhUkAAPQjdHHEDH4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TeIQ7SOfjIfbkhOIZE4jy50GsJSXHOyGkCAV0WV7F/pS4fvwZaSm/qe8lc1LiJwaJl26lS0sGJkV7+25v9hGRwJHzu1zpTaj51Wnt/eYHDbTisN55KAjNeox9iTLTeE04N2gw59tBQSwSnBNOBCsIEThaz+SeIjcoPcieeh73WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EX2mO73I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5EBC4CECC;
-	Sun, 24 Nov 2024 12:45:52 +0000 (UTC)
+	s=arc-20240116; t=1732452357; c=relaxed/simple;
+	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hGBLsIAxOmot8NLXppyasK5tbr5KQ/E3d85RWmlixTY19zzdMpiuyR77Tq/BJCe4Cz/dysJfPdMNzC48zTCgm73VRHv9Au5nQFae/3hUIhgNyROAuH4ALA939DCfdiqQeMsMfdYQjwO5kZ4BhXyAMudk6lwH/0WWDkzdmEUn0IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjqP2037; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC42FC4CED1;
+	Sun, 24 Nov 2024 12:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452353;
-	bh=keFLMy8dXblm7eF3VshvoKpwvmyXhUkAAPQjdHHEDH4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EX2mO73Ic6lzMBMoF5fBHh3icwg6HS7lecrUaYZNJq9bdRSzvF2mIllV3Opfs1+dO
-	 hd5RPBCG5yAe0zE5zS8LmBdIUQbMwdaV+tIvtaW8P1x2QjvUlqPvp10t6exh9m4wFD
-	 SlIK9skxLLg2clSkCs7s1KDgLdIB9099TIYloCWuzXbp7v2rhGSWdWxcIgRls9yHjI
-	 UPPN4Kp27ltRq1tVLg363T7cOYNMGEqDVjuLvKV4R64uS/BoY9+fx945I3UbN5d1CR
-	 CIWxXOldxuX9mxmhVw7wQIERQLXBkrCZ5SN0ZRhXjkAA/s2bjAPuWWZCAgga9WjXsI
-	 bLlhkSyMorKBg==
+	s=k20201202; t=1732452357;
+	bh=3dmE9ipKSNzc3d6Q3zsMj9NCZHBEgXwFHo36MflUZKk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FjqP2037GPBnr7b+Folr3Eh2FT6dp00UXQfCIXXSENrw3DuMPSknZ7AXKZRr2im00
+	 KrIWTCI/HPyC/JqQzc12A03hkBtpdhIpFWzoNif3LbEhJ0jqCGIhpQ4Ckgm3BDywNF
+	 oWRZUileoyOvD0fCmppLn6SFutDVWy2xilmfbj6Dq7gVXF/znUBPRK1cguoS6OSzTA
+	 yJowkN/+xem8xBDYgJtHGxeFqVpiJK09JGuPPWDwVYHEGGh6SjET+jyuavgWaNdiGU
+	 8ix2OcV1Gp/vuLT20a+4a1dWZWHP3O3VeipYvrBctuVRfp6lYHmaUdklQUlENhhKnc
+	 J1Xhr88HDKqow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Marco Elver <elver@google.com>,
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	mario.limonciello@amd.com,
-	tony.luck@intel.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 3/3] ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
-Date: Sun, 24 Nov 2024 07:45:45 -0500
-Message-ID: <20241124124547.3337766-3-sashal@kernel.org>
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	kasan-dev@googlegroups.com,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Date: Sun, 24 Nov 2024 07:45:54 -0500
+Message-ID: <20241124124554.3337842-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124547.3337766-1-sashal@kernel.org>
-References: <20241124124547.3337766-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,119 +63,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 7f261203d7c2e0c06e668b25dfaaee091a79ab25 ]
+[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
 
-The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
-as factory OS has the usual broken DSDT issues for x86 Android tablets.
+Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
+splats like:
 
-On top of that this tablet is special because all its LPSS island
-peripherals are enumerated as PCI devices rather then as ACPI devices as
-they typically are.
+| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+| preempt_count: 10002, expected: 0
+| RCU nest depth: 0, expected: 0
+| no locks held by swapper/1/0.
+| irq event stamp: 156674
+| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
+| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
+| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
+| softirqs last disabled at (0): [<0000000000000000>] 0x0
+| Preemption disabled at:
+| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
+| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
+| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
+| Call Trace:
+|  <IRQ>
+|  dump_stack_lvl+0x7e/0xc0
+|  dump_stack+0x1d/0x30
+|  __might_resched+0x1a2/0x270
+|  rt_spin_lock+0x68/0x170
+|  kcsan_skip_report_debugfs+0x43/0xe0
+|  print_report+0xb5/0x590
+|  kcsan_report_known_origin+0x1b1/0x1d0
+|  kcsan_setup_watchpoint+0x348/0x650
+|  __tsan_unaligned_write1+0x16d/0x1d0
+|  hrtimer_interrupt+0x3d6/0x430
+|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
+|  sysvec_apic_timer_interrupt+0x97/0xc0
+|  </IRQ>
 
-For the x86-android-tablets kmod to be able to instantiate a serdev client
-for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
-necessary.
+On a detected data race, KCSAN's reporting logic checks if it should
+filter the report. That list is protected by the report_filterlist_lock
+*non-raw* spinlock which may sleep on RT kernels.
 
-Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
-UARTs without an UID, such as the UARTs on this tablet.
+Since KCSAN may report data races in any context, convert it to a
+raw_spinlock.
 
-Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
-quirks, since there is nothing to do then.
+This requires being careful about when to allocate memory for the filter
+list itself which can be done via KCSAN's debugfs interface. Concurrent
+modification of the filter list via debugfs should be rare: the chosen
+strategy is to optimistically pre-allocate memory before the critical
+section and discard if unused.
 
-And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
-
-This should compile with CONFIG_PCI being unset without issues because
-dev_is_pci() is defined as "(false)" then.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241109215936.83004-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
+Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 47 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+ kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index e035cec614dc8..33d200cfc2fe1 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -12,6 +12,7 @@
+diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
+index 1d1d1b0e42489..f4623910fb1f2 100644
+--- a/kernel/kcsan/debugfs.c
++++ b/kernel/kcsan/debugfs.c
+@@ -46,14 +46,8 @@ static struct {
+ 	int		used;		/* number of elements used */
+ 	bool		sorted;		/* if elements are sorted */
+ 	bool		whitelist;	/* if list is a blacklist or whitelist */
+-} report_filterlist = {
+-	.addrs		= NULL,
+-	.size		= 8,		/* small initial size */
+-	.used		= 0,
+-	.sorted		= false,
+-	.whitelist	= false,	/* default is blacklist */
+-};
+-static DEFINE_SPINLOCK(report_filterlist_lock);
++} report_filterlist;
++static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
  
- #include <linux/acpi.h>
- #include <linux/dmi.h>
-+#include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
-@@ -384,6 +385,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
-+	{
-+		/* Vexia Edu Atla 10 tablet 9V version */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
-+	},
- 	{
- 		/* Whitelabel (sold as various brands) TM800A550L */
- 		.matches = {
-@@ -432,18 +446,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
- 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
- 	const struct dmi_system_id *dmi_id;
- 	long quirks = 0;
--	u64 uid;
--	int ret;
-+	u64 uid = 0;
+ /*
+  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
+@@ -110,7 +104,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+ 		return false;
+ 	func_addr -= offset; /* Get function start */
  
--	ret = acpi_dev_uid_to_integer(adev, &uid);
--	if (ret)
-+	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
-+	if (!dmi_id)
- 		return 0;
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	if (report_filterlist.used == 0)
+ 		goto out;
  
--	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
--	if (dmi_id)
--		quirks = (unsigned long)dmi_id->driver_data;
-+	quirks = (unsigned long)dmi_id->driver_data;
-+
-+	/* uid is left at 0 on errors and 0 is not a valid UART UID */
-+	acpi_dev_uid_to_integer(adev, &uid);
-+
-+	/* For PCI UARTs without an UID */
-+	if (!uid && dev_is_pci(controller_parent)) {
-+		struct pci_dev *pdev = to_pci_dev(controller_parent);
-+
-+		/*
-+		 * Devfn values for PCI UARTs on Bay Trail SoCs, which are
-+		 * the only devices where this fallback is necessary.
-+		 */
-+		if (pdev->devfn == PCI_DEVFN(0x1e, 3))
-+			uid = 1;
-+		else if (pdev->devfn == PCI_DEVFN(0x1e, 4))
-+			uid = 2;
+@@ -127,7 +121,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+ 		ret = !ret;
+ 
+ out:
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 	return ret;
+ }
+ 
+@@ -135,9 +129,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	report_filterlist.whitelist = whitelist;
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ }
+ 
+ /* Returns 0 on success, error-code otherwise. */
+@@ -145,6 +139,9 @@ static ssize_t insert_report_filterlist(const char *func)
+ {
+ 	unsigned long flags;
+ 	unsigned long addr = kallsyms_lookup_name(func);
++	unsigned long *delay_free = NULL;
++	unsigned long *new_addrs = NULL;
++	size_t new_size = 0;
+ 	ssize_t ret = 0;
+ 
+ 	if (!addr) {
+@@ -152,32 +149,33 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		return -ENOENT;
+ 	}
+ 
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++retry_alloc:
++	/*
++	 * Check if we need an allocation, and re-validate under the lock. Since
++	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
++	 */
++	if (data_race(report_filterlist.used == report_filterlist.size)) {
++		new_size = (report_filterlist.size ?: 4) * 2;
++		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
++		if (!new_addrs)
++			return -ENOMEM;
 +	}
-+
-+	if (!uid)
-+		return 0;
  
--	if (!dev_is_platform(controller_parent)) {
-+	if (!dev_is_platform(controller_parent) && !dev_is_pci(controller_parent)) {
- 		/* PNP enumerated UARTs */
- 		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
- 			*skip = true;
+-	if (report_filterlist.addrs == NULL) {
+-		/* initial allocation */
+-		report_filterlist.addrs =
+-			kmalloc_array(report_filterlist.size,
+-				      sizeof(unsigned long), GFP_ATOMIC);
+-		if (report_filterlist.addrs == NULL) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-	} else if (report_filterlist.used == report_filterlist.size) {
+-		/* resize filterlist */
+-		size_t new_size = report_filterlist.size * 2;
+-		unsigned long *new_addrs =
+-			krealloc(report_filterlist.addrs,
+-				 new_size * sizeof(unsigned long), GFP_ATOMIC);
+-
+-		if (new_addrs == NULL) {
+-			/* leave filterlist itself untouched */
+-			ret = -ENOMEM;
+-			goto out;
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
++	if (report_filterlist.used == report_filterlist.size) {
++		/* Check we pre-allocated enough, and retry if not. */
++		if (report_filterlist.used >= new_size) {
++			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
++			kfree(new_addrs); /* kfree(NULL) is safe */
++			delay_free = new_addrs = NULL;
++			goto retry_alloc;
+ 		}
+ 
++		if (report_filterlist.used)
++			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
++		delay_free = report_filterlist.addrs; /* free the old list */
++		report_filterlist.addrs = new_addrs;  /* switch to the new list */
+ 		report_filterlist.size = new_size;
+-		report_filterlist.addrs = new_addrs;
+ 	}
+ 
+ 	/* Note: deduplicating should be done in userspace. */
+@@ -185,9 +183,9 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		kallsyms_lookup_name(func);
+ 	report_filterlist.sorted = false;
+ 
+-out:
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 
++	kfree(delay_free);
+ 	return ret;
+ }
+ 
+@@ -204,13 +202,13 @@ static int show_info(struct seq_file *file, void *v)
+ 	}
+ 
+ 	/* show filter functions, and filter type */
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	seq_printf(file, "\n%s functions: %s\n",
+ 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
+ 		   report_filterlist.used == 0 ? "none" : "");
+ 	for (i = 0; i < report_filterlist.used; ++i)
+ 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
