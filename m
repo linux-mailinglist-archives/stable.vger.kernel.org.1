@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-94799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3B59D6F33
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:03:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03699D7176
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 14:49:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C8B9161F93
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:03:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94DC4B2C1F6
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EF21E47B3;
-	Sun, 24 Nov 2024 12:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFDC1E47CC;
+	Sun, 24 Nov 2024 12:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKvh1DtG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzaJPOU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29501E47AC;
-	Sun, 24 Nov 2024 12:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB411CEE80;
+	Sun, 24 Nov 2024 12:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452451; cv=none; b=SQSl8EInXbC1+/oy7Xhilu8cNddSU+nlauXyKrNsEjNlNwQPn5OU76iXKEodXuhM+Vs3LaRzncB1amGdNF0XuFvCNpWu0wX3FvILrjTG9xObEvZIooLslhcqKiSthaif8qLbNglHrvM2wXEZw0dhv+6DIl4j/f7Fk/iN9dkeZFA=
+	t=1732452456; cv=none; b=TOJtvq9yiGSarRETpBkSMlGDg9+cJZEB3vrAsaSVAyp1vjh0dsJ4h31cK/w8zzyBTnGW2MTB/EX/ZlBMQd7njCrjgZvjjRfC0htQhnUdYkAwqoRbJRCc2APM9fkFyoZXS68rM0mjffHWvcRH9e0qh1v1eNjOffoinhMp27ugQuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452451; c=relaxed/simple;
-	bh=ursMpZsRqCoSwV3YqfH654yZnUHf34LeoxAYVmozTzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mf7aqfR6ew6PiYQFpKoBqlHV7QxatJGh+OXA3LIC8+yQJ6BIXngorhh8WM4D96rj5EpL5vT0+Onc6UCDtQrPuUgNG7HLht0YWTt91xNNYb6tu8VeNXqBjHQ2UTBhAm0v5l3p1elase9M4fbEZtZ3P0p32mg4BXrbfPaY0m274x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKvh1DtG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592EDC4CECC;
-	Sun, 24 Nov 2024 12:47:30 +0000 (UTC)
+	s=arc-20240116; t=1732452456; c=relaxed/simple;
+	bh=LOs3EQTGf41IMhjbMb6zCRsx2GD1hoPqo7sHaTBNJx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d5dl5uuFPWYnw0CCxZWEDuDr417voKE1SKfZI4ISWCR3W5R8P6t+p4mPZ6J7pEZ6AuTgLwPl7Ej2cFtCY8UlueNtPeYdSW5+snzIsfq9vFkybIMkFY2IYvcefxOb7ex4jlrTGxpKzkjwR0LAu2isTYCDbDj5rnFEDEcXLUpgtz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzaJPOU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB9AC4CECC;
+	Sun, 24 Nov 2024 12:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452451;
-	bh=ursMpZsRqCoSwV3YqfH654yZnUHf34LeoxAYVmozTzA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKvh1DtGyvqviuY6MSj6DWtt0/zjishOdsfxnZEErdJwd9z3riiMY5RkdOwpnoNSN
-	 gvzJ9BXzrwATFxa0W7bdYSlV7ThuOEicmFY/BnVIZUBc/0PQmLnaeZWQfirAOl88e8
-	 XIL52yykKqme1oiWdEPMiLQUhsoe9aGayxynifP4pv+DkxLarVkxuENeP0faAKhIY+
-	 DRPAuZNu7HBLxYBgPa2YnfqSRXklmL3y0JML9x5R9TS25qCkonpcsYFCx+meJnfpgs
-	 6tZVBOHS6d1zIxzZw5iEU2nUaEBC61gEp2LMTI9q0SNtD9RMyQ20zsgTGFkWo87xHF
-	 t/L2O2/0+7kBA==
+	s=k20201202; t=1732452456;
+	bh=LOs3EQTGf41IMhjbMb6zCRsx2GD1hoPqo7sHaTBNJx4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JzaJPOU0KHZ2z+FaTss0LfBNit2sd0wkXsceziDgkuDpVtuQ3DLIGgKVxvjBsduLX
+	 g/lcXuGrAg+JwdIb95gbsTV/iUfYLCo4hAYKKaEYj5qOOgQIjyJqESeOnBwgeu2+2t
+	 jUzMAN4F2O02SVHVo6Q/wDrr2b8L++6B8KMy79ejMz6+PRFA6cY5k5OCzLGJxsf3Hu
+	 NCaZBIBD8S7gNq+LpVFmhmV4cZQGgTTTtY1dGKcxuPyd7lGN44kOyegYayRyULVkPw
+	 +IqdpugGdwLPWrM4n7WI2QRmUMPn2wcg/C1NV9/VjoUWmrSj92nTriEfDpka2WquZP
+	 6EB6S79rj0MVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
 	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	rdunlap@infradead.org,
-	paulmck@kernel.org
-Subject: [PATCH AUTOSEL 5.15 2/2] timekeeping: Always check for negative motion
-Date: Sun, 24 Nov 2024 07:47:24 -0500
-Message-ID: <20241124124726.3338494-2-sashal@kernel.org>
+	acme@kernel.org,
+	namhyung@kernel.org,
+	mhiramat@kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/2] uprobes: sanitiize xol_free_insn_slot()
+Date: Sun, 24 Nov 2024 07:47:30 -0500
+Message-ID: <20241124124733.3338551-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124726.3338494-1-sashal@kernel.org>
-References: <20241124124726.3338494-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,89 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.173
+X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit c163e40af9b2331b2c629fd4ec8b703ed4d4ae39 ]
+[ Upstream commit c7b4133c48445dde789ed30b19ccb0448c7593f7 ]
 
-clocksource_delta() has two variants. One with a check for negative motion,
-which is only selected by x86. This is a historic leftover as this function
-was previously used in the time getter hot paths.
+1. Clear utask->xol_vaddr unconditionally, even if this addr is not valid,
+   xol_free_insn_slot() should never return with utask->xol_vaddr != NULL.
 
-Since 135225a363ae timekeeping_cycles_to_ns() has unconditional protection
-against this as a by-product of the protection against 64bit math overflow.
+2. Add a comment to explain why do we need to validate slot_addr.
 
-clocksource_delta() is only used in the clocksource watchdog and in
-timekeeping_advance(). The extra conditional there is not hurting anyone.
+3. Simplify the validation above. We can simply check offset < PAGE_SIZE,
+   unsigned underflows are fine, it should work if slot_addr < area->vaddr.
 
-Remove the config option and unconditionally prevent negative motion of the
-readout.
+4. Kill the unnecessary "slot_nr >= UINSNS_PER_PAGE" check, slot_nr must
+   be valid if offset < PAGE_SIZE.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241031120328.599430157@linutronix.de
+The next patches will cleanup this function even more.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240929144235.GA9471@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig                   | 1 -
- kernel/time/Kconfig                | 5 -----
- kernel/time/timekeeping_internal.h | 7 -------
- 3 files changed, 13 deletions(-)
+ kernel/events/uprobes.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2f6312e7ce81f..8bb3cb5d655ff 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -124,7 +124,6 @@ config X86
- 	select ARCH_HAS_PARANOID_L1D_FLUSH
- 	select BUILDTIME_TABLE_SORT
- 	select CLKEVT_I8253
--	select CLOCKSOURCE_VALIDATE_LAST_CYCLE
- 	select CLOCKSOURCE_WATCHDOG
- 	select DCACHE_WORD_ACCESS
- 	select EDAC_ATOMIC_SCRUB
-diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-index 04bfd62f5e5ca..d9eb6892367e5 100644
---- a/kernel/time/Kconfig
-+++ b/kernel/time/Kconfig
-@@ -17,11 +17,6 @@ config ARCH_CLOCKSOURCE_DATA
- config ARCH_CLOCKSOURCE_INIT
- 	bool
- 
--# Clocksources require validation of the clocksource against the last
--# cycle update - x86/TSC misfeature
--config CLOCKSOURCE_VALIDATE_LAST_CYCLE
--	bool
--
- # Timekeeping vsyscall support
- config GENERIC_TIME_VSYSCALL
- 	bool
-diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
-index 4ca2787d1642e..1d4854d5c386e 100644
---- a/kernel/time/timekeeping_internal.h
-+++ b/kernel/time/timekeeping_internal.h
-@@ -15,7 +15,6 @@ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
- #define tk_debug_account_sleep_time(x)
- #endif
- 
--#ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
- static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 1ea2c1f311261..220d5f4a57e6b 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1634,8 +1634,8 @@ static unsigned long xol_get_insn_slot(struct uprobe *uprobe)
+ static void xol_free_insn_slot(struct task_struct *tsk)
  {
- 	u64 ret = (now - last) & mask;
-@@ -26,12 +25,6 @@ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
- 	 */
- 	return ret & ~(mask >> 1) ? 0 : ret;
- }
--#else
--static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
--{
--	return (now - last) & mask;
--}
--#endif
+ 	struct xol_area *area;
+-	unsigned long vma_end;
+ 	unsigned long slot_addr;
++	unsigned long offset;
  
- /* Semi public for serialization of non timekeeper VDSO updates. */
- extern raw_spinlock_t timekeeper_lock;
+ 	if (!tsk->mm || !tsk->mm->uprobes_state.xol_area || !tsk->utask)
+ 		return;
+@@ -1644,24 +1644,21 @@ static void xol_free_insn_slot(struct task_struct *tsk)
+ 	if (unlikely(!slot_addr))
+ 		return;
+ 
++	tsk->utask->xol_vaddr = 0;
+ 	area = tsk->mm->uprobes_state.xol_area;
+-	vma_end = area->vaddr + PAGE_SIZE;
+-	if (area->vaddr <= slot_addr && slot_addr < vma_end) {
+-		unsigned long offset;
+-		int slot_nr;
+-
+-		offset = slot_addr - area->vaddr;
+-		slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
+-		if (slot_nr >= UINSNS_PER_PAGE)
+-			return;
++	offset = slot_addr - area->vaddr;
++	/*
++	 * slot_addr must fit into [area->vaddr, area->vaddr + PAGE_SIZE).
++	 * This check can only fail if the "[uprobes]" vma was mremap'ed.
++	 */
++	if (offset < PAGE_SIZE) {
++		int slot_nr = offset / UPROBE_XOL_SLOT_BYTES;
+ 
+ 		clear_bit(slot_nr, area->bitmap);
+ 		atomic_dec(&area->slot_count);
+ 		smp_mb__after_atomic(); /* pairs with prepare_to_wait() */
+ 		if (waitqueue_active(&area->wq))
+ 			wake_up(&area->wq);
+-
+-		tsk->utask->xol_vaddr = 0;
+ 	}
+ }
+ 
 -- 
 2.43.0
 
