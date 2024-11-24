@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-94903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87309D7252
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5A29D753A
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:31:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA86BB21E15
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCEA6B3CFEF
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1C4192D65;
-	Sun, 24 Nov 2024 13:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB831991CB;
+	Sun, 24 Nov 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqAO+hjN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vaoeu/IL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3098192D61;
-	Sun, 24 Nov 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A89198E84;
+	Sun, 24 Nov 2024 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455197; cv=none; b=rJzFzakN3JA+z6a8N/Sn1dVbFkx3pRlaabar8Yt0Y2j9BPaWCkHBYatqzPxRH9WBglgaFQ0LCkqKwshtTXK3axU6xi4tEE22TG+kUrK0lHMH+RN+XWkBbOHi5buXR0J/K8UX0X/F22GszYh4FcZ6wjILASydcxqUFxPM3F/8ngw=
+	t=1732455199; cv=none; b=QpBk83W17dmAA6VnYoKUQW1iOOOpLr6T/47y3tuGmxFrKKz7fWYBL9QYgkOrRA+gJ02QO7BQxqVhLGporBfqapoOF39jdt8dzBw3nY5WbszvIUNi/H9b5EVKH4Si8/OBZ38zc6Ch5lz0SyikYzZyXx1ogvZHxMX6ucWevcdd1H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455197; c=relaxed/simple;
-	bh=fXjFAP9o3L9NJQ4trWUYtBcHl9hlse8x8GuECP8pCMg=;
+	s=arc-20240116; t=1732455199; c=relaxed/simple;
+	bh=M8vWynzc5IbnBUi2s8iUj8xr3SRbhHvpKk1BCl3C+H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owcEHjRoTG+NUMhWPUIR407Isl641UjO83EIVMCCnvw8ntj4dQnTua3u3y6o5eB+4WkiY0RIsdt0B1+HX2FZo3K/wpHytbxr+SM2lVsq+3d9BzEOw/cHNBpMEqkoA+cp+9C2Rf/oI3B2lqFuErPwBywQeT42ATx9/+HRCYK4moI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqAO+hjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7C6C4CED7;
-	Sun, 24 Nov 2024 13:33:14 +0000 (UTC)
+	 MIME-Version; b=tO/P15kb7xCab8rDwF5mJ9rNA438YCtKwJeeFxHOIMMHe17QuI/qeYKWEOMHON+KBjvB80qv6jc1iMQBzJNI4+s9V++jQ+CmFwT3mQq8UBK77Bv8IwJOMNBFKXy6l1/J24QCF+T5rvVbJ2Iu+7gkrcPxpsQodsEnpZHXxtxB6lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vaoeu/IL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8C1C4CED1;
+	Sun, 24 Nov 2024 13:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455195;
-	bh=fXjFAP9o3L9NJQ4trWUYtBcHl9hlse8x8GuECP8pCMg=;
+	s=k20201202; t=1732455198;
+	bh=M8vWynzc5IbnBUi2s8iUj8xr3SRbhHvpKk1BCl3C+H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqAO+hjNGSdqGv5ojSfd3kz3L3az3dDz/avbwqgUpCdQuWFdocPR2vITCt0RiJR1F
-	 u2F10Xwd5uw1u2YhbDMsuKa94rtun+dPizDoUsW0UYoG2Jdb4aMxZZ3eBDUzLNv9gR
-	 Vmro549Pp7z0/++vHoaArID7S7dSIaxvTkWvgIxvplL7Kz81t+RpYVEbmhAS87Ox1N
-	 T7c4jdvRrVKyctawii2LHAlxuEGMVKbgZI04GKkTmfvJH1tYfeDq5P/WAbNfalqq33
-	 2+NO6UqELzAtR6wR1+fb+pExX4eKjRHjV35/eLfRQ9oiwiIUbDPnjf9HSGb/pazyvK
-	 OXLGwabafVEcw==
+	b=Vaoeu/ILfPRj0gHzZtN8IQ7OupROBm3ImThcnFT+7cntDe/vEyTTEtB516EL2xxFS
+	 WGybTrNL6pmwwJ1P+Wr1/d0fRMXIW2M9lwH6ceozcAxzGUYNlfCj6rkgTBri4+c8kJ
+	 aUH3StyUuTpZvQE7hqaupRpstNiDMZhXwd/r6CPyVf4lOU6EjZv2HEgrl0PkHOEE7y
+	 ofkluPJOGeocM3kIk7FOLvekLF9Y2rfW0ynzEA3cTZqE5egYWOL6IiBBQ7ob0B5DbK
+	 f5BG+qnHaSO1RtIWctwMPyC2SXc5KaESMS+OAxZuBXs5oUescwAtJRmSAmhjIMQJhu
+	 hiW11JAtNzesg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	Peter Robinson <pbrobinson@gmail.com>,
+Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
+	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 007/107] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
-Date: Sun, 24 Nov 2024 08:28:27 -0500
-Message-ID: <20241124133301.3341829-7-sashal@kernel.org>
+	jani.nikula@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	tursulin@ursulin.net,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 008/107] drm/xe/pciid: Add new PCI id for ARL
+Date: Sun, 24 Nov 2024 08:28:28 -0500
+Message-ID: <20241124133301.3341829-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
 References: <20241124133301.3341829-1-sashal@kernel.org>
@@ -66,126 +77,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 
-[ Upstream commit 3e5e4a801aaf4283390cc34959c6c48f910ca5ea ]
+[ Upstream commit 35667a0330612bb25a689e4d3a687d47cede1d7a ]
 
-When removing kernel modules by:
-   rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
+Add new PCI id for ARL platform.
 
-Driver uses skb_queue_purge() to purge TX skb, but not report tx status
-causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_queue()
-to correct this.
+v2: Fix typo in PCI id (SaiTeja)
 
-Since ieee80211_purge_tx_queue() doesn't take locks, to prevent racing
-between TX work and purge TX queue, flush and destroy TX work in advance.
-
-   wlan0: deauthenticating from aa:f5:fd:60:4c:a8 by local
-     choice (Reason: 3=DEAUTH_LEAVING)
-   ------------[ cut here ]------------
-   Have pending ack frames!
-   WARNING: CPU: 3 PID: 9232 at net/mac80211/main.c:1691
-       ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   CPU: 3 PID: 9232 Comm: rmmod Tainted: G         C
-       6.10.1-200.fc40.aarch64 #1
-   Hardware name: pine64 Pine64 PinePhone Braveheart
-      (1.1)/Pine64 PinePhone Braveheart (1.1), BIOS 2024.01 01/01/2024
-   pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-   pc : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   lr : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   sp : ffff80008c1b37b0
-   x29: ffff80008c1b37b0 x28: ffff000003be8000 x27: 0000000000000000
-   x26: 0000000000000000 x25: ffff000003dc14b8 x24: ffff80008c1b37d0
-   x23: ffff000000ff9f80 x22: 0000000000000000 x21: 000000007fffffff
-   x20: ffff80007c7e93d8 x19: ffff00006e66f400 x18: 0000000000000000
-   x17: ffff7ffffd2b3000 x16: ffff800083fc0000 x15: 0000000000000000
-   x14: 0000000000000000 x13: 2173656d61726620 x12: 6b636120676e6964
-   x11: 0000000000000000 x10: 000000000000005d x9 : ffff8000802af2b0
-   x8 : ffff80008c1b3430 x7 : 0000000000000001 x6 : 0000000000000001
-   x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-   x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000003be8000
-   Call trace:
-    ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-    idr_for_each+0x74/0x110
-    ieee80211_free_hw+0x44/0xe8 [mac80211]
-    rtw_sdio_remove+0x9c/0xc0 [rtw88_sdio]
-    sdio_bus_remove+0x44/0x180
-    device_remove+0x54/0x90
-    device_release_driver_internal+0x1d4/0x238
-    driver_detach+0x54/0xc0
-    bus_remove_driver+0x78/0x108
-    driver_unregister+0x38/0x78
-    sdio_unregister_driver+0x2c/0x40
-    rtw_8723cs_driver_exit+0x18/0x1000 [rtw88_8723cs]
-    __do_sys_delete_module.isra.0+0x190/0x338
-    __arm64_sys_delete_module+0x1c/0x30
-    invoke_syscall+0x74/0x100
-    el0_svc_common.constprop.0+0x48/0xf0
-    do_el0_svc+0x24/0x38
-    el0_svc+0x3c/0x158
-    el0t_64_sync_handler+0x120/0x138
-    el0t_64_sync+0x194/0x198
-   ---[ end trace 0000000000000000 ]---
-
-Reported-by: Peter Robinson <pbrobinson@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/CALeDE9OAa56KMzgknaCD3quOgYuEHFx9_hcT=OFgmMAb+8MPyA@mail.gmail.com/
-Tested-by: Ping-Ke Shih <pkshih@realtek.com> # 8723DU
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240822014255.10211-2-pkshih@realtek.com
+Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240912115906.2730577-1-dnyaneshwar.bhadane@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 6 +++---
- drivers/net/wireless/realtek/rtw88/usb.c  | 5 +++--
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ include/drm/intel/xe_pciids.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index 21d0754dd7f6a..b67e551fcee3e 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -1297,12 +1297,12 @@ static void rtw_sdio_deinit_tx(struct rtw_dev *rtwdev)
- 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
- 	int i;
+diff --git a/include/drm/intel/xe_pciids.h b/include/drm/intel/xe_pciids.h
+index 59233eb008628..4ba88d2dccd4b 100644
+--- a/include/drm/intel/xe_pciids.h
++++ b/include/drm/intel/xe_pciids.h
+@@ -179,7 +179,8 @@
+ 	MACRO__(0x7D41, ## __VA_ARGS__),	\
+ 	MACRO__(0x7D51, ## __VA_ARGS__),        \
+ 	MACRO__(0x7D67, ## __VA_ARGS__),	\
+-	MACRO__(0x7DD1, ## __VA_ARGS__)
++	MACRO__(0x7DD1, ## __VA_ARGS__),	\
++	MACRO__(0xB640, ## __VA_ARGS__)
  
--	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++)
--		skb_queue_purge(&rtwsdio->tx_queue[i]);
--
- 	flush_workqueue(rtwsdio->txwq);
- 	destroy_workqueue(rtwsdio->txwq);
- 	kfree(rtwsdio->tx_handler_data);
-+
-+	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++)
-+		ieee80211_purge_tx_queue(rtwdev->hw, &rtwsdio->tx_queue[i]);
- }
- 
- int rtw_sdio_probe(struct sdio_func *sdio_func,
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index b17a429bcd299..07695294767ac 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -423,10 +423,11 @@ static void rtw_usb_tx_handler(struct work_struct *work)
- 
- static void rtw_usb_tx_queue_purge(struct rtw_usb *rtwusb)
- {
-+	struct rtw_dev *rtwdev = rtwusb->rtwdev;
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
--		skb_queue_purge(&rtwusb->tx_queue[i]);
-+		ieee80211_purge_tx_queue(rtwdev->hw, &rtwusb->tx_queue[i]);
- }
- 
- static void rtw_usb_write_port_complete(struct urb *urb)
-@@ -888,9 +889,9 @@ static void rtw_usb_deinit_tx(struct rtw_dev *rtwdev)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
- 
--	rtw_usb_tx_queue_purge(rtwusb);
- 	flush_workqueue(rtwusb->txwq);
- 	destroy_workqueue(rtwusb->txwq);
-+	rtw_usb_tx_queue_purge(rtwusb);
- }
- 
- static int rtw_usb_intf_init(struct rtw_dev *rtwdev,
+ /* MTL */
+ #define XE_MTL_IDS(MACRO__, ...)		\
 -- 
 2.43.0
 
