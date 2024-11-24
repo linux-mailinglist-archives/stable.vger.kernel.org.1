@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-94762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6949D6EDA
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:55:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18F19D6EE2
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 13:56:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D62BB2399A
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58911611DC
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 12:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8606E1E0B74;
-	Sun, 24 Nov 2024 12:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3931818E047;
+	Sun, 24 Nov 2024 12:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX1LEq27"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBNRls1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CA41E0B6E;
-	Sun, 24 Nov 2024 12:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8FE18CC1C;
+	Sun, 24 Nov 2024 12:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452156; cv=none; b=eoBcSc0DMdfbX2tF6xqkYK84ERqSL21rJb9TTbc5Il+lOwLRiHKbYgL1TZiJfboJXiZcWeAKw1uvSKalylwIKFgGfWv2FPsgG1aQUdcykjNVIr7HyRRQwKpPxJQ33Ed9GMbYpnCqouVStKgASOzsQJEt6MNdmEpICpZ9cHR3RIE=
+	t=1732452319; cv=none; b=j+CLJ/RalFS9E4oPxtJEFpRbvLodibfCSHC0CeH0Tln0hyLyopNC+G+wtZ12AEyaV7r0/aAqhbXkPoUA3Eg2q5brjU5SqAzyQE7+R3BlMewCdwusOViu1AZJzTJ7vBOODnfM2FN3rPJbKORTENddyjOxdPyuopobmMFFOve9skk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452156; c=relaxed/simple;
-	bh=U5cJMnmzukYGPKOjl6IplW7PNAjyX2EZNYMB/z1fB5U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bClRrman0THI0lxuSKhWIzoWf0kmrY5gIOL7GIS19ZzFKK3GZV8B2xdnUoek+4e+v1SaY1zFpW6J2bHA+mQdvTyqXN9+QmYrUZ8RSqiONFqVuRZzlJuvWU/thL0R6qmESe6bUHUbaTYc5Ab3E94pViQ1PTb3Y+iroiHzPuUYFZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX1LEq27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E46C4CECC;
-	Sun, 24 Nov 2024 12:42:34 +0000 (UTC)
+	s=arc-20240116; t=1732452319; c=relaxed/simple;
+	bh=oirgsQnHBfGFNBrWVg1xmJLEkU3WZRxplluiMQ+96mc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZQlxT+zqyDDzvz7uxwHPnt/y0+5pRJmroTcFUnDTqMxsMrkL70Ysig/0AyTHOBvLt6TXodAzYvjrjn0d4COlYNWk0tG9MXnp6ONcn96Mo49iSffq43b6pmEFTlgxSQmGASmFrzozYE4lgwKG0C1qWSmKNGbLAKiKyG8vWRYhL88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBNRls1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5F0C4CECC;
+	Sun, 24 Nov 2024 12:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452155;
-	bh=U5cJMnmzukYGPKOjl6IplW7PNAjyX2EZNYMB/z1fB5U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bX1LEq27R68zGVd39ywGNFfFQGQO7GJRanaCtuyB7xke2jzrEHBp7V5s1pIAjWMWb
-	 c8h/EogpRgPZO3lMTAjflOqrHbtlkHhskgOjjpG3bLq2fgl8DzdBIFtcV1Z494Dicq
-	 XdVFw2ktDhWm+yQNws8/qW6dqMKNrJCwW21GkBvEqtKpnJos6D1L9Tj/cbZapAOtzI
-	 D+iIGuHwS2Tgbs7AEHDF758f9vfZ0P/hAtzxImbF57MTLR+LIodaHBxdbEhTsyCO3a
-	 A2IgRyNm/4fSe4QKGnypfoFfQGgv6VMq8KQUen4NFs9Qrv/hEWAiZmRYhRYQFryzZI
-	 N6JPYTR/AQzxg==
+	s=k20201202; t=1732452318;
+	bh=oirgsQnHBfGFNBrWVg1xmJLEkU3WZRxplluiMQ+96mc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TBNRls1OTpbIZsa3DtJaC6aT9U5xvRKNhAr0lBffagq/oDK4XAyVYg9Y0tSNOHnP5
+	 r/Zj6+E9zcZYk/xWQYUF30rJZ7AS+WuBsmga7u1PPl68ZYR+3J9giyh2eBl+Do8lPE
+	 //yYhzn2PdrZFsYAnHhYa1NBZgbWg+HNPDmKBvhjdCZPxCts0/uexa4V8dMSa5SyUN
+	 WwN4ogy1TdrnuN9Wbf2yqhYTwpcGB5+v7C2tgVK7eaPyEgWrJIc2mjx+2SK1mfyg26
+	 8mUzfpC5z7XAnhPgjFEffnFnvUeC+WlJA4Qja36eyeYrnSZ/3fvnx0D/kFParBudnO
+	 wiC2wDUtvSBKg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/2] btrfs: fix warning on PTR_ERR() against NULL device at btrfs_control_ioctl()
-Date: Sun, 24 Nov 2024 07:42:28 -0500
-Message-ID: <20241124124231.3337202-2-sashal@kernel.org>
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 1/6] crypto: ecdsa - Avoid signed integer overflow on signature decoding
+Date: Sun, 24 Nov 2024 07:45:06 -0500
+Message-ID: <20241124124516.3337485-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124124231.3337202-1-sashal@kernel.org>
-References: <20241124124231.3337202-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,45 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.324
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 2342d6595b608eec94187a17dc112dd4c2a812fa ]
+[ Upstream commit 3b0565c703503f832d6cd7ba805aafa3b330cb9d ]
 
-Smatch complains about calling PTR_ERR() against a NULL pointer:
+When extracting a signature component r or s from an ASN.1-encoded
+integer, ecdsa_get_signature_rs() subtracts the expected length
+"bufsize" from the ASN.1 length "vlen" (both of unsigned type size_t)
+and stores the result in "diff" (of signed type ssize_t).
 
-  fs/btrfs/super.c:2272 btrfs_control_ioctl() warn: passing zero to 'PTR_ERR'
+This results in a signed integer overflow if vlen > SSIZE_MAX + bufsize.
 
-Fix this by calling PTR_ERR() against the device pointer only if it
-contains an error.
+The kernel is compiled with -fno-strict-overflow, which implies -fwrapv,
+meaning signed integer overflow is not undefined behavior.  And the
+function does check for overflow:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+       if (-diff >= bufsize)
+               return -EINVAL;
+
+So the code is fine in principle but not very obvious.  In the future it
+might trigger a false-positive with CONFIG_UBSAN_SIGNED_WRAP=y.
+
+Avoid by comparing the two unsigned variables directly and erroring out
+if "vlen" is too large.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ crypto/ecdsa.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index a595439518519..086d6d397f0be 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2283,7 +2283,10 @@ static long btrfs_control_ioctl(struct file *file, unsigned int cmd,
- 					       &btrfs_root_fs_type);
- 		if (IS_ERR(device)) {
- 			mutex_unlock(&uuid_mutex);
--			ret = PTR_ERR(device);
-+			if (IS_ERR(device))
-+				ret = PTR_ERR(device);
-+			else
-+				ret = 0;
- 			break;
- 		}
- 		ret = !(device->fs_devices->num_devices ==
+diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+index d5a10959ec281..80ef16ae6a40b 100644
+--- a/crypto/ecdsa.c
++++ b/crypto/ecdsa.c
+@@ -36,29 +36,24 @@ static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
+ 				  const void *value, size_t vlen, unsigned int ndigits)
+ {
+ 	size_t bufsize = ndigits * sizeof(u64);
+-	ssize_t diff = vlen - bufsize;
+ 	const char *d = value;
+ 
+-	if (!value || !vlen)
++	if (!value || !vlen || vlen > bufsize + 1)
+ 		return -EINVAL;
+ 
+-	/* diff = 0: 'value' has exacly the right size
+-	 * diff > 0: 'value' has too many bytes; one leading zero is allowed that
+-	 *           makes the value a positive integer; error on more
+-	 * diff < 0: 'value' is missing leading zeros
++	/*
++	 * vlen may be 1 byte larger than bufsize due to a leading zero byte
++	 * (necessary if the most significant bit of the integer is set).
+ 	 */
+-	if (diff > 0) {
++	if (vlen > bufsize) {
+ 		/* skip over leading zeros that make 'value' a positive int */
+ 		if (*d == 0) {
+ 			vlen -= 1;
+-			diff--;
+ 			d++;
+-		}
+-		if (diff)
++		} else {
+ 			return -EINVAL;
++		}
+ 	}
+-	if (-diff >= bufsize)
+-		return -EINVAL;
+ 
+ 	ecc_digits_from_bytes(d, vlen, dest, ndigits);
+ 
 -- 
 2.43.0
 
