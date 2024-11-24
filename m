@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-95221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76F69D744C
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:05:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74579D744F
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 16:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43164283C1E
-	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69D7D28673E
+	for <lists+stable@lfdr.de>; Sun, 24 Nov 2024 15:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587F21F7B49;
-	Sun, 24 Nov 2024 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276361F7B40;
+	Sun, 24 Nov 2024 13:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1hXDpDW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0KAip/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B241F7B40;
-	Sun, 24 Nov 2024 13:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AA91F7B6E;
+	Sun, 24 Nov 2024 13:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456386; cv=none; b=ALVtLyPZYbjM6G5ZHVcLkwEGmFmCCmV+rqlvAKlWnYl2RLGoBgbkoG023w/l9W74vkKgWixxX3BsS8+27Q5Vcx2UtlRHPjxpLXtTjTH8pR2dHhfzba/caPpFAWZQGaND1ZmEFVrCLnlRK0Rl0vLOIvobfyr5u861YWLGbKtowXE=
+	t=1732456388; cv=none; b=RDonXlEr53n1ExNkEVNwk9WEfie2lPnnZms5XDLW5KedlDtNhskp9mYvA5ixvdoVkz8fqbq5MGjzoHr1e3ElkowQcJ/ZrywUi/G1SvdRqXUWEP6asxrJjBriF2G7RzmuWX+s3+P6+aLOyjluJoRLc7EPtzQADsH/9OfykHcqeV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456386; c=relaxed/simple;
-	bh=bpNykeNycoZKTjEd5Ld2byQXCO4HJy/3xSAxpSOY60E=;
+	s=arc-20240116; t=1732456388; c=relaxed/simple;
+	bh=jNSsyqlhSIiaIQIX0zpuinT53eIK/i05hslL038uZM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+HYpz3ZVoZYglZ5I0mkWkxmzxWCw6wdUp1gjSEcnk4BmpD0hWgdha1FcBmOKA0KEymfD/R8xrgMdm2X8JyPDFrP9mLYK+EOxuLzmpiEKpLcUwIrvGgPLb0qjoym4zASEKhOC9W7oTuAl32I2TNvZ/AGKjx+wR4lKxJN2fqK9QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1hXDpDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C933EC4CED3;
-	Sun, 24 Nov 2024 13:53:04 +0000 (UTC)
+	 MIME-Version; b=dXFCVi5iFw6pOweHU9qyEn0P6Vgop4mp7iKiNgmIDVoCxFUguMZ8LSfGUnvD406pxspbnOTr70F6N7yGbDyovHcvXD7SnDm4qsLCzgLpKHopi2cOAag+c3LTQbJTkapwSYabhzjt+ePIL4CjSbdC/92Sx5XZmkRLl69OX3zCWjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0KAip/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B012C4CED3;
+	Sun, 24 Nov 2024 13:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456385;
-	bh=bpNykeNycoZKTjEd5Ld2byQXCO4HJy/3xSAxpSOY60E=;
+	s=k20201202; t=1732456388;
+	bh=jNSsyqlhSIiaIQIX0zpuinT53eIK/i05hslL038uZM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1hXDpDW95KnHhhAD5jAAt+NqV22I3KgHaX2PjAIVzCfE6ggciUH6GiUeGZQoI3IR
-	 FzBf/7lGGf/eCi/8mveXoIEFQX1PLcKCwRvmOIxrY4dJC92HXxE/vNwY5cW5/qau55
-	 BZfHSS5W9L4mus2ZSjbp+hq4lPn7kmWMgrZWpe007kpCzeGxLbM8ZujOw0VmJIDOHy
-	 Zfe/eqdvQGsAIZVBYGCLM875Pude9990ps3qdUgNY8dDK2KyfgbXbHJilrpwZ+LKDx
-	 gxZphJcAelgqj4GYiO+zwrhBm1xoYVst3WnlkALG+dTs+/iJ6NIeBtOCoT+87Pnn6C
-	 drNG+t4/WJfWg==
+	b=g0KAip/Dfbvw45kfs0uA/YeB/NHTd1K5a1LOaZBFA9jJRILTcVYKS3FTShXVIOowa
+	 1KBqwNce/RkInG3xeTeaNWAlR+rn44ODtQ0WpKMEb95vyYko9l7xz05cfpiEwOlRwZ
+	 vg7A+aUvHH7sSkWucSgUi2WPC2iJkWlraIcxh46lu+7HsG8jdKqbv9ID6QCO6nGZsg
+	 ZXRAdzy2hNhzhmrH6xNKrTZ4Elt86hligM89PuJtiMH6a3O+FDX7DCqL5FqRI7PcI7
+	 TddsnASLrLpKdJO14W4Of74P4JiiyfkIZ+M7rWJFh9r/Lcy/zfJSaRda4mYGeN5qp3
+	 IH9LP6AKHF+Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Levi Yun <yeoreum.yun@arm.com>,
-	Denis Nikitin <denik@chromium.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	m.szyprowski@samsung.com,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15 22/36] dma-debug: fix a possible deadlock on radix_lock
-Date: Sun, 24 Nov 2024 08:51:36 -0500
-Message-ID: <20241124135219.3349183-22-sashal@kernel.org>
+	shaggy@kernel.org,
+	eadavis@qq.com,
+	jfs-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 5.15 23/36] jfs: array-index-out-of-bounds fix in dtReadFirst
+Date: Sun, 24 Nov 2024 08:51:37 -0500
+Message-ID: <20241124135219.3349183-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135219.3349183-1-sashal@kernel.org>
 References: <20241124135219.3349183-1-sashal@kernel.org>
@@ -67,66 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit 7543c3e3b9b88212fcd0aaf5cab5588797bdc7de ]
+[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
 
-radix_lock() shouldn't be held while holding dma_hash_entry[idx].lock
-otherwise, there's a possible deadlock scenario when
-dma debug API is called holding rq_lock():
+The value of stbl can be sometimes out of bounds due
+to a bad filesystem. Added a check with appopriate return
+of error code in that case.
 
-CPU0                   CPU1                       CPU2
-dma_free_attrs()
-check_unmap()          add_dma_entry()            __schedule() //out
-                                                  (A) rq_lock()
-get_hash_bucket()
-(A) dma_entry_hash
-                                                  check_sync()
-                       (A) radix_lock()           (W) dma_entry_hash
-dma_entry_free()
-(W) radix_lock()
-                       // CPU2's one
-                       (W) rq_lock()
-
-CPU1 situation can happen when it extending radix tree and
-it tries to wake up kswapd via wake_all_kswapd().
-
-CPU2 situation can happen while perf_event_task_sched_out()
-(i.e. dma sync operation is called while deleting perf_event using
- etm and etr tmc which are Arm Coresight hwtracing driver backends).
-
-To remove this possible situation, call dma_entry_free() after
-put_hash_bucket() in check_unmap().
-
-Reported-by: Denis Nikitin <denik@chromium.org>
-Closes: https://lists.linaro.org/archives/list/coresight@lists.linaro.org/thread/2WMS7BBSF5OZYB63VT44U5YWLFP5HL6U/#RWM6MLQX5ANBTEQ2PRM7OXCBGCE6NPWU
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dtree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 09ccb4d6bc7b6..b3961b4ae1696 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1046,9 +1046,13 @@ static void check_unmap(struct dma_debug_entry *ref)
- 	}
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index a222a9d71887f..8f7ce1bea44c5 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -3382,6 +3382,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
  
- 	hash_bucket_del(entry);
--	dma_entry_free(entry);
--
- 	put_hash_bucket(bucket, flags);
+ 		/* get the leftmost entry */
+ 		stbl = DT_GETSTBL(p);
 +
-+	/*
-+	 * Free the entry outside of bucket_lock to avoid ABBA deadlocks
-+	 * between that and radix_lock.
-+	 */
-+	dma_entry_free(entry);
- }
++		if (stbl[0] < 0 || stbl[0] > 127) {
++			DT_PUTPAGE(mp);
++			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
++			return -EIO;
++		}
++
+ 		xd = (pxd_t *) & p->slot[stbl[0]];
  
- static void check_for_stack(struct device *dev,
+ 		/* get the child page block address */
 -- 
 2.43.0
 
