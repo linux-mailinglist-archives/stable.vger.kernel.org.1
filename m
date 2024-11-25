@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-95351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CD99D7CB6
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 09:15:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B71163518
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 08:15:53 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA2B126C10;
-	Mon, 25 Nov 2024 08:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="Zjt93dZq"
-X-Original-To: stable@vger.kernel.org
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB259D7C57
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 09:06:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9A31A296
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 08:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E161A282290
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 08:06:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF868189B86;
+	Mon, 25 Nov 2024 08:06:12 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D7618893C
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 08:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732522551; cv=none; b=DfJBSOP1rYyYF8LEB7hBe6Hgwp9Fu9ARJZmVyNBndnPYm4b0VSXkDeMNe2H7eobLkemrURTc1zThhsjrru8FMNz98wOEHHttxEdDFAbdgs2nWomeSHjwVbWHCqRdSINDFdkt5JRcxmSnV+yeS8va1ihsWEHsprKDm+A65Vv5/ac=
+	t=1732521972; cv=none; b=WsM+4Lc0ZnJO37DQKy2VRUE/SCmPPDsnAIXdlKiyG8F25hrOT4jZp3Zvm9YNxeFl4de7FGE+fp6z4mD1Hdk9Xsl4mKqOoUBhA39Zj+5+vL8ZLMpdfO0NE0ZsZn+44mizLRJ7ISmh+dNN2CZCrpIzVMVh1brQowxTDWQWPcna1ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732522551; c=relaxed/simple;
-	bh=A7jjK4571ULQWsuUzRVqTOLAWKXzMMGDv/1J8nAJEbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lXFXSyM2UfTT9Q2WzJLXsJTYsO/lYxzRTwmAucl9Pw/E+w6lmYYrgbVk5BVPGc+GPbFvbJM8qGpL0w02VSYlIkOSPRaO7lGsRElL4o8SIsokUnOiLmafY1N8o57LWtozxhXcfIwZEAr87WRWnzlfLPF6EtcPKUvqSG2RYz6b5Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=Zjt93dZq; arc=none smtp.client-ip=185.136.64.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 20241125080532737e4605a1906fe42b
-        for <stable@vger.kernel.org>;
-        Mon, 25 Nov 2024 09:05:32 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=QtvmmKKnCZjY+drnBwcESe4cUSDKG7ZwbKlK60eekl0=;
- b=Zjt93dZqmYpvi3n3PkNPJ0j5748XHXDMaispvy+1SYUH+0KAyfqt/r6fkxtpUnolOmhTk6
- XeXCXHkjDICuAn0h/XPDHCOxAuwokGMSkoLpMLzxeBf9+nDicw6L3FyoXyKFolmDOpbzFCPl
- v+5CcIwtwyqxPYpoaXRKsEdCMedS1O0wEUbDbYr2HwLLzJ0NqQcciE/IumoK4AHpFoZp81rD
- LDm/fjAzscOaNopxFrkuOwfWllnEJhoa8A6b1OapF2zDYJjBT0iGZ2jnIQZiVDGnGWI+HV4S
- 72nBjclSA5osDZdt/VVE3F6H2b/kox+Vj9nBwIky4MGelL9jNCayTErg==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-gpio@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	linux-omap@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] gpio: omap: Silence lockdep "Invalid wait context"
-Date: Mon, 25 Nov 2024 09:05:24 +0100
-Message-ID: <20241125080530.777123-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1732521972; c=relaxed/simple;
+	bh=v4a6cRlYnRgj4ZOxIrOoa7iGu/ELJoH6JWS5yBDTeto=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GDpSFKfPAmzBJkvqgQdSIuwC2sfABPT6tnSP1jwaIAs29WMKrR6ls5dnKjjzsguP7sm4nWefRlCrsjc/Eg699W3kysTgWiNYiTO3GcyE8gfgrcLImxCX/ZY20ruIIKhr4fLsQ0EKAZoJ2ojSzL3GEDkwOtqhPaJF9hvZjzjJNf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AP7BxNW003563;
+	Mon, 25 Nov 2024 00:06:06 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433b799grw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 25 Nov 2024 00:06:06 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 25 Nov 2024 00:06:02 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 25 Nov 2024 00:06:02 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <hdegoede@redhat.com>, <stable@vger.kernel.org>
+Subject: [PATCH 6.6] platform/x86: x86-android-tablets: Unregister devices in reverse order
+Date: Mon, 25 Nov 2024 16:06:25 +0800
+Message-ID: <20241125080625.386037-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,191 +55,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=atbgCjZV c=1 sm=1 tr=0 ts=67442fee cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=t7CeM3EgAAAA:8 a=bjo92SDsvNPRg7P7dsoA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: y1V3DTPfFvwy4lnfEv8ym_RvZrFLWOia
+X-Proofpoint-ORIG-GUID: y1V3DTPfFvwy4lnfEv8ym_RvZrFLWOia
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-25_05,2024-11-21_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 impostorscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411250069
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-The problem apparetly has been known since the conversion to
-raw_spin_lock() (commit 4dbada2be460
-("gpio: omap: use raw locks for locking")).
+[ Upstream commit 3de0f2627ef849735f155c1818247f58404dddfe ]
 
-Symptom:
+Not all subsystems support a device getting removed while there are
+still consumers of the device with a reference to the device.
 
-[ BUG: Invalid wait context ]
-5.10.214
------------------------------
-swapper/1 is trying to lock:
-(enable_lock){....}-{3:3}, at: clk_enable_lock
-other info that might help us debug this:
-context-{5:5}
-2 locks held by swapper/1:
- #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
- #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
-stack backtrace:
-CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
-Hardware name: Generic AM33XX (Flattened Device Tree)
-unwind_backtrace
-show_stack
-__lock_acquire
-lock_acquire.part.0
-_raw_spin_lock_irqsave
-clk_enable_lock
-clk_enable
-omap_gpio_set_config
-gpio_keys_setup_key
-gpio_keys_probe
-platform_drv_probe
-really_probe
-driver_probe_device
-device_driver_attach
-__driver_attach
-bus_for_each_dev
-bus_add_driver
-driver_register
-do_one_initcall
-do_initcalls
-kernel_init_freeable
-kernel_init
+One example of this is the regulator subsystem. If a regulator gets
+unregistered while there are still drivers holding a reference
+a WARN() at drivers/regulator/core.c:5829 triggers, e.g.:
 
-Problematic spin_lock_irqsave(&enable_lock, ...) is being called by
-clk_enable()/clk_disable() in omap2_set_gpio_debounce() and
-omap_clear_gpio_debounce().
+ WARNING: CPU: 1 PID: 1587 at drivers/regulator/core.c:5829 regulator_unregister
+ Hardware name: Intel Corp. VALLEYVIEW C0 PLATFORM/BYT-T FFD8, BIOS BLADE_21.X64.0005.R00.1504101516 FFD8_X64_R_2015_04_10_1516 04/10/2015
+ RIP: 0010:regulator_unregister
+ Call Trace:
+  <TASK>
+  regulator_unregister
+  devres_release_group
+  i2c_device_remove
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  device_unregister
+  x86_android_tablet_remove
 
-For omap2_set_gpio_debounce() it's possible to move
-raw_spin_lock_irqsave(&bank->lock, ...) inside omap2_set_gpio_debounce()
-so that the locks nest as follows:
+On the Lenovo Yoga Tablet 2 series the bq24190 charger chip also provides
+a 5V boost converter output for powering USB devices connected to the micro
+USB port, the bq24190-charger driver exports this as a Vbus regulator.
 
-  clk_enable(bank->dbck)
-  raw_spin_lock_irqsave(&bank->lock, ...)
-  raw_spin_unlock_irqrestore()
-  clk_disable()
+On the 830 (8") and 1050 ("10") models this regulator is controlled by
+a platform_device and x86_android_tablet_remove() removes platform_device-s
+before i2c_clients so the consumer gets removed first.
 
-Two call-sites of omap_clear_gpio_debounce() are more convoluted, but one
-can take the advantage of the nesting nature of clk_enable()/clk_disable(),
-so that the inner clk_disable() becomes lockless:
+But on the 1380 (13") model there is a lc824206xa micro-USB switch
+connected over I2C and the extcon driver for that controls the regulator.
+The bq24190 i2c-client *must* be registered first, because that creates
+the regulator with the lc824206xa listed as its consumer. If the regulator
+has not been registered yet the lc824206xa driver will end up getting
+a dummy regulator.
 
-  clk_enable(bank->dbck)		<-- only to clk_enable_lock()
-  raw_spin_lock_irqsave(&bank->lock, ...)
-  omap_clear_gpio_debounce()
-    clk_disable()			<-- becomes lockless
-  raw_spin_unlock_irqrestore()
-  clk_disable()
+Since in this case both the regulator provider and consumer are I2C
+devices, the only way to ensure that the consumer is unregistered first
+is to unregister the I2C devices in reverse order of in which they were
+created.
 
-Cc: stable@vger.kernel.org
-Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+For consistency and to avoid similar problems in the future change
+x86_android_tablet_remove() to unregister all device types in reverse
+order.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240406125058.13624-1-hdegoede@redhat.com
+[ Resolve minor conflicts ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 ---
- drivers/gpio/gpio-omap.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+ drivers/platform/x86/x86-android-tablets/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index 7ad4534054962..f9e502aa57753 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -181,6 +181,7 @@ static inline void omap_gpio_dbck_disable(struct gpio_bank *bank)
- static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
- 				   unsigned debounce)
+diff --git a/drivers/platform/x86/x86-android-tablets/core.c b/drivers/platform/x86/x86-android-tablets/core.c
+index a0fa0b6859c9..63a348af83db 100644
+--- a/drivers/platform/x86/x86-android-tablets/core.c
++++ b/drivers/platform/x86/x86-android-tablets/core.c
+@@ -230,20 +230,20 @@ static void x86_android_tablet_remove(struct platform_device *pdev)
  {
-+	unsigned long		flags;
- 	u32			val;
- 	u32			l;
- 	bool			enable = !!debounce;
-@@ -196,13 +197,18 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
+ 	int i;
  
- 	l = BIT(offset);
- 
-+	/*
-+	 * Ordering is important here: clk_enable() calls spin_lock_irqsave(),
-+	 * therefore it must be outside of the following raw_spin_lock_irqsave()
-+	 */
- 	clk_enable(bank->dbck);
-+	raw_spin_lock_irqsave(&bank->lock, flags);
-+
- 	writel_relaxed(debounce, bank->base + bank->regs->debounce);
- 
- 	val = omap_gpio_rmw(bank->base + bank->regs->debounce_en, l, enable);
- 	bank->dbck_enable_mask = val;
- 
--	clk_disable(bank->dbck);
- 	/*
- 	 * Enable debounce clock per module.
- 	 * This call is mandatory because in omap_gpio_request() when
-@@ -217,6 +223,9 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
- 		bank->context.debounce_en = val;
+-	for (i = 0; i < serdev_count; i++) {
++	for (i = serdev_count - 1; i >= 0; i--) {
+ 		if (serdevs[i])
+ 			serdev_device_remove(serdevs[i]);
  	}
  
-+	raw_spin_unlock_irqrestore(&bank->lock, flags);
-+	clk_disable(bank->dbck);
-+
- 	return 0;
- }
+ 	kfree(serdevs);
  
-@@ -647,6 +656,13 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
- 	unsigned long flags;
- 	unsigned offset = d->hwirq;
+-	for (i = 0; i < pdev_count; i++)
++	for (i = pdev_count - 1; i >= 0; i--)
+ 		platform_device_unregister(pdevs[i]);
  
-+	/*
-+	 * Enable the clock here so that the nested clk_disable() in the
-+	 * following omap_clear_gpio_debounce() is lockless
-+	 */
-+	if (bank->dbck_flag)
-+		clk_enable(bank->dbck);
-+
- 	raw_spin_lock_irqsave(&bank->lock, flags);
- 	bank->irq_usage &= ~(BIT(offset));
- 	omap_set_gpio_triggering(bank, offset, IRQ_TYPE_NONE);
-@@ -656,6 +672,9 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
- 		omap_clear_gpio_debounce(bank, offset);
- 	omap_disable_gpio_module(bank, offset);
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
-+
-+	if (bank->dbck_flag)
-+		clk_disable(bank->dbck);
- }
+ 	kfree(pdevs);
+ 	kfree(buttons);
  
- static void omap_gpio_irq_bus_lock(struct irq_data *data)
-@@ -827,6 +846,13 @@ static void omap_gpio_free(struct gpio_chip *chip, unsigned offset)
- 	struct gpio_bank *bank = gpiochip_get_data(chip);
- 	unsigned long flags;
+-	for (i = 0; i < i2c_client_count; i++)
++	for (i = i2c_client_count - 1; i >= 0; i--)
+ 		i2c_unregister_device(i2c_clients[i]);
  
-+	/*
-+	 * Enable the clock here so that the nested clk_disable() in the
-+	 * following omap_clear_gpio_debounce() is lockless
-+	 */
-+	if (bank->dbck_flag)
-+		clk_enable(bank->dbck);
-+
- 	raw_spin_lock_irqsave(&bank->lock, flags);
- 	bank->mod_usage &= ~(BIT(offset));
- 	if (!LINE_USED(bank->irq_usage, offset)) {
-@@ -836,6 +862,9 @@ static void omap_gpio_free(struct gpio_chip *chip, unsigned offset)
- 	omap_disable_gpio_module(bank, offset);
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
- 
-+	if (bank->dbck_flag)
-+		clk_disable(bank->dbck);
-+
- 	pm_runtime_put(chip->parent);
- }
- 
-@@ -913,15 +942,11 @@ static int omap_gpio_debounce(struct gpio_chip *chip, unsigned offset,
- 			      unsigned debounce)
- {
- 	struct gpio_bank *bank;
--	unsigned long flags;
- 	int ret;
- 
- 	bank = gpiochip_get_data(chip);
- 
--	raw_spin_lock_irqsave(&bank->lock, flags);
- 	ret = omap2_set_gpio_debounce(bank, offset, debounce);
--	raw_spin_unlock_irqrestore(&bank->lock, flags);
--
- 	if (ret)
- 		dev_info(chip->parent,
- 			 "Could not set line %u debounce to %u microseconds (%d)",
+ 	kfree(i2c_clients);
 -- 
-2.47.0
+2.43.0
 
 
