@@ -1,121 +1,143 @@
-Return-Path: <stable+bounces-95346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BAA9D7BFC
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 08:33:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4300D9D7C30
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 08:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7335B21D58
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 07:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07F20282198
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 07:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A9D13BC0C;
-	Mon, 25 Nov 2024 07:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9686D161320;
+	Mon, 25 Nov 2024 07:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XdqDE4eT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4A82119;
-	Mon, 25 Nov 2024 07:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E6514AD2D;
+	Mon, 25 Nov 2024 07:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732519989; cv=none; b=V/TyJQIes0ekjq8+gOgCPfT2kUWfedk3ZLySQc5NaqZYN0JisQUDk9fOdlYl1HdyV7ke3M60E3LX60Mfd1sTPOC3T6aytUswWSXBDb1hgjnUwr6sZVg2F1IvvX0so6JPRuAfbbInAVerFEmhcZrrZ9u+GRHzYjlWxQPvO+zDYj8=
+	t=1732521235; cv=none; b=hkpeLYUkUmzRftA/+h1IRnOFoFe6agyj5OE9mLtx5fIs6w2fhkEBGvFnaVLDfVMTSFOR9SLj4PSESPWlQnq/y4QL36pCr/y9vw7oUPIbyin8h+fdNhoDYtqHaijagRsns6WtdBGSH31lTeHbd435pxQ5E0WAKPn+wcvHOkbBrfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732519989; c=relaxed/simple;
-	bh=vwos+9xB/9SjgJ4gcS/NeNtWgCS+FAJoiEOAbN1jbE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZCNmn101hY+Y9kigoVPXoehz+ZdcWajW6Hy0JJGj74K3IR5H7V4Ky+cxuya9hbQRlIGg0HybqC2iN/rpT0JhrbVTsl7v0xreZzF1niehszFj/8/OXUkAqGyQq+5O/cyjgrM+TEL4Z81+zoXZAFB59lO0yDV6CHUulXwiQeQcio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E906DC4CECE;
-	Mon, 25 Nov 2024 07:33:07 +0000 (UTC)
-Message-ID: <49863857-f7b4-40c7-ae0c-3ba2bebe6200@xs4all.nl>
-Date: Mon, 25 Nov 2024 08:33:06 +0100
+	s=arc-20240116; t=1732521235; c=relaxed/simple;
+	bh=MTOg65FPbtEHzj6ceXeU2wiwD4YbqciYNRjbouWBU7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cNTx7V+PYl00OfQboKjW7YWlfD+Z5L/WInNAYYhkJ3fEPcreL6LGv18JLDdKGrb2nu5UtOLiJg0GmzRnSVNsUlTC5PAUQ9476w3zbZsyanxQ3vmkIYkFudXgnYZZc4Tiv52MTTBtw3N6/xvVWR/DtXJIn04hpWaDnPpqd7Ya1x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XdqDE4eT; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-724e1d0a52dso95485b3a.2;
+        Sun, 24 Nov 2024 23:53:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732521233; x=1733126033; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b6jiE8fsXfsP4ikoV8qpavcElY9z/0rHh5JLKGf+AVY=;
+        b=XdqDE4eTJnOXLkXSj/DRtrLaE86lL5iB2BLXiqrLE+s36MTJIuxFcybQ3ze85CXG8Q
+         /hwfJm0QFOH7Hh4rDD0zmCEfTA5bZAtEf6cXJJ4I8X+zxzV1oUN1nfff5lVk6XluYBb9
+         4lJTe6NCDVqepuiBI0l//1flFzz7FtrJ/dbY+p2hfZqsh8mjaiLNn2yY05MrfMCpAbve
+         IuZsBa9y+wQYh9rnH/8prqRkjeIgNox1uqb9wnmFUQduDpYLVByZUvsVbTFq79rNZwbA
+         vzBiB6T8UB2pAXhhk4l78qZOCe+uqtkh0SIxYFa4Q9UTUgn5Jdd/vDiQMH8MVhPNr7oE
+         Rsyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732521233; x=1733126033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b6jiE8fsXfsP4ikoV8qpavcElY9z/0rHh5JLKGf+AVY=;
+        b=t0fatmKjdoVZVjj0NeE8X9Mn+ZSCa5eW+se5lGqzcwyAxBivbNONP0MTwgN28WLQ5N
+         zpULbFy6xZCBWMdJrPWEz+ZApuHO7+Eh14hBYbsc7bh/YG9HQawzPTzHs+5kXU8ypouQ
+         /Qk1YRX21ZpWuWILDUvYABMuXApNnudQOb/C/NdZHTEozeG+EjwEqYeOOww3UnhT0r6i
+         nXzJmLQGniathQ5KVA0+v8oIVkIDFA1QYAtH6Bi12SgqZ/qnKUSiE25ndEWXmoYxUlFh
+         C3tJ3zI/dnu0YJmBd27/swJvo9XEFZ47OqgoWGPJdGZ8Ew85vlhSjno67BheUTUJAKsy
+         AUtg==
+X-Forwarded-Encrypted: i=1; AJvYcCXU5PKTNhY9ZIuAgfGacZXh1glJgZCqPwXnKyH8M4QKXm4bfVBaMi6M1I4meq+2YOTSRC/YNxM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB3EF/44BhKS7dtxOctdDRwsan4hD+BYEG9U0X1GN4nI4PEoo5
+	MIMg/eO+Q+W4/U8FYhV2OAqk9YAJ7IHIq3DuuW4DlCQBSo1TjNmGbYW/3HmJ
+X-Gm-Gg: ASbGncv1TMYhEVP7hwqq9lzZjZIIV5KKZryA3OvatMgdxrx0oNLTsFsGxMUpO1XOIYE
+	PyVYYzjfSuIpKJHSiY0O9OlFEgA6Tq05aiN1p7TUY4WCk/rW9Oa/bRornS1q4KjJotJ/kxuhKdq
+	xm6dJKopbfn3uTyhIs42TJeV4849Jl3PWMpdne6u91CxgvrV5iD9wd62/OwGiyQuIRHO3VaWRYa
+	UKKK/owbCKTXUqRjS0suQB1eGUuS0b0vd1/PMXDFMmULfVgcKbslAQQz5fDrWbFijKC
+X-Google-Smtp-Source: AGHT+IFNuAayu5EdvZepTbzrWMZnA6GqzPGU7jW9+JoQ1R9AXY0IBG2nXCYhRIDpb9rIQW4j8RRnpQ==
+X-Received: by 2002:a05:6a00:9297:b0:71e:596a:a392 with SMTP id d2e1a72fcca58-724df5d0c2bmr6744333b3a.2.1732521233132;
+        Sun, 24 Nov 2024 23:53:53 -0800 (PST)
+Received: from localhost.localdomain ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de456488sm5780804b3a.9.2024.11.24.23.53.50
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 24 Nov 2024 23:53:52 -0800 (PST)
+From: Yunseong Kim <yskelg@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	Austin Kim <austindh.kim@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: fix use-after-free in SMB request handling
+Date: Mon, 25 Nov 2024 16:45:55 +0900
+Message-ID: <20241125074552.51888-4-yskelg@gmail.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 4.19 2/4] media: vb2: use lock if
- wait_prepare/finish are NULL
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, tfiga@chromium.org,
- m.szyprowski@samsung.com, mchehab@kernel.org, linux-media@vger.kernel.org
-References: <20241124125856.3341388-1-sashal@kernel.org>
- <20241124125856.3341388-2-sashal@kernel.org>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <20241124125856.3341388-2-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+A race condition exists between SMB request handling in
+`ksmbd_conn_handler_loop()` and the freeing of `ksmbd_conn` in the
+workqueue handler `handle_ksmbd_work()`. This leads to a UAF.
+- KASAN: slab-use-after-free Read in handle_ksmbd_work
+- KASAN: slab-use-after-free in rtlock_slowlock_locked
 
-This shouldn't be backported. It is not a fix, and it relies on a number of other
-changes for this to work anyway, and none of those other changes are backported.
+This race condition arises as follows:
+- `ksmbd_conn_handler_loop()` waits for `conn->r_count` to reach zero:
+  `wait_event(conn->r_count_q, atomic_read(&conn->r_count) == 0);`
+- Meanwhile, `handle_ksmbd_work()` decrements `conn->r_count` using
+  `atomic_dec_return(&conn->r_count)`, and if it reaches zero, calls
+  `ksmbd_conn_free()`, which frees `conn`.
+- However, after `handle_ksmbd_work()` decrements `conn->r_count`,
+  it may still access `conn->r_count_q` in the following line:
+  `waitqueue_active(&conn->r_count_q)` or `wake_up(&conn->r_count_q)`
+  This results in a UAF, as `conn` has already been freed.
 
-So please drop this patch.
+The discovery of this UAF can be referenced in the following PR for
+syzkaller's support for SMB requests.  
+Link: https://github.com/google/syzkaller/pull/5524
 
-Thank you,
+Fixes: ee426bfb9d09 ("ksmbd: add refcnt to ksmbd_conn struct")
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org # v6.6.55+, v6.10.14+, v6.11.3+
+Cc: syzkaller@googlegroups.com
+Signed-off-by: Yunseong Kim <yskelg@gmail.com>
+---
+ fs/smb/server/server.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-	Hans
-
-On 24/11/2024 13:58, Sasha Levin wrote:
-> From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> 
-> [ Upstream commit 88785982a19daa765e30ab3a605680202cfaee4e ]
-> 
-> If the wait_prepare or wait_finish callback is set, then call it.
-> If it is NULL and the queue lock pointer is not NULL, then just
-> unlock/lock that mutex.
-> 
-> This allows simplifying drivers by dropping the wait_prepare and
-> wait_finish ops (and eventually the vb2_ops_wait_prepare/finish helpers).
-> 
-> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/media/common/videobuf2/videobuf2-core.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-> index 98719aa986bb9..e439831f6df46 100644
-> --- a/drivers/media/common/videobuf2/videobuf2-core.c
-> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
-> @@ -1528,7 +1528,10 @@ static int __vb2_wait_for_done_vb(struct vb2_queue *q, int nonblocking)
->  		 * become ready or for streamoff. Driver's lock is released to
->  		 * allow streamoff or qbuf to be called while waiting.
->  		 */
-> -		call_void_qop(q, wait_prepare, q);
-> +		if (q->ops->wait_prepare)
-> +			call_void_qop(q, wait_prepare, q);
-> +		else if (q->lock)
-> +			mutex_unlock(q->lock);
->  
->  		/*
->  		 * All locks have been released, it is safe to sleep now.
-> @@ -1538,12 +1541,16 @@ static int __vb2_wait_for_done_vb(struct vb2_queue *q, int nonblocking)
->  				!list_empty(&q->done_list) || !q->streaming ||
->  				q->error);
->  
-> +		if (q->ops->wait_finish)
-> +			call_void_qop(q, wait_finish, q);
-> +		else if (q->lock)
-> +			mutex_lock(q->lock);
-> +
-> +		q->waiting_in_dqbuf = 0;
->  		/*
->  		 * We need to reevaluate both conditions again after reacquiring
->  		 * the locks or return an error if one occurred.
->  		 */
-> -		call_void_qop(q, wait_finish, q);
-> -		q->waiting_in_dqbuf = 0;
->  		if (ret) {
->  			dprintk(1, "sleep was interrupted\n");
->  			return ret;
+diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
+index e6cfedba9992..c8cc6fa6fc3e 100644
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -276,8 +276,12 @@ static void handle_ksmbd_work(struct work_struct *wk)
+ 	 * disconnection. waitqueue_active is safe because it
+ 	 * uses atomic operation for condition.
+ 	 */
++	atomic_inc(&conn->refcnt);
+ 	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
+ 		wake_up(&conn->r_count_q);
++
++	if (atomic_dec_and_test(&conn->refcnt))
++		kfree(conn);
+ }
+ 
+ /**
+-- 
+2.43.0
 
 
