@@ -1,240 +1,195 @@
-Return-Path: <stable+bounces-95364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3B69D83F2
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:00:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E149D83F8
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F80D168EC2
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:00:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ABDC168D20
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF692194C77;
-	Mon, 25 Nov 2024 11:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iY5+TkMw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604A5196446;
+	Mon, 25 Nov 2024 11:00:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F94B194C8B;
-	Mon, 25 Nov 2024 11:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF67C194C86
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 11:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732532405; cv=none; b=l5sdloeV9mKgL4jMOY0xXRh9p/5KbF/w8r0Aso3xXPefRCK8qSL5izsL7sSNFNvEunN/QsnWZ5dL/2FSw0J0XtoTYVrpKGLn52RL4bksFS0CQ6lb2ruqlvcQggKS+93dMUo6KTcXoOSQ3ir4CaSJRbdyHyx3GMjlJ+qUadSj6oY=
+	t=1732532431; cv=none; b=SgK69OfCz7b4ewZJcHXZR6aP4aT9P1H9nKLF5/cmNq/RPvRqaIOaoM2pCgM46NUlr40zY2RJPwNRwKeoYpLFNgiKe3uaEgYq/rt5/tN7mY4c0TK5LvAxDk/mUajJQoT/0rjmRxLl9oDPa1VKwHYoGOtvT+/ZFwdin9ODMG9rsPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732532405; c=relaxed/simple;
-	bh=/Quc3TVGoy4pGDVfFhN+c7f352a24FKIfVvfUuYHk+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LEKrlgT+288j6Pd+qRxWn0l50PLe2a/qOV/cM+A+sQXQApisRE4hgkk0YIsxvtK0BiGoX12ADzAjK11Rh2VTOIgeXG5my3yOqBo7i7lnLb4k16Y/C/Hbm1mPGoXLQdZM39FcFyuDlRqA8iTbUK01a43cwNqowXX+Yw3dkpqmUSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iY5+TkMw; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732532403; x=1764068403;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/Quc3TVGoy4pGDVfFhN+c7f352a24FKIfVvfUuYHk+8=;
-  b=iY5+TkMwflkiq2p7G25vglDaTuL97ZgezgnI9wW4QsVUkxROvLxQvlmN
-   NumecsIhhV5bNMt8nOapIiJ4mQM3QF3XjEPnOgORfVzY5MPfPLiTrNbW8
-   6QuHkaHBKkIlOdzMUDhr830XM/DkMWnAHNvWJNPtpwiUI1+ti+1fq5lFA
-   GI1zVMiEB3ZarSL/Z0JNDJbrqag+712LatZ6G+BwiKRTiCX0+iLRnyHwI
-   /OugwdKx8UA0ZdWjEI11pr8VOGISkX3Xhm6xH3r873c5YVC2UvA9ZIM8C
-   q/YNTAuef7OtT6/5YD8WXlt9d5ZJ9w+BgcbjfNd6LPi8qeS+Rkk5qehJf
-   g==;
-X-CSE-ConnectionGUID: ognIg0BJQda1GYSB77J2Cw==
-X-CSE-MsgGUID: 5yPVQ9crRFeP6uOY6KNCYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11266"; a="36553094"
-X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
-   d="scan'208";a="36553094"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 03:00:03 -0800
-X-CSE-ConnectionGUID: vT8KuZrQQYuCAXmurDgi+g==
-X-CSE-MsgGUID: cV61WAkET5aMz6yX58YW9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
-   d="scan'208";a="91415169"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa008.fm.intel.com with SMTP; 25 Nov 2024 03:00:00 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 25 Nov 2024 12:59:59 +0200
-Date: Mon, 25 Nov 2024 12:59:59 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: anx7411: fix fwnode_handle reference leak
-Message-ID: <Z0RYr_H-sy0pfLHN@kuha.fi.intel.com>
-References: <20241121023429.962848-1-joe@pf.is.s.u-tokyo.ac.jp>
+	s=arc-20240116; t=1732532431; c=relaxed/simple;
+	bh=/0gO+9PPZBmpTRgBKiYQA8NcqskyWMNhhrizpwhdH0g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZkmbHmOZza0kAaKpSUM1IUg6mFSHfygnQnjhul4m2+9XXkOVUSpSOeo8rJde4vAkk4sOrrfsyRmcjd1NOHJeyPkwz42OzNx/AC47k0bO8fj0vrVLriyT4RgBjU/fcP292nizZn1SGoCzvoPld8ZpLbmczXagt96bkTrBBd1RRHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tFWpO-0005oV-7E
+	for stable@vger.kernel.org; Mon, 25 Nov 2024 12:00:26 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tFWpN-00048a-0p
+	for stable@vger.kernel.org;
+	Mon, 25 Nov 2024 12:00:26 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id B106937CB96
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 11:00:25 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id DD4DD37CB8E;
+	Mon, 25 Nov 2024 11:00:23 +0000 (UTC)
+Received: from [172.20.34.65] (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 09a3b8e0;
+	Mon, 25 Nov 2024 11:00:22 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 25 Nov 2024 12:00:16 +0100
+Subject: [PATCH RFC can] can: mcp251xfd: mcp251xfd_get_tef_len(): fix
+ length calculation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241121023429.962848-1-joe@pf.is.s.u-tokyo.ac.jp>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241125-mcp251xfd-fix-length-calculation-v1-1-974445b5f893@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAL9YRGcC/x2NQQrCMBBFrxJm7UAntIJuBQ/gtrgYJpM2EGNJq
+ hRK7+7g8sF//+3QtCZtcHU7VP2mlt7FgE4OZOYyKaZgDL7zPREN+JLFD7TFgDFtmLVM64zCWT6
+ ZV5Pxcg49dxqIooLdLFVt+U+M8LjfnHCB53H8APHd5YV7AAAA
+X-Change-ID: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Thomas Kopp <thomas.kopp@microchip.com>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>, stable@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-355e8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3857; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=/0gO+9PPZBmpTRgBKiYQA8NcqskyWMNhhrizpwhdH0g=;
+ b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnRFjDWYzc9I9kEdGkvs5QqeR/D65CdWi6/fFKU
+ KmEcgnfAluJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZ0RYwwAKCRAoOKI+ei28
+ b+0jB/41neInK9Mf0znPyauvf5DXxmk8o5zRado0ezQm/M0SR+ADlJulxgHbdUcxPExqJ7yKVwE
+ jTHgqrjrF2Tbf9qpiAs1frqFykS+r8ii5ATBk2+eG6ii2X1R1tqdSBSaZNoKU03nBgQ3dz1jzBk
+ YbQqorhc3fmlK0zRkioN+owulZAE84oWKwwCr8bPekSpfYS9X4D17dERynktMZ0AMVdVyRRkmdX
+ mkV3uwQfGgWOgUDGA6kiHyhvX7XdexDMXWccEbON6ASvUOHgGQD13nxko4hERG+dqXjrHzUrrlZ
+ Jk8x9tfvx+gERFLsWt/tGooOzhwLiUZ+HmcYzgLWHEasqDSq
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Thu, Nov 21, 2024 at 11:34:29AM +0900, Joe Hattori wrote:
-> An fwnode_handle and usb_role_switch are obtained with an incremented
-> refcount in anx7411_typec_port_probe(), however the refcounts are not
-> decremented in the error path. The fwnode_handle is also not decremented
-> in the .remove() function. Therefore, call fwnode_handle_put() and
-> usb_role_switch_put() accordingly.
-> 
-> Fixes: fe6d8a9c8e64 ("usb: typec: anx7411: Add Analogix PD ANX7411 support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-You don't need to check for the port nor the role_sw, but never mind:
+As the TEF has no head index, the driver uses the TX-FIFO's tail index
+instead, assuming that send frames are completed.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+When calculating the number of unhandled TEF events, that commit
+didn't take mcp2518fd erratum DS80000789E 6. into account. According
+to that erratum, the FIFOCI bits of a FIFOSTA register, here the
+TX-FIFO tail index might be corrupted.
 
-> ---
-> Changes in v2:
-> - Call usb_role_switch_put()
-> - Remove the port in anx7411_port_unregister().
-> ---
->  drivers/usb/typec/anx7411.c | 47 +++++++++++++++++++++++--------------
->  1 file changed, 29 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/anx7411.c b/drivers/usb/typec/anx7411.c
-> index d1e7c487ddfb..95607efb9f7e 100644
-> --- a/drivers/usb/typec/anx7411.c
-> +++ b/drivers/usb/typec/anx7411.c
-> @@ -1021,6 +1021,16 @@ static void anx7411_port_unregister_altmodes(struct typec_altmode **adev)
->  		}
->  }
->  
-> +static void anx7411_port_unregister(struct typec_params *typecp)
-> +{
-> +	fwnode_handle_put(typecp->caps.fwnode);
-> +	anx7411_port_unregister_altmodes(typecp->port_amode);
-> +	if (typecp->port)
-> +		typec_unregister_port(typecp->port);
-> +	if (typecp->role_sw)
-> +		usb_role_switch_put(typecp->role_sw);
-> +}
-> +
->  static int anx7411_usb_mux_set(struct typec_mux_dev *mux,
->  			       struct typec_mux_state *state)
->  {
-> @@ -1154,34 +1164,34 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  	ret = fwnode_property_read_string(fwnode, "power-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "power-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_port_power_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->type = ret;
->  
->  	ret = fwnode_property_read_string(fwnode, "data-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "data-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_port_data_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->data = ret;
->  
->  	ret = fwnode_property_read_string(fwnode, "try-power-role", &buf);
->  	if (ret) {
->  		dev_err(dev, "try-power-role not found: %d\n", ret);
-> -		return ret;
-> +		goto put_fwnode;
->  	}
->  
->  	ret = typec_find_power_role(buf);
->  	if (ret < 0)
-> -		return ret;
-> +		goto put_fwnode;
->  	cap->prefer_role = ret;
->  
->  	/* Get source pdos */
-> @@ -1193,7 +1203,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  						     typecp->src_pdo_nr);
->  		if (ret < 0) {
->  			dev_err(dev, "source cap validate failed: %d\n", ret);
-> -			return -EINVAL;
-> +			goto put_fwnode;
->  		}
->  
->  		typecp->caps_flags |= HAS_SOURCE_CAP;
-> @@ -1207,7 +1217,7 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  						     typecp->sink_pdo_nr);
->  		if (ret < 0) {
->  			dev_err(dev, "sink cap validate failed: %d\n", ret);
-> -			return -EINVAL;
-> +			goto put_fwnode;
->  		}
->  
->  		for (i = 0; i < typecp->sink_pdo_nr; i++) {
-> @@ -1251,13 +1261,21 @@ static int anx7411_typec_port_probe(struct anx7411_data *ctx,
->  		ret = PTR_ERR(ctx->typec.port);
->  		ctx->typec.port = NULL;
->  		dev_err(dev, "Failed to register type c port %d\n", ret);
-> -		return ret;
-> +		goto put_usb_role_switch;
->  	}
->  
->  	typec_port_register_altmodes(ctx->typec.port, NULL, ctx,
->  				     ctx->typec.port_amode,
->  				     MAX_ALTMODE);
->  	return 0;
-> +
-> +put_usb_role_switch:
-> +	if (ctx->typec.role_sw)
-> +		usb_role_switch_put(ctx->typec.role_sw);
-> +put_fwnode:
-> +	fwnode_handle_put(fwnode);
-> +
-> +	return ret;
->  }
->  
->  static int anx7411_typec_check_connection(struct anx7411_data *ctx)
-> @@ -1523,8 +1541,7 @@ static int anx7411_i2c_probe(struct i2c_client *client)
->  	destroy_workqueue(plat->workqueue);
->  
->  free_typec_port:
-> -	typec_unregister_port(plat->typec.port);
-> -	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-> +	anx7411_port_unregister(&plat->typec);
->  
->  free_typec_switch:
->  	anx7411_unregister_switch(plat);
-> @@ -1548,17 +1565,11 @@ static void anx7411_i2c_remove(struct i2c_client *client)
->  
->  	i2c_unregister_device(plat->spi_client);
->  
-> -	if (plat->typec.role_sw)
-> -		usb_role_switch_put(plat->typec.role_sw);
-> -
->  	anx7411_unregister_mux(plat);
->  
->  	anx7411_unregister_switch(plat);
->  
-> -	if (plat->typec.port)
-> -		typec_unregister_port(plat->typec.port);
-> -
-> -	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-> +	anx7411_port_unregister(&plat->typec);
->  }
->  
->  static const struct i2c_device_id anx7411_id[] = {
-> -- 
-> 2.34.1
+However here it seems the bit indicating that the TX-FIFO is
+empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
+TX-FIFO tail index is.
 
+Assume that the TX-FIFO is indeed empty if:
+- Chip's head and tail index are equal (len == 0).
+- The TX-FIFO is less than half full.
+  (The TX-FIFO empty case has already been checked at the
+   beginning of this function.)
+- No free buffers in the TX ring.
+
+If the TX-FIFO is assumed to be empty, assume that the TEF is full and
+return the number of elements in the TX-FIFO (which equals the number
+of TEF elements).
+
+If these assumptions are false, the driver might read to many objects
+from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
+and will refuse to process old events.
+
+Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Not-yet-Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 29 ++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8..e94321849fd7e69ed045eaeac3efec52fe077d96 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+ 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
+ 
++static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
++{
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
++}
++
+ static inline int
+ mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
+ 				 u8 *tef_tail)
+@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
+ 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
+ 
+ 	len = (chip_tx_tail << shift) - (tail << shift);
+-	*len_p = len >> shift;
++	len >>= shift;
++
++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
++	 * bits of a FIFOSTA register, here the TX-FIFO tail index
++	 * might be corrupted.
++	 *
++	 * However here it seems the bit indicating that the TX-FIFO
++	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
++	 * while the TX-FIFO tail index is.
++	 *
++	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
++	 * haven been send, if:
++	 * - Chip's head and tail index are equal (len == 0).
++	 * - The TX-FIFO is less than half full.
++	 *   (The TX-FIFO empty case has already been checked at the
++	 *    beginning of this function.)
++	 * - No free buffers in the TX ring.
++	 */
++	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0)
++		len = tx_ring->obj_num;
++
++	*len_p = len;
+ 
+ 	return 0;
+ }
+
+---
+base-commit: fcc79e1714e8c2b8e216dc3149812edd37884eef
+change-id: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
+
+Best regards,
 -- 
-heikki
+Marc Kleine-Budde <mkl@pengutronix.de>
+
+
 
