@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-95415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE869D89B2
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:50:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A899D89DD
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA740289A33
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:50:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05DF6B2AE05
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642EF1AF0A9;
-	Mon, 25 Nov 2024 15:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB30194AC7;
+	Mon, 25 Nov 2024 15:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gjO4UDMQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJ9LljWI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578C22AD25;
-	Mon, 25 Nov 2024 15:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92C8291E;
+	Mon, 25 Nov 2024 15:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732549845; cv=none; b=sIaF01Vt5B3kiomMg2jMnpXzSnIqNv8InuPye64RMxx//SC8isUoNIbNHDr1fxpIb9xPHXvozC/P0J4Be9PVFWSuecRXvSslh/IdTBSr9qRFmigyWVKadfvN/oQBjvnJq9tUWvpMuBc2BG/775O6v7jrXuTlq+/UgAAaCUCZh3s=
+	t=1732549949; cv=none; b=aBEbZBnf1bMT77Vk5cAqZ+ehaWedTi0HcJmXgHMT+a9cRy+IplOOBv8+tBCdgTEZsVwFGPU5VIEDwm4qaWS8mSceDAJ/LiRXVqXpZcAKXTHPlKx9aGQFVElEwhgRyaic0zVy5jFCgYw+Md6nmOtUxHUblIvcVUV1QiqHG1AR090=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732549845; c=relaxed/simple;
-	bh=Kme1QEATTdDXWpUTB7ZrHqVVLGnnbgY6alpay1KwBXw=;
+	s=arc-20240116; t=1732549949; c=relaxed/simple;
+	bh=/WoWitydF92Rc+lpLKLEnfGTJhdbwccFT6fc/tQiuR8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kymZUlEViDOBnHOPYb0i3uat7GMhnlqLROJ+xV6MhPHIQJRUxfPl3CStJ2WqelLT5VfpiSN82MgWsgWL5Wg7XpG3Lgu/Thfg4LLqdeKM/qISi2mmILas9UUn9SkORtyYE0GRlKr898eR+0KRDKfHHPXE0Ux1Munyc2zac9FM2C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gjO4UDMQ; arc=none smtp.client-ip=198.175.65.17
+	 Content-Type:MIME-Version; b=YQbvbHo3BfwpH0C15NDkTMz0oCfqpHRLKjChtq5SKg2O037hgkzt2SxBNZ6OALXYg8ENbSAs/s4JEfC39CJ5q6Oc6ZRtX56zR03d49/QTnbBw1QTDQz1bFe5XELZz91vd+FS5xI6p4lnVGlO1nYL7ZpPf9eW80PH+25PS9twrAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QJ9LljWI; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732549844; x=1764085844;
+  t=1732549948; x=1764085948;
   h=message-id:subject:from:to:cc:date:in-reply-to:
    references:content-transfer-encoding:mime-version;
-  bh=Kme1QEATTdDXWpUTB7ZrHqVVLGnnbgY6alpay1KwBXw=;
-  b=gjO4UDMQkY1PR+n0x2UOYH6qd1mPGLh7aV6FDuadN14JYiPf+PGoqIlp
-   4PTP5/vxkvPCbo1cYfsRpkRZyGfOn4liRGPb11jLmVSGGcS/g1Q9EadCk
-   1iBlX1xSkriQG+J2wgzURnfG2NSOcMBym41gnRIv+xWkhhYE3H+GKt+sK
-   au90VBQH9rQWfm+pyUrs76NIki6jR3Bwt/2ImaFK+BCmK5YoLKyCNBw+i
-   hmGvoGK5JUmTNpXTp6qL6GT6gJpbtk5/NND4kxnLu2TTuxb4+k0LW9YdS
-   EpXQTqmnnVLAV5kZLYZiE6HdGrkqyhSqMD0a6c1PBXSOzQi0lghT7bUa3
+  bh=/WoWitydF92Rc+lpLKLEnfGTJhdbwccFT6fc/tQiuR8=;
+  b=QJ9LljWIlwsJ7CLgbofar/cGCG9GWGnmKwC0qst7rQKnTR98pZUy9EKF
+   mRWLv8GfwkVQJiL6VDnpCuEsnbMn1b26d+76DmeuXKiA5CDwlrpPi5N+n
+   DKfD50CY+b47ZUznERYgh9thJmKrPmWyM1jxm3qb08/GJKTlZFq8HOfJ2
+   p/Dh51u7xwAxaGA7gBabzMKX61LkSU2Au+LhZw/buykXhsoQupekXToQ7
+   LzxeL7r9+RK2LkTkKcoc0asJVXA1Gy+4mfNu6GQWLq2uevjor+lq3ErPG
+   o/2GMjNHT+OpjnIRbY4QTSkr/Ai8tDrR1F9RyXxV9Wd2m4SjQuyqbxNHR
    g==;
-X-CSE-ConnectionGUID: EqhvDY4ESmSv7thpOmwHGA==
-X-CSE-MsgGUID: KahumHkSSzKmXOk4XNty8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="32722928"
+X-CSE-ConnectionGUID: U4ce8JX9S3WWyA2U1e1KAw==
+X-CSE-MsgGUID: P3+HQHUnSHKp9OerB9Q/gg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="50074722"
 X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; 
-   d="scan'208";a="32722928"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 07:50:43 -0800
-X-CSE-ConnectionGUID: nO7IimL1Qye2xQ55t/Vk/g==
-X-CSE-MsgGUID: 1+VcP7MrQIKYMUqmT3To6w==
+   d="scan'208";a="50074722"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 07:52:27 -0800
+X-CSE-ConnectionGUID: s8lpRx83TFCuCQxoW28YAQ==
+X-CSE-MsgGUID: y58xV3DNR5e0x6ompTZ9DA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; 
-   d="scan'208";a="122246591"
+   d="scan'208";a="96213492"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.22]) ([10.245.246.22])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 07:50:42 -0800
-Message-ID: <087e0b9f45888b75c6ac2455c022349e28a72e07.camel@linux.intel.com>
-Subject: Re: [PATCH AUTOSEL 6.11 3/5] locking/ww_mutex: Adjust to lockdep
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 07:52:25 -0800
+Message-ID: <0566a0ab18448a9206a92defb695dd2e5d9bd77c.camel@linux.intel.com>
+Subject: Re: [PATCH AUTOSEL 6.6 3/4] locking/ww_mutex: Adjust to lockdep
  nest_lock requirements
 From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com, will@kernel.org
-Date: Mon, 25 Nov 2024 16:50:37 +0100
-In-Reply-To: <20241124124643.3338173-3-sashal@kernel.org>
-References: <20241124124643.3338173-1-sashal@kernel.org>
-	 <20241124124643.3338173-3-sashal@kernel.org>
+Date: Mon, 25 Nov 2024 16:52:22 +0100
+In-Reply-To: <20241124124702.3338309-3-sashal@kernel.org>
+References: <20241124124702.3338309-1-sashal@kernel.org>
+	 <20241124124702.3338309-3-sashal@kernel.org>
 Autocrypt: addr=thomas.hellstrom@linux.intel.com; prefer-encrypt=mutual;
  keydata=mDMEZaWU6xYJKwYBBAHaRw8BAQdAj/We1UBCIrAm9H5t5Z7+elYJowdlhiYE8zUXgxcFz360SFRob21hcyBIZWxsc3Ryw7ZtIChJbnRlbCBMaW51eCBlbWFpbCkgPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPoiTBBMWCgA7FiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQuBaTVQrGBr/yQAD/Z1B+Kzy2JTuIy9LsKfC9FJmt1K/4qgaVeZMIKCAxf2UBAJhmZ5jmkDIf6YghfINZlYq6ixyWnOkWMuSLmELwOsgPuDgEZaWU6xIKKwYBBAGXVQEFAQEHQF9v/LNGegctctMWGHvmV/6oKOWWf/vd4MeqoSYTxVBTAwEIB4h4BBgWCgAgFiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwwACgkQuBaTVQrGBr/P2QD9Gts6Ee91w3SzOelNjsus/DcCTBb3fRugJoqcfxjKU0gBAKIFVMvVUGbhlEi6EFTZmBZ0QIZEIzOOVfkaIgWelFEH
 Organization: Intel Sweden AB, Registration Number: 556189-6027
@@ -132,10 +132,12 @@ On Sun, 2024-11-24 at 07:46 -0500, Sasha Levin wrote:
 tel.com
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Commit introduces regressions and should not be backported. See
-discussion for corresponding 6.12 patch.
+The commit introduces regressions and should not be backported, please
+see the corresponding patch for 6.12 for a discussion.
 
-/Thomas
+Thanks,
+Thomas
+
 
 
 
@@ -196,7 +198,7 @@ discussion for corresponding 6.12 patch.
 > =C2=A0#ifdef DEBUG_WW_MUTEXES
 > diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-
 > ww_mutex.c
-> index 78719e1ef1b11..8faa8f720bc8f 100644
+> index 7c5a8f05497f2..02b84288865ca 100644
 > --- a/kernel/locking/test-ww_mutex.c
 > +++ b/kernel/locking/test-ww_mutex.c
 > @@ -62,7 +62,8 @@ static int __test_mutex(unsigned int flags)
@@ -220,7 +222,7 @@ discussion for corresponding 6.12 patch.
 > =C2=A0
 > =C2=A0	if (ret) {
 > =C2=A0		pr_err("%s(flags=3D%x): mutual exclusion failure\n",
-> @@ -679,7 +681,7 @@ static int __init test_ww_mutex_init(void)
+> @@ -663,7 +665,7 @@ static int __init test_ww_mutex_init(void)
 > =C2=A0	if (ret)
 > =C2=A0		return ret;
 > =C2=A0
