@@ -1,159 +1,150 @@
-Return-Path: <stable+bounces-95386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3B39D87D6
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:24:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576439D8801
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF2E161F1B
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:24:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D49166CC6
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805601AF0C1;
-	Mon, 25 Nov 2024 14:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1441B0F22;
+	Mon, 25 Nov 2024 14:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RWul6A7Z"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TJJaBJeD"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82321191F84
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 14:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD5F1AF0CA
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 14:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732544669; cv=none; b=j77tsjRbjnnQ9YvkEHWMnDvu2CT2vyk8HyC+2ucicoZ8oCAq6DpILt8TEMtp9Y1iIvP09aF2p/GdiwaFr9/GU4BW5J0l5acPwVML6SSt5vnB9dQCCi+wxIRdmaeDkfHoaFxTM9lvTDxeCm30M3vM1V5/AWggWp3Io9mh+QbeLHI=
+	t=1732545007; cv=none; b=guYXpPjpA6BjGfkkDJr5rwibSdq6KdPtlONAsP3/xxoVyHaxsZuue34NwTcgK2UUZEhoM/IZtHnyt3WQnSUgNm0wnTjFFVPmTlKHx3CdFDHoqaLLqmRYuN+dBZbJhnnri4gL9Fu+/pz6CKmvZFkfE5VO/UdRfBzA2dDUnjfs+W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732544669; c=relaxed/simple;
-	bh=PAApblf5/yOuk9I4BzfC+hcjl0lxlkL+IWpwS5snJeE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OkWwpxElgZZ48GBOBVKX6XEqbJWPbtqL+938fs1AiPh17PnZJMfSy5DYJ9tkHRtiFxKF9vqnsHF4jaCLn4hhlfPZh9G2w/6dcJ6kHOPGomBg+8KFaY7uxGC1Ymz3uq3YOk436m5Zlfb6VcTCQT9TwV/tDsESUBZxx9EfrE0Rkg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RWul6A7Z; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732544666;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OAej4OPlBRSwRD5hkCmUtBDLkFXG4Wh3poAJBOLJFhM=;
-	b=RWul6A7ZYPPS8a2sxq+lD/MpD4oDa82ZEkOV+ptOGHhLYQd/5+eeBu+KOn42yKvDsIjd66
-	ES0vimhSfPzr9jPI10mpPmt9tolwuhlEn+9Uy401L9mXlSw7HoLTweMGLo4BibkWh8R/hX
-	t8ZDjAd1HY9D3q8LwJNdryT08nDVRhw=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-O_wx4yPLOP-AhmQDwh9LKw-1; Mon, 25 Nov 2024 09:24:24 -0500
-X-MC-Unique: O_wx4yPLOP-AhmQDwh9LKw-1
-X-Mimecast-MFC-AGG-ID: O_wx4yPLOP-AhmQDwh9LKw
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-aa52bfbdfebso167458366b.3
-        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 06:24:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732544663; x=1733149463;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OAej4OPlBRSwRD5hkCmUtBDLkFXG4Wh3poAJBOLJFhM=;
-        b=riYCxYGsl1iKJNHZtArZhHgo6wguTE3dxBXM2GaTQsAsehVDjh1/h+Qt8DalNkGpPb
-         9N/DthHzYFYamYFlBuW/6EIl/InXbvbZlSDjW0OQrMvKM0OzUC1uSrgsSXk3NhtIM4J0
-         zzOl8RSCsfwfxACjjeL/J9Sw3tnTBo+mTlmh4cFV0j9fU3uTd4P0jMfG9k095oKbRFls
-         wuQZKsNp3du/lO3oU3TENwBVttpP3VcuEErF0Wsi3vMMhB0CgU49WmopmEyt3rSthmAk
-         V2vK0F7umEyqykeqymzneQ7qT6IJUcQZy3ODL2LNT6QEsIw4+WdPBp9QYiAVFEUDax1z
-         Uenw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOVM2SAw55ydU1AHxfNtzOS/S8qIlvYboRriwbIq0oRPm+oc/JJA6cRafqyHSR42y5B/wbvgA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWl+Dqgv4LfCnRCMLzUgWmsxL5UzaGy7vbSMmYLqPeQty7c60H
-	f34IAi85XoBjlVgnDDwdMB4xlcwdbI7HmMygDLCCQG0dT9lWeDxA/L/N39ku26rTXUJx7okEVvm
-	ClECVkRHeySK7h2KMuHXi9IERuQZmni32IL9shVVNXSzseMHdNP/TRw==
-X-Gm-Gg: ASbGncvNIsYR4HK6049UnUWM49zNabDbBccN4JzqvqIW4ZBZlyyvZpjrXlf8fsmiPpq
-	IiDLnTkmFwn+FceEYCkPsFka5pzXFDxpfvq44Fza/aPWxD/NJ0oPpxrqa8h47/ETkyxBTWfpbP3
-	2Ww7mS4MVhY4JJ++Yt7gmBhpuQvwaIMQ7aTVh8N1Efilhp9ufo1+hZC8RyzPvqRFKTKlLUVKCVQ
-	tyqK3clEw7mtofXKMTnaUpkpM4szgwD4EQs5ngetDGaLvtXd/VsLGd8CxfR0TgCByf8HxdYyt4o
-	vlIOceGdaXIqfKoS7n0Gj0paU2SeN/jpRLQv/kq7OvbFJU1I/+8tpILgzHBzWNQvr34NONqJQqV
-	PY9IizYWqH6PxMtKfOHrXSUSl
-X-Received: by 2002:a17:906:3194:b0:aa5:274b:60ee with SMTP id a640c23a62f3a-aa5274b69famr1018207866b.39.1732544663473;
-        Mon, 25 Nov 2024 06:24:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHoGDD47dfwy9wZFvAqX4WMcfksgKqNJCU6tx7BOnVPBVTlVWMX5EUDMfzlOkKD2trMBOUnQw==
-X-Received: by 2002:a17:906:3194:b0:aa5:274b:60ee with SMTP id a640c23a62f3a-aa5274b69famr1018205166b.39.1732544663087;
-        Mon, 25 Nov 2024 06:24:23 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa537b4eae7sm302808966b.99.2024.11.25.06.24.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2024 06:24:22 -0800 (PST)
-Message-ID: <a321900c-2be7-4fe8-b693-4a185f1d5aa4@redhat.com>
-Date: Mon, 25 Nov 2024 15:24:22 +0100
+	s=arc-20240116; t=1732545007; c=relaxed/simple;
+	bh=DVL+m8+vijnsadOuEH90T3BgTy7zXNFd6NjZGjpDTzw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cwq6ZHhvAmmBUUc8PoAPbseMqAHIa8IwqabYUZ03XxfN0bbONXsJmLpa4FuI+3+bpupXAXydUUv1b6tYcdb3exFhIyjucGdiALggaRYtn/xMMfv0Wi4hC8rehrUjQ+SPwUUY13TUwOosWCXFl0hFTIuQyAMxtEtllMIOMM4RKGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TJJaBJeD; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1732545002; x=1764081002;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kT5okadEVbxmvz5K385U2BwMqiIHbA4MUm1xzm+8d54=;
+  b=TJJaBJeDEC15YYWSoStzwxrxVmw6E/ZmbQnY5Z5SkoPYAzdRGL0PgEGY
+   lHAjYMjXMUmR4sYb3j2rgfy+Cj51/Ntv21pqenFGSBPHFbQBGuiW7hmyS
+   bHNxDbYOLzoQJzOgdhB6V9Z9+W2JWM2vNeeX2USc6/MjoeV6DM/gF0wHG
+   o=;
+X-IronPort-AV: E=Sophos;i="6.12,183,1728950400"; 
+   d="scan'208";a="355497775"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 14:30:00 +0000
+Received: from EX19MTAUEA002.ant.amazon.com [10.0.44.209:35209]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.3.20:2525] with esmtp (Farcaster)
+ id 74345e8f-5102-40ec-a64f-c51b8d12747e; Mon, 25 Nov 2024 14:29:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 74345e8f-5102-40ec-a64f-c51b8d12747e
+Received: from EX19EXOUEB001.ant.amazon.com (10.252.135.46) by
+ EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 25 Nov 2024 14:29:56 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
+ EX19EXOUEB001.ant.amazon.com (10.252.135.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 25 Nov 2024 14:29:56 +0000
+Received: from email-imr-corp-prod-pdx-all-2c-c4413280.us-west-2.amazon.com
+ (10.124.125.2) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Mon, 25 Nov 2024 14:29:56 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-pdx-all-2c-c4413280.us-west-2.amazon.com (Postfix) with ESMTP id C6F4EA03B5;
+	Mon, 25 Nov 2024 14:29:55 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id 5BC3220D96; Mon, 25 Nov 2024 14:29:55 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Puranjay Mohan <pjy@amazon.com>, "Christoph
+ Hellwig" <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Anuj Gupta
+	<anuj20.g@samsung.com>, Keith Busch <kbusch@kernel.org>, Hagar Hemdan
+	<hagarhem@amazon.com>
+Subject: [PATCH 4.19] nvme: fix metadata handling in nvme-passthrough
+Date: Mon, 25 Nov 2024 14:29:53 +0000
+Message-ID: <20241125142953.30943-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] media: uvcvideo: Support partial control reads and
- minor changes
-To: Ricardo Ribalda <ribalda@chromium.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
-References: <20241120-uvc-readless-v4-0-4672dbef3d46@chromium.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20241120-uvc-readless-v4-0-4672dbef3d46@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Ricardo,
+From: Puranjay Mohan <pjy@amazon.com>
 
-On 20-Nov-24 4:26 PM, Ricardo Ribalda wrote:
-> Some cameras do not return all the bytes requested from a control
-> if it can fit in less bytes. Eg: returning 0xab instead of 0x00ab.
-> Support these devices.
-> 
-> Also, now that we are at it, improve uvc_query_ctrl() logging.
-> 
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
 
-Thank you for your patches, I have pushed both patches to:
+On an NVMe namespace that does not support metadata, it is possible to
+send an IO command with metadata through io-passthru. This allows issues
+like [1] to trigger in the completion code path.
+nvme_map_user_request() doesn't check if the namespace supports metadata
+before sending it forward. It also allows admin commands with metadata to
+be processed as it ignores metadata when bdev == NULL and may report
+success.
 
-https://gitlab.freedesktop.org/linux-media/users/uvc/-/commits/next/
+Reject an IO command with metadata when the NVMe namespace doesn't
+support it and reject an admin command if it has metadata.
 
-now.
+[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
 
-Regards,
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
+  to make it work on 4.19 ]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+ drivers/nvme/host/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Hans
-
-
-
-> ---
-> Changes in v4:
-> - Improve comment.
-> - Keep old likely(ret == size)
-> - Link to v3: https://lore.kernel.org/r/20241118-uvc-readless-v3-0-d97c1a3084d0@chromium.org
-> 
-> Changes in v3:
-> - Improve documentation.
-> - Do not change return sequence.
-> - Use dev_ratelimit and dev_warn_once
-> - Link to v2: https://lore.kernel.org/r/20241008-uvc-readless-v2-0-04d9d51aee56@chromium.org
-> 
-> Changes in v2:
-> - Rewrite error handling (Thanks Sakari)
-> - Discard 2/3. It is not needed after rewriting the error handling.
-> - Link to v1: https://lore.kernel.org/r/20241008-uvc-readless-v1-0-042ac4581f44@chromium.org
-> 
-> ---
-> Ricardo Ribalda (2):
->       media: uvcvideo: Support partial control reads
->       media: uvcvideo: Add more logging to uvc_query_ctrl()
-> 
->  drivers/media/usb/uvc/uvc_video.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
-> change-id: 20241008-uvc-readless-23f9b8cad0b3
-> 
-> Best regards,
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 6adff541282b..fcf062f3b507 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -802,11 +802,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 	bool write = nvme_is_write(cmd);
+ 	struct nvme_ns *ns = q->queuedata;
+ 	struct gendisk *disk = ns ? ns->disk : NULL;
++	bool supports_metadata = disk && blk_get_integrity(disk);
++	bool has_metadata = meta_buffer && meta_len;
+ 	struct request *req;
+ 	struct bio *bio = NULL;
+ 	void *meta = NULL;
+ 	int ret;
+ 
++	if (has_metadata && !supports_metadata)
++		return -EINVAL;
++
+ 	req = nvme_alloc_request(q, cmd, 0, NVME_QID_ANY);
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+@@ -821,7 +826,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 			goto out;
+ 		bio = req->bio;
+ 		bio->bi_disk = disk;
+-		if (disk && meta_buffer && meta_len) {
++		if (has_metadata) {
+ 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
+ 					meta_seed, write);
+ 			if (IS_ERR(meta)) {
+-- 
+2.40.1
 
 
