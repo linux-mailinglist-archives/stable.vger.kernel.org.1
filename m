@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-95373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2829D8527
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 13:13:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AC70163EC8
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:12:55 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE8C199EB7;
-	Mon, 25 Nov 2024 12:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="RKLXow9j"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DF69D8613
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:14:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E022500BA
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 12:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E771BB268E6
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:12:59 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2813199947;
+	Mon, 25 Nov 2024 12:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="hRKToxGi"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A0A199E9A
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 12:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732536775; cv=none; b=c54KkjC8yXG3L6ggncAlDVX0Vo/IlHG39mLoLetNgwXaAeRZZbd7sf+JzQpJBsB5c5A2qtLu3cEGyWFQbLOuMZjcyACFLToWz2Nb871cudPcqtquGxkKbIIPO6BrKz7TWPdL+L0ydg+fvUkDFN+3Qf2dgTL2ZBrJDei8a3tHOQ8=
+	t=1732536776; cv=none; b=iat6EvGyOW0EVw5R1UR3/iC0ODxGBJ+Hsv9lo3Movtakn8DAUKObJSeB8hqTYMVOPv0eT+XeZYQQByYJY4oARlxp9Jw+JZht21QO2FJcI5Qf0NDLbJQa2asPLDcJjS5SdytzEdUlsa76rNv9y+7U1Dfh2/2VxilJJau43ZxAwKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732536775; c=relaxed/simple;
-	bh=OTFA4YHcmTX2rE9VZMJi8dYmyJ3gOId3oqf11EayORc=;
+	s=arc-20240116; t=1732536776; c=relaxed/simple;
+	bh=MLSnpYpnDdb83dsO57HHirQDqJsYFWMfLYTyYFt8hlo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gvGnojadkPHXbGJk/2lW5YFGXuHZiO781tKJUTWqCTzeky2X6wPX8uxsyId9bOIXVezFc2aReeh9sdc7VWEHwHQWzW6VzrbhoZiey/VCrJQOP0HGHfSD0ZBLDQRgPX2peyk9XKRlBXhdjvqmBlPTi0dO5Ksw6kiDwW4tblMBe1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=RKLXow9j; arc=none smtp.client-ip=72.21.196.25
+	 MIME-Version:Content-Type; b=uTNnbPK2K8AXZPUkDQkvBg49b+INwzswv6czi8otqw0Uny+7FTO8AAvqZM72/ev0yINW6qnsysoAFb37G8I3ZVXkrM7ZLivhjFvoOEpUHirXxjbWZxixxBybt+SVXqPE0h2o6cgKbCihKatZFNgcYT0t3NHj1tYQYCXCsGGdlXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=hRKToxGi; arc=none smtp.client-ip=99.78.197.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1732536774; x=1764072774;
+  t=1732536775; x=1764072775;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=DTMBd2bEmcPXjqc240XdNVBag2jiPQjMByKFYkTYHmU=;
-  b=RKLXow9j6LJ4Y+iRq2OKKO0hwM6g1TT3RUekz3RsOcZ6R9NODuPzobcf
-   p3mpsCxFx+dRhh676yc3dfDulHBFXqqS87BDXBAgA0ctsMDsi5TQ/BQ9D
-   M5vDy3L1Hcua5/y+tXvV0ax62H8LGg04bMjWAzZFVPp7Lrog7uqok9sul
-   o=;
+  bh=VuJnPUW5Fhdz8JcOpH25yROzJDJT0HPvWssL8Otml84=;
+  b=hRKToxGiBsTQM4efStdJr5mVx8qVcuLGBu2KCsQkLtwYMcNeLhdraJBP
+   GPELaI3hC6akychm0boge/G58LltiBZh9FMi7qEc5N4VxkUslOlM6m/J0
+   JHGqwaxqON1Tgs0of7QlSEWbROpjOj1fyqSbJRP1WSk4mg6YDQTgMgGOX
+   4=;
 X-IronPort-AV: E=Sophos;i="6.12,182,1728950400"; 
-   d="scan'208";a="445815155"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 12:12:50 +0000
-Received: from EX19MTAUEC001.ant.amazon.com [10.0.29.78:17053]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.39.77:2525] with esmtp (Farcaster)
- id 596df114-ca7b-498a-bc48-056552d0844b; Mon, 25 Nov 2024 12:12:49 +0000 (UTC)
-X-Farcaster-Flow-ID: 596df114-ca7b-498a-bc48-056552d0844b
-Received: from EX19EXOUEA001.ant.amazon.com (10.252.134.47) by
- EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+   d="scan'208";a="147710617"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 12:12:52 +0000
+Received: from EX19MTAUEA001.ant.amazon.com [10.0.29.78:27324]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.44.125:2525] with esmtp (Farcaster)
+ id 7aaf9800-6c70-4714-ac16-584346abaf7c; Mon, 25 Nov 2024 12:12:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 7aaf9800-6c70-4714-ac16-584346abaf7c
+Received: from EX19EXOUEB002.ant.amazon.com (10.252.135.74) by
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 25 Nov 2024 12:12:49 +0000
+ Mon, 25 Nov 2024 12:12:52 +0000
 Received: from EX19MTAUEB002.ant.amazon.com (10.252.135.47) by
- EX19EXOUEA001.ant.amazon.com (10.252.134.47) with Microsoft SMTP Server
+ EX19EXOUEB002.ant.amazon.com (10.252.135.74) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 25 Nov 2024 12:12:48 +0000
-Received: from email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com
+ Mon, 25 Nov 2024 12:12:51 +0000
+Received: from email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com
  (10.124.125.2) by mail-relay.amazon.com (10.252.135.97) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 25 Nov 2024 12:12:48 +0000
+ 15.2.1258.34 via Frontend Transport; Mon, 25 Nov 2024 12:12:51 +0000
 Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com (Postfix) with ESMTP id CE80240765;
-	Mon, 25 Nov 2024 12:12:48 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1b-85daddd1.us-east-1.amazon.com (Postfix) with ESMTP id C4A5E403C2;
+	Mon, 25 Nov 2024 12:12:51 +0000 (UTC)
 Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id 8D8BE22462; Mon, 25 Nov 2024 12:12:48 +0000 (UTC)
+	id 8631922462; Mon, 25 Nov 2024 12:12:51 +0000 (UTC)
 From: Hagar Hemdan <hagarhem@amazon.com>
 To:
 CC: <stable@vger.kernel.org>, Puranjay Mohan <pjy@amazon.com>, "Christoph
  Hellwig" <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Anuj Gupta
 	<anuj20.g@samsung.com>, Keith Busch <kbusch@kernel.org>, Hagar Hemdan
 	<hagarhem@amazon.com>
-Subject: [PATCH 6.1] nvme: fix metadata handling in nvme-passthrough
-Date: Mon, 25 Nov 2024 12:10:07 +0000
-Message-ID: <20241125121009.17855-2-hagarhem@amazon.com>
+Subject: [PATCH 5.15] nvme: fix metadata handling in nvme-passthrough
+Date: Mon, 25 Nov 2024 12:10:08 +0000
+Message-ID: <20241125121009.17855-3-hagarhem@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20241125121009.17855-1-hagarhem@amazon.com>
 References: <20241125121009.17855-1-hagarhem@amazon.com>
@@ -105,54 +105,48 @@ support it and reject an admin command if it has metadata.
 [1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
 
 Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Puranjay Mohan <pjy@amazon.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Minor changes to make it work on 6.1 ]
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
+  to make it work on 5.15 ]
 Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 ---
- drivers/nvme/host/ioctl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/nvme/host/ioctl.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 875dee6ecd40..19a7f0160618 100644
+index 7397fad4c96f..22ff0e617b8f 100644
 --- a/drivers/nvme/host/ioctl.c
 +++ b/drivers/nvme/host/ioctl.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2011-2014, Intel Corporation.
-  * Copyright (c) 2017-2021 Christoph Hellwig.
-  */
-+#include <linux/blk-integrity.h>
- #include <linux/ptrace.h>	/* for force_successful_syscall_return */
- #include <linux/nvme_ioctl.h>
- #include <linux/io_uring.h>
-@@ -171,10 +172,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 	struct request_queue *q = req->q;
+@@ -61,11 +61,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 	bool write = nvme_is_write(cmd);
  	struct nvme_ns *ns = q->queuedata;
  	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
 +	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
 +	bool has_metadata = meta_buffer && meta_len;
+ 	struct request *req;
  	struct bio *bio = NULL;
  	void *meta = NULL;
  	int ret;
  
 +	if (has_metadata && !supports_metadata)
-+		return -EINVAL;
++			return -EINVAL;
 +
- 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
- 		struct iov_iter iter;
- 
-@@ -198,7 +204,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 	if (bdev)
- 		bio_set_dev(bio, bdev);
- 
--	if (bdev && meta_buffer && meta_len) {
-+	if (has_metadata) {
- 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
- 				meta_seed);
- 		if (IS_ERR(meta)) {
+ 	req = nvme_alloc_request(q, cmd, 0);
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+@@ -82,7 +87,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 		bio = req->bio;
+ 		if (bdev)
+ 			bio_set_dev(bio, bdev);
+-		if (bdev && meta_buffer && meta_len) {
++		if (has_metadata) {
+ 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
+ 					meta_seed, write);
+ 			if (IS_ERR(meta)) {
 -- 
 2.40.1
 
