@@ -1,247 +1,369 @@
-Return-Path: <stable+bounces-95370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E85D9D859C
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 13:48:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBD09D84FC
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 13:01:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A362B162C8A
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:01:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A01199947;
+	Mon, 25 Nov 2024 12:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WI0s+ISo"
+X-Original-To: stable@vger.kernel.org
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A84DBB2D016
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:59:14 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E719B199947;
-	Mon, 25 Nov 2024 11:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="dUnZUxij"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C22A376E0
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 11:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A3419146E
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 12:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732535949; cv=none; b=aBjJFFeNbtPMauNfuU4WbjLe2/A9qDEesSN2CEa04LvAX+VbpaqKINUCju6jAFzmqnOz3GO2b8VcChORuU67n/EqFoINv4Ykm8ZwKcHzP3jOFAX1WA0iyBNTYeu6EXzFGV6FfQpOzGcp8r2gRyUlAaof2CuWkKl8XtjJu+fe5Zk=
+	t=1732536082; cv=none; b=nNSPiAe2lG+qUFX6EhBztrm0ZGrdIJWO1rVsWOhp5X1QAlGCiH9X6V+UlKrE1HSV8yBnRCdCISWYfNdG5zZJjX9Hi3R49fvqlPLT7jPVkacnZi6sll61xOxKIDGg2IOLWyzVEBSvID04r3UOo9jpVS6tDkwK2XZngctbMqOQ0ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732535949; c=relaxed/simple;
-	bh=Nqj89ZYUKmsbGkLtnnKcQvhP2tYl+KP8++ciMLWTUf0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kq9LlVgLCWIdtjWrjYvMkr5Tq/rfr6C7XAHXaYvwnVtT6lU72wxkOLWkeS7e0Z/+4RMR1hfjYGv84TgkzuvXSw220lEAnLTSTW6m4sAGjWKBQD70LZXRkoplNaWEBfyzj3m+ojeTE/7fvX63x+2hLEFXoG2YcuRZbSYN7H3osPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=dUnZUxij; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434a10588f3so4225285e9.1
-        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 03:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1732535945; x=1733140745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UvTqih4zuDxpRIabgMXl7QO1Llp9lafNLgIxNa0SNLQ=;
-        b=dUnZUxijDEgCGZL9qxR/U5h3Wt9CbukI+wBnX0/xmU6m7TrK6Wj+a5DWv+nx3b1Ase
-         k/chRXTYhiUsOJLnFWsimG23ugvjj/POx52Y64XrbnemT0pIxrBBsytIpE+Wucgg/kgG
-         bwEcC9oGbovQ1ofJR5BIuNt2hZGa78Kv3ONe0xTY6XFePkcttn73rb9DMC6+FVPm6USv
-         /p/qxnBO09E7mFX9N1gPvjeHtI3k6sjY+kwaB95Z2MDETRrqe7RjmmrBor0T8VBpVWOq
-         7EPaYV01w/Csx8oSVKLwDG++QwpXMvog3qCe+G2UdCjdEsAFz9hjhg5t4baQEm45eK+3
-         PFUA==
+	s=arc-20240116; t=1732536082; c=relaxed/simple;
+	bh=rq/QlzFDIGffkw0Gc9yZwZeU9yXV7YcmkA9nouffMKE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u3mLefn2KelJxh8jtzXVw1+asG9nFph1eMt66BVLXRJRNutJ51BuuRouoxSafvRb7AiVwsxkf12N3VKhZUiF1X+7itvRdkeylHrQefHNffIpnhV+G0XPlaKqVugWtZm/LXA2uB7EbPwBSrf9nIJljp6FAKIktvP2mKo0bDG6muM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WI0s+ISo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732536080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZbMHM28le5Gro1fRhwOYLLQOzozUBhSWnlpT3fY81Uw=;
+	b=WI0s+ISo1gKyjIWsLLAQ3P2yWFvNqYAUl9vw6FItok7c3c6EYD73J9+Wx3sZClkyB4Rcnj
+	rlLpeA9mvzqbwyowfvplNwtyQfP0v2yg6PRTUVXahI1i+cbQ17cPHETGosohZ66fN436Uq
+	bBQbcLJGXIrVGeONvEZ54Ej/TJcs2wQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-604-UhBn7w6CMAi_1drkGb4B8A-1; Mon, 25 Nov 2024 07:01:18 -0500
+X-MC-Unique: UhBn7w6CMAi_1drkGb4B8A-1
+X-Mimecast-MFC-AGG-ID: UhBn7w6CMAi_1drkGb4B8A
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-aa53efda0f2so132404566b.0
+        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 04:01:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732535945; x=1733140745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UvTqih4zuDxpRIabgMXl7QO1Llp9lafNLgIxNa0SNLQ=;
-        b=BKGptOPmciiM5kchBnHRCjT2BU122Jw6iqdbWTkADM3SZwtqHtPYh5w2MXeOALqw44
-         0S6hITmmIX7HEsJBq6xFBOgkzJwHzcJMjuJHERfMdvuq6571U9csVqVrZO27eWWNv5Wv
-         MTnF4fxKxNw4tsOAtWhYNmE4IO4m2PWi95yfVDUkY9E4TZtblcMBmCtwQFHy9vgLoRdb
-         0gFsdFqlBtV8NR6PnMJCRdty744pjg9nVq/XuwxoTbx9SvF4oLLtFTOhWIvnalfYp7DA
-         W5B+6ta6/EAH368PWC7tmt4bKObV7yrW2tHAOj1LJvbc4Dvy/cU1lVDB7H43VG0miZk+
-         nNZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWryidn/kuTGGv2k8LhZi6T6FrifmhyCcvatzCYU0CN+s0oq8QYJ1Mz7GbDT+IRTgvhlfHqe+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoM+0+mbF7vHKOwv17yd12aDFmXX0bo183OGwUFpGc/J9fVI9B
-	1EDUhJpJdp9IsiiCjPLKCc+PNYxbaQg13rQGOFAXC03tUBM2FEuO6QDq+YVEeSQ+N6cQzAxRbHU
-	v
-X-Gm-Gg: ASbGncvUsxsZRSKCEAz2uzLWd8p22Fjd3iO6X4tCmoZmBuBg2IN05Fa6HjOqMg31ER9
-	a1gzz8znjnHoSYqY4vQh2NFQV+Dvm6LX3zWRzaXS70ld2UApy6i/G4/LjF/0nLjT0dqOAUkm2ZQ
-	hhpurlTHDMbPuRFF4wTCBPueKkqN0sw0XUy+wRdC68Trl1Kb4F7lVG5gFU3AQep6SnyvSSgslMG
-	1nvl6tJMn0GjmVv8boKuKLTjflrMpXL2joNiUEvmPrOMxticZl4OK5Xc93dVJXydZRg3WSMW0xF
-	ONU=
-X-Google-Smtp-Source: AGHT+IERI7AZlN3KrYfCNnJKk/X3paLDn8H+fVm0RkY5gq03QR61gDdmNk5OamtVv2fyVuPTYoynqg==
-X-Received: by 2002:a05:600c:1381:b0:431:5044:e388 with SMTP id 5b1f17b1804b1-433ce4ab0a0mr92338485e9.22.1732535945185;
-        Mon, 25 Nov 2024 03:59:05 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fad5fa2sm10459677f8f.1.2024.11.25.03.59.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2024 03:59:04 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	geert+renesas@glider.be,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	g.liakhovetski@gmx.de,
-	lethal@linux-sh.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	claudiu.beznea@tuxon.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] serial: sh-sci: Check if TX data was written to device in .tx_empty()
-Date: Mon, 25 Nov 2024 13:58:56 +0200
-Message-Id: <20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1732536077; x=1733140877;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbMHM28le5Gro1fRhwOYLLQOzozUBhSWnlpT3fY81Uw=;
+        b=oQ3QDlYD+7D0o8VeK6eAajPhjR3E2XOWIe+KmfH4+OseqPPiEiHBEGY9/HOV4z6xkJ
+         6R13mn8YbsucXCmFgCsY3a8PXXsXtFn16YdPb3saQelJWR0nFQlJrusT7SZ6N4FDjbXU
+         oTrEi0XL1NoVXIiQNM2BNPv5tg+u9nkBp6YB5xfsIywNDB72zCeQv9BE9qJoYG5PYaeP
+         5Ww6GsuLMAi3Aqs9oPXYyzMWrbSSPWwcV6Rs5FuGPw7Ma20gk5D6UvTqEyvBqSdLVfNZ
+         QisLH+qsf0rCdHVu0ZP+ov+frfaEAdVn8bqXu+qg6sLJz6/JIX7mPQuDCbEJ+Z6K3+XG
+         zeGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhdRNPfROTJtb52jVIEQ39TOjiRSvuuZ1ULPlhmFhzzWsfY8BLG663YMNJjRAfky/e27A1DW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP1uSD0o6MDS2NU35IWlFKoGN28esoFwpD7R/7VShmY4CF0m2e
+	DZG5TtiHT5Ln8OkrUCCMnnOLzP8krDkUeLco0GGlvSOR/0QNLc3lsFaw392wDIZFBwMDhPbw4vd
+	JK/cmoR8uOI1yX3HF5bTbVCB3peGsyQHBTdRuGzjgU0Y5n2KxVXHD/zV12qYp5A==
+X-Gm-Gg: ASbGncuamqvoxJWpVlXQc+GfDjt9AtMgLN86dHElx7aOVFqcBvvFyLB0NohntUKikRQ
+	I8GkeH19TtdZ1dUNqk9yGdcoxdygSavGptW21PhulavUI/7xjObexMQD5Ft/x1gGT9JO0UgugqH
+	2/hZObxU6AjTWt6iDgZ+KRZmwgvF84HEIiYIugB4ha5NK+PhQfKTfTTkjfkWmlzzX14sUDBvxg2
+	lr1g8OrBV6iKd4zOf8b/ydZjlebqEFpoeVcIDsLDrlD8bD/ypJ3BPDBOU9AvI6Vqv1mmHZRVkIc
+	HpoQjBXbDHCQh4r7SJ2OgdvtkQhZOEKFgtv/crM+L7i2so6CBCMbhaEiXWWrq4VZYmPYTq6QylC
+	2AfMue77seMvAn6kwngFyWVjz
+X-Received: by 2002:a17:907:7711:b0:aa5:2ef2:58bb with SMTP id a640c23a62f3a-aa52ef259acmr782848366b.0.1732536076496;
+        Mon, 25 Nov 2024 04:01:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENaOquYvMBq9Yn3uAZYbeCNhSkN6l6RqHbHKRagSZZ9ac48TpmkIt30DiREmHNS8W2KRtokA==
+X-Received: by 2002:a17:907:7711:b0:aa5:2ef2:58bb with SMTP id a640c23a62f3a-aa52ef259acmr782845066b.0.1732536076017;
+        Mon, 25 Nov 2024 04:01:16 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b5b764asm454083966b.175.2024.11.25.04.01.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Nov 2024 04:01:15 -0800 (PST)
+Message-ID: <5a199058-edab-4f9d-9e09-52305824f3bf@redhat.com>
+Date: Mon, 25 Nov 2024 13:01:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] media: uvcvideo: Implement the Privacy GPIO as a
+ evdev
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Armin Wolf <W_Armin@gmx.de>,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ Yunke Cao <yunkec@chromium.org>, Hans Verkuil <hverkuil@xs4all.nl>,
+ stable@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20241112-uvc-subdev-v3-0-0ea573d41a18@chromium.org>
+ <bd68178f-1de9-491f-8209-f67065d29283@redhat.com>
+ <CANiDSCtjpPG3XzaEOEeczZWO5gL-V_sj_Fv5=w82D6zKC9hnpw@mail.gmail.com>
+ <20241114230630.GE31681@pendragon.ideasonboard.com>
+ <CANiDSCt_bQ=E1fkpH1SAft1UXiHc2WYZgKDa8sr5fggrd7aiJg@mail.gmail.com>
+ <d0dd293e-550b-4377-8a73-90bcfe8c2386@redhat.com>
+ <CANiDSCvS1qEfS9oY=R05YhdRQJZmAjDCxVXxfVO4-=v4W1jTDg@mail.gmail.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CANiDSCvS1qEfS9oY=R05YhdRQJZmAjDCxVXxfVO4-=v4W1jTDg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Hi Ricardo,
 
-On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
-is called. The uart_suspend_port() calls 3 times the
-struct uart_port::ops::tx_empty() before shutting down the port.
+On 18-Nov-24 5:47 PM, Ricardo Ribalda wrote:
+> Hi Hans
+> 
+> On Mon, 18 Nov 2024 at 16:43, Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi All,
+>>
+>> On 15-Nov-24 9:20 AM, Ricardo Ribalda wrote:
+>>> On Fri, 15 Nov 2024 at 00:06, Laurent Pinchart
+>>> <laurent.pinchart@ideasonboard.com> wrote:
 
-According to the documentation, the struct uart_port::ops::tx_empty()
-API tests whether the transmitter FIFO and shifter for the port is
-empty.
+<snip>
 
-The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
-transmit FIFO through the FDR (FIFO Data Count Register). The data units
-in the FIFOs are written in the shift register and transmitted from there.
-The TEND bit in the Serial Status Register reports if the data was
-transmitted from the shift register.
+>>>> How do you handle cameras that suffer from
+>>>> UVC_QUIRK_PRIVACY_DURING_STREAM ?
+>>>
+>>> For those b) does not work.
+>>
+>> I already suspected as much, but it is good to have this
+>> confirmed.
+>>
+>> I'm afraid that from a userspace API pov cameras with a GPIO
+>> which only works when powered-on need to be treated the same as
+>> cameras which only have UVC_CT_PRIVACY_CONTROL IOW in this case
+>> keep exporting V4L2_CID_PRIVACY instead of switching to evdev
+>> with SW_CAMERA_LENS_COVER.
+>>
+>> Unfortunately this will make the GPIO handling code in the UVC
+>> driver somewhat more involved since now we have both uAPI-s for
+>> GPIOs depending on UVC_QUIRK_PRIVACY_DURING_STREAM.
+>>
+>> But I think that this makes sense, this way we end up offering
+>> 2 uAPIs depending on the hw capabilities:
+>>
+>> 1. evdev with SW_CAMERA_LENS_COVER which always reports a reliable
+>> state + events on the state changing without needing to power-up
+>> the camera.
+>>
+>> 2. V4L2_CID_PRIVACY for the case where the camera needs to be
+>> powered-on (/dev/video opened) and where the ctrl possibly needs
+>> to be polled.
+>>
+>> Assuming we can all agree on this split based on hw capabilities
+>> I think that we must document this somewhere in the media subsystem
+>> documentation. We can then also write down there that
+>> SW_CAMERA_LENS_COVER only applies to internal cameras.
+> 
+> I do not think that it is worth it to keep UVC_CT_PRIVACY_CONTROL for
+> the two devices that have connected the GPIO's pull up to the wrong
+> power rail.
+> Now that the GPIO can be used from userspace, I expect that those
+> errors will be found early in the design process and never reach
+> production stage.
+> 
+> 
+> If we use UVC_CT_PRIVACY_CONTROL for thes two devices:
+> - userspace will have to implement two different APIs
+> - the driver will have to duplicate the code.
+> - all that code will be very difficult to test: there are only 2
+> devices affected and it requires manual intervention to properly test
+> it.
+> 
+> I think that UVC_QUIRK_PRIVACY_DURING_STREAM is a good compromise and
+> the main user handles it properly.
 
-In the previous code, in the tx_empty() API implemented by the sh-sci
-driver, it is considered that the TX is empty if the hardware reports the
-TEND bit set and the number of data units in the FIFO is zero.
+Ok, as you wish. Lets go with using SW_CAMERA_LENS_COVER for the 2 models with
+UVC_QUIRK_PRIVACY_DURING_STREAM too.
 
-According to the HW manual, the TEND bit has the following meaning:
+<snip>
 
-0: Transmission is in the waiting state or in progress.
-1: Transmission is completed.
+>>>> Is there any ACPI- or WMI-provided information that could assist with
+>>>> associating a privacy GPIO with a camera ?
 
-It has been noticed that when opening the serial device w/o using it and
-then switch to a power saving mode, the tx_empty() call in the
-uart_port_suspend() function fails, leading to the "Unable to drain
-transmitter" message being printed on the console. This is because the
-TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
-TEND=0 has double meaning (waiting state, in progress) we can't
-determined the scenario described above.
+I just realized I did not answer this question from Laurent
+in my previous reply.
 
-Add a software workaround for this. This sets a variable if any data has
-been sent on the serial console (when using PIO) or if the DMA callback has
-been called (meaning something has been transmitted). In the tx_empty()
-API the status of the DMA transaction is also checked and if it is
-completed or in progress the code falls back in checking the hardware
-registers instead of relying on the software variable.
+No unfortunately there is no ACPI- or WMI-provided information that
+could assist with associating ACPI/WMI camera privacy controls with
+a specific camera. Note that these are typically not exposed as a GPIO,
+but rather as some vendor firmware interface.
 
-Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+Thinking more about this I'm starting to believe more and more
+that the privacy-control stuff should be handled by libcamera
+and then specifically by the pipeline-handler, with some helper
+code to share functionality where possible.
 
-Patch was initially part of series at [1].
+E.g. on IPU6 equipped Windows laptops there may be some ACPI/WMI
+driver which provides a /dev/input/event# SW_CAMERA_LENS_COVER node.
 
-Changes since [1]:
-- checked the s->chan_tx validity in sci_dma_check_tx_occurred()
+So I would expect the IPU6 pipeline-handler to search for such a
+/dev/input/event# node and then expose that to users of the camera
+through a to-be-defined API (I'm thinking a read-only control).
+
+The code to find the event node can be shared, because this would
+e.g. likely also apply to some IPU3 designs as well as upcoming
+IPU7 designs.
+
+<snip>
+
+>>>> We could include the evdev in the MC graph. That will of course only be
+>>>> possible if the kernel knows about that association in the first place.
+>>>> At least the 1st category of devices would benefit from this.
+>>
+>> Yes I was thinking about adding a link to the MC graph for this too.
+>>
+>> Ricardo I notice that in this v3 series you still create a v4l2-subdev
+>> for the GPIO handling and then add an ancillary link for the GPIO subdev
+>> to the mc-graph. But I'm not sure how that is helpful. Userspace would
+>> still need to do parent matching, but then match the evdev parent to
+>> the subdev after getting the subdev from the mc. In that case it might
+>> as well look at the physical (USB-interface) parent of the MC/video
+>> node and do parent matching on that avoiding the need to go through
+>> the MC at all.
+>>
+>> I think using the MC could still be useful by adding a new type of
+>> ancillary link to the MC API which provides a file-path as info to
+>> userspace rather then a mc-link and then just directly provide
+>> the /dev/input/event# path through this new API?
+>>
+>> I guess that extending the MC API like this might be a bit of
+>> a discussion. But it would already make sense to have this for
+>> the existing input device for the snapshot button.
+> 
+> The driver creates a v4l2-subdevice for every entity, and the gpio
+> today is modeled as an entity.
+
+Ok I see that explains why the subdevice is there, thank you.
+
+> The patchset just adds an ancillary link as Sakari suggested.
+> I am not against removing the gpio entity all together if it is not needed.
+
+Right unlike other entities which are really part of the UVC
+specification, the GPIO is not a "real" UVC entity.
+
+So I wonder if, after switching to SW_CAMERA_LENS_COVER, having
+this as a v4l2-subdevice buys us anything ? If not I think removing
+it might be a good idea.
+
+As for the ancillary link, that was useful to have when the API
+was a v4l2-ctrl on the subdevice. Just like I doubt if having
+the subdevice at all gives us any added value, I also doubt if
+having the ancillary link gives us any added value.
+
+> Now that we are brainstorming here... what about adding a control that
+> contains the name of the input device (eventX)? Is that a horrible
+> idea?
+
+I don't know, my initial reaction is that does not feel right to me.
+
+>>>>>> We can specify
+>>>>>> that SW_CAMERA_LENS_COVER only applies to device internal
+>>>>>> cameras, but then it is up to userspace to determine which
+>>>>>> cameras that are.
+>>>>>
+>>>>> I am working on wiring up this to userspace right now.. I will report
+>>>>> back if it cannot do it.
+>>
+>> Ricardo, great, thank you!
+
+Ricardo, any status update on this ?
+
+<snip>
+
+>>>> Assuming the kernel could report the association between an evdev and
+>>>> camera, we would need to report which evdev SW_CAMERA_LENS_COVER
+>>>> originates from all the way from the evdev to the consumer of the event.
+>>>> How well is that supported in standard Linux system architectures ? If
+>>>> I'm not mistaken libinput will report the originating device, but how
+>>>> far up the stack is it propagated ? And which component would we expect
+>>>> to consume those events, should the camera evdev be managed by e.g.
+>>>> libcamera ?
+>>
+>> Good questions. Looking back at our 2 primary use-cases:
+>>
+>> a) Having an app which is using (trying to use) the camera show
+>> a notification to the user that the camera is turned-off by
+>> a privacy switch .
+>>
+>> b) Showing on on-screen-display (OSD) with a camera /
+>> crossed-out-camera icon when the switch is toggled, similar to how
+>> muting speakers/mic show an OSD . Laptop vendor Windows add-on
+>> software does this and I know that some users have been asking
+>> for this.
+>>
+>> I think we have everything to do b) in current compositors
+>> like gnome-shell. Using an evdev with SW_CAMERA_LENS_COVER
+>> would even be a lot easier for b) then the current
+>> V4L2_CID_PRIVACY API.
+>>
+>> a) though is a lot harder. We could open up access to
+>> the relevant /dev/input/event# node using a udev uaccess
+>> tag so that users who can access /dev/video# nodes also
+>> get raw access to that /dev/input/event# node and then
+>> libcamera could indeed provide this information that way.
+>> I think that is probably the best option.
+>>
+>> At least for the cases where the camera on/off switch
+>> does not simply make the camera completely disappear.
+>>
+>> That case is harder. atm that case is not handled at all
+>> though. So even just getting b) to work for that case
+>> would be nice / an improvement.
+>>
+>> Eventually if we give libcamera access to event#
+>> nodes which advertise SW_CAMERA_LENS_COVER (and no other
+>> privacy sensitive information) then libcamera could even
+>> separately offer some API for apps to just get that value
+>> if there is no camera to associate it with.
+>>
+>> Actually thinking more about it libcamera probably might
+>> be the right place for some sort of "no cameras found
+>> have you tried hitting your camera privacy-switch" API.
+>> That is some API to query if such a message should be
+>> shown to the user. But that is very much future work.
+> 
+> Are standard apps expected to use libcamera directly or they should
+> use pipewire?
+> Maybe a) Should be pipewire's task?
+
+Standard apps are supposed to use pipewire, but IMHO this is
+really too low-level for pipewire to handle itself.
+
+Also see my remarks above about how I think this needs to
+be part of the pipeline handler. Since e.g. associating
+a /dev/input/event# SW_CAMERA_LENS_COVER node with a specific
+UVC camera is going to be UVC specific solution.
+
+For other pipeline-handlers combined with vendor fw-interfaces
+offering SW_CAMERA_LENS_COVER support I do not think that there
+is going to be a way to actually associate the 2. So we will
+likely simply have the pipeline handler for e.g. IPU6 simply
+associate any SW_CAMERA_LENS_COVER with the normal (non IR)
+user facing camera.
+
+Since we need this different ways to map a /dev/input/event#
+SW_CAMERA_LENS_COVER node to a specific camera this really
+needs to be done in libcamera IMHO.
+
+And I think this also solves the question about needing
+a kernel  API to associate the /dev/input/event# with
+a specific /dev/video#. At least for now I think we don't
+need an API and instead we can simply walk sysfs to find
+the common USB-interface parent to associate the 2.
+
+See how xawtv associates the alsa and /dev/video# parts
+of tv-grabber cards for an example.
+
+Regards,
+
+Hans
 
 
-[1] https://lore.kernel.org/all/20241115134401.3893008-1-claudiu.beznea.uj@bp.renesas.com/
-
- drivers/tty/serial/sh-sci.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 136e0c257af1..680f0203fda4 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -157,6 +157,7 @@ struct sci_port {
- 
- 	bool has_rtscts;
- 	bool autorts;
-+	bool tx_occurred;
- };
- 
- #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
-@@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
- {
- 	struct tty_port *tport = &port->state->port;
- 	unsigned int stopped = uart_tx_stopped(port);
-+	struct sci_port *s = to_sci_port(port);
- 	unsigned short status;
- 	unsigned short ctrl;
- 	int count;
-@@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
- 		}
- 
- 		sci_serial_out(port, SCxTDR, c);
-+		s->tx_occurred = true;
- 
- 		port->icount.tx++;
- 	} while (--count > 0);
-@@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
- 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
- 
-+	s->tx_occurred = true;
-+
- 	if (!kfifo_is_empty(&tport->xmit_fifo)) {
- 		s->cookie_tx = 0;
- 		schedule_work(&s->work_tx);
-@@ -1731,6 +1736,19 @@ static void sci_flush_buffer(struct uart_port *port)
- 		s->cookie_tx = -EINVAL;
- 	}
- }
-+
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	if (!s->chan_tx)
-+		return;
-+
-+	status = dmaengine_tx_status(s->chan_tx, s->cookie_tx, &state);
-+	if (status == DMA_COMPLETE || status == DMA_IN_PROGRESS)
-+		s->tx_occurred = true;
-+}
- #else /* !CONFIG_SERIAL_SH_SCI_DMA */
- static inline void sci_request_dma(struct uart_port *port)
- {
-@@ -1740,6 +1758,10 @@ static inline void sci_free_dma(struct uart_port *port)
- {
- }
- 
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+}
-+
- #define sci_flush_buffer	NULL
- #endif /* !CONFIG_SERIAL_SH_SCI_DMA */
- 
-@@ -2076,6 +2098,12 @@ static unsigned int sci_tx_empty(struct uart_port *port)
- {
- 	unsigned short status = sci_serial_in(port, SCxSR);
- 	unsigned short in_tx_fifo = sci_txfill(port);
-+	struct sci_port *s = to_sci_port(port);
-+
-+	sci_dma_check_tx_occurred(s);
-+
-+	if (!s->tx_occurred)
-+		return TIOCSER_TEMT;
- 
- 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
- }
-@@ -2247,6 +2275,7 @@ static int sci_startup(struct uart_port *port)
- 
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
-+	s->tx_occurred = false;
- 	sci_request_dma(port);
- 
- 	ret = sci_request_irq(s);
--- 
-2.39.2
 
 
