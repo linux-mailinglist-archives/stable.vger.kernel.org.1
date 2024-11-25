@@ -1,195 +1,217 @@
-Return-Path: <stable+bounces-95365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E149D83F8
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:00:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683069D8413
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ABDC168D20
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:00:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC7121699A1
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604A5196446;
-	Mon, 25 Nov 2024 11:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCF4194C92;
+	Mon, 25 Nov 2024 11:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mZRHJVA8"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF67C194C86
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 11:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF446192589;
+	Mon, 25 Nov 2024 11:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732532431; cv=none; b=SgK69OfCz7b4ewZJcHXZR6aP4aT9P1H9nKLF5/cmNq/RPvRqaIOaoM2pCgM46NUlr40zY2RJPwNRwKeoYpLFNgiKe3uaEgYq/rt5/tN7mY4c0TK5LvAxDk/mUajJQoT/0rjmRxLl9oDPa1VKwHYoGOtvT+/ZFwdin9ODMG9rsPQ=
+	t=1732532891; cv=none; b=nvvOugNzEnC0MT5MdBimCCN1b0y5LIUgiEZIlXemhkIgSHi+T6lUZuqtAbX//TBfh/gUSXGKBck+dUex1VBtMSya73LxENhO6YnxHzz2UphpG6guHic6Ta0g57TVxbc+IUrBR4K5c7QKtU6rCma/FKAmK/9yg45p/auCdhb+9Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732532431; c=relaxed/simple;
-	bh=/0gO+9PPZBmpTRgBKiYQA8NcqskyWMNhhrizpwhdH0g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZkmbHmOZza0kAaKpSUM1IUg6mFSHfygnQnjhul4m2+9XXkOVUSpSOeo8rJde4vAkk4sOrrfsyRmcjd1NOHJeyPkwz42OzNx/AC47k0bO8fj0vrVLriyT4RgBjU/fcP292nizZn1SGoCzvoPld8ZpLbmczXagt96bkTrBBd1RRHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFWpO-0005oV-7E
-	for stable@vger.kernel.org; Mon, 25 Nov 2024 12:00:26 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFWpN-00048a-0p
-	for stable@vger.kernel.org;
-	Mon, 25 Nov 2024 12:00:26 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id B106937CB96
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 11:00:25 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id DD4DD37CB8E;
-	Mon, 25 Nov 2024 11:00:23 +0000 (UTC)
-Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 09a3b8e0;
-	Mon, 25 Nov 2024 11:00:22 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 25 Nov 2024 12:00:16 +0100
-Subject: [PATCH RFC can] can: mcp251xfd: mcp251xfd_get_tef_len(): fix
- length calculation
+	s=arc-20240116; t=1732532891; c=relaxed/simple;
+	bh=eKZ3NTtyLru4te3bIet0CwHqjzzmKZtcG0wMs7PZ2w4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G45I7TSrdC92BdOM4ZLIC5XE7sbRc2JNdv3WpjfNQfFQJcPW4TgLpg8451/mpKpZiyikve9bipnSF5e0pJ+9kf+nHUUhdyULPORkI47RHBSxbiyaqpf2dX1JCFHUi8T936j3ugWfyWee/S9cL0S2xE+DLda4JSW38lY/KLAleHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mZRHJVA8; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 354996B5;
+	Mon, 25 Nov 2024 12:07:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732532864;
+	bh=eKZ3NTtyLru4te3bIet0CwHqjzzmKZtcG0wMs7PZ2w4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mZRHJVA8sseG1Gmr8AcwOpOyshbXvvaqxf0Yh506PLb3LA18dn1vl5Y8eceumjrGo
+	 ItYh9QbNdeMUqkJqaEPgnJI+MGOR9lTz2hfP8O2vqyoOZ5njFbSFdpcdFWzjMeMgt5
+	 +pcBTndCDtjCIrzid62CfAwnB6yCoNNfF9rdpMhg=
+Message-ID: <798adbca-7384-4c94-915d-f2cf0710b4e7@ideasonboard.com>
+Date: Mon, 25 Nov 2024 13:08:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] drm/tidss: Fix issue in irq handling causing
+ irq-flood issue
+To: Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+ Devarsh Thakkar <devarsht@ti.com>, Jyri Sarha <jyri.sarha@iki.fi>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Jonathan Cormier <jcormier@criticallink.com>, Bin Liu <b-liu@ti.com>,
+ stable@vger.kernel.org
+References: <20241021-tidss-irq-fix-v1-0-82ddaec94e4a@ideasonboard.com>
+ <20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com>
+ <e2828b26-8ee9-4140-a377-647f5ae12e2f@linux.dev>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <e2828b26-8ee9-4140-a377-647f5ae12e2f@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241125-mcp251xfd-fix-length-calculation-v1-1-974445b5f893@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAL9YRGcC/x2NQQrCMBBFrxJm7UAntIJuBQ/gtrgYJpM2EGNJq
- hRK7+7g8sF//+3QtCZtcHU7VP2mlt7FgE4OZOYyKaZgDL7zPREN+JLFD7TFgDFtmLVM64zCWT6
- ZV5Pxcg49dxqIooLdLFVt+U+M8LjfnHCB53H8APHd5YV7AAAA
-X-Change-ID: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Thomas Kopp <thomas.kopp@microchip.com>, 
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>, stable@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-355e8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3857; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=/0gO+9PPZBmpTRgBKiYQA8NcqskyWMNhhrizpwhdH0g=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnRFjDWYzc9I9kEdGkvs5QqeR/D65CdWi6/fFKU
- KmEcgnfAluJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZ0RYwwAKCRAoOKI+ei28
- b+0jB/41neInK9Mf0znPyauvf5DXxmk8o5zRado0ezQm/M0SR+ADlJulxgHbdUcxPExqJ7yKVwE
- jTHgqrjrF2Tbf9qpiAs1frqFykS+r8ii5ATBk2+eG6ii2X1R1tqdSBSaZNoKU03nBgQ3dz1jzBk
- YbQqorhc3fmlK0zRkioN+owulZAE84oWKwwCr8bPekSpfYS9X4D17dERynktMZ0AMVdVyRRkmdX
- mkV3uwQfGgWOgUDGA6kiHyhvX7XdexDMXWccEbON6ASvUOHgGQD13nxko4hERG+dqXjrHzUrrlZ
- Jk8x9tfvx+gERFLsWt/tGooOzhwLiUZ+HmcYzgLWHEasqDSq
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
+Hi,
 
-As the TEF has no head index, the driver uses the TX-FIFO's tail index
-instead, assuming that send frames are completed.
+On 24/11/2024 19:18, Aradhya Bhatia wrote:
+> Hi Tomi, Devarsh,
+> 
+> On 10/21/24 19:37, Tomi Valkeinen wrote:
+>> It has been observed that sometimes DSS will trigger an interrupt and
+>> the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
+>> VID level interrupt-statuses are zero.
+> 
+> Does this mean that there was a legitimate interrupt that potentially
+> went unrecognized? Or that there was a, for the lack of a better word,
+> fake interrupt trigger that doesn't need handling but just clearing?
 
-When calculating the number of unhandled TEF events, that commit
-didn't take mcp2518fd erratum DS80000789E 6. into account. According
-to that erratum, the FIFOCI bits of a FIFOSTA register, here the
-TX-FIFO tail index might be corrupted.
+I don't have an answer to that. I haven't been able to trigger this 
+issue, and I guess it's difficult to say for certain in any case.
 
-However here it seems the bit indicating that the TX-FIFO is
-empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
-TX-FIFO tail index is.
+My guess is that it's some kind of race issue either in the HW or the 
+combination of HW+SW.
 
-Assume that the TX-FIFO is indeed empty if:
-- Chip's head and tail index are equal (len == 0).
-- The TX-FIFO is less than half full.
-  (The TX-FIFO empty case has already been checked at the
-   beginning of this function.)
-- No free buffers in the TX ring.
+>> As the top level irqstatus is supposed to tell whether we have VP/VID
+>> interrupts, the thinking of the driver authors was that this particular
+>> case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
+>> bits which has corresponding interrupts in VP/VID status. So when this
+>> issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
+>> interrupt flood.
+>>
+>> It is unclear why the issue happens. It could be a race issue in the
+>> driver, but no such race has been found. It could also be an issue with
+>> the HW. However a similar case can be easily triggered by manually
+>> writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
+>> DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
+>> the bit, we get an interrupt flood.
+>>
+>> To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
+>> solution is that if the top level irqstatus is the one that triggers the
+>> interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
+>> unhandled if VP/VID interrupt statuses have bits set. However, testing
+>> shows that if any of the irqstatuses is set (i.e. even if
+>> DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
+>> interrupt.
+> 
+> Does this mean if VID/VP irqstatus has been set right around the time
+> the equivalent DISPC_IRQSTATUS bit is being cleared, the equivalent
+> DISPC_IRQSTATUS bit is going to get set again, and make the driver
+> handle the event as we expect it to?
 
-If the TX-FIFO is assumed to be empty, assume that the TEF is full and
-return the number of elements in the TX-FIFO (which equals the number
-of TEF elements).
+(If I recall right) no, DISPC_IRQSTATUS won't be set. But it doesn't 
+matter, the interrupt will be triggered anyway, and the driver will 
+handle the interrupt.
 
-If these assumptions are false, the driver might read to many objects
-from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
-and will refuse to process old events.
+>>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>> Co-developed-by: Bin Liu <b-liu@ti.com>
+>> Signed-off-by: Bin Liu <b-liu@ti.com>
+>> Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
+>> Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+>> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
+>> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
+>> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+>> Cc: stable@vger.kernel.org
+>> ---
+>>   drivers/gpu/drm/tidss/tidss_dispc.c | 12 ++++--------
+>>   1 file changed, 4 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+>> index 1ad711f8d2a8..f81111067578 100644
+>> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
+>> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+>> @@ -780,24 +780,20 @@ static
+>>   void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+>>   {
+>>   	unsigned int i;
+>> -	u32 top_clear = 0;
+>>   
+>>   	for (i = 0; i < dispc->feat->num_vps; ++i) {
+>> -		if (clearmask & DSS_IRQ_VP_MASK(i)) {
+>> +		if (clearmask & DSS_IRQ_VP_MASK(i))
+>>   			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
+>> -			top_clear |= BIT(i);
+>> -		}
+>>   	}
+>>   	for (i = 0; i < dispc->feat->num_planes; ++i) {
+>> -		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
+>> +		if (clearmask & DSS_IRQ_PLANE_MASK(i))
+>>   			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
+>> -			top_clear |= BIT(4 + i);
+>> -		}
+>>   	}
+> 
+> nit: Maybe these for-loop braces could be dropped as well.
 
-Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Not-yet-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 29 ++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+I like to have braces if there are multiple lines under it.
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8..e94321849fd7e69ed045eaeac3efec52fe077d96 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
- 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
- 
-+static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
-+{
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
-+}
-+
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
- 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
- 
- 	len = (chip_tx_tail << shift) - (tail << shift);
--	*len_p = len >> shift;
-+	len >>= shift;
-+
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the TX-FIFO tail index
-+	 * might be corrupted.
-+	 *
-+	 * However here it seems the bit indicating that the TX-FIFO
-+	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
-+	 * while the TX-FIFO tail index is.
-+	 *
-+	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
-+	 * haven been send, if:
-+	 * - Chip's head and tail index are equal (len == 0).
-+	 * - The TX-FIFO is less than half full.
-+	 *   (The TX-FIFO empty case has already been checked at the
-+	 *    beginning of this function.)
-+	 * - No free buffers in the TX ring.
-+	 */
-+	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0)
-+		len = tx_ring->obj_num;
-+
-+	*len_p = len;
- 
- 	return 0;
- }
+> Otherwise, LGTM,
+> 
+> Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 
----
-base-commit: fcc79e1714e8c2b8e216dc3149812edd37884eef
-change-id: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
+Thanks!
 
-Best regards,
--- 
-Marc Kleine-Budde <mkl@pengutronix.de>
-
+  Tomi
 
 
