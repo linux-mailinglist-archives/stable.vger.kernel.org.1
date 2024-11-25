@@ -1,109 +1,105 @@
-Return-Path: <stable+bounces-95382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B2E9D8737
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:00:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE299D874D
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:05:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0AB1653F5
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 13:59:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3093285191
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41ED1AF0A9;
-	Mon, 25 Nov 2024 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39151A7AC7;
+	Mon, 25 Nov 2024 14:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="UpQQ/ruA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uc42ExnI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1400A1AE850
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 13:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0093376E0;
+	Mon, 25 Nov 2024 14:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732543195; cv=none; b=giQM6tX1Qg6JSKEgiT1jKNyrxQVyHk2ZdvrM09znwGS992nZpPE9x+jh/OgplvFVj/TbX/7rmsCXcQYdPTG3JzvQ+PscxffH1r0gB/lRiLxvkHe8r5DmVcddzsV6GeyvVoG81DH65eiMzq9wgEwF+C2yCtjwYMRc9VBiODriG0Y=
+	t=1732543510; cv=none; b=GoC0q6HG8O1e+ANce1ioowESKEWS5KDatQ2UgQ+SzsKJQAFSkVjDLgIDrufZ8DsSVX7Adg/R9F8jcOcutVo1uh+sVCHVmZwLHdtGmXVn1Ba5PRznAvH/4QDR+fK8qL5oKB4KcQHKysyd783cs66xStM6uaWX5w3ogoImWq/t7wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732543195; c=relaxed/simple;
-	bh=E8nIC1QMQF0fv1CW6rYzP9Cy3c+iEgEnoJ86Z+Jxk7g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NnCJ5zuVbgIG64x4Ii2CfZ5wemRLLwVdcRl6b7bqwZNgl+7RaBPjoZUuifc9CylMKbvaGQhdoPf5tT6XigoA1k5KGchUzHaCRp4CdE7LhwY+uGQfGumDVR6AIztwq6Q6Rns31E9OVtLnHpPcn9WAgmzQ5no74INVvVDjrpCuhAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=UpQQ/ruA; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso50821371fa.0
-        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 05:59:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1732543191; x=1733147991; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E8nIC1QMQF0fv1CW6rYzP9Cy3c+iEgEnoJ86Z+Jxk7g=;
-        b=UpQQ/ruA98jopTJVOsqsQkJQZKduuIcLlnNCDuLXJW9ZSBt3xDLBNa5pweO6yvOiVD
-         rK0dMD4DO1ie2+/WHUZyoawKH0oJjFsuDhhoeAYMJdejPgg6+AemF/OqSz2JGWZsGQss
-         bz4fl2+b4wwrl+AuJ6yoeOzYdV9LrVeTISrXbTf5Rt41iFUPJcX8cBQIwYRvx9UhWBcs
-         8V1nYo5LVrJIVeCUOw6SPWmyen/6rUCyl8VtaoayUG0hMlYH3+tNFDZjbLx09rs2wdzP
-         7h1jsmZe2jf5nG0cKeVskXV0xZ0Ut25Ff/u7oqjwxQaGM6CZQcHP+Jval/3nzqBQiz13
-         JEfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732543191; x=1733147991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E8nIC1QMQF0fv1CW6rYzP9Cy3c+iEgEnoJ86Z+Jxk7g=;
-        b=mgyoTZCKulEOrQmP/Xfwy13tikz403qcRoqgVI3I/RFrfCJ/DhXrh29tZK8zb6avkj
-         oQsgf7qH8jQyGabFrhaF5piEAWArzVjOCsaA7GMvOA422OobcSUFVX0agxDaIDEein3G
-         ySV+DL88VC7GYPNcBqJ7q5n1JSDGKaHrTJrYHAYxUEBueXHO5wT5kU6qVRiN6pXKKE2D
-         a/n5aX+JfNanMIZ+bQqnVR+rvbik2BgjBfJo6xeziRAWNzjoKNLLT5gpY2iB/dlmMN/3
-         q5v/+lqxSHgTc4oIhtM2eZM3WadJT21MVNx2MN0nXvYFfd5cxIRiiTSl+npIUzXehz2O
-         1+tw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+DrX6BkmqCVu6HL8XypumZbiLMrDBS4pnBpb02NiEDgREKh56Ax9WO/nD1beLzXXT1YtZpuM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2nG23A2Vju70lfWll8JcRH4V2nGwDiSK7IJE39QlRP4o/lGyc
-	rI4bbCgw/Z2LWiNEB2CPa63pqCeDxi6BqigB8w/JY9ry1Qkfja8hnZbM0GWAC9bg8kgho/plOmC
-	FKJxdhYZ0d9JqKnGuhrS0RKP4/llE1pUiwQvnWA==
-X-Gm-Gg: ASbGncvFwzv3nuwNGC6Tm0/VFDVZOm9xWtd3u3SWZGzRt+rYsLw/ou1RtzuBStWqNqh
-	7+np2VxHQhPUXMx4tmw54W0nctp5xQSOxg+Ef1supevhpWAyTLZ3kw3VuY/2W
-X-Google-Smtp-Source: AGHT+IH73yZTyIDCHHrbFTIalkWywowb8ZZKOHo5jE0IO/R7trvqjhf5t9qKLZtCvrgKQHzQR0Gp6IUGA3oU75IteeY=
-X-Received: by 2002:ac2:46d6:0:b0:53d:d3ff:85f1 with SMTP id
- 2adb3069b0e04-53dd3ff8ef1mr4515352e87.42.1732543191117; Mon, 25 Nov 2024
- 05:59:51 -0800 (PST)
+	s=arc-20240116; t=1732543510; c=relaxed/simple;
+	bh=ER6BK/74S4G1DUMCprZWg698DiwXO4Dr+rnOqRuNX1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cs9CM5yn1jTvl2wm6mnFd6y6Hj69fYBP0AGKRVeIZ+Rume4NqLAja7vQT1kpg6XzNiDELy1mn+xzRQ+vXmCKJGMFR8ZZTdbfHhSE5Lo0ZLnjjUho0WA5aJr4OMpHyx5ThBVNMLmiSsORhYT7dEpfVomznYir5iBLaRVRnb/rmYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uc42ExnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAA3C4CECE;
+	Mon, 25 Nov 2024 14:05:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732543510;
+	bh=ER6BK/74S4G1DUMCprZWg698DiwXO4Dr+rnOqRuNX1M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Uc42ExnIQO0LRxiMs3xQ+F/NVW49ta39ByiW+AErf6oq/HDQrrik37kw20quaaIzI
+	 CJy6mpdt+jqAK6e1YEReDjJ+v0Yt+xIIVGxKUetRMWBvvXGN3Z7dw/gq+umWbw/+18
+	 xL3WmTiBVinbDorQfLoUt/N+9PAHXhqXsoaF0QUU+Pi7CLtpFBLqWt0qMhOTaZ8I+L
+	 fD/4dld4pwyyHZ1JFZkRVm0y/FHa6/3Zub86fTM/+bZixzSKu2vvo3hPJ4FcZUjKyS
+	 MUaZC1AG2Q5/FzNI/HDR54hhR1nwTX33o2r3f6Am5hucOdp/C4SJnwTLSUOP2pDCY/
+	 Nt1rSAO/Zg72Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: sashal@kernel.org,
+	MPTCP Upstream <mptcp@lists.linux.dev>,
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>
+Subject: [PATCH 6.6.y] mptcp: fix possible integer overflow in mptcp_reset_tout_timer
+Date: Mon, 25 Nov 2024 15:04:51 +0100
+Message-ID: <20241125140450.3752859-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118222828.240530-1-max.kellermann@ionos.com>
- <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
- <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
- <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com>
- <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
- <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
- <CA+2bHPZW5ngyrAs8LaYzm__HGewf0De51MvffNZW4h+WX7kfwA@mail.gmail.com>
- <CAO8a2SiRwVUDT8e3fN1jfFOw3Z92dtWafZd8M6MHB57D3d_wvg@mail.gmail.com> <CAO8a2SiN+cnsK5LGMV+6jZM=VcO5kmxkTH1mR1bLF6Z5cPxH9A@mail.gmail.com>
-In-Reply-To: <CAO8a2SiN+cnsK5LGMV+6jZM=VcO5kmxkTH1mR1bLF6Z5cPxH9A@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Mon, 25 Nov 2024 14:59:39 +0100
-Message-ID: <CAKPOu+8u1Piy9KVvo+ioL93i2MskOvSTn5qqMV14V6SGRuMpOw@mail.gmail.com>
-Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
-To: Alex Markuze <amarkuze@redhat.com>
-Cc: Patrick Donnelly <pdonnell@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
-	Ilya Dryomov <idryomov@gmail.com>, Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, 
-	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, dario@cure53.de, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1580; i=matttbe@kernel.org; h=from:subject; bh=5FqTq52xl8VsAEX/Pg7TynecMuw7MwwqjB0J/nAGOWU=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnRIQCzJj3UIdKq3Frn7JlFsA0HL8Eh9VJ+3bk3 YppBbRoOsaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ0SEAgAKCRD2t4JPQmmg cxbZD/4s4YB95wMV8MrObS9zd38Uetyk+WvKkRdL2u4ilqul5iOKvke60xVDjVzGw1cTV3PAWw/ fPMw6MU6FASTAI5r//697rpyZivsrBZfu9502JxwY8eWAOnUzYmSN3yXf5uCJ7TN2sEJgXy1/M3 Mnxr7ezQq22+8nukDO9YOlD4B1JQhx1HMbPWBjCQzw+6MAC6lzUr6esUFNZ4VjjZJlCzQR0vUmY J+c47EaU1Mw1s2wfdHNnC2m3ocrvYsnIhcxFa5oxZzPXR5u9bgTjRRtRCsrG9TOYZ2pcfBHxQfi uEAweFJ2AItuvTz/kYNbxo77vc7+TGoYwzPL50IbdeYwfWWagA94V0DS/aqi01KArmezr30qrqx paywH3OtAM3R+bIviEB0g92xlZKs4s9kRirEfA1kTUycLvIAQbWrXoOeBIdY280/4eu4+YFcsET TsW3PSOr5y6e3x1FNluo6d76LrvTFmVVH6Ddr06f7a0M9pK5coXjF/1Fwuo5XeOLadHtGtVV6gt nX55lSsxW20rDG24W6D/OTd5lTTh4c25ICaj2ovnD3bDgQKZMnobcUvB3yUTxi6myp34HndJSug BsAN0uW5aLSkcF0WQu13c4f7Jq06d8eul2zysQ5q+c86zNebYzV/w4lKMLXQOiwl38ev/0DswIf OHqEEfTATYWeqww==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 25, 2024 at 2:24=E2=80=AFPM Alex Markuze <amarkuze@redhat.com> =
-wrote:
-> Max, could you add a cap on the retry count to your original patch?
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-Before I wrote code that's not useful at all: I don't quite get why
-retry on buffer overflow is necessary at all. It looks like it once
-seemed to be a useful kludge, but then 1b71fe2efa31 ("ceph analog of
-cifs build_path_from_dentry() race fix") added the read_seqretry()
-check which, to my limited understanding, is a more robust
-implementation of rename detection.
+commit b169e76ebad22cbd055101ee5aa1a7bed0e66606 upstream.
 
-Max
+In 'mptcp_reset_tout_timer', promote 'probe_timestamp' to unsigned long
+to avoid possible integer overflow. Compile tested only.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Link: https://patch.msgid.link/20241107103657.1560536-1-d.kandybka@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in this version because commit d866ae9aaa43 ("mptcp: add a
+  new sysctl for make after break timeout") is not in this version, and
+  replaced TCP_TIMEWAIT_LEN in the expression. The fix can still be
+  applied the same way: by forcing a cast to unsigned long for the first
+  item. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index b8357d7c6b3a..01f6ce970918 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2691,8 +2691,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
+ 	if (!fail_tout && !inet_csk(sk)->icsk_mtup.probe_timestamp)
+ 		return;
+ 
+-	close_timeout = inet_csk(sk)->icsk_mtup.probe_timestamp - tcp_jiffies32 + jiffies +
+-			TCP_TIMEWAIT_LEN;
++	close_timeout = (unsigned long)inet_csk(sk)->icsk_mtup.probe_timestamp -
++			tcp_jiffies32 + jiffies + TCP_TIMEWAIT_LEN;
+ 
+ 	/* the close timeout takes precedence on the fail one, and here at least one of
+ 	 * them is active
+-- 
+2.45.2
+
 
