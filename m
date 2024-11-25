@@ -1,141 +1,114 @@
-Return-Path: <stable+bounces-95376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BE49D8567
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 13:25:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04409D871B
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:52:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9E31639BF
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:25:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F837B390F2
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3209019CC0A;
-	Mon, 25 Nov 2024 12:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7ADB1A7AC7;
+	Mon, 25 Nov 2024 12:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MfjBV2tJ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EUG+O85Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320331552E3
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 12:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1FE199EB7
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 12:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732537500; cv=none; b=BDlrZ2r4akvi73M9et8ttxX93T8cBoZHX0Y+raGXM9H1tBChQFDIaSY9ShBKaYjDhd4a6I7quIb/LrtgWOi49XCQq5dY/DCbbY7f98jCoBVOeBHQZY1kJIGkD6dQ2TMetevnEqMpy46UM6ahsYy9L5+2T/2btV2nsX02tMOj5bI=
+	t=1732539234; cv=none; b=SZ7dph90z1rblESE9xOjXnvLJHNPOQJMvsDIA7hv+nTEy6yI/c6tcvslza3aZ7yCIaWIB7Hb5ePRBydX5Aaorl7di2ZQU/tN1rs9aX19Q0X9Pn2ZAc63Ifh/Ajge91vcB7NFXbqVwm4s0ldzK2FLL7YgDz36wo3jIkdQYrIByjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732537500; c=relaxed/simple;
-	bh=1MIhac942bYqThQhO2fYakc1q0gsOhjIRGIpfC6gHDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GhyYQcCrTiFJ/QeUVeu49zb3FZiearLTAIVRXxjaKRcRkkeBXY5rP0bIb1gYNvvqgz61/NOaNm0+/EJRtLtgP9eLiM6NZcbFXRyB2Ud8n4ds5uSClORLSjjwVAEnl6WhWqziAtRfMIpGPg7ZwGXQlCWTVJn7IpYp/j+LoFc2RX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MfjBV2tJ; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53dd0cb9ce3so3975579e87.3
-        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 04:24:56 -0800 (PST)
+	s=arc-20240116; t=1732539234; c=relaxed/simple;
+	bh=qpn3nL4ruTIH9jcXSn5EnaywmyoyKdo1VON2EkUGiV0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ccDXdu6W4SnlMDawdfUGIOSTYktkUkwX0eUXbbNQyN5MFOzhAgWUv9lsQj76ToRRKAtBCXpUYTLOimkqIXQ76Pk6c/VHCsbYILGeDes62jTq8URwvOKpEyaNAT7PPLz9m7H6M349nSpzsesvXtP/7muKxRY+I0oO020JlUl/VVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EUG+O85Q; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6eeb8aa2280so68774447b3.1
+        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 04:53:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732537495; x=1733142295; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IPJcH/pZUFwQXY8dj6Du6OSGV2ZbBkDCGcyY6tthZEM=;
-        b=MfjBV2tJCcZ/e5Om7TBlnrg/Od9lllBBinNNlTs1vgaYudCbwsqkK6UpY8iyzxgXY6
-         R58Ci37+2jHeK4lxnF4NnFLJkKOSqoMM95VC2BZl1NPgrXcH3xhr5vQHGKLI2iwqffn6
-         +PoeDavpDHnMjcIAMJKmTQ4XATrePHjElrRMKyCaaSlmUCkb6l95oU3oTm/GKvoUVGfh
-         DIlloYRFGSaQm0O2C+tUHGPFCIW0j4gwwxGTMl5l7f1O2um1epGbh5/Tk/EgBNeXH6+s
-         b8K1PWcFcA2hW/CBVV6fdsLyeqAwRrse8FwMZtjqIB4OVCLL7on4+A5URfHJKnsWNHLk
-         W4zg==
+        d=google.com; s=20230601; t=1732539231; x=1733144031; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kQ4bkEkWXI9460U69LX56jW+n+QgNq12f2hQHN4SQHQ=;
+        b=EUG+O85QFtdwdD6iurL9QkH6pPPod3l62m7vNUX9J3FmJUZKaKGHjJWuAEvEP6IaiC
+         243biEHaM+xutmCgPZKUi+md/TMW1YMwKMmi4c/utrXUMHf7bxsRN0jUS8XQPOqmMj7T
+         7vX/EoGITzMMwlkEVDdqhhad+1hEdfy1OhA1109t38JlDjdMU8Ps3XPVNPRg0zsyPAfo
+         9elHJzUlARNBBtMAitm9l4wmFKSPTuiW3kaG12RIcbv/OxawXWbJrCYZ0275oZ2zCkif
+         iFbUoouo7sDug8gEDKWEO3bSNUZ/bP1eWPAkdHrJ2UjyrJjCxykodETqOrB+Pvxgvswf
+         qYhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732537495; x=1733142295;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IPJcH/pZUFwQXY8dj6Du6OSGV2ZbBkDCGcyY6tthZEM=;
-        b=DjFjpXXx0IRRSYiB5m83Koo+zckIQWi3yOWQ0M2VRiTWw/Aqcdz0ERrC2HVRXgxL9O
-         7wxS2WH/p9mxnp4KvAm6gmrqaDy1LpgIflUra9DcwExLbO08JKEcYYOrlNwtXjEogQWF
-         Apwxg4rH+iFCEt2ELMWmNcndvdkdMgD+Br+N/PAOt1ZDdM2wO42pIVOBVbJ1jNCF/RUT
-         fwfm+GFkHUmdncJkgdgUeo9TM8bvNBoAKr2/wKdaR/Sitm0Us4mzV9DCccLHDX4oVsTN
-         omJlu3VAYace0RozWwO/c8bw0GhlU2J12NFhr11L4Ha3SRVxR1J3yKJ4Nbje3usM2AT1
-         2oKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcPQk5BnXF+3zxLj0oyyln9Stlp8UpNep1C4Zh8y2i8GwXrz3vciyM9GbRhCwZ3jQGcUrIKyE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhHCPNhFJKncdVrov1gYaGUEzZw8ngqvcnP8jc9XXlC5BFT/CF
-	Ki8Yhb8xyY/2nmMmX2I5i5B+TfjLVr3ivuW2gJXkNDBFOHgWdrU2VgNpfT/anlQ=
-X-Gm-Gg: ASbGncuPqAsu5vLlZXiRrOYCfbtcpWgc7MzSCKQsAXhnvmsmV9JeYsod5gTqw9j582a
-	GmDt7MWD12nhYCpoY6leSxSfdRMbmAh+VJuUtmVrKC6D1p6cI4/8J/A+AE72iNJcQSBmCeGwVwM
-	1BXFstFpV5BBRMLZ76lNLn0zV8BFYbLEIdonBZxzj5DvxQ1noofx59htB5dKOz0ljyCg9IChvvS
-	Jf7fzryfshAu56nbg1LqMkM2PxrlnVU1VFJIl0hlM71r/l0c0uozQ2A9eOQMx1cFKmkq9vvE7bA
-	8ErCg+U8Z68QC37NiwL1RdM/
-X-Google-Smtp-Source: AGHT+IFlVjwEQfSEHD92mmB7kec/o4wkAJx7J1K/QCuKDC+tc1kL8fPqTnY1+jYN1nta3srV5ZSvBw==
-X-Received: by 2002:a05:6512:3e1b:b0:53d:a122:dd0f with SMTP id 2adb3069b0e04-53dd389e353mr5547727e87.28.1732537495333;
-        Mon, 25 Nov 2024 04:24:55 -0800 (PST)
-Received: from uffe-tuxpro14.. (h-178-174-189-39.A498.priv.bahnhof.se. [178.174.189.39])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd24457d4sm1655255e87.54.2024.11.25.04.24.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2024 04:24:53 -0800 (PST)
-From: Ulf Hansson <ulf.hansson@linaro.org>
-To: linux-mmc@vger.kernel.org,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Anthony Pighin <anthony.pighin@nokia.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mmc: core: Further prevent card detect during shutdown
-Date: Mon, 25 Nov 2024 13:24:46 +0100
-Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1732539231; x=1733144031;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kQ4bkEkWXI9460U69LX56jW+n+QgNq12f2hQHN4SQHQ=;
+        b=sCft8A4hkw7/fB7t/b5Pz2EriL5ZTtbpc2eiimihoZank0jsTDLQBdrc297S5qqYuT
+         zcscN6H5GXoA3ZbhYZ7kE8K3lB7SmRQuM1m9o5Tz8oHSD5/LbRv06PKuX9a2DemM3VP8
+         apGiTMOlGgdQJI9WUa8uGDSXXxtCcHaIUNBCqy+UjfBLZM6DFOw8d7lUa2/hH2QKiCl2
+         9+ludIvCELQhJYSixwfuDj/8DyiVS4QQ1DR2WreHnybFGqf5SyUtzeFituDGjK0A60e0
+         MBr4hYhtG9rTPbd7gaOvctKPk4QFdabQ9RHhkxG2+37n9J9f86ztbtANpD7XKQno1WlU
+         MLrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUp6gjLe1p6wOKZM9oQeUaGdCKlD0rGcTpiFuXKEjLA5Ptrv+lxZy7MpRcEpjNYUpwrllcbujA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+log4ot4QV/VYztaUcH8c85r9OlO5HgEA2qnpEuZAS9KQYoSh
+	Rnsl7j8Fy+FXx3VSfYmc6oCPu7lef2UKgUA2faqqCqcR69II0kbjfotxzFG9HNlQpqHnCc4TnaK
+	zk9R0MRdegS6toR8q0sch5MOGZ0TWIQ==
+X-Google-Smtp-Source: AGHT+IE19EwzHoDlqo1+yfATE7tPwcQWjdN41993yStl979u2Ve1bKHZt1w5Eo8cthREpp6xIqRXTv4idhncz1Ja+bW0
+X-Received: from vamshig51.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:70c])
+ (user=vamshigajjela job=sendgmr) by 2002:a05:690c:6709:b0:6e2:1713:bdb5 with
+ SMTP id 00721157ae682-6eee0a39166mr522877b3.5.1732539230924; Mon, 25 Nov 2024
+ 04:53:50 -0800 (PST)
+Date: Mon, 25 Nov 2024 18:23:37 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.371.ga323438b13-goog
+Message-ID: <20241125125338.905146-1-vamshigajjela@google.com>
+Subject: [PATCH] scsi: ufs: core: Fix link_startup_again on success
+From: Vamshi Gajjela <vamshigajjela@google.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+	Bart Van Assche <bvanassche@acm.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Vamshi Gajjela <vamshigajjela@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Disabling card detect from the host's ->shutdown_pre() callback turned out
-to not be the complete solution. More precisely, beyond the point when the
-mmc_bus->shutdown() has been called, to gracefully power off the card, we
-need to prevent card detect. Otherwise the mmc_rescan work may poll for the
-card with a CMD13, to see if it's still alive, which then will fail and
-hang as the card has already been powered off.
+Set link_startup_again to false after a successful
+ufshcd_dme_link_startup operation and confirmation of device presence.
+Prevents unnecessary link startup attempts when the previous operation
+has succeeded.
 
-To fix this problem, let's disable mmc_rescan prior to power off the card
-during shutdown.
-
-Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
-Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
+Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
+Fixes: 7caf489b99a4 ("scsi: ufs: issue link starup 2 times if device isn't active")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/mmc/core/bus.c  | 2 ++
- drivers/mmc/core/core.c | 3 +++
- 2 files changed, 5 insertions(+)
+ drivers/ufs/core/ufshcd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
-index 9283b28bc69f..1cf64e0952fb 100644
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct device *dev)
- 	if (dev->driver && drv->shutdown)
- 		drv->shutdown(card);
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index abbe7135a977..cc1d15002ab5 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4994,6 +4994,10 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
+ 			goto out;
+ 		}
  
-+	__mmc_stop_host(host);
++		/* link_startup success and device is present */
++		if (!ret && ufshcd_is_device_present(hba))
++			link_startup_again = false;
 +
- 	if (host->bus_ops->shutdown) {
- 		ret = host->bus_ops->shutdown(host);
- 		if (ret)
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index a499f3c59de5..d996d39c0d6f 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -2335,6 +2335,9 @@ void mmc_start_host(struct mmc_host *host)
- 
- void __mmc_stop_host(struct mmc_host *host)
- {
-+	if (host->rescan_disable)
-+		return;
-+
- 	if (host->slot.cd_irq >= 0) {
- 		mmc_gpio_set_cd_wake(host, false);
- 		disable_irq(host->slot.cd_irq);
+ 		/*
+ 		 * DME link lost indication is only received when link is up,
+ 		 * but we can't be sure if the link is up until link startup
 -- 
-2.43.0
+2.47.0.371.ga323438b13-goog
 
 
