@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF459D89F8
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:10:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BCA9D89F9
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:10:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04532854AB
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B007164174
 	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058391B4144;
-	Mon, 25 Nov 2024 16:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84141B4130;
+	Mon, 25 Nov 2024 16:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QImu4VOJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zs02fFfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D12500D2
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AEE2500D2
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 16:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732551053; cv=none; b=swE6LftJQtifFs01aYkSj804BXjcJq7xUZqIMFXJEUkRs3vinBGXoNBGd7hdPFDTNgE0LpjtTMKnSw0b0QUSbNwYvSbdvuIPOPW068xQIUN2xmkQItdWlBK7+6/Ngv9OxnBMOXrV6PUPcsMJ0F52NuHnuN+Q1Ux5v0nMC1tj6JM=
+	t=1732551055; cv=none; b=Qk+04q7qPKw9+zfjI+BiwzsOWawHoSN49tWRUm6tdAR2CBRNL0sWpEGxCKtFZdbr+R/hE/ZTzp+6GYHTk8rFglifrQuQv4E2wqMV1Uw0IuONdmMt33dcm3ldOUmDszwgHQMBg6TOnD6nt66jfJAp90Ej0aYOJskZF7zadlIT6qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732551053; c=relaxed/simple;
-	bh=TA4doo2AXg8dLnBPcQsK7KAGivF3rTE2xMpZE/BQbKo=;
+	s=arc-20240116; t=1732551055; c=relaxed/simple;
+	bh=Vxi83iHqOqVWlF+f1zlIjo4tegAaBpywBBhPN2e0NJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXP5H1CErdcjacsGp2Iiy7F2rrPBZkAw8yslvIbH2Uva0Mo3RW+5pHz0B4W8eQwJ83eJyzxhkwOcvniWM84wDqee2Kjq1C6bac1P6BlIUciTNcBsjYLUNE9U3pOnWXDyYpXsDmLKsHH5tY4ELjSZgihYNzK5F1G+Q6Q+B/C1FCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QImu4VOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46FEC4CECE;
-	Mon, 25 Nov 2024 16:10:52 +0000 (UTC)
+	 MIME-Version; b=QJzUUmWl5ZOK3GirQgaW/ePgwEQZO2qhQCioHIZq/RwLiLv+1KYAMCBf2L9kxscT7X2rUrREfDCmkc/V0SKTjIkwhSToJuKvSVMfqq6YVJCizjUE2hXba60O14TE8XfxVuKywQcTWBL+ctFaillva/PB2TPXKRIpAtYfbzwLu4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zs02fFfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CC3C4CECE;
+	Mon, 25 Nov 2024 16:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732551053;
-	bh=TA4doo2AXg8dLnBPcQsK7KAGivF3rTE2xMpZE/BQbKo=;
+	s=k20201202; t=1732551055;
+	bh=Vxi83iHqOqVWlF+f1zlIjo4tegAaBpywBBhPN2e0NJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QImu4VOJ5rU6eC1igkiftsKr0s2/fGjBEhARs8x5gLL0QszVkw4ho9yk2FfAjdGlM
-	 YBeyOBVGgfnZdKuFwm/ZmoB61VSb5Y1elR2MdihmxI8fj4ZAbAiK+a6fGpY0+ntGKS
-	 Qkh8pJsfIONfHEG+zUqnKiqM0nx+mNCH0chr3brCEL91VsWhwrZkS4cS8IfCYh6kTA
-	 U7IwBqdB0bJej/qQiWq/TyOCfltVc4yOsNmXsWN6WxWLNYRIzZfYj65aUX3V0F42p7
-	 xS5hY8s81969ErWr9RFgxzEt7+FMYRCwCyfcSb2EElvgqdzTQdOP2PtDI2sGCqOS6P
-	 oNsQ5toWQeT3Q==
+	b=Zs02fFfAJ+5lGeqCWjkShN27NCd45EcQQPbBCguXQxhndU1Jjxxk+hrey2x/iHW8k
+	 3kD87rHwFr5Ci087oQm9kowL2+5a8Jldq70fd8m68KrlQaSMpFlpvzVp+Pgtdp/gy8
+	 mORapmygcUH7dNL63ERSOcjAyzIcdrGduB77837E5ELsL6efqNi0SuZ0/ZgGaoqbz/
+	 HhCxyP3lcXb+4szZR+G8y+RptFIXb7FohWAKMMub7UHsyzAZfH1OW2UIVcf7/SOy7B
+	 PB78gtKmCNQslIhoJQHwUR21ALTpzsNaXJIlEkWHhSKSj1M+UPzXnHdD4Jg61TNjC3
+	 G/TqAxnZfApIw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4] nvme: fix metadata handling in nvme-passthrough
-Date: Mon, 25 Nov 2024 11:10:51 -0500
-Message-ID: <20241125103237-56c51e72f46ec086@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] mptcp: fix possible integer overflow in mptcp_reset_tout_timer
+Date: Mon, 25 Nov 2024 11:10:53 -0500
+Message-ID: <20241125104511-a5df769e18ed4c0d@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241125135334.3822-1-hagarhem@amazon.com>
+In-Reply-To:  <20241125140524.3753666-2-matttbe@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,120 +63,64 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9
+The upstream commit SHA1 provided is correct: b169e76ebad22cbd055101ee5aa1a7bed0e66606
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hagar Hemdan <hagarhem@amazon.com>
-Commit author: Puranjay Mohan <pjy@amazon.com>
+Backport author: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Commit author: Dmitry Kandybka <d.kandybka@gmail.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: dc522d2bc1d0)
+6.12.y | Not found
+6.11.y | Not found
 6.6.y | Not found
 6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
-5.4.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-25 10:29:11.090159886 -0500
-+++ /tmp/tmp.n0e8JIvoqt	2024-11-25 10:29:11.084066265 -0500
+--- -	2024-11-25 10:40:34.024304989 -0500
++++ /tmp/tmp.AFQFGr6Xvw	2024-11-25 10:40:34.014755112 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
++commit b169e76ebad22cbd055101ee5aa1a7bed0e66606 upstream.
 +
- On an NVMe namespace that does not support metadata, it is possible to
- send an IO command with metadata through io-passthru. This allows issues
- like [1] to trigger in the completion code path.
-@@ -17,58 +19,43 @@
- Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
- Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
- Signed-off-by: Keith Busch <kbusch@kernel.org>
-+[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
-+  to make it work on 5.4 ]
-+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
- ---
-- drivers/nvme/host/ioctl.c | 22 ++++++++++++++--------
-- 1 file changed, 14 insertions(+), 8 deletions(-)
-+ drivers/nvme/host/core.c | 7 ++++++-
-+ 1 file changed, 6 insertions(+), 1 deletion(-)
+ In 'mptcp_reset_tout_timer', promote 'probe_timestamp' to unsigned long
+ to avoid possible integer overflow. Compile tested only.
  
--diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
--index 850f81e08e7d8..1d769c842fbf5 100644
----- a/drivers/nvme/host/ioctl.c
--+++ b/drivers/nvme/host/ioctl.c
--@@ -4,6 +4,7 @@
--  * Copyright (c) 2017-2021 Christoph Hellwig.
--  */
-- #include <linux/bio-integrity.h>
--+#include <linux/blk-integrity.h>
-- #include <linux/ptrace.h>	/* for force_successful_syscall_return */
-- #include <linux/nvme_ioctl.h>
-- #include <linux/io_uring/cmd.h>
--@@ -119,9 +120,14 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-- 	struct request_queue *q = req->q;
-+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-+index 0676637e1eab..a841fd4929ad 100644
-+--- a/drivers/nvme/host/core.c
-++++ b/drivers/nvme/host/core.c
-+@@ -921,11 +921,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
-+ 	bool write = nvme_is_write(cmd);
-  	struct nvme_ns *ns = q->queuedata;
-- 	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
--+	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
-+ 	struct gendisk *disk = ns ? ns->disk : NULL;
-++	bool supports_metadata = disk && blk_get_integrity(disk);
- +	bool has_metadata = meta_buffer && meta_len;
-+ 	struct request *req;
-  	struct bio *bio = NULL;
-+ 	void *meta = NULL;
-  	int ret;
+@@ -6,22 +8,31 @@
+ Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+ Link: https://patch.msgid.link/20241107103657.1560536-1-d.kandybka@gmail.com
+ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
++[ Conflict in this version because commit d866ae9aaa43 ("mptcp: add a
++  new sysctl for make after break timeout") is not in this version, and
++  replaced TCP_TIMEWAIT_LEN in the expression. The fix can still be
++  applied the same way: by forcing a cast to unsigned long for the first
++  item. ]
++Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+ ---
+  net/mptcp/protocol.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
+ 
+ diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+-index b0e9a745ea621..a6f2a25edb119 100644
++index 1acd4e37a0ea..370afcac2623 100644
+ --- a/net/mptcp/protocol.c
+ +++ b/net/mptcp/protocol.c
+-@@ -2722,8 +2722,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
++@@ -2708,8 +2708,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
+  	if (!fail_tout && !inet_csk(sk)->icsk_mtup.probe_timestamp)
+  		return;
   
- +	if (has_metadata && !supports_metadata)
- +		return -EINVAL;
- +
-- 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
-- 		struct iov_iter iter;
-- 
--@@ -143,15 +149,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-- 		goto out;
-- 
-- 	bio = req->bio;
---	if (bdev) {
--+	if (bdev)
-- 		bio_set_dev(bio, bdev);
---		if (meta_buffer && meta_len) {
---			ret = bio_integrity_map_user(bio, meta_buffer, meta_len,
---						     meta_seed);
---			if (ret)
---				goto out_unmap;
---			req->cmd_flags |= REQ_INTEGRITY;
---		}
--+
--+	if (has_metadata) {
--+		ret = bio_integrity_map_user(bio, meta_buffer, meta_len,
--+					     meta_seed);
--+		if (ret)
--+			goto out_unmap;
--+		req->cmd_flags |= REQ_INTEGRITY;
-- 	}
-- 
-- 	return ret;
-+ 	req = nvme_alloc_request(q, cmd, 0, NVME_QID_ANY);
-+ 	if (IS_ERR(req))
-+ 		return PTR_ERR(req);
-+@@ -940,7 +945,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
-+ 			goto out;
-+ 		bio = req->bio;
-+ 		bio->bi_disk = disk;
-+-		if (disk && meta_buffer && meta_len) {
-++		if (has_metadata) {
-+ 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
-+ 					meta_seed, write);
-+ 			if (IS_ERR(meta)) {
+ -	close_timeout = inet_csk(sk)->icsk_mtup.probe_timestamp - tcp_jiffies32 + jiffies +
+--			mptcp_close_timeout(sk);
++-			TCP_TIMEWAIT_LEN;
+ +	close_timeout = (unsigned long)inet_csk(sk)->icsk_mtup.probe_timestamp -
+-+			tcp_jiffies32 + jiffies + mptcp_close_timeout(sk);
+++			tcp_jiffies32 + jiffies + TCP_TIMEWAIT_LEN;
+  
+  	/* the close timeout takes precedence on the fail one, and here at least one of
+  	 * them is active
 +-- 
-+2.40.1
++2.45.2
 +
 ---
 
@@ -184,5 +128,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
