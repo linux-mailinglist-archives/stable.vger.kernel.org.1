@@ -1,105 +1,120 @@
-Return-Path: <stable+bounces-95384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF529D8750
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E517D9D879F
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31D0F286804
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA8C228CAB6
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 14:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004CE1ADFFE;
-	Mon, 25 Nov 2024 14:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21431D517A;
+	Mon, 25 Nov 2024 14:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMocElN1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNxPid+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D76B1AF0D1;
-	Mon, 25 Nov 2024 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7C81D5172;
+	Mon, 25 Nov 2024 14:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732543534; cv=none; b=E2E5ruFG4G3NK65xGGIDnd0t8ebxh+R+O0lN6JKJTn9Cwp48hYw0jGXMZlfGK/s4JXFXLAjWWk529p8M4a/9Y4cvcP4JlVND/t8A80X7OF0bw3sLVteFslmYsRKm9uXjMAOJzTftr5jAEg0KiM7mYh5lh7QE8iS7aEiGEoSn69s=
+	t=1732543884; cv=none; b=XxxglhMyKRsZJNBZiqNXTzbFmi9QaIKB8rUVEU5342t7XRDVrQQxc5IO0EeXP9+edfiouhrKHaVSDAWQFTTWI1Wn3/HEWdleQTayxpeaW+i6c1uwOgowDnyDjt5SgtHL3C7cC9mjCjC/YzSaepTnHzPIGToHtN2Kg5p9rYUfpJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732543534; c=relaxed/simple;
-	bh=rekKS20wKYZQv5jnHd9JBUpdP5nqIwQWLlwpTWz8S9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FXFIE3PB118wJC3vEMfsHQg5FxuG7L/N/W/OPjQ03KcXVwUBBNTPpUd5apjrd9HGeyuhXEBt3AXwyoZaDiNT02zsG+nDoEa8DztXjyZCn4n19+gYC7YumbF+PdSWar+y5R1+z8y54GHDxFPMFvMiTtlw+zcwUREFjMzkWCGMdxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMocElN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D07AC4CED2;
-	Mon, 25 Nov 2024 14:05:32 +0000 (UTC)
+	s=arc-20240116; t=1732543884; c=relaxed/simple;
+	bh=2xTc35I6thzQLxndB6Oqp6UXDYaoWGlcGj/Q4rqRyds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u9Zcm1Ku6FfrVZyquyWDQKSwQdmivMmKs4vS8MStbj3JZCv8lVC4N6aI4HEzmtRdscNBM0NCodTPZQtYbin8c9Wtu88HecGtD9uuHXuPCruSNJ5cPGNJEPJsO6EHgH/fCTaXorLj6Wd0kY9Ivdzi1S8BglTB4qTemGGvQovtcXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNxPid+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4B6C4CED2;
+	Mon, 25 Nov 2024 14:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732543534;
-	bh=rekKS20wKYZQv5jnHd9JBUpdP5nqIwQWLlwpTWz8S9Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eMocElN1WfeP7p0cmuMCAHrGYKzXeq2PrMweso6A2x3e8rQYkxp10DJoL9R0dfUKG
-	 9Xk5JPgkg2CUvt7ivVWQMc86G7D3oSM7Xh7bQY4tDY4FAZFTqvjHlpX+Lk8xgG+Coe
-	 ky02pIjH2BDE5/Z0hqDAQWFcE6+T026tUvrYprtwiODx3KjUa3PMWxUF+b7WOj9k/n
-	 B9M8m6p48SS9EGAxzD5y2dI+UHuzjdYgw1i5rxorvT7ljr8y/CuzfXJPxDfkycVTTA
-	 Ohh1fAVioGt+01G8yw429i4rUs8vaXynx3385pOG49iuRlprEVwhj0BtTrgur/ArmS
-	 TwT+vnsKC26Iw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: sashal@kernel.org,
-	MPTCP Upstream <mptcp@lists.linux.dev>,
-	Dmitry Kandybka <d.kandybka@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: fix possible integer overflow in mptcp_reset_tout_timer
-Date: Mon, 25 Nov 2024 15:05:25 +0100
-Message-ID: <20241125140524.3753666-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1732543884;
+	bh=2xTc35I6thzQLxndB6Oqp6UXDYaoWGlcGj/Q4rqRyds=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kNxPid+1cVN0fi4x18puBFX/Ao+jSFRpjzyLpet6Hu5zUoEt2PuTfU5NfQEF/6YUR
+	 ITmRDFA3qzr/+3Xv4mne6nogx5Jpe58iZ5dFIUgDpUgxWR2u5Q9p5WkmqOngIxqhIc
+	 wr5gpmJLJRGQvJJGyLKGz/9j0lRaqCq+dZ7xUp/A5jXBhrKzZ5SGyOsF9cXVtFYWxg
+	 8RZU64iBnI0ifR6PQlt4dxe4IqpxRtiQCDf8LZguOBKc76L1BQMrLep9L5K0p9I2Et
+	 jnCBKUzNKIIOucS6bxixYMTIfaUQKxhZwKhBkfKZnh+7YtXZpcFKBZpxLWLCwnxOh/
+	 xq1FQi8n+E/Pw==
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2689e7a941fso2614668fac.3;
+        Mon, 25 Nov 2024 06:11:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWCHR229XhPFOEorOD7YoFVSlqHF/Eusij7X6zupid8yy5D1HX5E640Q0j+AwmRAKrxoM15xMHb@vger.kernel.org, AJvYcCWxbLUmqkTpLacybNvnxkDdEBv3wJ7zGJ3gCaihM/15oalLAIHYBe/3zO1F5jDhEe8VYvO67WRk3ZKpH/c=@vger.kernel.org, AJvYcCXnlEZ3ZhdhcP9qBS6BzLnd67qjceIeBpI6mXeoPbBiepStr3vp6d37lOl6rzPOlDKKser3AY2u40w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSoW9fJQkjOMND8fg2qTdirixqGKXJFxvCZyeBo2/3kKD37SFK
+	dleZSfsGSuEOKDmM5Q/pUrdUp/t8Pj+gatJqLxKoP5/uoZ4izxubwK/UtJkafk3oymOGgGdmQGX
+	E3uuwDVOscr3T+HV83NqIVoMl4rA=
+X-Google-Smtp-Source: AGHT+IHwD0ONTDAPv/44fpKZqgmGDncHi5ACNYkjLPoiuWZk/rrHR1ziCylC8yybGghptvN1cpM6MEjbHYmnAhl1/x4=
+X-Received: by 2002:a05:6870:b153:b0:295:ed17:3ec0 with SMTP id
+ 586e51a60fabf-29720c5dee4mr9676711fac.24.1732543883562; Mon, 25 Nov 2024
+ 06:11:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1580; i=matttbe@kernel.org; h=from:subject; bh=BtDIJuRWs9EVXovV/5nIlNAIAuJ/j1AjXsWcGrgusME=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnRIQlcrez1wYIc1NbZh8yXCBaf55nBKGqhS/Yz ItYbP0re/mJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ0SEJQAKCRD2t4JPQmmg cwdPEAC7wpMgtwCWwWCzH7peqKqaW98Mel6QO0308GchGgPupu2BVHrbgumUbdf613xvCD2/Rdt czxTRxaLNHKTz/0iMd2iDWPRUjietVykd2XMw0ubjwmymymXSynbgIAa4gYaoqH2e+88l71vv4q Q4QI+zjXgIPT4a1SGigxgRR1h7oktaavXlDobJOcAAqmgpc/VYxkXl7QAiJ1Xsb2JU3AtInKPHK s/z7Qf1l0hQ1Fq0+nbYVAdpc23zZTxFCTQayakwm49oZhhbdl1S7wMgJyfKF42WyQjL1CFUbhXA J8w7+yNTrwepRaOYDuA1JW69UKMhTKxpm1RlJ9N65Ny9ZHGKTR7cJFohHYe3ZmQlhfSc3HOi7MG zxVimVTkKST4NwOBx8pLb3tHJCGw8TWhG8y6yc/ap65VX/5rQxDyIIpe/4d/wL8goJeXw76Sq3K nUrBq5gHmHqUwcltWHOAh2xiOh2lmaaQdAErG0Zfxhq1ZfhStBxHtrMtLt6Np4ZOdpchIjTouIK Eap9yb/pKS1nzLdpQnb2Ex2xSSAlcr9lcQTaX7vmNTMdCWdoG0kolkctCyHjO/HKNR3NMkosA06 Ba5mYFNgKM5WNoUCZsLh6sTSuhTCWZELyGckiiaeHFa2SvQLf/nqocgYg5hERR96/tvXBrYTGou V8T+byEH9DpnyOQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+References: <20241114200213.422303-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20241114200213.422303-1-srinivas.pandruvada@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 25 Nov 2024 15:11:12 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hcqw37cVT4Hd2f8Rv-HEnZX=+N+2zR0hGhDD9nPxJ2zA@mail.gmail.com>
+Message-ID: <CAJZ5v0hcqw37cVT4Hd2f8Rv-HEnZX=+N+2zR0hGhDD9nPxJ2zA@mail.gmail.com>
+Subject: Re: [PATCH] thermal: int3400: Fix display of current_uuid for active policy
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: rafael@kernel.org, rui.zhang@intel.com, daniel.lezcano@linaro.org, 
+	lukasz.luba@arm.com, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Dmitry Kandybka <d.kandybka@gmail.com>
+On Fri, Nov 15, 2024 at 4:42=E2=80=AFAM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> When the current_uuid attribute is set to active policy UUID, reading
+> back the same attribute is displaying uuid as "INVALID" instead of active
+> policy UUID on some platforms before Ice Lake.
+>
+> In platforms before Ice Lake, firmware provides list of supported thermal
+> policies. In this case user space can select any of the supported thermal
+> policy via a write to attribute "current_uuid".
+>
+> With the 'commit c7ff29763989 ("thermal: int340x: Update OS policy
+> capability handshake")', OS policy handshake is updated to support
+> Ice Lake and later platforms. But this treated priv->current_uuid_index=
+=3D0
+> as invalid. This priv->current_uuid_index=3D0 is for active policy.
+> Only priv->current_uuid_index=3D-1 is invalid.
+>
+> Fix this issue by treating priv->current_uuid_index=3D0 as valid.
+>
+> Fixes: c7ff29763989 ("thermal: int340x: Update OS policy capability hands=
+hake")
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> CC: stable@vger.kernel.org # 5.18+
+> ---
+>  drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/dr=
+ivers/thermal/intel/int340x_thermal/int3400_thermal.c
+> index b0c0f0ffdcb0..f547d386ae80 100644
+> --- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+> +++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+> @@ -137,7 +137,7 @@ static ssize_t current_uuid_show(struct device *dev,
+>         struct int3400_thermal_priv *priv =3D dev_get_drvdata(dev);
+>         int i, length =3D 0;
+>
+> -       if (priv->current_uuid_index > 0)
+> +       if (priv->current_uuid_index >=3D 0)
+>                 return sprintf(buf, "%s\n",
+>                                int3400_thermal_uuids[priv->current_uuid_i=
+ndex]);
+>
+> --
 
-commit b169e76ebad22cbd055101ee5aa1a7bed0e66606 upstream.
-
-In 'mptcp_reset_tout_timer', promote 'probe_timestamp' to unsigned long
-to avoid possible integer overflow. Compile tested only.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-Link: https://patch.msgid.link/20241107103657.1560536-1-d.kandybka@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in this version because commit d866ae9aaa43 ("mptcp: add a
-  new sysctl for make after break timeout") is not in this version, and
-  replaced TCP_TIMEWAIT_LEN in the expression. The fix can still be
-  applied the same way: by forcing a cast to unsigned long for the first
-  item. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 1acd4e37a0ea..370afcac2623 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2708,8 +2708,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
- 	if (!fail_tout && !inet_csk(sk)->icsk_mtup.probe_timestamp)
- 		return;
- 
--	close_timeout = inet_csk(sk)->icsk_mtup.probe_timestamp - tcp_jiffies32 + jiffies +
--			TCP_TIMEWAIT_LEN;
-+	close_timeout = (unsigned long)inet_csk(sk)->icsk_mtup.probe_timestamp -
-+			tcp_jiffies32 + jiffies + TCP_TIMEWAIT_LEN;
- 
- 	/* the close timeout takes precedence on the fail one, and here at least one of
- 	 * them is active
--- 
-2.45.2
-
+Applied as 6.13-rc material, thanks!
 
