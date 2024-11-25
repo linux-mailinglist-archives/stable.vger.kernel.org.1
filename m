@@ -1,74 +1,87 @@
-Return-Path: <stable+bounces-95338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191989D7A39
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 03:53:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DAE9D7B00
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 06:13:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E885B21820
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 02:53:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10C21162D58
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 05:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7B811713;
-	Mon, 25 Nov 2024 02:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E2814EC77;
+	Mon, 25 Nov 2024 05:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="imdVD1O9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R+zB8iDk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC01A2500D7
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 02:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5245D38382
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 05:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732503197; cv=none; b=puMoJ+7DoxyK+QMKE0uP7OH8buFwgGOEHtlkAtyeLmh54YjNGVeBfvtBXsQlTKKsEa/Gm+rfEZcRXJxJ9nI4AZKl975TD2+wW2QskJzKtJV+YaKMiZ4epo9PGIfi5HzWCJgX1ktnI3B2j3eeEmJVHcCdZi+3V/9+0XBN3ZzKz+A=
+	t=1732511587; cv=none; b=ReU4zkYU0RTRG/0s8K9j2ZC09i899D8uWbqyX109TQ36UJL8j0xSN2SgD4U0+O/Ps5QAe4BUaeIn/HcX3GetBBXtDyh+sVvY9/8abZlmq7HTGqreXWiU7oqgROVwPuapsjdGxHFebSRqZ/E9hUTrmsuwS03jKPeWjCS1ePjFuaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732503197; c=relaxed/simple;
-	bh=FtSV0rD3j9uk2P65rPhlIjGraejp24YrlVkJCfVezDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rmlWIbyNYC30WCg1xbCUtRwnEcz/b18eZRe7Q4UUWrfgnJG9pOHVFkKlkEmrHFKJ5rsF8rJmmfHLo62RTowuUdfakWOEvawn/QrOE36hKa6tTYFhc9y+67dgbsNGmKwgYF37PCgumNaPJWL62c6SG40ckt+LpK46BW9qGc1wvrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=imdVD1O9; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732503196; x=1764039196;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=FtSV0rD3j9uk2P65rPhlIjGraejp24YrlVkJCfVezDY=;
-  b=imdVD1O9x8FQI3dGK1kackDNSxYOneyJTbfrCdLz9T3S+TLIcwIb6BsT
-   lAGq1iA0TBUOf299RtHaVCMWUh4RFp8jqUD7aBr2GY8NhaY3RrleVWaPQ
-   SolzuhktgZB9QLNP847RXIGq1MywSCjukA7SK1SPY91cpdHL+7P4O5dyU
-   Hdbmls8T0m4poSR68/9L33LotAuNqLnqqL+haY4btqh6EwLx+b2If8hRm
-   6WXTOMJWEAiD5KQTFzOXEx+inj0kleom50wIKmMJmlqnwhwD2RR0t1lya
-   v+6hAVUAZ8SQrEXyz50Z+U36vUPBI54Bxh5Xv1pYuorUWsVewZ85wu0AQ
-   A==;
-X-CSE-ConnectionGUID: YxG+Ck5eSX+WrDLj9ZDPEA==
-X-CSE-MsgGUID: X14aRXqnRo680u0fqAO/Yw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11266"; a="36372315"
-X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
-   d="scan'208";a="36372315"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2024 18:53:16 -0800
-X-CSE-ConnectionGUID: RmovcpVwRPGyNeYMbigJwg==
-X-CSE-MsgGUID: I2ekOgk3Tn6AKS903mHoSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
-   d="scan'208";a="128636953"
-Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 24 Nov 2024 18:53:15 -0800
-Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tFPDs-0005ZV-0F;
-	Mon, 25 Nov 2024 02:53:12 +0000
-Date: Mon, 25 Nov 2024 10:52:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.12] MAINTAINERS: appoint myself the XFS maintainer for
- 6.12 LTS
-Message-ID: <Z0PmYtGM0yol6bbG@ca93ea81d97d>
+	s=arc-20240116; t=1732511587; c=relaxed/simple;
+	bh=Uxp3iPzfUnlFAtZhMOzTk6Quj5tPd+jppMxgxAL2OVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qksE0imGGc/ZaNMXl7KMK4qjFdE2cS3ez2UPOHesIt1U5X80QEx7NoxykK/ekjgRnpvuE3RR9+Q5N1VROfuA1oSdkQbNP39LlreO7qy3cSWn5z0F6PZD5wxEeQz5hanQ3tOXkwmNOCvmhXtdlOCapOlhTulh//LKhxfGMWe8o8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R+zB8iDk; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2126408cf31so29460315ad.0
+        for <stable@vger.kernel.org>; Sun, 24 Nov 2024 21:13:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1732511585; x=1733116385; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
+        b=R+zB8iDk7BdqgDfwjF/vkM+4Nad2kgphcvCfHB9AVz+cxiXuaUGpQR68Is3zugtwJs
+         7dlnfiLtp5WQEZjWP9Lhs62tYLtfaVyn7lIffGdsE0ND1ZUNZI1yLElCEblX/uBz1BOs
+         27vDYgEsDiFHBotdBxAWreDlvmdqdHlVfrBLkFtnwh82DkANAawZQ1WB3LNKgrvN6+jV
+         l26naEW9KHY93XTd3I6cOVwbM65RYc01pTDNHxjM5A1eRvWR3TXqPIsfmEuoflqKPiX+
+         QNnadFKUPinD1wcnc9Uj1p0wUr/lw6AHBdKQ5WBTDrSILIcCzCRFVM7bqUL9TwDW6/XG
+         uCxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732511585; x=1733116385;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
+        b=WVyF61L2/p3OC4wUOnaaT+/MygM33eEQRZxawEsskRBYuzMRmbvrQ/vNR7TJgmLzN0
+         8RKR9muWMCvAaY1Ep7mwXY4z4YxMbjbnDCNJV8zIPwtp/a+1f/+9E3gQDayUpOJxzErT
+         IPurkE1tGEHuFjtL8gQLiaG3FUbUJgfxkfC1B57xBWxHPPEyTrWHEH4eDVH8evL3kktv
+         DcmCGhSzQAiWPDK9utXTJQE35jCJk3yth0DJ9ZJL3g5TKt3Cw44Ed6vM+HmS7Oy91VbD
+         sLN6IwBc4K7Tilalwokd8G5z6hBtne2englCU9tz2BTz5PqU7GRiCD84wRdJBG6l82Gq
+         oFvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxa83/9eFivNMXBeOcSCBeCg8do2ft6WUsxHFQnS/uP6L0fr6TRYp3457FKWiwxcYFLtR0OBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpSqcsRxqf8Tfk2Uh1Rx38yfIWkmZpHE21SE/h14ZsOhSLdrnn
+	GgKr7NZdQR4MGdEnyRFQBTYvEmwRJ1SZR/AnOhmGFwJT7s+vyI4VGNjfmdVppYA=
+X-Gm-Gg: ASbGncuTYsQK3q0M0FRFwRmveUobOiSSPd3eWk/HoQSQBvicBmtIMxjuHDyOWRpVTYo
+	RlVuTWV2+9Z15s1PHeGlrWuzqHnl6l5jACcsYb/PuByG1GSrEAMqtoa/a/qqKKRrt5CyjN0FqDc
+	rnth7ND3dRRAENDrXvPNoi5dNGa5S4FdFAJrHdfEuVycEwXpHvAWRa/IARWmAWKO4zdjPJvlb5U
+	bxuO9fu3aStIi0PCX3PtJ2FAhbaKecvCcKaodALVX32n/XJetrK
+X-Google-Smtp-Source: AGHT+IGb7tmx1BneKh/B9vmKsU5AzzHIggDnEW9pXM5m409dP4HngsAxqYc/QOBvt2L7HfqexG1ylA==
+X-Received: by 2002:a17:902:f652:b0:212:655c:caf with SMTP id d9443c01a7336-2129f6122fcmr153868475ad.55.1732511585476;
+        Sun, 24 Nov 2024 21:13:05 -0800 (PST)
+Received: from localhost ([122.172.86.146])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba6782sm55270585ad.102.2024.11.24.21.13.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2024 21:13:04 -0800 (PST)
+Date: Mon, 25 Nov 2024 10:43:02 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@kernel.org>, rafael@kernel.org,
+	zhipeng.wang_1@nxp.com, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
+Message-ID: <20241125051302.6tmaog2ksfpk5m6u@vireshk-i7>
+References: <20241103210251.762050-1-andreas@kemnade.info>
+ <7httcmonip.fsf@baylibre.com>
+ <20241104201424.2a42efdd@akair>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,26 +90,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241123013828.GA620578@frogsfrogsfrogs>
+In-Reply-To: <20241104201424.2a42efdd@akair>
 
-Hi,
+On 04-11-24, 20:14, Andreas Kemnade wrote:
+> no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
+> not a real driver, so I could not create mod_devicetable aliases to
+> match a given device. It constructs a device under certain conditions
+> depending on the board compatible, so no simple list of compatibles, it
+> contains allow and blocklists.
+> 
+> cpufreq-dt then binds to that device and that one can be built as a
+> module (which then made cpufreq-dt-platdev also a module, causing the
+> trouble). I do not see any benefit from having cpufreq-dt-platdev as a
+> module. ti-cpufreq has a similar role and is also just builtin.
+> It does itself no real work but provides a device cpufreq-dt then binds
+> to.
+> 
+> Handling module removal would probably need to be added and tested. I
+> feel not comfortable having such as a regression fix and for stable.
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.12] MAINTAINERS: appoint myself the XFS maintainer for 6.12 LTS
-Link: https://lore.kernel.org/stable/20241123013828.GA620578%40frogsfrogsfrogs
-
-Please ignore this mail if the patch is not relevant for upstream.
+Applied this patch for now (with some changes to commit log), as there is no
+clean way to fix this for now. Got reports from other folks too about it.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+viresh
 
