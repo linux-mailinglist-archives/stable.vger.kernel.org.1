@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336659D890F
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8399D8910
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7442286572
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E45292866F7
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855C21AF0B6;
-	Mon, 25 Nov 2024 15:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AF91AF0B6;
+	Mon, 25 Nov 2024 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dD8GzYpp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Npvem3Pj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4647A1946B9
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 15:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510A1A0AF0
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732548049; cv=none; b=uTLzGqHqliHv0BqUB6ELvtjt2fI9qoP2GFGvN/jriyXXaq5Ijis3445Ov75s4rGytWi4LnG/XFuXFN/yPbm2rrEO7UihGLmmnMwTlcd32SMKCTG1i9OhVvxIWHuHM0ll7yUTofT8gGOF/3D/kyoaRyXEQBU3lroOZH3rJpspAd0=
+	t=1732548051; cv=none; b=MMpIf6QeLHU+Ql20y3d5IbvqXvPI4t1CFRIDkoh8cJt35n66zw5EKIsVUxuqNBI4+k+aSPTa0WEVSbZ8AMISLN+PoiEyjv6/hCzeHDvpwxRVtHqsLLqrE2hgQFV2C24/ZH+Cxn535Bb6P+mKjD8dmvjU66o5JcWv4u8lCyZEkoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732548049; c=relaxed/simple;
-	bh=yj8V1wofobpUVKQcWuhe+GkE3mI1UkmtFdlEorXvlPk=;
+	s=arc-20240116; t=1732548051; c=relaxed/simple;
+	bh=gBEvD9IYsQuoHSWZQwB11PY4BEDXjLiwiXo95hi3dpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq5SOL3egRhtsxTkrRtIH2KgdUBMkV7RP4RGvMn75LrCy9R94d81z23cuB91coAUkf7TBWbCvTrO0Bt5qYTtZWD1fhEyUncLH3Ri6+vqhvXbX7giLZfIa2pNq+hRoMhBZe2JhMfH899UYA5q3GAW5JsP2Kzyu3THOTmpKoF7w9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dD8GzYpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60F9C4CECE;
-	Mon, 25 Nov 2024 15:20:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mk/HH3Wbdp6tNt9TBetQJDG7kAA2RehE38SEW2Yq3YKz5UUdx4mttnVOYoRmB8Sg6oE+SsU/2uL6ZAxA1sudp+Ie4b6T9OoAVZejd6ozRHjiiiXvJiZHO6Z0w0SqPGQO5w6ywg45398EGrNlRb4ijdxk52wnzZtP/HgOmWPZvdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Npvem3Pj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0101C4CECE;
+	Mon, 25 Nov 2024 15:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732548049;
-	bh=yj8V1wofobpUVKQcWuhe+GkE3mI1UkmtFdlEorXvlPk=;
+	s=k20201202; t=1732548051;
+	bh=gBEvD9IYsQuoHSWZQwB11PY4BEDXjLiwiXo95hi3dpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dD8GzYppNWa+UHL6LoL3PHG/qMhKyRoKM6tnVcldvAskfc0pzkTqSwPNcHtPjdgyV
-	 xVfiYNhHVUNj7mmZtgvy42PEnrKUXr9qKTqbpq8G8RFFd11mWndjhhD/fJqLjJZT9y
-	 LO+a8FE2PbKup4QrRxVXDDSfuAT3M3df+2rpm8us/pqR1j3o3vTMHwvAIxsJ5CkBrY
-	 hBgkT+xSMTC5BxIlQyugs16pF0JQARxbtuM4Js4E/Rfeqtgqnv/aVQDxt5n/UnkT/l
-	 2Lq74w9OyjsYs69myWjIJxQYt3eRFOjS2DAHRFtyym347v5G/vp0l8UeRjyVWbZ1fq
-	 qCRo4iiU8yHpg==
+	b=Npvem3PjyBYBYwbrXCwpYjtAcp/FoHuqy91pxLmmqWs7Rvrut6nYaDbqrdAjTkeW8
+	 17jy9/y8TcPHOlnQU5zTqnGecnw2UbyrjsGnDUZbiHCnnqr2TjGvH3R0qcIcuvXoGm
+	 dYBsbx0e8ULbpsBfuLMQoBUInI4lPmPAv2gvKtT2Fsi6u5VpWbyncNEPV5sq5L2yot
+	 V+8wfaEPcdtyFPkMznxCDKzYA69GYN8IDUPEENtfpnlrBRufhOrpud/emdGg2JtCLW
+	 7xpKPMcOfarWe7+wxy16zDZDtVcgkVvgllW4fHF2VQVwNmvDa3cRUWOaRhjZK2WLJx
+	 HS3LhJZvi8TOw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Mahmoud Adam <mngyadam@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH RFC can] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
-Date: Mon, 25 Nov 2024 10:20:47 -0500
-Message-ID: <20241125100249-1c012e0994360c86@stable.kernel.org>
+Subject: Re: [PATCH v2 5.4/5.10/5.15] cifs: Fix buffer overflow when parsing NFS reparse points
+Date: Mon, 25 Nov 2024 10:20:49 -0500
+Message-ID: <20241125085122-34d77d74a23c624e@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241125-mcp251xfd-fix-length-calculation-v1-1-974445b5f893@pengutronix.de>
+In-Reply-To:  <20241125083746.74543-1-mngyadam@amazon.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,157 +57,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 [ Sasha's backport helper bot ]
 
 Hi,
 
-Found matching upstream commit: 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a
+The upstream commit SHA1 provided is correct: e2a8910af01653c1c268984855629d71fb81f404
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Mahmoud Adam <mngyadam@amazon.com>
+Commit author: Pali Rohár <pali@kernel.org>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
+6.11.y | Present (different SHA1: c173d47b69f0)
+6.6.y | Present (different SHA1: c6db81c550ce)
+6.1.y | Present (different SHA1: 08461ff8be1c)
+5.15.y | Present (different SHA1: 6bddea684ef2)
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-25 09:44:04.236185172 -0500
-+++ /tmp/tmp.NB9ip9De6Z	2024-11-25 09:44:04.228767153 -0500
-@@ -1,55 +1,93 @@
--Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
--broken TEF FIFO tail index erratum") introduced
--mcp251xfd_get_tef_len() to get the number of unhandled transmit events
--from the Transmit Event FIFO (TEF).
--
--As the TEF has no head pointer, the driver uses the TX FIFO's tail
--pointer instead, assuming that send frames are completed. However the
--check for the TEF being full was not correct. This leads to the driver
--stop working if the TEF is full.
--
--Fix the TEF full check by assuming that if, from the driver's point of
--view, there are no free TX buffers in the chip and the TX FIFO is
--empty, all messages must have been sent and the TEF must therefore be
--full.
-+As the TEF has no head index, the driver uses the TX-FIFO's tail index
-+instead, assuming that send frames are completed.
- 
--Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
--Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
-+When calculating the number of unhandled TEF events, that commit
-+didn't take mcp2518fd erratum DS80000789E 6. into account. According
-+to that erratum, the FIFOCI bits of a FIFOSTA register, here the
-+TX-FIFO tail index might be corrupted.
+--- -	2024-11-25 08:41:08.697150675 -0500
++++ /tmp/tmp.5TBHo3EDHj	2024-11-25 08:41:08.686554930 -0500
+@@ -1,3 +1,5 @@
++commit e2a8910af01653c1c268984855629d71fb81f404 upstream.
 +
-+However here it seems the bit indicating that the TX-FIFO is
-+empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
-+TX-FIFO tail index is.
-+
-+Assume that the TX-FIFO is indeed empty if:
-+- Chip's head and tail index are equal (len == 0).
-+- The TX-FIFO is less than half full.
-+  (The TX-FIFO empty case has already been checked at the
-+   beginning of this function.)
-+- No free buffers in the TX ring.
-+
-+If the TX-FIFO is assumed to be empty, assume that the TEF is full and
-+return the number of elements in the TX-FIFO (which equals the number
-+of TEF elements).
-+
-+If these assumptions are false, the driver might read to many objects
-+from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
-+and will refuse to process old events.
-+
-+Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-+Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
- Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
--Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
--Cc: stable@vger.kernel.org
--Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
-+Not-yet-Cc: stable@vger.kernel.org
- Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+ ReparseDataLength is sum of the InodeType size and DataBuffer size.
+ So to get DataBuffer size it is needed to subtract InodeType's size from
+ ReparseDataLength.
+@@ -18,48 +20,32 @@
+ Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+ Signed-off-by: Pali Rohár <pali@kernel.org>
+ Signed-off-by: Steve French <stfrench@microsoft.com>
++[use variable name symlink_buf, the other buf->InodeType accesses are
++not used in current version so skip]
++Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
  ---
-- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 10 +++++++---
-- 1 file changed, 7 insertions(+), 3 deletions(-)
-+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 29 ++++++++++++++++++++++++++-
-+ 1 file changed, 28 insertions(+), 1 deletion(-)
+- fs/smb/client/reparse.c | 15 ++++++++++++++-
+- 1 file changed, 14 insertions(+), 1 deletion(-)
++v2: fix upstream format.
++https://lore.kernel.org/stable/20241122152943.76044-1-mngyadam@amazon.com/
++ fs/cifs/smb2ops.c | 6 ++++++
++ 1 file changed, 6 insertions(+)
  
- diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
--index f732556d233a7..d3ac865933fdf 100644
-+index d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8..e94321849fd7e69ed045eaeac3efec52fe077d96 100644
- --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
- +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
--@@ -16,9 +16,9 @@
-- 
-- #include "mcp251xfd.h"
-- 
---static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
--+static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
-- {
---	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
--+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
-+@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
-+ 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
-  }
+-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+-index 3b48a093cfb1f..8ea7a848aa393 100644
+---- a/fs/smb/client/reparse.c
+-+++ b/fs/smb/client/reparse.c
+-@@ -320,9 +320,16 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
+- 	unsigned int len;
+- 	u64 type;
++diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
++index 9ec67b76bc062..4f7639afa7627 100644
++--- a/fs/cifs/smb2ops.c
+++++ b/fs/cifs/smb2ops.c
++@@ -2807,6 +2807,12 @@ parse_reparse_posix(struct reparse_posix_data *symlink_buf,
   
-++static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
-++{
-++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
-++}
-++
-  static inline int
--@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
-- 	if (err)
-- 		return err;
-+ mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
-+ 				 u8 *tef_tail)
-+@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
-+ 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
+-+	len = le16_to_cpu(buf->ReparseDataLength);
+-+	if (len < sizeof(buf->InodeType)) {
++ 	/* See MS-FSCC 2.1.2.6 for the 'NFS' style reparse tags */
++ 	len = le16_to_cpu(symlink_buf->ReparseDataLength);
+++	if (len < sizeof(symlink_buf->InodeType)) {
+ +		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
+ +		return -EIO;
+ +	}
+ +
+-+	len -= sizeof(buf->InodeType);
+-+
+- 	switch ((type = le64_to_cpu(buf->InodeType))) {
+- 	case NFS_SPECFILE_LNK:
+--		len = le16_to_cpu(buf->ReparseDataLength);
+- 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
+- 							       len, true,
+- 							       cifs_sb->local_nls);
+-@@ -482,12 +489,18 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+- 	u32 tag = data->reparse.tag;
+++	len -= sizeof(symlink_buf->InodeType);
   
---	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
--+	/* If the chip says the TX-FIFO is empty, but there are no TX
--+	 * buffers free in the ring, we assume all have been sent.
-+ 	len = (chip_tx_tail << shift) - (tail << shift);
-+-	*len_p = len >> shift;
-++	len >>= shift;
-++
-++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-++	 * bits of a FIFOSTA register, here the TX-FIFO tail index
-++	 * might be corrupted.
-++	 *
-++	 * However here it seems the bit indicating that the TX-FIFO
-++	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
-++	 * while the TX-FIFO tail index is.
-++	 *
-++	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
-++	 * haven been send, if:
-++	 * - Chip's head and tail index are equal (len == 0).
-++	 * - The TX-FIFO is less than half full.
-++	 *   (The TX-FIFO empty case has already been checked at the
-++	 *    beginning of this function.)
-++	 * - No free buffers in the TX ring.
- +	 */
--+	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
--+	    mcp251xfd_get_tx_free(tx_ring) == 0) {
-- 		*len_p = tx_ring->obj_num;
-- 		return 0;
-- 	}
-++	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
-++	    mcp251xfd_get_tx_free(tx_ring) == 0)
-++		len = tx_ring->obj_num;
-++
-++	*len_p = len;
-+ 
-+ 	return 0;
-+ }
-+
-+---
-+base-commit: fcc79e1714e8c2b8e216dc3149812edd37884eef
-+change-id: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
-+
-+Best regards,
+- 	if (tag == IO_REPARSE_TAG_NFS && buf) {
+-+		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
+-+			return false;
+- 		switch (le64_to_cpu(buf->InodeType)) {
+- 		case NFS_SPECFILE_CHR:
+-+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+-+				return false;
+- 			fattr->cf_mode |= S_IFCHR;
+- 			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+- 			break;
+- 		case NFS_SPECFILE_BLK:
+-+			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+-+				return false;
+- 			fattr->cf_mode |= S_IFBLK;
+- 			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+- 			break;
++ 	if (le64_to_cpu(symlink_buf->InodeType) != NFS_SPECFILE_LNK) {
++ 		cifs_dbg(VFS, "%lld not a supported symlink type\n",
 +-- 
-+Marc Kleine-Budde <mkl@pengutronix.de>
-+
++2.40.1
 +
 ---
 
@@ -215,12 +164,7 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.11.y       |  Success    |  Success   |
-| stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-| stable/linux-4.19.y       |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
