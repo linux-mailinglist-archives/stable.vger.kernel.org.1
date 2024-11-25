@@ -1,155 +1,188 @@
-Return-Path: <stable+bounces-95410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D439D8916
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:21:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E809D8A8F
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E41E1287B2E
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B474B34FFB
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906711ADFEA;
-	Mon, 25 Nov 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428FD1B2196;
+	Mon, 25 Nov 2024 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3tFamwj"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="LPV4UESG";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="E8GA8IgA";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="LPV4UESG";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="E8GA8IgA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCAB171CD
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 15:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D75F171CD;
+	Mon, 25 Nov 2024 15:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732548065; cv=none; b=bPuOOqIsIv3CilqMazXOUpf63IfWwlhUnFRg0SO0UtSJb3b2ogBWTbQMmobDxWGfzVmOXfmTwCDMhvITpjBnfIEUSAH3VLLAjcovt/0Fc2gVGwmaXeU5C+K+r6YKS01ASCOTBlYXPL8HYCrD4Iy0dPEhuydHhkemI0mawINp7IE=
+	t=1732548087; cv=none; b=Fwj2QsazuExx/PRLabh3U9S8gg5LBwr6GvCY4DDZ9CslK/uUUu1OPXwfCusfRClidD9+eJhLdXqXrBgBbRy6FoariCD5qClEUg/JxswVJ+fzRPprqg4KsmFt+kwkwStZsg/tR+lokBiP5OACjLQ5UUxvW1iCpvixnkc+GXJ/1eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732548065; c=relaxed/simple;
-	bh=UfpqlpzDYfEINtVE5bruFEPxx0wC3IC10RqoP8Mgx8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEc4/eiNi68taPZCtS7E8gmOMieiahD1NUCHc+kTkXL/5u3MBdCHTQadYvrr7eTbgUyU8JzhZD1MoPTCkgQlelnxm/BOHlTMSpzYvF+D5jQc33x377Yn1laRexALsTJSBy9eVLk/J3dGw5PRAI5KNa8OPu6+MylED0p7ND+Y79w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3tFamwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF25EC4CECE;
-	Mon, 25 Nov 2024 15:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732548065;
-	bh=UfpqlpzDYfEINtVE5bruFEPxx0wC3IC10RqoP8Mgx8M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3tFamwjst52QDgc5FO3HYwcrbVJxRydMB5rrknuCtCmXQXyF4pHkaO/wN6AHlyrT
-	 a2avhIjvGfopWFKhChGR5MPH2/idzEkEBd2Rq2UjZguEguJVkjfNrQ3CLbh0G9di+g
-	 0hE9vj9UmUKx9SCTErAKILbCMKeGrQtBOKUtUgeATPQvYTMU5CJw34Mes96ChGvTcF
-	 YSXcfiPjrRQM2M6sVo+VNnWTeEw1vRzBlMsEzfADyI9LdrcEbPxUdzr1aIKHk3tIk1
-	 HbqAEE6XlvU2GoF9e/HwCRBtqb3P7L8EE2Xju4YFIPnIxJ6pWpHk6bD5cFAsM86fvh
-	 28QeHfEOxm5Eg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats
-Date: Mon, 25 Nov 2024 10:21:03 -0500
-Message-ID: <20241125090126-a7ecce7ce5adb98d@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241125053307.374219-1-bin.lan.cn@windriver.com>
-References: 
+	s=arc-20240116; t=1732548087; c=relaxed/simple;
+	bh=yweQJS1T5MofFQxuCLlGNCE03LYgUUuFJ7++Wg4EkrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mRcMFex3qqyb9gFwO0QZCEGK7GIf8k6xvNDJtaBZ60yU7rk+x7JdIJFeV55Mxo/UJ8cBrKxkiGKw0Wv9aRRr+TF6z1hLmfVzV1f++O+jIYA4kmv/pXoVE87InhCRKKzBF4XR+gswA3kwXEXaTXFwoLgGNbnUc7mQ8rARpEiqNU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=LPV4UESG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=E8GA8IgA; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=LPV4UESG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=E8GA8IgA; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8A5E51F442;
+	Mon, 25 Nov 2024 15:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732548083;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tPBe0Y4n/AZ6gwF2arusg1VMijc8sZYzIsikVrciUoo=;
+	b=LPV4UESGR9i8iG116YJslgdxLPC5IE7TFL6ygnR5t+mLTPlBLfeo9Bfiq2DYg95Gu/rL8N
+	9Uk7aFSzv/Nki+7HZKaoPlVje8hU5vCPeM8LVtlfZdA6dOfMbMEJdpm2d9atvIcxVXe76w
+	deDlGjoqnSW3Vd4PU1yyn1qGVxVgOY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732548083;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tPBe0Y4n/AZ6gwF2arusg1VMijc8sZYzIsikVrciUoo=;
+	b=E8GA8IgAkhxUfrEBIuiDiV5LfGoKIJahzaW0++YRsKY4bvmBlsOCZW4GSK4CL7ALM7JhV8
+	Mx4LEcVl8dL7vUAQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LPV4UESG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=E8GA8IgA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732548083;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tPBe0Y4n/AZ6gwF2arusg1VMijc8sZYzIsikVrciUoo=;
+	b=LPV4UESGR9i8iG116YJslgdxLPC5IE7TFL6ygnR5t+mLTPlBLfeo9Bfiq2DYg95Gu/rL8N
+	9Uk7aFSzv/Nki+7HZKaoPlVje8hU5vCPeM8LVtlfZdA6dOfMbMEJdpm2d9atvIcxVXe76w
+	deDlGjoqnSW3Vd4PU1yyn1qGVxVgOY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732548083;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tPBe0Y4n/AZ6gwF2arusg1VMijc8sZYzIsikVrciUoo=;
+	b=E8GA8IgAkhxUfrEBIuiDiV5LfGoKIJahzaW0++YRsKY4bvmBlsOCZW4GSK4CL7ALM7JhV8
+	Mx4LEcVl8dL7vUAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E451137D4;
+	Mon, 25 Nov 2024 15:21:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dYupGvOVRGcWWwAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Mon, 25 Nov 2024 15:21:23 +0000
+Date: Mon, 25 Nov 2024 16:21:22 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+	clm@fb.com, josef@toxicpanda.com, linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.12 10/19] btrfs: make
+ extent_range_clear_dirty_for_io() to handle sector size < page size cases
+Message-ID: <20241125152122.GZ31418@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <20241124123912.3335344-1-sashal@kernel.org>
+ <20241124123912.3335344-10-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241124123912.3335344-10-sashal@kernel.org>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Rspamd-Queue-Id: 8A5E51F442
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.21 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:replyto,suse.cz:dkim,suse.cz:mid,suse.com:email];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.21
+X-Spam-Flag: NO
 
-[ Sasha's backport helper bot ]
+On Sun, Nov 24, 2024 at 07:38:45AM -0500, Sasha Levin wrote:
+> From: Qu Wenruo <wqu@suse.com>
+> 
+> [ Upstream commit a4ef54dbb576032ba31a646a5ffc8a26a83cb92c ]
+> 
+> For btrfs with sector size < page size (e.g. 4K sector size, 64K page
+> size), and enable the sector perfect compression support, then the
+> following dirty range can lead to problems:
+> 
+>    0     32K     64K     96K    128K
+>    |     |///////||//////|    |/|
+>                               124K
+> 
+> In above case, if we start writeback for that inode, the last dirty
+> range [124K, 128K) will not be submitted and cause reserved space
+> leakage:
+> 
+> - Start writeback for page 0
+>   We find the range [32K, 96K) is suitable for compression, and queue it
+>   into a workqueue to do the delayed compression and submission.
+> 
+> - Compression happens for range [32K, 96K)
+>   Function extent_range_clear_dirty_for_io() is called, however it is
+>   only doing full page handling, not considering any the extra bitmaps
+>   for subpage cases.
+> 
+>   That function will clear page dirty for both page 0 and page 64K.
+> 
+> - Writeback for the inode is done
+>   Because page 64K has its dirty flag cleared, it will not be considered
+>   as a writeback target.
+> 
+> This means the range [124K, 128K) will not be submitted, and reserved
+> space for it will be leaked.
+> 
+> Fix this problem by using the subpage helper to clear the dirty flag.
+> 
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Hi,
-
-The upstream commit SHA1 provided is correct: 7601df8031fd67310af891897ef6cc0df4209305
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Oleg Nesterov <oleg@redhat.com>
-
-
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Not found
-
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-25 08:56:48.440504041 -0500
-+++ /tmp/tmp.DBppGejMK4	2024-11-25 08:56:48.433034088 -0500
-@@ -1,3 +1,5 @@
-+[ Upstream commit 7601df8031fd67310af891897ef6cc0df4209305 ]
-+
- lock_task_sighand() can trigger a hard lockup.  If NR_CPUS threads call
- do_task_stat() at the same time and the process has NR_THREADS, it will
- spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
-@@ -12,12 +14,14 @@
- Cc: Eric W. Biederman <ebiederm@xmission.com>
- Cc: <stable@vger.kernel.org>
- Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-+[ Resolve minor conflicts ]
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
- ---
-- fs/proc/array.c | 58 +++++++++++++++++++++++++++----------------------
-- 1 file changed, 32 insertions(+), 26 deletions(-)
-+ fs/proc/array.c | 57 +++++++++++++++++++++++++++----------------------
-+ 1 file changed, 32 insertions(+), 25 deletions(-)
- 
- diff --git a/fs/proc/array.c b/fs/proc/array.c
--index 45ba918638084..34a47fb0c57f2 100644
-+index 37b8061d84bb..34a47fb0c57f 100644
- --- a/fs/proc/array.c
- +++ b/fs/proc/array.c
- @@ -477,13 +477,13 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-@@ -51,7 +55,7 @@
-  		if (sig->tty) {
-  			struct pid *pgrp = tty_get_pgrp(sig->tty);
-  			tty_pgrp = pid_nr_ns(pgrp, ns);
--@@ -527,27 +523,9 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-+@@ -527,26 +523,9 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-  		num_threads = get_nr_threads(task);
-  		collect_sigign_sigcatch(task, &sigign, &sigcatch);
-  
-@@ -64,13 +68,12 @@
-  
- -		/* add up live thread stats at the group level */
-  		if (whole) {
---			struct task_struct *t;
---
---			__for_each_thread(sig, t) {
-+-			struct task_struct *t = task;
-+-			do {
- -				min_flt += t->min_flt;
- -				maj_flt += t->maj_flt;
- -				gtime += task_gtime(t);
---			}
-+-			} while_each_thread(task, t);
- -
- -			min_flt += sig->min_flt;
- -			maj_flt += sig->maj_flt;
-@@ -79,7 +82,7 @@
-  			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
-  				exit_code = sig->group_exit_code;
-  		}
--@@ -562,6 +540,34 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-+@@ -561,6 +540,34 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-  	if (permitted && (!whole || num_threads < 2))
-  		wchan = !task_is_running(task);
-  
-@@ -114,3 +117,6 @@
-  	if (whole) {
-  		thread_group_cputime_adjusted(task, &utime, &stime);
-  	} else {
-+-- 
-+2.43.0
-+
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+Please drop this patch from stable, it's preparatory work and has
+otherwise no effect.
 
