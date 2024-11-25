@@ -1,284 +1,162 @@
-Return-Path: <stable+bounces-95422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A20B9D8A30
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:22:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCEA4162475
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:22:36 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701021B415D;
-	Mon, 25 Nov 2024 16:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbpft8Qj"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1502C9D8B76
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 18:41:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2540C1B4F09
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 16:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0F67B29317
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 17:40:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369131B6D0E;
+	Mon, 25 Nov 2024 17:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Fsd2DncC"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45759139D0A
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 17:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732551753; cv=none; b=s2s00QvaTTK94MJeTFlrq40kGQi44wUQVgiH9h00QNwmB5vauy5AspC+0at791CZJTUMDnG78pUG0bBZnsevxqJCWylDqDNKjnvN80+TFpi8fjOgdY5o2+4kUN1l8QdJtLtfhW1aHUoch+lAhFjT3HKN/p7iEOSv2pEWIrp0peE=
+	t=1732556433; cv=none; b=GE755VEXwjkPzrPTTfrFpfYXMIYtNUtyMxPIRwiAI+hWoipYB8nX24AoKyX9MLD8HDOYQZ6JBMZi4TEFrTTwisFTI9WLlihEPHHungjfFPeOhDhRyWgbdJPAuDvjgBzMY6rh6zfWWXr6UVKwVTU7SufZIcb9J/2xNVH3w+tZj5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732551753; c=relaxed/simple;
-	bh=IwvqIyZdsYQgL+hFzDR2DtKRLoaF/kSW/bZjJEqb3/s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5b7N1kwGfUurzSAEF4O8BkfD4n9s2VI8NJMDwAx6QbVCfTdA7UY4/MYN6+AgbJ8vfQr7O+G22aed+zrqiWAPXbK7U7pk9BAp54EJcRe5FTZsE73ALvDXmLaxn9y9hC24qoSo6LadtnYxA1C1tFNiuULYEErwNDR7tFbTkWaCvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbpft8Qj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9D6C4CECE;
-	Mon, 25 Nov 2024 16:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732551752;
-	bh=IwvqIyZdsYQgL+hFzDR2DtKRLoaF/kSW/bZjJEqb3/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbpft8QjKEGUswv7xUbdStLcX9jCFPszwD1cxxXgZkiQGupDK7wwyaIqubINGhQTm
-	 E/HclOUdFpobxRAd/LC26Nc6JgZrbl7Tv0YKyQ838r3TSsFts3JXQAqZA8S8rYMnVt
-	 EHHYkqIT9iNLQWpFv4FrsS80gXZ9hcIhsLzZwTGX2YR+E+yvONhhaGaAhgSJdT/FTx
-	 vOT73CYSn/90B0y2ug4WAS+2bjI/2o85gE/4Uo0XZgQmg3sO/d5iP2dIMlooIRNsPy
-	 RhZWsI4hvZwjEpxyrDAu91jieV3s9eYRssdHnmTFZiGmsT5wV+dy3AGcGwU7jAkffS
-	 QsbqltIZuh2Vg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: jguittet.opensource@witekio.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15] Revert "drivers: clk: zynqmp: update divider round rate logic"
-Date: Mon, 25 Nov 2024 11:22:30 -0500
-Message-ID: <20241125111736-421120d2bcfea06b@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241125160959.3522094-1-jguittet.opensource@witekio.com>
-References: 
+	s=arc-20240116; t=1732556433; c=relaxed/simple;
+	bh=UqjmLpQcf7SL//etAuo8reRG1bzETHSS4opUf7km02g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LfhUVqgMDk/eT9VVyjuWMZwdGcK77atIIOHC2h98zp29AMaBA0sNB1r2BcPuhXt+Pl2lfkR7OI5hyUk3QGmyqobAgcFLrN9HpIw/PQMR93mz449I+O1dII6dZ34LiFeCN/AyCYXhMKe2J5/gZowzojItUMqOFKN49NFPsy6X53Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Fsd2DncC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4APEARXX000816;
+	Mon, 25 Nov 2024 17:40:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	C9FGLQqHxlNO1zBW1vy2SUad03hJc7TgPHXlsKcwQfk=; b=Fsd2DncCYvmO7j1W
+	vcwBuesqrYfDu9pMv+6nNbueLQwB8ZLSVuWYcwMpD/cEH76UjKefLqcMnU3Xkm/a
+	dYf/w1+M0aH23yECJGN3iV+57TgUxndOQC+W2pUb3TOW3tJQ2VzBN3bjUXqpakK8
+	bTQ54P8spvNNkz/tfVt3R+8ZkZ/56RsNyfjAziWPCwxc39aZOxnDoDezQR/59irh
+	eTXyJbDisfYj8W4i+kZsDd1Rw0xl5faeabyYQ4rq5fuYMypO6so4pTOCDvHnh52m
+	JLfRCy1oKeEZyQGu2bBKxvpHOGKEJ4d2U7Gc92H2AbktTDkFUKs1Tw2I37KsiLMk
+	EnAo4A==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 434ts1ghj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Nov 2024 17:40:16 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4APHeFCR024602
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Nov 2024 17:40:15 GMT
+Received: from [10.134.70.212] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 25 Nov
+ 2024 09:40:15 -0800
+Message-ID: <264fb0ff-d882-45ac-9589-635531c0659b@quicinc.com>
+Date: Mon, 25 Nov 2024 09:39:54 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panel: st7701: Add prepare_prev_first flag to
+ drm_panel
+To: Marek Vasut <marex@denx.de>, <dri-devel@lists.freedesktop.org>
+CC: Chris Morgan <macromorgan@hotmail.com>, David Airlie <airlied@gmail.com>,
+        Hironori KIKUCHI <kikuchan98@gmail.com>,
+        Jagan Teki
+	<jagan@amarulasolutions.com>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Neil
+ Armstrong <neil.armstrong@linaro.org>,
+        Simona Vetter <simona@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>, <stable@vger.kernel.org>
+References: <20241124224812.150263-1-marex@denx.de>
+Content-Language: en-US
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20241124224812.150263-1-marex@denx.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: WnF6ZJrABNRkb-Xzw8tZwMy-GIQmqKzG
+X-Proofpoint-ORIG-GUID: WnF6ZJrABNRkb-Xzw8tZwMy-GIQmqKzG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411250146
 
-[ Sasha's backport helper bot ]
-
-Hi,
-
-The upstream commit SHA1 provided is correct: 1fe15be1fb613534ecbac5f8c3f8744f757d237d
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: jguittet.opensource@witekio.com
-Commit author: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
 
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 37b67480609f)
-6.1.y | Present (different SHA1: c249ef9d0978)
-5.15.y | Present (different SHA1: 9117fc44fd3a)
+On 11/24/2024 2:48 PM, Marek Vasut wrote:
+> The DSI host must be enabled for the panel to be initialized in
+> prepare(). Set the prepare_prev_first flag to guarantee this.
+> This fixes the panel operation on NXP i.MX8MP SoC / Samsung DSIM
+> DSI host.
 
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-25 11:13:15.044326187 -0500
-+++ /tmp/tmp.qTmzowaD8e	2024-11-25 11:13:15.035746470 -0500
-@@ -1,108 +1,108 @@
--Currently zynqmp divider round rate is considering single parent and
--calculating rate and parent rate accordingly. But if divider clock flag
--is set to SET_RATE_PARENT then its not trying to traverse through all
--parent rate and not selecting best parent rate from that. So use common
--divider_round_rate() which is traversing through all clock parents and
--its rate and calculating proper parent rate.
-+This reverts commit 9117fc44fd3a9538261e530ba5a022dfc9519620 which is
-+commit 1fe15be1fb613534ecbac5f8c3f8744f757d237d upstream.
- 
--Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
--Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
--Link: https://lore.kernel.org/r/20231129112916.23125-3-jay.buddhabhatti@amd.com
--Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-+It is reported to cause regressions in the 5.15.y tree, so revert it for
-+now.
-+
-+Link: https://www.spinics.net/lists/kernel/msg5397998.html
-+Signed-off-by: Joel Guittet <jguittet.opensource@witekio.com>
- ---
-- drivers/clk/zynqmp/divider.c | 66 +++---------------------------------
-- 1 file changed, 5 insertions(+), 61 deletions(-)
-+ drivers/clk/zynqmp/divider.c | 66 +++++++++++++++++++++++++++++++++---
-+ 1 file changed, 61 insertions(+), 5 deletions(-)
- 
- diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
--index 33a3b2a226595..5a00487ae408b 100644
-+index e25c76ff2739..47a199346ddf 100644
- --- a/drivers/clk/zynqmp/divider.c
- +++ b/drivers/clk/zynqmp/divider.c
--@@ -110,52 +110,6 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
-+@@ -110,6 +110,52 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
-  	return DIV_ROUND_UP_ULL(parent_rate, value);
-  }
-  
---static void zynqmp_get_divider2_val(struct clk_hw *hw,
---				    unsigned long rate,
---				    struct zynqmp_clk_divider *divider,
---				    u32 *bestdiv)
---{
---	int div1;
---	int div2;
---	long error = LONG_MAX;
---	unsigned long div1_prate;
---	struct clk_hw *div1_parent_hw;
---	struct zynqmp_clk_divider *pdivider;
---	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
---
---	if (!div2_parent_hw)
---		return;
---
---	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
---	if (!pdivider)
---		return;
---
---	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
---	if (!div1_parent_hw)
---		return;
---
---	div1_prate = clk_hw_get_rate(div1_parent_hw);
---	*bestdiv = 1;
---	for (div1 = 1; div1 <= pdivider->max_div;) {
---		for (div2 = 1; div2 <= divider->max_div;) {
---			long new_error = ((div1_prate / div1) / div2) - rate;
---
---			if (abs(new_error) < abs(error)) {
---				*bestdiv = div2;
---				error = new_error;
---			}
---			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
---				div2 = div2 << 1;
---			else
---				div2++;
---		}
---		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
---			div1 = div1 << 1;
---		else
---			div1++;
---	}
---}
---
-++static void zynqmp_get_divider2_val(struct clk_hw *hw,
-++				    unsigned long rate,
-++				    struct zynqmp_clk_divider *divider,
-++				    u32 *bestdiv)
-++{
-++	int div1;
-++	int div2;
-++	long error = LONG_MAX;
-++	unsigned long div1_prate;
-++	struct clk_hw *div1_parent_hw;
-++	struct zynqmp_clk_divider *pdivider;
-++	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
-++
-++	if (!div2_parent_hw)
-++		return;
-++
-++	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
-++	if (!pdivider)
-++		return;
-++
-++	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
-++	if (!div1_parent_hw)
-++		return;
-++
-++	div1_prate = clk_hw_get_rate(div1_parent_hw);
-++	*bestdiv = 1;
-++	for (div1 = 1; div1 <= pdivider->max_div;) {
-++		for (div2 = 1; div2 <= divider->max_div;) {
-++			long new_error = ((div1_prate / div1) / div2) - rate;
-++
-++			if (abs(new_error) < abs(error)) {
-++				*bestdiv = div2;
-++				error = new_error;
-++			}
-++			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
-++				div2 = div2 << 1;
-++			else
-++				div2++;
-++		}
-++		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
-++			div1 = div1 << 1;
-++		else
-++			div1++;
-++	}
-++}
-++
-  /**
-   * zynqmp_clk_divider_round_rate() - Round rate of divider clock
-   * @hw:			handle between common and hardware-specific interfaces
--@@ -174,6 +128,7 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
-+@@ -128,7 +174,6 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
-  	u32 div_type = divider->div_type;
-  	u32 bestdiv;
-  	int ret;
--+	u8 width;
-+-	u8 width;
-  
-  	/* if read only, just return current value */
-  	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
--@@ -193,23 +148,12 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
-+@@ -148,12 +193,23 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
-  		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
-  	}
-  
---	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
---
---	/*
---	 * In case of two divisors, compute best divider values and return
---	 * divider2 value based on compute value. div1 will  be automatically
---	 * set to optimum based on required total divider value.
---	 */
---	if (div_type == TYPE_DIV2 &&
---	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
---		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
---	}
--+	width = fls(divider->max_div);
-- 
---	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
---		bestdiv = rate % *prate ? 1 : bestdiv;
--+	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
-- 
---	bestdiv = min_t(u32, bestdiv, divider->max_div);
---	*prate = rate * bestdiv;
--+	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
--+		*prate = rate;
-+-	width = fls(divider->max_div);
-++	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
-++
-++	/*
-++	 * In case of two divisors, compute best divider values and return
-++	 * divider2 value based on compute value. div1 will  be automatically
-++	 * set to optimum based on required total divider value.
-++	 */
-++	if (div_type == TYPE_DIV2 &&
-++	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
-++		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
-++	}
-+ 
-+-	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
-++	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
-++		bestdiv = rate % *prate ? 1 : bestdiv;
-+ 
-+-	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
-+-		*prate = rate;
-++	bestdiv = min_t(u32, bestdiv, divider->max_div);
-++	*prate = rate * bestdiv;
-  
-  	return rate;
-  }
-+-- 
-+2.25.1
-+
----
+Hi Marek,
 
-Results of testing on various branches:
+LGTM.
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+
+Thanks,
+
+Jessica Zhang
+
+> 
+> Fixes: 849b2e3ff969 ("drm/panel: Add Sitronix ST7701 panel driver")
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Chris Morgan <macromorgan@hotmail.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Hironori KIKUCHI <kikuchan98@gmail.com>
+> Cc: Jagan Teki <jagan@amarulasolutions.com>
+> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: stable@vger.kernel.org # v6.2+
+> ---
+> Note that the prepare_prev_first flag was added in Linux 6.2.y commit
+> 5ea6b1702781 ("drm/panel: Add prepare_prev_first flag to drm_panel"),
+> hence the CC stable v6.2+, even if the Fixes tag points to a commit
+> in Linux 5.1.y .
+> ---
+>   drivers/gpu/drm/panel/panel-sitronix-st7701.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+> index eef03d04e0cd2..1f72ef7ca74c9 100644
+> --- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+> +++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+> @@ -1177,6 +1177,7 @@ static int st7701_probe(struct device *dev, int connector_type)
+>   		return dev_err_probe(dev, ret, "Failed to get orientation\n");
+>   
+>   	drm_panel_init(&st7701->panel, dev, &st7701_funcs, connector_type);
+> +	st7701->panel.prepare_prev_first = true;
+>   
+>   	/**
+>   	 * Once sleep out has been issued, ST7701 IC required to wait 120ms
+> -- 
+> 2.45.2
+> 
+
 
