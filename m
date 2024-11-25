@@ -1,217 +1,188 @@
-Return-Path: <stable+bounces-95366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683069D8413
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:08:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC7121699A1
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:08:12 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCF4194C92;
-	Mon, 25 Nov 2024 11:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mZRHJVA8"
-X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436989D8449
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 12:22:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF446192589;
-	Mon, 25 Nov 2024 11:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3802DB261DB
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 11:16:14 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5AC1922F3;
+	Mon, 25 Nov 2024 11:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FhU7YJ56"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE9F16F8F5;
+	Mon, 25 Nov 2024 11:16:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732532891; cv=none; b=nvvOugNzEnC0MT5MdBimCCN1b0y5LIUgiEZIlXemhkIgSHi+T6lUZuqtAbX//TBfh/gUSXGKBck+dUex1VBtMSya73LxENhO6YnxHzz2UphpG6guHic6Ta0g57TVxbc+IUrBR4K5c7QKtU6rCma/FKAmK/9yg45p/auCdhb+9Ps=
+	t=1732533369; cv=none; b=rNYoeTTeMI4M0I5ATs+eCfh+mp/Q/hhjy7GPUYJ0VZ/F0vkvMk6xEzvlT+uEh1rLhN/3SZeOCE/VliOzCMuMQz45YxL+HdDKqwLZkQ8xrb3vaMomKMeTf0D2pupDkb/VVvFPrHUZwQGZn1brBJ9kZzLrQ5nDBZWIH86Za7/hG7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732532891; c=relaxed/simple;
-	bh=eKZ3NTtyLru4te3bIet0CwHqjzzmKZtcG0wMs7PZ2w4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G45I7TSrdC92BdOM4ZLIC5XE7sbRc2JNdv3WpjfNQfFQJcPW4TgLpg8451/mpKpZiyikve9bipnSF5e0pJ+9kf+nHUUhdyULPORkI47RHBSxbiyaqpf2dX1JCFHUi8T936j3ugWfyWee/S9cL0S2xE+DLda4JSW38lY/KLAleHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mZRHJVA8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 354996B5;
-	Mon, 25 Nov 2024 12:07:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1732532864;
-	bh=eKZ3NTtyLru4te3bIet0CwHqjzzmKZtcG0wMs7PZ2w4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mZRHJVA8sseG1Gmr8AcwOpOyshbXvvaqxf0Yh506PLb3LA18dn1vl5Y8eceumjrGo
-	 ItYh9QbNdeMUqkJqaEPgnJI+MGOR9lTz2hfP8O2vqyoOZ5njFbSFdpcdFWzjMeMgt5
-	 +pcBTndCDtjCIrzid62CfAwnB6yCoNNfF9rdpMhg=
-Message-ID: <798adbca-7384-4c94-915d-f2cf0710b4e7@ideasonboard.com>
-Date: Mon, 25 Nov 2024 13:08:02 +0200
+	s=arc-20240116; t=1732533369; c=relaxed/simple;
+	bh=kdnVlIG+B0GvyzI6XnIWhqcMOJeA2ir/FehYBjUqKeg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k9oCQdkNeJEPbS/EPZ3DqGqMHtVNz0PCe9u2SlMsvIBwHbPtLZE8NruMBSsyUe3XhLmJFp1Yz3+UBO+ZVtUrOx78XE6AnCdBGYCTgM0MQXaQ3GRj8NRHWGbxNOR6Ew54JyHWFU7KaqoMHY+o87Egdfxrw4VrAusGJMGjyIjsq3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FhU7YJ56; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732533366; x=1764069366;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kdnVlIG+B0GvyzI6XnIWhqcMOJeA2ir/FehYBjUqKeg=;
+  b=FhU7YJ56sRfpjO2NPOdG6krrzBI1MMPfhAsuuIVMesQX9Yy1iQBV1jwX
+   thbuujFYLD3U3oMTeAZAuXyRnNH3wyOHwQQRK3inrLsZGpxF0GiUpwWyd
+   Yqvkg7/AIIAxB/5AyUpWZlQ/AFbq+smdmzVE7ZSGfQ2c1O+1o8g50jpPi
+   XIXOhiS3cNQ24sYjnvuWeE6LuIbXO31eIul8hPnu+oXUnRLL7dJbOQfWB
+   lyHKjn4ntt6KR6yA/TasKImdCbWyvAIln33Vxh916jC6JVuCSZXNczsuv
+   0sNMC9wQoL64thEDaxbx5xja+cGjsLVjzpwxxzDm4A9yq5IjIATJT5Pee
+   A==;
+X-CSE-ConnectionGUID: nzGlADILRxeKvcOwX41Gbg==
+X-CSE-MsgGUID: 8yBrSqIuRuquV+7XblJRTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11266"; a="35486595"
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
+   d="scan'208";a="35486595"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 03:16:06 -0800
+X-CSE-ConnectionGUID: gBeP8Lr+RZqCkZddfOJNRw==
+X-CSE-MsgGUID: spSc4BW6RXSzi0N0AoewcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
+   d="scan'208";a="91690128"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa009.fm.intel.com with SMTP; 25 Nov 2024 03:16:04 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 25 Nov 2024 13:16:03 +0200
+Date: Mon, 25 Nov 2024 13:16:03 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: typec: anx7411: fix OF node reference leaks in
+ anx7411_typec_switch_probe()
+Message-ID: <Z0Rcc3_E25-2KJaw@kuha.fi.intel.com>
+References: <20241121023914.1194333-1-joe@pf.is.s.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] drm/tidss: Fix issue in irq handling causing
- irq-flood issue
-To: Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Devarsh Thakkar <devarsht@ti.com>, Jyri Sarha <jyri.sarha@iki.fi>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Jonathan Cormier <jcormier@criticallink.com>, Bin Liu <b-liu@ti.com>,
- stable@vger.kernel.org
-References: <20241021-tidss-irq-fix-v1-0-82ddaec94e4a@ideasonboard.com>
- <20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com>
- <e2828b26-8ee9-4140-a377-647f5ae12e2f@linux.dev>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <e2828b26-8ee9-4140-a377-647f5ae12e2f@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241121023914.1194333-1-joe@pf.is.s.u-tokyo.ac.jp>
 
 Hi,
 
-On 24/11/2024 19:18, Aradhya Bhatia wrote:
-> Hi Tomi, Devarsh,
+Sorry to keep you waiting.
+
+On Thu, Nov 21, 2024 at 11:39:14AM +0900, Joe Hattori wrote:
+> The refcounts of the OF nodes obtained in by of_get_child_by_name()
+> calls in anx7411_typec_switch_probe() are not decremented. Add
+> additional device_node fields to anx7411_data, and call of_node_put() on
+> them in the error path and in the unregister functions.
 > 
-> On 10/21/24 19:37, Tomi Valkeinen wrote:
->> It has been observed that sometimes DSS will trigger an interrupt and
->> the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
->> VID level interrupt-statuses are zero.
+> Fixes: e45d7337dc0e ("usb: typec: anx7411: Use of_get_child_by_name() instead of of_find_node_by_name()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> ---
+> Changes in v3:
+> - Add new fields to anx7411_data.
+> - Remove an unnecessary include.
+> ---
+>  drivers/usb/typec/anx7411.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 > 
-> Does this mean that there was a legitimate interrupt that potentially
-> went unrecognized? Or that there was a, for the lack of a better word,
-> fake interrupt trigger that doesn't need handling but just clearing?
+> diff --git a/drivers/usb/typec/anx7411.c b/drivers/usb/typec/anx7411.c
+> index 95607efb9f7e..e714b04399fa 100644
+> --- a/drivers/usb/typec/anx7411.c
+> +++ b/drivers/usb/typec/anx7411.c
+> @@ -290,6 +290,8 @@ struct anx7411_data {
+>  	struct power_supply *psy;
+>  	struct power_supply_desc psy_desc;
+>  	struct device *dev;
+> +	struct device_node *switch_node;
+> +	struct device_node *mux_node;
 
-I don't have an answer to that. I haven't been able to trigger this 
-issue, and I guess it's difficult to say for certain in any case.
+Please make these fwnodes.
 
-My guess is that it's some kind of race issue either in the HW or the 
-combination of HW+SW.
+>  };
+>  
+>  static u8 snk_identity[] = {
+> @@ -1099,6 +1101,7 @@ static void anx7411_unregister_mux(struct anx7411_data *ctx)
+>  	if (ctx->typec.typec_mux) {
+>  		typec_mux_unregister(ctx->typec.typec_mux);
+>  		ctx->typec.typec_mux = NULL;
+> +		of_node_put(ctx->mux_node);
 
->> As the top level irqstatus is supposed to tell whether we have VP/VID
->> interrupts, the thinking of the driver authors was that this particular
->> case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
->> bits which has corresponding interrupts in VP/VID status. So when this
->> issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
->> interrupt flood.
->>
->> It is unclear why the issue happens. It could be a race issue in the
->> driver, but no such race has been found. It could also be an issue with
->> the HW. However a similar case can be easily triggered by manually
->> writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
->> DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
->> the bit, we get an interrupt flood.
->>
->> To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
->> solution is that if the top level irqstatus is the one that triggers the
->> interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
->> unhandled if VP/VID interrupt statuses have bits set. However, testing
->> shows that if any of the irqstatuses is set (i.e. even if
->> DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
->> interrupt.
-> 
-> Does this mean if VID/VP irqstatus has been set right around the time
-> the equivalent DISPC_IRQSTATUS bit is being cleared, the equivalent
-> DISPC_IRQSTATUS bit is going to get set again, and make the driver
-> handle the event as we expect it to?
+fwnode_handle_put(ctx->mux_node);
 
-(If I recall right) no, DISPC_IRQSTATUS won't be set. But it doesn't 
-matter, the interrupt will be triggered anyway, and the driver will 
-handle the interrupt.
+>  	}
+>  }
+>  
+> @@ -1107,6 +1110,7 @@ static void anx7411_unregister_switch(struct anx7411_data *ctx)
+>  	if (ctx->typec.typec_switch) {
+>  		typec_switch_unregister(ctx->typec.typec_switch);
+>  		ctx->typec.typec_switch = NULL;
+> +		of_node_put(ctx->switch_node);
 
->>
->> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
->> Co-developed-by: Bin Liu <b-liu@ti.com>
->> Signed-off-by: Bin Liu <b-liu@ti.com>
->> Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
->> Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
->> Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
->> Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
->> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
->> Cc: stable@vger.kernel.org
->> ---
->>   drivers/gpu/drm/tidss/tidss_dispc.c | 12 ++++--------
->>   1 file changed, 4 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
->> index 1ad711f8d2a8..f81111067578 100644
->> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
->> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
->> @@ -780,24 +780,20 @@ static
->>   void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
->>   {
->>   	unsigned int i;
->> -	u32 top_clear = 0;
->>   
->>   	for (i = 0; i < dispc->feat->num_vps; ++i) {
->> -		if (clearmask & DSS_IRQ_VP_MASK(i)) {
->> +		if (clearmask & DSS_IRQ_VP_MASK(i))
->>   			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
->> -			top_clear |= BIT(i);
->> -		}
->>   	}
->>   	for (i = 0; i < dispc->feat->num_planes; ++i) {
->> -		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
->> +		if (clearmask & DSS_IRQ_PLANE_MASK(i))
->>   			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
->> -			top_clear |= BIT(4 + i);
->> -		}
->>   	}
-> 
-> nit: Maybe these for-loop braces could be dropped as well.
+fwnode_handle_put(ctx->switch_node);
 
-I like to have braces if there are multiple lines under it.
+>  	}
+>  }
+>  
+> @@ -1114,28 +1118,29 @@ static int anx7411_typec_switch_probe(struct anx7411_data *ctx,
+>  				      struct device *dev)
+>  {
+>  	int ret;
+> -	struct device_node *node;
+>  
+> -	node = of_get_child_by_name(dev->of_node, "orientation_switch");
+> -	if (!node)
+> +	ctx->switch_node = of_get_child_by_name(dev->of_node, "orientation_switch");
 
-> Otherwise, LGTM,
-> 
-> Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+ctx->switch_node = device_get_named_child_node(dev, "orientation_switch");
 
-Thanks!
+> +	if (!ctx->switch_node)
+>  		return 0;
+>  
+> -	ret = anx7411_register_switch(ctx, dev, &node->fwnode);
+> +	ret = anx7411_register_switch(ctx, dev, &ctx->switch_node->fwnode);
+>  	if (ret) {
+>  		dev_err(dev, "failed register switch");
+> +		of_node_put(ctx->switch_node);
+>  		return ret;
+>  	}
+>  
+> -	node = of_get_child_by_name(dev->of_node, "mode_switch");
+> -	if (!node) {
+> +	ctx->mux_node = of_get_child_by_name(dev->of_node, "mode_switch");
 
-  Tomi
+ctx->mux_node = device_get_named_child_node(dev, "mode_switch");
 
+> +	if (!ctx->mux_node) {
+>  		dev_err(dev, "no typec mux exist");
+>  		ret = -ENODEV;
+>  		goto unregister_switch;
+>  	}
+>  
+> -	ret = anx7411_register_mux(ctx, dev, &node->fwnode);
+> +	ret = anx7411_register_mux(ctx, dev, &ctx->mux_node->fwnode);
+>  	if (ret) {
+>  		dev_err(dev, "failed register mode switch");
+> +		of_node_put(ctx->mux_node);
+>  		ret = -ENODEV;
+>  		goto unregister_switch;
+>  	}
+
+thanks,
+
+-- 
+heikki
 
