@@ -1,104 +1,96 @@
-Return-Path: <stable+bounces-95357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CBF9D7E2C
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 09:55:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A759D820C
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 10:17:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 233EFB239C0
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 08:55:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172CD163093
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 09:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E03729CF0;
-	Mon, 25 Nov 2024 08:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACDF18FDC2;
+	Mon, 25 Nov 2024 09:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="OuAIgJUe"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="D77n2q8I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A838218D64B
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 08:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A37185935;
+	Mon, 25 Nov 2024 09:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732524941; cv=none; b=npIsCFqm3GkMsHxkHAOxEHO6jLLx8mogpxLcXyCye4/qCGDir6imc/AWEOedBCjb/7rMYPqzb9sEVrODcJhe4AaMva+HOONbqk1wJQmiWZ/NT0cSmiR9oi7zPsVjrrfimkmpO3jbb2K90p6oRJAtE96s36nXn9qNVogO6cYCADM=
+	t=1732526217; cv=none; b=JNrs2qnrjfbVAeC6q3DiKMbOXB94bOVVn/2of7qFJOBTgPR6Vplo/KYIvjYUOhi2cmj5YNJyX+HB4DTD5Ru/uaGtYw3snKZhPWtanmqvJ+OqvhqUw+eRfIx57KpIMWa2r8l/4pMZVFoCOFnRfBZIz7KUDQv7Dd87p6KIgGHG0U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732524941; c=relaxed/simple;
-	bh=HDfW3jVxCWdYw7T6W6STfvhIsTfJuxTDMyWxf/iJsfw=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GvJv//zsPwbmOidHQm0bt1zOtaZn3oCBK5KkZ+KeftPNO9hf43vFXjpFgIcjvT59M81s2Pcri8xr+x4db2fx5vOXplSesewTaVTdWV6gxKs3b7dCbgZVDrL0Jw63m/u4dh4k9+lF3hsSakQKeCQzP0S/t+mXBIZYONXGeqyjNOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=OuAIgJUe; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1732524939; x=1764060939;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=HDfW3jVxCWdYw7T6W6STfvhIsTfJuxTDMyWxf/iJsfw=;
-  b=OuAIgJUekXBXt3mz1WJAgVDXqJM9AT4aCWmmdytyv17vxXM5xsh5q8qv
-   9/hzbpGb4hf0F3n71Yw150TiXBygzMo8JCrkz99sAt3PiBKqgDqFTz0Q8
-   HFU3kZWeN0fDfnLx/22xZ90mDead63RimwnmiBdmpPSjMFklETVHjyLFU
-   w=;
-X-IronPort-AV: E=Sophos;i="6.12,182,1728950400"; 
-   d="scan'208";a="44171384"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 08:55:36 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:57842]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.61.54:2525] with esmtp (Farcaster)
- id f21d2487-34d7-4818-b323-09540143d2c2; Mon, 25 Nov 2024 08:55:36 +0000 (UTC)
-X-Farcaster-Flow-ID: f21d2487-34d7-4818-b323-09540143d2c2
-Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 25 Nov 2024 08:55:36 +0000
-Received: from email-imr-corp-prod-pdx-all-2c-c4413280.us-west-2.amazon.com
- (10.25.36.210) by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 25 Nov 2024 08:55:36 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com [10.15.1.225])
-	by email-imr-corp-prod-pdx-all-2c-c4413280.us-west-2.amazon.com (Postfix) with ESMTP id 11A40A047E;
-	Mon, 25 Nov 2024 08:55:36 +0000 (UTC)
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id 9DF3223E2; Mon, 25 Nov 2024 09:55:35 +0100 (CET)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: kernel test robot <lkp@intel.com>
-CC: <stable@vger.kernel.org>, <oe-kbuild-all@lists.linux.dev>
-Subject: Re: [PATCH 5.4/5.10/5.15] cifs: Fix buffer overflow when parsing
- NFS reparse points
-In-Reply-To: <Z0PftUzqwoftS1ri@ca93ea81d97d> (kernel test robot's message of
-	"Mon, 25 Nov 2024 10:23:49 +0800")
-References: <Z0PftUzqwoftS1ri@ca93ea81d97d>
-Date: Mon, 25 Nov 2024 09:55:35 +0100
-Message-ID: <lrkyqiksby9o8.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1732526217; c=relaxed/simple;
+	bh=lbIWNYMvSjyfLtOw1mvuOqw21VstXoAYqxbOHR064L0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fZkGl+0LcI4CxNbjl2IatVLxxGJtbypLoUtWMimXCJlY16KEulIehUw7qvMv+x0hzKlYn6TnfDabJ+U4z5BAIx52i8CN3P1CUe2E3GiJGJElANTElA4ZePgT+NfOV5v4Xc5nTx4x/MYbdnJa4XZedzGP0Ifg9RPkHCxHcBDTRA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=D77n2q8I; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 04FB9A06EA;
+	Mon, 25 Nov 2024 10:16:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=Q6wYDtIQjR5+T/DQDg0D6iro4kbT0EVZiPNUQPiaEF8=; b=
+	D77n2q8I+1axsoSfEUHf0oXpCp8HYOhEeOmuJ5cmgXsKxK+W21I9qsJt/BQo70K1
+	7cW42scuXJZ4oGJkrTmPLGnHyVZcxpxPkiV8JbTrUB3dTXi+lHh/8BcmJsF+72O7
+	T0435DSBWWStm4ONl0+rT2Oiqjeq3IdTMeEwD2ZQd7jilgRDQb8/8LzTYawYW4vW
+	0bbRTbOOkzc9k8ysTm3kkUB6JKyB19ZRhqyrzEP8G2IdmN3hUtNpGHCFJB+hQ2FP
+	C1s52uOMOunvpDJrsQncQQY8X5qFF8vM5IuEej6KQ/Ke8t6g7lDIueXlI90/NO5L
+	fCHGkf7IWgDCWsNVAxFNvvrmWOZ3hkVCHr0LC/0dT3lyS+ty7hPTjaKPOGKBmoTD
+	mGlxsM8S20rGVCu+0ki/AnszcQjbHIRC2ShyGbDx1tAhLdm9ZMgrzoOP6UofmFUa
+	5gwPBEBJfmEvqrXXrhfS1LOjO5mASxGnQoovG4VN9itan6zcXsnRGW8p1LPkHEuc
+	S9oj8INYBQThsJ/xBh4gfzkxEB0xXBs92O+gHN6w5IEYEtfc22peuzu6HA5w3fLL
+	6FX9o7nalAJTUG9IkUsH3e14QTNQsD2FDtUDZ6EhOPOBtnQxecBuFKq6oFxn+Ddg
+	2eW2tTcWnfO8BBsTCG8BAZR7dhwBBx5Jc81BiuuAOfs=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <stable@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Sasha
+ Levin" <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH 6.6 0/3] Fix PPS channel routing
+Date: Mon, 25 Nov 2024 10:16:36 +0100
+Message-ID: <20241125091639.2729916-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1732526205;VERSION=7980;MC=2019651544;ID=94027;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD94855607C67
 
-kernel test robot <lkp@intel.com> writes:
+On certain i.MX8 series parts [1], the PPS channel 0
+is routed internally to eDMA, and the external PPS
+pin is available on channel 1. In addition, on
+certain boards, the PPS may be wired on the PCB to
+an EVENTOUTn pin other than 0. On these systems
+it is necessary that the PPS channel be able
+to be configured from the Device Tree.
 
-> Hi,
->
-> Thanks for your patch.
->
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
->
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
->
-> Rule: The upstream commit ID must be specified with a separate line above the commit text.
-> Subject: [PATCH 5.4/5.10/5.15] cifs: Fix buffer overflow when parsing NFS reparse points
-> Link: https://lore.kernel.org/stable/20241122152943.76044-1-mngyadam%40amazon.com
->
-> Please ignore this mail if the patch is not relevant for upstream.
+[1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
 
-The commit id is there but in upstream <sha> commit, wrong format.
-I've sent a v2.
+Francesco Dolcini (3):
+  dt-bindings: net: fec: add pps channel property
+  net: fec: refactor PPS channel configuration
+  net: fec: make PPS channel configurable
 
--MNAdam
+ Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
+ drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
+ 2 files changed, 13 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
+
 
