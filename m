@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-95343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBCD9D7B48
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 06:38:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8BA9D7B47
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 06:38:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E13281693
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 05:38:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8123D162EB7
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 05:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC0C158218;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3471E13CFA6;
 	Mon, 25 Nov 2024 05:38:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515375589B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D4754765
 	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 05:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732513103; cv=fail; b=d6Ne5stA4hwZfrF4R3+eGv9Akj0TLTozcccgo+5c8sruRi2kl6tio8xtkibAB9XC0bXpc56dgWblNiSFBNxAjt26G2op8TzX9cBver40RwpVhFildZ5zjGe3E9N+XTP10S/GIe63XFnDpHukDUdVSGDQhN1kd/+I40SVdKQ2G08=
+	t=1732513103; cv=fail; b=AQyk7uqpB+gaeYEPC+ZtGyDCkZrguAlHKmzin0+TWnBOdWgkMXCDY/Z6mEAnmnYAaotF9rHcBIEML/Z9e2EMAKLIn4uMC7YtwK1Ht6zFsoZX5Arzizu4P0i0tjPOX0uTe72iKlc8gH2HVGr3ueLERwIm/vtr4vNLT+qfY+bsBzo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732513103; c=relaxed/simple;
-	bh=OF6MGJ8RJFuSpT1RK8h1iohAZwuCM7RcbmyAD8ctfgo=;
+	bh=LEf7ZCZ8SEUFUNe7M683XtiQsuHK4cDuJlbJzzRWMYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nY14CBS6lzjzeJ4OvupO6kThLiDiGXYmYaEakJoVAhAmaQEel8eW5IVqNWc2ddm+LpSKVfknSJDyQuXCM2rHTRazFBHFKi5DeLxfsPON/6k1hVJCAKVY09AKSuCx7+aQVa4EApgETmr2AEoqtWxLlOgP3qIcbuwhTju/Jw3eScs=
+	 Content-Type:MIME-Version; b=fvf9LUmdj4VZJromnxKKCV8kfvWT5C+VzivU29ye/l8glST8EN/nUBZSHoeQuijo6v7zOpb7QruG71jMU5H7YYlLeKAxnf/T+rdmYQMtU+gt24i8Nyudmke9+O75mheY3zp74etX4Am3Id/WGLwoeSZokEBscHfU9qv+gjXs1TU=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AP40lrQ024079;
-	Mon, 25 Nov 2024 05:38:13 GMT
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AP40lrS024079;
+	Mon, 25 Nov 2024 05:38:14 GMT
 Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4336189mgy-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4336189mgy-3
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Nov 2024 05:38:12 +0000 (GMT)
+	Mon, 25 Nov 2024 05:38:14 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q2r5swxAcq7CGuzl9D5GdSETGLKFGzF7fUAIwKmTN6ZwfL/K4Ovz0tc2rNidZdk+EO+TA667nUQRKUZbvtiMYAX0/bMReIPGlC90uJrH4xPTQh2OuM+6dP3DPo2YUXJV2rEa/82laM22vHV5XIMhze5rXtHU9zlG58QV2DAgfbfsCsNNgR9HwZjiDuU/dQ4dksbybCwZctS84AklvBAWvpkkCyQSVHihu0iH/sakbJYCqUU+dhQ3yR8LadKp9afRCcCWr/LnNIYJGnpsNQ24ER+daZNSioc8xKv7xM08SuLIPO3Idzt4oeHz6kDMVzxHS99rZ+5CnNPU/rsQ8AXsjw==
+ b=EJiQNTG8zLryZUXAXUDYTtbNS1y1b3Iu1wnQ6GC+M9eieh1pjJYbXYIorDloAJLHGXhbzfxc9gAU4RG4dEsjsy7ZYYeAcDx0/bMTftBDazPGn6y6P0fjqH9wn3xTbQsaFPAT8F/l1pZfYTcZbuOFcAIxoRQ4OCKiEA/ueUFkMWGJCUTySmgjP5fgP2M7+gPbVT5XMJcxLidbBYwMoX9hRxFZMSgg+btCclcr/3Qv5k6DkAiisCtX7Q1mqStq8TBElBE19zQGhci3a1gcnb2osfchC8+OYXeypn0KwIe8qF+KppYWXvWdqnjh/KL+LU/RHVXJtG7Zne1xr7iR2g+lFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i29yjdq3wjzYSBjO/vBv16G5BhXG+SML/rtL/gkl+sE=;
- b=XWiMwIbiEmY4WC1HyMPaCCEv3OVmWdPYYaf9VJlw1320JagY4ThmnBEB4wnRyQglJa6vkA0w+SnQyJi9FN83wnvTq5GCPZ2v4H8AZLfAlyGFaWYNOGKTIy8G8PxDx+FGXYFgPhWmCiYSC0ZMA7i8tN+mB+sT7ql/hzABTvAjby0/JvbYAs4vVLdQBsouFl7zExXhEphSo8HV1v/aYxRuDgzzhm2p2TPs1C4NoJBHcezPoFKzts4tR8YOsEtGlBuiKc6w7Q/fVPowCaZmEkcQQuba0o/jH4w58j0TGBIGWdlZ0B49fJ06HFg8cIw+nlqQ1bKbQ40o41UkkgGhJcexYw==
+ bh=j3IQBzuBcWD5B57N/iiwHl32/2+3QGyhEMrfGb6TsRY=;
+ b=WoqpG9Tz8W7/4bmLvbN5rbPiBg+w5EnFDAXA6nmlOJbA9rh+KXKH2xbDnklNA8FwwH6Gcp3ddpjaxYfFjr9ccSefXJhTz3XIVIOoTwqNBY6yHilg5o9ArSx64rmVjC6UtLbeFTcTkyPsiAEOQym8js3K2wmk47a/OE6RJTLxtVbuI0ZYfgM+QQRE55icUQ7Rxtg4BwJ9XoOQxNymJVwGudoBxg66Sm2N+Ntgbz32bXR8SIBJTSwQufQd+bK8qC85S5IpBlRqv2hN5nTfP38HvL+52NHg5GGSNXRb2a4Xn15SqiICkjQRn83ccIdKqtA9bcB57Xgy6GMR/B1aC4Vi3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
@@ -50,17 +50,17 @@ Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
  by SJ0PR11MB6717.namprd11.prod.outlook.com (2603:10b6:a03:44f::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.19; Mon, 25 Nov
- 2024 05:38:10 +0000
+ 2024 05:38:12 +0000
 Received: from MW4PR11MB5824.namprd11.prod.outlook.com
  ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
  ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8158.024; Mon, 25 Nov 2024
- 05:38:10 +0000
+ 05:38:12 +0000
 From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
 To: marpagan@redhat.com, yilun.xu@linux.intel.com, gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org, xiangyu.chen@aol.com
-Subject: [PATCH 6.1 1/2] fpga: bridge: add owner module and take its refcount
-Date: Mon, 25 Nov 2024 13:38:15 +0800
-Message-ID: <20241125053816.1914594-2-xiangyu.chen@eng.windriver.com>
+Subject: [PATCH 6.1 2/2] fpga: manager: add owner module and take its refcount
+Date: Mon, 25 Nov 2024 13:38:16 +0800
+Message-ID: <20241125053816.1914594-3-xiangyu.chen@eng.windriver.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241125053816.1914594-1-xiangyu.chen@eng.windriver.com>
 References: <20241125053816.1914594-1-xiangyu.chen@eng.windriver.com>
@@ -77,336 +77,493 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|SJ0PR11MB6717:EE_
-X-MS-Office365-Filtering-Correlation-Id: 084e362f-4083-48fc-d724-08dd0d1358d9
+X-MS-Office365-Filtering-Correlation-Id: e905760d-b54e-4456-e2bc-08dd0d1359dd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hhXIsyvm3DF5uB2hIq6Yp64iWfVDpWA2Gzi4P2mFG0nqHbHIv95g0TpCKllk?=
- =?us-ascii?Q?Giw0msNwYGqFdantsWMt0X0GQguHuwWGgxCjfYIzgBMP9KN3/wiJG1rMTFCe?=
- =?us-ascii?Q?rGYs0wqLSAJSbkYHWg6VqoSGQ2y39mkOWXZg4tU6EZgrGNq2YugMWO+HQPaX?=
- =?us-ascii?Q?sHCgNeV5ZJttbuzx1KZj/h5m3EsaaOi7qu1I5MJvk1nUuW5sYgHyR9Me3YJ4?=
- =?us-ascii?Q?FbqXGzNdLBG8NyI3AtosGOfD9BFjAwXg/vJU7Henw5/KEwrU5VGsAC3gn2qt?=
- =?us-ascii?Q?dAtrMxWxR1tt+JT1TTrmf80LLiYScmOBY8JO+4Daj+yOj2n0iRyUC4fMoa7t?=
- =?us-ascii?Q?H8BDJZVaTAIDWjGVzJ4xGC5OWh1VARK+UHj8KXu3W63hpb4a0fHnO3bvMaOA?=
- =?us-ascii?Q?na8yDcznvJt4W/DwKYeLL5Wfh28RYHyxMUYXBlwXmj3tQya57KNbqoQQL4YI?=
- =?us-ascii?Q?ipBPxj1QIBx8a1DMlPw9Db70hgkkvjA5Q1vk3aV64unyRJ2+xugxXrGG0EnT?=
- =?us-ascii?Q?1+/mel+UwLXX8w9oRQD1pL5jN04LAqG4Bxxz+fg/qIFM3YhfEy9cLXkF+xyY?=
- =?us-ascii?Q?ZIgJpBXMYUEuObLQcQuwAT65Vf4aUZszc6mZFm96xO4LEExN/5rhogX0vfqN?=
- =?us-ascii?Q?VivBi1c9xyMim6tZBy175eQsnI9xDrdrUGliMrKKfgARU+lRb2DvXuN+tHxn?=
- =?us-ascii?Q?PfLJ82nF//9WQHUB3upkTx6oO2uzixU/OB1Nw0SFELNvCcMbP6WMIKm/IZF0?=
- =?us-ascii?Q?64hrqY3GYI7QkRQp4Jzcz7kTol2Hbi4DognGTynOI45O7ydTqM9wxcS6+KnJ?=
- =?us-ascii?Q?nGXGc533rRTU67lHo7t+COuSbDi/301gDUlM8k6JVEbkTOqSd8hMTyCij9Ci?=
- =?us-ascii?Q?Of1iAUV/KeBzaZGgYr+RoIRGV85NJW+GpGBsEwNharkQD8ouVXPlaCeOb05z?=
- =?us-ascii?Q?uCgnAUyhlHJShLTRsJwxObpP97H2qlMi46jc9fu2lPSL8LgmwO2kj3ld4yzD?=
- =?us-ascii?Q?YcApxncSk8XsCP+reYcgksMNwa8nXC/mzEwHY3+eORJdzva4AjA+8bvRoL7y?=
- =?us-ascii?Q?U4wdiQ7BBzF2rq5uI+lcQVa7Wtnae05uCWdffNWDpqnmwEy2Ytcm5ydYtffK?=
- =?us-ascii?Q?ABjNDPL7GQ4JE1uefJ768MO+Lp/EcIhr5Qu65E/luB/hh6AJvcr1QKL6HZLd?=
- =?us-ascii?Q?4DgyGoXkBlDtv5BtvIV60viJo7deRShi5yRmC1AJSS3J/4jPTR/KocLAkG2s?=
- =?us-ascii?Q?Rg8KUoxAlx8Jv4ORXyXwbUSO/otTXE/DCKXE27vp+hvDwEJIPUT91zfdhBJ5?=
- =?us-ascii?Q?78YUEXI6iMZV30a+CZ6903hFm8zo4wT01/1uXmtBEatXzDGZrbpT8pcvBAgY?=
- =?us-ascii?Q?11Lw16w=3D?=
+	=?us-ascii?Q?VRyF8AgFQJin6CBdxqeAqTuc4VEEI/AHK+OYlEg53wBVdRvAuz0GMWq7PzI/?=
+ =?us-ascii?Q?jyguw1eBQq202+dUn1E04/BlOR5LOfDf9NnEFXi1c4Zai4RXvy0CMwmWHEQ2?=
+ =?us-ascii?Q?yOdujERzu46o+NO+U/MQacmo7x3ELzam28e0KDDiYa/t0bV0tj9AtsK5AbTX?=
+ =?us-ascii?Q?ULAGFxTV6AXDE0COEua76Gj5QgIuQd1pRNyQrD0/NT5l72vpJAiw5YkaJSkp?=
+ =?us-ascii?Q?yLyha85f1nhrIZWRj3ywTJ7vSDkvIfWDolmF0A/tjL3dWy/6kzI/DlfnwDcO?=
+ =?us-ascii?Q?HfGp8MvTQVNE62t5+LQ0vWhsP/1Pw9ouQ5pgOZ0En0cHHl5atYSKom1tFQLx?=
+ =?us-ascii?Q?sh2Rke/yKMYoTOjv+XFth+4w3xLIKnWtOOHYCZdCycHhv6KFrctt+xq7vDyE?=
+ =?us-ascii?Q?uN9h85VcbIzkWvPm9VhHOQdRvrhslPCOTJZ0Q/zslaXnzd7YqQRHKNcps8Ws?=
+ =?us-ascii?Q?uOFoWZk8cOWLqyetJR+NnFWG8JabvoKURwCU4ffJuMW8ug6AEzyNi0drztj/?=
+ =?us-ascii?Q?6Q5Bh9rgndHMLvMD+x2Nxq3fpZOF/clxmWxkjU8Yf8Htvf62OQHjmkz3Rnlx?=
+ =?us-ascii?Q?DHHmssJw081c9U0V8rMuwrXc1cJ2hkymbSjLv4sYlf8nSyeG4Uq3/JG60hlu?=
+ =?us-ascii?Q?BLXF5pQyh21sBxqdSbBV1sjcJyeI1VmKZBnuW70o1prubGSTCiQ++sTsj51M?=
+ =?us-ascii?Q?l5s1PNZay6DsKsfgV53BcQEJobdS94X54a9uunim7m+rTv0Lh3WdHIWnvs6j?=
+ =?us-ascii?Q?kZbuHKTUzl93RwEBRrTN4UVsykeS2BX7oC9LArUT0Pro2xkw4eNuyYyFL24Z?=
+ =?us-ascii?Q?/2Op7DPRogCqlBOGHpEwZ+EDXkgnDf51jXT/xdD9f24f58l/EONSg8jttca+?=
+ =?us-ascii?Q?c7Y9jXIPkkfHV/8tvJWx51dPE9l0WBrEZWfqBOnBUDZR2VEXo2zIf0vZ8gB8?=
+ =?us-ascii?Q?SqF2IPT/wEdEXEuONZqcK8pg+pCwqWf6DWhc4/g+U2+igW4uiTP14fopQYZl?=
+ =?us-ascii?Q?n9+QYbaqjS/XawgD3uF3mj3LLHjhN7VbdLY5wzNiaDvy+rdXKs0wLf8kEXn9?=
+ =?us-ascii?Q?3WaC8OKl28fU/lDpIqVnXJoId57TlSp1fF4+N5hNVQ3JEXjd0VwhPrKHFaCN?=
+ =?us-ascii?Q?DdVenoWhKg7uOq2QhFZKVr3LYVOTjyJ6K0UNvgVM/BkwIHZxaQoJAQZSUmVf?=
+ =?us-ascii?Q?O5gGgf43+H7OmN4zzCNJWzKtCpGd27is5B9IzgYeh7RaM4bjfLCmo9Wyw0wG?=
+ =?us-ascii?Q?mgA/A4/O/rrral02c5qOmJspwYA4PbKXfF242zNetKWEPh4xJMC8+bPdantm?=
+ =?us-ascii?Q?JCsFZhWl+CW1Cz9yxZ75jCmQ+KRWzRzXRJLlSKQs1JSORCsxFer7grxemtyP?=
+ =?us-ascii?Q?OzpmHkY=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?X7H2+DRRNXBWQjIrA8cnwyxiVkmIw1ZTkg7p06cIFXelBD/dQKqWwK4GI7ur?=
- =?us-ascii?Q?Et64Uyl81wpjwuqsI7CUy2cVQWmzYK5Xn+BM8HDxCzetHfBPVBjFtltGFxQd?=
- =?us-ascii?Q?Dyh1wCabo+qrbyX1VVWsbbd3Js/Q+egwc5GCzFUGIRQ7fOK9YIRRH5MAcwez?=
- =?us-ascii?Q?jFXzhirjwhmmQSE284kDYhxyEpUHr4ckyuD57dYPIYu0zZ1v/D1XjrksKTUD?=
- =?us-ascii?Q?1ZAiuHNYH8UvFHLWWB4lb0T2+S19ys08RTgGHIaUEkq7G635cgrnZUZtrzNf?=
- =?us-ascii?Q?T6/sRWQ+efhDzVBHbyUDFFGYgP3tElyOyVH90Qkbhnm9IczpJRmINCVVlXhQ?=
- =?us-ascii?Q?ktpC1AlXE/F45JJqu+UNS4vpG774+Tvm7iP0nTTyUjiu1ujAdhIL0EFE2IVO?=
- =?us-ascii?Q?+a1jmx7R23QGVaku242YMxYoq8yOab3GIby+NQWC2aTtncfXy6uonc1jkrzT?=
- =?us-ascii?Q?IX4vIa+vwSLlI6+bw/8FiKkJyAzubJSo/sAvOzKSctyxwsWF2x8TNT05SakY?=
- =?us-ascii?Q?//oZtm+B4EvnzH+RMNQ6TrEc7ivMUM1ENBx4GWQwKnnk28jHmCykngsuZ1+a?=
- =?us-ascii?Q?BmNblLeXxjeokuM4R/J25IhDTzQtohH6iADzBB9i9H6a6nIyuxdbF/VyImRs?=
- =?us-ascii?Q?8JXS0LUuiCLWcWKpl1Rei9TTPDfoS7KUk+yi+oVzHZml56XvDKEs2jClnVyG?=
- =?us-ascii?Q?Wr7SQM/4tXbbJMbz/HhdyRf6YHJ9l2K1TtRZ+A24g+Fd4lFADi8Cy1UEd1hF?=
- =?us-ascii?Q?PkAqi675YLOEU7V70/f+feVKwIrXktg2QIOOcygx7Edc5FvURelzQHUTqNW4?=
- =?us-ascii?Q?8/gEYxmozUkOSfu+gQnyl8LJ9aSQBLfGTQi8zLVhD8Kj6r6V75eFOgrYiyGU?=
- =?us-ascii?Q?ixlIimSMHfRQ9UrJzM90SdhZ2N+Hh3EwANHCgRmkttf+cHiwitjs/TGS5ePF?=
- =?us-ascii?Q?vCYr4A1WjLOl/XRFFDzk6wjSMle0We2z0AjMs6JZRXCixq5PpzJ8MUqgVZA1?=
- =?us-ascii?Q?Eg835z5vedYzNVg0fwtSgs4GztDTLdfMZSryHM7LhOC0dt2S9yVRRTwVfh1x?=
- =?us-ascii?Q?zg2mdkaGjKvgdxTu+9W1V383w7ko43W4zyHKNZBywX2NVRixLOSe19726pSC?=
- =?us-ascii?Q?6Fx8s4LMnt0++qpnIsrU1vSBO4s/sM5jB7FuQPXzMvRgYGzNA0VUdZitmi/u?=
- =?us-ascii?Q?jKX5S8CfOO6PlRh0XCU4gHyppnZsXXNZJyoTjP2vPEUGTAgqLe4HneVQ+pnH?=
- =?us-ascii?Q?cmDh/kicV4rhNGohk1XfHWgGuCq1KX1NayGC5QQpA3kspYsd19NG6De4R0JT?=
- =?us-ascii?Q?ne8cuJDOmNvV/OpnPySMo2CNXvbKnYez1Q4SoH1I2k7Q97sFPNfgT/TVcnAl?=
- =?us-ascii?Q?YRK6RkDcVqLc+B0SJGR7iuCKIpF0KzfW22Bs3UHRunSAqH0b69g1lcTDz7HQ?=
- =?us-ascii?Q?Yo+DPb6hb3kSHoPweCO5scoWZLSvNCLEw7O6wSJrpTMpr9Pp9WhdsbNdy+zU?=
- =?us-ascii?Q?Vd5W0A8Sas8/W0dS24E4QtEBOXmoVgHG492f6QdntOeQ+8vDoQOExflSGo7s?=
- =?us-ascii?Q?HBcsMur7QwiH45uKit6U6OGtBmBsODcL8/k7gToRh+MpnT5p5duKkOesIxBN?=
- =?us-ascii?Q?hQ=3D=3D?=
+	=?us-ascii?Q?4fc5+xKMaZzMLeZjkPfv+u+Pbiqiyrufu7knyP5jgdXBN8PoVkaqCqRO3q34?=
+ =?us-ascii?Q?W1R+4DlsdzRDGhH7UaDulhlbOJyydeHTM086jSBY3CVjjgiQb8qGePnpSYZP?=
+ =?us-ascii?Q?9nNqocCdsPoHUgMOszVtjxmGkWfd+aGVx37OOJDPv0VVUWZqEH14iCfWACnS?=
+ =?us-ascii?Q?oFah9rDu3IoXR2JBaZBtwzyDASLyMIHn6O0RCL0mnpQPUmIP96ymlaUfoyHq?=
+ =?us-ascii?Q?vclVXgcsPmx1ltRdHB/pZT5r1ww2zU5a3YFRauYka650ajH6osnXB6ON7scS?=
+ =?us-ascii?Q?rJ4B3Ona763MfIROZfq3PZQPkKxfiZg55Dr8RWxlWJPEQvfARzUyiEcaQy6U?=
+ =?us-ascii?Q?ZPzFz1qMvz7Y6tGZ81hWBhqCRtZ0b/bJUcfq3e96U7m2+U/yJ7ZxcChxUFyP?=
+ =?us-ascii?Q?q4W2dZ9q7Z6xPXNSPopY6FJPpsvkvRHINbKCtTBX4n3JJA6YY6VdUt+Jwvq4?=
+ =?us-ascii?Q?Spk7xJgf7tE40E9GY0UI0N6R+iZ9T/8k7f9h8Tk9utXLZkqi6+astoIoQdl7?=
+ =?us-ascii?Q?T7gh/bi4deCoBxkggeH5nj9iqJocGZfHXjgiCkQ7qESP+d/nyhc2N2hZm8c0?=
+ =?us-ascii?Q?LYHAYlIys9dN+MGFzIrCn+3UEV+5nHj4erP6OhbsK661pYoHLq7Ilz2lfJNl?=
+ =?us-ascii?Q?8Z7WWgOHzQ0rj/+OyakbPJ6M+F7VV4UW0YG10yIg2VfAqGJSYwfnliHpqAAI?=
+ =?us-ascii?Q?tNocs5d85weaUY7Q+PtzWf5YHpfLws+Vz0Xotz2Yyl8kEQTatyzK72Z7xuZL?=
+ =?us-ascii?Q?SgmifAxqDMi1jCROnTUM6lkxHUG8fGxbppHRE964ZEoDe2Ji9whKvN62DAdd?=
+ =?us-ascii?Q?GRblv6p+37RE1CJO/VjUOSX3XwlyOi5G8WK/3iUkIphjQfxHijlNbjLG5DhW?=
+ =?us-ascii?Q?+KN3ZA6ZwWtODOSiX4bAkv6cGX2MIi15mrrLjC6gIZ72c7CiJvOx+czZ/Qpt?=
+ =?us-ascii?Q?p/7joACPVpOCkuRzOInVAf6BBhCErRDOScwAcz0dKDpmjsbZPn7BzrR0ptE9?=
+ =?us-ascii?Q?i15QpsvI8XtrxU0tudMwVt8eGuuQjvVGwHDkSssNnFDqZb8tDBqYTXRgRtJ4?=
+ =?us-ascii?Q?gp18iy7cvSAZF52vU5HHJsqCaN2SmUA/7x8Cj1zdBKgVeiAtTarMEAqF6wGK?=
+ =?us-ascii?Q?/nguYkqJ4Ij7n8Qu885CY/B+e0m2P4uH0KPcxyRWTTr7v4nF7Gy1wa5dNMcL?=
+ =?us-ascii?Q?uredh/GuWaqKd21zdxYdCXMlap5Pp1rtOUnThzAAjHdmJw2xuH2dvJA+ZwiE?=
+ =?us-ascii?Q?vJwbH2/ybKYTzoHSRekszfk0N5aSqjnnZZPNMrtw8j+V8RhLp1h+n38eh7YG?=
+ =?us-ascii?Q?RXHGSUQO+lxLPhN+NktR5cy2XjSmmvmttld/yxJ9UdQIrhgHtxQgIGUomf6J?=
+ =?us-ascii?Q?FKZdeE31dqGOKIt10GyY1neJ5TOu6qbuM2dnQ2CQVqoeGlFUN1V/GwXKBSr9?=
+ =?us-ascii?Q?jPgTykms8tNmnrqSl4opeAyOKYmNCXgjmig+BI20jG1/3xETcoS1ODwc6OKX?=
+ =?us-ascii?Q?9SoqdwWjVgkmfgdJ+cY0SpS5+pEgfV8ZZ8Sr5uDVb0xmFQXo9lJ2I7YzbQ0a?=
+ =?us-ascii?Q?BhCAo6rWT70f0AgF87mv9ejCj3H3uN0vws8ORIXfS9e6mwuVAr6gz0CWzZt+?=
+ =?us-ascii?Q?LQ=3D=3D?=
 X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 084e362f-4083-48fc-d724-08dd0d1358d9
+X-MS-Exchange-CrossTenant-Network-Message-Id: e905760d-b54e-4456-e2bc-08dd0d1359dd
 X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 05:38:10.4465
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 05:38:12.1442
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hnf51rH+SwwVlt+939Q2LzaZwgFf9BXfDQpKPMZ6m4noMwMaEg4FX2Q2qWjo/kLltNUsPMKvKIipT5q4ukcE1XsJBEgtpzAi0fmqQIovyIM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Ljq1E9G7mX6JuA3mlTrHXS4n2SUPevKsRxufX3+0g8w5WZsU575AYVokpHbp4+7Lz499ibmsnJVmIzjFDqM0JIofxTm93Ivr0NKHL3inuI=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6717
-X-Proofpoint-ORIG-GUID: s_gLLk5utxUi9eqE-eM-eJRm-1c9KawY
-X-Proofpoint-GUID: s_gLLk5utxUi9eqE-eM-eJRm-1c9KawY
-X-Authority-Analysis: v=2.4 cv=O65rvw9W c=1 sm=1 tr=0 ts=67440d44 cx=c_pps a=LxkDbUgDkQmSfly3BTNqMw==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=ag1SF4gXAAAA:8 a=QyXUC8HyAAAA:8 a=t7CeM3EgAAAA:8 a=pb-scjWI82oOB5rjM7QA:9 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+X-Proofpoint-ORIG-GUID: WD_SLhVuwJrJadBrdsCYNI6ZateFzBBk
+X-Proofpoint-GUID: WD_SLhVuwJrJadBrdsCYNI6ZateFzBBk
+X-Authority-Analysis: v=2.4 cv=O65rvw9W c=1 sm=1 tr=0 ts=67440d46 cx=c_pps a=LxkDbUgDkQmSfly3BTNqMw==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=ag1SF4gXAAAA:8 a=QyXUC8HyAAAA:8 a=t7CeM3EgAAAA:8 a=taNDE3Rm5Uk9AQPKupkA:9 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-11-25_02,2024-11-21_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- clxscore=1011 mlxscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
  priorityscore=1501 lowpriorityscore=0 adultscore=0 malwarescore=0
  impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
  scancount=1 engine=8.21.0-2409260000 definitions=main-2411250046
 
 From: Marco Pagani <marpagan@redhat.com>
 
-[ Upstream commit 1da11f822042eb6ef4b6064dc048f157a7852529 ]
+[ Upstream commit 4d4d2d4346857bf778fafaa97d6f76bb1663e3c9 ]
 
-The current implementation of the fpga bridge assumes that the low-level
+The current implementation of the fpga manager assumes that the low-level
 module registers a driver for the parent device and uses its owner pointer
 to take the module's refcount. This approach is problematic since it can
-lead to a null pointer dereference while attempting to get the bridge if
+lead to a null pointer dereference while attempting to get the manager if
 the parent device does not have a driver.
 
-To address this problem, add a module owner pointer to the fpga_bridge
-struct and use it to take the module's refcount. Modify the function for
-registering a bridge to take an additional owner module parameter and
-rename it to avoid conflicts. Use the old function name for a helper macro
-that automatically sets the module that registers the bridge as the owner.
-This ensures compatibility with existing low-level control modules and
-reduces the chances of registering a bridge without setting the owner.
+To address this problem, add a module owner pointer to the fpga_manager
+struct and use it to take the module's refcount. Modify the functions for
+registering the manager to take an additional owner module parameter and
+rename them to avoid conflicts. Use the old function names for helper
+macros that automatically set the module that registers the manager as the
+owner. This ensures compatibility with existing low-level control modules
+and reduces the chances of registering a manager without setting the owner.
 
 Also, update the documentation to keep it consistent with the new interface
-for registering an fpga bridge.
+for registering an fpga manager.
 
-Other changes: opportunistically move put_device() from __fpga_bridge_get()
-to fpga_bridge_get() and of_fpga_bridge_get() to improve code clarity since
-the bridge device is taken in these functions.
+Other changes: opportunistically move put_device() from __fpga_mgr_get() to
+fpga_mgr_get() and of_fpga_mgr_get() to improve code clarity since the
+manager device is taken in these functions.
 
-Fixes: 21aeda950c5f ("fpga: add fpga bridge framework")
+Fixes: 654ba4cc0f3e ("fpga manager: ensure lifetime with of_fpga_mgr_get")
 Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Suggested-by: Xu Yilun <yilun.xu@intel.com>
-Reviewed-by: Russ Weight <russ.weight@linux.dev>
 Signed-off-by: Marco Pagani <marpagan@redhat.com>
 Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20240322171839.233864-1-marpagan@redhat.com
+Link: https://lore.kernel.org/r/20240305192926.84886-1-marpagan@redhat.com
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 ---
- Documentation/driver-api/fpga/fpga-bridge.rst |  7 ++-
- drivers/fpga/fpga-bridge.c                    | 57 ++++++++++---------
- include/linux/fpga/fpga-bridge.h              | 10 +++-
- 3 files changed, 43 insertions(+), 31 deletions(-)
+ Documentation/driver-api/fpga/fpga-mgr.rst | 34 +++++----
+ drivers/fpga/fpga-mgr.c                    | 82 +++++++++++++---------
+ include/linux/fpga/fpga-mgr.h              | 26 +++++--
+ 3 files changed, 89 insertions(+), 53 deletions(-)
 
-diff --git a/Documentation/driver-api/fpga/fpga-bridge.rst b/Documentation/driver-api/fpga/fpga-bridge.rst
-index 604208534095..833f68fb0700 100644
---- a/Documentation/driver-api/fpga/fpga-bridge.rst
-+++ b/Documentation/driver-api/fpga/fpga-bridge.rst
-@@ -6,9 +6,12 @@ API to implement a new FPGA bridge
+diff --git a/Documentation/driver-api/fpga/fpga-mgr.rst b/Documentation/driver-api/fpga/fpga-mgr.rst
+index 49c0a9512653..8d2b79f696c1 100644
+--- a/Documentation/driver-api/fpga/fpga-mgr.rst
++++ b/Documentation/driver-api/fpga/fpga-mgr.rst
+@@ -24,7 +24,8 @@ How to support a new FPGA device
+ --------------------------------
  
- * struct fpga_bridge - The FPGA Bridge structure
- * struct fpga_bridge_ops - Low level Bridge driver ops
--* fpga_bridge_register() - Create and register a bridge
-+* __fpga_bridge_register() - Create and register a bridge
- * fpga_bridge_unregister() - Unregister a bridge
+ To add another FPGA manager, write a driver that implements a set of ops.  The
+-probe function calls fpga_mgr_register() or fpga_mgr_register_full(), such as::
++probe function calls ``fpga_mgr_register()`` or ``fpga_mgr_register_full()``,
++such as::
  
-+The helper macro ``fpga_bridge_register()`` automatically sets
-+the module that registers the FPGA bridge as the owner.
+ 	static const struct fpga_manager_ops socfpga_fpga_ops = {
+ 		.write_init = socfpga_fpga_ops_configure_init,
+@@ -69,10 +70,11 @@ probe function calls fpga_mgr_register() or fpga_mgr_register_full(), such as::
+ 	}
+ 
+ Alternatively, the probe function could call one of the resource managed
+-register functions, devm_fpga_mgr_register() or devm_fpga_mgr_register_full().
+-When these functions are used, the parameter syntax is the same, but the call
+-to fpga_mgr_unregister() should be removed. In the above example, the
+-socfpga_fpga_remove() function would not be required.
++register functions, ``devm_fpga_mgr_register()`` or
++``devm_fpga_mgr_register_full()``.  When these functions are used, the
++parameter syntax is the same, but the call to ``fpga_mgr_unregister()`` should be
++removed. In the above example, the ``socfpga_fpga_remove()`` function would not be
++required.
+ 
+ The ops will implement whatever device specific register writes are needed to
+ do the programming sequence for this particular FPGA.  These ops return 0 for
+@@ -125,15 +127,19 @@ API for implementing a new FPGA Manager driver
+ * struct fpga_manager -  the FPGA manager struct
+ * struct fpga_manager_ops -  Low level FPGA manager driver ops
+ * struct fpga_manager_info -  Parameter structure for fpga_mgr_register_full()
+-* fpga_mgr_register_full() -  Create and register an FPGA manager using the
++* __fpga_mgr_register_full() -  Create and register an FPGA manager using the
+   fpga_mgr_info structure to provide the full flexibility of options
+-* fpga_mgr_register() -  Create and register an FPGA manager using standard
++* __fpga_mgr_register() -  Create and register an FPGA manager using standard
+   arguments
+-* devm_fpga_mgr_register_full() -  Resource managed version of
+-  fpga_mgr_register_full()
+-* devm_fpga_mgr_register() -  Resource managed version of fpga_mgr_register()
++* __devm_fpga_mgr_register_full() -  Resource managed version of
++  __fpga_mgr_register_full()
++* __devm_fpga_mgr_register() -  Resource managed version of __fpga_mgr_register()
+ * fpga_mgr_unregister() -  Unregister an FPGA manager
+ 
++Helper macros ``fpga_mgr_register_full()``, ``fpga_mgr_register()``,
++``devm_fpga_mgr_register_full()``, and ``devm_fpga_mgr_register()`` are available
++to ease the registration.
 +
- .. kernel-doc:: include/linux/fpga/fpga-bridge.h
-    :functions: fpga_bridge
+ .. kernel-doc:: include/linux/fpga/fpga-mgr.h
+    :functions: fpga_mgr_states
  
-@@ -16,7 +19,7 @@ API to implement a new FPGA bridge
-    :functions: fpga_bridge_ops
+@@ -147,16 +153,16 @@ API for implementing a new FPGA Manager driver
+    :functions: fpga_manager_info
  
- .. kernel-doc:: drivers/fpga/fpga-bridge.c
--   :functions: fpga_bridge_register
-+   :functions: __fpga_bridge_register
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_register_full
++   :functions: __fpga_mgr_register_full
  
- .. kernel-doc:: drivers/fpga/fpga-bridge.c
-    :functions: fpga_bridge_unregister
-diff --git a/drivers/fpga/fpga-bridge.c b/drivers/fpga/fpga-bridge.c
-index 833ce13ff6f8..698d6cbf782a 100644
---- a/drivers/fpga/fpga-bridge.c
-+++ b/drivers/fpga/fpga-bridge.c
-@@ -55,33 +55,26 @@ int fpga_bridge_disable(struct fpga_bridge *bridge)
- }
- EXPORT_SYMBOL_GPL(fpga_bridge_disable);
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: fpga_mgr_register
++   :functions: __fpga_mgr_register
  
--static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
-+static struct fpga_bridge *__fpga_bridge_get(struct device *bridge_dev,
- 					     struct fpga_image_info *info)
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: devm_fpga_mgr_register_full
++   :functions: __devm_fpga_mgr_register_full
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+-   :functions: devm_fpga_mgr_register
++   :functions: __devm_fpga_mgr_register
+ 
+ .. kernel-doc:: drivers/fpga/fpga-mgr.c
+    :functions: fpga_mgr_unregister
+diff --git a/drivers/fpga/fpga-mgr.c b/drivers/fpga/fpga-mgr.c
+index 8efa67620e21..0c71d91ba7f6 100644
+--- a/drivers/fpga/fpga-mgr.c
++++ b/drivers/fpga/fpga-mgr.c
+@@ -664,20 +664,16 @@ static struct attribute *fpga_mgr_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(fpga_mgr);
+ 
+-static struct fpga_manager *__fpga_mgr_get(struct device *dev)
++static struct fpga_manager *__fpga_mgr_get(struct device *mgr_dev)
  {
- 	struct fpga_bridge *bridge;
--	int ret = -ENODEV;
+ 	struct fpga_manager *mgr;
  
--	bridge = to_fpga_bridge(dev);
-+	bridge = to_fpga_bridge(bridge_dev);
- 
- 	bridge->info = info;
- 
--	if (!mutex_trylock(&bridge->mutex)) {
--		ret = -EBUSY;
--		goto err_dev;
--	}
-+	if (!mutex_trylock(&bridge->mutex))
-+		return ERR_PTR(-EBUSY);
+-	mgr = to_fpga_manager(dev);
++	mgr = to_fpga_manager(mgr_dev);
  
 -	if (!try_module_get(dev->parent->driver->owner))
--		goto err_ll_mod;
-+	if (!try_module_get(bridge->br_ops_owner)) {
-+		mutex_unlock(&bridge->mutex);
-+		return ERR_PTR(-ENODEV);
-+	}
+-		goto err_dev;
++	if (!try_module_get(mgr->mops_owner))
++		mgr = ERR_PTR(-ENODEV);
  
- 	dev_dbg(&bridge->dev, "get\n");
- 
- 	return bridge;
+ 	return mgr;
 -
--err_ll_mod:
--	mutex_unlock(&bridge->mutex);
 -err_dev:
 -	put_device(dev);
--	return ERR_PTR(ret);
+-	return ERR_PTR(-ENODEV);
  }
  
- /**
-@@ -97,13 +90,18 @@ static struct fpga_bridge *__fpga_bridge_get(struct device *dev,
- struct fpga_bridge *of_fpga_bridge_get(struct device_node *np,
- 				       struct fpga_image_info *info)
+ static int fpga_mgr_dev_match(struct device *dev, const void *data)
+@@ -693,12 +689,18 @@ static int fpga_mgr_dev_match(struct device *dev, const void *data)
+  */
+ struct fpga_manager *fpga_mgr_get(struct device *dev)
+ {
+-	struct device *mgr_dev = class_find_device(fpga_mgr_class, NULL, dev,
+-						   fpga_mgr_dev_match);
++	struct fpga_manager *mgr;
++	struct device *mgr_dev;
++
++	mgr_dev = class_find_device(fpga_mgr_class, NULL, dev, fpga_mgr_dev_match);
+ 	if (!mgr_dev)
+ 		return ERR_PTR(-ENODEV);
+ 
+-	return __fpga_mgr_get(mgr_dev);
++	mgr = __fpga_mgr_get(mgr_dev);
++	if (IS_ERR(mgr))
++		put_device(mgr_dev);
++
++	return mgr;
+ }
+ EXPORT_SYMBOL_GPL(fpga_mgr_get);
+ 
+@@ -711,13 +713,18 @@ EXPORT_SYMBOL_GPL(fpga_mgr_get);
+  */
+ struct fpga_manager *of_fpga_mgr_get(struct device_node *node)
  {
 -	struct device *dev;
-+	struct fpga_bridge *bridge;
-+	struct device *bridge_dev;
++	struct fpga_manager *mgr;
++	struct device *mgr_dev;
  
--	dev = class_find_device_by_of_node(fpga_bridge_class, np);
+-	dev = class_find_device_by_of_node(fpga_mgr_class, node);
 -	if (!dev)
-+	bridge_dev = class_find_device_by_of_node(fpga_bridge_class, np);
-+	if (!bridge_dev)
++	mgr_dev = class_find_device_by_of_node(fpga_mgr_class, node);
++	if (!mgr_dev)
  		return ERR_PTR(-ENODEV);
  
--	return __fpga_bridge_get(dev, info);
-+	bridge = __fpga_bridge_get(bridge_dev, info);
-+	if (IS_ERR(bridge))
-+		put_device(bridge_dev);
+-	return __fpga_mgr_get(dev);
++	mgr = __fpga_mgr_get(mgr_dev);
++	if (IS_ERR(mgr))
++		put_device(mgr_dev);
 +
-+	return bridge;
++	return mgr;
  }
- EXPORT_SYMBOL_GPL(of_fpga_bridge_get);
+ EXPORT_SYMBOL_GPL(of_fpga_mgr_get);
  
-@@ -124,6 +122,7 @@ static int fpga_bridge_dev_match(struct device *dev, const void *data)
- struct fpga_bridge *fpga_bridge_get(struct device *dev,
- 				    struct fpga_image_info *info)
+@@ -727,7 +734,7 @@ EXPORT_SYMBOL_GPL(of_fpga_mgr_get);
+  */
+ void fpga_mgr_put(struct fpga_manager *mgr)
  {
-+	struct fpga_bridge *bridge;
- 	struct device *bridge_dev;
- 
- 	bridge_dev = class_find_device(fpga_bridge_class, NULL, dev,
-@@ -131,7 +130,11 @@ struct fpga_bridge *fpga_bridge_get(struct device *dev,
- 	if (!bridge_dev)
- 		return ERR_PTR(-ENODEV);
- 
--	return __fpga_bridge_get(bridge_dev, info);
-+	bridge = __fpga_bridge_get(bridge_dev, info);
-+	if (IS_ERR(bridge))
-+		put_device(bridge_dev);
-+
-+	return bridge;
+-	module_put(mgr->dev.parent->driver->owner);
++	module_put(mgr->mops_owner);
+ 	put_device(&mgr->dev);
  }
- EXPORT_SYMBOL_GPL(fpga_bridge_get);
- 
-@@ -145,7 +148,7 @@ void fpga_bridge_put(struct fpga_bridge *bridge)
- 	dev_dbg(&bridge->dev, "put\n");
- 
- 	bridge->info = NULL;
--	module_put(bridge->dev.parent->driver->owner);
-+	module_put(bridge->br_ops_owner);
- 	mutex_unlock(&bridge->mutex);
- 	put_device(&bridge->dev);
- }
-@@ -312,18 +315,19 @@ static struct attribute *fpga_bridge_attrs[] = {
- ATTRIBUTE_GROUPS(fpga_bridge);
+ EXPORT_SYMBOL_GPL(fpga_mgr_put);
+@@ -766,9 +773,10 @@ void fpga_mgr_unlock(struct fpga_manager *mgr)
+ EXPORT_SYMBOL_GPL(fpga_mgr_unlock);
  
  /**
-- * fpga_bridge_register - create and register an FPGA Bridge device
-+ * __fpga_bridge_register - create and register an FPGA Bridge device
-  * @parent:	FPGA bridge device from pdev
-  * @name:	FPGA bridge name
-  * @br_ops:	pointer to structure of fpga bridge ops
-  * @priv:	FPGA bridge private data
-+ * @owner:	owner module containing the br_ops
+- * fpga_mgr_register_full - create and register an FPGA Manager device
++ * __fpga_mgr_register_full - create and register an FPGA Manager device
+  * @parent:	fpga manager device from pdev
+  * @info:	parameters for fpga manager
++ * @owner:	owner module containing the ops
   *
-  * Return: struct fpga_bridge pointer or ERR_PTR()
+  * The caller of this function is responsible for calling fpga_mgr_unregister().
+  * Using devm_fpga_mgr_register_full() instead is recommended.
+@@ -776,7 +784,8 @@ EXPORT_SYMBOL_GPL(fpga_mgr_unlock);
+  * Return: pointer to struct fpga_manager pointer or ERR_PTR()
   */
- struct fpga_bridge *
--fpga_bridge_register(struct device *parent, const char *name,
--		     const struct fpga_bridge_ops *br_ops,
--		     void *priv)
-+__fpga_bridge_register(struct device *parent, const char *name,
-+		       const struct fpga_bridge_ops *br_ops,
-+		       void *priv, struct module *owner)
+ struct fpga_manager *
+-fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info)
++__fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info,
++			 struct module *owner)
  {
- 	struct fpga_bridge *bridge;
- 	int id, ret;
-@@ -353,6 +357,7 @@ fpga_bridge_register(struct device *parent, const char *name,
+ 	const struct fpga_manager_ops *mops = info->mops;
+ 	struct fpga_manager *mgr;
+@@ -804,6 +813,8 @@ fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *in
  
- 	bridge->name = name;
- 	bridge->br_ops = br_ops;
-+	bridge->br_ops_owner = owner;
- 	bridge->priv = priv;
+ 	mutex_init(&mgr->ref_mutex);
  
- 	bridge->dev.groups = br_ops->groups;
-@@ -382,7 +387,7 @@ fpga_bridge_register(struct device *parent, const char *name,
++	mgr->mops_owner = owner;
++
+ 	mgr->name = info->name;
+ 	mgr->mops = info->mops;
+ 	mgr->priv = info->priv;
+@@ -841,14 +852,15 @@ fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *in
  
  	return ERR_PTR(ret);
  }
--EXPORT_SYMBOL_GPL(fpga_bridge_register);
-+EXPORT_SYMBOL_GPL(__fpga_bridge_register);
+-EXPORT_SYMBOL_GPL(fpga_mgr_register_full);
++EXPORT_SYMBOL_GPL(__fpga_mgr_register_full);
  
  /**
-  * fpga_bridge_unregister - unregister an FPGA bridge
-diff --git a/include/linux/fpga/fpga-bridge.h b/include/linux/fpga/fpga-bridge.h
-index 223da48a6d18..94c4edd047e5 100644
---- a/include/linux/fpga/fpga-bridge.h
-+++ b/include/linux/fpga/fpga-bridge.h
-@@ -45,6 +45,7 @@ struct fpga_bridge_info {
-  * @dev: FPGA bridge device
-  * @mutex: enforces exclusive reference to bridge
-  * @br_ops: pointer to struct of FPGA bridge ops
-+ * @br_ops_owner: module containing the br_ops
-  * @info: fpga image specific information
-  * @node: FPGA bridge list node
+- * fpga_mgr_register - create and register an FPGA Manager device
++ * __fpga_mgr_register - create and register an FPGA Manager device
+  * @parent:	fpga manager device from pdev
+  * @name:	fpga manager name
+  * @mops:	pointer to structure of fpga manager ops
+  * @priv:	fpga manager private data
++ * @owner:	owner module containing the ops
+  *
+  * The caller of this function is responsible for calling fpga_mgr_unregister().
+  * Using devm_fpga_mgr_register() instead is recommended. This simple
+@@ -859,8 +871,8 @@ EXPORT_SYMBOL_GPL(fpga_mgr_register_full);
+  * Return: pointer to struct fpga_manager pointer or ERR_PTR()
+  */
+ struct fpga_manager *
+-fpga_mgr_register(struct device *parent, const char *name,
+-		  const struct fpga_manager_ops *mops, void *priv)
++__fpga_mgr_register(struct device *parent, const char *name,
++		    const struct fpga_manager_ops *mops, void *priv, struct module *owner)
+ {
+ 	struct fpga_manager_info info = { 0 };
+ 
+@@ -868,9 +880,9 @@ fpga_mgr_register(struct device *parent, const char *name,
+ 	info.mops = mops;
+ 	info.priv = priv;
+ 
+-	return fpga_mgr_register_full(parent, &info);
++	return __fpga_mgr_register_full(parent, &info, owner);
+ }
+-EXPORT_SYMBOL_GPL(fpga_mgr_register);
++EXPORT_SYMBOL_GPL(__fpga_mgr_register);
+ 
+ /**
+  * fpga_mgr_unregister - unregister an FPGA manager
+@@ -900,9 +912,10 @@ static void devm_fpga_mgr_unregister(struct device *dev, void *res)
+ }
+ 
+ /**
+- * devm_fpga_mgr_register_full - resource managed variant of fpga_mgr_register()
++ * __devm_fpga_mgr_register_full - resource managed variant of fpga_mgr_register()
+  * @parent:	fpga manager device from pdev
+  * @info:	parameters for fpga manager
++ * @owner:	owner module containing the ops
+  *
+  * Return:  fpga manager pointer on success, negative error code otherwise.
+  *
+@@ -910,7 +923,8 @@ static void devm_fpga_mgr_unregister(struct device *dev, void *res)
+  * function will be called automatically when the managing device is detached.
+  */
+ struct fpga_manager *
+-devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info)
++__devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info,
++			      struct module *owner)
+ {
+ 	struct fpga_mgr_devres *dr;
+ 	struct fpga_manager *mgr;
+@@ -919,7 +933,7 @@ devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_inf
+ 	if (!dr)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	mgr = fpga_mgr_register_full(parent, info);
++	mgr = __fpga_mgr_register_full(parent, info, owner);
+ 	if (IS_ERR(mgr)) {
+ 		devres_free(dr);
+ 		return mgr;
+@@ -930,14 +944,15 @@ devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_inf
+ 
+ 	return mgr;
+ }
+-EXPORT_SYMBOL_GPL(devm_fpga_mgr_register_full);
++EXPORT_SYMBOL_GPL(__devm_fpga_mgr_register_full);
+ 
+ /**
+- * devm_fpga_mgr_register - resource managed variant of fpga_mgr_register()
++ * __devm_fpga_mgr_register - resource managed variant of fpga_mgr_register()
+  * @parent:	fpga manager device from pdev
+  * @name:	fpga manager name
+  * @mops:	pointer to structure of fpga manager ops
+  * @priv:	fpga manager private data
++ * @owner:	owner module containing the ops
+  *
+  * Return:  fpga manager pointer on success, negative error code otherwise.
+  *
+@@ -946,8 +961,9 @@ EXPORT_SYMBOL_GPL(devm_fpga_mgr_register_full);
+  * device is detached.
+  */
+ struct fpga_manager *
+-devm_fpga_mgr_register(struct device *parent, const char *name,
+-		       const struct fpga_manager_ops *mops, void *priv)
++__devm_fpga_mgr_register(struct device *parent, const char *name,
++			 const struct fpga_manager_ops *mops, void *priv,
++			 struct module *owner)
+ {
+ 	struct fpga_manager_info info = { 0 };
+ 
+@@ -955,9 +971,9 @@ devm_fpga_mgr_register(struct device *parent, const char *name,
+ 	info.mops = mops;
+ 	info.priv = priv;
+ 
+-	return devm_fpga_mgr_register_full(parent, &info);
++	return __devm_fpga_mgr_register_full(parent, &info, owner);
+ }
+-EXPORT_SYMBOL_GPL(devm_fpga_mgr_register);
++EXPORT_SYMBOL_GPL(__devm_fpga_mgr_register);
+ 
+ static void fpga_mgr_dev_release(struct device *dev)
+ {
+diff --git a/include/linux/fpga/fpga-mgr.h b/include/linux/fpga/fpga-mgr.h
+index 54f63459efd6..0d4fe068f3d8 100644
+--- a/include/linux/fpga/fpga-mgr.h
++++ b/include/linux/fpga/fpga-mgr.h
+@@ -201,6 +201,7 @@ struct fpga_manager_ops {
+  * @state: state of fpga manager
+  * @compat_id: FPGA manager id for compatibility check.
+  * @mops: pointer to struct of fpga manager ops
++ * @mops_owner: module containing the mops
   * @priv: low level driver private date
-@@ -54,6 +55,7 @@ struct fpga_bridge {
- 	struct device dev;
- 	struct mutex mutex; /* for exclusive reference to bridge */
- 	const struct fpga_bridge_ops *br_ops;
-+	struct module *br_ops_owner;
- 	struct fpga_image_info *info;
- 	struct list_head node;
+  */
+ struct fpga_manager {
+@@ -210,6 +211,7 @@ struct fpga_manager {
+ 	enum fpga_mgr_states state;
+ 	struct fpga_compat_id *compat_id;
+ 	const struct fpga_manager_ops *mops;
++	struct module *mops_owner;
  	void *priv;
-@@ -79,10 +81,12 @@ int of_fpga_bridge_get_to_list(struct device_node *np,
- 			       struct fpga_image_info *info,
- 			       struct list_head *bridge_list);
+ };
  
-+#define fpga_bridge_register(parent, name, br_ops, priv) \
-+	__fpga_bridge_register(parent, name, br_ops, priv, THIS_MODULE)
- struct fpga_bridge *
--fpga_bridge_register(struct device *parent, const char *name,
--		     const struct fpga_bridge_ops *br_ops,
--		     void *priv);
-+__fpga_bridge_register(struct device *parent, const char *name,
-+		       const struct fpga_bridge_ops *br_ops, void *priv,
-+		       struct module *owner);
- void fpga_bridge_unregister(struct fpga_bridge *br);
+@@ -230,18 +232,30 @@ struct fpga_manager *fpga_mgr_get(struct device *dev);
  
- #endif /* _LINUX_FPGA_BRIDGE_H */
+ void fpga_mgr_put(struct fpga_manager *mgr);
+ 
++#define fpga_mgr_register_full(parent, info) \
++	__fpga_mgr_register_full(parent, info, THIS_MODULE)
+ struct fpga_manager *
+-fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info);
++__fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info,
++			 struct module *owner);
+ 
++#define fpga_mgr_register(parent, name, mops, priv) \
++	__fpga_mgr_register(parent, name, mops, priv, THIS_MODULE)
+ struct fpga_manager *
+-fpga_mgr_register(struct device *parent, const char *name,
+-		  const struct fpga_manager_ops *mops, void *priv);
++__fpga_mgr_register(struct device *parent, const char *name,
++		    const struct fpga_manager_ops *mops, void *priv, struct module *owner);
++
+ void fpga_mgr_unregister(struct fpga_manager *mgr);
+ 
++#define devm_fpga_mgr_register_full(parent, info) \
++	__devm_fpga_mgr_register_full(parent, info, THIS_MODULE)
+ struct fpga_manager *
+-devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info);
++__devm_fpga_mgr_register_full(struct device *parent, const struct fpga_manager_info *info,
++			      struct module *owner);
++#define devm_fpga_mgr_register(parent, name, mops, priv) \
++	__devm_fpga_mgr_register(parent, name, mops, priv, THIS_MODULE)
+ struct fpga_manager *
+-devm_fpga_mgr_register(struct device *parent, const char *name,
+-		       const struct fpga_manager_ops *mops, void *priv);
++__devm_fpga_mgr_register(struct device *parent, const char *name,
++			 const struct fpga_manager_ops *mops, void *priv,
++			 struct module *owner);
+ 
+ #endif /*_LINUX_FPGA_MGR_H */
 -- 
 2.43.0
 
