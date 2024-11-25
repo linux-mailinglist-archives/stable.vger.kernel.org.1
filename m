@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DAC9D890B
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:20:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A23E9D890C
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 16:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEF4C28513B
-	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204A1285B07
+	for <lists+stable@lfdr.de>; Mon, 25 Nov 2024 15:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525D21ADFEA;
-	Mon, 25 Nov 2024 15:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3191AF0B6;
+	Mon, 25 Nov 2024 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1zeNio1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAsclNjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12754171CD
-	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 15:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAC5171CD
+	for <stable@vger.kernel.org>; Mon, 25 Nov 2024 15:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732548039; cv=none; b=NTJ31rNZd53byLsizLFFGnDnPJMZNSJvtU9zzJBMr3mSk1RVsaLub/2G+5zgFizr5oY05wigmpUmCwH6SKjDO/fybz52UbZWqRbrzbQki4vKDNkkmESzzUd2F4NgHPK7ub2gaqIRwmkWrgbzoXkj170DBN+0EOAIiB1odGyhGxQ=
+	t=1732548042; cv=none; b=t3OpQL0idBoztSxzlTkzFGVEoHLJlkE+B5JGJ/hmKgGSeLtvPqJEoAWhieJ9oEPXKBMin0seR1kBWKRuDK0zJyHMoC/VM9mXPDElCg+1SlzRIQ121YnFSGQmM4gbFmUXo6Ut3a4NyffDR2/PHt133ZYeXLJO7IItXBemYXX+VnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732548039; c=relaxed/simple;
-	bh=5ZPFuVzxPHbndHh3G/6vosV0OC2yLtQAiwaMOy92Ucg=;
+	s=arc-20240116; t=1732548042; c=relaxed/simple;
+	bh=7n2jhmXPDZcGQZp1rIbYPSSzc+G6ViFku7xGP1i1Hw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFsebAWpV4vhPMWL0UJUEfl99VAfPOW9HQRzabeaDiY0jbIRO+F78gVmwK5hVCauj5VoK+jhobWiscUccnXjsAeqoevvEbIgU3D6z5JbWc+4xT3wlMnU40mN8s0X2hUStMrCqXT2s2hk4MWTx/Oq010UaUOoRwvAwhHVwvfPVsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1zeNio1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E84C4CECE;
-	Mon, 25 Nov 2024 15:20:38 +0000 (UTC)
+	 MIME-Version; b=jnQSDY0Dg6XOnr1UTIPakT67X3XN5e2QRaj+hhw5a7+ad/jak6s3ZEgIKJ9Kt2CFwqTrrAVgHjBvpr7SuQYrrCWsyLmFf80h3HB8KNUedRN2cQHKEYrY5b4mYK3xIL8I2EnIy3IJf6TA1OliiUojdQsVRBfRXGRvt+2CPRn7ehU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAsclNjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F45C4CECE;
+	Mon, 25 Nov 2024 15:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732548038;
-	bh=5ZPFuVzxPHbndHh3G/6vosV0OC2yLtQAiwaMOy92Ucg=;
+	s=k20201202; t=1732548040;
+	bh=7n2jhmXPDZcGQZp1rIbYPSSzc+G6ViFku7xGP1i1Hw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1zeNio1C4lfl2G2b4VwU3ZiEhgdAA267uk0YKSRrktJKII5GWbcPLcw39P8SMNYh
-	 rDmFH2X3kwpL6ODBG8bwTZ3ntEK37Yd4vdGqVDHU4pVDB0uhdJKF0mXnluJY+BKJbN
-	 Iq/xxQu1iNbxNHEG2GHmPDQiIOQkgPQIperml8AkeYOeh3B26FEexLIcaTPrDboWgL
-	 NGqVSW/i7dXkFREJfTHH73WmhMUUa/1jRJ9ltPrdomtjZNAaEvqn9mXzat4360HCQm
-	 ikL5CgTFU0jPJ3a01gnkIE2UahG1jG7b043v/ink7zUs871HX3sfnUmwc5enCnXPy1
-	 gcHGcYKaQpd1g==
+	b=DAsclNjIsex6p2QDf520fu5ypJ36VkY/zjMVekNEbIxeCQNYJWfmLZVSPecU0RR+1
+	 xdKJ9hnsFzhTEPaqXao4sYXu5UJY0IfCadcjq9WertXj7JPT6hzkIZeAlDYl/2UHe3
+	 H6q+nmYrEKSWpyWD1s7eiunBmMmQXJ45yZLIPIbFdTKi7jgrVMhWenEucHkH1P5kpX
+	 cnRHwOmL81xFVIw87UHzYInIzDE2eKhDCWEcK1e96uh7h0MmV1v91x9rGHkVbde/Ht
+	 1u4Ebb7tCH/E2nO8HKtV1jvfoKB43a82XzUwbmgAn8poX5OYniGu4B1RVfOUBWpB8P
+	 mAR8VDVkiZFAw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
+Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] nvme: fix metadata handling in nvme-passthrough
-Date: Mon, 25 Nov 2024 10:20:37 -0500
-Message-ID: <20241125083656-89410c969e5b99c9@stable.kernel.org>
+Subject: Re: [PATCH 6.1 2/2] fpga: manager: add owner module and take its refcount
+Date: Mon, 25 Nov 2024 10:20:39 -0500
+Message-ID: <20241125101254-d0692ef1c2bf7efc@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241125121009.17855-2-hagarhem@amazon.com>
+In-Reply-To:  <20241125053816.1914594-3-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,112 +63,98 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9
+The upstream commit SHA1 provided is correct: 4d4d2d4346857bf778fafaa97d6f76bb1663e3c9
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hagar Hemdan <hagarhem@amazon.com>
-Commit author: Puranjay Mohan <pjy@amazon.com>
+Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
+Commit author: Marco Pagani <marpagan@redhat.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: dc522d2bc1d0)
-6.6.y | Not found
+6.11.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 2da62a139a62)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-25 08:33:27.193440892 -0500
-+++ /tmp/tmp.urG0V8ZM5L	2024-11-25 08:33:27.185209584 -0500
+--- -	2024-11-25 10:08:25.352634693 -0500
++++ /tmp/tmp.mxHKcERVgS	2024-11-25 10:08:25.345028939 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
++[ Upstream commit 4d4d2d4346857bf778fafaa97d6f76bb1663e3c9 ]
 +
- On an NVMe namespace that does not support metadata, it is possible to
- send an IO command with metadata through io-passthru. This allows issues
- like [1] to trigger in the completion code path.
-@@ -12,34 +14,37 @@
- [1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
- 
- Suggested-by: Christoph Hellwig <hch@lst.de>
--Signed-off-by: Puranjay Mohan <pjy@amazon.com>
- Reviewed-by: Christoph Hellwig <hch@lst.de>
- Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
- Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
- Signed-off-by: Keith Busch <kbusch@kernel.org>
-+[ Minor changes to make it work on 6.1 ]
-+Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+ The current implementation of the fpga manager assumes that the low-level
+ module registers a driver for the parent device and uses its owner pointer
+ to take the module's refcount. This approach is problematic since it can
+@@ -26,6 +28,8 @@
+ Acked-by: Xu Yilun <yilun.xu@intel.com>
+ Link: https://lore.kernel.org/r/20240305192926.84886-1-marpagan@redhat.com
+ Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
++Signed-off-by: Sasha Levin <sashal@kernel.org>
++Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-- drivers/nvme/host/ioctl.c | 22 ++++++++++++++--------
-- 1 file changed, 14 insertions(+), 8 deletions(-)
-+ drivers/nvme/host/ioctl.c | 8 +++++++-
-+ 1 file changed, 7 insertions(+), 1 deletion(-)
+  Documentation/driver-api/fpga/fpga-mgr.rst | 34 +++++----
+  drivers/fpga/fpga-mgr.c                    | 82 +++++++++++++---------
+@@ -33,7 +37,7 @@
+  3 files changed, 89 insertions(+), 53 deletions(-)
  
- diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
--index 850f81e08e7d8..1d769c842fbf5 100644
-+index 875dee6ecd40..19a7f0160618 100644
- --- a/drivers/nvme/host/ioctl.c
- +++ b/drivers/nvme/host/ioctl.c
--@@ -4,6 +4,7 @@
-+@@ -3,6 +3,7 @@
-+  * Copyright (c) 2011-2014, Intel Corporation.
-   * Copyright (c) 2017-2021 Christoph Hellwig.
+ diff --git a/Documentation/driver-api/fpga/fpga-mgr.rst b/Documentation/driver-api/fpga/fpga-mgr.rst
+-index 49c0a95126532..8d2b79f696c1f 100644
++index 49c0a9512653..8d2b79f696c1 100644
+ --- a/Documentation/driver-api/fpga/fpga-mgr.rst
+ +++ b/Documentation/driver-api/fpga/fpga-mgr.rst
+ @@ -24,7 +24,8 @@ How to support a new FPGA device
+@@ -109,7 +113,7 @@
+  .. kernel-doc:: drivers/fpga/fpga-mgr.c
+     :functions: fpga_mgr_unregister
+ diff --git a/drivers/fpga/fpga-mgr.c b/drivers/fpga/fpga-mgr.c
+-index 06651389c5926..0f4035b089a2e 100644
++index 8efa67620e21..0c71d91ba7f6 100644
+ --- a/drivers/fpga/fpga-mgr.c
+ +++ b/drivers/fpga/fpga-mgr.c
+ @@ -664,20 +664,16 @@ static struct attribute *fpga_mgr_attrs[] = {
+@@ -141,12 +145,12 @@
    */
-- #include <linux/bio-integrity.h>
- +#include <linux/blk-integrity.h>
-  #include <linux/ptrace.h>	/* for force_successful_syscall_return */
-  #include <linux/nvme_ioctl.h>
-- #include <linux/io_uring/cmd.h>
--@@ -119,9 +120,14 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-+ #include <linux/io_uring.h>
-+@@ -171,10 +172,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-  	struct request_queue *q = req->q;
-  	struct nvme_ns *ns = q->queuedata;
-  	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
- +	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
- +	bool has_metadata = meta_buffer && meta_len;
-  	struct bio *bio = NULL;
-+ 	void *meta = NULL;
-  	int ret;
+  struct fpga_manager *fpga_mgr_get(struct device *dev)
+  {
+--	struct device *mgr_dev = class_find_device(&fpga_mgr_class, NULL, dev,
++-	struct device *mgr_dev = class_find_device(fpga_mgr_class, NULL, dev,
+ -						   fpga_mgr_dev_match);
+ +	struct fpga_manager *mgr;
+ +	struct device *mgr_dev;
+ +
+-+	mgr_dev = class_find_device(&fpga_mgr_class, NULL, dev, fpga_mgr_dev_match);
+++	mgr_dev = class_find_device(fpga_mgr_class, NULL, dev, fpga_mgr_dev_match);
+  	if (!mgr_dev)
+  		return ERR_PTR(-ENODEV);
   
- +	if (has_metadata && !supports_metadata)
-@@ -48,27 +53,15 @@
-  	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
-  		struct iov_iter iter;
+@@ -167,9 +171,9 @@
+ +	struct fpga_manager *mgr;
+ +	struct device *mgr_dev;
   
--@@ -143,15 +149,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-- 		goto out;
-- 
-- 	bio = req->bio;
---	if (bdev) {
--+	if (bdev)
-+@@ -198,7 +204,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
-+ 	if (bdev)
-  		bio_set_dev(bio, bdev);
---		if (meta_buffer && meta_len) {
---			ret = bio_integrity_map_user(bio, meta_buffer, meta_len,
---						     meta_seed);
---			if (ret)
---				goto out_unmap;
---			req->cmd_flags |= REQ_INTEGRITY;
---		}
--+
--+	if (has_metadata) {
--+		ret = bio_integrity_map_user(bio, meta_buffer, meta_len,
--+					     meta_seed);
--+		if (ret)
--+			goto out_unmap;
--+		req->cmd_flags |= REQ_INTEGRITY;
-- 	}
+--	dev = class_find_device_by_of_node(&fpga_mgr_class, node);
++-	dev = class_find_device_by_of_node(fpga_mgr_class, node);
+ -	if (!dev)
+-+	mgr_dev = class_find_device_by_of_node(&fpga_mgr_class, node);
+++	mgr_dev = class_find_device_by_of_node(fpga_mgr_class, node);
+ +	if (!mgr_dev)
+  		return ERR_PTR(-ENODEV);
   
-- 	return ret;
-+-	if (bdev && meta_buffer && meta_len) {
-++	if (has_metadata) {
-+ 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
-+ 				meta_seed);
-+ 		if (IS_ERR(meta)) {
+@@ -337,7 +341,7 @@
+  static void fpga_mgr_dev_release(struct device *dev)
+  {
+ diff --git a/include/linux/fpga/fpga-mgr.h b/include/linux/fpga/fpga-mgr.h
+-index 54f63459efd6e..0d4fe068f3d8a 100644
++index 54f63459efd6..0d4fe068f3d8 100644
+ --- a/include/linux/fpga/fpga-mgr.h
+ +++ b/include/linux/fpga/fpga-mgr.h
+ @@ -201,6 +201,7 @@ struct fpga_manager_ops {
+@@ -393,3 +397,6 @@
+ +			 struct module *owner);
+  
+  #endif /*_LINUX_FPGA_MGR_H */
 +-- 
-+2.40.1
++2.43.0
 +
 ---
 
