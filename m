@@ -1,131 +1,105 @@
-Return-Path: <stable+bounces-95529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447BF9D98AA
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 14:38:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB759D9919
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:04:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BA11B259B9
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 13:37:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 888521659B6
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 14:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E8C1D514C;
-	Tue, 26 Nov 2024 13:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="S+iwmXm2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEDF1D5162;
+	Tue, 26 Nov 2024 14:04:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96008BEA;
-	Tue, 26 Nov 2024 13:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494FDB652;
+	Tue, 26 Nov 2024 14:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732628251; cv=none; b=bsvobb5RvLEKuuoAjw64qveGxCpTfvvZ9O3AvMw4DiEmfxZKK6t9vAWU9lX+5kS4Mfn2Y2E3I+tZkIjGg07BcsKFy9KE4cRQQc/xbTYQ9li+H6XaccsyMv1IbBIVaHwDO/Z4+x55bLhsnnci8X5lD9U8ZpO9iFxv1VWCfN9A4zA=
+	t=1732629891; cv=none; b=gu2sfGYA02BFfm/RDaGxMA9rPCQgpySqndnvsK03GHxToxoOWaQ58IU17oGKDIaSjDO4jhS22fUm/HOoIjmVx37zvIPBTaFO6FvBKtJqQEB2oBGMtmRjpeKlpFaG7+9tk0rdREuAJ92pBEYsPlqh+4MEcd4XtrJpmxxAMG6+lJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732628251; c=relaxed/simple;
-	bh=feL856Z/U/ZJKcQL9qTcJgDYB4dVhf8sRnNbDu/43A4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NyWeo9QetjJdPp1geR7Ot58mQPEZizXbmY9KufwSOsRjATZcPF8qrpgdKlT2Bcxbxxgh5jTYp04a0PZfE55kuTzeWAZmNEEX0I1kciNv2f0kEEH71oKjmhB8RTaFCJJSJzV1/HsfaAgHx8ErkbrgBwBNEXYvXAkaAICb7+Lk5p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=S+iwmXm2; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1732628247;
-	bh=feL856Z/U/ZJKcQL9qTcJgDYB4dVhf8sRnNbDu/43A4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S+iwmXm2zgbLIiuraQyUO/tZ2d5bScahmmRI2x6Q5US+CxTwuR/hKnMoXa4kN87hw
-	 P9JjVeOSQ72XUjReluFbAJIvK4RYuakk8sb7zEj6/sihkEkdcgpFsgvwgXOhubqm1u
-	 SgXK2zYPwB4PiJs0dzYeDYp4N7LNpYYl3IiAJfCpgNxEHtbwTucngyeL7LZbswNUXc
-	 DdacJtkmfV7WU36E5NIWGwaaChCxTcmaIuCN/dkHzh9MkvygQ9XY7el8RW9fnZwON7
-	 BmWoTq3dxg4IqsWWLKk62bFgdHkKoUkA4yEdLHx/a9MWSyh6/+mQTq7muh7Vtj+pOK
-	 YqIIt1G/2+lRw==
-Received: from notapiano (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 72C1D17E3686;
-	Tue, 26 Nov 2024 14:37:25 +0100 (CET)
-Date: Tue, 26 Nov 2024 08:37:23 -0500
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	Balsam CHIHI <bchihi@baylibre.com>, kernel@collabora.com,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Bernhard =?utf-8?Q?Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] thermal/drivers/mediatek/lvts: Disable monitor mode
- during suspend
-Message-ID: <f38e4283-7133-4865-b4fe-eafb6bd30534@notapiano>
-References: <20241125-mt8192-lvts-filtered-suspend-fix-v1-0-42e3c0528c6c@collabora.com>
- <20241125-mt8192-lvts-filtered-suspend-fix-v1-1-42e3c0528c6c@collabora.com>
- <CAHc4DNKmGA-MjTWdZhKygiaRwN7mHnMCf8UPUxH_V16uZifzFg@mail.gmail.com>
+	s=arc-20240116; t=1732629891; c=relaxed/simple;
+	bh=nrfBYl1T8z8xvreRnTTbHXf/wVl4uzTHrOf3RfELGpo=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ZibuaBdurLcQeaLqLtqc2lLcgnVnONh7tqAEdILiJ/wF1CtQ0PIW+VEBYk3E0FvTIhnNCRXA3EkFMRfOq0WVZtMpqo6tCvZjcrOzwHtDRje2BB7ujIfODPLmVC8zRuOf36BRXhtJ19ZQNshlq3OWeiUCLBFOWp38cUn77riuVQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XyPRf6SHvz21lsR;
+	Tue, 26 Nov 2024 22:03:10 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id ACF4F14010C;
+	Tue, 26 Nov 2024 22:04:39 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 26 Nov 2024 22:04:38 +0800
+Subject: Re: [PATCH v2] mtd: ubi: Added a check for ubi_num
+To: Denis Arefev <arefev@swemel.ru>, Richard Weinberger <richard@nod.at>
+CC: Miquel Raynal <miquel.raynal@bootlin.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>, Artem Bityutskiy <Artem.Bityutskiy@nokia.com>,
+	<linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20241126125453.6610-1-arefev@swemel.ru>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <9002ea77-64af-2a4a-3163-f3df0410fd00@huawei.com>
+Date: Tue, 26 Nov 2024 22:04:37 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20241126125453.6610-1-arefev@swemel.ru>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc4DNKmGA-MjTWdZhKygiaRwN7mHnMCf8UPUxH_V16uZifzFg@mail.gmail.com>
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
 
-On Tue, Nov 26, 2024 at 04:00:42PM +0800, Hsin-Te Yuan wrote:
-> On Tue, Nov 26, 2024 at 5:21â€¯AM NÃ­colas F. R. A. Prado
-> <nfraprado@collabora.com> wrote:
-> >
-> > When configured in filtered mode, the LVTS thermal controller will
-> > monitor the temperature from the sensors and trigger an interrupt once a
-> > thermal threshold is crossed.
-> >
-> > Currently this is true even during suspend and resume. The problem with
-> > that is that when enabling the internal clock of the LVTS controller in
-> > lvts_ctrl_set_enable() during resume, the temperature reading can glitch
-> > and appear much higher than the real one, resulting in a spurious
-> > interrupt getting generated.
-> >
-> This sounds weird to me. On my end, the symptom is that the device
-> sometimes cannot suspend.
-> To be more precise, `echo mem > /sys/power/state` returns almost
-> immediately. I think the irq is more
-> likely to be triggered during suspension.
+ÔÚ 2024/11/26 20:54, Denis Arefev Ð´µÀ:
+> Added a check for ubi_num for negative numbers
+> If the variable ubi_num takes negative values then we get:
+> 
+> qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
+> [    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
+> [    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
+> [    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
+> [    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
+> [    0.745600]  kernel_init from ret_from_fork+0x14/0x28
+> [    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Denis Arefev <arefev@swemel.ru>
+> ---
+> V1 -> V2: changed the tag Fixes and moved the check to ubi_mtd_param_parse()
+>   drivers/mtd/ubi/build.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi Hsin-Te,
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> 
+> diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+> index 30be4ed68fad..ef6a22f372f9 100644
+> --- a/drivers/mtd/ubi/build.c
+> +++ b/drivers/mtd/ubi/build.c
+> @@ -1537,7 +1537,7 @@ static int ubi_mtd_param_parse(const char *val, const struct kernel_param *kp)
+>   	if (token) {
+>   		int err = kstrtoint(token, 10, &p->ubi_num);
+>   
+> -		if (err) {
+> +		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
+>   			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
+>   			       token);
+>   			return -EINVAL;
+> 
 
-please also check the first paragraph of the cover letter, and patch 2, that
-should clarify it. But anyway, I can explain it here too:
-
-The issue you observed is caused by two things combined:
-* When returning from resume with filtered mode enabled, the sensor temperature
-  reading can glitch, appearing much higher. (fixed by this patch)
-* Since the Stage 3 threshold is enabled and configured to take the maximum
-  reading from the sensors, it will be triggered by that glitch and bring the
-  system into a state where it can no longer suspend, it will just resume right
-  away. (fixed by patch 2)
-
-So currently, every so often, during resume both these things will happen, and
-any future suspend will resume right away. That's why this was never observed by
-me when testing a single suspend/resume. It only breaks on resume, and only
-affects future suspends, so you need to test multiple suspend/resumes on the
-same run to observe this issue.
-
-And also since both things are needed to cause this issue, if you apply only
-patch 1 or only patch 2, it will already fix the issue.
-
-Hope this clarifies it.
-
-Thanks,
-NÃ­colas
 
