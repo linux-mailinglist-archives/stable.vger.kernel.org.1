@@ -1,208 +1,214 @@
-Return-Path: <stable+bounces-95520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BEA9D95F2
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 12:03:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAA69D9627
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 12:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1D7164C70
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 11:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F7016716F
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 11:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FC97DA68;
-	Tue, 26 Nov 2024 11:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dGxOjP4Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C601CDA04;
+	Tue, 26 Nov 2024 11:23:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0532366;
-	Tue, 26 Nov 2024 11:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732619027; cv=none; b=AyhwHfipCv5L/p/Xt0H+7e3JO05Zc31Gw+xmGdGwxXwfcMcAQpsmLZ0yEfkStoMGoPixRF6CrZeTEtcDclxiZdEklC+jEXVLS8+05oo72LiaGbEDL7T4RBodiT9LVO6iEGTR/YaUTYvhAbvt8WpKsB0c2rDjLztJ3jMbKyBNUX8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732619027; c=relaxed/simple;
-	bh=6Z23awsBbOP6OgQ+o/XZYsLEbMzvF/Bu6+MuhtkIPiI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h8ykoMEh7IxpQGK5Qpz8z+DQDU4VFNKHji2XqIs7RhUBVwr4VoyyhDToRamkEYQujQ/OAnUPgjeRQq0wrn4NCzWgjtPxG3VMpJQBhqywYxj0gZpgiHFYj1rQTzlT3CA6jBaElzqTwsE9I61aQjuHdF5+QY5kSC3WKS0QRfOSL5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dGxOjP4Z; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2138140004;
-	Tue, 26 Nov 2024 11:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732619017;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9qIA4RDGJqq407wcmAgXUIpGA4Wmfra8Ng+61C/q9qs=;
-	b=dGxOjP4ZvCxQVdk1DkvAOxtspwrRNnjALhmi/ccJI/bJi4pEOSyW1c9xyiiF9U648W0kWk
-	jnXj12nGCKJz8JXIk047HqrQvNv4XID/J7+tvT5tp0Vdxb+ttSUfSLtBNlHOpnH8TIeJPl
-	IVwiw7RvJ8gD1ZEN90Ko4nU4OYvAz+wfz+ONxKBV8WDK/6fVbotTWHZxG/+pqoR6Qz/Kz9
-	AWcEGlAWi7Znia0fNB2Oce/Png0sULaIpyCXr/cdO4amdTnyf813ES29D6M4K7/4MXQEmd
-	V4ORwkluE/FjB8muTuKZUK3V8Mtp/MgCAvZUwLgN5ZjcLCxrDDd/KH6+LwJu+Q==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Michael
- Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,
-  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>,  Marek Vasut <marex@denx.de>,  Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>,  linux-clk@vger.kernel.org,
-  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org,  Abel
- Vesa <abel.vesa@linaro.org>,  Herve Codina <herve.codina@bootlin.com>,
-  Luca Ceresoli <luca.ceresoli@bootlin.com>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@ge.com>,
-  stable@vger.kernel.org
-Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
-In-Reply-To: <55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com> (Liu Ying's
-	message of "Tue, 26 Nov 2024 14:49:38 +0800")
-References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
-	<b98fdf46-3d09-4693-86fe-954fc723e3a6@nxp.com>
-	<87zflrpp8w.fsf@bootlin.com>
-	<55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 26 Nov 2024 12:03:35 +0100
-Message-ID: <87h67uw92w.fsf@bootlin.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3AC13CF82
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 11:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732620201; cv=fail; b=q9PWtDd3YtfbMmpMTeEMbolXQ36ghoBKP2T4Hwt/fs+oXsrgLN6kjp/Ti/onbWWrhsH3eqhxxxcPLe+R3+aZnRHkbbOsLxnL7rAAsEqcDOizfVXhXwaMT2jHZZr8TzyXqNvVOLIbZyyj8JcmBB6zKx46cr7qjhwaiOotqtVfPPM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732620201; c=relaxed/simple;
+	bh=fi6TGRgOJx7GaUP8Z3DQzppuU/ixQcfqrWx/uljninI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZDxr/DXtlUt2zMg4V4bThvabN++cOBRsg7a5/owwXL/PQFOxJKMGSwJA1TtIwIgZ9y1HGbjPeP42oECHLR6Kn6iKMJDfC/A4K6lyfl0pJNX7lzA1Lfag6A/LXzZvedBO1UVnaJaZgayM06PUt4OC7yRdi07j9jLLhI8Jxe1P0fc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQ8O0c8011751;
+	Tue, 26 Nov 2024 11:23:14 GMT
+Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2043.outbound.protection.outlook.com [104.47.51.43])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433491b6mw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Nov 2024 11:23:13 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eluh4GBmNGh5mPw+rvPkpJgaOHfVFLyVY6b12S9huhPig3rhkBfHxXqcmpUfixIKdDNquH4NTHJ37h6MaqDEILG8iDC9wMLUtokA8G7TXTY/TTWrIgRoPBWoBWy5+0sQmysrHepgeUNVeEivM278Tb8nHm7aFj0P8VSGOKwlAw3IqrON9SnQAGRO6jWjaVQH1ewNudtTv/yrVtmenflUy6sS3X2tZm4OZ3BnokLk8/FiV58W5S1dqjkopqQr8jLD9ixJBXY+zAmbWIh4M8JCHNoN1Ct+wCmACSGlfldfC+70zVR9WPWOQ7mDTpNUhqXz9+ZqabxTvXXKgwmyCV+vSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BWG+sdmcP2IYSb5jyEA16husfOVn6oyVWl+XgeMemCg=;
+ b=zVWP/e4FQaHAPCFK3aHCXHtGa2MnAvmEebA4JLvWZ5kaqcen3Sp/NubpR1qkwd2z+05/yQnQfxOOJULoAyu9b97Hpkrj3eE8Jkkiwg6V6HtzRKxpam3JaAfbWqKRk+Uip08He7Hcg3VT+88Q/+wh5k8bxdyLjrH77S3mW05CwzDCNKqFuPdCJr+ZmDD+01Ott74rNTwbU4ha2ZfVyzZI+NePpNsxVbRgEeHJHncHmlhjpnqO2RtR+G7+1Ix2O1rtlphh3YhqRRSDvPHjaXdsXwnfujs2l/4NTzHZruGHU+7ezDrmQFX59cla2sdDhnF02bdoZik/wJTDLCDFQuApqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
+ by CY8PR11MB7106.namprd11.prod.outlook.com (2603:10b6:930:52::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Tue, 26 Nov
+ 2024 11:23:10 +0000
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
+ 11:23:10 +0000
+From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
+To: alex.hung@amd.com, nevenko.stupar@amd.com, gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.1] drm/amd/display: Check null-initialized variables
+Date: Tue, 26 Nov 2024 19:23:25 +0800
+Message-ID: <20241126112326.3844609-1-xiangyu.chen@eng.windriver.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0044.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::8) To MW4PR11MB5824.namprd11.prod.outlook.com
+ (2603:10b6:303:187::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CY8PR11MB7106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a271c14-d2c3-4e7e-3b58-08dd0e0cb581
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XO6qpI1xQKLuSuSqY/F0ptfByrfFcwILe2HN7jwZno6cG3kCyfkhy3Sw761N?=
+ =?us-ascii?Q?JUc3EQ6AAbp6FLq/Msm7GkYM9C6MkxwwxqX3A32uhGyObM+KU0kSS/V319i8?=
+ =?us-ascii?Q?AG5VYcGUtY3cwnEYJZbdbzPGsgcJ6cd9yy4LgIKZrNiacxENcz+hTGRzEtud?=
+ =?us-ascii?Q?ZFMsEnYnykCr+n0azmmQ6sq5x4V4kXM/DHznGCajU2O9GmcMH5x5RdfTFseV?=
+ =?us-ascii?Q?AIH7Mdxbjhv7GA312lk5bmf75gHIyPHfSWvwG71BXfIknrQDHo/vwVt+IHtA?=
+ =?us-ascii?Q?OM6xkuUDuGdP8es+YtHyGxSiMpEkEb4TAMwi3XVfepzpiRbiCWSFn/CuhB2N?=
+ =?us-ascii?Q?EzVC7KnojwPp1JWFnJ/UCtrDM93KEzmSF4mUzgJLUIhd4dDvD1ISErGW+5by?=
+ =?us-ascii?Q?SpM6ZNcT2jkl/I8rjxqtPexBsqM8NSuTeRbD9wR94p8v7thYvr5hRUWnXmD1?=
+ =?us-ascii?Q?AaVH2uONMtUpSBFJ0UOMRNdabbXsLqtbFY/fDrI3RsfSG2JFuVXRVSdv0mgP?=
+ =?us-ascii?Q?Lea/eeHpFYdBtb2ezSS2BRE8J/j2J+Yi+kh7fNvC0blLq8MYJmnGlfSAlcWE?=
+ =?us-ascii?Q?ouU4vUrHLEVcJXHiZrAa1lqrjyyJZHSmG8OwyvKfd1lqr86gd8Ef1QrXvXkU?=
+ =?us-ascii?Q?l+shA9tnrrz4cjusDrOMe8wtZyyOU09/J7COaBBY/faQANT/PfqdzQyZHJko?=
+ =?us-ascii?Q?HdeDE9+C5Iv0433IAjqKJmT3J3JNvFOqXgOVU4m581odGxKelMBnf1Z7GZ4q?=
+ =?us-ascii?Q?zIsvo1tuCtTFkvraHA9ksQI3s2dr8mReKRy37pQbYXIVuDztVTGsXZWCOB+Z?=
+ =?us-ascii?Q?CfFZqT90GwamINgXH5Rs9/WOFIT1/Z6Ebv/Y5fN+aUOhN1dg9roT4jx2tzrE?=
+ =?us-ascii?Q?ohuJpBjAqt8ljE1Sp3XsX+VEeju15jna7OU5jXgYWthudE35c9LzIHeZeulM?=
+ =?us-ascii?Q?LgoMpCVr/Yn4M6zEtiu+BrNZPBQFrZTnzuPovHIzxeiEk3TUW+ifWynYdWv4?=
+ =?us-ascii?Q?uggqHJtcznNNuLCqDoiXO+DU0yVa/esSuiDsHNlYOBYiVpfBgKO0kDuKFqs2?=
+ =?us-ascii?Q?lsU6F/6RXEyWPwyEONiLLwbHHkXBPKYgBFHQeviI+hRXi2EP+5rwh1fNvI9w?=
+ =?us-ascii?Q?lLHOYpRKaTJdi228Gnyh1vXlgojJTRtMs//OI2bwOddzOQXPte36QhxHHo0P?=
+ =?us-ascii?Q?bnOvDak1a7J4RpbeMYxmKf8KkD28rFDpx75KOfVFKbXqzAZDjwttrVp3s910?=
+ =?us-ascii?Q?jRsAN5l6wjm07zaXA5808eDwz9MG8UjAFCM62iXaJtypLAmtRB4OovdXYpWa?=
+ =?us-ascii?Q?VxGiMTNz5xrJN1U5LP6UX7ObFmHjFFVjWkaXtQk6ncFDS89FxU+/xqHHBz3r?=
+ =?us-ascii?Q?YpC3fKY5yZQQMPEclgXM5ScYR8oan7U+EhQ+gZusZLM5V22PAg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pUhMrl73H5jBPe7zOpEIN1HEn4/VHAtlHQWqPsjq+1Rx4vd0MgTaXwnoqCeG?=
+ =?us-ascii?Q?WDzk0eIRI2wZ/UbS7GnxtKSnDFlI30LqGvnUTDKmXRMdzZ7VjhFlN3Oaosu3?=
+ =?us-ascii?Q?NWVjkXvEvyzb4X8vQ6j0K/mrn1l3iD/ZO7j1lOsHKk0ZJITZerJ3uv1P0IQq?=
+ =?us-ascii?Q?kGukog3XAJsHdrP+3+MuZXFUWfP3C2XLA3nZXuQLkwyCmqM96CAL9lWazpGH?=
+ =?us-ascii?Q?iA/14AfoSNNmhxbl/LVOoNx4mJt6O4Qlmf2IpZJonfmyojwQjETnnviFRIwB?=
+ =?us-ascii?Q?Mqi2PaH0UMbx7NJox6rzAWiHxuIGSynPfi7Z0YFSgssxX3qS+feLxX0ftNAe?=
+ =?us-ascii?Q?ZQPQF+AWZ5PhD9iNHSDXzZypoCi3y7W21128EVB3hnFYPANBP96D7Pv8dl7i?=
+ =?us-ascii?Q?//RXheGEtVnRoBai7GOYtsx6Okb2lKb+qQSVIw/2vTycDrMDDmFJzQveCkAD?=
+ =?us-ascii?Q?QjpJYAs8uuRwkXwUbgjdgMhq5tQw+qzR/oNpyhLVTTkAO2sSB2xvaFnN7dsM?=
+ =?us-ascii?Q?/cT+qERHhREd0wOZDSp7wNtMAZ4oBCLz+Q5C5qJ4Gc/UejMuaGPUn9P43KGg?=
+ =?us-ascii?Q?hdpFw2iTVAgCYH6msrr6D4TC5v//CJA+q4YL69g1vQeJQts8Ylboi5Xk7Omo?=
+ =?us-ascii?Q?lWnoA/gtBYJm1PJ+MNleymyQk1/dlT+oM/sx2SRlrQzt3CryZj2/crukFZnC?=
+ =?us-ascii?Q?H+HYm8JRP71Jk5U8ju/lf+VovIG75CkK77XvVpOH+6bMtg0AnA/fGu/41y6j?=
+ =?us-ascii?Q?7yFN0A6s/LMegu3l/gL7YFnNREWp0HXbQWD3oIiz7jZjYdZvzfI+MVGbBFCX?=
+ =?us-ascii?Q?EqUeB1uNqMMWLlJYIAVQ+APv6JmHOHzCUlQtP+RwKlwtfzLhGa11swiP+77l?=
+ =?us-ascii?Q?XTG2f2BKZDphuod65dIi0GPmdVq6YP8l3+XB9a/wiX1f+nTMl4eckRnbz41Z?=
+ =?us-ascii?Q?Sc5F0VeHTlkJc9HWgU4hPYbF6U/0RmdDUKtkdB+uRH57ziXUl/WbeikXooTz?=
+ =?us-ascii?Q?47prcLVAls3H9KRo2d+soivvT9RTlOfRK3KjQutyVdPHOjfvd8TLoQXEej8G?=
+ =?us-ascii?Q?ovrz70iB9ZU7z78MqxbgjJ98rkfJ1dqlPg0LUDnXbWz0q7UOYS8SqgeFsWGq?=
+ =?us-ascii?Q?oTqDIFc8rNYFathsqZa9NMfS5kZlsC//mT0ZaZfWjZgY+mV7fcz6gZ+SCbk7?=
+ =?us-ascii?Q?ky1xEwERzw1p9O8GhQeawwktILR0rstOrC1RJNwLVT5iaDDPKshO2Rvu92Dx?=
+ =?us-ascii?Q?vPB/tTvfa6hCp70aukf1JSlcbnnv9DmoUCusa1UOsQmzfzvbODUBZ+gFv3Gr?=
+ =?us-ascii?Q?lxpOqh31bFVvdL/ElP+d70QkrVJIIEkZMcL80s8mnjBO6zqpe3S33UiXkakO?=
+ =?us-ascii?Q?PQjcp0IuLl1mqM8fh/2kIpdVLqzjnREPenBmZSiXUDuIsjXJnxJLZ3dFRMlo?=
+ =?us-ascii?Q?V1rAGKZQ5ONnlRST3tDnQAQeiaLuSlnr1j2YaIKHV9lFZtsYXBL1nLpeVTmR?=
+ =?us-ascii?Q?/tuxtmavTq5NtYXdjIAUr6ldnZtWKWphd3H5VyDGaLfs1gsphlfs4phjr++M?=
+ =?us-ascii?Q?NzYWQ0i+ZcJHDWu/qkEdmTkXwE1ZOi2smVOVHWC8wSc/+uk8MsWNZTdXch+e?=
+ =?us-ascii?Q?Iw=3D=3D?=
+X-OriginatorOrg: eng.windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a271c14-d2c3-4e7e-3b58-08dd0e0cb581
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 11:23:10.5660
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IvSAi+CyW8ZcWuLPD99jYM4pHVVBRTKdDQ8xV6fMaFqXm0oWJkn4e5r87pY273S8EwtxTSuV0TYSXgggcPycP8QVHDFOwUU6K5lUeEgDpIA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7106
+X-Authority-Analysis: v=2.4 cv=W4ZqVgWk c=1 sm=1 tr=0 ts=6745afa1 cx=c_pps a=BUR/PSeFfUFfX8a0VQYRdg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=zd2uoN0lAAAA:8
+ a=t7CeM3EgAAAA:8 a=wxn0Iau1ainUtKeLhj4A:9 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+X-Proofpoint-GUID: 7zZTqhaUZ0CF3-wFedGA-9ZJM11CxLKc
+X-Proofpoint-ORIG-GUID: 7zZTqhaUZ0CF3-wFedGA-9ZJM11CxLKc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-11-26_10,2024-11-25_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ adultscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ phishscore=0 spamscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2411260091
 
-Hi Liu,
+From: Alex Hung <alex.hung@amd.com>
 
->>> The
->>> pixel clock can be got from LDB's remote input LCDIF DT node by
->>> calling of_clk_get_by_name() in fsl_ldb_probe() like the below patch
->>> does. Similar to setting pixel clock rate, I think a chance is that
->>> pixel clock enablement can be moved from LCDIF driver to
->>> fsl_ldb_atomic_enable() to avoid on-the-fly division ratio change.
->>=20
->> TBH, this sounds like a hack and is no longer required with this series.
->
-> Pixel clock is an input signal to LDB, which is reflected in LDB block
-> diagram in i.MX8MP TRM(see Figure 13-70) where "CLOCK" goes into LDB
-> along with "DATA", "HSYNC", "VSYNC", "DATA_EN" and "CONTROL".  So,
-> fsl,ldb.yaml should have documented the pixel clock in clocks and
-> clock-names properties, but unfortunately it doesn't and it's too late
-> to do so.  The workaround is to get the pixel clock from LCDIF DT node
-> in the LDB driver.  I would call it a workaround rather than a hack,
-> since fsl,ldb.yaml should have documented the pixel clock in the first
-> place.
->
->>=20
->> You are just trying to circumvent the fact that until now, applying a
->> rate in an upper clock would unconfigure the downstream rates, and I
->> think this is our first real problem.
->
-> I'm still not a fan of setting CLK_SET_RATE_PARENT flag to the LDB clock
-> and pixel clocks.  If we look at the bigger picture, the first real
-> problem is probably how to support both separated video PLLs and shared
-> video PLL.
->
->>=20
->>> https://patchwork.kernel.org/project/linux-clk/patch/20241114065759.334=
-1908-6-victor.liu@nxp.com/
->>>
->>> Actually, one sibling patch of the above patch reverts ff06ea04e4cf
->>> because I thought "fixed PLL rate" is the only solution, though I'm
->>> discussing any alternative solution of "dynamically changeable PLL
->>> rate" with Marek in the thread of the sibling patch.
->>=20
->> I don't think we want fixed PLL rates. Especially if you start using
->
-> I don't want fixed PLL rates, either...
->
->> external (hot-pluggable) displays with different needs: it just does not
->
-> ... but, considering the problem of how to support separated/shared video
-> PLLs, I think we have to accept the fixed PLL rates.  So, unfortunately
-> some video modes read from EDID cannot fly.  If there is an feasible
-> alternative solution, it will be good to implement it, but till now I
-> don't see any.
+[ Upstream commit 367cd9ceba1933b63bc1d87d967baf6d9fd241d2 ]
 
-Can you please remind me what your exact display setup (and their
-required pixel clocks) is?
+[WHAT & HOW]
+drr_timing and subvp_pipe are initialized to null and they are not
+always assigned new values. It is necessary to check for null before
+dereferencing.
 
-AFAIU, you don't want to use dynamic calculations for the PLL because it
-breaks your use case with HDMI. Of course this is a very limited use
-case, because using a static rate means almost a single type of display
-can be plugged.
+This fixes 2 FORWARD_NULL issues reported by Coverity.
 
-The clock subsystem will not recalculate the video_pll1 if you can
-achieve a perfect rate change using the LDB/PIX divisors. So let me
-propose the below addition to this series. With the below diff, your
-setup should still work with assigned clock rates, while letting us
-handle our calculations dynamically.
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Xiangyu: BP to fix CVE: CVE-2024-49898, Minor conflict resolution]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+---
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-The addition I am now proposing is to remove CLK_SET_RATE_PARENT to both
-media_disp[12]_pix clocks. This should actually fix your situation while
-keeping pixel clocks accurate as far it is possible as the LDB clock
-will change video_pll1 only if the PLL rate is not suitable for it in
-the first place. And then, there will be no other clock messing with
-this PLL. This is probably a safer approach, which should still allow
-accurate dynamic rate calculations for "simple" setups *and* let the
-static assignations work otherwise:
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 85e0d1c2a908..9d8917f72d18 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -900,8 +900,9 @@ static bool subvp_drr_schedulable(struct dc *dc, struct dc_state *context, struc
+ 	 * for VBLANK: (VACTIVE region of the SubVP pipe can fit the MALL prefetch, VBLANK frame time,
+ 	 * and the max of (VBLANK blanking time, MALL region)).
+ 	 */
+-	if (stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
+-			subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
++	if (drr_timing &&
++	    stretched_drr_us < (1 / (double)drr_timing->min_refresh_in_uhz) * 1000000 * 1000000 &&
++	    subvp_active_us - prefetch_us - stretched_drr_us - max_vblank_mallregion > 0)
+ 		schedulable = true;
+ 
+ 	return schedulable;
+@@ -966,7 +967,7 @@ static bool subvp_vblank_schedulable(struct dc *dc, struct dc_state *context)
+ 	if (found && context->res_ctx.pipe_ctx[vblank_index].stream->ignore_msa_timing_param) {
+ 		// SUBVP + DRR case
+ 		schedulable = subvp_drr_schedulable(dc, context, &context->res_ctx.pipe_ctx[vblank_index]);
+-	} else if (found) {
++	} else if (found && subvp_pipe) {
+ 		main_timing = &subvp_pipe->stream->timing;
+ 		phantom_timing = &subvp_pipe->stream->mall_stream_config.paired_stream->timing;
+ 		vblank_timing = &context->res_ctx.pipe_ctx[vblank_index].stream->timing;
+-- 
+2.43.0
 
--       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
-s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_SET=
-_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
-+       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
-s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_NO_=
-RATE_CHANGE_DURING_PROPAGATION);
-[...]
--       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
-s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET=
-_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
-+       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
-s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_NO_=
-RATE_CHANGE_DURING_PROPAGATION);
-
-Can you please give this proposal a try?
-
-[...]
-
->> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
->> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
->> @@ -177,6 +177,17 @@ static void fsl_ldb_atomic_enable(struct drm_bridge=
- *bridge,
->>         mode =3D &crtc_state->adjusted_mode;
->>=20=20
->>         requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->cl=
-ock);
->> +       /*
->> +        * Dual cases require a 3.5 rate division on the pixel clocks, w=
-hich
->> +        * cannot be achieved with regular single divisors. Instead, dou=
-ble the
->> +        * parent PLL rate in the first place. In order to do that, we f=
-irst
->> +        * require twice the target clock rate, which will program the u=
-pper
->> +        * PLL. Then, we ask for the actual targeted rate, which can be =
-achieved
->> +        * by dividing by 2 the already configured upper PLL rate, witho=
-ut
->> +        * making further changes to it.
->> +        */
->> +       if (fsl_ldb_is_dual(fsl_ldb))
->> +               clk_set_rate(fsl_ldb->clk, requested_link_freq * 2);
->
-> I don't think i.MX6SX LDB needs this, because the "ldb" clock's parent
-> is a mux clock with "ldb_di0_div_3_5" or "ldb_di0_div_7" parents.
-
-Ah, you mean we should only do this in the imx8 case, right?
-
-Thanks,
-Miqu=C3=A8l
 
