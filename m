@@ -1,181 +1,113 @@
-Return-Path: <stable+bounces-95532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DA39D99F9
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:52:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6DC9D9A15
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 16:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A7AB2223A
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 14:52:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E439A285FFB
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7287F1D47DC;
-	Tue, 26 Nov 2024 14:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H4JFcMT9";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="FB96duuY";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H4JFcMT9";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="FB96duuY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8B81D54EF;
+	Tue, 26 Nov 2024 15:01:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from granite.fifsource.com (granite.fifsource.com [173.255.216.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8B28F5;
-	Tue, 26 Nov 2024 14:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200D0282F4;
+	Tue, 26 Nov 2024 15:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.216.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732632743; cv=none; b=hdvsnAQ/glbyZiM5fS++sh6LIbDnuuiZ6BvleoLNX3WfvRwoARWGvpHFWuDOWGSU5Z35jvpgoKqa+QB31mBX+P44n88MCdb/EYWdi6G4GM9OIz8MpHHaW6AJ+NFWMvw4QYDy5V5RrXXVoh2t44w/kZ6nlSOe+fOog8uauvL7hIg=
+	t=1732633272; cv=none; b=glYEsvRT36eSros9KxxMsBF5JV6OC2KrgpwOUOjEcAgBs1J58sKQ3I4ONKehw0JfA4Di+1egPMW9GbGgLlIGIt+wbR+jKWe72/TR14aay6BAcwRaN9LF4lIE3vDm9EJLWHzFNLSUJuUdeBr9YQFVdTkntzoMlh3q8c+sqiqKw28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732632743; c=relaxed/simple;
-	bh=YH7VUsPQRd833zgqYiGJxBpCkv7rPn0lNro0jtl43rU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L31NnQzGNeRhYEPcgyJ+BzO0YsVTqQSkTvSzGB6dnGHMrFry/UTuJH4FerH0gNC5Pxf5GjZM3C3pGaCCCZmUHne0puMlRDBDw/U/qEFU9pSqhYy9v7lc/OBvaCH5LgD7QuTi7lFizEyVIn4tLFd5FjjOWRxf0Ffe5PvcccBjt/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H4JFcMT9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=FB96duuY; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H4JFcMT9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=FB96duuY; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 739EE21177;
-	Tue, 26 Nov 2024 14:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1732632739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
-	b=H4JFcMT9Lvpaz1hOIbFetsIDZlat5mrEdeIA7IzfX6sWxtf68jN5MEJlAHjGVtGkzxfVKQ
-	GY4a7uIOuHvoeg4677ByPBzwmqaaq2qHMIiJkbxl+y8Hhv3GOWh7mbFh1/FzTDBmvGvfPr
-	MGwh1Nc9PiMHiQ1i8PcM8nAg3Y54KOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1732632739;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
-	b=FB96duuY/dbWsiYI/wyH7Re7Ji922TvQD0jJKx+ZnObh07fuofJCi3Bhuw4qPBO1ws0r3H
-	yJKdAJNI6gGpzlBQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1732632739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
-	b=H4JFcMT9Lvpaz1hOIbFetsIDZlat5mrEdeIA7IzfX6sWxtf68jN5MEJlAHjGVtGkzxfVKQ
-	GY4a7uIOuHvoeg4677ByPBzwmqaaq2qHMIiJkbxl+y8Hhv3GOWh7mbFh1/FzTDBmvGvfPr
-	MGwh1Nc9PiMHiQ1i8PcM8nAg3Y54KOY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1732632739;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
-	b=FB96duuY/dbWsiYI/wyH7Re7Ji922TvQD0jJKx+ZnObh07fuofJCi3Bhuw4qPBO1ws0r3H
-	yJKdAJNI6gGpzlBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C922139AA;
-	Tue, 26 Nov 2024 14:52:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id T3WTFqPgRWfXfwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 26 Nov 2024 14:52:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0E0DDA08CA; Tue, 26 Nov 2024 15:52:15 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	<linux-mm@kvack.org>,
-	<linux-fsdevel@vger.kernel.org>,
-	Anders Blomdell <anders.blomdell@gmail.com>,
-	Philippe Troin <phil@fifi.org>,
-	Jan Kara <jack@suse.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "readahead: properly shorten readahead when falling back to do_page_cache_ra()"
-Date: Tue, 26 Nov 2024 15:52:08 +0100
-Message-Id: <20241126145208.985-1-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1732633272; c=relaxed/simple;
+	bh=kYyB5DWRi6Rm6kbl+1OO96qkkjtKlDwr6cyUcun9jfo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GGdXfTKU3U6lxa5d1h2UAMSaHQiqTUjYtod8MpH2RXhnJvLfPE9wp9rw/62qbMNsorTaH4xK9muzEbeC4MmW6szdRLr8Ex/87oclBoH8FiSQc6hE72XH/DpW+yms8v71b2hT8RIxhFPKWMk+9uEAinWPW3rPca3jn0Je+Rh7FpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fifi.org; spf=pass smtp.mailfrom=fifi.org; arc=none smtp.client-ip=173.255.216.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fifi.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fifi.org
+Received: from ceramic.fifi.org (107-142-44-66.lightspeed.sntcca.sbcglobal.net [107.142.44.66])
+	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+	(Client did not present a certificate)
+	by granite.fifsource.com (Postfix) with ESMTPSA id 1B1924076;
+	Tue, 26 Nov 2024 07:01:09 -0800 (PST)
+Message-ID: <9a88fd5fcaad10132c00cfcbcf0f9de9fa47c99c.camel@fifi.org>
+Subject: Re: [PATCH] Revert "readahead: properly shorten readahead when
+ falling back to do_page_cache_ra()"
+From: Philippe Troin <phil@fifi.org>
+To: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, Anders Blomdell <anders.blomdell@gmail.com>,
+  stable@vger.kernel.org
+Date: Tue, 26 Nov 2024 07:01:08 -0800
+In-Reply-To: <20241126145208.985-1-jack@suse.cz>
+References: <20241126145208.985-1-jack@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1952; i=jack@suse.cz; h=from:subject; bh=YH7VUsPQRd833zgqYiGJxBpCkv7rPn0lNro0jtl43rU=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGNJdH3S/ejmfOSyiVnaP7STbfZNXzlBgurfveU3at/3ZZ+RV 6s2DOhmNWRgYORhkxRRZVkde1L42z6hra6iGDMwgViaQKQxcnAIwkdYZ7P90D7HPfmdpH6s6+USk9o k1/fbbPZgiNBbr/ZPTSj2cpuAquNW/6aRQIntKwe0aLpNc5jqNHp4VAXp258282lfXm32zLVdlC2eX LBRumz17zv4v/nxcLncPcL8K09b698rwNEOtpnH34dtZUTsjLRhZF+1JOfP9lGMbX0HAXIO0f1baqo ZrQn6/SZJwnclfsSic2W1HbIpR8LqS4qT2/tnP1y5c4Lbk+Zu43wblWQ2RR92v6rqc1Juh7ZW0+/f/ zGLRqS/fVnzZ8fdqVPmtXI7iAumMx8acM+RPh0mxL+atWv+sSCrG57/ZAn195ezfz951ZOy4MC1Sv2 DJOa1u0wYpttNeJzmcKrglfdsB
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[infradead.org,kvack.org,vger.kernel.org,gmail.com,fifi.org,suse.cz];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:mid,imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: -1.30
-X-Spam-Flag: NO
 
-This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
+On Tue, 2024-11-26 at 15:52 +0100, Jan Kara wrote:
+> This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
+>=20
+> Anders and Philippe have reported that recent kernels occasionally hang
+> when used with NFS in readahead code. The problem has been bisected to
+> 7c877586da3 ("readahead: properly shorten readahead when falling back to
+> do_page_cache_ra()"). The cause of the problem is that ra->size can be
+> shrunk by read_pages() call and subsequently we end up calling
+> do_page_cache_ra() with negative (read huge positive) number of pages.
+> Let's revert 7c877586da3 for now until we can find a proper way how the
+> logic in read_pages() and page_cache_ra_order() can coexist. This can
+> lead to reduced readahead throughput due to readahead window confusion
+> but that's better than outright hangs.
+>=20
+> Reported-by: Anders Blomdell <anders.blomdell@gmail.com>
+> Reported-by: Philippe Troin <phil@fifi.org>
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+> =C2=A0mm/readahead.c | 5 ++---
+> =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index 8f1cf599b572..ea650b8b02fb 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -458,8 +458,7 @@ void page_cache_ra_order(struct readahead_control *ra=
+ctl,
+> =C2=A0		struct file_ra_state *ra, unsigned int new_order)
+> =C2=A0{
+> =C2=A0	struct address_space *mapping =3D ractl->mapping;
+> -	pgoff_t start =3D readahead_index(ractl);
+> -	pgoff_t index =3D start;
+> +	pgoff_t index =3D readahead_index(ractl);
+> =C2=A0	unsigned int min_order =3D mapping_min_folio_order(mapping);
+> =C2=A0	pgoff_t limit =3D (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+> =C2=A0	pgoff_t mark =3D index + ra->size - ra->async_size;
+> @@ -522,7 +521,7 @@ void page_cache_ra_order(struct readahead_control *ra=
+ctl,
+> =C2=A0	if (!err)
+> =C2=A0		return;
+> =C2=A0fallback:
+> -	do_page_cache_ra(ractl, ra->size - (index - start), ra->async_size);
+> +	do_page_cache_ra(ractl, ra->size, ra->async_size);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static unsigned long ractl_max_pages(struct readahead_control *ract=
+l,
 
-Anders and Philippe have reported that recent kernels occasionally hang
-when used with NFS in readahead code. The problem has been bisected to
-7c877586da3 ("readahead: properly shorten readahead when falling back to
-do_page_cache_ra()"). The cause of the problem is that ra->size can be
-shrunk by read_pages() call and subsequently we end up calling
-do_page_cache_ra() with negative (read huge positive) number of pages.
-Let's revert 7c877586da3 for now until we can find a proper way how the
-logic in read_pages() and page_cache_ra_order() can coexist. This can
-lead to reduced readahead throughput due to readahead window confusion
-but that's better than outright hangs.
+You can add a
+   Tested-by: Philippe Troin <phil@fifi.org>
+tag as I did experiment and validate the fix with that revert on top of 6.1=
+1.10.
 
-Reported-by: Anders Blomdell <anders.blomdell@gmail.com>
-Reported-by: Philippe Troin <phil@fifi.org>
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- mm/readahead.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 8f1cf599b572..ea650b8b02fb 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -458,8 +458,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 		struct file_ra_state *ra, unsigned int new_order)
- {
- 	struct address_space *mapping = ractl->mapping;
--	pgoff_t start = readahead_index(ractl);
--	pgoff_t index = start;
-+	pgoff_t index = readahead_index(ractl);
- 	unsigned int min_order = mapping_min_folio_order(mapping);
- 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
- 	pgoff_t mark = index + ra->size - ra->async_size;
-@@ -522,7 +521,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 	if (!err)
- 		return;
- fallback:
--	do_page_cache_ra(ractl, ra->size - (index - start), ra->async_size);
-+	do_page_cache_ra(ractl, ra->size, ra->async_size);
- }
- 
- static unsigned long ractl_max_pages(struct readahead_control *ractl,
--- 
-2.35.3
-
+Phil.
 
