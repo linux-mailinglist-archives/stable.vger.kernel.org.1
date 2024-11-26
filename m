@@ -1,82 +1,120 @@
-Return-Path: <stable+bounces-95559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF789D9D4E
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:24:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325E49D9D59
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F75B28365D
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 18:24:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99342B26C45
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 18:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F159B1DD879;
-	Tue, 26 Nov 2024 18:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52D31DD9AB;
+	Tue, 26 Nov 2024 18:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjB7giOe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TbLez1S1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0291DB361;
-	Tue, 26 Nov 2024 18:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31041DDA17
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 18:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732645438; cv=none; b=tZXg6wiqykD75UQLIE0G5xgF4BMnR5DgmlTxyUFUJmt6VM1UgLUIM7X7CnV1uOOfu0dri7yXe5De67m6xyfIgpIFvHUpr1ig9ZfZf4jxmnLrdpEhJAHs+/jRrWcuEbDNoPS1DHm88gmbJ3t7g//Xxx03DedN8eZZQ4EF9P4cDI8=
+	t=1732645562; cv=none; b=AnyD5Ykp9Z/6J0fK0Ngw+HGc/Ghq9TYXt4QP26v9wIYmFFVdAY2/C1mNnyKajjElTte6fBByE3hH5ZK/mMwjiHIayW8NtLu3xeXewNm8IH5I8lcTKlbIdHW3neOnZ31cA9MXCPvAutqxbWrMo/QxykwNAIbsCAWHucPJ0x5i+AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732645438; c=relaxed/simple;
-	bh=d4m3VCLvxYI28BelZN8HIZM+RwKa2s94Qkjp4WqvsXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8P7mT4Oqa0Um+ZWylBojFnpT1FXHv9/knI32i/pB3yJCdVgUNr/Xm8TkWRFoGXqKs1OhpRyCkLm4XQ2IIDhQ9uJYXr5bsXfUTnx7KzdKGjCt/NYckTPOah2USwROfv8k8maqUvRxe6okZWTTZNzfUL3ykZVyRdW2/9PMLykCQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjB7giOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B90CC4CECF;
-	Tue, 26 Nov 2024 18:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732645438;
-	bh=d4m3VCLvxYI28BelZN8HIZM+RwKa2s94Qkjp4WqvsXE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LjB7giOeRtoOjqc82//rzmlZruDxCNX8J8QymbyU3bCFfM4+dcJsjgyTZVmp7Vqn5
-	 qncVEefXXMSeNw1oiJHXsK4YbRPop/8BQ4K6l6J+9nUlCXDV3x2xeEt/xN1cElRiy2
-	 rT17KoJAuWIowP+31Jne3R//y6ReJ57V05kFoNT9o7iqW+xFsZm0B82oLqRZCPCaEV
-	 nZGNUu06dpRbTLqQ9dLk6XvJSka52WLwJ8vTMpS9kaVzj6xZH9fBesSg1BMCHhrHmo
-	 yrtdmfvzvfD0df4tkockKWY+xf86OKyyyuweWbpswA0zbPWdKLXFTTSp4kX0Esm0es
-	 pnAXXHzlz56dw==
-Date: Tue, 26 Nov 2024 10:23:57 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 17/21] xfs: don't lose solo dquot update transactions
-Message-ID: <20241126182357.GM9438@frogsfrogsfrogs>
-References: <173258397748.4032920.4159079744952779287.stgit@frogsfrogsfrogs>
- <173258398090.4032920.6440798067032580972.stgit@frogsfrogsfrogs>
- <Z0VaFnJDFhcfs9K_@infradead.org>
+	s=arc-20240116; t=1732645562; c=relaxed/simple;
+	bh=RNYuaAo6IQhY4HSHKcyrhSxpNjMgrV4l6t7l0IdbgiI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TJP5w4uHVjNMuXU5htdeV/YnHvnHUwd/3BBg6etAmclwiXaHJxQ7OXaqLpZPvXwGtJGV0dq1yhNHVpulJCYU8AI5zjnvklB9/rZN/1Gj4FTVlpgewXlmbob7qOXzJrTAkt0GzBR9qUGMuFKKmIxi8lE1oSgiN5o+/KmoyLazMPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TbLez1S1; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732645561; x=1764181561;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RNYuaAo6IQhY4HSHKcyrhSxpNjMgrV4l6t7l0IdbgiI=;
+  b=TbLez1S1hCJeM7cH9iOujWfyulsRa9gBNV4F3lQ80OXJiGLN7sP/tXDi
+   W/0/vNoiltxedJnizJYVPLUnFRwx3RZ6JTzhg8Ep+1lSE0AT2imxXno/D
+   +ZVr/baQdPk/nDj1rcBKUR407b+8d24Ogm9i1dJa1xxzP7Gsl0wt2iaj4
+   dfHwzA6MKZaGNJ+lYiL7Pnu0iN63Y5v4UOq09wWpA/9pRM8qjCEWbINJA
+   YmeQLbnSt5bg5uO85QVTu/qQwx4ZPzCxnQhPFCnTCPU2YqqWbdYA7tM7p
+   jr9VB/0DyaKwaX/6M0lhuWCa7YbaZXgb6LRDp34+nQ3SeVUef6LN3pzyF
+   g==;
+X-CSE-ConnectionGUID: 2tMGTlJPRD65Wd19X78hkA==
+X-CSE-MsgGUID: l+jgqtihRP6AlTWW/AXqWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11268"; a="43892275"
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; 
+   d="scan'208";a="43892275"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 10:26:00 -0800
+X-CSE-ConnectionGUID: +/aDOK3sSBOrZ2J5MRAuPg==
+X-CSE-MsgGUID: T9z4cZ6ZThOh7RxG2WIwRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,186,1728975600"; 
+   d="scan'208";a="91312812"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.160.19]) ([10.245.160.19])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 10:25:58 -0800
+Message-ID: <66f90d3a-17fe-4837-a8c8-a97c04d3f754@linux.intel.com>
+Date: Tue, 26 Nov 2024 19:25:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z0VaFnJDFhcfs9K_@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drm/xe/migrate: fix pat index usage
+To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>, Nirmoy Das
+ <nirmoy.das@intel.com>, stable@vger.kernel.org
+References: <20241126181259.159713-3-matthew.auld@intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20241126181259.159713-3-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 25, 2024 at 09:18:14PM -0800, Christoph Hellwig wrote:
-> On Mon, Nov 25, 2024 at 05:29:08PM -0800, Darrick J. Wong wrote:
-> > This is currently not the case anywhere in the filesystem because quota
-> > updates always dirty at least one other metadata item, but a subsequent
-> > bug fix will add dquot log item precommits, so we actually need a dirty
-> > dquot log item prior to xfs_trans_run_precommits.  Also let's not leave
-> > a logic bomb.
-> 
-> Unlike for the sb updates there doesn't seem to be anything in
-> xfs_trans_mod_dquot that forces the transaction to be dirty, so I guess
-> the fixes tag is fine here.
 
-Correct.
+On 11/26/2024 7:13 PM, Matthew Auld wrote:
+> XE_CACHE_WB must be converted into the per-platform pat index for that
+> particular caching mode, otherwise we are just encoding whatever happens
+> to be the value of that enum.
+>
+> Fixes: e8babb280b5e ("drm/xe: Convert multiple bind ops into single job")
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.12+
 
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-Thanks!
-
---D
+> ---
+>  drivers/gpu/drm/xe/xe_migrate.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+> index cfd31ae49cc1..48e205a40fd2 100644
+> --- a/drivers/gpu/drm/xe/xe_migrate.c
+> +++ b/drivers/gpu/drm/xe/xe_migrate.c
+> @@ -1350,6 +1350,7 @@ __xe_migrate_update_pgtables(struct xe_migrate *m,
+>  
+>  	/* For sysmem PTE's, need to map them in our hole.. */
+>  	if (!IS_DGFX(xe)) {
+> +		u16 pat_index = xe->pat.idx[XE_CACHE_WB];
+>  		u32 ptes, ofs;
+>  
+>  		ppgtt_ofs = NUM_KERNEL_PDE - 1;
+> @@ -1409,7 +1410,7 @@ __xe_migrate_update_pgtables(struct xe_migrate *m,
+>  						pt_bo->update_index = current_update;
+>  
+>  					addr = vm->pt_ops->pte_encode_bo(pt_bo, 0,
+> -									 XE_CACHE_WB, 0);
+> +									 pat_index, 0);
+>  					bb->cs[bb->len++] = lower_32_bits(addr);
+>  					bb->cs[bb->len++] = upper_32_bits(addr);
+>  				}
 
