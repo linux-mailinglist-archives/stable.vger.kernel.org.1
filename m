@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD019D9A83
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 16:39:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38D09D9A84
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 16:39:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DEA4164A0A
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:39:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94DB28259B
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382251D63DD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5366D1D7E42;
 	Tue, 26 Nov 2024 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLMpqun7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMVsaJDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9971CD219
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1414B1D63DB
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 15:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732635556; cv=none; b=GdmpgE81LVaFQ8WykW3FINEFFG7Q86eebkAULtFT/fWR4iJk+xORhSMG4T632wIiVS+j/EAqcZNcfGEsERDq8Mtyq1kE35QvrpYGI7zsG1Ee8851Cjjgglz1uDErfkvZx0iiG9et5NdrGgQzvY4z1nJ+R0gunwvF7jcMp80EKOI=
+	t=1732635556; cv=none; b=cGyLmcbEvQwJEdrPZI/VUPzBaG7cvBtnrgOI3QJ3+d1WCQROePYc95iv4hsI9BwYWFFe0UnM8DXWASqxw5fqYrLSz7hbDLihp/iHzfR0Dw6TfQ50xO4eIF/466HTnlL8tHIFeJjWY95fcbOWKNK8LMznxNmvhkWZNdWeHmdQZ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732635556; c=relaxed/simple;
-	bh=sSwVykrQpOL6jclysbyBZjzl2PdXfrS9Zj59uzyY2hA=;
+	bh=ik+7otu9KBhWAIh1ZyFUdtS4LkyDfLhsvwRcePm/esc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glxkj9qdk0r8QOcpDynTo86n7DGvvREqF3C6OSXAE02i1V4JiSSORS2xyxh/eYqxgTFSHZf8vmUJQHL4R7LtdcYFAKp1w5xPgSNQXJU6qvknRCgGEKdiO1ccPp5onkS6+sSUV3FFJqS1IcULfSHJ2yZinahyZ6rhBHLUbEI9U30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLMpqun7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B598C4CECF;
-	Tue, 26 Nov 2024 15:39:13 +0000 (UTC)
+	 MIME-Version; b=Xm0ZmN75elfmq+ZvxQizLU5Saj9iQ73T05OKhi1F4ksWigkCC8U90icTKvVG8dbbEBsygaVhQYRTiGpx8jNmT6iQttM7dI015xrgumvrysW6Cjzaj6pXO2qYS8KQTomW3WHNWrVTVzbC9RFhOzJHvL/EjWCDD/H3GxrvtEVlx1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMVsaJDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FC5C4CED0;
+	Tue, 26 Nov 2024 15:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732635553;
-	bh=sSwVykrQpOL6jclysbyBZjzl2PdXfrS9Zj59uzyY2hA=;
+	s=k20201202; t=1732635555;
+	bh=ik+7otu9KBhWAIh1ZyFUdtS4LkyDfLhsvwRcePm/esc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLMpqun7zOr71AveZQaeTcTLE4DluSxkKCHUo0b9Yq07RPa5FokdZoEURLY+S+3AE
-	 RqoOLBy8y+Rn610MTe8dQWmdGnWl0o/8Jw+AdgQn3tXKF380csgNh+aezlxObhMd0o
-	 QjeKky8VCEPhzcH3u2hGRTpvVAOst0XZUs/tZ9ncGNZkCBzmszKVQ5mEyRzTM12ewU
-	 9miEOcWkpFnngG2KdPdsc82q5WLiWKTE1DdzarGFqUmHQQeSOaBJj12yxd+/bWkFgz
-	 KE1FYagfWQIg0S654VRAQledZZ2WElbZIRD5VeowPVwrrYfqiFS3/F2+2aT7oDgmkC
-	 SGzGcLjVgeJ/w==
+	b=YMVsaJDda3PHta/xOj6NyavTQ0XxtaZot95uBhdG52NCpHeXhbrO8K8J25bIvlhbR
+	 31DBLz2mi/HLrYnaQ2Y5g4hGjdfQTdQngrq5CMgMDB7nuIQpXUz6aOa8+TweAMo20G
+	 7yyP6mGRLHRq0jFj3HUjtl2ijbvpty3YH07bGlw5Zde8alI+q2kqy2yzZnf13IyB8r
+	 ClBVjlzoE6d8Xm4NtMEmVFPFzoVl7ewHaqcM4hyrQHwTHJNgJTsP1UOUO8qbeeq3ZX
+	 556LoKHbNcrJWrTN5cEoZ7vCV4BKQP6V9OY7s9eHZMP6yvS/31CVOJ2WbuXMt9mzN8
+	 +z7jUiD3Zsx2g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] drm/amd/display: Add null check for pipe_ctx->plane_state in dcn20_program_pipe
-Date: Tue, 26 Nov 2024 10:39:11 -0500
-Message-ID: <20241126103613-4633bda59a58ba44@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y 2/2] Bluetooth: MGMT: Fix possible crash on mgmt_index_removed
+Date: Tue, 26 Nov 2024 10:39:13 -0500
+Message-ID: <20241126081101-eef147164300553a@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241126065532.318085-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241126062537.310401-3-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,100 +63,92 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 8e4ed3cf1642df0c4456443d865cff61a9598aa8
+The upstream commit SHA1 provided is correct: f53e1c9c726d83092167f2226f32bd3b73f26c21
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Commit author: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: 65a6fee22d5c)
-6.6.y | Not found
+6.11.y | Present (different SHA1: 8c3f7943a291)
+6.6.y | Present (different SHA1: 4883296505aa)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-26 10:32:22.782798199 -0500
-+++ /tmp/tmp.h38Qae9tjS	2024-11-26 10:32:22.774777464 -0500
+--- -	2024-11-26 08:07:32.599317773 -0500
++++ /tmp/tmp.XHyzHU5ddN	2024-11-26 08:07:32.593820712 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 8e4ed3cf1642df0c4456443d865cff61a9598aa8 ]
++[ Upstream commit f53e1c9c726d83092167f2226f32bd3b73f26c21 ]
 +
- This commit addresses a null pointer dereference issue in the
- `dcn20_program_pipe` function. The issue could occur when
- `pipe_ctx->plane_state` is null.
-@@ -18,17 +20,23 @@
- Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
- Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
- Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-+Signed-off-by: Sasha Levin <sashal@kernel.org>
-+[Xiangyu: BP to fix CVE: CVE-2024-49914, modified the file path from
-+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn20/dcn20_hwseq.c to
-+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_hwseq.c
-+and minor conflict resolution]
+ If mgmt_index_removed is called while there are commands queued on
+ cmd_sync it could lead to crashes like the bellow trace:
+ 
+@@ -12,15 +14,17 @@
+ Fixes: 7cf5c2978f23 ("Bluetooth: hci_sync: Refactor remove Adv Monitor")
+ Reported-by: jiaymao <quic_jiaymao@quicinc.com>
+ Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
++[Xiangyu: BP to fix CVE: CVE-2024-49951, Minor conflict resolution]
 +Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-- .../amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 30 ++++++++++++-------
-- 1 file changed, 19 insertions(+), 11 deletions(-)
-+ .../drm/amd/display/dc/dcn20/dcn20_hwseq.c    | 22 ++++++++++++-------
-+ 1 file changed, 14 insertions(+), 8 deletions(-)
+  net/bluetooth/mgmt.c | 23 ++++++++++++++---------
+  1 file changed, 14 insertions(+), 9 deletions(-)
  
--diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
--index 270e337ae27bb..5a6064999033b 100644
----- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
--+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
--@@ -1922,22 +1922,29 @@ static void dcn20_program_pipe(
-- 				dc->res_pool->hubbub, pipe_ctx->plane_res.hubp->inst, pipe_ctx->hubp_regs.det_size);
-- 	}
-+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+index 12af2859002f..cd1d1b7283ab 100644
-+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+@@ -1732,17 +1732,22 @@ static void dcn20_program_pipe(
-+ 		dc->res_pool->hubbub->funcs->program_det_size(
-+ 			dc->res_pool->hubbub, pipe_ctx->plane_res.hubp->inst, pipe_ctx->det_buffer_size_kb);
+ diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+-index e4f564d6f6fbf..4157d9f23f46e 100644
++index 5a1015ccc063..82edd9981ab0 100644
+ --- a/net/bluetooth/mgmt.c
+ +++ b/net/bluetooth/mgmt.c
+-@@ -1453,10 +1453,15 @@ static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
++@@ -1457,10 +1457,15 @@ static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
   
- -	if (pipe_ctx->update_flags.raw || pipe_ctx->plane_state->update_flags.raw || pipe_ctx->stream->update_flags.raw)
- +	if (pipe_ctx->update_flags.raw ||
-@@ -42,16 +50,6 @@
- +	    (pipe_ctx->plane_state && pipe_ctx->plane_state->update_flags.bits.hdr_mult))
-  		hws->funcs.set_hdr_multiplier(pipe_ctx);
+  static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
+  {
+@@ -39,7 +43,7 @@
+  		mgmt_pending_remove(cmd);
   
-- 	if (hws->funcs.populate_mcm_luts) {
---		hws->funcs.populate_mcm_luts(dc, pipe_ctx, pipe_ctx->plane_state->mcm_luts,
---				pipe_ctx->plane_state->lut_bank_a);
---		pipe_ctx->plane_state->lut_bank_a = !pipe_ctx->plane_state->lut_bank_a;
--+		if (pipe_ctx->plane_state) {
--+			hws->funcs.populate_mcm_luts(dc, pipe_ctx, pipe_ctx->plane_state->mcm_luts,
--+						     pipe_ctx->plane_state->lut_bank_a);
--+			pipe_ctx->plane_state->lut_bank_a = !pipe_ctx->plane_state->lut_bank_a;
--+		}
-- 	}
-  	if (pipe_ctx->update_flags.bits.enable ||
- -	    pipe_ctx->plane_state->update_flags.bits.in_transfer_func_change ||
- -	    pipe_ctx->plane_state->update_flags.bits.gamma_change ||
-@@ -65,7 +63,7 @@
-  		hws->funcs.set_input_transfer_func(dc, pipe_ctx, pipe_ctx->plane_state);
+  		return;
+-@@ -9394,12 +9399,12 @@ void mgmt_index_added(struct hci_dev *hdev)
++@@ -9424,14 +9429,14 @@ void mgmt_index_added(struct hci_dev *hdev)
+  void mgmt_index_removed(struct hci_dev *hdev)
+  {
+  	struct mgmt_ev_ext_index ev;
+@@ -49,12 +53,14 @@
+  	if (test_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks))
+  		return;
   
-  	/* dcn10_translate_regamma_to_hw_format takes 750us to finish
--@@ -1947,7 +1954,8 @@ static void dcn20_program_pipe(
-+@@ -1752,7 +1757,8 @@ static void dcn20_program_pipe(
-  	if (pipe_ctx->update_flags.bits.enable ||
-  			pipe_ctx->update_flags.bits.plane_changed ||
-  			pipe_ctx->stream->update_flags.bits.out_tf ||
-@@ -75,7 +73,7 @@
-  		hws->funcs.set_output_transfer_func(dc, pipe_ctx, pipe_ctx->stream);
+--	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
+-+	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+- 
+- 	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+- 		mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev, NULL, 0,
+-@@ -9450,7 +9455,7 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
++ 	switch (hdev->dev_type) {
++ 	case HCI_PRIMARY:
++-		mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
+++		mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
++ 
++ 		if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
++ 			mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev,
++@@ -9489,7 +9494,7 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
+  void __mgmt_power_off(struct hci_dev *hdev)
+  {
+  	struct cmd_lookup match = { NULL, hdev };
+@@ -63,7 +69,7 @@
   
-  	/* If the pipe has been enabled or has a different opp, we
--@@ -1971,7 +1979,7 @@ static void dcn20_program_pipe(
-+@@ -1776,7 +1782,7 @@ static void dcn20_program_pipe(
-  	}
+  	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
   
-  	/* Set ABM pipe after other pipe configurations done */
-@@ -84,3 +82,6 @@
-  		if (pipe_ctx->stream_res.abm) {
-  			dc->hwss.set_pipe(pipe_ctx);
-  			pipe_ctx->stream_res.abm->funcs->set_abm_level(pipe_ctx->stream_res.abm,
+-@@ -9462,11 +9467,11 @@ void __mgmt_power_off(struct hci_dev *hdev)
++@@ -9501,11 +9506,11 @@ void __mgmt_power_off(struct hci_dev *hdev)
+  	 * status responses.
+  	 */
+  	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
+@@ -78,3 +84,6 @@
+  
+  	if (memcmp(hdev->dev_class, zero_cod, sizeof(zero_cod)) != 0) {
+  		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev,
 +-- 
 +2.43.0
 +
@@ -166,5 +158,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
