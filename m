@@ -1,161 +1,145 @@
-Return-Path: <stable+bounces-95562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE8E9D9DA0
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:47:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F2C9D9DB0
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8BB928326A
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 18:47:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC53AB2C674
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 18:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157C41DA614;
-	Tue, 26 Nov 2024 18:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF1F1DE2AA;
+	Tue, 26 Nov 2024 18:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t83kCGcw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjXl7Fiq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712131D45EF
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 18:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4385D1D63E8;
+	Tue, 26 Nov 2024 18:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732646856; cv=none; b=pKBNgDU85IMv89oAmMPUdfzdEoW/0PiAUzI8T/INHa9X4DKM6d8UNYYVODXwhCu25TyEu5Adxdk2gwKgH/nNzBtPlWmfWQjTckGkX21uW3mVYDQ+I9pDFmPMgCO45C5uQlJvGxsnLA+Klje/R9ubjdntyvF/pGwzbZ26Pw2QxIM=
+	t=1732647140; cv=none; b=mQ2SK4FdAR8HMgNXlfrftxdXj5z4zAiKmZV9HrX4HXkVnJlKpXwaCPLBX5+ys+CZ6FTBkGwIW0N0rMqHr8jRGKQ8Km8dnlmMmRJWv+az6Pp+sY8h2GDmyJQ0KxLbgoDbKljqA3qOee3hn2s3SxkiBchTaR0IAol4o1Yf4rmSyFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732646856; c=relaxed/simple;
-	bh=cn59P2T1k9wOl9aoAQKIvgNUfF6Vv0kaGwNzLI+khAs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=p25A/7BJbQkfCbFaE6pGbNwR1e+09eaMvkyoCygVsgKfkaX4N+9hLyTN/r/eArLgDsm5V/EoQejFk95d76oDb6XiRfu57n2XdaXZytS7iecYjGRPbkycwKZM+p1KlG5WM0gUcEfj69sQQ4y18CCDwKknz1qb4n7YSRzG1hF+HcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t83kCGcw; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2eaf1a11078so7060759a91.1
-        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 10:47:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732646855; x=1733251655; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Dq6rrtLxTmg3rcVW1L3Mlmhry+erxLfg0JBunzLXHUk=;
-        b=t83kCGcwWTtlxjAN4KL+5fh1OJemPRiMqnCCZLK826v3XaB64wug8CmQJo6LB56VB/
-         8xJHTki17wutnnbGcqfBgy3hNAesd99MgADlfMZOUVuqrvo0r9sWbbMx1x9jOmcqzZLi
-         RwBuZJPjRt6wbn54hJm3Qt2VIr6B1uqVvpM4oGMHqIEANzKlXI3TRMSk3ya90Y1v+DHq
-         kF+M7efnpCbxlz7+2W3oJva7obdlwDpUl3hZmTK1T+YRF0NUK7TaAYG3siLn0oVbn9jI
-         8ysIW2+9Jznkz5Sv2D3R7srRjFwTHqoBY8riehc3LfL5GcBx6rIXYjQw2AFnMxrbLfRx
-         48YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732646855; x=1733251655;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Dq6rrtLxTmg3rcVW1L3Mlmhry+erxLfg0JBunzLXHUk=;
-        b=m/nOrsVPMLhCTu/MgP/ZnQ4wluN+66kdFD3oUIM5t4lJGSbBB6TaypXC8SqKV+U1yk
-         cYnY9bI+PpgzIpsy3iONU6ebDENr/JQ9+wmUEoZdC0kQTSpBwut3iXHLmL+yNfiYByl3
-         HsJXqhhVgatRet8oXbJmw6TiKu3DG7nd179+D+2lQvuLK4fETKbRJV0PWOCY3gNS6y/7
-         AUDJVg2VAACzGgF4WGR6DiQUTvQdRwMvNoffHoTfMJRnQM70DYNZbUdoFf7IOvva0i6d
-         LSkgANWpnbbAxyPChOf51gLw5SSk9+Bl6Bx7qFmD1KAoVdQmvJuPbxMKdBKxSTfgf34B
-         Z6cg==
-X-Gm-Message-State: AOJu0Yx49o2D2+DiHCs9EOnLe/Jri6RKXyDvNG9KgdsTMFgHbHNyHSMp
-	KzEQl5p2H3MpZx/tj5HeK20PbMqW2smCUGvOCKGK087+teWuEXeBpPx5WhnBq2oD9Z0fidqPX8m
-	cVI4gEaOrnfB0P3ojpdiOx8r1sd9acP70x6IA6UlEcL1+R85dEprn8SP1QH9jr39VPHSbAMnuJE
-	5uH+DZnoFX6G+q/4XSNZZzwLbN7wa2iJP/U9Ye7V22p2owEp/q
-X-Google-Smtp-Source: AGHT+IHPvkND8oN7goG94f88mhQrQALu+7FsPq6j2TO9mkjs2xzYyS2zyNkamz1bw3/QHD2xAO7TswQK+5nvZQM=
-X-Received: from pjbst5.prod.google.com ([2002:a17:90b:1fc5:b0:2ea:756d:c396])
- (user=ziweixiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1d0e:b0:2ea:61ac:a50b with SMTP id 98e67ed59e1d1-2ee097e4795mr382227a91.31.1732646854614;
- Tue, 26 Nov 2024 10:47:34 -0800 (PST)
-Date: Tue, 26 Nov 2024 18:47:31 +0000
+	s=arc-20240116; t=1732647140; c=relaxed/simple;
+	bh=5vy3ETKoRBehBMtsbIQQeHicXBlDE6OcnPhy+O5N65U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YZ4Is65zYf5boTqQlzyOSdRxuythDGZw+aSRkpMoBW0iLCqMlPuRPc4dPxEDLARZSGdL3cviDmwZ7bijj5ltb8yUthYbpgCK71zaNOvkeIbmyMXtvZVc8nd2CWlKeyKgdBbIQx0i+rzYS7w7rom/z02y6Gzj/ypgKae+nK21FzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjXl7Fiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E70C4CECF;
+	Tue, 26 Nov 2024 18:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732647139;
+	bh=5vy3ETKoRBehBMtsbIQQeHicXBlDE6OcnPhy+O5N65U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OjXl7FiqYgkanSgMqRUgFZWhsrDscNA+htu1e6t6nN5DLEX8UEG9SzSZLtvQ8AlBY
+	 qhQOSCdfKQopnT/bOHU3QEVGQAypBhpBlm0e6H8tzl5thIJ+OmWlElQosPKHmwVtMs
+	 3rHnbVnliHXut4vSM647M9wItEwWOr/4WBUiXjI1Ac7CDFR705nrICK5+Za3SwxOwf
+	 nhobSZ8YJ89mAmp1eBobO+6noWEmR5zYir8ec++WW3aYCkRnBs59rypJNxwI3u84iI
+	 taute58duUWn4j/cb7N48EqILhLC+sBnjXuGjN7X5/1RP5dIb3Udxa6Uni8XDDziHo
+	 UV4r33tyZjpWA==
+Date: Tue, 26 Nov 2024 18:52:11 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Lars-Peter Clausen
+ <lars@metafoo.de>, Antoni Pokusinski <apokusinski01@gmail.com>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <jpaulo.silvagoncalves@gmail.com>, Gregor Boirie
+ <gregor.boirie@parrot.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, =?UTF-8?B?Sm8=?=
+ =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 02/11] iio: adc: ti-ads1119: fix information leak in
+ triggered buffer
+Message-ID: <20241126185211.385f82c4@jic23-huawei>
+In-Reply-To: <59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
+References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
+	<20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
+	<20241126085958.GA13577@francesco-nb>
+	<59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241126184731.2497956-1-ziweixiao@google.com>
-Subject: [PATCH 6.1] gve: Fixes for napi_poll when budget is 0
-From: Ziwei Xiao <ziweixiao@google.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, pkaligineedi@google.com, 
-	hramamurthy@google.com, Ziwei Xiao <ziweixiao@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Netpoll will explicitly pass the polling call with a budget of 0 to
-indicate it's clearing the Tx path only. For the gve_rx_poll and
-gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
-to do all the work. Add check to avoid the rx path and xdp path being
-called when budget is 0. And also avoid napi_complete_done being called
-when budget is 0 for netpoll.
+On Tue, 26 Nov 2024 10:46:37 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-The original fix was merged here:
-https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
-Resend it since the original one was not cleanly applied to 6.1 kernel.
+> On 26/11/2024 09:59, Francesco Dolcini wrote:
+> > On Mon, Nov 25, 2024 at 10:16:10PM +0100, Javier Carrasco wrote:  
+> >> The 'scan' local struct is used to push data to user space from a
+> >> triggered buffer, but it has a hole between the sample (unsigned int)
+> >> and the timestamp. This hole is never initialized.
+> >>
+> >> Initialize the struct to zero before using it to avoid pushing
+> >> uninitialized information to userspace.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> >> ---
+> >>  drivers/iio/adc/ti-ads1119.c | 2 ++
+> >>  1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+> >> index e9d9d4d46d38..2615a275acb3 100644
+> >> --- a/drivers/iio/adc/ti-ads1119.c
+> >> +++ b/drivers/iio/adc/ti-ads1119.c
+> >> @@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
+> >>  	unsigned int index;
+> >>  	int ret;
+> >>  
+> >> +	memset(&scan, 0, sizeof(scan));  
+> > 
+> > Did you consider adding a reserved field after sample and just
+> > initializing that one to zero?
+> > 
+> > It seems a trivial optimization not adding much value, but I thought about
+> > it, so I'd like to be sure you considered it.
+> > 
+> > In any case, the change is fine.
+> > 
+> > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > 
+> > Thanks,
+> > Francesco
+> >   
+> 
+> Hi Francesco, thanks for your review.
+> 
+> In this particular case where unsigned int is used for the sample, the
+> padding would _in theory_ depend on the architecture. The size of the
+> unsigned int is usually 4 bytes, but the standard only specifies that it
+> must be able to contain values in the [0, 65535] range i.e. 2 bytes.
+> That is indeed theory, and I don't know if there is a real case where a
+> new version of Linux is able to run on an architecture that uses 2 bytes
+> for an int. I guess there is not, but better safe than sorry.
+Using an unsigned int here is a bug as well as we should present consistent
+formatted data whatever the architecture.
+> 
+> We could be more specific with u32 for the sample and then add the
+> reserved field, but I would still prefer a memset() for this small
+> struct. Adding and initializing a reserved field looks a bit artificial
+> to me, especially for such marginal gains.
+Issue with reserved fields is we would have to be very very careful to spot them
+all.  A memset avoids that care being needed.
 
-Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
----
- drivers/net/ethernet/google/gve/gve_main.c | 7 +++++++
- drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
- drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
- 3 files changed, 7 insertions(+), 8 deletions(-)
+Jonathan
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index d3f6ad586ba1..8771ccfc69b4 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -202,6 +202,10 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
- 
- 	if (block->tx)
- 		reschedule |= gve_tx_poll(block, budget);
-+
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx) {
- 		work_done = gve_rx_poll(block, budget);
- 		reschedule |= work_done == budget;
-@@ -242,6 +246,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
- 	if (block->tx)
- 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
- 
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx) {
- 		work_done = gve_rx_poll_dqo(block, budget);
- 		reschedule |= work_done == budget;
-diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
-index 021bbf308d68..639eb6848c7d 100644
---- a/drivers/net/ethernet/google/gve/gve_rx.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx.c
-@@ -778,10 +778,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
- 
- 	feat = block->napi.dev->features;
- 
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	if (budget > 0)
- 		work_done = gve_clean_rx_done(rx, budget, feat);
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
-index 5e11b8236754..bf1ac0d1dc6f 100644
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -725,10 +725,6 @@ bool gve_tx_poll(struct gve_notify_block *block, int budget)
- 	u32 nic_done;
- 	u32 to_do;
- 
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	/* In TX path, it may try to clean completed pkts in order to xmit,
- 	 * to avoid cleaning conflict, use spin_lock(), it yields better
- 	 * concurrency between xmit/clean than netif's lock.
--- 
-2.47.0.338.g60cca15819-goog
+> 
+> Moreover, the common practice (at least in IIO)is a plain memset() to
+> initialize struct holes, and such common patterns are easier to maintain :)
+> 
+> Best regards,
+> Javier Carrasco
 
 
