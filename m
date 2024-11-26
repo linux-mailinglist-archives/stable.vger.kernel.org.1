@@ -1,193 +1,189 @@
-Return-Path: <stable+bounces-95571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E89D9F12
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 23:00:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5251E9D9FC0
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 00:44:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805B8280F50
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 22:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB27F168872
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 23:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004871DFDA8;
-	Tue, 26 Nov 2024 22:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBA91DFE29;
+	Tue, 26 Nov 2024 23:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C9yVyEVj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oCUdUsoi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1A51B87FF;
-	Tue, 26 Nov 2024 22:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198261DFE09
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732658414; cv=none; b=TebXDIOP3OaWneGDE97S1j3jQvsQMnq+eoyQxT53tQ0Vd/Hy+4u2ESby1/lzfnuq2L4+y+4k801KPildPdVhTrqyB5sBaNb+mluXqcWoOMsbIe63l/zSoG1q7cGSgi3slcyFbE3UWzqZ/ijoMiSzn6QO4QWt6QN2nvEoCnaCcbs=
+	t=1732664675; cv=none; b=d/4LCdV1XfIwaTZgC0J1BbEq+gQs31BsxqlS2Jwudfa+qKlnSErPK0C9BxD+IZ/8rYNeeOk6v72/Gjqm9BejqhhdakOtdj1+tPePQNdjSVsyIaF7A5+kxmYY50ihVZEkVwALwC+q9jFGa6Z/UTdeBvfv/vHpdMNVScnT/MZ6F/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732658414; c=relaxed/simple;
-	bh=a2+/MmWFaijNBOfYzJdymrWHQtSJRpiSmPNIqSVAc8c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=IRnQ8al4duGIZjr4D14N09wbr/BW70i8L1SCmsIPHKkDxuohMHtLwwEgnb9koXO/TWZIUUjuesySECOkd4t7unt5m4xyO9J9EsPZxTqMsnN3rvUc3CT8XH+6E++ytyMhxdNl+q0rSc08JsQfuALh+BZStJHf7Cqq17Xt8zilz7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C9yVyEVj; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434a8640763so7791795e9.1;
-        Tue, 26 Nov 2024 14:00:13 -0800 (PST)
+	s=arc-20240116; t=1732664675; c=relaxed/simple;
+	bh=+fhFM24qdTFklU9m2XwiT7YHYQrJaiSziSmW70rJDQQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ppNCT4nDTFwN/d147WCPlw2h8eW3dTDJ55rshMytr65sgSafpc39v4+E6GGgaIABnzLUYXMVSd9AIyUMv+YRnj0WsscNj5Kbc+7Xnu6QpTEh4o81avtygAkTTUnboLXGj4muc/8HZ7a09oIRvLkrHy0KxBHG85Fr0rjZQfI8Ih4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oCUdUsoi; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso56623495e9.0
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 15:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732658411; x=1733263211; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O2YAjAUCL19nVhGZ9FKqkp7bPNOtiIRcPPeFNZu8aU8=;
-        b=C9yVyEVjABdngaEVt2I8wnG4N+KWoWbJXhDnpxkMWMhCMkaP8+7/oAwGO9SJ8M302p
-         xEMmipqAi1iTo+FpdtADHY/xJSt+Ki83jbTfu96yvqfrOfI9T3GwuhBW59lnEuJ1JIKc
-         28hQy/5cFAm5xNSIQ7it9Nf2cfxuiW/O1dbaFUyzqArzoh+Djh+LUFIOPhzRjjE2f8/T
-         iLN7EF2httHfY7uDg2ZSxlpiIPk6ooYWKyGLC+mgItVe3iIP597hMNvB4bC+dYtU6aOL
-         lSXkKLzQr6yEazKwvM+s5GEfGsodmHtddwTPyQ+pM2B7MIQj3h4f7EUgn+jUnqCxrodt
-         XiCQ==
+        d=linaro.org; s=google; t=1732664671; x=1733269471; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CJmU59J+M2fvIhoTK/DsvENc1HKmlM36AHXQwtD2KaU=;
+        b=oCUdUsoiFAyrnEu0aLgsolTfbOYpbUFi5xIt9YgPd8pRMrg/3XvGJ5Qg4CacbQg+w5
+         iWugoTZqjVukKvzJTPnZEbxIzTloML3Cd9zgOT4XF3CBo2LvgRunwCp7k/9D5NmHIBW6
+         42zKM0ZbUVFvFu35zyJgGxuNdpd/tpRIyOvWsiwnOxKKilUZh5P/C9C3TGovykzUdFQg
+         m6TzK8aUNMiZ825IKMmotSdmiaGig76ctw5AIINf77ybxqXKsxvP0DMdlqSnnMNvzQ8e
+         Hi9x0YHn+knMFQou2YVx3PTL5yUPi6cFDYsP/p+qOkhmanrQ+Bz+O6LJ2XmGvGnQuqqb
+         ratQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732658411; x=1733263211;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=O2YAjAUCL19nVhGZ9FKqkp7bPNOtiIRcPPeFNZu8aU8=;
-        b=OqHwZ8PmjsWfFfZKkOQ5RpmDVqoCku7nUb6zIq64W2Qpuf5CjkNpS5IU3BJS4IcdAG
-         A/mhDrKLjEfFo6Hq7/+tBQRY8XXmaBxxb2OpF9FRLLPhBse1w7TlS/mu2wqQIpy4YqC4
-         huWh2TY214S3s7gOSa+8hE8shh3xzkRHS08WAAsuvuJn9aawl6B67avS2i0EZ0DtJwSz
-         WS/SO42EvTa4i29j2M92siUXYzh68qfrrtng6Wg88uXjAWunAD9sEG731sPOx4Pl1G12
-         4lUj6kXd7uBERdtYfFhcPZ2CSd7xExqTmpZ3pStbKRufHOfPr0lY6PVhhLqwPSa3VLDd
-         04Og==
-X-Forwarded-Encrypted: i=1; AJvYcCU/h1mXTby3QHWvOFxNBO3QP6oaH+TVNoITqIfAUxa941poBYwYolvnbjM3jv4C61npzRQ3NjF1dVk=@vger.kernel.org, AJvYcCWJseH14kMUcuuCgJ+h/DX+5JUJco5ydRaAlx8zejJTQI1dQeD6YzLufNYAJid+IgsX8ElY1wyR3YNAwMqf@vger.kernel.org, AJvYcCWnVrKXtYOjcUXl/PXxpXeXgL27tLSa8J8WFKAb+yVMAokqA1j8cMC2/rF7DA3Z7rBakQGklfUG@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrJzn/8q+RIwsY3C3thuXK6/vT6nEInLdtJ25VWxJum/G1JIcZ
-	dnJBOYipr1kz9i7ZLGLX1mOwAlrcHyXNLzlJ4YiB4D7bhsHxQhkE
-X-Gm-Gg: ASbGncvVFUEP2akVQCvVtWeKiYmu7wyIreCqd7eIi8l0RZBlwNzHq0ae7KDIaLsOfUJ
-	ojqcb1axEmNXbmNudId2hDybHbtLbK8CJ3aGfeJEE6PbgSUqZCcBB4raJ6ms6mofV8uXaQbO7bY
-	F6DnoSJ0Ie0qxAYxwGy+Ng1Hj9Adz570AdWojLYq5zqUhZMq8cBw/Z/1KEdypGrxeXcQkQRL5fZ
-	Zosisk8bIsVF3yHfm4kvZcHT1hGmIsljni77S7xLYYfQ0gOgeAgXmWzeI9U1M45PG2qqN6IOGGQ
-	7WhZuEfySotrEbSVUHjyGQG7fU8cB6mlVrAbklw1Baq54Q8vG9jbSe4GHStrUZ2lxrQh
-X-Google-Smtp-Source: AGHT+IGvgRXk4D4VKZNKxidgv3B+igOKa6hjyopdhCh95FJBs6H/igQMnbzCZirtIai1eRFVFtZrfQ==
-X-Received: by 2002:a05:600c:458b:b0:431:5ce4:bcf0 with SMTP id 5b1f17b1804b1-434a9dc6753mr7596535e9.15.1732658411345;
-        Tue, 26 Nov 2024 14:00:11 -0800 (PST)
-Received: from localhost (2a02-8389-41cf-e200-d42c-04c9-936b-d14b.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d42c:4c9:936b:d14b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa74fec9sm619785e9.6.2024.11.26.14.00.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 14:00:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732664671; x=1733269471;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CJmU59J+M2fvIhoTK/DsvENc1HKmlM36AHXQwtD2KaU=;
+        b=Q4fi2UYYtox5KL+cKYgmjQmJGg5zYEiNuakthP1NprG3or3HsWCMZcHBcSRVK5/4yc
+         eEW5drIzPp3RDmvB8SN78/OxITrwTYIgPyIbfSYcAlqmYFOWsWF9B4XCywIGGoVJT54i
+         cQNyhHi7qTdxf9LqBNsNIcyCuSTsNI2ntTK3HCDuIJUplFhkznxBFUgx/j9LfPlt4OTD
+         0EdSzHjfB76pQmFQhmSW64wVfdal7upHlfJybB39BAa/JNpdPd+6BrkattNcvyqoyHPq
+         YHS5sCg5vbFM9fM2n/K27XOjJ7SCiWmVWRWZlFMeOlp+GhxF2eJvwxqhL8BwBfgCjsYg
+         4bzw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8agj4XMMXypWZvqsJ7wJcVtm1zafP5MfudVPP8LhzDeJOA7mKnRihjXD3ws6mW0nvkC5ma/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIxsJ3KJF9AWmx4OYHmeDg4+ocpkNaG7IgMZZfl7E9jjv7Ru3o
+	oyKW6gEAtQ19HKisz9lO7btYNtYOOE7nCKS5ZJKCbTDzHkbr46wp+4sApPaODgI=
+X-Gm-Gg: ASbGnct9DV5DtZtSKpRsn4it0gFE8sO1EjOYqdig955oWzJqI9r924GUaV8Q6KOG8jI
+	mvDtSuSf3F+V3nvfBa5R7vRjd05v80H3KL4Dy6QIAsE0UtDxiP0zlWGLdx3If0j+8hkiG/rvmtl
+	sijia4b8ShMFfouQ7yw8ppfoSKUHiNB9HANOOOB/RmxhKOZlKQFuIRezkbZHcBYQ3i5p9o5DtC2
+	2frCazIxim1NCejSseCUUtxe+AgJIWOxWdb3uiQ0EG7h/Lm8Ur4s30daOM=
+X-Google-Smtp-Source: AGHT+IE8eKTrNeWUzbOE7vIWSLENBWD9fjmEpqowThwTsPT8/dFfLlB5O1ysxqfYmXhLujNL/goltg==
+X-Received: by 2002:a05:600c:5253:b0:434:9da3:602b with SMTP id 5b1f17b1804b1-434a9dbc410mr8471415e9.5.1732664671287;
+        Tue, 26 Nov 2024 15:44:31 -0800 (PST)
+Received: from [127.0.1.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fafe338sm14482899f8f.33.2024.11.26.15.44.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2024 15:44:30 -0800 (PST)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH v3 0/3] clk: qcom: Add support for multiple power-domains
+ for a clock controller.
+Date: Tue, 26 Nov 2024 23:44:26 +0000
+Message-Id: <20241126-b4-linux-next-24-11-18-clock-multiple-power-domains-v3-0-836dad33521a@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 Nov 2024 23:00:08 +0100
-Message-Id: <D5WG58I3QIEL.7Y7EGKOC7AS8@gmail.com>
-Subject: Re: [PATCH 02/11] iio: adc: ti-ads1119: fix information leak in
- triggered buffer
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-To: "Jonathan Cameron" <jic23@kernel.org>
-Cc: "Francesco Dolcini" <francesco@dolcini.it>, "Lars-Peter Clausen"
- <lars@metafoo.de>, "Antoni Pokusinski" <apokusinski01@gmail.com>,
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, "Gregor Boirie"
- <gregor.boirie@parrot.com>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <joao.goncalves@toradex.com>, "Francesco Dolcini"
- <francesco.dolcini@toradex.com>, <stable@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
- <20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
- <20241126085958.GA13577@francesco-nb>
- <59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
- <20241126185211.385f82c4@jic23-huawei>
-In-Reply-To: <20241126185211.385f82c4@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFpdRmcC/6XOwQ6CMBAE0F8hPbvGrm0AT/6H8VDoKhuxJS0gx
+ vDvFk561ePMYd68RKTAFMUhe4lAI0f2LoX9JhN1Y9yVgG3KAneopJQFVApadsMEjqYeUIGUkOq
+ 69fUN7kPbc9cSdP5BAay/G3YRjL6UpbK10mhEWu4CXXha1dM55YZj78NzPTHKpf3PGyXsoMoNV
+ rbAyuzzY5owwW99uIoFHPEDQf0bggkxmnKtlc1J6S9knuc33akzplwBAAA=
+X-Change-ID: 20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-a5f994dc452a
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-355e8
 
-On Tue Nov 26, 2024 at 7:52 PM CET, Jonathan Cameron wrote:
-> On Tue, 26 Nov 2024 10:46:37 +0100
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
->
-> > On 26/11/2024 09:59, Francesco Dolcini wrote:
-> > > On Mon, Nov 25, 2024 at 10:16:10PM +0100, Javier Carrasco wrote:
-> > >> The 'scan' local struct is used to push data to user space from a
-> > >> triggered buffer, but it has a hole between the sample (unsigned int=
-)
-> > >> and the timestamp. This hole is never initialized.
-> > >>
-> > >> Initialize the struct to zero before using it to avoid pushing
-> > >> uninitialized information to userspace.
-> > >>
-> > >> Cc: stable@vger.kernel.org
-> > >> Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
-> > >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > >> ---
-> > >>  drivers/iio/adc/ti-ads1119.c | 2 ++
-> > >>  1 file changed, 2 insertions(+)
-> > >>
-> > >> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads11=
-19.c
-> > >> index e9d9d4d46d38..2615a275acb3 100644
-> > >> --- a/drivers/iio/adc/ti-ads1119.c
-> > >> +++ b/drivers/iio/adc/ti-ads1119.c
-> > >> @@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int i=
-rq, void *private)
-> > >>  	unsigned int index;
-> > >>  	int ret;
-> > >>
-> > >> +	memset(&scan, 0, sizeof(scan));
-> > >
-> > > Did you consider adding a reserved field after sample and just
-> > > initializing that one to zero?
-> > >
-> > > It seems a trivial optimization not adding much value, but I thought =
-about
-> > > it, so I'd like to be sure you considered it.
-> > >
-> > > In any case, the change is fine.
-> > >
-> > > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > >
-> > > Thanks,
-> > > Francesco
-> > >
-> >
-> > Hi Francesco, thanks for your review.
-> >
-> > In this particular case where unsigned int is used for the sample, the
-> > padding would _in theory_ depend on the architecture. The size of the
-> > unsigned int is usually 4 bytes, but the standard only specifies that i=
-t
-> > must be able to contain values in the [0, 65535] range i.e. 2 bytes.
-> > That is indeed theory, and I don't know if there is a real case where a
-> > new version of Linux is able to run on an architecture that uses 2 byte=
-s
-> > for an int. I guess there is not, but better safe than sorry.
-> Using an unsigned int here is a bug as well as we should present consiste=
-nt
-> formatted data whatever the architecture.
+v3:
+- Fixes commit log "per which" - Bryan 
+- Link to v2: https://lore.kernel.org/r/20241125-b4-linux-next-24-11-18-clock-multiple-power-domains-v2-0-a5e7554d7e45@linaro.org
 
-Would you prefer that in the same patch as they are related issues? I
-could switch to u32 in v2 along with anything else that might arise in
-the reviews of the rest of the series.
-If you prefer a separate patch, that's fine too.
+v2:
+The main change in this version is Bjorn's pointing out that pm_runtime_*
+inside of the gdsc_enable/gdsc_disable path would be recursive and cause a
+lockdep splat. Dmitry alluded to this too.
 
-> >
-> > We could be more specific with u32 for the sample and then add the
-> > reserved field, but I would still prefer a memset() for this small
-> > struct. Adding and initializing a reserved field looks a bit artificial
-> > to me, especially for such marginal gains.
-> Issue with reserved fields is we would have to be very very careful to sp=
-ot them
-> all.  A memset avoids that care being needed.
->
-> Jonathan
->
-> >
-> > Moreover, the common practice (at least in IIO)is a plain memset() to
-> > initialize struct holes, and such common patterns are easier to maintai=
-n :)
-> >
-> > Best regards,
-> > Javier Carrasco
+Bjorn pointed to stuff being done lower in the gdsc_register() routine that
+might be a starting point.
+
+I iterated around that idea and came up with patch #3. When a gdsc has no
+parent and the pd_list is non-NULL then attach that orphan GDSC to the
+clock controller power-domain list.
+
+Existing subdomain code in gdsc_register() will connect the parent GDSCs in
+the clock-controller to the clock-controller subdomain, the new code here
+does that same job for a list of power-domains the clock controller depends
+on.
+
+To Dmitry's point about MMCX and MCX dependencies for the registers inside
+of the clock controller, I have switched off all references in a test dtsi
+and confirmed that accessing the clock-controller regs themselves isn't
+required.
+
+On the second point I also verified my test branch with lockdep on which
+was a concern with the pm_domain version of this solution but I wanted to
+cover it anyway with the new approach for completeness sake.
+
+Here's the item-by-item list of changes:
+
+- Adds a patch to capture pm_genpd_add_subdomain() result code - Bryan
+- Changes changelog of second patch to remove singleton and generally
+  to make the commit log easier to understand - Bjorn
+- Uses demv_pm_domain_attach_list - Vlad
+- Changes error check to if (ret < 0 && ret != -EEXIST) - Vlad
+- Retains passing &pd_data instead of NULL - because NULL doesn't do
+  the same thing - Bryan/Vlad
+- Retains standalone function qcom_cc_pds_attach() because the pd_data
+  enumeration looks neater in a standalone function - Bryan/Vlad
+- Drops pm_runtime in favour of gdsc_add_subdomain_list() for each
+  power-domain in the pd_list.
+  The pd_list will be whatever is pointed to by power-domains = <>
+  in the dtsi - Bjorn
+- Link to v1: https://lore.kernel.org/r/20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-v1-0-b7a2bd82ba37@linaro.org
+
+v1:
+On x1e80100 and it's SKUs the Camera Clock Controller - CAMCC has
+multiple power-domains which power it. Usually with a single power-domain
+the core platform code will automatically switch on the singleton
+power-domain for you. If you have multiple power-domains for a device, in
+this case the clock controller, you need to switch those power-domains
+on/off yourself.
+
+The clock controllers can also contain Global Distributed
+Switch Controllers - GDSCs which themselves can be referenced from dtsi
+nodes ultimately triggering a gdsc_en() in drivers/clk/qcom/gdsc.c.
+
+As an example:
+
+cci0: cci@ac4a000 {
+	power-domains = <&camcc TITAN_TOP_GDSC>;
+};
+
+This series adds the support to attach a power-domain list to the
+clock-controllers and the GDSCs those controllers provide so that in the
+case of the above example gdsc_toggle_logic() will trigger the power-domain
+list with pm_runtime_resume_and_get() and pm_runtime_put_sync()
+respectively.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+Bryan O'Donoghue (3):
+      clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
+      clk: qcom: common: Add support for power-domain attachment
+      driver: clk: qcom: Support attaching subdomain list to multiple parents
+
+ drivers/clk/qcom/common.c | 21 +++++++++++++++++++++
+ drivers/clk/qcom/gdsc.c   | 41 +++++++++++++++++++++++++++++++++++++++--
+ drivers/clk/qcom/gdsc.h   |  1 +
+ 3 files changed, 61 insertions(+), 2 deletions(-)
+---
+base-commit: 744cf71b8bdfcdd77aaf58395e068b7457634b2c
+change-id: 20241118-b4-linux-next-24-11-18-clock-multiple-power-domains-a5f994dc452a
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
 
