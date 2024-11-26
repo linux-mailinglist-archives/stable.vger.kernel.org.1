@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-95563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F2C9D9DB0
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:57:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E259D9DD0
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 20:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC53AB2C674
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 18:52:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56495B262C4
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF1F1DE2AA;
-	Tue, 26 Nov 2024 18:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FBF1DB365;
+	Tue, 26 Nov 2024 19:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjXl7Fiq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2KbM9rxf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YYMZ6pqS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4385D1D63E8;
-	Tue, 26 Nov 2024 18:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63206183CCA;
+	Tue, 26 Nov 2024 19:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732647140; cv=none; b=mQ2SK4FdAR8HMgNXlfrftxdXj5z4zAiKmZV9HrX4HXkVnJlKpXwaCPLBX5+ys+CZ6FTBkGwIW0N0rMqHr8jRGKQ8Km8dnlmMmRJWv+az6Pp+sY8h2GDmyJQ0KxLbgoDbKljqA3qOee3hn2s3SxkiBchTaR0IAol4o1Yf4rmSyFI=
+	t=1732647679; cv=none; b=TpI8bywm88aYNay2V8F7/NVyRBRHs0ZxpOXxJVtfhpjpgzJAyghHfVOycuuXauslc4PnWCR5p9klP2dS4Fi+M7jpboJjqx9zpHnAGObwv7S4cN8GrIsIGBNX6Q9dksyiHTFR6wrIRgQvZhgGM8Fkf5A+JjBhcqXL6fN3iA/d+xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732647140; c=relaxed/simple;
-	bh=5vy3ETKoRBehBMtsbIQQeHicXBlDE6OcnPhy+O5N65U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZ4Is65zYf5boTqQlzyOSdRxuythDGZw+aSRkpMoBW0iLCqMlPuRPc4dPxEDLARZSGdL3cviDmwZ7bijj5ltb8yUthYbpgCK71zaNOvkeIbmyMXtvZVc8nd2CWlKeyKgdBbIQx0i+rzYS7w7rom/z02y6Gzj/ypgKae+nK21FzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjXl7Fiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E70C4CECF;
-	Tue, 26 Nov 2024 18:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732647139;
-	bh=5vy3ETKoRBehBMtsbIQQeHicXBlDE6OcnPhy+O5N65U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OjXl7FiqYgkanSgMqRUgFZWhsrDscNA+htu1e6t6nN5DLEX8UEG9SzSZLtvQ8AlBY
-	 qhQOSCdfKQopnT/bOHU3QEVGQAypBhpBlm0e6H8tzl5thIJ+OmWlElQosPKHmwVtMs
-	 3rHnbVnliHXut4vSM647M9wItEwWOr/4WBUiXjI1Ac7CDFR705nrICK5+Za3SwxOwf
-	 nhobSZ8YJ89mAmp1eBobO+6noWEmR5zYir8ec++WW3aYCkRnBs59rypJNxwI3u84iI
-	 taute58duUWn4j/cb7N48EqILhLC+sBnjXuGjN7X5/1RP5dIb3Udxa6Uni8XDDziHo
-	 UV4r33tyZjpWA==
-Date: Tue, 26 Nov 2024 18:52:11 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Lars-Peter Clausen
- <lars@metafoo.de>, Antoni Pokusinski <apokusinski01@gmail.com>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>, Gregor Boirie
- <gregor.boirie@parrot.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, =?UTF-8?B?Sm8=?=
- =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <joao.goncalves@toradex.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 02/11] iio: adc: ti-ads1119: fix information leak in
- triggered buffer
-Message-ID: <20241126185211.385f82c4@jic23-huawei>
-In-Reply-To: <59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
-References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
-	<20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
-	<20241126085958.GA13577@francesco-nb>
-	<59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732647679; c=relaxed/simple;
+	bh=P8M1UPsrLzB3p2nJRXqoXqJWjwr0xU5AQFz5jVN9jco=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=p3UxyUZ1FGUrig9hmMvTEGBV4W/W9SMiItFzQwe//kgkyKEyXP7eKrlYjcC38FAQOdMdKuEkT5N4Rz4ScwuzqnPtXKiZ+9DGFsYyYm7W8IaBoZOPFI4fgOjPEPlGGwYJMJ+PTY3Q8pppKO/52pTHEwQnXbSH7AMr2y8JTIrIus8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2KbM9rxf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YYMZ6pqS; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 26 Nov 2024 19:01:14 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1732647675;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=d4SOQFtTEkYY3L8+IOQayZlPryk9ozcbJ2aGM6OAA8U=;
+	b=2KbM9rxf270+yTBtSWBV6eghZkOHojiEmd8zNkYQbD9pyg3AlDefVBH+yZTNLkI8ToytmH
+	888My3AwvOp41iddKbeYtsZMEuElg2e5lcg+h4Jb8yYJeIIHgBFBXdSKVrUT35uPIH/eIn
+	diuvvXaWIzCJDWfPrgnIuR77aauG3la5L5vfhUZf/nsDvxafb+qLHnUvvvMyCcNC53772c
+	W7rnw17kKTMglefbiAAao26vA0ghZ0zDfci7fqEgzrSAAiOEua3BeKNg4emDlFHF0ZSTHH
+	GfHPy7SgoLd1hzu6f2ux5LE/hDQMYOmn3oYwPcOMcTD4/Y23CKe3sb+22PX+KA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1732647675;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=d4SOQFtTEkYY3L8+IOQayZlPryk9ozcbJ2aGM6OAA8U=;
+	b=YYMZ6pqS6+tLn4nS7GtNQT6K0/tQSanTmCuHKOoPIit/NSd99o1/b88gapj0MoJALS9T+3
+	Hu9g1oRD2I0iU9Dw==
+From: "tip-bot2 for Russell King (Oracle)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/irq-mvebu-sei: Move misplaced select()
+ callback to SEI CP domain
+Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-ID: <173264767413.412.14263736309702033127.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 26 Nov 2024 10:46:37 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+The following commit has been merged into the irq/urgent branch of tip:
 
-> On 26/11/2024 09:59, Francesco Dolcini wrote:
-> > On Mon, Nov 25, 2024 at 10:16:10PM +0100, Javier Carrasco wrote:  
-> >> The 'scan' local struct is used to push data to user space from a
-> >> triggered buffer, but it has a hole between the sample (unsigned int)
-> >> and the timestamp. This hole is never initialized.
-> >>
-> >> Initialize the struct to zero before using it to avoid pushing
-> >> uninitialized information to userspace.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
-> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> >> ---
-> >>  drivers/iio/adc/ti-ads1119.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
-> >> index e9d9d4d46d38..2615a275acb3 100644
-> >> --- a/drivers/iio/adc/ti-ads1119.c
-> >> +++ b/drivers/iio/adc/ti-ads1119.c
-> >> @@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
-> >>  	unsigned int index;
-> >>  	int ret;
-> >>  
-> >> +	memset(&scan, 0, sizeof(scan));  
-> > 
-> > Did you consider adding a reserved field after sample and just
-> > initializing that one to zero?
-> > 
-> > It seems a trivial optimization not adding much value, but I thought about
-> > it, so I'd like to be sure you considered it.
-> > 
-> > In any case, the change is fine.
-> > 
-> > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > 
-> > Thanks,
-> > Francesco
-> >   
-> 
-> Hi Francesco, thanks for your review.
-> 
-> In this particular case where unsigned int is used for the sample, the
-> padding would _in theory_ depend on the architecture. The size of the
-> unsigned int is usually 4 bytes, but the standard only specifies that it
-> must be able to contain values in the [0, 65535] range i.e. 2 bytes.
-> That is indeed theory, and I don't know if there is a real case where a
-> new version of Linux is able to run on an architecture that uses 2 bytes
-> for an int. I guess there is not, but better safe than sorry.
-Using an unsigned int here is a bug as well as we should present consistent
-formatted data whatever the architecture.
-> 
-> We could be more specific with u32 for the sample and then add the
-> reserved field, but I would still prefer a memset() for this small
-> struct. Adding and initializing a reserved field looks a bit artificial
-> to me, especially for such marginal gains.
-Issue with reserved fields is we would have to be very very careful to spot them
-all.  A memset avoids that care being needed.
+Commit-ID:     81b9e4c6910fd779b679d7674ec7d3730c7f0e2c
+Gitweb:        https://git.kernel.org/tip/81b9e4c6910fd779b679d7674ec7d3730c7f0e2c
+Author:        Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+AuthorDate:    Thu, 21 Nov 2024 12:48:25 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 26 Nov 2024 19:50:42 +01:00
 
-Jonathan
+irqchip/irq-mvebu-sei: Move misplaced select() callback to SEI CP domain
 
-> 
-> Moreover, the common practice (at least in IIO)is a plain memset() to
-> initialize struct holes, and such common patterns are easier to maintain :)
-> 
-> Best regards,
-> Javier Carrasco
+Commit fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+introduced in v6.11-rc1 broke Mavell Armada platforms (and possibly others)
+by incorrectly switching irq-mvebu-sei to MSI parent.
 
+In the above commit, msi_parent_ops is set for the sei->cp_domain, but
+rather than adding a .select method to mvebu_sei_cp_domain_ops (which is
+associated with sei->cp_domain), it was added to mvebu_sei_domain_ops which
+is associated with sei->sei_domain, which doesn't have any
+msi_parent_ops. This makes the call to msi_lib_irq_domain_select() always
+fail.
+
+This bug manifests itself with the following kernel messages on Armada 8040
+based systems:
+
+ platform f21e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
+ platform f41e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
+
+Move the select callback to mvebu_sei_cp_domain_ops to cure it.
+
+Fixes: fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+---
+ drivers/irqchip/irq-mvebu-sei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-mvebu-sei.c b/drivers/irqchip/irq-mvebu-sei.c
+index f8c70f2..065166a 100644
+--- a/drivers/irqchip/irq-mvebu-sei.c
++++ b/drivers/irqchip/irq-mvebu-sei.c
+@@ -192,7 +192,6 @@ static void mvebu_sei_domain_free(struct irq_domain *domain, unsigned int virq,
+ }
+ 
+ static const struct irq_domain_ops mvebu_sei_domain_ops = {
+-	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_domain_alloc,
+ 	.free	= mvebu_sei_domain_free,
+ };
+@@ -306,6 +305,7 @@ static void mvebu_sei_cp_domain_free(struct irq_domain *domain,
+ }
+ 
+ static const struct irq_domain_ops mvebu_sei_cp_domain_ops = {
++	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_cp_domain_alloc,
+ 	.free	= mvebu_sei_cp_domain_free,
+ };
 
