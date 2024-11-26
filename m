@@ -1,173 +1,181 @@
-Return-Path: <stable+bounces-95531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F1D9D99BD
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:38:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DA39D99F9
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 15:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53C2283599
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 14:38:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A7AB2223A
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 14:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E031D5CC2;
-	Tue, 26 Nov 2024 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7287F1D47DC;
+	Tue, 26 Nov 2024 14:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TR/uIIj4"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H4JFcMT9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="FB96duuY";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H4JFcMT9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="FB96duuY"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72EEBE46;
-	Tue, 26 Nov 2024 14:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8B28F5;
+	Tue, 26 Nov 2024 14:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732631904; cv=none; b=RDb9HLhA1GsBDOapGG2aOfES9hpiKUjtDqOPpxfmMYbvrfD/EW+pGnaFecFMT4FJ2uq8OT2MGkWgBrM8no3AzHIuAHvDKdcgJnbAw4D8jl8NA+k0VBMIiilPft/BWHBUQrxWKxhEcQHV6VQk8dC4JDyFE4XITe3zS5fMKwlKzPA=
+	t=1732632743; cv=none; b=hdvsnAQ/glbyZiM5fS++sh6LIbDnuuiZ6BvleoLNX3WfvRwoARWGvpHFWuDOWGSU5Z35jvpgoKqa+QB31mBX+P44n88MCdb/EYWdi6G4GM9OIz8MpHHaW6AJ+NFWMvw4QYDy5V5RrXXVoh2t44w/kZ6nlSOe+fOog8uauvL7hIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732631904; c=relaxed/simple;
-	bh=8Q1AcMcf5bN33C57m/nCjesoaMvJRbyawLtQBBaJQHc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GKMtd4YIEoN6GxzCdOfQ2r9BwyoKzG+HJ4lCcffHQ16HPH3CNRe7yA270JJ7fkJqk8fs3cO7wHyOAi4mv/I6SgQy46223zUtL2ta7p0PpsxI2a6PfrwpULIci2TLMJNlW79AmHkH1fz9D4v3BacEFApsCbGlFRH2zsMMnDzj2WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TR/uIIj4; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1732631900;
-	bh=8Q1AcMcf5bN33C57m/nCjesoaMvJRbyawLtQBBaJQHc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TR/uIIj4aPO+RBacPBM9FcapHcX41FEZgrbEqtTwAyzqURqx5F0iiOiD9uuIqsmG6
-	 NTYBhC+nKWwFN88ypAKZL24CCPVsJhisICghwQRXAHOkK07XD9LQMFyhINBDaY2V6h
-	 Vr0bkuhyZwoL0Ffc9CULQUD/oGilB8cT7hEKFrq9ueMMRgjdjqt5M7WOPRlo5KXBzR
-	 LOGnSGHDFrFW2Ko6oLeHyKJSGDrzeUxr+YoyTFLzDM/e3Pjwxxkj1DXIEHNOej4fAN
-	 1ETAeDTpKvJ5+0qMYwSS7Qpo66S2rNwhr7y/zcQQ9CeM38jdzvxJ+EwMXZ0NUG6j/E
-	 2mOiLI+5Bm03A==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	s=arc-20240116; t=1732632743; c=relaxed/simple;
+	bh=YH7VUsPQRd833zgqYiGJxBpCkv7rPn0lNro0jtl43rU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L31NnQzGNeRhYEPcgyJ+BzO0YsVTqQSkTvSzGB6dnGHMrFry/UTuJH4FerH0gNC5Pxf5GjZM3C3pGaCCCZmUHne0puMlRDBDw/U/qEFU9pSqhYy9v7lc/OBvaCH5LgD7QuTi7lFizEyVIn4tLFd5FjjOWRxf0Ffe5PvcccBjt/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H4JFcMT9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=FB96duuY; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H4JFcMT9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=FB96duuY; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DEB1E17E36C7;
-	Tue, 26 Nov 2024 15:38:19 +0100 (CET)
-Message-ID: <142b0767-6033-4cf4-9a90-11592c8786df@collabora.com>
-Date: Tue, 26 Nov 2024 15:38:19 +0100
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 739EE21177;
+	Tue, 26 Nov 2024 14:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732632739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
+	b=H4JFcMT9Lvpaz1hOIbFetsIDZlat5mrEdeIA7IzfX6sWxtf68jN5MEJlAHjGVtGkzxfVKQ
+	GY4a7uIOuHvoeg4677ByPBzwmqaaq2qHMIiJkbxl+y8Hhv3GOWh7mbFh1/FzTDBmvGvfPr
+	MGwh1Nc9PiMHiQ1i8PcM8nAg3Y54KOY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732632739;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
+	b=FB96duuY/dbWsiYI/wyH7Re7Ji922TvQD0jJKx+ZnObh07fuofJCi3Bhuw4qPBO1ws0r3H
+	yJKdAJNI6gGpzlBQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732632739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
+	b=H4JFcMT9Lvpaz1hOIbFetsIDZlat5mrEdeIA7IzfX6sWxtf68jN5MEJlAHjGVtGkzxfVKQ
+	GY4a7uIOuHvoeg4677ByPBzwmqaaq2qHMIiJkbxl+y8Hhv3GOWh7mbFh1/FzTDBmvGvfPr
+	MGwh1Nc9PiMHiQ1i8PcM8nAg3Y54KOY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732632739;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=PVvC0X2IdzVccD4dVujhCabIRcmUKjGJsrcO3GJg50E=;
+	b=FB96duuY/dbWsiYI/wyH7Re7Ji922TvQD0jJKx+ZnObh07fuofJCi3Bhuw4qPBO1ws0r3H
+	yJKdAJNI6gGpzlBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C922139AA;
+	Tue, 26 Nov 2024 14:52:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T3WTFqPgRWfXfwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 26 Nov 2024 14:52:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 0E0DDA08CA; Tue, 26 Nov 2024 15:52:15 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	<linux-mm@kvack.org>,
+	<linux-fsdevel@vger.kernel.org>,
+	Anders Blomdell <anders.blomdell@gmail.com>,
+	Philippe Troin <phil@fifi.org>,
+	Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH] Revert "readahead: properly shorten readahead when falling back to do_page_cache_ra()"
+Date: Tue, 26 Nov 2024 15:52:08 +0100
+Message-Id: <20241126145208.985-1-jack@suse.cz>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] thermal/drivers/mediatek/lvts: Disable monitor mode
- during suspend
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, Alexandre Mergnat <amergnat@baylibre.com>,
- Balsam CHIHI <bchihi@baylibre.com>, kernel@collabora.com,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Hsin-Te Yuan <yuanhsinte@chromium.org>, Chen-Yu Tsai <wenst@chromium.org>,
- =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, stable@vger.kernel.org
-References: <20241125-mt8192-lvts-filtered-suspend-fix-v1-0-42e3c0528c6c@collabora.com>
- <20241125-mt8192-lvts-filtered-suspend-fix-v1-1-42e3c0528c6c@collabora.com>
- <600f9d78-bdc8-4133-bb43-06d798bcd543@collabora.com>
- <e3e9020b-f3d5-42bb-bf1e-6aa8da2d1708@notapiano>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <e3e9020b-f3d5-42bb-bf1e-6aa8da2d1708@notapiano>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1952; i=jack@suse.cz; h=from:subject; bh=YH7VUsPQRd833zgqYiGJxBpCkv7rPn0lNro0jtl43rU=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGNJdH3S/ejmfOSyiVnaP7STbfZNXzlBgurfveU3at/3ZZ+RV 6s2DOhmNWRgYORhkxRRZVkde1L42z6hra6iGDMwgViaQKQxcnAIwkdYZ7P90D7HPfmdpH6s6+USk9o k1/fbbPZgiNBbr/ZPTSj2cpuAquNW/6aRQIntKwe0aLpNc5jqNHp4VAXp258282lfXm32zLVdlC2eX LBRumz17zv4v/nxcLncPcL8K09b698rwNEOtpnH34dtZUTsjLRhZF+1JOfP9lGMbX0HAXIO0f1baqo ZrQn6/SZJwnclfsSic2W1HbIpR8LqS4qT2/tnP1y5c4Lbk+Zu43wblWQ2RR92v6rqc1Juh7ZW0+/f/ zGLRqS/fVnzZ8fdqVPmtXI7iAumMx8acM+RPh0mxL+atWv+sSCrG57/ZAn195ezfz951ZOy4MC1Sv2 DJOa1u0wYpttNeJzmcKrglfdsB
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[infradead.org,kvack.org,vger.kernel.org,gmail.com,fifi.org,suse.cz];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:mid,imap1.dmz-prg2.suse.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Score: -1.30
+X-Spam-Flag: NO
 
-Il 26/11/24 14:19, Nícolas F. R. A. Prado ha scritto:
-> On Tue, Nov 26, 2024 at 10:43:55AM +0100, AngeloGioacchino Del Regno wrote:
->> Il 25/11/24 22:20, Nícolas F. R. A. Prado ha scritto:
->>> When configured in filtered mode, the LVTS thermal controller will
->>> monitor the temperature from the sensors and trigger an interrupt once a
->>> thermal threshold is crossed.
->>>
->>> Currently this is true even during suspend and resume. The problem with
->>> that is that when enabling the internal clock of the LVTS controller in
->>> lvts_ctrl_set_enable() during resume, the temperature reading can glitch
->>> and appear much higher than the real one, resulting in a spurious
->>> interrupt getting generated.
->>>
->>> Disable the temperature monitoring and give some time for the signals to
->>> stabilize during suspend in order to prevent such spurious interrupts.
->>>
->>> Cc: stable@vger.kernel.org
->>> Reported-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
->>> Closes: https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
->>> Fixes: 8137bb90600d ("thermal/drivers/mediatek/lvts_thermal: Add suspend and resume")
->>> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
->>> ---
->>>    drivers/thermal/mediatek/lvts_thermal.c | 36 +++++++++++++++++++++++++++++++--
->>>    1 file changed, 34 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
->>> index 1997e91bb3be94a3059db619238aa5787edc7675..a92ff2325c40704adc537af6995b34f93c3b0650 100644
->>> --- a/drivers/thermal/mediatek/lvts_thermal.c
->>> +++ b/drivers/thermal/mediatek/lvts_thermal.c
->>> @@ -860,6 +860,32 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
->>>    	return 0;
->>>    }
->>> +static void lvts_ctrl_monitor_enable(struct device *dev, struct lvts_ctrl *lvts_ctrl, bool enable)
->>> +{
->>> +	/*
->>> +	 * Bitmaps to enable each sensor on filtered mode in the MONCTL0
->>> +	 * register.
->>> +	 */
->>> +	u32 sensor_filt_bitmap[] = { BIT(0), BIT(1), BIT(2), BIT(3) };
->>> +	u32 sensor_map = 0;
->>> +	int i;
->>> +
->>> +	if (lvts_ctrl->mode != LVTS_MSR_FILTERED_MODE)
->>> +		return;
->>> +
->>
->> That's easier and shorter:
->>
->> static void lvts_ctrl_monitor_enable( .... )
->> {
->> 	/* Bitmap to enable each sensor on filtered mode in the MONCTL0 register */
->> 	const u32 sensor_map = GENMASK(3, 0);
->>
->> 	if (lvts_ctrl->mode != LVTS_MSR_FILTERED_MODE)
->> 		return;
->>
->> 	/* Bits 0-3: Sensing points - Bit 9: Single point access flow */
->> 	if (enable)
->> 		writel(sensor_map | BIT(9), LVTS_MONCTL0(lvts_ctrl->base));
-> 
-> Wait, no, here you're enabling all the sensors in the controller. We only want
-> to enable ones that are valid, otherwise we might get garbage data and irqs from
-> sensors that aren't actually there. That's why I use the
-> lvts_for_each_valid_sensor() helper in this patch.
-> 
+This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
 
-Whoa, my brain actually missed the lvts_for_each_valid_sensor()!
+Anders and Philippe have reported that recent kernels occasionally hang
+when used with NFS in readahead code. The problem has been bisected to
+7c877586da3 ("readahead: properly shorten readahead when falling back to
+do_page_cache_ra()"). The cause of the problem is that ra->size can be
+shrunk by read_pages() call and subsequently we end up calling
+do_page_cache_ra() with negative (read huge positive) number of pages.
+Let's revert 7c877586da3 for now until we can find a proper way how the
+logic in read_pages() and page_cache_ra_order() can coexist. This can
+lead to reduced readahead throughput due to readahead window confusion
+but that's better than outright hangs.
 
-Okay no, then you're right - sorry for the bad example! In that case, though, I
-still have one more comment.
+Reported-by: Anders Blomdell <anders.blomdell@gmail.com>
+Reported-by: Philippe Troin <phil@fifi.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ mm/readahead.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-You can constify sensor_filt_bitmap, and since the values never go higher than
-BIT(3), you should also be able to spare some memory by turning that into a u8:
-
-	const u8 sensor_filt_bitmap[] = { BIT(0), BIT(1), BIT(2), BIT(3) };
-
-...and then I assume that there's no way valid sensors could ever read from an
-index that is more than 4 (so, I assume that there's no way the loop tries to
-read out of the array upper boundary).
-
-In which case - after at least constifying the sensor_filt_bitmap array, for v2
-feel free to add my
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-...and sorry again for the initial miss :-)
-
-Cheers,
-Angelo
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 8f1cf599b572..ea650b8b02fb 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -458,8 +458,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 		struct file_ra_state *ra, unsigned int new_order)
+ {
+ 	struct address_space *mapping = ractl->mapping;
+-	pgoff_t start = readahead_index(ractl);
+-	pgoff_t index = start;
++	pgoff_t index = readahead_index(ractl);
+ 	unsigned int min_order = mapping_min_folio_order(mapping);
+ 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+ 	pgoff_t mark = index + ra->size - ra->async_size;
+@@ -522,7 +521,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 	if (!err)
+ 		return;
+ fallback:
+-	do_page_cache_ra(ractl, ra->size - (index - start), ra->async_size);
++	do_page_cache_ra(ractl, ra->size, ra->async_size);
+ }
+ 
+ static unsigned long ractl_max_pages(struct readahead_control *ractl,
+-- 
+2.35.3
 
 
