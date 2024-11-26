@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-95483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364A79D9143
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 06:09:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03709D9148
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 06:14:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCEA3B26360
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 05:09:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525D5166B56
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 05:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E7369D31;
-	Tue, 26 Nov 2024 05:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C969D31;
+	Tue, 26 Nov 2024 05:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kr7FdpFL"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="frdS5mgt"
 X-Original-To: stable@vger.kernel.org
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEAD7E9;
-	Tue, 26 Nov 2024 05:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A67E9;
+	Tue, 26 Nov 2024 05:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732597792; cv=none; b=OqGpoNMiTvOURrt74ro5uahGcM7g5T5NigaaeBhWgbMED7N+K4Y3eRpujnXghRemHj+emyA4wq4d1DOdY62Lk8gqV2ge7/392/ZyjeL7Y09Q9gwxesvpamTN3FB1Um9i9zpcnHpTKtHdz9PGQImfFgEyde51XfP+2dEWn8LIF40=
+	t=1732598049; cv=none; b=IG/wkcVdUf5l3jGID+8S1G6vTr4N2YVdCIj9NhjeIkodpe5TwJcpk0TMjiQWDbQXnVJZhKTLRPXRD8xmz999SzFYKR0vO5yAsGpCapv2Wm/aQvNA/Udezh7bT04n1tBFl9zp8mN91JR7vpTBFKqnV1Jy372FHEjr7Ek+K66AOGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732597792; c=relaxed/simple;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
+	s=arc-20240116; t=1732598049; c=relaxed/simple;
+	bh=3Ktpy2W8n/6hMuwXJjn0ModHoQ5AjORyR4Kol/DZFpA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqOChn9+/oa8km0w9Bjn1wczH+BZce5GeRWrT4oADvNGwPV8xxwbJKhpKx9AFX5nD/5f6VHR5aooxcPrg/Hj9bHIz+inc8x2wz9qUpBXY/d3DpYm/V+GFtt0groUGiqEX0N9witWC7GWugyJGQR1eEXKcw0blXnm0aPvo525Lmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kr7FdpFL; arc=none smtp.client-ip=198.137.202.133
+	 Content-Type:Content-Disposition:In-Reply-To; b=hBWMGyOOhkimZxPyuFSeuu6e491/NbY9Db3nw/SYVvNZ/ZQ9QZpjMJEhpv0MzBP8KxJskxvieVSuC9sg7hGpQ06gILUjt1Olkp4JNwOZm6DcoXfEzT7s8KKzqcFkL7FTrg58j9gOMAr4eFn6IXv49v4o8bLYH2z3qf8/A2/RRV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=frdS5mgt; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=kr7FdpFLnz0pvUumShyoawNUsx
-	zzy04V4pAsc7wn7uCO14tPjU+lflCCXgyB05iZmwMk+BBMvRtXJSweq0bgVHf8OIdXJiI/Hdg8YR+
-	DLW9GDb4n/F9hqVzbfA6bHs7nTbudWQtn+3AW1vCrvd0FOVvrc/v1dKMBwhBzJ94Mjkx9KezaiZQX
-	0CCbm5qBJghyK2hrQis0SqOLo+tr7kzJ42fha6miez6SNrRUL3Phu+yWYdtcvIHUN8ZAJ7KhI6KzD
-	AVOk8/PhSB0hWUqNK0PmFKD0U42y4NXPfWqEhAVm8UThbUI1wwVUf4/kUrRgBleLeyZYvutWElcNO
-	ip0+Oqag==;
+	bh=woMkcs0jhmMIBpRBuyVxUn1/pog0E518gOYUYyVWVj8=; b=frdS5mgt646jPzYgfIkObGLA/r
+	W9n/i1MSqZVGnzX33spwsa1SVy2apJR/lMHWbQgk3kNGYC/RqWgx+N8/Np4w2b/Gma6EpEKpHbrhe
+	nDE4LEA7cOa4KrkNM+uq2H/2BZFmEKlvq31vh/c34HvRMJaqx8/gs3iy//DzTakDWrxlsXMumxcfj
+	dfu0arqSj5/FsazxDJMGWwA5eQOpqOShE0raLTnezvayv+I4OoIlG83vJxJa+lzWveFIAlH2f/OJL
+	SPK0V4wS3nueZPYn+hgnj4ELmbawUqj9TIw3TUJJytgHDzZW8lICqx7a5jQAAPdBx1joFanbOFrml
+	edWQPoXA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFnpe-00000009eXW-29OY;
-	Tue, 26 Nov 2024 05:09:50 +0000
-Date: Mon, 25 Nov 2024 21:09:50 -0800
+	id 1tFntn-00000009env-3oo2;
+	Tue, 26 Nov 2024 05:14:07 +0000
+Date: Mon, 25 Nov 2024 21:14:07 -0800
 From: Christoph Hellwig <hch@infradead.org>
 To: "Darrick J. Wong" <djwong@kernel.org>
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 14/21] xfs: only run precommits once per transaction
- object
-Message-ID: <Z0VYHpd8gOm_e3sO@infradead.org>
+Subject: Re: [PATCH 16/21] xfs: don't lose solo superblock counter update
+ transactions
+Message-ID: <Z0VZH45ZY44o4Bjq@infradead.org>
 References: <173258397748.4032920.4159079744952779287.stgit@frogsfrogsfrogs>
- <173258398042.4032920.1346072051908401243.stgit@frogsfrogsfrogs>
+ <173258398074.4032920.16314140758572044747.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,11 +61,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <173258398042.4032920.1346072051908401243.stgit@frogsfrogsfrogs>
+In-Reply-To: <173258398074.4032920.16314140758572044747.stgit@frogsfrogsfrogs>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Looks good:
+On Mon, Nov 25, 2024 at 05:28:53PM -0800, Darrick J. Wong wrote:
+> From: Darrick J. Wong <djwong@kernel.org>
+> 
+> Superblock counter updates are tracked via per-transaction counters in
+> the xfs_trans object.  These changes are then turned into dirty log
+> items in xfs_trans_apply_sb_deltas just prior to commiting the log items
+> to the CIL.
+> 
+> However, updating the per-transaction counter deltas do not cause
+> XFS_TRANS_DIRTY to be set on the transaction.  In other words, a pure sb
+> counter update will be silently discarded if there are no other dirty
+> log items attached to the transaction.
+> 
+> This is currently not the case anywhere in the filesystem because sb
+> counter updates always dirty at least one other metadata item, but let's
+> not leave a logic bomb.
+
+xfs_trans_mod_sb is the only place that sets XFS_TRANS_SB_DIRTY, and
+always forces XFS_TRANS_DIRTY.  So this seems kinda intentional, even
+if this new version is much cleaner.  So the change looks fine:
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+But I don't think the Fixes tag is really warranted.
 
 
