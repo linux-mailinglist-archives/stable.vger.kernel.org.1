@@ -1,180 +1,303 @@
-Return-Path: <stable+bounces-95568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091589D9E1F
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 20:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B24319D9E6D
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 21:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF137282F86
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:56:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42A16282F94
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 20:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3D71DE4FF;
-	Tue, 26 Nov 2024 19:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30091DB377;
+	Tue, 26 Nov 2024 20:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtjOedaS"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="xXv/rkjI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E5128689
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 19:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E98A1D63E9
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 20:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732650971; cv=none; b=UGHoCabhO9n6CGjpaiiPXKB2XcKfqZ0TlmWi7KKZ1e0sykfQ/5Zcgv2zEWvF0gNuoznNS5aIkI75vptG8co7m214cgzg4JhSEfWtqJ1JLB8V5rxI3JV0A1Zt44OFTIOhkAMvuiDN/Vpbnw1rTJCnh/pVOEJsS/Fsoc8aUCujFis=
+	t=1732653471; cv=none; b=KWef6c7iWzz8uN1fTs/nRnIiMCmF3D5V9gC0iNiV7hrErsJFU69ZhLyezThMZI6hTlmhW0r/5G38A5z7qyqiHYtrIYeEnDFCViEL3MhDza8CD66e4X8CSpdzJuSflWAhybPgEjWjJy878Ln293AZq8QFMkzgWgrqYo1x3jbtcgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732650971; c=relaxed/simple;
-	bh=X/AQq8mVu8rCEUPmThFn6L/sYQVwjIB1aDNhGc5HyeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ+wMRfX7eAzFOi1OJImk9Z/tVpf190A+PLAhL+XDOuRRPzj5roPvPfKG/IIDYfM5F+BUK2gwg/6C4BUd7S/q99rroBS4p5EmINg3l5guiCjJDZGqa+zOMU7QqkeCx6WDE2F0ePKKw0Kp3Z6kIbba/p6ST/7Fg+rtbdQMhUaiyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtjOedaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7026AC4CECF;
-	Tue, 26 Nov 2024 19:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732650970;
-	bh=X/AQq8mVu8rCEUPmThFn6L/sYQVwjIB1aDNhGc5HyeM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtjOedaSOMIHzpD1HQMnovWxSjq6tx5v87gZ9QthLdPdZw0N7IDEjoHcs6qMBLXo6
-	 uYDz1ZSo4j8XwbGn6aLBH/wYWbCCxwMnLXIh/Xbjc8SN/dhTBo70xYZ4qibcgFSxwr
-	 ot77yrIE5uu3Z8gk8cy0huCekxNoBh5UgQGJepCJRoAsEIl7Nku3NsSYnvojhToXZv
-	 X08buK58CXn0wlFtnZJNACGaqhfTTh83ar2/FsR/zvXtnKM6jXk0CZiKEmm+BiXwGj
-	 fmTQbRqlv3Atei0RvsQYhmiF7NURi8ljMZEc96j9Hl/XpboShfIDrLDXfAHV2d89z7
-	 KWaw27KFUN8DA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ziwei Xiao <ziweixiao@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] gve: Fixes for napi_poll when budget is 0
-Date: Tue, 26 Nov 2024 14:56:09 -0500
-Message-ID: <20241126144949-7ec7ce3db1b874e7@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241126184731.2497956-1-ziweixiao@google.com>
-References: 
+	s=arc-20240116; t=1732653471; c=relaxed/simple;
+	bh=gzhq4ilM7xN7prkyZTKgjVhpZmSHKljfQPpJ89u0Pyo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ubrWq3tH0L15KtfgY2sJ80GrKpABQ81nIbyng8RntxKbUc0cJKbKjb4vnItjDhwEP9+HZoOpWjvqEOF/yIjuxvAnTw0UoodeVkkMrevaatFWcc4a0tJ0HWwmldr33lrtzgivt+2lDP9ILpG3On6ZPPk53N0/oWcIUVJ4j3DognA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=xXv/rkjI; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53dd59a2bc1so5415636e87.2
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 12:37:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1732653466; x=1733258266; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UQ4t32M7ZLI4FzUfwQOyTzpokW/diWfMjxkLkUMro8Y=;
+        b=xXv/rkjI07kLV8yGxkoG5A0VB7XO+FgkQZL30zakKeXdGczTOopstzyLABzdvjCaTj
+         V4GtAJUKR21wBDaqZoAetmYJ6dD2W10MRUqC+QM34BBahjsGXol+ONS4D7MC7tk4QMYG
+         AYAPv7anitqT/04lTEao+MF1PLJyU5bol2gUAU2dJghDNS657C0rm8+JeiyEoH7WfpBh
+         AJKKTepw6hA16krOm8EyjPokEC/AdFTt4azxw4pysz7SHzvKpu7P00FaLxehTM2sXFZ6
+         dD6IBDK4bXbRBtRRU5ShZsW+bitAlR2EcI8bk2Bw2DGro4kkUqN+MYiKG43KWa80HKu4
+         vAlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732653466; x=1733258266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UQ4t32M7ZLI4FzUfwQOyTzpokW/diWfMjxkLkUMro8Y=;
+        b=IcORFadfNduvpErpRm9lOD/2hc7aO/p14dsvvmjHkUgBVyBXZoY4QE4Sr71lRkjHqS
+         A9k+rakK8jJOzJJ6sSaIji6yXUcEKrW88xfCZ7QnkCpa74q5AeK9ZXMKAWcsyk+LEHO7
+         kS/GZP4mxDXv96xq/jkPPLhn/RmXmg92Lw4KsEyYufr9dzto3DJ7+2WOgeyfHoYa/cPH
+         fuVmKG7kSAKgvop5iCR2gKY2Dr28IXlnxos+YlGdSqOa+j8Ct/kWUL/IiYb57eF2djls
+         KCXFVH9WZ8Pi7D58T9Qd/+BrXD89LMbC2MtLISaQH1gMd5vh3Q/bqXti6EMdMMUETa1p
+         tA8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUIXkwIND59Y6JUGonuW19ulcm5AcxlAeEiM0f5Lqi5xJq3D8TPyjdDyitkg6ZW5es58jbM8eA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNob3bPFajxK1bUURdzmlxYDnyhR+pz90ihWC+04M+6HVxY6lQ
+	79BC6zxYwv1q2oJJH3CX6x8FJ55Eg9HINnAuVkVI1wZT46Qi5wZcn5le3T0VoCp1i9gIf2TSyNo
+	jRXplB0JSsSpP9b8+lC1O99shrR1mpCVyhAiwNA==
+X-Gm-Gg: ASbGncteJE+qrAdzI9GbZZgJUk0SGUWg1Ge3gBrZrHyGsBH2OU9mhoESJvFz2B4iuEZ
+	1vioq1MN8wOKjD+pxQQ7j2oyS611odycl/CScNDDz1bWySGSOh7i1BysUj113ZPE=
+X-Google-Smtp-Source: AGHT+IGtNEUmmvQvrgJEmVFBB9IHb0jzO2pINcF0Q83qO5PrA2QFYfRJPml54xlqW0P5qIpEu4IPZAkb7Kbr7kN0zOA=
+X-Received: by 2002:a05:6512:3b08:b0:539:e2cc:d380 with SMTP id
+ 2adb3069b0e04-53df00d9559mr192239e87.27.1732653466233; Tue, 26 Nov 2024
+ 12:37:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241125080530.777123-1-alexander.sverdlin@siemens.com>
+In-Reply-To: <20241125080530.777123-1-alexander.sverdlin@siemens.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 26 Nov 2024 21:37:35 +0100
+Message-ID: <CAMRc=Md03oSc6jkib=g9B7C51i4aAD6LdXGHsmXuRxB7VjDxaA@mail.gmail.com>
+Subject: Re: [PATCH] gpio: omap: Silence lockdep "Invalid wait context"
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: linux-gpio@vger.kernel.org, Grygorii Strashko <grygorii.strashko@ti.com>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-omap@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+On Mon, Nov 25, 2024 at 9:05=E2=80=AFAM A. Sverdlin
+<alexander.sverdlin@siemens.com> wrote:
+>
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+>
+> The problem apparetly has been known since the conversion to
+> raw_spin_lock() (commit 4dbada2be460
+> ("gpio: omap: use raw locks for locking")).
+>
+> Symptom:
+>
+> [ BUG: Invalid wait context ]
+> 5.10.214
+> -----------------------------
+> swapper/1 is trying to lock:
+> (enable_lock){....}-{3:3}, at: clk_enable_lock
+> other info that might help us debug this:
+> context-{5:5}
+> 2 locks held by swapper/1:
+>  #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
+>  #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
+> stack backtrace:
+> CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
+> Hardware name: Generic AM33XX (Flattened Device Tree)
+> unwind_backtrace
+> show_stack
+> __lock_acquire
+> lock_acquire.part.0
+> _raw_spin_lock_irqsave
+> clk_enable_lock
+> clk_enable
+> omap_gpio_set_config
+> gpio_keys_setup_key
+> gpio_keys_probe
+> platform_drv_probe
+> really_probe
+> driver_probe_device
+> device_driver_attach
+> __driver_attach
+> bus_for_each_dev
+> bus_add_driver
+> driver_register
+> do_one_initcall
+> do_initcalls
+> kernel_init_freeable
+> kernel_init
+>
+> Problematic spin_lock_irqsave(&enable_lock, ...) is being called by
+> clk_enable()/clk_disable() in omap2_set_gpio_debounce() and
+> omap_clear_gpio_debounce().
+>
+> For omap2_set_gpio_debounce() it's possible to move
+> raw_spin_lock_irqsave(&bank->lock, ...) inside omap2_set_gpio_debounce()
+> so that the locks nest as follows:
+>
+>   clk_enable(bank->dbck)
+>   raw_spin_lock_irqsave(&bank->lock, ...)
+>   raw_spin_unlock_irqrestore()
+>   clk_disable()
+>
+> Two call-sites of omap_clear_gpio_debounce() are more convoluted, but one
+> can take the advantage of the nesting nature of clk_enable()/clk_disable(=
+),
+> so that the inner clk_disable() becomes lockless:
+>
+>   clk_enable(bank->dbck)                <-- only to clk_enable_lock()
+>   raw_spin_lock_irqsave(&bank->lock, ...)
+>   omap_clear_gpio_debounce()
+>     clk_disable()                       <-- becomes lockless
+>   raw_spin_unlock_irqrestore()
+>   clk_disable()
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> ---
+>  drivers/gpio/gpio-omap.c | 35 ++++++++++++++++++++++++++++++-----
+>  1 file changed, 30 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+> index 7ad4534054962..f9e502aa57753 100644
+> --- a/drivers/gpio/gpio-omap.c
+> +++ b/drivers/gpio/gpio-omap.c
+> @@ -181,6 +181,7 @@ static inline void omap_gpio_dbck_disable(struct gpio=
+_bank *bank)
+>  static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offs=
+et,
+>                                    unsigned debounce)
+>  {
+> +       unsigned long           flags;
+>         u32                     val;
+>         u32                     l;
+>         bool                    enable =3D !!debounce;
+> @@ -196,13 +197,18 @@ static int omap2_set_gpio_debounce(struct gpio_bank=
+ *bank, unsigned offset,
+>
+>         l =3D BIT(offset);
+>
+> +       /*
+> +        * Ordering is important here: clk_enable() calls spin_lock_irqsa=
+ve(),
+> +        * therefore it must be outside of the following raw_spin_lock_ir=
+qsave()
+> +        */
+>         clk_enable(bank->dbck);
+> +       raw_spin_lock_irqsave(&bank->lock, flags);
+> +
+>         writel_relaxed(debounce, bank->base + bank->regs->debounce);
+>
+>         val =3D omap_gpio_rmw(bank->base + bank->regs->debounce_en, l, en=
+able);
+>         bank->dbck_enable_mask =3D val;
+>
+> -       clk_disable(bank->dbck);
+>         /*
+>          * Enable debounce clock per module.
+>          * This call is mandatory because in omap_gpio_request() when
+> @@ -217,6 +223,9 @@ static int omap2_set_gpio_debounce(struct gpio_bank *=
+bank, unsigned offset,
+>                 bank->context.debounce_en =3D val;
+>         }
+>
+> +       raw_spin_unlock_irqrestore(&bank->lock, flags);
+> +       clk_disable(bank->dbck);
+> +
 
-Hi,
+This part looks pretty clear to me.
 
-Found matching upstream commit: 278a370c1766060d2144d6cf0b06c101e1043b6d
+>         return 0;
+>  }
+>
+> @@ -647,6 +656,13 @@ static void omap_gpio_irq_shutdown(struct irq_data *=
+d)
+>         unsigned long flags;
+>         unsigned offset =3D d->hwirq;
+>
+> +       /*
+> +        * Enable the clock here so that the nested clk_disable() in the
+> +        * following omap_clear_gpio_debounce() is lockless
+> +        */
+> +       if (bank->dbck_flag)
+> +               clk_enable(bank->dbck);
+> +
 
+But this looks like a functional change. You effectively bump the
+clock enable count but don't add a corresponding clk_disable() in the
+affected path. Is the clock ever actually disabled then?
 
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: ff33be9cecee)
-6.1.y | Not found
+Am I not getting something?
 
-Note: The patch differs from the upstream commit:
----
---- -	2024-11-26 14:46:00.728480326 -0500
-+++ /tmp/tmp.OFZu4s6rk5	2024-11-26 14:46:00.726235127 -0500
-@@ -1,40 +1,33 @@
--Netpoll will explicilty pass the polling call with a budget of 0 to
--indicate it's clearing the Tx path only. For the gve_rx_poll and
--gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
--to do all the work. Add check to avoid the rx path and xdp path being
--called when budget is 0. And also avoid napi_complete_done being called
--when budget is 0 for netpoll.
-+The original fix was merged here:
-+https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
-+Resend it since the original one was not cleanly applied to 6.1 kernel.
- 
- Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
- Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
--Link: https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
--Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
- ---
-- drivers/net/ethernet/google/gve/gve_main.c | 8 +++++++-
-+ drivers/net/ethernet/google/gve/gve_main.c | 7 +++++++
-  drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
-  drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
-- 3 files changed, 7 insertions(+), 9 deletions(-)
-+ 3 files changed, 7 insertions(+), 8 deletions(-)
- 
- diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
--index 276f996f95dcc..2d42e733837b0 100644
-+index d3f6ad586ba1..8771ccfc69b4 100644
- --- a/drivers/net/ethernet/google/gve/gve_main.c
- +++ b/drivers/net/ethernet/google/gve/gve_main.c
--@@ -254,10 +254,13 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
-- 	if (block->tx) {
-- 		if (block->tx->q_num < priv->tx_cfg.num_queues)
-- 			reschedule |= gve_tx_poll(block, budget);
---		else
--+		else if (budget)
-- 			reschedule |= gve_xdp_poll(block, budget);
-- 	}
-+@@ -202,6 +202,10 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
-  
-+ 	if (block->tx)
-+ 		reschedule |= gve_tx_poll(block, budget);
-++
- +	if (!budget)
- +		return 0;
- +
-  	if (block->rx) {
-  		work_done = gve_rx_poll(block, budget);
-  		reschedule |= work_done == budget;
--@@ -298,6 +301,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
-+@@ -242,6 +246,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
-  	if (block->tx)
-  		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
-  
-@@ -45,10 +38,10 @@
-  		work_done = gve_rx_poll_dqo(block, budget);
-  		reschedule |= work_done == budget;
- diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
--index e84a066aa1a40..73655347902d2 100644
-+index 021bbf308d68..639eb6848c7d 100644
- --- a/drivers/net/ethernet/google/gve/gve_rx.c
- +++ b/drivers/net/ethernet/google/gve/gve_rx.c
--@@ -1007,10 +1007,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
-+@@ -778,10 +778,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
-  
-  	feat = block->napi.dev->features;
-  
-@@ -60,17 +53,20 @@
-  		work_done = gve_clean_rx_done(rx, budget, feat);
-  
- diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
--index 6957a865cff37..9f6ffc4a54f0b 100644
-+index 5e11b8236754..bf1ac0d1dc6f 100644
- --- a/drivers/net/ethernet/google/gve/gve_tx.c
- +++ b/drivers/net/ethernet/google/gve/gve_tx.c
--@@ -925,10 +925,6 @@ bool gve_xdp_poll(struct gve_notify_block *block, int budget)
-- 	bool repoll;
-+@@ -725,10 +725,6 @@ bool gve_tx_poll(struct gve_notify_block *block, int budget)
-+ 	u32 nic_done;
-  	u32 to_do;
-  
- -	/* If budget is 0, do all the work */
- -	if (budget == 0)
- -		budget = INT_MAX;
- -
-- 	/* Find out how much work there is to be done */
-- 	nic_done = gve_tx_load_event_counter(priv, tx);
-- 	to_do = min_t(u32, (nic_done - tx->done), budget);
-+ 	/* In TX path, it may try to clean completed pkts in order to xmit,
-+ 	 * to avoid cleaning conflict, use spin_lock(), it yields better
-+ 	 * concurrency between xmit/clean than netif's lock.
-+-- 
-+2.47.0.338.g60cca15819-goog
-+
----
+Bart
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+>         raw_spin_lock_irqsave(&bank->lock, flags);
+>         bank->irq_usage &=3D ~(BIT(offset));
+>         omap_set_gpio_triggering(bank, offset, IRQ_TYPE_NONE);
+> @@ -656,6 +672,9 @@ static void omap_gpio_irq_shutdown(struct irq_data *d=
+)
+>                 omap_clear_gpio_debounce(bank, offset);
+>         omap_disable_gpio_module(bank, offset);
+>         raw_spin_unlock_irqrestore(&bank->lock, flags);
+> +
+> +       if (bank->dbck_flag)
+> +               clk_disable(bank->dbck);
+>  }
+>
+>  static void omap_gpio_irq_bus_lock(struct irq_data *data)
+> @@ -827,6 +846,13 @@ static void omap_gpio_free(struct gpio_chip *chip, u=
+nsigned offset)
+>         struct gpio_bank *bank =3D gpiochip_get_data(chip);
+>         unsigned long flags;
+>
+> +       /*
+> +        * Enable the clock here so that the nested clk_disable() in the
+> +        * following omap_clear_gpio_debounce() is lockless
+> +        */
+> +       if (bank->dbck_flag)
+> +               clk_enable(bank->dbck);
+> +
+>         raw_spin_lock_irqsave(&bank->lock, flags);
+>         bank->mod_usage &=3D ~(BIT(offset));
+>         if (!LINE_USED(bank->irq_usage, offset)) {
+> @@ -836,6 +862,9 @@ static void omap_gpio_free(struct gpio_chip *chip, un=
+signed offset)
+>         omap_disable_gpio_module(bank, offset);
+>         raw_spin_unlock_irqrestore(&bank->lock, flags);
+>
+> +       if (bank->dbck_flag)
+> +               clk_disable(bank->dbck);
+> +
+>         pm_runtime_put(chip->parent);
+>  }
+>
+> @@ -913,15 +942,11 @@ static int omap_gpio_debounce(struct gpio_chip *chi=
+p, unsigned offset,
+>                               unsigned debounce)
+>  {
+>         struct gpio_bank *bank;
+> -       unsigned long flags;
+>         int ret;
+>
+>         bank =3D gpiochip_get_data(chip);
+>
+> -       raw_spin_lock_irqsave(&bank->lock, flags);
+>         ret =3D omap2_set_gpio_debounce(bank, offset, debounce);
+> -       raw_spin_unlock_irqrestore(&bank->lock, flags);
+> -
+>         if (ret)
+>                 dev_info(chip->parent,
+>                          "Could not set line %u debounce to %u microsecon=
+ds (%d)",
+> --
+> 2.47.0
+>
 
