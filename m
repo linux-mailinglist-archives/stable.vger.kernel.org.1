@@ -1,153 +1,71 @@
-Return-Path: <stable+bounces-95479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3FD9D911E
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 05:52:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFB39D9135
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 06:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95F8EB245F5
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 04:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81EEE28703A
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 05:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1F085931;
-	Tue, 26 Nov 2024 04:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398682746A;
+	Tue, 26 Nov 2024 05:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H01l5V74"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nlLzXh1v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB2F14286
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 04:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6236E7E9;
+	Tue, 26 Nov 2024 05:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732596734; cv=none; b=NxGVc2h/IsBNwFo1jaMjsgK4B/Zfy0aFqIMmTQSa8a913fg+6OKEbRjFMq6xeJnV69RHeqvJkj1jokLAnBVLBEoqUkLYwQ5p/UzZ4h8Nxm0oShqeiZU5Q/+5vo9ve4ZRCeZ16btgQfipmhheScBVCDJlHwNLZGRAic8EITP5Q0w=
+	t=1732597282; cv=none; b=FpFN5sSC5OnlV9iqk5Zd7w7oK2FaPtI64bSH849LE62ov0TVEuPpInOjNR7ZBqsGoVpx/muLpxgTm9D6x7fAwL0/NrPTxrgNfxSodsDDiCBMJmTVRvfCkRVQ9K0AcIka4xjgSbERgOupq7peTFfIaPgAT5xlVKI8xl3DDeCy2Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732596734; c=relaxed/simple;
-	bh=UMaGgDkF1T2aYUdiWAaQKUuv145YTS1tpH7aMLKiQmY=;
+	s=arc-20240116; t=1732597282; c=relaxed/simple;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=enzm5E6OROWCQxkOT5TrgxyTLypuWItTMbvWhIAeg1XXH9NEVsmXJwVj9X3LGQCWk/ISw5j+43ZH1/3UPfyENCW2I2ddblsXEtUNSJ+AEwqvtuRZHk8b5nQ9EYbzVgeI5J1wszhnPBLzuETR58UQQmKP7DnNt8V+EyiV0v+CqGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H01l5V74; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-724ffe64923so2442182b3a.2
-        for <stable@vger.kernel.org>; Mon, 25 Nov 2024 20:52:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732596732; x=1733201532; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Rem8LGZXdVnZ/PI5gsaQii+kftUkAG4f3mUtkM8OBis=;
-        b=H01l5V742yTAVdomk5Oc2AXbgCIGX8hmkHGgtDtxdFR3qig/sVzN8Dye5uD9TGoCt6
-         xsWI6DGv5o6vgr6HsZjLS3X5MxTj5OB1VPL3taGiYoa2XY0HLu7UNbzH/bxHlRTb57M4
-         8Qj0ee6yX8WmH/tDcbov0Bnp7PwHpIBnNUIDkd9aKOK7R0ECC0QNboRJSHXlyQdU1twH
-         VOM2EYD+0AV1dckpnpTubuI21OrL1cO6K3jLhAjzO7hzvFD4ZBXYM8sCIZhQz1DqrJgv
-         I6bf9GUkfxEaDcyUHMlEmeMP+tQXFgS6K29tOh0z5hDWd1Hn3hEPgOVgrwZ+SXYwlGAm
-         C1IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732596732; x=1733201532;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rem8LGZXdVnZ/PI5gsaQii+kftUkAG4f3mUtkM8OBis=;
-        b=X+tJ/VZDaF5UXRaJ4xKpBKA+zJOnA3yYc9LgbkaSPrXI9+EXTWLZrhd3hrM4h1VnUm
-         JnRlDlgV3pX3Juhh/xy/0u+Pa0WbSlCUWFKi/32cJgLx2SdWvzjGXHG8YIutuLp41OV4
-         w5/GmO/EEUTBu5tPuzdoeIVM1ncEzsIbeZ5TlSE1fj56nhEuEBv1g3Josa44dhh9oQb1
-         rU8ywro73PWwzIka3VG0+EQrnpkWsF6VyqF+QrrH3PrPOT5qDV5rXITyFR4qjoCHM1Gp
-         xTfwV/H9IR0BzVlCgENYgIdd3W91Z+kTe9dKCtcBiDcRaopE5rqMk99DEXpnvqu/q1Ej
-         HuRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVqQ+mVAShT3ybJ8lbxJ+bOm8PprTgHUy8MsF0S46fYUD+9BSCJtxvR3jZybrlAVIflD1McfTM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzUnUtO84IskC9LRkY3LCsqqpAGImPsdbJ0eoFkwnLzNk+CS10
-	KiFltXUOzn4UIkgOJJK/lTw8gccMFk/GBNO0Nnm3EMiL6ugNlE8aBhe08XOGrA==
-X-Gm-Gg: ASbGncvZdFOzeELLhAvuy1Ya6CQaatV7oyBngLPvYJeRfcYs7uu1/MGAA6RkiYxZRFL
-	AFw5veAqBIK0fk8ct27ZxMoVpb7dwF36Ya/xm7CihsGrT+X16ivfKhZUCrkuEsEYTIx0SLgihXH
-	cWAcGlKx1sS7PPQppkVMTqhFcJPVoNQmH6WN4YAojlQ89MTqd5t3v2wcAy2IYFIb662D1Hmse09
-	sBGjnVf+1BvPKxIhiZiM64njYk+6Hq4c8mC2mwJb35MyCDW6CzX1lUjgbSc/MU=
-X-Google-Smtp-Source: AGHT+IFLS2CiMe6uFsk3VjOrgamDEQHKYFhaEEUWVyLY/IZqdSO4oF/zkuEQngAEkYwNRZrt7cVwfA==
-X-Received: by 2002:a05:6a21:3389:b0:1db:dfe4:daa4 with SMTP id adf61e73a8af0-1e09e40644fmr23624442637.9.1732596731951;
-        Mon, 25 Nov 2024 20:52:11 -0800 (PST)
-Received: from thinkpad ([220.158.156.172])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dc2c5fcsm72746705ad.280.2024.11.25.20.52.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2024 20:52:11 -0800 (PST)
-Date: Tue, 26 Nov 2024 10:22:06 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Vamshi Gajjela <vamshigajjela@google.com>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>, linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: ufs: core: Fix link_startup_again on success
-Message-ID: <20241126045206.v64iypeiyt22lcei@thinkpad>
-References: <20241125125338.905146-1-vamshigajjela@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rogbND0yp89JSoABYjWpl+pGfiTCWr0oDp7zeMn7pAVLRlhQesGMY4L1QZlS6SEHK/vN36uPsb8tI78GJRSSYUrn1y6J6VCXju9fTaU8l6pWfuHUzBDFNXiyxUD84Osn6mHmCTyTMAlAchu/vp8Z99s8mVnqsszNBsLzbDev8IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nlLzXh1v; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=nlLzXh1vO1Dq0UBT5wBz91EG3j
+	3PCpuBanJikxske7+nma7Eni5Km9GbrW1iWJ+zMaoF9acEtpcYKlPUZKzz0evlJqJwtrb7ejMXFCC
+	+/NzABc4wughL/dS7ejDpHuaUGhptwyZL4Toi798uj/VAjm9JC1AT77I0sMSZdc5Lqup99h+3QODI
+	+u/QEM7K7slZ+7/jRUcLFJOtvjkVRww0PjeXIL35zAWFD+Uj2tZ+ZBLjQlKAtN3YT1HuBTlC4qhEp
+	WhCZGtGBmyXJhLzhVptjXqzZZTwYXHvGCm0VW+PfyuQJx+0Dh6h6EGAQSkNXYtpO62F/N01fDGGdJ
+	7rbZ2ACA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tFnhQ-00000009ds7-0ZhB;
+	Tue, 26 Nov 2024 05:01:20 +0000
+Date: Mon, 25 Nov 2024 21:01:20 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 11/21] xfs: update btree keys correctly when _insrec
+ splits an inode root block
+Message-ID: <Z0VWIP9l32OeX1OB@infradead.org>
+References: <173258397748.4032920.4159079744952779287.stgit@frogsfrogsfrogs>
+ <173258397991.4032920.4586526854197814179.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241125125338.905146-1-vamshigajjela@google.com>
+In-Reply-To: <173258397991.4032920.4586526854197814179.stgit@frogsfrogsfrogs>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Mon, Nov 25, 2024 at 06:23:37PM +0530, Vamshi Gajjela wrote:
-> Set link_startup_again to false after a successful
-> ufshcd_dme_link_startup operation and confirmation of device presence.
-> Prevents unnecessary link startup attempts when the previous operation
-> has succeeded.
-> 
-> Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-> Fixes: 7caf489b99a4 ("scsi: ufs: issue link starup 2 times if device isn't active")
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/ufs/core/ufshcd.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index abbe7135a977..cc1d15002ab5 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -4994,6 +4994,10 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
->  			goto out;
->  		}
->  
-> +		/* link_startup success and device is present */
-> +		if (!ret && ufshcd_is_device_present(hba))
-> +			link_startup_again = false;
-> +
+Looks good:
 
-Using 'link_startup_again' flag looks messy. Can't we just check the device
-state after first link startup and if it is still not active, then try link
-startup one more time? (Assuming that the device state won't be active after
-first link startup).
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Also, we should move the link startup and its associated check to a helper
-function and call them instead of (ab)using the goto label.
-
-Like,
-
-	ret = __ufshcd_link_startup()
-	if (ret)
-		goto fail
-
-	/* try link startup one more time if the device is not active */
-	if (!ufshcd_is_ufs_dev_active()) {
-		ret = __ufshcd_link_startup()
-		if (ret)
-			goto fail
-	}
-
-- Mani
-
->  		/*
->  		 * DME link lost indication is only received when link is up,
->  		 * but we can't be sure if the link is up until link startup
-> -- 
-> 2.47.0.371.ga323438b13-goog
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
 
