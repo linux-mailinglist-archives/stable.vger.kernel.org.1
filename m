@@ -1,203 +1,208 @@
-Return-Path: <stable+bounces-95519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9049D95B1
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 11:39:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BEA9D95F2
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 12:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FA69166694
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 10:39:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1D7164C70
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 11:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C591BFE0C;
-	Tue, 26 Nov 2024 10:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FC97DA68;
+	Tue, 26 Nov 2024 11:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dGxOjP4Z"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221CE18FDBA
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 10:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0532366;
+	Tue, 26 Nov 2024 11:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732617543; cv=none; b=QijE5272X3+WPFNSFAozFQDC6+3NmMaO9EvdLnfLNArz9HbP3f7Wxzd7QugpPwYZ3jm0TKAq47dI1/fQY5Ju3ECMI4NgB0weB/OKVQL/LtWOgdfjXvtT6X9krcdlXR+B8RV7X5kfoEJMBalqE1j+It2Hc7X5YHpdsQAZVdlyHo8=
+	t=1732619027; cv=none; b=AyhwHfipCv5L/p/Xt0H+7e3JO05Zc31Gw+xmGdGwxXwfcMcAQpsmLZ0yEfkStoMGoPixRF6CrZeTEtcDclxiZdEklC+jEXVLS8+05oo72LiaGbEDL7T4RBodiT9LVO6iEGTR/YaUTYvhAbvt8WpKsB0c2rDjLztJ3jMbKyBNUX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732617543; c=relaxed/simple;
-	bh=sAOxah2M5O3VTEF5UaDJHeSJKF6SfSuYOQ5/5muWQ1E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LNdpWoR4GXevAEKNbDQSx7MFV5p2sStXvF4brz43hTN7nCX8e1RoPJQqSuBwrkLheoEbBQ6lJy4y3XwtYwlThyUn2FXWeRTZR68sSvyGz/ql5hyWyPLLDPvqC1jL2To/UlsYtOqRJK8DJc5bZufFfcQXY9CnxCEhFeolFIzIS94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFsy6-00040G-0y
-	for stable@vger.kernel.org; Tue, 26 Nov 2024 11:38:54 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tFsy5-000EXN-0C
-	for stable@vger.kernel.org;
-	Tue, 26 Nov 2024 11:38:53 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 81F1237D8E6
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 10:38:53 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id B55DB37D8DE;
-	Tue, 26 Nov 2024 10:38:51 +0000 (UTC)
-Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 10e92ff8;
-	Tue, 26 Nov 2024 10:38:51 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 26 Nov 2024 11:38:48 +0100
-Subject: [PATCH can v2] can: mcp251xfd: mcp251xfd_get_tef_len(): work
- around erratum DS80000789E 6.
+	s=arc-20240116; t=1732619027; c=relaxed/simple;
+	bh=6Z23awsBbOP6OgQ+o/XZYsLEbMzvF/Bu6+MuhtkIPiI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=h8ykoMEh7IxpQGK5Qpz8z+DQDU4VFNKHji2XqIs7RhUBVwr4VoyyhDToRamkEYQujQ/OAnUPgjeRQq0wrn4NCzWgjtPxG3VMpJQBhqywYxj0gZpgiHFYj1rQTzlT3CA6jBaElzqTwsE9I61aQjuHdF5+QY5kSC3WKS0QRfOSL5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dGxOjP4Z; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2138140004;
+	Tue, 26 Nov 2024 11:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732619017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9qIA4RDGJqq407wcmAgXUIpGA4Wmfra8Ng+61C/q9qs=;
+	b=dGxOjP4ZvCxQVdk1DkvAOxtspwrRNnjALhmi/ccJI/bJi4pEOSyW1c9xyiiF9U648W0kWk
+	jnXj12nGCKJz8JXIk047HqrQvNv4XID/J7+tvT5tp0Vdxb+ttSUfSLtBNlHOpnH8TIeJPl
+	IVwiw7RvJ8gD1ZEN90Ko4nU4OYvAz+wfz+ONxKBV8WDK/6fVbotTWHZxG/+pqoR6Qz/Kz9
+	AWcEGlAWi7Znia0fNB2Oce/Png0sULaIpyCXr/cdO4amdTnyf813ES29D6M4K7/4MXQEmd
+	V4ORwkluE/FjB8muTuKZUK3V8Mtp/MgCAvZUwLgN5ZjcLCxrDDd/KH6+LwJu+Q==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Michael
+ Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,
+  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  Marek Vasut <marex@denx.de>,  Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>,  linux-clk@vger.kernel.org,
+  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org,  Abel
+ Vesa <abel.vesa@linaro.org>,  Herve Codina <herve.codina@bootlin.com>,
+  Luca Ceresoli <luca.ceresoli@bootlin.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@ge.com>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
+In-Reply-To: <55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com> (Liu Ying's
+	message of "Tue, 26 Nov 2024 14:49:38 +0800")
+References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
+	<b98fdf46-3d09-4693-86fe-954fc723e3a6@nxp.com>
+	<87zflrpp8w.fsf@bootlin.com>
+	<55bb77b4-5172-4b4a-aaea-df6972a417dc@nxp.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 26 Nov 2024 12:03:35 +0100
+Message-ID: <87h67uw92w.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241126-mcp251xfd-fix-length-calculation-v2-1-c2ed516ed6ba@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIADelRWcC/42NSw6CMBCGr2Jm7RimtiquvIdhUdspNMFC2kIwh
- Lvb4AVc/s9vhcTRc4L7YYXIs09+CEWI4wFMp0PL6G3RICohiUjh24xC0eIsOr9gz6HNHRrdm6n
- XuYyxvlipK7ZEjqHcjJFLc0c8wegATTE7n/IQPzt2pj36EcQfhJmQsL5KKdVLuVt9foylNOU4B
- L+cLEOzbdsXanR7H9oAAAA=
-X-Change-ID: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Thomas Kopp <thomas.kopp@microchip.com>, 
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>, stable@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-355e8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4137; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=sAOxah2M5O3VTEF5UaDJHeSJKF6SfSuYOQ5/5muWQ1E=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnRaU4VE3meW5Zsi1lA7QVHV7mV/CwFhODfSuU/
- mOLDljU3FmJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZ0WlOAAKCRAoOKI+ei28
- by3CB/4xjcVguRSVVlhQ883UYhPw4qi2dLUgQYoPUvulrvOWYCLbNkNGa93IPRLCsuzYB5dy+wW
- 454nGuNm5IEM8TzvfIShINk9dZR+9a4fZZ55Yu61CUkcDD9+1BZJ/lUPCKqLIqICu4SjGvgsVOU
- xswjLUMABYqHYhDpagV8A+NjiNDJbhWkyD5TQotGV79cY9ErLec/zMER4WoEzyJH+PFJpIpPN7P
- tLwA9eJ6wu8r6MftyBjFpbgqZPCxPfGdXVrpH4trhufwl63u1V5c49ZDSTgkUCw9rcPwNjaVeKo
- 3NRJXlrWGvet4E9OQnDGIOUTDhx+N8obleTpptFlZe/vSBcT
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
+Hi Liu,
 
-As the TEF has no head index, the driver uses the TX-FIFO's tail index
-instead, assuming that send frames are completed.
+>>> The
+>>> pixel clock can be got from LDB's remote input LCDIF DT node by
+>>> calling of_clk_get_by_name() in fsl_ldb_probe() like the below patch
+>>> does. Similar to setting pixel clock rate, I think a chance is that
+>>> pixel clock enablement can be moved from LCDIF driver to
+>>> fsl_ldb_atomic_enable() to avoid on-the-fly division ratio change.
+>>=20
+>> TBH, this sounds like a hack and is no longer required with this series.
+>
+> Pixel clock is an input signal to LDB, which is reflected in LDB block
+> diagram in i.MX8MP TRM(see Figure 13-70) where "CLOCK" goes into LDB
+> along with "DATA", "HSYNC", "VSYNC", "DATA_EN" and "CONTROL".  So,
+> fsl,ldb.yaml should have documented the pixel clock in clocks and
+> clock-names properties, but unfortunately it doesn't and it's too late
+> to do so.  The workaround is to get the pixel clock from LCDIF DT node
+> in the LDB driver.  I would call it a workaround rather than a hack,
+> since fsl,ldb.yaml should have documented the pixel clock in the first
+> place.
+>
+>>=20
+>> You are just trying to circumvent the fact that until now, applying a
+>> rate in an upper clock would unconfigure the downstream rates, and I
+>> think this is our first real problem.
+>
+> I'm still not a fan of setting CLK_SET_RATE_PARENT flag to the LDB clock
+> and pixel clocks.  If we look at the bigger picture, the first real
+> problem is probably how to support both separated video PLLs and shared
+> video PLL.
+>
+>>=20
+>>> https://patchwork.kernel.org/project/linux-clk/patch/20241114065759.334=
+1908-6-victor.liu@nxp.com/
+>>>
+>>> Actually, one sibling patch of the above patch reverts ff06ea04e4cf
+>>> because I thought "fixed PLL rate" is the only solution, though I'm
+>>> discussing any alternative solution of "dynamically changeable PLL
+>>> rate" with Marek in the thread of the sibling patch.
+>>=20
+>> I don't think we want fixed PLL rates. Especially if you start using
+>
+> I don't want fixed PLL rates, either...
+>
+>> external (hot-pluggable) displays with different needs: it just does not
+>
+> ... but, considering the problem of how to support separated/shared video
+> PLLs, I think we have to accept the fixed PLL rates.  So, unfortunately
+> some video modes read from EDID cannot fly.  If there is an feasible
+> alternative solution, it will be good to implement it, but till now I
+> don't see any.
 
-When calculating the number of unhandled TEF events, that commit
-didn't take mcp2518fd erratum DS80000789E 6. into account. According
-to that erratum, the FIFOCI bits of a FIFOSTA register, here the
-TX-FIFO tail index might be corrupted.
+Can you please remind me what your exact display setup (and their
+required pixel clocks) is?
 
-However here it seems the bit indicating that the TX-FIFO is
-empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
-TX-FIFO tail index is.
+AFAIU, you don't want to use dynamic calculations for the PLL because it
+breaks your use case with HDMI. Of course this is a very limited use
+case, because using a static rate means almost a single type of display
+can be plugged.
 
-Assume that the TX-FIFO is indeed empty if:
-- Chip's head and tail index are equal (len == 0).
-- The TX-FIFO is less than half full.
-  (The TX-FIFO empty case has already been checked at the
-   beginning of this function.)
-- No free buffers in the TX ring.
+The clock subsystem will not recalculate the video_pll1 if you can
+achieve a perfect rate change using the LDB/PIX divisors. So let me
+propose the below addition to this series. With the below diff, your
+setup should still work with assigned clock rates, while letting us
+handle our calculations dynamically.
 
-If the TX-FIFO is assumed to be empty, assume that the TEF is full and
-return the number of elements in the TX-FIFO (which equals the number
-of TEF elements).
+The addition I am now proposing is to remove CLK_SET_RATE_PARENT to both
+media_disp[12]_pix clocks. This should actually fix your situation while
+keeping pixel clocks accurate as far it is possible as the LDB clock
+will change video_pll1 only if the PLL rate is not suitable for it in
+the first place. And then, there will be no other clock messing with
+this PLL. This is probably a safer approach, which should still allow
+accurate dynamic rate calculations for "simple" setups *and* let the
+static assignations work otherwise:
 
-If these assumptions are false, the driver might read to many objects
-from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
-and will refuse to process old events.
+-       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_SET=
+_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
++       hws[IMX8MP_CLK_MEDIA_DISP2_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_NO_=
+RATE_CHANGE_DURING_PROPAGATION);
+[...]
+-       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET=
+_RATE_PARENT | CLK_NO_RATE_CHANGE_DURING_PROPAGATION);
++       hws[IMX8MP_CLK_MEDIA_DISP1_PIX] =3D imx8m_clk_hw_composite_bus_flag=
+s("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_NO_=
+RATE_CHANGE_DURING_PROPAGATION);
 
-Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Tested-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
-Changes in v2:
-- adjusted patch subject
-- added stable on Cc
-- added Renjaya Raga Zenta's Tested-by
-- Link to RFC: https://patch.msgid.link/20241125-mcp251xfd-fix-length-calculation-v1-1-974445b5f893@pengutronix.de
----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 29 ++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+Can you please give this proposal a try?
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8..e94321849fd7e69ed045eaeac3efec52fe077d96 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
- 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
- 
-+static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
-+{
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
-+}
-+
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
- 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
- 
- 	len = (chip_tx_tail << shift) - (tail << shift);
--	*len_p = len >> shift;
-+	len >>= shift;
-+
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the TX-FIFO tail index
-+	 * might be corrupted.
-+	 *
-+	 * However here it seems the bit indicating that the TX-FIFO
-+	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
-+	 * while the TX-FIFO tail index is.
-+	 *
-+	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
-+	 * haven been send, if:
-+	 * - Chip's head and tail index are equal (len == 0).
-+	 * - The TX-FIFO is less than half full.
-+	 *   (The TX-FIFO empty case has already been checked at the
-+	 *    beginning of this function.)
-+	 * - No free buffers in the TX ring.
-+	 */
-+	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0)
-+		len = tx_ring->obj_num;
-+
-+	*len_p = len;
- 
- 	return 0;
- }
+[...]
 
----
-base-commit: 9bb88c659673003453fd42e0ddf95c9628409094
-change-id: 20241115-mcp251xfd-fix-length-calculation-96d4a0ed11fe
+>> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
+>> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+>> @@ -177,6 +177,17 @@ static void fsl_ldb_atomic_enable(struct drm_bridge=
+ *bridge,
+>>         mode =3D &crtc_state->adjusted_mode;
+>>=20=20
+>>         requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->cl=
+ock);
+>> +       /*
+>> +        * Dual cases require a 3.5 rate division on the pixel clocks, w=
+hich
+>> +        * cannot be achieved with regular single divisors. Instead, dou=
+ble the
+>> +        * parent PLL rate in the first place. In order to do that, we f=
+irst
+>> +        * require twice the target clock rate, which will program the u=
+pper
+>> +        * PLL. Then, we ask for the actual targeted rate, which can be =
+achieved
+>> +        * by dividing by 2 the already configured upper PLL rate, witho=
+ut
+>> +        * making further changes to it.
+>> +        */
+>> +       if (fsl_ldb_is_dual(fsl_ldb))
+>> +               clk_set_rate(fsl_ldb->clk, requested_link_freq * 2);
+>
+> I don't think i.MX6SX LDB needs this, because the "ldb" clock's parent
+> is a mux clock with "ldb_di0_div_3_5" or "ldb_di0_div_7" parents.
 
-Best regards,
--- 
-Marc Kleine-Budde <mkl@pengutronix.de>
+Ah, you mean we should only do this in the imx8 case, right?
 
-
+Thanks,
+Miqu=C3=A8l
 
