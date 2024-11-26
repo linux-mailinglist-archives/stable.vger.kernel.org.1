@@ -1,188 +1,123 @@
-Return-Path: <stable+bounces-95468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB599D8FFB
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 02:30:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E4F9D8FFD
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 02:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88922B25D15
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 01:30:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C59E5B24235
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 01:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CDADF51;
-	Tue, 26 Nov 2024 01:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEqDbxkB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7808B8F7D;
+	Tue, 26 Nov 2024 01:33:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF52A8F7D;
-	Tue, 26 Nov 2024 01:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71744372
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 01:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732584611; cv=none; b=g6UglF/y6sGcfi4NKwj+VfKhi2E2CgiHOrJ75lFRVtf0GMjQ0HR9m3atL0UDGyGCNIRDnV/ulQEQIto3sQqg51uR751263M+jqC6cIE8iOKxtwjY+B4kiSZbAwvNFYQiASFtPZmIpNNoJ8quwPM4XpXCLeZqxKcmZGPV1k//fpY=
+	t=1732584826; cv=none; b=ZFooHroHY7pHPj9HCJqlQATAoifZ0NbWJbJ4K76J8lgaItakQTftvfEz0LxwXjzt2Ytd8EUZh+0pGBmCbeydz1ut6QwuFoI8zTZ5pliFaCa81ounVBrEd2vHNfwJSwLV9TpgipEdN/eiEInk0K5OaHBttAn4OyVtYvt9BwqgzmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732584611; c=relaxed/simple;
-	bh=HK5b8pvSZdRSIviaWqNiHWzdphi33f6n7p6eh1jC4o8=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hcfiCFZJvJ+umLdel+cgPGP2k9adS3Ej4osp/a9BYo7Szhgn3G3AmYyh7kSGF6+tJKUZuy/3+Fp9HtwYfzJb+Zjqpi25/+w5pq946wmYkTWD7ljAI/QU7m7v9uFGvngLOXXe5OPltfZT6bnoxirWTaUlP4yGCFeeFRZgnRM/Qd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEqDbxkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89923C4CECE;
-	Tue, 26 Nov 2024 01:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732584611;
-	bh=HK5b8pvSZdRSIviaWqNiHWzdphi33f6n7p6eh1jC4o8=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=gEqDbxkBaR/ldjuFZ0/6thiUPyST/s2+hzLoRO1pVJFEQw+1guaTZ5Oz81SC4YNHo
-	 9ZXk41onAqlZ1b10v0Omfisqib0Z1WpHnWBN23rzERmnO2akv9LYWjlLbCoo5OiC2M
-	 LsdGKqdOh1WS8E2Y6N27Ll0P8Aog6Pix+gTus2x/gePLcatqTGXBQXqbCdwpZUuHz5
-	 YXVn0/38I+ECXbLqjCdsGUTWx/aoMz52Ysjg3So5cMCQoZIQ96YFYgIc7mUGoblJ4j
-	 77WE5qPKTW7wamr9N4oBxo0Lltk25MVd589WagBEa95cTSjRXTj30NgTvr/Eospytk
-	 si4b8xCtwusiQ==
-Date: Mon, 25 Nov 2024 17:30:11 -0800
-Subject: [PATCH 21/21] xfs: convert quotacheck to attach dquot buffers
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: djwong@kernel.org
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <173258398160.4032920.3728172117282478382.stgit@frogsfrogsfrogs>
-In-Reply-To: <173258397748.4032920.4159079744952779287.stgit@frogsfrogsfrogs>
-References: <173258397748.4032920.4159079744952779287.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1732584826; c=relaxed/simple;
+	bh=N9iuEJ9kmghQ+f646Tv7gGgXU68RrbXtqsHXR44DTr8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=itaVJKi5AIHYhYabNjEveI9UZt56f7b4DlJtvcpHaGkYwy9xqMsV2KRkvxg3JvFlVF+sadhGJ7drPySVhFiBR3iQ7wufYMQuG6T6jArcrhk/bq13fnJ7n5n6KXI3y/zpUj0F2thT3mfCHQXDI+V6cKFWJ1CpvfzW7KVSxclXAK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQ0dFDN010623;
+	Mon, 25 Nov 2024 17:33:42 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433b79aeu6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 25 Nov 2024 17:33:41 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 25 Nov 2024 17:33:41 -0800
+Received: from pek-blan-cn-d1.wrs.com (128.224.34.185) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 25 Nov 2024 17:33:40 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <stable@vger.kernel.org>, <wayne.lin@amd.com>
+CC: <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.6] drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
+Date: Tue, 26 Nov 2024 09:34:03 +0800
+Message-ID: <20241126013403.423044-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=atbgCjZV c=1 sm=1 tr=0 ts=67452575 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=ng9SVECvpAF2hbHsC8cA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: MTN2Pu5XwSEAqMUq_l31IN_Cxu70mHGA
+X-Proofpoint-ORIG-GUID: MTN2Pu5XwSEAqMUq_l31IN_Cxu70mHGA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-11-25_16,2024-11-25_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 impostorscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411260011
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Wayne Lin <wayne.lin@amd.com>
 
-Now that we've converted the dquot logging machinery to attach the dquot
-buffer to the li_buf pointer so that the AIL dqflush doesn't have to
-allocate or read buffers in a reclaim path, do the same for the
-quotacheck code so that the reclaim shrinker dqflush call doesn't have
-to do that either.
+[ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
 
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: 903edea6c53f09 ("mm: warn about illegal __GFP_NOFAIL usage in a more appropriate location and manner")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+[Why]
+When unplug one of monitors connected after mst hub, encounter null pointer dereference.
+
+It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
+commit new state which directly referring to info stored in dc_sink will cause null pointer
+dereference.
+
+[how]
+Remove redundant checking condition. Relevant condition should already be covered by checking
+if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
+
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Resolve minor conflicts ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 ---
- fs/xfs/xfs_dquot.c |    9 +++------
- fs/xfs/xfs_dquot.h |    2 --
- fs/xfs/xfs_qm.c    |   18 +++++++++++++-----
- 3 files changed, 16 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-
-diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-index c495f7ad80018f..c47f95c96fe0cf 100644
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1275,11 +1275,10 @@ xfs_qm_dqflush_check(
-  * Requires dquot flush lock, will clear the dirty flag, delete the quota log
-  * item from the AIL, and shut down the system if something goes wrong.
-  */
--int
-+static int
- xfs_dquot_read_buf(
- 	struct xfs_trans	*tp,
- 	struct xfs_dquot	*dqp,
--	xfs_buf_flags_t		xbf_flags,
- 	struct xfs_buf		**bpp)
- {
- 	struct xfs_mount	*mp = dqp->q_mount;
-@@ -1287,10 +1286,8 @@ xfs_dquot_read_buf(
- 	int			error;
- 
- 	error = xfs_trans_read_buf(mp, tp, mp->m_ddev_targp, dqp->q_blkno,
--				   mp->m_quotainfo->qi_dqchunklen, xbf_flags,
-+				   mp->m_quotainfo->qi_dqchunklen, 0,
- 				   &bp, &xfs_dquot_buf_ops);
--	if (error == -EAGAIN)
--		return error;
- 	if (xfs_metadata_is_sick(error))
- 		xfs_dquot_mark_sick(dqp);
- 	if (error)
-@@ -1324,7 +1321,7 @@ xfs_dquot_attach_buf(
- 		struct xfs_buf	*bp = NULL;
- 
- 		spin_unlock(&qlip->qli_lock);
--		error = xfs_dquot_read_buf(tp, dqp, 0, &bp);
-+		error = xfs_dquot_read_buf(tp, dqp, &bp);
- 		if (error)
- 			return error;
- 
-diff --git a/fs/xfs/xfs_dquot.h b/fs/xfs/xfs_dquot.h
-index 362ca34f7c248b..1c5c911615bf7f 100644
---- a/fs/xfs/xfs_dquot.h
-+++ b/fs/xfs/xfs_dquot.h
-@@ -214,8 +214,6 @@ void xfs_dquot_to_disk(struct xfs_disk_dquot *ddqp, struct xfs_dquot *dqp);
- #define XFS_DQ_IS_DIRTY(dqp)	((dqp)->q_flags & XFS_DQFLAG_DIRTY)
- 
- void		xfs_qm_dqdestroy(struct xfs_dquot *dqp);
--int		xfs_dquot_read_buf(struct xfs_trans *tp, struct xfs_dquot *dqp,
--				xfs_buf_flags_t flags, struct xfs_buf **bpp);
- int		xfs_qm_dqflush(struct xfs_dquot *dqp, struct xfs_buf *bp);
- void		xfs_qm_dqunpin_wait(struct xfs_dquot *dqp);
- void		xfs_qm_adjust_dqtimers(struct xfs_dquot *d);
-diff --git a/fs/xfs/xfs_qm.c b/fs/xfs/xfs_qm.c
-index a79c4a1bf27fab..e073ad51af1a3d 100644
---- a/fs/xfs/xfs_qm.c
-+++ b/fs/xfs/xfs_qm.c
-@@ -148,13 +148,13 @@ xfs_qm_dqpurge(
- 		 * We don't care about getting disk errors here. We need
- 		 * to purge this dquot anyway, so we go ahead regardless.
- 		 */
--		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
-+		error = xfs_dquot_use_attached_buf(dqp, &bp);
- 		if (error == -EAGAIN) {
- 			xfs_dqfunlock(dqp);
- 			dqp->q_flags &= ~XFS_DQFLAG_FREEING;
- 			goto out_unlock;
- 		}
--		if (error)
-+		if (!bp)
- 			goto out_funlock;
- 
- 		/*
-@@ -506,8 +506,8 @@ xfs_qm_dquot_isolate(
- 		/* we have to drop the LRU lock to flush the dquot */
- 		spin_unlock(lru_lock);
- 
--		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
--		if (error) {
-+		error = xfs_dquot_use_attached_buf(dqp, &bp);
-+		if (!bp || error == -EAGAIN) {
- 			xfs_dqfunlock(dqp);
- 			goto out_unlock_dirty;
- 		}
-@@ -1330,6 +1330,10 @@ xfs_qm_quotacheck_dqadjust(
- 		return error;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index d390e3d62e56..9ec9792f115a 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -179,6 +179,8 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ 		dc_sink_release(dc_sink);
+ 		aconnector->dc_sink = NULL;
+ 		aconnector->edid = NULL;
++		aconnector->dsc_aux = NULL;
++		port->passthrough_aux = NULL;
  	}
  
-+	error = xfs_dquot_attach_buf(NULL, dqp);
-+	if (error)
-+		return error;
-+
- 	trace_xfs_dqadjust(dqp);
+ 	aconnector->mst_status = MST_STATUS_DEFAULT;
+@@ -487,6 +489,8 @@ dm_dp_mst_detect(struct drm_connector *connector,
+ 		dc_sink_release(aconnector->dc_sink);
+ 		aconnector->dc_sink = NULL;
+ 		aconnector->edid = NULL;
++		aconnector->dsc_aux = NULL;
++		port->passthrough_aux = NULL;
  
- 	/*
-@@ -1512,9 +1516,13 @@ xfs_qm_flush_one(
- 		goto out_unlock;
- 	}
- 
--	error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
-+	error = xfs_dquot_use_attached_buf(dqp, &bp);
- 	if (error)
- 		goto out_unlock;
-+	if (!bp) {
-+		error = -EFSCORRUPTED;
-+		goto out_unlock;
-+	}
- 
- 	error = xfs_qm_dqflush(dqp, bp);
- 	if (!error)
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+ 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
+-- 
+2.43.0
 
 
