@@ -1,143 +1,161 @@
-Return-Path: <stable+bounces-95565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484379D9DE5
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 20:13:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A579D9DEF
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 20:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51948B23A1F
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:10:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44F21B21BEF
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 19:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670C41DE3C5;
-	Tue, 26 Nov 2024 19:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB121DE2AA;
+	Tue, 26 Nov 2024 19:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pzCrnJjN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z8DL4VFF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o55Fsa4Z"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979516F0E8;
-	Tue, 26 Nov 2024 19:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB9718858E
+	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 19:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732648239; cv=none; b=OXsy0uSO011KYBNNAztxHpl6LoPhcRCmzOx7YEX25MRoQLl5qIWnl6zTR316YO73c8NUDCrfxd2gZJsrIO3yj58jwOkJCJL+PiFX7SF+BnrVIDR2znTdGhwdCom/o6PC2At7UnCFcD/0uWmwV0qnVCLXLSFN3Bfhbd7GKbgHZX0=
+	t=1732648767; cv=none; b=P+ktlkSImz0y3B4ARMEnl+RpbieAX0MMaFW/fq6dW8gtOWtK4Q5h9Mt+3hDtFZSg+bBrl2sbEJPxJAXtd0+QRL0jJXRDIknaJD4KTXMp5Xu4xPyL7g00O26w4HPUW3FGgpMXIXg90DQWWMcOEQVaW6YD4BwIuDxuSkYkqKvsOrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732648239; c=relaxed/simple;
-	bh=JOHJmp5WW4ejGgVC5EV8U4eM4KtgEjJCcdvggW8sJMI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=L5NZMY6EXLmm+D40xJsfnEyUPVPptLfYkbA15TnJb/r/Hu7h/OmMHfb0jCgTwEtzu748cZUvrzDiyV+CNO/UFdzQ/57DQCx9W7bV+Zs9JXI+PIipkG5i57ZA6r8BYmrKdba9p44rMvypxdx6k/lSYI4WgzbQbCyaTdetk806x1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pzCrnJjN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z8DL4VFF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 26 Nov 2024 19:10:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732648235;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAjiz4z6eaIdVpBbx0+i+piPgSWWWTXgTEOEVv9t9TA=;
-	b=pzCrnJjNjWUiWPstzTCJxpul3A4Eb1NkEoEh376Q0LC1Ta+rgz7ALhNs1EbNo96hlzX0Lq
-	Hk+lmB4x1zMQ0TQesfP2UeIuuX+ivgcZH6TtTf5F2DVNFredbuBv9eFPr2G8Ke80dd05o/
-	7IhPpaliCcMSHokb6U1c913LYtiwFMWyZxnUWdRrQpYrc/56Sx0NQoa9sNv4gcds75qtTD
-	8Naqi+kPC+IYdBGh5Rt12GCyHu111hhUsG/pDF/utSixVKlHYDywEX+NxJ4SCa3IYiZBhB
-	eMFmNycrW9E243BcuZdcgGD80ptttgM5hjhqz+jlBp72V+zBOvdVU/AagCCa+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732648235;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAjiz4z6eaIdVpBbx0+i+piPgSWWWTXgTEOEVv9t9TA=;
-	b=Z8DL4VFFfGP7Gb1okUjqjjymIoV3e9MR2s1wzGKp4QrhFy3qqQofv4jG/xhFWzE45nRhm3
-	G69YBeFw4PWQn4CA==
-From: "tip-bot2 for Russell King (Oracle)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/irq-mvebu-sei: Move misplaced select()
- callback to SEI CP domain
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <E1tE6bh-004CmX-QU@rmk-PC.armlinux.org.uk>
-References: <E1tE6bh-004CmX-QU@rmk-PC.armlinux.org.uk>
+	s=arc-20240116; t=1732648767; c=relaxed/simple;
+	bh=0ycQbzo+BwNOllcn4ZNczpOsjYTAXNWs5z7n+nnUjnU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sQtmvVR09ZlDStP9yCBJcttvRKN6AIxisvzHYB+hdZRMrSm/esAqcs+y9CKNVlFAb7GtPRj6gc2WryK7eKK8DNkG3bNOGKD4mKsqnUIqvyqfNaYb3l5VMyryl/MsXvXKFmY8mgdp1gtg4fLJ3Jpon5izEDar8DJt3oyBoWzRryQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o55Fsa4Z; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7250da8a2a5so2555202b3a.0
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 11:19:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1732648765; x=1733253565; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NDOQAbNycSNXRnM/MeyhS3VQP9GYhOqzCxxjxAfYZn8=;
+        b=o55Fsa4ZmsXv6s7K+4w2oLloKE2Vf7HLYICPkzC+h31p1dPrMoh7alwphfBKQsEkQ3
+         PhVgCrUcD9Xvqus3tlLgcIlMOAhC6arBTyLt4Gq8c61zqlz2Ni1sxzB04kkdSArZcpEv
+         yoGDuKTCKWzcae0QpYvjZ1ldEpNgbj9MmGss45iIozH80f0BDpmJjN8jZD/t0m5dCWAk
+         enQ624Pabd6h4eSDcFg0KSnVjtdaskNilwy1LoEZJKTIglP2Oc9Xso9nJaPua9rzbVq6
+         4RRpPf26xvWQJRDuBmCFj5jm+w3somcHspSLNO9qBb6XsttUgwx+BZNHReqikuPkq0em
+         eeAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732648765; x=1733253565;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NDOQAbNycSNXRnM/MeyhS3VQP9GYhOqzCxxjxAfYZn8=;
+        b=UGCZTvJrqmdW+bsK9XA3Z2DQ7xLomyWvRkcD1rv0PwOGKlotnsZ5pC1B4szPrlX9sJ
+         mn3MTRASwVbQJKfX1toeNsL1fMVVLlMsrtGvVHJ6wJTu5GEWdepVInD72G3+kgL2tICN
+         lPYgRQplYeh1pyiV1q8RWifNa3/UCZ9byzQVYf+3rhrKyLAiYgciklIaNl4aXAf2dpsV
+         ouyTp1ADVJD2IJ/tJClP+wl+0Yc1b2IptfKYF/KxqwHpKMWCmUNAnlma+qa9ofIUz3PG
+         kMEZcjcwPwHtCV07tA/N/GXd0NcbRoskv62aaBfgFNGbalBB+aEZAObs1yNgrBBeotdJ
+         OV9g==
+X-Gm-Message-State: AOJu0Yw/tQBQo9GL9k6Yk3qsAard2HMivq32X/cXZfBSzYMHuP8R+rG+
+	mU2Kz9kR2umIbbGUy7myoTIm1gHFPuAe2B6WBQh8gp5oJLEVaZyEw41zSz+es+dRF6D+nvZIESf
+	8TJeD+6TVTbDPmZX34WCQCRTq8RUIcKS7fgQGzIuGlQ8bwiie2YIqPdpfN4Ld1yeG2iTzXyWfcm
+	ZpxpEy45OSZqcKYuJABflvgTIVpxoUz4JG8SXGiZqQEBN7USv5
+X-Google-Smtp-Source: AGHT+IGBGbouGYspNNbL7q+FWpQr3HU2rGbucxk45ddgNH02azZpgKL5YFvCJzM4Z7bSFEMN7vhFzlCsMyxTMQ8=
+X-Received: from pjbqn8.prod.google.com ([2002:a17:90b:3d48:b0:2eb:12d7:fedd])
+ (user=ziweixiao job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:1d10:b0:2ea:7755:a108 with SMTP id 98e67ed59e1d1-2ee08e9c75dmr515774a91.4.1732648765128;
+ Tue, 26 Nov 2024 11:19:25 -0800 (PST)
+Date: Tue, 26 Nov 2024 19:19:22 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <173264823499.412.10177145065774712407.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241126191922.2504882-1-ziweixiao@google.com>
+Subject: [PATCH 5.15] gve: Fixes for napi_poll when budget is 0
+From: Ziwei Xiao <ziweixiao@google.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, pkaligineedi@google.com, 
+	hramamurthy@google.com, ziweixiao@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-The following commit has been merged into the irq/urgent branch of tip:
+Netpoll will explicitly pass the polling call with a budget of 0 to
+indicate it's clearing the Tx path only. For the gve_rx_poll and
+gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
+to do all the work. Add check to avoid the rx path and xdp path being
+called when budget is 0. And also avoid napi_complete_done being called
+when budget is 0 for netpoll.
 
-Commit-ID:     12aaf67584cf19dc84615b7aba272fe642c35b8b
-Gitweb:        https://git.kernel.org/tip/12aaf67584cf19dc84615b7aba272fe642c35b8b
-Author:        Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-AuthorDate:    Thu, 21 Nov 2024 12:48:25 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 26 Nov 2024 19:58:27 +01:00
+The original fix was merged here:
+https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
+Resend it since the original one was not cleanly applied to 5.15 kernel.
 
-irqchip/irq-mvebu-sei: Move misplaced select() callback to SEI CP domain
-
-Commit fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
-introduced in v6.11-rc1 broke Mavell Armada platforms (and possibly others)
-by incorrectly switching irq-mvebu-sei to MSI parent.
-
-In the above commit, msi_parent_ops is set for the sei->cp_domain, but
-rather than adding a .select method to mvebu_sei_cp_domain_ops (which is
-associated with sei->cp_domain), it was added to mvebu_sei_domain_ops which
-is associated with sei->sei_domain, which doesn't have any
-msi_parent_ops. This makes the call to msi_lib_irq_domain_select() always
-fail.
-
-This bug manifests itself with the following kernel messages on Armada 8040
-based systems:
-
- platform f21e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
- platform f41e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
-
-Move the select callback to mvebu_sei_cp_domain_ops to cure it.
-
-Fixes: fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/E1tE6bh-004CmX-QU@rmk-PC.armlinux.org.uk
+Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
 ---
- drivers/irqchip/irq-mvebu-sei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 7 +++++++
+ drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
+ drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mvebu-sei.c b/drivers/irqchip/irq-mvebu-sei.c
-index f8c70f2..065166a 100644
---- a/drivers/irqchip/irq-mvebu-sei.c
-+++ b/drivers/irqchip/irq-mvebu-sei.c
-@@ -192,7 +192,6 @@ static void mvebu_sei_domain_free(struct irq_domain *domain, unsigned int virq,
- }
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index bf8a4a7c43f7..c3f1959533a8 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -198,6 +198,10 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
  
- static const struct irq_domain_ops mvebu_sei_domain_ops = {
--	.select	= msi_lib_irq_domain_select,
- 	.alloc	= mvebu_sei_domain_alloc,
- 	.free	= mvebu_sei_domain_free,
- };
-@@ -306,6 +305,7 @@ static void mvebu_sei_cp_domain_free(struct irq_domain *domain,
- }
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll(block, budget);
++
++	if (!budget)
++		return 0;
++
+ 	if (block->rx)
+ 		reschedule |= gve_rx_poll(block, budget);
  
- static const struct irq_domain_ops mvebu_sei_cp_domain_ops = {
-+	.select	= msi_lib_irq_domain_select,
- 	.alloc	= mvebu_sei_cp_domain_alloc,
- 	.free	= mvebu_sei_cp_domain_free,
- };
+@@ -246,6 +250,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
+ 
++	if (!budget)
++		return 0;
++
+ 	if (block->rx) {
+ 		work_done = gve_rx_poll_dqo(block, budget);
+ 		reschedule |= work_done == budget;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 94941d4e4744..368e0e770178 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -599,10 +599,6 @@ bool gve_rx_poll(struct gve_notify_block *block, int budget)
+ 
+ 	feat = block->napi.dev->features;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	if (budget > 0)
+ 		repoll |= gve_clean_rx_done(rx, budget, feat);
+ 	else
+diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
+index 665ac795a1ad..d56b8356f1f3 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -691,10 +691,6 @@ bool gve_tx_poll(struct gve_notify_block *block, int budget)
+ 	u32 nic_done;
+ 	u32 to_do;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	/* Find out how much work there is to be done */
+ 	tx->last_nic_done = gve_tx_load_event_counter(priv, tx);
+ 	nic_done = be32_to_cpu(tx->last_nic_done);
+-- 
+2.47.0.338.g60cca15819-goog
+
 
