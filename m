@@ -1,257 +1,295 @@
-Return-Path: <stable+bounces-95491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDD69D91B5
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 07:25:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B509D91C5
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 07:30:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9D1285F71
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 06:25:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D676164DEF
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 06:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12871149C64;
-	Tue, 26 Nov 2024 06:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F75A1885A5;
+	Tue, 26 Nov 2024 06:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="k/pnDnc3";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="k/pnDnc3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2EE4C8E
-	for <stable@vger.kernel.org>; Tue, 26 Nov 2024 06:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732602338; cv=fail; b=MepynvsXE64LQE/8z0E7KtlXDH65td1fCxCD2dwrCaDbWI7no6dTuJGdqxhgOtPy25SsADgaIT847e4oSo7pNJLvaSQZw+rwVvMtQIJrNrvXu7DyVPYLnggah3Yx2Uo6+6QHzS0SbLdQgZmMTc/V0K0b0xcpWF1y6p6eqgC7h6I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732602338; c=relaxed/simple;
-	bh=TtS/G52t50n21SFusI/ZbMxvb+ovp44McNCgp/jLW0M=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AAC3208;
+	Tue, 26 Nov 2024 06:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732602603; cv=none; b=YoO10YiZs0aI85SF9XE6nCrIeQvsOqJ1blmpzUFoV7PCh1kSB0GOJXJbYkA/qBz1yH7F4y493bubRYQdOsNeds1RCv6FslBqhgRuL4XXjrW4O8cU3WSpr6zfMzth7D2YEeDBxnzKtQaGrHUUfjzdw3oi6iLDtsVIGQZm0yzi8JI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732602603; c=relaxed/simple;
+	bh=PGVIabG8i4G54Xa+u6HsKZwViPWlu+jiGWi5wqziZo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l6qLo4ndaIzIdb0GfXs9aarFUAwWf9vWSmCmB0Fk8xB/rm8PQGPfEFvAJcjFKcs39+6U8qsd5jfdtuZ20MkwTXTtmS76pU3f3FDFgbDGZfKleVbSiD4ROtFQ2pOSG6sL6HiEZlePhW8YSQ7L8tqk4VB3lX8R6hlyQsgEo358aMk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQ5BGXX022318;
-	Tue, 26 Nov 2024 06:25:32 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2046.outbound.protection.outlook.com [104.47.70.46])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433491axpn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 26 Nov 2024 06:25:31 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V5E3WvymVVM85rsD62bees1/pcMOc1qpcF3eQmNpBMD91Lzcu3ckBnxVpKTYSGxrhY4HqMs1B4dJOynKyiTls9PBXAh+NQih6tYHMQW+JD+R2MGZ0PywkczaO4ToEyAiA3lMwz5H584+WJxX+i1Y55Vlat0CkaJdiod0dbc1BPYoKSfI3cYTlTeF+hQfTXfSH7Hr1w/aUaBJT7aCb2H+UoS0w8GQoU3kVl8fONj+bq+2RNwbL3GfuKc7YwPA0sZHvHWWu+OioZebWFZ7H8YRkGGW3Uvj1MKPzi2yXjUSGgyRmDNPGoZ75YhQUefs4hVs9iUdPfQM2+/xMMNVzBdcRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rgwTgDrnwYMv7yMAKc8yA7TEd2rNNBNZjqaEVbTfKIQ=;
- b=PHfgu4bmmvZNfbfi4LynvGGkfuKZbS0L13jinJVsdUc1OcWET8jpL1qEm5206E/GZZy7XYuhNkGYdxExkjfM6nlYgm+zbN2zsYeJuZSDFp5W5hGl0VGl0RwJSkiFTzfpxGrDlPUUprnGU5pWBqDpM+Ojvg0J53RRPddOfiTp3dknTTRp+LDmCKz8q/nY4ND6CiLSAGKm8GF0CaI4Mxl8PlRhWOVLqGqFemJFqWBwMaTn5Bo/QMgA5RG5cNQ3uw/r9ZXiKw/LbRVdoA7d3AwX3LaTk2ECvDIcdei4qGVlpIkQeiQYA+n+aw+xsBWe48Nnq/fb5QiB4r4uOIqVVC1sqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by CY8PR11MB7171.namprd11.prod.outlook.com (2603:10b6:930:92::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.19; Tue, 26 Nov
- 2024 06:25:29 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
- 06:25:29 +0000
-From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-To: luiz.von.dentz@intel.com, gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org, xiangyu.chen@aol.com
-Subject: [PATCH 6.1.y 2/2] Bluetooth: MGMT: Fix possible crash on mgmt_index_removed
-Date: Tue, 26 Nov 2024 14:25:37 +0800
-Message-ID: <20241126062537.310401-3-xiangyu.chen@eng.windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241126062537.310401-1-xiangyu.chen@eng.windriver.com>
-References: <20241126062537.310401-1-xiangyu.chen@eng.windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0029.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::20) To MW4PR11MB5824.namprd11.prod.outlook.com
- (2603:10b6:303:187::19)
+	 MIME-Version; b=IIn1/+uXN3hUSAahZTuBnJfBecZqZcsa5XMeFYZm24jucVWeK7q4rWdbQZEhv09WKWCp9ykmu7Ny7zFbO/jUUI0uI8TCNQpKu489hiYyE3KhRbmANMzcMhK9rAJNuL+P4x/Warn2ZCjS8U9/0Pe28/UVMQ77qR7Y5CcA3E5qdiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=k/pnDnc3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=k/pnDnc3; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5C18F21153;
+	Tue, 26 Nov 2024 06:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1732602593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gnrUl362Xiw2/ygz3JhH81Z9lOpoWU3jOtJSx7S/a5E=;
+	b=k/pnDnc3KKNVu7BnJgajZWsfdurgnLw2mkPVDxKAkEV0PoM5UYLHwvnu/CcHzFhcbyVRod
+	q64uZ1WpB3R/0A7771jmjB/j1Pp8ph4R3X5/faeLiZ64rI3CMYLorTXCGUyumTfm8Ehcl0
+	OtNNPj9nrPi6TPy86i/VsWBdtKMnIt8=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b="k/pnDnc3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1732602593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gnrUl362Xiw2/ygz3JhH81Z9lOpoWU3jOtJSx7S/a5E=;
+	b=k/pnDnc3KKNVu7BnJgajZWsfdurgnLw2mkPVDxKAkEV0PoM5UYLHwvnu/CcHzFhcbyVRod
+	q64uZ1WpB3R/0A7771jmjB/j1Pp8ph4R3X5/faeLiZ64rI3CMYLorTXCGUyumTfm8Ehcl0
+	OtNNPj9nrPi6TPy86i/VsWBdtKMnIt8=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B9EB139AA;
+	Tue, 26 Nov 2024 06:29:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id OOACOt9qRWeZUQAAD6G6ig
+	(envelope-from <wqu@suse.com>); Tue, 26 Nov 2024 06:29:51 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] btrfs: handle btrfs_run_delalloc_range() errors correctly
+Date: Tue, 26 Nov 2024 16:59:23 +1030
+Message-ID: <3d7d7a1151b3f3cc64dbf3a06d46dd08c5c86a8f.1732596971.git.wqu@suse.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1732596971.git.wqu@suse.com>
+References: <cover.1732596971.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CY8PR11MB7171:EE_
-X-MS-Office365-Filtering-Correlation-Id: 178fee18-5199-464a-665f-08dd0de31fa1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YnD/zklXR/30bfrVP3lWiTzs+GyTkq0T/KH3hrKaU6ujae7j4tr/YQgkvV35?=
- =?us-ascii?Q?BbbKKd/WTil0neb5jz2dfnO9Vmw5vrQRye9AvRDBcwgEsYtnVeY0x86mrrb7?=
- =?us-ascii?Q?YilHLLhxayJrqNnI1W+n3znpNUQL3suHhV/NggLWfbrJYoXSe6aBFAgd+I5g?=
- =?us-ascii?Q?LXYNAdPWADW0mtD8PmeYByHBKGBJoIfzxK8QUwNNVKcd5OV4LmwBdB6w5kNa?=
- =?us-ascii?Q?igJFQx7DO6NBpc1IT7CpyWxq/mwnVmf8iNWlIUO1xmDTs176JLQsp4AgljGi?=
- =?us-ascii?Q?lJacYEKcuhYkck/xtX/dmtJPS0eyhTI4InHbN6/S1+VtDixOHaySuWKSDkqF?=
- =?us-ascii?Q?bvMyWQHE4UsrWLyG2ze/dcOqHnQor0gLEpsOihIzEMdnHXtD2GhQ5mlO0DZ3?=
- =?us-ascii?Q?iEW588tCd4ijDaioIpJIvM/nEK8pKy8QbyF4KhbHuDxTnLzP3mU/oJOYgkN7?=
- =?us-ascii?Q?vYoCOmt3UM9IG3fcoG4V1+KAbs/8P1dm3cgj+I6SYGGDIfl3OsNZA2AZDo2q?=
- =?us-ascii?Q?OksbUw402Ovc7BhGZS3umQeKZ7lsI26TVGra646bBxJXEVlgHvYKpoe/9xSr?=
- =?us-ascii?Q?dN5MHZJGKcYqkKB18WkZUcqWTGVzyfx7qlyWF1A58K8u64AM4nU/ABgJplVe?=
- =?us-ascii?Q?sNh9EGvgiwr5gtvp1x4ObQt+oHmU8kYOcr73GYLyJrxr/Kz60q2cJgRyYhjH?=
- =?us-ascii?Q?+xVILM/ke2bEoiLJJCn6mn/uK+WqikIHecR2O+P2MsLiahZcuVHThXxLpkyb?=
- =?us-ascii?Q?D6poruBbZ4kIz94tlDpCFaoL7hjhnRPhwpHSc4IqV8DvSnMNk389KIAy6ZQv?=
- =?us-ascii?Q?hhrTW5uDBPhqDHYAqbQZurGFRPgESOeCc2APOuVPp7AIFv2qFw3PTaoYUj8N?=
- =?us-ascii?Q?788KmsK6xEXI3B8Oy4nA1gLjaToyuVVtzK9A96QrWeH0F6MJM4hZlOh7k/Kj?=
- =?us-ascii?Q?fWB3LMs6r4tlcBjhXUw9/eULvFcRShUo+S8/0Ac/M3IPfiYNOmed8ysYhqFo?=
- =?us-ascii?Q?PWeacTTgEsLRMScBxrVLNSrkLt3GMBR3RwUCWHC4akvaX+FJKO6/N3DGKlDG?=
- =?us-ascii?Q?p4d2gr7zZDYafQqFcylTH2lKI3Ahs3klMwYiuzoUvQ6hWpsP/DV25wUr8tnW?=
- =?us-ascii?Q?83Gn6VyotiWr3GgSNwBaVShgJVubFBOxu98MB6bN/lvqA+nRfRnhSyLuYS2V?=
- =?us-ascii?Q?KX2W0rsSTorNfT4bgrYlRH9ojLWC3rjS/rtij1uQWMsl0QU8p0ibqiBssI5a?=
- =?us-ascii?Q?PN3B5/EXH3EWNnFX1BCfzSoEG6FCh+XoUQIcKoCgMryrbKsufq9A4z6Rfk1N?=
- =?us-ascii?Q?rDIy4ej8J3p/31f7IVCmDyAEGIwXt8q3FFX0Dkzm7Z+LvO2O7JNJgWUlx+4/?=
- =?us-ascii?Q?gobhqDWV20T9/V/CcYgRp20ssK650O4lhyq0PY4BjIXFRi2b9g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ao4bv2aFZjPPlPmTDxmdWsNtc3savDknN1/TpnezgaKO+TV/o6/W+Tq1IkAm?=
- =?us-ascii?Q?Azx+6wLnRrBSkw3f+YJ3ogaGOTashZ85zBv6bdm1FhDtJPFvWx5SIe93vrz8?=
- =?us-ascii?Q?mVo4YjytlyGahHtqCFkk3/6IKMoYht+BU1agycD09U+zgad0aIRRQOOMBIn1?=
- =?us-ascii?Q?TDKCt+BnsMXAnL8Q5PX4hcWqCYY28UrAUaXNJsnYlrn2/864MicwZ5hejprD?=
- =?us-ascii?Q?bYrHdceUFNrQvMVvewZ3G4giEBvsez/U3fQD0j4DuoPCkb/hno37aZm1Xsg1?=
- =?us-ascii?Q?yDHsRpCXa/DuXFO+GwvOv7wL+ABXSjJ/ujBosHnDDLT+NxEe4cSZmR9nGxXi?=
- =?us-ascii?Q?30D9IcKBTdOCuC6AO8ZLdafLqrKOQ2JMnYSkdZcIjG9Z02TMNio6rGe9tBQJ?=
- =?us-ascii?Q?teZ7F9ouxwfipa8FGs214LqpjzneTpCBUL1KjgyzChX+xIuG3FpB3qEF7JXd?=
- =?us-ascii?Q?1ppgADA9XZJtsAuzfRC0LcaUxRPHvJmNMt4Kkw7w3ox49CVYPtrBaQztwcR6?=
- =?us-ascii?Q?lI0SWXVlQ7q2pRs26NWurEZj6OyHEJE2FA9AOEP1k1ypBwqU+ec4OcLsblcQ?=
- =?us-ascii?Q?oXdcF1iKWpiOCSpI/r+l/Pkjqtgih8ZpqwTTUIjjN4+9Du4nlLRLnjtFGVFl?=
- =?us-ascii?Q?k9fHPwV1ERP+8eFFd7GnRmDfnDYXeWPuv83pnnLgPbG2+KvHLvVabRk9dooo?=
- =?us-ascii?Q?xbsv17lFSYGTNrfKlL7G7q8FD3SXR3ESC72R1X9ogKwdEmwJTXFPBiQZWczR?=
- =?us-ascii?Q?htXqnjTxB2sfQAP33UNGYNlmQsY5AzPf/JQJlgxEKnUQV5hIA0Ra82MQ4Wkf?=
- =?us-ascii?Q?/RG1ndkdTLny6N9jOjLFP0DUN9LciGYvYcmvuwvwt3gD9rn49TOGml33Twxc?=
- =?us-ascii?Q?5LdnUOANa5vOvc5F0zg5xd5SnfYdhrvHDNwOPxl4dA2eX9N8skGOowRGzGBI?=
- =?us-ascii?Q?5lkRA+7RYHGuVqLgofgnGjU8ZFocH/LCRETu713N6r8I0GtvM8jrsvEi5tuQ?=
- =?us-ascii?Q?XEWuIH0c9nfMNWSqG66cCnCu+TL/fFwhIzuJKrh0Y6hQogRtc6a8NJ8gek0P?=
- =?us-ascii?Q?G9xatGzmou9fGqFfyVtgbpncXDltpyz4BFlftFDiitM3ddHmmlscm1bqZjbs?=
- =?us-ascii?Q?ejvni+F0KPjE4ibEo+RPPRm6Zj1zBE06vWyJA0nx9VWreLAuQ5KYY7uyvC9x?=
- =?us-ascii?Q?QoCgou3vlrD4tlpg8oOzToCL2bvnIpHtCAT7U4YEXxzGPnX0/bEa8aDJKyyM?=
- =?us-ascii?Q?Yya87O8lQX31XAVnsBoZBGUGhoTlsXi4g7uwWTQZDExQsU5IWHQcYDCo7R6U?=
- =?us-ascii?Q?X6S4x2VozdDuH95sBeoE5K+yS/NA/QVwai1sKjFKmynUrNHT1+i8RyFqRsZm?=
- =?us-ascii?Q?uDwZuU6BETQ7Cjb5mnVTGicYF8BWX/H87KQG6cJalCEH+/mA6Q8RojWcgi/6?=
- =?us-ascii?Q?S+k/foGc5ZSisqpxOo8JUxc8rtRcLRh6J2RCDGGpejWn4jNG9rMQX5uYvIuf?=
- =?us-ascii?Q?tVv/uPQa88gNS2IQ+ya7Ad3G2QnSyr8xoi4R5Orsaxb65c7YCaZm7caeKiiz?=
- =?us-ascii?Q?IGGr0caWe8G3+Swd1qv+ukSJkpn/FsQ3pZUY03AdP4/u+MmapLiwUQiJx6fm?=
- =?us-ascii?Q?qw=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 178fee18-5199-464a-665f-08dd0de31fa1
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 06:25:29.8252
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Sl3DLx+i9GhXPI6kXUZgRvODiLrTR+i8xK5hickoxEILtJb81P0QWlHp7sTSAbxFH19UYxyHydWPw/r4TbklTcoWZTj8pqfVUlD6GlxPr30=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7171
-X-Authority-Analysis: v=2.4 cv=W4ZqVgWk c=1 sm=1 tr=0 ts=674569db cx=c_pps a=IwUfk5KXFkOzJxXNjnChew==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=QyXUC8HyAAAA:8
- a=COk6AnOGAAAA:8 a=t7CeM3EgAAAA:8 a=Qngnf2NrlJ0sP2dl_mQA:9 a=TjNXssC_j7lpFel5tvFf:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Proofpoint-GUID: jH910txCU8JULAy0uOc2t0JV0fJ584wb
-X-Proofpoint-ORIG-GUID: jH910txCU8JULAy0uOc2t0JV0fJ584wb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-11-26_05,2024-11-25_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- adultscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
- phishscore=0 spamscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2409260000 definitions=main-2411260050
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5C18F21153
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[BUG]
+There are several crash or hang during fstests runs with sectorsize < page
+size setup.
 
-[ Upstream commit f53e1c9c726d83092167f2226f32bd3b73f26c21 ]
+It turns out that most of those hang happens after a
+btrfs_run_delalloc_range() failure (caused by -ENOSPC).
 
-If mgmt_index_removed is called while there are commands queued on
-cmd_sync it could lead to crashes like the bellow trace:
+The most common one is generic/750.
 
-0x0000053D: __list_del_entry_valid_or_report+0x98/0xdc
-0x0000053D: mgmt_pending_remove+0x18/0x58 [bluetooth]
-0x0000053E: mgmt_remove_adv_monitor_complete+0x80/0x108 [bluetooth]
-0x0000053E: hci_cmd_sync_work+0xbc/0x164 [bluetooth]
+The symptom are all related to ordered extent finishing, where we double
+account the target ordered extent.
 
-So while handling mgmt_index_removed this attempts to dequeue
-commands passed as user_data to cmd_sync.
+[CAUSE]
+Inside writepage_delalloc() if we hit an error from
+btrfs_run_delalloc_range(), we still need to unlock all the locked
+range, but that's the only error handling.
 
-Fixes: 7cf5c2978f23 ("Bluetooth: hci_sync: Refactor remove Adv Monitor")
-Reported-by: jiaymao <quic_jiaymao@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[Xiangyu: BP to fix CVE: CVE-2024-49951, Minor conflict resolution]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+If we have the following page layout with a 64K page size and 4K sector
+size:
+
+    0    4K                 32K  40K          60K   64K
+    |////|                  |////|            |/////|
+
+Where |//| is the dirtied blocks inside the folio.
+
+Then we hit the following sequence:
+
+- Enter writepage_delalloc() for folio 0
+
+- btrfs_run_delalloc_range() returned 0 for [0, 4K)
+  And created regular COW ordered extent for range [0, 4K)
+
+- btrfs_run_delalloc_range() returned 0 for [32K, 40K)
+  And created async extent for range [32K, 40K).
+
+  This means the error handling will be done in another thread, we
+  should not touch the range anymore.
+
+- btrfs_run_delalloc_range() failed with -ENOSPC for range [60K, 64K)
+  In theory we should not fail since we should have reserved enough
+  space at buffered write time, but let's ignore that rabbit hole and
+  focus on the error handling.
+
+- Error handling in extent_writepage()
+  Now we go to the done: tag, calling btrfs_mark_ordered_io_finished()
+  for the whole folio range.
+
+  This will find ranges [0, 4K) and [32K, 40K) to cleanup, for [0, 4K)
+  it should be cleaned up, but for range [32K, 40K) it's asynchronously
+  handled, the OE may have already been submitted.
+
+  This will lead to the double account for range [32K, 40K) and crash
+  the kernel.
+
+Unfortunately this bad error handling is from the very beginning of
+sector size < page size support.
+
+[FIX]
+Instead of relying on the btrfs_mark_ordered_io_finished() call to
+cleanup the whole folio range, record the last successfully ran delalloc
+range.
+
+And combined with bio_ctrl->submit_bitmap to properly clean up any newly
+created ordered extents.
+
+Since we have cleaned up the ordered extents in range, we should not
+rely on the btrfs_mark_ordered_io_finished() inside extent_writepage()
+anymore.
+
+By this, we should avoid double accounting during error handling.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- net/bluetooth/mgmt.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ fs/btrfs/extent_io.c | 45 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 37 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 5a1015ccc063..82edd9981ab0 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1457,10 +1457,15 @@ static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
- 
- static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
- {
--	if (cmd->cmd_complete) {
--		u8 *status = data;
-+	struct cmd_lookup *match = data;
-+
-+	/* dequeue cmd_sync entries using cmd as data as that is about to be
-+	 * removed/freed.
-+	 */
-+	hci_cmd_sync_dequeue(match->hdev, NULL, cmd, NULL);
- 
--		cmd->cmd_complete(cmd, *status);
-+	if (cmd->cmd_complete) {
-+		cmd->cmd_complete(cmd, match->mgmt_status);
- 		mgmt_pending_remove(cmd);
- 
- 		return;
-@@ -9424,14 +9429,14 @@ void mgmt_index_added(struct hci_dev *hdev)
- void mgmt_index_removed(struct hci_dev *hdev)
- {
- 	struct mgmt_ev_ext_index ev;
--	u8 status = MGMT_STATUS_INVALID_INDEX;
-+	struct cmd_lookup match = { NULL, hdev, MGMT_STATUS_INVALID_INDEX };
- 
- 	if (test_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks))
- 		return;
- 
- 	switch (hdev->dev_type) {
- 	case HCI_PRIMARY:
--		mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
-+		mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
- 
- 		if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
- 			mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev,
-@@ -9489,7 +9494,7 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
- void __mgmt_power_off(struct hci_dev *hdev)
- {
- 	struct cmd_lookup match = { NULL, hdev };
--	u8 status, zero_cod[] = { 0, 0, 0 };
-+	u8 zero_cod[] = { 0, 0, 0 };
- 
- 	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
- 
-@@ -9501,11 +9506,11 @@ void __mgmt_power_off(struct hci_dev *hdev)
- 	 * status responses.
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 438974d4def4..0132c2b84d99 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1145,11 +1145,13 @@ static bool find_next_delalloc_bitmap(struct folio *folio,
+  * helper for extent_writepage(), doing all of the delayed allocation setup.
+  *
+  * This returns 1 if btrfs_run_delalloc_range function did all the work required
+- * to write the page (copy into inline extent).  In this case the IO has
+- * been started and the page is already unlocked.
++ * to write the page (copy into inline extent or compression).  In this case
++ * the IO has been started and we should no longer touch the page (may have
++ * already been unlocked).
+  *
+  * This returns 0 if all went well (page still locked)
+- * This returns < 0 if there were errors (page still locked)
++ * This returns < 0 if there were errors (page still locked), in this case any
++ * newly created delalloc range will be marked as error and finished.
+  */
+ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 						 struct folio *folio,
+@@ -1167,6 +1169,12 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 	 * last delalloc end.
  	 */
- 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
--		status = MGMT_STATUS_INVALID_INDEX;
-+		match.mgmt_status = MGMT_STATUS_INVALID_INDEX;
- 	else
--		status = MGMT_STATUS_NOT_POWERED;
-+		match.mgmt_status = MGMT_STATUS_NOT_POWERED;
+ 	u64 last_delalloc_end = 0;
++	/*
++	 * Save the last successfully ran delalloc range end (exclusive).
++	 * This is for error handling to avoid ranges with ordered extent created
++	 * but no IO will be submitted due to error.
++	 */
++	u64 last_finished = page_start;
+ 	u64 delalloc_start = page_start;
+ 	u64 delalloc_end = page_end;
+ 	u64 delalloc_to_write = 0;
+@@ -1235,11 +1243,19 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 			found_len = last_delalloc_end + 1 - found_start;
  
--	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
-+	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+ 		if (ret >= 0) {
++			/*
++			 * Some delalloc range may be created by previous folios.
++			 * Thus we still need to clean those range up during error
++			 * handling.
++			 */
++			last_finished = found_start;
+ 			/* No errors hit so far, run the current delalloc range. */
+ 			ret = btrfs_run_delalloc_range(inode, folio,
+ 						       found_start,
+ 						       found_start + found_len - 1,
+ 						       wbc);
++			if (ret >= 0)
++				last_finished = found_start + found_len;
+ 		} else {
+ 			/*
+ 			 * We've hit an error during previous delalloc range,
+@@ -1274,8 +1290,21 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
  
- 	if (memcmp(hdev->dev_class, zero_cod, sizeof(zero_cod)) != 0) {
- 		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev,
+ 		delalloc_start = found_start + found_len;
+ 	}
+-	if (ret < 0)
++	/*
++	 * It's possible we have some ordered extents created before we hit
++	 * an error, cleanup non-async successfully created delalloc ranges.
++	 */
++	if (unlikely(ret < 0)) {
++		unsigned int bitmap_size = min(
++			(last_finished - page_start) >> fs_info->sectorsize_bits,
++			fs_info->sectors_per_page);
++
++		for_each_set_bit(bit, &bio_ctrl->submit_bitmap, bitmap_size)
++			btrfs_mark_ordered_io_finished(inode, folio,
++				page_start + (bit << fs_info->sectorsize_bits),
++				fs_info->sectorsize, false);
+ 		return ret;
++	}
+ out:
+ 	if (last_delalloc_end)
+ 		delalloc_end = last_delalloc_end;
+@@ -1509,13 +1538,13 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+ 
+ 	bio_ctrl->wbc->nr_to_write--;
+ 
+-done:
+-	if (ret) {
++	if (ret)
+ 		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
+ 					       page_start, PAGE_SIZE, !ret);
+-		mapping_set_error(folio->mapping, ret);
+-	}
+ 
++done:
++	if (ret < 0)
++		mapping_set_error(folio->mapping, ret);
+ 	/*
+ 	 * Only unlock ranges that are submitted. As there can be some async
+ 	 * submitted ranges inside the folio.
 -- 
-2.43.0
+2.47.0
 
 
