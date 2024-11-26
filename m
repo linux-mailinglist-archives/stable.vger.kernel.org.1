@@ -1,107 +1,113 @@
-Return-Path: <stable+bounces-95508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F9F9D9322
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 09:15:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FC79D93B9
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 10:00:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B81E3B23668
-	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 08:14:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE5A167CC7
+	for <lists+stable@lfdr.de>; Tue, 26 Nov 2024 09:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E5D199924;
-	Tue, 26 Nov 2024 08:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737671B415C;
+	Tue, 26 Nov 2024 09:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OtIO9b/X"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zKG1pIbu"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E23195FEF;
-	Tue, 26 Nov 2024 08:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FF81ABEBF;
+	Tue, 26 Nov 2024 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732608888; cv=none; b=JAQhoht/3Pb0IkUD/Nqu2xZf7nx7DG+J8IGoHconFO+znWD5Hu2U28IHwuruSwfBKa8lHhezzidgp31Qp579cw8y1gp4Cq3xKefBnr0QuNE4u3rYjLdnIxzyxNjU6pw9SDBtRiPaup3Fqwa5MTyWRwJNH56zmRJzaUAXMjfmsow=
+	t=1732611609; cv=none; b=EZDc7IzLjw5NYiP5wOr592d8NLTqDWixdgkMUEq1zTY6gc07XDu3PAUqmARMQutu3eeZfV7uaM8htFMe2pJIbrCEp7Qcb+c+laZ8V0FQ1bBsXMRc0iG40AXDQSbtd8NfKMpy48EOaj5eeExljKPKtTjtIpN0CFGpjWqtycziIIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732608888; c=relaxed/simple;
-	bh=d+W6oEGagjOlO132h9isVYkwbKYe0dZdo5HJ4iTtJck=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZXVv/+pcTd1mCT9ytdt1Foh2rEIxRwvZymUZ0scuD0T26e2QqYpSeEKjL2h6ImyKLXuxnBqLGLmAolDLhS6I8PZYREsrazUO48GiqnrVnmmLtXj9nPm+LlTPq3xBf40TAsupkxKX7WnQbyoCbAKneh4EPDlcvEtCbiQnhbAbas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OtIO9b/X; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E87AC1BF20A;
-	Tue, 26 Nov 2024 08:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732608884;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0KBdHG/CxCQsHvXhWUwBJsOdE18Osim3Vs/pu+kM5KU=;
-	b=OtIO9b/XZVXjD5ehh7AoyyWv2sIsym4Wm1f/gwSOKlmvGH6b0L3KkRQ8KZCXWdyIFghxcB
-	vlXzSRqhabwdNAtB/O2ZcNxLHtAebeiaVOKqz5vVkuPEt77Ez/PCbFGk41LROBe2BVze16
-	KEwOP6FwgV7VEmJCCgh48EJNajkMlxDDp5+g6N9NtUZa6NaPkb7oHc+OEc122h72j4lqVy
-	jE47tofmSXgZ/3udtipnakOl5JpSGswy3DNmjfALjhNIl1THc9+wI1LuE3o7GR4r0y4UWP
-	q4x0fFY/+Tr16ZSuVG05KgFG3VlRHpHwOdKfYJS63tfCsW9HpXWA4GRHhPnGkA==
-Date: Tue, 26 Nov 2024 09:14:41 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Cosmin Tanislav <demonsingur@gmail.com>, Tomi
- Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
- stable@vger.kernel.org, Romain Gantois <romain.gantois@bootlin.com>
-Subject: Re: [PATCH v2 1/3] i2c: atr: Fix client detach
-Message-ID: <20241126091441.345d4493@booty>
-In-Reply-To: <20241122-i2c-atr-fixes-v2-1-0acd325b6916@ideasonboard.com>
-References: <20241122-i2c-atr-fixes-v2-0-0acd325b6916@ideasonboard.com>
-	<20241122-i2c-atr-fixes-v2-1-0acd325b6916@ideasonboard.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732611609; c=relaxed/simple;
+	bh=HoPGrXDeyiP3vLgB+rubUVJ6LgEJvWoYrTiBr02UaCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kY+yOJmQqO4eiRJlyEe1xXZrT113RqJgSofVaPZQ0GLl7Wg8uIstbfcWuHGfDa/S53CaxUNlX/C1yB2l04C09uqEGq0EwifjTKBmStSgXo/l4vtOwOIrxe4mDA+34ZfBQtARqVelLB6bGU0KZGBTOtMhjUioEWAOFcdwhh9JGwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zKG1pIbu; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 7E7371FA63;
+	Tue, 26 Nov 2024 10:00:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1732611603;
+	bh=HYLlL2py6KvR3LGQTUWtWU+jRFBXwR9XUix4zOYXRis=; h=From:To:Subject;
+	b=zKG1pIbuXG6nmaMjlfaosLQnohBA7rJGFu4h2cbjKPjl2zyS3/SnGE6QGUuUTzluR
+	 YOlHUZJZDongAW+DrCsnA3CGUZDIYoZJ+TBCi9LP5MDBlkd+0o2w1QPkoDs5OMaxWJ
+	 eZKDxtRr3PZraMtYsJY9cbk5cj9RHmRXN9fc0Cx8tvh+OUe1r1/qctUE/YCuvMEDco
+	 +k4rwPGHZSRkpV9IqebD6BQ0IvwSgLGQJIi54WD/2CZ9wtEqiQ4sMEbBOiWd6M/P4w
+	 b0tYLMnsuIWjQwz4wDvsvZZiu1qzbzwExwO6FtGtPlUuV4Y3swwH0zU8vsgwgkNg2C
+	 i4CLCWr6KC0cA==
+Date: Tue, 26 Nov 2024 09:59:58 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Antoni Pokusinski <apokusinski01@gmail.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
+	Gregor Boirie <gregor.boirie@parrot.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 02/11] iio: adc: ti-ads1119: fix information leak in
+ triggered buffer
+Message-ID: <20241126085958.GA13577@francesco-nb>
+References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
+ <20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
 
-Hello Tomi,
-
-+Cc: Romain who is doing a different kind of sorcery on i2c-atr.c, so
-he is aware of this series.
-
-On Fri, 22 Nov 2024 14:26:18 +0200
-Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> wrote:
-
-> From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+On Mon, Nov 25, 2024 at 10:16:10PM +0100, Javier Carrasco wrote:
+> The 'scan' local struct is used to push data to user space from a
+> triggered buffer, but it has a hole between the sample (unsigned int)
+> and the timestamp. This hole is never initialized.
 > 
-> i2c-atr catches the BUS_NOTIFY_DEL_DEVICE event on the bus and removes
-> the translation by calling i2c_atr_detach_client().
+> Initialize the struct to zero before using it to avoid pushing
+> uninitialized information to userspace.
 > 
-> However, BUS_NOTIFY_DEL_DEVICE happens when the device is about to be
-> removed from this bus, i.e. before removal, and thus before calling
-> .remove() on the driver. If the driver happens to do any i2c
-> transactions in its remove(), they will fail.
-> 
-> Fix this by catching BUS_NOTIFY_REMOVED_DEVICE instead, thus removing
-> the translation only after the device is actually removed.
-> 
-> Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+> Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>  drivers/iio/adc/ti-ads1119.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+> index e9d9d4d46d38..2615a275acb3 100644
+> --- a/drivers/iio/adc/ti-ads1119.c
+> +++ b/drivers/iio/adc/ti-ads1119.c
+> @@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
+>  	unsigned int index;
+>  	int ret;
+>  
+> +	memset(&scan, 0, sizeof(scan));
 
-Looks good:
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Did you consider adding a reserved field after sample and just
+initializing that one to zero?
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+It seems a trivial optimization not adding much value, but I thought about
+it, so I'd like to be sure you considered it.
+
+In any case, the change is fine.
+
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+
+Thanks,
+Francesco
+
 
