@@ -1,368 +1,232 @@
-Return-Path: <stable+bounces-95647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FBD9DAC1A
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:54:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C0C9DAC67
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 18:27:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F8C1695EF
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E85281EF3
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAD1200BB3;
-	Wed, 27 Nov 2024 16:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412C7201024;
+	Wed, 27 Nov 2024 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="iWUpNs9p"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQAt4vfr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A588125760
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDD200BBA
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 17:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732726454; cv=none; b=WOfNHUyk0CBXBoUycbd9rrA7XwJxgmlA9F9dE0wZ4cozNeolI3GH8H5jeHBAbMmrs75O4rYNhk1BjLrejDknyGU3O6ebSBTgRa3eko2LuLyfj0T9n6qJ7zuZj8X5LF/7yktZDQItsdkmXaHXyQPBKo99R8FvoipaSJGpHkOi4Nk=
+	t=1732728454; cv=none; b=jox5xTsya/rKTjMxPj8U4Gb8yk3n6uJ1diWd/ZF0Iq5YIHUHX9Rosk77edaKNEjLobKAMl5sPxCJPX0FUd8nz1QTfXm3slf2A0MvJD8cI84I3g7g1JN/MlFsjoICLcgJkzrWzNZYYUucIkA0c7vgNs0Di8PoG40YR/I+V6wFlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732726454; c=relaxed/simple;
-	bh=S4eHcpglmeao1LGl/cJoGVX1FRppa+2e3o3Qu9TAWfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VfJoZEP1VXOKdu1liwQxbTBdpyL9OZhsiTP0c8mPvdzBgrD3vSXdu+hlcnqAktT2ClTh+vpY8h4aKNW4IeQ4IOgIB6dFIV14ruofbEVrHPV3FCHevS2vY98t1RqOKJ2tMPCLYwM6Bb7ATT3Vj4dbVVQ1Vk73+mhr1bULYvc0x+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=iWUpNs9p; arc=none smtp.client-ip=209.85.218.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-aa549f2f9d2so493052066b.3
-        for <stable@vger.kernel.org>; Wed, 27 Nov 2024 08:54:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1732726450; x=1733331250; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y+Fql9pBERDSrejpdbF7yc4MdeEfFwTo3f5/cemLNsQ=;
-        b=iWUpNs9pjdgD7CQNfWB/dDVEHiqdiNTI7j1dCbFOjhLF/IF8cpPG+ye9Yf980QBnC4
-         u1fhZVb6zN21CwGSYcrNQtncsqqh2K4jZVv+hEBsFDhGBqUXQs0HwzfR5Ks+FvWN/m6i
-         kzft0B6ZPJuyNBpySU04Ni0YnIxXEpRoHbDZfQLduP69IEQOuLse3TgwsOZn/HL41V8Q
-         lp5Wl+xxkrYrzSCuxJE5YGsXLsr1Q+K/nzV2z02ziFccJWtRgLckfpbSbb9zGvrFUkHg
-         Isb2+xexznUJX2MFmsRoe64JQ7U1pSnwICYWITTwN0gX1POj0UrWBYSL3g0nZiOl9HVU
-         RR6A==
+	s=arc-20240116; t=1732728454; c=relaxed/simple;
+	bh=84k0kHnTdC3L+4g7efXnw/e520GNE2hshbg8krGIP5o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XH/t00lCZFxjra6DzC+kZaOP0pgu+K15aULm4VzFySbDlQBHGU8E3dzp+DdkHrwLeCfOT1HQK7Er0ISeVfkYaKhUCdpXGyqJuz2eap8SqYeAYzomhH2LOzC8FQmXozQBPgZMCFFVKivPw5fuh/QxYz8qrXUkYdrMislWi0xhQoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RQAt4vfr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732728449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=beOnUcZGQU2mrcIYvueq6R+cVXgzH9B5DJtHxbHnrQM=;
+	b=RQAt4vfrFe9AtcEwloKIv/vSDyON83UkI/Sw8om6agTDXiJCb4nWzcqBeHVP6BS3WUJcUN
+	xOZOKTaoTlhMeZvRVA82S8uAxEc0k4Wn9fkJ0wG2BU8aVlUY+Ce/BrlH5bkbPT+WPISLgG
+	LFUPzdofahOG1MsDnM7JdysOW+ZrAog=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-Y2FhAKCZOEioGMf2V_VCYw-1; Wed, 27 Nov 2024 12:27:28 -0500
+X-MC-Unique: Y2FhAKCZOEioGMf2V_VCYw-1
+X-Mimecast-MFC-AGG-ID: Y2FhAKCZOEioGMf2V_VCYw
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-466acb9f16dso26630571cf.1
+        for <stable@vger.kernel.org>; Wed, 27 Nov 2024 09:27:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732726450; x=1733331250;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y+Fql9pBERDSrejpdbF7yc4MdeEfFwTo3f5/cemLNsQ=;
-        b=KBuUpxYlqBW1Jya2ktimvy/+JTlI0ODP7UPvNZralZSZfrN/svlCSogvcIcVVKCRjd
-         xQuNvylvNFbrwG5bBpcETdkXBjTtpt5cRxQuYAm4IWVu2sdpdwzR29IP5Mf/BlGUj+m+
-         IZxb3HI0JN02a8/isRvO4xrL96gwOg9gfZ96h17qraYv4aHPNa6KCYJ32YGLz6EqyWoo
-         IvuzthjurlNyZirLgojk3+qkiMW2eTSHCmodB2JrrprgSXSBkm78h2tEkUDOuxoRHV72
-         tDg79hN6SHN3Qcx5Cl4i8jGCO+xmxTy+8wlhx0bVog0UVOuzGdZcWhAPTD6tQ8IpquL+
-         MqHA==
-X-Gm-Message-State: AOJu0YyZ3VONIuEE4dmrb1QJx57waUHDKNcQi1Sc5VZ5Skxr89ucHKkO
-	2PlMW36bXkGQiCx+sSxDuklvU4eZdR/jvz4O1S8dgCEU+2kvp56DSPNQCgrouqw=
-X-Gm-Gg: ASbGnct6jdMZJtYapMD5bp64RclalGx8C2RpnPy/yTonCNNR1HO/PcIwYct/YvPIeSt
-	pPJUCOiIufPvItIX+aG4ZU/zPm5HlAmeHcth2UceUCqj2BR4jj0LlW1Hx5Fp0nxRkX6aNN3ZPCU
-	zS48bft4aDruynv9OHzA5yCctm+/xwS3vkStGSqkBUsxsjgSBP2qpb2ztGWWiMf6aJ6QxdX8s5p
-	8XO6+8zcQ6B0U/1fHOLFjEOc+mpsQ1yZW0+/D4hUPkC1ewY2StdT8mnjM9bBEf3YtGdSAk+Ebix
-	HNL1yl8YIm0MsECaLVJs4yIGP+e028wdN+hXjLWsGNI7qHTUSA==
-X-Google-Smtp-Source: AGHT+IH2d3QQXMr5TVC8Z87qPqmiPtIEPUeEUvzAxF2WdXJsf53JysbCUBivaeZ9CUFU2/b/zOQk6Q==
-X-Received: by 2002:a17:906:3caa:b0:aa5:4ca6:11b1 with SMTP id a640c23a62f3a-aa58106265dmr269711266b.52.1732726449886;
-        Wed, 27 Nov 2024 08:54:09 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f2c8700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2c:8700:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa54a23545dsm442854766b.152.2024.11.27.08.54.09
+        d=1e100.net; s=20230601; t=1732728448; x=1733333248;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=beOnUcZGQU2mrcIYvueq6R+cVXgzH9B5DJtHxbHnrQM=;
+        b=j1mYTWJxYACpILPEqZrPU7BuCOdmS7I+G+7Tq7p7DcF+kzYOu8iFUHbDDE1WZVEp/u
+         GchG3qqut807fziOLBoJ6lRbAnPlFfeyYyPonr2Z9Zzts/9n6/GIuE2+ZoxPloSrH2kK
+         8qd8U8T8OBhpsJjYEEcdsfTD1RSewRuv2x9wOW47aRubpqOQMchHuQkfMPYS7XK9+xFV
+         xv6Jctxg9QxZlE31tLP3KWtldcH+edypXYTepnFjdLYpwrpJS+HNIs1qHhMi31VckJBJ
+         kCqTxnjJqQT96oQaLseLAnasOOQ7VOBoNs/jxDHddNdwjtwoazFsBk5OSIPvjvKSbS+a
+         sZtA==
+X-Gm-Message-State: AOJu0Yya7Al1jftYXHSh7/PNhoQu7w9CxWBTDRwv85vIlphgxE8sqk4B
+	ds1jc984dJ2rmNf/fhlPIl27XcGkiwdogGOyLKF7Cf7BW7UkAVaGWSAKCx01Fvr7t7PbcyIirB5
+	6H44RukMH6W/l73naeSznSH1VMdeNYXGjOwoz3hruixylXEyEvfSTbA==
+X-Gm-Gg: ASbGncuEkmu/yQAOM89lSp3sHp6xO4AVNkMv6F1zK0j02/qN+lTBK4FDPZPN2vMQTR2
+	dBmI+nLqQ+jRP9OY8mCkkx/rQpmn2MD2ld4yBTQznBtAtzuao6tjWtaMK59F+QgoQZyXyTkNo6O
+	RDA1/aIMPfyamVJgcFf85iMBSHNl5DB4vd9ZyJm7XvN4b2noUcIWvNt0dGGZCmNVp3oS52ZvfP/
+	n6MbizNdn2FeSEDogO3BAr/7LrTPWH747W/QJP0fFfrebHG1AHBnz5FMWWKBg7uXcwbBGgBcWNG
+	Fi9M/mLGV7runkq7+v1fpXcS3Rjgs0pKVZU=
+X-Received: by 2002:a05:622a:1341:b0:463:1677:c09 with SMTP id d75a77b69052e-466b35ea5femr68921661cf.23.1732728447784;
+        Wed, 27 Nov 2024 09:27:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+fAMgcLzUudgIW52TJuWeKGmuj/kR1YAzG3qMwrZjsvPqzOjlYx5DSJYQMYJ3GaA+mF1VrQ==
+X-Received: by 2002:a05:622a:1341:b0:463:1677:c09 with SMTP id d75a77b69052e-466b35ea5femr68921251cf.23.1732728447440;
+        Wed, 27 Nov 2024 09:27:27 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46682eee51bsm48523711cf.82.2024.11.27.09.27.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 08:54:09 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: xiubli@redhat.com,
-	idryomov@gmail.com,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v2] fs/ceph/file: fix buffer overflow in __ceph_sync_read()
-Date: Wed, 27 Nov 2024 17:54:05 +0100
-Message-ID: <20241127165405.2676516-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.45.2
+        Wed, 27 Nov 2024 09:27:26 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Peter Zijlstra <peterz@infradead.org>, Chenbo Lu
+ <chenbo.lu@jobyaviation.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, mingo@redhat.com,
+ juri.lelli@redhat.com, linux-kernel@vger.kernel.org
+Subject: Re: Performance Degradation After Upgrading to Kernel 6.8
+In-Reply-To: <20241120090354.GE19989@noisy.programming.kicks-ass.net>
+References: <CACodVevaOp4f=Gg467_m-FAdQFceGQYr7_Ahtt6CfpDVQhAsjA@mail.gmail.com>
+ <20241120090354.GE19989@noisy.programming.kicks-ass.net>
+Date: Wed, 27 Nov 2024 18:27:23 +0100
+Message-ID: <xhsmhzflkmvt0.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-If the inode size gets truncated by another task, __ceph_sync_read()
-may crash with a buffer overflow because it sets `left` to a huge
-value:
+Damn, I wrote a reply on the 20th but seems like I never sent it. At least
+I found it saved somewhere, so I don't have to rewrite it...
 
-  else if (off + ret > i_size)
-          left = i_size - off;
+On 20/11/24 10:03, Peter Zijlstra wrote:
+> On Tue, Nov 19, 2024 at 04:30:02PM -0800, Chenbo Lu wrote:
+>> Hello,
+>> 
+>> I am experiencing a significant performance degradation after
+>> upgrading my kernel from version 6.6 to 6.8 and would appreciate any
+>> insights or suggestions.
+>> 
+>> I am running a high-load simulation system that spawns more than 1000
+>> threads and the overall CPU usage is 30%+ . Most of the threads are
+>> using real-time
+>> scheduling (SCHED_RR), and the threads of a model are using
+>> SCHED_DEADLINE. After upgrading the kernel, I noticed that the
+>> execution time of my model has increased from 4.5ms to 6ms.
+>> 
+>> What I Have Done So Far:
+>> 1. I found this [bug
+>> report](https://bugzilla.kernel.org/show_bug.cgi?id=219366#c7) and
+>> reverted the commit efa7df3e3bb5da8e6abbe37727417f32a37fba47 mentioned
+>> in the post. Unfortunately, this did not resolve the issue.
+>> 2. I performed a git bisect and found that after these two commits
+>> related to scheduling (RT and deadline) were merged, the problem
+>> happened. They are 612f769edd06a6e42f7cd72425488e68ddaeef0a,
+>> 5fe7765997b139e2d922b58359dea181efe618f9
+>
+> And yet you failed to Cc Valentin, the author of said commits :/
+>
+>> After reverting these two commits, the model execution time improved
+>> to around 5 ms.
+>> 3. I revert two more commits, and the execution time is back to 4.7ms:
+>> 63ba8422f876e32ee564ea95da9a7313b13ff0a1,
+>> efa7df3e3bb5da8e6abbe37727417f32a37fba47
+>> 
+>> My questions are:
+>> 1.Has anyone else experienced similar performance degradation after
+>> upgrading to kernel 6.8?
+>
+> This is 4 kernel releases back, I my memory isn't that long.
+>
+>> 2.Can anyone explain why these two commits are causing the problem? I
+>> am not very familiar with the kernel code and would appreciate any
+>> insights.
+>
+> There might be a race window between setting the tro and sending the
+> IPI, such that previously the extra IPIs would sooner find the newly
+> pushable task.
+>
+> Valentin, would it make sense to set tro before enqueueing the pushable,
+> instead of after it?
 
-Imagine `i_size` was truncated to zero; `off + ret > i_size` is always
-true, but `i_size - off` can be negative; since `left` is unsigned, it
-turns into a rather huge number, and thus the `while (left > 0)` loop
-never stops until it eventually crashes because `pages[idx]` overflows
-the `pages` allocation.
+Urgh, those cachelines are beyond cold...
 
-We need to ensure that `i_size` never becomes smaller than `off`.  I
-suggest breaking from the loop as soon as this happens, right after
-the `i_size = i_size_read(inode)` update.
+/me goes reading
 
-This can be reproduced easily by running a program like this on one
-Ceph client:
+Ok yeah I guess we could have this race vs
 
-  ioctl(fd, CEPH_IOC_SYNCIO);
-  char buffer[16384];
-  while (1) pread(fd, buffer, sizeof(buffer), 8192);
+rto_push_irq_work_func()
+`\
+  rto_next_cpu()
 
-Then, on another server, truncate and rewrite the file until the first
-server's kernel crashes (I never needed more than two attempts to
-trigger the kernel crash):
-
-  dd if=/dev/urandom of=foo bs=1k count=64
-
-This is how the crash looks like (with KASAN and some debug logs from
-`__ceph_sync_read` and `ceph_fill_file_size`):
-
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 16384 i_size 65536
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 16384 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: size 65536 -> 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_seq 36656 -> 36657
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 0 i_size 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: result 0 retry_op 0
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: orig 8192~16384 reading 8192~16384
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: 8192~16384 got 1024 i_size 0
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in __ceph_sync_read+0x173f/0x1b10
- Read of size 8 at addr ffff8881d5dfbea0 by task pread/3276
-
- CPU: 3 UID: 2147488069 PID: 3276 Comm: pread Not tainted 6.11.10-cm4all1-hp+ #254
- Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 09/05/2019
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x62/0x90
-  print_report+0xc4/0x5e0
-  ? __virt_addr_valid+0x1e9/0x3a0
-  ? __ceph_sync_read+0x173f/0x1b10
-  kasan_report+0xb9/0xf0
-  ? __ceph_sync_read+0x173f/0x1b10
-  __ceph_sync_read+0x173f/0x1b10
-  ? __pfx___ceph_sync_read+0x10/0x10
-  ? lock_acquire+0x186/0x4d0
-  ? ceph_read_iter+0xace/0x19f0
-  ceph_read_iter+0xace/0x19f0
-  ? lock_release+0x648/0xb50
-  ? __pfx_ceph_read_iter+0x10/0x10
-  ? __rseq_handle_notify_resume+0x8ed/0xd40
-  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-  ? vfs_read+0x6e0/0xba0
-  vfs_read+0x6e0/0xba0
-  ? __pfx_vfs_read+0x10/0x10
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  __x64_sys_pread64+0x19b/0x1f0
-  ? __pfx___x64_sys_pread64+0x10/0x10
-  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-  do_syscall_64+0x82/0x130
-  ? lockdep_hardirqs_on_prepare+0x275/0x3e0
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  ? do_syscall_64+0x8e/0x130
-  ? lockdep_hardirqs_on_prepare+0x275/0x3e0
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  ? do_syscall_64+0x8e/0x130
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f8449d18343
- Code: 48 8b 6c 24 48 e8 3d 00 f3 ff 41 b8 02 00 00 00 e9 38 f6 ff ff 66 90 80 3d a1 42 0e 00 00 49 89 ca 74 14 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 5d c3 0f 1f 40 00 48 83 ec 28 48 89 54 24 10
- RSP: 002b:00007ffd7a2e8b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000011
- RAX: ffffffffffffffda RBX: 00007ffd7a2e8cc8 RCX: 00007f8449d18343
- RDX: 0000000000004000 RSI: 0000557f7917c2a0 RDI: 0000000000000003
- RBP: 00007ffd7a2e8bb0 R08: 0000557f7919d000 R09: 0000000000021001
- R10: 0000000000002000 R11: 0000000000000202 R12: 0000000000000000
- R13: 00007ffd7a2e8cf0 R14: 0000557f436c2dd8 R15: 00007f8449e43020
-  </TASK>
-
- Allocated by task 3276:
-  kasan_save_stack+0x1c/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x8b/0x90
-  __kmalloc_noprof+0x1bf/0x490
-  ceph_alloc_page_vector+0x36/0x110
-  __ceph_sync_read+0x769/0x1b10
-  ceph_read_iter+0xace/0x19f0
-  vfs_read+0x6e0/0xba0
-  __x64_sys_pread64+0x19b/0x1f0
-  do_syscall_64+0x82/0x130
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- The buggy address belongs to the object at ffff8881d5dfbe80
-  which belongs to the cache kmalloc-32 of size 32
- The buggy address is located 0 bytes to the right of
-  allocated 32-byte region [ffff8881d5dfbe80, ffff8881d5dfbea0)
-
- The buggy address belongs to the physical page:
- page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1d5dfb
- flags: 0x2fffc0000000000(node=0|zone=2|lastcpupid=0x3fff)
- page_type: 0xfdffffff(slab)
- raw: 02fffc0000000000 ffff888100042780 dead000000000122 0000000000000000
- raw: 0000000000000000 0000000080400040 00000001fdffffff 0000000000000000
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ffff8881d5dfbd80: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff8881d5dfbe00: fa fb fb fb fc fc fc fc fa fb fb fb fc fc fc fc
- >ffff8881d5dfbe80: 00 00 00 00 fc fc fc fc fa fb fb fb fc fc fc fc
-                                ^
-  ffff8881d5dfbf00: fc fc fc fc fc fc fc fc fa fb fb fb fc fc fc fc
-  ffff8881d5dfbf80: fa fb fb fb fc fc fc fc fa fb fb fb fc fc fc fc
- ==================================================================
- Disabling lock debugging due to kernel taint
- Oops: general protection fault, probably for non-canonical address 0xe021fc6b8000019a: 0000 [#1] SMP KASAN PTI
- KASAN: maybe wild-memory-access in range [0x0110035c00000cd0-0x0110035c00000cd7]
- CPU: 3 UID: 2147488069 PID: 3276 Comm: pread Tainted: G    B              6.11.10-cm4all1-hp+ #254
- Tainted: [B]=BAD_PAGE
- Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 09/05/2019
- RIP: 0010:__ceph_sync_read+0xc33/0x1b10
- Code: 39 e7 4d 0f 47 fc 48 8d 0c c6 48 89 c8 48 c1 e8 03 42 80 3c 30 00 0f 85 0b 0b 00 00 48 8b 11 48 8d 7a 08 48 89 f8 48 c1 e8 03 <42> 80 3c 30 00 0f 85 0d 0b 00 00 48 8b 42 08 a8 01 0f 84 ee 04 00
- RSP: 0018:ffff8881ed6e78e0 EFLAGS: 00010207
- RAX: 0022006b8000019a RBX: 0000000000000000 RCX: ffff8881d5dfbea0
- RDX: 0110035c00000ccc RSI: 0000000000000008 RDI: 0110035c00000cd4
- RBP: ffff8881ed6e7a80 R08: 0000000000000001 R09: fffffbfff28b44ac
- R10: ffffffff945a2567 R11: 0000000000000001 R12: ffffffffffffa000
- R13: 0000000000000004 R14: dffffc0000000000 R15: 0000000000001000
- FS:  00007f8449c1f740(0000) GS:ffff88d2b5a00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fb72c6aecf0 CR3: 00000001ed7b6003 CR4: 00000000007706f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ? die_addr+0x3c/0xa0
-  ? exc_general_protection+0x113/0x200
-  ? asm_exc_general_protection+0x22/0x30
-  ? __ceph_sync_read+0xc33/0x1b10
-  ? __pfx___ceph_sync_read+0x10/0x10
-  ? lock_acquire+0x186/0x4d0
-  ? ceph_read_iter+0xace/0x19f0
-  ceph_read_iter+0xace/0x19f0
-  ? lock_release+0x648/0xb50
-  ? __pfx_ceph_read_iter+0x10/0x10
-  ? __rseq_handle_notify_resume+0x8ed/0xd40
-  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-  ? vfs_read+0x6e0/0xba0
-  vfs_read+0x6e0/0xba0
-  ? __pfx_vfs_read+0x10/0x10
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  __x64_sys_pread64+0x19b/0x1f0
-  ? __pfx___x64_sys_pread64+0x10/0x10
-  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-  do_syscall_64+0x82/0x130
-  ? lockdep_hardirqs_on_prepare+0x275/0x3e0
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  ? do_syscall_64+0x8e/0x130
-  ? lockdep_hardirqs_on_prepare+0x275/0x3e0
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  ? do_syscall_64+0x8e/0x130
-  ? syscall_exit_to_user_mode+0x9a/0x190
-  ? do_syscall_64+0x8e/0x130
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f8449d18343
- Code: 48 8b 6c 24 48 e8 3d 00 f3 ff 41 b8 02 00 00 00 e9 38 f6 ff ff 66 90 80 3d a1 42 0e 00 00 49 89 ca 74 14 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 5d c3 0f 1f 40 00 48 83 ec 28 48 89 54 24 10
- RSP: 002b:00007ffd7a2e8b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000011
- RAX: ffffffffffffffda RBX: 00007ffd7a2e8cc8 RCX: 00007f8449d18343
- RDX: 0000000000004000 RSI: 0000557f7917c2a0 RDI: 0000000000000003
- RBP: 00007ffd7a2e8bb0 R08: 0000557f7919d000 R09: 0000000000021001
- R10: 0000000000002000 R11: 0000000000000202 R12: 0000000000000000
- R13: 00007ffd7a2e8cf0 R14: 0000557f436c2dd8 R15: 00007f8449e43020
-  </TASK>
- Modules linked in:
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:__ceph_sync_read+0xc33/0x1b10
- Code: 39 e7 4d 0f 47 fc 48 8d 0c c6 48 89 c8 48 c1 e8 03 42 80 3c 30 00 0f 85 0b 0b 00 00 48 8b 11 48 8d 7a 08 48 89 f8 48 c1 e8 03 <42> 80 3c 30 00 0f 85 0d 0b 00 00 48 8b 42 08 a8 01 0f 84 ee 04 00
- RSP: 0018:ffff8881ed6e78e0 EFLAGS: 00010207
- RAX: 0022006b8000019a RBX: 0000000000000000 RCX: ffff8881d5dfbea0
- RDX: 0110035c00000ccc RSI: 0000000000000008 RDI: 0110035c00000cd4
- RBP: ffff8881ed6e7a80 R08: 0000000000000001 R09: fffffbfff28b44ac
- R10: ffffffff945a2567 R11: 0000000000000001 R12: ffffffffffffa000
- R13: 0000000000000004 R14: dffffc0000000000 R15: 0000000000001000
- FS:  00007f8449c1f740(0000) GS:ffff88d2b5a00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fb72c6aecf0 CR3: 00000001ed7b6003 CR4: 00000000007706f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- workqueue: ceph_con_workfn hogged CPU for >10000us 35 times, consider switching to WQ_UNBOUND
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: size 0 -> 65536
- ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_size: truncate_size 0 -> 0, encrypted 0
-
-Fixes: 1065da21e5df ("ceph: stop copying to iter at EOF on sync reads")
-Fixes: https://tracker.ceph.com/issues/67524
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Not sure if that applies to DL too since it doesn't have the PUSH_IPI
+thing, but anyway - Chenbo, could you please try the below?
 ---
-v2: public posting; added link to Ceph bug tracker (vulnerability had
-been known already for 3 months)
----
- fs/ceph/file.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 4b8d59ebda00..57d7cdda0f87 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1154,6 +1154,13 @@ ssize_t __ceph_sync_read(struct inode *inode, loff_t *ki_pos,
- 		doutc(cl, "%llu~%llu got %zd i_size %llu%s\n", off, len,
- 		      ret, i_size, (more ? " MORE" : ""));
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index d9d5a702f1a61..270a25335c4bc 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -602,16 +602,16 @@ static void enqueue_pushable_dl_task(struct rq *rq, struct task_struct *p)
  
-+		if (off >= i_size)
-+			/* meanwhile, the file has been truncated by
-+			 * another task and the offset is no longer
-+			 * valid; stop here
-+			 */
-+			break;
+ 	WARN_ON_ONCE(!RB_EMPTY_NODE(&p->pushable_dl_tasks));
+ 
++	if (!rq->dl.overloaded) {
++		dl_set_overload(rq);
++		rq->dl.overloaded = 1;
++	}
 +
- 		/* Fix it to go to end of extent map */
- 		if (sparse && ret >= 0)
- 			ret = ceph_sparse_ext_map_end(op);
--- 
-2.45.2
+ 	leftmost = rb_add_cached(&p->pushable_dl_tasks,
+ 				 &rq->dl.pushable_dl_tasks_root,
+ 				 __pushable_less);
+ 	if (leftmost)
+ 		rq->dl.earliest_dl.next = p->dl.deadline;
+-
+-	if (!rq->dl.overloaded) {
+-		dl_set_overload(rq);
+-		rq->dl.overloaded = 1;
+-	}
+ }
+ 
+ static void dequeue_pushable_dl_task(struct rq *rq, struct task_struct *p)
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index bd66a46b06aca..1ea45a45ed657 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -385,6 +385,15 @@ static inline void rt_queue_pull_task(struct rq *rq)
+ 
+ static void enqueue_pushable_task(struct rq *rq, struct task_struct *p)
+ {
++	/*
++	 * Set RTO first so rto_push_irq_work_func() can see @rq as a push
++	 * candidate as early as possible.
++	 */
++	if (!rq->rt.overloaded) {
++		rt_set_overload(rq);
++		rq->rt.overloaded = 1;
++	}
++
+ 	plist_del(&p->pushable_tasks, &rq->rt.pushable_tasks);
+ 	plist_node_init(&p->pushable_tasks, p->prio);
+ 	plist_add(&p->pushable_tasks, &rq->rt.pushable_tasks);
+@@ -392,15 +401,15 @@ static void enqueue_pushable_task(struct rq *rq, struct task_struct *p)
+ 	/* Update the highest prio pushable task */
+ 	if (p->prio < rq->rt.highest_prio.next)
+ 		rq->rt.highest_prio.next = p->prio;
+-
+-	if (!rq->rt.overloaded) {
+-		rt_set_overload(rq);
+-		rq->rt.overloaded = 1;
+-	}
+ }
+ 
+ static void dequeue_pushable_task(struct rq *rq, struct task_struct *p)
+ {
++	/*
++	 * To match enqueue we should check/unset RTO first, but for that we
++	 * need to pop @p first. This makes this asymmetric wrt enqueue, but
++	 * the worst we can get out of this is an extra useless IPI.
++	 */
+ 	plist_del(&p->pushable_tasks, &rq->rt.pushable_tasks);
+ 
+ 	/* Update the new highest prio pushable task */
 
 
