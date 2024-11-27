@@ -1,136 +1,111 @@
-Return-Path: <stable+bounces-95584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043069DA16D
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 05:21:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E2BB163602
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 04:21:16 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ECE81AD7;
-	Wed, 27 Nov 2024 04:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHxQG5sL"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BB79DA1F6
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:04:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327D10E6;
-	Wed, 27 Nov 2024 04:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FAC7284E0B
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 06:04:07 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E11F13D89D;
+	Wed, 27 Nov 2024 06:04:04 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E313AA3F
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 06:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732681273; cv=none; b=n0+DDyasqWG67SLeSuYjNN0u6c86IghUbc79lHaHyc+YwoV6Dhp+m2PDfkr2HjJ8eAG4mNGlV0RxqvGYyrkDLB8MjNx27TJLOj2yWRmhppTkPal74bz99IwzPxCZq6ZZW44iz+FySHSLVKaxPfNiJEvEXoLx6opB/9LUTiKWSDs=
+	t=1732687444; cv=none; b=JfdyvbtAi6RLMKgOTPMuercValTGjygKN7i3VUiUkpcpROp6uSE/nPV6iO6OCWpneiuq8irfFYsvla4xS8RAAEVEOH0lud4e7n+kAxCsA22OCGm58U/RzsZKnhsCd/aHvX1UcoFz9G1nUs2Bn9I43T4WU6VcOe5rAzsKl606Kd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732681273; c=relaxed/simple;
-	bh=eHOLQKunbk8Z3giDEIVHC1DnAyRTlQQ9KQn/cuoZS7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VgKsIWd9KEk6keNVN8MJsjurSBcjQ9CzTPNodl1TXGMm2BlcaeyxmFXI7QAL8iT0EU0FYKGb4mySIPJFtx3gUQm5eVE/DHqEaDdfy4S4Mt3ZT9z9QydQx7sJUIaHTWt3CdjeY5I7UrZava78XCcIuBwVGKGwa1kNJQqg1myTGik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHxQG5sL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADF5C4CECC;
-	Wed, 27 Nov 2024 04:21:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732681273;
-	bh=eHOLQKunbk8Z3giDEIVHC1DnAyRTlQQ9KQn/cuoZS7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KHxQG5sLVqZUZTAiOvTwoSBEJAQfVtGniz0PQwBIE1txYPDdeZ5Ic6WNRzeGQcgQO
-	 dSDtnCfBI4DmJs1SUxqb8zN9WxQ0NeOGrCo/V/OtPio9W02z9iTS/qyYU+ewU98Iva
-	 TlKHdFs7vGL7uHayaDq+pPqYw3ztw7aazAR12KXjGwK+4q5LKWhfuKXo8ExmvRr4RC
-	 3VSMDDZhVfcvz6beZcxdo9GC7P4RFcPEildaDZgrQUtLyri2wC1U30PIBsIzKHgbIo
-	 6FuDLPfyMiY2zZMSJn6ee54mOsCnB85ax/kwtuofA9ucTI5L45qD30KXgvspfAdOQQ
-	 Qe4OE9J2BGghw==
-Date: Tue, 26 Nov 2024 22:21:10 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: manivannan.sadhasivam@linaro.org
-Cc: Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>, 
-	Nitin Rawat <quic_nitirawa@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] clk: qcom: gcc-sm8550: Keep UFS PHY GDSCs ALWAYS_ON
-Message-ID: <tebgud2k4bup35e7rkfpx5kt7m5jxgw3yo3myjzfushnmdecsj@e4cb44jqoevp>
-References: <20241107-ufs-clk-fix-v1-0-6032ff22a052@linaro.org>
- <20241107-ufs-clk-fix-v1-1-6032ff22a052@linaro.org>
+	s=arc-20240116; t=1732687444; c=relaxed/simple;
+	bh=oanSEIZoU8KDBdDbLDDNAqJFoFCBlU2vVQE5V0ZrFKI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s4A9oFS+5upaXWkfshey+JkT83wocMhgy4stOWRoDVmaWiEbu35KvTl520USoFpp/YmG4z6FKOpWqBLsi57plAn9DTvQltKdU+VG1XiGbAZbb86511DcS67GsZF7EmY/XO9ui6tYELxrLt6qdpkmlkcFGGZnyNSEa/ZRtlGNzts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AR5gYAc015490;
+	Wed, 27 Nov 2024 06:03:58 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433618c56e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 27 Nov 2024 06:03:58 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Tue, 26 Nov 2024 22:03:57 -0800
+Received: from pek-lpg-core3.wrs.com (128.224.153.43) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Tue, 26 Nov 2024 22:03:55 -0800
+From: Bin Lan <bin.lan.cn@windriver.com>
+To: <stable@vger.kernel.org>, <mpatocka@redhat.com>
+CC: <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.6] dm: fix a crash if blk_alloc_disk fails
+Date: Wed, 27 Nov 2024 14:03:54 +0800
+Message-ID: <20241127060354.2695746-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241107-ufs-clk-fix-v1-1-6032ff22a052@linaro.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: Rq00x67pU1E3-qNW55kHPxIqm77zELyB
+X-Proofpoint-GUID: Rq00x67pU1E3-qNW55kHPxIqm77zELyB
+X-Authority-Analysis: v=2.4 cv=O65rvw9W c=1 sm=1 tr=0 ts=6746b64e cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=gu6fZOg2AAAA:8 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=hD80L64hAAAA:8 a=t7CeM3EgAAAA:8
+ a=CznjUHFP9-Q3qCXQxMMA:9 a=-FEs8UIgK8oA:10 a=2RSlZUUhi9gRBrsHwhhZ:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-11-27_02,2024-11-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2411270049
 
-On Thu, Nov 07, 2024 at 11:58:09AM +0000, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> Starting from SM8550, UFS PHY GDSCs doesn't support hardware retention. So
-> using RETAIN_FF_ENABLE is wrong. Moreover, without ALWAYS_ON flag, GDSCs
-> will get powered down during suspend, causing the UFS PHY to loose its
-> state. And this will lead to below UFS error during resume as observed on
-> SM8550-QRD:
-> 
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-Unless I'm mistaken, ALWAYS_ON makes GDSC keep the gendpd ALWAYS_ON as
-well, which in turn would ensure that any parent power-domain is kept
-active - which in the case of GCC would imply CX.
+[ Upstream commit fed13a5478680614ba97fc87e71f16e2e197912e ]
 
-The way we've dealt with this elsewhere is to use the PWRSTS_RET_ON flag
-in pwrsts; we then keep the GDSC active, but release any votes to the
-parent and rely on hardware to kick in MX when we're shutting down CX.
-Perhaps this can't be done for some reason?
+If blk_alloc_disk fails, the variable md->disk is set to an error value.
+cleanup_mapped_device will see that md->disk is non-NULL and it will
+attempt to access it, causing a crash on this statement
+"md->disk->private_data = NULL;".
 
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://marc.info/?l=dm-devel&m=172824125004329&w=2
+Cc: stable@vger.kernel.org
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+---
+ drivers/md/dm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-PS. In contrast to other platforms where we've dealt with issues of
-under voltage crashes, I see &gcc in sm8550.dtsi doesn't specify a
-parent power-domain, which would mean that the required-opps = <&nom> of
-&ufs_mem_hc is voting for nothing.
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 5dd0a42463a2..f45427291ea6 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2077,8 +2077,10 @@ static struct mapped_device *alloc_dev(int minor)
+ 	 * override accordingly.
+ 	 */
+ 	md->disk = blk_alloc_disk(md->numa_node_id);
+-	if (!md->disk)
++	if (!md->disk){
++		md->disk = NULL;
+ 		goto bad;
++	}
+ 	md->queue = md->disk->queue;
+ 
+ 	init_waitqueue_head(&md->wait);
+-- 
+2.34.1
 
-Regards,
-Bjorn
-
-> ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
-> ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
-> ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
-> ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
-> ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
-> 
-> Cc: stable@vger.kernel.org # 6.8
-> Fixes: 1fe8273c8d40 ("clk: qcom: gcc-sm8550: Add the missing RETAIN_FF_ENABLE GDSC flag")
-> Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Suggested-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/clk/qcom/gcc-sm8550.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
-> index 5abaeddd6afc..7dd08e175820 100644
-> --- a/drivers/clk/qcom/gcc-sm8550.c
-> +++ b/drivers/clk/qcom/gcc-sm8550.c
-> @@ -3046,7 +3046,7 @@ static struct gdsc ufs_phy_gdsc = {
->  		.name = "ufs_phy_gdsc",
->  	},
->  	.pwrsts = PWRSTS_OFF_ON,
-> -	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
-> +	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
->  };
->  
->  static struct gdsc ufs_mem_phy_gdsc = {
-> @@ -3055,7 +3055,7 @@ static struct gdsc ufs_mem_phy_gdsc = {
->  		.name = "ufs_mem_phy_gdsc",
->  	},
->  	.pwrsts = PWRSTS_OFF_ON,
-> -	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
-> +	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
->  };
->  
->  static struct gdsc usb30_prim_gdsc = {
-> 
-> -- 
-> 2.25.1
-> 
-> 
 
