@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B859DAB8C
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381219DAB8A
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81414B2164F
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C7C165056
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F7D2581;
-	Wed, 27 Nov 2024 16:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A802C200B89;
+	Wed, 27 Nov 2024 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRfs45Fv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc/HZ6cR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3296200B93
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690D01FF7DB
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732724110; cv=none; b=RmR+xO9j26LbasOLfozbuSYSbyR8t0RO5lYPduth1LL3NpsR3Yvp+202eDaDbNDpf6SbkUe65LopIKPyUtFpH4u1IBph1FGA9HbHSlimHT6S/Ou/XHZZFy9idOct5RHHX72rZu5s+TGy52O9kAFOdJs0W+BhGQOAAln3BlJHUUc=
+	t=1732724112; cv=none; b=jV8ky5Um/XH/5KhNdIN1oQVbl6sFi4sgxgU0azR/sF2H9Ar/KoV8aPjeyAFRdJeid/l3rsfftpTBX7evC9lirJeC2P6GsPZ3iwmpuipgQNPVMI/+Puzj1o3/e6OxprhjT5dwqam1C7oQ1Zl1/cchKPvY73ynxcZeLoQOALPnm10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732724110; c=relaxed/simple;
-	bh=7W8gokUDZvzQJR7ZlccTHOPy84Gg08puhDmoItYxqvQ=;
+	s=arc-20240116; t=1732724112; c=relaxed/simple;
+	bh=AzOMQpJdTtKCmGlFihUbBrEVJHPmC1Y9vSjPYsngots=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLQjGC3ic595GsPk0Nx5/fS+Nbkmz7+jh0hTVPy7waIiXrG4swHDlbiNnFOU49x2JoqWLKz2n9Dm6MGID0thi+c7aHE96qCpriTCLACwB4QbuCS1kHQRdcYYiz88wj9ruW7N2T26DC5166dFxNPMn+gcrpImaGOpkF/znjCg1jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRfs45Fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83C5C4CECC;
-	Wed, 27 Nov 2024 16:15:09 +0000 (UTC)
+	 MIME-Version; b=iavpvEQbGkg+F31WkNMwaSZ1ebxrRghsFxa53N1sP2SWmrwk7wPwdMgJmXgRey61y6IdPKuA17wXkzqFHcVwYK3WW2VvLxXOrmfPIrsywaq8qiwpoaSUQo/yOyKaGPd3JtyaGwosOinsvNT4VVppOScPlepoJqvZAg/rt3jLUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc/HZ6cR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3241C4CECC;
+	Wed, 27 Nov 2024 16:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732724110;
-	bh=7W8gokUDZvzQJR7ZlccTHOPy84Gg08puhDmoItYxqvQ=;
+	s=k20201202; t=1732724112;
+	bh=AzOMQpJdTtKCmGlFihUbBrEVJHPmC1Y9vSjPYsngots=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRfs45FvH+kNh5fOw4ymb8HhaRHoIMlSm1dU/Clnmb7xm0C0Zq5MHc4qiXbkBraz0
-	 F0+NK6D9h7aKkkagyM5e9r5bcGt2BVp32ZxBFEk40bMa0DMl8zam5Sy9e5eWhiyG4L
-	 b6iwh8QISSTCDSJSnad/baBKohDccd4QaAfVzwK2sFEe+RJzngkSPmDkOqtHK0Bd2D
-	 pJYFEGqWm4+DhwY28g+o7rz913uF/jy3MXwAhggiXJTzghxl7t5vP+6Zb/iZmdzHDB
-	 u0vurM6hiqVedlyaGM5nb29vR/lZPeRgO4smmknJ3HzpII7jCN0v3ok3TQzZrjAube
-	 KpdgfktUy7I6A==
+	b=Lc/HZ6cRkHPLqJWmRFd4X+8VO8wuhT1TcMi8vTQlCzGjBFyYJkDaj+tGFQaTU4En4
+	 JlOrZ/psRMD/KRLK+3hnFj41u0caCZ2dhrIPHKesU9cKji5cNSpo8pqZ7DLwZ+BZsK
+	 9J8PI9MQbuWzMA62/pyxVpi/e19pcFdh2nuWwxFziEv37EsgQu+b7YoEShpnh8HsGu
+	 CoCJpYbYL/tPq5Ep4e/tIDJLW3CeQWp9oWtf3M2WkYOJpnOkS1XIbMr4lyBwqjDDeb
+	 OIPU+SVfWnOiu+Vd4pjnjTbinPn/w3a49oZeOUpy5wIjrWInUsSXt5BDCCbS2KMN2l
+	 hGUh7EzLSgcJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: mingli.yu@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1/6.6] drm/amd/display: Check phantom_stream before it is used
-Date: Wed, 27 Nov 2024 11:15:08 -0500
-Message-ID: <20241127085829-2182f128e7c6e45b@stable.kernel.org>
+Subject: Re: [PATCH 5.15] ksmbd: fix slab-use-after-free in smb3_preauth_hash_rsp
+Date: Wed, 27 Nov 2024 11:15:10 -0500
+Message-ID: <20241127083256-48e3c9908efd4c7e@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241127101950.1190303-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20241127063833.2525112-1-mingli.yu@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,59 +63,58 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 3718a619a8c0a53152e76bb6769b6c414e1e83f4
+The upstream commit SHA1 provided is correct: b8fc56fbca7482c1e5c0e3351c6ae78982e25ada
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-Commit author: Alex Hung <alex.hung@amd.com>
+Backport author: <mingli.yu@windriver.com>
+Commit author: Namjae Jeon <linkinjeon@kernel.org>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: 3ba1219e299a)
-6.6.y | Not found
+6.11.y | Present (different SHA1: 1b6ad475d4ed)
+6.6.y | Present (different SHA1: c6cdc08c25a8)
+6.1.y | Present (different SHA1: f7557bbca40d)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-27 08:50:16.132173096 -0500
-+++ /tmp/tmp.AYYDMHqI5u	2024-11-27 08:50:16.128684474 -0500
+--- -	2024-11-27 08:27:30.965656947 -0500
++++ /tmp/tmp.cpyd1kXGy5	2024-11-27 08:27:30.959243327 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit 3718a619a8c0a53152e76bb6769b6c414e1e83f4 ]
++commit b8fc56fbca7482c1e5c0e3351c6ae78982e25ada upstream.
 +
- dcn32_enable_phantom_stream can return null, so returned value
- must be checked before used.
+ ksmbd_user_session_put should be called under smb3_preauth_hash_rsp().
+ It will avoid freeing session before calling smb3_preauth_hash_rsp().
  
-@@ -8,15 +10,18 @@
- Signed-off-by: Alex Hung <alex.hung@amd.com>
- Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
- Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-+Signed-off-by: Sasha Levin <sashal@kernel.org>
-+[Xiangyu: BP to fix CVE: CVE-2024-49897, modified the source path]
-+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+@@ -6,14 +8,16 @@
+ Tested-by: Norbert Szetei <norbert@doyensec.com>
+ Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+ Signed-off-by: Steve French <stfrench@microsoft.com>
++Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  ---
-- drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c | 3 +++
-+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c | 3 +++
-  1 file changed, 3 insertions(+)
+- fs/smb/server/server.c | 4 ++--
++ fs/ksmbd/server.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
  
--diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
--index 3ed6d1fa0c440..ee009716d39b1 100644
----- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
--+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
--@@ -1717,6 +1717,9 @@ void dcn32_add_phantom_pipes(struct dc *dc, struct dc_state *context,
-+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+index 2b8700b291a4..ef47fb2f6905 100644
-+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+@@ -1796,6 +1796,9 @@ void dcn32_add_phantom_pipes(struct dc *dc, struct dc_state *context,
-  	// be a valid candidate for SubVP (i.e. has a plane, stream, doesn't
-  	// already have phantom pipe assigned, etc.) by previous checks.
-  	phantom_stream = dcn32_enable_phantom_stream(dc, context, pipes, pipe_cnt, index);
-@@ -26,3 +31,6 @@
-  	dcn32_enable_phantom_plane(dc, context, phantom_stream, index);
+-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
+-index 9670c97f14b3e..e7f14f8df943e 100644
+---- a/fs/smb/server/server.c
+-+++ b/fs/smb/server/server.c
++diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
++index 09ebcf39d5bc..da5b9678ad05 100644
++--- a/fs/ksmbd/server.c
+++++ b/fs/ksmbd/server.c
+ @@ -238,11 +238,11 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
+  	} while (is_chained == true);
   
-  	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+@@ -28,3 +32,6 @@
+  	if (work->sess && work->sess->enc && work->encrypted &&
+  	    conn->ops->encrypt_resp) {
+  		rc = conn->ops->encrypt_resp(work);
 +-- 
-+2.25.1
++2.34.1
 +
 ---
 
@@ -123,6 +122,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
