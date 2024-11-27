@@ -1,252 +1,149 @@
-Return-Path: <stable+bounces-95597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2943B9DA3A1
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 09:16:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E019DA404
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 09:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B85BB220E1
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:16:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 396B42841D2
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D976B18858E;
-	Wed, 27 Nov 2024 08:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857BC189919;
+	Wed, 27 Nov 2024 08:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="P1D9WhK4";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mX2tDxKG"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ePtpbDGd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98AE17BB21;
-	Wed, 27 Nov 2024 08:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E2C1114;
+	Wed, 27 Nov 2024 08:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732695354; cv=none; b=tzBUqFrX/DOAaAwuvphL8QK/Wm2vu7XWzmVi9Pa6z9nz/w6pjLoVYNHi4HdkWzYojMw/6G5utK10Rp5YDgL24+8iXmpcH/kcj2UF6NN0P61uELwR06rPyfxGesLscXjA++5VGLtEVnKoUcwRvrobKgk4UF/QM+pU5GZIZY7wXec=
+	t=1732696499; cv=none; b=OxUE8TpoJIK6gKbZoYm6/UOWtfSwApdhi7qT39n2nZxG/bB13Y4Y0R2cGvLOQNzUesqY57jbGsqN8qrWqwleRejoOUk8s8Zg6PhUXAFlrs0LldEt8n/IQu1l2RPLxcAIZl8IEtGNuF9UmCaRWCkz8ZlpJ/lgESaCt64MpMLePMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732695354; c=relaxed/simple;
-	bh=K5nW6VmEIHEpzSYlhCOUxxZLojioyjpm0ENPk7v6AKM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9+FVSyCX508CfRbDXJbgsQ7nsExt2r4Ut24kFfE+43bcC5Jk6zPLeefIQxBKX6PhpXRxT8FE04L+1jD1AfdlD1qomVDKDkjb8wFzk7v+eiKFbptlf/fRtXkdN6cy8dGsrzx64PfLmkvVpLLfo6rOnnrgjSZsboREtL9/89ExPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=P1D9WhK4; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mX2tDxKG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id ECE291F7A0;
-	Wed, 27 Nov 2024 08:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1732695351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e1/uYAoX9Y0yx2zSZFiaLYlF5FodM2Ha4vdrjBJ3s6M=;
-	b=P1D9WhK4CfsOXoO94h3a6kyGr7H4QsxEfjCwRkDdsLZ5ct2vaJkPDahkVbGX9K75pOR++9
-	Cak1ZQHrYf3dL3cshFs6Oo6Cq5OvUDQnmdJ5MxQZ3sz3440VcqMhqaXpc0HD2bm5sQ+BDQ
-	1L7RPRbjEbkUqwcRzFDFDp7+wz5zgRk=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1732695350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e1/uYAoX9Y0yx2zSZFiaLYlF5FodM2Ha4vdrjBJ3s6M=;
-	b=mX2tDxKGgS8AFhYOkdgzFtg+M1K0zUTLXzjN4zyARjM1OQJuPG07/l1dwp588W5HxX3DVo
-	4MvgUQh9aZ1Ky//uofHQoyTO3WrtgSyrC6XJCzBuOdKe4CyZZ60PwWr1wxZ4Mg9dLvr+mS
-	er/LfzEk8B4QiDe+B8bb8Q+AZsHTDbE=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE1CF139AA;
-	Wed, 27 Nov 2024 08:15:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qILMJjXVRmcBJgAAD6G6ig
-	(envelope-from <wqu@suse.com>); Wed, 27 Nov 2024 08:15:49 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2 2/2] btrfs: handle submit_one_sector() error inside extent_writepage_io()
-Date: Wed, 27 Nov 2024 18:45:29 +1030
-Message-ID: <2f4045a932334e2ec493fb4504ff8072eb8007ac.1732695237.git.wqu@suse.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1732695237.git.wqu@suse.com>
-References: <cover.1732695237.git.wqu@suse.com>
+	s=arc-20240116; t=1732696499; c=relaxed/simple;
+	bh=Ze4jFSr20glq2KKoEzubGfLgmXPognZt9fc7rqvDDaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XBq9WDon5MGo9zXqhTNRCBNhQpS1v2RztySelBZO+U6cgbAdvrjj26vn0cGAK8THvK16I4zt3uxrlp9+egY9cuf6/qQT3OFXjzybqUdzGSkwE55W3Oe629ga2ecZbX+9qlsyJUHLHiKH/aZyvmlTD5Vb8YMuEEwYU3qzE8IOk48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ePtpbDGd; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4E3B978C;
+	Wed, 27 Nov 2024 09:34:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732696472;
+	bh=Ze4jFSr20glq2KKoEzubGfLgmXPognZt9fc7rqvDDaE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ePtpbDGd5oHd9r6b/JsfGFZvqas1LznKEs6X1vKa1qcmKnQLQp3TQD8JtXcGebyCh
+	 6o3XIuysKyPIYxmn1GTLSr+fwiYw6RMEvsl3JQh0n40EmDScnr2L32RYx9VapGSepm
+	 w/Z67XwZhBCAhKVX2na5J+dCBSoNjBaGzEmRIy+o=
+Date: Wed, 27 Nov 2024 10:34:44 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] media: uvcvideo: Support partial control reads
+Message-ID: <20241127083444.GV5461@pendragon.ideasonboard.com>
+References: <20241120-uvc-readless-v4-0-4672dbef3d46@chromium.org>
+ <20241120-uvc-readless-v4-1-4672dbef3d46@chromium.org>
+ <20241126180616.GL5461@pendragon.ideasonboard.com>
+ <CANiDSCuZkeV7jTVbNhnty8bMszUkb6g9czJfwDvRUFMhNdFp2Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiDSCuZkeV7jTVbNhnty8bMszUkb6g9czJfwDvRUFMhNdFp2Q@mail.gmail.com>
 
-[BUG]
-If submit_one_sector() failed inside extent_writepage_io() for sector
-size < page size cases (e.g. 4K sector size and 64K page size), then
-we can hit double ordered extent accounting error.
+On Tue, Nov 26, 2024 at 07:12:53PM +0100, Ricardo Ribalda wrote:
+> On Tue, 26 Nov 2024 at 19:06, Laurent Pinchart wrote:
+> > On Wed, Nov 20, 2024 at 03:26:19PM +0000, Ricardo Ribalda wrote:
+> > > Some cameras, like the ELMO MX-P3, do not return all the bytes
+> > > requested from a control if it can fit in less bytes.
+> > > Eg: Returning 0xab instead of 0x00ab.
+> > > usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
+> > >
+> > > Extend the returned value from the camera and return it.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+> > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > ---
+> > >  drivers/media/usb/uvc/uvc_video.c | 16 ++++++++++++++++
+> > >  1 file changed, 16 insertions(+)
+> > >
+> > > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > > index cd9c29532fb0..482c4ceceaac 100644
+> > > --- a/drivers/media/usb/uvc/uvc_video.c
+> > > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > > @@ -79,6 +79,22 @@ int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
+> > >       if (likely(ret == size))
+> > >               return 0;
+> > >
+> > > +     /*
+> > > +      * In UVC the data is usually represented in little-endian.
+> >
+> > I had a comment about this in the previous version, did you ignore it on
+> > purpose because you disagreed, or was it an oversight ?
+> 
+> I rephrased the comment. I added "usually" to make it clear that it
+> might not be the case for all the data types. Like composed or xu.
 
-This should be very rare, as submit_one_sector() only fails when we
-failed to grab the extent map, and such extent map should exist inside
-the memory and have been pinned.
+Ah, that's what you meant by "usually". I read it as "usually in
+little-endian, but could be big-endian too", which confused me.
 
-[CAUSE]
-For example we have the following folio layout:
+Data types that are not integers will not work nicely with the
+workaround below. How do you envision that being handled ? Do you
+consider that the device will return too few bytes only for integer data
+types, or that affected devices don't have controls that use compound
+data types ? I don't see what else we could do so I'd be fine with such
+a heuristic for this workaround, but it needs to be clearly explained.
 
-    0  4K          32K    48K   60K 64K
-    |//|           |//////|     |///|
+> I also r/package/packet/
+> 
+> Did I miss another comment?
+> 
+> > > +      * Some devices return shorter USB control packets that expected if the
+> > > +      * returned value can fit in less bytes. Zero all the bytes that the
+> > > +      * device have not written.
+> >
+> > s/have/has/
+> >
+> > And if you meant to start a new paragraph here, a blank line is missing.
+> > Otherwise, no need to break the line before 80 columns.
+> 
+> The patch is already in the uvc tree. How do you want to handle this?
 
-Where |///| is the dirty range we need to writeback. The 3 different
-dirty ranges are submitted for regular COW.
+The branch shared between Hans and me can be rebased, it's a staging
+area.
 
-Now we hit the following sequence:
+> > > +      * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need to
+> > > +      * be excluded because its size is always 1.
+> > > +      */
+> > > +     if (ret > 0 && query != UVC_GET_INFO) {
+> > > +             memset(data + ret, 0, size - ret);
+> > > +             dev_warn_once(&dev->udev->dev,
+> > > +                           "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
+> > > +                           uvc_query_name(query), cs, unit, ret, size);
+> > > +             return 0;
+> > > +     }
+> > > +
+> > >       if (ret != -EPIPE) {
+> > >               dev_err(&dev->udev->dev,
+> > >                       "Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
-- submit_one_sector() returned 0 for [0, 4K)
-
-- submit_one_sector() returned 0 for [32K, 48K)
-
-- submit_one_sector() returned error for [60K, 64K)
-
-- btrfs_mark_ordered_io_finished() called for the whole folio
-  This will mark the following ranges as finished:
-  * [0, 4K)
-  * [32K, 48K)
-    Both ranges have their IO already submitted, this cleanup will
-    lead to double accounting.
-
-  * [60K, 64K)
-    That's the correct cleanup.
-
-The only good news is, this error is only theoretical, as the target
-extent map is always pinned, thus we should directly grab it from
-memory, other than reading it from the disk.
-
-[FIX]
-Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
-range, which can touch ranges we should not touch, instead
-move the error handling inside extent_writepage_io().
-
-So that we can cleanup exact sectors that are ought to be submitted but
-failed.
-
-This provide much more accurate cleanup, avoiding the double accounting.
-
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/extent_io.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index d619c4e148be..b74298c2c24f 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1418,6 +1418,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	unsigned long range_bitmap = 0;
- 	bool submitted_io = false;
-+	bool error = false;
- 	const u64 folio_start = folio_pos(folio);
- 	u64 cur;
- 	int bit;
-@@ -1460,11 +1461,21 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			break;
- 		}
- 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
--		if (ret < 0)
--			goto out;
-+		if (unlikely(ret < 0)) {
-+			submit_one_bio(bio_ctrl);
-+			/*
-+			 * Failed to grab the extent map which should be very rare.
-+			 * Since there is no bio submitted to finish the ordered
-+			 * extent, we have to manually finish this sector.
-+			 */
-+			btrfs_mark_ordered_io_finished(inode, folio, cur,
-+					fs_info->sectorsize, false);
-+			error = true;
-+			continue;
-+		}
- 		submitted_io = true;
- 	}
--out:
-+
- 	/*
- 	 * If we didn't submitted any sector (>= i_size), folio dirty get
- 	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
-@@ -1472,8 +1483,11 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	 *
- 	 * Here we set writeback and clear for the range. If the full folio
- 	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
-+	 *
-+	 * If we hit any error, the corresponding sector will still be dirty
-+	 * thus no need to clear PAGECACHE_TAG_DIRTY.
- 	 */
--	if (!submitted_io) {
-+	if (!submitted_io && !error) {
- 		btrfs_folio_set_writeback(fs_info, folio, start, len);
- 		btrfs_folio_clear_writeback(fs_info, folio, start, len);
- 	}
-@@ -1493,7 +1507,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- {
- 	struct inode *inode = folio->mapping->host;
- 	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
--	const u64 page_start = folio_pos(folio);
- 	int ret;
- 	size_t pg_offset;
- 	loff_t i_size = i_size_read(inode);
-@@ -1536,10 +1549,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- 
- 	bio_ctrl->wbc->nr_to_write--;
- 
--	if (ret)
--		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
--					       page_start, PAGE_SIZE, !ret);
--
- done:
- 	if (ret < 0)
- 		mapping_set_error(folio->mapping, ret);
-@@ -2320,11 +2329,8 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
- 		if (ret == 1)
- 			goto next_page;
- 
--		if (ret) {
--			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
--						       cur, cur_len, !ret);
-+		if (ret)
- 			mapping_set_error(mapping, ret);
--		}
- 		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
- 		if (ret < 0)
- 			found_error = true;
 -- 
-2.47.0
+Regards,
 
+Laurent Pinchart
 
