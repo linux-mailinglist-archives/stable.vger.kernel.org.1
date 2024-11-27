@@ -1,124 +1,410 @@
-Return-Path: <stable+bounces-95580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F5C9DA112
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 04:11:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855239DA11B
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 04:24:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ED88283026
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 03:11:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D34EDB2255E
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 03:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F70481CD;
-	Wed, 27 Nov 2024 03:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE7612C499;
+	Wed, 27 Nov 2024 03:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jKv+i8I/"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495F2139D;
-	Wed, 27 Nov 2024 03:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D4823C3
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 03:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732677086; cv=none; b=oDNEMAjv22JPGc2V4DapAEXdpzcSjaDVrJ40/2vGACYQzOODgnFtD6eXYFBxkRQTlnHkYuxINAPGWuSZJX7ZGWPdGk+YyziNnyYNDdXNfesYirhBOmcNKsN/zff6HCPMqdFAdAIC82YfcjBl7CvdrmYTotcQFozOEpDrgKvhHYw=
+	t=1732677878; cv=none; b=dSEyuyJPnWqpj1Zc8qovpQs9fT1oSIbfi/JB01Tla/ynB9CFJxDE3ksp2rKEUIEDRrzXJHfhhh6vVLBSp0F/1i7zZyTcXA7QayZl4Df5Eo1/BHzjksfIfKqCmvw1Z/7EsISDHQPM5BQ7DsOkg0OZRoaahhbdR1ZGutu0sQLRTfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732677086; c=relaxed/simple;
-	bh=JT7wu2Q9QL/H+3kDgRRdP1qEPj05LLgsw84fkuZQ6jk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AvGLTF6HpdrcWLo+QVDp49409mNlelCFHNGWuZhxfsdhbxd30xOF9tsZp0nNizOQDmNcOXMHgEoF81amYtzqTPiwUoAsFaAxk3pMzybXGY7+0gigKIUxinefzjB474tVKrDJH5iwX64R/4XTDm/xO4FQBBhcZIo8UUGs8f37U5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Xykwg6Wtmz4f3lDh;
-	Wed, 27 Nov 2024 11:10:59 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 9D2D91A06D7;
-	Wed, 27 Nov 2024 11:11:19 +0800 (CST)
-Received: from [10.174.177.210] (unknown [10.174.177.210])
-	by APP4 (Coremail) with SMTP id gCh0CgCXc4fWjUZnSxzICw--.31254S3;
-	Wed, 27 Nov 2024 11:11:19 +0800 (CST)
-Message-ID: <37bb7584-be0a-8932-d8a7-e51418641402@huaweicloud.com>
-Date: Wed, 27 Nov 2024 11:11:18 +0800
+	s=arc-20240116; t=1732677878; c=relaxed/simple;
+	bh=1/u+UcElI+MPPVSNKfLQzRGy86qxjLSXFbU0VpGBKGI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mHf5+tnW3DWSSZebu6bcBfOiAUTVKQmgP9J1Q1esiyv/8e4QQV1yM+NaJPaNSNY++VaaAN8TZyuZy6bA4HiIdQUEbFFzbNSKUxNQnjfwRaY+yv3szrj/yyKaFNhtgNrk60EcJf2FBQUey4SP3pDGW1euhf9/Snwj/76tjUOMlFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jKv+i8I/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732677875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q91fMjk0/N0rHJS1h9TgFKLdHdt3dGavzSTZjaXJDGw=;
+	b=jKv+i8I/JN3vPhLkVNOR9mZWQ4svYLnWuntvCNScdWZ0YgyfNMFQctlWGnzqZ28sGBlDfi
+	4PwAPqWuWYjPI86DNpo/zCAwVQp9L4uTszXyuz/8MB/otxZkdzja6F6fIuWr0Dxz6D5WV9
+	i6UmQ6kyDDcO40XcxXg4z6k9Dm1yww8=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-PwXSd3y2M6iGnlieHcHlnA-1; Tue, 26 Nov 2024 22:24:29 -0500
+X-MC-Unique: PwXSd3y2M6iGnlieHcHlnA-1
+X-Mimecast-MFC-AGG-ID: PwXSd3y2M6iGnlieHcHlnA
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-515250e3520so961844e0c.3
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 19:24:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732677868; x=1733282668;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q91fMjk0/N0rHJS1h9TgFKLdHdt3dGavzSTZjaXJDGw=;
+        b=qCe8oDjr+2siOvYdq/gxoLOHuU3bJ1t0Ly0mNTHl+FOWLxiBLzjJSAljSqw1ypSrC8
+         dIhCWfuPb0ONvd/SFZT8cm1r67HTW473B3OCzfkpJKH0ntuVrOdm5av7xTV7HcYCn8/h
+         cvltBpV2pAIE2lPNq4tckt8/5m0POsqXJ+0X8Lv7ViNL8HKPRrqD5780rhTHQar3qpZQ
+         Cq2VTsxksEJPx5JbYwVi4aRNirC8r2edH48UIVpHPmYS23ej5Eqgi7/T58kgNhcEc3Kh
+         YRd6HUAiRWZZj6wRgiLcrgESousas3NWWHcALg0ctPiuxYERkpmyI1eh/nsvivC12qdp
+         mSLw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuNeDi4Z89+dMw77rbh+O18KyVOyeUUNJODhjxMlusjGPg3rI/lADbV4SjoWRoq/Vt0SNDUgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytPqxTwPgd+n7yUIizCDDJiRuTtxNFHiglcg3mgQZHwnG9VFAs
+	hoDqFDMKekjD9UVO3swWzk/fgkOj+1WfdqCUPkuHHCmHJ/wcpvyuVikqvz5gl/RlGKja2wNku7t
+	IrJi65YVGIOWScOtG2AUS4pIfQnIdP90mnxSvydxG1/b5P3lqtn2mvnIGBmARI7GM4J3sQkgGNJ
+	JI4t0TXN4ElKfSP0tr92svPB7TbOWh
+X-Gm-Gg: ASbGnctuhPSUfzvWkr6L5S7LJUjTXoB00ODq7Q37b9OkRwgTm4FmXzY5OuxT/nekxeL
+	4mFKj1ms3XJOl5Rwai1shthDZYTSpqsVA
+X-Received: by 2002:a05:6102:f0a:b0:4af:3f3c:515d with SMTP id ada2fe7eead31-4af447ba11amr2480006137.4.1732677868409;
+        Tue, 26 Nov 2024 19:24:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENLpNHXVdEJkHfKOZ6y3NH0owSwITH1IrhuBh+8vAIoAuNm3dDd/e+WuEr/MLMpgiQz6hr18VjYjytXU3cWrU=
+X-Received: by 2002:a05:6102:f0a:b0:4af:3f3c:515d with SMTP id
+ ada2fe7eead31-4af447ba11amr2479984137.4.1732677867940; Tue, 26 Nov 2024
+ 19:24:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [RFC PATCH v2 1/5] libfs: Return ENOSPC when the directory offset
- range is exhausted
-To: cel@kernel.org, Hugh Dickens <hughd@google.com>,
- Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, yukuai3@huawei.com,
- Chuck Lever <chuck.lever@oracle.com>, stable@vger.kernel.org
-References: <20241126155444.2556-1-cel@kernel.org>
- <20241126155444.2556-2-cel@kernel.org>
-From: yangerkun <yangerkun@huaweicloud.com>
-In-Reply-To: <20241126155444.2556-2-cel@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCXc4fWjUZnSxzICw--.31254S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7uFyUKr45CFy8urWxWF1fXrb_yoW8GrWfpF
-	WkJanIkFZxJr18C3ykXr4qyry0gwsrGr1xuFZxuw1UA3sxAFn7Ga12yr1Y9a4UKrs8CFnF
-	qF4YkF1F9w1UJFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUrs
-	qXDUUUU
-X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
+References: <20241126024200.2371546-1-koichiro.den@canonical.com>
+ <CACGkMEsJ1X-u=djO2=kJzZdpZH5SX560V9osdpDuySXtfBMpuw@mail.gmail.com> <6lkdqvbnlntx3cno5qi7c4nks2ub3bkaycsuq7p433c4vemcmf@fwnhqbo5ehaw>
+In-Reply-To: <6lkdqvbnlntx3cno5qi7c4nks2ub3bkaycsuq7p433c4vemcmf@fwnhqbo5ehaw>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 27 Nov 2024 11:24:15 +0800
+Message-ID: <CACGkMEvR4+_iRAFACkXLgX-hGwjfOgd3emiyquzxUHL9wC-b=g@mail.gmail.com>
+Subject: Re: [PATCH] virtio_net: drain unconsumed tx completions if any before dql_reset
+To: Koichiro Den <koichiro.den@canonical.com>
+Cc: virtualization@lists.linux.dev, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
+	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-LGTM
+On Tue, Nov 26, 2024 at 12:44=E2=80=AFPM Koichiro Den
+<koichiro.den@canonical.com> wrote:
+>
+> On Tue, Nov 26, 2024 at 11:50:17AM +0800, Jason Wang wrote:
+> > On Tue, Nov 26, 2024 at 10:42=E2=80=AFAM Koichiro Den
+> > <koichiro.den@canonical.com> wrote:
+> > >
+> > > When virtnet_close is followed by virtnet_open, there is a slight cha=
+nce
+> > > that some TX completions remain unconsumed. Those are handled during =
+the
+> > > first NAPI poll, but since dql_reset occurs just beforehand, it can l=
+ead
+> > > to a crash [1].
+> > >
+> > > This issue can be reproduced by running: `while :; do ip l set DEV do=
+wn;
+> > > ip l set DEV up; done` under heavy network TX load from inside of the
+> > > machine.
+> > >
+> > > To fix this, drain unconsumed TX completions if any before dql_reset,
+> > > allowing BQL to start cleanly.
+> > >
+> > > ------------[ cut here ]------------
+> > > kernel BUG at lib/dynamic_queue_limits.c:99!
+> > > Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> > > CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+=
+ #2
+> > > Tainted: [N]=3DTEST
+> > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
+> > > BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> > > RIP: 0010:dql_completed+0x26b/0x290
+> > > Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff =
+0d
+> > > 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 0=
+1
+> > > d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
+> > > RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
+> > > RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
+> > > RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
+> > > RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
+> > > R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
+> > > R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
+> > > FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
+> > > knlGS:0000000000000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
+> > > PKRU: 55555554
+> > > Call Trace:
+> > >  <IRQ>
+> > >  ? die+0x32/0x80
+> > >  ? do_trap+0xd9/0x100
+> > >  ? dql_completed+0x26b/0x290
+> > >  ? dql_completed+0x26b/0x290
+> > >  ? do_error_trap+0x6d/0xb0
+> > >  ? dql_completed+0x26b/0x290
+> > >  ? exc_invalid_op+0x4c/0x60
+> > >  ? dql_completed+0x26b/0x290
+> > >  ? asm_exc_invalid_op+0x16/0x20
+> > >  ? dql_completed+0x26b/0x290
+> > >  __free_old_xmit+0xff/0x170 [virtio_net]
+> > >  free_old_xmit+0x54/0xc0 [virtio_net]
+> > >  virtnet_poll+0xf4/0xe30 [virtio_net]
+> > >  ? __update_load_avg_cfs_rq+0x264/0x2d0
+> > >  ? update_curr+0x35/0x260
+> > >  ? reweight_entity+0x1be/0x260
+> > >  __napi_poll.constprop.0+0x28/0x1c0
+> > >  net_rx_action+0x329/0x420
+> > >  ? enqueue_hrtimer+0x35/0x90
+> > >  ? trace_hardirqs_on+0x1d/0x80
+> > >  ? kvm_sched_clock_read+0xd/0x20
+> > >  ? sched_clock+0xc/0x30
+> > >  ? kvm_sched_clock_read+0xd/0x20
+> > >  ? sched_clock+0xc/0x30
+> > >  ? sched_clock_cpu+0xd/0x1a0
+> > >  handle_softirqs+0x138/0x3e0
+> > >  do_softirq.part.0+0x89/0xc0
+> > >  </IRQ>
+> > >  <TASK>
+> > >  __local_bh_enable_ip+0xa7/0xb0
+> > >  virtnet_open+0xc8/0x310 [virtio_net]
+> > >  __dev_open+0xfa/0x1b0
+> > >  __dev_change_flags+0x1de/0x250
+> > >  dev_change_flags+0x22/0x60
+> > >  do_setlink.isra.0+0x2df/0x10b0
+> > >  ? rtnetlink_rcv_msg+0x34f/0x3f0
+> > >  ? netlink_rcv_skb+0x54/0x100
+> > >  ? netlink_unicast+0x23e/0x390
+> > >  ? netlink_sendmsg+0x21e/0x490
+> > >  ? ____sys_sendmsg+0x31b/0x350
+> > >  ? avc_has_perm_noaudit+0x67/0xf0
+> > >  ? cred_has_capability.isra.0+0x75/0x110
+> > >  ? __nla_validate_parse+0x5f/0xee0
+> > >  ? __pfx___probestub_irq_enable+0x3/0x10
+> > >  ? __create_object+0x5e/0x90
+> > >  ? security_capable+0x3b/0x70
+> > >  rtnl_newlink+0x784/0xaf0
+> > >  ? avc_has_perm_noaudit+0x67/0xf0
+> > >  ? cred_has_capability.isra.0+0x75/0x110
+> > >  ? stack_depot_save_flags+0x24/0x6d0
+> > >  ? __pfx_rtnl_newlink+0x10/0x10
+> > >  rtnetlink_rcv_msg+0x34f/0x3f0
+> > >  ? do_syscall_64+0x6c/0x180
+> > >  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > >  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+> > >  netlink_rcv_skb+0x54/0x100
+> > >  netlink_unicast+0x23e/0x390
+> > >  netlink_sendmsg+0x21e/0x490
+> > >  ____sys_sendmsg+0x31b/0x350
+> > >  ? copy_msghdr_from_user+0x6d/0xa0
+> > >  ___sys_sendmsg+0x86/0xd0
+> > >  ? __pte_offset_map+0x17/0x160
+> > >  ? preempt_count_add+0x69/0xa0
+> > >  ? __call_rcu_common.constprop.0+0x147/0x610
+> > >  ? preempt_count_add+0x69/0xa0
+> > >  ? preempt_count_add+0x69/0xa0
+> > >  ? _raw_spin_trylock+0x13/0x60
+> > >  ? trace_hardirqs_on+0x1d/0x80
+> > >  __sys_sendmsg+0x66/0xc0
+> > >  do_syscall_64+0x6c/0x180
+> > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > RIP: 0033:0x7f41defe5b34
+> > > Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 =
+00
+> > > f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 0=
+0
+> > > f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+> > > RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002=
+e
+> > > RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
+> > > RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
+> > > RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
+> > > R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
+> > > R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
+> > >  </TASK>
+> > > [...]
+> > > ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]--=
+-
+> > >
+> > > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
+> > > Cc: <stable@vger.kernel.org> # v6.11+
+> > > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+> > > ---
+> > >  drivers/net/virtio_net.c | 37 +++++++++++++++++++++++++++++--------
+> > >  1 file changed, 29 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > > index 64c87bb48a41..3e36c0470600 100644
+> > > --- a/drivers/net/virtio_net.c
+> > > +++ b/drivers/net/virtio_net.c
+> > > @@ -513,7 +513,7 @@ static struct sk_buff *virtnet_skb_append_frag(st=
+ruct sk_buff *head_skb,
+> > >                                                struct sk_buff *curr_s=
+kb,
+> > >                                                struct page *page, voi=
+d *buf,
+> > >                                                int len, int truesize)=
+;
+> > > -static void virtnet_xsk_completed(struct send_queue *sq, int num);
+> > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bo=
+ol drain);
+> > >
+> > >  enum virtnet_xmit_type {
+> > >         VIRTNET_XMIT_TYPE_SKB,
+> > > @@ -580,7 +580,8 @@ static void sg_fill_dma(struct scatterlist *sg, d=
+ma_addr_t addr, u32 len)
+> > >  }
+> > >
+> > >  static void __free_old_xmit(struct send_queue *sq, struct netdev_que=
+ue *txq,
+> > > -                           bool in_napi, struct virtnet_sq_free_stat=
+s *stats)
+> > > +                           bool in_napi, struct virtnet_sq_free_stat=
+s *stats,
+> > > +                           bool drain)
+> > >  {
+> > >         struct xdp_frame *frame;
+> > >         struct sk_buff *skb;
+> > > @@ -620,7 +621,8 @@ static void __free_old_xmit(struct send_queue *sq=
+, struct netdev_queue *txq,
+> > >                         break;
+> > >                 }
+> > >         }
+> > > -       netdev_tx_completed_queue(txq, stats->napi_packets, stats->na=
+pi_bytes);
+> > > +       if (!drain)
+> > > +               netdev_tx_completed_queue(txq, stats->napi_packets, s=
+tats->napi_bytes);
+> > >  }
+> > >
+> > >  static void virtnet_free_old_xmit(struct send_queue *sq,
+> > > @@ -628,10 +630,21 @@ static void virtnet_free_old_xmit(struct send_q=
+ueue *sq,
+> > >                                   bool in_napi,
+> > >                                   struct virtnet_sq_free_stats *stats=
+)
+> > >  {
+> > > -       __free_old_xmit(sq, txq, in_napi, stats);
+> > > +       __free_old_xmit(sq, txq, in_napi, stats, false);
+> > >
+> > >         if (stats->xsk)
+> > > -               virtnet_xsk_completed(sq, stats->xsk);
+> > > +               virtnet_xsk_completed(sq, stats->xsk, false);
+> > > +}
+> > > +
+> > > +static void virtnet_drain_old_xmit(struct send_queue *sq,
+> > > +                                  struct netdev_queue *txq)
+> > > +{
+> > > +       struct virtnet_sq_free_stats stats =3D {0};
+> > > +
+> > > +       __free_old_xmit(sq, txq, false, &stats, true);
+> > > +
+> > > +       if (stats.xsk)
+> > > +               virtnet_xsk_completed(sq, stats.xsk, true);
+> > >  }
+> >
+> > Are we sure this can drain the queue? Note that the device is not stopp=
+ed.
+>
+> Thanks for reviewing. netif_tx_wake_queue can be invoked before the "drai=
+n"
+> point I added e.g. via virtnet_config_changed_work, so it seems that I ne=
+ed
+> to ensure it's stopped (DRV_XOFF) before the "drain" and wake it afterwar=
+ds.
+> Please let me know if I=E2=80=99m mistaken.
 
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Not sure I get you, but I meant we don't reset the device so it can
+keep raising tx interrupts:
 
-在 2024/11/26 23:54, cel@kernel.org 写道:
-> From: Chuck Lever <chuck.lever@oracle.com>
-> 
-> Testing shows that the EBUSY error return from mtree_alloc_cyclic()
-> leaks into user space. The ERRORS section of "man creat(2)" says:
-> 
->> 	EBUSY	O_EXCL was specified in flags and pathname refers
->> 		to a block device that is in use by the system
->> 		(e.g., it is mounted).
-> 
-> ENOSPC is closer to what applications expect in this situation.
-> 
-> Note that the normal range of simple directory offset values is
-> 2..2^63, so hitting this error is going to be rare to impossible.
-> 
-> Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> ---
->   fs/libfs.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/libfs.c b/fs/libfs.c
-> index 46966fd8bcf9..bf67954b525b 100644
-> --- a/fs/libfs.c
-> +++ b/fs/libfs.c
-> @@ -288,7 +288,9 @@ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
->   
->   	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
->   				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
-> -	if (ret < 0)
-> +	if (unlikely(ret == -EBUSY))
-> +		return -ENOSPC;
-> +	if (unlikely(ret < 0))
->   		return ret;
->   
->   	offset_set(dentry, offset);
+virtnet_drain_old_xmit()
+netdev_tx_reset_queue()
+skb_xmit_done()
+napi_enable()
+netdev_tx_completed_queue() // here we might still surprise the bql?
+
+Thanks
+
+>
+> >
+> > >
+> > >  /* Converting between virtqueue no. and kernel tx/rx queue no.
+> > > @@ -1499,7 +1512,8 @@ static bool virtnet_xsk_xmit(struct send_queue =
+*sq, struct xsk_buff_pool *pool,
+> > >         /* Avoid to wakeup napi meanless, so call __free_old_xmit ins=
+tead of
+> > >          * free_old_xmit().
+> > >          */
+> > > -       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), tr=
+ue, &stats);
+> > > +       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), tr=
+ue,
+> > > +                       &stats, false);
+> > >
+> > >         if (stats.xsk)
+> > >                 xsk_tx_completed(sq->xsk_pool, stats.xsk);
+> > > @@ -1556,10 +1570,13 @@ static int virtnet_xsk_wakeup(struct net_devi=
+ce *dev, u32 qid, u32 flag)
+> > >         return 0;
+> > >  }
+> > >
+> > > -static void virtnet_xsk_completed(struct send_queue *sq, int num)
+> > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bo=
+ol drain)
+> > >  {
+> > >         xsk_tx_completed(sq->xsk_pool, num);
+> > >
+> > > +       if (drain)
+> > > +               return;
+> > > +
+> > >         /* If this is called by rx poll, start_xmit and xdp xmit we s=
+hould
+> > >          * wakeup the tx napi to consume the xsk tx queue, because th=
+e tx
+> > >          * interrupt may not be triggered.
+> > > @@ -3041,6 +3058,7 @@ static void virtnet_disable_queue_pair(struct v=
+irtnet_info *vi, int qp_index)
+> > >
+> > >  static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp=
+_index)
+> > >  {
+> > > +       struct netdev_queue *txq =3D netdev_get_tx_queue(vi->dev, qp_=
+index);
+> > >         struct net_device *dev =3D vi->dev;
+> > >         int err;
+> > >
+> > > @@ -3054,7 +3072,10 @@ static int virtnet_enable_queue_pair(struct vi=
+rtnet_info *vi, int qp_index)
+> > >         if (err < 0)
+> > >                 goto err_xdp_reg_mem_model;
+> > >
+> > > -       netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index))=
+;
+> > > +       /* Drain any unconsumed TX skbs transmitted before the last v=
+irtnet_close */
+> > > +       virtnet_drain_old_xmit(&vi->sq[qp_index], txq);
+> > > +
+> > > +       netdev_tx_reset_queue(txq);
+> > >         virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].na=
+pi);
+> > >         virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_in=
+dex].napi);
+> > >
+> > > --
+> > > 2.43.0
+> > >
+> > >
+> >
+> > Thanks
+> >
+>
 
 
