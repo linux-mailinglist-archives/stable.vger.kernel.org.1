@@ -1,98 +1,53 @@
-Return-Path: <stable+bounces-95587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683CE9DA263
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:38:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6BA9DA265
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7AF2857B3
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 06:38:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C736B24AA0
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 06:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10B148FE6;
-	Wed, 27 Nov 2024 06:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NWgrmNBa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C73B13D89D;
+	Wed, 27 Nov 2024 06:38:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9642E13D89D
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 06:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D280F9DD
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 06:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732689490; cv=none; b=ckQ/tu2VI8YZX1chVTws6kkp/Y51lz7OL2WQ17ZIHz1ecjWHtWIuagKskPlvmdP011Cv5L3SYqER47YvVPpsJyq7Y5k3smmbbrBzI3W6sMRdYVH7gUb81LyiRoz/3TtwPvYgdpCQF/RJYKZJGzez6SSOi86wqE1awExNXm93WzU=
+	t=1732689526; cv=none; b=Ihc9FexStS86t5V6MElDXLk4yHQoDLvyLN1xsO1WYBkn4OttkAtLaVzEsIFh7v3jCiSYMSc6J57Jrst3NLfX9c+avIvWWND+9NhqerJMzGv/2ih6KKgg8uetbBT8gA5OsCP4m1w9vB+117ASOXjInmWPOlvsY0cPOPEShFC1pOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732689490; c=relaxed/simple;
-	bh=dGtP0OFWPFMzdrmrsHo4j1Z7kYCtxwor60WjBaEEkak=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iUDf42Ut9psdThk3oHXYgnJaHFT+QiYL4948pVgs9cKC47Cv4XtXNNylNc+2RME7ffVpeJwtrp0W7s98D2BbvWjNdlcRzUBLArHWASRvMjgu/YrftyZTMJEfVB3nzYbUlEXQmOeU2r/sK0+8D3i9ppgzl3POdx7SgZ4NRN5KN3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NWgrmNBa; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732689487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=G+YCBL5Fbtu9FqPpXsCFPCj+WxNq+b6w4EIVlKRXk0U=;
-	b=NWgrmNBa+9GfvpXdv5X2ZpU1sB2cCmO6IyoFIYLHpR83H0gp9cNDIFFGBDBFg7UhYkQEFz
-	OkiP7LYBPuwfMVNgz3ftgXs0G+2CfrA+q/M+DyDMWw9mEOdc5GQKQHPdA66RiHw/PY/Eo8
-	55yJXoskV9fH4/A9O8Ec1M8QwXFjuj0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-cEZvrj3nOgSwjdxLCH_Z6A-1; Wed, 27 Nov 2024 01:38:05 -0500
-X-MC-Unique: cEZvrj3nOgSwjdxLCH_Z6A-1
-X-Mimecast-MFC-AGG-ID: cEZvrj3nOgSwjdxLCH_Z6A
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3822ec50b60so3714785f8f.0
-        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 22:38:05 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732689484; x=1733294284;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G+YCBL5Fbtu9FqPpXsCFPCj+WxNq+b6w4EIVlKRXk0U=;
-        b=rcrFQ50/caUmyMYUmzsBysaXY/BPrqQDaayRUudaEuVyILAO5kLRcF9fLD184MleQm
-         qohW/3WYxVMPnqrGM7NLQvBOzRTmHB4Jyw6kfA+NPNEtZdtzg8//5STyuWJgdp/VywHs
-         lhshi70Ig8GQG4/K/Mhao3ITN6fzBrCwBn660jG+4fHVseBre6oiO30OMiu+CMoKHsKD
-         76vsGRHO+APkR97UI6mM5lkEEEpHIIl5sf1I1xGtZpDwkVLqoCRc/buuSp3HbT54mZ7M
-         93rH6skdpY3U5N8ZsAlTEr8RhmqYLqx6QC+nGYS1QDA4zpwLbJeVs4G6NJ3uuPGpoa8w
-         mwUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtDAmwfZb+ZyB2VdXcvOseGz4/9BtlRW3UVvV+IgPweUiUXA0HW+y83AHINE6RLh33r4DUpxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY/UjwjDqOlmXP0a4t0t9ItzRKF0sjldV7dLTlXgBTBE6pTRjc
-	33e829bYi1CWV8RyQHBzMxutqGddQ+aygXq1v2nWlb0GoimKSPImdhFbEKeTnSgXq9/7gqNrPTv
-	jKBvfJ+hiIeI4yDQxE0cnT8bKDuLFcgUR0kRRrttHq4+oURWekdg2Rg==
-X-Gm-Gg: ASbGncvM9I3joi+DzzqWEEVEdOFKQVfh271VEkcVuhMXUw4FdxYoXzJu927/tC8QFXI
-	Fy+OW+uUILOQQm8cfovooy4rS68pnSeoR0nDU1EYmWs4GDpIJcGialbdHYuGJjhnr9w0uYfxRH3
-	L1FTXILInHAABuxFZdcKRJUzAK11ebznDiRlqf1U+1HYLlaWdyu2sI0w0PE3m+F+G2Ds72JcPie
-	0dOOD+SqF/xJPc/bDrBzJFOesFQi5nS9qIXr8DRiXvU0XW466poS13sFZfxDkn6QuJIeoKXOEH2
-	q88=
-X-Received: by 2002:a05:6000:1fac:b0:382:4926:98fa with SMTP id ffacd0b85a97d-385c6eddc05mr1380237f8f.40.1732689484220;
-        Tue, 26 Nov 2024 22:38:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYKQMJPg1pK+Yv9OE2yE9UfK7AcAnlLcZVCkycjl/FISYqlhmKJ2bvx8Wr13qgtwDOSA3c1g==
-X-Received: by 2002:a05:6000:1fac:b0:382:4926:98fa with SMTP id ffacd0b85a97d-385c6eddc05mr1380217f8f.40.1732689483910;
-        Tue, 26 Nov 2024 22:38:03 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.75.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fbedebfsm15403742f8f.100.2024.11.26.22.38.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 22:38:03 -0800 (PST)
-From: Juri Lelli <juri.lelli@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org,
-	Juri Lelli <juri.lelli@redhat.com>,
-	stable@vger.kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>
-Subject: [PATCH] sched/deadline: Fix replenish_dl_new_period dl_server condition
-Date: Wed, 27 Nov 2024 07:37:40 +0100
-Message-ID: <20241127063740.8278-1-juri.lelli@redhat.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1732689526; c=relaxed/simple;
+	bh=Y/QulOrxh80FSwrJonIGrDjygiPJ28AsZ4gvP41kn4I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QVDjW1E8SU8C301AS0QeL/Wcy2qchWgHn0nJJcRgmDYg3f0ZXFM+qEh6IUiZarRqhT75bBc7atKZpGYiflUleDO3HrHe64FFN4BkKeFDK6tZ3bOg0IvhTwPm13Tf7dQunx2UGtrkyvC6zVskAMZmENqodGd1/Mq86JOPxjZbA+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AR5Qscw006727
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 06:38:36 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 433491c877-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 06:38:36 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Tue, 26 Nov 2024 22:38:35 -0800
+Received: from pek-lpg-core4.wrs.com (128.224.153.44) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Tue, 26 Nov 2024 22:38:34 -0800
+From: <mingli.yu@windriver.com>
+To: <stable@vger.kernel.org>
+Subject: [PATCH 5.15] ksmbd: fix slab-use-after-free in smb3_preauth_hash_rsp
+Date: Wed, 27 Nov 2024 14:38:33 +0800
+Message-ID: <20241127063833.2525112-1-mingli.yu@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,42 +55,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=W4ZqVgWk c=1 sm=1 tr=0 ts=6746be6c cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=OVD7ab4yAAAA:8 a=yMhMjlubAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8
+ a=QVX2bwBik0lwbl3go5UA:9 a=uj-rpvF5wCmgIeEMWm7q:22 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: uxqhl69OVL4uu5ucbJfAE-WQ96PPoxf4
+X-Proofpoint-ORIG-GUID: uxqhl69OVL4uu5ucbJfAE-WQ96PPoxf4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-11-27_02,2024-11-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ adultscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=821 impostorscore=0
+ phishscore=0 spamscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2411270054
 
-The condition in replenish_dl_new_period() that checks if a reservation
-(dl_server) is deferred and is not handling a starvation case is
-obviously wrong.
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-Fix it.
+commit b8fc56fbca7482c1e5c0e3351c6ae78982e25ada upstream.
 
-Cc: stable@vger.kernel.org
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+ksmbd_user_session_put should be called under smb3_preauth_hash_rsp().
+It will avoid freeing session before calling smb3_preauth_hash_rsp().
+
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ksmbd/server.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index d9d5a702f1a6..206691d35b7d 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -781,7 +781,7 @@ static inline void replenish_dl_new_period(struct sched_dl_entity *dl_se,
- 	 * If it is a deferred reservation, and the server
- 	 * is not handling an starvation case, defer it.
- 	 */
--	if (dl_se->dl_defer & !dl_se->dl_defer_running) {
-+	if (dl_se->dl_defer && !dl_se->dl_defer_running) {
- 		dl_se->dl_throttled = 1;
- 		dl_se->dl_defer_armed = 1;
- 	}
+diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
+index 09ebcf39d5bc..da5b9678ad05 100644
+--- a/fs/ksmbd/server.c
++++ b/fs/ksmbd/server.c
+@@ -238,11 +238,11 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
+ 	} while (is_chained == true);
+ 
+ send:
+-	if (work->sess)
+-		ksmbd_user_session_put(work->sess);
+ 	if (work->tcon)
+ 		ksmbd_tree_connect_put(work->tcon);
+ 	smb3_preauth_hash_rsp(work);
++	if (work->sess)
++		ksmbd_user_session_put(work->sess);
+ 	if (work->sess && work->sess->enc && work->encrypted &&
+ 	    conn->ops->encrypt_resp) {
+ 		rc = conn->ops->encrypt_resp(work);
 -- 
-2.47.0
+2.34.1
 
 
