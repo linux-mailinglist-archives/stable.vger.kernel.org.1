@@ -1,177 +1,189 @@
-Return-Path: <stable+bounces-95591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E528F9DA316
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:28:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554BA9DA344
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:43:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53DC284160
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73A516205D
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430FB149E1A;
-	Wed, 27 Nov 2024 07:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA7314A4D1;
+	Wed, 27 Nov 2024 07:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="csvODGo1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xAWT5veW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1FE1114
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 07:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA05E1547C0
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 07:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732692483; cv=none; b=JzTDRZLVw/sfU9yRvZk6IwVONSKfZLXr2XZCw0+kpM5C8Heu1VgYmKlbqleD94GTdBxCKGtAXNUZo1HzwNHS0oHKfdMZ4GnsAZBZ3q77IvQOwTB6ZWTHs/DAnNNXMXUh3kekIrKrexGAoo3c+rZye+5rtxHeT8fCZ83QqFDkcyw=
+	t=1732693375; cv=none; b=AlqluaPM9AgSjyPRVDDE5W0Ir/Afs4ragfZ2itPammEby4m4cNvfU50S1ZjfF399NYBIxATGcrHadTgnlffTyshKfA+OZPDCCDaztAjF5U7fBoKuyRs52lHoZTCUJQELDH1rYhnjXef5huXoJUuH7a8I92TiHcXd7s7sr2/ej18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732692483; c=relaxed/simple;
-	bh=KuWXTb4LcW8/bpSbKWNdmhYeKVa50JrbQlRXOqHDf6g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D4vjuXvaKzdJBZnzRC0RNClxEDllyfpizerTeaQr3zZwI4gJOj2QCTVZp6TaZ6NSy7J61KyJW3jJkMA5n55dv1X3oEd49WkgkapT30c06M0Hy/YDWBcuue0GtT2TeQBnOIfg9cTFGXJqlyYYQbRMzh6BD5aKmTEZFnCMkd0ai5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=csvODGo1; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ffc76368c6so46601421fa.0
-        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:28:01 -0800 (PST)
+	s=arc-20240116; t=1732693375; c=relaxed/simple;
+	bh=LU6AwlYsk3CPKKY2s0mNL0hPX4NuZPGAywEkPk0vpeg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EElZoPyp5wFqet2s7iejKNLt8JyLEUoQCSCm49jY6MUdvhi0FarbUmx2EEcZ9mbYs0OK/q/QR+HWzNf/IMFyVp8uZZEhIVGqMEX6L2jjy5iuQXun5LnstIpJKmQC0jaPnz8OYeRsPxulZw0t2hCtYSOCq68Tan2mqcojDyqt5QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xAWT5veW; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-212008b0d6eso52469715ad.3
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:42:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732692479; x=1733297279; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1oZqeCiNDi+VUMlqaFu0Cj3Hfsp6EOFS1u82qR+tNuM=;
-        b=csvODGo1IkOAU13dGOKITD1LfPTKpoRFl597fbuKrT8A9novnBnw6GH9Fu4Xu39Wo6
-         /uRqYUBRsBwPcrL9PC7MagUDB3+N28JUd3ulNQMzR+oXCsvVf7E9nqgrV9071XGzfnUR
-         +E7Na+SNFCmdt1p+PGwRezTowmqXB33q+BGAs=
+        d=linaro.org; s=google; t=1732693373; x=1733298173; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oMWDgk/n3j4GiaybswgAiKAVmYvm7oHmNlJIVMIMNac=;
+        b=xAWT5veWFj/XYJ1A1tOPYsUPA5QLLbRSKq1cnhQPYGAcid7rDYrT61U9HlxPNax0QK
+         2rok6R4SlfXLXShsS3Ae8TgXZP1Fr8A5FjLtZ+8/dtLgWgguCG1MeE/msauMNJyHWEe9
+         6pA/Lgfrw9TzNDgH8l73V435/DD6/Yr4qyVTTdglwIU5gu4qpBd5z9siq4zGz7sngUrH
+         tehw0J7GDcwIsgmrC6Fi1/RmtrW4rULmpDdNT/zKnTXK01H9LLPc6q+Y0RatrJPspGi5
+         2gYi+9c1OYfJpUKty8iL5zGkrIuuxUTNj8ybKpthN2h94l898Y7HqduXYZeu4jmjeTwz
+         nlzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732692479; x=1733297279;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1oZqeCiNDi+VUMlqaFu0Cj3Hfsp6EOFS1u82qR+tNuM=;
-        b=NRmRg075NKysMe17xoizci3TGi+pYTo67YCrqNUN1i2WcL2jsHWTkWgAtxUsIZ6puh
-         HVuCgtNLsyh2bHxpDLTmriOx7dJFQfFWV2faGNuvq8b61Re8z3YygMOJ9dclX6o5eVAe
-         OT8sns/aU+L0mUUAvUE8nmyKShrhugPa6NTJI7SE1vCi9BwFH9xfZK9GdrDgDgpzV3Qv
-         UHOgwAZ1QQVXRmzEFiyGhdcn2FfIIkU5GZ00ejGMRvlT5HYHQFiOGSOMeZ6/6gWNAoCu
-         zKW8Mr+/8AJYxDSjBPkq6uKrwT/Npiv3RqyxsrFTJs3EQfMmUx5KMcLeFvez3vavPEh6
-         EPQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkuUgaG2CzXFmHSP5AoILVbGofq+eJasDKSxilvFkrFiT3V830XjelZcxHRuYXx+lU7O00P4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKjE+eE4WmOnAe9Vr4rMNPV+unpnVjkm9lR9KuJskGN3AF1N+u
-	KnupFq3eHoEorJnwE3P9TGbJsRYQCpnFYTe56POcZ8fprGNVVE8qrxt2Sxrx1gdC5TdLc7xhmz3
-	+5Bkw
-X-Gm-Gg: ASbGnctjURcgAMG5tOPfK4ckSvajgTjWLlCnA3J120zbUpTuYBS5xn+y1pf2pe2sxjN
-	dbpRwWSiGwbTDfhLs0inx7tYqQghnlQTmRX5meIO1V5JsVxS2Edpi7n2lX7IWalegiF9GKAbT89
-	AckAkPMm75lfDUM3zmWklkeAByhoLQLNkVlOImn0UkEN6U6ZP+fhpBzzeJfR0S/39V4i/FnqZ7d
-	Ru2AN5lLVRdZAKc/LhHiQR1IN4+veS9ZWY1MUcqHubhTPbhI06dD+T1foQy83kqWZGT6uPK44xk
-	ARsGj9HwqKr5pHnz
-X-Google-Smtp-Source: AGHT+IFIVBE96VtYP1bJdnro6aLdWEucKe2uBprQ+SMzEBL58CyTwZ40elxC1IZ7JLYqo6uH1TDj8g==
-X-Received: by 2002:a05:651c:1611:b0:2fb:510c:7237 with SMTP id 38308e7fff4ca-2ffd60f15f5mr13035921fa.41.1732692474751;
-        Tue, 26 Nov 2024 23:27:54 -0800 (PST)
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b2f41fasm681391666b.65.2024.11.26.23.27.53
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 23:27:53 -0800 (PST)
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cfc18d5259so4369a12.1
-        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:27:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXqiGnVunmb1mB3rH3xq598pu5mpGaC1ESlJbI/QDVjCIToWJeMCmB/fdPL3pnHAmb4kT3qxtY=@vger.kernel.org
-X-Received: by 2002:aa7:d80b:0:b0:5d0:3ddd:c773 with SMTP id
- 4fb4d7f45d1cf-5d0819b8bf8mr48974a12.4.1732692472728; Tue, 26 Nov 2024
- 23:27:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732693373; x=1733298173;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oMWDgk/n3j4GiaybswgAiKAVmYvm7oHmNlJIVMIMNac=;
+        b=kblZTvIZ3uZ1+S6MVwFuFY/BpgB9yDfbwTSVzcDye+mpayEN+YQIzJfpwevGIWapg4
+         oNIy6xM88mzAXVN48v9EKla5zhpgJnKCcpmlPQ70p16O+Yp9PIcLotqo9Js/eyzq3bqj
+         hMSc8ukC8+wr7cFxzVBqVpHN8kuompviOFWjO4N5r6AB+mE8giJdWdW6/VNQ1DQQKJl1
+         B1nuf2DC5Ux5iXP+gkb8m2FKEmF/ALAJj0qs74awTOIk1/omvPQketj5J0ybECNl0EJw
+         RvjTicR6aGt0z3Ko8JwkwqZwVjadtZSA6UPfyI0XjjxAY2hJav5wLlemuUMcEfygVGTr
+         kvTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMTyY6/gkAdForKKRKXHmhCxJiorb0ttpLHB9dkSgisYTfOZUe2ILKLxBKMR/p7nPWPkdc6wY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO5bX7iCEaha+cEcbLT7F1oep7pPWJXy+t6lV+GL8jLM8plXMg
+	5R/ElUBKHazzHYfMxuw6VO/P8d7tX525Xi2Xif4/x/6hbGa4eYsC/M0Z8Yhk0w==
+X-Gm-Gg: ASbGncutcODmJB/sc1vJCJ9zyjlN1vxaYTVcdniqcgf/yGPlSlCQzzF/G8hEodLpmQO
+	06SEi3Ri0xpeoQVDfUkKmswvrXBFoo2Ky2gVs8E+IhGl/7encnUq1V5D8PmZiPQxDtl51HtLL8I
+	8d8TFP3BAnHOcwxwSrSFQhIMTv2QyPTeLpp1ux4q9dwDxAtB8UYJYpNXZi5OKAaxKjz0SV/4n1S
+	oOB0uecpP3yncQFTK2Dicxrtk+ozUJj0b/AipZ78Ou0A/otImh3Pamdka/Z
+X-Google-Smtp-Source: AGHT+IGp9I4DmuKPduEUQ+Vs8HvCWxBrCkbO+5RyEgGe/YSQ1SwDti6JUnGKKHfl4zUAgD/Vk310rA==
+X-Received: by 2002:a17:902:d551:b0:211:f8c8:372c with SMTP id d9443c01a7336-21501381ba1mr22923355ad.21.1732693373062;
+        Tue, 26 Nov 2024 23:42:53 -0800 (PST)
+Received: from thinkpad ([120.60.136.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dc12f22sm96678915ad.186.2024.11.26.23.42.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2024 23:42:52 -0800 (PST)
+Date: Wed, 27 Nov 2024 13:12:45 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] clk: qcom: gcc-sm8550: Keep UFS PHY GDSCs ALWAYS_ON
+Message-ID: <20241127074245.4fhr3gypxbjipqnq@thinkpad>
+References: <20241107-ufs-clk-fix-v1-0-6032ff22a052@linaro.org>
+ <20241107-ufs-clk-fix-v1-1-6032ff22a052@linaro.org>
+ <tebgud2k4bup35e7rkfpx5kt7m5jxgw3yo3myjzfushnmdecsj@e4cb44jqoevp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241125-mt8192-lvts-filtered-suspend-fix-v1-0-42e3c0528c6c@collabora.com>
- <20241125-mt8192-lvts-filtered-suspend-fix-v1-1-42e3c0528c6c@collabora.com>
- <CAHc4DNKmGA-MjTWdZhKygiaRwN7mHnMCf8UPUxH_V16uZifzFg@mail.gmail.com> <f38e4283-7133-4865-b4fe-eafb6bd30534@notapiano>
-In-Reply-To: <f38e4283-7133-4865-b4fe-eafb6bd30534@notapiano>
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Date: Wed, 27 Nov 2024 15:27:16 +0800
-X-Gmail-Original-Message-ID: <CAHc4DN+S6mBy_VRTWEqp-uA13zUyadtqPoo+-WZTmwYHofpkcg@mail.gmail.com>
-Message-ID: <CAHc4DN+S6mBy_VRTWEqp-uA13zUyadtqPoo+-WZTmwYHofpkcg@mail.gmail.com>
-Subject: Re: [PATCH 1/5] thermal/drivers/mediatek/lvts: Disable monitor mode
- during suspend
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Cc: Hsin-Te Yuan <yuanhsinte@chromium.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Alexandre Mergnat <amergnat@baylibre.com>, Balsam CHIHI <bchihi@baylibre.com>, kernel@collabora.com, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	Chen-Yu Tsai <wenst@chromium.org>, =?UTF-8?Q?Bernhard_Rosenkr=C3=A4nzer?= <bero@baylibre.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tebgud2k4bup35e7rkfpx5kt7m5jxgw3yo3myjzfushnmdecsj@e4cb44jqoevp>
 
-On Tue, Nov 26, 2024 at 9:37=E2=80=AFPM N=C3=ADcolas F. R. A. Prado
-<nfraprado@collabora.com> wrote:
->
-> On Tue, Nov 26, 2024 at 04:00:42PM +0800, Hsin-Te Yuan wrote:
-> > On Tue, Nov 26, 2024 at 5:21=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
-> > <nfraprado@collabora.com> wrote:
-> > >
-> > > When configured in filtered mode, the LVTS thermal controller will
-> > > monitor the temperature from the sensors and trigger an interrupt onc=
-e a
-> > > thermal threshold is crossed.
-> > >
-> > > Currently this is true even during suspend and resume. The problem wi=
-th
-> > > that is that when enabling the internal clock of the LVTS controller =
-in
-> > > lvts_ctrl_set_enable() during resume, the temperature reading can gli=
-tch
-> > > and appear much higher than the real one, resulting in a spurious
-> > > interrupt getting generated.
-> > >
-> > This sounds weird to me. On my end, the symptom is that the device
-> > sometimes cannot suspend.
-> > To be more precise, `echo mem > /sys/power/state` returns almost
-> > immediately. I think the irq is more
-> > likely to be triggered during suspension.
->
-> Hi Hsin-Te,
->
-> please also check the first paragraph of the cover letter, and patch 2, t=
-hat
-> should clarify it. But anyway, I can explain it here too:
->
-> The issue you observed is caused by two things combined:
-> * When returning from resume with filtered mode enabled, the sensor tempe=
-rature
->   reading can glitch, appearing much higher. (fixed by this patch)
-> * Since the Stage 3 threshold is enabled and configured to take the maxim=
-um
->   reading from the sensors, it will be triggered by that glitch and bring=
- the
->   system into a state where it can no longer suspend, it will just resume=
- right
->   away. (fixed by patch 2)
->
-> So currently, every so often, during resume both these things will happen=
-, and
-> any future suspend will resume right away. That's why this was never obse=
-rved by
-> me when testing a single suspend/resume. It only breaks on resume, and on=
-ly
-> affects future suspends, so you need to test multiple suspend/resumes on =
-the
-> same run to observe this issue.
->
-> And also since both things are needed to cause this issue, if you apply o=
-nly
-> patch 1 or only patch 2, it will already fix the issue.
->
-> Hope this clarifies it.
->
-> Thanks,
-> N=C3=ADcolas
+On Tue, Nov 26, 2024 at 10:21:10PM -0600, Bjorn Andersson wrote:
+> On Thu, Nov 07, 2024 at 11:58:09AM +0000, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > 
+> > Starting from SM8550, UFS PHY GDSCs doesn't support hardware retention. So
+> > using RETAIN_FF_ENABLE is wrong. Moreover, without ALWAYS_ON flag, GDSCs
+> > will get powered down during suspend, causing the UFS PHY to loose its
+> > state. And this will lead to below UFS error during resume as observed on
+> > SM8550-QRD:
+> > 
+> 
+> Unless I'm mistaken, ALWAYS_ON makes GDSC keep the gendpd ALWAYS_ON as
+> well, which in turn would ensure that any parent power-domain is kept
+> active - which in the case of GCC would imply CX.
+> 
 
-Thanks for the explanation!
+That's correct. But there is one more way to fix this issue. We can powerdown
+UFS (controller and device) during suspend and the ufs-qcom driver can specify
+the default suspend level based on platform. I think that would be more
+appropriate than forbidding CX power collapse for the whole SoC.
 
-Regards,
-Hsin-Te
+Let me cook up a patch.
+
+> The way we've dealt with this elsewhere is to use the PWRSTS_RET_ON flag
+> in pwrsts; we then keep the GDSC active, but release any votes to the
+> parent and rely on hardware to kick in MX when we're shutting down CX.
+> Perhaps this can't be done for some reason?
+> 
+
+UFS team told me that there is no 'hardware retention' for UFS PHYs starting
+from SM8550 and asked to keep GDSCs ALWAYS_ON. So that would mean, there is no
+MX backing also.
+
+- Mani
+
+> 
+> PS. In contrast to other platforms where we've dealt with issues of
+> under voltage crashes, I see &gcc in sm8550.dtsi doesn't specify a
+> parent power-domain, which would mean that the required-opps = <&nom> of
+> &ufs_mem_hc is voting for nothing.
+> 
+> Regards,
+> Bjorn
+> 
+> > ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
+> > ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
+> > ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
+> > ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
+> > ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
+> > 
+> > Cc: stable@vger.kernel.org # 6.8
+> > Fixes: 1fe8273c8d40 ("clk: qcom: gcc-sm8550: Add the missing RETAIN_FF_ENABLE GDSC flag")
+> > Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+> > Suggested-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >  drivers/clk/qcom/gcc-sm8550.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+> > index 5abaeddd6afc..7dd08e175820 100644
+> > --- a/drivers/clk/qcom/gcc-sm8550.c
+> > +++ b/drivers/clk/qcom/gcc-sm8550.c
+> > @@ -3046,7 +3046,7 @@ static struct gdsc ufs_phy_gdsc = {
+> >  		.name = "ufs_phy_gdsc",
+> >  	},
+> >  	.pwrsts = PWRSTS_OFF_ON,
+> > -	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+> > +	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
+> >  };
+> >  
+> >  static struct gdsc ufs_mem_phy_gdsc = {
+> > @@ -3055,7 +3055,7 @@ static struct gdsc ufs_mem_phy_gdsc = {
+> >  		.name = "ufs_mem_phy_gdsc",
+> >  	},
+> >  	.pwrsts = PWRSTS_OFF_ON,
+> > -	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+> > +	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
+> >  };
+> >  
+> >  static struct gdsc usb30_prim_gdsc = {
+> > 
+> > -- 
+> > 2.25.1
+> > 
+> > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
