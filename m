@@ -1,66 +1,93 @@
-Return-Path: <stable+bounces-95653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4898E9DADD6
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 20:30:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49683165D12
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 19:30:16 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECB6201265;
-	Wed, 27 Nov 2024 19:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5pon74J"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7015B9DAE5D
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 21:11:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6950312E1E0;
-	Wed, 27 Nov 2024 19:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35F5628177B
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 20:11:35 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061EF202F98;
+	Wed, 27 Nov 2024 20:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdBdYGYt"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C71202F7B;
+	Wed, 27 Nov 2024 20:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732735816; cv=none; b=nXqnOSY+xMzeitcFIcvcz7x9ShYVfpzNSIkYcZ/z6tpdN3c1d4QMdnHuIIwJB+f7qehaOjANJU0q+z1uOqLW+N2axJ/Zz9feQ8qKwjxhuHj+FMMvzv1HbzEOxx2Dzebq6lRMi+N8rcUZHgrVWz7pE+1i+Xd6Xt+AnCPoMEebG1c=
+	t=1732738248; cv=none; b=WfTNOVS/YxNEnIExXK79+h7nZBBu2DYxlSITu+H/yTYjF2+xT4DmK//4RtjhN3vs3OQNOhvyDAttvnmy/dbjJUzxRM9AfvtHCd/ucTS8/ClBMTUkO2GCP9LCgxQBYN6YlruHMJ5OtBrbetCkyEyxXXQnM91fzX4gN/+109UAxSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732735816; c=relaxed/simple;
-	bh=Q93fhdsgg0GiaU68+V3FzwR+KBc2+Wcx9p9sfWcABMg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ERVbX7uKe/3iVSNPZjCZl6Xy6Nx085mi/QnhWrys4ZFoEVkHpsyLu26MsmBh/ZBDsuGs5HtobAOdUaAB0JmXszDPShXjKkLhNK6ZNtKeRNVrEmcDUlsH3AoQ+1T+gHzBfitQtJA6/nylvDIurLgIKJtu624LtREXuGl2iCZdg4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5pon74J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1012C4CECC;
-	Wed, 27 Nov 2024 19:30:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732735815;
-	bh=Q93fhdsgg0GiaU68+V3FzwR+KBc2+Wcx9p9sfWcABMg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=d5pon74Jylztp5VkG+voF54PL+5omHF9r+rBOgjyN3yu3BiuZvTIc7qIrQ2URDr5m
-	 cBqnyPwmr8biiVB33DLT0R+epsH4nxGaH696880KjlGaCAQ+jMJ76Wzi0VPnbevKP/
-	 JBjvxtzoU8TYfoWXykun7L3TMrhTNiczveUPxPdcOk0A/hpqvWyto/XWIZZZrzl0u8
-	 5pVCri8ZLCrB6YWQHV2dg6LrLdPlqLURm54gXjTpnwSmF5j3k0B1dEZGHUX7rh9jP1
-	 zh41dEKco0LNz11cK97gETakxQK17V1dyupoBhO9SUtKtIJZA6XCURGJv6lIuxZnZ/
-	 gDZOgspFr9BFw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tGNjp-00GLq1-Jq;
-	Wed, 27 Nov 2024 19:30:13 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] arch_numa: Restore nid checks before registering a memblock with a node
-Date: Wed, 27 Nov 2024 19:30:00 +0000
-Message-Id: <20241127193000.3702637-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1732738248; c=relaxed/simple;
+	bh=iFknynaxVSWi7l7OEEZ0/tMzkRAiqgHR7fjOJFyhRfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ub312ZLhDx8vi/F3kd4NzpRJhdM1tWU+wv0yNOPppVXT3muxhe34AuoM5X1+tBuhmY9W0ZSwb9/M4rkm3G4qvoZTRbUT7XEFC7bP6CHi+rRmCWe/bQuQnKt4Ai4hsiurZqUCOjjWCwNJipAjuvnVj9ExS0oFGugzdSm65j9DwEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdBdYGYt; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-466943679bfso1420711cf.0;
+        Wed, 27 Nov 2024 12:10:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732738246; x=1733343046; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mblefla9njkVPYJmF7+4lumH+f/65iphlvMfUcC2UiM=;
+        b=JdBdYGYtIdaUVwVCtoU72DfWIKVDXxJ1hfyyxIqOHGkwy1LRpsR6D+RR5baNzn831L
+         N957F1pCZylIrwnR9oMW6CWA1NjHT/vpUOlD5lZcSqhMuKsFMkXNY/oV0mS1+XGHxM7M
+         Q4QBQgcom0ZASI5aJeC9TanmVFd7LZqSRtJBNGCWxA2TNPUjqXV2Z+knMbrfikdrrQTB
+         E+Seir1qdsdpqG2cdy2/SRB2Wr01XwrgH8wvuRXY5Wj65vBQeAhh19PwyO7+JCLyb5yq
+         PUYn/OlghBb4CQr4QgktOkLMwf+ot52iDPCQgZMVUnCfqnJOUpk66MceSZzRaMhl2gLy
+         Hnfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732738246; x=1733343046;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mblefla9njkVPYJmF7+4lumH+f/65iphlvMfUcC2UiM=;
+        b=q0bN0+qZkMLSqqIOqOA4KPaBPpxLfijQUrVB39n/PmUi5FV/5EwDFHre3NTxJLxQz9
+         T/4CjemqyvWyJ5TJnPki171aE+Ubl/5hAXhtYSJAGyEPpsEvONqJanfwM7olMCke6LZT
+         nadkDjaamaCRm0wjcTe1088VwcnHI/+S0bbdt07qnlYcSKmRb8PNoFHMWWRqZtQvmUuK
+         PjeA40lGnitSfC5kR2DoTAW5KBn21ntxaQo4TWaP+jO1K2PTiaNToDLeaxtfOj60jRb3
+         +oEWOTvUpaCTvyYwDOi41QmwFChiW1pMl22/D7sc1c0/Y905DssVsKXSor05xhAKtm9d
+         oGAA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEIdrZb4ilqQmYy7nwr0TTk/lEKlvmmiqPf8661waji9EwHsJLmp46DdKorE9q5y1jLB3zPlqbOHTizhk=@vger.kernel.org, AJvYcCWT7+sKjiyhugFshS6M1jK/ztpz7SWGfwZ/jJe70ASYLs4dz7eShGFwwAGiTnQPiMepow3336UU@vger.kernel.org
+X-Gm-Message-State: AOJu0YysGbK9x3XiQAbeYupGaCDsJ6DVDcAB7g5Wsm5C7o2E2KD/h6ki
+	O9XY2vMZfRida2q1tCtSE2unmX+EmYjJCwDN/eZrdukzlZRkXGeU
+X-Gm-Gg: ASbGnctE7YpNTg+HJtG6tq0yiX/4s5tCIJrdY0Ys5hjzLYUi3APK0iuzLFTUKCUcqj+
+	JvpW67GWl7/dJKxo5WV3SCb3onnmdNNkeYzK2eH0Hc2qjJTX+uiQMUe/jHJ3OmUXwLij4detjS+
+	d4W0YIhv9bIqnvNenir5UIckfElHBmmFNwwzBqMSH0ZdG8vWmLcc9SMePiRrNsJwz+ry1R6x9q/
+	jRFJPZ7/zNfzMwBHyHzdzfOjEYcRV80t9ShdGkuObOG9H0g1FP3TtgWD47m7YL717e+b2Bz
+X-Google-Smtp-Source: AGHT+IGXO3DPEwrzdtMEulE3VhY7JlQ+MgBKS5s1oo9cMdxXkiSfRsPCWUfk8wMsJreCYQsvHzy5tQ==
+X-Received: by 2002:ac8:5987:0:b0:461:9d9:15c2 with SMTP id d75a77b69052e-466b3554a2amr73534731cf.1.1732738246079;
+        Wed, 27 Nov 2024 12:10:46 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b679c8d982sm138536285a.14.2024.11.27.12.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Nov 2024 12:10:45 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: nirmoy.das@linux.intel.com
+Cc: jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	chris@chris-wilson.co.uk,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
+	stable@vger.kernel.org,
+	Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH RESEND v2] drm/i915: Fix memory leak by correcting cache object name in error handler
+Date: Wed, 27 Nov 2024 20:10:42 +0000
+Message-Id: <20241127201042.29620-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,118 +95,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, rppt@kernel.org, catalin.marinas@arm.com, will@kernel.org, ziy@nvidia.com, dan.j.williams@intel.com, david@redhat.com, akpm@linux-foundation.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Commit 767507654c22 ("arch_numa: switch over to numa_memblks")
-significantly cleaned up the NUMA registration code, but also
-dropped a significant check that was refusing to accept to
-configure a memblock with an invalid nid.
+From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
 
-On "quality hardware" such as my ThunderX machine, this results
-in a kernel that dies immediately:
+Replace "slab_priorities" with "slab_dependencies" in the error handler
+to avoid memory leak.
 
-[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x431f0a10]
-[    0.000000] Linux version 6.12.0-00013-g8920d74cf8db (maz@valley-girl) (gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #3872 SMP PREEMPT Wed Nov 27 15:25:49 GMT 2024
-[    0.000000] KASLR disabled due to lack of seed
-[    0.000000] Machine model: Cavium ThunderX CN88XX board
-[    0.000000] efi: EFI v2.4 by American Megatrends
-[    0.000000] efi: ESRT=0xffce0ff18 SMBIOS 3.0=0xfffb0000 ACPI 2.0=0xffec60000 MEMRESERVE=0xffc905d98
-[    0.000000] esrt: Reserving ESRT space from 0x0000000ffce0ff18 to 0x0000000ffce0ff50.
-[    0.000000] earlycon: pl11 at MMIO 0x000087e024000000 (options '115200n8')
-[    0.000000] printk: legacy bootconsole [pl11] enabled
-[    0.000000] NODE_DATA(0) allocated [mem 0xff6754580-0xff67566bf]
-[    0.000000] Unable to handle kernel paging request at virtual address 0000000000001d40
-[    0.000000] Mem abort info:
-[    0.000000]   ESR = 0x0000000096000004
-[    0.000000]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    0.000000]   SET = 0, FnV = 0
-[    0.000000]   EA = 0, S1PTW = 0
-[    0.000000]   FSC = 0x04: level 0 translation fault
-[    0.000000] Data abort info:
-[    0.000000]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[    0.000000]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    0.000000]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    0.000000] [0000000000001d40] user address but active_mm is swapper
-[    0.000000] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.12.0-00013-g8920d74cf8db #3872
-[    0.000000] Hardware name: Cavium ThunderX CN88XX board (DT)
-[    0.000000] pstate: a00000c5 (NzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    0.000000] pc : sparse_init_nid+0x54/0x428
-[    0.000000] lr : sparse_init+0x118/0x240
-[    0.000000] sp : ffff800081da3cb0
-[    0.000000] x29: ffff800081da3cb0 x28: 0000000fedbab10c x27: 0000000000000001
-[    0.000000] x26: 0000000ffee250f8 x25: 0000000000000001 x24: ffff800082102cd0
-[    0.000000] x23: 0000000000000001 x22: 0000000000000000 x21: 00000000001fffff
-[    0.000000] x20: 0000000000000001 x19: 0000000000000000 x18: ffffffffffffffff
-[    0.000000] x17: 0000000001b00000 x16: 0000000ffd130000 x15: 0000000000000000
-[    0.000000] x14: 00000000003e0000 x13: 00000000000001c8 x12: 0000000000000014
-[    0.000000] x11: ffff800081e82860 x10: ffff8000820fb2c8 x9 : ffff8000820fb490
-[    0.000000] x8 : 0000000000ffed20 x7 : 0000000000000014 x6 : 00000000001fffff
-[    0.000000] x5 : 00000000ffffffff x4 : 0000000000000000 x3 : 0000000000000000
-[    0.000000] x2 : 0000000000000000 x1 : 0000000000000040 x0 : 0000000000000007
-[    0.000000] Call trace:
-[    0.000000]  sparse_init_nid+0x54/0x428
-[    0.000000]  sparse_init+0x118/0x240
-[    0.000000]  bootmem_init+0x70/0x1c8
-[    0.000000]  setup_arch+0x184/0x270
-[    0.000000]  start_kernel+0x74/0x670
-[    0.000000]  __primary_switched+0x80/0x90
-[    0.000000] Code: f865d804 d37df060 cb030000 d2800003 (b95d4084)
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
-[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
-
-while previous kernel versions were able to recognise how brain-damaged
-the machine is, and only build a fake node.
-
-Restoring the check brings back some sanity and a "working" system.
-
-Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
+Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
+Cc: <stable@vger.kernel.org> # v5.2+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
 ---
- drivers/base/arch_numa.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Changelog:
 
-diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
-index e187016764265..5457248eb0811 100644
---- a/drivers/base/arch_numa.c
-+++ b/drivers/base/arch_numa.c
-@@ -207,7 +207,21 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
- static int __init numa_register_nodes(void)
- {
- 	int nid;
--
-+	struct memblock_region *mblk;
-+
-+	/* Check that valid nid is set to memblks */
-+	for_each_mem_region(mblk) {
-+		int mblk_nid = memblock_get_region_node(mblk);
-+		phys_addr_t start = mblk->base;
-+		phys_addr_t end = mblk->base + mblk->size - 1;
-+
-+		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
-+			pr_warn("Warning: invalid memblk node %d [mem %pap-%pap]\n",
-+				mblk_nid, &start, &end);
-+			return -EINVAL;
-+		}
-+	}
-+ 
- 	/* Finally register nodes. */
- 	for_each_node_mask(nid, numa_nodes_parsed) {
- 		unsigned long start_pfn, end_pfn;
+v1 -> v2:
+
+1. Alter the subject.
+---
+ drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
+index 762127dd56c5..70a854557e6e 100644
+--- a/drivers/gpu/drm/i915/i915_scheduler.c
++++ b/drivers/gpu/drm/i915/i915_scheduler.c
+@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(void)
+ 	return 0;
+ 
+ err_priorities:
+-	kmem_cache_destroy(slab_priorities);
++	kmem_cache_destroy(slab_dependencies);
+ 	return -ENOMEM;
+ }
 -- 
-2.39.2
+2.25.1
 
 
