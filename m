@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B499DAB85
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 567EF9DAB87
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F354281F9E
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BBDA281F30
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13BA1FCF77;
-	Wed, 27 Nov 2024 16:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B7A200B84;
+	Wed, 27 Nov 2024 16:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QniUYtQw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5+niXQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0EC200B9C
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735E6200B95
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732724103; cv=none; b=fsezc2kcBd7nHPuD5XkO2wqF4ngDELxYJUpDq0aDCaGgEqy91YUOs2KtEsX/RlTywcxlBajtl9IZte0+Fcdw3MH/cfpKQJO+XwgfJd7vHq1KYAV4r1FcewBcvKjdh1Aki3UlYeP41gnFtdgwDv6HAY6Vys6WDt60PrhPDcOCMow=
+	t=1732724105; cv=none; b=RGscyuGZWoTYAIG44vk3cJ0iRzJmFrrYC7bK9ufVwGXX6fObFlTTWqnf/ve9SYw8htSC7v90bAxKKnhvtgHZW7g9kopVrmR2ezQNuwubdvb5mjiUd3/RdeMp7DT+qTgnufgHIHgNx3I26pO3Q3gNlM/S4Ocn3vGj70e7V6oz3sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732724103; c=relaxed/simple;
-	bh=H8/iPG4GMsd1+cwQqWCA9SoteRegxnXBpuM7ZP6lHbo=;
+	s=arc-20240116; t=1732724105; c=relaxed/simple;
+	bh=53DtXAcxbCVQaI/CSCDvadCEb3y2Lh1LrSDNCQE4F5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3W/SWDXGsRRCKeVPKEj3fTy2sVcwXJAPMwgNCGdfizgTLUlbr8nImGOsIhPaEoHubUDN8V29wlo1/xuPTD0G4O/qpuH/KY5VQH77roJzLtmUJKDkMhLiNE1w6mDUtovezV1UDmKUsYmQnPf4amrtyEaCGRnoABuiM0zA9w/itg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QniUYtQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A799CC4CECC;
-	Wed, 27 Nov 2024 16:15:02 +0000 (UTC)
+	 MIME-Version; b=FSs/Z/P115R1AJitjYm6H57L4msWNzVA5y1L5ReWLkzlP+CObRHF1VX7p12z5OYUzbspY421KiIIPGi/spXnWULFhWYJ4mYOJflXZrlTsZhi32YdWN4jQ6P0tILv8qtRxuykrZcFU0BJRsYILpBANFrGT40VFllGwJ0BN8mJ5Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5+niXQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCCFC4CECC;
+	Wed, 27 Nov 2024 16:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732724103;
-	bh=H8/iPG4GMsd1+cwQqWCA9SoteRegxnXBpuM7ZP6lHbo=;
+	s=k20201202; t=1732724104;
+	bh=53DtXAcxbCVQaI/CSCDvadCEb3y2Lh1LrSDNCQE4F5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QniUYtQwjY+KmBd/uJuSaWc18Sn5Vs0r0/Uz1ggSYHDlExt9qyAB5MLKg0B1GHKnj
-	 4QMLyZRjaElqXgGcdaVOWAZQNfvbNaRz1+e7cDcVYTauiWwTTzeFHXUkC/Ay8o8+h4
-	 4BiGkjYn6deUthTYoHRZQchA5KFkNXLvla88+7H7iT/dYHicmkt7YqXO0aHYsyFLsU
-	 7y9Jtm8FpK9C8w/mQKIFNZsmDwb5CGg+Oyx1IdI1kAg6fI4N5FvbtmewsRpUVGc+6N
-	 a8SEQo3hDwR330YigHfC7TpaSa7pqKZmpxeehafLFoxkaHhcOQ7TDhxl+NMIWyCllQ
-	 pMWvO/R0i2TvA==
+	b=F5+niXQc8eN31AwhfeshPVs1BCPfylCZJUJ2FpHpUlTLFBWSzbE2dyvTaXgKmDBwv
+	 lXNZ+xQrlu53MtJgK8iEI1bijuVlsDVY4NyZDgau/ITEJE2vP1Fp0BJMAnpjPpPsST
+	 0ycoSU+aXT1EuDEmQS1DzvZ2Yz4lUNiGtmQQZvjoXmOJFgYVk5hpzX5ivN24g7PI7U
+	 xGQjPLbXv7x2fftya3ejoZ76lZtESHXZ658tFjWqX2pAcfrK92LfYgxAjCcJzu0uvR
+	 2XOueC/JYGU0regA4YsMedFjT57Gdg2yuP5ADJajET2vh9nbIoCKJpouRsk6nFxm/w
+	 L21FhN5YDD6Jw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
+Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] xfs: add bounds checking to xlog_recover_process_data
-Date: Wed, 27 Nov 2024 11:15:01 -0500
-Message-ID: <20241127092348-71078fcecc786710@stable.kernel.org>
+Subject: Re: [PATCH 6.6] drm/amd/display: Check null pointer before try to access it
+Date: Wed, 27 Nov 2024 11:15:03 -0500
+Message-ID: <20241127110521-06651653a6b26cd9@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241127130814.1203257-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241127122056.1889195-1-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,54 +63,78 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: fb63435b7c7dc112b1ae1baea5486e0a6e27b196
+The upstream commit SHA1 provided is correct: 1b686053c06ffb9f4524b288110cf2a831ff7a25
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: lei lu <llfamsec@gmail.com>
+Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
+Commit author: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
+6.11.y | Present (different SHA1: 2002ccb93004)
 6.6.y | Not found
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-27 09:15:10.118544781 -0500
-+++ /tmp/tmp.yXhwFlxu6p	2024-11-27 09:15:10.108180884 -0500
+--- -	2024-11-27 11:04:55.475015908 -0500
++++ /tmp/tmp.cuRpI3alDe	2024-11-27 11:04:55.465385699 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 ]
++[ Upstream commit 1b686053c06ffb9f4524b288110cf2a831ff7a25 ]
 +
- There is a lack of verification of the space occupied by fixed members
- of xlog_op_header in the xlog_recover_process_data.
- 
-@@ -22,15 +24,16 @@
- Reviewed-by: Dave Chinner <dchinner@redhat.com>
- Reviewed-by: Darrick J. Wong <djwong@kernel.org>
- Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+ [why & how]
+ Change the order of the pipe_ctx->plane_state check to ensure that
+ plane_state is not null before accessing it.
+@@ -7,32 +9,26 @@
+ Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+ Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+ Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
++[Xiangyu: BP to fix CVE: CVE-2024-49906, modified the source path]
++Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-  fs/xfs/xfs_log_recover.c | 5 ++++-
-  1 file changed, 4 insertions(+), 1 deletion(-)
+- .../gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 11 ++++++++---
+- 1 file changed, 8 insertions(+), 3 deletions(-)
++ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c | 10 +++++++---
++ 1 file changed, 7 insertions(+), 3 deletions(-)
  
- diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
--index 4fe627991e865..409b645ce7995 100644
-+index affe94356ed1..006a376c34b2 100644
- --- a/fs/xfs/xfs_log_recover.c
- +++ b/fs/xfs/xfs_log_recover.c
--@@ -2489,7 +2489,10 @@ xlog_recover_process_data(
-+@@ -2439,7 +2439,10 @@ xlog_recover_process_data(
+-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+-index 425432ca497f1..a68da1a7092d5 100644
+---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+-@@ -1932,6 +1932,11 @@ static void dcn20_program_pipe(
++diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++index 2861268ccd23..a825fd6c7fa6 100644
++--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++@@ -1742,13 +1742,17 @@ static void dcn20_program_pipe(
+  	    (pipe_ctx->plane_state && pipe_ctx->plane_state->update_flags.bits.hdr_mult))
+  		hws->funcs.set_hdr_multiplier(pipe_ctx);
   
-  		ohead = (struct xlog_op_header *)dp;
-  		dp += sizeof(*ohead);
-@@ -42,3 +45,6 @@
++-	if (pipe_ctx->update_flags.bits.enable ||
++-	    (pipe_ctx->plane_state &&
+ +	if ((pipe_ctx->plane_state && pipe_ctx->plane_state->update_flags.bits.hdr_mult) ||
+ +	    pipe_ctx->update_flags.bits.enable)
+ +		hws->funcs.set_hdr_multiplier(pipe_ctx);
+ +
+-+
+- 	if (hws->funcs.populate_mcm_luts) {
+- 		if (pipe_ctx->plane_state) {
+- 			hws->funcs.populate_mcm_luts(dc, pipe_ctx, pipe_ctx->plane_state->mcm_luts,
+-@@ -1939,13 +1944,13 @@ static void dcn20_program_pipe(
+- 			pipe_ctx->plane_state->lut_bank_a = !pipe_ctx->plane_state->lut_bank_a;
+- 		}
+- 	}
+--	if (pipe_ctx->update_flags.bits.enable ||
+--	    (pipe_ctx->plane_state &&
+ +	if ((pipe_ctx->plane_state &&
+  	     pipe_ctx->plane_state->update_flags.bits.in_transfer_func_change) ||
+  	    (pipe_ctx->plane_state &&
+@@ -44,3 +40,6 @@
+  		hws->funcs.set_input_transfer_func(dc, pipe_ctx, pipe_ctx->plane_state);
   
-  		/* errors will abort recovery */
-  		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
+  	/* dcn10_translate_regamma_to_hw_format takes 750us to finish
 +-- 
-+2.34.1
++2.25.1
 +
 ---
 
@@ -118,5 +142,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
 
