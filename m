@@ -1,76 +1,78 @@
-Return-Path: <stable+bounces-95593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C760C9DA34D
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:46:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BAE19DA352
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 08:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DD66B23917
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:46:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC719B25FED
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 07:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513B715575C;
-	Wed, 27 Nov 2024 07:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B239B185B62;
+	Wed, 27 Nov 2024 07:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gdZQeIuM"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ob9aMd2W"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F25153836
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 07:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41381547C0
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 07:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732693583; cv=none; b=NhkHNHupPqebbpiV8k1+diDxmToczN+NYLnOcnKbbfx5q1z9Sy80f5Zgy9jjfs6aExUwXzKA85lTqqB0AyjyEinghJ6ESMJiuX1i/KxU/HQT43j7EY1c2dYnCTIQOPLoaWXoy+n7qA4PPDxkWDdCcJBvPduOlCIgwkV7MwqbjWc=
+	t=1732693585; cv=none; b=Y+CSkDhSnR0ci+YTp5cN+/TzQgEw6OeL+PKGwmvHkvrfnYKkntVdDgfyRQsLd9Q5kX7SdVW2GSZzTVImC0agJwdBsinN9Wh5YvGCzSWMSZ6JgWfHD001lNZ3hhfaeGgGhHP+xYBy84uxwoyIDXQjRnpr9ox0F4LSffJS0StIoXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732693583; c=relaxed/simple;
-	bh=NFub0nakpRsmq3bNjhBqvGXTini1GDnZAkDIKXX8OzQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pbDeT49v37j9wZF3LCJ9KoCwYy4pv94KXVmy4rpzfswKgANJMLpAWnOy/1aYeMwvROmKkcYEH6/O/dLg3K5FkGeHyRS7hneWdTToL0146HZd9Umit9Y35vlVcWjYAx6/K5vSuwH8XdVunxA4cF5Xqvcl2p6LB4qbzICb2JW9Xvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gdZQeIuM; arc=none smtp.client-ip=209.85.219.42
+	s=arc-20240116; t=1732693585; c=relaxed/simple;
+	bh=P7cJDdqJWrLuL8K2uEZRvjaoWn4MVm6+xAAkGWyiVYg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=AfP6SUKyIZGRiuBJZZsV30xm2Ho7xKe4EbOzepuRf84jxg1vYQGcJzwM5rR8ZsCyAgQ8Bn1N0I2E0r3OdgnGc2/O20ZLVYIO5j7JG8rbpF+2I2PncmhvEHrVE3IhJt2Ia4FhsBVkCBLZpovaSvrroYIsfvLOMxZJ2/pEmxI+slU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ob9aMd2W; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6d41ec318eeso45307636d6.3
-        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:46:21 -0800 (PST)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-466847440a6so24079101cf.2
+        for <stable@vger.kernel.org>; Tue, 26 Nov 2024 23:46:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732693580; x=1733298380; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfnG/mg+dg4mMvgmniivU1lb5hziEpjBC3xCnLCoRuk=;
-        b=gdZQeIuMgQD8vrP7FGys56i+dEE8OG7OdgvS6gSbCgKOPu9VTX973eS2tvadi4T1R/
-         8981o6wPcUi5fDx7KrR0IDByy6dKG3hDZ6O5JG5KpxizXluD9bkJcqAElajB1d+WMCYL
-         9317z0b94fGI5EBfnZQgNA1YDqwDN7r5YCRcM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732693580; x=1733298380;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1732693581; x=1733298381; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yfnG/mg+dg4mMvgmniivU1lb5hziEpjBC3xCnLCoRuk=;
-        b=EOZGwXeuXVMtXlxtWpq8M9K/X5qDrSGgGhUj7FaKTY1sgt/ItGKm/BgaURyzYgk4Um
-         SoeLpEiFn8HYjIhC6hTMgwEnidDrcyokzulYcTx/P0bSAHKKObIG3DXS/5helWAsVbxr
-         XiLIi4fpBXzLK6xOExFBoZ3nVCSnbsDWWsgvxoXFm8vYwiWEZQhnJv4YQ1c7mx68HQNn
-         JNEQKoNuObBM/wMTcmGx5TZVFJP7IxE13qpZ84LTyqZQAgRD8unw86SP8z5n9Qj5zd2i
-         FWUBFgFUnP27itsiM1UmGMKdlo/vZCro4bnLctD+tUh4WO0p03XSs4T6+eemq8PRhUGw
-         SPPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqzWFRgh8adfQKZQXPfNogj5kxHNZ9afr4NCnDN02QOHkvF5ZUfO5/N+LsyObgbYANa9V9Mog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOwD4NeuiWXidHGI6toYpxP+aqCx7ol+LLApMP/G/0iAr/yIA/
-	KjTCwT6VLSW3V0BJcfW2LPwXgNNiPSecziM/1mcC1lSSra8ebhKZ55XKH0Pkuw==
-X-Gm-Gg: ASbGncuzp2+C8qpt5wdLvBlUvEaTs9mPzbT+ArMHGCRjqKScPIknLTWVe7tM3zMmA3z
-	NOXNgkivP7987H51uSIpliCpedbbGwNB7+ijxHdxSZwRHKI5RTf/tY8xAVxH4o+Hdw3SZkECJvq
-	kog6hI68+AnXHibGNP3d/2J16KdN6JHHictmXAkbi7MwTKbPrg7eNTDpIHq91XBO79oaKcjVGYH
-	PW1UN39tstZCHZhaO9fD0rXzqxVkZ9XYbD9kanpcGbn4tY6yOXC+EXOdLDY61rBUHTM4fXGM/zu
-	Ih00cGR20pbBuCb184W4Rs25
-X-Google-Smtp-Source: AGHT+IFfysEFAbHgZfaCoTo0H1CGxOVMO96onL+xqWkZS2/t9cNT8T6LeiMB0S6UXRh7Pn4PtadAag==
-X-Received: by 2002:ad4:5cc7:0:b0:6d4:85f:ccac with SMTP id 6a1803df08f44-6d864d3eae0mr27270796d6.13.1732693580498;
-        Tue, 26 Nov 2024 23:46:20 -0800 (PST)
+        bh=HKrUO2mKilVMnb8uGrp8DPUwicBtZJtjKmdkARmt5l4=;
+        b=ob9aMd2WGwHgFzxBQK5Pw0cyNcdvykqiYRNd8WSqBf9QMq/utIA1p1SlM1PQiwpR2T
+         Qy3UPxY0TAZKFOmkra9zg3NU/ulQTTjP9BEmKwzaLtmjNXY923JoHIk4ccytcZpn2YNX
+         BEaZhPNeNCvZcdc3CTAlWd28JrBIL+InP6DCY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732693581; x=1733298381;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HKrUO2mKilVMnb8uGrp8DPUwicBtZJtjKmdkARmt5l4=;
+        b=GyR1SQBgmYrKFTV84Fc8t1I3uOtv5F98QzHY2zHudoicANNQO9TmP0FU+bbpt8h/DL
+         RRamvJ3+VNbSxMQHGNGqAisCjPjve2r/rMnc2aQQprdngWwtPEvevN7kpA6Jyj+4dF/J
+         ygipfmCSrRioje3qKvZxnSaGn6Ez6TKjcDOjF0HCHDWFHmZJrY5hsnoeXILzCtbHgkCw
+         wjuNl3znKqLW52cZIpO1m0BiqWOpcCxNxBxu7T9WXUtfC2vWFEyg6BoyH1xpSX4+DdUC
+         G0d9ByrYgA6FGgFFWihMDynuhuaFNoxi1H75iD3RNTh7BisAwxwlgkZiF+6gQWI8YVcs
+         0+qA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvWy5OmEkIZsbkqd68h6mcH9PN4VJJDJwZp24H2ntGbrDJKuY7sC0kWmIhWGoT4NJeO1kbDB8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/zxLVyzi+wF4XKKWvVc3LVF0jzu6NQLyESTBjXei1cWnDwfZm
+	XwE7iVisVO2LUKIiqK2QBb1WYFwpj+6DHh09ZSDNiKjlELApvSRqGF8VqQfTRw==
+X-Gm-Gg: ASbGncu23aTtk3Om1PtCkqrM6yvhuVBGe/XDHxOStL0/p+LgwA3JJoCUgr6fFxTP8P5
+	28JL6DwYsmeXQN9fw2kcDY8+9AY5ENtyatX97M8mQCAB0Ph2ij2SnGITQsCXewmJwU4P5irujBY
+	AIhCeh+mJNNE1IudfMChrv7cvjKlsSH34hISf6Fh6tqrIk5HPoWquDZTQMamZU3eZRLSSeDYGGO
+	pNfjic4jhVWWiooKWNfrw2wJ7nKru4z80ZMTGvpGKPh8uJbbuBBX3m7OOwFgX9jUjsPJxVhl6oC
+	RJNQ9igAHXRPvdqtVjaMHGJX
+X-Google-Smtp-Source: AGHT+IHjZqETEPShgvU8rMJKDjffubDyJxiF4XR9EMU6bbMMSHIwCT/IdCc48x4fk/k07H62yBxdcA==
+X-Received: by 2002:ad4:5766:0:b0:6cb:ce4c:1cc1 with SMTP id 6a1803df08f44-6d864d1f41dmr29507186d6.20.1732693581473;
+        Tue, 26 Nov 2024 23:46:21 -0800 (PST)
 Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451a97b1asm63750386d6.40.2024.11.26.23.46.18
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451a97b1asm63750386d6.40.2024.11.26.23.46.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 23:46:19 -0800 (PST)
+        Tue, 26 Nov 2024 23:46:20 -0800 (PST)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH 0/2] media: uvcvideo: Two fixes for async controls
-Date: Wed, 27 Nov 2024 07:46:09 +0000
-Message-Id: <20241127-uvc-fix-async-v1-0-eb8722531b8c@chromium.org>
+Date: Wed, 27 Nov 2024 07:46:10 +0000
+Subject: [PATCH 1/2] media: uvcvideo: Do not set an async control owned by
+ other fh
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,9 +81,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEHORmcC/x2MywqAIBAAf0X23IKa0ONXooPoVnuxUJJC/Pek4
- zDMFEgUmRLMokCkzInP0EB1Atxhw07IvjFoqY1SesA7O9z4QZve4FC7yRtpVG/9CK25IjX5/5a
- 11g8rh5jVXwAAAA==
+Message-Id: <20241127-uvc-fix-async-v1-1-eb8722531b8c@chromium.org>
+References: <20241127-uvc-fix-async-v1-0-eb8722531b8c@chromium.org>
+In-Reply-To: <20241127-uvc-fix-async-v1-0-eb8722531b8c@chromium.org>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
  Hans de Goede <hdegoede@redhat.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -91,28 +93,36 @@ Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
  Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-This patchset fixes two bugs with the async controls for the uvc driver.
+If a file handle is waiting for a response from an async control, avoid
+that other file handle operate with it.
 
-They were found while implementing the granular PM, but I am sending
-them as a separate patches, so they can be reviewed sooner. They fix
-real issues in the driver that need to be taken care.
+Without this patch, the first file handle will never get the event
+associated to that operation.
 
+Cc: stable@vger.kernel.org
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Ricardo Ribalda (2):
-      media: uvcvideo: Do not set an async control owned by other fh
-      media: uvcvideo: Remove dangling pointers
+ drivers/media/usb/uvc/uvc_ctrl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- drivers/media/usb/uvc/uvc_ctrl.c | 44 ++++++++++++++++++++++++++++++++++++++--
- drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
- drivers/media/usb/uvc/uvcvideo.h |  3 +++
- 3 files changed, 47 insertions(+), 2 deletions(-)
----
-base-commit: 72ad4ff638047bbbdf3232178fea4bec1f429319
-change-id: 20241127-uvc-fix-async-2c9d40413ad8
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 4fe26e82e3d1..5d3a28edf7f0 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1950,6 +1950,10 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+ 	if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+ 		return -EACCES;
+ 
++	/* Other file handle is waiting a response from this async control. */
++	if (ctrl->handle && ctrl->handle != handle)
++		return -EBUSY;
++
+ 	/* Clamp out of range values. */
+ 	switch (mapping->v4l2_type) {
+ 	case V4L2_CTRL_TYPE_INTEGER:
 
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.47.0.338.g60cca15819-goog
 
 
