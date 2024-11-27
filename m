@@ -1,232 +1,242 @@
-Return-Path: <stable+bounces-95648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C0C9DAC67
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 18:27:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4029DAC85
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 18:33:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E85281EF3
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891181672A6
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412C7201024;
-	Wed, 27 Nov 2024 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3DE2010FF;
+	Wed, 27 Nov 2024 17:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQAt4vfr"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="UfiPBUMI"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DDD200BBA
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 17:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A124A2010F4
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 17:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732728454; cv=none; b=jox5xTsya/rKTjMxPj8U4Gb8yk3n6uJ1diWd/ZF0Iq5YIHUHX9Rosk77edaKNEjLobKAMl5sPxCJPX0FUd8nz1QTfXm3slf2A0MvJD8cI84I3g7g1JN/MlFsjoICLcgJkzrWzNZYYUucIkA0c7vgNs0Di8PoG40YR/I+V6wFlJM=
+	t=1732728795; cv=none; b=BjTUbnSF2ryamfMCaUCYZkBJTzK+ho+WYbkYQoRcF2Q4n/z4wT3zaOHTxrNc7d4YxBVK66BS9Rz+pq89f/V/dsZi/QCCnCFTXY7NgaKHed/tHVbNw3p7/MNEYO5oAxbVP7O8vNXlUEn6QyDu6+4Dsx1I38N4zjmv1sN6fcDyuSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732728454; c=relaxed/simple;
-	bh=84k0kHnTdC3L+4g7efXnw/e520GNE2hshbg8krGIP5o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XH/t00lCZFxjra6DzC+kZaOP0pgu+K15aULm4VzFySbDlQBHGU8E3dzp+DdkHrwLeCfOT1HQK7Er0ISeVfkYaKhUCdpXGyqJuz2eap8SqYeAYzomhH2LOzC8FQmXozQBPgZMCFFVKivPw5fuh/QxYz8qrXUkYdrMislWi0xhQoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RQAt4vfr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732728449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=beOnUcZGQU2mrcIYvueq6R+cVXgzH9B5DJtHxbHnrQM=;
-	b=RQAt4vfrFe9AtcEwloKIv/vSDyON83UkI/Sw8om6agTDXiJCb4nWzcqBeHVP6BS3WUJcUN
-	xOZOKTaoTlhMeZvRVA82S8uAxEc0k4Wn9fkJ0wG2BU8aVlUY+Ce/BrlH5bkbPT+WPISLgG
-	LFUPzdofahOG1MsDnM7JdysOW+ZrAog=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-Y2FhAKCZOEioGMf2V_VCYw-1; Wed, 27 Nov 2024 12:27:28 -0500
-X-MC-Unique: Y2FhAKCZOEioGMf2V_VCYw-1
-X-Mimecast-MFC-AGG-ID: Y2FhAKCZOEioGMf2V_VCYw
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-466acb9f16dso26630571cf.1
-        for <stable@vger.kernel.org>; Wed, 27 Nov 2024 09:27:28 -0800 (PST)
+	s=arc-20240116; t=1732728795; c=relaxed/simple;
+	bh=WHpE9eR5UhlUSBcB5vf5FzyYI2xQkCKts8Gpzp1P+K0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n6YB40EYWT7Ac8T6p/Ueir64xy2DFnF7kH4NGaL2E8rA+w8v5cNyEFBJOvoK4JYuisOWb2xC1LDRCiOCo0GEdemQkw7MVw/I12NhpJf8LtM4leV2EAmfDerPa0y85AHqXrOhOz+eaP5wno5RgNl29nJi5rAcp/CzCl/+YngMtq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=UfiPBUMI; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3825c05cc90so4440439f8f.1
+        for <stable@vger.kernel.org>; Wed, 27 Nov 2024 09:33:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1732728792; x=1733333592; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W2Dvzpd6/ofo2QAO5d3vYdwlkF2Kp83/EUc916PDQGo=;
+        b=UfiPBUMI+WGc2LvyveaWleEzRnGRqEtBSw67Vr2gQtsyOZtwdoP7rUYgxUgwX8F+fM
+         /iaFFi15EgWS5fo7lLxBbrUyDGgfIy1MzLj6KWmtpN36MVRH0Cc9wTrTZl7H3LDcQ9Al
+         MnmpV9eU/VHQd3otwAwAlZa+FSsWd75iqQIATcryMMsF6VwemiTJ9BZbcz7hmN/uioHo
+         CQP2oXuPWw3JSaDEFVO52Z7skiTN4xPLYpHxqgyyUBkMF2xMlK89CENTTLQhq5SedySk
+         aDJM7JH/XyZ/CRWU6oVL7Ji+sjF2RKsqsGEudQIF5Hr1cUfbG+EVtydJtQ63coo/3UeF
+         HG1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732728448; x=1733333248;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=beOnUcZGQU2mrcIYvueq6R+cVXgzH9B5DJtHxbHnrQM=;
-        b=j1mYTWJxYACpILPEqZrPU7BuCOdmS7I+G+7Tq7p7DcF+kzYOu8iFUHbDDE1WZVEp/u
-         GchG3qqut807fziOLBoJ6lRbAnPlFfeyYyPonr2Z9Zzts/9n6/GIuE2+ZoxPloSrH2kK
-         8qd8U8T8OBhpsJjYEEcdsfTD1RSewRuv2x9wOW47aRubpqOQMchHuQkfMPYS7XK9+xFV
-         xv6Jctxg9QxZlE31tLP3KWtldcH+edypXYTepnFjdLYpwrpJS+HNIs1qHhMi31VckJBJ
-         kCqTxnjJqQT96oQaLseLAnasOOQ7VOBoNs/jxDHddNdwjtwoazFsBk5OSIPvjvKSbS+a
-         sZtA==
-X-Gm-Message-State: AOJu0Yya7Al1jftYXHSh7/PNhoQu7w9CxWBTDRwv85vIlphgxE8sqk4B
-	ds1jc984dJ2rmNf/fhlPIl27XcGkiwdogGOyLKF7Cf7BW7UkAVaGWSAKCx01Fvr7t7PbcyIirB5
-	6H44RukMH6W/l73naeSznSH1VMdeNYXGjOwoz3hruixylXEyEvfSTbA==
-X-Gm-Gg: ASbGncuEkmu/yQAOM89lSp3sHp6xO4AVNkMv6F1zK0j02/qN+lTBK4FDPZPN2vMQTR2
-	dBmI+nLqQ+jRP9OY8mCkkx/rQpmn2MD2ld4yBTQznBtAtzuao6tjWtaMK59F+QgoQZyXyTkNo6O
-	RDA1/aIMPfyamVJgcFf85iMBSHNl5DB4vd9ZyJm7XvN4b2noUcIWvNt0dGGZCmNVp3oS52ZvfP/
-	n6MbizNdn2FeSEDogO3BAr/7LrTPWH747W/QJP0fFfrebHG1AHBnz5FMWWKBg7uXcwbBGgBcWNG
-	Fi9M/mLGV7runkq7+v1fpXcS3Rjgs0pKVZU=
-X-Received: by 2002:a05:622a:1341:b0:463:1677:c09 with SMTP id d75a77b69052e-466b35ea5femr68921661cf.23.1732728447784;
-        Wed, 27 Nov 2024 09:27:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH+fAMgcLzUudgIW52TJuWeKGmuj/kR1YAzG3qMwrZjsvPqzOjlYx5DSJYQMYJ3GaA+mF1VrQ==
-X-Received: by 2002:a05:622a:1341:b0:463:1677:c09 with SMTP id d75a77b69052e-466b35ea5femr68921251cf.23.1732728447440;
-        Wed, 27 Nov 2024 09:27:27 -0800 (PST)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46682eee51bsm48523711cf.82.2024.11.27.09.27.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 09:27:26 -0800 (PST)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>, Chenbo Lu
- <chenbo.lu@jobyaviation.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, mingo@redhat.com,
- juri.lelli@redhat.com, linux-kernel@vger.kernel.org
-Subject: Re: Performance Degradation After Upgrading to Kernel 6.8
-In-Reply-To: <20241120090354.GE19989@noisy.programming.kicks-ass.net>
-References: <CACodVevaOp4f=Gg467_m-FAdQFceGQYr7_Ahtt6CfpDVQhAsjA@mail.gmail.com>
- <20241120090354.GE19989@noisy.programming.kicks-ass.net>
-Date: Wed, 27 Nov 2024 18:27:23 +0100
-Message-ID: <xhsmhzflkmvt0.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+        d=1e100.net; s=20230601; t=1732728792; x=1733333592;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W2Dvzpd6/ofo2QAO5d3vYdwlkF2Kp83/EUc916PDQGo=;
+        b=uTUu4RTxiIW5LR2mvyO4ybUgJHvx+0Y9+Om51jk5u3EUb6w42yGAMi8++j3WD+BkWD
+         vsmGIlY1vERzQy2ikFY4XYT94ppFnSZwbteyT6Dm2MC4k9M8eF2eJHBfLDh4HESgthd+
+         kdEl9k9OsmLnxLPsUVidgrP7K2sxuURvO0xmTEb9gWMB6scSKuINQ3G3+0/jbkPsbf9+
+         S5EK+LcVX6gi6+rg3kRtzo2jnT+J1CR3NAjtcLhjNLHXt6JjWozA9bOuD7uI/laUBoj+
+         8Z0oHUghAKVHTAxTAw2UbJqRoDMzZ4wmXH/poTC3Bjv5Isd/opzDIryKck4wGJi+CW+N
+         cqHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMlvJ5gqvi/KlBkgFI0LK3SXKCNsvW+clq1xpt1nmQ96XVeQ8TIHkBRz2DOqo97l1BGrEVYYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqQttojLPpObz4uVpHZDsOYxBWqTgI37U/p3NBR3ZPthS/G8bf
+	DZxl36WRa22lXG4q+71wN6pBm1dZw3flz5anB76OhyGFhJ9VhqShncibCq6QjP4=
+X-Gm-Gg: ASbGncs7Aaz0JofMYz9ADJx5p6w5YO9c3IvBpIps3MhNh8lUFmoeD0MvouEejRKAS+A
+	3LNoS7OeSOMR0QofDUOXZjpCfFJGdF41d+L3eBDRjx6CtKydxzabd6b7oC259FG2kvWqsXp7hal
+	Vaqn2ZX+4ybafPw8IZsU1+vmONRGEENHYaSkJfm2VTQon5n+vmTTta9h9XXzIJKbOsiMEKKS+AK
+	EOy69NltLx+KWf7lrnn0MUuzX3Q/PynG2Na1K14e4D+UGqGX47xJAAVbg==
+X-Google-Smtp-Source: AGHT+IGtStnjKDVkWM4W4FfoiuUvanyDA4yxgbzn7BtijkP8yZgwoZcYmJJU95zF2wDM50TaHo+h3w==
+X-Received: by 2002:a05:6000:2704:b0:382:42c3:83e4 with SMTP id ffacd0b85a97d-385c6ec0a39mr2605026f8f.33.1732728791999;
+        Wed, 27 Nov 2024 09:33:11 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fafeceesm16864453f8f.37.2024.11.27.09.33.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Nov 2024 09:33:11 -0800 (PST)
+Message-ID: <29b0e509-69a5-4098-bccf-d53cc6593c49@tuxon.dev>
+Date: Wed, 27 Nov 2024 19:33:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] serial: sh-sci: Clean sci_ports[0] after at earlycon
+ exit
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: magnus.damm@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, p.zabel@pengutronix.de,
+ lethal@linux-sh.org, g.liakhovetski@gmx.de, ysato@users.sourceforge.jp,
+ ulrich.hecht+renesas@gmail.com, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-serial@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+References: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com>
+ <CAMuHMdX57_AEYC_6CbrJn-+B+ivU8oFiXR0FXF7Lrqv5dWZWYA@mail.gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <CAMuHMdX57_AEYC_6CbrJn-+B+ivU8oFiXR0FXF7Lrqv5dWZWYA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Damn, I wrote a reply on the 20th but seems like I never sent it. At least
-I found it saved somewhere, so I don't have to rewrite it...
+Hi, Geert,
 
-On 20/11/24 10:03, Peter Zijlstra wrote:
-> On Tue, Nov 19, 2024 at 04:30:02PM -0800, Chenbo Lu wrote:
->> Hello,
->> 
->> I am experiencing a significant performance degradation after
->> upgrading my kernel from version 6.6 to 6.8 and would appreciate any
->> insights or suggestions.
->> 
->> I am running a high-load simulation system that spawns more than 1000
->> threads and the overall CPU usage is 30%+ . Most of the threads are
->> using real-time
->> scheduling (SCHED_RR), and the threads of a model are using
->> SCHED_DEADLINE. After upgrading the kernel, I noticed that the
->> execution time of my model has increased from 4.5ms to 6ms.
->> 
->> What I Have Done So Far:
->> 1. I found this [bug
->> report](https://bugzilla.kernel.org/show_bug.cgi?id=219366#c7) and
->> reverted the commit efa7df3e3bb5da8e6abbe37727417f32a37fba47 mentioned
->> in the post. Unfortunately, this did not resolve the issue.
->> 2. I performed a git bisect and found that after these two commits
->> related to scheduling (RT and deadline) were merged, the problem
->> happened. They are 612f769edd06a6e42f7cd72425488e68ddaeef0a,
->> 5fe7765997b139e2d922b58359dea181efe618f9
->
-> And yet you failed to Cc Valentin, the author of said commits :/
->
->> After reverting these two commits, the model execution time improved
->> to around 5 ms.
->> 3. I revert two more commits, and the execution time is back to 4.7ms:
->> 63ba8422f876e32ee564ea95da9a7313b13ff0a1,
->> efa7df3e3bb5da8e6abbe37727417f32a37fba47
->> 
->> My questions are:
->> 1.Has anyone else experienced similar performance degradation after
->> upgrading to kernel 6.8?
->
-> This is 4 kernel releases back, I my memory isn't that long.
->
->> 2.Can anyone explain why these two commits are causing the problem? I
->> am not very familiar with the kernel code and would appreciate any
->> insights.
->
-> There might be a race window between setting the tro and sending the
-> IPI, such that previously the extra IPIs would sooner find the newly
-> pushable task.
->
-> Valentin, would it make sense to set tro before enqueueing the pushable,
-> instead of after it?
+On 27.11.2024 18:28, Geert Uytterhoeven wrote:
+> Hi Claudiu,
+> 
+> Thanks for your patch, which is now commit 3791ea69a4858b81 ("serial:
+> sh-sci: Clean sci_ports[0] after at earlycon exit") in tty/tty-next.
+> 
+> On Wed, Nov 6, 2024 at 1:02 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> The early_console_setup() function initializes the sci_ports[0].port with
+>> an object of type struct uart_port obtained from the object of type
+>> struct earlycon_device received as argument by the early_console_setup().
+>>
+>> It may happen that later, when the rest of the serial ports are probed,
+>> the serial port that was used as earlycon (e.g., port A) to be mapped to a
+>> different position in sci_ports[] and the slot 0 to be used by a different
+>> serial port (e.g., port B), as follows:
+>>
+>> sci_ports[0] = port A
+>> sci_ports[X] = port B
+> 
+> Haven't you mixed A and B?
+> 
+>> In this case, the new port mapped at index zero will have associated data
+>> that was used for earlycon.
+> 
+> Oops, do you have a simple reproducer for this?
 
-Urgh, those cachelines are beyond cold...
+It is reproducible with patches:
+- [PATCH 6/9] arm64: dts: renesas: rzg3s-smarc: Fix the debug serial alias
+- [PATCH 9/9] arm64: dts: renesas: r9a08g045s33-smarc-pmod: Add overlay for
+SCIF1
 
-/me goes reading
+After boot, cat /dev/ttySC0 will lead to the issue described.
 
-Ok yeah I guess we could have this race vs
+> 
+>> In case this happens, after Linux boot, any access to the serial port that
+>> maps on sci_ports[0] (port A) will block the serial port that was used as
+>> earlycon (port B).
+> 
+> Again, A <-> B?
+> 
+>> To fix this, add early_console_exit() that clean the sci_ports[0] at
+>> earlycon exit time.
+>>
+>> Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> 
+> This causes a crash (lock-up without any output) when
+> CONFIG_DEBUG_SPINLOCK=y (e.g. CONFIG_PROVE_LOCKING=y).
 
-rto_push_irq_work_func()
-`\
-  rto_next_cpu()
+I missed to check this. Thank you for testing it.
 
-Not sure if that applies to DL too since it doesn't have the PUSH_IPI
-thing, but anyway - Chenbo, could you please try the below?
----
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index d9d5a702f1a61..270a25335c4bc 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -602,16 +602,16 @@ static void enqueue_pushable_dl_task(struct rq *rq, struct task_struct *p)
- 
- 	WARN_ON_ONCE(!RB_EMPTY_NODE(&p->pushable_dl_tasks));
- 
-+	if (!rq->dl.overloaded) {
-+		dl_set_overload(rq);
-+		rq->dl.overloaded = 1;
-+	}
-+
- 	leftmost = rb_add_cached(&p->pushable_dl_tasks,
- 				 &rq->dl.pushable_dl_tasks_root,
- 				 __pushable_less);
- 	if (leftmost)
- 		rq->dl.earliest_dl.next = p->dl.deadline;
--
--	if (!rq->dl.overloaded) {
--		dl_set_overload(rq);
--		rq->dl.overloaded = 1;
--	}
- }
- 
- static void dequeue_pushable_dl_task(struct rq *rq, struct task_struct *p)
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index bd66a46b06aca..1ea45a45ed657 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -385,6 +385,15 @@ static inline void rt_queue_pull_task(struct rq *rq)
- 
- static void enqueue_pushable_task(struct rq *rq, struct task_struct *p)
- {
-+	/*
-+	 * Set RTO first so rto_push_irq_work_func() can see @rq as a push
-+	 * candidate as early as possible.
-+	 */
-+	if (!rq->rt.overloaded) {
-+		rt_set_overload(rq);
-+		rq->rt.overloaded = 1;
-+	}
-+
- 	plist_del(&p->pushable_tasks, &rq->rt.pushable_tasks);
- 	plist_node_init(&p->pushable_tasks, p->prio);
- 	plist_add(&p->pushable_tasks, &rq->rt.pushable_tasks);
-@@ -392,15 +401,15 @@ static void enqueue_pushable_task(struct rq *rq, struct task_struct *p)
- 	/* Update the highest prio pushable task */
- 	if (p->prio < rq->rt.highest_prio.next)
- 		rq->rt.highest_prio.next = p->prio;
--
--	if (!rq->rt.overloaded) {
--		rt_set_overload(rq);
--		rq->rt.overloaded = 1;
--	}
- }
- 
- static void dequeue_pushable_task(struct rq *rq, struct task_struct *p)
- {
-+	/*
-+	 * To match enqueue we should check/unset RTO first, but for that we
-+	 * need to pop @p first. This makes this asymmetric wrt enqueue, but
-+	 * the worst we can get out of this is an extra useless IPI.
-+	 */
- 	plist_del(&p->pushable_tasks, &rq->rt.pushable_tasks);
- 
- 	/* Update the new highest prio pushable task */
+> 
+>> --- a/drivers/tty/serial/sh-sci.c
+>> +++ b/drivers/tty/serial/sh-sci.c
+>> @@ -3546,6 +3546,32 @@ sh_early_platform_init_buffer("earlyprintk", &sci_driver,
+>>  #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+>>  static struct plat_sci_port port_cfg __initdata;
+>>
+>> +static int early_console_exit(struct console *co)
+>> +{
+>> +       struct sci_port *sci_port = &sci_ports[0];
+>> +       struct uart_port *port = &sci_port->port;
+>> +       unsigned long flags;
+>> +       int locked = 1;
+>> +
+>> +       if (port->sysrq)
+>> +               locked = 0;
+>> +       else if (oops_in_progress)
+>> +               locked = uart_port_trylock_irqsave(port, &flags);
+>> +       else
+>> +               uart_port_lock_irqsave(port, &flags);
+>> +
+>> +       /*
+>> +        * Clean the slot used by earlycon. A new SCI device might
+>> +        * map to this slot.
+>> +        */
+>> +       memset(sci_ports, 0, sizeof(*sci_port));
+> 
+> Nit: I'd rather use "*sci_port" instead of "sci_ports".
 
+That would be better, indeed.
+
+> 
+>> +
+>> +       if (locked)
+>> +               uart_port_unlock_irqrestore(port, flags);
+> 
+> "BUG: spinlock bad magic", as you've just cleared the port, including
+> the spinlock.
+> 
+> I guess we can just remove all locking from this function to fix this?
+
+I'll look to it.
+
+> 
+> However, could it happen that the new device taking slot 0 is probed
+> before the early console is terminated?
+
+I don't know to answer this. In my testing I haven't encountered it.
+
+> In that case, its active
+> sci_ports[] entry would be cleared when early_console_exit() is called.
+> 
+> Also, what happens if "earlycon keep_bootcon" is passed on the kernel
+> command line, and the new device takes slot 0?
+
+I checked it with earlycon and the serial device being on slot 0. In this
+case it was OK.
+
+> 
+> Thanks!
+> 
+>> +
+>> +       return 0;
+>> +}
+>> +
+>>  static int __init early_console_setup(struct earlycon_device *device,
+>>                                       int type)
+>>  {
+>> @@ -3562,6 +3588,8 @@ static int __init early_console_setup(struct earlycon_device *device,
+>>                        SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+>>
+>>         device->con->write = serial_console_write;
+>> +       device->con->exit = early_console_exit;
+>> +
+>>         return 0;
+>>  }
+>>  static int __init sci_early_console_setup(struct earlycon_device *device,
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
