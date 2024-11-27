@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150249DAB8F
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2AC9DAB90
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 17:15:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF6042812A0
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7F4A165204
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FC5200B83;
-	Wed, 27 Nov 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419DB1FF7DB;
+	Wed, 27 Nov 2024 16:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvK3/o6Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpkmyH+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9977E288D1
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01144200B89
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732724119; cv=none; b=o4utAMs2YpoOJwbhLClvgGfBdoVT8jMIgX/jxktodoCR1zHYP5r7goHn45lHhOg/sgfrmzY0j6iPxTfmASyouBpONOfk0031wW9GdzzVJKopx2S6vx+dpwF1sjmYeJziHksrYscp0FRDt03epAoaCjWCGyGJF0+j3NGjv6gquZE=
+	t=1732724121; cv=none; b=nO7ln93eix3+fbjCvmQEC7v6zq/A3KwVmbkErcXX7RD8mG8wmZDAO6GUXdPN0E2fIBHlVXwb82sxaN3jHqDdJFYSsLz1eqLkeDJD6KH3+9+9B2iJcAzm4e2X+h9C7Va0vCEyFWAkZ5SaATTv+0IFTcnvWITiRYi7YdarAsl/kNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732724119; c=relaxed/simple;
-	bh=5gD0OsgmwyycJNp8tsNRpyx7eJURXZ3mKwfd5mEbQws=;
+	s=arc-20240116; t=1732724121; c=relaxed/simple;
+	bh=19XhEJcnBxjTMLPyJsmE73cujDsMmkYLMJnNhHHN/h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvnCSn62Q76Xo9aAB1hzvimEnVxzBAFHKJzB3Di/cBw980cUtW9t/k0P0JuvnEoRGT2lTZw79zsmKsE1KYMvd4UXbkmJ/EqK3kKrz1vr4DGWJCvjaa1+f/MRHDvlVFr2j6ci87HZp3JnIUleJaPp3Fmgn740X9uztYUHpn3EraU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvK3/o6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2620C4CECC;
-	Wed, 27 Nov 2024 16:15:18 +0000 (UTC)
+	 MIME-Version; b=cXg5rU6UQU5v1x+K7qiR5VAYeaaEQHNfkO4gQNhNaiAAwbasTU9BHVej2u0YsHptGxVR4HTxWNmRgTtvNBtHMVG2DcMXxCO7X6f2jxZaIaxXb3eCKNi0OX6RHhYkVUuvLyjvwj82j0l1l+x0S9tNz7MgaXxO2/wrsA4aIMiumwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpkmyH+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C8FC4CED3;
+	Wed, 27 Nov 2024 16:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732724119;
-	bh=5gD0OsgmwyycJNp8tsNRpyx7eJURXZ3mKwfd5mEbQws=;
+	s=k20201202; t=1732724120;
+	bh=19XhEJcnBxjTMLPyJsmE73cujDsMmkYLMJnNhHHN/h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvK3/o6QDw5FaxA6Y9NR4Zlj3bRRQqNX5UCvkHvyb4grwYJSxh+wy7uk29xyno9fa
-	 LTxctl+N9LtUQ6WxuVDCiN0iJwZZDakNAcHuGPqqiUJB528OBDBx4rCD3W0c8ndDL1
-	 N/mFzNGHqY0vJeZM+GGLiMXfpkJaVmT92RXqFLXPcNfP9K5oVhyUsycoZLHdTveGLo
-	 IVlq+bOQz+pBIE+Cce93cIJcBl8Epfc2RESR5+8TlDeW1u/wEZ+tMoKyqo3uvOhIWj
-	 RDMK8t5eTpYmKDNHpGyRzc4QZIb4d81UAQa9d3zd61N0kCjVB623K5JG43dae5kNpv
-	 N6x6IwuJVApGA==
+	b=RpkmyH+2RbgYgBx1/r6Jf4anW8udybxXwNbu8a3SE/NXyyz9d4ZrPK1OsC/j+4qcg
+	 YhYFldOaLdhO4S/pbNAfG/h8tvT+sWbXOOFCdatCwmlcjux6yIyHrHyCOXYfA/PyhS
+	 66YrCAPRw8Uxanx6quwHmuVyGN8ar1DSI+RU8ze0RFBZC8Fi6c8QHgwfdXfTmfohb7
+	 W1ITXBiT8joLSdnzd7I8SXLyYB2yCl2yZEB0t08O/48mfg075k3191QtTG2uyiPn4s
+	 07rYMKkkYsbv7WGxXOTIXpZ8zSTh2KEQCCCEBVyklrxnBabdGp9+UG4fQPgoet66CL
+	 btdrQqWN/SK6w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
+Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] dm: fix a crash if blk_alloc_disk fails
-Date: Wed, 27 Nov 2024 11:15:17 -0500
-Message-ID: <20241127110426-e70645fe55ffbc36@stable.kernel.org>
+Subject: Re: [PATCH 6.1 1/1] scsi: lpfc: Validate hdwq pointers before dereferencing in reset/errata paths
+Date: Wed, 27 Nov 2024 11:15:19 -0500
+Message-ID: <20241127074906-0aa0d5ee47813adc@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241127060354.2695746-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241127100237.1138842-1-xiangyu.chen@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,60 +63,114 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: fed13a5478680614ba97fc87e71f16e2e197912e
+The upstream commit SHA1 provided is correct: 2be1d4f11944cd6283cb97268b3e17c4424945ca
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Mikulas Patocka <mpatocka@redhat.com>
+Backport author: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
+Commit author: Justin Tee <justin.tee@broadcom.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (different SHA1: d7aec2a06730)
+6.11.y | Present (different SHA1: fd665c8dbdb1)
 6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-27 09:24:16.233428906 -0500
-+++ /tmp/tmp.Jz2z3Kr0Gz	2024-11-27 09:24:16.224663135 -0500
+--- -	2024-11-27 07:44:21.246175065 -0500
++++ /tmp/tmp.PTEqkEQ2h7	2024-11-27 07:44:21.238682123 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit fed13a5478680614ba97fc87e71f16e2e197912e ]
++[ Upstream commit 2be1d4f11944cd6283cb97268b3e17c4424945ca ]
 +
- If blk_alloc_disk fails, the variable md->disk is set to an error value.
- cleanup_mapped_device will see that md->disk is non-NULL and it will
- attempt to access it, causing a crash on this statement
-@@ -8,23 +10,27 @@
- Closes: https://marc.info/?l=dm-devel&m=172824125004329&w=2
- Cc: stable@vger.kernel.org
- Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+ When the HBA is undergoing a reset or is handling an errata event, NULL ptr
+ dereference crashes may occur in routines such as
+ lpfc_sli_flush_io_rings(), lpfc_dev_loss_tmo_callbk(), or
+@@ -9,6 +11,9 @@
+ Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+ Link: https://lore.kernel.org/r/20240726231512.92867-4-justintee8345@gmail.com
+ Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
++Signed-off-by: Sasha Levin <sashal@kernel.org>
++[Xiangyu: BP to fix CVE: CVE-2024-49891, no test_bit() conflict resolution]
++Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
  ---
-  drivers/md/dm.c | 4 +++-
-  1 file changed, 3 insertions(+), 1 deletion(-)
+  drivers/scsi/lpfc/lpfc_hbadisc.c |  3 ++-
+  drivers/scsi/lpfc/lpfc_scsi.c    | 13 +++++++++++--
+@@ -16,24 +21,24 @@
+  3 files changed, 24 insertions(+), 3 deletions(-)
  
- diff --git a/drivers/md/dm.c b/drivers/md/dm.c
--index ff4a6b570b764..19230404d8c2b 100644
-+index 5dd0a42463a2..f45427291ea6 100644
- --- a/drivers/md/dm.c
- +++ b/drivers/md/dm.c
--@@ -2290,8 +2290,10 @@ static struct mapped_device *alloc_dev(int minor)
-+@@ -2077,8 +2077,10 @@ static struct mapped_device *alloc_dev(int minor)
-  	 * override accordingly.
-  	 */
-- 	md->disk = blk_alloc_disk(NULL, md->numa_node_id);
---	if (IS_ERR(md->disk))
--+	if (IS_ERR(md->disk)) {
-+ 	md->disk = blk_alloc_disk(md->numa_node_id);
-+-	if (!md->disk)
-++	if (!md->disk){
- +		md->disk = NULL;
-  		goto bad;
- +	}
-  	md->queue = md->disk->queue;
+ diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+-index 6943f6c6395c4..f21c5993e8d72 100644
++index aaa98a006fdc..d3a5f10b8b83 100644
+ --- a/drivers/scsi/lpfc/lpfc_hbadisc.c
+ +++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+-@@ -175,7 +175,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+- 			 ndlp->nlp_state, ndlp->fc4_xpt_flags);
+- 
+- 	/* Don't schedule a worker thread event if the vport is going down. */
+--	if (test_bit(FC_UNLOADING, &vport->load_flag)) {
+-+	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
+-+	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
+- 		spin_lock_irqsave(&ndlp->lock, iflags);
++@@ -177,7 +177,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
++ 	/* Don't schedule a worker thread event if the vport is going down.
++ 	 * The teardown process cleans up the node via lpfc_drop_node.
++ 	 */
++-	if (vport->load_flag & FC_UNLOADING) {
+++	if ((vport->load_flag & FC_UNLOADING) ||
+++	    !(phba->hba_flag & HBA_SETUP)) {
++ 		((struct lpfc_rport_data *)rport->dd_data)->pnode = NULL;
+  		ndlp->rport = NULL;
   
-  	init_waitqueue_head(&md->wait);
+ diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+-index 98ce9d97a2257..60cd60ebff38e 100644
++index 2a81a42de5c1..ed32aa01c711 100644
+ --- a/drivers/scsi/lpfc/lpfc_scsi.c
+ +++ b/drivers/scsi/lpfc/lpfc_scsi.c
+-@@ -5555,11 +5555,20 @@ lpfc_abort_handler(struct scsi_cmnd *cmnd)
++@@ -5554,11 +5554,20 @@ lpfc_abort_handler(struct scsi_cmnd *cmnd)
+  
+  	iocb = &lpfc_cmd->cur_iocbq;
+  	if (phba->sli_rev == LPFC_SLI_REV4) {
+@@ -48,7 +53,7 @@
+ +					 "HBA_SETUP %d\n", FAILED,
+ +					 cmnd->device->id,
+ +					 (u64)cmnd->device->lun,
+-+					 test_bit(HBA_SETUP, &phba->hba_flag));
+++					 (HBA_SETUP & phba->hba_flag));
+  			ret = FAILED;
+  			goto out_unlock_hba;
+  		}
+@@ -57,10 +62,10 @@
+  	}
+  	/* the command is in process of being cancelled */
+ diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+-index d240bbded4c8f..332b8d2348e9e 100644
++index 587e3c2f7c48..1e04b6fc127a 100644
+ --- a/drivers/scsi/lpfc/lpfc_sli.c
+ +++ b/drivers/scsi/lpfc/lpfc_sli.c
+-@@ -4687,6 +4687,17 @@ lpfc_sli_flush_io_rings(struct lpfc_hba *phba)
++@@ -4668,6 +4668,17 @@ lpfc_sli_flush_io_rings(struct lpfc_hba *phba)
+  	/* Look on all the FCP Rings for the iotag */
+  	if (phba->sli_rev >= LPFC_SLI_REV4) {
+  		for (i = 0; i < phba->cfg_hdw_queue; i++) {
+@@ -69,8 +74,8 @@
+ +				lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
+ +						"7777 hdwq's deleted %lx "
+ +						"%lx %x %x\n",
+-+						phba->pport->load_flag,
+-+						phba->hba_flag,
+++						(unsigned long)phba->pport->load_flag,
+++						(unsigned long)phba->hba_flag,
+ +						phba->link_state,
+ +						phba->sli.sli_flag);
+ +				return;
+@@ -78,3 +83,6 @@
+  			pring = phba->sli4_hba.hdwq[i].io_wq->pring;
+  
+  			spin_lock_irq(&pring->ring_lock);
 +-- 
-+2.34.1
++2.25.1
 +
 ---
 
@@ -124,5 +178,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
