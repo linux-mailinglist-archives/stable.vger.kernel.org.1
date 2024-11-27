@@ -1,133 +1,447 @@
-Return-Path: <stable+bounces-95654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7015B9DAE5D
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 21:11:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17299DAE94
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 21:40:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E701620E2
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 20:40:10 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1F5202F92;
+	Wed, 27 Nov 2024 20:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X2E20aKy"
+X-Original-To: stable@vger.kernel.org
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35F5628177B
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 20:11:35 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061EF202F98;
-	Wed, 27 Nov 2024 20:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdBdYGYt"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C71202F7B;
-	Wed, 27 Nov 2024 20:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67C116132F
+	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 20:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732738248; cv=none; b=WfTNOVS/YxNEnIExXK79+h7nZBBu2DYxlSITu+H/yTYjF2+xT4DmK//4RtjhN3vs3OQNOhvyDAttvnmy/dbjJUzxRM9AfvtHCd/ucTS8/ClBMTUkO2GCP9LCgxQBYN6YlruHMJ5OtBrbetCkyEyxXXQnM91fzX4gN/+109UAxSM=
+	t=1732740009; cv=none; b=urdpnhdvtTp6RKgW5UM3oEC+6fP3XI5mib/n4jVJfKqFpagxlA+pz9pc0tmBAA6KbtfFh7YApCaBVBu3jzdi5a/6nDD3DDBlSRGk4nwdPLL4ujnhDkBH8dcHCiU2yYrVv5lRzVWPyNfYkZe9ZcSPqQZyIbrFfxHQQNilloLpxKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732738248; c=relaxed/simple;
-	bh=iFknynaxVSWi7l7OEEZ0/tMzkRAiqgHR7fjOJFyhRfQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ub312ZLhDx8vi/F3kd4NzpRJhdM1tWU+wv0yNOPppVXT3muxhe34AuoM5X1+tBuhmY9W0ZSwb9/M4rkm3G4qvoZTRbUT7XEFC7bP6CHi+rRmCWe/bQuQnKt4Ai4hsiurZqUCOjjWCwNJipAjuvnVj9ExS0oFGugzdSm65j9DwEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdBdYGYt; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-466943679bfso1420711cf.0;
-        Wed, 27 Nov 2024 12:10:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732738246; x=1733343046; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mblefla9njkVPYJmF7+4lumH+f/65iphlvMfUcC2UiM=;
-        b=JdBdYGYtIdaUVwVCtoU72DfWIKVDXxJ1hfyyxIqOHGkwy1LRpsR6D+RR5baNzn831L
-         N957F1pCZylIrwnR9oMW6CWA1NjHT/vpUOlD5lZcSqhMuKsFMkXNY/oV0mS1+XGHxM7M
-         Q4QBQgcom0ZASI5aJeC9TanmVFd7LZqSRtJBNGCWxA2TNPUjqXV2Z+knMbrfikdrrQTB
-         E+Seir1qdsdpqG2cdy2/SRB2Wr01XwrgH8wvuRXY5Wj65vBQeAhh19PwyO7+JCLyb5yq
-         PUYn/OlghBb4CQr4QgktOkLMwf+ot52iDPCQgZMVUnCfqnJOUpk66MceSZzRaMhl2gLy
-         Hnfw==
+	s=arc-20240116; t=1732740009; c=relaxed/simple;
+	bh=+uyRhbycbB8JbfOn837Ldki/ELPUdawVxtV6PjO0Mrg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oFJz0dzlnhT0xmuYuENknryFajIrjfbsTsWSaArAO4yGw3tfrK/MM5tidGvMen+egyQiiRkhrMwzCnF43bPUdZtl7laLgVOoWDl13SfI7B0JlTyqJGoVb/0/y6Iteu8u3djlRBcsWtEkeS4ThIgNOjUCPHGYlW5VStlszOIiqX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X2E20aKy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732740005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BodojohjlI9WVBaIQ+kWrLA4+kAe3EgXWfvnZnqPBhY=;
+	b=X2E20aKyQ3ksOMPS+xViWs6hQ2QFKE7Ys96tD/sOPDNGrCmKd8bXsoUCLtpNdOesfoV6c4
+	7rrI4C+SDQbRAQf+pxXdRe9VbOpTSq/MYFXf+ShB3KN2++BfRYiZibaglsBaM8kiSkAspP
+	fZgaJztCVepzMtdPmUH5mpNXty+/euI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-yVJYILxAPuO-hHfhe0AxSQ-1; Wed, 27 Nov 2024 15:40:04 -0500
+X-MC-Unique: yVJYILxAPuO-hHfhe0AxSQ-1
+X-Mimecast-MFC-AGG-ID: yVJYILxAPuO-hHfhe0AxSQ
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-381d0582ad3so83854f8f.0
+        for <stable@vger.kernel.org>; Wed, 27 Nov 2024 12:40:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732738246; x=1733343046;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mblefla9njkVPYJmF7+4lumH+f/65iphlvMfUcC2UiM=;
-        b=q0bN0+qZkMLSqqIOqOA4KPaBPpxLfijQUrVB39n/PmUi5FV/5EwDFHre3NTxJLxQz9
-         T/4CjemqyvWyJ5TJnPki171aE+Ubl/5hAXhtYSJAGyEPpsEvONqJanfwM7olMCke6LZT
-         nadkDjaamaCRm0wjcTe1088VwcnHI/+S0bbdt07qnlYcSKmRb8PNoFHMWWRqZtQvmUuK
-         PjeA40lGnitSfC5kR2DoTAW5KBn21ntxaQo4TWaP+jO1K2PTiaNToDLeaxtfOj60jRb3
-         +oEWOTvUpaCTvyYwDOi41QmwFChiW1pMl22/D7sc1c0/Y905DssVsKXSor05xhAKtm9d
-         oGAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEIdrZb4ilqQmYy7nwr0TTk/lEKlvmmiqPf8661waji9EwHsJLmp46DdKorE9q5y1jLB3zPlqbOHTizhk=@vger.kernel.org, AJvYcCWT7+sKjiyhugFshS6M1jK/ztpz7SWGfwZ/jJe70ASYLs4dz7eShGFwwAGiTnQPiMepow3336UU@vger.kernel.org
-X-Gm-Message-State: AOJu0YysGbK9x3XiQAbeYupGaCDsJ6DVDcAB7g5Wsm5C7o2E2KD/h6ki
-	O9XY2vMZfRida2q1tCtSE2unmX+EmYjJCwDN/eZrdukzlZRkXGeU
-X-Gm-Gg: ASbGnctE7YpNTg+HJtG6tq0yiX/4s5tCIJrdY0Ys5hjzLYUi3APK0iuzLFTUKCUcqj+
-	JvpW67GWl7/dJKxo5WV3SCb3onnmdNNkeYzK2eH0Hc2qjJTX+uiQMUe/jHJ3OmUXwLij4detjS+
-	d4W0YIhv9bIqnvNenir5UIckfElHBmmFNwwzBqMSH0ZdG8vWmLcc9SMePiRrNsJwz+ry1R6x9q/
-	jRFJPZ7/zNfzMwBHyHzdzfOjEYcRV80t9ShdGkuObOG9H0g1FP3TtgWD47m7YL717e+b2Bz
-X-Google-Smtp-Source: AGHT+IGXO3DPEwrzdtMEulE3VhY7JlQ+MgBKS5s1oo9cMdxXkiSfRsPCWUfk8wMsJreCYQsvHzy5tQ==
-X-Received: by 2002:ac8:5987:0:b0:461:9d9:15c2 with SMTP id d75a77b69052e-466b3554a2amr73534731cf.1.1732738246079;
-        Wed, 27 Nov 2024 12:10:46 -0800 (PST)
-Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b679c8d982sm138536285a.14.2024.11.27.12.10.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 12:10:45 -0800 (PST)
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-To: nirmoy.das@linux.intel.com
-Cc: jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	tursulin@ursulin.net,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	chris@chris-wilson.co.uk,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	stable@vger.kernel.org,
-	Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH RESEND v2] drm/i915: Fix memory leak by correcting cache object name in error handler
-Date: Wed, 27 Nov 2024 20:10:42 +0000
-Message-Id: <20241127201042.29620-1-jiashengjiangcool@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1732740001; x=1733344801;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BodojohjlI9WVBaIQ+kWrLA4+kAe3EgXWfvnZnqPBhY=;
+        b=VVNaPojqB7i+YPqepeUxNvEIoiwCsg6ABu4prFtqRJBaZZYPtjcKcSrMClOpcxYuXj
+         muemrSwsZJjSXIPatmL4n8Ov/Ck3uC0f+5qOoiNG4VmKWpEfPoOO+Eu3/3o+1mNnfs1/
+         nNcfB5P2zqKM3R/LUL1NvpbFiqcvXIyAdJL1+MWyPSAZiNGfqlAor9+ydVfIEcKWIvRd
+         yX2UWN64/k/IMwcs3WB82/4Dh7n74C/udfE5SzzGQKbsA7VFHkKBVC0Iyq1L4dxHZNLI
+         aLuepupycDQm/BYgmsoAuc7n4zqseldQHP2pRsrFszc0eJUO5smP5JfBKtyB+vjDMQ0B
+         WIIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX12se0zHAsZpgs0XV3MoFXvvEBeeoaJmb6O0+jmoZdHafIIKOkh0Y5eRcFq5FxEjYaJ60ztl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYC1/py8MfspPwz3rEbXLnT59aAolix/uSSiuMIHvLkWWA4WYi
+	82Ufo97xAy3mnwfoNlyZb5BNLwe9IBwp9XLgl7pksBm3ufJFN89ParU8E5lWJ0CceGZhsuGf9Ny
+	3WhbhP7kaVTOr5Fl/lmmSn4qpTirJ6btK5ywZ78mtlH2C0qFRrsZrQHyVXZJw6nqeXaLHhuhZBo
+	8K9v82V5dpfq1bHGGSi55EZqxDMpL/
+X-Gm-Gg: ASbGncurtC5M5+qt35Gb3lFTcM09aKwc7b0qYbDm3tkv9h7xrvj3g1CBzF4BvyBLjdf
+	2rDaCiyHuFB0pHrpYqWVIsuhK3E+i54Y=
+X-Received: by 2002:a05:6000:79d:b0:382:5141:f63d with SMTP id ffacd0b85a97d-385c6edd259mr5108500f8f.53.1732740001079;
+        Wed, 27 Nov 2024 12:40:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWWdaAMvnX2gQp2dWgQs9IZ08qJaaFhRgkjyxgRNHpKNNj+/Bf7m7ainC7GV5xmnppmIqCULkVp/dd4UjNcAQ=
+X-Received: by 2002:a05:6000:79d:b0:382:5141:f63d with SMTP id
+ ffacd0b85a97d-385c6edd259mr5108477f8f.53.1732740000686; Wed, 27 Nov 2024
+ 12:40:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241127165405.2676516-1-max.kellermann@ionos.com>
+In-Reply-To: <20241127165405.2676516-1-max.kellermann@ionos.com>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Wed, 27 Nov 2024 22:39:49 +0200
+Message-ID: <CAO8a2Sg35LyjnaQ56WjLXeJ39CHdh+OTTuTthKYONa3Qzej3dw@mail.gmail.com>
+Subject: Re: [PATCH v2] fs/ceph/file: fix buffer overflow in __ceph_sync_read()
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: xiubli@redhat.com, idryomov@gmail.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+There is a fix for this proposed by Luis.
+It's being tested now.
 
-Replace "slab_priorities" with "slab_dependencies" in the error handler
-to avoid memory leak.
-
-Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-Cc: <stable@vger.kernel.org> # v5.2+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
----
-Changelog:
-
-v1 -> v2:
-
-1. Alter the subject.
----
- drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
-index 762127dd56c5..70a854557e6e 100644
---- a/drivers/gpu/drm/i915/i915_scheduler.c
-+++ b/drivers/gpu/drm/i915/i915_scheduler.c
-@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(void)
- 	return 0;
- 
- err_priorities:
--	kmem_cache_destroy(slab_priorities);
-+	kmem_cache_destroy(slab_dependencies);
- 	return -ENOMEM;
- }
--- 
-2.25.1
+On Wed, Nov 27, 2024 at 6:54=E2=80=AFPM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
+>
+> If the inode size gets truncated by another task, __ceph_sync_read()
+> may crash with a buffer overflow because it sets `left` to a huge
+> value:
+>
+>   else if (off + ret > i_size)
+>           left =3D i_size - off;
+>
+> Imagine `i_size` was truncated to zero; `off + ret > i_size` is always
+> true, but `i_size - off` can be negative; since `left` is unsigned, it
+> turns into a rather huge number, and thus the `while (left > 0)` loop
+> never stops until it eventually crashes because `pages[idx]` overflows
+> the `pages` allocation.
+>
+> We need to ensure that `i_size` never becomes smaller than `off`.  I
+> suggest breaking from the loop as soon as this happens, right after
+> the `i_size =3D i_size_read(inode)` update.
+>
+> This can be reproduced easily by running a program like this on one
+> Ceph client:
+>
+>   ioctl(fd, CEPH_IOC_SYNCIO);
+>   char buffer[16384];
+>   while (1) pread(fd, buffer, sizeof(buffer), 8192);
+>
+> Then, on another server, truncate and rewrite the file until the first
+> server's kernel crashes (I never needed more than two attempts to
+> trigger the kernel crash):
+>
+>   dd if=3D/dev/urandom of=3Dfoo bs=3D1k count=3D64
+>
+> This is how the crash looks like (with KASAN and some debug logs from
+> `__ceph_sync_read` and `ceph_fill_file_size`):
+>
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 16384 i_size 65536
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 16384 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: size 65536 -> 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_seq 36656 -> 36657
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 0 i_size 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+result 0 retry_op 0
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+on inode 0000000035059a6f 1000235edb7.fffffffffffffffe 2000~4000
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+orig 8192~16384 reading 8192~16384
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] __ceph_sync_read: =
+8192~16384 got 1024 i_size 0
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  BUG: KASAN: slab-out-of-bounds in __ceph_sync_read+0x173f/0x1b10
+>  Read of size 8 at addr ffff8881d5dfbea0 by task pread/3276
+>
+>  CPU: 3 UID: 2147488069 PID: 3276 Comm: pread Not tainted 6.11.10-cm4all1=
+-hp+ #254
+>  Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 0=
+9/05/2019
+>  Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x62/0x90
+>   print_report+0xc4/0x5e0
+>   ? __virt_addr_valid+0x1e9/0x3a0
+>   ? __ceph_sync_read+0x173f/0x1b10
+>   kasan_report+0xb9/0xf0
+>   ? __ceph_sync_read+0x173f/0x1b10
+>   __ceph_sync_read+0x173f/0x1b10
+>   ? __pfx___ceph_sync_read+0x10/0x10
+>   ? lock_acquire+0x186/0x4d0
+>   ? ceph_read_iter+0xace/0x19f0
+>   ceph_read_iter+0xace/0x19f0
+>   ? lock_release+0x648/0xb50
+>   ? __pfx_ceph_read_iter+0x10/0x10
+>   ? __rseq_handle_notify_resume+0x8ed/0xd40
+>   ? __pfx___rseq_handle_notify_resume+0x10/0x10
+>   ? vfs_read+0x6e0/0xba0
+>   vfs_read+0x6e0/0xba0
+>   ? __pfx_vfs_read+0x10/0x10
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   __x64_sys_pread64+0x19b/0x1f0
+>   ? __pfx___x64_sys_pread64+0x10/0x10
+>   ? __pfx___rseq_handle_notify_resume+0x10/0x10
+>   do_syscall_64+0x82/0x130
+>   ? lockdep_hardirqs_on_prepare+0x275/0x3e0
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   ? do_syscall_64+0x8e/0x130
+>   ? lockdep_hardirqs_on_prepare+0x275/0x3e0
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   ? do_syscall_64+0x8e/0x130
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  RIP: 0033:0x7f8449d18343
+>  Code: 48 8b 6c 24 48 e8 3d 00 f3 ff 41 b8 02 00 00 00 e9 38 f6 ff ff 66 =
+90 80 3d a1 42 0e 00 00 49 89 ca 74 14 b8 11 00 00 00 0f 05 <48> 3d 00 f0 f=
+f ff 77 5d c3 0f 1f 40 00 48 83 ec 28 48 89 54 24 10
+>  RSP: 002b:00007ffd7a2e8b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000011
+>  RAX: ffffffffffffffda RBX: 00007ffd7a2e8cc8 RCX: 00007f8449d18343
+>  RDX: 0000000000004000 RSI: 0000557f7917c2a0 RDI: 0000000000000003
+>  RBP: 00007ffd7a2e8bb0 R08: 0000557f7919d000 R09: 0000000000021001
+>  R10: 0000000000002000 R11: 0000000000000202 R12: 0000000000000000
+>  R13: 00007ffd7a2e8cf0 R14: 0000557f436c2dd8 R15: 00007f8449e43020
+>   </TASK>
+>
+>  Allocated by task 3276:
+>   kasan_save_stack+0x1c/0x40
+>   kasan_save_track+0x10/0x30
+>   __kasan_kmalloc+0x8b/0x90
+>   __kmalloc_noprof+0x1bf/0x490
+>   ceph_alloc_page_vector+0x36/0x110
+>   __ceph_sync_read+0x769/0x1b10
+>   ceph_read_iter+0xace/0x19f0
+>   vfs_read+0x6e0/0xba0
+>   __x64_sys_pread64+0x19b/0x1f0
+>   do_syscall_64+0x82/0x130
+>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+>  The buggy address belongs to the object at ffff8881d5dfbe80
+>   which belongs to the cache kmalloc-32 of size 32
+>  The buggy address is located 0 bytes to the right of
+>   allocated 32-byte region [ffff8881d5dfbe80, ffff8881d5dfbea0)
+>
+>  The buggy address belongs to the physical page:
+>  page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1d5=
+dfb
+>  flags: 0x2fffc0000000000(node=3D0|zone=3D2|lastcpupid=3D0x3fff)
+>  page_type: 0xfdffffff(slab)
+>  raw: 02fffc0000000000 ffff888100042780 dead000000000122 0000000000000000
+>  raw: 0000000000000000 0000000080400040 00000001fdffffff 0000000000000000
+>  page dumped because: kasan: bad access detected
+>
+>  Memory state around the buggy address:
+>   ffff8881d5dfbd80: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+>   ffff8881d5dfbe00: fa fb fb fb fc fc fc fc fa fb fb fb fc fc fc fc
+>  >ffff8881d5dfbe80: 00 00 00 00 fc fc fc fc fa fb fb fb fc fc fc fc
+>                                 ^
+>   ffff8881d5dfbf00: fc fc fc fc fc fc fc fc fa fb fb fb fc fc fc fc
+>   ffff8881d5dfbf80: fa fb fb fb fc fc fc fc fa fb fb fb fc fc fc fc
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  Disabling lock debugging due to kernel taint
+>  Oops: general protection fault, probably for non-canonical address 0xe02=
+1fc6b8000019a: 0000 [#1] SMP KASAN PTI
+>  KASAN: maybe wild-memory-access in range [0x0110035c00000cd0-0x0110035c0=
+0000cd7]
+>  CPU: 3 UID: 2147488069 PID: 3276 Comm: pread Tainted: G    B            =
+  6.11.10-cm4all1-hp+ #254
+>  Tainted: [B]=3DBAD_PAGE
+>  Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 0=
+9/05/2019
+>  RIP: 0010:__ceph_sync_read+0xc33/0x1b10
+>  Code: 39 e7 4d 0f 47 fc 48 8d 0c c6 48 89 c8 48 c1 e8 03 42 80 3c 30 00 =
+0f 85 0b 0b 00 00 48 8b 11 48 8d 7a 08 48 89 f8 48 c1 e8 03 <42> 80 3c 30 0=
+0 0f 85 0d 0b 00 00 48 8b 42 08 a8 01 0f 84 ee 04 00
+>  RSP: 0018:ffff8881ed6e78e0 EFLAGS: 00010207
+>  RAX: 0022006b8000019a RBX: 0000000000000000 RCX: ffff8881d5dfbea0
+>  RDX: 0110035c00000ccc RSI: 0000000000000008 RDI: 0110035c00000cd4
+>  RBP: ffff8881ed6e7a80 R08: 0000000000000001 R09: fffffbfff28b44ac
+>  R10: ffffffff945a2567 R11: 0000000000000001 R12: ffffffffffffa000
+>  R13: 0000000000000004 R14: dffffc0000000000 R15: 0000000000001000
+>  FS:  00007f8449c1f740(0000) GS:ffff88d2b5a00000(0000) knlGS:000000000000=
+0000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 00007fb72c6aecf0 CR3: 00000001ed7b6003 CR4: 00000000007706f0
+>  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>  PKRU: 55555554
+>  Call Trace:
+>   <TASK>
+>   ? die_addr+0x3c/0xa0
+>   ? exc_general_protection+0x113/0x200
+>   ? asm_exc_general_protection+0x22/0x30
+>   ? __ceph_sync_read+0xc33/0x1b10
+>   ? __pfx___ceph_sync_read+0x10/0x10
+>   ? lock_acquire+0x186/0x4d0
+>   ? ceph_read_iter+0xace/0x19f0
+>   ceph_read_iter+0xace/0x19f0
+>   ? lock_release+0x648/0xb50
+>   ? __pfx_ceph_read_iter+0x10/0x10
+>   ? __rseq_handle_notify_resume+0x8ed/0xd40
+>   ? __pfx___rseq_handle_notify_resume+0x10/0x10
+>   ? vfs_read+0x6e0/0xba0
+>   vfs_read+0x6e0/0xba0
+>   ? __pfx_vfs_read+0x10/0x10
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   __x64_sys_pread64+0x19b/0x1f0
+>   ? __pfx___x64_sys_pread64+0x10/0x10
+>   ? __pfx___rseq_handle_notify_resume+0x10/0x10
+>   do_syscall_64+0x82/0x130
+>   ? lockdep_hardirqs_on_prepare+0x275/0x3e0
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   ? do_syscall_64+0x8e/0x130
+>   ? lockdep_hardirqs_on_prepare+0x275/0x3e0
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   ? do_syscall_64+0x8e/0x130
+>   ? syscall_exit_to_user_mode+0x9a/0x190
+>   ? do_syscall_64+0x8e/0x130
+>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  RIP: 0033:0x7f8449d18343
+>  Code: 48 8b 6c 24 48 e8 3d 00 f3 ff 41 b8 02 00 00 00 e9 38 f6 ff ff 66 =
+90 80 3d a1 42 0e 00 00 49 89 ca 74 14 b8 11 00 00 00 0f 05 <48> 3d 00 f0 f=
+f ff 77 5d c3 0f 1f 40 00 48 83 ec 28 48 89 54 24 10
+>  RSP: 002b:00007ffd7a2e8b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000011
+>  RAX: ffffffffffffffda RBX: 00007ffd7a2e8cc8 RCX: 00007f8449d18343
+>  RDX: 0000000000004000 RSI: 0000557f7917c2a0 RDI: 0000000000000003
+>  RBP: 00007ffd7a2e8bb0 R08: 0000557f7919d000 R09: 0000000000021001
+>  R10: 0000000000002000 R11: 0000000000000202 R12: 0000000000000000
+>  R13: 00007ffd7a2e8cf0 R14: 0000557f436c2dd8 R15: 00007f8449e43020
+>   </TASK>
+>  Modules linked in:
+>  ---[ end trace 0000000000000000 ]---
+>  RIP: 0010:__ceph_sync_read+0xc33/0x1b10
+>  Code: 39 e7 4d 0f 47 fc 48 8d 0c c6 48 89 c8 48 c1 e8 03 42 80 3c 30 00 =
+0f 85 0b 0b 00 00 48 8b 11 48 8d 7a 08 48 89 f8 48 c1 e8 03 <42> 80 3c 30 0=
+0 0f 85 0d 0b 00 00 48 8b 42 08 a8 01 0f 84 ee 04 00
+>  RSP: 0018:ffff8881ed6e78e0 EFLAGS: 00010207
+>  RAX: 0022006b8000019a RBX: 0000000000000000 RCX: ffff8881d5dfbea0
+>  RDX: 0110035c00000ccc RSI: 0000000000000008 RDI: 0110035c00000cd4
+>  RBP: ffff8881ed6e7a80 R08: 0000000000000001 R09: fffffbfff28b44ac
+>  R10: ffffffff945a2567 R11: 0000000000000001 R12: ffffffffffffa000
+>  R13: 0000000000000004 R14: dffffc0000000000 R15: 0000000000001000
+>  FS:  00007f8449c1f740(0000) GS:ffff88d2b5a00000(0000) knlGS:000000000000=
+0000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 00007fb72c6aecf0 CR3: 00000001ed7b6003 CR4: 00000000007706f0
+>  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>  PKRU: 55555554
+>  workqueue: ceph_con_workfn hogged CPU for >10000us 35 times, consider sw=
+itching to WQ_UNBOUND
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: size 0 -> 65536
+>  ceph:  [8f7ec2f3-0dcb-468f-bd16-37e0a61bf195 4098067] ceph_fill_file_siz=
+e: truncate_size 0 -> 0, encrypted 0
+>
+> Fixes: 1065da21e5df ("ceph: stop copying to iter at EOF on sync reads")
+> Fixes: https://tracker.ceph.com/issues/67524
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+> v2: public posting; added link to Ceph bug tracker (vulnerability had
+> been known already for 3 months)
+> ---
+>  fs/ceph/file.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+> index 4b8d59ebda00..57d7cdda0f87 100644
+> --- a/fs/ceph/file.c
+> +++ b/fs/ceph/file.c
+> @@ -1154,6 +1154,13 @@ ssize_t __ceph_sync_read(struct inode *inode, loff=
+_t *ki_pos,
+>                 doutc(cl, "%llu~%llu got %zd i_size %llu%s\n", off, len,
+>                       ret, i_size, (more ? " MORE" : ""));
+>
+> +               if (off >=3D i_size)
+> +                       /* meanwhile, the file has been truncated by
+> +                        * another task and the offset is no longer
+> +                        * valid; stop here
+> +                        */
+> +                       break;
+> +
+>                 /* Fix it to go to end of extent map */
+>                 if (sparse && ret >=3D 0)
+>                         ret =3D ceph_sparse_ext_map_end(op);
+> --
+> 2.45.2
+>
+>
 
 
