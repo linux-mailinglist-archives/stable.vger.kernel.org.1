@@ -1,97 +1,111 @@
-Return-Path: <stable+bounces-95628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4929DAA3A
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 15:59:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BB39DAABC
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 16:28:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F6FB22A01
-	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 14:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41020166D13
+	for <lists+stable@lfdr.de>; Wed, 27 Nov 2024 15:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75E71F9A9F;
-	Wed, 27 Nov 2024 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9921200100;
+	Wed, 27 Nov 2024 15:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bmc+sYsj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqMjro8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9848CB652
-	for <stable@vger.kernel.org>; Wed, 27 Nov 2024 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845291E51D;
+	Wed, 27 Nov 2024 15:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732719555; cv=none; b=ERCqwLWW8lNOW16hIUMJ6WKlN3VAKP8306PhTuCR5c6fVunGWt9/CE/G2KmOWH0reud09j4hlQ0O42c1zxwk5V3G18JoeCiQLqSqJI5QIM5WyA5NlHnKb8XWi4S64utNtKVv0z83BIKLQAQSvJ5WMjStgRIe8sANkVTwKeVt5dA=
+	t=1732721300; cv=none; b=tyHWa8vd3YEyskSbDpyv/dSxFefrbPB/Kw3V8tB8/KlNSupn24TeFUVt7/9WPViP0UIdHe7HuMqhnX8iJwNSIEGO1mNe+W4zY07m8U4I/0lAR4WwBU6w2iGFFNmTtsWKtwDH3LEPqb26/1BqT+NB/yfG7jJlA8ZK81c2Y7dXmf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732719555; c=relaxed/simple;
-	bh=ysSOJFJ8Lhyyqj3BWafUVtyKTltSltArjUyAKNtACNk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jj5MKPsUOjxYfAhfahRzrGtXlCryyZuKmm+QhXjqo8nphFhqH2QQfavhf2EZXXPxh+DVlNgkwL3q7OixZixtfaTfsiu6oE1IrVgKJCB1esZGFVo2pc1k8SeF4UXIPiR0+JRGirXPhelywFhpWG2xZ129wS12IA7qScDYn0U+3PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bmc+sYsj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B220C4CECC;
-	Wed, 27 Nov 2024 14:59:14 +0000 (UTC)
+	s=arc-20240116; t=1732721300; c=relaxed/simple;
+	bh=NPVXYksZkbK7cP6WTdZWPp256P2B4FMiN2imk2oaSkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qlZ/HsNM9HVVncJTIGKN6U5FaduFYRP8DlbV7mzsfxprd8urER1qWMTFCt7DUUdcEwMo3Y4ZP6465HjqcepkyBg+guucqg1LjLB5RbHe9MhsSPF0vvlYGGiQy110MpAQcWxIM1iQlFH8iUMZxso6YVWbl2Ed394yZb+YBTSB43g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqMjro8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A4EC4CED4;
+	Wed, 27 Nov 2024 15:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732719555;
-	bh=ysSOJFJ8Lhyyqj3BWafUVtyKTltSltArjUyAKNtACNk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Bmc+sYsjZFRehUWH53Gb0ccobYGUq+9tWNAggY0yBVWCZH5u6Zi+0EA5073LmLX4W
-	 v90CAYFye4mi5Ejx3fWgKHdWC89bFz15jNp488noLCooq1PxP1kUWJob4c/SjUClrH
-	 GLbUnG2tmcTlaeagPKccDOpkeQPprbFdvnd/Boi1Ck1gUcIyYma9tBhcrjdMTjfXVV
-	 aAdr7W5X1+cf3rGAVbsTLMXifpfjAYygWbk0EeS3ZstLqoX+CpzclVshvFk4mkdon1
-	 sbO25rS1CsOmaZY3mnjtLeRJgu2bhugI4pp24jtEW3Vl436gCqDVnoEweiXPlZoYOj
-	 3Fdivy6utHETw==
-From: Mark Brown <broonie@kernel.org>
-To: Ilya Zverev <ilya@zverev.info>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20241127134420.14471-1-ilya@zverev.info>
-References: <20241127134420.14471-1-ilya@zverev.info>
-Subject: Re: [PATCH] ASoC: amd: yc: Add a quirk for microfone on Lenovo
- ThinkPad P14s Gen 5 21MES00B00
-Message-Id: <173271955434.493990.5752359110711297055.b4-ty@kernel.org>
-Date: Wed, 27 Nov 2024 14:59:14 +0000
+	s=k20201202; t=1732721300;
+	bh=NPVXYksZkbK7cP6WTdZWPp256P2B4FMiN2imk2oaSkg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GqMjro8ojkY1tLpJcZlcUCbWHypMHq37p4mKe4wKeV9ANga4aylCBQE5UXv9iYKgk
+	 H1l1QixsymlDu3V1hiAXlqQ+p7QdbeKFcSDKwZLfBJkqKPEtAZbS/0zJ1A5o+Ud9qh
+	 u7JN52eMlk8g6rwlpELRbm82tdppU3TV3hpeD9TlLb3IYDi8RMJ7YE8OmDX2u0aEvf
+	 Niovao4OIXLG6o/hSiAPHrpsys5AJQjzRXjcxcosIpPWYpk2lyS7FAz/VE13TvCiwz
+	 vIVmGM4GwB0ZQ/IklvvUcFWv2pqPyGzdYlEZ9xUf4Ze0PrIz9bToqLxo+7KqJpD+I4
+	 EWbJYlUQFuyzQ==
+From: cel@kernel.org
+To: Hugh Dickens <hughd@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Cc: <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>,
+	yukuai3@huawei.com,
+	yangerkun@huaweicloud.com,
+	Chuck Lever <chuck.lever@oracle.com>,
+	stable@vger.kernel.org,
+	Jeff Layton <jlayton@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>
+Subject: [RFC PATCH v3 1/5] libfs: Return ENOSPC when the directory offset range is exhausted
+Date: Wed, 27 Nov 2024 10:28:11 -0500
+Message-ID: <20241127152815.151781-2-cel@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241127152815.151781-1-cel@kernel.org>
+References: <20241127152815.151781-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
+Content-Transfer-Encoding: 8bit
 
-On Wed, 27 Nov 2024 15:44:20 +0200, Ilya Zverev wrote:
-> New ThinkPads need new quirk entries. Ilya has tested this one.
-> Laptop product id is 21MES00B00, though the shorthand 21ME works.
-> 
-> 
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Applied to
+Testing shows that the EBUSY error return from mtree_alloc_cyclic()
+leaks into user space. The ERRORS section of "man creat(2)" says:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+>	EBUSY	O_EXCL was specified in flags and pathname refers
+>		to a block device that is in use by the system
+>		(e.g., it is mounted).
 
-Thanks!
+ENOSPC is closer to what applications expect in this situation.
 
-[1/1] ASoC: amd: yc: Add a quirk for microfone on Lenovo ThinkPad P14s Gen 5 21MES00B00
-      commit: b682aa788e5f9f1ddacdfbb453e49fd3f4e83721
+Note that the normal range of simple directory offset values is
+2..2^63, so hitting this error is going to be rare to impossible.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
+Cc: <stable@vger.kernel.org> # v6.9+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/libfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 46966fd8bcf9..bf67954b525b 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -288,7 +288,9 @@ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
+ 
+ 	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
+ 				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
+-	if (ret < 0)
++	if (unlikely(ret == -EBUSY))
++		return -ENOSPC;
++	if (unlikely(ret < 0))
+ 		return ret;
+ 
+ 	offset_set(dentry, offset);
+-- 
+2.47.0
 
 
