@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827D89DB0A0
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 02:12:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B24CA9DB0BA
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 02:26:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04CF5B21CCA
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 643F216223E
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCFF1AAC4;
-	Thu, 28 Nov 2024 01:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DB827470;
+	Thu, 28 Nov 2024 01:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="u+z/3PzN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hpmd7MjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419318E25;
-	Thu, 28 Nov 2024 01:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17BD1E505;
+	Thu, 28 Nov 2024 01:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732756364; cv=none; b=J0nFvyDeRmfborc/CKP4MslMqC/XHZLe2DP2d0tRSakM/AIQ91zs/y1tgfT214Dl1PL7nK0qN8RsUMS7pw3JzfOg/wQDjTk6QuLlR2WByk7q91hhM+9y9M81lDxxHT6n+wAqiaREfHeVDQR1Lb1Ux1zut6ehriHuLtAN35WvqQ0=
+	t=1732757174; cv=none; b=pcvmDb8o7Kaf5aqNtHJFcPV0DNuE/qxRTC9xE+N5+tnB4MVWNqa7rRs/1Gf41U6qWARj+m2YgOfmCzgRTiXHgIPmVTyS6bTtLOQdfXUV7vBzIKO5TQn+rU257KjAFvsx366zja6SmgbG4AAmJQTnd1/QUvq0zxjnudEy+gF6jU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732756364; c=relaxed/simple;
-	bh=5SLgCbLqDxaVXDdo0U3BpIVt9JOS5aWINvrsqNaOEnw=;
-	h=Date:To:From:Subject:Message-Id; b=XcXs9oyZNlwg+F/IMycHnM0F+wYU+yUr9XrRKrQXLTx2qrZp3JDsRrJLKvnxXZLxMhcCRliM6DoFOR1/93x/f4Pi47qwBl4yU39G3SeLlYEb6rFblgR2tTHL+Gd16rOH6rPMCj8pVs7Cs+D5Vbwd1ljec4y9GMNhMta5tckPluE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=u+z/3PzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D96EC4CECC;
-	Thu, 28 Nov 2024 01:12:43 +0000 (UTC)
+	s=arc-20240116; t=1732757174; c=relaxed/simple;
+	bh=cAtlbA1U9J5Df6E73Oz5P0Fc9Pq5oq8EywQ9tQcrjOs=;
+	h=Date:To:From:Subject:Message-Id; b=O5nKIeXkKlW5N60FQU3WXjedJ+TwraqalRZc26HJfkK1qe5GFd4Wu20uXTldq5UBEHDEma4HhojM03ExpH9tOBueXqGO5PMCxwkzNX9Ca4gCaGhx8A7LZG4SCRMn79qYqRquaags0stoAbtmW0ckQXLOun291sNHZyTNZPwLEWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hpmd7MjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B632C4CECC;
+	Thu, 28 Nov 2024 01:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732756363;
-	bh=5SLgCbLqDxaVXDdo0U3BpIVt9JOS5aWINvrsqNaOEnw=;
+	s=korg; t=1732757174;
+	bh=cAtlbA1U9J5Df6E73Oz5P0Fc9Pq5oq8EywQ9tQcrjOs=;
 	h=Date:To:From:Subject:From;
-	b=u+z/3PzN8NdDkfxunRlB3KJf0sDXGh6FyXTfYmd5Xpvpwtj4Ot7Jw6Qfk/Hbo3zOi
-	 dfbjCXfB1tE1UMQASQ08ruS1N/uP4LcCTOKGo20QrIPbM7JWNRKYaJ7mqkYrdVWKN7
-	 ebl8s/ZWLzxfjTHTAMjSINpwlEupZz2UFIKfgRZA=
-Date: Wed, 27 Nov 2024 17:12:43 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,willy@infradead.org,akpm@linux-foundation.org
+	b=Hpmd7MjZYc61HmpUM1R2J4uuEpO7giqQFD0GgWiZJvq9Tfj/cbE11RDu9ifkrtvx/
+	 HQXgsAkPL9WyxVQS6ZtxC4GNZtc+cpbGFxJqg3CNLfmh17prHLkE+Pf28BiagVPizf
+	 Le5QGuih45GRaMdGSBb2C5mHc9ZxY9eLaZLvf8ow=
+Date: Wed, 27 Nov 2024 17:26:13 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,osalvador@suse.de,glider@google.com,dvyukov@google.com,bigeasy@linutronix.de,andreyknvl@gmail.com,elver@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-open-code-page_folio-in-dump_page.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241128011243.8D96EC4CECC@smtp.kernel.org>
+Subject: + stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241128012614.6B632C4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: open-code page_folio() in dump_page()
+     Subject: stackdepot: fix stack_depot_save_flags() in NMI context
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-open-code-page_folio-in-dump_page.patch
+     stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-open-code-page_folio-in-dump_page.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,81 +73,92 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: mm: open-code page_folio() in dump_page()
-Date: Mon, 25 Nov 2024 20:17:19 +0000
+From: Marco Elver <elver@google.com>
+Subject: stackdepot: fix stack_depot_save_flags() in NMI context
+Date: Fri, 22 Nov 2024 16:39:47 +0100
 
-page_folio() calls page_fixed_fake_head() which will misidentify this page
-as being a fake head and load off the end of 'precise'.  We may have a
-pointer to a fake head, but that's OK because it contains the right
-information for dump_page().
+Per documentation, stack_depot_save_flags() was meant to be usable from
+NMI context if STACK_DEPOT_FLAG_CAN_ALLOC is unset.  However, it still
+would try to take the pool_lock in an attempt to save a stack trace in the
+current pool (if space is available).
 
-gcc-15 is smart enough to catch this with -Warray-bounds:
+This could result in deadlock if an NMI is handled while pool_lock is
+already held.  To avoid deadlock, only try to take the lock in NMI context
+and give up if unsuccessful.
 
-In function 'page_fixed_fake_head',
-    inlined from '_compound_head' at ../include/linux/page-flags.h:251:24,
-    inlined from '__dump_page' at ../mm/debug.c:123:11:
-../include/asm-generic/rwonce.h:44:26: warning: array subscript 9 is outside
-+array bounds of 'struct page[1]' [-Warray-bounds=]
+The documentation is fixed to clearly convey this.
 
-Link: https://lkml.kernel.org/r/20241125201721.2963278-2-willy@infradead.org
-Fixes: fae7d834c43c ("mm: add __dump_folio()")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Kees Cook <kees@kernel.org>
+Link: https://lkml.kernel.org/r/Z0CcyfbPqmxJ9uJH@elver.google.com
+Link: https://lkml.kernel.org/r/20241122154051.3914732-1-elver@google.com
+Fixes: 4434a56ec209 ("stackdepot: make fast paths lock-less again")
+Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/debug.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/stackdepot.h |    6 +++---
+ lib/stackdepot.c           |   10 +++++++++-
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/mm/debug.c~mm-open-code-page_folio-in-dump_page
-+++ a/mm/debug.c
-@@ -124,19 +124,22 @@ static void __dump_page(const struct pag
- {
- 	struct folio *foliop, folio;
- 	struct page precise;
-+	unsigned long head;
- 	unsigned long pfn = page_to_pfn(page);
- 	unsigned long idx, nr_pages = 1;
- 	int loops = 5;
+--- a/include/linux/stackdepot.h~stackdepot-fix-stack_depot_save_flags-in-nmi-context
++++ a/include/linux/stackdepot.h
+@@ -147,7 +147,7 @@ static inline int stack_depot_early_init
+  * If the provided stack trace comes from the interrupt context, only the part
+  * up to the interrupt entry is saved.
+  *
+- * Context: Any context, but setting STACK_DEPOT_FLAG_CAN_ALLOC is required if
++ * Context: Any context, but unsetting STACK_DEPOT_FLAG_CAN_ALLOC is required if
+  *          alloc_pages() cannot be used from the current context. Currently
+  *          this is the case for contexts where neither %GFP_ATOMIC nor
+  *          %GFP_NOWAIT can be used (NMI, raw_spin_lock).
+@@ -156,7 +156,7 @@ static inline int stack_depot_early_init
+  */
+ depot_stack_handle_t stack_depot_save_flags(unsigned long *entries,
+ 					    unsigned int nr_entries,
+-					    gfp_t gfp_flags,
++					    gfp_t alloc_flags,
+ 					    depot_flags_t depot_flags);
  
- again:
- 	memcpy(&precise, page, sizeof(*page));
--	foliop = page_folio(&precise);
--	if (foliop == (struct folio *)&precise) {
-+	head = precise.compound_head;
-+	if ((head & 1) == 0) {
-+		foliop = (struct folio *)&precise;
- 		idx = 0;
- 		if (!folio_test_large(foliop))
- 			goto dump;
- 		foliop = (struct folio *)page;
- 	} else {
-+		foliop = (struct folio *)(head - 1);
- 		idx = folio_page_idx(foliop, page);
+ /**
+@@ -175,7 +175,7 @@ depot_stack_handle_t stack_depot_save_fl
+  * Return: Handle of the stack trace stored in depot, 0 on failure
+  */
+ depot_stack_handle_t stack_depot_save(unsigned long *entries,
+-				      unsigned int nr_entries, gfp_t gfp_flags);
++				      unsigned int nr_entries, gfp_t alloc_flags);
+ 
+ /**
+  * __stack_depot_get_stack_record - Get a pointer to a stack_record struct
+--- a/lib/stackdepot.c~stackdepot-fix-stack_depot_save_flags-in-nmi-context
++++ a/lib/stackdepot.c
+@@ -630,7 +630,15 @@ depot_stack_handle_t stack_depot_save_fl
+ 			prealloc = page_address(page);
  	}
  
+-	raw_spin_lock_irqsave(&pool_lock, flags);
++	if (in_nmi()) {
++		/* We can never allocate in NMI context. */
++		WARN_ON_ONCE(can_alloc);
++		/* Best effort; bail if we fail to take the lock. */
++		if (!raw_spin_trylock_irqsave(&pool_lock, flags))
++			goto exit;
++	} else {
++		raw_spin_lock_irqsave(&pool_lock, flags);
++	}
+ 	printk_deferred_enter();
+ 
+ 	/* Try to find again, to avoid concurrently inserting duplicates. */
 _
 
-Patches currently in -mm which might be from willy@infradead.org are
+Patches currently in -mm which might be from elver@google.com are
 
-mm-open-code-pagetail-in-folio_flags-and-const_folio_flags.patch
-mm-open-code-page_folio-in-dump_page.patch
-mm-page_alloc-cache-page_zone-result-in-free_unref_page.patch
-mm-make-alloc_pages_mpol-static.patch
-mm-page_alloc-export-free_frozen_pages-instead-of-free_unref_page.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-post_alloc_hook.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-prep_new_page.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-get_page_from_freelist.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_cpuset_fallback.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_may_oom.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_compact.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_reclaim.patch
-mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_slowpath.patch
-mm-page_alloc-move-set_page_refcounted-to-end-of-__alloc_pages.patch
-mm-page_alloc-add-__alloc_frozen_pages.patch
-mm-mempolicy-add-alloc_frozen_pages.patch
-slab-allocate-frozen-pages.patch
+stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
 
 
