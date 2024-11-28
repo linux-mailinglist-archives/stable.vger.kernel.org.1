@@ -1,113 +1,78 @@
-Return-Path: <stable+bounces-95751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077B39DBC0E
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 19:05:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023AA9DBC2E
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 19:35:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC2A281E60
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 18:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81FED164307
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 18:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145EE1C1AD1;
-	Thu, 28 Nov 2024 18:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E9E1C0DFD;
+	Thu, 28 Nov 2024 18:35:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3854E1917F1;
-	Thu, 28 Nov 2024 18:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2313BC35;
+	Thu, 28 Nov 2024 18:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732817124; cv=none; b=VlphMusQZyndDaC8xNbz9cIBk58SctF7jE7DGycJ96W1Bekz71eu/0+12iE5Z2Y+9TeRKAORd4cttweiqenEMGakO4Mek96wiVDWJobz9NmeiwWwMhnYGh4iJh5DhKzq2KWOKdVOPQUGcmwZbrqtUFA5tE/cyRWBFziTlnbYmGA=
+	t=1732818929; cv=none; b=Y91VwbxLGXXkVvK10ZpdeOTMNDNKGEemOTBSqrA15LKXMAENuymjJ1DPLYMYoicc1APmPTFkc17ECCFnGMVLWZq+2MJxDzcIFfguqka9grwaK/+BkZ53SxJNwca75I511EXv6vjYhMTxdggd/bVAW5iuSUMu447Vv7f1Xjcrh5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732817124; c=relaxed/simple;
-	bh=hhgpMzS8pN9T8uIknwZ8HxuAzC9Z8YBN9l9692StdeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IPUrtA3K+lsCcPS9vlVoGwCGKyjHiHNmnueLM+yHHen3bKpmtvlVe+uwWh5/g0ns9hvmWYpAchz/hk+ZUv7GkN6P5VT6FCm2GFiOri74frMWVhTeOFpq35ouc+3fLpnd6sRfZUov2qYS4zGrKtGUL9uaHOw7qXsaaxJuWlLlBEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 471521C00D9; Thu, 28 Nov 2024 19:05:21 +0100 (CET)
-Date: Thu, 28 Nov 2024 19:05:20 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, uwu@icenowy.me
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/98] 6.1.117-rc1 review
-Message-ID: <Z0iw4Hwltov+x89b@duo.ucw.cz>
-References: <20241112101844.263449965@linuxfoundation.org>
+	s=arc-20240116; t=1732818929; c=relaxed/simple;
+	bh=qp4ptKu4Z1R6OdIBX52vCTipE1Gk0eORG5tI1Ia/tNE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aKB/uetvLw57mgHeby+aQagDLHhOqUhZMQwkWo7mwFL0erkEWrWFT0+eZ/XlPBAJLN+UIVHKiGNoPt6wNQomgPg0oJRz76sYy5xKhb3Kwxmp/RTQ4PJGXSC+nSZzoroAocg7/pP+mJyMDEFxhdIsVcXsn+F2YGuxfbrGN11aDMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 28 Nov
+ 2024 21:35:22 +0300
+Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 28 Nov
+ 2024 21:35:22 +0300
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+	<sashal@kernel.org>, <stable@vger.kernel.org>
+CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Boris Pismenny
+	<borisp@nvidia.com>, John Fastabend <john.fastabend@gmail.com>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, Jakub Kicinski <kuba@kernel.org>, "David
+ S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH 5.4/5.10/5.15 0/1] Backport fix for CVE-2023-1075
+Date: Thu, 28 Nov 2024 10:35:08 -0800
+Message-ID: <20241128183509.23236-1-n.zhandarovich@fintech.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oqo3nIbTnLByV64u"
-Content-Disposition: inline
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
+ (10.0.10.18)
 
+This patch addresses an issue of type confusion in tls_is_tx_ready(),
+as a check for NULL of list_first_entry() return value is wrong.
+This issue has been given a CVE entry CVE-2023-1075 [1] and is still
+present in several stable branches.
 
---oqo3nIbTnLByV64u
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As the flawed function tls_is_tx_ready() is named is_tx_ready() and
+is situated in another file (specifically, include/net/tls.h) in older
+kernel versions, fix the error there instead. This adapted backport
+can be cleanly applied to 5.4, 5.10 and 5.15 branches.
 
-Hi!
+[PATCH 5.4/5.10/5.15 1/1] net/tls: tls_is_tx_ready() checked list_entry
+Use list_first_entry_or_null() instead of list_entry() to properly
+check for empty lists.
+Fixes [1].
 
-> Icenowy Zheng <uwu@icenowy.me>
->     thermal/of: support thermal zones w/o trips subnode
-
-This seems to introduce memory leak.
-
-+++ b/drivers/thermal/thermal_of.c
-@@ -238,18 +238,15 @@ static struct thermal_trip *thermal_of_trips_init(str=
-uct device_node *np
-, int *n
-=2E..    =20
-        trips =3D of_get_child_by_name(np, "trips");
--       if (!trips) {
--               pr_err("Failed to find 'trips' node\n");
--               return ERR_PTR(-EINVAL);
--       }
-+       if (!trips)
-+               return NULL;
-=20
-        count =3D of_get_child_count(trips);
--       if (!count) {
--               pr_err("No trip point defined\n");
--               ret =3D -EINVAL;
--               goto out_of_node_put;
--       }
-+       if (!count)
-+               return NULL;
-
-
-In the !count case, we still need to do the of_node_put, AFAICT.
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---oqo3nIbTnLByV64u
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ0iw4AAKCRAw5/Bqldv6
-8u6fAKCvN8zN8FZ3yvxQNlH9T0I0ckJLXACffOWxUEAAiduhpx95v/4Kkfstzgg=
-=9At1
------END PGP SIGNATURE-----
-
---oqo3nIbTnLByV64u--
+[1] https://nvd.nist.gov/vuln/detail/cve-2023-1075
+[2] https://github.com/torvalds/linux/commit/ffe2a22562444720b05bdfeb999c03e810d84cbb
 
