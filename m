@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24CA9DB0BA
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 02:26:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB43C9DB142
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 02:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 643F216223E
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C26160FAA
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DB827470;
-	Thu, 28 Nov 2024 01:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A39A34CC4;
+	Thu, 28 Nov 2024 01:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hpmd7MjZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rkh0PkrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17BD1E505;
-	Thu, 28 Nov 2024 01:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE37D12B73;
+	Thu, 28 Nov 2024 01:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732757174; cv=none; b=pcvmDb8o7Kaf5aqNtHJFcPV0DNuE/qxRTC9xE+N5+tnB4MVWNqa7rRs/1Gf41U6qWARj+m2YgOfmCzgRTiXHgIPmVTyS6bTtLOQdfXUV7vBzIKO5TQn+rU257KjAFvsx366zja6SmgbG4AAmJQTnd1/QUvq0zxjnudEy+gF6jU8=
+	t=1732758709; cv=none; b=t3hhNiSG77La0oMDJYCxh8hb2hLnN5GZK2JSRewG97GbVCdvVouJR1+KASi19Efagp1CrJVXYW7te041gwsT2pP846qTANCrfAj8T1NlV2H0BS3G0UMDbcaS5hDYQmkWtHWDvfqLHXDHlW0h2YNsOp7nZdimPBUkqsq2bX0uWJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732757174; c=relaxed/simple;
-	bh=cAtlbA1U9J5Df6E73Oz5P0Fc9Pq5oq8EywQ9tQcrjOs=;
-	h=Date:To:From:Subject:Message-Id; b=O5nKIeXkKlW5N60FQU3WXjedJ+TwraqalRZc26HJfkK1qe5GFd4Wu20uXTldq5UBEHDEma4HhojM03ExpH9tOBueXqGO5PMCxwkzNX9Ca4gCaGhx8A7LZG4SCRMn79qYqRquaags0stoAbtmW0ckQXLOun291sNHZyTNZPwLEWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hpmd7MjZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B632C4CECC;
-	Thu, 28 Nov 2024 01:26:14 +0000 (UTC)
+	s=arc-20240116; t=1732758709; c=relaxed/simple;
+	bh=TBD6Sh/QPyySgfLrxsV0I1iVz3k1RFf5Iw6Ky0D9kcQ=;
+	h=Date:To:From:Subject:Message-Id; b=NRuqbcFnzjzDFLcNisyRr8OzE5KjUhUkPryotN9Fo8XkR44nlqg3EhDc3CFExYQMmhuAUKAWsdNyunMIovi/4ZiBF288uMpKOmX0vKgnbQdGwBccfZ+NBrEOzz+4JpjCokeQqE44orypqh7YuqRfiFfe5KulNMFAa6sa49Y8APs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rkh0PkrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529E4C4CECC;
+	Thu, 28 Nov 2024 01:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732757174;
-	bh=cAtlbA1U9J5Df6E73Oz5P0Fc9Pq5oq8EywQ9tQcrjOs=;
+	s=korg; t=1732758708;
+	bh=TBD6Sh/QPyySgfLrxsV0I1iVz3k1RFf5Iw6Ky0D9kcQ=;
 	h=Date:To:From:Subject:From;
-	b=Hpmd7MjZYc61HmpUM1R2J4uuEpO7giqQFD0GgWiZJvq9Tfj/cbE11RDu9ifkrtvx/
-	 HQXgsAkPL9WyxVQS6ZtxC4GNZtc+cpbGFxJqg3CNLfmh17prHLkE+Pf28BiagVPizf
-	 Le5QGuih45GRaMdGSBb2C5mHc9ZxY9eLaZLvf8ow=
-Date: Wed, 27 Nov 2024 17:26:13 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,osalvador@suse.de,glider@google.com,dvyukov@google.com,bigeasy@linutronix.de,andreyknvl@gmail.com,elver@google.com,akpm@linux-foundation.org
+	b=Rkh0PkrMVj0BLKE9D8hbQdHYrIsqs8HyZvgszqYhNJwHMJxcBp6RoFGrGKFZZdglE
+	 drGexNDuyp3n1Fy3CrkalFSgnjNvB7FbCnL1wYSYeOXdmd720SZ7Ymfxzzeemplwd7
+	 XpbO8DBMxsCUNngC35q3Dbk3ZRJsySCvAm1gUly0=
+Date: Wed, 27 Nov 2024 17:51:47 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,wen.gang.wang@oracle.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241128012614.6B632C4CECC@smtp.kernel.org>
+Subject: + ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241128015148.529E4C4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: stackdepot: fix stack_depot_save_flags() in NMI context
+     Subject: ocfs2: update seq_file index in ocfs2_dlm_seq_next
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
+     ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,92 +73,48 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Marco Elver <elver@google.com>
-Subject: stackdepot: fix stack_depot_save_flags() in NMI context
-Date: Fri, 22 Nov 2024 16:39:47 +0100
+From: Wengang Wang <wen.gang.wang@oracle.com>
+Subject: ocfs2: update seq_file index in ocfs2_dlm_seq_next
+Date: Tue, 19 Nov 2024 09:45:00 -0800
 
-Per documentation, stack_depot_save_flags() was meant to be usable from
-NMI context if STACK_DEPOT_FLAG_CAN_ALLOC is unset.  However, it still
-would try to take the pool_lock in an attempt to save a stack trace in the
-current pool (if space is available).
+The following INFO level message was seen:
 
-This could result in deadlock if an NMI is handled while pool_lock is
-already held.  To avoid deadlock, only try to take the lock in NMI context
-and give up if unsuccessful.
+seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
+update position index
 
-The documentation is fixed to clearly convey this.
+Fix:
+Update *pos (so m->index) to make seq_read_iter happy though the index its
+self makes no sense to ocfs2_dlm_seq_next.
 
-Link: https://lkml.kernel.org/r/Z0CcyfbPqmxJ9uJH@elver.google.com
-Link: https://lkml.kernel.org/r/20241122154051.3914732-1-elver@google.com
-Fixes: 4434a56ec209 ("stackdepot: make fast paths lock-less again")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/stackdepot.h |    6 +++---
- lib/stackdepot.c           |   10 +++++++++-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ fs/ocfs2/dlmglue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/stackdepot.h~stackdepot-fix-stack_depot_save_flags-in-nmi-context
-+++ a/include/linux/stackdepot.h
-@@ -147,7 +147,7 @@ static inline int stack_depot_early_init
-  * If the provided stack trace comes from the interrupt context, only the part
-  * up to the interrupt entry is saved.
-  *
-- * Context: Any context, but setting STACK_DEPOT_FLAG_CAN_ALLOC is required if
-+ * Context: Any context, but unsetting STACK_DEPOT_FLAG_CAN_ALLOC is required if
-  *          alloc_pages() cannot be used from the current context. Currently
-  *          this is the case for contexts where neither %GFP_ATOMIC nor
-  *          %GFP_NOWAIT can be used (NMI, raw_spin_lock).
-@@ -156,7 +156,7 @@ static inline int stack_depot_early_init
-  */
- depot_stack_handle_t stack_depot_save_flags(unsigned long *entries,
- 					    unsigned int nr_entries,
--					    gfp_t gfp_flags,
-+					    gfp_t alloc_flags,
- 					    depot_flags_t depot_flags);
+--- a/fs/ocfs2/dlmglue.c~ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2
++++ a/fs/ocfs2/dlmglue.c
+@@ -3110,6 +3110,7 @@ static void *ocfs2_dlm_seq_next(struct s
+ 	struct ocfs2_lock_res *iter = v;
+ 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
  
- /**
-@@ -175,7 +175,7 @@ depot_stack_handle_t stack_depot_save_fl
-  * Return: Handle of the stack trace stored in depot, 0 on failure
-  */
- depot_stack_handle_t stack_depot_save(unsigned long *entries,
--				      unsigned int nr_entries, gfp_t gfp_flags);
-+				      unsigned int nr_entries, gfp_t alloc_flags);
- 
- /**
-  * __stack_depot_get_stack_record - Get a pointer to a stack_record struct
---- a/lib/stackdepot.c~stackdepot-fix-stack_depot_save_flags-in-nmi-context
-+++ a/lib/stackdepot.c
-@@ -630,7 +630,15 @@ depot_stack_handle_t stack_depot_save_fl
- 			prealloc = page_address(page);
- 	}
- 
--	raw_spin_lock_irqsave(&pool_lock, flags);
-+	if (in_nmi()) {
-+		/* We can never allocate in NMI context. */
-+		WARN_ON_ONCE(can_alloc);
-+		/* Best effort; bail if we fail to take the lock. */
-+		if (!raw_spin_trylock_irqsave(&pool_lock, flags))
-+			goto exit;
-+	} else {
-+		raw_spin_lock_irqsave(&pool_lock, flags);
-+	}
- 	printk_deferred_enter();
- 
- 	/* Try to find again, to avoid concurrently inserting duplicates. */
++	(*pos)++;
+ 	spin_lock(&ocfs2_dlm_tracking_lock);
+ 	iter = ocfs2_dlm_next_res(iter, priv);
+ 	list_del_init(&dummy->l_debug_list);
 _
 
-Patches currently in -mm which might be from elver@google.com are
+Patches currently in -mm which might be from wen.gang.wang@oracle.com are
 
-stackdepot-fix-stack_depot_save_flags-in-nmi-context.patch
+ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch
 
 
