@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F329DB04E
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:39:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CB49DB050
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 01:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6191EB22415
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 00:39:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AD90B2255B
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 00:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB50B9475;
-	Thu, 28 Nov 2024 00:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA16C149;
+	Thu, 28 Nov 2024 00:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ACH2yuBt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bCIQBGKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1CB9460;
-	Thu, 28 Nov 2024 00:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172DF7482;
+	Thu, 28 Nov 2024 00:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732754342; cv=none; b=efotmRdOMNVIz9lwnKRkp27pK3hVtKeJ/Y+U7fCd2RQVMXz38gO3qAIHz8PZpwuQEVl1xR0DenzMF0xhenKSDRIgBKsF1kQz9fWgRsFlKUedrQwNLgFWzd0lHh2GnmuXEzdK4NCm5WTPiEPtK8JauflJb4LbqypMgq8nGUufLr0=
+	t=1732754457; cv=none; b=CZh4SmElDq7DF2yr/+f/eaqa3/tHnPP+3HENUa7hwsZ8ZEGpVygSwZpaiEccs/bqsiL3/z/xhqH1zNYSTehXbF+NfYrgW8YHsmuc4RRxo57Pa+X/QLwJMCyCBxTeXvKgAl5Dh3qlr3Mq8/6eD+gSEdxIUt8i/tKMPlebSYsLoJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732754342; c=relaxed/simple;
-	bh=oSzaIbkMZYJO2Tufkp+y03o80y7q4EZ0HofmEa7Y0eY=;
-	h=Date:To:From:Subject:Message-Id; b=pBpR+8DH1Izy8TYPvFeuLcghpax3RwJ0+rGqOhysbK33S2M2y7X8PNAJuEDLx0xxmoTF579umnUGLQpxLzqNwFmYlUAiwX4rQZz61B0Qp/PhmQzKVmUZWflIMiIRhInBK4IizHvWoOcZsa0OQO9nbEIK1QFtKWP9emMFFUt6nFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ACH2yuBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFBAC4CECC;
-	Thu, 28 Nov 2024 00:39:01 +0000 (UTC)
+	s=arc-20240116; t=1732754457; c=relaxed/simple;
+	bh=a/G0mIukmp13jLDB5EJOYQ4Xu4asbW72zH7Q6ih4/tU=;
+	h=Date:To:From:Subject:Message-Id; b=N0w2TbYSEcsjJy4aI7L1q/8B5KHf1ohlcBVMYVNvq9E9QPHalDL5QP/hc6Oec3AcAcoX+XMe3oUzkqBIMA3jAmUkNqvRFPHrOXQFda3I4w8BRiEMxyAaw1eCBhxQQRgVAAWYvHN2MdycEPxmhhjeZ9UAQos9bZlgweNBARc01JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bCIQBGKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DD2C4CECC;
+	Thu, 28 Nov 2024 00:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732754342;
-	bh=oSzaIbkMZYJO2Tufkp+y03o80y7q4EZ0HofmEa7Y0eY=;
+	s=korg; t=1732754456;
+	bh=a/G0mIukmp13jLDB5EJOYQ4Xu4asbW72zH7Q6ih4/tU=;
 	h=Date:To:From:Subject:From;
-	b=ACH2yuBt0dZTLHVpbfN2ocpL1/eE51Himx4yqUevRA3uT+sw3HsgDBjzagG/5nke8
-	 WiPu07chsKFGE4jeOC2nSkg2M8B1b2WLWkbc53Crz32sK/EHFPW5aSkniZqLefn6qw
-	 E6nXBF0C/GmnK8sAJFpTqUdQIM9s1Q8J8lZO9h9o=
-Date: Wed, 27 Nov 2024 16:39:01 -0800
-To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,ritesh.list@gmail.com,donettom@linux.ibm.com,broonie@kernel.org,akpm@linux-foundation.org
+	b=bCIQBGKZvQZmhO+r9WMhaaRIwSVWb68cabEuCtmEpraUgMG2BrHHNhGcNWfCp3gdI
+	 VzIBRIU24STo6eS1kFGIf95uXBZ7oF1flb3/r2opsnrb+zWrnROmseAHKNZ8Q2P17z
+	 FcKFLHzTl8fPXIxWj5VzwfyOD00QEPaAMMewKaJg=
+Date: Wed, 27 Nov 2024 16:40:56 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,shuah@kernel.org,mheyne@amazon.de,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftest-hugetlb_dio-fix-test-naming.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241128003901.EEFBAC4CECC@smtp.kernel.org>
+Subject: + selftests-damon-add-_damon_sysfspy-to-test_files.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241128004056.D1DD2C4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: selftest: hugetlb_dio: fix test naming
+     Subject: selftests/damon: add _damon_sysfs.py to TEST_FILES
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftest-hugetlb_dio-fix-test-naming.patch
+     selftests-damon-add-_damon_sysfspy-to-test_files.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftest-hugetlb_dio-fix-test-naming.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-damon-add-_damon_sysfspy-to-test_files.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,66 +73,48 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Mark Brown <broonie@kernel.org>
-Subject: selftest: hugetlb_dio: fix test naming
-Date: Wed, 27 Nov 2024 16:14:22 +0000
+From: Maximilian Heyne <mheyne@amazon.de>
+Subject: selftests/damon: add _damon_sysfs.py to TEST_FILES
+Date: Wed, 27 Nov 2024 12:08:53 +0000
 
-The string logged when a test passes or fails is used by the selftest
-framework to identify which test is being reported.  The hugetlb_dio test
-not only uses the same strings for every test that is run but it also uses
-different strings for test passes and failures which means that test
-automation is unable to follow what the test is doing at all.
+When running selftests I encountered the following error message with
+some damon tests:
 
-Pull the existing duplicated logging of the number of free huge pages
-before and after the test out of the conditional and replace that and the
-logging of the result with a single ksft_print_result() which incorporates
-the parameters passed into the test into the output.
+ # Traceback (most recent call last):
+ #   File "[...]/damon/./damos_quota.py", line 7, in <module>
+ #     import _damon_sysfs
+ # ModuleNotFoundError: No module named '_damon_sysfs'
 
-Link: https://lkml.kernel.org/r/20241127-kselftest-mm-hugetlb-dio-names-v1-1-22aab01bf550@kernel.org
-Fixes: fae1980347bf ("selftests: hugetlb_dio: fixup check for initial conditions to skip in the start")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Fix this by adding the _damon_sysfs.py file to TEST_FILES so that it
+will be available when running the respective damon selftests.
+
+Link: https://lkml.kernel.org/r/20241127-picks-visitor-7416685b-mheyne@amazon.de
+Fixes: 306abb63a8ca ("selftests/damon: implement a python module for test-purpose DAMON sysfs controls")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/hugetlb_dio.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ tools/testing/selftests/damon/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/hugetlb_dio.c~selftest-hugetlb_dio-fix-test-naming
-+++ a/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -76,19 +76,15 @@ void run_dio_using_hugetlb(unsigned int
- 	/* Get the free huge pages after unmap*/
- 	free_hpage_a = get_free_hugepages();
+--- a/tools/testing/selftests/damon/Makefile~selftests-damon-add-_damon_sysfspy-to-test_files
++++ a/tools/testing/selftests/damon/Makefile
+@@ -6,7 +6,7 @@ TEST_GEN_FILES += debugfs_target_ids_rea
+ TEST_GEN_FILES += debugfs_target_ids_pid_leak
+ TEST_GEN_FILES += access_memory access_memory_even
  
-+	ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
-+	ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
-+
- 	/*
- 	 * If the no. of free hugepages before allocation and after unmap does
- 	 * not match - that means there could still be a page which is pinned.
- 	 */
--	if (free_hpage_a != free_hpage_b) {
--		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
--		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
--		ksft_test_result_fail(": Huge pages not freed!\n");
--	} else {
--		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
--		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
--		ksft_test_result_pass(": Huge pages freed successfully !\n");
--	}
-+	ksft_test_result(free_hpage_a == free_hpage_b,
-+			 "free huge pages from %u-%u\n", start_off, end_off);
- }
+-TEST_FILES = _chk_dependency.sh _debugfs_common.sh
++TEST_FILES = _chk_dependency.sh _debugfs_common.sh _damon_sysfs.py
  
- int main(void)
+ # functionality tests
+ TEST_PROGS = debugfs_attrs.sh debugfs_schemes.sh debugfs_target_ids.sh
 _
 
-Patches currently in -mm which might be from broonie@kernel.org are
+Patches currently in -mm which might be from mheyne@amazon.de are
 
-selftest-hugetlb_dio-fix-test-naming.patch
+selftests-damon-add-_damon_sysfspy-to-test_files.patch
 
 
