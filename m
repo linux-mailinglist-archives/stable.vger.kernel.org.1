@@ -1,155 +1,65 @@
-Return-Path: <stable+bounces-95688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9BC9DB3C5
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 09:30:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B921D9DB41E
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 09:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74A8A2825DD
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 08:30:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E36EB23144
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 08:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A0B14B96E;
-	Thu, 28 Nov 2024 08:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B5E14F125;
+	Thu, 28 Nov 2024 08:47:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BFA149DFA
-	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 08:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732782600; cv=fail; b=baeCO1moPpVyQ2ONY8y0BT2nuBBkTqPMqSScqwZjf3M3uQx4kKJPmEknn/y0Dg5qdTWyQZs+D1KJmGlfeTWMC+HkqqQHzytHAX0Ar8R5F0jkGnat6Y9ihtbKEfZunRgAqM2/1ljgfi0bJYPKvZ1iJeY0SzLb4L3KMKXEYVDCf3E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732782600; c=relaxed/simple;
-	bh=IpgFoZeOwN48+l+yARt+ga86czZQn5F3yVKYYKwzim4=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AzWAnEM5Kxh/tFO11oxQB1XH9plBMdUnyw3RG598hGCCQAJBxoKy8PpA/WM82CQMLWplEfiT19XRSkbW4z8vhvoae6FBGGgIuJ5GTLonDZsnYvHGn/LzFjqsg52KX/z+4v619V1y/DNj493CCkCLsgjWzF9p5YoTTVuOmSYznoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDC414E2CD
+	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 08:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732783665; cv=none; b=upselmAA0Zdru0v/uGcAghJGnAnHdL6ox9pGGCkHHcav+QZ5PkDBAjs45kRVC2fzJcqCJQHEUsnZUzW45BfzhFk9yL/oEarRK7S3Og1ZtZquJehoMpBmkhTMuU3EHJ+3q3NYFScNv2ZH/JWo1f5wGejza98EQnoUlkWiqwyHddc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732783665; c=relaxed/simple;
+	bh=IzeKpcl1A1Q1u+w1Tl6e09YrfAsPBpXdqHcdCgzqpRY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fUA6++2LVcHk0uIzc+/4pqYm7d4VglVj4IxHxH1XTLGGwD4Zr81DSi+P8swy4SsdsfqSHG0jAVDJYOXBs8aCU4T1EhyZHYFBc6lJQB32zM0Bqsl1h6qVfLIarkj+f78v6nNFR9qOOAG7xaKbl/wdBbvY5iEOZNJw7vqX8/Nki+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AS6wpck031387;
-	Thu, 28 Nov 2024 08:29:50 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2042.outbound.protection.outlook.com [104.47.66.42])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43671b0sqn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Nov 2024 08:29:50 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p+FCcnrLF5VHwFCIgru1kx4VO/9WjTM+BVrZ6rlJyDYJfT7h0hlPuHvKtKDiFnxia0xhrSJtg/wRvqI1Wu1w/T+BJJkq9Q/w9ePToK8Fn7Y4y1b3YiqceeuGVTTphEWwI7kr4fyJ1Xx4HEsJEMvSmN1X0iufpPReUwW9A02ju1D3g/oD1MtVRwnUczDhneMHKgi29RfyauKRKb0QjrrDuqCuZoxX5Oez1V0VKXUqtrcf6wY7s+puTGQEaixCV+W9XI+W1B4CrJEFo1dZPC23VMoE3ab4so3iXPGmdoJd1DJk0/iLGL9YZWxaZnAKkj6hjz3P7GUk/eQbShiIAozQfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rufYzzK0wwzbEem/HbMLvfbOqcXL4FDu/tBURKaW7xk=;
- b=vnUsqwCwTLDSIXWJosgB71p4Wo2FRv4aYEkXYF8601sevR7qDTU75OOQUfPepUko/Xq8+f+BvLA7bKaW+W98HFZTMW0FlU7l44RKY1KG4sgNPO47nIHaRZ3JBrVMEAXo5Y702iDDN9TvPEWn0Qhvgh2fdkJfvNBhWF1A2FhUcIjdnIP94Rv6n+xYODRMWua97UyOJCbNAE9REluAtZMP+Fiqhopiatn7/m/eB1UTSnnSrG5wSuEuRcI0f926wdEcjSMUj5AzxXTdt79EpL7Vn0ArnUIiE5/6fRfGzVagcj3sE8FmxOegkTAkxq0ZFqFO14N4IHiXdVvx03oNPD1xzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
- by BN9PR11MB5259.namprd11.prod.outlook.com (2603:10b6:408:134::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Thu, 28 Nov
- 2024 08:29:47 +0000
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0%5]) with mapi id 15.20.8207.010; Thu, 28 Nov 2024
- 08:29:47 +0000
-From: bin.lan.cn@eng.windriver.com
-To: stable@vger.kernel.org, jason-jh.lin@mediatek.com
-Subject: [PATCH 6.6] mailbox: mtk-cmdq: Move devm_mbox_controller_register() after devm_pm_runtime_enable()
-Date: Thu, 28 Nov 2024 16:29:30 +0800
-Message-Id: <20241128082930.1988659-1-bin.lan.cn@eng.windriver.com>
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AS61An2014476;
+	Thu, 28 Nov 2024 08:47:33 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43671b0t9d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 28 Nov 2024 08:47:33 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Thu, 28 Nov 2024 00:47:32 -0800
+Received: from pek-lpg-core4.wrs.com (128.224.153.44) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Thu, 28 Nov 2024 00:47:31 -0800
+From: <mingli.yu@eng.windriver.com>
+To: <stable@vger.kernel.org>, <xialonglong@kylinos.cn>
+Subject: [PATCH v2 5.15] tty: n_gsm: Fix use-after-free in gsm_cleanup_mux
+Date: Thu, 28 Nov 2024 16:47:30 +0800
+Message-ID: <20241128084730.430060-1-mingli.yu@eng.windriver.com>
 X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYAPR01CA0239.jpnprd01.prod.outlook.com
- (2603:1096:404:11e::35) To CH3PR11MB8701.namprd11.prod.outlook.com
- (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|BN9PR11MB5259:EE_
-X-MS-Office365-Filtering-Correlation-Id: b36d4d8c-e049-4397-2297-08dd0f86d13f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5E4Fygg+4XJyjR62yBMe/lhNE/GhlVNLtwmUd3xJpVAEeBQxcGtfztFIYF1k?=
- =?us-ascii?Q?PnM4hLgmccCj7PZBt8T5SMW1uhSbqCNHhRgef4LpJ2VPSgZafT7Y0E4tT9oZ?=
- =?us-ascii?Q?7NZPr85/n5P3XxqooB8H8Ij2Lhh+Cf23FdadJxkf+pUmPJ36uTsCZSA8jbsg?=
- =?us-ascii?Q?Qri8iU/S5nTKWAjdXucZZnTE4B2nCQQMPxOHObuF5ebd35z6ubcgcpYojFp3?=
- =?us-ascii?Q?Dl1aLNJB8THHvzvGfgZ6vYrJoAbouhBVPA0qrOqi78LewTq84e8zbZMxEyJZ?=
- =?us-ascii?Q?r16XvYmo0qQ3yiri9Xx4p1Y81q5J9veWCbhFsV2mj94p0l1dlnmbtm69a6w5?=
- =?us-ascii?Q?+2JtoMoENKasjtSfScoGQmlyDV79WenzynsQk8OZT0fTEsgKhONbgZcn6sTO?=
- =?us-ascii?Q?nrGqvNYlakQ7h1cRKYDAEaQUAY6XepnEncq/2dtKVTTafoc+MQtN/Qjs/Fpv?=
- =?us-ascii?Q?gmoOICTJlkjJ3jMp4Qwewj0DJjeaUH9Uk4/KvF5r91gvdvRmHfRAviuan0Ta?=
- =?us-ascii?Q?r775NwPKxl692/NVhAggaLExBAVVNRb1M7bePy8ubuVSHfHLlqtX1ck37mGw?=
- =?us-ascii?Q?cEHECjLlJQoq0CTSlv0B+hPBR3KPju3FQRFDxq2i8rBKv9kx2tA4HAe+e046?=
- =?us-ascii?Q?O3ZRosYsubmigtk1N+mOZaWg7WP8zg1MhYJxpuLXcsLhCpV38a/9tlMAZl5A?=
- =?us-ascii?Q?mjoNztpZEt5r4a1t1NLiKZD3oDYvTgQ8l2WOLXuD59OGQ8lzyoCXyStuQ3LE?=
- =?us-ascii?Q?QdGdplRWpnbZtYF45FWuS67t7SeryBgrQMBxDgLDMkAWKy8UcmmFE1gIwoKT?=
- =?us-ascii?Q?gJ81vn/dtm3lke3LlzlaEuSEOkJ3d0l6WwhcittVwjaJjvuXBp1LiUwVjEXG?=
- =?us-ascii?Q?RVB1mcvCakcUUlrvXDCY9+JVbUH2t1uD3AdjSjPmxOp8ccw+UPeIacM1AqKc?=
- =?us-ascii?Q?lhnwA7X7WB/BvQUMV4hVS2uquncwC7BB9DETtZT6Woo2XnusLBg1PAIIPQMa?=
- =?us-ascii?Q?I/2Tz7i6ZVLxd9+aDZKQIiId8HgM/o+d9/p4KzTbLu+KijuqE31MZ9UCWAsw?=
- =?us-ascii?Q?vAcKTluHm0/++9kpTdOZUhrPInKM7jbz+wID8vFt5KMVKukbmlnUu+LYYg9a?=
- =?us-ascii?Q?oOWwZ52Nsgs0G8BTNAssf8W2RLBZFrroJL44XPdP7W9850nPcEIz5zPGDozZ?=
- =?us-ascii?Q?2DE/vIZ9dcr2gYaHAqutXFNpqIvBfLADsevU2aKdA47w3MvgVjKjiNDeZDCI?=
- =?us-ascii?Q?WGSZX2ddN2c3XCT5C5GG7jjs5iphpqXw19QVcJ5wY/LH6msrsf5l59ZOgAYX?=
- =?us-ascii?Q?0Y9RINyMloG/Pkf9AtJD50BwTV23lYa+2fH/pIwM8jl6rVycpgjgPqMKW1rp?=
- =?us-ascii?Q?TOaWSa05mRNTiSK71Sfz4rlausLkm1PYa9lh+zQsnIn95IIm8g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hmpWil3IshgsdWhOnvQ/5EMTxwrqfWAygXhywjZYcvty+Vw5iU9kXbY6Ow43?=
- =?us-ascii?Q?rQZ/rYACrhCMJtlifbYAee1sjoCeK4y2SAXRJlH0vRSvj3jhNqdyhyW0njxr?=
- =?us-ascii?Q?ue2oGj2i3Ojmncv1MHZ9V3IBI0CH9XXXwGsqOSx8qjAT8SAWlT4rFGHnBbMA?=
- =?us-ascii?Q?wrdtJhQeLgmUoriC6SALarJfl4micGdi+YVct7iep5zNl7mKrRJwO7YH46Vv?=
- =?us-ascii?Q?jIon/T4QscwifXhw26W6UE8+SMWkYbRALoeaLfcPpv8PQOx+b9/1J73G8Gzy?=
- =?us-ascii?Q?rM4JKm3NTqiAQK5JjKPpsZgsVW4uEcHVfX72Y7S4xS27x20lny9m4SE+Zcv6?=
- =?us-ascii?Q?KXwcMo24iKQkiskE/MVntaAojtDpd+wu/pZddEQPysgTpLxZAhh3QlmKN1Zn?=
- =?us-ascii?Q?JCswIOntR7ug87nfAur0oQYftMQU79Q2VhOmgRj6z+XZRVBSABCXbNgqVUZB?=
- =?us-ascii?Q?t/XiQUN2sWjyySoSbKthFhmQEIADwqhOr9qJOGVWmHMnI80qIu+uxUeQUVkl?=
- =?us-ascii?Q?PEBiIXQvY2NGUxNAF8m9wHfQ7ViZDphz4pZykfhoGAZaxi1HPZhuBaGGI5GZ?=
- =?us-ascii?Q?M/RYYcFRPyFlqbUtrB35t/4O7bBo+wQbuIudrk5U5I5V56nBjubwRFbO1AHW?=
- =?us-ascii?Q?Q3lsF0DUWmK6FrkgV57pbgCvus9/yVDzeNyLa3Uh/yFwZffFfm+7bbj+W+Ez?=
- =?us-ascii?Q?q/fbMB/A31Wc+eDF41qFtrcr8D7VrqLgxFXVQUqLeoX89eZVH/Wjyq4StiPm?=
- =?us-ascii?Q?GEZgMOKUqTvssJGjs22CbJpzzbb+Z9ESFvhQVzc4MxCD4UEn6C3qVmaXIJ9k?=
- =?us-ascii?Q?93jh1usBWLLqz7GFR9oyxex5zA9m+8FOp7RjUYPRmcrgYSn9DM6pHYCoovNj?=
- =?us-ascii?Q?lXpg/VNHLEs8pwsy0xHVbTi9FchGAj2RbVEBu+HenfPOefLyDAC5CIm/+F74?=
- =?us-ascii?Q?CiDd80PRxqaFEPM3zzHnzS6GrnVWQtjptiQUc24GKa0fbpHKWVgyYnzm+rs2?=
- =?us-ascii?Q?ZECqzWWgAvgVPAtd2e/gn4k7R0oJ2ZyYKX4B9ytHY5iJeiqCxtbShJcHyb5Z?=
- =?us-ascii?Q?gYe/h0tLDAucA7inpNBEbYat0TGz4FCsvHN4HNMvypiE5UlElElpXOwa2IxU?=
- =?us-ascii?Q?eLmYupscGMc0ueIkY5XJaNboOlQxmoBNX7g8CCkwqqaMBM8RrlQ8mNnbbWqV?=
- =?us-ascii?Q?QiuqeIyCEjw0xZmMAtue90QExhgYgDeu/cC1V5MPFrAjSm8aK2Yg5i3jxJtS?=
- =?us-ascii?Q?SAetoJyvn3FlpAtvMSihEfDYOgMrvTJFW5Bm4xDM6Iw11bHSH12RmdZhA9AD?=
- =?us-ascii?Q?x/l+JDzra8X5gE2fyi/ghdokxl1aXk0tHyCyNUEGYYDnA6qmgi/D68p3f/dw?=
- =?us-ascii?Q?q7k/q3cBgfWfN2Gewj+AOMI0DIcxJMMKifOqIOZWfWdbL1kEouC2Mla9ovmt?=
- =?us-ascii?Q?8Da03HOD0u40I/FZXatkd8gH/gChjYZuJEyKqlS5l1RfQtqBgWEoQ6Mc6fH7?=
- =?us-ascii?Q?xYv6qkz4eyw6KkBPYiSKm/LvLtgpywcJLVkXkHCUCvQZcFiHJG18jBMjf9Zw?=
- =?us-ascii?Q?UqEUfyQkemiWbQUEDe6aD1DXgWYK6//3KzDkF3FWXzoZZeZmOwdft+Wb8uo8?=
- =?us-ascii?Q?/Q=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b36d4d8c-e049-4397-2297-08dd0f86d13f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2024 08:29:46.9544
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9oVP8TRQ/GXk1NNIBNW5Yf9HXci4eMw2/RfqgSZGSPsHDGJyHFNamGf4nbiFIXYCJd4CxwsvFzlGKtUNBb68+hiSsL/r2tp74t2Txp2DLO4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5259
-X-Proofpoint-GUID: fI8eGBl6GDnF-KVmZau_eqhETgjx0RwE
-X-Proofpoint-ORIG-GUID: fI8eGBl6GDnF-KVmZau_eqhETgjx0RwE
-X-Authority-Analysis: v=2.4 cv=TIe/S0la c=1 sm=1 tr=0 ts=674829fe cx=c_pps a=ZuQraZtzrhlqXEa35WAx3g==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=mpaa-ttXAAAA:8
- a=QX4gbG5DAAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=ghR5xj94K-_V6kW8Z9EA:9 a=AbAUZ8qAyYyZVLSsDulk:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: yJIXxzGw3vr3-qCDC24RJHaLVbFexNn2
+X-Proofpoint-ORIG-GUID: yJIXxzGw3vr3-qCDC24RJHaLVbFexNn2
+X-Authority-Analysis: v=2.4 cv=TIe/S0la c=1 sm=1 tr=0 ts=67482e25 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=VwQbUJbxAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=DWr4oNudKj5MoudNrjUA:9 a=Yupwre4RP9_Eg_Bd0iYG:22
+ a=FdTzh2GWekK77mhwV6Dw:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-11-28_07,2024-11-27_01,2024-11-22_01
@@ -157,79 +67,96 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorit
  phishscore=0 mlxscore=0 bulkscore=0 impostorscore=0 clxscore=1011
  malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
  mlxlogscore=999 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2411120000 definitions=main-2411280066
+ scancount=1 engine=8.21.0-2411120000 definitions=main-2411280069
 
-From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-[ Upstream commit a8bd68e4329f9a0ad1b878733e0f80be6a971649 ]
+commit 9462f4ca56e7d2430fdb6dcc8498244acbfc4489 upstream.
 
-When mtk-cmdq unbinds, a WARN_ON message with condition
-pm_runtime_get_sync() < 0 occurs.
+BUG: KASAN: slab-use-after-free in gsm_cleanup_mux+0x77b/0x7b0
+drivers/tty/n_gsm.c:3160 [n_gsm]
+Read of size 8 at addr ffff88815fe99c00 by task poc/3379
+CPU: 0 UID: 0 PID: 3379 Comm: poc Not tainted 6.11.0+ #56
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX
+Desktop Reference Platform, BIOS 6.00 11/12/2020
+Call Trace:
+ <TASK>
+ gsm_cleanup_mux+0x77b/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
+ __pfx_gsm_cleanup_mux+0x10/0x10 drivers/tty/n_gsm.c:3124 [n_gsm]
+ __pfx_sched_clock_cpu+0x10/0x10 kernel/sched/clock.c:389
+ update_load_avg+0x1c1/0x27b0 kernel/sched/fair.c:4500
+ __pfx_min_vruntime_cb_rotate+0x10/0x10 kernel/sched/fair.c:846
+ __rb_insert_augmented+0x492/0xbf0 lib/rbtree.c:161
+ gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
+ _raw_spin_lock_irqsave+0x92/0xf0 arch/x86/include/asm/atomic.h:107
+ __pfx_gsmld_ioctl+0x10/0x10 drivers/tty/n_gsm.c:3822 [n_gsm]
+ ktime_get+0x5e/0x140 kernel/time/timekeeping.c:195
+ ldsem_down_read+0x94/0x4e0 arch/x86/include/asm/atomic64_64.h:79
+ __pfx_ldsem_down_read+0x10/0x10 drivers/tty/tty_ldsem.c:338
+ __pfx_do_vfs_ioctl+0x10/0x10 fs/ioctl.c:805
+ tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
 
-According to the call tracei below:
-  cmdq_mbox_shutdown
-  mbox_free_channel
-  mbox_controller_unregister
-  __devm_mbox_controller_unregister
-  ...
+Allocated by task 65:
+ gsm_data_alloc.constprop.0+0x27/0x190 drivers/tty/n_gsm.c:926 [n_gsm]
+ gsm_send+0x2c/0x580 drivers/tty/n_gsm.c:819 [n_gsm]
+ gsm1_receive+0x547/0xad0 drivers/tty/n_gsm.c:3038 [n_gsm]
+ gsmld_receive_buf+0x176/0x280 drivers/tty/n_gsm.c:3609 [n_gsm]
+ tty_ldisc_receive_buf+0x101/0x1e0 drivers/tty/tty_buffer.c:391
+ tty_port_default_receive_buf+0x61/0xa0 drivers/tty/tty_port.c:39
+ flush_to_ldisc+0x1b0/0x750 drivers/tty/tty_buffer.c:445
+ process_scheduled_works+0x2b0/0x10d0 kernel/workqueue.c:3229
+ worker_thread+0x3dc/0x950 kernel/workqueue.c:3391
+ kthread+0x2a3/0x370 kernel/kthread.c:389
+ ret_from_fork+0x2d/0x70 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:257
 
-The root cause can be deduced to be calling pm_runtime_get_sync() after
-calling pm_runtime_disable() as observed below:
-1. CMDQ driver uses devm_mbox_controller_register() in cmdq_probe()
-   to bind the cmdq device to the mbox_controller, so
-   devm_mbox_controller_unregister() will automatically unregister
-   the device bound to the mailbox controller when the device-managed
-   resource is removed. That means devm_mbox_controller_unregister()
-   and cmdq_mbox_shoutdown() will be called after cmdq_remove().
-2. CMDQ driver also uses devm_pm_runtime_enable() in cmdq_probe() after
-   devm_mbox_controller_register(), so that devm_pm_runtime_disable()
-   will be called after cmdq_remove(), but before
-   devm_mbox_controller_unregister().
+Freed by task 3367:
+ kfree+0x126/0x420 mm/slub.c:4580
+ gsm_cleanup_mux+0x36c/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
+ gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
+ tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
 
-To fix this problem, cmdq_probe() needs to move
-devm_mbox_controller_register() after devm_pm_runtime_enable() to make
-devm_pm_runtime_disable() be called after
-devm_mbox_controller_unregister().
+[Analysis]
+gsm_msg on the tx_ctrl_list or tx_data_list of gsm_mux
+can be freed by multi threads through ioctl,which leads
+to the occurrence of uaf. Protect it by gsm tx lock.
 
-Fixes: 623a6143a845 ("mailbox: mediatek: Add Mediatek CMDQ driver")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240926130213.531959-1-xialonglong@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Mingli: Backport to fix CVE-2024-50073, no guard macro defined resolution]
+Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/tty/n_gsm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 4d62b07c1411..d5f5606585f4 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -623,12 +623,6 @@ static int cmdq_probe(struct platform_device *pdev)
- 		cmdq->mbox.chans[i].con_priv = (void *)&cmdq->thread[i];
- 	}
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index aae9f73585bd..1becbdf7c470 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2443,6 +2443,7 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	int i;
+ 	struct gsm_dlci *dlci;
+ 	struct gsm_msg *txq, *ntxq;
++	unsigned long flags;
  
--	err = devm_mbox_controller_register(dev, &cmdq->mbox);
--	if (err < 0) {
--		dev_err(dev, "failed to register mailbox: %d\n", err);
--		return err;
--	}
--
- 	platform_set_drvdata(pdev, cmdq);
- 
- 	WARN_ON(clk_bulk_prepare(cmdq->pdata->gce_num, cmdq->clocks));
-@@ -642,6 +636,12 @@ static int cmdq_probe(struct platform_device *pdev)
- 		return err;
- 	}
- 
-+	err = devm_mbox_controller_register(dev, &cmdq->mbox);
-+	if (err < 0) {
-+		dev_err(dev, "failed to register mailbox: %d\n", err);
-+		return err;
-+	}
+ 	gsm->dead = true;
+ 	mutex_lock(&gsm->mutex);
+@@ -2471,9 +2472,12 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
 +
- 	return 0;
++	spin_lock_irqsave(&gsm->tx_lock, flags);
+ 	list_for_each_entry_safe(txq, ntxq, &gsm->tx_list, list)
+ 		kfree(txq);
+ 	INIT_LIST_HEAD(&gsm->tx_list);
++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
  }
  
+ /**
 -- 
 2.34.1
 
