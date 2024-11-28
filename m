@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-95756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF809DBD16
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 21:54:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD769DBD17
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 21:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9789281C2B
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 20:54:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8144B281D6E
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 20:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E551C3045;
-	Thu, 28 Nov 2024 20:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDFB1C4606;
+	Thu, 28 Nov 2024 20:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="K3jI/5hp"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hH89A8WH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616971C2334
-	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 20:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739EC1C3301
+	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 20:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732827259; cv=none; b=XONt6WOXRnb+11sRvyo4CoqqbGttv1cB5msHckFW3kuWXbER8YRKU0H3ux6vL0hZ+b6j1QnogR/u2/b9UquVHbJwA+QrEShflSTKrJtu1PGyOKlcJheMA44SX8R9G4Fd6yJ0fCXr68r7DDIQ/5fp5MqWKsSg4JGeultK1auFJRY=
+	t=1732827262; cv=none; b=G7kJOE+r2mdSdnB9TJBazeynP6ZBB3nyPqRXqrhkrQtZOD6z8crJOfL/cgfQkTmn4eYCBLF0/zAmdMiOtPhtFzE+1awHZOw6RS4IFS208ICuPE3OvBjw1C6Rsa3DXRRFuajf89G+FQITMGUPMnXB8qtB5XdiSgr8g4syToAWODA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732827259; c=relaxed/simple;
-	bh=FHu7xsPNIFx5yEIyoPkkng/BvphDpd2Y2mvhSZv97MM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iyevth0yeoY67SLYeNcJYfrMHJt1pGFDXaO9WwTkbEQfzPW0ghLOBnZsd5CcNvk855Go+Zkwxs/Br4Ref0A7sW3kIDq52LOjz3qGVPbKuWAk4y+FV99/wA+btwhcndgp07JmPv9Slq+P4LEveAfRLfpos6Qxd5ng8++VWOC6cuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=K3jI/5hp; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1732827262; c=relaxed/simple;
+	bh=H2sUBB+fsICTdnFjz8Lj6jJqXgJsJGlzoShvTjrlPXM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ma/AW4GeKnl1jUsWaYtUJIrKxJqruTvQmv0R2SHqiYsEApxR6l3BJTpv1Opz3ufvUQ4LN5G5uFmZyYdAwrreqtseR9qIvq2ExHV3wiASwSjOGEDcTanMXg0tzWV8DK7ea6aBQgyzDghGS/lRk/+tkw0Jme0QiFoeSxZQFyb37oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hH89A8WH; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4668f208f10so8186411cf.3
-        for <stable@vger.kernel.org>; Thu, 28 Nov 2024 12:54:18 -0800 (PST)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-46684744070so9423911cf.1
+        for <stable@vger.kernel.org>; Thu, 28 Nov 2024 12:54:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732827257; x=1733432057; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R1xCF7LNbFLYTpKldHQ+hspxekaIZZtHO9TlcY3bVcA=;
-        b=K3jI/5hpU0eBHytKNPRLKOIQEYQDHAkJXq8JoWQrRuYhc0ou3265l50EveClD8Rkuu
-         9uQnvu8TY3qEArqzn/BzHOEa404vJQG0JpTGIY0byHghb+DfUqnqexydybySPls5MTpX
-         eJP+bm6j5l7GRyiOt2wqzveArGeUvkPHaIExc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732827257; x=1733432057;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1732827259; x=1733432059; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=R1xCF7LNbFLYTpKldHQ+hspxekaIZZtHO9TlcY3bVcA=;
-        b=CG6QV1BklocW8mgTrezdXcnoXxSatynN9ia0WYXDoR4l5LkWHyAeAPtE3ip6ABXIXW
-         jwMB3SaM65pKcUzXHylqGDKyFttx4rfVoEVILI4CYxo1/plAn4NW08I2ItIqrPBK2pyR
-         KXTwvs/y5yqun77eHBoJ9Y9cvv4Rs7JTuCZBv/z9kh5bMoxpDiGOSfWtOOI3nogOuhnk
-         4pRP0tM/8mro2mtSu/ohJOWkRXuUtPBKH3iTWLNQ2TWw9Yi9kAWMJfCYqyz9yGU5OH08
-         w+bIeQb+f7mtUgtB9emgvEmCO1BTi/elflAMNOjnMIfyTNd83FBu+tOxiO/VFGKt4uJB
-         yY3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWmOj4VDsloiM7/uTZJOjPbteV+tbSIkdsCRJyHBCAnDG/GhgjIchu5N03qe0iCOwNFWaAEiOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu6y1mmGAt8IPh6rc/rwxyp7N42ysaEecKprOWwPe0GetnmNZv
-	br6fnNXt8v8J+TETroEhUY9C2oJaDw1zbmY5H7SOzdT9nUe95WhMJjsFCwVPUw339PZoQnV3q+Y
+        bh=m4fn8wn/VKVd1lfp+Uuux+ZckEB87hkFaLSp4OUxjOQ=;
+        b=hH89A8WHUG40tV201+z2UytElqO0LZFfvRmZ+eqK5zNiTc7jsWhaBu9sU8m9g4ALLQ
+         4DDEss1NpXkE0+pYMyPRqEmPQGtL3G7yHltYR+KWtUDAxevdE+3tpbovp2PKQRMlDFpf
+         GwNmOBQK3PhDGWkfz54onmfCP2YYkzukF00io=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732827259; x=1733432059;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m4fn8wn/VKVd1lfp+Uuux+ZckEB87hkFaLSp4OUxjOQ=;
+        b=W13Fbr6XmRXm0PhCWSN7xJgKI0At2wW0D5AZI4SZ8PzmYsf/pKeQ9ixKdWNa+WMIa3
+         E/R+hZIdqcD2ih/nqj3ZNhKnmGCZ5Mhglof/GVUvjMZWWXkRAtTE8Ous50/cqUT5wLgG
+         TDsRYmF7E1TiL+ld6BkHNyzz9nYASFO0/DZlQosGN/SWpStibQJ7n7hyB3+AOBWRPpe7
+         npTSyaVeHbjtsBrwbYr/BEaqkgP3OaVito6Mmt0PKkJoUsB2Kdfezouu6YtSolMqfFCF
+         SD+qUOcDcwz/ps9FD/76ExrbEoNTj9HiJYjmMkxIBmxLq6MGGP3Xx6381re4w+PsOwZh
+         PXGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJlgVvuqTFT+GfKloLSO2MBOtJQ5SSKBaNxRrYk4RBk8Q+ZRhDMXFE1Hl2Z9MoRpbdmO/MivE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOms6ChVlNrwJcWcRYRmF5FKBD32NQVzt0UDAVegY2YzURPdFx
+	2nRThf3rySJb9JtNOWwN/+4VQtKP01nkKPcgGLJPnPXi3psnSpNJB75BOeywXbfRX0A3A1Xcoj8
 	=
-X-Gm-Gg: ASbGncuU4DuKSyY+Yc4jjstNwAxSFK1y1q3oonMokTbpjviMLLDK3o/IB5Odgi6vgf0
-	ApLP8obutqmREVbTWqGiMxHtDjvfxKIpfvoy2uDZtoya/NCdcK38mdgKb1WDjJbGfVuQj/veYBH
-	4DOBzXe82FiSzRfawsPV62OQZOeMDdbmI4KKKALkAhfiqN6jd0jyWMYOiuZoiLCQoUALwVcbHuU
-	gbvtIket0/ffXJ1oMeNxEWkBJk8WgYpLGzeY/Y2Ag8XGl9b359Ch2Pbg+I2ESMUXA8BuvMkmIz5
-	by7tYahdyDterq9svnx56hIJ
-X-Google-Smtp-Source: AGHT+IHRpN6NATAmbciIyy05yWURRecQ9xopikH3OnMGV1553UEz0YTGxwbOrQhhCSSQmgCEPnswmQ==
-X-Received: by 2002:a05:622a:180e:b0:466:a308:292c with SMTP id d75a77b69052e-466b359e2cbmr127726571cf.32.1732827257019;
-        Thu, 28 Nov 2024 12:54:17 -0800 (PST)
+X-Gm-Gg: ASbGncvUXnQk+e7PgBeynkuT4Yk9N4Q2YRh9IbFgM4EfszcR89eOrNsyULD3tkpyyP/
+	8MnDZx+3QX+riTjg8BITAT4/qsnSacCiHdQi1GUkracfIdYwcVeGBBsRxe+5oXa8XE9bXC02+aL
+	nZe/NrrYrv+eiFwg6HJ5b1gM4VSORqghvFguXLtHoUNTHZr7IYlMDuidyiufgbHfBpH/5JoJ/Xe
+	2leHXri1VMbR1eelIVQ1GeD/9vgck1jLHu3ye9djI0NnIbM3rVh81diXsuL7M77W8shQN+Ymdpr
+	iQN7CBAqmiYlB5UtL0eAQRHw
+X-Google-Smtp-Source: AGHT+IGsQPPcE1Y6kRMFJwvkPvXDD4RZbAEeird+u3mx85igV+v5RYgUf1lgiIsUgpYQjUBWW7Ft1Q==
+X-Received: by 2002:ac8:5d94:0:b0:464:c8f2:e553 with SMTP id d75a77b69052e-466b36549f8mr88277511cf.42.1732827259063;
+        Thu, 28 Nov 2024 12:54:19 -0800 (PST)
 Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-466c407e6acsm9923421cf.52.2024.11.28.12.54.15
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-466c407e6acsm9923421cf.52.2024.11.28.12.54.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 12:54:15 -0800 (PST)
+        Thu, 28 Nov 2024 12:54:17 -0800 (PST)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v5 0/2] media: uvcvideo: Support partial control reads and
- minor changes
-Date: Thu, 28 Nov 2024 20:53:40 +0000
-Message-Id: <20241128-uvc-readless-v5-0-cf16ed282af8@chromium.org>
+Date: Thu, 28 Nov 2024 20:53:41 +0000
+Subject: [PATCH v5 1/2] media: uvcvideo: Support partial control reads
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,10 +81,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFTYSGcC/33NQQrCMBCF4atI1kYmyVRbV95DXKSZqQ2olUSDI
- r27aTdKqS7fwPfPS0QOnqPYLl4icPLRd5c8iuVCuNZejiw95S00aFQApbwnJwNbOnGMUpumqkt
- nCWojMrkGbvxjzO0Pebc+3rrwHOtJDdcfoaQkSEBtHRalahB3rg3d2d/Pqy4cxdBK+p/Xo6eKC
- mWZi/WMNx+v1NSb7KnaOGUNlEgw4/HLa5h4zB7XG001N4Zw+r/v+zfYVY0OawEAAA==
+Message-Id: <20241128-uvc-readless-v5-1-cf16ed282af8@chromium.org>
+References: <20241128-uvc-readless-v5-0-cf16ed282af8@chromium.org>
+In-Reply-To: <20241128-uvc-readless-v5-0-cf16ed282af8@chromium.org>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
  Hans de Goede <hdegoede@redhat.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -93,47 +92,55 @@ Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
  Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-Some cameras do not return all the bytes requested from a control
-if it can fit in less bytes. Eg: returning 0xab instead of 0x00ab.
-Support these devices.
+Some cameras, like the ELMO MX-P3, do not return all the bytes
+requested from a control if it can fit in less bytes.
+Eg: Returning 0xab instead of 0x00ab.
+usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
 
-Also, now that we are at it, improve uvc_query_ctrl() logging.
+Extend the returned value from the camera and return it.
 
+Cc: stable@vger.kernel.org
+Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Changes in v5:
-- Improve comment.
-- Link to v4: https://lore.kernel.org/r/20241120-uvc-readless-v4-0-4672dbef3d46@chromium.org
+ drivers/media/usb/uvc/uvc_video.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-Changes in v4:
-- Improve comment.
-- Keep old likely(ret == size)
-- Link to v3: https://lore.kernel.org/r/20241118-uvc-readless-v3-0-d97c1a3084d0@chromium.org
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index cd9c29532fb0..67f714bca417 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -79,6 +79,27 @@ int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
+ 	if (likely(ret == size))
+ 		return 0;
+ 
++	/*
++	 * Some devices return shorter USB control packets than expected if the
++	 * returned value can fit in less bytes. Zero all the bytes that the
++	 * device has not written.
++	 *
++	 * This quirk is applied to all controls, regardless of their data type.
++	 * Most controls are little-endian integers, in which case the missing
++	 * bytes become 0 MSBs. For other data types, a different heuristic
++	 * could be implemented if a device is found needing it.
++	 *
++	 * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need
++	 * to be excluded because its size is always 1.
++	 */
++	if (ret > 0 && query != UVC_GET_INFO) {
++		memset(data + ret, 0, size - ret);
++		dev_warn_once(&dev->udev->dev,
++			      "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
++			      uvc_query_name(query), cs, unit, ret, size);
++		return 0;
++	}
++
+ 	if (ret != -EPIPE) {
+ 		dev_err(&dev->udev->dev,
+ 			"Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
-Changes in v3:
-- Improve documentation.
-- Do not change return sequence.
-- Use dev_ratelimit and dev_warn_once
-- Link to v2: https://lore.kernel.org/r/20241008-uvc-readless-v2-0-04d9d51aee56@chromium.org
-
-Changes in v2:
-- Rewrite error handling (Thanks Sakari)
-- Discard 2/3. It is not needed after rewriting the error handling.
-- Link to v1: https://lore.kernel.org/r/20241008-uvc-readless-v1-0-042ac4581f44@chromium.org
-
----
-Ricardo Ribalda (2):
-      media: uvcvideo: Support partial control reads
-      media: uvcvideo: Add more logging to uvc_query_ctrl()
-
- drivers/media/usb/uvc/uvc_video.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
----
-base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
-change-id: 20241008-uvc-readless-23f9b8cad0b3
-
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.47.0.338.g60cca15819-goog
 
 
