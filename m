@@ -1,144 +1,215 @@
-Return-Path: <stable+bounces-95693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DAB9DB559
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 11:09:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00879DB568
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 11:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4428916997A
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 10:09:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E932169E62
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 10:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17649199EAF;
-	Thu, 28 Nov 2024 10:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123B31917E4;
+	Thu, 28 Nov 2024 10:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="n3ZUOmIH"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71BF1922FA;
-	Thu, 28 Nov 2024 10:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E617C219
+	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 10:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732788477; cv=none; b=M17pRloEyiQmdywkm+lWC2vRvavYCtKmD9mo9fvqoBakHmbSWg02BHL0JCF7bjNoBYcVxJMbTus0FWPgVCiocxcIQClZ/pnhxIjEYoJLzbsQGiqRsta6lJkrQG1i2HDqfv2Uf5R5ITXuR18F7x/Ocmj7twcPAkSrAeBl/5PSBaA=
+	t=1732788541; cv=none; b=Sv1YcaMVP+49SxYX6sWbDwsj7BFw3HqZQKQd9Pc8VPq+Bn+6x1pSnqTElmZAICasWDhDNn6HVCwfKvfhImqkVOeNXtfTgQ+I3SdLPb1Dnd4pvI+dt4C4DTZPwhP77/C1LLsYg43dapyihwupQlxnO+laSS6S647No9sAXbRqeMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732788477; c=relaxed/simple;
-	bh=F/+paQrCzgnUEe9H/qWGDdTSwyqz6J+WBIAfJTb6Gt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arffmYJLi3gLmyuQPcp/VzcoLGWHBsb3VQ6UmSBZGBIY0R1h1vVg66mAanGlGRQQrRZy9KJtPQTsV7qLkQFuW3MexdRcEvw1V7xLwKTdGaLmUyfmnzOJ6UJF4ZZm8IgS59WVKHQJ1/0HQwnLQdbz1GTXnzKfWrd/A09N55lEt8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4XzWWZ24zQz9v7JQ;
-	Thu, 28 Nov 2024 17:40:26 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id E92AE1402C4;
-	Thu, 28 Nov 2024 18:07:52 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwAnj365QEhn6eNzAg--.15234S9;
-	Thu, 28 Nov 2024 11:07:52 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	eric.snowberg@oracle.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 7/7] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-Date: Thu, 28 Nov 2024 11:06:20 +0100
-Message-ID: <20241128100621.461743-8-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.47.0.118.gfd3785337b
-In-Reply-To: <20241128100621.461743-1-roberto.sassu@huaweicloud.com>
-References: <20241128100621.461743-1-roberto.sassu@huaweicloud.com>
+	s=arc-20240116; t=1732788541; c=relaxed/simple;
+	bh=8JTTnCHZnnMo3oxuwzguJnJc/O1rDNf/9TTzaUfiCC4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dU9ysFNDfpAa2z1vMVf4jDOxCo2ZvWDoNbhIy3oFFuRYXZpB5N7I1u2gMihzYRmPMwxcX00QGol/8XF8siq57d3Pug2WlgQ8DRkAXI9CDuyFAdgIKm3T5L4zltj+xMZN0BPYnyHEOp+qiHfE3iMICKw7UnWizexvsm2TOWewHjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=n3ZUOmIH; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ffa12ad18cso6962971fa.2
+        for <stable@vger.kernel.org>; Thu, 28 Nov 2024 02:08:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1732788538; x=1733393338; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qH69DGlARRYVL50i80W3i9hrrH9KaWwkcgqBCO+wAFY=;
+        b=n3ZUOmIHbd6AUqPjy8ZzEApsl6I+UZzDQXttslC8VAmLG87x1bSfRlA49do7tbWCso
+         UP7wSHIsle0Na0IYHPWa1wOgY/JsMcEVkBDp4z4nbqF+X7F7WIKL/EnWW07yrm/Njnpd
+         Q9EAvBYZd4G3cCPEJiH5XJ4sZIUMurQKdSJlQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732788538; x=1733393338;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qH69DGlARRYVL50i80W3i9hrrH9KaWwkcgqBCO+wAFY=;
+        b=Rz7jELvgKeFkQgUEllRoH2JwXDt+YT0FRVM4QhdB2YEefmlq7Ktg3tggk3b0GIbMnD
+         cPx1Qrd6Mome561fuOGzKLiDJW4QDtArNUy5bUBwd1YpCs1sI54VikVoWumodO1llbdI
+         hCBUuhogOIlCwuIUaYPVysnMDyQDXYaF8A0yusdmHo+czDuaQ55bLXBJ6I5AUiJxQSNo
+         XGESFJ2cNe4DfhJ/uXiwyiYR0jKZZi+RxlMBNIN2F4arFNe9rckdlcbT/HKiTVojmDmp
+         roiPAo2kEqKo06nm6/ne7Enqt5AR0JFrGFqEthttMYWbfNvX+fXeSjycHNv6UB71/o6g
+         eEtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJjWsKNwe2bjpM3MWXZOdLySlbR03sipuyT/2udUKxDx6ifBZS/EIZ1bscjiBG8one0zrgfQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF2KdfdPsxF/y1YzOCLRzHCn4jUqABSyC0lVo5CJvxpZfj5zre
+	y7wEF+BtDhp2npvluBZTMq6yyX+kTQEoaCzp62HbNIJgRVobeRpGntkO6HP2Z0eOPBWbO+ZO0/o
+	xo66oJyr3yz3wbI2mL/Q+Pfsnk1XMxv8uE6s=
+X-Gm-Gg: ASbGncvEUNfsgMurLJQ+3I76fsf2i3DKB71vdIxKESxfWVXpsHuqBpn86er+cH2LK5W
+	Hdmu3xqy4+fJMgzDRUI9xPvA6S1RfbMRmJYVxJPImFZIAiD2xJjswOrJW
+X-Google-Smtp-Source: AGHT+IGwyQRa0PyyAxqMwrDBn3GABwFRoQjHsMo4wzJLNgIAsloiPCavUY3TRo7zYcP7WoCb5P11lcE30BShy2iFre8=
+X-Received: by 2002:a2e:bd83:0:b0:2ff:c4a3:882a with SMTP id
+ 38308e7fff4ca-2ffd6059f80mr35507821fa.18.1732788537986; Thu, 28 Nov 2024
+ 02:08:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:GxC2BwAnj365QEhn6eNzAg--.15234S9
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zry8Zw1xXF4xGw18Ary7ZFb_yoW5Jr17pa
-	9a9FyUGr40qFyIkrn3JF1aka48K3y29FWUXa15Cw1vyFsxXr1UZFyDtr17CF98Wr1SkFy2
-	qF9Iq34Yva1qyaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrV
-	C2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE
-	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
-	kKe7AKxVWrXVW3AwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07jhXo7UUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgABBGdH1XMCrAABsu
+References: <20241104154252.1463188-1-ukaszb@chromium.org> <5iacpnq5akk3gk7kdg5wkbaohbtwtuc6cl7xyubsh2apkteye3@2ztqtkpoauyg>
+ <CALwA+Nb31ukU2Ox782Mq+ucBvEqm9_SioSAE23ifhX7DsHayhA@mail.gmail.com> <yphjztfvehbqd4xbdo7wtdfd4d3ziibq6hytuuxnoypdpsr462@zwl2cfj6f5kw>
+In-Reply-To: <yphjztfvehbqd4xbdo7wtdfd4d3ziibq6hytuuxnoypdpsr462@zwl2cfj6f5kw>
+From: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>
+Date: Thu, 28 Nov 2024 11:08:46 +0100
+Message-ID: <CALwA+NYOm5mrw7=PSD+w_ma0hzR2CQ5dspz5X-bqi1o7ikfq6Q@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: typec: ucsi: Fix completion notifications
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>, Benson Leung <bleung@chromium.org>, 
+	Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+On Thu, Nov 21, 2024 at 11:53=E2=80=AFPM Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> On Wed, Nov 20, 2024 at 03:56:41PM +0100, =C5=81ukasz Bartosik wrote:
+> > On Mon, Nov 18, 2024 at 6:58=E2=80=AFPM Dmitry Baryshkov
+> > <dmitry.baryshkov@linaro.org> wrote:
+> > >
+> > > On Mon, Nov 04, 2024 at 03:42:52PM +0000, =C5=81ukasz Bartosik wrote:
+> > > > OPM                         PPM                         LPM
+> > > >  |        1.send cmd         |                           |
+> > > >  |-------------------------->|                           |
+> > > >  |                           |--                         |
+> > > >  |                           |  | 2.set busy bit in CCI  |
+> > > >  |                           |<-                         |
+> > > >  |      3.notify the OPM     |                           |
+> > > >  |<--------------------------|                           |
+> > > >  |                           | 4.send cmd to be executed |
+> > > >  |                           |-------------------------->|
+> > > >  |                           |                           |
+> > > >  |                           |      5.cmd completed      |
+> > > >  |                           |<--------------------------|
+> > > >  |                           |                           |
+> > > >  |                           |--                         |
+> > > >  |                           |  | 6.set cmd completed    |
+> > > >  |                           |<-       bit in CCI        |
+> > > >  |                           |                           |
+> > > >  |   7.handle notification   |                           |
+> > > >  |   from point 3, read CCI  |                           |
+> > > >  |<--------------------------|                           |
+> > > >  |                           |                           |
+> > > >  |     8.notify the OPM      |                           |
+> > > >  |<--------------------------|                           |
+> > > >  |                           |                           |
+> > > >
+> > > > When the PPM receives command from the OPM (p.1) it sets the busy b=
+it
+> > > > in the CCI (p.2), sends notification to the OPM (p.3) and forwards =
+the
+> > > > command to be executed by the LPM (p.4). When the PPM receives comm=
+and
+> > > > completion from the LPM (p.5) it sets command completion bit in the=
+ CCI
+> > > > (p.6) and sends notification to the OPM (p.8). If command execution=
+ by
+> > > > the LPM is fast enough then when the OPM starts handling the notifi=
+cation
+> > > > from p.3 in p.7 and reads the CCI value it will see command complet=
+ion bit
+> > > > and will call complete(). Then complete() might be called again whe=
+n the
+> > > > OPM handles notification from p.8.
+> > >
+> > > I think the change is fine, but I'd like to understand, what code pat=
+h
+> > > causes the first read from the OPM side before the notification from
+> > > the PPM?
+> > >
+> >
+> > The read from the OPM in p.7 is a result of notification in p.3 but I a=
+gree
+> > it is misleading since you pointed it out. I will reorder p.7 and p.8.
+>
+> Ack, thanks for the explanation. Do you think that it also might be
+> beneficial to call reinit_completion() when sending the command? I think
+> we discussed this change few months ago on the ML, but I failed to send
+> the patch...
+>
 
-Commit 11c60f23ed13 ("integrity: Remove unused macro
-IMA_ACTION_RULE_FLAGS") removed the IMA_ACTION_RULE_FLAGS mask, due to it
-not being used after commit 0d73a55208e9 ("ima: re-introduce own integrity
-cache lock").
+Dmitry sorry for delayed response.
 
-However, it seems that the latter commit mistakenly used the wrong mask
-when moving the code from ima_inode_post_setattr() to
-process_measurement(). There is no mention in the commit message about this
-change and it looks quite important, since changing from IMA_ACTIONS_FLAGS
-(later renamed to IMA_NONACTION_FLAGS) to IMA_ACTION_RULE_FLAGS was done by
-commit 42a4c603198f0 ("ima: fix ima_inode_post_setattr").
+IMHO it makes sense to clear completion in ucsi_sync_control_common()
+with reinit_completion().
+But I wonder whether with this change moving from test_bit ->
+test_and_clear_bit do you still see a potential
+scenario for a race ?
 
-Restore the original change, but with new mask 0xfb000000 since the
-policy-specific flags changed meanwhile, and rename IMA_ACTION_RULE_FLAGS
-to IMA_NONACTION_RULE_FLAGS, to be consistent with IMA_NONACTION_FLAGS.
+Thanks,
+Lukasz
 
-Cc: stable@vger.kernel.org # v4.16.x
-Fixes: 11c60f23ed13 ("integrity: Remove unused macro IMA_ACTION_RULE_FLAGS")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/integrity/ima/ima.h      | 1 +
- security/integrity/ima/ima_main.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index 22c3b87cfcac..32ffef2cc92a 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -141,6 +141,7 @@ struct ima_kexec_hdr {
- 
- /* IMA iint policy rule cache flags */
- #define IMA_NONACTION_FLAGS	0xff000000
-+#define IMA_NONACTION_RULE_FLAGS	0xfb000000
- #define IMA_DIGSIG_REQUIRED	0x01000000
- #define IMA_PERMIT_DIRECTIO	0x02000000
- #define IMA_NEW_FILE		0x04000000
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 712c3a522e6c..83e467ad18d4 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -277,7 +277,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 		/* reset appraisal flags if ima_inode_post_setattr was called */
- 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
- 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
--				 IMA_NONACTION_FLAGS);
-+				 IMA_NONACTION_RULE_FLAGS);
- 
- 	/*
- 	 * Re-evaulate the file if either the xattr has changed or the
--- 
-2.47.0.118.gfd3785337b
-
+> >
+> > Thanks,
+> > Lukasz
+> >
+> > > >
+> > > > This fix replaces test_bit() with test_and_clear_bit()
+> > > > in ucsi_notify_common() in order to call complete() only
+> > > > once per request.
+> > > >
+> > > > Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for com=
+mand handling")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: =C5=81ukasz Bartosik <ukaszb@chromium.org>
+> > > > ---
+> > > >  drivers/usb/typec/ucsi/ucsi.c | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi=
+/ucsi.c
+> > > > index e0f3925e401b..7a9b987ea80c 100644
+> > > > --- a/drivers/usb/typec/ucsi/ucsi.c
+> > > > +++ b/drivers/usb/typec/ucsi/ucsi.c
+> > > > @@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 =
+cci)
+> > > >               ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+> > > >
+> > > >       if (cci & UCSI_CCI_ACK_COMPLETE &&
+> > > > -         test_bit(ACK_PENDING, &ucsi->flags))
+> > > > +         test_and_clear_bit(ACK_PENDING, &ucsi->flags))
+> > > >               complete(&ucsi->complete);
+> > > >
+> > > >       if (cci & UCSI_CCI_COMMAND_COMPLETE &&
+> > > > -         test_bit(COMMAND_PENDING, &ucsi->flags))
+> > > > +         test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
+> > > >               complete(&ucsi->complete);
+> > > >  }
+> > > >  EXPORT_SYMBOL_GPL(ucsi_notify_common);
+> > > > --
+> > > > 2.47.0.199.ga7371fff76-goog
+> > > >
+> > >
+> > > --
+> > > With best wishes
+> > > Dmitry
+>
+> --
+> With best wishes
+> Dmitry
 
