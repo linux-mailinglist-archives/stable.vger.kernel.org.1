@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759A39DB90A
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 14:43:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7219DB90B
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 14:43:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E033AB23647
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 13:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90F60162349
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DEA1A9B4B;
-	Thu, 28 Nov 2024 13:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C571A9B30;
+	Thu, 28 Nov 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmC8BrSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlvebd7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4653919CD01
-	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 13:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6556E19CD01
+	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732801397; cv=none; b=Fb+ugak0r7ltzRCvEqsEy5MTi0w7pQtGnYqMohxL+bNkjp1cY3brfJuiTlgcTLWOyY/a1jNYQ5LB6DCCYYRRgel2JoBmBPwf48MwnRK8zJwYw48Hf0Sx5A+DgvzxjoEQxE8B+YT9S8PA/PCnWZL+eTA7I4XNq0whk3tD/Dw/W2E=
+	t=1732801399; cv=none; b=jNMOSqszkc4XARKt3rV76Xw4Pm/L/5GK0d7UT/x1YLCbUi1+Zzf5aNSYbjtY9oigctxzqD21qbWEFDYeWo/3foKleOGPffuatqytmNoJ+PpwXrl466ZZE5Um4jE6Udxakle3xR3+6mZS4ofNxKOXR0Hu0vrD/oH6R8I8ipaMOHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732801397; c=relaxed/simple;
-	bh=WZsBCnmnhgDX8iuTAzeXK5oRmZ4CNO+SN/ClZDrgcjM=;
+	s=arc-20240116; t=1732801399; c=relaxed/simple;
+	bh=HnIuiVCD9KtlGRlWEy+0LWXncWVL8Ug2PiKshizjGk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bn6fNpD7bm3m0hj8FwBad2GWJKuW++1534cQ27Q5NpQ4qxJkw4L9t03HAmJM9fbqsm0YFON88JB3jUlwVImAHpByjShtYkS1moJO/n/p6ElHNSsVTD9HqD9GgGkxDjKlWCts0xmOHVGTh2TY+uFMQduATgHrq6xwPa6Utw8CEYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmC8BrSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DAEC4CED3;
-	Thu, 28 Nov 2024 13:43:16 +0000 (UTC)
+	 MIME-Version; b=HZAWFY47fiKcIcgVvjV9s0c2MI64sUWtifKg0CgtsQ8HWUFTIqGc9JsTT3YZPcoQ7zorgTsj+G/0yqc8nrTNNr58+Uy+VWhNZ4QfHlRqa35SMVcM2r8KyG5wQk0m+l7ZCIwTLqGQGSStoi9nKgTuoHFjbc8XitV5MJGnut5eLV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlvebd7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8F7C4CED2;
+	Thu, 28 Nov 2024 13:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732801397;
-	bh=WZsBCnmnhgDX8iuTAzeXK5oRmZ4CNO+SN/ClZDrgcjM=;
+	s=k20201202; t=1732801399;
+	bh=HnIuiVCD9KtlGRlWEy+0LWXncWVL8Ug2PiKshizjGk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NmC8BrSpZ417+kLiqaJxyWPJjFlCgAVrRIhOlfD0xL4erNSTTLgyFCm1S7jZlqKZK
-	 BbHsbfUVbEsokmYdgTnTxXztyKi2Vz8YAJR1Htne6YrOBQOJd9v5jCJBc8/DCgt4mz
-	 t/htjOX8ZbwcAOmF7NUqsUPkwMTeudpaGrUclSo5tZvxB5Xows20rgUoM2RSbTzdF1
-	 hYVwL3qFRaiCPHKyWkhfLsuMAAEn/GWPPmipFfHyU1PevnV5sEf8j9sZ33gfcNtshO
-	 I15HBDqBbbFV5enVDGt3GqKCQMjorUBHY73VAiHFpHZBb2EoRiCUQn3L/Zzx4VPeNH
-	 0NdhnpTOwJLVQ==
+	b=hlvebd7Ho1pp69NaPi84mIXHRQrTekBh4KbF7y1oOPcxDu+kT9VbQjTbUyL4mN5S4
+	 5Ac8IPANjLWIscp9zuJaxgo2364WFIcBc9NKAGEqkRTi0UwyDFjmJeeoPO55raLOco
+	 QAK5qZ+WuG3LcNZzDDciQXENB7KBFjAS7bdyE0yVm3M8KXvZJXy9fhf+WwksSWzwOb
+	 zHSScVJH9+7SBA6tfUFwMkpcTq48A0Ws2GaOdqaNaovZyKK2IU1o1ooVRBy7fYZRPl
+	 0O/be6yUTCM68BHdaqJ+3yQ8i3SvCeySt9IrVsI221f7h8i9ucAej6mwPWwFCa5lKM
+	 xI0GQVFjeGp2g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bin Lan <bin.lan.cn@windriver.com>,
+Cc: mingli.yu@eng.windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] mlxsw: spectrum_acl_tcam: Fix NULL pointer dereference in error path
-Date: Thu, 28 Nov 2024 07:57:05 -0500
-Message-ID: <20241128063354-40690685068cbd32@stable.kernel.org>
+Subject: Re: [PATCH v2 5.15] tty: n_gsm: Fix use-after-free in gsm_cleanup_mux
+Date: Thu, 28 Nov 2024 07:57:07 -0500
+Message-ID: <20241128062100-628f67dc6f369895@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241128065521.1471959-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20241128084730.430060-1-mingli.yu@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,85 +63,72 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: efeb7dfea8ee10cdec11b6b6ba4e405edbe75809
+The upstream commit SHA1 provided is correct: 9462f4ca56e7d2430fdb6dcc8498244acbfc4489
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Bin Lan <bin.lan.cn@windriver.com>
-Commit author: Ido Schimmel <idosch@nvidia.com>
+Backport author: <mingli.yu@eng.windriver.com>
+Commit author: Longlong Xia <xialonglong@kylinos.cn>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 817840d125a3)
-6.1.y | Not found
+6.11.y | Present (different SHA1: 0eec592c6a74)
+6.6.y | Present (different SHA1: c29f192e0d44)
+6.1.y | Present (different SHA1: bf171b5e86e4)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
---- -	2024-11-28 06:27:54.820071472 -0500
-+++ /tmp/tmp.TYWoQ2w0cN	2024-11-28 06:27:54.814129152 -0500
+--- -	2024-11-28 06:15:22.075748655 -0500
++++ /tmp/tmp.vWxXusWqkZ	2024-11-28 06:15:22.068138702 -0500
 @@ -1,3 +1,5 @@
-+[ Upstream commit efeb7dfea8ee10cdec11b6b6ba4e405edbe75809 ]
++commit 9462f4ca56e7d2430fdb6dcc8498244acbfc4489 upstream.
 +
- When calling mlxsw_sp_acl_tcam_region_destroy() from an error path after
- failing to attach the region to an ACL group, we hit a NULL pointer
- dereference upon 'region->group->tcam' [1].
-@@ -36,15 +38,48 @@
- Acked-by: Paolo Abeni <pabeni@redhat.com>
- Link: https://lore.kernel.org/r/fb6a4542bbc9fcab5a523802d97059bffbca7126.1705502064.git.petrm@nvidia.com
- Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-+[ For the function mlxsw_sp_acl_to_tcam() is not exist in 6.1.y, pick
-+mlxsw_sp_acl_to_tcam() from commit 74cbc3c03c828ccf265a72f9bcb5aee906978744 ]
-+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+ BUG: KASAN: slab-use-after-free in gsm_cleanup_mux+0x77b/0x7b0
+ drivers/tty/n_gsm.c:3160 [n_gsm]
+ Read of size 8 at addr ffff88815fe99c00 by task poc/3379
+@@ -51,20 +53,37 @@
+ Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+ Link: https://lore.kernel.org/r/20240926130213.531959-1-xialonglong@kylinos.cn
+ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++[Mingli: Backport to fix CVE-2024-50073, no guard macro defined resolution]
++Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  ---
-+ drivers/net/ethernet/mellanox/mlxsw/spectrum.h          | 1 +
-+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c      | 5 +++++
-  drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
-- 1 file changed, 2 insertions(+), 2 deletions(-)
-+ 3 files changed, 8 insertions(+), 2 deletions(-)
+- drivers/tty/n_gsm.c | 2 ++
+- 1 file changed, 2 insertions(+)
++ drivers/tty/n_gsm.c | 4 ++++
++ 1 file changed, 4 insertions(+)
  
-+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-+index c8ff2a6d7e90..57ab91133774 100644
-+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-+@@ -970,6 +970,7 @@ enum mlxsw_sp_acl_profile {
-+ };
+ diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+-index 5d37a09849163..252849910588f 100644
++index aae9f73585bd..1becbdf7c470 100644
+ --- a/drivers/tty/n_gsm.c
+ +++ b/drivers/tty/n_gsm.c
+-@@ -3157,6 +3157,8 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
++@@ -2443,6 +2443,7 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
++ 	int i;
++ 	struct gsm_dlci *dlci;
++ 	struct gsm_msg *txq, *ntxq;
+++	unsigned long flags;
 + 
-+ struct mlxsw_afk *mlxsw_sp_acl_afk(struct mlxsw_sp_acl *acl);
-++struct mlxsw_sp_acl_tcam *mlxsw_sp_acl_to_tcam(struct mlxsw_sp_acl *acl);
-+ 
-+ int mlxsw_sp_acl_ruleset_bind(struct mlxsw_sp *mlxsw_sp,
-+ 			      struct mlxsw_sp_flow_block *block,
-+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-+index 6c5af018546f..93b71106b4c5 100644
-+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-+@@ -40,6 +40,11 @@ struct mlxsw_afk *mlxsw_sp_acl_afk(struct mlxsw_sp_acl *acl)
-+ 	return acl->afk;
++ 	gsm->dead = true;
++ 	mutex_lock(&gsm->mutex);
++@@ -2471,9 +2472,12 @@ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
+  	mutex_unlock(&gsm->mutex);
+  	/* Now wipe the queues */
+  	tty_ldisc_flush(gsm->tty);
+ +
+-+	guard(spinlock_irqsave)(&gsm->tx_lock);
+- 	list_for_each_entry_safe(txq, ntxq, &gsm->tx_ctrl_list, list)
+++	spin_lock_irqsave(&gsm->tx_lock, flags);
++ 	list_for_each_entry_safe(txq, ntxq, &gsm->tx_list, list)
+  		kfree(txq);
+- 	INIT_LIST_HEAD(&gsm->tx_ctrl_list);
++ 	INIT_LIST_HEAD(&gsm->tx_list);
+++	spin_unlock_irqrestore(&gsm->tx_lock, flags);
 + }
 + 
-++struct mlxsw_sp_acl_tcam *mlxsw_sp_acl_to_tcam(struct mlxsw_sp_acl *acl)
-++{
-++	return &acl->tcam;
-++}
-++
-+ struct mlxsw_sp_acl_ruleset_ht_key {
-+ 	struct mlxsw_sp_flow_block *block;
-+ 	u32 chain_index;
- diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
--index d50786b0a6ce4..7d1e91196e943 100644
-+index 685bcf8cbfa9..6796edb24951 100644
- --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
- +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
--@@ -681,13 +681,13 @@ static void
-+@@ -747,13 +747,13 @@ static void
-  mlxsw_sp_acl_tcam_region_destroy(struct mlxsw_sp *mlxsw_sp,
-  				 struct mlxsw_sp_acl_tcam_region *region)
-  {
-@@ -60,3 +95,6 @@
-  	kfree(region);
-  }
-  
++ /**
 +-- 
 +2.34.1
 +
@@ -151,5 +138,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
