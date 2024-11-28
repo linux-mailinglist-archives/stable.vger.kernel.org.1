@@ -1,114 +1,133 @@
-Return-Path: <stable+bounces-95747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F2B9DBB75
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 17:44:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0BF9DBB90
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 17:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBB1EB229DE
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 16:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52819283122
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D1B1BDABE;
-	Thu, 28 Nov 2024 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76E01B85FA;
+	Thu, 28 Nov 2024 16:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bDT4CLgN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtRWRKHL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD01C173C;
-	Thu, 28 Nov 2024 16:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745E217993;
+	Thu, 28 Nov 2024 16:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732812236; cv=none; b=q8AmEO/sKkdBZ6IVUN5osKzZeTZlco6epzN9GzhR0iwGd2thCYQmdCZ0JQ1UCEPjgFs9tO33Ewepo9UZlKoUQ9VtCKbrTO0qk8chYjgxY6M8OsX2B2Y7GZQuqpE4FNr4IytcB/+FF2uxukOt2Qmi0D1gezoYzfPdpcm7LpTFilQ=
+	t=1732812739; cv=none; b=eW0MJ3D6khFrI427DTtRBoh277iaSH6kLvFeroBw7PijsAk9k1LiHyXIECKwsJ39UD08s0VFuRkj7IxCUi0ZPdaCd/2ml4D6Vs7ggaa7IwLXrpewywI/euMxp6yT32/sfpG3lIDWIfIl3wcZdwC3+F20eM4qGEe8LzBRO7H+kGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732812236; c=relaxed/simple;
-	bh=WkKkP9VK19grXsdbi+La067oaeO0fCjhwxaKtyL/YiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yv91hlpBgUOabCUISwQ9kXZFFJwgGfpvp4dCcRmgP7GqdHNkpGUq/94tF+7rrE4IPs5B4rLiukhS2Ql3qQRXpnvWgqJI61calLxO6uyusvZa1QTI8qcyHDF2+YZHbBr9tjSq7XeABVRvUrRIdmrAPeBytdhe5b7DZcgCxt7PqPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bDT4CLgN; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EBAE440E0276;
-	Thu, 28 Nov 2024 16:43:51 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id TJXKOvBIsjJ9; Thu, 28 Nov 2024 16:43:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1732812227; bh=t5VPGfRICgOVWK7ZjQmKkU7K5Wtzyspkwf97k0l8fok=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bDT4CLgNF1K2X78JtO7EYwUhkiFgAwHWv70TYIiBuW/aY+vRgyGol1Am1FDqx9Q0K
-	 OdPKlxsZSfaDry0yz9ngd0oeAN7UDQaCMHoOhsWBK4XjNgG6c9WUb6K7eV3Fv0e7aR
-	 C7ajqIrDQpDcbqhcdJ72157TSjjWg0D25Rq5HfJuwSd1N5u378U5T0qigBNh1VU7Bl
-	 WDyVa6UpTXe8OdjvZU8wmy7MQihy2xT6L51PX9AlVPElquxQ8//e7Q6OnALyu7/5Ig
-	 OcILaX1f1WgRy6a5awJvQZSjOgHXHCYwc0Vkx67E0uB/FMHulb0uKOIgOWS/pzX3Lp
-	 syJ8fhBACjhQLjizU7ffcJteEvDlD61cSJn5icAthcakGj/dZvgvBdk3vPQ+ole/t7
-	 2/ey9ix45KTwKnMwfRGAGsTV2BW6YwYaFV/igR0bvM5hC4BzvE02j52sNp78GWISsj
-	 CZaDn6m6gkanJCZXxyq455JVwxd0+4VlbP5moqll5hndYWI2LqtPyKhOR62tLnRsMk
-	 Phpr/bb7Ff9GVGCclOi7zdNNu3Pv2tsdjwuOtSqdEQrU+51JSiv+qdZd6y7diwg1r+
-	 VUY+QJHrQw3U3tESKOVKBn1iRxphJYAmtBAX59ZjNfwJhqmH11uRmtSEFVpXIqm9sP
-	 L2ZW5nvXlAHXlVLcWVzom8WQ=
-Received: from zn.tnic (p200300ea9736a177329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9736:a177:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B0B5D40E0269;
-	Thu, 28 Nov 2024 16:43:21 +0000 (UTC)
-Date: Thu, 28 Nov 2024 17:43:10 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, puwen@hygon.cn, seanjc@google.com,
-	kim.phillips@amd.com, jmattson@google.com, babu.moger@amd.com,
-	peterz@infradead.org, rick.p.edgecombe@intel.com, brgerst@gmail.com,
-	ashok.raj@intel.com, mjguzik@gmail.com, jpoimboe@kernel.org,
-	nik.borisov@suse.com, aik@amd.com, vegard.nossum@oracle.com,
-	daniel.sneddon@linux.intel.com, acdunlap@google.com,
-	Erwan Velu <erwanaliasr1@gmail.com>, pavel@denx.de
-Subject: Re: [PATCH AUTOSEL 5.15 11/12] x86/barrier: Do not serialize MSR
- accesses on AMD
-Message-ID: <20241128164310.GCZ0idnhjpAV6wFWm6@fat_crate.local>
-References: <20240115232718.209642-1-sashal@kernel.org>
- <20240115232718.209642-11-sashal@kernel.org>
- <20241128115924.GAZ0hbHKsbtCixVqAe@fat_crate.local>
- <Z0iRzPpGvpeYzA4H@sashalap>
+	s=arc-20240116; t=1732812739; c=relaxed/simple;
+	bh=dvQEqAMMVBetwcgzVYNkCxfdi2w/wGckBTs6rFErkds=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=py30dM4XhCMRNaUP6VdfnEHM8cTl8dtkrg03RIBBpeOzzku5keG3dlAzo6epWgK7aUPPsRGD0gu0fsdOEnvz4GTgpsOo0XjSa7imAJTupPnIVzwef7uelKuLLpQrbE+5Nsg6NZMINvR2827AE0DJBPjmL3K7ia39UQW/qWXrfOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtRWRKHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A34BC4CECE;
+	Thu, 28 Nov 2024 16:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732812739;
+	bh=dvQEqAMMVBetwcgzVYNkCxfdi2w/wGckBTs6rFErkds=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MtRWRKHLz5x+AsW9kqDHUTkNjsDiNO/Zx1wSlQ9XD8FUBKGTVo6ihqaVNyGNpdZc2
+	 wumjR408IYB9xBcUKSmUMtiXaCVCybzDT3r0u7v7cUijleLr1hpnqpmLCan+rC1ZhP
+	 hTzC2UwTsR2kCBSDXlEYSYltl1XTKZMgiexdnDuHeD6F3tYh1Ot4Q6iNfrN4Y3nkBn
+	 79tCU9PPwJF9v4ap87SAc8KSgyyoGyQvaahGSObY4poMSJearQ7Yz+ROjybpoqq5HT
+	 v73I2p+lUViZdACHR6X0ZNLbvC5LWmHPPDMr7CQgmwIO7zncoWcuxD+R3lCbaHtLBp
+	 b7xpzwpV/8rKQ==
+Received: from [37.171.122.54] (helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tGhkW-00GaEB-It;
+	Thu, 28 Nov 2024 16:52:16 +0000
+Date: Thu, 28 Nov 2024 16:52:14 +0000
+Message-ID: <87y113s3lt.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arch_numa: Restore nid checks before registering a memblock with a node
+In-Reply-To: <Z0gVxWstZdKvhY6m@kernel.org>
+References: <20241127193000.3702637-1-maz@kernel.org>
+	<Z0gVxWstZdKvhY6m@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z0iRzPpGvpeYzA4H@sashalap>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 37.171.122.54
+X-SA-Exim-Rcpt-To: rppt@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, ziy@nvidia.com, dan.j.williams@intel.com, david@redhat.com, akpm@linux-foundation.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Nov 28, 2024 at 10:52:44AM -0500, Sasha Levin wrote:
-> You've missed the 5.10 mail :)
+Hi Mike,
 
-You mean in the flood? ;-P
+On Thu, 28 Nov 2024 07:03:33 +0000,
+Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> Hi Marc,
+> 
+> > diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+> > index e187016764265..5457248eb0811 100644
+> > --- a/drivers/base/arch_numa.c
+> > +++ b/drivers/base/arch_numa.c
+> > @@ -207,7 +207,21 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+> >  static int __init numa_register_nodes(void)
+> >  {
+> >  	int nid;
+> > -
+> > +	struct memblock_region *mblk;
+> > +
+> > +	/* Check that valid nid is set to memblks */
+> > +	for_each_mem_region(mblk) {
+> > +		int mblk_nid = memblock_get_region_node(mblk);
+> > +		phys_addr_t start = mblk->base;
+> > +		phys_addr_t end = mblk->base + mblk->size - 1;
+> > +
+> > +		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
+> > +			pr_warn("Warning: invalid memblk node %d [mem %pap-%pap]\n",
+> > +				mblk_nid, &start, &end);
+> > +			return -EINVAL;
+> > +		}
+> 
+> We have memblock_validate_numa_coverage() that checks that amount of memory
+> with unset node id is less than a threshold. The loop here can be replaced
+> with something like
+> 
+> 	if (!memblock_validate_numa_coverage(0))
+> 		return -EINVAL;
 
-> Pavel objected to it so I've dropped it: https://lore.kernel.org/all/Zbli7QIGVFT8EtO4@sashalap/
+Unfortunately, that doesn't seem to result in something that works
+(relevant extract only):
 
-So we're not backporting those anymore? But everything else? :-P
+[    0.000000] NUMA: no nodes coverage for 9MB of 65516MB RAM
+[    0.000000] NUMA: Faking a node at [mem 0x0000000000500000-0x0000000fff0fffff]
+[    0.000000] NUMA: no nodes coverage for 0MB of 65516MB RAM
+[    0.000000] Unable to handle kernel paging request at virtual address 0000000000001d40
 
-And 5.15 has it already...
+Any idea?
 
-Frankly, with the amount of stuff going into stable, I see no problem with
-backporting such patches. Especially if the people using stable kernels will
-end up backporting it themselves and thus multiply work. I.e., Erwan's case.
-
-Thx.
+	M.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Without deviation from the norm, progress is not possible.
 
