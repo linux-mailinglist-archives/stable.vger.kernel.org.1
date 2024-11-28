@@ -1,177 +1,130 @@
-Return-Path: <stable+bounces-95708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0789DB7D7
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 13:40:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915F41638FC
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 12:40:02 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C4919DF5F;
-	Thu, 28 Nov 2024 12:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIUxmkIL"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C6B9DB7E5
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 13:49:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B47195385;
-	Thu, 28 Nov 2024 12:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BA6B2813E3
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 12:49:06 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EF619D092;
+	Thu, 28 Nov 2024 12:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dqXaYon0"
+X-Original-To: stable@vger.kernel.org
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0A5154BEC
+	for <stable@vger.kernel.org>; Thu, 28 Nov 2024 12:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732797599; cv=none; b=Haw9urE2H4QtI9/h60KW9HAu6Fyup9G5AG5HixWBQnYNd/RDCHdwPxWNwFZQkbqkWUZJKbCjPfp1kzvZvCSt/oXjYB7kDAzasBFqWp3TCOaxc/ZpFMg9Fuun7blavjTx3pPZErLPBPJQKcLeTK2gPx6eRRGwRr0r+gyagSVsW0w=
+	t=1732798141; cv=none; b=abQ/sGKOjHHnK3pXsYP4FZGHI5K5OYhGy3a1ou7VFDJ5qJtIke0BasVknUilcG3HEF5J2lc9i7RJHQ7yOvlqM40ZtzimWEjeS3c+ULAsMo7MmfMTeq6vwxuhSrt997t6VOz3e3nlexm5wPuckM8smWoy+IOC04KGx5P2wpRyd1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732797599; c=relaxed/simple;
-	bh=Wod3CyOOWw+gjQSUcCKB60gjUHYWb+9QAENBYzuhgTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E0OpoWzFWJ179Rc4JcL5FHxxSLWV2p1/PhJWjdVx6Xd/vOzOj8UU6wp2t4iW38qEJ69ieMVFQsovZdCz0vZPC2RbaSHkEI0o85X+YLrkc8SBHpzJDuuZF8wU0eEfrdCl5qTe2D+8o64gClTGqysKBMiNv7y2CdCQauAhWThziMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIUxmkIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D2AC4CECE;
-	Thu, 28 Nov 2024 12:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732797599;
-	bh=Wod3CyOOWw+gjQSUcCKB60gjUHYWb+9QAENBYzuhgTw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IIUxmkILCiF3hTCaQN1uPQ46f5sngEDkjvWcGMeNZE2WO8fd5Ssb+dJkqovMiQeae
-	 u4sLpq7sZhu6jK+EcavRl8svy2ecumogdEU3MaC5lcEV4IvFT3f2IH0yR2yqDWXgJe
-	 eoFfWuHWmLs3omsoNf7HhS1QUmfEBdOjpZmitqYoRRcipcbXhajsrNLFzxzztVrxY1
-	 XuId8P6WOawhBwOTD9I/nbm6bzNUAp6JtaHhIg3A4Ay5W1LeljbG57TSxyedqo66kL
-	 GrhTh/Nku9mI8w8EuPgWAxQ+MJx7Ga/3W54xu3q4TnXYijTUtCu1+OP92F2i6ELx5V
-	 wtX40PGy0Ce8w==
-Message-ID: <cada130f-bd1f-4844-8842-89dda70e240b@kernel.org>
-Date: Thu, 28 Nov 2024 14:39:53 +0200
+	s=arc-20240116; t=1732798141; c=relaxed/simple;
+	bh=pVn4CwQnElFAMNTHPQNx+FLhkcukHMnJjjj6xdSW2os=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uYLQbMtJLOQXoMVkQFahNt81E0/jRdQ+bYkNEPwUaKLcGn265hmob+ARvEBewl8gg6hGwMBOddLA2nc3iWt8lhuFYgac/xrKADoBnQfJYCtmuTtccNvwtWJWD7V/6KhQqNbTX29/mrrMTTuysb6WOSVPek9NxfnUnS6MfEu4FHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dqXaYon0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732798138;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rfAvR7YYk+y9zWk1qVDAVIqs1aRRRfyOj2S8utkBWMg=;
+	b=dqXaYon0BF2rXfsIK7xnE6rJswXtYSviPJSuoDJwW31Y9t3NRxjwJnJNU8vbKiPOE2q8WY
+	g4gE5X1ANGEFc8cfPv770TXG/WKm3wV8hkKQvIeHjuyPpgsax58kmFPHPQxBZX7G5HgSZS
+	9U9F+WRdmv2sGehJ/49YFVqS2nbeEFA=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-ZSbUCyNmNli7s7F3Yjs6iA-1; Thu, 28 Nov 2024 07:48:57 -0500
+X-MC-Unique: ZSbUCyNmNli7s7F3Yjs6iA-1
+X-Mimecast-MFC-AGG-ID: ZSbUCyNmNli7s7F3Yjs6iA
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5cfca7e901cso483649a12.2
+        for <stable@vger.kernel.org>; Thu, 28 Nov 2024 04:48:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732798136; x=1733402936;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rfAvR7YYk+y9zWk1qVDAVIqs1aRRRfyOj2S8utkBWMg=;
+        b=H/PTLwfdc2IV2FalrN6lCfoeLAyGRIa5VL6SjXPj3MkeCIpL2yTD78rBaKrPk8bzIW
+         8JDKY3jPQEIKgoZPZ5g5vjcArmK007GW2kCFovaiN8Y0IDLPm7Z6pGJclOSe2jp4GhVX
+         s8BXEUyqdxfpFMs2cP8knWjdljg9KMxsHMsB2bJRre0GimwQ9bnzQOSyp1qNbw69VIeQ
+         3QhsWDFpDoymltI8jq4TlqFhUJk8jqOzeYJBqc7cY61ro5t6F1Anstq1f+pY8OS3td5E
+         LlaY0xnXnvpKiEZRy/mV+iZH9JPHdGrzl3uX6OC4x0o4dIOMW5rfwAGzaWAC0tfjbBSz
+         W59w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGToNlcjQIIubNBMWU402cI+TzkOa2Io55EPuWjYVYZeCofVYwgKNHLfMxf9qLwu54veewVtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm7fvMWLsN1ngKb8+fJf4c5PphVcRIsjglgENX7WYtD4iEIbhV
+	HuCDeGq27J5s5JJhLmxNa5z8E/1F7+xterRuWKGpvwpR/LMdFRhqio0N8IDv7cbznZF9TZ2B5NG
+	spA1AgLxsYHvQhKveCR2/t3THXVhYqngwCg8giJKml9FBWe1zmmXPdC5W7mYAaelQRasOMvrL7O
+	xy/BvyV/f8ka8rdaxSslSnEotJgL/FRWzuoTKgSO8=
+X-Gm-Gg: ASbGncvWkSO2CSHPgBACivUTfZ+jCkRFJvsOtUpS9mJzCmj9HTucM9bieAUjA3vqTZN
+	llyICRy79he9cJ3pIf/J9AKja89cxvMk=
+X-Received: by 2002:a05:6402:2807:b0:5cf:dcd4:1277 with SMTP id 4fb4d7f45d1cf-5d080b7fb27mr7644584a12.7.1732798135983;
+        Thu, 28 Nov 2024 04:48:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqespB5pnh6QZG6jUOEA2sxMetiq8Ns1u68KUXRR85sdhHWac+b1nfQFhGDLXamN5ZkQk50Wl3uPRkyzJg04Q=
+X-Received: by 2002:a05:6402:2807:b0:5cf:dcd4:1277 with SMTP id
+ 4fb4d7f45d1cf-5d080b7fb27mr7644431a12.7.1732798134201; Thu, 28 Nov 2024
+ 04:48:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
- module
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Tony Lindgren <tony@atomide.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
-References: <20241107225100.1803943-1-andreas@kemnade.info>
- <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
- <20241108184118.5ee8114c@akair> <20241111150953.GA23206@atomide.com>
- <20241111193117.5a5f5ecb@akair> <20241111234604.66a9691b@akair>
- <20241116212734.30f5d35b@akair>
- <d1679678-8996-4484-bcf4-d4eaa6f009a4@kernel.org>
- <20241127235858.44e1ce01@akair>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241127235858.44e1ce01@akair>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241127212027.2704515-1-max.kellermann@ionos.com>
+ <CAO8a2SiS16QFJ0mDtAW0ieuy9Nh6RjnP7-39q0oZKsVwNL=kRQ@mail.gmail.com>
+ <CAKPOu+-Xa37qO1oQQtmLbZ34-KHckMmOumpf9n4ewnHr6YyZoQ@mail.gmail.com> <CAKPOu+9H+NGa44_p4DDw3H=kWfi-zANN_wb3OtsQScjDGmecyQ@mail.gmail.com>
+In-Reply-To: <CAKPOu+9H+NGa44_p4DDw3H=kWfi-zANN_wb3OtsQScjDGmecyQ@mail.gmail.com>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Thu, 28 Nov 2024 14:48:43 +0200
+Message-ID: <CAO8a2Sh6wJ++BQE_6WjK0H5ySNer8i2GqqW=BY3uAgK-6Wbj=g@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/file: fix memory leaks in __ceph_sync_read()
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: xiubli@redhat.com, idryomov@gmail.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+The ergonomics and error handling on this function seem awkward. I'll
+take a closer look on how to arrange it better.
 
-
-On 28/11/2024 00:58, Andreas Kemnade wrote:
-> Am Mon, 18 Nov 2024 15:08:48 +0200
-> schrieb Roger Quadros <rogerq@kernel.org>:
-> 
->> On 16/11/2024 22:27, Andreas Kemnade wrote:
->>> Am Mon, 11 Nov 2024 23:46:04 +0100
->>> schrieb Andreas Kemnade <andreas@kemnade.info>:
->>>   
->>>> Am Mon, 11 Nov 2024 19:31:17 +0100
->>>> schrieb Andreas Kemnade <andreas@kemnade.info>:
->>>>  
->>>>> Am Mon, 11 Nov 2024 17:09:53 +0200
->>>>> schrieb Tony Lindgren <tony@atomide.com>:
->>>>>     
->>>>>> * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:      
->>>>>>> They are not used, if they are just disabled, kernel does not touch
->>>>>>> them, so if it is there, the kernel can handle
->>>>>>> pm. At least as long as it is not under ti,sysc.
->>>>>>>
->>>>>>> There are probably cleaner solutions for this, but for a CC: stable I
->>>>>>> would prefer something less invasive.        
->>>>>>
->>>>>> For unused devices, it's best to configure things to use ti-sysc, and
->>>>>> then set status disabled (or reserved) for the child devices only. This
->>>>>> way the parent interconnect target module is PM runtime managed by
->>>>>> Linux, and it's power domain gets properly idled for the unused devices
->>>>>> too.
->>>>>>       
->>>>> Hmm, we also have omap_hwmod_setup_all() which is still called if
->>>>> without device nodes being available.
->>>>>
->>>>> Converting mcspi to ti-sysc is more than 100 lines. So it does not
->>>>> qualify for stable.
->>>>>     
->>>>>>> I can try a ti-sysc based fix in parallel.        
->>>>>>
->>>>>> Yeah that should be trivial hopefully :)
->>>>>>       
->>>>> I played around, got pm issues too, tried to force-enable things (via
->>>>> power/control),
->>>>> watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
->>>>> or reset.
->>>>>
->>>>> but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
->>>>>
->>>>> I test from initramfs, so no mmc activity involved
->>>>>
->>>>> removing status = "disabled" from mcspi3 solves things.
->>>>> With and without ti-sysc conversion. removing status = "disabled" from
->>>>> mcspi4 seems not to help.
->>>>>
->>>>> That all cannot be... I will retry tomorrow.
->>>>>     
->>>> well, I tried a bit further:
->>>> I build the omap spi driver as module.
->>>> and booted With mcspi3 not disabled and no module autoload.
->>>>
->>>> without module loaded: pm bad, same as with mcspi3 disabled
->>>> with module loaded: core pm ok
->>>> with module loaded and unloaded: core pm ok.
->>>>
->>>> so at least a trace.
->>>>  
->>> ok, I am a bit further.
->>> mcspi is per default in slave mode, setting it to master solves issues.
->>> And that happens when the driver is probed because its default is
->>> master.
->>> Having the pins muxed as mode 7 also helps or selecting a pulldown for
->>> cs. (cs is active high per default!)
->>> switching to pullup does not harm once the spi module is off, but having
->>> active cs seems to prevent idling despite CM_IDLEST1_CORE
->>> not showing it.
->>>
->>> History: u-boot muxes McSPI3, because it can be available on an
->>> optionally fitted pin header. But there is no user known (would need
->>> a dtb overlay anyways). So I will rather mux to mode 7.  
->>
->> I'm sorry I didn't fully understand the problem.
->>
->> So, u-boot configures pinmux for McSPI3 and enables McSPI3 as well
->> but fails to disable it properly?
-> 
-> At least it sets Pinmux.
->  
->> And because McSPI3 is in slave mode and CS is active it fails to
->> transition to idle in Linux?
-> 
-> yes, slave mode is default.
->>
->> So isn't this a u-boot issue?
->>
-> Just telling u-boot to not mux McSPI3 helps. So, yes u-boot should not
-> set it. But. I have no clear idea how bitrot the u-boot update process
-> is. I would prefer setting the pinmux also in kernel back to the
-> default.
-> 
-That would be fine.
-
--- 
-cheers,
--roger
+On Thu, Nov 28, 2024 at 2:31=E2=80=AFPM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
+>
+> On Thu, Nov 28, 2024 at 1:28=E2=80=AFPM Max Kellermann <max.kellermann@io=
+nos.com> wrote:
+> >
+> > On Thu, Nov 28, 2024 at 1:18=E2=80=AFPM Alex Markuze <amarkuze@redhat.c=
+om> wrote:
+> > > Pages are freed in `ceph_osdc_put_request`, trying to release them
+> > > this way will end badly.
+> >
+> > I don't get it. If this ends badly, why does the other
+> > ceph_release_page_vector() call after ceph_osdc_put_request() in that
+> > function not end badly?
+>
+> Look at this piece:
+>
+>         osd_req_op_extent_osd_data_pages(req, 0, pages, read_len,
+>                          offset_in_page(read_off),
+>                          false, false);
+>
+> The last parameter is "own_pages". Ownership of these pages is NOT
+> transferred to the osdc request, therefore ceph_osdc_put_request()
+> will NOT free them, and this is really a leak bug and my patch fixes
+> it.
+>
+> I just saw this piece of code for the first time, I have no idea. What
+> am I missing?
+>
 
 
