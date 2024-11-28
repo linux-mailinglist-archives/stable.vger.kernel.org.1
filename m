@@ -1,101 +1,197 @@
-Return-Path: <stable+bounces-95753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDD89DBC31
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 19:35:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DD39DBD04
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 21:45:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E7A316439E
-	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 18:35:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D48281C7D
+	for <lists+stable@lfdr.de>; Thu, 28 Nov 2024 20:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CA81C1F33;
-	Thu, 28 Nov 2024 18:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EBD1C2334;
+	Thu, 28 Nov 2024 20:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Lcx4cKOb"
 X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5D41C1AD1;
-	Thu, 28 Nov 2024 18:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B84433B1;
+	Thu, 28 Nov 2024 20:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732818932; cv=none; b=Pw3nVIRdDZU0E44DAykzuJGqsad4KRiRwO9CUCKSzqvWieDBSUtxiJdbhBr0019Soxi2Kmbvftqhyi78q3uCAhlbnzL2dH3JDCjoikhNMChwgWhhK+zEu0/1kJYXwRyo14GTu9k/E+YXR0IzcKPhn1OekYCnYI5GWiPCD/xmyd4=
+	t=1732826735; cv=none; b=mM239hy9s5fYETBfJaXhNqhHRTv4aViwZEQ8EEzX/QxwyyohNUbueE7S3wexcQfRH7yphcJibmRfM80oJ9fTSXGGtftx6iTJASV4nybw3b50x2pBhw24mwp4JhB/znJywsBeXyT57CPOGoiTkfezxm0UV41bJzp3t7O4agqqQW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732818932; c=relaxed/simple;
-	bh=iK5M1/Niyt4Poh1Y/a5sp7IifwhDqAK7SOasFu30Oio=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thexddXWDoT0vhk1avwSb/o1ay0QtSWSItuf1vmdAB6usCJIDxURdn8teUVsWPS12/29OiN6wWYhVPUB/G4KWCs+3bGt3Ja+nw+0JXzD+t5z7aLANniTlUuo3nOJNm3RgNdPhpiPcqouOB6HpqZGfeLhx97yK45SWNYd0TeqcUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 28 Nov
- 2024 21:35:26 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 28 Nov
- 2024 21:35:26 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
-	<sashal@kernel.org>, <stable@vger.kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Boris Pismenny
-	<borisp@nvidia.com>, John Fastabend <john.fastabend@gmail.com>, "Daniel
- Borkmann" <daniel@iogearbox.net>, Jakub Kicinski <kuba@kernel.org>, "David
- S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH 5.4/5.10/5.15 1/1] net/tls: tls_is_tx_ready() checked list_entry
-Date: Thu, 28 Nov 2024 10:35:09 -0800
-Message-ID: <20241128183509.23236-2-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241128183509.23236-1-n.zhandarovich@fintech.ru>
-References: <20241128183509.23236-1-n.zhandarovich@fintech.ru>
+	s=arc-20240116; t=1732826735; c=relaxed/simple;
+	bh=UMYE0eAAYmB/PkcRW6ZCnIx6X+WRhj8jM3geWSVcjZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7bmQdr34SpFs7K10k4/N/6NSS9fA3XdGnYBmBbhjjgxbLmqNjwUG5jMhAbLr3VekhiuQu4U3UW3dBLrlw16O8LLP/0gyBHqc3C3dfh1iEJKNCGcVVgPv+WEOruVqKMJnag9kfbNFQEHx/BkkV7z76KEjfONnOuJkh80Ob95UH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Lcx4cKOb; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5320AC21;
+	Thu, 28 Nov 2024 21:45:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732826706;
+	bh=UMYE0eAAYmB/PkcRW6ZCnIx6X+WRhj8jM3geWSVcjZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lcx4cKObeZiwGP3FOLTXu/Yte4QaG1tNMlAPAy3OJsu1+qmhPqLaRIEM5x/eEboia
+	 0AhSvccogyMoTvrveonE5ld3ossGD5c1WObhtmrWTJn1+enCjo7EyzlZPYVPOltUcJ
+	 H5ZCVJI8PALVokCWHpIINSRReiIsWiXnMAoWFQLM=
+Date: Thu, 28 Nov 2024 22:45:19 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] media: uvcvideo: Support partial control reads
+Message-ID: <20241128204519.GA25731@pendragon.ideasonboard.com>
+References: <20241120-uvc-readless-v4-0-4672dbef3d46@chromium.org>
+ <20241120-uvc-readless-v4-1-4672dbef3d46@chromium.org>
+ <20241126180616.GL5461@pendragon.ideasonboard.com>
+ <CANiDSCuZkeV7jTVbNhnty8bMszUkb6g9czJfwDvRUFMhNdFp2Q@mail.gmail.com>
+ <20241127083444.GV5461@pendragon.ideasonboard.com>
+ <CANiDSCvvCtkiHHPCj0trox-oeWeh_rks3Cqm+kS9Hvtp9QC6Yg@mail.gmail.com>
+ <20241127091400.GB31095@pendragon.ideasonboard.com>
+ <CANiDSCs8o4SFx1TJYXNcWkgrzk6COoTxOKD1a02AuO4CYKxx+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiDSCs8o4SFx1TJYXNcWkgrzk6COoTxOKD1a02AuO4CYKxx+g@mail.gmail.com>
 
-From: Pietro Borrello <borrello@diag.uniroma1.it>
+On Wed, Nov 27, 2024 at 10:35:54AM +0100, Ricardo Ribalda wrote:
+> On Wed, 27 Nov 2024 at 10:14, Laurent Pinchart wrote:
+> > On Wed, Nov 27, 2024 at 09:58:21AM +0100, Ricardo Ribalda wrote:
+> > > On Wed, 27 Nov 2024 at 09:34, Laurent Pinchart wrote:
+> > > > On Tue, Nov 26, 2024 at 07:12:53PM +0100, Ricardo Ribalda wrote:
+> > > > > On Tue, 26 Nov 2024 at 19:06, Laurent Pinchart wrote:
+> > > > > > On Wed, Nov 20, 2024 at 03:26:19PM +0000, Ricardo Ribalda wrote:
+> > > > > > > Some cameras, like the ELMO MX-P3, do not return all the bytes
+> > > > > > > requested from a control if it can fit in less bytes.
+> > > > > > > Eg: Returning 0xab instead of 0x00ab.
+> > > > > > > usb 3-9: Failed to query (GET_DEF) UVC control 3 on unit 2: 1 (exp. 2).
+> > > > > > >
+> > > > > > > Extend the returned value from the camera and return it.
+> > > > > > >
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Fixes: a763b9fb58be ("media: uvcvideo: Do not return positive errors in uvc_query_ctrl()")
+> > > > > > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> > > > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > > > > ---
+> > > > > > >  drivers/media/usb/uvc/uvc_video.c | 16 ++++++++++++++++
+> > > > > > >  1 file changed, 16 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > > > > > > index cd9c29532fb0..482c4ceceaac 100644
+> > > > > > > --- a/drivers/media/usb/uvc/uvc_video.c
+> > > > > > > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > > > > > > @@ -79,6 +79,22 @@ int uvc_query_ctrl(struct uvc_device *dev, u8 query, u8 unit,
+> > > > > > >       if (likely(ret == size))
+> > > > > > >               return 0;
+> > > > > > >
+> > > > > > > +     /*
+> > > > > > > +      * In UVC the data is usually represented in little-endian.
+> > > > > >
+> > > > > > I had a comment about this in the previous version, did you ignore it on
+> > > > > > purpose because you disagreed, or was it an oversight ?
+> > > > >
+> > > > > I rephrased the comment. I added "usually" to make it clear that it
+> > > > > might not be the case for all the data types. Like composed or xu.
+> > > >
+> > > > Ah, that's what you meant by "usually". I read it as "usually in
+> > > > little-endian, but could be big-endian too", which confused me.
+> > > >
+> > > > Data types that are not integers will not work nicely with the
+> > > > workaround below. How do you envision that being handled ? Do you
+> > > > consider that the device will return too few bytes only for integer data
+> > > > types, or that affected devices don't have controls that use compound
+> > > > data types ? I don't see what else we could do so I'd be fine with such
+> > > > a heuristic for this workaround, but it needs to be clearly explained.
+> > >
+> > > Non integer datatypes might work if the last part of the data is
+> > > expected to be zero.
+> > > I do not think that we can find a heuristic that can work for all the cases.
+> > >
+> > > For years we have ignored partial reads and it has never been an
+> > > issue. I vote for not adding any heuristics, the logging should help
+> > > identify future issues (if there is any).
+> >
+> > What you're doing below is already a heuristic :-) I don't think the
+> > code needs to be changed, but I'd like this comment to explain why we
+> > consider that the heuristic in this patch is fine, to help the person
+> > (possibly you or me) who will read this code in a year and wonder what's
+> > going on.
+> 
+> What about:
+> 
+> * Some devices return shorter USB control packets than expected if the
+> * returned value can fit in less bytes. Zero all the bytes that the
+> * device has not written.
+> *
+> * This quirk is applied to all datatypes, even to non little-endian integers
+> * or composite values. We exclude UVC_GET_INFO from the quirk.
+> * UVC_GET_LEN does not need to be excluded because its size is
+> * always 1.
 
-[ Upstream commit ffe2a22562444720b05bdfeb999c03e810d84cbb ]
+For the second paragraph you could write
 
-tls_is_tx_ready() checks that list_first_entry() does not return NULL.
-This condition can never happen. For empty lists, list_first_entry()
-returns the list_entry() of the head, which is a type confusion.
-Use list_first_entry_or_null() which returns NULL in case of empty
-lists.
+ * This quirk is applied to all controls, regardless of their data type. Most
+ * controls are little-endian integers, in which case the missing bytes become 0
+ * MSBs. For other data types, a different heuristic could be implemented if a
+ * device is found needing it.
+ *
+ * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need to be
+ * excluded because its size is always 1.
 
-Fixes: a42055e ("net/tls: Add support for async encryption of records for performance")
-Signed-off-by: Pietro Borrello <borrello@diag.uniroma1.it>
-Link: https://lore.kernel.org/r/20230128-list-entry-null-check-tls-v1-1-525bbfe6f0d0@diag.uniroma1.it
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Nikita: since tls_is_tx_ready() exists only as is_tx_ready() in
-include/net/tls.h, fix the issue there instead.]
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
- include/net/tls.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > I also r/package/packet/
+> > > > >
+> > > > > Did I miss another comment?
+> > > > >
+> > > > > > > +      * Some devices return shorter USB control packets that expected if the
+> > > > > > > +      * returned value can fit in less bytes. Zero all the bytes that the
+> > > > > > > +      * device have not written.
+> > > > > >
+> > > > > > s/have/has/
+> > > > > >
+> > > > > > And if you meant to start a new paragraph here, a blank line is missing.
+> > > > > > Otherwise, no need to break the line before 80 columns.
+> > > > >
+> > > > > The patch is already in the uvc tree. How do you want to handle this?
+> > > >
+> > > > The branch shared between Hans and me can be rebased, it's a staging
+> > > > area.
+> > >
+> > > I will send a new version, fixing the typo. and the missing new line.
+> > > I will also remove the sentence
+> > > `* In UVC the data is usually represented in little-endian.`
+> > > It is confusing.
+> > >
+> > > > > > > +      * We exclude UVC_GET_INFO from the quirk. UVC_GET_LEN does not need to
+> > > > > > > +      * be excluded because its size is always 1.
+> > > > > > > +      */
+> > > > > > > +     if (ret > 0 && query != UVC_GET_INFO) {
+> > > > > > > +             memset(data + ret, 0, size - ret);
+> > > > > > > +             dev_warn_once(&dev->udev->dev,
+> > > > > > > +                           "UVC non compliance: %s control %u on unit %u returned %d bytes when we expected %u.\n",
+> > > > > > > +                           uvc_query_name(query), cs, unit, ret, size);
+> > > > > > > +             return 0;
+> > > > > > > +     }
+> > > > > > > +
+> > > > > > >       if (ret != -EPIPE) {
+> > > > > > >               dev_err(&dev->udev->dev,
+> > > > > > >                       "Failed to query (%s) UVC control %u on unit %u: %d (exp. %u).\n",
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 7f220e03ebb2..e6836a5dfb6e 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -427,7 +427,7 @@ static inline bool is_tx_ready(struct tls_sw_context_tx *ctx)
- {
- 	struct tls_rec *rec;
- 
--	rec = list_first_entry(&ctx->tx_list, struct tls_rec, list);
-+	rec = list_first_entry_or_null(&ctx->tx_list, struct tls_rec, list);
- 	if (!rec)
- 		return false;
- 
 -- 
-2.25.1
+Regards,
 
+Laurent Pinchart
 
