@@ -1,131 +1,139 @@
-Return-Path: <stable+bounces-95836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90009DEC9A
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:03:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B109DECB6
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:35:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AED1B28204D
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 20:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F07216330B
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 20:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83DC1A2C21;
-	Fri, 29 Nov 2024 20:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYUlLyS1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A6715697B;
+	Fri, 29 Nov 2024 20:35:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6896713DB9F
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 20:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B1313AA35;
+	Fri, 29 Nov 2024 20:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732910602; cv=none; b=ukZZcCnJHtEBzGKIr0sQAM9Y1IsE6ghVFCx2wcCpudF4+RYFvRu2C1YKewmc9KdL80s2QXPoiejpT7JYpaoB1aAlleDotMfwt4klTZ4eudtxgkYZVfAkYbchrROZ/PglfXn/CDd6zh6R4y0QTEXXnNprDbDzzpb0xvsZtnPESBI=
+	t=1732912505; cv=none; b=Oe8Rh+j1ZOTUjMwjsuWf/7bLjpG7idtX4ScR/nxfv1ZPeZa1nQKeJ7lJMCfpUzV0BOgrX6v1qjYYiCTy0JuqhtlQVnIN5pMSf39xoQOgZnFCZuc+7FS4HtaI2fVYoW+gCQC4xnxkw81eVl05qf/KML5pciXNCMapQZXsDZlR/LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732910602; c=relaxed/simple;
-	bh=hQoCZOfiKKGU4a8ngvsHH+SKw713wUaoPD9e+sMHwWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiTDCi4vY8Jnnwe1ewTqQw7nOFswxpx6psPMJeoPyit90I1vCPUzpMU6YC3nOWPQXvA8Xafprj5ZHUK+NsCNK5wnuKdRopwyE9MdZP9ECumHU27eCxA1wzfGl9GcVk19Q77a/OadJ98ap7vTFUR6GLUZq5F4qQQGqF10tNHrU1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYUlLyS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED90C4CECF;
-	Fri, 29 Nov 2024 20:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732910601;
-	bh=hQoCZOfiKKGU4a8ngvsHH+SKw713wUaoPD9e+sMHwWo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYUlLyS14lvUrdp6pq1nyhgrsltA/52wPzYT+cTCli5276vi9VTPC+VYqRrB+Yy+D
-	 mdwovhd6IOpJ00BDJnDLiDZN5GqhzsiDJCxAHRvPIKRczAzP1EQxaNAv0TIpaS/fa3
-	 4q3HrDU7lHrSu/th2v+pMVaKo6YF9o4lNziIk27Fab9QEkni1h07bvdB9PzclBBote
-	 kWgCcrTrqJNSe4nM/MVOpfA/6aR8PzrzNLC8GjuzpQC6/3udAHaacsKxeBuswSYO0I
-	 ySvKt++uZNt+1iWqetWHLSIH0yILgFPfLv602U4b+8DxHQnYrLNkXpTPUQTIXxrBxy
-	 WnzzYJgDmq4vQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-Date: Fri, 29 Nov 2024 15:03:20 -0500
-Message-ID: <20241129140614-af295bd2976d3ea8@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241129060856.26060-2-hagarhem@amazon.com>
-References: 
+	s=arc-20240116; t=1732912505; c=relaxed/simple;
+	bh=YMFWazRWvhRQepmnWfacv5koAFIfgM6etwtnuQizzpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lywr0p3pfxHmd5/aeS8INExmzFv/xWMFvw1Kt5UqqmChUvhyqnXgGrmO8WxLOJqbAefcCOgRd23e9siGlLqvWXSJmo2vHhUwJzNlwhf672+13lzVbIRUGycmLvBZRGGEeD788MZ9Cfc11irrCcBEAWgDCBhHkjkzQ/afTW7Fj9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 1BC381C00A0; Fri, 29 Nov 2024 21:34:54 +0100 (CET)
+Date: Fri, 29 Nov 2024 21:34:53 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Pavel Machek <pavel@denx.de>, Borislav Petkov <bp@alien8.de>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, puwen@hygon.cn, seanjc@google.com,
+	kim.phillips@amd.com, jmattson@google.com, babu.moger@amd.com,
+	peterz@infradead.org, rick.p.edgecombe@intel.com, brgerst@gmail.com,
+	ashok.raj@intel.com, mjguzik@gmail.com, jpoimboe@kernel.org,
+	nik.borisov@suse.com, aik@amd.com, vegard.nossum@oracle.com,
+	daniel.sneddon@linux.intel.com, acdunlap@google.com,
+	Erwan Velu <erwanaliasr1@gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.15 11/12] x86/barrier: Do not serialize MSR
+ accesses on AMD
+Message-ID: <Z0olbd3OYQnlmW+D@duo.ucw.cz>
+References: <20240115232718.209642-1-sashal@kernel.org>
+ <20240115232718.209642-11-sashal@kernel.org>
+ <20241128115924.GAZ0hbHKsbtCixVqAe@fat_crate.local>
+ <Z0iRzPpGvpeYzA4H@sashalap>
+ <20241128164310.GCZ0idnhjpAV6wFWm6@fat_crate.local>
+ <Z0mNTEw2vK1nJpOo@duo.ucw.cz>
+ <Z0nD6NZc3wmq8_v9@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-[ Sasha's backport helper bot ]
-
-Hi,
-
-The upstream commit SHA1 provided is correct: 556a7c039a52c21da33eaae9269984a1ef59189b
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hagar Hemdan <hagarhem@amazon.com>
-Commit author: Kan Liang <kan.liang@linux.intel.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="E/ga9PEn1OI4TTxc"
+Content-Disposition: inline
+In-Reply-To: <Z0nD6NZc3wmq8_v9@sashalap>
 
 
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.11.y | Present (exact SHA1)
-6.6.y | Not found
-6.1.y | Not found
+--E/ga9PEn1OI4TTxc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Note: The patch differs from the upstream commit:
----
-1:  556a7c039a52c ! 1:  39f65e280d338 perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-    @@ Metadata
-      ## Commit message ##
-         perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-     
-    +    [ Upstream commit 556a7c039a52c21da33eaae9269984a1ef59189b ]
-    +
-         The below error is observed on Ice Lake VM.
-     
-         $ perf stat
-    @@ Commit message
-         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-         Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
-         Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
-    +    [ Minor changes to make it work on 6.1 ]
-    +    Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-     
-      ## arch/x86/events/intel/core.c ##
-    -@@ arch/x86/events/intel/core.c: exra_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-    - 	return x86_pmu.version >= 2 ? attr->mode : 0;
-    +@@ arch/x86/events/intel/core.c: default_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-    + 	return attr->mode;
-      }
-      
-     +static umode_t
-    @@ arch/x86/events/intel/core.c: exra_is_visible(struct kobject *kobj, struct attri
-      
-      static struct attribute_group group_events_mem = {
-     @@ arch/x86/events/intel/core.c: static umode_t hybrid_format_is_visible(struct kobject *kobj,
-    - 	return (cpu >= 0) && (pmu->pmu_type & pmu_attr->pmu_type) ? attr->mode : 0;
-    + 	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
-      }
-      
-     +static umode_t hybrid_td_is_visible(struct kobject *kobj,
-    @@ arch/x86/events/intel/core.c: static umode_t hybrid_format_is_visible(struct kob
-     +
-     +
-     +	/* Only the big core supports perf metrics */
-    -+	if (pmu->pmu_type == hybrid_big)
-    ++	if (pmu->cpu_type == hybrid_big)
-     +		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
-     +
-     +	return attr->mode;
----
+On Fri 2024-11-29 08:38:48, Sasha Levin wrote:
+> On Fri, Nov 29, 2024 at 10:45:48AM +0100, Pavel Machek wrote:
+> > Hi!
+> >=20
+> > > > You've missed the 5.10 mail :)
+> > >=20
+> > > You mean in the flood? ;-P
+> > >=20
+> > > > Pavel objected to it so I've dropped it: https://lore.kernel.org/al=
+l/Zbli7QIGVFT8EtO4@sashalap/
+> > >=20
+> > > So we're not backporting those anymore? But everything else? :-P
+> > >=20
+> > > And 5.15 has it already...
+> > >=20
+> > > Frankly, with the amount of stuff going into stable, I see no problem=
+ with
+> > > backporting such patches. Especially if the people using stable kerne=
+ls will
+> > > end up backporting it themselves and thus multiply work. I.e., Erwan'=
+s case.
+> >=20
+> > Well, some people would prefer -stable to only contain fixes for
+> > critical things, as documented.
+> >=20
+> > stable-kernel-rules.rst:
+> >=20
+> > - It must fix a problem that causes a build error (but not for things
+> >   marked CONFIG_BROKEN), an oops, a hang, data corruption, a real
+> >   security issue, or some "oh, that's not good" issue.  In short, somet=
+hing
+> >   critical.
+> >=20
+> > Now, you are right that reality and documentation are not exactly
+> > "aligned". I don't care much about which one is fixed, but I'd really
+> > like them to match (because that's what our users expect).
+>=20
+> You should consider reading past the first bullet in that section :)
+>=20
+>   - Serious issues as reported by a user of a distribution kernel may also
+>     be considered if they fix a notable performance or interactivity issu=
+e.
+>=20
+> It sounds like what's going on here, no?
 
-Results of testing on various branches:
+Is it? I'd not expect this to be visible in anything but
+microbenchmarks. Do you have user reports hitting this?
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+It is not like this makes kernel build 10% slower, is it?
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--E/ga9PEn1OI4TTxc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ0olbQAKCRAw5/Bqldv6
+8nqWAKCCRon2Yj6x3KIUKSIIIdoM+cRC2ACeN7Blhft5imjMVc0BI9j3TD6S7DE=
+=OHlZ
+-----END PGP SIGNATURE-----
+
+--E/ga9PEn1OI4TTxc--
 
