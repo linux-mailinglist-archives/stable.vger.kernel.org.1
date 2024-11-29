@@ -1,101 +1,142 @@
-Return-Path: <stable+bounces-95839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB779DECD8
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 22:18:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2FA9DECDE
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 22:20:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7D01638A3
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:18:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8777B20AC9
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6B9189BAD;
-	Fri, 29 Nov 2024 21:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7A8189BAD;
+	Fri, 29 Nov 2024 21:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQJe0Nft"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nnTjujDb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2286915AF6;
-	Fri, 29 Nov 2024 21:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6700B155300
+	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 21:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732915119; cv=none; b=a7BQjFEBmEVh4v08PejP8WyKnrqEzBZU4mpuZYAReq3ZrHESbe/CohQ3VuhOWjZ0it+5CV6rPNoFwn9pDQwXs9EDj6svNXa5FUZMXyvj8tjb/jW6PmTfURIm4kVGuuys3WDKWcqrnCbhOQZiZSv7sXU/0JXRCrsZNcdDONi61bg=
+	t=1732915252; cv=none; b=aThga7RIMJl4ZRbka85QW8ofb8Vdi7u+6jRKGRjofDOQ5mBn4Y7np5A7QFgMoIT1/rq8P7Y6ED3xvXC8NsqKM31MWfOYPho1mGJKz/lK8LsB4YyssBMha+5iKehT3UU1idDRfQthytYO8bgoKh/9thocpw47tJU6T9a0yuJ+Vug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732915119; c=relaxed/simple;
-	bh=9onmvIaJLISG67vwgchmVef7Mm+BpVYqrZJhuC2/nSA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZnhCxhOzTfCzgXu5tSzquaY4kKwO9jYHLruF9oAjx4Br/i6OUMMkJTJfaAGti2lNzrU059MrB5dh2sI2oWKQfhya40oF+Vpb8hMcMmm6Vkh15W7iwjHzmtNLn6sgUkJ2Rqp3UuEzKqtitAWjEaCZQzjVb+uvdkvK9mAOQ0s/xyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQJe0Nft; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b66d5f6ec8so153649285a.0;
-        Fri, 29 Nov 2024 13:18:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732915117; x=1733519917; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9onmvIaJLISG67vwgchmVef7Mm+BpVYqrZJhuC2/nSA=;
-        b=NQJe0NftObYCyitn6dHM6W73QUmkgRy6c6l5A3K95dGtytvBhRfeovS7QYGxm5dDaA
-         Bu963OucFXfpyiGLluPo41R/H/rOiCkrVh0e5j3qHPjJggw0PyDo/LbMr+eynkqJcy/L
-         xHjrorpnTup4QMUv900wQpchmZRY4MkfIHu1rkoOkxDJKWY09kOYcFSWUigmxUKZe1tI
-         LTwXAU8KYJjCpOz8ftmzdofynjhiuZg3iVMZDi2GJTrsHRWs0PbTyBAQPwj8mzo2nXYu
-         0eLAWmbxjK7AmgIXRocu4P53RkcV4nBfyMf1URcqDLYcEgXIKl1LqVLziLOJ+LqVXUrF
-         sMrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732915117; x=1733519917;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9onmvIaJLISG67vwgchmVef7Mm+BpVYqrZJhuC2/nSA=;
-        b=w4vkDHDw/90rhfV9z5oZpCgADoWaa0zH1EtZ8vDdNk+oWq0wg8iDScKIxZvYw4R4AR
-         GIM3IGlJF/2IM2UASd4UU4tL5NB3bjlRxpmb9MJP2UF1MpVWOfHFKhSy2KFWb31VFATx
-         wicmPb2Hrp1zDS1W/qd9cYlRjEKySKtBOu7qCwx10RC0hL25vn5nMTYqpVDZMqjxuZz8
-         7ccqdmQfGd2oy4CCGZJDm3E/Gnr5M+AWSWaDfnCP04chq5HJiAZsxakUZYw+BvpfBQLl
-         65pcPf1fqeby50wThm8V2Bb24Ltdl8gOVx+xl3tBkuxMqBCpPZK5JiY823CTSgR1bN/r
-         bVDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFmbjJpvNbSGuNbBfgyh7kgtudySNcYtcoY37fHjF7yLOfzeuUD8g56TDoW6vTO2dOIxK7GDomFV0rmoc=@vger.kernel.org, AJvYcCVJDYfulta4SfAfIRN3JUoExwJsfM7iMehuaSldn1wUu9Nqti6vAPR1SeYUEZidB9PCgfJnxdAu@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgRylA9N/X37HthOzcKKfOyxY+i7mmSG76xydkh3qCYBFtOExt
-	e8TARDeWOv9so8PiX/ZeZMYXI3H7gySVPb7XMPHz5u/MnA0G5Y+NptlyY1maSakGuPK+1oBebMd
-	AqXIeeR85FXhsre2nL6gWTsv+wik=
-X-Gm-Gg: ASbGncthoHVj1SwYtCFty1aEUtjB6jiwTiPRWmErrp4HlTDyNezu1nrBbeJy3/R3hr9
-	lEfStLju4er+57WsrEfr4ajiG1eHCTZWakLt7Fm6DbVeIYcSMqhGwWE96
-X-Google-Smtp-Source: AGHT+IEkWpCGrfP+Fw8sEVM7ooU4K9gi3GzorgaZIVsmnsijPL3UKcok7+Lxti1KIwLzS+qUu0AIzifd42VpEKhIF5A=
-X-Received: by 2002:a05:620a:2715:b0:7a4:d685:caa9 with SMTP id
- af79cd13be357-7b67c46384emr2348891085a.48.1732915117107; Fri, 29 Nov 2024
- 13:18:37 -0800 (PST)
+	s=arc-20240116; t=1732915252; c=relaxed/simple;
+	bh=/OIS65UgVyCsbYd4J0PHLr/KtC6EVuk2tik4ryOqy28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MdO2qg/4AFB3Z/zvhFUsIb3QUFB2V+Anl4JdZ0uuG07UD0En5CGIr1poKKLUXA5sfyVNAXEbBi1sNoZP2ex7C9cwdCVI7aGkd6IVhRtPFtG7PvtIHiNdCxQs3gbDkqiOMEgo1uOeNMMPdvsbywa8Jz2l1bJzs+FGoX78qscUdXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=nnTjujDb; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.80.160.39] (unknown [108.142.230.59])
+	by linux.microsoft.com (Postfix) with ESMTPSA id F1789205307D;
+	Fri, 29 Nov 2024 13:20:49 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F1789205307D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1732915250;
+	bh=5d+ZyJYYnXStYtwE+mk37XMR1YxN9NgIxHaoVNulVAU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nnTjujDbjr/UpS9OB2ML3/gmoAvJwsyhUv4XsBtqqp5+t0Oh6xYxMxEyaCqDWyWe9
+	 IkRVyu/CkBV1QqHerFc3oSc1nfkzOMQtCZFmbB916xvQpuTpR/B9oVU4+a2uN8b3HH
+	 PCFT8ksXEx6zVdY9/1lEjvMrsGiqSKz+Rd/C9GBY=
+Message-ID: <95cf11dc-6771-4a53-9c34-20ee27bfeaa2@linux.microsoft.com>
+Date: Fri, 29 Nov 2024 22:20:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240115232718.209642-1-sashal@kernel.org> <20240115232718.209642-11-sashal@kernel.org>
- <20241128115924.GAZ0hbHKsbtCixVqAe@fat_crate.local> <Z0iRzPpGvpeYzA4H@sashalap>
- <20241128164310.GCZ0idnhjpAV6wFWm6@fat_crate.local> <Z0kJHvesUl6xJkS7@sashalap>
- <CAL2Jzuxygf+kp0b9y5c+SY7xQEp7j24zNuKqaTAOUGHZrmWROw@mail.gmail.com>
- <20241129133310.GDZ0nClg7mDbFaqxft@fat_crate.local> <Z0nfomc6TKd-17S9@sashalap>
-In-Reply-To: <Z0nfomc6TKd-17S9@sashalap>
-From: Erwan Velu <erwanaliasr1@gmail.com>
-Date: Fri, 29 Nov 2024 22:18:26 +0100
-Message-ID: <CAL2Jzux9JrS95dTAOgH6+FFa8suHZ2SLcDwF4+dXNg4xxYG8Wg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 5.15 11/12] x86/barrier: Do not serialize MSR
- accesses on AMD
-To: Sasha Levin <sashal@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, 
-	x86@kernel.org, puwen@hygon.cn, seanjc@google.com, kim.phillips@amd.com, 
-	jmattson@google.com, babu.moger@amd.com, peterz@infradead.org, 
-	rick.p.edgecombe@intel.com, brgerst@gmail.com, ashok.raj@intel.com, 
-	mjguzik@gmail.com, jpoimboe@kernel.org, nik.borisov@suse.com, aik@amd.com, 
-	vegard.nossum@oracle.com, daniel.sneddon@linux.intel.com, acdunlap@google.com, 
-	pavel@denx.de
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15] kernfs: switch global kernfs_rwsem lock to per-fs
+ lock
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
+ Sasha Levin <sashal@kernel.org>, Tejun Heo <tj@kernel.org>
+References: <20241129113236.209845-1-jpiotrowski@linux.microsoft.com>
+ <2024112923-constrict-respect-a0a6@gregkh>
+Content-Language: en-US
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <2024112923-constrict-respect-a0a6@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Or LPC? I don't usually end up attending KR but Greg is always there :)
-<innocent tone>
-You should come once, it's such a nice conference!
-</innocent>
+On 29/11/2024 13:12, Greg Kroah-Hartman wrote:
+> On Fri, Nov 29, 2024 at 12:32:36PM +0100, Jeremi Piotrowski wrote:
+>> From: Minchan Kim <minchan@kernel.org>
+>>
+>> [ Upstream commit 393c3714081a53795bbff0e985d24146def6f57f ]
+>>
+>> The kernfs implementation has big lock granularity(kernfs_rwsem) so
+>> every kernfs-based(e.g., sysfs, cgroup) fs are able to compete the
+>> lock. It makes trouble for some cases to wait the global lock
+>> for a long time even though they are totally independent contexts
+>> each other.
+>>
+>> A general example is process A goes under direct reclaim with holding
+>> the lock when it accessed the file in sysfs and process B is waiting
+>> the lock with exclusive mode and then process C is waiting the lock
+>> until process B could finish the job after it gets the lock from
+>> process A.
+>>
+>> This patch switches the global kernfs_rwsem to per-fs lock, which
+>> put the rwsem into kernfs_root.
+>>
+>> Suggested-by: Tejun Heo <tj@kernel.org>
+>> Acked-by: Tejun Heo <tj@kernel.org>
+>> Signed-off-by: Minchan Kim <minchan@kernel.org>
+>> Link: https://lore.kernel.org/r/20211118230008.2679780-1-minchan@kernel.org
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+>> ---
+>> Hi Stable Maintainers,
+>>
+>> This upstream commit fixes a kernel hang due to severe lock contention on
+>> kernfs_rwsem that occurs when container workloads perform a lot of cgroupfs
+>> accesses. Could you please apply to 5.15.y? I cherry-pick the upstream commit
+>> to v5.15.173 and then performed `git format-patch`.
+> 
+> This should not hang, but rather just reduce contention, right? Do you
+> have real performance numbers that show this is needed? What workloads 
+> are overloading cgroupfs?
+
+System hang due to the contention might be a more accurate description. On a
+kubernetes node there is always a stream of processes
+(systemd, kubelet, containerd, cadvisor) periodically opening/stating/reading cgroupfs
+files. Java apps also love reading cgroup files. Other operations such as creation of
+short-lived containers take a write lock on the rwsem when creating cgroups and when
+creating veth netdevs. The veth netdev creation takes the rwsem when creating sysfs files.
+Systemd service startup also contends for the same write lock.
+
+It's not so much a particular workload as it is a matter of scale, the cgroupfs read
+accesses scale with the number of containers on a host. With enough readers and the
+right mix of writers, write operations can take minutes.
+
+Here are some real performance number: I have a representative reproducer with 50 cgroupfs
+readers in a loop and a container batch job every minute. `systemctl status` times out
+after 1m30s, container creation takes over 4m causing the operations to pile up, making the
+situation even worse. With this patch included, under the same load the operations finish in
+~10s, preventing the system from becoming unresponsive.
+
+This patch stops sysfs and cgroupfs modifications from contending for the same rwsem,
+as well as lowering contention between different cgroup subsystems.
+
+
+> And why not just switch them to 6.1.y kernels or newer?
+
+I wish we could just do that. Right now all our users are on 5.15 and a lot of their
+workloads are sensitive to changes to any part of the container stack including kernel
+version. So they will gradually migrate to kernel 6.1.y and newer as part of upgrading
+their clusters to a new kubernetes release after they validate their workloads on it.
+This is a slow process and in the meantime they are hitting the issue that the patch
+addresses. I'm sure there are other similar users of 5.15 out there.
+
+> 
+> thanks,
+> 
+> greg k-h
+
+Thanks,
+Jeremi
 
