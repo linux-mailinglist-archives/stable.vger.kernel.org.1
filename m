@@ -1,75 +1,78 @@
-Return-Path: <stable+bounces-95774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B149DBF64
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 07:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626C89DBF63
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 07:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45890B21B73
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A68281D56
 	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 06:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B218E1547FD;
-	Fri, 29 Nov 2024 06:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506D515624D;
+	Fri, 29 Nov 2024 06:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gUt3hjfE"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="lEuuKDJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E59184F
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 06:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F588184F
+	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 06:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732860547; cv=none; b=pKSftIRjLES+aYOHvrP0i0MwtF2kDHRgJttdv8n2QL51ZjjEQyqyPs06lHaXZmL1NPjNQx4olsMB/beE2fYJxBhLuWaTLg7SX3JpCJknNwk/7Ma8ZVhNYB8/xfc+HlIh7jxXx5yoiUNLkD6suU8bClLAdgC4FPQ5bhwuebxBUkc=
+	t=1732860551; cv=none; b=Yc8iNrwQ/9of2qGxVD+Pi4ob6euO5R/Xc9jJeKPHIxolIW9ACDMd+aFzPfbpm3IQUvADzr1cNOQFgx+g4K5YdkBNRiLYLloHvEkNmjtPEJsz5mZU+rw9vRu3vvrjlmaeDc6Y5gdeogFutQ57Y4JOoWKDXGOKDdHLsxEYwF6f2CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732860547; c=relaxed/simple;
-	bh=PNkiP0VK7Ip++Vg9Ydroq2C86VTtZfj2BrYnEML7Pq4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nkIhNgpr7yfoWoJW9hP2EEL3jaTWtzzJ1fcrP8wmWxdeXHvse4/3HMnBqygr7hWB4p3OsICFMCYfk0pTr9e14hHpWj8mFnC8cLw80XAKa/KVoElYZ2UFcDNkPiGa20UBR8rtDH5Vppj2q7x7vgf/VIRTJWE6m2cferz4N5XQW/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gUt3hjfE; arc=none smtp.client-ip=207.171.188.206
+	s=arc-20240116; t=1732860551; c=relaxed/simple;
+	bh=4agiga2S4m7mpS1VA9Y8a4ZCfKSQKHX0/HMD3GHYxDo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L3ekpL/asYsfXTEu8wrrf8wxW54ijPvVw0DSLWIM6sRk2vaG4yxb/C8xVrVwDl6jK4LwmQkWFH9TvalCU6LxujT/K2qbre8ue9yfgtSxzXUsgCuDYhI+YvGsLeW+EPD1xVYEHwX9XoA4fbpmxHPR08JIgaYb8sbWIZGyyf8irM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=lEuuKDJy; arc=none smtp.client-ip=207.171.188.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1732860547; x=1764396547;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GB4xfh4ocN/L0oK7f1pFAys1btC1Smq3yi13CQOq8yc=;
-  b=gUt3hjfEf0x3oQjwtviMtCNHb/hab2L//tWAWGDZTdHwK7AmGE3vNwBA
-   LZXgV/imq1G1+TileIV4ah95/6INaYbOofvu8gw6+jZqlWkT+V8wqCex+
-   6PoC6cqHphbh5VtSIhgWBLQL0s2UQ8lIL4eYUw7nKbVIaxgIdIeeOLuxM
-   U=;
+  t=1732860551; x=1764396551;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=izfIiRiUb/s6vn9a9qXkgBsh3Bkn8sjevJa7VIvCwo0=;
+  b=lEuuKDJyn1Pc6YCPN9xiJy4K+utX5SxTdRWWmblYiN8j3vFYrwb6n7o6
+   LRcL9LMp0iUDkbX6Z17AUmj2DTD3EtvP758q7sd26x7aWqx8tVcR4WZm2
+   8N4R6ehpb6NMcQQV9uDFcZJrC5apdfQRKM4bI0LukT4sZzix+lcthvPwJ
+   Y=;
 X-IronPort-AV: E=Sophos;i="6.12,194,1728950400"; 
-   d="scan'208";a="779519657"
+   d="scan'208";a="779519667"
 Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:09:01 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:5137]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.32.230:2525] with esmtp (Farcaster)
- id 3aa0b829-55aa-4374-bdc4-5e98d2c076b1; Fri, 29 Nov 2024 06:08:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 3aa0b829-55aa-4374-bdc4-5e98d2c076b1
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:09:11 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:1825]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.2:2525] with esmtp (Farcaster)
+ id b6ce75b9-e9ef-421f-b8b7-cab97c065bbc; Fri, 29 Nov 2024 06:09:09 +0000 (UTC)
+X-Farcaster-Flow-ID: b6ce75b9-e9ef-421f-b8b7-cab97c065bbc
+Received: from EX19MTAUWC002.ant.amazon.com (10.250.64.143) by
  EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 29 Nov 2024 06:08:59 +0000
-Received: from email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
+ Fri, 29 Nov 2024 06:09:07 +0000
+Received: from email-imr-corp-prod-pdx-all-2c-475d797d.us-west-2.amazon.com
+ (10.25.36.210) by mail-relay.amazon.com (10.250.64.149) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Fri, 29 Nov 2024 06:08:59 +0000
+ 15.2.1258.34 via Frontend Transport; Fri, 29 Nov 2024 06:09:07 +0000
 Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-iad-all-1a-93a35fb4.us-east-1.amazon.com (Postfix) with ESMTP id DA611406F5;
-	Fri, 29 Nov 2024 06:08:58 +0000 (UTC)
+	by email-imr-corp-prod-pdx-all-2c-475d797d.us-west-2.amazon.com (Postfix) with ESMTP id DA3AAA1091;
+	Fri, 29 Nov 2024 06:09:06 +0000 (UTC)
 Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id 95B4F224B1; Fri, 29 Nov 2024 06:08:58 +0000 (UTC)
+	id 738E7224B1; Fri, 29 Nov 2024 06:09:06 +0000 (UTC)
 From: Hagar Hemdan <hagarhem@amazon.com>
 To:
 CC: <stable@vger.kernel.org>, Kan Liang <kan.liang@linux.intel.com>, "Dongli
  Zhang" <dongli.zhang@oracle.com>, Peter Zijlstra <peterz@infradead.org>,
 	"Hagar Hemdan" <hagarhem@amazon.com>
-Subject: [PATCH 6.6] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-Date: Fri, 29 Nov 2024 06:08:55 +0000
-Message-ID: <20241129060856.26060-1-hagarhem@amazon.com>
+Subject: [PATCH 6.1] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
+Date: Fri, 29 Nov 2024 06:08:56 +0000
+Message-ID: <20241129060856.26060-2-hagarhem@amazon.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20241129060856.26060-1-hagarhem@amazon.com>
+References: <20241129060856.26060-1-hagarhem@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,7 +112,7 @@ Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
 Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
-[ Minor changes to make it work on 6.6 ]
+[ Minor changes to make it work on 6.1 ]
 Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 ---
  arch/x86/events/intel/core.c | 34 +++++++++++++++++++++++++++++++++-
