@@ -1,267 +1,352 @@
-Return-Path: <stable+bounces-95782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B629DC034
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 09:02:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 020971617DA
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 08:02:03 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6C2165F13;
-	Fri, 29 Nov 2024 08:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NE4ZOwmR"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAAD9DC032
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 09:02:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E5515D5B6
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 08:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732867237; cv=fail; b=ktp98yKNvFT2Aytq1cw06UWqWWUvoCrZYHMyHJJCUu9oCstl/9LXnZ7J4QNaMLGU/bPSps+zFml9gl9lOj6/catZeTsbcQcEMbPz3P6WCNdvrKjMS2mkLmOFfmRhWk+3QrpeFEeFC+DahtrzXKgBdFPE2hHeblPBaYUlJ6yIKyI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732867237; c=relaxed/simple;
-	bh=eaDlPEpXiEXuCF92hAy3tQlJD5OyOjRMZ6an0zoiKLc=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=p9WrqXl0pqHaM3ABJh09l3iJyU4OeZZpDSALEzq3kieHBj+wv5Js0KZa7ZV4Nl05n0otVlDrZR1f/oygI6/NINQxfoHFgt9AXLkxJ223Db4/lhicBKq4Eamwbdo7xvXB04+g9R5q1C0dAT6Oj/koDiWI+3CJgSbiHt8G0mGlxsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NE4ZOwmR; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732867236; x=1764403236;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=eaDlPEpXiEXuCF92hAy3tQlJD5OyOjRMZ6an0zoiKLc=;
-  b=NE4ZOwmRhNoG/Xzpswj9Bnyck55NmIoxIZnfF5YrqMVqL1gfDXpMCW1U
-   Bhdgdli3BDlC+RVNDoHpw5QgvN76wE6GtAL0NZudhtEURTArvPp21CqsG
-   wgOTAXtESeILjTHmWM+uh3eknFZp78iJO+SoS1SCgA40ZMfuSVbjMJrnH
-   pcuVi3f9ZAlaqgMwk0CE2SBK6b/xD2eqk4/WsV+gAxZ8ilCpT2+DeL7qP
-   PFeB2qZ0YuRmlS26zgmrKAUmxVLskgquJ5isrr7sQ60vdWxBmp9cyqPTM
-   TadqNTJANp1ah4Vi36yr2URqhKWapQJ2nM+vKC8YKGmkplNkREpBzzGlX
-   Q==;
-X-CSE-ConnectionGUID: eAbl3N/XRKG7OVCXDgfHuA==
-X-CSE-MsgGUID: XlUoGyKfQfa5230G4w3MMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="32466373"
-X-IronPort-AV: E=Sophos;i="6.12,194,1728975600"; 
-   d="scan'208";a="32466373"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 00:00:35 -0800
-X-CSE-ConnectionGUID: Rly9s78rRFWD3ggZOcuTHQ==
-X-CSE-MsgGUID: fUMLCRicQOO/p8Io89Sn7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,194,1728975600"; 
-   d="scan'208";a="115705562"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Nov 2024 00:00:35 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 29 Nov 2024 00:00:34 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 29 Nov 2024 00:00:34 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.44) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 29 Nov 2024 00:00:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X/Ufnxkc6Zz+tl2V/fPoZ6Axv3R6eAVwDkB/ULl3NPFagVmS+MhMdAaYqhCgJGTHf3BkQkE1THa9BtbsMdXBcq4c/AwosWwlgbz7D9SW0Dxt6W6C0fGO9F63Fy4MEmy7EE+gBMfY44Ymsl7jTtt3/QEdR7YcgtKj9prpEr76BRk15fvE1OOJJZkU2r+cIzxxJmSg36ztpqAPyLy3wEbJpILkwKfepW7FVnN0vyk2m86b6Gdw2AjtmNu5AjxWbuZBMQjRrIlwjiKMgQDmzv3xKS4Tv9uCeJGO038SLN1/KK1nZa/ZqvOF+hcozCNfbHh2PP4OFJyvad+kLj7NlWmk9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ma52lBYCz1il9p3eMpk598A36ZLGR11zf/TEqSPxzKo=;
- b=Q4V+NQHgxRTixOo2VZotCdAwbGjMn3M45lEKAulFObu4gwKQCA4+rGJi6dHidqqDGHt/opche/PeYRO4+byVUVrGp5r+ImN1WuWoHlfF8J/j42QiHnd/UsRMBmH9S1ifMISuKAn1TG4eZOHVw6WoJF0MSli4fE3DbjoQ1O45k8keILMhxjL7pk7Ozagv6WfPWwsc2AXxnaaNCQqgdNBT57PIH97uB8+Soa+aTDYIL/Kd7wSNq+SWoS3TG7MqukNocXJbD05E7rZiBhLX65mZgaHX6Xjh9dSvs7pG0j3Pr44l9ZEG7aN3rIAKyIdgLEz6SwP6owgkI/3GPteQojJMMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by MW3PR11MB4633.namprd11.prod.outlook.com (2603:10b6:303:5b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.15; Fri, 29 Nov
- 2024 08:00:31 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.8207.010; Fri, 29 Nov 2024
- 08:00:24 +0000
-Message-ID: <09913faf-f70f-4deb-bc24-295796c8d0ca@intel.com>
-Date: Fri, 29 Nov 2024 13:30:17 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/modes: Avoid divide by zero harder in
- drm_mode_vrefresh()
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
-	<dri-devel@lists.freedesktop.org>
-CC: <intel-gfx@lists.freedesktop.org>, <stable@vger.kernel.org>,
-	<syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com>
-References: <20241129042629.18280-1-ville.syrjala@linux.intel.com>
- <20241129042629.18280-2-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20241129042629.18280-2-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN2PR01CA0171.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26::26) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DEF92821EC
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 08:02:28 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBAB15855C;
+	Fri, 29 Nov 2024 08:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="V8sWKUQA";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="V8sWKUQA"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFD01581E1;
+	Fri, 29 Nov 2024 08:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732867299; cv=none; b=BSk26caeYyR4L3Vy0bfWPsESgA+IDlls3/4DnIw00Ev9ytXjhESU9h1SVt9z5PUXwFg+f77VHG6T4Y7SynzmkezFgF9pRPsjOb8INRPG1DAz9PxNxLfPasTksZNY2Wis7EYvCMbsOOCQ0njRON52BBuvNvcV20weqwxbGSbOUGo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732867299; c=relaxed/simple;
+	bh=4X8ji4NpJvb4/98bZ9okzZx1P3sIj36Z9TzMuefqK48=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j0ip+AKsNM2VYC8de7hFTJVYnWfp1TiuHKFGIiuBAkCJKOSpZlZ2tfpqzjtQx+9mETbTKmKxuRTF65qszkqc1fEif617FK3vsNoNYio8VhB8/ODP5DTjwP9iEmcrkQdz53vjCZ7IU1VEGt/EGrsejlWzc2u6mn01ma9Hzc4FkFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=V8sWKUQA; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=V8sWKUQA; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1DBCC21171;
+	Fri, 29 Nov 2024 08:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1732867289; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=m0UHUDYXDoqPbdg3gmyZIIC14Kz7EjSHm1CxVtkCePA=;
+	b=V8sWKUQAzUsLa6Ot0jcgo3epEr89NYrpbYv1EZjyDbGuyBK/njnKNOO2+A7iqG4/Ns1S5s
+	PC6Zh/UlvaCtdtIVvCQm3eKqR9bEIyDjrpU6TikZAV/+wtIa+Lf9QW1/3SypVIXeETUa8V
+	q2BEsnMwRa07lwlh1h4io30Dy3N9edI=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1732867289; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=m0UHUDYXDoqPbdg3gmyZIIC14Kz7EjSHm1CxVtkCePA=;
+	b=V8sWKUQAzUsLa6Ot0jcgo3epEr89NYrpbYv1EZjyDbGuyBK/njnKNOO2+A7iqG4/Ns1S5s
+	PC6Zh/UlvaCtdtIVvCQm3eKqR9bEIyDjrpU6TikZAV/+wtIa+Lf9QW1/3SypVIXeETUa8V
+	q2BEsnMwRa07lwlh1h4io30Dy3N9edI=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 057DE133F3;
+	Fri, 29 Nov 2024 08:01:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id OAnwLNd0SWdMNwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Fri, 29 Nov 2024 08:01:27 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: do proper folio cleanup when cow_file_range() failed
+Date: Fri, 29 Nov 2024 18:31:06 +1030
+Message-ID: <0b4675971b718709497ca35c0d69e06db0c69d58.1732867087.git.wqu@suse.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|MW3PR11MB4633:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66179722-c5e6-41c0-8317-08dd104be113
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UFB1TEJhb3daNXVISjgxb09nbExWWGxMRkhMeVBBZlZld21EQ0ZySFdsZGhM?=
- =?utf-8?B?Z0xNcENibjhKaHNVbURWK0tEeDVpczN6dzQ3OTdKT0wxd2pJVlltSFc1Z25Y?=
- =?utf-8?B?YWNiZW5MTWdCbFVGcGpEalFlNG1wK0Q5Y3RDQzBoRWJ6QjlIRzVSUXR0dy9S?=
- =?utf-8?B?U3cvbEZzN2pwMmF6UEh1UnU2ak5JWUZoRytPc05MeVk0VnU0VGdoK0lLRzZT?=
- =?utf-8?B?QjlwU1UrQVVMMjR5L1BrVWQvSEJITzU3TlpKWG1KVE00UU5BVjMyMUNnR2ls?=
- =?utf-8?B?L1ZzSjhBOEJyQkNNODZLM3hjenRmeXUwWHVwMTl6R3hIeFJycllXb2wxQyto?=
- =?utf-8?B?VXN0WXhmMll6cWt6U1FjeDk1OXdGRmlaOXJWTEdlSy9tem1ZWndtOEFyNllL?=
- =?utf-8?B?RTFlc3pUM0ZIUGQwUkgvdG4yV0ZjUkRLVHNEcGg4NGxpOVhHcVFGMEF1RnNm?=
- =?utf-8?B?SG9OQTJXKzNFdUtxRXdVUzRaUjgxbXZwL1ZoNmE3Yy9KUW9nYzJUODlLVmkz?=
- =?utf-8?B?R0tHNWVYaHB1YUl5RmNGY202MG54QUhnU2tCRFBScENPeDd6bUJMVkxaWUFI?=
- =?utf-8?B?a0VCZ1JzYnZLWjVpdEZMNWhnRGR6M0NRbEV0WEUxRkgzWU1EdmM3c2hIS0w1?=
- =?utf-8?B?RG9OWUs5RTFjSTZJSjlvZGt4UEh3ejMvSVhvaGxkd1lsTVRtcW1abWFPcDEx?=
- =?utf-8?B?b0RXcFBqTUNOVGhoSGpTcjM5TGRmdThFWWE0YjBkdFhHMDhVSFlQWFFkcUJP?=
- =?utf-8?B?WEJsRHVGaDZFb0hUaUZvRStZVnhDb0ZTT1YwZU8wVTA5TmwrZlluMG43Tit1?=
- =?utf-8?B?aDRMc1IvSnVqTkVYK0JjUk5zcEpQM3ZVMHJyZ2hoanFDRUhnUVRpOVRMNkdz?=
- =?utf-8?B?MGFQSDlpa1VCM0ZZOXZDMWdVeXdjY0xyL3JNcXJzQ3RpVE5YNkxQQk9SRVBU?=
- =?utf-8?B?K0kwek9vc0kwVEdLU1NDeDh1eW5mUjQ3dTk3OTFxU2hjZFFVSW1WSFZpM3B1?=
- =?utf-8?B?MThoMm8ycm5aV3VTSVVPaEZnYVY2bjU2NHdXMzcybUtKc2ZvSngrc2dGUmdh?=
- =?utf-8?B?R3dmckozYzUxYjF0anJjWEQvclVNT2JtbWxDL0Q4VGg3WTFDVDFxa3ZoR1pt?=
- =?utf-8?B?bk5tamxCOXpFN2E5eUhuWHg5R1ExQUtqZzRKR0xGSFdvYlRjNXdqcG1MME5H?=
- =?utf-8?B?eGgvaE1KLzZ6MU9tdUdJcmZvKzJGV3docjNVK3pJTkFNWGR2WW1XbGZwVUNw?=
- =?utf-8?B?cEtvR1VYZ3pXdk01aTkya2cvQ2FxZmExU0tqRzE1VVU5REJjcnZxanNSK1lR?=
- =?utf-8?B?MHV6UFJEWCsvbjA2dkpKclZiZmtNVGxIWHl4ZEYyVEc2SVNZTUNONDdwRTIy?=
- =?utf-8?B?aHVwaytHYno0dk1ncmZUNUw5MC9LcFlsVDJiMUxSRkUxcnFsdVM2OWN3U1k5?=
- =?utf-8?B?VzM3UkFQaWd5eFNSQUxBZ2Y0Q2dvaVByZzBLT2tHZ2FpL1JoN0ZZZXUzOHNa?=
- =?utf-8?B?cWRvSnA2akFZV2thUDIzVWY1UzFnZXNaTDdvQ3hkRkdnZ2tOaDAxQ2lWS3Ja?=
- =?utf-8?B?N2N4M1lCZklsOG5iSzFHVVdEWStJUU5NRy9HSmRQdzFlMEFyaHF4c1BtYWp0?=
- =?utf-8?B?eFd0SUpHSHp5UnJISDgwaC9lOFZpWTF1Qy9YYU8xbkZoWVN6N3FiYnFlcE1R?=
- =?utf-8?B?eWRFMnJZMmx0WW91RFdKSXhQVk84MXhOY3JXcnZxWlZvREZYMUpwcFVmOW9t?=
- =?utf-8?Q?txq2Vki5kdhbvdylBM=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmJDU2VSUG1vcGtRMURCZ0t5RlFmdmxhcUIzam91RlcwMjBJcEN5QUs5YWJo?=
- =?utf-8?B?aTFqMVdLRmJKaHhISzQwczRCZHdhcVRvdkM5RW5peXcvNnV2cVc0d0RoeDA5?=
- =?utf-8?B?bnA3bjlvellUakZtMDRXdmtsNGhOSXlYTjR1L3c3alFuek5JMkl2VE5nLy9s?=
- =?utf-8?B?eGpYaTJmZmo0VW9oOWg5emJpUHVueHpNUzI5cUg5aytYOUdlVDVlSGlQZnJ3?=
- =?utf-8?B?aFE2NENyWUg2bjl3SGRnNkdQRGp0TWVtOVB0QTlmZW5mbWZmQzR0cWw1NnRn?=
- =?utf-8?B?cmJPQVRBSFBNc0dSMWFOTXRJSEZRWThocHNyOEVLNE1id2tOTTUvT2ViK0lX?=
- =?utf-8?B?Tmw2bFhqMUYrdW16VHpCWHlQZjdVa0RHbUg3bHRPZEhxR1FmQ2VpNERmMnZJ?=
- =?utf-8?B?aTFhOUJjNWNIZU0xTmdTeUw3Tlh1cmt1ZFFpaTNMbDVqSW83OEVJYnZnOEVz?=
- =?utf-8?B?R203Z2E1V25sVjFIdUVUc1VJNVVVRHpJM2JzWEN3RVA5elpWcHNBdm5MQUF3?=
- =?utf-8?B?czRRQmtDTnVqUDVzczdMbm1BdlRiODJQYkhTZTMwbUh1KzBtdXhIcUlUUEty?=
- =?utf-8?B?eUhxaWZVNGkzUDlWNG01aFd1aXg5TzVQQkV5QXl6a1JsVi9sWXN4VmhGcTNa?=
- =?utf-8?B?SXFZV2hVeDRZS2kxUmc0WEd5UTNEY21wMUNCejZNWk9uV0s1QUEwbVp1b2Zy?=
- =?utf-8?B?SGtiUHFCazZ5OTB2SG10TzRQSWlqUU5WdWQzRnpPblZYTk82cEhEczRLTUhK?=
- =?utf-8?B?U1psdUhsUkNDeWYxTW0zL1E0VHMzL2FCWUs2alZ4cVRpc2w4K1pDTHhkNHI0?=
- =?utf-8?B?OG5LODQ3VFptNWNTR241RGNSWnkwek9ocUVXWmcydVR0K3hIK2tNRWhpeHNO?=
- =?utf-8?B?R2grSXFtbHErMUVCb3NRbzRobjdVSlBkNFpRbXl6N3BOM3VtZzRFQWhBVUtj?=
- =?utf-8?B?ZmN0S3R2MUFreWt2eVYxd2h1OFN6OFFjTUQ3bnNsaHkrN3pBZjVpVHdmYm9O?=
- =?utf-8?B?LzZmQkRZVkszbStOa21MRXBlQXBLQlZQeVZzS0V0U1F4ZzZSNm8zb3JsOWw5?=
- =?utf-8?B?clo3UzdQWnFjaVpXUnJKY3d4dG9NazdZUTNmdVFSS0VsaFZCdlFzbmk1Z3dO?=
- =?utf-8?B?b1lpMDBSMDlmd3UxaHAvN0RNd3YzRGVFNnhzQ0xyRk5XTE1zZ0ltWStEWjg2?=
- =?utf-8?B?VmZTbVpIMHZneEVBVEl4ZHRXY0dPK2VvK01qVWlJS0pDbERqV0FLb1l3cDlr?=
- =?utf-8?B?T2RqSGQvTDhVRGVRUHVvd3RHbDdKSVJxajl3MmtrT25tdTJCSE9obCs2ZWtM?=
- =?utf-8?B?V0tWNW5Qa0lxV0JDM3pMSC90VUFrOFowUldYU3RwNWRFKzkya2VQV0tZK212?=
- =?utf-8?B?em9DUDJHZVF2UExyNStQdGN2eU1XUlZodTdFOFYrVWdBZDgrZmIzOWRnOVlP?=
- =?utf-8?B?NkNnRGs5UStBL2s2bkw3aHdnUFYyOU1RU21xTGFFZkIxajVrb1R1dkppUDhY?=
- =?utf-8?B?U2tGaGpJTXlIVCswdG9ZbnB1c25hY0lMd1F6aGFLTDdLZ09OamlHajgxOVBx?=
- =?utf-8?B?dTIrRXN5TGl3NFR0V212WGJYZ3k1VGJKQjU1SHc2TTQzME5sM2l2YmMyOENB?=
- =?utf-8?B?NTB5TTdQUVJlbFZ1RWo4amREbUs3dWZtUVRwc3NET2gyN1g1bm1Ic2Q1cjBF?=
- =?utf-8?B?SmN1eGJCWG1VblBVRWtFVWRhcVZZbGcyYVRnVnlNMzlBODRNRzcrTzZ6NU9a?=
- =?utf-8?B?aVJQei94enA2eHVZWVcrVlFZRVFySGJPRzlmRi9pbjRCV2NYcEc0Vnc3OGMv?=
- =?utf-8?B?cXN0c0V6RTJKOUNOUjNkNlU0R05iTFVoTzBiNWVxRVlDdGw3MHhjUmtsb3gz?=
- =?utf-8?B?ZTR0TkVyL1BoTHFicGliTXlxUzhjSGRRTE9Hc09jTDJ1YUpSMmdHbTVMbWwv?=
- =?utf-8?B?RWFtMTZzajBKbkxVd1lpeSt4RUhWRHI0bHJxc0ZFaDJMZUVpZkxKMUp2WVdU?=
- =?utf-8?B?K09MZ1dSU1AzL01OTkVuSHVDU2ZHTzdsNE1TSUV6TzVlbm1uU0hYSnJmZUlx?=
- =?utf-8?B?c2JXOUhiVDIxZktCWkZFOGtsU1dtcUV1ZFFDa0FCMkNHaWJWZi9ITG5TSWdB?=
- =?utf-8?B?N0pFUWJwRkM1UnZkQjFuL1kwRDBDNUs3bFM0WVNxd2hXRHM4Z3BPVFZ4dW90?=
- =?utf-8?B?SWc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66179722-c5e6-41c0-8317-08dd104be113
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2024 08:00:24.2833
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7pZwA2mBpz24LKuK26Sc6s/EkoeOmFRGV3TSDW9GcgpuNzFLGK7VQPqmpYlxcdurXdy7YSsdLVIul6CF6ySsY3VSFY34o6zfjuYuY0N2dZs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4633
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid]
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
 
+[BUG]
+When testing with COW fixup marked as BUG_ON() (this is involved with the
+new pin_user_pages*() change, which should not result new out-of-band
+dirty pages), I hit a crash triggered by the BUG_ON() from hitting COW
+fixup path.
 
-On 11/29/2024 9:56 AM, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
->
-> drm_mode_vrefresh() is trying to avoid divide by zero
-> by checking whether htotal or vtotal are zero. But we may
-> still end up with a div-by-zero of vtotal*htotal*...
->
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=622bba18029bcde672e1
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   drivers/gpu/drm/drm_modes.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_modes.c b/drivers/gpu/drm/drm_modes.c
-> index 6ba167a33461..71573b85d924 100644
-> --- a/drivers/gpu/drm/drm_modes.c
-> +++ b/drivers/gpu/drm/drm_modes.c
-> @@ -1287,14 +1287,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
->    */
->   int drm_mode_vrefresh(const struct drm_display_mode *mode)
->   {
-> -	unsigned int num, den;
-> +	unsigned int num = 1, den = 1;
->   
->   	if (mode->htotal == 0 || mode->vtotal == 0)
->   		return 0;
->   
-> -	num = mode->clock;
-> -	den = mode->htotal * mode->vtotal;
-> -
->   	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
->   		num *= 2;
->   	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
-> @@ -1302,6 +1299,12 @@ int drm_mode_vrefresh(const struct drm_display_mode *mode)
->   	if (mode->vscan > 1)
->   		den *= mode->vscan;
->   
-> +	if (check_mul_overflow(mode->clock, num, &num))
-> +		return 0;
-> +
-> +	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
+This BUG_ON() happens just after a failed btrfs_run_delalloc_range():
 
-Can mode->htotal * mode->vtotal result in overflow?
+ BTRFS error (device dm-2): failed to run delalloc range, root 348 ino 405 folio 65536 submit_bitmap 6-15 start 90112 len 106496: -28
+ ------------[ cut here ]------------
+ kernel BUG at fs/btrfs/extent_io.c:1444!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ CPU: 0 UID: 0 PID: 434621 Comm: kworker/u24:8 Tainted: G           OE      6.12.0-rc7-custom+ #86
+ Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+ Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
+ pc : extent_writepage_io+0x2d4/0x308 [btrfs]
+ lr : extent_writepage_io+0x2d4/0x308 [btrfs]
+ Call trace:
+  extent_writepage_io+0x2d4/0x308 [btrfs]
+  extent_writepage+0x218/0x330 [btrfs]
+  extent_write_cache_pages+0x1d4/0x4b0 [btrfs]
+  btrfs_writepages+0x94/0x150 [btrfs]
+  do_writepages+0x74/0x190
+  filemap_fdatawrite_wbc+0x88/0xc8
+  start_delalloc_inodes+0x180/0x3b0 [btrfs]
+  btrfs_start_delalloc_roots+0x174/0x280 [btrfs]
+  shrink_delalloc+0x114/0x280 [btrfs]
+  flush_space+0x250/0x2f8 [btrfs]
+  btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+  process_one_work+0x164/0x408
+  worker_thread+0x25c/0x388
+  kthread+0x100/0x118
+  ret_from_fork+0x10/0x20
+ Code: aa1403e1 9402f3ef aa1403e0 9402f36f (d4210000)
+ ---[ end trace 0000000000000000 ]---
 
-and we should add:
+[CAUSE]
+That failure is mostly from cow_file_range(), where we can hit -ENOSPC.
 
-if (check_mul_overflow(mode->htotal, mode->vtotal, &prod))
-	return 0;
+Although the -ENOSPC is already a bug related to our space reservation
+code, let's just focus on the error handling.
 
-Regards,
+For example, we have the following dirty range [0, 64K) of an inode,
+with 4K sector size and 4K page size:
 
-Ankit
+   0        16K        32K       48K       64K
+   |///////////////////////////////////////|
+   |#######################################|
 
-> +		return 0;
-> +
->   	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
->   }
->   EXPORT_SYMBOL(drm_mode_vrefresh);
+Where |///| means page are still dirty, and |###| means the extent io
+tree has EXTENT_DELALLOC flag.
+
+- Enter extent_writepage() for page 0
+
+- Enter btrfs_run_delalloc_range() for range [0, 64K)
+
+- Enter cow_file_range() for range [0, 64K)
+
+- Function btrfs_reserve_extent() only reserved one 16K extent
+  So we created extent map and ordered extent for range [0, 16K)
+
+   0        16K        32K       48K       64K
+   |////////|//////////////////////////////|
+   |<- OE ->|##############################|
+
+   And range [0, 16K) has its delalloc flag cleared.
+   But since we haven't yet submit any bio, involved 4 pages are still
+   dirty.
+
+- Function btrfs_reserve_extent() return with -ENOSPC
+  Now we have to run error cleanup, which will clear all
+  EXTENT_DELALLOC* flags and clear the dirty flags for the remaining
+  ranges:
+
+   0        16K        32K       48K       64K
+   |////////|                              |
+   |        |                              |
+
+  Note that range [0, 16K) still has their pages dirty.
+
+- Some time later, writeback are triggered again for the range [0, 16K)
+  since the page range still have dirty flags.
+
+- btrfs_run_delalloc_range() will do nothing because there is no
+  EXTENT_DELALLOC flag.
+
+- extent_writepage_io() find page 0 has no ordered flag
+  Which falls into the COW fixup path, triggering the BUG_ON().
+
+Unfortunately this error handling bug dates back to the introduction of btrfs.
+Thankfully with the abuse of cow fixup, at least it won't crash the
+kernel.
+
+[FIX]
+Instead of immediately unlock the extent and folios, we keep the extent
+and folios locked until either erroring out or the whole delalloc range
+finished.
+
+When the whole delalloc range finished without error, we just unlock the
+whole range with PAGE_SET_ORDERED (and PAGE_UNLOCK for !keep_locked
+cases), with EXTENT_DELALLOC and EXTENT_LOCKED cleared.
+And those involved folios will be properly submitted, with their dirty
+flags cleared during submission.
+
+For the error path, it will be a little more complex:
+
+- The range with ordered extent allocated (range (1))
+  We only clear the EXTENT_DELALLOC and EXTENT_LOCKED, as the remaining
+  flags are cleaned up by
+  btrfs_mark_ordered_io_finished()->btrfs_finish_one_ordered().
+
+  For folios we finish the IO (clear dirty, start writeback and
+  immediately finish the writeback) and unlock the folios.
+
+- The range with reserved extent but no ordered extent (range(2))
+- The range we never touched (range(3))
+  For both range (2) and range(3) the behavior is not changed.
+
+Now even if cow_file_range() failed halfway with some successfully
+reserved extents/ordered extents, we will keep all folios clean, so
+there will be no future writeback triggered on them.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+ fs/btrfs/inode.c | 63 ++++++++++++++++++++++++------------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
+---
+The similar bug exists for nocow path too (and other routines like
+zoned), the fix for nocow will come later after the patch get reviewed.
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 9267861f8ab0..e8232ac7917f 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1372,6 +1372,17 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 
+ 	alloc_hint = btrfs_get_extent_allocation_hint(inode, start, num_bytes);
+ 
++	/*
++	 * We're not doing compressed IO, don't unlock the first page
++	 * (which the caller expects to stay locked), don't clear any
++	 * dirty bits and don't set any writeback bits
++	 *
++	 * Do set the Ordered (Private2) bit so we know this page was
++	 * properly setup for writepage.
++	 */
++	page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
++	page_ops |= PAGE_SET_ORDERED;
++
+ 	/*
+ 	 * Relocation relies on the relocated extents to have exactly the same
+ 	 * size as the original extents. Normally writeback for relocation data
+@@ -1431,6 +1442,10 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 		file_extent.offset = 0;
+ 		file_extent.compression = BTRFS_COMPRESS_NONE;
+ 
++		/*
++		 * Locked range will be released either during error clean up or
++		 * after the whole range is finished.
++		 */
+ 		lock_extent(&inode->io_tree, start, start + cur_alloc_size - 1,
+ 			    &cached);
+ 
+@@ -1476,21 +1491,6 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 
+ 		btrfs_dec_block_group_reservations(fs_info, ins.objectid);
+ 
+-		/*
+-		 * We're not doing compressed IO, don't unlock the first page
+-		 * (which the caller expects to stay locked), don't clear any
+-		 * dirty bits and don't set any writeback bits
+-		 *
+-		 * Do set the Ordered (Private2) bit so we know this page was
+-		 * properly setup for writepage.
+-		 */
+-		page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
+-		page_ops |= PAGE_SET_ORDERED;
+-
+-		extent_clear_unlock_delalloc(inode, start, start + cur_alloc_size - 1,
+-					     locked_folio, &cached,
+-					     EXTENT_LOCKED | EXTENT_DELALLOC,
+-					     page_ops);
+ 		if (num_bytes < cur_alloc_size)
+ 			num_bytes = 0;
+ 		else
+@@ -1507,6 +1507,9 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 		if (ret)
+ 			goto out_unlock;
+ 	}
++	extent_clear_unlock_delalloc(inode, orig_start, end, locked_folio, &cached,
++				     EXTENT_LOCKED | EXTENT_DELALLOC,
++				     page_ops);
+ done:
+ 	if (done_offset)
+ 		*done_offset = end;
+@@ -1527,35 +1530,31 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 	 * We process each region below.
+ 	 */
+ 
+-	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+-		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
+-	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+-
+ 	/*
+ 	 * For the range (1). We have already instantiated the ordered extents
+ 	 * for this region. They are cleaned up by
+ 	 * btrfs_cleanup_ordered_extents() in e.g,
+-	 * btrfs_run_delalloc_range(). EXTENT_LOCKED | EXTENT_DELALLOC are
+-	 * already cleared in the above loop. And, EXTENT_DELALLOC_NEW |
+-	 * EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV are handled by the cleanup
+-	 * function.
++	 * btrfs_run_delalloc_range().
++	 * EXTENT_DELALLOC_NEW | EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV
++	 * are also handled by the cleanup function.
+ 	 *
+-	 * However, in case of @keep_locked, we still need to unlock the pages
+-	 * (except @locked_folio) to ensure all the pages are unlocked.
++	 * So here we only clear EXTENT_LOCKED and EXTENT_DELALLOC flag,
++	 * and finish the writeback of the involved folios, which will be
++	 * never submitted.
+ 	 */
+-	if (keep_locked && orig_start < start) {
++	if (orig_start < start) {
++		clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC;
++		page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
++
+ 		if (!locked_folio)
+ 			mapping_set_error(inode->vfs_inode.i_mapping, ret);
+ 		extent_clear_unlock_delalloc(inode, orig_start, start - 1,
+ 					     locked_folio, NULL, 0, page_ops);
+ 	}
+ 
+-	/*
+-	 * At this point we're unlocked, we want to make sure we're only
+-	 * clearing these flags under the extent lock, so lock the rest of the
+-	 * range and clear everything up.
+-	 */
+-	lock_extent(&inode->io_tree, start, end, NULL);
++	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
++		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
++	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+ 
+ 	/*
+ 	 * For the range (2). If we reserved an extent for our delalloc range
+-- 
+2.47.0
+
 
