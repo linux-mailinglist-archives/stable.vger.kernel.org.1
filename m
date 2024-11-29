@@ -1,122 +1,122 @@
-Return-Path: <stable+bounces-95789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9F59DC1A3
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 10:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B559DC200
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 11:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2FE6B210F9
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 09:45:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92EC6B210D9
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 10:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC76179972;
-	Fri, 29 Nov 2024 09:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAFD189BA8;
+	Fri, 29 Nov 2024 10:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VurmnLxE"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB375156C72;
-	Fri, 29 Nov 2024 09:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303BD14C5B0;
+	Fri, 29 Nov 2024 10:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732873554; cv=none; b=Tpg6TFjCcBGf0duF2h5quNDIO7v8803CsD0moS2lAnpjVDPJA6Lz6/yc6SfIZ/pNKvhms2BCNM6fpiiSKR0rSWGtFhk9StGs3ysoCx1NRrdsRyG4PpDU7s2vgt6mjagN1UyAnxZTbtie4ruSSwrLH5X+kIJuwFswb18VNHpplG4=
+	t=1732875215; cv=none; b=kMPaHzk/rXMuBtfCF+dgbrkjfZhc4UJE/wmXLtFiEVAeUsD5LjAFlWZ8sY0sa3qdiw2Y2HxkxUyeS+qenA1FTCALW+kcxrSAYjdpG/V9os/GZ8jNFYxzgUxPe6Sk8dMNPuQcKiKaN8N/Mit+o5ulX3ewn9OggvrOr2HqSPwIF3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732873554; c=relaxed/simple;
-	bh=kRVfmbkioIEYPAt9J2XdL7Rrn7z9wPrcbZ/w3hGFwpo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RWPZ3bUb5nJW+3l46VBY6RGvOkW/l02CvLvqMLaH60Aj+TxriYB3wM5uD0NDAHkt+mfugm6B3LwQ9hVPVXsMy9V/JweEIJ23QMTkvbJSQPz8rooHnccSKyfOC5rwlxj+JVn3tyUjYB8ZAazRDKXmJydBUxjtXuLjSKyNSDEQtnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 5963E1C00DE; Fri, 29 Nov 2024 10:45:49 +0100 (CET)
-Date: Fri, 29 Nov 2024 10:45:48 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, puwen@hygon.cn,
-	seanjc@google.com, kim.phillips@amd.com, jmattson@google.com,
-	babu.moger@amd.com, peterz@infradead.org,
-	rick.p.edgecombe@intel.com, brgerst@gmail.com, ashok.raj@intel.com,
-	mjguzik@gmail.com, jpoimboe@kernel.org, nik.borisov@suse.com,
-	aik@amd.com, vegard.nossum@oracle.com,
-	daniel.sneddon@linux.intel.com, acdunlap@google.com,
-	Erwan Velu <erwanaliasr1@gmail.com>, pavel@denx.de
-Subject: Re: [PATCH AUTOSEL 5.15 11/12] x86/barrier: Do not serialize MSR
- accesses on AMD
-Message-ID: <Z0mNTEw2vK1nJpOo@duo.ucw.cz>
-References: <20240115232718.209642-1-sashal@kernel.org>
- <20240115232718.209642-11-sashal@kernel.org>
- <20241128115924.GAZ0hbHKsbtCixVqAe@fat_crate.local>
- <Z0iRzPpGvpeYzA4H@sashalap>
- <20241128164310.GCZ0idnhjpAV6wFWm6@fat_crate.local>
+	s=arc-20240116; t=1732875215; c=relaxed/simple;
+	bh=NPa3oFkWv04US7sf8nc10gt6uF2uaPgqqgmQ2Hgvi98=;
+	h=Date:To:From:Subject:Message-Id; b=fm8/QEgTIMH/auaYJeQPv/f2hOoPNQRHwQeJJNF9bOGIyMX7hwfz/TsoNqfHmPXSCwUC+7eYOE2IzH6GKThIhSjuEdcifs64ZE1JobdLZwAI6Y3or0rocghj8v+CYZorp6Pw3alJiUE70899gc9weQlBwjVQ32tIP23ZAyoFiqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VurmnLxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B71C4CECF;
+	Fri, 29 Nov 2024 10:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1732875214;
+	bh=NPa3oFkWv04US7sf8nc10gt6uF2uaPgqqgmQ2Hgvi98=;
+	h=Date:To:From:Subject:From;
+	b=VurmnLxEBD2MotHFQJREdG7nd7AtVovDcp+5HfpaXupVR8O+nQnIcl2zyITO/72yJ
+	 qWdW48HQuvye+TTB16e+DEWEZRiaBQ6xZlVdckMYr8woLn87SydVT9+Jipi+SkAMtS
+	 2cHCUAX3x8GFT64xPPAnUXG9b0F2052cqQiHUVCU=
+Date: Fri, 29 Nov 2024 02:13:34 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,jsperbeck@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memcg-declare-do_memsw_account-inline.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241129101334.D5B71C4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6A4yexlJK1XvHMaL"
-Content-Disposition: inline
-In-Reply-To: <20241128164310.GCZ0idnhjpAV6wFWm6@fat_crate.local>
 
 
---6A4yexlJK1XvHMaL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch titled
+     Subject: mm: memcg: declare do_memsw_account inline
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memcg-declare-do_memsw_account-inline.patch
 
-Hi!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memcg-declare-do_memsw_account-inline.patch
 
-> > You've missed the 5.10 mail :)
->=20
-> You mean in the flood? ;-P
->=20
-> > Pavel objected to it so I've dropped it: https://lore.kernel.org/all/Zb=
-li7QIGVFT8EtO4@sashalap/
->=20
-> So we're not backporting those anymore? But everything else? :-P
->=20
-> And 5.15 has it already...
->=20
-> Frankly, with the amount of stuff going into stable, I see no problem with
-> backporting such patches. Especially if the people using stable kernels w=
-ill
-> end up backporting it themselves and thus multiply work. I.e., Erwan's ca=
-se.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Well, some people would prefer -stable to only contain fixes for
-critical things, as documented.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-stable-kernel-rules.rst:
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
- - It must fix a problem that causes a build error (but not for things
-   marked CONFIG_BROKEN), an oops, a hang, data corruption, a real
-   security issue, or some "oh, that's not good" issue.  In short, something
-   critical.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-Now, you are right that reality and documentation are not exactly
-"aligned". I don't care much about which one is fixed, but I'd really
-like them to match (because that's what our users expect).
+------------------------------------------------------
+From: John Sperbeck <jsperbeck@google.com>
+Subject: mm: memcg: declare do_memsw_account inline
+Date: Thu, 28 Nov 2024 12:39:59 -0800
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+In commit 66d60c428b23 ("mm: memcg: move legacy memcg event code into
+memcontrol-v1.c"), the static do_memsw_account() function was moved from a
+.c file to a .h file.  Unfortunately, the traditional inline keyword
+wasn't added.  If a file (e.g., a unit test) includes the .h file, but
+doesn't refer to do_memsw_account(), it will get a warning like:
 
---6A4yexlJK1XvHMaL
-Content-Type: application/pgp-signature; name="signature.asc"
+mm/memcontrol-v1.h:41:13: warning: unused function 'do_memsw_account' [-Wunused-function]
+   41 | static bool do_memsw_account(void)
+      |             ^~~~~~~~~~~~~~~~
 
------BEGIN PGP SIGNATURE-----
+Link: https://lkml.kernel.org/r/20241128203959.726527-1-jsperbeck@google.com
+Fixes: 66d60c428b23 ("mm: memcg: move legacy memcg event code into memcontrol-v1.c")
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ0mNTAAKCRAw5/Bqldv6
-8mRBAJ4r9M5WBINfJRwMswB8bSpU5UYgOgCZAShF/37413beKV0T0Xvz8GvYYjw=
-=QCu/
------END PGP SIGNATURE-----
+ mm/memcontrol-v1.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---6A4yexlJK1XvHMaL--
+--- a/mm/memcontrol-v1.h~mm-memcg-declare-do_memsw_account-inline
++++ a/mm/memcontrol-v1.h
+@@ -38,7 +38,7 @@ void mem_cgroup_id_put_many(struct mem_c
+ 	     iter = mem_cgroup_iter(NULL, iter, NULL))
+ 
+ /* Whether legacy memory+swap accounting is active */
+-static bool do_memsw_account(void)
++static inline bool do_memsw_account(void)
+ {
+ 	return !cgroup_subsys_on_dfl(memory_cgrp_subsys);
+ }
+_
+
+Patches currently in -mm which might be from jsperbeck@google.com are
+
+mm-memcg-declare-do_memsw_account-inline.patch
+
 
