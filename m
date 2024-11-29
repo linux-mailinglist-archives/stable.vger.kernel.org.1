@@ -1,134 +1,156 @@
-Return-Path: <stable+bounces-95812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A12A9DE6F3
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 14:07:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C089DE6F9
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 14:08:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97B09165015
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 13:07:57 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2184F19B5AC;
+	Fri, 29 Nov 2024 13:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h/OozXmM"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8CCEB22473
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 13:07:49 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13F419D8A2;
-	Fri, 29 Nov 2024 13:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R5IDfDI9"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62FA156991
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 13:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5819D88D
+	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 13:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732885664; cv=none; b=s+qYuCDHMe7hPPyDeSE+pNYahpP4MFkkSexc0GB92OprJa1hfuB2f1l4903vxJEbONcnVlcfC1HHea/jv6UUe2xdjl+CJz/LLZm7yx/jiE8yPmU9RCk5Yws5PtCT/s6/kE/pAqRIPVF1fqh4r563BWGkLwO9TP/J75ClCgk6mVE=
+	t=1732885671; cv=none; b=Auf3oVx7sLGMNlk90hu30Hc5732FdGWrXqsWtEvJ0rsBI1jllbfj7M7AdD1rmjzOIQtxoLxijf0e7cUU9k6AZVUe08LJKVBPYQlmNfYA3kDdVH6yelT67WB1eotxWsCvBRlQL41c3NUKFtOJgPgnd7/KxP2jn55b6d+O0iedXL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732885664; c=relaxed/simple;
-	bh=mQpHD0O/4DmVLloEpdEHgH89jVyxadWEyw/hKsvGyhE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cHxkljaKOcJEJWD8CBHvCEffwJ1ylN/1j6Ubd0qa5fmIpphJIrRI2M+cZohce5bgIm/hOHa598W2z1413bibN4Wxspu4YmRQ1/35c7U8MWLRLjkjs8/cHYyAFvHerr0NWspXtSiT8O7jfsltPwq2emh84uRl0YDm7p4ikHDLQxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R5IDfDI9; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-434a742481aso16801675e9.3
-        for <stable@vger.kernel.org>; Fri, 29 Nov 2024 05:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732885661; x=1733490461; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+aPv1A/6lNNGm3pKHhjnN5K2Ej+6bunOS3nenFEWG4Q=;
-        b=R5IDfDI9TKVnyj6lHw+l5l7gbB1ICpTZkx/K+V6gG4UQVmrLCb/iNc1ra4GaZE9txO
-         csKf2OX0dDpsciUKr84zqwTicYwS/pbfjEoDaQXfYRqTzteX65+KG7IdYwpRAjaOe6Fr
-         /nyEivv971MqrUE2DJcTPDSL+A7nUF8ihYRr+yEi5yWg7P3U/M1fI7ae4WvHYm6LR6Kq
-         L3T1f8fCxlWJw7ktevq7r43ujVuo+gppeTqsml0rsY2k1wnmF9Ltae9ChjAJjKziqkjK
-         1UD4MdXwlun1ujaOvCOdvJaXREGXpJs2vaylwQayUAPgQPQ3BkDIw7vb/KVMdQT49lem
-         1agQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732885661; x=1733490461;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+aPv1A/6lNNGm3pKHhjnN5K2Ej+6bunOS3nenFEWG4Q=;
-        b=s3e0eCf7toKM67dkQJia8BBSVGKWSzKTF85wbvi7WpdvbSX4u0LXlN3z21YDVzp5Qr
-         dUOs15fCXGwfPKh49Ve+fepg66DhawqdDoZpdsxQBby9TGHlkZRDak45yayzV/cHbM6J
-         +CntSL2uCUMK722Z+peBxTvTwfFfSJ9CnM7G0YnB+C6DtwSog/oYLMhuHi4VNi5lnEEY
-         nm6Y/09zKMpRLr/zmo5GoMDzmay5JK9m5E0QAABZaRHD9gfgVwDrWe5akV7Bg+OyHOsH
-         IQIeJkjKRWRdC4Lnfuqt2zeSivpbQiBJHelsJFSJmDi/oYuAT2HBb7zVh9lRxH79Zv9v
-         U78w==
-X-Forwarded-Encrypted: i=1; AJvYcCXHAQF/naLyGwOvOGliK1z3CGpUXNiHOjUi4sJcaFSKj+xWbpp5Jh5PuXXEoP2V9e6c8F+QH3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8PMFwFMtW3XJKWobjAUvJq4qSxU+ITXGGmY+dO2AK984nQX7Z
-	SylFvQz9LzbtyTK6E6PFGSePrZ0sMI1iIRYHisElQplfhs8hdDOU+8kBfV6LV/o=
-X-Gm-Gg: ASbGncunckB8olwda+uaYS5c3Wx4BN5Q2vPJy8rSXlxm+oiadPFx2G1Fw1scQlkOXGC
-	ctP5w/+uG0pv47pVCjG02HwfE+HGEzj0SukjSTHzXKXOWd/oQQUohpLoMw/YV7GRWDggMS3NrlA
-	h7fU+2vl+Wy7TWQ7hNiePCSGVVDeK998KQsdRcvC7v2EfTOcyLS/kp5HoDm5r6dPWsXbI1KTOE1
-	eUe9qfSWQ5YEeymA7NeyWeTW+2LXI0WUTJRNPm5+7qgwrK3dqVraSyXhhU=
-X-Google-Smtp-Source: AGHT+IHhtPopN59nF0wT9aM0MO2ZUTkad4G2GioIMf1qnkxOPmpIkivwxwFk/94QpZ1tIVuayw0v5g==
-X-Received: by 2002:a05:600c:1d18:b0:426:8884:2c58 with SMTP id 5b1f17b1804b1-434a9dbbcc7mr111429935e9.4.1732885642767;
-        Fri, 29 Nov 2024 05:07:22 -0800 (PST)
-Received: from [127.0.1.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa77d01esm86228395e9.22.2024.11.29.05.07.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Nov 2024 05:07:21 -0800 (PST)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Fri, 29 Nov 2024 13:06:47 +0000
-Subject: [PATCH v6 1/3] clk: qcom: gdsc: Capture pm_genpd_add_subdomain
- result code
+	s=arc-20240116; t=1732885671; c=relaxed/simple;
+	bh=49dxjDB/tmnNrlY5WUmvW+n7+3jGSA88yJhe3KI58Z4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FGCDgbNlWbk40kMHCuYtJKr46B2s/S9iz0bVCY46/NR9TYSxiW2ukQCC3iDO/BOTxC5u9zKOo2Yi71WrmRiOHl/b0fLxXZ8tZdSgZogqbSg2w19duwYXI8c2WbzehxGZMakyyrtqc/c9APDx1cHLRQziev9gPZEyKh/llbLt/+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h/OozXmM; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732885670; x=1764421670;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=49dxjDB/tmnNrlY5WUmvW+n7+3jGSA88yJhe3KI58Z4=;
+  b=h/OozXmM0JQW2gNd4VSLxc5xANpDg4vnoils/LzE9IH2RzO1me6fqUp7
+   ZN1Q/3QXhgFt2rfEt8/bHg6lnVoYMsbdYzuaG7HojCSmHI8LvsmZBakle
+   ZdaX9NEYD5k5eFIjG3B8/G4L+WvYdkkEnXgZXiJs0kYWTQgO4skpvio7T
+   BEJLKgKoZwGxvETZMV0AiYwZR9L5jjUJr8IMM4EUwGQI+EP3hGQPCQh9h
+   HgaKU+rqmiOGrQi9oD/l0fVGYtLiFWjaLEf7IRgB9f/9FVNcT90TJDXk7
+   KfbdCU57ShHdXIzORE9iykCVL0WZkXa0r6leQ+IJSvVpveduJjwSATX15
+   Q==;
+X-CSE-ConnectionGUID: xTCq3t1jSuG8ze3E2VWtGQ==
+X-CSE-MsgGUID: YB+EGv85TNuNZ7BDS7RoWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="33175434"
+X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
+   d="scan'208";a="33175434"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 05:07:50 -0800
+X-CSE-ConnectionGUID: vVRCUsPJSlWyOb1n/SZi+Q==
+X-CSE-MsgGUID: Q39pckRRQk2U7VA3nTXX6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
+   d="scan'208";a="96567334"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.241])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 05:07:47 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Ville Syrjala
+ <ville.syrjala@linux.intel.com>, dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org,
+ syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
+Subject: Re: [PATCH 1/2] drm/modes: Avoid divide by zero harder in
+ drm_mode_vrefresh()
+In-Reply-To: <09913faf-f70f-4deb-bc24-295796c8d0ca@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20241129042629.18280-1-ville.syrjala@linux.intel.com>
+ <20241129042629.18280-2-ville.syrjala@linux.intel.com>
+ <09913faf-f70f-4deb-bc24-295796c8d0ca@intel.com>
+Date: Fri, 29 Nov 2024 15:07:41 +0200
+Message-ID: <87cyie6vdu.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-b4-linux-next-24-11-18-clock-multiple-power-domains-v6-1-24486a608b86@linaro.org>
-References: <20241129-b4-linux-next-24-11-18-clock-multiple-power-domains-v6-0-24486a608b86@linaro.org>
-In-Reply-To: <20241129-b4-linux-next-24-11-18-clock-multiple-power-domains-v6-0-24486a608b86@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-355e8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Adding a new clause to this if/else I noticed the existing usage of
-pm_genpd_add_subdomain() wasn't capturing and returning the result code.
+On Fri, 29 Nov 2024, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com> wrote:
+> On 11/29/2024 9:56 AM, Ville Syrjala wrote:
+>> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>>
+>> drm_mode_vrefresh() is trying to avoid divide by zero
+>> by checking whether htotal or vtotal are zero. But we may
+>> still end up with a div-by-zero of vtotal*htotal*...
+>>
+>> Cc: stable@vger.kernel.org
+>> Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=3D622bba18029bcde672e1
+>> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>> ---
+>>   drivers/gpu/drm/drm_modes.c | 11 +++++++----
+>>   1 file changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_modes.c b/drivers/gpu/drm/drm_modes.c
+>> index 6ba167a33461..71573b85d924 100644
+>> --- a/drivers/gpu/drm/drm_modes.c
+>> +++ b/drivers/gpu/drm/drm_modes.c
+>> @@ -1287,14 +1287,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
+>>    */
+>>   int drm_mode_vrefresh(const struct drm_display_mode *mode)
+>>   {
+>> -	unsigned int num, den;
+>> +	unsigned int num =3D 1, den =3D 1;
+>>=20=20=20
+>>   	if (mode->htotal =3D=3D 0 || mode->vtotal =3D=3D 0)
+>>   		return 0;
+>>=20=20=20
+>> -	num =3D mode->clock;
+>> -	den =3D mode->htotal * mode->vtotal;
+>> -
+>>   	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+>>   		num *=3D 2;
+>>   	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+>> @@ -1302,6 +1299,12 @@ int drm_mode_vrefresh(const struct drm_display_mo=
+de *mode)
+>>   	if (mode->vscan > 1)
+>>   		den *=3D mode->vscan;
+>>=20=20=20
+>> +	if (check_mul_overflow(mode->clock, num, &num))
+>> +		return 0;
+>> +
+>> +	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
+>
+> Can mode->htotal * mode->vtotal result in overflow?
 
-pm_genpd_add_subdomain() returns an int and can fail. Capture that result
-code and throw it up the call stack if something goes wrong.
+u16 * u16 will always fit in an unsigned int (at least where the kernel
+runs).
 
-Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/clk/qcom/gdsc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-diff --git a/drivers/clk/qcom/gdsc.c b/drivers/clk/qcom/gdsc.c
-index fa5fe4c2a2ee7786c2e8858f3e41301f639e5d59..4fc6f957d0b846cc90e50ef243f23a7a27e66899 100644
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -555,9 +555,11 @@ int gdsc_register(struct gdsc_desc *desc,
- 		if (!scs[i])
- 			continue;
- 		if (scs[i]->parent)
--			pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
-+			ret = pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
- 		else if (!IS_ERR_OR_NULL(dev->pm_domain))
--			pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
-+			ret = pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return of_genpd_add_provider_onecell(dev->of_node, data);
 
--- 
-2.45.2
+>
+> and we should add:
+>
+> if (check_mul_overflow(mode->htotal, mode->vtotal, &prod))
+> 	return 0;
+>
+> Regards,
+>
+> Ankit
+>
+>> +		return 0;
+>> +
+>>   	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
+>>   }
+>>   EXPORT_SYMBOL(drm_mode_vrefresh);
 
+--=20
+Jani Nikula, Intel
 
