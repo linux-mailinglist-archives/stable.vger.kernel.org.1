@@ -1,257 +1,222 @@
-Return-Path: <stable+bounces-95846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EF69DECEE
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 22:31:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2570F9DED02
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 22:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9400CB21DB3
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:30:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBB2A28218F
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10641A2643;
-	Fri, 29 Nov 2024 21:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953001A0BEC;
+	Fri, 29 Nov 2024 21:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="meuxX1IQ"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="c/1691Db"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA261A76C8
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 21:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485AAD23;
+	Fri, 29 Nov 2024 21:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732915834; cv=none; b=hP2rhJaYz4CfCzfGlD3MeN4R10VMvTlo1H9B1pI0vikgNaMDcpVb/juL4o41SJWts96LinJ2ovPV2icb+CllvPXEqiaQXpE4YdIe9fs6VlDC1/fm5F1Qk21g1iAKxGA+gxMFj8gh630KSTHrys/YF+Eq/zHhtPsuPpYCTPPAb+4=
+	t=1732916855; cv=none; b=Nx6tjUrZD3ATNiJqPVBQV/EXUAGD2ir+uokNdRmmN6bQR52UQl8pOsvTH1CeaAA9QMDNcoAMO8x3jDKShI7sG5VktGYVG211SvY/gmJg7w8fz1TXbVMQxXuouiQl+aLCyyuNgFt7lIpT0LDkAOMER0aJUQL9HPwszqEfETNVFMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732915834; c=relaxed/simple;
-	bh=+pfaMnSC0go4/J60SrpKpFXQ/i2qf8ZpJd+CtfqYHc4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WML/uS2yGChE83iddhtT+3/END6XkMOMrlTJy4UvdUkQB0Mo4dwi6U9wVfmjRpveNM1ZD4XFanaL96oD3MrHpAa9eG92Qz2H/zRtbf1Bv+4fnpYApjwfddFp6vIahbfR806OxJJpLQZoCim00fSNsqvI74xm1XFbQaoEkfjuNGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=meuxX1IQ; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-515192490c3so598885e0c.3
-        for <stable@vger.kernel.org>; Fri, 29 Nov 2024 13:30:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732915832; x=1733520632; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GhCf5eirgTgth8XVE2W1qnK6YW57KSpNmGivwsRejzA=;
-        b=meuxX1IQdfC4s6PO23AcZGaieysvEH88HOrPUrziIUJfjtUVWF+WGlOFSSlKjA4M6C
-         gWw0POZB7PHE6Vy8m6SVrmB0gBi6B5mLkAlHKFMQUc2bhVVPTGb1m4mL0Da6g07LQ39d
-         ibkiV7i+wGSwSa5cTnhkmYE2y6mW0p3DSF+mo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732915832; x=1733520632;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GhCf5eirgTgth8XVE2W1qnK6YW57KSpNmGivwsRejzA=;
-        b=IpLhvd0ogV8DV6av50WrpOXBgQvecG/lHljHKFfUWf85o7sTVumq5sOA5hQZ8rkAQh
-         Y423UYWvMZVO1pdQomluQ2M3462+ES1wYuuonhGW3kIAlYhqOUn4TPLG5jV815kfOWOY
-         gqAnDmVsWR3+PvVGMYBcdeqIladgImjXb91lRbcihqP7CP5c10jC22ZGeo17fAk8dgA8
-         Sf7VJ6XpfYuLEfZTFQDHOS6saZ+h//0GvP+D+oGJuKrXwODnxrncgg3seFY6ytrw6rxW
-         /40subLOxS7YW4SjE7/5yf033CX1E3+Np912OtSh1nivLM3g2QR3Ut3VCZMJx6E16U64
-         CiZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRSnN+ThLOdeIqNzL/lJEhkXg0pHJsBIUJWlNAziEu5sJDecz43IgfUxZQ9Ep7jFF6EaYi/hg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEcl3WTjpIIbCPInPyrHkk6wropsmYC9nL1RRWfM0T2it488Qr
-	VBh+0HwZotR190NYAybyAc2Y15otRpMpL6NZToIbyWf1a/nsvAUOrGPbbas2GFEAFek3uNBfKPY
-	=
-X-Gm-Gg: ASbGncu04nDng73FZ8xQBBPEVjbfpoquM8U6jeP6y2TSsq2I58qkK+CUijPcwxlbn3c
-	4IW3ffVylcmQOWhZGdcwpjOBfy7nCybY6Vv9K0R0qcxTUd8itVfw2hJp1TMs2l9qawfehwl6/xV
-	nAwYUyu4igUivDSaR45z7VCERvQJlGHlY+iB8FbCHq72E+VlhIoMsmkfffbJ7NCBEBTEfE4ilpR
-	uvA8AmvLRabjtfltU3/kU14VyWb1BHGRUb5GDg8yMVKhcyDa9LFfJclJcUI2FykKNlEtNMLHsdP
-	wuOFvVWBIkYsE8Ck73qNuuLj
-X-Google-Smtp-Source: AGHT+IFYwmDx0IKqcsATxkcItz9Kemn9Y5b19SBUmQymuvzPqTIPXsfSyh1fHAg0r6gBeJc73H4R+A==
-X-Received: by 2002:a05:6122:6419:10b0:50d:40bb:ae14 with SMTP id 71dfb90a1353d-515569e2f8cmr9832094e0c.9.1732915830592;
-        Fri, 29 Nov 2024 13:30:30 -0800 (PST)
-Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5156d0c1b7asm607254e0c.36.2024.11.29.13.30.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Nov 2024 13:30:29 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 29 Nov 2024 21:30:16 +0000
-Subject: [PATCH v4 2/4] media: uvcvideo: Remove dangling pointers
+	s=arc-20240116; t=1732916855; c=relaxed/simple;
+	bh=PF3GFjspWJnSYtUmztFn/TtoY/RO/NVPnT77nVDnEWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MDP6N4nxmbNIlSjv337FOT4+GX8dd568gBM94+dB3hghieoS/t1RS7flvoHrZ5cmvrNfkHoekzynwikYT6RuL3qiR5zndiTtx9a6j6/U2i0CdJ1T+1+garDEqKFVsDxwikljactzQYW7yt2h6dbIc3jy6be6cZyiZogskqQ4F5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=c/1691Db; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AF6EAA57;
+	Fri, 29 Nov 2024 22:47:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1732916826;
+	bh=PF3GFjspWJnSYtUmztFn/TtoY/RO/NVPnT77nVDnEWA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c/1691Db8olWVQlmo4MpchhysfUkcsOEE+t+2IlIWm+QBM5NO6t3PkEM0/QhcHFjE
+	 5Yi5Ovi7SVInWjYBdsMxjbW1ukqlLn3AAn9DqplfKu3t/vJej5WQvMEnSYK1/sjkyq
+	 PTHyvn2RrLZgeYEj6Eul9t2tTtO6AKvM0tb1Tu+U=
+Date: Fri, 29 Nov 2024 23:47:21 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control
+ owned by other fh
+Message-ID: <20241129214721.GC2652@pendragon.ideasonboard.com>
+References: <20241127-uvc-fix-async-v2-0-510aab9570dd@chromium.org>
+ <20241127-uvc-fix-async-v2-2-510aab9570dd@chromium.org>
+ <20241128222232.GF25731@pendragon.ideasonboard.com>
+ <CANiDSCvyMbAffdyi7_TrA0tpjbHe3V_D_VkTKiW-fNDnwQfpGA@mail.gmail.com>
+ <20241128223343.GH25731@pendragon.ideasonboard.com>
+ <7eeab6bd-ce02-41a6-bcc1-7c2750ce0359@xs4all.nl>
+ <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+ <20241129110640.GB4108@pendragon.ideasonboard.com>
+ <e6eeb2fc-7951-4ef2-afc5-5147d78ec2e8@xs4all.nl>
+ <CANiDSCsVdv2dE4jtkVD0Xk2ji=tGPH6zNAHWCwxUHKv6i==RTg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-uvc-fix-async-v4-2-f23784dba80f@chromium.org>
-References: <20241129-uvc-fix-async-v4-0-f23784dba80f@chromium.org>
-In-Reply-To: <20241129-uvc-fix-async-v4-0-f23784dba80f@chromium.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Hans de Goede <hdegoede@redhat.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, 
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiDSCsVdv2dE4jtkVD0Xk2ji=tGPH6zNAHWCwxUHKv6i==RTg@mail.gmail.com>
 
-When an async control is written, we copy a pointer to the file handle
-that started the operation. That pointer will be used when the device is
-done. Which could be anytime in the future.
+On Fri, Nov 29, 2024 at 02:37:21PM +0100, Ricardo Ribalda wrote:
+> On Fri, 29 Nov 2024 at 14:10, Hans Verkuil wrote:
+> > On 29/11/2024 12:06, Laurent Pinchart wrote:
+> > > On Fri, Nov 29, 2024 at 11:59:27AM +0100, Ricardo Ribalda wrote:
+> > >> On Fri, 29 Nov 2024 at 11:36, Hans Verkuil wrote:
+> > >>> On 28/11/2024 23:33, Laurent Pinchart wrote:
+> > >>>> On Thu, Nov 28, 2024 at 11:28:29PM +0100, Ricardo Ribalda wrote:
+> > >>>>> On Thu, 28 Nov 2024 at 23:22, Laurent Pinchart wrote:
+> > >>>>>>
+> > >>>>>> Hi Ricardo,
+> > >>>>>>
+> > >>>>>> (CC'ing Hans Verkuil)
+> > >>>>>>
+> > >>>>>> Thank you for the patch.
+> > >>>>>>
+> > >>>>>> On Wed, Nov 27, 2024 at 12:14:50PM +0000, Ricardo Ribalda wrote:
+> > >>>>>>> If a file handle is waiting for a response from an async control, avoid
+> > >>>>>>> that other file handle operate with it.
+> > >>>>>>>
+> > >>>>>>> Without this patch, the first file handle will never get the event
+> > >>>>>>> associated with that operation, which can lead to endless loops in
+> > >>>>>>> applications. Eg:
+> > >>>>>>> If an application A wants to change the zoom and to know when the
+> > >>>>>>> operation has completed:
+> > >>>>>>> it will open the video node, subscribe to the zoom event, change the
+> > >>>>>>> control and wait for zoom to finish.
+> > >>>>>>> If before the zoom operation finishes, another application B changes
+> > >>>>>>> the zoom, the first app A will loop forever.
+> > >>>>>>
+> > >>>>>> Hans, the V4L2 specification isn't very clear on this. I see pros and
+> > >>>>>> cons for both behaviours, with a preference for the current behaviour,
+> > >>>>>> as with this patch the control will remain busy until the file handle is
+> > >>>>>> closed if the device doesn't send the control event for any reason. What
+> > >>>>>> do you think ?
+> > >>>>>
+> > >>>>> Just one small clarification. The same file handler can change the
+> > >>>>> value of the async control as many times as it wants, even if the
+> > >>>>> operation has not finished.
+> > >>>>>
+> > >>>>> It will be other file handles that will get -EBUSY if they try to use
+> > >>>>> an async control with an unfinished operation started by another fh.
+> > >>>>
+> > >>>> Yes, I should have been more precised. If the device doesn't send the
+> > >>>> control event, then all other file handles will be prevented from
+> > >>>> setting the control until the file handle that set it first gets closed.
+> > >>>
+> > >>> I think I need a bit more background here:
+> > >>>
+> > >>> First of all, what is an asynchronous control in UVC? I think that means
+> > >>> you can set it, but it takes time for that operation to finish, so you
+> > >>> get an event later when the operation is done. So zoom and similar operations
+> > >>> are examples of that.
+> > >>>
+> > >>> And only when the operation finishes will the control event be sent, correct?
+> > >>
+> > >> You are correct.  This diagrams from the spec is more or less clear:
+> > >> https://ibb.co/MDGn7F3
+> > >>
+> > >>> While the operation is ongoing, if you query the control value, is that reporting
+> > >>> the current position or the final position?
+> > >>
+> > >> I'd expect hardware will return either the current position, the start
+> > >> position or the final position. I could not find anything in the spec
+> > >> that points in one direction or the others.
+> > >
+> > > Figure 2-21 in UVC 1.5 indicates that the device should STALL the
+> > > GET_CUR and SET_CUR requests if a state change is in progress.
+> > >
+> > >> And in the driver I believe that we might have a bug handling this
+> > >> case (will send a patch if I can confirm it)
+> > >> the zoom is at 0 and you set it 10
+> > >> if you read the value 2 times before the camera reaches value 10:
+> > >> - First value will come from the hardware and the response will be cached
+> > >
+> > > Only if the control doesn't have the auto-update flag set, so it will be
+> > > device-dependent. As GET_CUR should stall that's not really relevant,
+> > > except for the fact that devices may not stall the request.
+> >
+> > OK, that helps a lot.
+> >
+> > If an operation is in progress, then setting a new control value should
+> > result in -EBUSY. Based on the description above, I gather that even the
+> > same fh that made the request cannot update it while the operation is
+> > ongoing?
+> 
+> That is correct according to the spec. But both Laurent (correct me if
+> I am wrong) and me suspect that there are devices that do not
+> implement this properly.
 
-If the user closes that file descriptor, its structure will be freed,
-and there will be one dangling pointer per pending async control, that
-the driver will try to use.
+With UVC it's more than suspicion. Whatever the feature, there's bound
+to be a device that gets it wrong. The more niche the feature is, the
+worse it can get.
 
-Clean all the dangling pointers during release().
+> > Getting the control should just return the value that was set. I assume
+> > that is cached in uvc?
+> 
+> If I get the code right... we only return the cached value when the
+> field "loaded" is true. That happens when we read the device. So if
+> the driver is just loaded
+> 
+> write(full controlA)
+> read(full controlA)
+> read(full controlA)
+> 
+> The first read will get the value from the hardware, the second will be cached.
 
-To avoid adding a performance penalty in the most common case (no async
-operation), a counter has been introduced with some logic to make sure
-that it is properly handled.
+It depends if the control is marked as auto-update or not. This is
+orthogonal to asynchronous controls, so we shouldn't rely on it.
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- drivers/media/usb/uvc/uvc_ctrl.c | 54 ++++++++++++++++++++++++++++++++++++++--
- drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
- drivers/media/usb/uvc/uvcvideo.h |  9 ++++++-
- 3 files changed, 62 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 88ef8fdc2be2..bc96fb475b9c 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1579,6 +1579,33 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
- 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
- }
- 
-+static void uvc_ctrl_set_handle(struct uvc_control *ctrl, struct uvc_fh *handle)
-+{
-+	/* NOTE: We must own the chain->ctrl_mutex to run this function. */
-+
-+	if (handle) {
-+		if (handle == ctrl->handle) /* Nothing to do here. */
-+			return;
-+
-+		/* We can't change the original handler. */
-+		if (WARN_ON(ctrl->handle))
-+			return;
-+
-+		ctrl->handle = handle;
-+		handle->pending_async_ctrls++;
-+		return;
-+	}
-+
-+	if (!ctrl->handle) /* Nothing to do here.*/
-+		return;
-+
-+	handle = ctrl->handle;
-+	ctrl->handle = NULL;
-+	if (WARN_ON(!handle->pending_async_ctrls))
-+		return;
-+	handle->pending_async_ctrls--;
-+}
-+
- void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 			   struct uvc_control *ctrl, const u8 *data)
- {
-@@ -1589,7 +1616,7 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 	mutex_lock(&chain->ctrl_mutex);
- 
- 	handle = ctrl->handle;
--	ctrl->handle = NULL;
-+	uvc_ctrl_set_handle(ctrl, NULL);
- 
- 	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
- 		s32 value = __uvc_ctrl_get_value(mapping, data);
-@@ -2047,7 +2074,7 @@ int uvc_ctrl_set(struct uvc_fh *handle,
- 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
- 
- 	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS && !ctrl->handle)
--		ctrl->handle = handle;
-+		uvc_ctrl_set_handle(ctrl, handle);
- 
- 	ctrl->dirty = 1;
- 	ctrl->modified = 1;
-@@ -2770,6 +2797,29 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
- 	return 0;
- }
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
-+{
-+	struct uvc_entity *entity;
-+
-+	guard(mutex)(&handle->chain->ctrl_mutex);
-+
-+	if (!handle->pending_async_ctrls)
-+		return;
-+
-+	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
-+		for (unsigned int i = 0; i < entity->ncontrols; ++i) {
-+			struct uvc_control *ctrl = &entity->controls[i];
-+
-+			if (ctrl->handle != handle)
-+				continue;
-+
-+			uvc_ctrl_set_handle(ctrl, NULL);
-+		}
-+	}
-+
-+	WARN_ON(handle->pending_async_ctrls);
-+}
-+
- /*
-  * Cleanup device controls.
-  */
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index 97c5407f6603..b425306a3b8c 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -652,6 +652,8 @@ static int uvc_v4l2_release(struct file *file)
- 
- 	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
- 
-+	uvc_ctrl_cleanup_fh(handle);
-+
- 	/* Only free resources if this is a privileged handle. */
- 	if (uvc_has_privileges(handle))
- 		uvc_queue_release(&stream->queue);
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index ce688b80e986..e0e4f099a210 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -340,7 +340,11 @@ struct uvc_video_chain {
- 	struct uvc_entity *processing;		/* Processing unit */
- 	struct uvc_entity *selector;		/* Selector unit */
- 
--	struct mutex ctrl_mutex;		/* Protects ctrl.info */
-+	struct mutex ctrl_mutex;		/*
-+						 * Protects ctrl.info,
-+						 * ctrl.handle and
-+						 * uvc_fh.pending_async_ctrls
-+						 */
- 
- 	struct v4l2_prio_state prio;		/* V4L2 priority state */
- 	u32 caps;				/* V4L2 chain-wide caps */
-@@ -615,6 +619,7 @@ struct uvc_fh {
- 	struct uvc_video_chain *chain;
- 	struct uvc_streaming *stream;
- 	enum uvc_handle_state state;
-+	unsigned int pending_async_ctrls;
- };
- 
- struct uvc_driver {
-@@ -800,6 +805,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
- int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 		      struct uvc_xu_control_query *xqry);
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
-+
- /* Utility functions */
- struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
- 					    u8 epaddr);
+> > >> - Second value will be the cached one
+> > >>
+> > >> now the camera  is at zoom 10
+> > >> If you read the value, you will read the cached value
+> > >>
+> > >>> E.g.: the zoom control is at value 0 and I set it to 10, then I poll the zoom control
+> > >>> value: will that report the intermediate values until it reaches 10? And when it is
+> > >>> at 10, the control event is sent?
+> > >>>
+> > >>>>>>> Cc: stable@vger.kernel.org
+> > >>>>>>> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+> > >>>>>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > >>>>>>> ---
+> > >>>>>>>  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++++
+> > >>>>>>>  1 file changed, 4 insertions(+)
+> > >>>>>>>
+> > >>>>>>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > >>>>>>> index b6af4ff92cbd..3f8ae35cb3bc 100644
+> > >>>>>>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > >>>>>>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > >>>>>>> @@ -1955,6 +1955,10 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+> > >>>>>>>       if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+> > >>>>>>>               return -EACCES;
+> > >>>>>>>
+> > >>>>>>> +     /* Other file handle is waiting a response from this async control. */
+> > >>>>>>> +     if (ctrl->handle && ctrl->handle != handle)
+> > >>>>>>> +             return -EBUSY;
+> > >>>>>>> +
+> > >>>>>>>       /* Clamp out of range values. */
+> > >>>>>>>       switch (mapping->v4l2_type) {
+> > >>>>>>>       case V4L2_CTRL_TYPE_INTEGER:
 
 -- 
-2.47.0.338.g60cca15819-goog
+Regards,
 
+Laurent Pinchart
 
