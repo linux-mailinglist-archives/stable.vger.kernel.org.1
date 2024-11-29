@@ -1,156 +1,189 @@
-Return-Path: <stable+bounces-95813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C089DE6F9
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 14:08:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97B09165015
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 13:07:57 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2184F19B5AC;
-	Fri, 29 Nov 2024 13:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h/OozXmM"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A859DE700
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 14:10:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5819D88D
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 13:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 295F9B20DEC
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 13:10:50 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E15719D8A3;
+	Fri, 29 Nov 2024 13:10:45 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18787156991;
+	Fri, 29 Nov 2024 13:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732885671; cv=none; b=Auf3oVx7sLGMNlk90hu30Hc5732FdGWrXqsWtEvJ0rsBI1jllbfj7M7AdD1rmjzOIQtxoLxijf0e7cUU9k6AZVUe08LJKVBPYQlmNfYA3kDdVH6yelT67WB1eotxWsCvBRlQL41c3NUKFtOJgPgnd7/KxP2jn55b6d+O0iedXL8=
+	t=1732885845; cv=none; b=T+epqc127suz4z6UB89R0W7roqQ8DSsp0lwmrhUbdPKW1MSts59Js7z0In6xQHwFWl3LPbONys8eAAlJ9BRWJdi9kFHbFNoVf3ImlguFkcBWtoe6jcPTfjSu/u+vVC4GaAbpYI9BRLKo/+eEtTRorCzlKQgi2swzlkbVD07uRTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732885671; c=relaxed/simple;
-	bh=49dxjDB/tmnNrlY5WUmvW+n7+3jGSA88yJhe3KI58Z4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FGCDgbNlWbk40kMHCuYtJKr46B2s/S9iz0bVCY46/NR9TYSxiW2ukQCC3iDO/BOTxC5u9zKOo2Yi71WrmRiOHl/b0fLxXZ8tZdSgZogqbSg2w19duwYXI8c2WbzehxGZMakyyrtqc/c9APDx1cHLRQziev9gPZEyKh/llbLt/+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h/OozXmM; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732885670; x=1764421670;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=49dxjDB/tmnNrlY5WUmvW+n7+3jGSA88yJhe3KI58Z4=;
-  b=h/OozXmM0JQW2gNd4VSLxc5xANpDg4vnoils/LzE9IH2RzO1me6fqUp7
-   ZN1Q/3QXhgFt2rfEt8/bHg6lnVoYMsbdYzuaG7HojCSmHI8LvsmZBakle
-   ZdaX9NEYD5k5eFIjG3B8/G4L+WvYdkkEnXgZXiJs0kYWTQgO4skpvio7T
-   BEJLKgKoZwGxvETZMV0AiYwZR9L5jjUJr8IMM4EUwGQI+EP3hGQPCQh9h
-   HgaKU+rqmiOGrQi9oD/l0fVGYtLiFWjaLEf7IRgB9f/9FVNcT90TJDXk7
-   KfbdCU57ShHdXIzORE9iykCVL0WZkXa0r6leQ+IJSvVpveduJjwSATX15
-   Q==;
-X-CSE-ConnectionGUID: xTCq3t1jSuG8ze3E2VWtGQ==
-X-CSE-MsgGUID: YB+EGv85TNuNZ7BDS7RoWA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="33175434"
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="33175434"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 05:07:50 -0800
-X-CSE-ConnectionGUID: vVRCUsPJSlWyOb1n/SZi+Q==
-X-CSE-MsgGUID: Q39pckRRQk2U7VA3nTXX6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="96567334"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.241])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 05:07:47 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Ville Syrjala
- <ville.syrjala@linux.intel.com>, dri-devel@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org,
- syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
-Subject: Re: [PATCH 1/2] drm/modes: Avoid divide by zero harder in
- drm_mode_vrefresh()
-In-Reply-To: <09913faf-f70f-4deb-bc24-295796c8d0ca@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20241129042629.18280-1-ville.syrjala@linux.intel.com>
- <20241129042629.18280-2-ville.syrjala@linux.intel.com>
- <09913faf-f70f-4deb-bc24-295796c8d0ca@intel.com>
-Date: Fri, 29 Nov 2024 15:07:41 +0200
-Message-ID: <87cyie6vdu.fsf@intel.com>
+	s=arc-20240116; t=1732885845; c=relaxed/simple;
+	bh=6PKqaLSzy7a+YGasiuHgTCGCEKkl+ttapGfC8mv8FLI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Engs6cG2QzpXppeMZgY/Ts1QuccO3vlnmS3CCe5scGp7Fsxo6Go3/nGJvGdh6oJaMdJxtvapmbgdw9aY7R55sD7gYhPT/30TqSbfsVdX+YdrLmk4oF0bUBD9b7S5o5JxS3v0zhdESlFHZzLrAmjpRmRm8VF6LPXx42RoRu+XzZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358CDC4CECF;
+	Fri, 29 Nov 2024 13:10:43 +0000 (UTC)
+Message-ID: <e6eeb2fc-7951-4ef2-afc5-5147d78ec2e8@xs4all.nl>
+Date: Fri, 29 Nov 2024 14:10:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control owned
+ by other fh
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241127-uvc-fix-async-v2-0-510aab9570dd@chromium.org>
+ <20241127-uvc-fix-async-v2-2-510aab9570dd@chromium.org>
+ <20241128222232.GF25731@pendragon.ideasonboard.com>
+ <CANiDSCvyMbAffdyi7_TrA0tpjbHe3V_D_VkTKiW-fNDnwQfpGA@mail.gmail.com>
+ <20241128223343.GH25731@pendragon.ideasonboard.com>
+ <7eeab6bd-ce02-41a6-bcc1-7c2750ce0359@xs4all.nl>
+ <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+ <20241129110640.GB4108@pendragon.ideasonboard.com>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In-Reply-To: <20241129110640.GB4108@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 29 Nov 2024, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com> wrote:
-> On 11/29/2024 9:56 AM, Ville Syrjala wrote:
->> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+On 29/11/2024 12:06, Laurent Pinchart wrote:
+> On Fri, Nov 29, 2024 at 11:59:27AM +0100, Ricardo Ribalda wrote:
+>> On Fri, 29 Nov 2024 at 11:36, Hans Verkuil wrote:
+>>> On 28/11/2024 23:33, Laurent Pinchart wrote:
+>>>> On Thu, Nov 28, 2024 at 11:28:29PM +0100, Ricardo Ribalda wrote:
+>>>>> On Thu, 28 Nov 2024 at 23:22, Laurent Pinchart wrote:
+>>>>>>
+>>>>>> Hi Ricardo,
+>>>>>>
+>>>>>> (CC'ing Hans Verkuil)
+>>>>>>
+>>>>>> Thank you for the patch.
+>>>>>>
+>>>>>> On Wed, Nov 27, 2024 at 12:14:50PM +0000, Ricardo Ribalda wrote:
+>>>>>>> If a file handle is waiting for a response from an async control, avoid
+>>>>>>> that other file handle operate with it.
+>>>>>>>
+>>>>>>> Without this patch, the first file handle will never get the event
+>>>>>>> associated with that operation, which can lead to endless loops in
+>>>>>>> applications. Eg:
+>>>>>>> If an application A wants to change the zoom and to know when the
+>>>>>>> operation has completed:
+>>>>>>> it will open the video node, subscribe to the zoom event, change the
+>>>>>>> control and wait for zoom to finish.
+>>>>>>> If before the zoom operation finishes, another application B changes
+>>>>>>> the zoom, the first app A will loop forever.
+>>>>>>
+>>>>>> Hans, the V4L2 specification isn't very clear on this. I see pros and
+>>>>>> cons for both behaviours, with a preference for the current behaviour,
+>>>>>> as with this patch the control will remain busy until the file handle is
+>>>>>> closed if the device doesn't send the control event for any reason. What
+>>>>>> do you think ?
+>>>>>
+>>>>> Just one small clarification. The same file handler can change the
+>>>>> value of the async control as many times as it wants, even if the
+>>>>> operation has not finished.
+>>>>>
+>>>>> It will be other file handles that will get -EBUSY if they try to use
+>>>>> an async control with an unfinished operation started by another fh.
+>>>>
+>>>> Yes, I should have been more precised. If the device doesn't send the
+>>>> control event, then all other file handles will be prevented from
+>>>> setting the control until the file handle that set it first gets closed.
+>>>
+>>> I think I need a bit more background here:
+>>>
+>>> First of all, what is an asynchronous control in UVC? I think that means
+>>> you can set it, but it takes time for that operation to finish, so you
+>>> get an event later when the operation is done. So zoom and similar operations
+>>> are examples of that.
+>>>
+>>> And only when the operation finishes will the control event be sent, correct?
 >>
->> drm_mode_vrefresh() is trying to avoid divide by zero
->> by checking whether htotal or vtotal are zero. But we may
->> still end up with a div-by-zero of vtotal*htotal*...
+>> You are correct.  This diagrams from the spec is more or less clear:
+>> https://ibb.co/MDGn7F3
 >>
->> Cc: stable@vger.kernel.org
->> Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=3D622bba18029bcde672e1
->> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->> ---
->>   drivers/gpu/drm/drm_modes.c | 11 +++++++----
->>   1 file changed, 7 insertions(+), 4 deletions(-)
+>>> While the operation is ongoing, if you query the control value, is that reporting
+>>> the current position or the final position?
 >>
->> diff --git a/drivers/gpu/drm/drm_modes.c b/drivers/gpu/drm/drm_modes.c
->> index 6ba167a33461..71573b85d924 100644
->> --- a/drivers/gpu/drm/drm_modes.c
->> +++ b/drivers/gpu/drm/drm_modes.c
->> @@ -1287,14 +1287,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
->>    */
->>   int drm_mode_vrefresh(const struct drm_display_mode *mode)
->>   {
->> -	unsigned int num, den;
->> +	unsigned int num =3D 1, den =3D 1;
->>=20=20=20
->>   	if (mode->htotal =3D=3D 0 || mode->vtotal =3D=3D 0)
->>   		return 0;
->>=20=20=20
->> -	num =3D mode->clock;
->> -	den =3D mode->htotal * mode->vtotal;
->> -
->>   	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
->>   		num *=3D 2;
->>   	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
->> @@ -1302,6 +1299,12 @@ int drm_mode_vrefresh(const struct drm_display_mo=
-de *mode)
->>   	if (mode->vscan > 1)
->>   		den *=3D mode->vscan;
->>=20=20=20
->> +	if (check_mul_overflow(mode->clock, num, &num))
->> +		return 0;
->> +
->> +	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
->
-> Can mode->htotal * mode->vtotal result in overflow?
+>> I'd expect hardware will return either the current position, the start
+>> position or the final position. I could not find anything in the spec
+>> that points in one direction or the others.
+> 
+> Figure 2-21 in UVC 1.5 indicates that the device should STALL the
+> GET_CUR and SET_CUR requests if a state change is in progress.
+> 
+>> And in the driver I believe that we might have a bug handling this
+>> case (will send a patch if I can confirm it)
+>> the zoom is at 0 and you set it 10
+>> if you read the value 2 times before the camera reaches value 10:
+>> - First value will come from the hardware and the response will be cached
+> 
+> Only if the control doesn't have the auto-update flag set, so it will be
+> device-dependent. As GET_CUR should stall that's not really relevant,
+> except for the fact that devices may not stall the request.
 
-u16 * u16 will always fit in an unsigned int (at least where the kernel
-runs).
+OK, that helps a lot.
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+If an operation is in progress, then setting a new control value should
+result in -EBUSY. Based on the description above, I gather that even the
+same fh that made the request cannot update it while the operation is
+ongoing?
 
+Getting the control should just return the value that was set. I assume
+that is cached in uvc?
 
->
-> and we should add:
->
-> if (check_mul_overflow(mode->htotal, mode->vtotal, &prod))
-> 	return 0;
->
-> Regards,
->
-> Ankit
->
->> +		return 0;
->> +
->>   	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
->>   }
->>   EXPORT_SYMBOL(drm_mode_vrefresh);
+Regards,
 
---=20
-Jani Nikula, Intel
+	Hans
+
+> 
+>> - Second value will be the cached one
+>>
+>> now the camera  is at zoom 10
+>> If you read the value, you will read the cached value
+>>
+>>> E.g.: the zoom control is at value 0 and I set it to 10, then I poll the zoom control
+>>> value: will that report the intermediate values until it reaches 10? And when it is
+>>> at 10, the control event is sent?
+>>>
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+>>>>>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>>>>>>> ---
+>>>>>>>  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++++
+>>>>>>>  1 file changed, 4 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+>>>>>>> index b6af4ff92cbd..3f8ae35cb3bc 100644
+>>>>>>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+>>>>>>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+>>>>>>> @@ -1955,6 +1955,10 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+>>>>>>>       if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+>>>>>>>               return -EACCES;
+>>>>>>>
+>>>>>>> +     /* Other file handle is waiting a response from this async control. */
+>>>>>>> +     if (ctrl->handle && ctrl->handle != handle)
+>>>>>>> +             return -EBUSY;
+>>>>>>> +
+>>>>>>>       /* Clamp out of range values. */
+>>>>>>>       switch (mapping->v4l2_type) {
+>>>>>>>       case V4L2_CTRL_TYPE_INTEGER:
+> 
+
 
