@@ -1,185 +1,187 @@
-Return-Path: <stable+bounces-95798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53DB9DC282
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 12:07:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CE09DC286
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 12:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2146BB218AA
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 11:07:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6FB283409
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 11:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889AF1990D8;
-	Fri, 29 Nov 2024 11:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50EB18A6A7;
+	Fri, 29 Nov 2024 11:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qxxpXQsA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nc3GucTM"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8C3155726;
-	Fri, 29 Nov 2024 11:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BD2155726;
+	Fri, 29 Nov 2024 11:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732878414; cv=none; b=WAqwSevw0g43u+rV4CTgMl4InYf2QN+FBwquRfgQQTFgpPpMxQRNpfu8Sag4v4h6Jxj6Jw00ptc9HHH+OcJh+Iij+P70iYE7+U+GJD3xEIGBCd2Amq61KTQXJiJhsY3/x5UZGelpKeAwns6k5cGMiXqEj5SYQ5o45T6vDfc7e1I=
+	t=1732878458; cv=none; b=dpsLrmczKylI52RiVg7V+ras3qEdkH9ecrfj6BnqxEppN6bG3qhv6Vuzhq4yMx6Yk5jAtOtqig2w6vaU0KdwdXjakC9AnbrH/3u1E6f/ukb6mjhSi8gtnDO4I6ncFRxLCVT+RAPp3uBIwHuuzNiEIq+opiXhIvUnT+gGT1C/4jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732878414; c=relaxed/simple;
-	bh=TwdrBaS4qYS6OdOtx8q9Yeagwt8UgVRcTEqq9YSfMBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n1uhqG7BbsI4f9GQcd76mq+yGSSogNALnj5GSoFuJmnXJa0LpD+rYVdgT+/+ZpSihgYueTse9qxMqzPW5XezX+GOQZruxUqTvT2oEJpoMfBwk/jBSEf3xOf5cIPiQUC6Vu1e1nHnBvMiJxuoi2anib/7yscEJNZtRVCsA5SjiEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qxxpXQsA; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 469E7A8F;
-	Fri, 29 Nov 2024 12:06:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1732878386;
-	bh=TwdrBaS4qYS6OdOtx8q9Yeagwt8UgVRcTEqq9YSfMBc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qxxpXQsA+neGZrBhgXAjDjR7ecZQv87V4hi+PuFEC0EtZC4tTdf/sEmYL5SKXenKc
-	 dCyPI9qK9WzNVqmhOs/ZtDFWNeTbJhj0u5OIPUlmoI0ATGmHk1gp7l2lcrT06H7Vez
-	 KwcIIDX+QcV3IFgKX2CluVcPheiAQ09ItDPhcvFY=
-Date: Fri, 29 Nov 2024 13:06:40 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control
- owned by other fh
-Message-ID: <20241129110640.GB4108@pendragon.ideasonboard.com>
-References: <20241127-uvc-fix-async-v2-0-510aab9570dd@chromium.org>
- <20241127-uvc-fix-async-v2-2-510aab9570dd@chromium.org>
- <20241128222232.GF25731@pendragon.ideasonboard.com>
- <CANiDSCvyMbAffdyi7_TrA0tpjbHe3V_D_VkTKiW-fNDnwQfpGA@mail.gmail.com>
- <20241128223343.GH25731@pendragon.ideasonboard.com>
- <7eeab6bd-ce02-41a6-bcc1-7c2750ce0359@xs4all.nl>
- <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+	s=arc-20240116; t=1732878458; c=relaxed/simple;
+	bh=IgWZmiTQjVeCO299Jkm0cQy7MH9EP10NuEXhObmfHs4=;
+	h=Date:To:From:Subject:Message-Id; b=HStzuzBhxWLwXdBFmTsUfZ23HCqmPUITGON9FHpi7ECGRy1lK9ItPg0fAJGdFaDn/XsoZSPE3arjxTbMdbG4Ae/yGqcGHDOFLKw1xdguBmWbh/Jbly71TiF7w774aNL/WeXwvVyAzYbBirx2RWl18XMuC+gz9iF8numW6MO033I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nc3GucTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E1FC4CECF;
+	Fri, 29 Nov 2024 11:07:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1732878457;
+	bh=IgWZmiTQjVeCO299Jkm0cQy7MH9EP10NuEXhObmfHs4=;
+	h=Date:To:From:Subject:From;
+	b=nc3GucTMpNpQSL29cf9kraoz+zwrFDhQEOtTBoOqeeba0xKhYm3x49NMeWIGew2QI
+	 ldPzBYEHazxHudHRUyiv99/7ChXVwbdoFCvSJXFSXOwnRXBwiLAqCnjytTftbm8wDa
+	 k34B9drqe7qBwoXMBlrq6DYmsdrLZRGtzODnxqPE=
+Date: Fri, 29 Nov 2024 03:07:37 -0800
+To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,riel@surriel.com,minchan@kernel.org,lokeshgidra@google.com,hboehm@google.com,david@redhat.com,kaleshsingh@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-respect-mmap-hint-address-when-aligning-for-thp.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241129110737.98E1FC4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
 
-On Fri, Nov 29, 2024 at 11:59:27AM +0100, Ricardo Ribalda wrote:
-> On Fri, 29 Nov 2024 at 11:36, Hans Verkuil wrote:
-> > On 28/11/2024 23:33, Laurent Pinchart wrote:
-> > > On Thu, Nov 28, 2024 at 11:28:29PM +0100, Ricardo Ribalda wrote:
-> > >> On Thu, 28 Nov 2024 at 23:22, Laurent Pinchart wrote:
-> > >>>
-> > >>> Hi Ricardo,
-> > >>>
-> > >>> (CC'ing Hans Verkuil)
-> > >>>
-> > >>> Thank you for the patch.
-> > >>>
-> > >>> On Wed, Nov 27, 2024 at 12:14:50PM +0000, Ricardo Ribalda wrote:
-> > >>>> If a file handle is waiting for a response from an async control, avoid
-> > >>>> that other file handle operate with it.
-> > >>>>
-> > >>>> Without this patch, the first file handle will never get the event
-> > >>>> associated with that operation, which can lead to endless loops in
-> > >>>> applications. Eg:
-> > >>>> If an application A wants to change the zoom and to know when the
-> > >>>> operation has completed:
-> > >>>> it will open the video node, subscribe to the zoom event, change the
-> > >>>> control and wait for zoom to finish.
-> > >>>> If before the zoom operation finishes, another application B changes
-> > >>>> the zoom, the first app A will loop forever.
-> > >>>
-> > >>> Hans, the V4L2 specification isn't very clear on this. I see pros and
-> > >>> cons for both behaviours, with a preference for the current behaviour,
-> > >>> as with this patch the control will remain busy until the file handle is
-> > >>> closed if the device doesn't send the control event for any reason. What
-> > >>> do you think ?
-> > >>
-> > >> Just one small clarification. The same file handler can change the
-> > >> value of the async control as many times as it wants, even if the
-> > >> operation has not finished.
-> > >>
-> > >> It will be other file handles that will get -EBUSY if they try to use
-> > >> an async control with an unfinished operation started by another fh.
-> > >
-> > > Yes, I should have been more precised. If the device doesn't send the
-> > > control event, then all other file handles will be prevented from
-> > > setting the control until the file handle that set it first gets closed.
-> >
-> > I think I need a bit more background here:
-> >
-> > First of all, what is an asynchronous control in UVC? I think that means
-> > you can set it, but it takes time for that operation to finish, so you
-> > get an event later when the operation is done. So zoom and similar operations
-> > are examples of that.
-> >
-> > And only when the operation finishes will the control event be sent, correct?
-> 
-> You are correct.  This diagrams from the spec is more or less clear:
-> https://ibb.co/MDGn7F3
-> 
-> > While the operation is ongoing, if you query the control value, is that reporting
-> > the current position or the final position?
-> 
-> I'd expect hardware will return either the current position, the start
-> position or the final position. I could not find anything in the spec
-> that points in one direction or the others.
 
-Figure 2-21 in UVC 1.5 indicates that the device should STALL the
-GET_CUR and SET_CUR requests if a state change is in progress.
+The patch titled
+     Subject: mm: Respect mmap hint address when aligning for THP
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-respect-mmap-hint-address-when-aligning-for-thp.patch
 
-> And in the driver I believe that we might have a bug handling this
-> case (will send a patch if I can confirm it)
-> the zoom is at 0 and you set it 10
-> if you read the value 2 times before the camera reaches value 10:
-> - First value will come from the hardware and the response will be cached
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-respect-mmap-hint-address-when-aligning-for-thp.patch
 
-Only if the control doesn't have the auto-update flag set, so it will be
-device-dependent. As GET_CUR should stall that's not really relevant,
-except for the fact that devices may not stall the request.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> - Second value will be the cached one
-> 
-> now the camera  is at zoom 10
-> If you read the value, you will read the cached value
->
-> > E.g.: the zoom control is at value 0 and I set it to 10, then I poll the zoom control
-> > value: will that report the intermediate values until it reaches 10? And when it is
-> > at 10, the control event is sent?
-> >
-> > >>>> Cc: stable@vger.kernel.org
-> > >>>> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-> > >>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > >>>> ---
-> > >>>>  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++++
-> > >>>>  1 file changed, 4 insertions(+)
-> > >>>>
-> > >>>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> > >>>> index b6af4ff92cbd..3f8ae35cb3bc 100644
-> > >>>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> > >>>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> > >>>> @@ -1955,6 +1955,10 @@ int uvc_ctrl_set(struct uvc_fh *handle,
-> > >>>>       if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
-> > >>>>               return -EACCES;
-> > >>>>
-> > >>>> +     /* Other file handle is waiting a response from this async control. */
-> > >>>> +     if (ctrl->handle && ctrl->handle != handle)
-> > >>>> +             return -EBUSY;
-> > >>>> +
-> > >>>>       /* Clamp out of range values. */
-> > >>>>       switch (mapping->v4l2_type) {
-> > >>>>       case V4L2_CTRL_TYPE_INTEGER:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
--- 
-Regards,
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Laurent Pinchart
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kalesh Singh <kaleshsingh@google.com>
+Subject: mm: Respect mmap hint address when aligning for THP
+Date: Mon, 18 Nov 2024 13:46:48 -0800
+
+Commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries") updated __get_unmapped_area() to align the start address for
+the VMA to a PMD boundary if CONFIG_TRANSPARENT_HUGEPAGE=y.
+
+It does this by effectively looking up a region that is of size,
+request_size + PMD_SIZE, and aligning up the start to a PMD boundary.
+
+Commit 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on
+32 bit") opted out of this for 32bit due to regressions in mmap base
+randomization.
+
+Commit d4148aeab412 ("mm, mmap: limit THP alignment of anonymous mappings
+to PMD-aligned sizes") restricted this to only mmap sizes that are
+multiples of the PMD_SIZE due to reported regressions in some performance
+benchmarks -- which seemed mostly due to the reduced spatial locality of
+related mappings due to the forced PMD-alignment.
+
+Another unintended side effect has emerged: When a user specifies an mmap
+hint address, the THP alignment logic modifies the behavior, potentially
+ignoring the hint even if a sufficiently large gap exists at the requested
+hint location.
+
+Example Scenario:
+
+Consider the following simplified virtual address (VA) space:
+
+    ...
+
+    0x200000-0x400000 --- VMA A
+    0x400000-0x600000 --- Hole
+    0x600000-0x800000 --- VMA B
+
+    ...
+
+A call to mmap() with hint=0x400000 and len=0x200000 behaves differently:
+
+  - Before THP alignment: The requested region (size 0x200000) fits into
+    the gap at 0x400000, so the hint is respected.
+
+  - After alignment: The logic searches for a region of size
+    0x400000 (len + PMD_SIZE) starting at 0x400000.
+    This search fails due to the mapping at 0x600000 (VMA B), and the hint
+    is ignored, falling back to arch_get_unmapped_area[_topdown]().
+
+In general the hint is effectively ignored, if there is any existing
+mapping in the below range:
+
+     [mmap_hint + mmap_size, mmap_hint + mmap_size + PMD_SIZE)
+
+This changes the semantics of mmap hint; from ""Respect the hint if a
+sufficiently large gap exists at the requested location" to "Respect the
+hint only if an additional PMD-sized gap exists beyond the requested
+size".
+
+This has performance implications for allocators that allocate their heap
+using mmap but try to keep it "as contiguous as possible" by using the end
+of the exisiting heap as the address hint.  With the new behavior it's
+more likely to get a much less contiguous heap, adding extra fragmentation
+and performance overhead.
+
+To restore the expected behavior; don't use
+thp_get_unmapped_area_vmflags() when the user provided a hint address, for
+anonymous mappings.
+
+Note: As Yang Shi pointed out: the issue still remains for filesystems
+which are using thp_get_unmapped_area() for their get_unmapped_area() op. 
+It is unclear what worklaods will regress for if we ignore THP alignment
+when the hint address is provided for such file backed mappings -- so this
+fix will be handled separately.
+
+Link: https://lkml.kernel.org/r/20241118214650.3667577-1-kaleshsingh@google.com
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Hans Boehm <hboehm@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mmap.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/mmap.c~mm-respect-mmap-hint-address-when-aligning-for-thp
++++ a/mm/mmap.c
+@@ -893,6 +893,7 @@ __get_unmapped_area(struct file *file, u
+ 	if (get_area) {
+ 		addr = get_area(file, addr, len, pgoff, flags);
+ 	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
++		   && !addr /* no hint */
+ 		   && IS_ALIGNED(len, PMD_SIZE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+ 		addr = thp_get_unmapped_area_vmflags(file, addr, len,
+_
+
+Patches currently in -mm which might be from kaleshsingh@google.com are
+
+mm-respect-mmap-hint-address-when-aligning-for-thp.patch
+
 
