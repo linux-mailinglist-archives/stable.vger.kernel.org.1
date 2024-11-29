@@ -1,716 +1,280 @@
-Return-Path: <stable+bounces-95800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577809DC2EE
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 12:33:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2169DC322
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 12:55:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06AAD161378
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 11:33:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE742820D2
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 11:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15EA15B551;
-	Fri, 29 Nov 2024 11:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C871991D2;
+	Fri, 29 Nov 2024 11:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Iss45/wK"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LhR6Tfs+"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D335B132C38
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 11:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053C033C5
+	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 11:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732880013; cv=none; b=P9dmYqhRDWHecjo+9kJELWBi2iN8Yb/Y0eRBO6aq99C9ZxdoLTaGSjRocsYXsgm8VoNh40KiphOADwTPLqgUivVMzBSKIYEr/sKBhpgoCiS0euUfJGOvHCsqCkN0qgcmYdMUHvengozdBtsV5IgEpwscn1v/sDrhtUROf0/TBZw=
+	t=1732881311; cv=none; b=Sc0Lrp/i709dntk2RWqUPutUaQI0NZUFmmcobCxtxJ7zk2yUKNzhk82Xbz213d9JrHxxPCmXtjcKquqHrvIr4rdsQDc4Q2F91SX52lpsrnoyiDoc97DDOHCY4ng5t4Qi3EY52/lnmJyzefqaPMjOrUnkKqIGJGBrvdnY0WlIBuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732880013; c=relaxed/simple;
-	bh=UmU8o+oTJ9HqcoBh353TMyjckKLohodj/0myXFV1k80=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SQ1z2DeopCdW6rk1USqnZGZPhknVqlGVRbiZUN6j+FDr+2NHnjmaA0nZD0j6laxrqvMj2lr8zqsIpjuAhuvkHDbv8uognv6HJUJCemTuxxdTSAnDIwYNIkX3kzw9XWUfTmzu8l/C2Xig+CS7KwJIxAEnJZgKlqEvTFxt7Xik6GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Iss45/wK; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from LAPTOP-I1KNRUTF.home (unknown [20.107.5.167])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 695102053072;
-	Fri, 29 Nov 2024 03:33:24 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 695102053072
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1732880005;
-	bh=PLwzMsNjfvFTR1skr6/FAl0NlLxkpHpd57HHIyfd5JI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Iss45/wKdKNiDC0sA69pmb9vVl6LJSwfiYJE8Hr2ODO2g+7ZLRL2ZvqfwwnCq7gKt
-	 fAEq8AR42r2U5VKGdVUXm766vKQaqz6YgCovCtpkdKeGy1KS/BbCrWXUIpbm8HIg5v
-	 b5sWgCOa5HK2NtBcBYhmMQEGy9lAKUV4rnHKCJP8=
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To: stable@vger.kernel.org
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Subject: [PATCH 5.15] kernfs: switch global kernfs_rwsem lock to per-fs lock
-Date: Fri, 29 Nov 2024 12:32:36 +0100
-Message-Id: <20241129113236.209845-1-jpiotrowski@linux.microsoft.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1732881311; c=relaxed/simple;
+	bh=H94fonH0/iS0Ya400lkWzBlZTIYjE5AlSJn+rurzY0M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fk7t51KVyjCB0fEvGgfjkMrB3qvDvaRJcrMP+alEkW9zdncxmgosx1urCWNYSADkt2xHUc8M6nwXWNNPYNAZnWhHN8aptnYtoyL8tMvTdpGB8f1ZJukEBoSSepx3ykL8BzPh8v44yn6U+p//IaCRB/bui/rc058U7WK9b0+qGYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LhR6Tfs+; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7ee11ff7210so1249402a12.1
+        for <stable@vger.kernel.org>; Fri, 29 Nov 2024 03:55:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1732881309; x=1733486109; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=49ZRrxTPw/7ckWBIVJ4Tn6I41BTVjNlZXEsLbt2obgk=;
+        b=LhR6Tfs+u98kEDgLyFNpL39dyq2P6A6Wi1MvYLSadswy0cqQgAdaLPLvhl393F+E/Q
+         P9q1wY+BtFs8wAGzIyZdgL7IUf8hJ6pVT2hXBmmqhDmRQEITXL9E3KIvcofbpehXQ/bz
+         b4JTQnxLkZjyilswIGwy8vrlu5KkPAhaKxNns=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732881309; x=1733486109;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=49ZRrxTPw/7ckWBIVJ4Tn6I41BTVjNlZXEsLbt2obgk=;
+        b=mBrjN5/eh+j1j7AZ8vyjaN+0i+y+ovMxDOt0bsJQI6niqN5I8SrWBsjInHYesD30aD
+         w1/70lHaPkTbnQUFKkVw7hAYAK9yuT5Y8amxTOltr/DoEDkM/j+xfQCsLVqJmYCHQ5Dp
+         0d+kElWjmlJXtkGu/y28CW2c4779zz7SDpKiZgyLtNBK/P6/shm0s/386zWqX8PSgbS+
+         yQgpibV5z3+6LcIo0bi8oI9cRMPnQeUY5VFsxJ/QOeXxKi/RuVOvzzfhUgteh5zueSkW
+         MmBhoh5yL69lbDzo1MqSmONf/yaDh7SV8nby5gVZEvN9Tj2SEE5ufgCI3xRHTtfbLOIE
+         Xn6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXso5/S3bGiTMuJpuC0Z2nR7JM56ZYkJdUOMJvm2EYGBMjGOG0zGGCGq+UifdYI2XHeWGphSI0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCuvBn1UgZvWhIovsZc+n7Ab4DWUCxVNJi7jZgzQ847dKlqMxv
+	57nzC2v95aByutmbvyjYMQmoN7zijsIVqbJnJ+bfAEFWEJL7ZNtCzGBm8+faP6AT5/ThJLiU/4U
+	=
+X-Gm-Gg: ASbGncuCsqAmqTB5vilcZMW72h1wuPeu+QDkzFy/iXl94eRH3EUxf/E5HXu8EVKLwCa
+	T+YHrZyMNH53JGTU6WtnLlHssdwta/ZZZcdLlkRhLs0lTyqjJcKiXKA0LVmTCT35zlJbXZy+0lc
+	0CwWnpA37IK1G0ArsV0rX7ElR/cZ4/K9mZ9ye/IGVGJrD4CeLQIg0OAG6wdoYq4mOciXg+KsREz
+	Hv9WZnSkig2XUcYB1fN5TyPOKRFyxRpvfn+dxttH/PC653zy43hj8OLHWIZ1EzZQS5b8exR/fwr
+	/LcFhNnw0mzjsK60
+X-Google-Smtp-Source: AGHT+IE1Ci2P2bl9k3FTD4CUHgsKOPalYv/MXAO0e4hFEyeBoj4FgSMXWrsI42vCWdGKwxsAxANGjQ==
+X-Received: by 2002:a05:6a21:2d8f:b0:1e0:bedf:5902 with SMTP id adf61e73a8af0-1e0e0aa73ecmr15081262637.6.1732881308857;
+        Fri, 29 Nov 2024 03:55:08 -0800 (PST)
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com. [209.85.210.181])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72541848b4dsm3379924b3a.186.2024.11.29.03.55.07
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Nov 2024 03:55:07 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-724f0f6300aso1930833b3a.2
+        for <stable@vger.kernel.org>; Fri, 29 Nov 2024 03:55:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVyxjnKsdSbJmZfhyg10JioNso22+ahYceW222n437zWJFF7y8OU65AyRxwKprP2GRLBdcOR9g=@vger.kernel.org
+X-Received: by 2002:a17:90b:33ce:b0:2ea:6f90:ce09 with SMTP id
+ 98e67ed59e1d1-2ee094caf5amr12809220a91.27.1732881306860; Fri, 29 Nov 2024
+ 03:55:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241127-uvc-fix-async-v2-0-510aab9570dd@chromium.org>
+ <20241127-uvc-fix-async-v2-2-510aab9570dd@chromium.org> <20241128222232.GF25731@pendragon.ideasonboard.com>
+ <CANiDSCvyMbAffdyi7_TrA0tpjbHe3V_D_VkTKiW-fNDnwQfpGA@mail.gmail.com>
+ <20241128223343.GH25731@pendragon.ideasonboard.com> <7eeab6bd-ce02-41a6-bcc1-7c2750ce0359@xs4all.nl>
+ <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com> <20241129110640.GB4108@pendragon.ideasonboard.com>
+In-Reply-To: <20241129110640.GB4108@pendragon.ideasonboard.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Fri, 29 Nov 2024 12:54:55 +0100
+X-Gmail-Original-Message-ID: <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
+Message-ID: <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control owned
+ by other fh
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>, Hans de Goede <hdegoede@redhat.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>, 
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Minchan Kim <minchan@kernel.org>
+On Fri, 29 Nov 2024 at 12:06, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> On Fri, Nov 29, 2024 at 11:59:27AM +0100, Ricardo Ribalda wrote:
+> > On Fri, 29 Nov 2024 at 11:36, Hans Verkuil wrote:
+> > > On 28/11/2024 23:33, Laurent Pinchart wrote:
+> > > > On Thu, Nov 28, 2024 at 11:28:29PM +0100, Ricardo Ribalda wrote:
+> > > >> On Thu, 28 Nov 2024 at 23:22, Laurent Pinchart wrote:
+> > > >>>
+> > > >>> Hi Ricardo,
+> > > >>>
+> > > >>> (CC'ing Hans Verkuil)
+> > > >>>
+> > > >>> Thank you for the patch.
+> > > >>>
+> > > >>> On Wed, Nov 27, 2024 at 12:14:50PM +0000, Ricardo Ribalda wrote:
+> > > >>>> If a file handle is waiting for a response from an async control, avoid
+> > > >>>> that other file handle operate with it.
+> > > >>>>
+> > > >>>> Without this patch, the first file handle will never get the event
+> > > >>>> associated with that operation, which can lead to endless loops in
+> > > >>>> applications. Eg:
+> > > >>>> If an application A wants to change the zoom and to know when the
+> > > >>>> operation has completed:
+> > > >>>> it will open the video node, subscribe to the zoom event, change the
+> > > >>>> control and wait for zoom to finish.
+> > > >>>> If before the zoom operation finishes, another application B changes
+> > > >>>> the zoom, the first app A will loop forever.
+> > > >>>
+> > > >>> Hans, the V4L2 specification isn't very clear on this. I see pros and
+> > > >>> cons for both behaviours, with a preference for the current behaviour,
+> > > >>> as with this patch the control will remain busy until the file handle is
+> > > >>> closed if the device doesn't send the control event for any reason. What
+> > > >>> do you think ?
+> > > >>
+> > > >> Just one small clarification. The same file handler can change the
+> > > >> value of the async control as many times as it wants, even if the
+> > > >> operation has not finished.
+> > > >>
+> > > >> It will be other file handles that will get -EBUSY if they try to use
+> > > >> an async control with an unfinished operation started by another fh.
+> > > >
+> > > > Yes, I should have been more precised. If the device doesn't send the
+> > > > control event, then all other file handles will be prevented from
+> > > > setting the control until the file handle that set it first gets closed.
+> > >
+> > > I think I need a bit more background here:
+> > >
+> > > First of all, what is an asynchronous control in UVC? I think that means
+> > > you can set it, but it takes time for that operation to finish, so you
+> > > get an event later when the operation is done. So zoom and similar operations
+> > > are examples of that.
+> > >
+> > > And only when the operation finishes will the control event be sent, correct?
+> >
+> > You are correct.  This diagrams from the spec is more or less clear:
+> > https://ibb.co/MDGn7F3
+> >
+> > > While the operation is ongoing, if you query the control value, is that reporting
+> > > the current position or the final position?
+> >
+> > I'd expect hardware will return either the current position, the start
+> > position or the final position. I could not find anything in the spec
+> > that points in one direction or the others.
+>
+> Figure 2-21 in UVC 1.5 indicates that the device should STALL the
+> GET_CUR and SET_CUR requests if a state change is in progress.
+>
+> > And in the driver I believe that we might have a bug handling this
+> > case (will send a patch if I can confirm it)
+> > the zoom is at 0 and you set it 10
+> > if you read the value 2 times before the camera reaches value 10:
+> > - First value will come from the hardware and the response will be cached
+>
+> Only if the control doesn't have the auto-update flag set, so it will be
+> device-dependent. As GET_CUR should stall that's not really relevant,
+> except for the fact that devices may not stall the request.
 
-[ Upstream commit 393c3714081a53795bbff0e985d24146def6f57f ]
+I missed that the device will likely stall during async operations.
 
-The kernfs implementation has big lock granularity(kernfs_rwsem) so
-every kernfs-based(e.g., sysfs, cgroup) fs are able to compete the
-lock. It makes trouble for some cases to wait the global lock
-for a long time even though they are totally independent contexts
-each other.
+What do you think of something like this? I believe it can work with
+compliant and non compliant devices.
+Note that the event will be received by the device that originated the
+operation, not to the second one that might receive an error during
+write/read.
 
-A general example is process A goes under direct reclaim with holding
-the lock when it accessed the file in sysfs and process B is waiting
-the lock with exclusive mode and then process C is waiting the lock
-until process B could finish the job after it gets the lock from
-process A.
 
-This patch switches the global kernfs_rwsem to per-fs lock, which
-put the rwsem into kernfs_root.
 
-Suggested-by: Tejun Heo <tj@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Minchan Kim <minchan@kernel.org>
-Link: https://lore.kernel.org/r/20211118230008.2679780-1-minchan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
----
-Hi Stable Maintainers,
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 4fe26e82e3d1..9a86c912e7a2 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1826,14 +1826,15 @@ static int uvc_ctrl_commit_entity(struct
+uvc_device *dev,
+                        continue;
 
-This upstream commit fixes a kernel hang due to severe lock contention on
-kernfs_rwsem that occurs when container workloads perform a lot of cgroupfs
-accesses. Could you please apply to 5.15.y? I cherry-pick the upstream commit
-to v5.15.173 and then performed `git format-patch`.
+                /*
+-                * Reset the loaded flag for auto-update controls that were
++                * Reset the loaded flag for auto-update controls and for
++                * asynchronous controls with pending operations, that were
+                 * marked as loaded in uvc_ctrl_get/uvc_ctrl_set to prevent
+                 * uvc_ctrl_get from using the cached value, and for write-only
+                 * controls to prevent uvc_ctrl_set from setting bits not
+                 * explicitly set by the user.
+                 */
+                if (ctrl->info.flags & UVC_CTRL_FLAG_AUTO_UPDATE ||
+-                   !(ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR))
++                   !(ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR) || ctrl->handle)
+                        ctrl->loaded = 0;
 
-Thanks,
-Jeremi
+                if (!ctrl->dirty)
+@@ -2046,8 +2047,18 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+        mapping->set(mapping, value,
+                uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
 
- fs/kernfs/dir.c        | 110 ++++++++++++++++++++++++-----------------
- fs/kernfs/file.c       |   6 ++-
- fs/kernfs/inode.c      |  22 ++++++---
- fs/kernfs/mount.c      |  15 +++---
- fs/kernfs/symlink.c    |   5 +-
- include/linux/kernfs.h |   2 +
- 6 files changed, 97 insertions(+), 63 deletions(-)
+-       if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-               ctrl->handle = handle;
++       if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS) {
++               /*
++                * Other file handle is waiting for an operation on
++                * this asynchronous control. If the device is compliant
++                * this operation will fail.
++                *
++                * Do not replace the handle pointer, so the original file
++                * descriptor will get the completion event.
++                */
++               if (!ctrl->handle)
++                       ctrl->handle = handle;
++       }
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index 36430bdf9381..ebe4ab0765ee 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -17,7 +17,6 @@
- 
- #include "kernfs-internal.h"
- 
--DECLARE_RWSEM(kernfs_rwsem);
- static DEFINE_SPINLOCK(kernfs_rename_lock);	/* kn->parent and ->name */
- /*
-  * Don't use rename_lock to piggy back on pr_cont_buf. We don't want to
-@@ -34,7 +33,7 @@ static DEFINE_SPINLOCK(kernfs_idr_lock);	/* root->ino_idr */
- 
- static bool kernfs_active(struct kernfs_node *kn)
- {
--	lockdep_assert_held(&kernfs_rwsem);
-+	lockdep_assert_held(&kernfs_root(kn)->kernfs_rwsem);
- 	return atomic_read(&kn->active) >= 0;
- }
- 
-@@ -465,14 +464,15 @@ void kernfs_put_active(struct kernfs_node *kn)
-  * return after draining is complete.
-  */
- static void kernfs_drain(struct kernfs_node *kn)
--	__releases(&kernfs_rwsem) __acquires(&kernfs_rwsem)
-+	__releases(&kernfs_root(kn)->kernfs_rwsem)
-+	__acquires(&kernfs_root(kn)->kernfs_rwsem)
- {
- 	struct kernfs_root *root = kernfs_root(kn);
- 
--	lockdep_assert_held_write(&kernfs_rwsem);
-+	lockdep_assert_held_write(&root->kernfs_rwsem);
- 	WARN_ON_ONCE(kernfs_active(kn));
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 
- 	if (kernfs_lockdep(kn)) {
- 		rwsem_acquire(&kn->dep_map, 0, 0, _RET_IP_);
-@@ -491,7 +491,7 @@ static void kernfs_drain(struct kernfs_node *kn)
- 
- 	kernfs_drain_open_files(kn);
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- }
- 
- /**
-@@ -740,11 +740,12 @@ struct kernfs_node *kernfs_find_and_get_node_by_id(struct kernfs_root *root,
- int kernfs_add_one(struct kernfs_node *kn)
- {
- 	struct kernfs_node *parent = kn->parent;
-+	struct kernfs_root *root = kernfs_root(parent);
- 	struct kernfs_iattrs *ps_iattr;
- 	bool has_ns;
- 	int ret;
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 
- 	ret = -EINVAL;
- 	has_ns = kernfs_ns_enabled(parent);
-@@ -775,7 +776,7 @@ int kernfs_add_one(struct kernfs_node *kn)
- 		ps_iattr->ia_mtime = ps_iattr->ia_ctime;
- 	}
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 
- 	/*
- 	 * Activate the new node unless CREATE_DEACTIVATED is requested.
-@@ -789,7 +790,7 @@ int kernfs_add_one(struct kernfs_node *kn)
- 	return 0;
- 
- out_unlock:
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	return ret;
- }
- 
-@@ -810,7 +811,7 @@ static struct kernfs_node *kernfs_find_ns(struct kernfs_node *parent,
- 	bool has_ns = kernfs_ns_enabled(parent);
- 	unsigned int hash;
- 
--	lockdep_assert_held(&kernfs_rwsem);
-+	lockdep_assert_held(&kernfs_root(parent)->kernfs_rwsem);
- 
- 	if (has_ns != (bool)ns) {
- 		WARN(1, KERN_WARNING "kernfs: ns %s in '%s' for '%s'\n",
-@@ -842,7 +843,7 @@ static struct kernfs_node *kernfs_walk_ns(struct kernfs_node *parent,
- 	size_t len;
- 	char *p, *name;
- 
--	lockdep_assert_held_read(&kernfs_rwsem);
-+	lockdep_assert_held_read(&kernfs_root(parent)->kernfs_rwsem);
- 
- 	spin_lock_irq(&kernfs_pr_cont_lock);
- 
-@@ -880,11 +881,12 @@ struct kernfs_node *kernfs_find_and_get_ns(struct kernfs_node *parent,
- 					   const char *name, const void *ns)
- {
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root = kernfs_root(parent);
- 
--	down_read(&kernfs_rwsem);
-+	down_read(&root->kernfs_rwsem);
- 	kn = kernfs_find_ns(parent, name, ns);
- 	kernfs_get(kn);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	return kn;
- }
-@@ -904,11 +906,12 @@ struct kernfs_node *kernfs_walk_and_get_ns(struct kernfs_node *parent,
- 					   const char *path, const void *ns)
- {
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root = kernfs_root(parent);
- 
--	down_read(&kernfs_rwsem);
-+	down_read(&root->kernfs_rwsem);
- 	kn = kernfs_walk_ns(parent, path, ns);
- 	kernfs_get(kn);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	return kn;
- }
-@@ -933,6 +936,7 @@ struct kernfs_root *kernfs_create_root(struct kernfs_syscall_ops *scops,
- 		return ERR_PTR(-ENOMEM);
- 
- 	idr_init(&root->ino_idr);
-+	init_rwsem(&root->kernfs_rwsem);
- 	INIT_LIST_HEAD(&root->supers);
- 
- 	/*
-@@ -1056,6 +1060,7 @@ struct kernfs_node *kernfs_create_empty_dir(struct kernfs_node *parent,
- static int kernfs_dop_revalidate(struct dentry *dentry, unsigned int flags)
- {
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root;
- 
- 	if (flags & LOOKUP_RCU)
- 		return -ECHILD;
-@@ -1067,18 +1072,19 @@ static int kernfs_dop_revalidate(struct dentry *dentry, unsigned int flags)
- 		/* If the kernfs parent node has changed discard and
- 		 * proceed to ->lookup.
- 		 */
--		down_read(&kernfs_rwsem);
- 		spin_lock(&dentry->d_lock);
- 		parent = kernfs_dentry_node(dentry->d_parent);
- 		if (parent) {
-+			spin_unlock(&dentry->d_lock);
-+			root = kernfs_root(parent);
-+			down_read(&root->kernfs_rwsem);
- 			if (kernfs_dir_changed(parent, dentry)) {
--				spin_unlock(&dentry->d_lock);
--				up_read(&kernfs_rwsem);
-+				up_read(&root->kernfs_rwsem);
- 				return 0;
- 			}
--		}
--		spin_unlock(&dentry->d_lock);
--		up_read(&kernfs_rwsem);
-+			up_read(&root->kernfs_rwsem);
-+		} else
-+			spin_unlock(&dentry->d_lock);
- 
- 		/* The kernfs parent node hasn't changed, leave the
- 		 * dentry negative and return success.
-@@ -1087,7 +1093,8 @@ static int kernfs_dop_revalidate(struct dentry *dentry, unsigned int flags)
- 	}
- 
- 	kn = kernfs_dentry_node(dentry);
--	down_read(&kernfs_rwsem);
-+	root = kernfs_root(kn);
-+	down_read(&root->kernfs_rwsem);
- 
- 	/* The kernfs node has been deactivated */
- 	if (!kernfs_active(kn))
-@@ -1106,10 +1113,10 @@ static int kernfs_dop_revalidate(struct dentry *dentry, unsigned int flags)
- 	    kernfs_info(dentry->d_sb)->ns != kn->ns)
- 		goto out_bad;
- 
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 	return 1;
- out_bad:
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 	return 0;
- }
- 
-@@ -1123,10 +1130,12 @@ static struct dentry *kernfs_iop_lookup(struct inode *dir,
- {
- 	struct kernfs_node *parent = dir->i_private;
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root;
- 	struct inode *inode = NULL;
- 	const void *ns = NULL;
- 
--	down_read(&kernfs_rwsem);
-+	root = kernfs_root(parent);
-+	down_read(&root->kernfs_rwsem);
- 	if (kernfs_ns_enabled(parent))
- 		ns = kernfs_info(dir->i_sb)->ns;
- 
-@@ -1137,7 +1146,7 @@ static struct dentry *kernfs_iop_lookup(struct inode *dir,
- 		 * create a negative.
- 		 */
- 		if (!kernfs_active(kn)) {
--			up_read(&kernfs_rwsem);
-+			up_read(&root->kernfs_rwsem);
- 			return NULL;
- 		}
- 		inode = kernfs_get_inode(dir->i_sb, kn);
-@@ -1152,7 +1161,7 @@ static struct dentry *kernfs_iop_lookup(struct inode *dir,
- 	 */
- 	if (!IS_ERR(inode))
- 		kernfs_set_rev(parent, dentry);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	/* instantiate and hash (possibly negative) dentry */
- 	return d_splice_alias(inode, dentry);
-@@ -1275,7 +1284,7 @@ static struct kernfs_node *kernfs_next_descendant_post(struct kernfs_node *pos,
- {
- 	struct rb_node *rbn;
- 
--	lockdep_assert_held_write(&kernfs_rwsem);
-+	lockdep_assert_held_write(&kernfs_root(root)->kernfs_rwsem);
- 
- 	/* if first iteration, visit leftmost descendant which may be root */
- 	if (!pos)
-@@ -1310,8 +1319,9 @@ static struct kernfs_node *kernfs_next_descendant_post(struct kernfs_node *pos,
- void kernfs_activate(struct kernfs_node *kn)
- {
- 	struct kernfs_node *pos;
-+	struct kernfs_root *root = kernfs_root(kn);
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 
- 	pos = NULL;
- 	while ((pos = kernfs_next_descendant_post(pos, kn))) {
-@@ -1325,14 +1335,14 @@ void kernfs_activate(struct kernfs_node *kn)
- 		pos->flags |= KERNFS_ACTIVATED;
- 	}
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- }
- 
- static void __kernfs_remove(struct kernfs_node *kn)
- {
- 	struct kernfs_node *pos;
- 
--	lockdep_assert_held_write(&kernfs_rwsem);
-+	lockdep_assert_held_write(&kernfs_root(kn)->kernfs_rwsem);
- 
- 	/*
- 	 * Short-circuit if non-root @kn has already finished removal.
-@@ -1402,9 +1412,11 @@ static void __kernfs_remove(struct kernfs_node *kn)
-  */
- void kernfs_remove(struct kernfs_node *kn)
- {
--	down_write(&kernfs_rwsem);
-+	struct kernfs_root *root = kernfs_root(kn);
-+
-+	down_write(&root->kernfs_rwsem);
- 	__kernfs_remove(kn);
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- }
- 
- /**
-@@ -1490,8 +1502,9 @@ void kernfs_unbreak_active_protection(struct kernfs_node *kn)
- bool kernfs_remove_self(struct kernfs_node *kn)
- {
- 	bool ret;
-+	struct kernfs_root *root = kernfs_root(kn);
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 	kernfs_break_active_protection(kn);
- 
- 	/*
-@@ -1519,9 +1532,9 @@ bool kernfs_remove_self(struct kernfs_node *kn)
- 			    atomic_read(&kn->active) == KN_DEACTIVATED_BIAS)
- 				break;
- 
--			up_write(&kernfs_rwsem);
-+			up_write(&root->kernfs_rwsem);
- 			schedule();
--			down_write(&kernfs_rwsem);
-+			down_write(&root->kernfs_rwsem);
- 		}
- 		finish_wait(waitq, &wait);
- 		WARN_ON_ONCE(!RB_EMPTY_NODE(&kn->rb));
-@@ -1534,7 +1547,7 @@ bool kernfs_remove_self(struct kernfs_node *kn)
- 	 */
- 	kernfs_unbreak_active_protection(kn);
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	return ret;
- }
- 
-@@ -1551,6 +1564,7 @@ int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
- 			     const void *ns)
- {
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root;
- 
- 	if (!parent) {
- 		WARN(1, KERN_WARNING "kernfs: can not remove '%s', no directory\n",
-@@ -1558,7 +1572,8 @@ int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
- 		return -ENOENT;
- 	}
- 
--	down_write(&kernfs_rwsem);
-+	root = kernfs_root(parent);
-+	down_write(&root->kernfs_rwsem);
- 
- 	kn = kernfs_find_ns(parent, name, ns);
- 	if (kn) {
-@@ -1567,7 +1582,7 @@ int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
- 		kernfs_put(kn);
- 	}
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 
- 	if (kn)
- 		return 0;
-@@ -1586,6 +1601,7 @@ int kernfs_rename_ns(struct kernfs_node *kn, struct kernfs_node *new_parent,
- 		     const char *new_name, const void *new_ns)
- {
- 	struct kernfs_node *old_parent;
-+	struct kernfs_root *root;
- 	const char *old_name = NULL;
- 	int error;
- 
-@@ -1593,7 +1609,8 @@ int kernfs_rename_ns(struct kernfs_node *kn, struct kernfs_node *new_parent,
- 	if (!kn->parent)
- 		return -EINVAL;
- 
--	down_write(&kernfs_rwsem);
-+	root = kernfs_root(kn);
-+	down_write(&root->kernfs_rwsem);
- 
- 	error = -ENOENT;
- 	if (!kernfs_active(kn) || !kernfs_active(new_parent) ||
-@@ -1647,7 +1664,7 @@ int kernfs_rename_ns(struct kernfs_node *kn, struct kernfs_node *new_parent,
- 
- 	error = 0;
-  out:
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	return error;
- }
- 
-@@ -1718,11 +1735,14 @@ static int kernfs_fop_readdir(struct file *file, struct dir_context *ctx)
- 	struct dentry *dentry = file->f_path.dentry;
- 	struct kernfs_node *parent = kernfs_dentry_node(dentry);
- 	struct kernfs_node *pos = file->private_data;
-+	struct kernfs_root *root;
- 	const void *ns = NULL;
- 
- 	if (!dir_emit_dots(file, ctx))
- 		return 0;
--	down_read(&kernfs_rwsem);
-+
-+	root = kernfs_root(parent);
-+	down_read(&root->kernfs_rwsem);
- 
- 	if (kernfs_ns_enabled(parent))
- 		ns = kernfs_info(dentry->d_sb)->ns;
-@@ -1739,12 +1759,12 @@ static int kernfs_fop_readdir(struct file *file, struct dir_context *ctx)
- 		file->private_data = pos;
- 		kernfs_get(pos);
- 
--		up_read(&kernfs_rwsem);
-+		up_read(&root->kernfs_rwsem);
- 		if (!dir_emit(ctx, name, len, ino, type))
- 			return 0;
--		down_read(&kernfs_rwsem);
-+		down_read(&root->kernfs_rwsem);
- 	}
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 	file->private_data = NULL;
- 	ctx->pos = INT_MAX;
- 	return 0;
-diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index 60e2a86c535e..9414a7a60a9f 100644
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -847,6 +847,7 @@ static void kernfs_notify_workfn(struct work_struct *work)
- {
- 	struct kernfs_node *kn;
- 	struct kernfs_super_info *info;
-+	struct kernfs_root *root;
- repeat:
- 	/* pop one off the notify_list */
- 	spin_lock_irq(&kernfs_notify_lock);
-@@ -859,8 +860,9 @@ static void kernfs_notify_workfn(struct work_struct *work)
- 	kn->attr.notify_next = NULL;
- 	spin_unlock_irq(&kernfs_notify_lock);
- 
-+	root = kernfs_root(kn);
- 	/* kick fsnotify */
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 
- 	list_for_each_entry(info, &kernfs_root(kn)->supers, node) {
- 		struct kernfs_node *parent;
-@@ -898,7 +900,7 @@ static void kernfs_notify_workfn(struct work_struct *work)
- 		iput(inode);
- 	}
- 
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	kernfs_put(kn);
- 	goto repeat;
- }
-diff --git a/fs/kernfs/inode.c b/fs/kernfs/inode.c
-index c0eae1725435..3d783d80f5da 100644
---- a/fs/kernfs/inode.c
-+++ b/fs/kernfs/inode.c
-@@ -99,10 +99,11 @@ int __kernfs_setattr(struct kernfs_node *kn, const struct iattr *iattr)
- int kernfs_setattr(struct kernfs_node *kn, const struct iattr *iattr)
- {
- 	int ret;
-+	struct kernfs_root *root = kernfs_root(kn);
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 	ret = __kernfs_setattr(kn, iattr);
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	return ret;
- }
- 
-@@ -111,12 +112,14 @@ int kernfs_iop_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
- {
- 	struct inode *inode = d_inode(dentry);
- 	struct kernfs_node *kn = inode->i_private;
-+	struct kernfs_root *root;
- 	int error;
- 
- 	if (!kn)
- 		return -EINVAL;
- 
--	down_write(&kernfs_rwsem);
-+	root = kernfs_root(kn);
-+	down_write(&root->kernfs_rwsem);
- 	error = setattr_prepare(&init_user_ns, dentry, iattr);
- 	if (error)
- 		goto out;
-@@ -129,7 +132,7 @@ int kernfs_iop_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
- 	setattr_copy(&init_user_ns, inode, iattr);
- 
- out:
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 	return error;
- }
- 
-@@ -184,13 +187,14 @@ int kernfs_iop_getattr(struct user_namespace *mnt_userns,
- {
- 	struct inode *inode = d_inode(path->dentry);
- 	struct kernfs_node *kn = inode->i_private;
-+	struct kernfs_root *root = kernfs_root(kn);
- 
--	down_read(&kernfs_rwsem);
-+	down_read(&root->kernfs_rwsem);
- 	spin_lock(&inode->i_lock);
- 	kernfs_refresh_inode(kn, inode);
- 	generic_fillattr(&init_user_ns, inode, stat);
- 	spin_unlock(&inode->i_lock);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	return 0;
- }
-@@ -274,19 +278,21 @@ int kernfs_iop_permission(struct user_namespace *mnt_userns,
- 			  struct inode *inode, int mask)
- {
- 	struct kernfs_node *kn;
-+	struct kernfs_root *root;
- 	int ret;
- 
- 	if (mask & MAY_NOT_BLOCK)
- 		return -ECHILD;
- 
- 	kn = inode->i_private;
-+	root = kernfs_root(kn);
- 
--	down_read(&kernfs_rwsem);
-+	down_read(&root->kernfs_rwsem);
- 	spin_lock(&inode->i_lock);
- 	kernfs_refresh_inode(kn, inode);
- 	ret = generic_permission(&init_user_ns, inode, mask);
- 	spin_unlock(&inode->i_lock);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	return ret;
- }
-diff --git a/fs/kernfs/mount.c b/fs/kernfs/mount.c
-index f2f909d09f52..cfa79715fc1a 100644
---- a/fs/kernfs/mount.c
-+++ b/fs/kernfs/mount.c
-@@ -236,6 +236,7 @@ struct dentry *kernfs_node_dentry(struct kernfs_node *kn,
- static int kernfs_fill_super(struct super_block *sb, struct kernfs_fs_context *kfc)
- {
- 	struct kernfs_super_info *info = kernfs_info(sb);
-+	struct kernfs_root *kf_root = kfc->root;
- 	struct inode *inode;
- 	struct dentry *root;
- 
-@@ -255,9 +256,9 @@ static int kernfs_fill_super(struct super_block *sb, struct kernfs_fs_context *k
- 	sb->s_shrink.seeks = 0;
- 
- 	/* get root inode, initialize and unlock it */
--	down_read(&kernfs_rwsem);
-+	down_read(&kf_root->kernfs_rwsem);
- 	inode = kernfs_get_inode(sb, info->root->kn);
--	up_read(&kernfs_rwsem);
-+	up_read(&kf_root->kernfs_rwsem);
- 	if (!inode) {
- 		pr_debug("kernfs: could not get root inode\n");
- 		return -ENOMEM;
-@@ -334,6 +335,7 @@ int kernfs_get_tree(struct fs_context *fc)
- 
- 	if (!sb->s_root) {
- 		struct kernfs_super_info *info = kernfs_info(sb);
-+		struct kernfs_root *root = kfc->root;
- 
- 		kfc->new_sb_created = true;
- 
-@@ -344,9 +346,9 @@ int kernfs_get_tree(struct fs_context *fc)
- 		}
- 		sb->s_flags |= SB_ACTIVE;
- 
--		down_write(&kernfs_rwsem);
-+		down_write(&root->kernfs_rwsem);
- 		list_add(&info->node, &info->root->supers);
--		up_write(&kernfs_rwsem);
-+		up_write(&root->kernfs_rwsem);
- 	}
- 
- 	fc->root = dget(sb->s_root);
-@@ -371,10 +373,11 @@ void kernfs_free_fs_context(struct fs_context *fc)
- void kernfs_kill_sb(struct super_block *sb)
- {
- 	struct kernfs_super_info *info = kernfs_info(sb);
-+	struct kernfs_root *root = info->root;
- 
--	down_write(&kernfs_rwsem);
-+	down_write(&root->kernfs_rwsem);
- 	list_del(&info->node);
--	up_write(&kernfs_rwsem);
-+	up_write(&root->kernfs_rwsem);
- 
- 	/*
- 	 * Remove the superblock from fs_supers/s_instances
-diff --git a/fs/kernfs/symlink.c b/fs/kernfs/symlink.c
-index c8f8e41b8411..efb0b9ca9057 100644
---- a/fs/kernfs/symlink.c
-+++ b/fs/kernfs/symlink.c
-@@ -114,11 +114,12 @@ static int kernfs_getlink(struct inode *inode, char *path)
- 	struct kernfs_node *kn = inode->i_private;
- 	struct kernfs_node *parent = kn->parent;
- 	struct kernfs_node *target = kn->symlink.target_kn;
-+	struct kernfs_root *root = kernfs_root(parent);
- 	int error;
- 
--	down_read(&kernfs_rwsem);
-+	down_read(&root->kernfs_rwsem);
- 	error = kernfs_get_target_path(parent, target, path);
--	up_read(&kernfs_rwsem);
-+	up_read(&root->kernfs_rwsem);
- 
- 	return error;
- }
-diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-index 1093abf7c28c..e7078cde3522 100644
---- a/include/linux/kernfs.h
-+++ b/include/linux/kernfs.h
-@@ -16,6 +16,7 @@
- #include <linux/atomic.h>
- #include <linux/uidgid.h>
- #include <linux/wait.h>
-+#include <linux/rwsem.h>
- 
- struct file;
- struct dentry;
-@@ -197,6 +198,7 @@ struct kernfs_root {
- 	struct list_head	supers;
- 
- 	wait_queue_head_t	deactivate_waitq;
-+	struct rw_semaphore	kernfs_rwsem;
- };
- 
- struct kernfs_open_file {
+        ctrl->dirty = 1;
+        ctrl->modified = 1;
+
+>
+> > - Second value will be the cached one
+> >
+> > now the camera  is at zoom 10
+> > If you read the value, you will read the cached value
+> >
+> > > E.g.: the zoom control is at value 0 and I set it to 10, then I poll the zoom control
+> > > value: will that report the intermediate values until it reaches 10? And when it is
+> > > at 10, the control event is sent?
+> > >
+> > > >>>> Cc: stable@vger.kernel.org
+> > > >>>> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+> > > >>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > >>>> ---
+> > > >>>>  drivers/media/usb/uvc/uvc_ctrl.c | 4 ++++
+> > > >>>>  1 file changed, 4 insertions(+)
+> > > >>>>
+> > > >>>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > >>>> index b6af4ff92cbd..3f8ae35cb3bc 100644
+> > > >>>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > > >>>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > >>>> @@ -1955,6 +1955,10 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+> > > >>>>       if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+> > > >>>>               return -EACCES;
+> > > >>>>
+> > > >>>> +     /* Other file handle is waiting a response from this async control. */
+> > > >>>> +     if (ctrl->handle && ctrl->handle != handle)
+> > > >>>> +             return -EBUSY;
+> > > >>>> +
+> > > >>>>       /* Clamp out of range values. */
+> > > >>>>       switch (mapping->v4l2_type) {
+> > > >>>>       case V4L2_CTRL_TYPE_INTEGER:
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
+
+
+
 -- 
-2.39.5
-
+Ricardo Ribalda
 
