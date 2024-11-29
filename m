@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-95831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF89DEC96
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:03:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDA49DEC97
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 21:03:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCEEA163A04
-	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 20:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA5E7281E9A
+	for <lists+stable@lfdr.de>; Fri, 29 Nov 2024 20:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88291A0AE1;
-	Fri, 29 Nov 2024 20:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025991A265D;
+	Fri, 29 Nov 2024 20:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HokwANLf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZxe/CHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8871313DB9F
-	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 20:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B680613DB9F
+	for <stable@vger.kernel.org>; Fri, 29 Nov 2024 20:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732910591; cv=none; b=Ojqr8V/fIo6iEZr2zFTn1pGaNhlZRd5rb5OunpOQlP2yMCqu0KHe+wBDCTs3HFO9svPzkP7qCBj/R8m1Czeju5V73efBwnUbr/UaHEWKrwuC6aF82UnDTUI5oaQDhlIN7vEfwk/gwD78JHDzN8li6JN2cPzr+vfP6bkIDkf0icQ=
+	t=1732910593; cv=none; b=pNPc8WlyEy4/SIXbrymj259i/8cf9+A0+QbAxZQNTjZIJdvcFTugAJTmRN8zmnvBlfXMKNOz0ktWII0i9eMkfd0lDtbMtZf/bjqBlQ/d+qQ9Zqq2NNb4EqlnyTFj465NV38sc+Qjq5tcja+gVgSCVUvta0mKrBH9GlbRx/LwxME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732910591; c=relaxed/simple;
-	bh=8YtyfmePEXOr59HgFOzbaB3+K0xv65dnlHW0XWKiCcU=;
+	s=arc-20240116; t=1732910593; c=relaxed/simple;
+	bh=pbhV0wVEb8rnjWJwSo1743CJjF/eA2mVG3vdgFygba4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgr5rLpkrjPyew0IEBhcLmD1KwEQAsGgJy+ofaviOf9yLZaxlezw8wsVqAzAZXxf/5Fwx+Zveb+bFEacejXjMhtgXhexR6ZqA3zlRMqCKnMsnEU5Zgt0dX1gxB+ZM85Yw8JfFn5W1hvWwedKmRGe+o7kXrdCMrUzM7yd/wBhdhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HokwANLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5C7C4CECF;
-	Fri, 29 Nov 2024 20:03:10 +0000 (UTC)
+	 MIME-Version; b=mZRPGwaU10rzPq5nDLgU8OftTdNw7YbUCaRxjwtibNS09qzMCiiwHWirNtPvKi0AIZvJAptHpm0gBe+hDL1K3ONLstDh2VvlN/CqNv3hZgjVz1EM4jiukLtCAV5OlRaRF8TtZcs1Tl25ypAZI+oWj2dq5K9l6JlJLed+XPf7s6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZxe/CHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62ECC4CECF;
+	Fri, 29 Nov 2024 20:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732910591;
-	bh=8YtyfmePEXOr59HgFOzbaB3+K0xv65dnlHW0XWKiCcU=;
+	s=k20201202; t=1732910593;
+	bh=pbhV0wVEb8rnjWJwSo1743CJjF/eA2mVG3vdgFygba4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HokwANLf1S9oecHVZPXjXntKzwxvLOY/wTQvQJK6iIP2pOsgttBkHGaUzSNwbrjhb
-	 H7Ac6yUWeS/bKVdLZjbzdfK+qsRkc0Uo8s1ZF3QJcKUtb8mBWv5mQ6vKL1NtETFmoX
-	 o2gisTCZce5+ToBMuZVitEf1M1jLOzrDcdDLNsTV6+i97guxlVbQgya80kDeGnzJux
-	 OSZRTsEG0tbatmMi4mqTj+paUOY9JPJu2hZH2u0N0qMINBOLLellf7PRvVmb4iz78o
-	 7ifhPTP0L8KlKmDEW5uq0rw+JciRr597p9LBcl+BVQQwtxwJuasbEEr4BEeL19ciet
-	 7x4xJJ2j+46pA==
+	b=VZxe/CHfdFz169e2LnXB0a/YLTGeUNYSoXjrGiA4ecZ99Q+l03H3060qzsk7icM7u
+	 KJaMK1ryCtW4+ZDDUYRz7+scuDKDUHC62+hMcnI2o1a/+5VMbTEFe77fXa/PlZgO0S
+	 1Dg+aBbwacRLP6LC6Qxd/DbJuGUiksloMX+LPNjxM0HF3m9QWrLSjogO3CuzWwD1pc
+	 mbL1WuSNZWdzLB423W5oDEwD3xSKWFOPayAl7ewh27b4iRPHvUTH/u65CkrOkk064d
+	 tBEvnPSOFMeKGt9KZnkaolaMkymZtwnlogkC0INLADOjRIXpfNM50gWUmOs3yPmvWD
+	 +EyGjUiHkW2Bw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-Date: Fri, 29 Nov 2024 15:03:08 -0500
-Message-ID: <20241129142000-cf79a85efd12d7db@stable.kernel.org>
+Subject: Re: [PATCH 5.15] kernfs: switch global kernfs_rwsem lock to per-fs lock
+Date: Fri, 29 Nov 2024 15:03:11 -0500
+Message-ID: <20241129143043-6aea62392ec8e78f@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241129060856.26060-1-hagarhem@amazon.com>
+In-Reply-To:  <20241129113236.209845-1-jpiotrowski@linux.microsoft.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,68 +63,80 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 556a7c039a52c21da33eaae9269984a1ef59189b
+The upstream commit SHA1 provided is correct: 393c3714081a53795bbff0e985d24146def6f57f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hagar Hemdan <hagarhem@amazon.com>
-Commit author: Kan Liang <kan.liang@linux.intel.com>
+Backport author: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Commit author: Minchan Kim <minchan@kernel.org>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
 6.11.y | Present (exact SHA1)
-6.6.y | Not found
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  556a7c039a52c ! 1:  46084b673b37e perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
+1:  393c3714081a5 ! 1:  b3f5272b13165 kernfs: switch global kernfs_rwsem lock to per-fs lock
     @@ Metadata
       ## Commit message ##
-         perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
+         kernfs: switch global kernfs_rwsem lock to per-fs lock
      
-    +    [ Upstream commit 556a7c039a52c21da33eaae9269984a1ef59189b ]
+    +    [ Upstream commit 393c3714081a53795bbff0e985d24146def6f57f ]
     +
-         The below error is observed on Ice Lake VM.
-     
-         $ perf stat
+         The kernfs implementation has big lock granularity(kernfs_rwsem) so
+         every kernfs-based(e.g., sysfs, cgroup) fs are able to compete the
+         lock. It makes trouble for some cases to wait the global lock
     @@ Commit message
-         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-         Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
-         Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
-    +    [ Minor changes to make it work on 6.6 ]
-    +    Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+         Signed-off-by: Minchan Kim <minchan@kernel.org>
+         Link: https://lore.kernel.org/r/20211118230008.2679780-1-minchan@kernel.org
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    +    Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
      
-      ## arch/x86/events/intel/core.c ##
-    -@@ arch/x86/events/intel/core.c: exra_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-    - 	return x86_pmu.version >= 2 ? attr->mode : 0;
-    +@@ arch/x86/events/intel/core.c: default_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-    + 	return attr->mode;
-      }
+      ## fs/kernfs/dir.c ##
+     @@
+    @@ fs/kernfs/dir.c
       
-     +static umode_t
-    @@ arch/x86/events/intel/core.c: exra_is_visible(struct kobject *kobj, struct attri
+     -DECLARE_RWSEM(kernfs_rwsem);
+      static DEFINE_SPINLOCK(kernfs_rename_lock);	/* kn->parent and ->name */
+    - static char kernfs_pr_cont_buf[PATH_MAX];	/* protected by rename_lock */
+    - static DEFINE_SPINLOCK(kernfs_idr_lock);	/* root->ino_idr */
+    + /*
+    +  * Don't use rename_lock to piggy back on pr_cont_buf. We don't want to
+     @@ fs/kernfs/dir.c: static DEFINE_SPINLOCK(kernfs_idr_lock);	/* root->ino_idr */
       
-      static struct attribute_group group_events_mem = {
-     @@ arch/x86/events/intel/core.c: static umode_t hybrid_format_is_visible(struct kobject *kobj,
-    - 	return (cpu >= 0) && (pmu->pmu_type & pmu_attr->pmu_type) ? attr->mode : 0;
-    + 	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
-      }
+      static bool kernfs_active(struct kernfs_node *kn)
+    @@ fs/kernfs/dir.c: static struct kernfs_node *kernfs_walk_ns(struct kernfs_node *p
+     -	lockdep_assert_held_read(&kernfs_rwsem);
+     +	lockdep_assert_held_read(&kernfs_root(parent)->kernfs_rwsem);
       
-     +static umode_t hybrid_td_is_visible(struct kobject *kobj,
-    @@ arch/x86/events/intel/core.c: static umode_t hybrid_format_is_visible(struct kob
-     +
-     +
-     +	/* Only the big core supports perf metrics */
-    -+	if (pmu->pmu_type == hybrid_big)
-    ++	if (pmu->cpu_type == hybrid_big)
-     +		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
-     +
-     +	return attr->mode;
+    - 	/* grab kernfs_rename_lock to piggy back on kernfs_pr_cont_buf */
+    - 	spin_lock_irq(&kernfs_rename_lock);
+    + 	spin_lock_irq(&kernfs_pr_cont_lock);
+    + 
+     @@ fs/kernfs/dir.c: struct kernfs_node *kernfs_find_and_get_ns(struct kernfs_node *parent,
+      					   const char *name, const void *ns)
+      {
+    @@ fs/kernfs/dir.c: int kernfs_remove_by_name_ns(struct kernfs_node *parent, const
+     +	down_write(&root->kernfs_rwsem);
+      
+      	kn = kernfs_find_ns(parent, name, ns);
+    - 	if (kn)
+    - 		__kernfs_remove(kn);
+    + 	if (kn) {
+    +@@ fs/kernfs/dir.c: int kernfs_remove_by_name_ns(struct kernfs_node *parent, const char *name,
+    + 		kernfs_put(kn);
+    + 	}
+      
+     -	up_write(&kernfs_rwsem);
+     +	up_write(&root->kernfs_rwsem);
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
