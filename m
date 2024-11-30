@@ -1,55 +1,102 @@
-Return-Path: <stable+bounces-95878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661C09DF265
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 18:52:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FBB9DF288
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 19:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060F8281489
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 17:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40BB1280BE3
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 18:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DC51A7264;
-	Sat, 30 Nov 2024 17:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE691A9B4E;
+	Sat, 30 Nov 2024 18:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlMvQHA+"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="R42FobvT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDB1A7261
-	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 17:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6230E1A9B2A
+	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 18:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732989121; cv=none; b=r8Gsc047KsvNcArzhzurP5depVDLg2plJl88FbqCUlB4SLKacePR3t5vegAcypeR8irVvD+Y18vYNegpfS/Ww1Gol7KSdqRe9gCEBM7HD9dKVMIHirWCEVabbHZHhQyOnnYJsWGHyZN7P5G5CusuVdkV/tMs6J5tENVdfc7i91U=
+	t=1732990682; cv=none; b=vBIjVDKCEN7o8ZveapwF1DEGjeRlbFpgwGduI21/p1zAHcLg6lYjfpODTquSE/OujkSD8IXD4/KqKDINWKom5mOYWzisNoUXSDeFrOB3GazeinI9diLgyFq3TwM52S1J53g166DAL0YglbIyrw/1RmENscAT8FgCieqnlPqdU6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732989121; c=relaxed/simple;
-	bh=YjjI5D79z0Y4xKmTpk/zrX3+FMgMu+UI7ZG0S0j4YvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rj6hqgb7up03cR4KsoebPlYF8p7NqFaf07b8KNnl/BYTwTa5X3MkcfSD/9KB8U9hD3YcR7jMP2RDBxMGHBXZr/uSNqL+g27U2TNFaR7pz+gjSn6tA4VkBOJIAFwPhbdDhr1wcQ5wxjta2eNq4BHc7g2goUULixH0ubcjTqfyg/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlMvQHA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2EDC4CECC;
-	Sat, 30 Nov 2024 17:52:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732989121;
-	bh=YjjI5D79z0Y4xKmTpk/zrX3+FMgMu+UI7ZG0S0j4YvA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UlMvQHA+bMmihEs7JLYphH08sFafyXg2/UQBFPBpTOX5xsshAVNrzziqHpSjsugj3
-	 sq1rBy3f+66sgocthTp8k7VtPVfupvXFHPhxWls2cY0TT2nl99jB4g7MT4qzV+KFki
-	 3eAHZPKnDyS1hBTKgGyfgW4ANravullb4usG6XERPOBILLL0gE4m7XwaEUyX37QvzR
-	 zIriygiYsx/x9aoFam3iqbzJhkkNwsxGRSf1ZvRUvL2lI43gJxj4KWfVqXCV+HjEyD
-	 /xYQ6UWDp+IYBXLXPXdZsvEwDVUJS16V0M4JTjN5v1pdpah0z46P7Eq+WPbsWyHaOP
-	 Q5BhChO5P4TWw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.11/6.12] net_sched: sch_fq: don't follow the fast path if Tx is behind now
-Date: Sat, 30 Nov 2024 09:51:48 -0800
-Message-ID: <20241130175148.63765-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1732990682; c=relaxed/simple;
+	bh=pNhhp1g57LN3bGgz1bZ4j7QLiz9CDBq+DBuEGkIBlEo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rde3mROWRGprw651EtG5WIozhE3Z3N527+EVatJGPAHLU/EADaOagEQrVBVYXETf6L4zlCcEuQjTiD1orTRWKQ7Eg5qMxpVrXVdVRujzoFoL6qOjo/dZ3rnAfrTqhXEVioup0jVtNU68u7M8PtahPeoGjwKPIlwSq9S8zu8TOss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=R42FobvT; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 15E733F298
+	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 18:17:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1732990675;
+	bh=FrQ7uouEuWWp1deBNDeofRuJWSQLAs5SkX0OO5v31jE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=R42FobvTcJGBTBnb0A75GP0NwP3/K8oHcLqK7iTgXuxACc4buLU7nbcCW9TTghQ9k
+	 ZsWwviQDcqMdhi8ykrNtJXv0sJEo9zz47jRivECDqk3CDnX+Dbvc/BvR27fdBB+qof
+	 O3NA6K6txtkmc5CvXQYAgNFviLdRms9XMSg2iQ3uxZ+VCWmamLNGK/tze4+p/T8ctZ
+	 MRPpguJYitr3OxsLtDjQyASmezj773jxFNTTe1eIsEQzd+3tuVrFg1lZCfYlwgNL0O
+	 eip088C+ErfNbAdLQpPKz0d57AgI3LcXsAlyTiGoc4FyggH+Tu23GAGf/tbE3oikwe
+	 RA1GuX39Ukdbg==
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-72467cd273dso2901759b3a.1
+        for <stable@vger.kernel.org>; Sat, 30 Nov 2024 10:17:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732990673; x=1733595473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FrQ7uouEuWWp1deBNDeofRuJWSQLAs5SkX0OO5v31jE=;
+        b=NP2LJHiCodXBFJr0sZLI3Y+oX1q4OlyZYZZr3wc1V/k36RBACZDieFBmi4e7gYuliQ
+         kN+fsAZdRE5YVb6SCgrQI4Qbr/nEsj4FCk0nk5x9VYVGLOitPw8l6gzczbp0KQoKoF+J
+         p6oIEqQfplBXiMHI9PaReV422uNto0gXTE8sSAl2fhHs5XWPGb4HmdCJmt3GYMmUkYAb
+         SrC9xQ1EUYBi/ShwROuIpwQrNmpa+T89cU3C7OAtXDyJTtUPXDYLOlyr9TqblhWOnGmL
+         U8OdYDOt76QQbg3EGMaZ949/Ph4zHHv2Wg/3fV5Ce69I11ZW/ZOpSwbdnvNRO1RIHSfI
+         syTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaSwwu2kmDgc/eKg6c/zjB7WWTq2fD7ZN5X4Z3SE6K5lF1iEczCbVAFf+2AhVf1MNWkDkXJfs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLEKMjCLLaNvte7FAmcELhabwpbxUWWQQKQNTxPwplEdNNqOqk
+	noPNYEhu8T06OUA7dmjMWiUsqY1KhXHgenaPmZJdPIip9o1447j2sW9po66fxezcTz5xd73Inv3
+	u7MbfQEheFQpdTnNMUL93pE7XqAZOUL3sTvjOduX9jbgrPqartu/eQK/a71nDrT60oyUyF3HfaD
+	cUeg==
+X-Gm-Gg: ASbGncs5NaNCayA1iaUBqDH2p5HSwANTz3U/kPjiAZlQclDs92iqflKGG+sTPOOao3f
+	Tp/FZDrkRsYHqB3LrQeTEr/dwCY886S4YsB9W2lHa3t/qxj96vlqccR9D1X52fXwppNZiFy7u0D
+	/9LgapvlJlRzAmS/+eIQSceyjQSgpBlomHWTexrB++R0Ag+fzmQYhOeU7KQWyGar0tT0IhO9XAQ
+	8Z73sbUBPX3Cjz2k/KLXNQElvwjDY2cVLf1WlHf/13r+m5kW2Q=
+X-Received: by 2002:a05:6a00:84c:b0:724:db17:f975 with SMTP id d2e1a72fcca58-7253f369c37mr21113831b3a.12.1732990673217;
+        Sat, 30 Nov 2024 10:17:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEwdDQ+gsR4GC4ZUk+6aVeHc8PqayTTKVhNF98puQsrpYaFddakCLMXg4SFQoZWkpsBFGhGpw==
+X-Received: by 2002:a05:6a00:84c:b0:724:db17:f975 with SMTP id d2e1a72fcca58-7253f369c37mr21113801b3a.12.1732990672864;
+        Sat, 30 Nov 2024 10:17:52 -0800 (PST)
+Received: from z790sl.. ([240f:74:7be:1:1e0d:5d21:fd85:275b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725417fbf52sm5447869b3a.119.2024.11.30.10.17.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Nov 2024 10:17:52 -0800 (PST)
+From: Koichiro Den <koichiro.den@canonical.com>
+To: virtualization@lists.linux.dev
+Cc: mst@redhat.com,
+	jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jiri@resnulli.us,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net-next] virtio_net: drop netdev_tx_reset_queue() from virtnet_enable_queue_pair()
+Date: Sun,  1 Dec 2024 03:17:44 +0900
+Message-ID: <20241130181744.3772632-1-koichiro.den@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,78 +105,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 122aba8c80618eca904490b1733af27fb8f07528 ]
+When virtnet_close is followed by virtnet_open, some TX completions can
+possibly remain unconsumed, until they are finally processed during the
+first NAPI poll after the netdev_tx_reset_queue(), resulting in a crash
+[1]. Commit b96ed2c97c79 ("virtio_net: move netdev_tx_reset_queue() call
+before RX napi enable") seems not sufficient to eliminate all BQL crash
+scenarios for virtio-net.
 
-Recent kernels cause a lot of TCP retransmissions
+This issue can be reproduced with the latest net-next master by running:
+`while :; do ip l set DEV down; ip l set DEV up; done` under heavy network
+TX load from inside the machine.
 
-[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-[  5]   0.00-1.00   sec  2.24 GBytes  19.2 Gbits/sec  2767    442 KBytes
-[  5]   1.00-2.00   sec  2.23 GBytes  19.1 Gbits/sec  2312    350 KBytes
-                                                      ^^^^
+netdev_tx_reset_queue() can actually be dropped from virtnet_open path;
+the device is not stopped in any case. For BQL core part, it's just like
+traffic nearly ceases to exist for some period. For stall detector added
+to BQL, even if virtnet_close could somehow lead to some TX completions
+delayed for long, followed by virtnet_open, we can just take it as stall
+as mentioned in commit 6025b9135f7a ("net: dqs: add NIC stall detector
+based on BQL"). Note also that users can still reset stall_max via sysfs.
 
-Replacing the qdisc with pfifo makes retransmissions go away.
+So, drop netdev_tx_reset_queue() from virtnet_enable_queue_pair(). This
+eliminates the BQL crashes. With this patch, virtio-net performs only
+one dql_reset() per probe.
 
-It appears that a flow may have a delayed packet with a very near
-Tx time. Later, we may get busy processing Rx and the target Tx time
-will pass, but we won't service Tx since the CPU is busy with Rx.
-If Rx sees an ACK and we try to push more data for the delayed flow
-we may fastpath the skb, not realizing that there are already "ready
-to send" packets for this flow sitting in the qdisc.
+[1]:
+------------[ cut here ]------------
+kernel BUG at lib/dynamic_queue_limits.c:99!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
+Tainted: [N]=TEST
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
+BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:dql_completed+0x26b/0x290
+Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
+4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
+d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
+RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
+RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
+RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
+RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
+R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
+FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ? die+0x32/0x80
+ ? do_trap+0xd9/0x100
+ ? dql_completed+0x26b/0x290
+ ? dql_completed+0x26b/0x290
+ ? do_error_trap+0x6d/0xb0
+ ? dql_completed+0x26b/0x290
+ ? exc_invalid_op+0x4c/0x60
+ ? dql_completed+0x26b/0x290
+ ? asm_exc_invalid_op+0x16/0x20
+ ? dql_completed+0x26b/0x290
+ __free_old_xmit+0xff/0x170 [virtio_net]
+ free_old_xmit+0x54/0xc0 [virtio_net]
+ virtnet_poll+0xf4/0xe30 [virtio_net]
+ ? __update_load_avg_cfs_rq+0x264/0x2d0
+ ? update_curr+0x35/0x260
+ ? reweight_entity+0x1be/0x260
+ __napi_poll.constprop.0+0x28/0x1c0
+ net_rx_action+0x329/0x420
+ ? enqueue_hrtimer+0x35/0x90
+ ? trace_hardirqs_on+0x1d/0x80
+ ? kvm_sched_clock_read+0xd/0x20
+ ? sched_clock+0xc/0x30
+ ? kvm_sched_clock_read+0xd/0x20
+ ? sched_clock+0xc/0x30
+ ? sched_clock_cpu+0xd/0x1a0
+ handle_softirqs+0x138/0x3e0
+ do_softirq.part.0+0x89/0xc0
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xa7/0xb0
+ virtnet_open+0xc8/0x310 [virtio_net]
+ __dev_open+0xfa/0x1b0
+ __dev_change_flags+0x1de/0x250
+ dev_change_flags+0x22/0x60
+ do_setlink.isra.0+0x2df/0x10b0
+ ? rtnetlink_rcv_msg+0x34f/0x3f0
+ ? netlink_rcv_skb+0x54/0x100
+ ? netlink_unicast+0x23e/0x390
+ ? netlink_sendmsg+0x21e/0x490
+ ? ____sys_sendmsg+0x31b/0x350
+ ? avc_has_perm_noaudit+0x67/0xf0
+ ? cred_has_capability.isra.0+0x75/0x110
+ ? __nla_validate_parse+0x5f/0xee0
+ ? __pfx___probestub_irq_enable+0x3/0x10
+ ? __create_object+0x5e/0x90
+ ? security_capable+0x3b/0x70
+ rtnl_newlink+0x784/0xaf0
+ ? avc_has_perm_noaudit+0x67/0xf0
+ ? cred_has_capability.isra.0+0x75/0x110
+ ? stack_depot_save_flags+0x24/0x6d0
+ ? __pfx_rtnl_newlink+0x10/0x10
+ rtnetlink_rcv_msg+0x34f/0x3f0
+ ? do_syscall_64+0x6c/0x180
+ ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+ netlink_rcv_skb+0x54/0x100
+ netlink_unicast+0x23e/0x390
+ netlink_sendmsg+0x21e/0x490
+ ____sys_sendmsg+0x31b/0x350
+ ? copy_msghdr_from_user+0x6d/0xa0
+ ___sys_sendmsg+0x86/0xd0
+ ? __pte_offset_map+0x17/0x160
+ ? preempt_count_add+0x69/0xa0
+ ? __call_rcu_common.constprop.0+0x147/0x610
+ ? preempt_count_add+0x69/0xa0
+ ? preempt_count_add+0x69/0xa0
+ ? _raw_spin_trylock+0x13/0x60
+ ? trace_hardirqs_on+0x1d/0x80
+ __sys_sendmsg+0x66/0xc0
+ do_syscall_64+0x6c/0x180
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7f41defe5b34
+Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
+f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
+f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
+RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
+RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
+R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
+R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
+ </TASK>
+[...]
+---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-Don't trust the fastpath if we are "behind" according to the projected
-Tx time for next flow waiting in the Qdisc. Because we consider anything
-within the offload window to be okay for fastpath we must consider
-the entire offload window as "now".
-
-Qdisc config:
-
-qdisc fq 8001: dev eth0 parent 1234:1 limit 10000p flow_limit 100p \
-  buckets 32768 orphan_mask 1023 bands 3 \
-  priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 \
-  weights 589824 196608 65536 quantum 3028b initial_quantum 15140b \
-  low_rate_threshold 550Kbit \
-  refill_delay 40ms timer_slack 10us horizon 10s horizon_drop
-
-For iperf this change seems to do fine, the reordering is gone.
-The fastpath still gets used most of the time:
-
-  gc 0 highprio 0 fastpath 142614 throttled 418309 latency 19.1us
-   xx_behind 2731
-
-where "xx_behind" counts how many times we hit the new "return false".
-
-CC: stable@vger.kernel.org
-Fixes: 076433bd78d7 ("net_sched: sch_fq: add fast path for mostly idle qdisc")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241124022148.3126719-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[stable: drop the offload horizon, it's not supported / 0]
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
+Cc: <stable@vger.kernel.org> # v6.11+
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
 ---
-Per Fixes tag 6.7+, so the two non-longterm branches.
+Previous attempt:
+https://lore.kernel.org/netdev/20241126024200.2371546-1-koichiro.den@canonical.com/
 ---
- net/sched/sch_fq.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/virtio_net.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 19a49af5a9e5..afefe124d903 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -331,6 +331,12 @@ static bool fq_fastpath_check(const struct Qdisc *sch, struct sk_buff *skb,
- 		 */
- 		if (q->internal.qlen >= 8)
- 			return false;
-+
-+		/* Ordering invariants fall apart if some delayed flows
-+		 * are ready but we haven't serviced them, yet.
-+		 */
-+		if (q->time_next_delayed_flow <= now)
-+			return false;
- 	}
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 64c87bb48a41..35a36d1289db 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3054,7 +3054,6 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
+ 	if (err < 0)
+ 		goto err_xdp_reg_mem_model;
  
- 	sk = skb->sk;
+-	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index));
+ 	virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
+ 	virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
+ 
 -- 
-2.47.0
+2.43.0
 
 
