@@ -1,182 +1,161 @@
-Return-Path: <stable+bounces-95860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B7D9DEFB6
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 10:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC1D9DF055
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 13:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363CF1626A3
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 09:54:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2C9716359B
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2461D14D28C;
-	Sat, 30 Nov 2024 09:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C287C13C3F2;
+	Sat, 30 Nov 2024 12:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XbDEEXs2"
+	dkim=pass (2048-bit key) header.d=galax.is header.i=@galax.is header.b="ysLVkQOe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail2.galax.is (ns2.galax.is [185.101.96.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE13126C05
-	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 09:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B6214A4C6;
+	Sat, 30 Nov 2024 12:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.101.96.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732960458; cv=none; b=KM42NjdQN42oWNm7wQnFtV0At8DjdtNuCRup2SNOZW2OZikSsP4ElCzfCEXdyLt75HL4/L/kwiCRDB4KCNDcGAmfJh0kpEHXywsagNS8maVY1jA7k9cEt7F89nJlxhIh2XJ3LV8HkWcv39qatkyobUEAMIzhI90Ei3/i9Lxg2Vg=
+	t=1732969984; cv=none; b=VQdXJHMj0wvAvu/5YB67iZOcQIJC9IRIYLtiMjmy8A8skxN+5yQPeF7qfzlLniP+4xWoU7p4wAM+yx04OnVmDfH8hyxm4mhlm46M1eHwOTNXcNp44tY79cX1Si3Qhb/RgBhxKTeOtJJOmb47Ju0IcXHAGZGubmCL9HJ02sJbwpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732960458; c=relaxed/simple;
-	bh=HDqXuqlxiaDPte0W46BTkT66Qu1FiJgD8ZkENUx5qKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rsDA7GDATH8zKZ9XzTb5MqwAno99/fKjrPvPfNrKARk7mMXMgGtYJpJMHwEBI4mrfrMnCmLmhD/EOMbVtMnpbtUuOMQ1WxLAazWow1fBAz6HwPeDeHAKKCb7211GIMaUsGmoqPH4ofbK4ZGWMstc4DdtIFYj0mlGC/0EzHVRHGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XbDEEXs2; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ffe4569fbeso20641921fa.1
-        for <stable@vger.kernel.org>; Sat, 30 Nov 2024 01:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732960455; x=1733565255; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Lc9DfCXaFvHVBMdEeSwVvJlevNEtc41NoCu48KM7Oc=;
-        b=XbDEEXs2iMEiWiYU3Jbjb29viXcNK3i/s4a1DYZ+quROx9aqLMC88IeDXJE56O7pK5
-         P2kvyiBzZgxkbflezUmnoch9EuoDi4LhQEkYNhOR65xe19MCRS73QK8Il5hdglu0M79C
-         3KP5OHeba+tZY8KE/jqwqw/kfvn8s3irn7Xx72x/9UhGx56PIfLif0xiXH8p2g33brjO
-         pdNpGC9EhoSe0CI7e7zgVa/j91r0o69RVFp84Ysi/6VlmWT/K4Fvi+15QvimaMg2SiwY
-         vqdeyuHTyrhRU0ezzXUefZWcL7YcJE+N4saY5i5apNeO0To+rCkTZYRGyCdUU9tglrZA
-         Lo6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732960455; x=1733565255;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Lc9DfCXaFvHVBMdEeSwVvJlevNEtc41NoCu48KM7Oc=;
-        b=uNIM+wkqvYpm7ZybS4Jv9wUO36b+xUTvBh5M5tXuQJ9GJzmIQxrbKyyfDcIo5huA7u
-         C3H5avQF+FRJ7QBuCVokOa+R3LlN1OCKV5QPwS0vXX2Wt0HZxB5nPnV2q/EFHZxXk4Ym
-         M1aMk3Y/wJPFY+lOd4ro/fj1yztx0872rsAz7vFh8qXj3cPB8YoTeUg7rp3SYAGi6pEv
-         uO7U1T1uCdw1UcUV4I7gNiHrmWMVf9dXvYZUuJGsv7KbSMGbBsLNjr6wBrYhou4DJf/9
-         Hj/q5mgO9uyoyHTsFnQ+xZGWoJsd8AHhIpmgS7b79BsE8qGKxG/bnA2yfLkX5tJz6dSS
-         gY3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWSjdZ/fE3hAd7kBIwN7kpbf0/5/tsNlraa4UwwLSm4riufnszrp/RPfLuTMyuqqEU2KeNpFaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEvYfpSTjCCmi17gNjg8y1ngoNMChzM8RIIO6P5Q3dX/A6jC4W
-	uz1uuag8IWPtoPh+TjcC3P82n9kAnimrM8zOFZVQV2FT9ux2DRCaIhwSepmmSYY=
-X-Gm-Gg: ASbGnct09WtVkJEksdfqNosRu72KWVdP1AsGyCag1QCThNWolj41k24F0f/s+gYetyq
-	3Jctf02VSuBRdBygv5el5RvpY2oeiL30UGPdgsvevt06G1spQHrCXID33Xd2VP618iaUfnImvna
-	Q3KR+1nsZVLIPYyXBcL8xLbGYehmaEf3PbJLnQLQm7NIWedFrjnOzIxq9Hdj7xYrO1XQTrEGctG
-	/wy4/HVOxiDM7szbyoj79OxGQVDxwO44o1ANLuuzbqWDVl40yO5fG/djXiBTuJGnUtFM2mcrX0I
-	Mx3wN03I7y14xMKjZ6MTmHl17zryXw==
-X-Google-Smtp-Source: AGHT+IFkfMrwigSf+zgzstB/hgJoOKRZVbjeqFCsdGsPsNseLBJrUIenMSlGkjvt/K+9OUdn2YEiGQ==
-X-Received: by 2002:a05:651c:2220:b0:2ff:d728:bbc1 with SMTP id 38308e7fff4ca-2ffde1f3281mr37422461fa.5.1732960455087;
-        Sat, 30 Nov 2024 01:54:15 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfbb8f59sm6538471fa.17.2024.11.30.01.54.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Nov 2024 01:54:13 -0800 (PST)
-Date: Sat, 30 Nov 2024 11:54:11 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: "Bauer, Markus" <Markus.Bauer2@avnet.eu>
-Cc: "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>, 
-	"airlied@gmail.com" <airlied@gmail.com>, "andrzej.hajda@intel.com" <andrzej.hajda@intel.com>, 
-	"neil.armstrong@linaro.org" <neil.armstrong@linaro.org>, 
-	"Laurent.pinchart@ideasonboard.com" <Laurent.pinchart@ideasonboard.com>, 
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] sn65dsi83.c: fix dual-channel LVDS output also divide
- porches
-Message-ID: <4iow25webuwskjbx6gfft45x3jhxvg3diulfpjzonesgjmszhz@dk54ylmq7tnd>
-References: <BE0P281MB0211EB59ADE02F4DB8F9D0CDC22F2@BE0P281MB0211.DEUP281.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1732969984; c=relaxed/simple;
+	bh=B+/rAqHq/4Tm3UqzMGfHzBIHcmNbQQMlWPgGCVV9Dmw=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=mnXUa5rwncnkLHqsM1P2mJ8wWSh+FgTnNvOZ9lNWys02EvFxf75CkVsyJcTsFaU4QAl4mJyB65Z/dorQuaIT/jIUge+1lsHIwAwyuyXdHLGPcl647763FTa06vgkHi5WIZkCBAgRmrTzbnj+ZiSWF9bvKPo6KbsdkG3u0VBZS0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=galax.is; spf=pass smtp.mailfrom=galax.is; dkim=pass (2048-bit key) header.d=galax.is header.i=@galax.is header.b=ysLVkQOe; arc=none smtp.client-ip=185.101.96.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=galax.is
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=galax.is
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=galax.is; s=default;
+	t=1732965475; bh=B+/rAqHq/4Tm3UqzMGfHzBIHcmNbQQMlWPgGCVV9Dmw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ysLVkQOeKfj0OVIwytoFHbdQsureXLmhj7w4vXWJPG14IRqUx+HYM8TfAjDxrdqK3
+	 emOMj6ka5tnbgeO33cao3EF5LZMasmIBZewVA1nNdc2mpNQ/QSoaByl1UD0YaqX5IX
+	 FKFFrL+bWOQJpaWW2/lKSYxEdr/rEPf7JaTvrm0r0k3xbgpv03Q/qAjLNt15Cco8t4
+	 1uOTJzkHOlBLJyLypMF2n68QW7vNpPyTkNl0FRyotjoubpTZKO2Okle7e4nWDoqfZf
+	 kVxPfBgqIXfnlzuB+zUtLgmAIOYPP14OzXv3+/HIEVnLUt5tKWsccFlXHIvGKmOffb
+	 b9QFfGwxLhbLQ==
+Received: from [IPV6:2001:4091:a247:843f:ae6e:e692:c5a4:10bc] (unknown [IPv6:2001:4091:a247:843f:ae6e:e692:c5a4:10bc])
+	by mail2.galax.is (Postfix) with ESMTPSA id CB2D91FF38;
+	Sat, 30 Nov 2024 12:17:53 +0100 (CET)
+Content-Type: multipart/mixed; boundary="------------aXDlJb8JN0TyYB1Ro06mAAly"
+Message-ID: <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
+Date: Sat, 30 Nov 2024 12:17:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BE0P281MB0211EB59ADE02F4DB8F9D0CDC22F2@BE0P281MB0211.DEUP281.PROD.OUTLOOK.COM>
+User-Agent: Mozilla Thunderbird
+Subject: Re: backporting 24a9799aa8ef ("smb: client: fix UAF in
+ smb2_reconnect_server()") to older stable series
+To: Salvatore Bonaccorso <carnil@debian.org>, gregkh@linuxfoundation.org,
+ Paulo Alcantara <pc@manguebit.com>, Steve French <stfrench@microsoft.com>,
+ Michael <mk-debian@galax.is>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-cifs@vger.kernel.org
+References: <2024040834-magazine-audience-8aa4@gregkh>
+ <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
+From: Michael Krause <mk-debian@galax.is>
+Content-Language: de-LU, en-US
+In-Reply-To: <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
 
-On Tue, Nov 26, 2024 at 09:42:45AM +0000, Bauer, Markus wrote:
-> sn65dsi83.c: fix dual-channel LVDS output also divide porches
+This is a multi-part message in MIME format.
+--------------aXDlJb8JN0TyYB1Ro06mAAly
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Please use drm/bridge: ti-sn65dsi83: as subject prefix. Drop the first
-line of the commit message.
+Hi *,
 
-> 
-> When generating dual-channel LVDS to a single display, the
-> horizontal part has to be divided in halves for each channel.
-> This was done correctly for hactive, but not for the porches.
 
-I don't see this being handled for hactive. Could you please point out
-the code?
+On 11/30/24 10:21 AM, Salvatore Bonaccorso wrote:
+> Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
+> in smb2_reconnect_server()") which seems in fact to solve the issue.
+> 
+> Michael, can you please post your backport here for review from Paulo
+> and Steve?
 
-> 
-> Of course this does only apply to sn65dsi84, which is also covered
-> by this driver.
-> 
-> Cc: stable@vger.kernel.org
+Of course, attached.
 
-Also:
+Now I really hope I didn't screw it up :)
 
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
+cheers
+Michael
+--------------aXDlJb8JN0TyYB1Ro06mAAly
+Content-Type: text/x-patch; charset=UTF-8; name="backport.patch"
+Content-Disposition: attachment; filename="backport.patch"
+Content-Transfer-Encoding: base64
 
-> Signed-off-by: Markus Bauer <markus.bauer2@avnet.com>
-> ---
->  drivers/gpu/drm/bridge/ti-sn65dsi83.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> index ad73f69d768d..d71f752e79ec 100644
-> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-> @@ -399,7 +399,7 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
->  	unsigned int pval;
->  	__le16 le16val;
->  	u16 val;
-> -	int ret;
-> +	int ret, hfront, hback;
->  
->  	ret = regulator_enable(ctx->vcc);
->  	if (ret) {
-> @@ -521,12 +521,22 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
->  	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
->  	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
->  			  &le16val, 2);
-> +
-> +	hback = mode->htotal - mode->hsync_end;
-> +	if (ctx->lvds_dual_link)
-> +		hback /= 2;
-> +
->  	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
-> -		     mode->htotal - mode->hsync_end);
-> +		     hback);
->  	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
->  		     mode->vtotal - mode->vsync_end);
-> +
-> +	hfront = mode->hsync_start - mode->hdisplay;
-> +	if (ctx->lvds_dual_link)
-> +		hfront /= 2;
-> +
->  	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
-> -		     mode->hsync_start - mode->hdisplay);
-> +		     hfront);
->  	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
->  		     mode->vsync_start - mode->vdisplay);
->  	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
-> -- 
-> 2.34.1
-> 
-> 
-> --
-> Markus Bauer
-> 
-> Avnet Embedded is becoming TRIA:
-> www.tria-technologies.com
-> 
-> 
-> 
-> We continuously commit to comply with the applicable data protection laws and ensure fair and transparent processing of your personal data. 
-> Please read our privacy statement including an information notice and data protection policy for detailed information on our website.
+LS0tIGEvZnMvc21iL2NsaWVudC9jb25uZWN0LmMJMjAyNC0xMS0yMiAxNDozNzozNS4wMDAw
+MDAwMDAgKzAwMDAKKysrIGIvZnMvc21iL2NsaWVudC9jb25uZWN0LmMJMjAyNC0xMS0zMCAx
+MTowNTo1My4xMzczMzkyMjkgKzAwMDAKQEAgLTI1OSw3ICsyNTksMTMgQEAKIAogCXNwaW5f
+bG9jaygmY2lmc190Y3Bfc2VzX2xvY2spOwogCWxpc3RfZm9yX2VhY2hfZW50cnlfc2FmZShz
+ZXMsIG5zZXMsICZwc2VydmVyLT5zbWJfc2VzX2xpc3QsIHNtYl9zZXNfbGlzdCkgewotCQkv
+KiBjaGVjayBpZiBpZmFjZSBpcyBzdGlsbCBhY3RpdmUgKi8KKwkJc3Bpbl9sb2NrKCZzZXMt
+PnNlc19sb2NrKTsKKwkJaWYgKHNlcy0+c2VzX3N0YXR1cyA9PSBTRVNfRVhJVElORykgewor
+CQkJc3Bpbl91bmxvY2soJnNlcy0+c2VzX2xvY2spOworCQkJY29udGludWU7CisJCX0KKwkJ
+c3Bpbl91bmxvY2soJnNlcy0+c2VzX2xvY2spOworCiAJCXNwaW5fbG9jaygmc2VzLT5jaGFu
+X2xvY2spOwogCQlpZiAoIWNpZnNfY2hhbl9pc19pZmFjZV9hY3RpdmUoc2VzLCBzZXJ2ZXIp
+KSB7CiAJCQlzcGluX3VubG9jaygmc2VzLT5jaGFuX2xvY2spOwpAQCAtMTk3NywzMSArMTk4
+Myw2IEBACiAJcmV0dXJuIHJjOwogfQogCi0vKioKLSAqIGNpZnNfZnJlZV9pcGMgLSBoZWxw
+ZXIgdG8gcmVsZWFzZSB0aGUgc2Vzc2lvbiBJUEMgdGNvbgotICogQHNlczogc21iIHNlc3Np
+b24gdG8gdW5tb3VudCB0aGUgSVBDIGZyb20KLSAqCi0gKiBOZWVkcyB0byBiZSBjYWxsZWQg
+ZXZlcnl0aW1lIGEgc2Vzc2lvbiBpcyBkZXN0cm95ZWQuCi0gKgotICogT24gc2Vzc2lvbiBj
+bG9zZSwgdGhlIElQQyBpcyBjbG9zZWQgYW5kIHRoZSBzZXJ2ZXIgbXVzdCByZWxlYXNlIGFs
+bCB0Y29ucyBvZiB0aGUgc2Vzc2lvbi4KLSAqIE5vIG5lZWQgdG8gc2VuZCBhIHRyZWUgZGlz
+Y29ubmVjdCBoZXJlLgotICoKLSAqIEJlc2lkZXMsIGl0IHdpbGwgbWFrZSB0aGUgc2VydmVy
+IHRvIG5vdCBjbG9zZSBkdXJhYmxlIGFuZCByZXNpbGllbnQgZmlsZXMgb24gc2Vzc2lvbiBj
+bG9zZSwgYXMKLSAqIHNwZWNpZmllZCBpbiBNUy1TTUIyIDMuMy41LjYgUmVjZWl2aW5nIGFu
+IFNNQjIgTE9HT0ZGIFJlcXVlc3QuCi0gKi8KLXN0YXRpYyBpbnQKLWNpZnNfZnJlZV9pcGMo
+c3RydWN0IGNpZnNfc2VzICpzZXMpCi17Ci0Jc3RydWN0IGNpZnNfdGNvbiAqdGNvbiA9IHNl
+cy0+dGNvbl9pcGM7Ci0KLQlpZiAodGNvbiA9PSBOVUxMKQotCQlyZXR1cm4gMDsKLQotCXRj
+b25JbmZvRnJlZSh0Y29uKTsKLQlzZXMtPnRjb25faXBjID0gTlVMTDsKLQlyZXR1cm4gMDsK
+LX0KLQogc3RhdGljIHN0cnVjdCBjaWZzX3NlcyAqCiBjaWZzX2ZpbmRfc21iX3NlcyhzdHJ1
+Y3QgVENQX1NlcnZlcl9JbmZvICpzZXJ2ZXIsIHN0cnVjdCBzbWIzX2ZzX2NvbnRleHQgKmN0
+eCkKIHsKQEAgLTIwMzUsMzUgKzIwMTYsNDQgQEAKIHsKIAl1bnNpZ25lZCBpbnQgcmMsIHhp
+ZDsKIAl1bnNpZ25lZCBpbnQgY2hhbl9jb3VudDsKKyAJYm9vbCBkb19sb2dvZmY7CisgCXN0
+cnVjdCBjaWZzX3Rjb24gKnRjb247CiAJc3RydWN0IFRDUF9TZXJ2ZXJfSW5mbyAqc2VydmVy
+ID0gc2VzLT5zZXJ2ZXI7CiAKKyAJc3Bpbl9sb2NrKCZjaWZzX3RjcF9zZXNfbG9jayk7CiAJ
+c3Bpbl9sb2NrKCZzZXMtPnNlc19sb2NrKTsKLQlpZiAoc2VzLT5zZXNfc3RhdHVzID09IFNF
+U19FWElUSU5HKSB7CisJY2lmc19kYmcoRllJLCAiJXM6IGlkPTB4JWxseCBzZXNfY291bnQ9
+JWQgc2VzX3N0YXR1cz0ldSBpcGM9JXNcbiIsCisJCSBfX2Z1bmNfXywgc2VzLT5TdWlkLCBz
+ZXMtPnNlc19jb3VudCwgc2VzLT5zZXNfc3RhdHVzLAorCQkgc2VzLT50Y29uX2lwYyA/IHNl
+cy0+dGNvbl9pcGMtPnRyZWVfbmFtZSA6ICJub25lIik7CisJaWYgKHNlcy0+c2VzX3N0YXR1
+cyA9PSBTRVNfRVhJVElORyB8fCAtLXNlcy0+c2VzX2NvdW50ID4gMCkgewogCQlzcGluX3Vu
+bG9jaygmc2VzLT5zZXNfbG9jayk7CisgCQlzcGluX3VubG9jaygmY2lmc190Y3Bfc2VzX2xv
+Y2spOwogCQlyZXR1cm47CiAJfQotCXNwaW5fdW5sb2NrKCZzZXMtPnNlc19sb2NrKTsKKyAJ
+Lyogc2VzX2NvdW50IGNhbiBuZXZlciBnbyBuZWdhdGl2ZSAqLworIAlXQVJOX09OKHNlcy0+
+c2VzX2NvdW50IDwgMCk7CiAKLQljaWZzX2RiZyhGWUksICIlczogc2VzX2NvdW50PSVkXG4i
+LCBfX2Z1bmNfXywgc2VzLT5zZXNfY291bnQpOwotCWNpZnNfZGJnKEZZSSwKLQkJICIlczog
+c2VzIGlwYzogJXNcbiIsIF9fZnVuY19fLCBzZXMtPnRjb25faXBjID8gc2VzLT50Y29uX2lw
+Yy0+dHJlZV9uYW1lIDogIk5PTkUiKTsKLQotCXNwaW5fbG9jaygmY2lmc190Y3Bfc2VzX2xv
+Y2spOwotCWlmICgtLXNlcy0+c2VzX2NvdW50ID4gMCkgewotCQlzcGluX3VubG9jaygmY2lm
+c190Y3Bfc2VzX2xvY2spOwotCQlyZXR1cm47Ci0JfQorCXNwaW5fbG9jaygmc2VzLT5jaGFu
+X2xvY2spOworCWNpZnNfY2hhbl9jbGVhcl9uZWVkX3JlY29ubmVjdChzZXMsIHNlcnZlcik7
+CisJc3Bpbl91bmxvY2soJnNlcy0+Y2hhbl9sb2NrKTsKKworCWRvX2xvZ29mZiA9IHNlcy0+
+c2VzX3N0YXR1cyA9PSBTRVNfR09PRCAmJiBzZXJ2ZXItPm9wcy0+bG9nb2ZmOworCXNlcy0+
+c2VzX3N0YXR1cyA9IFNFU19FWElUSU5HOworCXRjb24gPSBzZXMtPnRjb25faXBjOworCXNl
+cy0+dGNvbl9pcGMgPSBOVUxMOworIAlzcGluX3VubG9jaygmc2VzLT5zZXNfbG9jayk7CiAJ
+c3Bpbl91bmxvY2soJmNpZnNfdGNwX3Nlc19sb2NrKTsKIAotCS8qIHNlc19jb3VudCBjYW4g
+bmV2ZXIgZ28gbmVnYXRpdmUgKi8KLQlXQVJOX09OKHNlcy0+c2VzX2NvdW50IDwgMCk7Ci0K
+LQlpZiAoc2VzLT5zZXNfc3RhdHVzID09IFNFU19HT09EKQotCQlzZXMtPnNlc19zdGF0dXMg
+PSBTRVNfRVhJVElORzsKLQotCWNpZnNfZnJlZV9pcGMoc2VzKTsKLQotCWlmIChzZXMtPnNl
+c19zdGF0dXMgPT0gU0VTX0VYSVRJTkcgJiYgc2VydmVyLT5vcHMtPmxvZ29mZikgeworCS8q
+CisJICogT24gc2Vzc2lvbiBjbG9zZSwgdGhlIElQQyBpcyBjbG9zZWQgYW5kIHRoZSBzZXJ2
+ZXIgbXVzdCByZWxlYXNlIGFsbAorCSAqIHRjb25zIG9mIHRoZSBzZXNzaW9uLiAgTm8gbmVl
+ZCB0byBzZW5kIGEgdHJlZSBkaXNjb25uZWN0IGhlcmUuCisJICoKKwkgKiBCZXNpZGVzLCBp
+dCB3aWxsIG1ha2UgdGhlIHNlcnZlciB0byBub3QgY2xvc2UgZHVyYWJsZSBhbmQgcmVzaWxp
+ZW50CisJICogZmlsZXMgb24gc2Vzc2lvbiBjbG9zZSwgYXMgc3BlY2lmaWVkIGluIE1TLVNN
+QjIgMy4zLjUuNiBSZWNlaXZpbmcgYW4KKwkgKiBTTUIyIExPR09GRiBSZXF1ZXN0LgorCSAq
+LworCXRjb25JbmZvRnJlZSh0Y29uKTsKKwlpZiAoZG9fbG9nb2ZmKSB7CiAJCXhpZCA9IGdl
+dF94aWQoKTsKIAkJcmMgPSBzZXJ2ZXItPm9wcy0+bG9nb2ZmKHhpZCwgc2VzKTsKIAkJaWYg
+KHJjKQo=
 
--- 
-With best wishes
-Dmitry
+--------------aXDlJb8JN0TyYB1Ro06mAAly--
 
