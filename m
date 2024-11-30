@@ -1,53 +1,65 @@
-Return-Path: <stable+bounces-95867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015A29DF06B
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 13:55:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FB59DF07A
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 14:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7390428236E
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CBE4281501
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 13:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BD41990C9;
-	Sat, 30 Nov 2024 12:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B15E1991B4;
+	Sat, 30 Nov 2024 13:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="QM1uTdQy"
 X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE6914A60D;
-	Sat, 30 Nov 2024 12:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121AC42AA4;
+	Sat, 30 Nov 2024 13:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732971316; cv=none; b=Yx5sy364qLePxwmO/18B3/YtgZ7X+p9IeZ4iBTYhiKkPJrP47X9nvGERqwl8pKPzHE2s04oYZubyC4YhHLmINvUW7sa5qz+bi954RatooJbf52PvNj1MPTg/EWB/Qq5MyREfhFulV9EUECsU9lW5SE1BT9HHgSZWiafjdXbrsfU=
+	t=1732973261; cv=none; b=jUzvONVUwelRYsFS1rnpbR192u8dv8ghxSF7MUJPaGEQ+AlY4nPW3HgsbYGZMT09AMzQH8C5Lqoi4y6KycmCom8ZUatFgxbkkZOVA8cMkqYvXPYQAjHqf9gGcD3Q6ns6AwCu6O29pnlJDceBQHNNH1Y8jhpetbh+od8ETjWHaeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732971316; c=relaxed/simple;
-	bh=YxFU9g3nKc0hDKlhwfiZxJLMQMtvK82CvUsbZBzlR+o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k3jmiF1JnbW7ZMMJxQ0Z4BhnaR5GPg0bqq5Pwq1p9L9zhsdqOo5zSxb89oruqfu2eITAGp0CDzpGGSFomGroFNhNhNJ/uJmy4DBbhBotEz9lYg/ffDUsmcnwe010q1jREJpsDJrbtA/QB+QwsE7KCDoUttYmLEvUBczRVGYssxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Sat, 30 Nov
- 2024 15:55:02 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Sat, 30 Nov
- 2024 15:55:02 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Luiz Augusto von Dentz
-	<luiz.von.dentz@intel.com>, Marcel Holtmann <marcel@holtmann.org>, "Johan
- Hedberg" <johan.hedberg@gmail.com>, Luiz Augusto von Dentz
-	<luiz.dentz@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH 5.10/5.15] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
-Date: Sat, 30 Nov 2024 04:54:57 -0800
-Message-ID: <20241130125457.29343-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1732973261; c=relaxed/simple;
+	bh=4Ed0nz5m12QW8u8SRV5ZWuoAH3uPzVjZw1PS/ibNFrE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a2TQzOYrQ3L1taPrCmoWA99JSBQsHI9w+xB173DTYuErQULnb61vYXUNclLi7MGPPJu+Zk73HLlhdhBu1FHp5yqctDYykX38XS9VEhD3ioSsHojssbnw0XJhyDuhEkJfUxFtMCkVG2tsSjVHUX+iGHD1vIjZSMp6d/w8SMmSqIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=QM1uTdQy; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:1814:0:640:37e9:0])
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A641C60F59;
+	Sat, 30 Nov 2024 16:27:26 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:11::1:15])
+	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id ARcU322IZa60-pmXXibCX;
+	Sat, 30 Nov 2024 16:27:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1732973245;
+	bh=+eyGxWAtd/f4CQXvN7ri9iNKbNFEua2Am/b4Jgy2ocI=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=QM1uTdQyFu4dvuEOKwVOPMYy+L0FH5C3D+1JGz/m2sJh8eyEaP6yAB/hvt+OkMwIO
+	 QgSH9ML0iTelIawlsx0KJmMj37gXFJU4Oq+PaDiK7j6rlWoDWYLOKnNcoaNPLBnRPw
+	 UZs03AiWUbKOXwgfBrk5TPCEg0XgL7WA1y6kc+oY=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.6] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
+Date: Sat, 30 Nov 2024 16:27:02 +0300
+Message-Id: <20241130132702.1974626-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,63 +67,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
-This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-("Bluetooth: Always request for user confirmation for Just Works")
-always request user confirmation with confirm_hint set since the
-likes of bluetoothd have dedicated policy around JUST_WORKS method
-(e.g. main.conf:JustWorksRepairing).
+To solve this preserve faultin pfn in separate kvm_page_fault
+field and pass it in kvm_release_pfn_clean(). Patch tested for all
+mentioned guest memory backends with tdp_mmu={0,1}.
 
-CVE: CVE-2024-8805
-Cc: stable@vger.kernel.org
-Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-[Nikita: minor fix to resolve a conflict caused by different debug
-print macros used around the change: keep BT_DBG() instead of
-bt_dev_dbg().]
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
+
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
- net/bluetooth/hci_event.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ arch/x86/kvm/mmu/mmu.c          | 5 +++--
+ arch/x86/kvm/mmu/mmu_internal.h | 2 ++
+ arch/x86/kvm/mmu/paging_tmpl.h  | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 58c029958759..546795425119 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4751,19 +4751,16 @@ static void hci_user_confirm_request_evt(struct hci_dev *hdev,
- 		goto unlock;
- 	}
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 294775b7383b..2105f3bc2e59 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4321,6 +4321,7 @@ static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+ 	smp_rmb();
  
--	/* If no side requires MITM protection; auto-accept */
-+	/* If no side requires MITM protection; use JUST_CFM method */
- 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
- 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 	ret = __kvm_faultin_pfn(vcpu, fault);
++	fault->faultin_pfn = fault->pfn;
+ 	if (ret != RET_PF_CONTINUE)
+ 		return ret;
  
--		/* If we're not the initiators request authorization to
--		 * proceed from user space (mgmt_user_confirm with
--		 * confirm_hint set to 1). The exception is if neither
--		 * side had MITM or if the local IO capability is
--		 * NoInputNoOutput, in which case we do auto-accept
-+		/* If we're not the initiator of request authorization and the
-+		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
-+		 * method (mgmt_user_confirm with confirm_hint set to 1).
- 		 */
- 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
--		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
--		    (loc_mitm || rem_mitm)) {
-+		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
- 			BT_DBG("Confirming auto-accept as acceptor");
- 			confirm_hint = 1;
- 			goto confirm;
+@@ -4398,7 +4399,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(fault->faultin_pfn);
+ 	return r;
+ }
+ 
+@@ -4474,7 +4475,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 
+ out_unlock:
+ 	read_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(fault->faultin_pfn);
+ 	return r;
+ }
+ #endif
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index decc1f153669..a016b51f9c62 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -236,6 +236,8 @@ struct kvm_page_fault {
+ 	/* Outputs of kvm_faultin_pfn.  */
+ 	unsigned long mmu_seq;
+ 	kvm_pfn_t pfn;
++	/* pfn copy for kvm_release_pfn_clean(), constant after kvm_faultin_pfn() */
++	kvm_pfn_t faultin_pfn;
+ 	hva_t hva;
+ 	bool map_writable;
+ 
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index c85255073f67..b945dde6e3be 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -848,7 +848,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(fault->faultin_pfn);
+ 	return r;
+ }
+ 
 -- 
-2.25.1
+2.34.1
 
 
