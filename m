@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E369C9DF320
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 21:49:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2D19DF327
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 21:51:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85682162E8F
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 20:49:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D71B20F1B
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 20:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7304A1A9B3E;
-	Sat, 30 Nov 2024 20:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD471AAE06;
+	Sat, 30 Nov 2024 20:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPuirFpd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nP1zxkMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260E717741;
-	Sat, 30 Nov 2024 20:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B551AA1CD;
+	Sat, 30 Nov 2024 20:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732999769; cv=none; b=W98RBDwBXPONRq2jUKRQ9DLaeIIonENoeqJlIUgEQGeQmUYbJ+u72mk2mbham+P7Vmk3/8nT/T7KVm6aeKA8NBfdhes1qAJISOjH4X2cv8jFpRyQK98+IxYoLCCHoeXaX6bA66GJ7pP7VJqdLh6YMmBPqy8d3RayiYzJJBACNZs=
+	t=1732999870; cv=none; b=Iv4s+z+Q9OklV7eUm3B8z4NegHGKxhzb4p/6AoYnRYxGw7lGOJ6pxGKaeRH1tPsYn+4IY2BT5ypQ+QtyiGqvXm2h07RHRQgW7fBuJwm3P+9WPQUPiM+DaeuiMVZrSAKVuwzcXomRJX8u/WCwRttLXoDkc0PlZ0+xV9lRis1cxuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732999769; c=relaxed/simple;
-	bh=gObW6/DphjkWINxbkQ5lX1lAeobeYEyaexCD5b0jj0w=;
+	s=arc-20240116; t=1732999870; c=relaxed/simple;
+	bh=l5HTMxOvV+HOmgGEwOj7jUljAwXcKy+LbuXtcSZrJQA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yt5wjJFrIvCT/PwYUlR9qxZUWjAr7wbtAqnYwBcVPrD7xDj8bCqQKWohRv8UliZ2lRgSyGnCUtM6yKrOmhW+8niXKZRRAfMXhPKKIRwqEotNW9fs0zaItFIhl18c0OuTj1SHIOW4tNWC+oYtjAWoSQRGCbMRzNARhO7DKn9L4PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPuirFpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DDCC4CECC;
-	Sat, 30 Nov 2024 20:49:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uY5LFenusZhF53WEER8StGQ/v8eBLGjhLwn6NAhk7tuQtHo6fH12hPzasOZSF1Gca1JexCHJTHDlIuJqSKg18A92TIzIZKWWUhTBv0KhjJqLIB/LnrjbPyZLCtX7+O3cB1/rZtr8tmkebBC807A6c0ZT8zNCw/EpvLq4hgXawUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nP1zxkMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCB5C4CECC;
+	Sat, 30 Nov 2024 20:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732999768;
-	bh=gObW6/DphjkWINxbkQ5lX1lAeobeYEyaexCD5b0jj0w=;
+	s=k20201202; t=1732999870;
+	bh=l5HTMxOvV+HOmgGEwOj7jUljAwXcKy+LbuXtcSZrJQA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oPuirFpdQJbcN8Co004/JNRNsm6hNEvUo+31lwVnb639HbOQ4zYQbTdBfIKwUTABK
-	 TkcnYx7VwnzPah8FsF2rdF7f0VDNmToFiZNBy28eaCKQTFv+JekpkP7Cuet/7iQ9oF
-	 lYDsVqFmV3hy2PcTbIsudMgaGMvp6Un0bnp6VGaIOPnoKh6z2QnH4R28c7+DWqaYYm
-	 tghN+7QxYYSFyjV5SePDeZo38WbOrkxU/UNKsmDTxFsAmVG1pWF/zj8oMMj6mzxsXo
-	 khF8GB4HyfUwtpSNnwDUCSIrpm+VLvQ4z83ZhwjqHx+La9zcHRT/KFXBtcaTXSJxd3
-	 IN0rca2FVssiQ==
-Date: Sat, 30 Nov 2024 20:49:23 +0000
+	b=nP1zxkMWGb09LyjE524QqbGvp1XArWCmGuvg8PKZDn825vlSe2taI8R7uc120W1MU
+	 pGc9balBNdMJE3ePiEk1M3MLDNts+qRouR0sjiLx8ElTo6roHMLeC5cPVMtDyMwgOh
+	 cGd0WiMiFycD7FmByMGWAzMtukqAgtRz0cGU1jYUyCVaKYajEgQAneABd3HdnUFkfx
+	 EQALmgVRt58IsQkO46kg5PEz+NR0HxHIi5Vo8QIz1bgFrD2hLBVtrYxs2cmA4dGnL3
+	 kcXKjxCge0lMHXPZS0PM8b37CeCi7O6+qy5aqrzYTLg2PBEEI3sZ9WPwCqnUSfTnIP
+	 dRYvDfT8W7/Nw==
+Date: Sat, 30 Nov 2024 20:50:59 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Antoni Pokusinski
@@ -53,12 +53,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Antoni Pokusinski
  =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
  <joao.goncalves@toradex.com>, Francesco Dolcini
  <francesco.dolcini@toradex.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 10/11] iio: light: as73211: fix information leak in
- triggered buffer
-Message-ID: <20241130204923.45d71fa4@jic23-huawei>
-In-Reply-To: <20241125-iio_memset_scan_holes-v1-10-0cb6e98d895c@gmail.com>
+Subject: Re: [PATCH 09/11] iio: dummy: iio_simply_dummy_buffer: fix
+ information leak in triggered buffer
+Message-ID: <20241130205059.20790814@jic23-huawei>
+In-Reply-To: <20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com>
 References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
-	<20241125-iio_memset_scan_holes-v1-10-0cb6e98d895c@gmail.com>
+	<20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,49 +69,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Nov 2024 22:16:18 +0100
+On Mon, 25 Nov 2024 22:16:17 +0100
 Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> The 'scan' local struct is used to push data to userspace from a
-> triggered buffer, but it leaves the first channel uninitialized if
-> AS73211_SCAN_MASK_ALL is not set. That is used to optimize color channel
-> readings.
+> The 'data' array is allocated via kmalloc() and it is used to push data
+> to user space from a triggered buffer, but it does not set values for
+> inactive channels, as it only uses iio_for_each_active_channel()
+> to assign new values.
 > 
-> Set the temperature channel to zero if only color channels are
-> relevant to avoid pushing uninitialized information to userspace.
+> Use kzalloc for the memory allocation to avoid pushing uninitialized
+> information to userspace.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+> Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Huh.
+Oops. Got it wrong even in the example driver.
 
-If the temperature channel is turned off the data should shift. So should be read
-into scan.chan[0] and [1] and [2], but not [3].
+Applied to the fixes-togreg branch of iio.git.
 
-Not skipping [0] as here.
-
-So this code path currently doesn't work as far as I can tell.
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/light/as73211.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/iio/dummy/iio_simple_dummy_buffer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..99679b686146 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -675,6 +675,9 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
->  		if (ret < 0)
->  			goto done;
-> +
-> +		/* Avoid leaking uninitialized data */
-> +		scan.chan[0] = 0;
->  	}
+> diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> index 4ca3f1aaff99..288880346707 100644
+> --- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> +++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+> @@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+>  	int i = 0, j;
+>  	u16 *data;
 >  
->  	if (data_result) {
+> -	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
+> +	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+>  	if (!data)
+>  		goto done;
+>  
 > 
 
 
