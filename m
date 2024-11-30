@@ -1,188 +1,211 @@
-Return-Path: <stable+bounces-95858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CAE9DEF50
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 09:23:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20609DEF75
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 10:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48BE2B21BC0
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 08:23:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A7972815C2
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 09:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D7146D57;
-	Sat, 30 Nov 2024 08:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEAF149DFF;
+	Sat, 30 Nov 2024 09:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t/UjA+fm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrRANzgx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41222FC52
-	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 08:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B234184F;
+	Sat, 30 Nov 2024 09:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732954997; cv=none; b=nNfxAw8HrU9fPJ0l9WkYbgUcQ5s4s1edGr81R04Lk4etZWSDIEpCki4g1pZP/z7f8Y79X1hYBGaZylOKaitRrehhW2B6zn47fQh+PDyxadbtr+6dGDmnD6AkUuKQsOHFylWn3TcGIpa0iN0OO+bf4A83Vp3R85zzfSG9ehXNrw0=
+	t=1732958491; cv=none; b=uBlAEK9KBNbKttyeaSF+M/nXW1z2PR6abRrb8YkYr8ISVZjXZ6ETYAtVnmE6hHfqmkeQ+2hqu44rActnPnKTZRe57MsKcOM4FO3kNlZdCJEOClTAlRfje439hmaXK08ltiBaXDx2fFVhhC0VicWJGPB1tJztef0A/lt30f0iOvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732954997; c=relaxed/simple;
-	bh=ByrR8tIF411nep0B5oVqaD2d798WvXZ1DGKPUssEvM4=;
+	s=arc-20240116; t=1732958491; c=relaxed/simple;
+	bh=B6Kp42DdMx7o2F9q1ZZWxAakwpNvbdugbjjugcx6Ajg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pYjYURt0hPo8shzTmyvqGRPRTtTt1vOa27IKZt7Fo+8fQr0hFveA+Zn6Z6kfHg7DxJ2hIcVGrbT3Y3QWwHxWqSgVXKDikMORMc7sFqTq/NbfmWt6xYY43v0VQTL0n0x8LYs6hx4bY2CIyllsCiXwDaqFWPk/dZOUvZCT08FsmTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t/UjA+fm; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-724f0f6300aso2886332b3a.2
-        for <stable@vger.kernel.org>; Sat, 30 Nov 2024 00:23:15 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=RGt0mY0jTfTT758V1iIRoik8PghQ8ZRjCm03YR+UWsANKEWhYlcTxKInS2evbkFy8zHLNkmnQBMuL6jz114tFxnbuXmiYjb8wJFWoF1BiNuIACsV/6gPlVXYWXw9bCu16LjsKpNJ+Nhan2ZkKOkWVsE6BHeH7F3lk+5UXovBodo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrRANzgx; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aa55da18f89so388874966b.0;
+        Sat, 30 Nov 2024 01:21:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732954995; x=1733559795; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ey9mK2QYcDtPPCKwbACtibTYlsE29O14SbX2DFECs0A=;
-        b=t/UjA+fmy+MIwqa5sdxf64uRV+K4RY/hu6PCH7zEMAlm8LGXvoM4+qBoEXYVYjf8Yd
-         kyFP2jNFz/mWV2LMqi6g3tROItam0PCpSxhNUyLawoNmzEtfiVRF4k0vIDhMToJug7+g
-         HDILaVsF9/4HrTgFRMFraweM55a3jWSFrvWNYVYI9ZIwdttqupixF4enU2IBPJjmlhBS
-         Zrzn7tuoBEuBj8oFPflLKiiMjUz/pf5yx8+v+ZVMiLT8WdREJu9LpHNaxQj0yaN3ln97
-         fqLfHZgEcalNXqMlOi+kN88/2tFr2TLDGBu+U8lQAbPCnMKOkzR/k1cdvepiYwLBGHYn
-         ztMg==
+        d=gmail.com; s=20230601; t=1732958488; x=1733563288; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wBGn31dHy/ezVGkqd5PyJ56mr5MWJzEdxUSwMzGNmOs=;
+        b=FrRANzgxIMsMsPC9V2WAf1ywxZbfJpH/y88d50I/yOx6zMp0IJd6g2n5CVdfd6tBa9
+         GabrxrgLYpusqe0dQmc2T4yjzl5M+1AQJs6mQXR0dunIwwzce8rvuNE1VPIpNo0Q3XG1
+         AEfXkHpmhjmvS+/8rY/LSzEoyNt3JhQjF1ZulVe4V1CPOxRrHifseFHDr5kpY6dxBVE1
+         P4BER5VSsyi5CDWHX3rtMY1V5ljU7zrxKPAqTcAYhdfLlsWG9MoDRM318vtDtlr+KtyD
+         cmNaSWUtks9POY2ObIJeTk7wJAlFw/wzg2i4q2BcMgFJkiTwTHGVbVCr0B1dAsATcrkn
+         IH2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732954995; x=1733559795;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ey9mK2QYcDtPPCKwbACtibTYlsE29O14SbX2DFECs0A=;
-        b=s+M2pH0GTLMZ2FAd+oSv5dWmLNo5guI5hPWn6kq4pK8D8WLE8ZafVf+UkBLwC0V+4X
-         cnmJAgjlhcUEdPw9xqTNBC/BElR8gVLNA0hPT5KD+oP9lJDMw86OWhXZDeV2gChDI1bp
-         Z2rr6aFqDiJrbB3tYADrRc9Cp94aOM/5ZlPbkT369UQHHXiuSIgPp0GtbcbYjuT6gWlu
-         alzm7iqPBPegOZYJkPxCG6jVk3jN5oJQvb7yqFG64yGbBmU0/MhvHRTsxWiF+1NcjYrF
-         euf5YFckEaQYV9DMnJDPaQTCtr05fqVlLyB8/5CmWAGb1EoLBbW0TSFpzIEkDPtyOtaQ
-         DBYg==
-X-Forwarded-Encrypted: i=1; AJvYcCX6ekDXPyoQd9Qi4kFifC+EQcsvr/Rzv4rINGbVA4zq6qMifIcnlBqHpRNeq4/HpCnXtmrtAkA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx49iS7Of4FCm074Wv+4v2kS7eHPWziq3yMfBRKMv0NkBqYKq7q
-	TFS+gAg9tQePu16lRV0su/XYPGDMHL8YlJ3puKqIstSAvwJwetX0QL/YSec1XA==
-X-Gm-Gg: ASbGncttp7FJsFc+E75EL+JEOnGi2QODfP7DqkQvLPRxkFjvWRWAhVtuWfAV1tS6Q82
-	laNfDjvV6nPdYiNgbe/Ugm99EvL9jixZdgVtqq53r5N4mDA/fxze896qC64fIm9Po53onv3CBao
-	z2Ea31C33GTQCQv6e/ZT/+3Lz0jsU4CsjlQrnulgoiY4OBG8oL8/ZMazR3TNhzqJwHwtuAkS9D5
-	PeVJEhIkPbyI+Kn4ziViqIP4e2Rbz71FeFwIA1kL5OAlHuniQxL8zxwrFRI
-X-Google-Smtp-Source: AGHT+IEevzG/vRxDLEDST9WWoqNiJfyVNndxBjogGzADGjYE/6vBufeiKYVrM7etFIzouaRIIo/thw==
-X-Received: by 2002:a05:6a00:2301:b0:724:63f1:a520 with SMTP id d2e1a72fcca58-7253014a0d1mr20309929b3a.18.1732954995303;
-        Sat, 30 Nov 2024 00:23:15 -0800 (PST)
-Received: from thinkpad ([120.60.57.102])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7254176121asm4686980b3a.39.2024.11.30.00.23.08
+        d=1e100.net; s=20230601; t=1732958488; x=1733563288;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wBGn31dHy/ezVGkqd5PyJ56mr5MWJzEdxUSwMzGNmOs=;
+        b=hbjP+R993ni0EHTEpfGRhSHdLM2UMdTHNlqdVYCu57LjmPrU031EypbMi33tIjILVB
+         Zj2m1Dvi/itLzVr4pBnjoCpKqcz/+6VN4v+lIsRNzfC1dIGND6k7A/1WLihPUJ9zfBCp
+         prk6y9B+Ly8PvB8MXGxgugWIWxM4AdSgxtSA+1qefTtH8JDmpJX1jnKrgQo4uI2Gu5bT
+         Y6+66TJ178mZc8oGL/+2sZMQtv9HjzZ9GdvmtQORpCaG+HyxjcFM3O3foUV0NLt0JJCH
+         lMox+EF95XpKHqfflCMnGSpXEndOe/Nz4M9XjLxTdzmXHuYhbhmtCi+fsIHl4PHXA3+z
+         sCXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQv6a65bx6JqaKqL87n0RixfkdTluCd019wMApjIrOGm1X0UuX3lEvjJKEjqh1yVDOqmt3yD/wuksL@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm+7YnjFnHrbaQkKEkQ9k6oFfKjwzwkklqTjQMZL+/nj9wURrl
+	c9jFJQeHbeD0UDX9IV7EAvrTHon5eHUzAPvpA5Hpn39S3oK1OUtPhUo1XwyZ
+X-Gm-Gg: ASbGncsVoFAf2IzwpI+zSJmi6gJmqj7Ie8BgzqIuHTM+TEvV97OBhwEk/AqyLE2ELMx
+	Q9ZpgR+47hEfWcN+dENCJZLUvFF41PHGv2pSCt6QQzhg2FDtDTrckC/gqkc4/4dDmNIReSmwaZp
+	IaK4HCP43KbABnsvTULwZv4DO4H9ntWZ4aE3d18TSBnAjnA1U9rNZ/bgi/RsIjhsL/4JLjYbENs
+	YAMZwnzoW3z4IPUEmPKXEPm6zJQFx46QdP+wqhwKDhkTNNVGV98DIHlhYN7pCy8XNrJCxhQZgon
+	IUvaDoRmRg==
+X-Google-Smtp-Source: AGHT+IEfNkerElY5P7dfL7r2pI4qGlf/ZrmDqu682/tZx+T8mPpiQtoSwrEXrOtIzIPIRKRsEQk/hQ==
+X-Received: by 2002:a17:906:318a:b0:a9a:b70:2a92 with SMTP id a640c23a62f3a-aa580f0daf7mr1173951266b.16.1732958487565;
+        Sat, 30 Nov 2024 01:21:27 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa59990a825sm258686666b.153.2024.11.30.01.21.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Nov 2024 00:23:14 -0800 (PST)
-Date: Sat, 30 Nov 2024 13:53:05 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>, stable@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5 1/6] PCI: dwc: ep: iATU registers must be written
- after the BAR_MASK
-Message-ID: <20241130082305.camrgbzloeev4pei@thinkpad>
-References: <20241127103016.3481128-8-cassel@kernel.org>
- <20241127103016.3481128-9-cassel@kernel.org>
+        Sat, 30 Nov 2024 01:21:26 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 0FBAFBE2EE7; Sat, 30 Nov 2024 10:21:26 +0100 (CET)
+Date: Sat, 30 Nov 2024 10:21:26 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: gregkh@linuxfoundation.org, Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>, Michael <mk-debian@galax.is>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	linux-cifs@vger.kernel.org
+Subject: backporting 24a9799aa8ef ("smb: client: fix UAF in
+ smb2_reconnect_server()") to older stable series (was: Re: FAILED: patch
+ "[PATCH] smb: client: fix UAF in  smb2_reconnect_server()" failed to apply
+ to 6.1-stable tree)
+Message-ID: <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
+References: <2024040834-magazine-audience-8aa4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241127103016.3481128-9-cassel@kernel.org>
+In-Reply-To: <2024040834-magazine-audience-8aa4@gregkh>
 
-On Wed, Nov 27, 2024 at 11:30:17AM +0100, Niklas Cassel wrote:
-> The DWC Databook description for the LWR_TARGET_RW and LWR_TARGET_HW fields
-> in the IATU_LWR_TARGET_ADDR_OFF_INBOUND_i registers state that:
-> "Field size depends on log2(BAR_MASK+1) in BAR match mode."
-> 
-> I.e. only the upper bits are writable, and the number of writable bits is
-> dependent on the configured BAR_MASK.
-> 
-> If we do not write the BAR_MASK before writing the iATU registers, we are
-> relying the reset value of the BAR_MASK being larger than the requested
-> size of the first set_bar() call. The reset value of the BAR_MASK is SoC
-> dependent.
-> 
-> Thus, if the first set_bar() call requests a size that is larger than the
-> reset value of the BAR_MASK, the iATU will try to write to read-only bits,
-> which will cause the iATU to end up redirecting to a physical address that
-> is different from the address that was intended.
-> 
-> Thus, we should always write the iATU registers after writing the BAR_MASK.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Hi Paulo, hi Steve,
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-- Mani
-
-> ---
->  .../pci/controller/dwc/pcie-designware-ep.c   | 28 ++++++++++---------
->  1 file changed, 15 insertions(+), 13 deletions(-)
+On Mon, Apr 08, 2024 at 12:19:35PM +0200, gregkh@linuxfoundation.org wrote:
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index f3ac7d46a855..bad588ef69a4 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
->  		return -EINVAL;
->  
-> -	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
-> -
-> -	if (!(flags & PCI_BASE_ADDRESS_SPACE))
-> -		type = PCIE_ATU_TYPE_MEM;
-> -	else
-> -		type = PCIE_ATU_TYPE_IO;
-> -
-> -	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
-> -	if (ret)
-> -		return ret;
-> -
->  	if (ep->epf_bar[bar])
-> -		return 0;
-> +		goto config_atu;
-> +
-> +	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
->  
->  	dw_pcie_dbi_ro_wr_en(pci);
->  
-> @@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
->  	}
->  
-> -	ep->epf_bar[bar] = epf_bar;
->  	dw_pcie_dbi_ro_wr_dis(pci);
->  
-> +config_atu:
-> +	if (!(flags & PCI_BASE_ADDRESS_SPACE))
-> +		type = PCIE_ATU_TYPE_MEM;
-> +	else
-> +		type = PCIE_ATU_TYPE_IO;
-> +
-> +	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ep->epf_bar[bar] = epf_bar;
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.47.0
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 24a9799aa8efecd0eb55a75e35f9d8e6400063aa
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040834-magazine-audience-8aa4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 24a9799aa8ef ("smb: client: fix UAF in smb2_reconnect_server()")
+> 7257bcf3bdc7 ("cifs: cifs_chan_is_iface_active should be called with chan_lock held")
+> 27e1fd343f80 ("cifs: after disabling multichannel, mark tcon for reconnect")
+> fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
+> a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+> c37ed2d7d098 ("smb: client: remove extra @chan_count check in __cifs_put_smb_ses()")
+> ff7d80a9f271 ("cifs: fix session state transition to avoid use-after-free issue")
+> 38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+> 943fb67b0902 ("cifs: missing lock when updating session status")
+> bc962159e8e3 ("cifs: avoid race conditions with parallel reconnects")
+> 1bcd548d935a ("cifs: prevent data race in cifs_reconnect_tcon()")
+> e77978de4765 ("cifs: update ip_addr for ses only for primary chan setup")
+> 3c0070f54b31 ("cifs: prevent data race in smb2_reconnect()")
+> 05844bd661d9 ("cifs: print last update time for interface list")
+> 25cf01b7c920 ("cifs: set correct status of tcon ipc when reconnecting")
+> abdb1742a312 ("cifs: get rid of mount options string parsing")
+> 9fd29a5bae6e ("cifs: use fs_context for automounts")
 
--- 
-மணிவண்ணன் சதாசிவம்
+In Debian we got a report yhsy in s CIFS (DFS) infrastructure and
+after mounting at some point later but reproducible they are able to
+trigger within few minutes a system hang with a trace:
+
+CIFS: VFS: \\SOME.SERVER.FQDN cifs_put_smb_ses: Session Logoff failure rc=-11
+CIFS: VFS: \\(null) cifs_put_smb_ses: Session Logoff failure rc=-11
+list_del corruption, ffff966536fe7800->next is NULL
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:49!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+CPU: 6 PID: 2498151 Comm: kworker/6:9 Tainted: G           OE      6.1.0-23-amd64 #1  Debian 6.1.99-1
+Hardware name: Dell Inc. PowerEdge R620/0KCKR5, BIOS 2.9.0 12/06/2019
+Workqueue: events delayed_mntput
+RIP: 0010:__list_del_entry_valid.cold+0xf/0x6f
+Code: c7 c7 88 3c fa a0 e8 90 a0 fe ff 0f 0b 48 c7 c7 60 3c fa a0 e8 82 a0 fe ff 0f 0b 48 89 fe 48 c7 c7 70 3d fa a0 e8 71 a0 fe ff <0f> 0b 48 89 d1 48 c7 c7 90 3e fa a0 48 89 c2 e8 5d a0 fe ff 0f 0b
+RSP: 0018:ffffad83a63f7dd0 EFLAGS: 00010246
+RAX: 0000000000000033 RBX: ffff966536fe7800 RCX: 0000000000000027
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff965e7f8e03a0
+RBP: 00000000142d66a6 R08: 0000000000000000 R09: ffffad83a63f7c68
+R10: 0000000000000003 R11: ffff966ebff11be0 R12: 00000000fffffff5
+R13: ffff966536fe7000 R14: ffff966536fe7020 R15: ffffffffa1770b88
+FS:  0000000000000000(0000) GS:ffff965e7f8c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe35dbcb7b0 CR3: 0000000f36c10001 CR4: 00000000000606e0
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x1a/0x1f
+ ? die+0x2a/0x50
+ ? do_trap+0xc5/0x110
+ ? __list_del_entry_valid.cold+0xf/0x6f
+ ? do_error_trap+0x6a/0x90
+ ? __list_del_entry_valid.cold+0xf/0x6f
+ ? exc_invalid_op+0x4c/0x60
+ ? __list_del_entry_valid.cold+0xf/0x6f
+ ? asm_exc_invalid_op+0x16/0x20
+ ? __list_del_entry_valid.cold+0xf/0x6f
+ cifs_put_smb_ses+0xbb/0x3e0 [cifs]
+ mount_group_release+0x82/0xa0 [cifs]
+ cifs_umount+0x88/0xa0 [cifs]
+ deactivate_locked_super+0x2f/0xa0
+ cleanup_mnt+0xbd/0x150
+ delayed_mntput+0x28/0x40
+ process_one_work+0x1c7/0x380
+ worker_thread+0x4d/0x380
+ ? rescuer_thread+0x3a0/0x3a0
+ kthread+0xda/0x100
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x22/0x30
+ </TASK>
+Modules linked in: bluetooth jitterentropy_rng drbg ansi_cprng ecdh_generic rfkill ecc overlay isofs cmac nls_utf8 cifs cifs_arc4 cifs_md4 rpcsec_gss_krb5 nfsv4 dns_resolver nfs fscache netfs tls beegfs(OE) rpcrdma rdma_ucm ib_iser rdma_cm iw_cm ib_cm libiscsi scsi_transport_iscsi rdma_rxe ib_uverbs ip6_udp_tunnel udp_tunnel ib_core nft_chain_nat xt_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nft_compat nf_tables nfnetlink intel_rapl_msr intel_rapl_common sb_edac x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel ipmi_ssif binfmt_misc kvm irqbypass ghash_clmulni_intel sha512_ssse3 sha512_generic sha256_ssse3 sha1_ssse3 aesni_intel crypto_simd cryptd rapl dcdbas mgag200 intel_cstate joydev evdev drm_shmem_helper intel_uncore iTCO_wdt ipmi_si drm_kms_helper mei_me intel_pmc_bxt ipmi_devintf iTCO_vendor_support pcspkr i2c_algo_bit mei ipmi_msghandler watchdog sg acpi_power_meter button nfsd auth_rpcgss nfs_acl lockd grace sunrpc drm fuse loop efi_pstore configfs
+ ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 dm_mod hid_generic usbhid hid sd_mod t10_pi sr_mod cdrom crc64_rocksoft crc64 crc_t10dif crct10dif_generic ahci libahci crct10dif_pclmul crct10dif_common crc32_pclmul libata ehci_pci bnx2x ehci_hcd megaraid_sas usbcore scsi_mod lpc_ich usb_common mdio libcrc32c crc32c_generic scsi_common crc32c_intel wmi
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__list_del_entry_valid.cold+0xf/0x6f
+Code: c7 c7 88 3c fa a0 e8 90 a0 fe ff 0f 0b 48 c7 c7 60 3c fa a0 e8 82 a0 fe ff 0f 0b 48 89 fe 48 c7 c7 70 3d fa a0 e8 71 a0 fe ff <0f> 0b 48 89 d1 48 c7 c7 90 3e fa a0 48 89 c2 e8 5d a0 fe ff 0f 0b
+RSP: 0018:ffffad83a63f7dd0 EFLAGS: 00010246
+RAX: 0000000000000033 RBX: ffff966536fe7800 RCX: 0000000000000027
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff965e7f8e03a0
+RBP: 00000000142d66a6 R08: 0000000000000000 R09: ffffad83a63f7c68
+R10: 0000000000000003 R11: ffff966ebff11be0 R12: 00000000fffffff5
+R13: ffff966536fe7000 R14: ffff966536fe7020 R15: ffffffffa1770b88
+FS:  0000000000000000(0000) GS:ffff965e7f8c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe35dbcb7b0 CR3: 0000000f36c10001 CR4: 00000000000606e0
+note: kworker/6:9[2498151] exited with preempt_count 1
+
+Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
+in smb2_reconnect_server()") which seems in fact to solve the issue.
+
+Michael, can you please post your backport here for review from Paulo
+and Steve?
+
+Regards,
+Salvatore
 
