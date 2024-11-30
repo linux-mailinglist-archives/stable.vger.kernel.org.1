@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77E79DEEDD
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 04:58:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7679DEEE7
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 05:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B283B21690
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 03:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CC4281989
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 04:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C704C78C76;
-	Sat, 30 Nov 2024 03:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076D51369B4;
+	Sat, 30 Nov 2024 04:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RDGs74gv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QaGROKIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593AA63A9;
-	Sat, 30 Nov 2024 03:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC3C20330;
+	Sat, 30 Nov 2024 04:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732939087; cv=none; b=s/W1kdbyqBByjKqlFYDc3AaA1Bus7FQ0TuQ0XnrO6VDjhO20kKGZWu644kyNKcvoZqeXgHBOcyKs4Zi0CDPgKAwbCm8vsH+aF+vG1wtoMC0/2qcOUhgHJ4XA1fN6xsl21O0mDU2Yb/0ssc4HacYMNSD5NPFxNGQEQaDb0P9g+3k=
+	t=1732939967; cv=none; b=P09xJBVVjvw+xvp5HlGpdSD/uK99MYMTrXlvfUz0DZ6hVP8/kxYPOrBd0qp0SK+7iCLTOGRNJeeKz4iEQW09eLoScW8s5BZvUTnTbwU6zcUKI7O2ywNObEU0cIVjlixsuh1Y0JMXnDezcr7I0MR1CRuQM5TMTyqapGdtErqHpcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732939087; c=relaxed/simple;
-	bh=dZj2YclkcAqJZIKEj0FsFzvvj5mWyM8Etv0HtxsqlZI=;
-	h=Date:To:From:Subject:Message-Id; b=rJve+wn7Tu4xQ8XRkzOU5W9mgzzCOmKXzc/06n0dxTUKeYTUfDXgA4K/zjmZNDq/NS7fZ4l9s3O31SphDHSCcHgMrHnUQBAVgxCW5Xvhxo4bYYCFaSY8darpVY7qjjwq5RvmxwZJ4+gEsTvZqtHEyXZ2cV6f5EKbHJWvtsUGHZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RDGs74gv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B7C4CECC;
-	Sat, 30 Nov 2024 03:58:06 +0000 (UTC)
+	s=arc-20240116; t=1732939967; c=relaxed/simple;
+	bh=ZdR8He5KkFZynUOunl5hS1ewYxv7g1Gn1/jzgOXQ6OM=;
+	h=Date:To:From:Subject:Message-Id; b=IC3tKyvdBpkkTs4RfX2hTrm7IHzhviubh/juWm6b+BIR1m+u6OwYUEPfHevAMGDJSecWDI7Tby8CWeQYRuDAQik28aStdAwe+bxkMNQqomI5T65z30LFII+Qc05/bTv+X1OpwPUXG/wk1QZQmx+4EIpWelq8xuHWOTgZ/+k74Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QaGROKIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA5AC4CECC;
+	Sat, 30 Nov 2024 04:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732939086;
-	bh=dZj2YclkcAqJZIKEj0FsFzvvj5mWyM8Etv0HtxsqlZI=;
+	s=korg; t=1732939967;
+	bh=ZdR8He5KkFZynUOunl5hS1ewYxv7g1Gn1/jzgOXQ6OM=;
 	h=Date:To:From:Subject:From;
-	b=RDGs74gvkoSH+x8J3zWUYk+sSn/KLPBuY9YXlw4TN98wLQDxjzjuCacxplfv8Pue4
-	 DFLh6ppYOcjyHO9WxmHqkza469ezXJOJHBvSKM108v+BS4Z5kP2dKl6kI4qYGOoPry
-	 +tc610pl2TKbHecWNbw0u5hkmWWtb4wXe1NLon6s=
-Date: Fri, 29 Nov 2024 19:58:06 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,akpm@linux-foundation.org
+	b=QaGROKIU3Xbo2+PtItRJz4t+3ZdFDTFmKzhDqq0QI/h5ljNovU7ktZNxJMq8JGsJo
+	 Ov9Ox1LFU3h29mlmNIdEoFrTpyoigsdmEOdwt0kisfUEVB7QRA46gmYupKE/RWHNKP
+	 0P4dEjSYy+F93kkzaRypZvX2J+F6QzFTHGyI9IuY=
+Date: Fri, 29 Nov 2024 20:12:46 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,akinobu.mita@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-stackinit-hide-never-taken-branch-from-compiler.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241130035806.9F0B7C4CECC@smtp.kernel.org>
+Subject: + mm-damon-fix-order-of-arguments-in-damos_before_apply-tracepoint.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241130041247.6AA5AC4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: lib: stackinit: hide never-taken branch from compiler
+     Subject: mm/damon: fix order of arguments in damos_before_apply tracepoint
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     lib-stackinit-hide-never-taken-branch-from-compiler.patch
+     mm-damon-fix-order-of-arguments-in-damos_before_apply-tracepoint.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-stackinit-hide-never-taken-branch-from-compiler.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-fix-order-of-arguments-in-damos_before_apply-tracepoint.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,45 +73,43 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Kees Cook <kees@kernel.org>
-Subject: lib: stackinit: hide never-taken branch from compiler
-Date: Sun, 17 Nov 2024 03:38:13 -0800
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Subject: mm/damon: fix order of arguments in damos_before_apply tracepoint
+Date: Fri, 15 Nov 2024 10:20:23 -0800
 
-The never-taken branch leads to an invalid bounds condition, which is by
-design. To avoid the unwanted warning from the compiler, hide the
-variable from the optimizer.
+Since the order of the scheme_idx and target_idx arguments in TP_ARGS is
+reversed, they are stored in the trace record in reverse.
 
-../lib/stackinit_kunit.c: In function 'do_nothing_u16_zero':
-../lib/stackinit_kunit.c:51:49: error: array subscript 1 is outside array bounds of 'u16[0]' {aka 'short unsigned int[]'} [-Werror=array-bounds=]
-   51 | #define DO_NOTHING_RETURN_SCALAR(ptr)           *(ptr)
-      |                                                 ^~~~~~
-../lib/stackinit_kunit.c:219:24: note: in expansion of macro 'DO_NOTHING_RETURN_SCALAR'
-  219 |                 return DO_NOTHING_RETURN_ ## which(ptr + 1);    \
-      |                        ^~~~~~~~~~~~~~~~~~
-
-Link: https://lkml.kernel.org/r/20241117113813.work.735-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lkml.kernel.org/r/20241115182023.43118-1-sj@kernel.org
+Link: https://patch.msgid.link/20241112154828.40307-1-akinobu.mita@gmail.com
+Fixes: c603c630b509 ("mm/damon/core: add a tracepoint for damos apply target regions")
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/stackinit_kunit.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/damon.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/stackinit_kunit.c~lib-stackinit-hide-never-taken-branch-from-compiler
-+++ a/lib/stackinit_kunit.c
-@@ -212,6 +212,7 @@ static noinline void test_ ## name (stru
- static noinline DO_NOTHING_TYPE_ ## which(var_type)		\
- do_nothing_ ## name(var_type *ptr)				\
- {								\
-+	OPTIMIZER_HIDE_VAR(ptr);				\
- 	/* Will always be true, but compiler doesn't know. */	\
- 	if ((unsigned long)ptr > 0x2)				\
- 		return DO_NOTHING_RETURN_ ## which(ptr);	\
+--- a/include/trace/events/damon.h~mm-damon-fix-order-of-arguments-in-damos_before_apply-tracepoint
++++ a/include/trace/events/damon.h
+@@ -15,7 +15,7 @@ TRACE_EVENT_CONDITION(damos_before_apply
+ 		unsigned int target_idx, struct damon_region *r,
+ 		unsigned int nr_regions, bool do_trace),
+ 
+-	TP_ARGS(context_idx, target_idx, scheme_idx, r, nr_regions, do_trace),
++	TP_ARGS(context_idx, scheme_idx, target_idx, r, nr_regions, do_trace),
+ 
+ 	TP_CONDITION(do_trace),
+ 
 _
 
-Patches currently in -mm which might be from kees@kernel.org are
+Patches currently in -mm which might be from akinobu.mita@gmail.com are
 
-lib-stackinit-hide-never-taken-branch-from-compiler.patch
+mm-damon-fix-order-of-arguments-in-damos_before_apply-tracepoint.patch
 
 
