@@ -1,126 +1,149 @@
-Return-Path: <stable+bounces-95861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C209DF017
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:21:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734F19DF021
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6723E282C2C
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 11:21:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18158B21B4E
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 11:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5381A165F0C;
-	Sat, 30 Nov 2024 11:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4FE18A6C0;
+	Sat, 30 Nov 2024 11:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W48d//8c";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZbX1k1Ss"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6d/Ghp7"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C02013C695;
-	Sat, 30 Nov 2024 11:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A42141987;
+	Sat, 30 Nov 2024 11:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732965700; cv=none; b=Jgvi1gLV4C0273Gruh76hHbLXV5WpfMvR2Di23sxLYRWz06y3B2fhBGUnIFLQ/i6cMqVtjBMJ1suvUrGJsaWDjOM3jyTPyCL8UqcZ3Ylmm9tQ2puV40ff2Rb3FpVjVjCz+F0gBNtj6o4UDQY4FnOgajZowdklv3hF8RNYGbqfyE=
+	t=1732966427; cv=none; b=F/UuYxzj6c/HT1j037OFJCVhgVndbLy0ujLNcoktTZqUKwCUGEhJ9gZAMcCH43MtTuj+2V6lrB0LtVBALWY5O4z2GQMeOriLCk3AzVdoWI74qOxbmy5029RZuVAm+KYlltY16spMKqrCemb856NhF6I//kATxxCTXvVyH1O61wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732965700; c=relaxed/simple;
-	bh=PjvKJ5710Gb3kD1DxMQEDFnwvzKL0Gs8ep+I/j/XA2k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g3zmjgVcmwezSCqN9rjC17ClmOfD1Cz/4cfF4cS6oQEhgoSWQTKw3UR80ojN7E2gdpjVmn6rijoxiRtQtFH6j+kCL7wFv9rNkI3UCk7QQbZP7HS/t5tcWRc2koHbdxaqCqCrhEC76OWY/wCQWkJTaanKoEZi43gJxVo6Inj/n4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W48d//8c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZbX1k1Ss; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732965696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ubFNGhee8AQUbXc00EUNlkCO7zOglb0GOC2LTLf32dU=;
-	b=W48d//8cIlhAa6OiPAIXxmxxMZE8revJhPcVAUUrq46RM09DaueM53qSSh5AhBDO51bXVF
-	etSR6nisR+3aDpv8seJQrMn+js3sXKdFtozghtloZfn5g7s4RFjlayUZ7S1MPf7nx0nHvZ
-	DPrV9P2qA2Cki63aaRjyZmYHHnFYsRZnlKbsaH7cr/7KuD9ltTHCY8KuLoTMHHg6BJqTcB
-	OC5HDL4DTMQabpHB7RKeye9mWbCdHLAHCnMDUFIqSPJ/eSC0LHc1i4so6acCeUt6gI8tfs
-	GI2RZWbi2CnRRN3r6a1UZpufNEBUuBDwr435rN20+RSCwrE3vO5WUkkVhl4V3w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732965696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ubFNGhee8AQUbXc00EUNlkCO7zOglb0GOC2LTLf32dU=;
-	b=ZbX1k1Ssa0vaggcUHWpCFltoMtEmCzl16pofzSLNIvaoGmGgQI7+j8HX2HIdmtyk7A/TYj
-	OQ9+wzvZQgUGl+CA==
-To: 20241015061522.25288-1-rui.zhang@intel.com, Zhang Rui <rui.zhang@intel.com>
-Cc: hpa@zytor.com, peterz@infradead.org, thorsten.blum@toblux.com,
- yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
- srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com, x86@kernel.org,
- linux-pm@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: bisected: [PATCH V4] x86/apic: Always explicitly disarm
- TSC-deadline timer
-In-Reply-To: <20241128111844.GE10431@google.com>
-References: <20241128111844.GE10431@google.com>
-Date: Sat, 30 Nov 2024 12:21:36 +0100
-Message-ID: <87o71xvuf3.ffs@tglx>
+	s=arc-20240116; t=1732966427; c=relaxed/simple;
+	bh=N7UEnsfZfi3Yu71lo0rhgQTRf0xBgW1a2d9UEsE38T4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EqQdxTXYkw5swRaWKYNypV7IESUcSxU1/hpGMdJFISdP84pTWYP+G0+v6lT8XTH8+Tm+CN2ycA13LMK+avY33aGkeBAjR3bYW0AMuDKC5ge4rjCKaJBSGCHTVNd0B6c9JhkELLApCcR7je3FgXidAtiwSLCfZUVV5Whz/TsKc14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6d/Ghp7; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434a1639637so24900835e9.1;
+        Sat, 30 Nov 2024 03:33:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732966424; x=1733571224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EL6KVlYMiRPfIoR2qBsCEcQAjqvcPLAovHyHcOnwcNA=;
+        b=B6d/Ghp75tNuB3E3Nmm5c/PNfURR5O566ey27C70G8CXCjpVAxN9LZT/ILePhk5ic/
+         oIoxvJMC+vB2p0ZeYC3CMe+xCU60QnBit/3zWEJ1elJzKopE5fWRZpeQNHbttsjtI9MR
+         DeJdT3c2CI99dzlTRPchSA9etKCZtQlNP+tFgOtoyrgLlJSs27vh+0TbekjuNredH1+J
+         kTF6FC1sEMRD3zzUlQYrJbfGx2t38hXTBNIo8owK3g4SJOlj4ekDWzALGLadkTPB+x9D
+         9a1ORugbaxm0V363QIN9DhmDfIPTU3poWbs9PyUUpLclDiyXFRV0KiBCQOAu7fKCRp/e
+         uFlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732966424; x=1733571224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EL6KVlYMiRPfIoR2qBsCEcQAjqvcPLAovHyHcOnwcNA=;
+        b=ayIRKcaZNUgszYIN++Q3NnhBm7tmITczbpNMQe4kwY/RIEHoh9Lvbn8PBlX35rvEyJ
+         PE+SzgiDWfi0bEW6zTBlMNvkWpXVKfJ4rUzYsDp8HdJDZZWjW/ravPdKDn0hA+x3YZ1i
+         5eYQfiUUxmDNKOEuIuskkCj6HKhXeL5kWh6RI+zEIA61Y4KIILnp4icQJdzPcRHV7HP/
+         y0kr5k8uIpdYyaEIdZW1ueRHCDvsp/1PBN7odR4N5CRHDA38QpZGt3RzbtViFxBSCpls
+         g/RhrQo6fHnio9etvCz59CEtpwsSNYEwX7aeWHLjeGe9FzzIZg9It6S65NEXVWxmIlDE
+         SUkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVzZ3x5xoUOHujKhRj4LTdvmKt85iX5O5HJu6xnyDuZYkDv0XvmQimDEcBnkZvBFYrqJ8WPn2jN@vger.kernel.org, AJvYcCWEZYkgLAybjitfs3KWSFHQDUft+s+jWw5fIBe4UA5TI7QCXKNVY1btj8v4n5YiJcJVYvpufH5vjD+pa6zsHQ5c@vger.kernel.org, AJvYcCXxN0YeIJXhK7lbfZi61qWpuzGJM2FJPZ+5ZH6uaog9YnqsiH/lK9IDGaSLba1I+9drHCcxddAFZfILd/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDR6DnxdWBAB1n+ICINrHUhIQaTxJzl12OUtodZs/+3xEDjWZB
+	MA0Md+JtT/5gyVO3TD/Hf3eymfTdGODYS+sp0bDZVkx2Aqa8JJcr
+X-Gm-Gg: ASbGncuCTACsh2ywS2I9JtIOJZR1hSqjgZfamr37HieDe/5QDbM+mT74mfO2EjwUT+4
+	FRyiRc0Mx2swHd9y9X+LOPy1LQwLOs8pzW5OykmVSr4uUjhh3IdvPRBBFvj71KfswcFpaOIFrFr
+	xYqNW3f2Kx6y9ekVo0ykiQY8uUhvZtCuqFchctZm9DNURgSSJ8uyW3aeomsaLWWu4QPxeF4Srd1
+	7W42yINEMvXgXq3amy+X+kHlV/EiDj5uUAdiICHsaWnzaXiCY8UL5ibKZoXCY6q1nUg98w6+C7F
+	srWOi2CjdVGoGaHdylQ=
+X-Google-Smtp-Source: AGHT+IGEquHdV3LyyYusIywiVJxdZDtQStlBx5Sfx3l8/f6Wc0aQaQOyrRPA3gbJCwQZizot/vfuTQ==
+X-Received: by 2002:a05:6000:1448:b0:382:41ad:d8f0 with SMTP id ffacd0b85a97d-385c6ec0e2emr13276066f8f.34.1732966423881;
+        Sat, 30 Nov 2024 03:33:43 -0800 (PST)
+Received: from localhost.localdomain (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-434aa77ffb0sm113506365e9.20.2024.11.30.03.33.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Nov 2024 03:33:43 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [net PATCH 1/2] selftests: net: lib: fix broken ping with coreutils ping util
+Date: Sat, 30 Nov 2024 12:33:09 +0100
+Message-ID: <20241130113314.6488-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 28 2024 at 20:18, Sergey Senozhatsky wrote:
->> Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
->> MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
->> to the initial-count register (APIC_TMICT) which is ignored in
->> TSC-deadline mode.
->
-> So this commit hit stable and we now see section mismatch errors:
->
-> // stripped
->
-> WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference from the (unknown reference) (unknown) to the (unknown reference) .irqentry.text:(unknown)
-> The relocation at __ex_table+0x447c references
-> section ".irqentry.text" which is not in the list of
-> authorized sections.
->
-> WARNING: vmlinux.o(__ex_table+0x4480): Section mismatch in reference from the (unknown reference) (unknown) to the (unknown reference) .irqentry.text:(unknown)
-> The relocation at __ex_table+0x4480 references
-> section ".irqentry.text" which is not in the list of
-> authorized sections.
->
-> FATAL: modpost: Section mismatches detected.
->
-> Specifically because of wrmsrl.
->
-> I'm aware of the section mismatch errors on linux-5.4 (I know), not
-> aware of any other stable versions (but I haven't checked).  Is this
-> something specific to linux-5.4?
+If the coreutils variant of ping is used instead of the busybox one, the
+ping_do() command is broken. This comes by the fact that for coreutils
+ping, the ping IP needs to be the very last elements.
 
-So it seems the compiler inlines the inner guts of
-sysvec_apic_timer_interrupt() and local_apic_timer_interrupt().
+To handle this, reorder the ping args and make $dip last element.
 
-Can you try the patch below?
+The use of coreutils ping might be useful for case where busybox is not
+compiled with float interval support and ping command doesn't support
+0.1 interval. (in such case a dedicated ping utility is installed
+instead)
 
-Thanks,
-
-        tglx
+Cc: stable@vger.kernel.org
+Fixes: 73bae6736b6b ("selftests: forwarding: Add initial testing framework")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1007,7 +1007,7 @@ void setup_secondary_APIC_clock(void)
- /*
-  * The guts of the apic timer interrupt
-  */
--static void local_apic_timer_interrupt(void)
-+static noinline void local_apic_timer_interrupt(void)
- {
- 	struct clock_event_device *evt = this_cpu_ptr(&lapic_events);
- 
+ tools/testing/selftests/net/forwarding/lib.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index c992e385159c..2060f95d5c62 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -1473,8 +1473,8 @@ ping_do()
+ 
+ 	vrf_name=$(master_name_get $if_name)
+ 	ip vrf exec $vrf_name \
+-		$PING $args $dip -c $PING_COUNT -i 0.1 \
+-		-w $PING_TIMEOUT &> /dev/null
++		$PING $args -c $PING_COUNT -i 0.1 \
++		-w $PING_TIMEOUT $dip &> /dev/null
+ }
+ 
+ ping_test()
+@@ -1504,8 +1504,8 @@ ping6_do()
+ 
+ 	vrf_name=$(master_name_get $if_name)
+ 	ip vrf exec $vrf_name \
+-		$PING6 $args $dip -c $PING_COUNT -i 0.1 \
+-		-w $PING_TIMEOUT &> /dev/null
++		$PING6 $args -c $PING_COUNT -i 0.1 \
++		-w $PING_TIMEOUT $dip &> /dev/null
+ }
+ 
+ ping6_test()
+-- 
+2.45.2
 
 
