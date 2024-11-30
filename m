@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3ADD9DEECB
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 03:53:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CF89DEECF
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 04:05:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20DE3163432
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 02:53:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82D8C281CAC
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 03:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAB470832;
-	Sat, 30 Nov 2024 02:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B26C43AA1;
+	Sat, 30 Nov 2024 03:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DkpJNVxc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NiB85osr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92337535DC;
-	Sat, 30 Nov 2024 02:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CA68468;
+	Sat, 30 Nov 2024 03:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732935186; cv=none; b=cPBHX0knY4cQ61A55Qp6v4mcW+rSi2rpFQFg7kNxnhNRQLkobow1S8hLdAPWzk4HeTsQTwt0DeR5msQqZ/Z8v1ALKjW43yfZZQanatGblEHcyJS4g4Y+soePQ+cq+SNlF6/N6oNWnpnLP3nqzvit8TAIrAM9GmbhHILrvksi5eo=
+	t=1732935897; cv=none; b=i4EqVIuAbugPXHyXzm9kaXLL12p+Cb6afvwtEiB9BBOpjspVmMY9Gf7WFx8zUvDH1O29zr22zn2m+IQ1683zGBjjlRAk9xb2/acXOzryyOj4oDmoU94ejQZ0coIuyRqgPHHMktHb+t6XDEgRKWoWRMEaFXqvUVSwVwQM6LbgP/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732935186; c=relaxed/simple;
-	bh=wVwFWRx1weNHXCajM53uUVQ3VpCckJ+++WQkCk7fLDA=;
-	h=Date:To:From:Subject:Message-Id; b=ndR/sFP1nj7oTLMyLcT+IkkO1PxKS4AkjluX+NKSMyuqaek14UCtCtcsMXtH4Sxc+AjEJ24Q5mY/+d2gfJH+lRuUXtBxLQdtZl0OSBFBkQI9JiQIQLLitOkEkCptDng/SPTv8eMq0im5Z6z3qqJ8eXxtU1bORmMefykn4RklCjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DkpJNVxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFD0C4CECF;
-	Sat, 30 Nov 2024 02:53:06 +0000 (UTC)
+	s=arc-20240116; t=1732935897; c=relaxed/simple;
+	bh=wQuyWYbf7CS9SQweNYoLS8KZtme5gZ4NP/+oTI+Eo7c=;
+	h=Date:To:From:Subject:Message-Id; b=rQYC/UIFchV4fn45PMCeqr1yW0vxBnsfH3G/qUDn/ZJppsblOpj5zHIHjcJ1T8dKwh1k18EdKERX0SpEBdixxO+f+1tWOQOBpcMMssBAKlpnFM3Pc56KEzS4Mc/V5WE4A/sNLrrLiVJhpRbWiqd+q/Q848as5SfCzSKeBhjJIvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NiB85osr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C2BC4CECF;
+	Sat, 30 Nov 2024 03:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1732935186;
-	bh=wVwFWRx1weNHXCajM53uUVQ3VpCckJ+++WQkCk7fLDA=;
+	s=korg; t=1732935896;
+	bh=wQuyWYbf7CS9SQweNYoLS8KZtme5gZ4NP/+oTI+Eo7c=;
 	h=Date:To:From:Subject:From;
-	b=DkpJNVxcJTOq0IihHNWmkfusAb7dd/yKIAZwfnmi/FA2U09z3cdPlO5nJ8O5RUOlK
-	 N0h92nS8bqdtZhNmgaxgUzEmb8hsV/6euF6waVab+zM+Sz0Vit9f3MsK3LsTrXUaKZ
-	 5JiNPzr1UbB5oXgPTgTEF0v6n6Wd6JCcKQDJLXiI=
-Date: Fri, 29 Nov 2024 18:53:05 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,stable@vger.kernel.org,souravpanda@google.com,rppt@kernel.org,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,00107082@163.com,surenb@google.com,akpm@linux-foundation.org
+	b=NiB85osrGnqlTrxXPZ0iEa+4gE/kxOTVvc7z4WF5k399VofVxHjKckV16gu1K4EMy
+	 NOjqtcO6TdVyzsScRy578ZprOQabQlMlRWwDMleL+ooyw3MumsncPKdKN5gOAbRM0z
+	 OYISJN/huQuyUPnWOUCPKuDjbkkjMnFSbRDbU0z8=
+Date: Fri, 29 Nov 2024 19:04:55 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,caiqingfu@ruijie.com.cn,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-fix-set_codetag_empty-when-config_mem_alloc_profiling_debug.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241130025306.1FFD0C4CECF@smtp.kernel.org>
+Subject: + zram-panic-when-use-ext4-over-zram.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241130030456.37C2BC4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: alloc_tag: fix set_codetag_empty() when !CONFIG_MEM_ALLOC_PROFILING_DEBUG
+     Subject: zram: fix panic when using ext4 over zram
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-fix-set_codetag_empty-when-config_mem_alloc_profiling_debug.patch
+     zram-panic-when-use-ext4-over-zram.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-fix-set_codetag_empty-when-config_mem_alloc_profiling_debug.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-panic-when-use-ext4-over-zram.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,58 +73,121 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: fix set_codetag_empty() when !CONFIG_MEM_ALLOC_PROFILING_DEBUG
-Date: Fri, 29 Nov 2024 16:14:23 -0800
+From: caiqingfu <caiqingfu@ruijie.com.cn>
+Subject: zram: fix panic when using ext4 over zram
+Date: Fri, 29 Nov 2024 19:57:35 +0800
 
-It was recently noticed that set_codetag_empty() might be used not only to
-mark NULL alloctag references as empty to avoid warnings but also to reset
-valid tags (in clear_page_tag_ref()).  Since set_codetag_empty() is
-defined as NOOP for CONFIG_MEM_ALLOC_PROFILING_DEBUG=n, such use of
-set_codetag_empty() leads to subtle bugs.  Fix set_codetag_empty() for
-CONFIG_MEM_ALLOC_PROFILING_DEBUG=n to reset the tag reference.
+[   52.073080 ] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[   52.073511 ] Modules linked in:
+[   52.074094 ] CPU: 0 UID: 0 PID: 3825 Comm: a.out Not tainted 6.12.0-07749-g28eb75e178d3-dirty #3
+[   52.074672 ] Hardware name: linux,dummy-virt (DT)
+[   52.075128 ] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   52.075619 ] pc : obj_malloc+0x5c/0x160
+[   52.076402 ] lr : zs_malloc+0x200/0x570
+[   52.076630 ] sp : ffff80008dd335f0
+[   52.076797 ] x29: ffff80008dd335f0 x28: ffff000004104a00 x27: ffff000004dfc400
+[   52.077319 ] x26: 000000000000ca18 x25: ffff00003fcaf0e0 x24: ffff000006925cf0
+[   52.077785 ] x23: 0000000000000c0a x22: ffff0000032ee780 x21: ffff000006925cf0
+[   52.078257 ] x20: 0000000000088000 x19: 0000000000000000 x18: 0000000000fffc18
+[   52.078701 ] x17: 00000000fffffffd x16: 0000000000000803 x15: 00000000fffffffe
+[   52.079203 ] x14: 000000001824429d x13: ffff000006e84000 x12: ffff000006e83fec
+[   52.079711 ] x11: ffff000006e83000 x10: 00000000000002a5 x9 : ffff000006e83ff3
+[   52.080269 ] x8 : 0000000000000001 x7 : 0000000017e80000 x6 : 0000000000017e80
+[   52.080724 ] x5 : 0000000000000003 x4 : ffff00000402a5e8 x3 : 0000000000000066
+[   52.081081 ] x2 : ffff000006925cf0 x1 : ffff00000402a5e8 x0 : ffff000004104a00
+[   52.081595 ] Call trace:
+[   52.081925 ]  obj_malloc+0x5c/0x160 (P)
+[   52.082220 ]  zs_malloc+0x200/0x570 (L)
+[   52.082504 ]  zs_malloc+0x200/0x570
+[   52.082716 ]  zram_submit_bio+0x788/0x9e8
+[   52.083017 ]  __submit_bio+0x1c4/0x338
+[   52.083343 ]  submit_bio_noacct_nocheck+0x128/0x2c0
+[   52.083518 ]  submit_bio_noacct+0x1c8/0x308
+[   52.083722 ]  submit_bio+0xa8/0x14c
+[   52.083942 ]  submit_bh_wbc+0x140/0x1bc
+[   52.084088 ]  __block_write_full_folio+0x23c/0x5f0
+[   52.084232 ]  block_write_full_folio+0x134/0x21c
+[   52.084524 ]  write_cache_pages+0x64/0xd4
+[   52.084778 ]  blkdev_writepages+0x50/0x8c
+[   52.085040 ]  do_writepages+0x80/0x2b0
+[   52.085292 ]  filemap_fdatawrite_wbc+0x6c/0x90
+[   52.085597 ]  __filemap_fdatawrite_range+0x64/0x94
+[   52.085900 ]  filemap_fdatawrite+0x1c/0x28
+[   52.086158 ]  sync_bdevs+0x170/0x17c
+[   52.086374 ]  ksys_sync+0x6c/0xb8
+[   52.086597 ]  __arm64_sys_sync+0x10/0x20
+[   52.086847 ]  invoke_syscall+0x44/0x100
+[   52.087230 ]  el0_svc_common.constprop.0+0x40/0xe0
+[   52.087550 ]  do_el0_svc+0x1c/0x28
+[   52.087690 ]  el0_svc+0x30/0xd0
+[   52.087818 ]  el0t_64_sync_handler+0xc8/0xcc
+[   52.088046 ]  el0t_64_sync+0x198/0x19c
+[   52.088500 ] Code: 110004a5 6b0500df f9401273 54000160 (f9401664)
+[   52.089097 ] ---[ end trace 0000000000000000  ]---
 
-Link: https://lkml.kernel.org/r/20241130001423.1114965-2-surenb@google.com
-Fixes: a8fc28dad6d5 ("alloc_tag: introduce clear_page_tag_ref() helper function")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/lkml/20241124074318.399027-1-00107082@163.com/
-Cc: David Wang <00107082@163.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
+When using ext4 on zram, the following panic occasionally occurs under
+high memory usage
+
+The reason is that when the handle is obtained using the slow path, it
+will be re-compressed.  If the data in the page changes, the compressed
+length may exceed the previous one.  Overflow occurred when writing to
+zs_object, which then caused the panic.
+
+Comment the fast path and force the slow path.  Adding a large number of
+read and write file systems can quickly reproduce it.
+
+The solution is to re-obtain the handle after re-compression if the length
+is different from the previous one.
+
+Link: https://lkml.kernel.org/r/20241129115735.136033-1-baicaiaichibaicai@gmail.com
+Signed-off-by: caiqingfu <caiqingfu@ruijie.com.cn>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/alloc_tag.h |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/zram/zram_drv.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/include/linux/alloc_tag.h~alloc_tag-fix-set_codetag_empty-when-config_mem_alloc_profiling_debug
-+++ a/include/linux/alloc_tag.h
-@@ -63,7 +63,12 @@ static inline void set_codetag_empty(uni
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+--- a/drivers/block/zram/zram_drv.c~zram-panic-when-use-ext4-over-zram
++++ a/drivers/block/zram/zram_drv.c
+@@ -1633,6 +1633,7 @@ static int zram_write_page(struct zram *
+ 	unsigned long alloced_pages;
+ 	unsigned long handle = -ENOMEM;
+ 	unsigned int comp_len = 0;
++	unsigned int last_comp_len = 0;
+ 	void *src, *dst, *mem;
+ 	struct zcomp_strm *zstrm;
+ 	unsigned long element = 0;
+@@ -1664,6 +1665,11 @@ compress_again:
  
- static inline bool is_codetag_empty(union codetag_ref *ref) { return false; }
--static inline void set_codetag_empty(union codetag_ref *ref) {}
+ 	if (comp_len >= huge_class_size)
+ 		comp_len = PAGE_SIZE;
 +
-+static inline void set_codetag_empty(union codetag_ref *ref)
-+{
-+	if (ref)
-+		ref->ct = NULL;
-+}
++	if (last_comp_len && (last_comp_len != comp_len)) {
++		zs_free(zram->mem_pool, handle);
++		handle = (unsigned long)ERR_PTR(-ENOMEM);
++	}
+ 	/*
+ 	 * handle allocation has 2 paths:
+ 	 * a) fast path is executed with preemption disabled (for
+@@ -1692,8 +1698,10 @@ compress_again:
+ 		if (IS_ERR_VALUE(handle))
+ 			return PTR_ERR((void *)handle);
  
- #endif /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
+-		if (comp_len != PAGE_SIZE)
++		if (comp_len != PAGE_SIZE) {
++			last_comp_len = comp_len;
+ 			goto compress_again;
++		}
+ 		/*
+ 		 * If the page is not compressible, you need to acquire the
+ 		 * lock and execute the code below. The zcomp_stream_get()
 _
 
-Patches currently in -mm which might be from surenb@google.com are
+Patches currently in -mm which might be from caiqingfu@ruijie.com.cn are
 
-alloc_tag-fix-module-allocation-tags-populated-area-calculation.patch
-alloc_tag-fix-set_codetag_empty-when-config_mem_alloc_profiling_debug.patch
-mm-convert-mm_lock_seq-to-a-proper-seqcount.patch
-mm-introduce-mmap_lock_speculation_beginend.patch
+zram-panic-when-use-ext4-over-zram.patch
 
 
