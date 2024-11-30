@@ -1,138 +1,122 @@
-Return-Path: <stable+bounces-95863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5C99DF024
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:34:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9BA9DF03E
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 12:46:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CD9CB21858
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 11:34:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D71161BF1
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 11:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BB8198A2F;
-	Sat, 30 Nov 2024 11:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F2E19307D;
+	Sat, 30 Nov 2024 11:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MKaRTT+6"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ic8OSo4F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF20414B959;
-	Sat, 30 Nov 2024 11:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568AC43179
+	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 11:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732966428; cv=none; b=laMtaBeUSrwx58BTdENGm7n/wBkxdm0aJykjUpDlrg/8ajqpEBeSedXuX5L2zlGEi+cVQ/tCM90U/0bCjEPAD7PZ62jw1zn5oV/tdiill+QBYva7weQ5WX26h3b4l6CIYwXvnUPEf/DFwOfBNOGStAvpKirpYzPYnYslOaXAWrc=
+	t=1732967157; cv=none; b=HQnkzcjaE18L+1bCe0aBrhYF57HVdszmHsErGXM4wixGMuJmFBBfFEpG+bql7oKmt2FRO88Ahlb8uLNBKj6F961ZgsIM3TcpVh1mDhKhPUoWv4z2B0z+6Da4LOzEmr1cfZTf+WQCdcQTp2UGXmumr7qYANWl6TiCD0tlGGkdSGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732966428; c=relaxed/simple;
-	bh=0j3tdra+ltz7wC7HcXn6qt6O0YvoCNWrBSttLfbUiJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HObGio9s5sWctB2+fNjUwgwwUJLfXyhMSjGC1XpfV6msW/SPmySwBcWbpsDDV2njchojHi/NE++Fpzuodq1azHq7hHYj4vmoBGwbEXSJB4nq5/yDTP67ttoKJrv9FwakPteJctidNE6CcUQ8/KqcNB5L91MSUYxDu78dWt5o1uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MKaRTT+6; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-434a2f3bae4so24839375e9.3;
-        Sat, 30 Nov 2024 03:33:46 -0800 (PST)
+	s=arc-20240116; t=1732967157; c=relaxed/simple;
+	bh=r1e0yUCyDDwKPlm63GtdgkD7CHFhpuCqZeRfGb0SRpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IeRvND98MU1hml5v0KWy+yfU6zOKMTNwCGGwbSV3f6hxFPZfAHGRElcCS9ENEzsAyWG7XYt9F9w8YIybplP6cuxLWH03mEomz80MRVPT57l1d6qpyhz3yMnTo9ebDajgrBufqz0lR3vkfTwp50C54Sv2hg5qJO/X+zZoRbbVItA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ic8OSo4F; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ee86a1a92dso215959a91.1
+        for <stable@vger.kernel.org>; Sat, 30 Nov 2024 03:45:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732966425; x=1733571225; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KznO62qCJv+6BDEEPXmID3KRaxfXIzTf99/wITYjG4M=;
-        b=MKaRTT+69YFyMPQu4yUV9BYEiQoSOMrhT0hqB8k52L/aJAhqQTlNHJCjbUt+otllxG
-         cQnvBGzqCDWKym/f12kyAvNXuUxBgXB8vZ9zy+5aCX46z8dQZuwWcvQtEE/G7B4iobNQ
-         Ws1yD0tXq4Y4XD4lpOvW4inS6pLp3GW+/rBiDomSAgq8VcyAd6Ke0FakoA2PqGsF/fRL
-         CFcg3jbFEqcb/cBs25eztZu9C823oMIMVZMswY3tGbtOgtbeFk/2kKqnNCUXR1SqmWjQ
-         +iutiS3dSjDJI55kn6I7yoqBfDDHNnm7vC9Q6ZFREtyGbsBhKvkG5nXU7BG1eapLqFs4
-         w4kw==
+        d=chromium.org; s=google; t=1732967156; x=1733571956; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SZLt8uumTsVK4PRtt2vPFNMECzkd5X7pvdUrrrYwcuk=;
+        b=Ic8OSo4FVtMrHBIIpLb54zS6gDREUfv3/RYvTZJFfWJQ34LmM5/koQF3XTEiNcGzx6
+         sAoxcnv8J7iAh0/USrZICVb+hMfODOR4KZLwQMd3W3qs2d6ZQ39dzCypkMHe/PFGNvnA
+         O3bX7fN9/1ytKEtXBcnz0Z2qqHHmwjF/cot5M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732966425; x=1733571225;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KznO62qCJv+6BDEEPXmID3KRaxfXIzTf99/wITYjG4M=;
-        b=MNxrY7J7B8IQJXDpA3oMzm/n06KahDaM31Ce1cQ4ziixu0R1fJBEqgB3hTIO5DVbr4
-         g3UrhKTkrCHT4hTqmfyZjw8DgF2Y73g8S1SUcOwrw+fDykCgMjoU5wGY7gcjxytvSwtR
-         /P8U42tthE45izkBG2/fNbiLm3N0nOxtN7/DC6LLJWr80tsWtYJB8hj8E99UVglzv2lA
-         bHF8oDgdsK2DdbYhazvNFu1re1Ak+hfEWYeV0kfv8Ir2omATQst0GGBeO6Sj3x0qWbHw
-         MUTPkFSIKgijTRZ+OUtW9uYnxb5Bei9dv2tna5YuxPBCS9WePdHePRELURMz+oO6kA7T
-         x9Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVQDlRt1IoIdf43FG6SjfjkBnf2C0cOtWsaBmQviIKMzpgjQRr65IL3yAv7M9RpUsMnoUsz/IQ@vger.kernel.org, AJvYcCVngEbZGmpZGzTC2wnXEIuWlYNcxUFNtdHGNxh9eN9kOTD0bVt50cPEYq6bmUUo8lwEjlPxI/iBOZ5Rw9Q=@vger.kernel.org, AJvYcCWM0rrNcyoIGPTSoVmWK7vmLjSc1o9Al+8PC4+nUfx5JvHXlMLan9RZ9gY5ePcb0Am7nsSh9NFtwbhpvsxk6Qhp@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhvncXExnvV1/EAtCKFtuQ0hWCrvlbVYozKKVuH8VfN09cEdNJ
-	LXzsHy0enRXM+R9CZ/KhuHhTmys4Zi8BSacU6ibyhbiwg6p3kiro
-X-Gm-Gg: ASbGncvcDEEGHbihIZeQiBTDHgZZb4b7CakZ4EII7jqotfRhUgfWbvNwbMgjtuHOAiw
-	v1owHVjI1w3i/UOYr7ryrf7tO45b2EI9OZe1v0Vq5HzMNsrn+DwKC5ZOXPxZNGV1ls7RWyJMgTY
-	E1tNrT3SnzaSKMTdg9DKJlZC6vcMF9WM779V5TngDqzIp647jX859cw0RnEkUYrMmp/EEgl3Dl6
-	cNGqAPg7/fO9YOvSA5LnAhn5EZALfAv4fdVQsPlptg1HpGydV/ge30OJPrjgtHAbMOCE7/mZ8sG
-	sqc6UFQ4gTYAPOaaMeA=
-X-Google-Smtp-Source: AGHT+IHTHejoUNDBj6zPjtKoB8j4qcQmWCwAmVpw9OBbEvuuPy6jVok440aAll3fixhxQxcdTqKMwA==
-X-Received: by 2002:a05:600c:1d8d:b0:42c:b905:2bf9 with SMTP id 5b1f17b1804b1-434a9dc7875mr158069385e9.16.1732966425103;
-        Sat, 30 Nov 2024 03:33:45 -0800 (PST)
-Received: from localhost.localdomain (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-434aa77ffb0sm113506365e9.20.2024.11.30.03.33.44
+        d=1e100.net; s=20230601; t=1732967156; x=1733571956;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SZLt8uumTsVK4PRtt2vPFNMECzkd5X7pvdUrrrYwcuk=;
+        b=LRVYTd2EZajIYQJSW9M7LZRXI82o7SUy9xtwcPWXTydgK0K1/CI4i7QMi/w7LA2bG1
+         mJAF/YMd+FgshBX+JirLSaQobh70qUrrXZ89XYjER2QFo7wReQIgw0spxeCrKn0BzP4/
+         gG2/6Uy+gRz4IiOPMp5RREbuJJrzBesvz5Bjtst/1NDBeoP6+McgvqyWaiOgsn4TkCRb
+         puZvzhoO9ouE0RDJ+Aa6kH8qnYM6/9zs6acfsjogY5Sg0RfGAVKNX6UH+hyGalFKhyum
+         0GiGh7Iy5YPqr8eXs+tcvYEmtd4waO1hTPZeCwV7nFvycYFvSV8IC7e+SdFFwtru4Mc5
+         3ipw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkCYRciOMBvy4ju+KVgECJ2oUaYi1An/VmGRU0uh94l2ObrYYgv76zX3lmeRJLmynuSYEU6Qk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7VS1KWwkFRpD6byd7W0ZKtY3vE5MloHrqyXnFH9kIaSf69ts9
+	jEvGeIyWXe0c1spZACBdSL6xmEOopwGhvHUjPOwmSFpvlx/w0DtHtegBiREHmQ==
+X-Gm-Gg: ASbGncuVIS8G+mt2AqVPZKuou/v2MfFXNzYYerJYUg0VQzcTgzTzlaDfhKd16W29nIr
+	53ieLuHeMadTLmk3eLRs8LJtVQQgnPxfQAXiEDF/SqpMmtVHHrTKECTMj4yR1EtZ7/99EARGYdT
+	8x9yfAnWe/j6G0Zqt2lhsoj07xsxU8V/k6Z8+7AOHJ52pcu/kLOX70XnBf1R38ZXvcYyB1RXu91
+	zz0Zd7au9Za7DAXNjj5lfUrJjHCpZ+9bBpStxQWU30TFoTbGmv7Xg==
+X-Google-Smtp-Source: AGHT+IHgAsdwCtIGni0kUusDMWjJYG3oPVjW5T6ZOyx1CHulNmaI/ielGsyBmh1jVqjnM8DFAz+dAg==
+X-Received: by 2002:a17:90b:3b87:b0:2ea:83a0:4792 with SMTP id 98e67ed59e1d1-2ee097bdd2emr16602262a91.28.1732967155689;
+        Sat, 30 Nov 2024 03:45:55 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:18ff:40bf:9e68:65f3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ee0fad03bcsm6794650a91.33.2024.11.30.03.45.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Nov 2024 03:33:44 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Petr Machata <petrm@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [net PATCH 2/2] selftests: forwarding: local_termination: sleep before starting tests
-Date: Sat, 30 Nov 2024 12:33:10 +0100
-Message-ID: <20241130113314.6488-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241130113314.6488-1-ansuelsmth@gmail.com>
-References: <20241130113314.6488-1-ansuelsmth@gmail.com>
+        Sat, 30 Nov 2024 03:45:55 -0800 (PST)
+Date: Sat, 30 Nov 2024 20:45:49 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: 20241015061522.25288-1-rui.zhang@intel.com,
+	Zhang Rui <rui.zhang@intel.com>, hpa@zytor.com,
+	peterz@infradead.org, thorsten.blum@toblux.com,
+	yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
+	srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
+	x86@kernel.org, linux-pm@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: bisected: [PATCH V4] x86/apic: Always explicitly disarm
+ TSC-deadline timer
+Message-ID: <20241130114549.GI10431@google.com>
+References: <20241128111844.GE10431@google.com>
+ <87o71xvuf3.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o71xvuf3.ffs@tglx>
 
-It seems real hardware requires some time to stabilize and actually
-works after an 'ip link up'. This is not the case for veth as everything
-is simulated but this is a requirement for real hardware to permit
-receiving packet.
+On (24/11/30 12:21), Thomas Gleixner wrote:
+> > WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference from the (unknown reference) (unknown) to the (unknown reference) .irqentry.text:(unknown)
+> > The relocation at __ex_table+0x447c references
+> > section ".irqentry.text" which is not in the list of
+> > authorized sections.
+> >
+> > WARNING: vmlinux.o(__ex_table+0x4480): Section mismatch in reference from the (unknown reference) (unknown) to the (unknown reference) .irqentry.text:(unknown)
+> > The relocation at __ex_table+0x4480 references
+> > section ".irqentry.text" which is not in the list of
+> > authorized sections.
+> >
+> > FATAL: modpost: Section mismatches detected.
+> >
+> > Specifically because of wrmsrl.
+> >
+> > I'm aware of the section mismatch errors on linux-5.4 (I know), not
+> > aware of any other stable versions (but I haven't checked).  Is this
+> > something specific to linux-5.4?
+> 
+> So it seems the compiler inlines the inner guts of
+> sysvec_apic_timer_interrupt() and local_apic_timer_interrupt().
+> 
+> Can you try the patch below?
 
-Without this the very fist test for unicast always fails on real
-hardware. With the introduced sleep of one second after mc_route_prepare,
-the test corretly pass as the packet can correctly be delivered.
-
-Cc: stable@vger.kernel.org
-Fixes: 90b9566aa5cd ("selftests: forwarding: add a test for local_termination.sh")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- tools/testing/selftests/net/forwarding/local_termination.sh | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
-index c35548767756..8923c741ce4b 100755
---- a/tools/testing/selftests/net/forwarding/local_termination.sh
-+++ b/tools/testing/selftests/net/forwarding/local_termination.sh
-@@ -182,6 +182,8 @@ run_test()
- 	mc_route_prepare $send_if_name
- 	mc_route_prepare $rcv_if_name
- 
-+	sleep 1
-+
- 	send_uc_ipv4 $send_if_name $rcv_dmac
- 	send_uc_ipv4 $send_if_name $MACVLAN_ADDR
- 	send_uc_ipv4 $send_if_name $UNKNOWN_UC_ADDR1
--- 
-2.45.2
-
+That works, as far as I can tell, thank you!
 
