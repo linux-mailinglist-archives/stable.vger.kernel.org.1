@@ -1,170 +1,102 @@
-Return-Path: <stable+bounces-95868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FB59DF07A
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 14:27:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D63D9DF081
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 14:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CBE4281501
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 13:27:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EE3EB211AC
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 13:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B15E1991B4;
-	Sat, 30 Nov 2024 13:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C60F1494B3;
+	Sat, 30 Nov 2024 13:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="QM1uTdQy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mx22Laq3"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121AC42AA4;
-	Sat, 30 Nov 2024 13:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C231DFF7
+	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 13:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732973261; cv=none; b=jUzvONVUwelRYsFS1rnpbR192u8dv8ghxSF7MUJPaGEQ+AlY4nPW3HgsbYGZMT09AMzQH8C5Lqoi4y6KycmCom8ZUatFgxbkkZOVA8cMkqYvXPYQAjHqf9gGcD3Q6ns6AwCu6O29pnlJDceBQHNNH1Y8jhpetbh+od8ETjWHaeg=
+	t=1732973563; cv=none; b=NOE4D58NlQW4z01dkQmPpdVK7EOGoksCRdeWTDlreE8wCfDblxGPgPRbXsaaXiaQT9mCzZSrNQP19eGJG7F/RE83HUBY3BQYQ3yGP2VqF4mbN4cIQChRtPP7U7Gk3bcO31/39gDF9p3eYnEi3IklwQn5NFSvZzOw0PkaQw20bnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732973261; c=relaxed/simple;
-	bh=4Ed0nz5m12QW8u8SRV5ZWuoAH3uPzVjZw1PS/ibNFrE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a2TQzOYrQ3L1taPrCmoWA99JSBQsHI9w+xB173DTYuErQULnb61vYXUNclLi7MGPPJu+Zk73HLlhdhBu1FHp5yqctDYykX38XS9VEhD3ioSsHojssbnw0XJhyDuhEkJfUxFtMCkVG2tsSjVHUX+iGHD1vIjZSMp6d/w8SMmSqIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=QM1uTdQy; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:1814:0:640:37e9:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id A641C60F59;
-	Sat, 30 Nov 2024 16:27:26 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:11::1:15])
-	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id ARcU322IZa60-pmXXibCX;
-	Sat, 30 Nov 2024 16:27:25 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1732973245;
-	bh=+eyGxWAtd/f4CQXvN7ri9iNKbNFEua2Am/b4Jgy2ocI=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=QM1uTdQyFu4dvuEOKwVOPMYy+L0FH5C3D+1JGz/m2sJh8eyEaP6yAB/hvt+OkMwIO
-	 QgSH9ML0iTelIawlsx0KJmMj37gXFJU4Oq+PaDiK7j6rlWoDWYLOKnNcoaNPLBnRPw
-	 UZs03AiWUbKOXwgfBrk5TPCEg0XgL7WA1y6kc+oY=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH 6.6] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
-Date: Sat, 30 Nov 2024 16:27:02 +0300
-Message-Id: <20241130132702.1974626-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1732973563; c=relaxed/simple;
+	bh=WTj1lwkWjVN0i0IOZUq99tt+uM/w/gpKvAiB1yUAFeQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=uSDRA9t5TpWg/COOR1dDhS0lulsBWeC8u6TNBOFdHho2uyLxGU8+dxO8vhwLoTCzoqEbhgo6CryGTBLPxD6NVclJmWKb3HsB5xHB5JQHCux3nXzGDpJq7VZABstW7staMRD3XzHltHwz9aws/TsaW36IuTcDylekpalEDhAr7SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mx22Laq3; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732973561; x=1764509561;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=WTj1lwkWjVN0i0IOZUq99tt+uM/w/gpKvAiB1yUAFeQ=;
+  b=mx22Laq3pQp7kPpHVjeAAwU8RLP6+3yLFTKFKj1ByPFGUeGpSO25kTfm
+   CEOMUjat+N4QZGze8SqqvmYN9glglHu5UGZJchtFT5QtloVDOjvjq0CGR
+   p5Unr0iyTYkyO/BP6Zyn5a9ht/IU3gc5ODheOedFRJzk7o8phGlCTFdn5
+   dggMFtUNQl62ln6UrFmh725+U6C8KEmHWbR6T0noZF3t2EYMFKfNkoJkl
+   C2d2eB44xXEviL2Hx1TCSsasIZw/5w7WLgulOv3MLWhf9XeCvlv4+oBCB
+   0AeievSFrDNd5Tvh25P3I6IXWNrHtPqJiaYDHV2JYiqWgTwvYTuqjz/lE
+   A==;
+X-CSE-ConnectionGUID: Q6Nig7jSQYaJK+Hq+sdSFA==
+X-CSE-MsgGUID: Yv3I/qWETIGiQe420dEBqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11272"; a="20767931"
+X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
+   d="scan'208";a="20767931"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 05:32:41 -0800
+X-CSE-ConnectionGUID: HvBtBlogSdK3V1C7tUWVKw==
+X-CSE-MsgGUID: 427upFbsQpCWXVj31vBNhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
+   d="scan'208";a="92852496"
+Received: from lkp-server02.sh.intel.com (HELO 36a1563c48ff) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 30 Nov 2024 05:32:40 -0800
+Received: from kbuild by 36a1563c48ff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tHNZa-0000hP-2T;
+	Sat, 30 Nov 2024 13:32:06 +0000
+Date: Sat, 30 Nov 2024 21:29:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.6] KVM: x86/mmu: Ensure that kvm_release_pfn_clean()
+ takes exact pfn from kvm_faultin_pfn()
+Message-ID: <Z0sTJs1lfeIENOv0@ff21b5d8d570>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241130132702.1974626-1-kniv@yandex-team.ru>
 
-Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
-guest memory (PMD pages). To reproduce the issue you need to reserve
-guest memory with `memmap=` cmdline, create and mount FS in DAX mode
-(tested both XFS and ext4), see doc link below. ndctl command for test:
-ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
-Then pass memory object to qemu like:
--m 8G -object memory-backend-file,id=ram0,size=8G,\
-mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
--numa node,memdev=ram0,cpus=0-1
-QEMU fails to run guest with error: kvm run failed Bad address
-and there are two warnings in dmesg:
-WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
-WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
+Hi,
 
-It looks like in the past assumption was made that pfn won't change from
-faultin_pfn() to release_pfn_clean(), e.g. see
-commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
-But kvm_page_fault structure made pfn part of mutable state, so
-now release_pfn_clean() can take hugepage-adjusted pfn.
-And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
-Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
-different folios, so we're getting get_page/put_page imbalance.
+Thanks for your patch.
 
-To solve this preserve faultin pfn in separate kvm_page_fault
-field and pass it in kvm_release_pfn_clean(). Patch tested for all
-mentioned guest memory backends with tdp_mmu={0,1}.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-No bug in upstream as it was solved fundamentally by
-commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
-and related patch series.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
-Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
----
- arch/x86/kvm/mmu/mmu.c          | 5 +++--
- arch/x86/kvm/mmu/mmu_internal.h | 2 ++
- arch/x86/kvm/mmu/paging_tmpl.h  | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.6] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
+Link: https://lore.kernel.org/stable/20241130132702.1974626-1-kniv%40yandex-team.ru
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 294775b7383b..2105f3bc2e59 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4321,6 +4321,7 @@ static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
- 	smp_rmb();
- 
- 	ret = __kvm_faultin_pfn(vcpu, fault);
-+	fault->faultin_pfn = fault->pfn;
- 	if (ret != RET_PF_CONTINUE)
- 		return ret;
- 
-@@ -4398,7 +4399,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 
- out_unlock:
- 	write_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(fault->faultin_pfn);
- 	return r;
- }
- 
-@@ -4474,7 +4475,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
- 
- out_unlock:
- 	read_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(fault->faultin_pfn);
- 	return r;
- }
- #endif
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index decc1f153669..a016b51f9c62 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -236,6 +236,8 @@ struct kvm_page_fault {
- 	/* Outputs of kvm_faultin_pfn.  */
- 	unsigned long mmu_seq;
- 	kvm_pfn_t pfn;
-+	/* pfn copy for kvm_release_pfn_clean(), constant after kvm_faultin_pfn() */
-+	kvm_pfn_t faultin_pfn;
- 	hva_t hva;
- 	bool map_writable;
- 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index c85255073f67..b945dde6e3be 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -848,7 +848,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 
- out_unlock:
- 	write_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(fault->faultin_pfn);
- 	return r;
- }
- 
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
