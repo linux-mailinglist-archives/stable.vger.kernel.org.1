@@ -1,478 +1,181 @@
-Return-Path: <stable+bounces-95871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B337E9DF1B0
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 16:25:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFBC9DF1CF
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 16:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 740D22817CE
-	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 15:25:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57EA6B215B6
+	for <lists+stable@lfdr.de>; Sat, 30 Nov 2024 15:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AE8146A68;
-	Sat, 30 Nov 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584F91A08C6;
+	Sat, 30 Nov 2024 15:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="YZ9TOk7l"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JqX6zHSg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2079.outbound.protection.outlook.com [40.107.241.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185F19F118
-	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 15:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732980321; cv=none; b=LLUrj30LCaqUN6gR1FBpxv4FGXbFFu6qxkzq8kt0B5x9xiA77Krh3yF3UAgQvk87oRe4JABaIeJtgC3AyTX+5doVeIoej1JQveZglBK9Eeg2dt5PT1Z7HKuVazwCgoXD9BRK2xkG4phKENRA9O7c+/ptly3EqRgCqpqXYzqWN+Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732980321; c=relaxed/simple;
-	bh=ZvI8ngA2lJKPix+uo6rhvxC4AA9yo/YADip1nGmPTG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aFmUNA3W7pNl60nksn6b5OfqFF0zqL1ciu0wXOfzVaUhKIwMbL+XatflHYUDP8qDaqZ2J1ECRsKNZo4ZoKPmRtvrpTTBkQcN5c6eu379TLmMRxiZtvHmJDg04qt8QAWREHxJI5gPr2pyV3kGWI1Ki+IDxIleExPrdC15wvxnHr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=YZ9TOk7l; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 503053F233
-	for <stable@vger.kernel.org>; Sat, 30 Nov 2024 15:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1732979871;
-	bh=68o2AYtc3bYaECzDnCAgRhPDPd34/meeFFn69QThC08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=YZ9TOk7l+mlPxCZpTEuy4ihLqbeU4DeAsfmjrphILjye3F/fCSPqQkCQkLQIOGpV8
-	 d1+nrF4FluQpC2kgfx6KvvNKg9R2+3ZtlNev9UBkapQWT1RDYusbDVcYdTNjtd1SVU
-	 WgogqE8NfgQBuDmShrFKLFaAIutbX50H62Kbnj2tRY0gNYHey8VcyG7MW28bko+Rza
-	 5i9mwlnf4tr3qEKfzEjBUmJEzqveXyPUaLucM76VBY+gt/5aTCqko7N/LTk01ohdAM
-	 fwet34FtNNKnx8cW5WiU3HqGqUVWQrz+CJy7ZplpdwGJNQdBsHs/HuIA969tz2fy+y
-	 g2uZt0OULS3Cw==
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-72524409ab8so2409408b3a.2
-        for <stable@vger.kernel.org>; Sat, 30 Nov 2024 07:17:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732979870; x=1733584670;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=68o2AYtc3bYaECzDnCAgRhPDPd34/meeFFn69QThC08=;
-        b=In8czz+v/ywlBtywNzh2veF7JbA3V+9lf9HarGirEGTmpjhWQ+xqHj+he3YnTxBso3
-         t4H+oEwoTepSm+hBVA1RbvrQkUMChc5qOmZZtFnj9V7RG4PBRX12cXkspHdmhMaQNCbp
-         zdgcuhtOU2ZyU/VOlisjglqOHK3de6PA/wBVESMhnIGKMxyfIYXfDC1c+Qb5WVIb8NZF
-         Al9NmGNxv5DYSG12137u0msH2PsMMOR3lTHRPHvFmlxgv1O+yM9gIDFFp3ZqDtp4FJc0
-         SBD3ZPRjG4AZBx73vhen1W8gOWr6kxc51z2a/qK/1ALR+02fgMWnhB3F6KdIrPJiBdM3
-         gw/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU9/o0XWefrtcv1Hww9QlPqvG8l+xmLIyuaAXVWdYBPZn33hWZ1VBTIARCcVKw3Y0s544znen4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu9ue5B6nRotfk8dENB4cIQa4m0Zj/5YaUqjNzqUZzFGmga/Yn
-	nRfrnExs1tlC3iNMf97uqynhdnNoRamhbNbcyDk7UBQkz3ZvDTvsXyzOT2Wneqcd43PEYyUZsYx
-	scQvQzwVmZhxpQFBqM2WmoGtpUjzs0DoDv/4GjEhukCQdBheOJhM5suH2WMOy7Bi0TGkpzg==
-X-Gm-Gg: ASbGncv+5GU4CQLHhpQkBmFArhilhkmESnFwUcb/0QidYUdqwH9qCm0/1pQTlJdJ4m/
-	yACGY4mWkbZZGU8T5ecst61XBhwMYMUWEAecEiaUK29HdoZ+Z0vBotg0fXpMr6aYz4JrxnTbEG7
-	bEQ1RKPGkvJNcEYHI5/b6Bl5ldgZ63jdtnthP9CBUabpnLxyu3RyuzTpo8T1sV0RQjKNcfglW7L
-	ziG4GNuROtfyfGA1+0yep7r6fWVuXvesfYNU8dJQl4gQuf8w511
-X-Received: by 2002:a05:6a00:1492:b0:71e:59d2:9c99 with SMTP id d2e1a72fcca58-7252ff9f26emr22421905b3a.4.1732979869395;
-        Sat, 30 Nov 2024 07:17:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmknqipwzi3wKWWx3tJ/NX09qqtbeqPLOW5qMGR4c0O5EkXIHDGTtLa1rYe/BQmYesl9GKHQ==
-X-Received: by 2002:a05:6a00:1492:b0:71e:59d2:9c99 with SMTP id d2e1a72fcca58-7252ff9f26emr22421860b3a.4.1732979868943;
-        Sat, 30 Nov 2024 07:17:48 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:1e0d:5d21:fd85:275b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7254182bd10sm5291620b3a.154.2024.11.30.07.17.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Nov 2024 07:17:48 -0800 (PST)
-Date: Sun, 1 Dec 2024 00:17:46 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: virtualization@lists.linux.dev, mst@redhat.com, 
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] virtio_net: drain unconsumed tx completions if any
- before dql_reset
-Message-ID: <mva2p3l75byaqsmn2b55w7ougwg52mk67k7gzhhjngytuago3s@ndov2hbr57ns>
-References: <20241126024200.2371546-1-koichiro.den@canonical.com>
- <CACGkMEsJ1X-u=djO2=kJzZdpZH5SX560V9osdpDuySXtfBMpuw@mail.gmail.com>
- <6lkdqvbnlntx3cno5qi7c4nks2ub3bkaycsuq7p433c4vemcmf@fwnhqbo5ehaw>
- <CACGkMEvR4+_iRAFACkXLgX-hGwjfOgd3emiyquzxUHL9wC-b=g@mail.gmail.com>
- <uwpyhnvavs6gnagujf2etse3q4c7vgjtej5bi34546isuefmgk@ebkfjs3wagsp>
- <CACGkMEvmBEfMwko-wJJ_78w+1QhN=r1zJ4wbaCJ1L9TU1Uo1pQ@mail.gmail.com>
- <judg4yj4adez5y3tm6lojouf6uh7ge3nice2npzzvwklpluj6t@oicfewgnwbll>
- <CACGkMEu_9aeb5xzKd7r+OFfud=kWOZYREa-8GcDzzppceKszjw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0B42AA4;
+	Sat, 30 Nov 2024 15:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732981398; cv=fail; b=b9b0tpjbrQx43SnEkm+ew0mHpuLC9N0D9VL/nRR5i95SGpD3kzAM6qZ8sPzgSdv25ILEjEU79uqGGUMESkcc/6ExxiIxozG/gPyrEsCN6CM8e4kJBRPMQKirDL/XK+anXYWf+zNoqbRv9KF6a0+FV8zOSfwJk40vBE6rR3FU8KY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732981398; c=relaxed/simple;
+	bh=T7IDkhnTz01z49E+S5kt46n+mGNm7Jt56+1zQxfmEKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cz+Koe0tVfhrZJOEu8EJzVxxS3ZRenh63c84aGy+pT9Wy0eOqQrKtsncPQUUqTfmo8X9tVY3pbgOO5qoI+2wWMbJ/KvQnRtqnF6RvScsIrj1lC/46zQXcRz/uJlJPlfowz16xwtGBKziXCJ2Gv1lYNYnZ7YHUFQDJzbUgvs+hDo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JqX6zHSg; arc=fail smtp.client-ip=40.107.241.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f9+GfCXPc1YDQm0UBh/6mdxnPhwcrp06cnH/zVKXKFHqg3OHRGKLUZz2L5vts6kA3rIjmrphnNL9H79ia0koNVbBnEUGinjSPydR8IfsIsceC/KpbEQdC8uMwjfMO+2903r0x1FIVIUydCf7z2QyQc22dmeS60nX4dsUzqepvyxMnrzuw0HXDSmuY43VBkpf1inz6GVwhNuEMxZ25VRAu2Ou8x1QP4+fFPNk9+eWSnQqWyZWUjSiLytgLNHGLk03Me4d0YpRSfGmOl3PdPYNU8dAbn70+f0EVopb6YJBeWaRqePnRbEcwRMvqI22u/S+mXgL6Fzqwhqfmv9a0Snfhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I40LB55bf0vdzmc2NDuPhbTQT+FEe7tpMAFZKX1xvfI=;
+ b=vwzJH5IXVp3T4MnIXkEUhGro8NbHASxM3vCURNoKAghuh61xnutvoBD/4Qh2madhJ5PSQO4HNIgkt0nU5YkTHEMOuox8YlfhKTELVO46HZoya+HlRp0oBdL0FV6H/nP5OW7tsXSktKwFPy1gZ9mrLk96A/v2NBHlq8iMn0/qLlb8PdFvlC2o6BwnHfJzu1hQ46EOeSd9szKWolhBTb83tFf+Y7IL2T39NrXSt7Cgh0Zk5H42bv3fIOBX7Cw+kOQyWOZMD2g9QfzCGoh8gGihcU/rgicv61npqVw5901uZhdYDaWAHl5oWgsl7zo3t2t73ByrcZ/8SCt0QtNwuzNfPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I40LB55bf0vdzmc2NDuPhbTQT+FEe7tpMAFZKX1xvfI=;
+ b=JqX6zHSgGggNj4kmJAv16RIfsWjzUOKbrbib9pWZkMRWYii9FrjhJSUfIRSpsEBNYQYGIHMYS8JhsIFtF/45CNzWKrgmx9g/hZ0SnXZEvlaKlxOHqivUEGfIE7gdHu60J36SSfbPMIxKNMiKk8ws2H2xWDelY6bkGSCRm8ipgAdp9fTqXlUYaTnK5vQk50ETa3PVJw3JLc0ZSy8p/eZLIe8P4Szmwi1LqXqz0ytx8h43/3ssu1Ej8ene0eotCAVndipoNpFTObNTHloabiSZjdT7qrBGAsqjhvuxUsRie3cHcng7FG3x+avGpKpX7kVE49R6YAqcb625qhTvz0Wnpg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by VI1PR04MB10074.eurprd04.prod.outlook.com (2603:10a6:800:1d5::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.14; Sat, 30 Nov
+ 2024 15:43:10 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8207.017; Sat, 30 Nov 2024
+ 15:43:10 +0000
+Date: Sat, 30 Nov 2024 17:43:07 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [net PATCH 1/2] selftests: net: lib: fix broken ping with
+ coreutils ping util
+Message-ID: <20241130154307.cskk55ecltjkinqz@skbuf>
+References: <20241130113314.6488-1-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241130113314.6488-1-ansuelsmth@gmail.com>
+X-ClientProxiedBy: VI1P190CA0051.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:800:1bb::10) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkMEu_9aeb5xzKd7r+OFfud=kWOZYREa-8GcDzzppceKszjw@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|VI1PR04MB10074:EE_
+X-MS-Office365-Filtering-Correlation-Id: f79e15ab-93a1-4ba9-718c-08dd1155b17d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?n2FWfZg88a2J7oidHft/hnZRNJI8uMSi5iItXObFQRrUBn8sj7Q6rOOYs7o0?=
+ =?us-ascii?Q?AqVKyJjp3N7XsI/RcGkHfqk0yDSHe9ztz3za7ZXgfoDKuVqa9oriyc5dD2YZ?=
+ =?us-ascii?Q?GMfhTjkDZwL+wrj6rKdNeRUwFKWUOgDJ+lA8Y27ZC55EMtEgczqtFqT5a00C?=
+ =?us-ascii?Q?vdu1uGlwuiuxvQIhhkEm4z9K+b8ObSF1BoYtJTNpHg+hCoyE23b0GCEytMnQ?=
+ =?us-ascii?Q?XfnBIEvHp/8NTYMnEGbhYtWn3gDyGPJs5RZWjVIWgslU8TR9c2PMs2nzLvxl?=
+ =?us-ascii?Q?W9IpANUAyYqO5/YJp+FsbTv5f+v892m3zqrpzmacnebATLplN7UU7BAOdlcA?=
+ =?us-ascii?Q?W0eG5cVE9d4pH6RN3RtUQyMe/A+pOT7pipUGVLDVyVTeIsrPzUgoeynsj8XC?=
+ =?us-ascii?Q?Z/db4gONw8Rr0exQexnUgDbSM+3bW+lZvWzncT/saQw4uM3Yb2OAPj8dnQLL?=
+ =?us-ascii?Q?LGNU8hV6ZuvkV5x9Oa6dTsvPdSmWSPREJPP8EaGuLfYpnXb9AS1KzPs4hONq?=
+ =?us-ascii?Q?QP47izi8v73aZanYf+i4IqcjpGMJhfgcXAhsDoq5yg8GYix9rjplB10LMpOc?=
+ =?us-ascii?Q?qxwIf+9tdW4Ku9D51kEVtaCJMj7wHn8zlX4vUpcrPF8oJCXUK4yBF2BBnCq2?=
+ =?us-ascii?Q?wMpdlHktOcs+i8xJNDoRTkWL4CoxyZr11+o+zshrsb7qwqlePWCw0Ez5bLFz?=
+ =?us-ascii?Q?mJ4gXENlbrOntK7LPI0udRXDturimRUZzxTGQHvMHiOzD302I+7mgEj1/3ET?=
+ =?us-ascii?Q?fT3JhBL8iUrqzfd3JqXevPsxVOohnPQsq4ROlATMwqm47Lcn6qPRr3/Ksh/h?=
+ =?us-ascii?Q?lm8uvwnFlvn07GMENoFHgBmY/9SfrUOWzYLoSFo+rL/07jLKI9Epa2eJMQhV?=
+ =?us-ascii?Q?whqj4180v09ZnYfOemyqDZ5B+QayR9DDL/TGOzKiH1anqih3vNP/c/3ES+Ya?=
+ =?us-ascii?Q?PgvBr9FiyjBLMSQ2JQ6XguoDepF7CxKeP+bZuHPvQMNsqn38Ot2Eqvy2IfqO?=
+ =?us-ascii?Q?Ny9abWYp80XTBYsQ58mtRdsRQUHTZH7bh5e7Ka3tBGEljzibqr1lxhl+L3pX?=
+ =?us-ascii?Q?mGMxJCN/HMdN1kGwGq94eoroFfsYZtpWZqlGInO0P/RZ6U5HOFDyjc+pzGeB?=
+ =?us-ascii?Q?wTyG3xEzKYHYYTu5SQJTkJyD4CDirN2MlH4v4m3+6mcT3Zj6h7vcGEXEm5xD?=
+ =?us-ascii?Q?mX0T979qp50wPyIFKGwTv7MN9lCe45MLrqsID7OLk76AdHc2v8EoB/M++12+?=
+ =?us-ascii?Q?7D+CGFfjQoipM6Z2r2+37paT3rJOtiU5kKcsmBME6l9UAAxlcsEE2ACRNq4K?=
+ =?us-ascii?Q?uJPad52FKM/x5a4zTSv41AGhIOTmaLWyX4mkocfaFSeGNA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fumK6X+Di8aK+SWAWVZ2hwYbgR73oUmrQFWOyejZoFrGkBQjtXUiUeTsi/7s?=
+ =?us-ascii?Q?kqgjAg6OLcMSMExvqSkPBSPr8XxBj6wl3sHKV4U20mrCQs47/a7Dwc+hNep1?=
+ =?us-ascii?Q?PxrN2mtpQsBpTSVKbfPREnjz4QPY65bnBiuBpsa1K+ddnLQuMm1L6uGln35w?=
+ =?us-ascii?Q?E1VMvKNsf+iaoOOAbXiU+DMhtg69DftJ6yOAjgo8hkryktJ+SpaWtbbXy0DL?=
+ =?us-ascii?Q?aCpIj36jXX0oom7EcaY6EGMeqOfRNW/mPAXfhkTIbHfEOo7QZIgw5+GEV491?=
+ =?us-ascii?Q?yZ9NyvUjOW5fh2o/cjOXkBMhJpHVm+YNQNc8FZlz5G/p5/ma08j+VGZ9VE1R?=
+ =?us-ascii?Q?HHSGhu1KB76UKH1xn4QXRTAIjUmEpNYwpob2fysDjpXSaStF+zKb1I7Hhe5R?=
+ =?us-ascii?Q?OO61Ol5908llZz1ZK5SM4XJfGwXob5wlYGA4lMKFyKLNDptfuDzFDmtQYngr?=
+ =?us-ascii?Q?ItTpYbwy/VedXSUiKIfwDAoJNqnrqjM1hH3ZwL56a8ILUgjP3+BzjVhYAms3?=
+ =?us-ascii?Q?wE0pSiCAGytWyJ/RCGLvgS3jIiBdLZfN7mtDNppa/KHFl+S22a4ExYQDPDi5?=
+ =?us-ascii?Q?hgytpgwz+WKgrhpfETmoMD/OJrzgwnuTuDL4jp7ttNZwu2WC0oXz3zwRmulI?=
+ =?us-ascii?Q?Y/oVocF0W0xFKwUxb748bd5hq4Kj5IgYEGjoajLrpbolkXn2Jpwiv/t7IPZe?=
+ =?us-ascii?Q?YLKKWv+zOCMHEYQ5lnoIM2cqMHE5qROeHXLgYs4MNItL39bYoUdkPfrJNQok?=
+ =?us-ascii?Q?OHvA0KG1RMPlxLU7LQaQo7G4vqXrxa+wBdjokpA5Q37xluAtQxlPAt4lBIbQ?=
+ =?us-ascii?Q?2ZEXjusxQXiAlxSJJKvFrBxze8G8FF55XysDqDRCEux9fYKdM4V+AhJ1Am4/?=
+ =?us-ascii?Q?t0wbrBwug9hSgRA4mf+SqT4cmhgjOHsL8DTHibVGRotDqkyUoS72sUVlIPuf?=
+ =?us-ascii?Q?Lz/hAIohs5t6XuHU7guFtrUDqUFELflY41xPRt42T5VHAm5WDvWHkoEDS/N9?=
+ =?us-ascii?Q?GellwiJw5abRnfkXl2w8PamToepwwuW3C3uJLbhfzeVo1/92NwHMUACRb/fe?=
+ =?us-ascii?Q?wnLSytTTnw69LpJC7Dj1kSEPPz0uH/SvqWAfGWKoleg+dnGiPICorplobKq5?=
+ =?us-ascii?Q?tK53XVtcCXZ6oIk1SM6yYsmtUJ/aX1RKodMGX4/+CnH7bBXfxunk8eNVPNcK?=
+ =?us-ascii?Q?l0vnnG2vcVzE2B1zhnjHll/EPhP6JoxSAUc9Qm3ve9kFyKoiz3AFleiMnXTD?=
+ =?us-ascii?Q?GbupdqngT1o4hbsdEQNVCBQPpzNbHgnFpnT6jXYgmMu00hg1N0tr7MWQvdDc?=
+ =?us-ascii?Q?chhN+o39IoJlB7FaKZf3NdLx3tq8rcY+QZ+is0v4H8JmaUX1RXq3rCSstWkW?=
+ =?us-ascii?Q?IpHmU+D/tf6XQAfHnyBr/Kt32V7XP7eORkJuFfXTDXFk0ipkJipw9DXoa3vA?=
+ =?us-ascii?Q?c6Z7MBIHh/usDYKQbMGVLi1ixPW5tVfmMXCIJOnL/sKyfPqLQ/UysIi+XaUL?=
+ =?us-ascii?Q?nJxgzg46CorNrgG0rGXtt+m6jVJdSuXp2P07WW+SGAEGhxbNeuF/6q66JjCh?=
+ =?us-ascii?Q?SthuUGh0SP1QdLIZWNIckEsBIv29F/y9aAb9MDykJkd+WMmWwYYiR2NKg95m?=
+ =?us-ascii?Q?ww=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f79e15ab-93a1-4ba9-718c-08dd1155b17d
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2024 15:43:10.5761
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tMddPiZiVqnRMu06C+zdudtZq+AckHeHnsQtrTCBqHJ3y6PYLNY7xcDBcECfX3rzuQpz9D1UrZtNCZ1xEs1SQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB10074
 
-On Fri, Nov 29, 2024 at 10:18:04AM +0800, Jason Wang wrote:
-> On Thu, Nov 28, 2024 at 12:25 PM Koichiro Den
-> <koichiro.den@canonical.com> wrote:
-> >
-> > On Thu, Nov 28, 2024 at 10:57:01AM +0800, Jason Wang wrote:
-> > > On Wed, Nov 27, 2024 at 12:08 PM Koichiro Den
-> > > <koichiro.den@canonical.com> wrote:
-> > > >
-> > > > On Wed, Nov 27, 2024 at 11:24:15AM +0800, Jason Wang wrote:
-> > > > > On Tue, Nov 26, 2024 at 12:44 PM Koichiro Den
-> > > > > <koichiro.den@canonical.com> wrote:
-> > > > > >
-> > > > > > On Tue, Nov 26, 2024 at 11:50:17AM +0800, Jason Wang wrote:
-> > > > > > > On Tue, Nov 26, 2024 at 10:42 AM Koichiro Den
-> > > > > > > <koichiro.den@canonical.com> wrote:
-> > > > > > > >
-> > > > > > > > When virtnet_close is followed by virtnet_open, there is a slight chance
-> > > > > > > > that some TX completions remain unconsumed. Those are handled during the
-> > > > > > > > first NAPI poll, but since dql_reset occurs just beforehand, it can lead
-> > > > > > > > to a crash [1].
-> > > > > > > >
-> > > > > > > > This issue can be reproduced by running: `while :; do ip l set DEV down;
-> > > > > > > > ip l set DEV up; done` under heavy network TX load from inside of the
-> > > > > > > > machine.
-> > > > > > > >
-> > > > > > > > To fix this, drain unconsumed TX completions if any before dql_reset,
-> > > > > > > > allowing BQL to start cleanly.
-> > > > > > > >
-> > > > > > > > ------------[ cut here ]------------
-> > > > > > > > kernel BUG at lib/dynamic_queue_limits.c:99!
-> > > > > > > > Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> > > > > > > > CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
-> > > > > > > > Tainted: [N]=TEST
-> > > > > > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
-> > > > > > > > BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> > > > > > > > RIP: 0010:dql_completed+0x26b/0x290
-> > > > > > > > Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
-> > > > > > > > 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
-> > > > > > > > d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
-> > > > > > > > RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
-> > > > > > > > RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
-> > > > > > > > RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
-> > > > > > > > RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
-> > > > > > > > R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
-> > > > > > > > R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
-> > > > > > > > FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
-> > > > > > > > knlGS:0000000000000000
-> > > > > > > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > > > > CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
-> > > > > > > > PKRU: 55555554
-> > > > > > > > Call Trace:
-> > > > > > > >  <IRQ>
-> > > > > > > >  ? die+0x32/0x80
-> > > > > > > >  ? do_trap+0xd9/0x100
-> > > > > > > >  ? dql_completed+0x26b/0x290
-> > > > > > > >  ? dql_completed+0x26b/0x290
-> > > > > > > >  ? do_error_trap+0x6d/0xb0
-> > > > > > > >  ? dql_completed+0x26b/0x290
-> > > > > > > >  ? exc_invalid_op+0x4c/0x60
-> > > > > > > >  ? dql_completed+0x26b/0x290
-> > > > > > > >  ? asm_exc_invalid_op+0x16/0x20
-> > > > > > > >  ? dql_completed+0x26b/0x290
-> > > > > > > >  __free_old_xmit+0xff/0x170 [virtio_net]
-> > > > > > > >  free_old_xmit+0x54/0xc0 [virtio_net]
-> > > > > > > >  virtnet_poll+0xf4/0xe30 [virtio_net]
-> > > > > > > >  ? __update_load_avg_cfs_rq+0x264/0x2d0
-> > > > > > > >  ? update_curr+0x35/0x260
-> > > > > > > >  ? reweight_entity+0x1be/0x260
-> > > > > > > >  __napi_poll.constprop.0+0x28/0x1c0
-> > > > > > > >  net_rx_action+0x329/0x420
-> > > > > > > >  ? enqueue_hrtimer+0x35/0x90
-> > > > > > > >  ? trace_hardirqs_on+0x1d/0x80
-> > > > > > > >  ? kvm_sched_clock_read+0xd/0x20
-> > > > > > > >  ? sched_clock+0xc/0x30
-> > > > > > > >  ? kvm_sched_clock_read+0xd/0x20
-> > > > > > > >  ? sched_clock+0xc/0x30
-> > > > > > > >  ? sched_clock_cpu+0xd/0x1a0
-> > > > > > > >  handle_softirqs+0x138/0x3e0
-> > > > > > > >  do_softirq.part.0+0x89/0xc0
-> > > > > > > >  </IRQ>
-> > > > > > > >  <TASK>
-> > > > > > > >  __local_bh_enable_ip+0xa7/0xb0
-> > > > > > > >  virtnet_open+0xc8/0x310 [virtio_net]
-> > > > > > > >  __dev_open+0xfa/0x1b0
-> > > > > > > >  __dev_change_flags+0x1de/0x250
-> > > > > > > >  dev_change_flags+0x22/0x60
-> > > > > > > >  do_setlink.isra.0+0x2df/0x10b0
-> > > > > > > >  ? rtnetlink_rcv_msg+0x34f/0x3f0
-> > > > > > > >  ? netlink_rcv_skb+0x54/0x100
-> > > > > > > >  ? netlink_unicast+0x23e/0x390
-> > > > > > > >  ? netlink_sendmsg+0x21e/0x490
-> > > > > > > >  ? ____sys_sendmsg+0x31b/0x350
-> > > > > > > >  ? avc_has_perm_noaudit+0x67/0xf0
-> > > > > > > >  ? cred_has_capability.isra.0+0x75/0x110
-> > > > > > > >  ? __nla_validate_parse+0x5f/0xee0
-> > > > > > > >  ? __pfx___probestub_irq_enable+0x3/0x10
-> > > > > > > >  ? __create_object+0x5e/0x90
-> > > > > > > >  ? security_capable+0x3b/0x70
-> > > > > > > >  rtnl_newlink+0x784/0xaf0
-> > > > > > > >  ? avc_has_perm_noaudit+0x67/0xf0
-> > > > > > > >  ? cred_has_capability.isra.0+0x75/0x110
-> > > > > > > >  ? stack_depot_save_flags+0x24/0x6d0
-> > > > > > > >  ? __pfx_rtnl_newlink+0x10/0x10
-> > > > > > > >  rtnetlink_rcv_msg+0x34f/0x3f0
-> > > > > > > >  ? do_syscall_64+0x6c/0x180
-> > > > > > > >  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > > > > > >  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
-> > > > > > > >  netlink_rcv_skb+0x54/0x100
-> > > > > > > >  netlink_unicast+0x23e/0x390
-> > > > > > > >  netlink_sendmsg+0x21e/0x490
-> > > > > > > >  ____sys_sendmsg+0x31b/0x350
-> > > > > > > >  ? copy_msghdr_from_user+0x6d/0xa0
-> > > > > > > >  ___sys_sendmsg+0x86/0xd0
-> > > > > > > >  ? __pte_offset_map+0x17/0x160
-> > > > > > > >  ? preempt_count_add+0x69/0xa0
-> > > > > > > >  ? __call_rcu_common.constprop.0+0x147/0x610
-> > > > > > > >  ? preempt_count_add+0x69/0xa0
-> > > > > > > >  ? preempt_count_add+0x69/0xa0
-> > > > > > > >  ? _raw_spin_trylock+0x13/0x60
-> > > > > > > >  ? trace_hardirqs_on+0x1d/0x80
-> > > > > > > >  __sys_sendmsg+0x66/0xc0
-> > > > > > > >  do_syscall_64+0x6c/0x180
-> > > > > > > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > > > > > > RIP: 0033:0x7f41defe5b34
-> > > > > > > > Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
-> > > > > > > > f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
-> > > > > > > > f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
-> > > > > > > > RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-> > > > > > > > RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
-> > > > > > > > RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
-> > > > > > > > RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
-> > > > > > > > R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
-> > > > > > > > R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
-> > > > > > > >  </TASK>
-> > > > > > > > [...]
-> > > > > > > > ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-> > > > > > > >
-> > > > > > > > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
-> > > > > > > > Cc: <stable@vger.kernel.org> # v6.11+
-> > > > > > > > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> > > > > > > > ---
-> > > > > > > >  drivers/net/virtio_net.c | 37 +++++++++++++++++++++++++++++--------
-> > > > > > > >  1 file changed, 29 insertions(+), 8 deletions(-)
-> > > > > > > >
-> > > > > > > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > > > > > > > index 64c87bb48a41..3e36c0470600 100644
-> > > > > > > > --- a/drivers/net/virtio_net.c
-> > > > > > > > +++ b/drivers/net/virtio_net.c
-> > > > > > > > @@ -513,7 +513,7 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
-> > > > > > > >                                                struct sk_buff *curr_skb,
-> > > > > > > >                                                struct page *page, void *buf,
-> > > > > > > >                                                int len, int truesize);
-> > > > > > > > -static void virtnet_xsk_completed(struct send_queue *sq, int num);
-> > > > > > > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bool drain);
-> > > > > > > >
-> > > > > > > >  enum virtnet_xmit_type {
-> > > > > > > >         VIRTNET_XMIT_TYPE_SKB,
-> > > > > > > > @@ -580,7 +580,8 @@ static void sg_fill_dma(struct scatterlist *sg, dma_addr_t addr, u32 len)
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > > >  static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
-> > > > > > > > -                           bool in_napi, struct virtnet_sq_free_stats *stats)
-> > > > > > > > +                           bool in_napi, struct virtnet_sq_free_stats *stats,
-> > > > > > > > +                           bool drain)
-> > > > > > > >  {
-> > > > > > > >         struct xdp_frame *frame;
-> > > > > > > >         struct sk_buff *skb;
-> > > > > > > > @@ -620,7 +621,8 @@ static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
-> > > > > > > >                         break;
-> > > > > > > >                 }
-> > > > > > > >         }
-> > > > > > > > -       netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
-> > > > > > > > +       if (!drain)
-> > > > > > > > +               netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > > >  static void virtnet_free_old_xmit(struct send_queue *sq,
-> > > > > > > > @@ -628,10 +630,21 @@ static void virtnet_free_old_xmit(struct send_queue *sq,
-> > > > > > > >                                   bool in_napi,
-> > > > > > > >                                   struct virtnet_sq_free_stats *stats)
-> > > > > > > >  {
-> > > > > > > > -       __free_old_xmit(sq, txq, in_napi, stats);
-> > > > > > > > +       __free_old_xmit(sq, txq, in_napi, stats, false);
-> > > > > > > >
-> > > > > > > >         if (stats->xsk)
-> > > > > > > > -               virtnet_xsk_completed(sq, stats->xsk);
-> > > > > > > > +               virtnet_xsk_completed(sq, stats->xsk, false);
-> > > > > > > > +}
-> > > > > > > > +
-> > > > > > > > +static void virtnet_drain_old_xmit(struct send_queue *sq,
-> > > > > > > > +                                  struct netdev_queue *txq)
-> > > > > > > > +{
-> > > > > > > > +       struct virtnet_sq_free_stats stats = {0};
-> > > > > > > > +
-> > > > > > > > +       __free_old_xmit(sq, txq, false, &stats, true);
-> > > > > > > > +
-> > > > > > > > +       if (stats.xsk)
-> > > > > > > > +               virtnet_xsk_completed(sq, stats.xsk, true);
-> > > > > > > >  }
-> > > > > > >
-> > > > > > > Are we sure this can drain the queue? Note that the device is not stopped.
-> > > > > >
-> > > > > > Thanks for reviewing. netif_tx_wake_queue can be invoked before the "drain"
-> > > > > > point I added e.g. via virtnet_config_changed_work, so it seems that I need
-> > > > > > to ensure it's stopped (DRV_XOFF) before the "drain" and wake it afterwards.
-> > > > > > Please let me know if I’m mistaken.
-> > > > >
-> > > > > Not sure I get you, but I meant we don't reset the device so it can
-> > > >
-> > > > I was wondering whether there would be a scenario where the tx queue is
-> > > > woken up and some new packets from the upper layer reach dql_queued()
-> > > > before the drain point, which also could cause the crash.
-> > >
-> > > Ok.
-> > >
-> > > >
-> > > > > keep raising tx interrupts:
-> > > > >
-> > > > > virtnet_drain_old_xmit()
-> > > > > netdev_tx_reset_queue()
-> > > > > skb_xmit_done()
-> > > > > napi_enable()
-> > > > > netdev_tx_completed_queue() // here we might still surprise the bql?
-> > > >
-> > > > Indeed, virtqueue_disable_cb() is needed before the drain point.
-> > >
-> > > Two problems:
-> > >
-> > > 1) device/virtqueue is not reset, it can still process the packets
-> > > after virtnet_drain_old_xmit()
-> > > 2) virtqueue_disable_cb() just does its best effort, it can't
-> > > guarantee no interrupt after that.
-> > >
-> > > To drain TX, the only reliable seems to be:
-> > >
-> > > 1) reset a virtqueue (or a device)
-> > > 2) drain by using free_old_xmit()
-> > > 3) netif_reset_tx_queue() // btw this seems to be better done in close not open
-> >
-> > Thank you for the clarification.
-> > As for 1), I may be missing something but what if VIRTIO_F_RING_RESET is
-> > not supported. A device reset in this context feels a bit excessive to me
-> > (just my two cents though) if in virtnet_open, so as you said, it seems
-> > better done in close in that regard as well.
+On Sat, Nov 30, 2024 at 12:33:09PM +0100, Christian Marangi wrote:
+> If the coreutils variant of ping is used instead of the busybox one, the
+> ping_do() command is broken. This comes by the fact that for coreutils
+> ping, the ping IP needs to be the very last elements.
 > 
-> Probably, most NIC has a way to stop its TX which is missed in
-> virtio-net. So we don't have more choices other than device reset when
-> there's no virtqueue reset.
+> To handle this, reorder the ping args and make $dip last element.
 > 
-> Or we can limit the BQL to virtqueue reset, AF_XDP used to suffer from
-> the exact issue when there's no virtqueue reset. That's why virtqueue
-> reset is invented and AF_XDP is limited to virtqueue reset.
+> The use of coreutils ping might be useful for case where busybox is not
+> compiled with float interval support and ping command doesn't support
+> 0.1 interval. (in such case a dedicated ping utility is installed
+> instead)
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 73bae6736b6b ("selftests: forwarding: Add initial testing framework")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
 
-Thank you for the response.
-
-Hmm, if we do a device reset, to me it seems better to (re-)initialize the
-device in a sane way (i.e. ACKNOWLEDGE->DRIVER->...->DRIVER_OK) here as
-well, to avoid potentially surprising the hyperviour side, IIUC. That would
-essentially make it nearly equivalent to the current freeze/restore
-handling. However, performing such a reset in open or close path would
-likely require a fundamental restructuring/redefinition of the open/close
-semantics for virtio-net, right? Otherwise I guess it would be a dirty hack
-solely for this BQL issue. Limitting the BQL to virtqueue reset sounds
-nicer, but I'm now inclined to your suggestion to simply drop
-netdev_tx_reset_queue(), as mentioned in my response below.
-
-> 
-> >
-> > >
-> > > Or I wonder if this can be easily fixed by just removing
-> > > netdev_tx_reset_queue()?
-> >
-> > Perhaps introducing a variant of dql_reset() that clears all stall history
-> > would suffice? To avoid excessively long stall_max to be possibly recorded.
-> 
-> Not sure, it looks like the problem still, bql might still be
-> surprised when it might get completed tx packets when it think it
-> hasn't sent any?
-
-I meant an API that would clear only stall_max, without requiring users to
-do so in such cases. That said, I just noticed that commit message of
-6025b9135f7a ("net: dqs: add NIC stall detector based on BQL") mentions
-that "this mechanism does not ignore stalls caused by Tx being disabled, or
-loss of link", primarily for simplicity's sake. Given this, simply dropping
-netdev_tx_reset_queue() seems like a streamlined approach. I'll resend a
-patch that does so. If I'm missing something or mistaken, please let me
-know.
-
-Thanks
-
-> 
-> Thanks
-> 
-> >
-> > Thanks
-> >
-> > >
-> > > Thanks
-> > >
-> > > >
-> > > > Thanks
-> > > >
-> > > > >
-> > > > > Thanks
-> > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > >
-> > > > > > > >  /* Converting between virtqueue no. and kernel tx/rx queue no.
-> > > > > > > > @@ -1499,7 +1512,8 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
-> > > > > > > >         /* Avoid to wakeup napi meanless, so call __free_old_xmit instead of
-> > > > > > > >          * free_old_xmit().
-> > > > > > > >          */
-> > > > > > > > -       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), true, &stats);
-> > > > > > > > +       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), true,
-> > > > > > > > +                       &stats, false);
-> > > > > > > >
-> > > > > > > >         if (stats.xsk)
-> > > > > > > >                 xsk_tx_completed(sq->xsk_pool, stats.xsk);
-> > > > > > > > @@ -1556,10 +1570,13 @@ static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
-> > > > > > > >         return 0;
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > > > -static void virtnet_xsk_completed(struct send_queue *sq, int num)
-> > > > > > > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bool drain)
-> > > > > > > >  {
-> > > > > > > >         xsk_tx_completed(sq->xsk_pool, num);
-> > > > > > > >
-> > > > > > > > +       if (drain)
-> > > > > > > > +               return;
-> > > > > > > > +
-> > > > > > > >         /* If this is called by rx poll, start_xmit and xdp xmit we should
-> > > > > > > >          * wakeup the tx napi to consume the xsk tx queue, because the tx
-> > > > > > > >          * interrupt may not be triggered.
-> > > > > > > > @@ -3041,6 +3058,7 @@ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > > > > > >
-> > > > > > > >  static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > > > > > >  {
-> > > > > > > > +       struct netdev_queue *txq = netdev_get_tx_queue(vi->dev, qp_index);
-> > > > > > > >         struct net_device *dev = vi->dev;
-> > > > > > > >         int err;
-> > > > > > > >
-> > > > > > > > @@ -3054,7 +3072,10 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > > > > > >         if (err < 0)
-> > > > > > > >                 goto err_xdp_reg_mem_model;
-> > > > > > > >
-> > > > > > > > -       netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index));
-> > > > > > > > +       /* Drain any unconsumed TX skbs transmitted before the last virtnet_close */
-> > > > > > > > +       virtnet_drain_old_xmit(&vi->sq[qp_index], txq);
-> > > > > > > > +
-> > > > > > > > +       netdev_tx_reset_queue(txq);
-> > > > > > > >         virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
-> > > > > > > >         virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
-> > > > > > > >
-> > > > > > > > --
-> > > > > > > > 2.43.0
-> > > > > > > >
-> > > > > > > >
-> > > > > > >
-> > > > > > > Thanks
-> > > > > > >
-> > > > > >
-> > > > >
-> > > >
-> > >
-> >
-> 
+Do you mean the other way around? that the busybox ping is the broken one?
+And by coreutils ping, you actually mean iputils ping, right?
 
