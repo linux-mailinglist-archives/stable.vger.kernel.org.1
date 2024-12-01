@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-95898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB319DF4E5
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 08:00:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A1D9DF4FE
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 09:30:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53B54B207F9
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 07:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91762162A95
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 08:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD577081D;
-	Sun,  1 Dec 2024 07:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734DB69D2B;
+	Sun,  1 Dec 2024 08:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zfco3/M6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jazW1jqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6277F4120B;
-	Sun,  1 Dec 2024 07:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAFF2E40B;
+	Sun,  1 Dec 2024 08:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733036405; cv=none; b=JafX7EUwNJ8xou2fk3GGzD5+YIdIX0ujxi9sqYrJ92WEDH6OsWJ9kMq6fL1Ghi8/ELk/guF9memww5O/cDFfiqg/cvDIRRbNjUyv/rRhdBxkQgTJ5HWSO8Sz2MoS6FXemssAGYbSMHAKu3GYr9bqcm5vza8rbEqswJjLtCTC5xY=
+	t=1733041852; cv=none; b=Yd1QMiTom3YjzSH1OQtnxO9zp3uj1d7+bPPV5NpwLAAbjhAxZ8vxACaSpRss4J/bj9Y6m96jyoigulNehOKAX//6Uw3vXvJwbjHVv0l+wxS12Y/4uwcc4kSv0/JnzLyRrjinZ4xTXkjc0cNGEHnB1lbrVRh6Y08DluHPttlxdRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733036405; c=relaxed/simple;
-	bh=6mPgB53FRk0RTyGy5XDK1rmOjoTs+6pls7igk5ryNSI=;
-	h=Date:To:From:Subject:Message-Id; b=obVcQVXx3bjQCafTRMH2VkDNdtF+FeQUxr6FsPsL4gI2zvCvPY6AeQffNN47XAOieFfL8ERiuiRKeeHYFLmTxOnDK0Xfw5uDlr+V2okoBx9+rjWCVb6LgmLgpa+N0s4+nUpFR3Wj8109Wm+AJzglz9xX/d9B+yT5bRRCHAG+rAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zfco3/M6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C756AC4CECF;
-	Sun,  1 Dec 2024 07:00:04 +0000 (UTC)
+	s=arc-20240116; t=1733041852; c=relaxed/simple;
+	bh=6chgIAvmaHO2y5o6qDt4BSlNVjyjL4RA0uj4x3KjJkM=;
+	h=Date:To:From:Subject:Message-Id; b=oHoPdx89GIGatMXQtEdw5kk2jsgSNDEKncp5DzIhBONZ+MrdvsXMHe6HVlTtxhm871j3E5GQpZ71KqkU5c3H6CtP2sOscJ17hb1sn4Tym/5OCcdKulePY/qALhVn/u51/xgYCmuTnnOvHiJX3TeKWfV50Ni8vcmFDMRlaEmYcqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jazW1jqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F95DC4CECF;
+	Sun,  1 Dec 2024 08:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733036404;
-	bh=6mPgB53FRk0RTyGy5XDK1rmOjoTs+6pls7igk5ryNSI=;
+	s=korg; t=1733041851;
+	bh=6chgIAvmaHO2y5o6qDt4BSlNVjyjL4RA0uj4x3KjJkM=;
 	h=Date:To:From:Subject:From;
-	b=zfco3/M6DncJ/huylmzuVoJ3NL+2DVBgqJYzzXhIMyYNNMNjqBoXO1YTvL18+EpVc
-	 FIxIUZCcX0UUyTr2kzwpqbrdlydh/gefbyOVwdof+YqhgQiDwbc+nD6mfzfmBD6VPW
-	 R5ITcoeFzcXWWFFYDnLavOHbQnPwbHlcEYIBIn3U=
-Date: Sat, 30 Nov 2024 23:00:04 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nao.horiguchi@gmail.com,david@redhat.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+	b=jazW1jqE3SoBeWfFNGPtHTdgTHR82uZKYInNiZvNvVd4qtck9coAPCwz6zW1sYRJR
+	 KMowmbquy4SMQGXVRRu2UeC076Pklh/269WwIpf/R07I0yljxygi5S8S4mBJ7npMUM
+	 PYYUpyrdTSxp83uAOc/SeBtv5OpTOxRsHgGAdoeU=
+Date: Sun, 01 Dec 2024 00:30:51 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mgorman@techsingularity.net,snishika@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch removed from -mm tree
-Message-Id: <20241201070004.C756AC4CECF@smtp.kernel.org>
+Subject: [to-be-updated] mm-vmscan-ensure-kswapd-is-woken-up-if-the-wait-queue-is-active.patch removed from -mm tree
+Message-Id: <20241201083051.8F95DC4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,132 +50,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+     Subject: mm: vmscan: ensure kswapd is woken up if the wait queue is active
 has been removed from the -mm tree.  Its filename was
-     mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
+     mm-vmscan-ensure-kswapd-is-woken-up-if-the-wait-queue-is-active.patch
 
 This patch was dropped because an updated version will be issued
 
 ------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-Date: Fri, 12 Jul 2024 14:42:49 +0800
+From: Seiji Nishikawa <snishika@redhat.com>
+Subject: mm: vmscan: ensure kswapd is woken up if the wait queue is active
+Date: Wed, 27 Nov 2024 00:06:12 +0900
 
-When I did memory failure tests recently, below panic occurs:
+Even after commit 501b26510ae3 ("vmstat: allow_direct_reclaim should use
+zone_page_state_snapshot"), a task may remain indefinitely stuck in
+throttle_direct_reclaim() while holding mm->rwsem.
 
-page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-kernel BUG at include/linux/page-flags.h:616!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- unpoison_memory+0x2f3/0x590
- simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
- debugfs_attr_write+0x42/0x60
- full_proxy_write+0x5b/0x80
- vfs_write+0xd5/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f0314887
-RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
- </TASK>
-Modules linked in: hwpoison_inject
----[ end trace 0000000000000000 ]---
-RIP: 0010:unpoison_memory+0x2f3/0x590
-RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-Kernel panic - not syncing: Fatal exception
-Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception ]---
+__alloc_pages_nodemask
+ try_to_free_pages
+  throttle_direct_reclaim
 
-We're hitting a BUG_ON in PF_ANY():
+This can cause numerous other tasks to wait on the same rwsem, leading
+to severe system hangups:
 
-PAGEFLAG(HWPoison, hwpoison, PF_ANY)
+[1088963.358712] INFO: task python3:1670971 blocked for more than 120 seconds.
+[1088963.365653]       Tainted: G           OE     -------- -  - 4.18.0-553.el8_10.aarch64 #1
+[1088963.373887] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[1088963.381862] task:python3         state:D stack:0     pid:1670971 ppid:1667117 flags:0x00800080
+[1088963.381869] Call trace:
+[1088963.381872]  __switch_to+0xd0/0x120
+[1088963.381877]  __schedule+0x340/0xac8
+[1088963.381881]  schedule+0x68/0x118
+[1088963.381886]  rwsem_down_read_slowpath+0x2d4/0x4b8
 
-#define PF_ANY(page, enforce)	PF_POISONED_CHECK(page)
+The issue arises when allow_direct_reclaim(pgdat) returns false,
+preventing progress even when the pgdat->pfmemalloc_wait wait queue is
+empty. Despite the wait queue being empty, the condition,
+allow_direct_reclaim(pgdat), may still be returning false, causing it to
+continue looping.
 
-#define PF_POISONED_CHECK(page) ({					\
-	VM_BUG_ON_PGFLAGS(PagePoisoned(page), page);		\
-	page; })
+In some cases, reclaimable pages exist (zone_reclaimable_pages() returns
+ > 0), but calculations of pfmemalloc_reserve and free_pages result in
+wmark_ok being false.
 
-#define	PAGE_POISON_PATTERN	-1l
-static inline int PagePoisoned(const struct page *page)
-{
-	return READ_ONCE(page->flags) == PAGE_POISON_PATTERN;
-}
+And then, despite the pgdat->kswapd_wait queue being non-empty, kswapd
+is not woken up, further exacerbating the problem:
 
-The offlined pages will have page->flags set to PAGE_POISON_PATTERN
-while pfn is still valid:
+crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_highest_zoneidx
+$775 = __MAX_NR_ZONES
 
-offline_pages
-  remove_pfn_range_from_zone
-    page_init_poison
-      memset(page, PAGE_POISON_PATTERN, size);
+The issue likely occurs under specific conditions: high memory pressure
+with frequent direct reclaim, contention on mmap_sem from concurrent
+memory allocations, reclaimable pages exist, but zone states cause
+wmark_ok to return false.
 
-The root cause is that unpoison_memory() tries to check the PG_HWPoison
-flags of an uninitialized page. So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-triggered. This can be reproduced by below steps:
-1.Offline memory block:
- echo offline > /sys/devices/system/memory/memory12/state
-2.Get offlined memory pfn:
- page-types -b n -rlN
-3.Write pfn to unpoison-pfn
- echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+Modern workloads (e.g., Python multiprocessing) and changes in kernel
+reclaim logic may have surfaced such edge cases more prominently than
+before.
 
-Link: https://lkml.kernel.org/r/20240712064249.3882707-1-linmiaohe@huawei.com
-Fixes: f165b378bbdf ("mm: uninitialized struct page poisoning sanity checking")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
+The workload involves concurrent Python processes under high memory
+pressure, leading to contention on mmap_sem.  While not unusual, this
+workload may trigger a rare combination of conditions that expose the
+issue.
+
+This patch modifies allow_direct_reclaim() to wake kswapd if the
+pgdat->kswapd_wait queue is active, regardless of whether wmark_ok is true
+or false.  This change ensures kswapd does not miss wake-ups under high
+memory pressure, reducing the risk of task stalls in the throttled reclaim
+path.
+
+Link: https://lkml.kernel.org/r/20241126150612.114561-1-snishika@redhat.com
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memory-failure.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/vmscan.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/memory-failure.c~mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory
-+++ a/mm/memory-failure.c
-@@ -2578,6 +2578,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
+--- a/mm/vmscan.c~mm-vmscan-ensure-kswapd-is-woken-up-if-the-wait-queue-is-active
++++ a/mm/vmscan.c
+@@ -6389,8 +6389,8 @@ static bool allow_direct_reclaim(pg_data
  
-+	if (PagePoisoned(p)) {
-+		unpoison_pr_info("%#lx: page is uninitialized\n",
-+				 pfn, &unpoison_rs);
-+		ret = -EOPNOTSUPP;
-+		goto unlock_mutex;
-+	}
-+
- 	if (!PageHWPoison(p)) {
- 		unpoison_pr_info("%#lx: page was already unpoisoned\n",
- 				 pfn, &unpoison_rs);
+ 	wmark_ok = free_pages > pfmemalloc_reserve / 2;
+ 
+-	/* kswapd must be awake if processes are being throttled */
+-	if (!wmark_ok && waitqueue_active(&pgdat->kswapd_wait)) {
++	/* Always wake up kswapd if the wait queue is not empty */
++	if (waitqueue_active(&pgdat->kswapd_wait)) {
+ 		if (READ_ONCE(pgdat->kswapd_highest_zoneidx) > ZONE_NORMAL)
+ 			WRITE_ONCE(pgdat->kswapd_highest_zoneidx, ZONE_NORMAL);
+ 
 _
 
-Patches currently in -mm which might be from linmiaohe@huawei.com are
+Patches currently in -mm which might be from snishika@redhat.com are
 
+mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
 
 
