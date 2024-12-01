@@ -1,110 +1,133 @@
-Return-Path: <stable+bounces-95894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407139DF452
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 02:10:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE369DF46A
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 03:41:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7E3B281003
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 01:10:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3B2916224F
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 02:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985852582;
-	Sun,  1 Dec 2024 01:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42299DF71;
+	Sun,  1 Dec 2024 02:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brSoHv5w"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="c8dA1LhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDA0EC4
-	for <stable@vger.kernel.org>; Sun,  1 Dec 2024 01:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7BB79FD;
+	Sun,  1 Dec 2024 02:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733015435; cv=none; b=H3t8xta4Uy52iRsSx9Sy5YJvELXIjCdgYMd2K0cPUGhcuquMVYqY3D4rQ/a1cpgHUlPl2ATy9jG20WFINe3X632iXlS33rjBv0Aj+9fnMdn0GaN4jzWtZryE4FgIcRyR++Nf2I/1c5/Q0zE71hWQD371yQ/KQLvg22dGnMbbne4=
+	t=1733020878; cv=none; b=RbERQ4QaOEzhZEZB7PCo76Uy9B0+rPl1bKFxb9w5EMMq5Vwax9UF3dvOSCygzkzSS/imOr0HVQGxzxnhXek8S9yg1lzD5Dsxpr96ZB5XIUuEia7v+n3rxyRfwhXWjurb4k6AZJ6PFLSneXc3A6WexoER3H+wZJjqoc5+oR9ZlMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733015435; c=relaxed/simple;
-	bh=UpeH9emcfZiamV8s/8cEG1EkyeMLrtnLeq+BlqlI8v4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgZrX3dyhhTX4ueup00LMILNRLhoJ4yXpYmKCFfcLVWzVu9OmD+l/k3hlTrJnBCsKllTrDLvqQLNBYncih/OB5duS7cz0ztzrHXvYFaFvbp+ibPcps0yN/BjmaFykvK4RrebN0la+LHXMVCbZQcf9Bj+99rzwVnRws+DJizniJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brSoHv5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE1C4CECC;
-	Sun,  1 Dec 2024 01:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733015433;
-	bh=UpeH9emcfZiamV8s/8cEG1EkyeMLrtnLeq+BlqlI8v4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brSoHv5wmQHTZKwrSa9bCFiFrc8xJOyL+Yo0eiqnA0qAvk6O15XaJL3VSAYFg9pnS
-	 P2bJcncNjEMdH67Or+r8IkHnc7Uh5rNXVy35lpojRQWa+U5BbGt3UpHmNo3+itQZhv
-	 Hj9RIDjPlXnO8CXCDyTgY3ArgDQvvHWk2kB7Ag732PPZpZRWm6lYxwmNNFmZT11Kzy
-	 t/S60ERi0yDS7GYCl3xubez7H7ADBmpOZQEpNeM4uHYjy+YtfecNqJWEEQflWvX2fg
-	 Ak+bMOAXRRucXz8iMdu72OSj+4xk8yQO6xqceUxypixVpEenS4Aujj5SH5uL5/F/T2
-	 mdAXV7S9iKKzg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.11/6.12] net_sched: sch_fq: don't follow the fast path if Tx is behind now
-Date: Sat, 30 Nov 2024 20:10:31 -0500
-Message-ID: <20241130200339-8ab1b38516913b7c@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241130175148.63765-1-kuba@kernel.org>
-References: 
+	s=arc-20240116; t=1733020878; c=relaxed/simple;
+	bh=9CY0YeXAbxlBIOer1kt14LCTkQ8Jq8XZyOUOp4GoUDU=;
+	h=Date:To:From:Subject:Message-Id; b=ikpwuwtQtm9EiG4KKQzMP379FSsJxW36n8Id00P/Tvcjkkw1gTyyctuxSHu8Ujbp2rxMPkmVNpj+mJUcKq2RH/WaUxQYkzY/w1ZE/EFPt+CL/KSF4RBXUAJ/nYkvUFJaJDMAU2b/dUR54Dmmd+0OYldjM5hYnC5xkABK1O+oAfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=c8dA1LhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79E8C4CECC;
+	Sun,  1 Dec 2024 02:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733020877;
+	bh=9CY0YeXAbxlBIOer1kt14LCTkQ8Jq8XZyOUOp4GoUDU=;
+	h=Date:To:From:Subject:From;
+	b=c8dA1LhS6FLbo1GQ8vOnSVENFKhgbZpY6w5wyPPfWlKirW6kiKBTH4fwjoB5AQsFW
+	 yT5aIu5lxaKXj+wk7vxXH08kGrWZbhIbRxRErK8NoJAMjM0uLVObZr5Ggir9jN+FqO
+	 CNw81h5a5Qs9dl8x1bh4mWAqnltQW5UNmvM82e+Q=
+Date: Sat, 30 Nov 2024 18:41:17 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mgorman@techsingularity.net,snishika@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241201024117.A79E8C4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-[ Sasha's backport helper bot ]
-
-Hi,
-
-The upstream commit SHA1 provided is correct: 122aba8c80618eca904490b1733af27fb8f07528
 
 
-Status in newer kernel trees:
-6.12.y | Not found
+The patch titled
+     Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
 
-Note: The patch differs from the upstream commit:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Seiji Nishikawa <snishika@redhat.com>
+Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+Date: Sun, 1 Dec 2024 01:12:34 +0900
+
+The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
+by a node being incorrectly deemed balanced despite pressure in certain
+zones, such as ZONE_NORMAL.  This issue arises from
+zone_reclaimable_pages() returning 0 for zones without reclaimable file-
+backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
+free pages to be skipped.
+
+The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
+during reclaim, masking pressure in other zones.  Consequently,
+pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
+mechanisms in allow_direct_reclaim() from being triggered, leading to an
+infinite loop in throttle_direct_reclaim().
+
+This patch modifies zone_reclaimable_pages() to account for free pages
+(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
+with sufficient free pages are not skipped, enabling proper balancing and
+reclaim behavior.
+
+Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-1:  122aba8c80618 ! 1:  14d9d00a6b68f net_sched: sch_fq: don't follow the fast path if Tx is behind now
-    @@ Metadata
-      ## Commit message ##
-         net_sched: sch_fq: don't follow the fast path if Tx is behind now
-     
-    +    [ Upstream commit 122aba8c80618eca904490b1733af27fb8f07528 ]
-    +
-         Recent kernels cause a lot of TCP retransmissions
-     
-         [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-    @@ Commit message
-         Reviewed-by: Eric Dumazet <edumazet@google.com>
-         Link: https://patch.msgid.link/20241124022148.3126719-1-kuba@kernel.org
-         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-    +    [stable: drop the offload horizon, it's not supported / 0]
-    +    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-     
-      ## net/sched/sch_fq.c ##
-     @@ net/sched/sch_fq.c: static bool fq_fastpath_check(const struct Qdisc *sch, struct sk_buff *skb,
-    @@ net/sched/sch_fq.c: static bool fq_fastpath_check(const struct Qdisc *sch, struc
-     +		/* Ordering invariants fall apart if some delayed flows
-     +		 * are ready but we haven't serviced them, yet.
-     +		 */
-    -+		if (q->time_next_delayed_flow <= now + q->offload_horizon)
-    ++		if (q->time_next_delayed_flow <= now)
-     +			return false;
-      	}
-      
----
 
-Results of testing on various branches:
+ mm/vmscan.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.11.y       |  Success    |  Success   |
+--- a/mm/vmscan.c~mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim
++++ a/mm/vmscan.c
+@@ -374,7 +374,14 @@ unsigned long zone_reclaimable_pages(str
+ 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
+ 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
+ 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
+-
++	/*
++	 * If there are no reclaimable file-backed or anonymous pages, 
++	 * ensure zones with sufficient free pages are not skipped. 
++	 * This prevents zones like DMA32 from being ignored in reclaim 
++	 * scenarios where they can still help alleviate memory pressure.
++	 */
++	if (nr == 0)
++	    nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
+ 	return nr;
+ }
+ 
+_
+
+Patches currently in -mm which might be from snishika@redhat.com are
+
+mm-vmscan-ensure-kswapd-is-woken-up-if-the-wait-queue-is-active.patch
+mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
+
 
