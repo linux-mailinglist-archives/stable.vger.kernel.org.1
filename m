@@ -1,151 +1,114 @@
-Return-Path: <stable+bounces-95903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A619DF576
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 13:15:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2548A9DF582
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 13:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9A2AB20F31
-	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 12:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2D91281426
+	for <lists+stable@lfdr.de>; Sun,  1 Dec 2024 12:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A5F166310;
-	Sun,  1 Dec 2024 12:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6E81A7AF5;
+	Sun,  1 Dec 2024 12:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="N0nhkKIR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZfRzKFO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46E21632F5
-	for <stable@vger.kernel.org>; Sun,  1 Dec 2024 12:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7725A19D881;
+	Sun,  1 Dec 2024 12:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733055341; cv=none; b=CrQ3FpjWPi2rTMLJOcCqGzQ2qTPNb52qLelOITd0EXU2LXeU6pCjwQMQ0BIA2/1spwHszB0Chx2BJUac//dAIbYvfiHlYCHO+ctPqgV/7mbKOe++U97ajZDpyUgC2BAJUV+ZKK950bcCHXn6WoCej4KQEtQOJCkeFABBVOVdaJE=
+	t=1733056664; cv=none; b=EQMP/rjo+SJlUT1ORWscSsjFDUkVjSAtS/M50pWiEnR9coUSWRT8lm16PyK/dSEJRioavkC24OjNREh7f1G7sVw7TUErWiKOOmj4zRnz+LypXKSX+k6b6+hHCKfv+VVx2FzWYo9zuqst1sughitLfW9jEer8g2ikj3X8RQ0/FSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733055341; c=relaxed/simple;
-	bh=OD5RbXnLcYUI6Lkoh4YmOYsGCrqxg1N3G4+4P7vvOU4=;
+	s=arc-20240116; t=1733056664; c=relaxed/simple;
+	bh=SyhOwGg/tG1tw43QpvwtWWOKCOtYIrnX4vFWv77DiZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KyK06yrFEy6rCJ3FFppSCBhxgU+WhrhD+yVdNG+P6DrBNMyPsV00C9GfbdZUz7F3uA3qx6U+yQOWIo2coBIhEAuiAUSb4OiOCTptyZPjjPx29amO/HqVkI249MvpPn8mCwg5IerPNHvTIu+nWTwhtWgUjqThxfP2J4tPQ7ECBlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=N0nhkKIR; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id C5CE73F298
-	for <stable@vger.kernel.org>; Sun,  1 Dec 2024 12:15:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1733055331;
-	bh=+Bep4MW8ltny8AhXj/MnN4uqUspcjkr8DMrhdOLo+Ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=N0nhkKIRtmx4AKdWyvTXDZkXF/4KdlQjBI4CEcmxeVbZ8rUqOUvgkdeAMZqrm+1wa
-	 ySI/hUV6zJiXBwcXsuDYe1pp7d7b7/460HU6nGFAetUBDX0u6Uszv+9DgkqB0LsL/w
-	 hRFfWsBbs+AL2xSt7zoWtCZk9cp01weewTn0CDel7I5Pt9mfgnZgg+3vWGxm2+ciiN
-	 AG3qG8TU+hDj8gos/H9CIbi2BDoO4pt7Lxtv6pMMHq0bsSsvtSMPihVJzbpSTgynIg
-	 Q3fO6i6mktuezGESF9cEVE/jGcqdOUWHO/bKevx7gz1LwwDEqnMMLztIvfgzfDKP18
-	 i+Y2iklZudI+A==
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-7f8af3950ecso2580857a12.3
-        for <stable@vger.kernel.org>; Sun, 01 Dec 2024 04:15:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733055330; x=1733660130;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Bep4MW8ltny8AhXj/MnN4uqUspcjkr8DMrhdOLo+Ls=;
-        b=IPkGBFw+5yNE+1ruTgJehF/wWGnyKKuNSbznMcbp41S9U7DpQJ20oeVCRZKZpOkKvg
-         RrM9CSJtPov6Ro5gwD/Rk1xTAMwm50yQ6ShmRFbU00nrmv+Wdd2K0NxFZtuGqAlnQCaA
-         cpAD6nKgBA8/Oml41P3qlaaLNZELFXYt07Mpu4zqt9pCB2915qDGMcr+c938tQGACm1w
-         ZwYtp04SWy0gtd7TcrUJL5MkBFBlpclh7NDfEcne5OaIWiKYgThgsLMUDwJGTgx4Cncw
-         WnYPB1CR4klKmSuvHJQjKP7FcA6xhwuprzG7OaOtlSnsb+HYIGlbFereO1vOHdDHbYyI
-         UbxA==
-X-Gm-Message-State: AOJu0YyQnD9E+pGYS7EKDGMLHWO9No/h8cPTQ4kAYTHGmBcznoT/k72n
-	IUh56jGgY10Jwm0W+bc+RhufKBhDEUi6/yYwS6sj5XpiP53hmJX4F0O3fkjFi4Z+E6/JZKOXQ/Q
-	6SZZLHG3PcCTljLZvDJETQAIx1K3jswr0/IQuYNJSdYdvYCfMTYYmYNyGUK68Su4SHL36aw==
-X-Gm-Gg: ASbGncsq7ZLmlPYR+OF1voEwmLTZg82unEAyk7P6y+6lGbfO4Dm2rfTvvDm2NDQZimw
-	tPseSDPLvmrM1Wv3r0yRA+6AH2H00ciR4ARTljXrbvw2h+IMtCWjA1jKm119foTDdYbeVpOpeAw
-	ngypxshk6Yo4Q8fhcx8Cv+JJ2CQKA/PFitoUZfK52YTRkXJXfpc/G9RanE6AQhESRy47fanwpdS
-	Tt9pJeNN88AC18OSMD9Asxdo3VqcN+hmwKvZnqL0LXbPEpb/eKP
-X-Received: by 2002:a05:6a20:6a1b:b0:1e0:dd8a:bef7 with SMTP id adf61e73a8af0-1e0e0b2ab0dmr30172888637.13.1733055330068;
-        Sun, 01 Dec 2024 04:15:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHtDQhxEw3jWkfkeUannFdCgJard0mxeGTdxtAgy2BAcPoMlV/2tqw/AjDRhcz4T37CmbQfUg==
-X-Received: by 2002:a05:6a20:6a1b:b0:1e0:dd8a:bef7 with SMTP id adf61e73a8af0-1e0e0b2ab0dmr30172864637.13.1733055329722;
-        Sun, 01 Dec 2024 04:15:29 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:8479:7cee:fba6:54d5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7254176fc93sm6772744b3a.63.2024.12.01.04.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Dec 2024 04:15:29 -0800 (PST)
-Date: Sun, 1 Dec 2024 21:15:27 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Chen-Yu Tsai <wenst@chromium.org>
-Cc: stable@vger.kernel.org, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	=?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-Subject: Re: [PATCH 6.6 433/538] arm64: dts: mediatek: mt8195-cherry: Mark
- USB 3.0 on xhci1 as disabled
-Message-ID: <6itvivhxbjlpky5hn6x2hmc3kzz4regcvmsk226t6ippjad7yk@26xug5lrdqdw>
-References: <20241002125751.964700919@linuxfoundation.org>
- <20241002125809.530901902@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BzXpght1wli7u72P1sKMLc1XUcwaDlxB4HAmc4riHBaNqpo4Qi4L+78ZcjicukGCKMFlN/t12vYVpumZoBdU6ILVLHYnv/9QLIZCUenMPJz7v4WNm9B9KY8DWbtbzbgV0TByE7/MUYBrq5tRk2mc0sQIpGfGHPPJr+BlvNe9hlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZfRzKFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38131C4CECF;
+	Sun,  1 Dec 2024 12:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733056664;
+	bh=SyhOwGg/tG1tw43QpvwtWWOKCOtYIrnX4vFWv77DiZw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nZfRzKFOl6946UqcK4qI2xcllOm+RTFnaBQI3WazDccMOLQmHW19tX0iTNPt1KoH2
+	 gTio/6hsoiO4l8Z5BYO05gJDq3kqUDqSZWVQximP0rgoiIgimXMMZsFi06uZT3eMuD
+	 9Bt20YuFFpL7naoPfL/XnNreSauJb43JqNelPQU1bj1TH5E4KIn1He8lyzmNsNfoHp
+	 eI828BJP202+6r7KkxUbxZBqfZbyM6p1+zntRGGnIk3jZU12JdV/v5jZgnqHOR4DTM
+	 yPO9kIKnx2Ml6qTtMqlhpke7tdzDcF6VNOu4NS14/DTvc07P/O0qAF6W5nTXirt8QD
+	 1XyFu9vErZNbQ==
+Received: by pali.im (Postfix)
+	id 518A075F; Sun,  1 Dec 2024 13:37:35 +0100 (CET)
+Date: Sun, 1 Dec 2024 13:37:35 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Mahmoud Adam <mngyadam@amazon.com>
+Cc: gregkh@linuxfoundation.org, stfrench@microsoft.com,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH] cifs: Fix buffer overflow when parsing NFS reparse points
+Message-ID: <20241201123735.ssqp4v6q57ygmxt5@pali>
+References: <20241122134410.124563-1-mngyadam@amazon.com>
+ <20241123122050.23euwjcjsuqwiodx@pali>
+ <lrkyqmshny9qt.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241002125809.530901902@linuxfoundation.org>
+In-Reply-To: <lrkyqmshny9qt.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
+User-Agent: NeoMutt/20180716
 
-On Wed, Oct 02, 2024 at 03:01:12PM +0200, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
+On Monday 25 November 2024 09:54:02 Mahmoud Adam wrote:
+> Pali Rohár <pali@kernel.org> writes:
 > 
-> ------------------
+> > On Friday 22 November 2024 14:44:10 Mahmoud Adam wrote:
+> >> From: Pali Rohár <pali@kernel.org>
+> >> 
+> >> upstream e2a8910af01653c1c268984855629d71fb81f404 commit.
+> >> 
+> >> ReparseDataLength is sum of the InodeType size and DataBuffer size.
+> >> So to get DataBuffer size it is needed to subtract InodeType's size from
+> >> ReparseDataLength.
+> >> 
+> >> Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
+> >> at position after the end of the buffer because it does not subtract
+> >> InodeType size from the length. Fix this problem and correctly subtract
+> >> variable len.
+> >> 
+> >> Member InodeType is present only when reparse buffer is large enough. Check
+> >> for ReparseDataLength before accessing InodeType to prevent another invalid
+> >> memory access.
+> >> 
+> >> Major and minor rdev values are present also only when reparse buffer is
+> >> large enough. Check for reparse buffer size before calling reparse_mkdev().
+> >> 
+> >> Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+> >> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+> >> Signed-off-by: Pali Rohár <pali@kernel.org>
+> >> Signed-off-by: Steve French <stfrench@microsoft.com>
+> >> [use variable name symlink_buf, the other buf->InodeType accesses are
+> >> not used in current version so skip]
+> >> Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+> >> ---
+> >> This fixes CVE-2024-49996, and applies cleanly on 5.4->6.1, 6.6 and
+> >> later already has the fix.
+> >
+> > Interesting... I have not know that there is CVE number for this issue.
+> > Have you asked for assigning CVE number? Or was it there before?
+> >
+> Nope, It was assigned a CVE here:
+>  https://lore.kernel.org/all/2024102138-CVE-2024-49996-0d29@gregkh/
 > 
-> From: Chen-Yu Tsai <wenst@chromium.org>
-> 
-> commit 09d385679487c58f0859c1ad4f404ba3df2f8830 upstream.
-> 
-> USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
-> pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
-> design.
-> 
-> Mark USB 3.0 as disabled on this controller using the
-> "mediatek,u3p-dis-msk" property.
-> 
-> Reported-by: N�colas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
-> Closes: https://lore.kernel.org/all/9fce9838-ef87-4d1b-b3df-63e1ddb0ec51@notapiano/
-> Fixes: b6267a396e1c ("arm64: dts: mediatek: cherry: Enable T-PHYs and USB XHCI controllers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-> Link: https://lore.kernel.org/r/20240731034411.371178-2-wenst@chromium.org
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> --- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-> @@ -1312,6 +1312,7 @@
->  	usb2-lpm-disable;
->  	vusb33-supply = <&mt6359_vusb_ldo_reg>;
->  	vbus-supply = <&usb_vbus>;
-> +	mediatek,u3p-dis-msk = <1>;
->  };
->  
->  #include <arm/cros-ec-keyboard.dtsi>
-> 
-> 
+> -MNAdam
 
-It looks like this change is applied to xhci3 instead of xhci1. The same
-appears in the backport for linux-6.1.y. Could you take a look?
-
-Thanks,
-
--Koichiro Den
+I did not know that somebody already assigned it there.
+It would be nice in future to inform people involved in the change about
+assigning CVE number for the change.
 
