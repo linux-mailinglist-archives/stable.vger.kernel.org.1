@@ -1,490 +1,430 @@
-Return-Path: <stable+bounces-96034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A629E068B
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8DA9E071D
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F93BB460C0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:18:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93957B2BDB6
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EDF1FE457;
-	Mon,  2 Dec 2024 13:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494EB1FF5F4;
+	Mon,  2 Dec 2024 13:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="iP2692B7"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RP6Pv60C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC37213AA35;
-	Mon,  2 Dec 2024 13:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3939A1FE469
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 13:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733145456; cv=none; b=O+AfJAyEl66i7d4AaAjE2B4EA0K6VuTWyo6+rzymaDZJDkuKv3tLTpqK9afi0tFMnzwOZcYTMESeOxCxDK0tfylWv1bd1FpiAcDf/psg1keQ+OblgEZ0iyfvWckwjlvpqIbCfEtuhiUv0BJTO9FyXaKnXG1fDGb/Y55iYCu2jm8=
+	t=1733146182; cv=none; b=ms7+e01ltcgMCYRbTuWtgC/hcxHqui72HwP0ISUcef3yEMVZMwrs6qQu/RZfncV6rnNOscJmcS9Yqgpbi9MwT7rNLd79LGxXFDn4Xs9g82DUoL2SCOxjG8im/Jf8Z8ZYzmGRsOE7O3+SE0Y3yD/4HhLCO+X8wIThLwckqBT9/z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733145456; c=relaxed/simple;
-	bh=OLJpSX3LNj136Ba0KdFNNezKUJSqfSOM2lpI+TIC/FU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=geXQ2ERecR1Sux7K/isMAJHbzQjPKsjJgdsbz3tcTUenSJjxOPQgVNzJ4Yz6l/EyiW7NH3drcguoDw82ojtNchn8Qu74CN3LmAlkfZYQlQF7SzMedRzureV6mNYijFkYcDlykeQpRtERcOjluT70ybmpm7ZUKFTfw9IEDZ4WwTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=iP2692B7; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sendonly@marcansoft.com)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 2F90241F5F;
-	Mon,  2 Dec 2024 13:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1733145447;
-	bh=OLJpSX3LNj136Ba0KdFNNezKUJSqfSOM2lpI+TIC/FU=;
-	h=From:Date:Subject:To:Cc;
-	b=iP2692B7NwQbgSq+Id0GvlWW2ejP9DL62dburowzPz/pTRjFeRnmb7W54ufkRJciu
-	 154HyNgxUKfidUwlylK7NlsEWb+zJvjoM/JR3ERCXjRMdnef8Sc1DrIOPHRUSg/u02
-	 JA4d83v4VVSLaBCi5/jASTmd7OwBE/23WdsCWizxvU+88msk5Nc+oA9iFAfmFwwLNN
-	 P6yBGxSPpgLc/8nhaOMnUAh31cn5zjZkeNwq5TmNCXNTzs1shUbAvnr4/gaxwHI/dP
-	 JJGCNHlF3H1GW/U8C34HKy/RPuyjdIy9NVJPZNlgwgsvfYchRKfo3Ux8siBCaCqD4i
-	 fimp1RVp4jInA==
-From: Asahi Lina <lina@asahilina.net>
-Date: Mon, 02 Dec 2024 22:17:15 +0900
-Subject: [PATCH] ALSA: usb-audio: Add extra PID for RME Digiface USB
+	s=arc-20240116; t=1733146182; c=relaxed/simple;
+	bh=IcydIlA8N3bMueO2jBxxyUbjfySJpfqhZZqk7Ag1Fd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DCqhBKc5TD0D0c8mz7XRgYhmJNLF4W6swW5E6eENPZTVBFyOzgf41JHfFxptJHOAq+D0OMRNELT4ud+ACNQCPi2AXpaPXYPhaYYmx4mTuaEomooml2U/c5I+f0XzDNEH0/Qy6YoLPV9NXzYBjlHmeMY057cpykKUU42b22tq5Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RP6Pv60C; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-724f1004c79so2794686b3a.2
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 05:29:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733146179; x=1733750979; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1UFk1zETh1yQ+t6dfU68XUkKjwtAc7B2qB2KVqqUbII=;
+        b=RP6Pv60CBpnc7DJejtloTZiDu4bbvPRPoOY+BEwBT470RcFkC1OJXJmx9T7GIjDv2r
+         TG0KJjuCk/6nJKCZofgC8kyUBURfk8BLHAL8teGVkacwLFq1qyfuMjv5vyyMKoznvUNZ
+         A1cR0O4oFAXSIPkjjyyVdvzXQe52LX9Wq9axA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733146179; x=1733750979;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1UFk1zETh1yQ+t6dfU68XUkKjwtAc7B2qB2KVqqUbII=;
+        b=ft9Vag7tetgWuSuqKxSp0/pN7uju+vY1Pf2eQCbojON4V+sbij2/0rvpDSkaZmy1Ml
+         LBN8I+QghLlTeG8cwMpbM/3XglCrKh/YBr7kaaqZTuSLMWg4wp7scfjSjB2Yo+pvPElq
+         77GIn0plsNsOP+GXQof7vubQEAaZgsDlPRouYyaO1nFxoqzZVqjJFilbpa6K9qQJhPNn
+         HPLRyEkHFrThnIqUg57Ot3gTQ0f5SAMgHPWpGYiA2B9/Yv15x++oqzkAZ0ZtRGjkN1uQ
+         JV6NMuCrNWAeBlOzdSiGylY01AwyQUlxdy59NSGls7aYTzDY41awXDLZc/QUIQWlcKft
+         jgYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUV9P8VfQbQR6x7MbW3lVxTxVoLrH1SOpqlYNyLfPjezoi4hxcvZUVGhBMgoM9bkL+t0uz+OoI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBrYoYVt7teOE7IYKZ0xuWo2QseeTfnaGLGNn7/xhv2qCOKX1T
+	wHGDzsI7RBjttKQU3pMvGU06bvjYypVuo9IpiRDUGzLbu1JDy6z9DRb1THKnRKyzs4SeSm1cZ5w
+	=
+X-Gm-Gg: ASbGncsNRUsax2gYaQXvZMvXK6E3S24QXQHd+dvL5/ThdIvxt+mEBVpze/NhyOfj7yU
+	UprXYeXbJ+IRVfshS6TrebsmS4DszHS0KEabBU8TOO10sw26jJMDgSoJMSVx2zhyYA8CKICErmU
+	APG2Qj7RAAKznSqpdgyPoBAPZ45/uAtnHxSsWNyOZM+t2jnMj1FCYf2Y5QPWL/wxaaV2WjEpLr9
+	iXylJEzONMtqaeValLngP0VpSWCUjs5MgP7cWyO+/KEvAbmkxu8JllCzVD6zMsGPX4QYWnlxfBh
+	FhsI/epCHiez
+X-Google-Smtp-Source: AGHT+IGtjEt6+c3GawZ9h1vxMqwWr/6tLcTj2JkD4GdUkeSY22zA5cpRZuQg0F5EssMIO+NSZMY/+Q==
+X-Received: by 2002:a17:90b:390b:b0:2ea:61de:38f1 with SMTP id 98e67ed59e1d1-2ee097baf85mr27934180a91.27.1733146179099;
+        Mon, 02 Dec 2024 05:29:39 -0800 (PST)
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com. [209.85.216.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ee7e468428sm4404419a91.31.2024.12.02.05.29.36
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 05:29:36 -0800 (PST)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ee8c72b52dso1206208a91.0
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 05:29:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX3FnYRTJPE8xv5FLxOPdunPQWmZvtp/ITw2QXI0z1fK1V7lHJrIH6X7LFc1N47+EsTIKTaeOg=@vger.kernel.org
+X-Received: by 2002:a17:90b:390b:b0:2ea:61de:38f1 with SMTP id
+ 98e67ed59e1d1-2ee097baf85mr27933933a91.27.1733146175906; Mon, 02 Dec 2024
+ 05:29:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-rme-digiface-usb-id-v1-1-50f730d7a46e@asahilina.net>
-X-B4-Tracking: v=1; b=H4sIAFqzTWcC/x2MQQqAIBBFrxKzbiArQ7pKtDAdaxZZKEUg3b2hz
- YPH4/8CmRJThrEqkOjmzEcUUXUFbrNxJWQvDm3T9kqAaSf0vHKwjvDKi3T0odEuGGUG3YEsz0S
- Bn/91mt/3A3llORxlAAAA
-X-Change-ID: 20241202-rme-digiface-usb-id-df05cf818653
-To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: Heiko Engemann <heikoengemann@gmail.com>, 
- Cyan Nyan <cyan.vtb@gmail.com>, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Asahi Lina <lina@asahilina.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733145447; l=11996;
- i=lina@asahilina.net; s=20240902; h=from:subject:message-id;
- bh=OLJpSX3LNj136Ba0KdFNNezKUJSqfSOM2lpI+TIC/FU=;
- b=IdNg5bli6ojMRL2JqkteKYnIe5jtU1uXf0bBYSbhBiAlQhQxud/BGoJZQwoJCHTvUG81ef6Vo
- Wbwg1tnmvaeBWjS3A9oHgKoZ7PJTHNAV1xSAFmfKPVx5TkOEJVatDOd
-X-Developer-Key: i=lina@asahilina.net; a=ed25519;
- pk=tpv7cWfUnHNw5jwf6h4t0gGgglt3/xcwlfs0+A/uUu8=
+References: <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+ <20241129110640.GB4108@pendragon.ideasonboard.com> <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
+ <e95b7d74-2c56-4f5a-a2f2-9c460d52fdb4@xs4all.nl> <CANiDSCvj4VVAcQOpR-u-BcnKA+2ifcuq_8ZML=BNOHT_55fBog@mail.gmail.com>
+ <CANiDSCvwzY3DJ+U3EyzA7TCQu2qMUL6L1eTmZYbM+_Tk6DsPaA@mail.gmail.com>
+ <20241129220339.GD2652@pendragon.ideasonboard.com> <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
+ <20241202001846.GD6105@pendragon.ideasonboard.com> <fb321ade-40e7-4b1e-8fcd-c6475767239d@xs4all.nl>
+ <20241202081157.GB16635@pendragon.ideasonboard.com> <445e551c-c527-443c-8913-6999455bd366@xs4all.nl>
+ <633ca07b-6795-429f-874d-474a68396f45@redhat.com> <CANiDSCvmRrf1vT3g9Mzkc790RUo3GuQaFzu5+_G66b3_62RuXw@mail.gmail.com>
+ <839446b3-1d16-4af8-997a-f2a37eb4711e@redhat.com>
+In-Reply-To: <839446b3-1d16-4af8-997a-f2a37eb4711e@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 2 Dec 2024 14:29:24 +0100
+X-Gmail-Original-Message-ID: <CANiDSCszkv=YQPJOSE8EarXWPhZxkk-KR9enLScUOV_P0nzTCg@mail.gmail.com>
+Message-ID: <CANiDSCszkv=YQPJOSE8EarXWPhZxkk-KR9enLScUOV_P0nzTCg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control owned
+ by other fh
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>, 
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-It seems there is an alternate version of the hardware with a different
-PID. User testing reveals this still works with the same interface as far
-as the kernel is concerned, so just add the extra PID. Thanks to Heiko
-Engemann for testing with this version.
+On Mon, 2 Dec 2024 at 13:19, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 2-Dec-24 11:50 AM, Ricardo Ribalda wrote:
+> > On Mon, 2 Dec 2024 at 11:27, Hans de Goede <hdegoede@redhat.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 2-Dec-24 9:44 AM, Hans Verkuil wrote:
+> >>> On 02/12/2024 09:11, Laurent Pinchart wrote:
+> >>>> On Mon, Dec 02, 2024 at 09:05:07AM +0100, Hans Verkuil wrote:
+> >>>>> On 02/12/2024 01:18, Laurent Pinchart wrote:
+> >>>>>> On Fri, Nov 29, 2024 at 11:18:54PM +0100, Ricardo Ribalda wrote:
+> >>>>>>> On Fri, 29 Nov 2024 at 23:03, Laurent Pinchart wrote:
+> >>>>>>>> On Fri, Nov 29, 2024 at 07:47:31PM +0100, Ricardo Ribalda wrote:
+> >>>>>>>>> Before we all go on a well deserved weekend, let me recap what we
+> >>>>>>>>> know. If I did not get something correctly, let me know.
+> >>>>>>>>>
+> >>>>>>>>> 1) Well behaved devices do not allow to set or get an incomplete async
+> >>>>>>>>> control. They will stall instead (ref: Figure 2-21 in UVC 1.5 )
+> >>>>>>>>> 2) Both Laurent and Ricardo consider that there is a big chance that
+> >>>>>>>>> some camera modules do not implement this properly. (ref: years of
+> >>>>>>>>> crying over broken module firmware :) )
+> >>>>>>>>>
+> >>>>>>>>> 3) ctrl->handle is designed to point to the fh that originated the
+> >>>>>>>>> control. So the logic can decide if the originator needs to be
+> >>>>>>>>> notified or not. (ref: uvc_ctrl_send_event() )
+> >>>>>>>>> 4) Right now we replace the originator in ctrl->handle for unfinished
+> >>>>>>>>> async controls.  (ref:
+> >>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/media/usb/uvc/uvc_ctrl.c#n2050)
+> >>>>>>>>>
+> >>>>>>>>> My interpretation is that:
+> >>>>>>>>> A) We need to change 4). We shall not change the originator of
+> >>>>>>>>> unfinished ctrl->handle.
+> >>>>>>>>> B) Well behaved cameras do not need the patch "Do not set an async
+> >>>>>>>>> control owned by another fh"
+> >>>>>>>>> C) For badly behaved cameras, it is fine if we slightly break the
+> >>>>>>>>> v4l2-compliance in corner cases, if we do not break any internal data
+> >>>>>>>>> structure.
+> >>>>>>>>
+> >>>>>>>> The fact that some devices may not implement the documented behaviour
+> >>>>>>>> correctly may not be a problem. Well-behaved devices will stall, which
+> >>>>>>>> means we shouldn't query the device while as async update is in
+> >>>>>>>> progress. Badly-behaved devices, whatever they do when queried, should
+> >>>>>>>> not cause any issue if we don't query them.
+> >>>>>>>
+> >>>>>>> I thought we could detect the stall and return safely. Isn't that the case?
+> >>>>>>
+> >>>>>> We could, but if we know the device will stall anyway, is there a reason
+> >>>>>> not to avoid issuing the request in the first place ?
+> >>>>>>
+> >>>>>>> Why we have not seen issues with this?
+> >>>>>>
+> >>>>>> I haven't tested a PTZ device for a very long time, and you would need
+> >>>>>> to hit a small time window to see the issue.
+> >>>>>>
+> >>>>>>>> We should not send GET_CUR and SET_CUR requests to the device while an
+> >>>>>>>> async update is in progress, and use cached values instead. When we
+> >>>>>>>> receive the async update event, we should clear the cache. This will be
+> >>>>>>>> the same for both well-behaved and badly-behaved devices, so we can
+> >>>>>>>> expose the same behaviour towards userspace.
+> >>>>>>>
+> >>>>>>> seting ctrl->loaded = 0 when we get an event sounds like a good idea
+> >>>>>>> and something we can implement right away.
+> >>>>>>> If I have to resend the set I will add it to the end.
+> >>>>>>>
+> >>>>>>>> We possibly also need some kind of timeout mechanism to cope with the
+> >>>>>>>> async update event not being delivered by the device.
+> >>>>>>>
+> >>>>>>> This is the part that worries me the most:
+> >>>>>>> - timeouts make the code fragile
+> >>>>>>> - What is a good value for timeout? 1 second, 30, 300? I do not think
+> >>>>>>> that we can find a value.
+> >>>>>>
+> >>>>>> I've been thinking about the implementation of uvc_fh cleanup over the
+> >>>>>> weekend, and having a timeout would have the nice advantage that we
+> >>>>>> could reference-count uvc_fh instead of implementing a cleanup that
+> >>>>>> walks over all controls when closing a file handle. I think it would
+> >>>>>> make the code simpler, and possibly safer too.
+> >>>>>>
+> >>>>>>>> Regarding the userspace behaviour during an auto-update, we have
+> >>>>>>>> multiple options:
+> >>>>>>>>
+> >>>>>>>> For control get,
+> >>>>>>>>
+> >>>>>>>> - We can return -EBUSY
+> >>>>>>>> - We can return the old value from the cache
+> >>>>>
+> >>>>> This would match the control behavior best. Only when the operation is
+> >>>>> done is the control updated and the control event sent.
+> >>>>>
+> >>>>> Some questions: is any of this documented for UVC? Because this is non-standard
+> >>>>
+> >>>> No this isn't documented.
+> >>>>
+> >>>>> behavior. Are there applications that rely on this? Should we perhaps add
+> >>>>
+> >>>> I don't know.
+> >>>>
+> >>>>> proper support for this to the control framework? E.g. add an ASYNC flag and
+> >>>>> document this?
+> >>>>
+> >>>> We could, but this is such a specific use case that I don't think is
+> >>>> worth adding complexity to the already complex control framework would
+> >>>> be worth it. What we could do is perhaps adding a flag for the userspace
+> >>>> API, but even there, I never like modelling an API with a single user.
+> >>>
+> >>> Well, it might be a single driver that uses this, but it is also the most
+> >>> used driver by far. I think the only change is to add a flag for this and
+> >>> describe how it should behave. And add v4l2-compliance tests for it.
+> >>>
+> >>> Otherwise no changes to the control framework are needed, I think.
+> >>>
+> >>> Controls with the ASYNC flag set would:
+> >>>
+> >>> - return the old value from the cache.
+> >>> - document that setting a new value while the operation is in progress
+> >>>   results in EBUSY. Document that if the new value is equal to the old value,
+> >>>   then return 0 and do nothing (alternative is to just immediately send
+> >>>   the control changed event, but that might require a control framework change).
+> >>> - when the operation finishes, update the cache to the new value and
+> >>>   send the control changed event.
+> >>> - document that userspace should specify V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK
+> >>>   when subscribing to the control if you calling fh wants to know when
+> >>>   the operation finishes.
+> >>> - document how timeouts should be handled: this is tricky, especially with
+> >>>   bad hardware. I.e. if the hw doesn't send the event, does that mean that
+> >>>   you are never able to set the control since it will stall?
+> >>>   In the end this will just reflect how UVC handles this.
+> >>
+> >> I have been catching up on this thread (I have not read the v3 and v4
+> >> threads yet).
+> >>
+> >> This all started with Ricardo noticing that ctrl->handle may get
+> >> overwritten when another app sets the ctrl, causing the first app
+> >> to set the ctrl to get a V4L2_EVENT for the ctrl (if subscribed)
+> >> even though it set the ctrl itself.
+> >>
+> >> My observations so far:
+> >>
+> >> 1. This is only hit when another app changes the ctrl after the first app,
+> >> in this case, if there is no stall issued by the hw for the second app's
+> >> request, arguably the first app getting the event for the ctrl is correct
+> >
+> > In other words, for non compliant cameras the current behaviour is
+> > correct. For compliant cameras it is broken.
+> >
+> >> since it was changed by the second app. IOW I think the current behavior
+> >> is not only fine, but even desirable. Assuming we only override ctrl->handle
+> >> after successfully sending the set-ctrl request to the hardware.
+> >
+> > We are overriding ctrl->handle unconditionally, even if set-ctrl stalls.
+>
+> Right I was just looking at that. Since we hold chain->ctrl_mutex
+> from the start of uvc_ioctl_s_try_ext_ctrls() until we finish
+> uvc_ctrl_commit() we can delay setting ctrl->handle until
+> a successful commit.
+>
+> Actually looking at this I think I've found another bug, uvc_ctrl_set()
+> always sets ctrl->handle also in the VIDIOC_TRY_EXT_CTRLS case in
+> which case we never send the SET_CUR command to the camera.
+ack
 
-Due to the way quirks-table.h is structured, that means we have to turn
-the entire quirk struct into a macro to avoid duplicating it...
+>
+> And the handle is not part of the data backed up / restored by
+> a rollback.
+>
+> Moving the storing of the handle to a successful commit fixes
+> both the overriding of the handle in the stall case as well
+> as the bogus setting of the handle on VIDIOC_TRY_EXT_CTRLS.
+>
+> So my suggestion would be not touching ctrl->handle from
+> ctrl_set() instead store the handle in a new ctrl->new_handle
+> variable there and copy the new_handle values to handle for affected
+> controls after a successful commit (before releasing the lock).
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Asahi Lina <lina@asahilina.net>
----
- sound/usb/mixer_quirks.c |   1 +
- sound/usb/quirks-table.h | 341 ++++++++++++++++++++++++-----------------------
- sound/usb/quirks.c       |   2 +
- 3 files changed, 176 insertions(+), 168 deletions(-)
+We do not need to do that. Instead, we can move the set to
+uvc_ctrl_commit_entity().
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 6456e87e2f397478aa1d767bc27f15d7b09acb86..a95ebcf4e46e76b19ec439c4ec02f18e650f96a3 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -4059,6 +4059,7 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_bbfpro_controls_create(mixer);
- 		break;
- 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+	case USB_ID(0x2a39, 0x3fa0): /* RME Digiface USB (alternate) */
- 		err = snd_rme_digiface_controls_create(mixer);
- 		break;
- 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 199d0603cf8e592930199097a9fa009a7b5308d8..3f8beacca27a1787987ee7eba08456eb3598231c 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -3616,176 +3616,181 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 		}
- 	}
- },
--{
--	/* Only claim interface 0 */
--	.match_flags = USB_DEVICE_ID_MATCH_VENDOR |
--		       USB_DEVICE_ID_MATCH_PRODUCT |
--		       USB_DEVICE_ID_MATCH_INT_CLASS |
--		       USB_DEVICE_ID_MATCH_INT_NUMBER,
--	.idVendor = 0x2a39,
--	.idProduct = 0x3f8c,
--	.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
--	.bInterfaceNumber = 0,
--	QUIRK_DRIVER_INFO {
--		QUIRK_DATA_COMPOSITE {
-+#define QUIRK_RME_DIGIFACE(pid) \
-+{ \
-+	/* Only claim interface 0 */ \
-+	.match_flags = USB_DEVICE_ID_MATCH_VENDOR | \
-+		       USB_DEVICE_ID_MATCH_PRODUCT | \
-+		       USB_DEVICE_ID_MATCH_INT_CLASS | \
-+		       USB_DEVICE_ID_MATCH_INT_NUMBER, \
-+	.idVendor = 0x2a39, \
-+	.idProduct = pid, \
-+	.bInterfaceClass = USB_CLASS_VENDOR_SPEC, \
-+	.bInterfaceNumber = 0, \
-+	QUIRK_DRIVER_INFO { \
-+		QUIRK_DATA_COMPOSITE { \
- 			/*
- 			 * Three modes depending on sample rate band,
- 			 * with different channel counts for in/out
--			 */
--			{ QUIRK_DATA_STANDARD_MIXER(0) },
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 34, // outputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x02,
--					.ep_idx = 1,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_32000 |
--						SNDRV_PCM_RATE_44100 |
--						SNDRV_PCM_RATE_48000,
--					.rate_min = 32000,
--					.rate_max = 48000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						32000, 44100, 48000,
--					},
--					.sync_ep = 0x81,
--					.sync_iface = 0,
--					.sync_altsetting = 1,
--					.sync_ep_idx = 0,
--					.implicit_fb = 1,
--				},
--			},
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 18, // outputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x02,
--					.ep_idx = 1,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_64000 |
--						SNDRV_PCM_RATE_88200 |
--						SNDRV_PCM_RATE_96000,
--					.rate_min = 64000,
--					.rate_max = 96000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						64000, 88200, 96000,
--					},
--					.sync_ep = 0x81,
--					.sync_iface = 0,
--					.sync_altsetting = 1,
--					.sync_ep_idx = 0,
--					.implicit_fb = 1,
--				},
--			},
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 10, // outputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x02,
--					.ep_idx = 1,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_KNOT |
--						SNDRV_PCM_RATE_176400 |
--						SNDRV_PCM_RATE_192000,
--					.rate_min = 128000,
--					.rate_max = 192000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						128000, 176400, 192000,
--					},
--					.sync_ep = 0x81,
--					.sync_iface = 0,
--					.sync_altsetting = 1,
--					.sync_ep_idx = 0,
--					.implicit_fb = 1,
--				},
--			},
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 32, // inputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x81,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_32000 |
--						SNDRV_PCM_RATE_44100 |
--						SNDRV_PCM_RATE_48000,
--					.rate_min = 32000,
--					.rate_max = 48000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						32000, 44100, 48000,
--					}
--				}
--			},
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 16, // inputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x81,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_64000 |
--						SNDRV_PCM_RATE_88200 |
--						SNDRV_PCM_RATE_96000,
--					.rate_min = 64000,
--					.rate_max = 96000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						64000, 88200, 96000,
--					}
--				}
--			},
--			{
--				QUIRK_DATA_AUDIOFORMAT(0) {
--					.formats = SNDRV_PCM_FMTBIT_S32_LE,
--					.channels = 8, // inputs
--					.fmt_bits = 24,
--					.iface = 0,
--					.altsetting = 1,
--					.altset_idx = 1,
--					.endpoint = 0x81,
--					.ep_attr = USB_ENDPOINT_XFER_ISOC |
--						USB_ENDPOINT_SYNC_ASYNC,
--					.rates = SNDRV_PCM_RATE_KNOT |
--						SNDRV_PCM_RATE_176400 |
--						SNDRV_PCM_RATE_192000,
--					.rate_min = 128000,
--					.rate_max = 192000,
--					.nr_rates = 3,
--					.rate_table = (unsigned int[]) {
--						128000, 176400, 192000,
--					}
--				}
--			},
--			QUIRK_COMPOSITE_END
--		}
--	}
--},
-+			 */ \
-+			{ QUIRK_DATA_STANDARD_MIXER(0) }, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 34, /* outputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x02, \
-+					.ep_idx = 1, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_32000 | \
-+						SNDRV_PCM_RATE_44100 | \
-+						SNDRV_PCM_RATE_48000, \
-+					.rate_min = 32000, \
-+					.rate_max = 48000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						32000, 44100, 48000, \
-+					}, \
-+					.sync_ep = 0x81, \
-+					.sync_iface = 0, \
-+					.sync_altsetting = 1, \
-+					.sync_ep_idx = 0, \
-+					.implicit_fb = 1, \
-+				}, \
-+			}, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 18, /* outputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x02, \
-+					.ep_idx = 1, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_64000 | \
-+						SNDRV_PCM_RATE_88200 | \
-+						SNDRV_PCM_RATE_96000, \
-+					.rate_min = 64000, \
-+					.rate_max = 96000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						64000, 88200, 96000, \
-+					}, \
-+					.sync_ep = 0x81, \
-+					.sync_iface = 0, \
-+					.sync_altsetting = 1, \
-+					.sync_ep_idx = 0, \
-+					.implicit_fb = 1, \
-+				}, \
-+			}, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 10, /* outputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x02, \
-+					.ep_idx = 1, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_KNOT | \
-+						SNDRV_PCM_RATE_176400 | \
-+						SNDRV_PCM_RATE_192000, \
-+					.rate_min = 128000, \
-+					.rate_max = 192000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						128000, 176400, 192000, \
-+					}, \
-+					.sync_ep = 0x81, \
-+					.sync_iface = 0, \
-+					.sync_altsetting = 1, \
-+					.sync_ep_idx = 0, \
-+					.implicit_fb = 1, \
-+				}, \
-+			}, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 32, /* inputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x81, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_32000 | \
-+						SNDRV_PCM_RATE_44100 | \
-+						SNDRV_PCM_RATE_48000, \
-+					.rate_min = 32000, \
-+					.rate_max = 48000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						32000, 44100, 48000, \
-+					} \
-+				} \
-+			}, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 16, /* inputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x81, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_64000 | \
-+						SNDRV_PCM_RATE_88200 | \
-+						SNDRV_PCM_RATE_96000, \
-+					.rate_min = 64000, \
-+					.rate_max = 96000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						64000, 88200, 96000, \
-+					} \
-+				} \
-+			}, \
-+			{ \
-+				QUIRK_DATA_AUDIOFORMAT(0) { \
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE, \
-+					.channels = 8, /* inputs */ \
-+					.fmt_bits = 24, \
-+					.iface = 0, \
-+					.altsetting = 1, \
-+					.altset_idx = 1, \
-+					.endpoint = 0x81, \
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC | \
-+						USB_ENDPOINT_SYNC_ASYNC, \
-+					.rates = SNDRV_PCM_RATE_KNOT | \
-+						SNDRV_PCM_RATE_176400 | \
-+						SNDRV_PCM_RATE_192000, \
-+					.rate_min = 128000, \
-+					.rate_max = 192000, \
-+					.nr_rates = 3, \
-+					.rate_table = (unsigned int[]) { \
-+						128000, 176400, 192000, \
-+					} \
-+				} \
-+			}, \
-+			QUIRK_COMPOSITE_END \
-+		} \
-+	} \
-+}
-+
-+QUIRK_RME_DIGIFACE(0x3f8c),
-+QUIRK_RME_DIGIFACE(0x3fa0),
-+
- #undef USB_DEVICE_VENDOR_SPEC
- #undef USB_AUDIO_DEVICE
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index c5fd180357d1e8cc4560bf03ae1ab3c12e6ee9d1..9f38288a1bede8a360abbd0296f571cdf9a72c7d 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1638,6 +1638,7 @@ int snd_usb_apply_boot_quirk(struct usb_device *dev,
- 			return snd_usb_motu_microbookii_boot_quirk(dev);
- 		break;
- 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+	case USB_ID(0x2a39, 0x3fa0): /* RME Digiface USB (alternate) */
- 		return snd_usb_rme_digiface_boot_quirk(dev);
- 	}
- 
-@@ -1851,6 +1852,7 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 		mbox3_set_format_quirk(subs, fmt); /* Digidesign Mbox 3 */
- 		break;
- 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+	case USB_ID(0x2a39, 0x3fa0): /* RME Digiface USB (alternate) */
- 		rme_digiface_set_format_quirk(subs);
- 		break;
- 	}
+I have a patchset ready with this change.
 
----
-base-commit: adc218676eef25575469234709c2d87185ca223a
-change-id: 20241202-rme-digiface-usb-id-df05cf818653
 
-Cheers,
-~~ Lina
 
+>
+> This will also successfully replace the handle for buggy
+> devices which do not report a stall but instead accept the
+> second SET_CUR. This replacement of handle is the correct thing
+> todo in this case since after the second SET_CUR is accepted
+> there is a change of the ctrl happening from the pov of the
+> issuer of the first SET_CUR.
+>
+> >> 2. This adds a lot of complexity for not sending an event to the app
+> >> which made the change. Hans V. suggested maybe adding some sort of flag
+> >> for async ctrls to the userspace API. I wonder if we should not just
+> >> get rid of this complexity and document that these controls will always
+> >> generate events independent of V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK ?
+> >> That would certainly simplify things, but it raises the questions if
+> >> this will cause issues for existing applications.
+> >
+> > To be honest, I am more concerned about the dangling pointers than the event.
+>
+> Ack.
+>
+> > Updating the doc to say that  ASYC controls always generate events
+> > sounds good to me. But until we reach an agreement on the specifics
+> > I'd rather land this fix and then we can take time to design an API
+> > that works for compliant and non compliant hardware.
+>
+> I agree that we should focus on fixing the dangling pointer problem
+> and your v4 series is heading in the right direction there.
+>
+> I'm not sure if we should take your v4 series as is though, see above.
+>
+> At a minimum I think the issue with setting ctrl->handle in
+> the VIDIOC_TRY_EXT_CTRLS case needs to be fixed.
+>
+> >> Note that if we simply return -EBUSY on set until acked by a status
+> >> event we also avoid the issue of ctrl->handle getting overwritten,
+> >> but that relies on reliable status events; or requires timeout handling.
+> >>
+> >> 3. I agree with Ricardo that a timeout based approach for cameras which
+> >> to not properly send status events for async ctrls is going to be
+> >> problematic. Things like pan/tilt homing can take multiple seconds which
+> >> is really long to use as a timeout if we plan to return -EBUSY until
+> >> the timeout triggers. I think it would be better to just rely on
+> >> the hardware sending a stall, or it accepting and correctly handling
+> >> a new CUR_SET command while the previous one is still being processed.
+> >>
+> >> I guess we can track if the hw does send status events when async ctrls
+> >> complete and then do the -EBUSY thing without going out to the hw after
+> >> the first time an async ctrl has been acked by a status event.
+> >>
+> >> And then combine that with the current behavior of overwriting ctrl->handle
+> >> until the ctrl has been marked as having working status events. So:
+> >>
+> >> a) In case we do not know yet if a ctrl gets status-event acks; and
+> >> on devices without reliable status events keep current behavior.
+> >>
+> >> b) As soon as we know a ctrl has reliable status events, switch to
+> >> returning -EBUSY if a set is pending (as indicated by ctrl->handle
+> >> being set).
+> >>
+> >> I don't like the fact that this changes the behavior after the first
+> >> status event acking an async ctrl, but I don't really see another way.
+> >
+> > If I understood you correctly, you are proposing the following quirk:
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > index f0e8a436a306..1a554afeaa2f 100644
+> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > @@ -1132,6 +1132,9 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+> >         if ((ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR) == 0)
+> >                 return -EACCES;
+> >
+> > +       if (ctrl->handle && ctrl->async_event_works)
+> > +               return -EBUSY;
+> > +
+> >         ret = __uvc_ctrl_load_cur(chain, ctrl);
+> >         if (ret < 0)
+> >                 return ret;
+> > @@ -1672,6 +1675,8 @@ bool uvc_ctrl_status_event_async(struct urb> *urb, struct uvc_video_chain *chain,
+> >         /* Flush the control cache, the data might have changed. */
+> >         ctrl->loaded = 0;
+> >
+> > +       ctrl->async_event_works = true;
+> > +
+> >         if (list_empty(&ctrl->info.mappings))
+> >                 return false;
+> >
+> > @@ -1982,6 +1987,9 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+> >         if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+> >                 return -EACCES;
+> >
+> > +       if (ctrl->handle && ctrl->async_event_works)
+> > +               return -EBUSY;
+> > +
+>
+> Yes this is what I'm proposing, except that this check should be
+> skipped in the VIDIOC_TRY_EXT_CTRLS case. I think we need to add
+> a "bool try" parameter to uvc_ctrl_set() and not look at / set
+> [new_]handle when this is set.
+
+SGTM. Let's add this improvement later.
+
+>
+>
+>
+> >         /* Clamp out of range values. */
+> >         switch (mapping->v4l2_type) {
+> >         case V4L2_CTRL_TYPE_INTEGER:
+> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > index e0e4f099a210..0ef7c594eecb 100644
+> > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > @@ -154,6 +154,7 @@ struct uvc_control {
+> >                                  * File handle that initially changed the
+> >                                  * async control.
+> >                                  */
+> > +       bool async_event_works;
+> >  };
+> >
+> > The benefit is that we can predict a device returning STALL without
+> > having to actually do the set/get operation.
+> >
+> > We can add it as a follow-up patch.
+>
+> Another benefit would be correctly returning -EBUSY when trying to get
+> the ctrl. I agree this could be done as a follow-up.
+>
+> Regards,
+>
+> Hans
+>
+>
+
+
+-- 
+Ricardo Ribalda
 
