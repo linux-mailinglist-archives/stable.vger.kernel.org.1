@@ -1,137 +1,189 @@
-Return-Path: <stable+bounces-95938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B899DFBC2
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:18:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DB89DFBD0
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:24:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2ABBB20EE5
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:18:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A3D7162A3E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E958B1F9409;
-	Mon,  2 Dec 2024 08:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1A61F9AA9;
+	Mon,  2 Dec 2024 08:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="jKCt5r5A"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A474430
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 08:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EE51D6DDC
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 08:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733127518; cv=none; b=uuDCuz51TQCW9v8mbu7IGjrCSxskGPi9TNngtwvUOf7/hep01tJStbNPMk59QeJak3I9KutHsUlTUiSVLGirz1NdN1SMUhIRjRCv/KH3QK3IGDjzjhhhFla5WT02ddBMIeEtgluuFiB0V94mOC32Sj4ASgCSfuDSmnSaYHgoi30=
+	t=1733127864; cv=none; b=Nc8f2ktVo7qJk6aXSXDvvq8fJJbbknLnrCo0XYDp57WA+tc+4Z0IjB4XkTBFgVJAsXEpuS8Fz0jRRlxeeRixX450CBWN2vyWVSuOmVfaQFk56HniUTI20JpGw1BQMzO7u2l9w6uO6440IZlDLU0N3/sL3leKsx8t+8ahxGF7hoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733127518; c=relaxed/simple;
-	bh=ReWIu+SyAkv15E2qSKduhEEPr7OW9FuqBsoOCivd9W4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=DXEit7ah7TkVl6fgWCjpJfHzeZcoOylzux4qx8EihR2PMhoLZuvgDPhw8Xk3DaDbKRJyIkxfcgtiAuuX8LrThuNhWgIKitNrZwUheHhU4Y7XclH4YpoecS5jeoCligVcjH6RCngDQYg9gmEz4gCefP1s9oUKOQX2C+x/MKVojyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-26-XoLKLSZoNi6PIY7yenUkHg-1; Mon, 02 Dec 2024 08:18:28 +0000
-X-MC-Unique: XoLKLSZoNi6PIY7yenUkHg-1
-X-Mimecast-MFC-AGG-ID: XoLKLSZoNi6PIY7yenUkHg
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 2 Dec
- 2024 08:17:59 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 2 Dec 2024 08:17:59 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Dominique MARTINET' <dominique.martinet@atmark-techno.com>, Oliver Neukum
-	<oneukum@suse.com>
-CC: "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Greg Thelen
-	<gthelen@google.com>, John Sperbeck <jsperbeck@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-Subject: RE: [PATCH net] net: usb: usbnet: fix name regression
-Thread-Topic: [PATCH net] net: usb: usbnet: fix name regression
-Thread-Index: AQHbRG456Phg3HaMXk68vY32fDXRdrLSmKCA
-Date: Mon, 2 Dec 2024 08:17:59 +0000
-Message-ID: <e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
+	s=arc-20240116; t=1733127864; c=relaxed/simple;
+	bh=/ZHSv0vZid3O406LMuPtfLpuD5C4UcF09GoLOSYaEhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbURdiFdTGXCZOLtPlAbdxgY8h5iQ8uIeXEup4xd//WeRbeXGkC/ZDqtzoJ2W+RyH781T5225/7zt29/Qt14OacPq3MKEcSfJPiPBxr0Dtai1VyJDbC8vWT+ERyEdX4W6GoYxI0p3YB6JBt22Uik1NKBcXdtU+KXgK+kfwPUlWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=jKCt5r5A; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=jKCt5r5A;
+	dkim-atps=neutral
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id 31F9E4CD
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 17:24:21 +0900 (JST)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7254237c888so3517825b3a.1
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 00:24:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1733127860; x=1733732660; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=t/h3ksscezU2AFx7jalcVKwx+o7bQGfGeG3iipVTlMA=;
+        b=jKCt5r5AFfYI74IP8XwOTK2CMfU8hOSNjY7X7/cvZaWjm1XGRAvYigD5FD8lwey2QW
+         URc9wQkuVYouyGB79vLX4Nu3wmxwx5amiDv/16jRPypDwrlMXb6raxO1qPiZFyS2b0nm
+         cEfoK5obQRBIwKE6pDXupk35qugxTyoCYFIQKI5GbHnv+8ouIG4SD/il0NQFoigumX8N
+         //RB7lhTWbdSMPwtuTUlt5b7jH+Wit+bcupfg18Qg3gUxA3CVijfQ0OSjJe4cPCWszD6
+         rS5fGukYNah9qn6Ar/vU0PB8HdUhygmnb4Xvcqkl1imE/98k5WKu8E0LKmEbhrIrsJ1z
+         igCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733127860; x=1733732660;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t/h3ksscezU2AFx7jalcVKwx+o7bQGfGeG3iipVTlMA=;
+        b=U2Bs1bcJUEkoL0mS2W/J76DumMhBYEVCfVr+tI3dtpTpjAyhyeI3w6DAX98Eb8C8+8
+         dYAQAchht8FwOO9VM1uBQx5VDmm/gjQwQFiFykCbbafidJlIgi/iCtocdekuTwDfGtvS
+         fHlyQtUdavusbXJO9U9puDY16GGwu5xF82dWNz19Bf8ho5V33usYdDQ0Safz6iI9jzUs
+         eVP1PMemqr1UX9K6zXogredm80ATikNxhozIED/0TyBlws7VrHSr0wcL89B8pgLJDU2U
+         EEJ30a1/QWbLSMFBd1YumKmQAAq+PwLghDY+CcVxcnwF0IU/qmlTjGpgPWNU7IJlHh6L
+         n9NA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcV07paP4Zb3vVeFzAWPJXSp4Kz544mcizFKZlGX3mV7SRC9vl9oezCaRQ1MvtwqdHWDH1dt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4a54346NYCAriAbo2GDBx4seGlclVZX5V/siUgTp9TJER+OIM
+	BC3SrkClNfsbiFEtsSbr4E27OdO6EqiDREI944zkK1sbsOjF/6LPZekFlcvzjfNXNHOJl0vDoST
+	fVKOJKji3nmIqCITKShEKVN7/M1MJCyX8RG8i1LI6mEyLh0EuioBksQk=
+X-Gm-Gg: ASbGncuU60Ap2Hy5CpoBGIbQrfJPpCeAtZGk/4J2fwLJOI2rV3FFND4NzBXSneHjGi7
+	WRXlKnT77gZb1wXdSEH6+04L1jO0coZlnWK9v5EZQgyW3cXyJvSKX62W+skaEwumPtMVXQCKIgM
+	EKytRvRLUDX1otEFgySW9hZrU7GTscd76iM0ADfrBLeINHZU5/UFnpf73BEwMXiw9Wla5kAyogA
+	6hL70p5dpTNNeMRAHtsCN5m01AmpFQjvVVI5RtPkjI5h/wW2HsUR7sMCmYBSvZzR9zr63mFsYJV
+	88RUVFc2CVZKznL0kT7ddg3vqhi56Ro=
+X-Received: by 2002:a17:902:f64f:b0:20c:a0a5:a181 with SMTP id d9443c01a7336-21501381b6fmr305187005ad.19.1733127860199;
+        Mon, 02 Dec 2024 00:24:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF67NsKV2/CWe50pDLshUkUs6WDDf2ByoBORdWZB1Kq2UVOK27KewyrPjxmWntBKQjczEsiyA==
+X-Received: by 2002:a17:902:f64f:b0:20c:a0a5:a181 with SMTP id d9443c01a7336-21501381b6fmr305186825ad.19.1733127859875;
+        Mon, 02 Dec 2024 00:24:19 -0800 (PST)
+Received: from localhost (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21584fbbb9esm19347595ad.153.2024.12.02.00.24.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 02 Dec 2024 00:24:19 -0800 (PST)
+Date: Mon, 2 Dec 2024 17:24:08 +0900
+From: Dominique MARTINET <dominique.martinet@atmark-techno.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Oliver Neukum <oneukum@suse.com>, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	Greg Thelen <gthelen@google.com>,
+	John Sperbeck <jsperbeck@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
+Message-ID: <Z01uqI7hUNyCGFcw@atmark-techno.com>
 References: <20241017071849.389636-1-oneukum@suse.com>
  <Z00udyMgW6XnAw6h@atmark-techno.com>
-In-Reply-To: <Z00udyMgW6XnAw6h@atmark-techno.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+ <2024120259-diaphragm-unspoken-5fe0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3vn9QO8hW4fM2fShPW1NFigTvqTn_4EfFLfLU27m43U_1733127507
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2024120259-diaphragm-unspoken-5fe0@gregkh>
 
-RnJvbTogRG9taW5pcXVlIE1BUlRJTkVUDQo+IFNlbnQ6IDAyIERlY2VtYmVyIDIwMjQgMDM6NTAN
-Cj4gDQo+IEhpLA0KPiANCj4gT2xpdmVyIE5ldWt1bSB3cm90ZSBvbiBUaHUsIE9jdCAxNywgMjAy
-NCBhdCAwOToxODozN0FNICswMjAwOg0KPiA+IFRoZSBmaXggZm9yIE1BQyBhZGRyZXNzZXMgYnJv
-a2UgZGV0ZWN0aW9uIG9mIHRoZSBuYW1pbmcgY29udmVudGlvbg0KPiA+IGJlY2F1c2UgaXQgZ2F2
-ZSBuZXR3b3JrIGRldmljZXMgbm8gcmFuZG9tIE1BQyBiZWZvcmUgYmluZCgpDQo+ID4gd2FzIGNh
-bGxlZC4gVGhpcyBtZWFucyB0aGF0IHRoZSBjaGVjayBmb3IgdGhlIGxvY2FsIGFzc2lnbm1lbnQg
-Yml0DQo+ID4gd2FzIGFsd2F5cyBuZWdhdGl2ZSBhcyB0aGUgYWRkcmVzcyB3YXMgemVyb2VkIGZy
-b20gYWxsb2NhdGlvbiwNCj4gPiBpbnN0ZWFkIG9mIGZyb20gb3ZlcndyaXRpbmcgdGhlIE1BQyB3
-aXRoIGEgdW5pcXVlIGhhcmR3YXJlIGFkZHJlc3MuDQo+IA0KPiBTbyB3ZSBoaXQgdGhlIGV4YWN0
-IGludmVyc2UgcHJvYmxlbSB3aXRoIHRoaXMgcGF0Y2g6IG91ciBkZXZpY2Ugc2hpcHMgYW4NCj4g
-TFRFIG1vZGVtIHdoaWNoIGV4cG9zZXMgYSBjZGMtZXRoZXJuZXQgaW50ZXJmYWNlIHRoYXQgaGFk
-IGFsd2F5cyBiZWVuDQo+IG5hbWVkIHVzYjAsIGFuZCB3aXRoIHRoaXMgcGF0Y2ggaXQgc3RhcnRl
-ZCBiZWluZyBuYW1lZCBldGgxLCBicmVha2luZw0KPiB0b28gbWFueSBoYXJkY29kZWQgdGhpbmdz
-IGV4cGVjdGluZyB0aGUgbmFtZSB0byBiZSB1c2IwIGFuZCBtYWtpbmcgb3VyDQo+IGRldmljZXMg
-dW5hYmxlIHRvIGNvbm5lY3QgdG8gdGhlIGludGVybmV0IGFmdGVyIHVwZGF0aW5nIHRoZSBrZXJu
-ZWwuDQoNCkVybSBkb2VzIHRoYXQgbWVhbiB5b3VyIG1vZGVtIGhhcyBhIGxvY2FsbHkgYWRtaW5p
-c3RlcmVkIE1BQyBhZGRyZXNzPw0KSXQgcmVhbGx5IHNob3VsZG4ndC4NCg0KPiBMb25nIHRlcm0g
-d2UnbGwgcHJvYmFibHkgYWRkIGFuIHVkZXYgcnVsZSBvciBzb21ldGhpbmcgdG8gbWFrZSB0aGUg
-bmFtZQ0KPiBleHBsaWNpdCBpbiB1c2Vyc3BhY2UgYW5kIG5vdCByaXNrIHRoaXMgaGFwcGVuaW5n
-IGFnYWluLCBidXQgcGVyaGFwcw0KPiB0aGVyZSdzIGEgYmV0dGVyIHdheSB0byBrZWVwIHRoZSBv
-bGQgYmVoYXZpb3I/DQo+IA0KPiAoSW4gcGFydGljdWxhciB0aGlzIGhpdCBhbGwgc3RhYmxlIGtl
-cm5lbHMgbGFzdCBtb250aCBzbyBJJ20gc3VyZSB3ZQ0KPiB3b24ndCBiZSB0aGUgb25seSBvbmVz
-IGdldHRpbmcgYW5ub3llZCB3aXRoIHRoaXMuLi4gUGVyaGFwcyByZXZlcnRpbmcNCj4gYm90aCBw
-YXRjaGVzIGZvciBzdGFibGUgYnJhbmNoZXMgbWlnaHQgbWFrZSBzZW5zZSBpZiBubyBiZXR0ZXIg
-d2F5DQo+IGZvcndhcmQgaXMgZm91bmQgLS0gSSd2ZSBhZGRlZCBzdGFibGVAIGluIGNjIGZvciBo
-ZWFkcyB1cC9vcGluaW9ucykNCj4gDQo+IA0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3VzYi91c2Ju
-ZXQuYw0KPiA+IEBAIC0xNzY3LDcgKzE3NjcsOCBAQCB1c2JuZXRfcHJvYmUgKHN0cnVjdCB1c2Jf
-aW50ZXJmYWNlICp1ZGV2LCBjb25zdCBzdHJ1Y3QgdXNiX2RldmljZV9pZCAqcHJvZCkNCj4gPiAg
-CQkvLyBjYW4gcmVuYW1lIHRoZSBsaW5rIGlmIGl0IGtub3dzIGJldHRlci4NCj4gPiAgCQlpZiAo
-KGRldi0+ZHJpdmVyX2luZm8tPmZsYWdzICYgRkxBR19FVEhFUikgIT0gMCAmJg0KPiA+ICAJCSAg
-ICAoKGRldi0+ZHJpdmVyX2luZm8tPmZsYWdzICYgRkxBR19QT0lOVFRPUE9JTlQpID09IDAgfHwN
-Cj4gPiAtCQkgICAgIChuZXQtPmRldl9hZGRyIFswXSAmIDB4MDIpID09IDApKQ0KPiA+ICsJCSAg
-ICAgLyogc29tZWJvZHkgdG91Y2hlZCBpdCovDQo+ID4gKwkJICAgICAhaXNfemVyb19ldGhlcl9h
-ZGRyKG5ldC0+ZGV2X2FkZHIpKSkNCj4gDQo+IC4uLiBvciBhY3R1YWxseSBub3cgSSdtIGxvb2tp
-bmcgYXQgaXQgYWdhaW4sIHBlcmhhcHMgaXMgdGhlIGNoZWNrIGp1c3QNCj4gYmFja3dhcmRzLCBv
-ciBhbSBJIGdldHRpbmcgdGhpcyB3cm9uZz8NCj4gcHJldmlvdXMgY2hlY2sgd2FzIHJlbmFtZSBp
-ZiAobWFjWzBdICYgMHgyID09IDApLCB3aGljaCByZWFkcyB0byBtZSBhcw0KPiAibm9ib2R5IHNl
-dCB0aGUgMm5kIGJpdCINCj4gbmV3IGNoZWNrIG5vdyByZW5hbWVzIGlmICFpc196ZXJvLCBzbyBy
-ZW5hbWVzIGlmIGl0IHdhcyBzZXQsIHdoaWNoIGlzDQo+IHRoZSBvcHBvc2l0ZT8uLi4NCg0KVGhl
-IDJuZCBiaXQgKGFrYSBtYWNbMF0gJiAyKSBpcyB0aGUgJ2xvY2FsbHkgYWRtaW5pc3RlcmVkJyBi
-aXQuDQpUaGUgaW50ZW50aW9uIG9mIHRoZSBzdGFuZGFyZCB3YXMgdGhhdCBhbGwgbWFudWZhY3R1
-cmVycyB3b3VsZCBnZXQNCmEgdmFsaWQgMTQtYml0IE9VSSBhbmQgdGhlIEVFUFJPTSAob3IgZXF1
-aXZhbGVudCkgd291bGQgY29udGFpbiBhbg0KYWRkcmVzc2VzIHdpdGggdGhhdCBiaXQgY2xlYXIs
-IHN1Y2ggYWRkcmVzc2VzIHNob3VsZCBiZSBnbG9iYWxseSB1bmlxdWUuDQpBbHRlcm5hdGl2ZWx5
-IHRoZSBsb2NhbCBuZXR3b3JrIGFkbWluaXN0cmF0b3IgY291bGQgYXNzaWduIGFuIGFkZHJlc3MN
-CndpdGggdGhhdCBiaXQgc2V0LCByZXF1aXJlZCBieSBwcm90b2NvbHMgbGlrZSBERUNuZXQuDQoN
-ClRoaXMgaGFzIG5ldmVyIGFjdHVhbGx5IGJlZW4gc3RyaWN0bHkgdHJ1ZSwgYSBmZXcgbWFudWZh
-Y3R1cmVycyB1c2VkDQonbG9jYWxseSBhZG1pbmlzdGVyZWQgYWRkcmVzc2VzJyAoMDI6Y2Y6MWY6
-eHg6eHg6eHggY29tZXMgdG8gbWluZCkNCmFuZCBzeXN0ZW1zIHR5cGljYWxseSBhbGxvdyBhbnkg
-KG5vbi1icm9hZGNhc3QpIGJlIHNldC4NCg0KU28gYmFzaW5nIGFueSBkZWNpc2lvbiBvbiB3aGV0
-aGVyIGEgTUFDIGFkZHJlc3MgaXMgbG9jYWwgb3IgZ2xvYmFsDQppcyBhbHdheXMgZ29pbmcgdG8g
-YmUgY29uZnVzaW5nLg0KDQpMaW51eCB3aWxsIGFsbG9jYXRlIGEgcmFuZG9tIChsb2NhbGx5IGFk
-bWluaXN0ZXJlZCkgYWRkcmVzcyBpZiBub25lDQppcyBmb3VuZCAtIHVzdWFsbHkgZHVlIHRvIGEg
-Y29ycnVwdCBlZXByb20uDQoNCglEYXZpZA0KDQo+IA0KPiA+ICAJCQlzdHJzY3B5KG5ldC0+bmFt
-ZSwgImV0aCVkIiwgc2l6ZW9mKG5ldC0+bmFtZSkpOw0KPiA+ICAJCS8qIFdMQU4gZGV2aWNlcyBz
-aG91bGQgYWx3YXlzIGJlIG5hbWVkICJ3bGFuJWQiICovDQo+IA0KPiBUaGFua3MsDQo+IC0tDQo+
-IERvbWluaXF1ZSBNYXJ0aW5ldA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJy
-YW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lz
-dHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+Greg Kroah-Hartman wrote on Mon, Dec 02, 2024 at 07:29:52AM +0100:
+> On Mon, Dec 02, 2024 at 12:50:15PM +0900, Dominique MARTINET wrote:
+> > So we hit the exact inverse problem with this patch: our device ships an
+> > LTE modem which exposes a cdc-ethernet interface that had always been
+> > named usb0, and with this patch it started being named eth1, breaking
+> > too many hardcoded things expecting the name to be usb0 and making our
+> > devices unable to connect to the internet after updating the kernel.
+> > 
+> > 
+> > Long term we'll probably add an udev rule or something to make the name
+> > explicit in userspace and not risk this happening again, but perhaps
+> > there's a better way to keep the old behavior?
+> > 
+> > (In particular this hit all stable kernels last month so I'm sure we
+> > won't be the only ones getting annoyed with this... Perhaps reverting
+> > both patches for stable branches might make sense if no better way
+> > forward is found -- I've added stable@ in cc for heads up/opinions)
+> 
+> Device names have NEVER been stable.  They move around and can change on
+> every boot, let alone almost always changing between kernel versions.
+> That's why we created udev, to solve this issue.
 
+Yes, I agree and we will add an udev rule to enforce the name for later
+updates (I really am just a messenger here as "the kernel guy", after
+having been asked why did this change), and I have no problem with this
+behavior changing on master whatever the direction this takes
+(... assuming the check was written as intended)
+
+Now you're saying this I guess the main reason we were affected is that
+alpine never made the "stable network interface name" systemd-udev
+switch, so for most people that interface will just be named
+enx028072781510 anyway and most people will probably not notice this...
+(But then again these don't use the "new" name either, so they just
+don't care)
+
+
+With that said, and while I agree the names can change, I still think
+there's some hierarchy here -- the X part of ethX/usbX can change on
+every boot and I have zero problem with that, but I wouldn't expect the
+"type" part to change so easily, and I would have assume stable kernels
+would want to at least try to preserve these unless there is a good
+reason not to.
+The two commits here (8a7d12d674ac ("net: usb: usbnet: fix name
+regression") and bab8eb0dd4cb ("usbnet: modern method to get random
+MAC") before it) are just cleanup I see no problem reverting them for
+stable kernels if they cause any sort of issue, regardless of how
+userspace "should" work.
+
+
+> But how is changing the MAC address changing the device naming here?
+> How are they linked to suddenly causing the names to switch around?
+
+That's also something I'd like to understand :)
+
+Apparently, usbnet had a rule that said that if a device is ethernet,
+and either (it's not point-to-point) or (mac[0] & 0x2 == 0) then we
+would rename it to ethX instad of the usbX name.
+
+commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") made it so
+the last part of the check would rename it to ethX if the mac has been
+set by any driver, so my understanding is that all drivers that used to
+set the mac to something that avoided the 0x2 would now get renamed?...
+But as you can see above from the stable device name I gave, the mac
+address does start with 02, so I don't understand why it hadn't been
+renamed before or what this rules mean and why it's here...?
+
+The commit message mentions commit bab8eb0dd4cb ("usbnet: modern method
+to get random MAC") which changed the timing usbnet would set a random
+mac, but in my case the mac does come from the hardware (it's stable
+across reboots), so I guess I wasn't affected by that commit but the new
+one trying to make it better for people with a random mac made it worse
+for my case?
+
+
+Anyway, as said above we'll try to figure something for udev, and this
+will hopefully be a heads up for anyone else falling here doing a web
+search.
+(Our users are rather adverse to changes so I don't see myself enabling
+static interface names anytime soon, but time will tell how that turns
+out...)
+
+Cheers,
+-- 
+Dominique
 
