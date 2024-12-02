@@ -1,110 +1,78 @@
-Return-Path: <stable+bounces-96124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF6F9E08E7
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:44:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70A59E08AD
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C05B4BC264B
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C2F280DB2
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93851B394D;
-	Mon,  2 Dec 2024 16:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC621B0F13;
+	Mon,  2 Dec 2024 16:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b="FGI73+x+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="evqxDflA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EVC3Xqtf"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC941AC444
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C811A76CE
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733156604; cv=none; b=dVHzyFmbJU02Jgjs/+vwXQRSI5ZqISfk/QTrs81rrkdG0W1bsrVBN41qzbGhFbyWoh2jmJT3pCdIk2BnNaLHYDRAD7PTosQSdsWzqxMJpG39y5zhKzfMaDZJ60+GvJ4pMpdX+YYMExtLTxJqWQ0N/09OvQQqCKWUiART2oKdIc0=
+	t=1733157321; cv=none; b=k4Qh37Y0+AniB/tRnGIkKg4QEWMEaPZF6Lwnvj7Bf/z1yoiLO74wZ7YCUwAW675OIlP0gUjPpOBNMfb4IV8pByCITeJT8Lb8lBgus/tY61mVWaJnMWCgL05Uh600xeEuM+vF8gN8LrIpw8D9I5jdPxP3Esgzog/wDhwbGw2fQUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733156604; c=relaxed/simple;
-	bh=05G92EVrlhv3yOxiX9FIlWSU+y2sTMaXIb3mVRKEkto=;
+	s=arc-20240116; t=1733157321; c=relaxed/simple;
+	bh=2WJjzL+pv8PFUXma2u5w7rZ1vfalpOgBja+PmYhDx+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEhtv/fuzqXYj3Ob9HGjQWnFpMoQqX52ZV3LkPTKVzSo5Ho8UjnDSX8VBdR1Wgp6dsPrX/xtfVpv2DMWlTJvvjcw2HDb/+SUkjpU1IgvUEPEOoMEfldjXq0FjlfJJqIFuZdN5p3tCT1k5WyNtMLT+ACjhoJLRe03DDaadvXyFt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc; spf=pass smtp.mailfrom=jfarr.cc; dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b=FGI73+x+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=evqxDflA; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jfarr.cc
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0E1A613806B2;
-	Mon,  2 Dec 2024 11:23:20 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 02 Dec 2024 11:23:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1733156600; x=
-	1733243000; bh=D+hTh3v2GmvzPejfCAFGnfz26QpQzRpFO4C3N6oL8iw=; b=F
-	GI73+x+C61KJ+YimR24UajIgCxXlJ0zMhyB3xAv/lZ+3oIw/q/GTYoyfbc84CtA6
-	QPt3GjwzTayo75pFPq/ZgSVlR+pe1ARHpusiNPR6on3rSClskYN6WwYQsnz4NL5h
-	my59isx9wRbLlJWUK9OUQO/gVAEIRkEnxb/V2wURkrd40EAcoa2sQ6Nvt2AKtzd3
-	ja+ppMFMmJhuiI6IbJnwTmg3WLklEAkOI/kifZHFAKlcgCf/iE0hm01MOpXrU/YX
-	IvKHbhsZaOHbjExqpPdtfzcF2nStoaOQqpdCJ4OWd2AYUER0oTqgX2pGL2BtUKtp
-	M+M5RNOjXCgcmo9xq4OFA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1733156600; x=1733243000; bh=D
-	+hTh3v2GmvzPejfCAFGnfz26QpQzRpFO4C3N6oL8iw=; b=evqxDflAcimzzYAN4
-	znKyvk6yF3GHTGabE3nt45dCnfftywMp0pJ/qoe33W97zvZF6B37OrHcgFUTg1Dr
-	vt3kpOhu9/ZYaI2476x4rQAwcFoHRgcNWDEtlEjxr8ss3TN/ffwXUKMPNvODOfQ7
-	OwJi34OpQ0C6VDLY6aLbz2hplyS+JRnKBW1sllbotwpzly1WGAn6eWd+brjJ0ltH
-	TTU9VC369EDcBbeW/MTpf0Arw0DJXgtoamzCtI64u0vadpJ7SwjFJHYtdIVFC9JH
-	shuwzhmzGmjtNvdNimWlO/ZYEM4cqNIwSFnBnS4WC9mX0ZBDRCJQcnw9BnVMeLB3
-	buDjg==
-X-ME-Sender: <xms:995NZ5F5sgmFVhriiKKvVw9HNUS4bStAXN7rRKNTpg5qTh2qh1UyCQ>
-    <xme:995NZ-Uk2JFtp4dNL-7yFomrpdkkHAkO20ol6dWa6r6VUCF7fIqAN05pfi7d79ZYk
-    NsMCE97x9HZDT4mTN8>
-X-ME-Received: <xmr:995NZ7LLqdrgaEvAHN86UbOj_rIh3lxE1pX4WnRnKvrCMb4t6DUm-XgnTtXR2DjlWP-DAhcVyY7KdpGVt6u4eAR_OcueBbg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrheelgdekiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenfghrlhcuvffnffculddutddmnecujfgurhephffvvefufffkofgj
-    fhgggfestdekredtredttdenucfhrhhomheplfgrnhcujfgvnhgurhhikhcuhfgrrhhruc
-    eokhgvrhhnvghlsehjfhgrrhhrrdgttgeqnecuggftrfgrthhtvghrnhepheetgeekteef
-    kefftdeuuedujeevhffhfeejgfehvdejtefftddtleefvdejhfejnecuffhomhgrihhnpe
-    hgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhgnhhurdhorhhgpdhllhhvmhdr
-    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hkvghrnhgvlhesjhhfrghrrhdrtggtpdhnsggprhgtphhtthhopeekpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdp
-    rhgtphhtthhopehkvghrnhgvlhesjhhfrghrrhdrtggtpdhrtghpthhtohepnhgrthhhrg
-    hnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeholhhivhgvrhdrshgrnhhgsehinhht
-    vghlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepthhhohhrshhtvghnrdgslhhumheslhhinhhugidruggvvhdprhgtphhtthhopehk
-    vggvsheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:995NZ_ESSRA5t3_tpXla0oHS_riattwhMr39NYtRm2pC-hG5HnXAfg>
-    <xmx:995NZ_VakUZXdrjs2qVrkmZ8zAZszJ_vG9gaXEnf6VU8HSCkKKjoyQ>
-    <xmx:995NZ6N0XnQPGQB8BoUdgTIEubIgLOBilv1ch7qilWPLp7Hrl8qORA>
-    <xmx:995NZ-2s47sXXjo_2ehgszqNhmb1lNcUhpaZnfY5VGxwVCEcWoSnQQ>
-    <xmx:-N5NZ7oECx3obdgcEgjI8ZkJG8qWjyke-ylLaWZqAWHrL8rxASokEuBF>
-Feedback-ID: i01d149f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Dec 2024 11:23:18 -0500 (EST)
-From: Jan Hendrik Farr <kernel@jfarr.cc>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.6.y] Compiler Attributes: disable __counted_by for clang < 19.1.3
-Date: Mon,  2 Dec 2024 17:23:07 +0100
-Message-ID: <20241202162307.325302-1-kernel@jfarr.cc>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2024120221-gizzard-thermos-ba19@gregkh>
-References: <2024120221-gizzard-thermos-ba19@gregkh>
+	 MIME-Version; b=DudkeJJnimd4QSarns7LwmVAih4LAQ4+Hb9L+IUA173F5f2ecQhEchTok0w3UVSN27dfIJ8FLjKlefRu1Fa2z3inF1zyfVnk4uNh6WwI/emff0tyJ2ubTAoBWhcjKLHwQedw6ZlMi0sbIHeRxuoN8GlenOW3bDjXbS3m/UBVJSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EVC3Xqtf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733157319;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HyGIJzVjB5pGO8vz5bCSJn+OKkV4sWqeKPCojQqGMsI=;
+	b=EVC3Xqtfx+h5tYa29sp2LPgM/w3YSXoRUhR2TaNPT6ukM66WZvb1n7EoyG3Otu0Wy83r7O
+	sg7ucGHtDrP+euwnX/k26Z91IV3gdDbkQf206qfDk7FjbVMOWwBq0+fhjst+CH2bEbjItf
+	iLSboTHfk1bQNVuEdkRrBjSG/ktDBvo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-mD4-SnjqMTOHeOCYYchrdw-1; Mon,
+ 02 Dec 2024 11:35:13 -0500
+X-MC-Unique: mD4-SnjqMTOHeOCYYchrdw-1
+X-Mimecast-MFC-AGG-ID: mD4-SnjqMTOHeOCYYchrdw
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D4901964CDF;
+	Mon,  2 Dec 2024 16:35:10 +0000 (UTC)
+Received: from rhel-developer-toolbox-2.redhat.com (unknown [10.45.225.22])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 32FD0195608A;
+	Mon,  2 Dec 2024 16:35:05 +0000 (UTC)
+From: Michal Schmidt <mschmidt@redhat.com>
+To: Rodolfo Giometti <giometti@enneenne.com>
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	George Spelvin <linux@horizon.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/6] pps: fix cdev use-after-free
+Date: Mon,  2 Dec 2024 17:34:46 +0100
+Message-ID: <20241202163451.1442566-2-mschmidt@redhat.com>
+In-Reply-To: <20241202163451.1442566-1-mschmidt@redhat.com>
+References: <20241202163451.1442566-1-mschmidt@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,136 +80,179 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-commit f06e108a3dc53c0f5234d18de0bd224753db5019 upstream.
+The lifetime of a struct pps_device and the struct cdev embedded in it
+is under control of the associated struct device.
+The cdev's .open/.release methods (pps_cdev_{open,release}()) try to
+keep the device alive while the cdev is open, but this is insufficient.
 
-This patch disables __counted_by for clang versions < 19.1.3 because
-of the two issues listed below. It does this by introducing
-CONFIG_CC_HAS_COUNTED_BY.
+Consider this sequence:
+1. Attach the PPS line discipline to a TTY.
+2. Open the created /dev/pps* file.
+3. Detach the PPS line discipline.
+4. Close the file.
 
-1. clang < 19.1.2 has a bug that can lead to __bdos returning 0:
-https://github.com/llvm/llvm-project/pull/110497
+In this scenario, the last reference to the cdev is not released from
+pps code, but in __fput(), *after* running the .release method, which
+frees the pps_device (including struct cdev).
 
-2. clang < 19.1.3 has a bug that can lead to __bdos being off by 4:
-https://github.com/llvm/llvm-project/pull/112636
+Fix this by using cdev_set_parent() to ensure that the pps_device
+outlives the cdev.
 
-Fixes: c8248faf3ca2 ("Compiler Attributes: counted_by: Adjust name and identifier expansion")
-Cc: stable@vger.kernel.org # 6.6.x: 16c31dd7fdf6: Compiler Attributes: counted_by: bump min gcc version
-Cc: stable@vger.kernel.org # 6.6.x: 2993eb7a8d34: Compiler Attributes: counted_by: fixup clang URL
-Cc: stable@vger.kernel.org # 6.6.x: 231dc3f0c936: lkdtm/bugs: Improve warning message for compilers without counted_by support
-Cc: stable@vger.kernel.org # 6.6.x
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/20240913164630.GA4091534@thelio-3990X/
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202409260949.a1254989-oliver.sang@intel.com
-Link: https://lore.kernel.org/all/Zw8iawAF5W2uzGuh@archlinux/T/#m204c09f63c076586a02d194b87dffc7e81b8de7b
-Suggested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://lore.kernel.org/r/20241029140036.577804-2-kernel@jfarr.cc
-Signed-off-by: Kees Cook <kees@kernel.org>
-(cherry picked from commit f06e108a3dc53c0f5234d18de0bd224753db5019)
-Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
+cdev_set_parent() should be used before cdev_add(), but we can't do that
+here, because at that point we don't have the dev yet. It's created
+in the next step with device_create(). To compensate, bump the refcount
+of the dev, which is what cdev_add() would have done if we followed the
+usual order. This will be cleaned up in subsequent patches.
+
+With the parent relationship in place, the .open/.release methods no
+longer need to change the refcount. The cdev reference held by the core
+filesystem code is enough to keep the pps device alive.
+The .release method had nothing else to do, so remove it.
+
+Move the cdev_del() from pps_device_destruct() to pps_unregister_cdev().
+This is necessary. Otherwise, the pps_device would be holding a
+reference to itself and never get released. It also brings symmetry
+between pps_register_cdev() and pps_unregister_cdev().
+
+KASAN detection of the bug:
+
+ pps_core: deallocating pps0
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cdev_put+0x4e/0x50
+ Read of size 8 at addr ff1100001c1c7360 by task sleep/1192
+
+ CPU: 0 UID: 0 PID: 1192 Comm: sleep Not tainted 6.12.0-0.rc7.59.fc42.x86_64+debug #1
+ Hardware name: Red Hat OpenStack Compute, BIOS 1.14.0-1.module+el8.4.0+8855+a9e237a9 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x84/0xd0
+  print_report+0x174/0x505
+  kasan_report+0xab/0x180
+  cdev_put+0x4e/0x50
+  __fput+0x725/0xaa0
+  task_work_run+0x119/0x200
+  do_exit+0x8ef/0x27a0
+  do_group_exit+0xbc/0x250
+  get_signal+0x1b78/0x1e00
+  arch_do_signal_or_restart+0x8f/0x570
+  syscall_exit_to_user_mode+0x1f4/0x290
+  do_syscall_64+0xa3/0x190
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f6c598342d6
+ Code: Unable to access opcode bytes at 0x7f6c598342ac.
+ RSP: 002b:00007ffff3528160 EFLAGS: 00000202 ORIG_RAX: 00000000000000e6
+ RAX: fffffffffffffdfc RBX: 00007f6c597c5740 RCX: 00007f6c598342d6
+ RDX: 00007ffff35281f0 RSI: 0000000000000000 RDI: 0000000000000000
+ RBP: 00007ffff3528170 R08: 0000000000000000 R09: 0000000000000000
+ R10: 00007ffff35281e0 R11: 0000000000000202 R12: 00007f6c597c56c8
+ R13: 00007ffff35281e0 R14: 000000000000003c R15: 00007ffff35281e0
+  </TASK>
+
+ Allocated by task 1186:
+  kasan_save_stack+0x30/0x50
+  kasan_save_track+0x14/0x30
+  __kasan_kmalloc+0x8f/0xa0
+  pps_register_source+0xe4/0x360
+  pps_tty_open+0x191/0x220 [pps_ldisc]
+  tty_ldisc_open+0x75/0xc0
+  tty_set_ldisc+0x29e/0x730
+  tty_ioctl+0x866/0x11e0
+  __x64_sys_ioctl+0x12e/0x1a0
+  do_syscall_64+0x97/0x190
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ Freed by task 1192:
+  kasan_save_stack+0x30/0x50
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x70
+  __kasan_slab_free+0x37/0x50
+  kfree+0x140/0x4d0
+  device_release+0x9c/0x210
+  kobject_put+0x17c/0x4b0
+  pps_cdev_release+0x56/0x70
+  __fput+0x368/0xaa0
+  task_work_run+0x119/0x200
+  do_exit+0x8ef/0x27a0
+  do_group_exit+0xbc/0x250
+  get_signal+0x1b78/0x1e00
+  arch_do_signal_or_restart+0x8f/0x570
+  syscall_exit_to_user_mode+0x1f4/0x290
+  do_syscall_64+0xa3/0x190
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ff1100001c1c7200
+                which belongs to the cache kmalloc-rnd-02-512 of size 512
+ The buggy address is located 352 bytes inside of
+                freed 512-byte region [ff1100001c1c7200, ff1100001c1c7400)
+ [...]
+ ==================================================================
+
+Fixes: eae9d2ba0cfc ("LinuxPPS: core support")
+Fixes: d953e0e837e6 ("pps: Fix a use-after free bug when unregistering a source.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
 ---
- drivers/misc/lkdtm/bugs.c           |  4 ++--
- include/linux/compiler_attributes.h | 13 -------------
- include/linux/compiler_types.h      | 19 +++++++++++++++++++
- init/Kconfig                        |  9 +++++++++
- 4 files changed, 30 insertions(+), 15 deletions(-)
+ drivers/pps/pps.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
-index c66cc05a68c4..473ec58f87a2 100644
---- a/drivers/misc/lkdtm/bugs.c
-+++ b/drivers/misc/lkdtm/bugs.c
-@@ -388,8 +388,8 @@ static void lkdtm_FAM_BOUNDS(void)
- 
- 	pr_err("FAIL: survived access of invalid flexible array member index!\n");
- 
--	if (!__has_attribute(__counted_by__))
--		pr_warn("This is expected since this %s was built a compiler supporting __counted_by\n",
-+	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY))
-+		pr_warn("This is expected since this %s was built with a compiler that does not support __counted_by\n",
- 			lkdtm_kernel_info);
- 	else if (IS_ENABLED(CONFIG_UBSAN_BOUNDS))
- 		pr_expected_config(CONFIG_UBSAN_TRAP);
-diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
-index f5859b8c68b4..7e0a2efd90ca 100644
---- a/include/linux/compiler_attributes.h
-+++ b/include/linux/compiler_attributes.h
-@@ -94,19 +94,6 @@
- # define __copy(symbol)
- #endif
- 
--/*
-- * Optional: only supported since gcc >= 14
-- * Optional: only supported since clang >= 18
-- *
-- *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
-- * clang: https://reviews.llvm.org/D148381
-- */
--#if __has_attribute(__counted_by__)
--# define __counted_by(member)		__attribute__((__counted_by__(member)))
--#else
--# define __counted_by(member)
--#endif
+diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+index 25d47907db17..4f497353daa2 100644
+--- a/drivers/pps/pps.c
++++ b/drivers/pps/pps.c
+@@ -301,15 +301,6 @@ static int pps_cdev_open(struct inode *inode, struct file *file)
+ 	struct pps_device *pps = container_of(inode->i_cdev,
+ 						struct pps_device, cdev);
+ 	file->private_data = pps;
+-	kobject_get(&pps->dev->kobj);
+-	return 0;
+-}
 -
+-static int pps_cdev_release(struct inode *inode, struct file *file)
+-{
+-	struct pps_device *pps = container_of(inode->i_cdev,
+-						struct pps_device, cdev);
+-	kobject_put(&pps->dev->kobj);
+ 	return 0;
+ }
+ 
+@@ -324,15 +315,12 @@ static const struct file_operations pps_cdev_fops = {
+ 	.compat_ioctl	= pps_cdev_compat_ioctl,
+ 	.unlocked_ioctl	= pps_cdev_ioctl,
+ 	.open		= pps_cdev_open,
+-	.release	= pps_cdev_release,
+ };
+ 
+ static void pps_device_destruct(struct device *dev)
+ {
+ 	struct pps_device *pps = dev_get_drvdata(dev);
+ 
+-	cdev_del(&pps->cdev);
+-
+ 	/* Now we can release the ID for re-use */
+ 	pr_debug("deallocating pps%d\n", pps->id);
+ 	mutex_lock(&pps_idr_lock);
+@@ -383,6 +371,10 @@ int pps_register_cdev(struct pps_device *pps)
+ 		goto del_cdev;
+ 	}
+ 
++	cdev_set_parent(&pps->cdev, &pps->dev->kobj);
++	/* Compensate for setting the parent after cdev_add() */
++	get_device(pps->dev);
++
+ 	/* Override the release function with our own */
+ 	pps->dev->release = pps_device_destruct;
+ 
+@@ -407,6 +399,7 @@ void pps_unregister_cdev(struct pps_device *pps)
+ 	pr_debug("unregistering pps%d\n", pps->id);
+ 	pps->lookup_cookie = NULL;
+ 	device_destroy(pps_class, pps->dev->devt);
++	cdev_del(&pps->cdev);
+ }
+ 
  /*
-  * Optional: not supported by gcc
-  * Optional: only supported since clang >= 14.0
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 0a182f088c89..02f616dfb15f 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -295,6 +295,25 @@ struct ftrace_likely_data {
- #define __no_sanitize_or_inline __always_inline
- #endif
- 
-+/*
-+ * Optional: only supported since gcc >= 15
-+ * Optional: only supported since clang >= 18
-+ *
-+ *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
-+ * clang: https://github.com/llvm/llvm-project/pull/76348
-+ *
-+ * __bdos on clang < 19.1.2 can erroneously return 0:
-+ * https://github.com/llvm/llvm-project/pull/110497
-+ *
-+ * __bdos on clang < 19.1.3 can be off by 4:
-+ * https://github.com/llvm/llvm-project/pull/112636
-+ */
-+#ifdef CONFIG_CC_HAS_COUNTED_BY
-+# define __counted_by(member)		__attribute__((__counted_by__(member)))
-+#else
-+# define __counted_by(member)
-+#endif
-+
- /* Section for code which can't be instrumented at all */
- #define __noinstr_section(section)					\
- 	noinline notrace __attribute((__section__(section)))		\
-diff --git a/init/Kconfig b/init/Kconfig
-index 6054ba684c53..60ed7713b5ee 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -107,6 +107,15 @@ config CC_HAS_ASM_INLINE
- config CC_HAS_NO_PROFILE_FN_ATTR
- 	def_bool $(success,echo '__attribute__((no_profile_instrument_function)) int x();' | $(CC) -x c - -c -o /dev/null -Werror)
- 
-+config CC_HAS_COUNTED_BY
-+	# TODO: when gcc 15 is released remove the build test and add
-+	# a gcc version check
-+	def_bool $(success,echo 'struct flex { int count; int array[] __attribute__((__counted_by__(count))); };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
-+	# clang needs to be at least 19.1.3 to avoid __bdos miscalculations
-+	# https://github.com/llvm/llvm-project/pull/110497
-+	# https://github.com/llvm/llvm-project/pull/112636
-+	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
-+
- config PAHOLE_VERSION
- 	int
- 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
 -- 
-2.47.1
+2.47.0
 
 
