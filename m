@@ -1,276 +1,351 @@
-Return-Path: <stable+bounces-95962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D839DFEF4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2559DFE85
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB72CB2A87F
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:13:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63C79B2207B
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D701FE474;
-	Mon,  2 Dec 2024 10:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C281FC0FA;
+	Mon,  2 Dec 2024 10:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NkaMZmBh";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="WRjQoUzq"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ewJwbsRc"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60A31FC11A;
-	Mon,  2 Dec 2024 10:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733134311; cv=fail; b=F0OhwBtwoGnlPAXz2RsiD/ZQJ0hxXtXu98p0qJ+T2MP8IwtjIMgrwdROhhJ1CahfKuo0/MOjimJ9VsfiS+pty6hJYzkbx3tqfIbxDJlU+0b5G78zGmTKyANoVxZOxlgwh5inUbOPg73SUc4gM3aYJVAXcPt9Cmz9DYxhWQVTc2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733134311; c=relaxed/simple;
-	bh=pWst/jLMtyhw9CdmPy3wj54LbzJk6km7V4YscnRTJP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Arls8YjpOCjPNR66QBDK6WvPo6Y3tDILxJFFjIEH7IFVaxJj2Fr/ChW2R4ZiYQFVOsCYs9aYc7FqiBErfE5zDaJfWLwthxQtU/QH+V2hm9PbzKdam4A1h+BJr4PE7Tj5eLDYCPt+0hqPA/IiJ200NFmKn7CBbsqkgu/8kgxDLY0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NkaMZmBh; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=WRjQoUzq; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B26Wxvr008605;
-	Mon, 2 Dec 2024 10:11:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=yXuVMfHi41Y1jRfz2LyGiYKxl/pGfVN9pcpVpZk7JNk=; b=
-	NkaMZmBhnLQCVMEv8Jf94z0bdTgXANmwO37kZQb2xmNiNIqoqqQcUSCWKZg07979
-	TD9TrfzM4c8VCkWZn5wrDlUSDa0rtT0MupJh5k5926BfM9auPaDZ+7L9TRdR85UG
-	dt85dLAw8E1FplWtaMqLCeCnMo60JwSzUApkQUxJlQSAN4tPZ+m8x37DuMl7AupA
-	jplGAbEJGmHb9lJacQFFAwdGt5q6LnKbCjFiHPORUuo+xhIhET5V0z1yIbbH5ML1
-	652X++yY9hhiBBxNjxlT7GOYBODQeQv377uRdpKFD1Zfb5AH/HDI2GI4KE4jXefC
-	opd13+oHtoRb7kyRWjbmsg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 437s9ytgcn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 02 Dec 2024 10:11:45 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4B28kpa1032206;
-	Mon, 2 Dec 2024 10:11:44 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2172.outbound.protection.outlook.com [104.47.55.172])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43836sabw2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 02 Dec 2024 10:11:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FmtOfaSmUL6E/jkQl6P/5lyegdXJUcTD460nkpakNuh66YuLsen/CJj2fl5cXBh3ZQlEz2PW53lrUlUofkU+U0AfuWvI5LgxqiqkNg53hIp+8MKfEwaA2ZQYpBI7+48J3t8zwfeJF17C61KPAVAkj09rVFjzjzFQRILlgp/qBFvQ4wMYhrjfTp/94YQ/cuLaR17j/BOuDkPQEf9EuPMayHXj/pgMr332hQ5HvML6UjhuTuA2vZpwXjlLNWwKoS7nXCRGqPhjcfyL3ETBqVDBmOOExvH7GT8Fc4Gju+7FXtNJqmqSNXGOxikFl4Nazkx8v7bY78lTvLpZ6rrsLN/T1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yXuVMfHi41Y1jRfz2LyGiYKxl/pGfVN9pcpVpZk7JNk=;
- b=ci9XQ8auQYgucPGBETjZlidlvK7qJzX8H17eKxq2xsFnsCqA+BDY2ZIsDU040RcMsNUlvmNNh2K5kayJQuhB7t+qSTFaa0oT4rMQrBSneA6ltVgMF2lhfpcQJ/NVE+MTx50edqzHFIk5UkbBLj2pCdxDuJ01SwEZxgWGuHl4kSB04xQKz2gArw1v68dBqvTFTgs721asI3tMrtHvLETfDR8Ta1OWExC2842A/uOe4B4ZLthQ9jk+oKl1yy9Tn72W54p5Fimvqnp0N7QGhxFl5jS8bI/EbbAb4u0U6lU/1QJpg01aSmnrjWwlpWQFsjsRjIQ1fVwiHOEy9IsnFqovpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74D81FBEB2
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 10:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733134301; cv=none; b=E1oEkLhV55y+vhZme09vYf2jtdpzBkBvPCLLcezuv30b33GY+0oVB4c0H5iacQ1GXvVrULH7hF0ZsDEJww6ESv8aibxNVoDBQidzD7nllSL3jLsIEB8q0ttexnHCTC6qMQCuya5PUbewXO0Czbz2Tb8cd8YawKdDchR+46IRquQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733134301; c=relaxed/simple;
+	bh=U7rbdYbZDh7xSxahV1mY9FJE7hACVUQFMBHdEHN/0rU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Phey8FqXWafVuuv8AC64BVRecuhoTofbeeVxWrY1M+Qny3Raima4bWl5czujr8hhPkrQmQAKF0V7IXt7UgpPNXew/ZQtpbRBRY21Fw3l25RjvTubCH7StYi+2lwI8JATAi+GQ8kD2AT/qnaWKq56eqB1k+fvKlXE3IwvDR8gaHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ewJwbsRc; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-724e1b08fc7so3411087b3a.0
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 02:11:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yXuVMfHi41Y1jRfz2LyGiYKxl/pGfVN9pcpVpZk7JNk=;
- b=WRjQoUzqTlNZuWrh7TmPdq2VP0okwPTdHviqGGsfuiDtstcMvTXwVvcI73VGnye76VVMaI+RuAx5lZJv3faGuDy4dCL8mwV4MVI7tFFnUQCBjJiPWChdzx8dNxg2eSjQhcxVUySfhWKo8qqo4L6soy2oIDdTuMBbAOERb3h6Ad4=
-Received: from PH0PR10MB5563.namprd10.prod.outlook.com (2603:10b6:510:f2::13)
- by CH3PR10MB6788.namprd10.prod.outlook.com (2603:10b6:610:14b::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Mon, 2 Dec
- 2024 10:11:41 +0000
-Received: from PH0PR10MB5563.namprd10.prod.outlook.com
- ([fe80::1917:9c45:4a41:240]) by PH0PR10MB5563.namprd10.prod.outlook.com
- ([fe80::1917:9c45:4a41:240%6]) with mapi id 15.20.8207.017; Mon, 2 Dec 2024
- 10:11:41 +0000
-From: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>, cgroups@vger.kernel.org,
-        Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 2/2] cgroup: Move rcu_head up near the top of cgroup_root
-Date: Mon,  2 Dec 2024 15:41:02 +0530
-Message-ID: <20241202101102.91106-2-siddh.raman.pant@oracle.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241202101102.91106-1-siddh.raman.pant@oracle.com>
-References: <2024120235-path-hangover-4717@gregkh>
- <20241202101102.91106-1-siddh.raman.pant@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN2PR01CA0254.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:21a::20) To PH0PR10MB5563.namprd10.prod.outlook.com
- (2603:10b6:510:f2::13)
+        d=chromium.org; s=google; t=1733134298; x=1733739098; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=knJS7mj1YtFquz8cQCj19OIgQjQc2GxbLndLnPuEFF0=;
+        b=ewJwbsRcHPumRQc8gyIHEfWt7YIsioTbkJDst7Gl/wUTtNy1Wa+to5a8MwfxdWEFD7
+         ZFPLsMFRVhTDpzMaZwVU3GS9xhc2BTDp/RxmZiu/rS136o9s+TRM6WJqOm/q9sQJ73hg
+         23f69p9HQM03CS75m22f8ygTl0P9YdPCF8vTw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733134299; x=1733739099;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=knJS7mj1YtFquz8cQCj19OIgQjQc2GxbLndLnPuEFF0=;
+        b=JmXpIGJsGEyscC/zz53oDDoztx9wPtuIE7p3TjzHkAZ3oRKvyIHxEXYAUwWcVQKXkj
+         tJm7ebNSwuhIl4rCAp6LSymYJMnSA6LR17qrqHxH8MP1tDgscSNWceMDKKFxNsJ4TULG
+         xSKpSLrLlN8vLAkU1lf2A3Wx2K91Hg0vVV3IaooNPeqy05vzWG5I/d/wcocxVwPhkB6W
+         vDvZOy9S9r380wrkz12I3SikLF54XgaE4fqAFShVe4KPF9BHu9KXBqUBg5SxIHmNGEXd
+         jN2EtqamTMWgW/vUYeTCrTYeJMCiHLmAF10TaPBH9ea4wBYP+ND1JXBoSao/yAK5QuXb
+         hLBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6lv6N8IK0Jyw0Jc/RA/HdokP4Klk4lk7BlXkaWmhUpIY5hFxJWFtoyWgEYH+DYEoQ9gn5IWU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVJikTGaiYMBKrVQaNFTf97XepE8SxIn0/y2n5uvy6SjpuFzFk
+	s6VBLGJ2a11KyPCwh3SZdtq6lg7dSLV50aeaxdIs91El4C1y7LExPlgSp4trCiEbR1Im1ziZZCw
+	=
+X-Gm-Gg: ASbGncshSCzYxfokVChVC7MDe9t5Wn2YJCSaVuDWb3sicqSsX+lk/zHPcnJdvmzNhvK
+	9VbvepLl6v5KFLbhOwNVCZ2XpgURRQpKiW+8nlNSsu+/E36wxBNdfQrB2P/0qDH4BptQAqoI9Nv
+	76nduObwzGVQ8KLHYEsCiF0c0nSGKkPEg5Yl06DKVgl+mOg/QapTSICwDyBSh4b/9fcvVgyjzcR
+	bqIiS4eNvZPS/d634VzyaNex1fblJCXEp+lJ6PKFvx2S9VQ4qjH3o0tzMv2FzYLiNpdz8mpUoH1
+	zVMFgIMi+Tyf
+X-Google-Smtp-Source: AGHT+IFQdZFluu3RZmgLbWAapNvIFTwGzIh+nDULC+7cSQlwBtnOVD2L1IFDeJYRZUnu6aeTJzIDGA==
+X-Received: by 2002:a17:902:fc4c:b0:215:72a7:f39f with SMTP id d9443c01a7336-21572a7f63cmr109706625ad.36.1733134298501;
+        Mon, 02 Dec 2024 02:11:38 -0800 (PST)
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com. [209.85.216.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2152196845dsm71364385ad.121.2024.12.02.02.11.35
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 02:11:35 -0800 (PST)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee786b3277so1349750a91.1
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 02:11:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUeo6OT7vsE3f0ZMK34K667uJzoHdvTmP9AKSW7plNpe0wjVSMyPiyzgrbI40An8akeP4hvLuA=@vger.kernel.org
+X-Received: by 2002:a17:90a:e7cf:b0:2ee:d9f5:cfb4 with SMTP id
+ 98e67ed59e1d1-2eed9f5dc4emr2028969a91.36.1733134294563; Mon, 02 Dec 2024
+ 02:11:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5563:EE_|CH3PR10MB6788:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08377f49-9c9d-4909-c9fd-08dd12b9b7c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|10070799003|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ajRKT0JYNVlFekxHeVZCK0VFYlJBUHFUWDlrNVNsYkJsRnhEcFNWR2d3czdQ?=
- =?utf-8?B?dXUxcGVpTW1kL1hvZ0Rya2VBU1hzZGhickZVQW9SRnR2SWQ2Z3lhZFRYcU9I?=
- =?utf-8?B?V25IOVFNYis1RVUyQlhVcXBvS21CSWVWRzNmNmpCZXg1OWhTMnoxeHBodnBZ?=
- =?utf-8?B?elF4VEVIOThZZ3hUZFRRQ3JEakkvUHBXRm5zdCtzcDNoMVd6NHhWN3pqaUly?=
- =?utf-8?B?OVpRaU5JL2hhTEZOOXZjQXZvNnVxWHYvUmVZYkVHQXJ5c29zZHdOY1crTm8w?=
- =?utf-8?B?czJIMmdETXFmL05YRVVnWkx1UlBvRmpZdmJnalE3QXBvQy9YTGp1d0JIbUJE?=
- =?utf-8?B?enpzK0QvVWFLQVk4bjFpK254YXBlSUtBeVZJVE83ZDErakhIZlI0OWZ1ZXhM?=
- =?utf-8?B?V2dhVGhqSmN1MlJmUkxwUGUrVWFNQlRoK0J4Zk1Fdnk2azE0YkgwM2tVN2FP?=
- =?utf-8?B?SGNSOUszb2JoeThhMDNrNXlleHpBN244MmJoL0NlNk9RVEx1ZDRkV0I3WWxh?=
- =?utf-8?B?NE0yWkRscVJsS056QWNPMU1DSUU3YUM4Z1JYRHlnTE8xQU5TeW9UNmpsOXNU?=
- =?utf-8?B?RWZGZDh6U1R0akJzZVZCVjJaTHN0aEpaODVhbERycHk3QkRYUTlUWmxTMmc0?=
- =?utf-8?B?ZEtTTkFqTEE4Qy9WZnh5UDQzTEVObGRDRzJUVTJpY2RvOVE5N01zb0tXZExP?=
- =?utf-8?B?blRtK3JaZUViSGVWRmIrQU9YN1BaVkEyVnhmTmNYUy9GVVdIYkZUTzc2dDRn?=
- =?utf-8?B?RUtPUlNYWHZlUm9NblJEMjdYL0ZMK3lwa244TEloK01MWS9GRDZGdWw2NE1h?=
- =?utf-8?B?Y1FraEhtQW4xc1dRazNEVUcrRmh3S0RWYXpqVUE3aHpsUFNRRmZRT3pZU053?=
- =?utf-8?B?VWtJN0lLSzV0OWVHSjE0L3ZXZGZxaGRrWVBYR1J5RndVYm1mZjQvdG9kSC9Z?=
- =?utf-8?B?OElTVksyOVB1NXFvVDFtUzkycnZBY01xdDVHU2c3MVNhc1pWNGZ5b3h3a3No?=
- =?utf-8?B?OUZiQ0tCd21xR1I4UzlyT0QzYmFhdkJZV2FqTWRhZW4yeExBd3NuNzdXVlAr?=
- =?utf-8?B?M2lpZDJ5ZWdOTDhzRjlIT09HNmxMQmdjRlloQWErWW9FT21FSi93YVFFeFQv?=
- =?utf-8?B?dzlkNmJJYUh0cVZiYU5PaWwwOWdsTjdqZmh1Vk9TMDBid2xqbDdHM0VOT0tE?=
- =?utf-8?B?V1MvaC9IcnB6ZXRObjFMZGNPWUtQMVo4a1ZRRHJyOUlGcm1aMjVxQk5MT1hU?=
- =?utf-8?B?VHkySDBFWGExdDdQMy8vam15NEovb041bUtZMnNvaTJmbGxRRnlaL1NSK29W?=
- =?utf-8?B?enhOQStMcjA4TVZkVVlDRC9jUC82TUlHN245aFQ1TjBDbDJTa1l0RmovVWJN?=
- =?utf-8?B?NGNJM0Z5TkFteEZTSmptM3Vibitra3J3YlZuMDBJZitibUg0YmxOU2w3MFYz?=
- =?utf-8?B?WnBDSHVzVzMwUFVxMGJVcGlzNmt0VXhJY2tDc2dwVTNjcGhMenNQWDJzK3Rr?=
- =?utf-8?B?eGl3YVg0bkJZSnRTMnNpYmJaaGJ6bkplN2ZvTC9icG8zYW4wNTJ6TklpL1d6?=
- =?utf-8?B?dkV5OWRFRjFJRDVyaU1DRGxNQ3NFUTJBRkNybDM1VG9NaEt4MFd3blVCV1d2?=
- =?utf-8?B?dk1hYitBS2dUVCtueVV3cWMwQ0lUckFUOUwzcVN3c1lZRFpudTVkcVNaeWlh?=
- =?utf-8?B?eW9laXl3QkNHZzlPeUVvSFJ0UlpXR25IaFlxZm11eWVFZjAyTTNjbXJoQzhN?=
- =?utf-8?B?cWpsdy8xekFoZytCMHIrVTNLNlo2ZWMzZmlDZW9lYzd3akdZaEVyMHdyZWtx?=
- =?utf-8?Q?3qeeLMOUVVczC7z3dInYpFWuud5YH9KLzPlU8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5563.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?alJrbFJKNk9lZGZ2UGdVellqZkVZM3hld3ZJZHhPeE9qWEw1QWJycDY2ZWM3?=
- =?utf-8?B?Y0NjekZJWFk4Zi9tbEdBeXdHbXZ4YS9YWmxXeXBoem1ENEQvWkNSS01oL0Rv?=
- =?utf-8?B?dVBWang1c285YU4vWDhLajRWcGhpczdKSzI2UStiUjNMeVk4SzZyaU5seVFD?=
- =?utf-8?B?WTRVdUpVZXJFMlh4V3VUVWtJeU03RkJEWGk3Z1A0L1MvMDNxTy82bEhuMHRQ?=
- =?utf-8?B?TDdKZjNoVVBCSXQwWUlZdEVhamxzRkVIa0xxamJEL3FsYVJxc1RrdmhJRmhu?=
- =?utf-8?B?UkJ4eVZ1UnpBOHFxdyt0V0RxallGNzJ6cFQycXdDTXJIMmQzTForMjhPVEtl?=
- =?utf-8?B?azA4KzlxVTIzMW1DNnNDTkh5R3hBWFRTMzlJU3JKbVlCRnVoZDF2a3lkK0Zh?=
- =?utf-8?B?SVVQZlFVdEh1VTl2UThNZVVUbkNJYW1nUWhnRWNScUk3SmltL041WkdPSVRY?=
- =?utf-8?B?Y3g3SWsyM0Q2bHBnUExHbW1zQ0x1ZU5rREQ3QytoYThubURpQUxqNy8zTHRz?=
- =?utf-8?B?Wm1LRXpqcGo4cVFhZ2M0WVUyMVhNL1d6UFR6anVKVld1L1RaOHJoa2VjSk8x?=
- =?utf-8?B?V2FTcUZDOUc0ZkpWaGE3NWg5NjZLYy9jTUk1T29HR0pyQ1BJU2hpZkJWRjBx?=
- =?utf-8?B?czlYWjBrMHp2MjJjaWdqL3Vac2NiUkZoWDJEY2JrbWdMQ25SZ1NEZWFValEx?=
- =?utf-8?B?emhaNGtJdVVKaGNidzFCV0lxeE02ZytzT09kb2dIQUpPUFBpZFU4SXloRTU4?=
- =?utf-8?B?Q2tYZllaMmhBK3kzejFhNXh1REVET1krVHhIR0ZQeXl0RXRPL1ZxQXpEbnR1?=
- =?utf-8?B?UlJvNngzQWxpQXVDbGlRSk05dzRtenNmNVZNQVEvNUprdlh2bHF6YXNSeTla?=
- =?utf-8?B?UUNQbUVIOHlnV2FObjRKczc0eVZZeWFNVmNROFRsK0UwY1dhNEgxZG8zTmx3?=
- =?utf-8?B?RG9Oem9XeXNRM1dRV2xGM3h2WVVuWTltNDcrWE5LSS9CeWlTSk1TckdhWHJQ?=
- =?utf-8?B?VWJLbWd0Nnh6VnJrbGtqaGdrV2tRcGwyclZoOWxjQVJvZUZ5ZzFTWmxmRkpN?=
- =?utf-8?B?dnJZYzNSczNWR3FFZVllWU0zNGNjNVFrWTJzcURvRW5nZG9UQkZrRzFRT3ZE?=
- =?utf-8?B?bUFqTDl1UTIzTTZmZ1RCa1BLMFcvMWVBWmdqQWdTb29Kdko5c2NxcTBnaXpO?=
- =?utf-8?B?Tjc1YWdoTzlqRWl1R0haL01KaVNld1ZJUnVYSjdKcmlQajI5K0JKSVBpZUQv?=
- =?utf-8?B?a0NUTzBLRWJBRFdoQkhkaks3a3BveXpTMDB6cTJOTEhDR2hhUlp2bnRjUU9m?=
- =?utf-8?B?cnI5THMyUzllZzBIUCszcFBCa2lSb2EwWkZyTVN2aHNqaTFSM0pwaGIxZjM2?=
- =?utf-8?B?UFhOY2U5d0E2T01hL1llNWtzSkltMzVZRlk4R2FQUGduYjA1cEd3TlkzaUZn?=
- =?utf-8?B?MHNhSHlJSnByMjJhY1FjYnowbWtGY0MvRE1LMnY4VEJUT0wxdnU2ajB5dXVz?=
- =?utf-8?B?K2Y3RmdPOThuWTMzNWNFcWltTk9GaFR0Zi9TWVFLVDlyRXpSSEJyUk9FQVZm?=
- =?utf-8?B?cisyNlA4Z2w3b3dnaHp2K0QzRkdaTVBWc0dVUm5WWU5hUSs2N2NqczFvblRx?=
- =?utf-8?B?cUtyRFpMbkxQdTZSWDJJQUNiU0Zva09zVFlJbzdVdHhRQkxlNXZuYTBHekN1?=
- =?utf-8?B?clhCRUgxRjgxZnZNTDdQR1JGc05zNlRLUitmRWpxL1dtWjM5UU1nanBISXp1?=
- =?utf-8?B?WCtOVWlIRlc3cENoSHNsMFVySTlNNFJ0OVM2MjlVYmxmenhrVUgrQXh3Nzdj?=
- =?utf-8?B?a2NJR21TcTRJY1p0MzRFcVNtMmdualJ4UnYzcG5mN3ptNU1GMnBWaUlGd0Zp?=
- =?utf-8?B?Q1NHT2dtT2JIYkkrUmJ5TlE0U0pqeW5XenlLcGlMbnBleXpyM29zZXhBZjhN?=
- =?utf-8?B?M1hCVHhiSGZLaWgvSEdsR1A5allnNERjZUtoMHgzMjhWUVlmZzJRNm8weDlU?=
- =?utf-8?B?cnNBZDhmQ0ppWWZVb2IvaTRLOFQrdjk3YUdGTGJ2NHBrS3ZrQUlhbWFaeXBP?=
- =?utf-8?B?N1NXU21FcWRjRElIQ01TeVE0ZUQ0S0lvMG1sVmMrbTF6MzA5U0VrM0xBVU13?=
- =?utf-8?B?aDJPZHgrUTVPYUtiSGNsQUgwOTJsVVNrdXVvdVlMbHd4UXl3Z21NdW9GQ3lx?=
- =?utf-8?B?c3IyV01lbktFMm9jMXdaaXZpOWdFZnd1MnJjU3I5ekNCbXBybmQxT3hVcno5?=
- =?utf-8?B?bnVCYm9nTnh3UTZLSHJEUktFMW1nPT0=?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	T5dSbOwBh8ZUrSUoUjiGEo1NbSMxr6NNNyPDOWt8RBnzBrYTkLL+HdyZv7otj/yUhJigXvF7CL+MXIVX9WKjQHqFCzSthl2xQxzaBeKkEx1iFkLTdmTfE0knCmdCJpXqf+cPz9F0SjttmS+3Jjx0GecDu1QC6ehtj2At5ngLlAe7Kjz0MF5DgY4avPwqBHROWQY8k/jNnN8/je2yWuB1Pu5KC9J0IYJYluvGp8DIy3doSfI0lQrR3aPWHaWJZTiDSmb7QJTsuPBuhFfDWuHrece4UB7BiheCEkdEBPfy3JROd89AzgrL+baILst5RmHt0ZqeTfdc464x4Ac10jcF3MHY6oyUQDGZxqE3aFqXgCBZMdlkEhpenM/2DTar+LmQgI1Tk2QJiXOommMYBNDpDx2nK3OVei4NOZR5iRhg8OFkJBLhW3RPhOteksL0WbzlmSasUpgijs3wddkYkUgbFt1yiRUL0kyljwRqoNNapZyxjpnaEwHLMnV9AZitVi1+zpHP8aPCIMdP+6EZju7mmGlyxuyDuZlDo8i3fTpOhrCWy9sJwM6ReCcJg2zWUE7k+Pd1rtmQBF1TbY2HFaLbFaa7eb/UGWjM914YOckNx+g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08377f49-9c9d-4909-c9fd-08dd12b9b7c4
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5563.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2024 10:11:41.8842
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: APoNSpml/ZJsxOdJEb7ZcEHcj3vOIsybPHuTIm0E2TioKdFKO4vk6dBiP1b7YNAqwPreAjxerYnU//VrrujJvqbu5DPBxo75BrqfQoU9rAs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB6788
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-02_06,2024-11-28_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=0
- malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2412020090
-X-Proofpoint-GUID: B9vU1FfTSc1owvzUI4iFfFOJXpYlrQQN
-X-Proofpoint-ORIG-GUID: B9vU1FfTSc1owvzUI4iFfFOJXpYlrQQN
+References: <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+ <20241129110640.GB4108@pendragon.ideasonboard.com> <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
+ <e95b7d74-2c56-4f5a-a2f2-9c460d52fdb4@xs4all.nl> <CANiDSCvj4VVAcQOpR-u-BcnKA+2ifcuq_8ZML=BNOHT_55fBog@mail.gmail.com>
+ <CANiDSCvwzY3DJ+U3EyzA7TCQu2qMUL6L1eTmZYbM+_Tk6DsPaA@mail.gmail.com>
+ <20241129220339.GD2652@pendragon.ideasonboard.com> <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
+ <20241202001846.GD6105@pendragon.ideasonboard.com> <CANiDSCuf=YN0=Q+ariHRPUAhacd=s5SFRHsySXWDowaiJxMa3A@mail.gmail.com>
+ <20241202083833.GC16635@pendragon.ideasonboard.com>
+In-Reply-To: <20241202083833.GC16635@pendragon.ideasonboard.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 2 Dec 2024 11:11:22 +0100
+X-Gmail-Original-Message-ID: <CANiDSCuFFrxgDxSAN+aLqSs1v7hLnfhrbsjq8=Qpnk1beHumRw@mail.gmail.com>
+Message-ID: <CANiDSCuFFrxgDxSAN+aLqSs1v7hLnfhrbsjq8=Qpnk1beHumRw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control owned
+ by other fh
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>, Hans de Goede <hdegoede@redhat.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>, 
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Waiman Long <longman@redhat.com>
+On Mon, 2 Dec 2024 at 09:38, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> On Mon, Dec 02, 2024 at 08:28:48AM +0100, Ricardo Ribalda wrote:
+> > On Mon, 2 Dec 2024 at 01:19, Laurent Pinchart
+> > <laurent.pinchart@ideasonboard.com> wrote:
+> > >
+> > > On Fri, Nov 29, 2024 at 11:18:54PM +0100, Ricardo Ribalda wrote:
+> > > > On Fri, 29 Nov 2024 at 23:03, Laurent Pinchart wrote:
+> > > > > On Fri, Nov 29, 2024 at 07:47:31PM +0100, Ricardo Ribalda wrote:
+> > > > > > Before we all go on a well deserved weekend, let me recap what we
+> > > > > > know. If I did not get something correctly, let me know.
+> > > > > >
+> > > > > > 1) Well behaved devices do not allow to set or get an incomplete async
+> > > > > > control. They will stall instead (ref: Figure 2-21 in UVC 1.5 )
+> > > > > > 2) Both Laurent and Ricardo consider that there is a big chance that
+> > > > > > some camera modules do not implement this properly. (ref: years of
+> > > > > > crying over broken module firmware :) )
+> > > > > >
+> > > > > > 3) ctrl->handle is designed to point to the fh that originated the
+> > > > > > control. So the logic can decide if the originator needs to be
+> > > > > > notified or not. (ref: uvc_ctrl_send_event() )
+> > > > > > 4) Right now we replace the originator in ctrl->handle for unfinished
+> > > > > > async controls.  (ref:
+> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/media/usb/uvc/uvc_ctrl.c#n2050)
+> > > > > >
+> > > > > > My interpretation is that:
+> > > > > > A) We need to change 4). We shall not change the originator of
+> > > > > > unfinished ctrl->handle.
+> > > > > > B) Well behaved cameras do not need the patch "Do not set an async
+> > > > > > control owned by another fh"
+> > > > > > C) For badly behaved cameras, it is fine if we slightly break the
+> > > > > > v4l2-compliance in corner cases, if we do not break any internal data
+> > > > > > structure.
+> > > > >
+> > > > > The fact that some devices may not implement the documented behaviour
+> > > > > correctly may not be a problem. Well-behaved devices will stall, which
+> > > > > means we shouldn't query the device while as async update is in
+> > > > > progress. Badly-behaved devices, whatever they do when queried, should
+> > > > > not cause any issue if we don't query them.
+> > > >
+> > > > I thought we could detect the stall and return safely. Isn't that the case?
+> > >
+> > > We could, but if we know the device will stall anyway, is there a reason
+> > > not to avoid issuing the request in the first place ?
+> >
+> > Because there are always going to be devices that do not send the
+> > event when the control has finished.
+> >
+> > It is impossible to know the state of the device: Is the zoom still
+> > moving or the device is not compliant?
+>
+> Another type of broken behaviour would be devices that don't correctly
+> handle UVC_GET and UVC_CUR requests while an async update is in
+> progress. If you issue those requests, those devices will break. Are
+> they more or less important than devices that don't send an event ?
+>
+> All of those are partly theoretical problems. I'd rather keep it simple
+> for now until we get feedback about broken devices.
+>
+> > > > Why we have not seen issues with this?
+> > >
+> > > I haven't tested a PTZ device for a very long time, and you would need
+> > > to hit a small time window to see the issue.
+> >
+> > Not that small, some devices take up to 10 seconds to go from the
+> > smallest zoom to the biggest zoom.
+> > I'd say that v4l2-ctl has a very big chance to hit any error.
+> >
+> > BTW, homing can take an even longer time.
+> >
+> > > > > We should not send GET_CUR and SET_CUR requests to the device while an
+> > > > > async update is in progress, and use cached values instead. When we
+> > > > > receive the async update event, we should clear the cache. This will be
+> > > > > the same for both well-behaved and badly-behaved devices, so we can
+> > > > > expose the same behaviour towards userspace.
+> > > >
+> > > > seting ctrl->loaded = 0 when we get an event sounds like a good idea
+> > > > and something we can implement right away.
+> > > > If I have to resend the set I will add it to the end.
+> > > >
+> > > > > We possibly also need some kind of timeout mechanism to cope with the
+> > > > > async update event not being delivered by the device.
+> > > >
+> > > > This is the part that worries me the most:
+> > > > - timeouts make the code fragile
+> > > > - What is a good value for timeout? 1 second, 30, 300? I do not think
+> > > > that we can find a value.
+> > >
+> > > I've been thinking about the implementation of uvc_fh cleanup over the
+> > > weekend, and having a timeout would have the nice advantage that we
+> > > could reference-count uvc_fh instead of implementing a cleanup that
+> > > walks over all controls when closing a file handle. I think it would
+> > > make the code simpler, and possibly safer too.
+> >
+> > The problem with a timeout is:
+> > - We do not know what is the right value for the timeout.
+> > - We need to have one timeout per control, or implement a timeout
+> > dispatcher mechanism, and that is racy by nature
+> > - It will require introducing a new locking mechanism to avoid races
+> > between the timeout handler and the event completion
+>
+> Timeouts don't come for free, that's for sure.
+>
+> > - It introduces a new lifetime in the driver... I'd argue that it is
+> > best to have less, not more.
+>
+> That I disagree with, my experience with V4L2 (as well as with DRM, or
+> actually the kernel in general) is that we would be in a much better
+> place today if object lifetimes were handled with reference counting
+> more widely.
+>
+> > I do not see many benefits....
+>
+> The main benefit is simplifying the close() implementation and
+> complexity, as well as lowering lock contention (whether the latter
+> brings a real advantage in practice, I haven't checked)..
+>
+> > What we can introduce on top of my set is something like this (just
+> > pseudocode, do not scream at me :P)  That code can prevent stalls and
+> > will work with misbehaving hardware.... (But I still do not know a
+> > good value for timeout) and solve some of the issues that I mention.
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > index f0e8a436a306..a55bd4b3ac07 100644
+> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > @@ -1132,6 +1132,9 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+> >         if ((ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR) == 0)
+> >                 return -EACCES;
+> >
+> > +       if (ctrl->handle && ( NOW - ctrl->async_start_time ) < TIMEOUT)
+> > +               return -EBUSY;
+> > +
+> >         ret = __uvc_ctrl_load_cur(chain, ctrl);
+> >         if (ret < 0)
+> >                 return ret;
+> > @@ -1591,6 +1594,7 @@ static int uvc_ctrl_get_handle(struct uvc_fh
+> > *handle, struct uvc_control *ctrl)
+> >                 return -EBUSY;
+> >
+> >         ctrl->handle = handle;
+> > +       ctrl->async_start_time = NOW;
+> >         handle->pending_async_ctrls++;
+> >         return 0;
+> >  }
+> > @@ -1982,6 +1986,9 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+> >         if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+> >                 return -EACCES;
+> >
+> > +       if (ctrl->handle && ( NOW - ctrl->async_start_time ) < TIMEOUT)
+> > +               return -EBUSY;
+>
+> If I understand you correctly, this is meant to prevent accessing the
+> device for an initial TIMEOUT period, based on the knowledge it will
+> very likely STALL. After the TIMEOUT, if the async set is still not
+> complete, SET_CUR will be issued, and a STALL will likely occur.
+>
+> If we device to standardize on -EBUSY while the async set is in
+> progress, we need to do so before and after the timeout.
+> uvc_query_ctrl() will return -EBUSY in case of a STALL if the device
+> reports the "Not ready" error. This is what I expect a device to report
+> in this case. Of course the UVC specification, in section 2.4.4,
+> documents that the device will update the request error code control,
+> but doesn't tell which value should be used :-S I suppose we'll handle
+> broken devices if the need arise.
+>
+> > +
+> >         /* Clamp out of range values. */
+> >         switch (mapping->v4l2_type) {
+> >         case V4L2_CTRL_TYPE_INTEGER:
+> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > index e0e4f099a210..5c82fae94dff 100644
+> > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > @@ -154,6 +154,8 @@ struct uvc_control {
+> >                                  * File handle that initially changed the
+> >                                  * async control.
+> >                                  */
+> > +
+> > +       TIME async_start_time;
+> >  };
+> >
+> >
+> > In any case. Can we solve this in incremental steps? I think the
+> > current patch seems simple and correct. We can introduce the timeout
+> > later.
+>
+> The main reason for a timeout was to replace walking over all controls
+> at close() time with reference counting of uvc_fh, which is an
+> alternative approach to the current patch. Given that picking a good
+> timeout value is difficult, and that the current implementation already
+> skips the walk in the most common case when no async set is pending, I
+> suppose we could start with that.
 
-commit a7fb0423c201ba12815877a0b5a68a6a1710b23a upstream.
+Cool. I am going to send a new version of:
+https://patchwork.linuxtv.org/project/linux-media/patch/20241129-uvc-fix-async-v4-1-f23784dba80f@chromium.org/
 
-Commit d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU
-safe") adds a new rcu_head to the cgroup_root structure and kvfree_rcu()
-for freeing the cgroup_root.
+using  uvc_ctrl_get_handle / uvc_ctrl_put_handle ad lockdep annotations.
 
-The current implementation of kvfree_rcu(), however, has the limitation
-that the offset of the rcu_head structure within the larger data
-structure must be less than 4096 or the compilation will fail. See the
-macro definition of __is_kvfree_rcu_offset() in include/linux/rcupdate.h
-for more information.
+Hopefully in the future we can get rid of: uvc_ctrl_cleanup_fh()
 
-By putting rcu_head below the large cgroup structure, any change to the
-cgroup structure that makes it larger run the risk of causing build
-failure under certain configurations. Commit 77070eeb8821 ("cgroup:
-Avoid false cacheline sharing of read mostly rstat_cpu") happens to be
-the last straw that breaks it. Fix this problem by moving the rcu_head
-structure up before the cgroup structure.
 
-Fixes: d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU safe")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/lkml/20231207143806.114e0a74@canb.auug.org.au/
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-[Shivani: Modified to apply on v5.4.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Reviewed-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
----
- include/linux/cgroup-defs.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks!
+>
+> > > > > Regarding the userspace behaviour during an auto-update, we have
+> > > > > multiple options:
+> > > > >
+> > > > > For control get,
+> > > > >
+> > > > > - We can return -EBUSY
+> > > > > - We can return the old value from the cache
+> > > > > - We can return the new value fromt he cache
+> > > > >
+> > > > > Returning -EBUSY would be simpler to implement.
+> > > >
+> > > > Not only easy, I think it is the most correct,
+> > > >
+> > > > > I don't think the behaviour should depend on whether the control is read
+> > > > > on the file handle that initiated the async operation or on a different
+> > > > > file handle.
+> > > > >
+> > > > > For control set, I don't think we can do much else than returning
+> > > > > -EBUSY, regardless of which file handle the control is set on.
+> > > >
+> > > > ACK.
+> > > >
+> > > > > > I will send a new version with my interpretation.
+> > > > > >
+> > > > > > Thanks for a great discussion
+> > > >
+> > > > Looking with some perspective... I believe that we should look into
+> > > > the "userspace behaviour for auto controls" in a different patchset.
+> > > > It is slightly unrelated to this discussion.
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index c64f11674850..f0798d98be8e 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -506,6 +506,10 @@ struct cgroup_root {
- 	/* Unique id for this hierarchy. */
- 	int hierarchy_id;
- 
-+	/* A list running through the active hierarchies */
-+	struct list_head root_list;
-+	struct rcu_head rcu;
-+
- 	/* The root cgroup.  Root is destroyed on its release. */
- 	struct cgroup cgrp;
- 
-@@ -515,10 +519,6 @@ struct cgroup_root {
- 	/* Number of cgroups in the hierarchy, used only for /proc/cgroups */
- 	atomic_t nr_cgrps;
- 
--	/* A list running through the active hierarchies */
--	struct list_head root_list;
--	struct rcu_head rcu;
--
- 	/* Hierarchy-specific flags */
- 	unsigned int flags;
- 
+
+
 -- 
-2.45.2
-
+Ricardo Ribalda
 
