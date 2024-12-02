@@ -1,63 +1,53 @@
-Return-Path: <stable+bounces-95998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C6B9E0116
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:59:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507DC9E0130
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04B8A162A2E
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:59:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6091614D7
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB9B1FE46C;
-	Mon,  2 Dec 2024 11:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="kfCOHf6D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E65B1FE474;
+	Mon,  2 Dec 2024 12:01:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE41FE457;
-	Mon,  2 Dec 2024 11:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E28F1D95A9;
+	Mon,  2 Dec 2024 12:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733140774; cv=none; b=CObQCg2d0IbjHHDjgrMPhmLn/QvVJ048+mFxZuHlBBcUOBlZqjhJaWDTLzeiOlteylHs1ezEDR7tt9HVdgKH61MbFKa3EFhAtgAmUmV6BcT/Sb5lCtZ/I7kQjGZYNzmFcz0h9U/azyCDB+p5Hhf+iyQji4HNR4D7GpWcqs8dK98=
+	t=1733140877; cv=none; b=PzxcUhcv+c7KTV2BEtzQ+PilyKMpioxQm5knVYiLFCifZvlXJgRn6Pujia52Lin248LrDSd4SzEc9djRb5RaoB9wxhgtpNVxECSWBhKeadFD26yz8d8Gf53u5oje1E2SEhTeDgWDHa3vPpbEngi2EYjsgvpdvu7QmPqVFqkI6U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733140774; c=relaxed/simple;
-	bh=N/FtLGxZSOjoESGAFkoZ7rNu2YPWJnOH24yyDQkCF1I=;
+	s=arc-20240116; t=1733140877; c=relaxed/simple;
+	bh=qN7zSp52L2v1SA9YKpv1TumbOqlVeIrH+RB98EjRP+o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jm2O/2bQJIrX8oWEc5xtit7oZanDxqrk5JQO6VQhdE2dLZW9OdUu9nSnBhMnsJDV5OkNlL6xjN9RSngypIKz2GvnqMVz1hAe/EzR7T0ar7VoS/fnNKJrDcoTZi/9xTSMHdvbGmHdHk1/mAfrUNN584cUYFbLXU7sOFFMxL1Mo50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=kfCOHf6D; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=KirvsyIVzcLS3MEnA0Qg9+OP06q8TzMZQLA2Cb9E/LCw5nPCqOF8DSjVAEuMVJM1QlsOefdSE3iW/PzsjcVI23TCHhTGoAFbuWCX8geRPFFdeDogKfEFA3kTxI5F9iI3CXLcmCi6+BWu/oJmIEPUV2D4NqcniEh2Mmg9JCMvwPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 889F91C00A0; Mon,  2 Dec 2024 12:59:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1733140761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H5ubiw6vD4okQFCfJBW+Ugm6BtQvdoUcLByM+fyDWlU=;
-	b=kfCOHf6Dmy4t3nZYQCoE1xuCMpfTN/ZPug/6jz8E5HOnEaShyW/jfKEXm9TCCPlCibt3pc
-	2Iq5O9lku9yBP3uJeE0JAXWJxiqqABBXmlA+Lj5jUJ49CkPImVyzG6fc4ahCA8Tfntq00w
-	Bi/+mCXdm+r5lqCoOdf24UFOtWIwcWQ=
-Date: Mon, 2 Dec 2024 12:59:21 +0100
-From: Pavel Machek <pavel@ucw.cz>
+	id 18A7A1C00A0; Mon,  2 Dec 2024 13:01:12 +0100 (CET)
+Date: Mon, 2 Dec 2024 13:01:11 +0100
+From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Alexander =?iso-8859-1?Q?H=F6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>, robin@protonic.nl,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, corbet@lwn.net, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 3/6] can: j1939: fix error in J1939
- documentation.
-Message-ID: <Z02hGYbHhkEeE3eQ@duo.ucw.cz>
+	Luo Yifan <luoyifan@cmss.chinamobile.com>,
+	Mark Brown <broonie@kernel.org>, olivier.moysan@foss.st.com,
+	arnaud.pouliquen@foss.st.com, lgirdwood@gmail.com, perex@perex.cz,
+	tiwai@suse.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.10 4/6] ASoC: stm: Prevent potential division
+ by zero in stm32_sai_mclk_round_rate()
+Message-ID: <Z02hh/K7okT4fvOc@duo.ucw.cz>
 References: <20241112103803.1654174-1-sashal@kernel.org>
- <20241112103803.1654174-3-sashal@kernel.org>
+ <20241112103803.1654174-4-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,72 +55,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UyTOBD7KB2x8PJGs"
+	protocol="application/pgp-signature"; boundary="3fawmNHJI3c1oRFq"
 Content-Disposition: inline
-In-Reply-To: <20241112103803.1654174-3-sashal@kernel.org>
+In-Reply-To: <20241112103803.1654174-4-sashal@kernel.org>
 
 
---UyTOBD7KB2x8PJGs
-Content-Type: text/plain; charset=iso-8859-1
+--3fawmNHJI3c1oRFq
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
+> [ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
 >=20
-> [ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
->=20
-> The description of PDU1 format usage mistakenly referred to PDU2
-> format.
+> This patch checks if div is less than or equal to zero (div <=3D 0). If
+> div is zero or negative, the function returns -EINVAL, ensuring the
+> division operation (*prate / div) is safe to perform.
 
-I'm pretty sure this does not fix user-visible bug.
+Well, previous version propagated error code, now it is eaten. Is
+stm32_sai_get_clk_div returning 0?
 
 BR,
 								Pavel
 
-> Signed-off-by: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
-> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-> Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gm=
-x.net
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+> Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chin=
+amobile.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  Documentation/networking/j1939.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  sound/soc/stm/stm32_sai_sub.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/Documentation/networking/j1939.rst b/Documentation/networkin=
-g/j1939.rst
-> index 0a4b73b03b997..59f81ba411608 100644
-> --- a/Documentation/networking/j1939.rst
-> +++ b/Documentation/networking/j1939.rst
-> @@ -83,7 +83,7 @@ format, the Group Extension is set in the PS-field.
+> diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+> index 3aa1cf2624020..3a7f0102b4c5c 100644
+> --- a/sound/soc/stm/stm32_sai_sub.c
+> +++ b/sound/soc/stm/stm32_sai_sub.c
+> @@ -380,8 +380,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *=
+hw, unsigned long rate,
+>  	int div;
 > =20
->  On the other hand, when using PDU1 format, the PS-field contains a so-ca=
-lled
->  Destination Address, which is _not_ part of the PGN. When communicating =
-a PGN
-> -from user space to kernel (or vice versa) and PDU2 format is used, the P=
-S-field
-> +from user space to kernel (or vice versa) and PDU1 format is used, the P=
-S-field
->  of the PGN shall be set to zero. The Destination Address shall be set
->  elsewhere.
+>  	div =3D stm32_sai_get_clk_div(sai, *prate, rate);
+> -	if (div < 0)
+> -		return div;
+> +	if (div <=3D 0)
+> +		return -EINVAL;
+> =20
+>  	mclk->freq =3D *prate / div;
 > =20
 
 --=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---UyTOBD7KB2x8PJGs
+--3fawmNHJI3c1oRFq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ02hGQAKCRAw5/Bqldv6
-8l9LAJwL6qfkl3olcEWNHAA4lyQ0gqDEHACfcaO8EgLoYfDotzr44LxkgMgl/VE=
-=/fMJ
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ02hhwAKCRAw5/Bqldv6
+8hAkAKC0b/Oh8ldKHa90Tlm10HU7ITeWowCgxMxATUX7/rKamYpZAx5Mk1HHjC8=
+=I7ba
 -----END PGP SIGNATURE-----
 
---UyTOBD7KB2x8PJGs--
+--3fawmNHJI3c1oRFq--
 
