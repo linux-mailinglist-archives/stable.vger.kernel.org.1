@@ -1,151 +1,158 @@
-Return-Path: <stable+bounces-96151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585989E0B41
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:43:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD279E0BB3
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 20:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2132826D0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:43:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 116A0B334CB
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA171DACA1;
-	Mon,  2 Dec 2024 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7763D96D;
+	Mon,  2 Dec 2024 15:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vRwO00mB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdySsC3r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BBF1DD866
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 18:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEA1BA53
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733165005; cv=none; b=dJ8WkAUCwBnrY0lGV9h62vJQLa2gfOQusd3EDxNOH07WTQd/EKP6EozkCzFsPDul8XoQw3BQE055OKdAKnXhNBikNPyGtFPpfZGX8YYUDAwXxiteos3Av+gqP7fh8smPESg66zkACn3ejI+xdOdbci0tALI1sSuwjjSfdoeQE1k=
+	t=1733154665; cv=none; b=bkevd3IWc/yq+3OmsxW255IBMMFldERL5ruYkJBLP2gmJwHhqITxYX2h0FcNHIqnyQGFKrXP88M/bm/nQH5plrAXesjz1sVMbvjUOJxoSclP4yAX3vz3wrP7y4PrTjoLo7yaW8w7hpkh6MmB7YYP2d4RdUmHvbnpwSvHY+jIZcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733165005; c=relaxed/simple;
-	bh=I6X+25HwarITYfnmWvypF7d0Hyw8TJMkjS5mLztaUow=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=kcV3tC/mnDFnvDQt4vGkVHSbBLTkrEu7X8RSlAVA8t4DJldE34VMrmErEHS47L2Zw244qKXcVZNWV5DecbF9QiWty0k7TodlrVc2wttqJwmUR6NkYarj/LoC/Ghh1b8zJ7KgtrphOxrLTRKhBUUx7kW99K4XKYibViYG5vzxJZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vRwO00mB; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-85b8d1fd1bbso834470241.1
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 10:43:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733165002; x=1733769802; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7Se8T5+LK18s+wDSD1Sg761iFvt2oWO3ZqKqGkylKq4=;
-        b=vRwO00mBVaQsZa7xkk9s+4adtMazWhEeR6wUdCQpB9KImqOqrvKi+Kzf5ooFxaE1jT
-         g8Gn9gHP9ypqTtsFwO01ySW75w9R69tVzD/miVcUloPC1U1PPQpv6kWKEXdf3vmgh3u/
-         X2R+BrEiadYCDDC2GR+um4g/rWu12d8oCpxunK2oXuqtQS9G4W6/ijD1RUBnGQFvXkfF
-         MS41wOcL5yKiywxzB3dkDs+q7IrcGJ96ofA+d1aT1ijwSXMj0hBf5yvlLF7fI+c2wPw+
-         9rqYFfW1eXJRla9ubo0oaFypYA887CFJJXVqI4qPEkQeDYaMSmYhi5ikLIUolHMi/CvY
-         +RZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733165002; x=1733769802;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7Se8T5+LK18s+wDSD1Sg761iFvt2oWO3ZqKqGkylKq4=;
-        b=jnIRFPHCUB0Zxyn7bv/lTFiWFwNgvBDVkvkRe5diMb1VmPh0jy/4EjvL32spDxorqI
-         IlYRY1mQogk6vaFmH58P6SsFfjkFVHa2fG9nEkJQJERCIcJOD/utW7Y1DYMF0QcA005m
-         DEIr6n492WgdHgxbdEfYRUStSKEh3OW636aiaBrLBG5lvlwoXQ2LtG5nCNu/5oxOba8T
-         cS9HR9EPijSdkFYbcxMQOTfSsEx23KvJep0jOUQlroUvQbCrNa3YptSAVhHu3LYeBa1m
-         Co9MiwqmhIy6XlaLmPeUG4RYRx47lMCRCs5ornaMTU9KH5QILmQJ7eK87JlTvzpAcjM2
-         tzXA==
-X-Gm-Message-State: AOJu0Ywb3VSJcSH6UO1fPtDIqMkhmtUJHidfM+PvHONEIY9Fy2fGJ6ri
-	8BU0opLQ2HYkgYjkMPWL6XFOS9AzJOfcyS4ar4AiscaZdrSY7XkPK+7xn5NYQxR2ZYqDkbMhUfl
-	yIglKKE3nWZ8FkiaRUdzG7NkL6pwkpTI//WlPKBMRj0lyQ3ht5Bc=
-X-Gm-Gg: ASbGncvELyAbs1HhWUnC38ShxQo4A1l7VtXi8YxrwYM27b5C8fUEGrjWKPOJT8JuKRF
-	VNIjEJO9C1BSiNjAtK0d8D+zx6sDLSaNg
-X-Google-Smtp-Source: AGHT+IHs7hkrXZMkSka2KzYCMq2Db0uhY/f+zEXDn3gxFJFY3CqXCi3w1hz4Fk/YoO+opKa+72vNn7Buyj4pv8VOTe0=
-X-Received: by 2002:a05:6122:2a41:b0:510:185:5d9c with SMTP id
- 71dfb90a1353d-51556a3e2b4mr30501129e0c.11.1733165002577; Mon, 02 Dec 2024
- 10:43:22 -0800 (PST)
+	s=arc-20240116; t=1733154665; c=relaxed/simple;
+	bh=smBBnNZKAZK9nWVC/KB0imiOK6TP4DUfKRVXvjkNsmo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eNKZrTU3s4UQ7H6nN14K/PFoyODdMC4evctCbZhKgbeINTWJwEqhxzF/tPmFrbiR6rNbt26/7Z6Ze54WsBiiLz3KCXdRrsxffe0xgmhpMKWjaR1lMyn18H2pwkdGYfaEhIJ0hvd+0FzHfDTK1va3lPsh6VBJsHwpvFjEfGimAwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdySsC3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0634FC4CED1;
+	Mon,  2 Dec 2024 15:51:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733154664;
+	bh=smBBnNZKAZK9nWVC/KB0imiOK6TP4DUfKRVXvjkNsmo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=JdySsC3r4uY2/KxbhsmWAvjdEST6B1LPQ7MZq7l0SWP0Nh0II09ZCaTBpIZNVnf5h
+	 THbt1EUIC7HGVlRzWGEPao2BFlfDWjAqGNs/rorS5YJdoVyJkQ2EELKWBFqE/fotGH
+	 3YDhsHNWIruhcmoPCZWapD7NniwyEZunIrVhCjzk=
+Subject: FAILED: patch "[PATCH] xhci: Fix control transfer error on Etron xHCI host" failed to apply to 6.6-stable tree
+To: ki.chiang65@gmail.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 16:50:48 +0100
+Message-ID: <2024120248-scuff-roster-854c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 3 Dec 2024 00:13:11 +0530
-Message-ID: <CA+G9fYtQ+8vKa1F1kmjBCH0kDR2PkPRVgDuqCg_X6kKeaYjuyA@mail.gmail.com>
-Subject: stable-rc: queue: v5.15: drivers/clocksource/timer-ti-dm-systimer.c:691:39:
- error: expected '=', ',', ';', 'asm' or '__attribute__' before '__free'
-To: linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Cc: javier.carrasco.cruz@gmail.com, Anders Roxell <anders.roxell@linaro.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The arm queues build gcc-12 defconfig-lkftconfig failed on the
-Linux stable-rc queue 5.15 for the arm architectures.
 
-arm
-* arm, build
- - build/gcc-12-defconfig-lkftconfig
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Build errors:
-------
-drivers/clocksource/timer-ti-dm-systimer.c: In function
-'dmtimer_percpu_quirk_init':
-drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: expected
-'=', ',', ';', 'asm' or '__attribute__' before '__free'
-  691 |         struct device_node *arm_timer __free(device_node) =
-      |                                       ^~~~~~
-drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: implicit
-declaration of function '__free'; did you mean 'kfree'?
-[-Werror=implicit-function-declaration]
-  691 |         struct device_node *arm_timer __free(device_node) =
-      |                                       ^~~~~~
-      |                                       kfree
-drivers/clocksource/timer-ti-dm-systimer.c:691:46: error:
-'device_node' undeclared (first use in this function)
-  691 |         struct device_node *arm_timer __free(device_node) =
-      |                                              ^~~~~~~~~~~
-drivers/clocksource/timer-ti-dm-systimer.c:691:46: note: each
-undeclared identifier is reported only once for each function it
-appears in
-drivers/clocksource/timer-ti-dm-systimer.c:694:36: error: 'arm_timer'
-undeclared (first use in this function); did you mean 'add_timer'?
-  694 |         if (of_device_is_available(arm_timer)) {
-      |                                    ^~~~~~~~~
-      |                                    add_timer
-cc1: some warnings being treated as errors
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5e1c67abc9301d05130b7e267c204e7005503b33
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120248-scuff-roster-854c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Links:
----
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/log
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/history/
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/details/
+Possible dependencies:
 
-Steps to reproduce:
-------------
-- tuxmake \
-        --runtime podman \
-        --target-arch arm \
-        --toolchain gcc-12 \
-        --kconfig
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/config
 
-metadata:
-----
-  git describe: v5.15.173-312-gc83ccef4e8ee
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: c83ccef4e8ee73e988561f85f18d2d73c7626ad0
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/
-  toolchain: gcc-12
-  config: gcc-12-defconfig-lkftconfig
-  arch: arm
 
---
-Linaro LKFT
-https://lkft.linaro.org
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5e1c67abc9301d05130b7e267c204e7005503b33 Mon Sep 17 00:00:00 2001
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+Date: Wed, 6 Nov 2024 12:14:45 +0200
+Subject: [PATCH] xhci: Fix control transfer error on Etron xHCI host
+
+Performing a stability stress test on a USB3.0 2.5G ethernet adapter
+results in errors like this:
+
+[   91.441469] r8152 2-3:1.0 eth3: get_registers -71
+[   91.458659] r8152 2-3:1.0 eth3: get_registers -71
+[   91.475911] r8152 2-3:1.0 eth3: get_registers -71
+[   91.493203] r8152 2-3:1.0 eth3: get_registers -71
+[   91.510421] r8152 2-3:1.0 eth3: get_registers -71
+
+The r8152 driver will periodically issue lots of control-IN requests
+to access the status of ethernet adapter hardware registers during
+the test.
+
+This happens when the xHCI driver enqueue a control TD (which cross
+over the Link TRB between two ring segments, as shown) in the endpoint
+zero's transfer ring. Seems the Etron xHCI host can not perform this
+TD correctly, causing the USB transfer error occurred, maybe the upper
+driver retry that control-IN request can solve problem, but not all
+drivers do this.
+
+|     |
+-------
+| TRB | Setup Stage
+-------
+| TRB | Link
+-------
+-------
+| TRB | Data Stage
+-------
+| TRB | Status Stage
+-------
+|     |
+
+To work around this, the xHCI driver should enqueue a No Op TRB if
+next available TRB is the Link TRB in the ring segment, this can
+prevent the Setup and Data Stage TRB to be breaked by the Link TRB.
+
+Check if the XHCI_ETRON_HOST quirk flag is set before invoking the
+workaround in xhci_queue_ctrl_tx().
+
+Fixes: d0e96f5a71a0 ("USB: xhci: Control transfer support.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-20-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index f62b243d0fc4..517df97ef496 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -3733,6 +3733,20 @@ int xhci_queue_ctrl_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
+ 	if (!urb->setup_packet)
+ 		return -EINVAL;
+ 
++	if ((xhci->quirks & XHCI_ETRON_HOST) &&
++	    urb->dev->speed >= USB_SPEED_SUPER) {
++		/*
++		 * If next available TRB is the Link TRB in the ring segment then
++		 * enqueue a No Op TRB, this can prevent the Setup and Data Stage
++		 * TRB to be breaked by the Link TRB.
++		 */
++		if (trb_is_link(ep_ring->enqueue + 1)) {
++			field = TRB_TYPE(TRB_TR_NOOP) | ep_ring->cycle_state;
++			queue_trb(xhci, ep_ring, false, 0, 0,
++					TRB_INTR_TARGET(0), field);
++		}
++	}
++
+ 	/* 1 TRB for setup, 1 for status */
+ 	num_trbs = 2;
+ 	/*
+
 
