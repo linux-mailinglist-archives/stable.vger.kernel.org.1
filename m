@@ -1,193 +1,131 @@
-Return-Path: <stable+bounces-96148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437D19E0CAB
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 21:00:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44419E0D03
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 21:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41513B3ACC6
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:22:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 414F3B39EF8
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124611DE2A0;
-	Mon,  2 Dec 2024 18:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D031DDC24;
+	Mon,  2 Dec 2024 18:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="cWZhNUld"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ehdvq5HD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5F317C7CE
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 18:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D7B1DA0EB
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 18:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733163718; cv=none; b=gFQjCSLWuOKN9ASeAz6Nd7r9c9mp1a0fUEPCln7EZQre1M2lDRXNY/Qb90TunECKu2RAbgWvxjCmFTY3h9BA6bqyFKQ0z0ob+jhCmdhp13fAiBJPHDb4NrMQ6zq/0f8hsi182dC482oK+fKrV5moBCjzFiZ2uv0q0MSQwE5gzIs=
+	t=1733164261; cv=none; b=PbN+2P+1xmotifrK+cuXUKsS5hieOOxiVIaAFJ5bdWniY77WGjmlibOlKghjeZQ+NiIsINGCgJmKDMw/OcQRv2sD7p5lU0kDFQq5Zn45sDP84wDxhfiXDDOGpseUtWXVoX72LrWirviGGlQrTkwlELuoI2/uYGI4GQ1xo91TU18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733163718; c=relaxed/simple;
-	bh=Rn8RSyo6St3YsKMOwIjeKXLonnInDGO7TN+trE/MnzA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YqrwPB+u5LZLy+GHIzpAmvWC6ogojNmfNs47cJ1w3Afr1hgdWXiKUGY55IiDykz4JUaopT2GMTGsDTTV9174r0KzWiDNhKrMj4f9A9rnDnydLf7MzlAoMD00US+jTtpo1D+09WpVkOZaXCvL2FytHKsLyHQ6lpNf61Yt/pHophA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=cWZhNUld; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so1270135a91.3
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 10:21:56 -0800 (PST)
+	s=arc-20240116; t=1733164261; c=relaxed/simple;
+	bh=2iScdVCBMpmjjiCXk0OlK00wqChwDzGVlJmeztoW5S8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CNrLUSJ8oCmqRMzI/7hbo/7JbYk9Xr51eBRDBdstFVTnjGneCuzOVH2C8HN8VMuDwgJPhomZOsn9XQE+telD9pLqY8cFt68G007MhxGFqEa/qGMIP0wb92Av+EOWqREGwcSLy2SSHqo8g8X+CtShuhp0yxbjnmPXn+idfJBINw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ehdvq5HD; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-71d40fdde2fso1614585a34.3
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 10:30:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1733163716; x=1733768516; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I/B0ei9W1+2IGtRTaS0qVmFrCfQ0sKHpMjt98rIqC9A=;
-        b=cWZhNUldzNCwb+shckPOP7uT2ESUZVdKYiHR2Nl9ESsED0gUyjoK1qNiISoUG2ajrN
-         toG+itnDlsltclRzzLkEO47QapYS0dK3Ez0WWtWO3EhauTMSYDuuyJghWe2IfgC1UKCu
-         f4D27Z97rFJPmB53ipfR0z+1logLyLU0hnxuI=
+        d=linaro.org; s=google; t=1733164258; x=1733769058; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hr3Gd/LiFtAjtQkwDJjm0PXxkVfJjoGp7ojBnwj5Gag=;
+        b=ehdvq5HDhLpBkGeEKKXV+jn2YqsS2FPLGvxcZBYZG3bLRyjdVW4azQhHNi067shAS6
+         xunefvMpi6WRKwRN+g1RUUjUPdPt4J3bLmuyKMDWkYj9bF03fF7CB41tPTdrEtXEEW46
+         sCwRs3ip4pxZy0Rarq4+MLdtxm/oc/vZwIdj4KfrAtCRo0F8RKBDxFFA3qpMX0DPLQKZ
+         QaSQMRG2bxQA1M+HH2TJ3lDFli+oOVKtocX9uoJzj7Uu4aCkEe+HGmxOFNxHLop2jqn5
+         0fBIFODIBUdDdUY2meoNkg0aJ4iH92bHDM/X5LfugTVivMX0tAHxiY86mDMHLOwGjavu
+         5rlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733163716; x=1733768516;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I/B0ei9W1+2IGtRTaS0qVmFrCfQ0sKHpMjt98rIqC9A=;
-        b=ixj5t+iM06p+viU0zrrNkm9dzjd4ayo53aRQfycJQSdWpnL9ZS0cRRlpqprpw7zEDo
-         aP+9jMSVott17IThma6Jnu5MHeH14+rToCfrJyPtF8ru+oxE4XlDDC7POMxXhDe4KA6Z
-         UYT7JGq63puoI5BzvU5DdXCCbvHYq0vHazAXA7qDlIAh60V2cK5uVM02PnvUDwPnWVBH
-         JAeOjY46nu6mq4hU23ShEm1GN5Zv2P216t9354S1I1WmuRTHnFDr5qJgJYqZE2Jr4tf+
-         vI3IKVErzytQ1X6OoAJBpi5S2Z9L8SgtS1hx/SHKAagYx1vkxiwp32eumntvV6kQQkQu
-         lMsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVzei5O/UKL05EyRnoC5ICmEEMmpHOa9PUurdcWw2KqXdjSQRtOwEh2NXZdDyhvH7Dul1FRQjM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydUYvx5nIMS3jr1XsEf6GrOiQa2ygj9ZaNzbDB/EYzeU0uQ0CK
-	/8quFurygNQscHMg2eAm+MMHGpR5xCDcJZq+iKlgYxXvsMYmpnN2I/VBAhApTgQ=
-X-Gm-Gg: ASbGncvGgwRTMlsF8vW87IkQs2diMV0iEWbisR+f9Icpb4niTMM/8pde+1tMdn8JZm4
-	GGsjFcDAkcgIQ60/u+JDZKhesaZUq5CbsDUpfC3Myn8LDsVi+hU6YiWl4iBkVnMWXnM/54/Ta2E
-	FpNx7g66P5G5mbJNwlccjaAANXwlzkRfFFJtmNNjk+7fD1W2rEo3SVcQgz2HDM8SUTCiyrPjjXW
-	HVf0XpdlrJMLd6YPpG1d1qu0r27Qg3IvG7e/iLH78gGmgi3uN1NrnSMeQ==
-X-Google-Smtp-Source: AGHT+IG5hA1szOqSgQik4MsxCUTY/OHGOcKWS9WjuBzdQtP1A6LkTbTXItK5kcH9MvJqbQsODhHFHg==
-X-Received: by 2002:a17:90b:4d0d:b0:2ea:a25d:3baa with SMTP id 98e67ed59e1d1-2ee08e5bad3mr30665194a91.5.1733163715640;
-        Mon, 02 Dec 2024 10:21:55 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eec5eabec6sm2359185a91.34.2024.12.02.10.21.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 10:21:55 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	mkarsten@uwaterloo.ca,
-	Joe Damato <jdamato@fastly.com>,
-	stable@vger.kernel.org,
-	Guenter Roeck <linux@roeck-us.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [net] net: Make napi_hash_lock irq safe
-Date: Mon,  2 Dec 2024 18:21:02 +0000
-Message-Id: <20241202182103.363038-1-jdamato@fastly.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1733164258; x=1733769058;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hr3Gd/LiFtAjtQkwDJjm0PXxkVfJjoGp7ojBnwj5Gag=;
+        b=bIPBDtk7Eq+krISebYKV2g3BUTg7JXmWqKy5/hdtX6Wic0w1cZsDVP6xuwZivNha0Q
+         tUXhmeZEEPkUTCWlLMVSNUGXCraWOZddKLkNd4DLK+v0a/HFPKG6It+RvCdNfduxQBSn
+         Uzw8zjWh/dxxNI/k0rMcTGRncNfsj1eVxt+qcMhcDBz///XUZuVbF9V3j0SX/EmFQ5rN
+         O3Qx+OCM9MMN0NXKC31BEQtjbc/WIIEBP1M2Rh4xbdV+qwdEObluYJY6xLAcYXRy4S30
+         SHlUsSjBBi9WhUdG5CpBJ5QAnrWyZ48OyrTsgpiO3XM7KMETSPctlIitNFRQro1aYb4t
+         Lxkg==
+X-Gm-Message-State: AOJu0YxIrN5dd65FtYTetuPH+G3Ykbpe53CgkyyXkwEfPzRdaxQHYOsc
+	bHuz0IJbVogtD7t96Zy3JLJKdci4EY2H34YRes+SA00/bRLzdzDsUua516XqNHnyzQTTsflWS9f
+	p2emseTCop7bL0qbmwuLXvgVVz9z2rL1xM6DFCIfBjvLOzNHwNiM=
+X-Gm-Gg: ASbGncvGshKEUyCWod3/fCNScFHpnrDz9UWneP5RVqqrNqHkUnEw3b+12yc8u2RutDo
+	Mm3lkxut6hbo9klztCluOKydfXJzJcHiy
+X-Google-Smtp-Source: AGHT+IHlNZ0c3FgMSDeb4X1ilFXmlXpiLh2UyuryMRixGlP9qIERz81Jb/a0RHj6dZKqNN3qYCgeYR/htw4LOwHnoLA=
+X-Received: by 2002:a05:6358:5d84:b0:1c3:75c6:599a with SMTP id
+ e5c5f4694b2df-1cab16a573bmr895060655d.21.1733164257961; Mon, 02 Dec 2024
+ 10:30:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 3 Dec 2024 00:00:46 +0530
+Message-ID: <CA+G9fYu95a2Dy-R-duaieHVOM9E+zeKu1EF+YJydnaD7nxnhQg@mail.gmail.com>
+Subject: stable-rc: queues: 5.15: arch/arm64/kvm/vgic/vgic-its.c:870:24:
+ error: implicit declaration of function 'vgic_its_write_entry_lock' [-Werror=implicit-function-declaration]
+To: linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>, kvmarm@lists.linux.dev
+Cc: Kunkun Jiang <jiangkunkun@huawei.com>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Make napi_hash_lock IRQ safe. It is used during the control path, and is
-taken and released in napi_hash_add and napi_hash_del, which will
-typically be called by calls to napi_enable and napi_disable.
+The arm64 queues build gcc-12 defconfig-lkftconfig failed on the
+Linux stable-rc queue 5.15 for the arm64 architectures.
 
-This change avoids a deadlock in pcnet32 (and other any other drivers
-which follow the same pattern):
+arm64
+* arm64, build
+ - build/gcc-12-defconfig-lkftconfig
 
- CPU 0:
- pcnet32_open
-    spin_lock_irqsave(&lp->lock, ...)
-      napi_enable
-        napi_hash_add <- before this executes, CPU 1 proceeds
-          spin_lock(napi_hash_lock)
-       [...]
-    spin_unlock_irqrestore(&lp->lock, flags);
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
- CPU 1:
-   pcnet32_close
-     napi_disable
-       napi_hash_del
-         spin_lock(napi_hash_lock)
-          < INTERRUPT >
-            pcnet32_interrupt
-              spin_lock(lp->lock) <- DEADLOCK
+Build errors:
+------
+arch/arm64/kvm/vgic/vgic-its.c:870:24: error: implicit declaration of
+function 'vgic_its_write_entry_lock'
+[-Werror=implicit-function-declaration]
+  870 |                 return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
 
-Changing the napi_hash_lock to be IRQ safe prevents the IRQ from firing
-on CPU 1 until napi_hash_lock is released, preventing the deadlock.
-
-Cc: stable@vger.kernel.org
-Fixes: 86e25f40aa1e ("net: napi: Add napi_config")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/netdev/85dd4590-ea6b-427d-876a-1d8559c7ad82@roeck-us.net/
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joe Damato <jdamato@fastly.com>
+Links:
 ---
- net/core/dev.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166362/suite/build/test/gcc-12-defconfig-lkftconfig/log
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166362/suite/build/test/gcc-12-defconfig-lkftconfig/history/
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166362/suite/build/test/gcc-12-defconfig-lkftconfig/details/
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 13d00fc10f55..45a8c3dd4a64 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6557,18 +6557,22 @@ static void __napi_hash_add_with_id(struct napi_struct *napi,
- static void napi_hash_add_with_id(struct napi_struct *napi,
- 				  unsigned int napi_id)
- {
--	spin_lock(&napi_hash_lock);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&napi_hash_lock, flags);
- 	WARN_ON_ONCE(napi_by_id(napi_id));
- 	__napi_hash_add_with_id(napi, napi_id);
--	spin_unlock(&napi_hash_lock);
-+	spin_unlock_irqrestore(&napi_hash_lock, flags);
- }
- 
- static void napi_hash_add(struct napi_struct *napi)
- {
-+	unsigned long flags;
-+
- 	if (test_bit(NAPI_STATE_NO_BUSY_POLL, &napi->state))
- 		return;
- 
--	spin_lock(&napi_hash_lock);
-+	spin_lock_irqsave(&napi_hash_lock, flags);
- 
- 	/* 0..NR_CPUS range is reserved for sender_cpu use */
- 	do {
-@@ -6578,7 +6582,7 @@ static void napi_hash_add(struct napi_struct *napi)
- 
- 	__napi_hash_add_with_id(napi, napi_gen_id);
- 
--	spin_unlock(&napi_hash_lock);
-+	spin_unlock_irqrestore(&napi_hash_lock, flags);
- }
- 
- /* Warning : caller is responsible to make sure rcu grace period
-@@ -6586,11 +6590,13 @@ static void napi_hash_add(struct napi_struct *napi)
-  */
- static void napi_hash_del(struct napi_struct *napi)
- {
--	spin_lock(&napi_hash_lock);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&napi_hash_lock, flags);
- 
- 	hlist_del_init_rcu(&napi->napi_hash_node);
- 
--	spin_unlock(&napi_hash_lock);
-+	spin_unlock_irqrestore(&napi_hash_lock, flags);
- }
- 
- static enum hrtimer_restart napi_watchdog(struct hrtimer *timer)
--- 
-2.25.1
+Steps to reproduce:
+------------
+- tuxmake \
+        --runtime podman \
+        --target-arch arm64 \
+        --toolchain gcc-12 \
+        --kconfig
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrGeL0phpW3aHlpr5cjEzz3r/config
 
+metadata:
+----
+  git describe: v5.15.173-312-gc83ccef4e8ee
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: c83ccef4e8ee73e988561f85f18d2d73c7626ad0
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrGeL0phpW3aHlpr5cjEzz3r/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrGeL0phpW3aHlpr5cjEzz3r/
+  toolchain: gcc-12
+  config: gcc-12-defconfig-lkftconfig
+  arch: arm64
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
