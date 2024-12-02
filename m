@@ -1,324 +1,197 @@
-Return-Path: <stable+bounces-96068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1924E9E06DC
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F029E0681
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994BA1623C6
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:59:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD43B160F43
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6280B209681;
-	Mon,  2 Dec 2024 14:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8375A202F96;
+	Mon,  2 Dec 2024 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eq9rmD/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeZu3+7w"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A398208962
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 14:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411411FE47F
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151376; cv=none; b=AowxMyxpCAZYVcrCEFW2GgCsXawDvts2WbruIO6hUsiXtgKRVklO9OzZt7EMBOfVAOggAsyHN4Ec6qQvOihmwdNIu6yeWi52NzaYiZCFT5o2QqFXiEkVTGJnrpiDREfOaBlPpyC0ov3bbLa8RR/+7ZixhtXozEaQaXft2/qCFbs=
+	t=1733151804; cv=none; b=rdcsN4MaYGlUJnV51EGC+7oN2OBRjGSIC4XQ85Br0GQy6wQh7VGpt5mBL9pe3aIzcaDwejcOZ6tlGKnBEafHwzVK/jB2SARpJGzeMVaQZKYGY7Qx++U+EeVtqVloVCqR7y1wYkTGGifpc1IIo/2IxIsCVxkPm4rmvyxzHiSFHjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151376; c=relaxed/simple;
-	bh=fKP/RiMYgZS2O68QD/EI11Q3lQSHnma6zMItBFmLxKI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y0Jv1mwgMP8EwC0aF2xof7izxZBIys4PXpUwXwF4vVh1n6ME7be8AJ0GMWSnraprMrZzQG8itnk2iwkqQJPLk50USOW/YSoXe/gj9Nw6lZPystAC8NLX4y9P4gZqYe4/L7/uYXsqSTGEARAQBjAr3ieB6al0hJgEoXlym3qbSU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eq9rmD/E; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733151373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XgML7MvW6KLkBDw9XHbFRndWiyvemLPs+WW1WJQdJVc=;
-	b=eq9rmD/EYmmSKr3f6HdGd/Hda2jq9UznpI4a2VuBtX+Dc/NXvFId1aWY5NDeFBBoY/OU3z
-	IG8m8hO6oT+eIc8Qph5jf5+9gRY4bHT608jTKEl/9SdgC/58HHxSrEvSDGpzA1iNXjrrI5
-	jy3BXZbe2GLGW4XEGQDPYEZcw9hq7+I=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-8rrYXOfROLqgRt5zuywO8Q-1; Mon, 02 Dec 2024 09:56:12 -0500
-X-MC-Unique: 8rrYXOfROLqgRt5zuywO8Q-1
-X-Mimecast-MFC-AGG-ID: 8rrYXOfROLqgRt5zuywO8Q
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa54d1c790cso301264366b.3
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 06:56:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733151371; x=1733756171;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XgML7MvW6KLkBDw9XHbFRndWiyvemLPs+WW1WJQdJVc=;
-        b=WkFTPD0XoCTkddiWN8Fs5nCI42+WzoeVJsRcddz4kg9EvZI7H7vH24g7nGxkpF1Zex
-         8c0NJL+w1J0zNbJ4K+gthTThxXSRNSja49mhoFxakvJs1VAeB2mjsNxNGejgfDh56+2z
-         MJqrngSi7mCXpuwlaySnXhA/HW2gV64UWHbw/FNx0gMAiVUEv6nB5S0vRgk3SESfxYpE
-         CwdXQgBa1l6uIDY8GJkGaEXKA2ga6sc98tpAbQhIkQC/1YHb28lR9oYnFhHviVlRnBCw
-         LC1Yc019GuEyy9tOl2dB7TUiGovRsHLPKp+OjxonuiLZ/VTJ4HKxYlI2aqSWRoVgDgBT
-         rXBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwK1RzKqhfChGkDvrVP63iY0ByrhxIOAGgQhxNlk+ABA4yKUrEdkuddaCeQC0tFTv/HZ46fP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzry5HxkujDLXLhfuFF253qpWkICrbt0VbAMGqNlw3XvGRrlr0b
-	EnTT7h2DQPgkHymAdTXbnYPBri/AcVeg9a3w55W9EdloQGvy3EtEfocO/IcbpvwUArPWGAbAaRq
-	OUN/3N0+3hEneVEQaK4llAQf5AI5xiPHaLX/8MKxw0jNmDB9/63/epA==
-X-Gm-Gg: ASbGncsHK7TlMgH0x3EF1mN0eXAWUHL86iR8eRnTmZn7ugcVhfUsqijomEo6xlfHZA9
-	CdWJEBhpuNwi09u3fjRDsQUQ6nTZ0vmg8zb3Cn6OM02DaWkjpd2tQjou9GcMoDXaVJ74BqfJ3c3
-	RLCCLEuhSv4Z1w5bwVs1yQWDkSarUnPhRtmIiIRaBTjWS5bz9egtS9X54Sti11EeGU+jLYySi8X
-	720+opxBpeYDqawtYRS8cG7l0KJyF5+IqH9ipvqfW+Fgv/SnPBk5w==
-X-Received: by 2002:a17:906:329a:b0:aa5:1d08:dacf with SMTP id a640c23a62f3a-aa580f01a6amr2029062966b.13.1733151370774;
-        Mon, 02 Dec 2024 06:56:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJQaJW0zre9XIeROgYN/FJjTnxYGPO36rn6GiEgfSijb3+9BRwxJ39xLZ6IITHDMcGsy9uQA==
-X-Received: by 2002:a17:906:329a:b0:aa5:1d08:dacf with SMTP id a640c23a62f3a-aa580f01a6amr2029060066b.13.1733151370143;
-        Mon, 02 Dec 2024 06:56:10 -0800 (PST)
-Received: from [10.40.98.157] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5998e64a8sm514473266b.130.2024.12.02.06.56.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 06:56:09 -0800 (PST)
-Message-ID: <38121061-452d-486a-80e5-e4cda0ab9071@redhat.com>
-Date: Mon, 2 Dec 2024 15:56:08 +0100
+	s=arc-20240116; t=1733151804; c=relaxed/simple;
+	bh=OY8s7z4TkD8YVEBg2vSDjroKLfr+8PjZyDSPUKkWKSs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IEnoPxlR+0pd/cSSX5xZfJ41NF6c0NDe0quXU6A5laZTGkmOAjgeNgTpPxYw/XTuU9HLPyNsoQ8C2xaO/dEYoQkCsxyndUrc5tp3jn5AbGZCVjmKysgPRPJ7AZun27CkUjnvS1AKbN2d7g/pcr6NyE3CmxOGKlEYKhefXZ7AFhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeZu3+7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59553C4CED2;
+	Mon,  2 Dec 2024 15:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733151803;
+	bh=OY8s7z4TkD8YVEBg2vSDjroKLfr+8PjZyDSPUKkWKSs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=KeZu3+7w1VgWuqRxrPY5EO03GvyzcnjLBchVzRyuRJcvqbNoE1whVt/ZsTLnZHlFf
+	 pNUBmBpuJcptLxujuVVIEefHAEuXSCtQDSWBHWF/W7bhbe7dwjPKE4UUV1f3GMoK5z
+	 NWMKP5gKidaPGJFXenlH63R8PNyrdP5QwyLvLRII=
+Subject: FAILED: patch "[PATCH] perf/x86/intel/pt: Fix buffer full but size is 0 case" failed to apply to 5.4-stable tree
+To: adrian.hunter@intel.com,peterz@infradead.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 16:03:20 +0100
+Message-ID: <2024120220-comply-kissing-b2b3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] media: uvcvideo: Remove dangling pointers
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
- Hans Verkuil <hverkuil@xs4all.nl>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241202-uvc-fix-async-v5-0-6658c1fe312b@chromium.org>
- <20241202-uvc-fix-async-v5-2-6658c1fe312b@chromium.org>
- <79da5e62-acb0-4bf5-a1c0-f2000fae0167@redhat.com>
- <CANiDSCu3BjC1JsnmgX5eEapBpzHw+HZUw58iiyVfe4KqEDCWVA@mail.gmail.com>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CANiDSCu3BjC1JsnmgX5eEapBpzHw+HZUw58iiyVfe4KqEDCWVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-On 2-Dec-24 3:49 PM, Ricardo Ribalda wrote:
-> Hi Hans
-> 
-> 
-> On Mon, 2 Dec 2024 at 15:44, Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 2-Dec-24 3:24 PM, Ricardo Ribalda wrote:
->>> When an async control is written, we copy a pointer to the file handle
->>> that started the operation. That pointer will be used when the device is
->>> done. Which could be anytime in the future.
->>>
->>> If the user closes that file descriptor, its structure will be freed,
->>> and there will be one dangling pointer per pending async control, that
->>> the driver will try to use.
->>>
->>> Clean all the dangling pointers during release().
->>>
->>> To avoid adding a performance penalty in the most common case (no async
->>> operation), a counter has been introduced with some logic to make sure
->>> that it is properly handled.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
->>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
->>> ---
->>>  drivers/media/usb/uvc/uvc_ctrl.c | 52 ++++++++++++++++++++++++++++++++++++++--
->>>  drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
->>>  drivers/media/usb/uvc/uvcvideo.h |  9 ++++++-
->>>  3 files changed, 60 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
->>> index 9a80a7d8e73a..af1e38f5c6e9 100644
->>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
->>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
->>> @@ -1579,6 +1579,37 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
->>>       uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
->>>  }
->>>
->>> +static void uvc_ctrl_get_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
->>> +{
->>> +     lockdep_assert_held(&handle->chain->ctrl_mutex);
->>> +
->>> +     if (ctrl->handle)
->>> +             dev_warn_ratelimited(&handle->stream->dev->udev->dev,
->>> +                                  "UVC non compliance: Setting an async control with a pending operation.");
->>> +
->>> +     if (handle == ctrl->handle)
->>> +             return;
->>> +
->>> +     if (ctrl->handle)
->>> +             ctrl->handle->pending_async_ctrls--;
->>> +
->>> +     ctrl->handle = handle;
->>> +     handle->pending_async_ctrls++;
->>> +}
->>
->> Maybe simplify this to:
-> 
-> I do not think that we can do that simplification.
-> 
-> If we do that, the original file handle `pending_async_ctrls` value
-> will be out of sync.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Ah good point, I missed that the -- and ++ are done on 2 potentially
-different handles.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Regards,
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5b590160d2cf776b304eb054afafea2bd55e3620
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120220-comply-kissing-b2b3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-Hans
+Possible dependencies:
 
 
 
->> static void uvc_ctrl_get_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
->> {
->>         lockdep_assert_held(&handle->chain->ctrl_mutex);
->>
->>         if (!ctrl->handle)
->>                 handle->pending_async_ctrls++;
->>         else
->>                 dev_warn_ratelimited(&handle->stream->dev->udev->dev,
->>                                      "UVC non compliance: Setting an async control with a pending operation.");
->>
->>         ctrl->handle = handle;
->> }
->>
->> ?
->>
->> Otherwise the patch looks good to me:
->>
->> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> 
-> 
-> 
->>
->> Regards,
->>
->> Hans
->>
->>
->>
->>
->>> +static void uvc_ctrl_put_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
->>> +{
->>> +     lockdep_assert_held(&handle->chain->ctrl_mutex);
->>> +
->>> +     if (ctrl->handle != handle) /* Nothing to do here.*/
->>> +             return;
->>> +
->>> +     ctrl->handle = NULL;
->>> +     if (WARN_ON(!handle->pending_async_ctrls))
->>> +             return;
->>> +     handle->pending_async_ctrls--;
->>> +}
->>> +
->>>  void uvc_ctrl_status_event(struct uvc_video_chain *chain,
->>>                          struct uvc_control *ctrl, const u8 *data)
->>>  {
->>> @@ -1589,7 +1620,8 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
->>>       mutex_lock(&chain->ctrl_mutex);
->>>
->>>       handle = ctrl->handle;
->>> -     ctrl->handle = NULL;
->>> +     if (handle)
->>> +             uvc_ctrl_put_handle(handle, ctrl);
->>>
->>>       list_for_each_entry(mapping, &ctrl->info.mappings, list) {
->>>               s32 value = __uvc_ctrl_get_value(mapping, data);
->>> @@ -1865,7 +1897,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
->>>
->>>               if (!rollback && handle &&
->>>                   ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
->>> -                     ctrl->handle = handle;
->>> +                     uvc_ctrl_get_handle(handle, ctrl);
->>>       }
->>>
->>>       return 0;
->>> @@ -2774,6 +2806,22 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
->>>       return 0;
->>>  }
->>>
->>> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
->>> +{
->>> +     struct uvc_entity *entity;
->>> +
->>> +     guard(mutex)(&handle->chain->ctrl_mutex);
->>> +
->>> +     if (!handle->pending_async_ctrls)
->>> +             return;
->>> +
->>> +     list_for_each_entry(entity, &handle->chain->dev->entities, list)
->>> +             for (unsigned int i = 0; i < entity->ncontrols; ++i)
->>> +                     uvc_ctrl_put_handle(handle, &entity->controls[i]);
->>> +
->>> +     WARN_ON(handle->pending_async_ctrls);
->>> +}
->>> +
->>>  /*
->>>   * Cleanup device controls.
->>>   */
->>> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
->>> index 97c5407f6603..b425306a3b8c 100644
->>> --- a/drivers/media/usb/uvc/uvc_v4l2.c
->>> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
->>> @@ -652,6 +652,8 @@ static int uvc_v4l2_release(struct file *file)
->>>
->>>       uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
->>>
->>> +     uvc_ctrl_cleanup_fh(handle);
->>> +
->>>       /* Only free resources if this is a privileged handle. */
->>>       if (uvc_has_privileges(handle))
->>>               uvc_queue_release(&stream->queue);
->>> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
->>> index 07f9921d83f2..92ecdd188587 100644
->>> --- a/drivers/media/usb/uvc/uvcvideo.h
->>> +++ b/drivers/media/usb/uvc/uvcvideo.h
->>> @@ -337,7 +337,11 @@ struct uvc_video_chain {
->>>       struct uvc_entity *processing;          /* Processing unit */
->>>       struct uvc_entity *selector;            /* Selector unit */
->>>
->>> -     struct mutex ctrl_mutex;                /* Protects ctrl.info */
->>> +     struct mutex ctrl_mutex;                /*
->>> +                                              * Protects ctrl.info,
->>> +                                              * ctrl.handle and
->>> +                                              * uvc_fh.pending_async_ctrls
->>> +                                              */
->>>
->>>       struct v4l2_prio_state prio;            /* V4L2 priority state */
->>>       u32 caps;                               /* V4L2 chain-wide caps */
->>> @@ -612,6 +616,7 @@ struct uvc_fh {
->>>       struct uvc_video_chain *chain;
->>>       struct uvc_streaming *stream;
->>>       enum uvc_handle_state state;
->>> +     unsigned int pending_async_ctrls;
->>>  };
->>>
->>>  struct uvc_driver {
->>> @@ -797,6 +802,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
->>>  int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
->>>                     struct uvc_xu_control_query *xqry);
->>>
->>> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
->>> +
->>>  /* Utility functions */
->>>  struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
->>>                                           u8 epaddr);
->>>
->>
-> 
-> 
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5b590160d2cf776b304eb054afafea2bd55e3620 Mon Sep 17 00:00:00 2001
+From: Adrian Hunter <adrian.hunter@intel.com>
+Date: Tue, 22 Oct 2024 18:59:07 +0300
+Subject: [PATCH] perf/x86/intel/pt: Fix buffer full but size is 0 case
+
+If the trace data buffer becomes full, a truncated flag [T] is reported
+in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
+data must have been added to make the buffer full.
+
+That happens when the buffer fills up from empty to full before the
+Intel PT driver has updated the buffer position.  Then the driver
+calculates the new buffer position before calculating the data size.
+If the old and new positions are the same, the data size is reported
+as 0, even though it is really the whole buffer size.
+
+Fix by detecting when the buffer position is wrapped, and adjust the
+data size calculation accordingly.
+
+Example
+
+  Use a very small buffer size (8K) and observe the size of truncated [T]
+  data. Before the fix, it is possible to see records of 0 size.
+
+  Before:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 2 times to write data ]
+    [ perf record: Captured and wrote 0.105 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
+    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
+
+ After:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 3 times to write data ]
+    [ perf record: Captured and wrote 0.040 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
+    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
+
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index fd4670a6694e..a087bc0c5498 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -828,11 +828,13 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ 	buf->cur_idx++;
+ 
+ 	if (buf->cur_idx == buf->cur->last) {
+-		if (buf->cur == buf->last)
++		if (buf->cur == buf->last) {
+ 			buf->cur = buf->first;
+-		else
++			buf->wrapped = true;
++		} else {
+ 			buf->cur = list_entry(buf->cur->list.next, struct topa,
+ 					      list);
++		}
+ 		buf->cur_idx = 0;
+ 	}
+ }
+@@ -846,8 +848,11 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ static void pt_update_head(struct pt *pt)
+ {
+ 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
++	bool wrapped = buf->wrapped;
+ 	u64 topa_idx, base, old;
+ 
++	buf->wrapped = false;
++
+ 	if (buf->single) {
+ 		local_set(&buf->data_size, buf->output_off);
+ 		return;
+@@ -865,7 +870,7 @@ static void pt_update_head(struct pt *pt)
+ 	} else {
+ 		old = (local64_xchg(&buf->head, base) &
+ 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
+-		if (base < old)
++		if (base < old || (base == old && wrapped))
+ 			base += buf->nr_pages << PAGE_SHIFT;
+ 
+ 		local_add(base - old, &buf->data_size);
+diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
+index f5e46c04c145..a1b6c04b7f68 100644
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -65,6 +65,7 @@ struct pt_pmu {
+  * @head:	logical write offset inside the buffer
+  * @snapshot:	if this is for a snapshot/overwrite counter
+  * @single:	use Single Range Output instead of ToPA
++ * @wrapped:	buffer advance wrapped back to the first topa table
+  * @stop_pos:	STOP topa entry index
+  * @intr_pos:	INT topa entry index
+  * @stop_te:	STOP topa entry pointer
+@@ -82,6 +83,7 @@ struct pt_buffer {
+ 	local64_t		head;
+ 	bool			snapshot;
+ 	bool			single;
++	bool			wrapped;
+ 	long			stop_pos, intr_pos;
+ 	struct topa_entry	*stop_te, *intr_te;
+ 	void			**data_pages;
 
 
