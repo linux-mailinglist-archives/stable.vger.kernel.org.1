@@ -1,52 +1,73 @@
-Return-Path: <stable+bounces-95929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C40F9DFB8A
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:57:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5B1163BA3
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 07:57:36 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC4A1F9ABE;
-	Mon,  2 Dec 2024 07:56:44 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC789DFBA1
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:08:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E613D1F943D
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 07:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4000B28175D
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:08:09 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB45C1F9431;
+	Mon,  2 Dec 2024 08:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=itb.spb.ru header.i=@itb.spb.ru header.b="YZCkkwv0"
+X-Original-To: stable@vger.kernel.org
+Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C101F9E6;
+	Mon,  2 Dec 2024 08:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733126204; cv=none; b=Y6zbgfu2NePn5TUzaEgpjyhdohnVKmDuclEuC4WvfDepxH08AsaSS0sdllAO5IosPYaMHDuQuqzsFDFBb9WjrbNAo//cIf/H/khjaCAaQo+8zoShblKMkRIB7ZnG4lUg4d0a7tEPE3wj3eY1NtvhD2SxJ8+vxwvtsEuR9IMO7yo=
+	t=1733126884; cv=none; b=BrbAp8poBxqmBo+ZRTLdEj7UORQP1xF/qnJ9lRhq/Wx+Y/FrwLatojAmw1/1kt8Rh552O38svA0y0W8zLiDKO6MNBzKzks5/6d0YjPTZA/V2eybrcSbnxD7w9ZRnGu+Cxa46HK9t3ovF96Aiw6MlEqlYreNygapN0ux/7hs5vrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733126204; c=relaxed/simple;
-	bh=NMwi5a7CHZjL22gQHcOPrQSBL+zkSlm1VcpsJZU9Or0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UeoBOJb3edb5KdMEFfIYMPdIRmUgDLWBS9R3zROlI8rrZI9P23ynDLpcRY+ZTvV8khB4V4AiL42gscjcahDyhL9PtwN6srargKwaWMxL/4i5egieXKlvGyGP1J4WvFFLOSf7GqaFaR0TZDLe1UryDL22pVr6HivxMnKmR7MMGA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B27ABI9019916
-	for <stable@vger.kernel.org>; Mon, 2 Dec 2024 07:56:35 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 437qx11s0j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 02 Dec 2024 07:56:34 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 1 Dec 2024 23:56:33 -0800
-Received: from pek-lpg-core4.wrs.com (128.224.153.44) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 1 Dec 2024 23:56:33 -0800
-From: <mingli.yu@eng.windriver.com>
-To: <stable@vger.kernel.org>
-Subject: [PATCH 5.15] parisc: fix a possible DMA corruption
-Date: Mon, 2 Dec 2024 15:56:32 +0800
-Message-ID: <20241202075632.2442890-1-mingli.yu@eng.windriver.com>
+	s=arc-20240116; t=1733126884; c=relaxed/simple;
+	bh=MSW5BTDyePFiKoa+mbURS90jRDsWlUIgeZx3jybnPRI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rGrBEG47MqqSWswZlEbZy0MiCJM8e/12vAHXD0AS8rFZJwTNAgpxnGQV+AxueHjiZLbosVRJcDdBDtMoSWnxkexZ7VSL9YpkyaVGNECcqGGj/C2YdXFMIKBM7XR8ReZqi2v5LUdgtRoj0Lw3XtqseFBHeC974q4K6a5GlBtSfuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=itb.spb.ru; spf=pass smtp.mailfrom=itb.spb.ru; dkim=pass (1024-bit key) header.d=itb.spb.ru header.i=@itb.spb.ru header.b=YZCkkwv0; arc=none smtp.client-ip=178.154.239.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=itb.spb.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=itb.spb.ru
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+	by forward203b.mail.yandex.net (Yandex) with ESMTPS id D4E786486C;
+	Mon,  2 Dec 2024 11:02:12 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2720:0:640:5aee:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 803B560F03;
+	Mon,  2 Dec 2024 11:02:04 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id f1ZvNeGOfiE0-wjjuYp10;
+	Mon, 02 Dec 2024 11:02:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=itb.spb.ru; s=mail;
+	t=1733126523; bh=fAvlWEkjGOo1q72idjWA0Eucb8ySH4M7IRqqfWdyYRE=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=YZCkkwv0CsBqEe9B3jleawzwSzgsrdVWTohT8pxpvgP4vnYIybRWF2MoGiOFsWpJQ
+	 t0u4obNc4EDN19bYamRefun5j7kg56DW7YghxnRW/uriBhWV6+C1yP0KyoU19KYt1S
+	 1oQXmUZu5CD2fgaGtmHWiO4v5D1Gf56aQFBvbB0w=
+Authentication-Results: mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net; dkim=pass header.i=@itb.spb.ru
+From: Ivan Stepchenko <sid@itb.spb.ru>
+To: Kenneth Feng <kenneth.feng@amd.com>
+Cc: Ivan Stepchenko <sid@itb.spb.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Xinhui Pan <Xinhui.Pan@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Tim Huang <Tim.Huang@amd.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Alexander Richards <electrodeyt@gmail.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Rex Zhu <Rex.Zhu@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	lvc-project@linuxtesting.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm: amd: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
+Date: Mon,  2 Dec 2024 11:00:43 +0300
+Message-Id: <20241202080043.5343-1-sid@itb.spb.ru>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,80 +76,33 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: MHYUdsUYDVZLcSHd8DTie4OXJqAXg58H
-X-Authority-Analysis: v=2.4 cv=EuYorTcA c=1 sm=1 tr=0 ts=674d6832 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=YlDBPuehlc0bO2GpeZkA:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: MHYUdsUYDVZLcSHd8DTie4OXJqAXg58H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-02_04,2024-11-28_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- clxscore=1011 priorityscore=1501 suspectscore=0 adultscore=0 mlxscore=0
- spamscore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412020069
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+The function atomctrl_get_smc_sclk_range_table() does not check the return
+value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
+retrieve SMU_Info table, it returns NULL which is later dereferenced.
 
-[ Upstream commit 7ae04ba36b381bffe2471eff3a93edced843240f]
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
-possible that two unrelated 16-byte allocations share a cache line. If
-one of these allocations is written using DMA and the other is written
-using cached write, the value that was written with DMA may be
-corrupted.
-
-This commit changes ARCH_DMA_MINALIGN to be 128 on PA20 and 32 on PA1.1 -
-that's the largest possible cache line size.
-
-As different parisc microarchitectures have different cache line size, we
-define arch_slab_minalign(), cache_line_size() and
-dma_get_cache_alignment() so that the kernel may tune slab cache
-parameters dynamically, based on the detected cache line size.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
 ---
- arch/parisc/Kconfig             |  1 +
- arch/parisc/include/asm/cache.h | 11 ++++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 6ac0c4b98e28..9888e0b3f675 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -15,6 +15,7 @@ config PARISC
- 	select ARCH_SPLIT_ARG64 if !64BIT
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
-+	select ARCH_HAS_CACHE_LINE_SIZE
- 	select DMA_OPS
- 	select RTC_CLASS
- 	select RTC_DRV_GENERIC
-diff --git a/arch/parisc/include/asm/cache.h b/arch/parisc/include/asm/cache.h
-index d53e9e27dba0..99e26c686f7f 100644
---- a/arch/parisc/include/asm/cache.h
-+++ b/arch/parisc/include/asm/cache.h
-@@ -20,7 +20,16 @@
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index fe24219c3bf4..4bd92fd782be 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -992,6 +992,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
+ 			GetIndexIntoMasterTable(DATA, SMU_Info),
+ 			&size, &frev, &crev);
  
- #define SMP_CACHE_BYTES L1_CACHE_BYTES
++	if (!psmu_info)
++		return -EINVAL;
  
--#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-+#ifdef CONFIG_PA20
-+#define ARCH_DMA_MINALIGN	128
-+#else
-+#define ARCH_DMA_MINALIGN	32
-+#endif
-+#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
-+
-+#define arch_slab_minalign()	((unsigned)dcache_stride)
-+#define cache_line_size()	dcache_stride
-+#define dma_get_cache_alignment cache_line_size
- 
- #define __read_mostly __section(".data..read_mostly")
- 
+ 	for (i = 0; i < psmu_info->ucSclkEntryNum; i++) {
+ 		table->entry[i].ucVco_setting = psmu_info->asSclkFcwRangeEntry[i].ucVco_setting;
 -- 
 2.34.1
 
