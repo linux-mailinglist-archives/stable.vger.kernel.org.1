@@ -1,102 +1,69 @@
-Return-Path: <stable+bounces-95940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C59B9DFC03
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:37:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384699DFC11
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:38:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93337B21367
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:37:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC397281CF1
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 08:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3511F9F45;
-	Mon,  2 Dec 2024 08:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C171F9F40;
+	Mon,  2 Dec 2024 08:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="IBqYJqXD"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="epHYRemz"
 X-Original-To: stable@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BC11F9EB0
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 08:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43151F943F;
+	Mon,  2 Dec 2024 08:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733128628; cv=none; b=jVMN9oNbFcUKtuznBzxF2sfvlaVCvQYMMBQAwWRmT6G5ixPgnCtlDqHIp0mBDfjH//PPOt4+IHQUYKNWSCP3RQxZwkGSymmpDXYOYkuiSFSeTTEV57eytruQ4TT4qDS1yVwawdgotCrhiTr/i0o789mof6H+UnhSS2YKGsO3dqw=
+	t=1733128728; cv=none; b=KQ1kigTUfRBQ9Karv1XtKHunQ6sdADLgNHI5jtk+u8DEutG/NsUmzj1Rlz558KHpH24weSsDcHLb3u2xU65Q+wkRyvYo76F9EUljDaP5m61b3iuLe3o/sAA1FxVOqxlSwD0si2xP9tOJhUqb0R38Dd8Ppy3Tr+TXpr/Cd3a9sIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733128628; c=relaxed/simple;
-	bh=9vqHlE4eKnkIwWvsC3JIbW/E7dhC9pzrKM+9c/98Xec=;
+	s=arc-20240116; t=1733128728; c=relaxed/simple;
+	bh=exnzvOOzv9zTqHKHJbD28IhJgvuw44iIDxMzsn69HaU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GckzhVNBd8eC/RxEmnx51oZtSYk8MLk6c4tR8kAGVF6j6Fxlp0t0s4Mosle5VeMJ2kXd4D3w80Vjg3sq/AklhPLfvB8rY3ICleHQzIT8r2PHQyplmbuPqgtmXJhHxSJAzZNQYFqE0ShziNRWWx/ZEmKtGs4YHNW+miuJKXUjv5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=IBqYJqXD; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=IBqYJqXD;
-	dkim-atps=neutral
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 2752E567
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 17:37:05 +0900 (JST)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2156cb2c3d2so19467375ad.1
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 00:37:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1733128624; x=1733733424; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VK2WqgJCuK3lJ9mOGj3N1dg4zBlFcV2FC4v/ogSdXlE=;
-        b=IBqYJqXDFlFfwyjsYdNRswtezlYUnlRa4Cz9Lrvk5691b6kPtFRgGOrC01JZhew1+p
-         xnCLF/QTwobpSvzTQ+PucfxfH2N0vrjtIusrOJ0miH45KqkyFBJ90lo2zDNUiaxfxwVr
-         NNUggQ1qlSt2F80lIfbRRPTC98GTOuDMgRXza6x3uMszmhOqe8b/oY0g0ZfbZqIxnQjP
-         8/fDJYH6dwzA7tzduAtEIHW8WPdQncPL4SDWNkECmuBkHr/MUVPpUTnD2sfU4EoHb2lN
-         a77v+5xAKasA6gebeHQKwjm6mzyhn3/tF9bFbGIArAH+a1CiFTZ0O5fg0K+Ohwo4AoGG
-         YdJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733128624; x=1733733424;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VK2WqgJCuK3lJ9mOGj3N1dg4zBlFcV2FC4v/ogSdXlE=;
-        b=NYCEq3CgHsJWvuUl0fJGREaa0biwqKC384anDIyZYoc6ahRRdu6ZUoX+/dsaWTORES
-         Qbc9+KYEFgnLsSIojv1+XkvpG7wTbdXn11chKkilxRao9sWExjI9fX0I08bsTMbXCSI0
-         6nJv67NJi/BMgQTGpUtuK+3Up46Eu+Ps0tfmnH7pWsCmMRczojXowcUb/hiuyU3Ii3RQ
-         FnhS02atWJKTs0q99edqzIqvmFZRqFyZBSbTtd7AcqzUGree6iVLJq1xXeyU0HL7Bm0Q
-         1EFd2tG7STMFU17uuwU5ApIr2A6Ur/x2ZGGomBPJZGX4ojwEAeu3m/uv98OCjrndlGPN
-         Ltkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBuc0UJLemuh83q5Ga8tPEpPsAGerkpFLbLdP/OBH+kjQri/Vdc4dTQcUObo7t/NJ5gDsjafw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGwDMzoOhUE78lEyXhIsl1VLZehb3eCdEsVryZb8p3KlLo6mKE
-	I2hQTJjEIGsXXExgH3ggz539sMhDHn9NHD7OYcZYQ98vIg7n+LGfGE8Uq4BfvFaSUZgLa3dW4B/
-	dnBrz9GI7epDhDg/Lc0GqAX+BS1PtM5Qf2AsCvN1efiwZXB+8wkhXDhstUFkHHh4=
-X-Gm-Gg: ASbGncvIPfaFlT7+0aHRI0B4QxvoEAQfCM2ZOw8qC/5PL9uGigZIU/3a3dBWl/aiOIH
-	2XCFpqWpJXmAHhB3Bv+yhFpH52MhAXOO1r/QI2KCKwfGzaaxnnDbX+j2iNM0IuJn13R/CWNrSgu
-	JGMR7XU2b3QjV1tnwPDPXXYmWlfyAcXdV0uXNK4Cx1ieQ95v+efIYu8Ae9iuPY3QJAsutmvJWER
-	PCoAnTUYz/ioy0/k2h8eJXmZhkJ21nGdgDNoCLZeGIRIj5uWZGjF6OfghZQMQXWLGYhogqFjk2Y
-	ZvIEspA+ipIb0CT8NnT/ekJSNxxvzyxMtQ==
-X-Received: by 2002:a17:902:f54c:b0:215:8695:ef91 with SMTP id d9443c01a7336-2158695f663mr63999705ad.6.1733128624194;
-        Mon, 02 Dec 2024 00:37:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFSWAE/y0IhIcwNvm6fI7kzoEX5JNN1BJNMR/5uOfQrwY1hGEgyeBr1D7ts6PKB0Bl8V884sQ==
-X-Received: by 2002:a17:902:f54c:b0:215:8695:ef91 with SMTP id d9443c01a7336-2158695f663mr63999525ad.6.1733128623892;
-        Mon, 02 Dec 2024 00:37:03 -0800 (PST)
-Received: from localhost (178.101.200.35.bc.googleusercontent.com. [35.200.101.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2156e0bf55csm28960015ad.5.2024.12.02.00.37.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Dec 2024 00:37:03 -0800 (PST)
-Date: Mon, 2 Dec 2024 17:36:51 +0900
-From: 'Dominique MARTINET' <dominique.martinet@atmark-techno.com>
-To: David Laight <David.Laight@aculab.com>
-Cc: Oliver Neukum <oneukum@suse.com>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Greg Thelen <gthelen@google.com>,
-	John Sperbeck <jsperbeck@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
-Message-ID: <Z01xo_7lbjTVkLRt@atmark-techno.com>
-References: <20241017071849.389636-1-oneukum@suse.com>
- <Z00udyMgW6XnAw6h@atmark-techno.com>
- <e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mk3QT6yrC56Fhk+GBSvGx+dYiJx5R7RC5cKLm9ONimAJnZVIzToucgFUAmeoSMXsrfY6QanyMva6OGwFy4z+ByB+eghHcH9g06v+9MZocWtfif/rsn/9NRr6JaAQsuiU9TXxe1Mj6W+HZLwKxP+3bUOamU4W2pIMVPBM/yA3rLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=epHYRemz; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 801D0514;
+	Mon,  2 Dec 2024 09:38:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733128697;
+	bh=exnzvOOzv9zTqHKHJbD28IhJgvuw44iIDxMzsn69HaU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=epHYRemzfOh+bh1297w8d5dgPjHQFxof7wDG8fEXpQUqmMTF5nWo8nYruQh7nWq0B
+	 fPrY+wOWXu7hF6cQp78JXMIWtHBRyk/Gqg/EJsgCQ40zrDwW4ohQph2F9pIltLtFMN
+	 5QfQD30BSqNAk5BnHmzIAs+fqXZPPcBHOF+U2qSY=
+Date: Mon, 2 Dec 2024 10:38:33 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control
+ owned by other fh
+Message-ID: <20241202083833.GC16635@pendragon.ideasonboard.com>
+References: <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
+ <20241129110640.GB4108@pendragon.ideasonboard.com>
+ <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
+ <e95b7d74-2c56-4f5a-a2f2-9c460d52fdb4@xs4all.nl>
+ <CANiDSCvj4VVAcQOpR-u-BcnKA+2ifcuq_8ZML=BNOHT_55fBog@mail.gmail.com>
+ <CANiDSCvwzY3DJ+U3EyzA7TCQu2qMUL6L1eTmZYbM+_Tk6DsPaA@mail.gmail.com>
+ <20241129220339.GD2652@pendragon.ideasonboard.com>
+ <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
+ <20241202001846.GD6105@pendragon.ideasonboard.com>
+ <CANiDSCuf=YN0=Q+ariHRPUAhacd=s5SFRHsySXWDowaiJxMa3A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,109 +72,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
+In-Reply-To: <CANiDSCuf=YN0=Q+ariHRPUAhacd=s5SFRHsySXWDowaiJxMa3A@mail.gmail.com>
 
-
-(Sorry for back-to-back replies, hadn't noticed this when I wrote the
-previous mail)
-
-David Laight wrote on Mon, Dec 02, 2024 at 08:17:59AM +0000:
-> > So we hit the exact inverse problem with this patch: our device ships an
-> > LTE modem which exposes a cdc-ethernet interface that had always been
-> > named usb0, and with this patch it started being named eth1, breaking
-> > too many hardcoded things expecting the name to be usb0 and making our
-> > devices unable to connect to the internet after updating the kernel.
+On Mon, Dec 02, 2024 at 08:28:48AM +0100, Ricardo Ribalda wrote:
+> On Mon, 2 Dec 2024 at 01:19, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+> >
+> > On Fri, Nov 29, 2024 at 11:18:54PM +0100, Ricardo Ribalda wrote:
+> > > On Fri, 29 Nov 2024 at 23:03, Laurent Pinchart wrote:
+> > > > On Fri, Nov 29, 2024 at 07:47:31PM +0100, Ricardo Ribalda wrote:
+> > > > > Before we all go on a well deserved weekend, let me recap what we
+> > > > > know. If I did not get something correctly, let me know.
+> > > > >
+> > > > > 1) Well behaved devices do not allow to set or get an incomplete async
+> > > > > control. They will stall instead (ref: Figure 2-21 in UVC 1.5 )
+> > > > > 2) Both Laurent and Ricardo consider that there is a big chance that
+> > > > > some camera modules do not implement this properly. (ref: years of
+> > > > > crying over broken module firmware :) )
+> > > > >
+> > > > > 3) ctrl->handle is designed to point to the fh that originated the
+> > > > > control. So the logic can decide if the originator needs to be
+> > > > > notified or not. (ref: uvc_ctrl_send_event() )
+> > > > > 4) Right now we replace the originator in ctrl->handle for unfinished
+> > > > > async controls.  (ref:
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/media/usb/uvc/uvc_ctrl.c#n2050)
+> > > > >
+> > > > > My interpretation is that:
+> > > > > A) We need to change 4). We shall not change the originator of
+> > > > > unfinished ctrl->handle.
+> > > > > B) Well behaved cameras do not need the patch "Do not set an async
+> > > > > control owned by another fh"
+> > > > > C) For badly behaved cameras, it is fine if we slightly break the
+> > > > > v4l2-compliance in corner cases, if we do not break any internal data
+> > > > > structure.
+> > > >
+> > > > The fact that some devices may not implement the documented behaviour
+> > > > correctly may not be a problem. Well-behaved devices will stall, which
+> > > > means we shouldn't query the device while as async update is in
+> > > > progress. Badly-behaved devices, whatever they do when queried, should
+> > > > not cause any issue if we don't query them.
+> > >
+> > > I thought we could detect the stall and return safely. Isn't that the case?
+> >
+> > We could, but if we know the device will stall anyway, is there a reason
+> > not to avoid issuing the request in the first place ?
 > 
-> Erm does that mean your modem has a locally administered MAC address?
-> It really shouldn't.
-
-Unfortunately, that's what it gives us:
-# ip a show dev eth1
-4: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000
-    link/ether 02:80:72:78:15:10 brd ff:ff:ff:ff:ff:ff
-
-# udevadm info /sys/class/net/eth1
-P: /devices/platform/soc/2100000.bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1:1.0/net/eth1
-E: DEVPATH=/devices/platform/soc/2100000.bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1:1.0/net/eth1
-E: ID_BUS=usb
-E: ID_MM_CANDIDATE=1
-E: ID_MODEL=GTO
-E: ID_MODEL_ENC=GTO
-E: ID_MODEL_ID=00a0
-E: ID_NET_NAME_MAC=enx028072781510
-E: ID_REVISION=0307
-E: ID_SERIAL=Gemalto_GTO_101578728002
-E: ID_SERIAL_SHORT=101578728002
-E: ID_TYPE=generic
-E: ID_USB_DRIVER=cdc_ether
-E: ID_USB_INTERFACES=:020600:0a0000:020201:
-E: ID_USB_INTERFACE_NUM=00
-E: ID_VENDOR=Gemalto
-E: ID_VENDOR_ENC=Gemalto
-E: ID_VENDOR_ID=1e2d
-E: IFINDEX=4
-E: INTERFACE=eth1
-E: NM_UNMANAGED=1
-E: SUBSYSTEM=net
-E: USEC_INITIALIZED=23339186
-
-(that mac is stable accross reboots)
-
-afaiu, this modem generates a pointtopoint ethernet device and then
-routes packets sent there to LTE.
-
-I've just checked what my phone does when I do USB tethering and it's
-pretty similar, the mac is also a local 02:xx mac (02:36:05) which is
-also not in OUI lookup tables.
-(the only difference is, I plugged it on my laptop which runs systemd,
-so it got named enx023605xxxxxx and none of this matters..)
-
-> > > +++ b/drivers/net/usb/usbnet.c
-> > > @@ -1767,7 +1767,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
-> > >  		// can rename the link if it knows better.
-> > >  		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
-> > >  		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
-> > > -		     (net->dev_addr [0] & 0x02) == 0))
-> > > +		     /* somebody touched it*/
-> > > +		     !is_zero_ether_addr(net->dev_addr)))
-> > 
-> > ... or actually now I'm looking at it again, perhaps is the check just
-> > backwards, or am I getting this wrong?
-> > previous check was rename if (mac[0] & 0x2 == 0), which reads to me as
-> > "nobody set the 2nd bit"
-> > new check now renames if !is_zero, so renames if it was set, which is
-> > the opposite?...
+> Because there are always going to be devices that do not send the
+> event when the control has finished.
 > 
-> The 2nd bit (aka mac[0] & 2) is the 'locally administered' bit.
-> The intention of the standard was that all manufacturers would get
-> a valid 14-bit OUI and the EEPROM (or equivalent) would contain an
-> addresses with that bit clear, such addresses should be globally unique.
-> Alternatively the local network administrator could assign an address
-> with that bit set, required by protocols like DECnet.
+> It is impossible to know the state of the device: Is the zoom still
+> moving or the device is not compliant?
+
+Another type of broken behaviour would be devices that don't correctly
+handle UVC_GET and UVC_CUR requests while an async update is in
+progress. If you issue those requests, those devices will break. Are
+they more or less important than devices that don't send an event ?
+
+All of those are partly theoretical problems. I'd rather keep it simple
+for now until we get feedback about broken devices.
+
+> > > Why we have not seen issues with this?
+> >
+> > I haven't tested a PTZ device for a very long time, and you would need
+> > to hit a small time window to see the issue.
 > 
-> This has never actually been strictly true, a few manufacturers used
-> 'locally administered addresses' (02:cf:1f:xx:xx:xx comes to mind)
-> and systems typically allow any (non-broadcast) be set.
+> Not that small, some devices take up to 10 seconds to go from the
+> smallest zoom to the biggest zoom.
+> I'd say that v4l2-ctl has a very big chance to hit any error.
 > 
-> So basing any decision on whether a MAC address is local or global
-> is always going to be confusing.
+> BTW, homing can take an even longer time.
+> 
+> > > > We should not send GET_CUR and SET_CUR requests to the device while an
+> > > > async update is in progress, and use cached values instead. When we
+> > > > receive the async update event, we should clear the cache. This will be
+> > > > the same for both well-behaved and badly-behaved devices, so we can
+> > > > expose the same behaviour towards userspace.
+> > >
+> > > seting ctrl->loaded = 0 when we get an event sounds like a good idea
+> > > and something we can implement right away.
+> > > If I have to resend the set I will add it to the end.
+> > >
+> > > > We possibly also need some kind of timeout mechanism to cope with the
+> > > > async update event not being delivered by the device.
+> > >
+> > > This is the part that worries me the most:
+> > > - timeouts make the code fragile
+> > > - What is a good value for timeout? 1 second, 30, 300? I do not think
+> > > that we can find a value.
+> >
+> > I've been thinking about the implementation of uvc_fh cleanup over the
+> > weekend, and having a timeout would have the nice advantage that we
+> > could reference-count uvc_fh instead of implementing a cleanup that
+> > walks over all controls when closing a file handle. I think it would
+> > make the code simpler, and possibly safer too.
+> 
+> The problem with a timeout is:
+> - We do not know what is the right value for the timeout.
+> - We need to have one timeout per control, or implement a timeout
+> dispatcher mechanism, and that is racy by nature
+> - It will require introducing a new locking mechanism to avoid races
+> between the timeout handler and the event completion
 
-Thank you for the explanation, I now understand the old check better --
-point to point devices that are a local MAC addresses (0x2 set) would
-get to keep the usb0 name.
+Timeouts don't come for free, that's for sure.
 
-The new check however no longer cares about the address globality, and
-just basically always renames the interface if the driver provided a
-mac ?
+> - It introduces a new lifetime in the driver... I'd argue that it is
+> best to have less, not more.
 
-If that is what was intended, I am fine with this, but I think these
-local ppp usb interfaces are rather common in the cheap modem world.
+That I disagree with, my experience with V4L2 (as well as with DRM, or
+actually the kernel in general) is that we would be in a much better
+place today if object lifetimes were handled with reference counting
+more widely.
 
+> I do not see many benefits....
 
-> Linux will allocate a random (locally administered) address if none
-> is found - usually due to a corrupt eeprom.
+The main benefit is simplifying the close() implementation and
+complexity, as well as lowering lock contention (whether the latter
+brings a real advantage in practice, I haven't checked)..
 
-Thanks,
+> What we can introduce on top of my set is something like this (just
+> pseudocode, do not scream at me :P)  That code can prevent stalls and
+> will work with misbehaving hardware.... (But I still do not know a
+> good value for timeout) and solve some of the issues that I mention.
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> index f0e8a436a306..a55bd4b3ac07 100644
+> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> @@ -1132,6 +1132,9 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+>         if ((ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR) == 0)
+>                 return -EACCES;
+> 
+> +       if (ctrl->handle && ( NOW - ctrl->async_start_time ) < TIMEOUT)
+> +               return -EBUSY;
+> +
+>         ret = __uvc_ctrl_load_cur(chain, ctrl);
+>         if (ret < 0)
+>                 return ret;
+> @@ -1591,6 +1594,7 @@ static int uvc_ctrl_get_handle(struct uvc_fh
+> *handle, struct uvc_control *ctrl)
+>                 return -EBUSY;
+> 
+>         ctrl->handle = handle;
+> +       ctrl->async_start_time = NOW;
+>         handle->pending_async_ctrls++;
+>         return 0;
+>  }
+> @@ -1982,6 +1986,9 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+>         if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR))
+>                 return -EACCES;
+> 
+> +       if (ctrl->handle && ( NOW - ctrl->async_start_time ) < TIMEOUT)
+> +               return -EBUSY;
+
+If I understand you correctly, this is meant to prevent accessing the
+device for an initial TIMEOUT period, based on the knowledge it will
+very likely STALL. After the TIMEOUT, if the async set is still not
+complete, SET_CUR will be issued, and a STALL will likely occur.
+
+If we device to standardize on -EBUSY while the async set is in
+progress, we need to do so before and after the timeout.
+uvc_query_ctrl() will return -EBUSY in case of a STALL if the device
+reports the "Not ready" error. This is what I expect a device to report
+in this case. Of course the UVC specification, in section 2.4.4,
+documents that the device will update the request error code control,
+but doesn't tell which value should be used :-S I suppose we'll handle
+broken devices if the need arise.
+
+> +
+>         /* Clamp out of range values. */
+>         switch (mapping->v4l2_type) {
+>         case V4L2_CTRL_TYPE_INTEGER:
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index e0e4f099a210..5c82fae94dff 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -154,6 +154,8 @@ struct uvc_control {
+>                                  * File handle that initially changed the
+>                                  * async control.
+>                                  */
+> +
+> +       TIME async_start_time;
+>  };
+> 
+> 
+> In any case. Can we solve this in incremental steps? I think the
+> current patch seems simple and correct. We can introduce the timeout
+> later.
+
+The main reason for a timeout was to replace walking over all controls
+at close() time with reference counting of uvc_fh, which is an
+alternative approach to the current patch. Given that picking a good
+timeout value is difficult, and that the current implementation already
+skips the walk in the most common case when no async set is pending, I
+suppose we could start with that.
+
+> > > > Regarding the userspace behaviour during an auto-update, we have
+> > > > multiple options:
+> > > >
+> > > > For control get,
+> > > >
+> > > > - We can return -EBUSY
+> > > > - We can return the old value from the cache
+> > > > - We can return the new value fromt he cache
+> > > >
+> > > > Returning -EBUSY would be simpler to implement.
+> > >
+> > > Not only easy, I think it is the most correct,
+> > >
+> > > > I don't think the behaviour should depend on whether the control is read
+> > > > on the file handle that initiated the async operation or on a different
+> > > > file handle.
+> > > >
+> > > > For control set, I don't think we can do much else than returning
+> > > > -EBUSY, regardless of which file handle the control is set on.
+> > >
+> > > ACK.
+> > >
+> > > > > I will send a new version with my interpretation.
+> > > > >
+> > > > > Thanks for a great discussion
+> > >
+> > > Looking with some perspective... I believe that we should look into
+> > > the "userspace behaviour for auto controls" in a different patchset.
+> > > It is slightly unrelated to this discussion.
+
 -- 
-Dominique
+Regards,
+
+Laurent Pinchart
 
