@@ -1,129 +1,100 @@
-Return-Path: <stable+bounces-95947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C2C9DFD4D
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CAF9DFD4E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A3D28061B
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9EF280D3B
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF2E1F943E;
-	Mon,  2 Dec 2024 09:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF94F1F9F69;
+	Mon,  2 Dec 2024 09:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUb3mVkX"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="glLFVMua"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD1A22331
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 09:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F8C22331;
+	Mon,  2 Dec 2024 09:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733132216; cv=none; b=LLI8jLltUeDKJcCelDJGWu2UhvbH8nMRMDiP5yKNdw9gPrRWBOlep567ta4UlUhDolhP2nVdr+2CMQShGTchkxR4iSO7J8aD4dGDXfhPjnL96AY7dxmR/vOALwyAovKh+5K5Q5qQ2nSqqo7sWc4lTZvFaSzU0l11cbLH2r2xwOM=
+	t=1733132227; cv=none; b=Dr/b75IbNaCO80ar7fx8HhJ1heG6lw73xrXK8pR6r+AEglxm0egViFeMcPGnXQ8siZuOHd1Ee4J9yWxuDm7atq7ARv4MvC20NAQgdt4f5y6Ss1AAnrnD4IVLoIG98UZLBQn0Tm1DqUw4nprztTnWul+tvwB5N01ktTcrkz0X16A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733132216; c=relaxed/simple;
-	bh=nxFCrNYKks5ziXpnqV+WtT4PHRQKzNDliJ/rasdiNi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UujoydiZS6eNCciaXJiBgBjvAsjTngL2wv/gz+aFBpO+51d+s4OTfkyE/TZdyeRfsjuxOG4sl+auiKB0Md/cttghkNYtO2PsUdawzj55jCgSAwK2/hxMhyz304qPkHb9paRLASCiicu16x7RJFuhpXsw3AZ0WAbvbbkUOoaQp2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUb3mVkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D38C4CED2;
-	Mon,  2 Dec 2024 09:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733132215;
-	bh=nxFCrNYKks5ziXpnqV+WtT4PHRQKzNDliJ/rasdiNi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NUb3mVkXRqLNmPPKPzbOtwCBdtGl2jeCVoqQszSRjg4vvmZfW+vMqacf4TipT7u2J
-	 1YVp1AoDpQGHydVmAzul7J6LknW7AynRev63irBBHJGigAB8JbUqLpcF78UvYP3uQr
-	 1jqeM23vzHwpjM1R5A+tWWG9OjSjozbIVryxh1EM=
-Date: Mon, 2 Dec 2024 10:36:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: mingli.yu@eng.windriver.com
-Cc: stable@vger.kernel.org, xialonglong@kylinos.cn
-Subject: Re: [PATCH v2 5.15] tty: n_gsm: Fix use-after-free in gsm_cleanup_mux
-Message-ID: <2024120226-motion-dole-53a4@gregkh>
-References: <20241128084730.430060-1-mingli.yu@eng.windriver.com>
+	s=arc-20240116; t=1733132227; c=relaxed/simple;
+	bh=lOayRBayZGSlXgUrI9KvTQ7rdb+QafjbTeNRnQUzG6M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LtLU9Fk3zpdEzixLFDoB/A+s6saRbsfz61aoTLM5UgT9ihgGI8tkjgOWuNO3nriqSWhieVVgQiArR1gpzT3xZtkEet8YFJZ8S4F0Vidzndob8G+kZL0NSZt5C0wC0MliK/ZoERGTIunGnkEGQNiiM3KDKLaQdIGaoLwbX7oN7Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=glLFVMua; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1733132212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vsUdwmzHEUtFp4dw0uNgWDj5eMaa/8lI8CftTMle4BI=;
+	b=glLFVMuaIeiD46Uyv90P/ajVMXJ/VOaRvcswdnYRFuhN0y+EZu27Of8BxNORqwI+3Kb49t
+	4DzqNEhsZlr0UJrt25WT6+tj2M9CiYWAzNPvnXVGWCywPDUPpOrZFiS2mPxCKpvWTBP9BG
+	hLTueajQ7kTDQsFVEe/0pcMPspNYTh8=
+To: Richard Weinberger <richard@nod.at>
+Cc: Zhihao Cheng <chengzhihao1@huawei.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Artem Bityutskiy <Artem.Bityutskiy@nokia.com>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mtd: ubi: Added a check for ubi_num
+Date: Mon,  2 Dec 2024 12:36:52 +0300
+Message-Id: <20241202093652.5911-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241128084730.430060-1-mingli.yu@eng.windriver.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 28, 2024 at 04:47:30PM +0800, mingli.yu@eng.windriver.com wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> commit 9462f4ca56e7d2430fdb6dcc8498244acbfc4489 upstream.
-> 
-> BUG: KASAN: slab-use-after-free in gsm_cleanup_mux+0x77b/0x7b0
-> drivers/tty/n_gsm.c:3160 [n_gsm]
-> Read of size 8 at addr ffff88815fe99c00 by task poc/3379
-> CPU: 0 UID: 0 PID: 3379 Comm: poc Not tainted 6.11.0+ #56
-> Hardware name: VMware, Inc. VMware Virtual Platform/440BX
-> Desktop Reference Platform, BIOS 6.00 11/12/2020
-> Call Trace:
->  <TASK>
->  gsm_cleanup_mux+0x77b/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
->  __pfx_gsm_cleanup_mux+0x10/0x10 drivers/tty/n_gsm.c:3124 [n_gsm]
->  __pfx_sched_clock_cpu+0x10/0x10 kernel/sched/clock.c:389
->  update_load_avg+0x1c1/0x27b0 kernel/sched/fair.c:4500
->  __pfx_min_vruntime_cb_rotate+0x10/0x10 kernel/sched/fair.c:846
->  __rb_insert_augmented+0x492/0xbf0 lib/rbtree.c:161
->  gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
->  _raw_spin_lock_irqsave+0x92/0xf0 arch/x86/include/asm/atomic.h:107
->  __pfx_gsmld_ioctl+0x10/0x10 drivers/tty/n_gsm.c:3822 [n_gsm]
->  ktime_get+0x5e/0x140 kernel/time/timekeeping.c:195
->  ldsem_down_read+0x94/0x4e0 arch/x86/include/asm/atomic64_64.h:79
->  __pfx_ldsem_down_read+0x10/0x10 drivers/tty/tty_ldsem.c:338
->  __pfx_do_vfs_ioctl+0x10/0x10 fs/ioctl.c:805
->  tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
-> 
-> Allocated by task 65:
->  gsm_data_alloc.constprop.0+0x27/0x190 drivers/tty/n_gsm.c:926 [n_gsm]
->  gsm_send+0x2c/0x580 drivers/tty/n_gsm.c:819 [n_gsm]
->  gsm1_receive+0x547/0xad0 drivers/tty/n_gsm.c:3038 [n_gsm]
->  gsmld_receive_buf+0x176/0x280 drivers/tty/n_gsm.c:3609 [n_gsm]
->  tty_ldisc_receive_buf+0x101/0x1e0 drivers/tty/tty_buffer.c:391
->  tty_port_default_receive_buf+0x61/0xa0 drivers/tty/tty_port.c:39
->  flush_to_ldisc+0x1b0/0x750 drivers/tty/tty_buffer.c:445
->  process_scheduled_works+0x2b0/0x10d0 kernel/workqueue.c:3229
->  worker_thread+0x3dc/0x950 kernel/workqueue.c:3391
->  kthread+0x2a3/0x370 kernel/kthread.c:389
->  ret_from_fork+0x2d/0x70 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:257
-> 
-> Freed by task 3367:
->  kfree+0x126/0x420 mm/slub.c:4580
->  gsm_cleanup_mux+0x36c/0x7b0 drivers/tty/n_gsm.c:3160 [n_gsm]
->  gsmld_ioctl+0x395/0x1450 drivers/tty/n_gsm.c:3408 [n_gsm]
->  tty_ioctl+0x643/0x1100 drivers/tty/tty_io.c:2818
-> 
-> [Analysis]
-> gsm_msg on the tx_ctrl_list or tx_data_list of gsm_mux
-> can be freed by multi threads through ioctl,which leads
-> to the occurrence of uaf. Protect it by gsm tx lock.
-> 
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-> Cc: stable <stable@kernel.org>
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Link: https://lore.kernel.org/r/20240926130213.531959-1-xialonglong@kylinos.cn
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> [Mingli: Backport to fix CVE-2024-50073, no guard macro defined resolution]
-> Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
-> ---
->  drivers/tty/n_gsm.c | 4 ++++
->  1 file changed, 4 insertions(+)
+Added a check for ubi_num for negative numbers
+If the variable ubi_num takes negative values then we get:
 
-What differed from v1?
+qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
+[    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
+[    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
+[    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
+[    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
+[    0.745600]  kernel_init from ret_from_fork+0x14/0x28
+[    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
 
-Please submit a v3 that says what has changed here.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-thanks,
+Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+V1 -> V2: changed the tag Fixes and moved the check to ubi_mtd_param_parse()
+ drivers/mtd/ubi/build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 30be4ed68fad..ef6a22f372f9 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -1537,7 +1537,7 @@ static int ubi_mtd_param_parse(const char *val, const struct kernel_param *kp)
+ 	if (token) {
+ 		int err = kstrtoint(token, 10, &p->ubi_num);
+ 
+-		if (err) {
++		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
+ 			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
+ 			       token);
+ 			return -EINVAL;
+-- 
+2.25.1
+
 
