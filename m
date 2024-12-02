@@ -1,141 +1,160 @@
-Return-Path: <stable+bounces-96171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239B79E0DD4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 22:27:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CA19E0E8B
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 23:06:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77BE16586C
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 21:27:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4AABB2E7D3
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 21:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CA71DF727;
-	Mon,  2 Dec 2024 21:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F7E1DF275;
+	Mon,  2 Dec 2024 21:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uir5zYCt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meuKDiwW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEA61DF735;
-	Mon,  2 Dec 2024 21:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E7770800;
+	Mon,  2 Dec 2024 21:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733174775; cv=none; b=nl2jCAsxULJbRo4eIbxRl/OMo3idU76TksQgHSPO3toTEfCu2CuZSM5pj0mJ00DToYlIKvmcEE0DtQquZ1UvuF/z6u/CM9qxCPo6U1ri0obwqXCUYBjEXChq3z0FNq7qKUReCj+LrzYQ9atMp7xs8id3C5NJcpBSrIvn4cr8iQg=
+	t=1733174904; cv=none; b=lYIcYaTQp4zBdUVb4YT1BLArwSqzlOCOU7YAQR97Ach5d0vVPsx8Ak1XkAVOzvsddWR9rqHswCD2bDyq17AK7ccun7pspohgiyVW/SrTed2PucwyX8aDybomwR7lUXCQQ/lkve3Xr8QT/eyt+LY2dRtRSsIa6pxhQ3hNNM8aN9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733174775; c=relaxed/simple;
-	bh=vUl+TUNQn8BRz2vomXn/Chbc78pyH2FuMlmF1Jcd/A4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ngMDzpOnFdwYeoLT8OIOMRlkK/URKZVfTzWLOfB+7bm7C3LDfptB0AHu8qk2Ph5kmzsFTgYISRz1dp6qWSQIhQIhI7OvQ2WlsnLqHrmi4363Zhj9/kvaf6rB3B/kmrQKv5fzxVArQXtxbdFR9PnhApLIjzEDti/5LFY54pMls8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uir5zYCt; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1733174904; c=relaxed/simple;
+	bh=xEyiY89CFoyIC6RJOf5yxjlGAjYfDd0YclyWYUnj1wU=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HsbfbjLHW6AHCfxKc+oL8+8G1UBmYJqyh/XW9UghhkZp60Sr4njBoA5+4QnbIpqggYNEc2TzBRev2cjOZYo+5+Wo8sQR9rhiEPiuFGm1RessIt5gn4T+KKKu1jNZA1JMfff4KNEtJR80/3qxjnvKhWRKcts1gwRaZTPqbLxyxns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meuKDiwW; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ea93311724so557787a91.2;
-        Mon, 02 Dec 2024 13:26:13 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so1499196f8f.2;
+        Mon, 02 Dec 2024 13:28:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733174772; x=1733779572; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r2XejICzXArLFcIiyqAnjcmXvCQg/37urb3NpURPZ9s=;
-        b=Uir5zYCtGcsgv+0cCWX91GseMQwheVmHdmT6P+GjThsDZGQUWklN4Q89VVDMgVHPGN
-         zQ/0dPxK4zaqLMS4PHOhRegqdAIUPCHZbcKNvgjg4bCu/k7LXrnX3QOyJbHBinLrQIu4
-         URr3l1bfjqt01RptV+UoYgbUaZerSqu42koucataC9pYLP4nQeKXbIFut9PLdeE3dMlo
-         PoHiajwZgLM744qMLPxI5ldpazHdTxLSViKylSIXPCU53vNN61MGLah9WVsqSuuJRM9F
-         Ymm+DfgA6O467OEkgSdv5y6GXHxV2arj4YIR6qMdvINzXm14btgDYS3D/bUupwflCdf0
-         M8xw==
+        d=gmail.com; s=20230601; t=1733174901; x=1733779701; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=d+TbYMTL7pdvSVVUGiDfIrHjRUykt9pBPOmZDspqpv4=;
+        b=meuKDiwWlkRxb2+ccGKKc93mpLpDp+yYSVwwO9BIWwEVGkxff9om1d7seZcr5R6HVH
+         POCg3BK70WKsqTNDMGLQodw64bdjqh5zsihxy797mQ37Qc1seZuI5TwU3CUPwM6Kqoy7
+         bUUXDIeRBqa5mNuHLNpKM1Esys6l+8ISqLuk1S51/eFI/1LYNE0uF0qBEWzwjyVtTiCJ
+         Qp44iB8pO4YG/OLE3Z6bKDB+8Vw7AmWXqL++OOcvUT4UTJUjInWtTIU/nxyBt6Q0hCRa
+         TAWNfKTrgCCrV4H7tQDc1UtuTjZtRGIFjJWNE2xXlj7VfCx0EBGD/sgaKeB1FlJYhXJ5
+         HXEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733174772; x=1733779572;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r2XejICzXArLFcIiyqAnjcmXvCQg/37urb3NpURPZ9s=;
-        b=kjS+/cQZX6XITV+bjmV8MF9tqTTeorRDjTG3anEBVDyiogHhA+j/uTrj/M0zQjJbsY
-         91Ybcd/jBc3+737/qINdMk2HXmJMs+8I3OC4zvSXaKuEPkVzxvQkrz8eGXBc0QMTqXtf
-         AT9hwThEax9FJPubBCFj68l9LxTpblW2TpXpPPX3Q0Hxe2RsoumuyJLuSVlBRECL3e1v
-         mVaYCj7lRZwsEZRnvz6fYQFd2feF2EHD4b+LP31QKkfRgrWIu7rK/uOHEtmgFEw/NtPy
-         tvPnaD0rvpNA+20COzppdGPE1o/RmjMfuCvENC8H4WvUcSE4sReFJ7v5xPfEr8ipvTp5
-         Z/Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/7lUD9+E3wttJgxkCwx49zYEylHd/DNyK1FTnQCiQkG0pWEUSJCn+navdMa0no2Wp1/1dPMJQ@vger.kernel.org, AJvYcCXe51Ve3Is/cI1T67kN7p8fLKqWagIAlD2FTrvjnmFfU2veES/VRUCdusRYFXNkWKf64hJ2CxggaYWSSH8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMNmpbtWAnmfwMXgslFWGJGudd1HXolRUTDnznlajBeuU6eQIU
-	FEIWu5SfdZAQb5N182IFPvt2bKc17MjIQp6jTmG83cPyVRnRXCqaA/rwwWnKb7UEHY6fKGXsb9j
-	5uUhdlJvi6r+CRt2M1YYydJrJkvI=
-X-Gm-Gg: ASbGncvpPedgyeq03O0+9sd8jHXYC6NVl5fONXz62XtYF20pF36jGux8D0psEsk5Sua
-	Jz3oIlQ9kIhC4ynHlLsFY4lECN2PGU1U=
-X-Google-Smtp-Source: AGHT+IEXlg13b3ifBskkGZwkW8PNP/lLn1940BLZpT4v8S4oGQtGrOYide0iHSNd5F3UBGsaESmbS8Zb3m9xuMOOjqk=
-X-Received: by 2002:a17:90b:4c10:b0:2ee:3fa7:ef23 with SMTP id
- 98e67ed59e1d1-2ef01288ba7mr20504a91.8.1733174772464; Mon, 02 Dec 2024
- 13:26:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733174901; x=1733779701;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d+TbYMTL7pdvSVVUGiDfIrHjRUykt9pBPOmZDspqpv4=;
+        b=QiVwIFyx8bd0kIHG2gU+DB+3IKEb5JoxpdM7S/BJ61Tbp6zX9kJemMxSPQVXgGcBcq
+         700DVTWBA6KJkN/Xq4u2sH3Vx+26DjjV/MlYLFr4SuvXk37hvJTZ4l0hgyZlPPIQvCDK
+         9OtxBMlhpt48a2re4DAPdJDFc4smSdXAMcnzPZNEbt9Qs22BsI+W1jYKgyM0iXsuZkdL
+         Mu/KS4i6EGgpFBdqQFYbIrlqavbTgS1vyJ3NxcDkDZqllyCuDcHHCQ2wmXFbe9eD3uwY
+         51OX3oNpxGjEa9yRxGMid2SmMhJvEfI3OMzrq+AJ6cosJrilxbYNuUSgkS42UFXOSBnY
+         8jaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFjVACM5Nsfa1Q9WwOW3x9wzjMgOCAcieJBri49ZX7uN3+QT/xpE+7GV3qMB3ADeM5+UlOHD3H@vger.kernel.org, AJvYcCWROQjlM71xknCvtqxf9uvk3XAmp6GmxeRHZwrDpwIeQObbi4IvqnshUeuGv/HC/uKUcAtkguS4@vger.kernel.org, AJvYcCWdMm44tuIfGa2YNAz3kZ3nh7uJRX7RB0XSlP6lU9XrmM8W+tZeQFEbXWEanvv7QFRSyL4taeIRbFUtoYw=@vger.kernel.org, AJvYcCXEa/3dNXsSzHGyQiyMPvberTFGWgQ0JKPn7wR0o3S30Z6PnhqWtwSk4IQhc8SP6Ojz/9ucaa/tzv40QirxNQq8@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk2t0Al19Gihr6JjlukV2lG0f9UP6fZ1AoutNrd8hjhPwuDlgF
+	24lLK/Voo5bjm62bWLYHz88e/+ij5MuhQecAFcRbPw+xsXZlOrQi
+X-Gm-Gg: ASbGnct1tU0NOQGqaxv9B8fL3v9e+rhG4bZZidqu1e/dUT4trbg4vCSoqSxi78seOIc
+	uXUHYczLCIKSOAiAXwy2euE8m5EnK8ekHnHWCopU6W/dAcfpLfp0Pd4WBT0F6gbojVOB3MWm1vs
+	hK/rnr3K/CJ18DuPhwRsvWySMWtU8jjb9muiTAPRcA065Q+KUec26gKrT0XRB/MMVdArS7i3xhC
+	EJ1BB8+mwvAi8cIbY960wpaPAgtXLZFdx+L3AXtknbyTqZYemy2Ay3aS+C9Ro44n7O/4fG6pGs2
+	BsayBQ==
+X-Google-Smtp-Source: AGHT+IF+ZISfH0DvNTDiAbFqRbtpMicPQtHEBxTSXE3ToSiPa1WjslQrrR4kA6zhUQ3UgoD/mZkIXg==
+X-Received: by 2002:a05:6000:4604:b0:385:f114:15d6 with SMTP id ffacd0b85a97d-385fd3caf15mr9878f8f.13.1733174900591;
+        Mon, 02 Dec 2024 13:28:20 -0800 (PST)
+Received: from Ansuel-XPS. (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385f13e4457sm4450311f8f.35.2024.12.02.13.28.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 13:28:20 -0800 (PST)
+Message-ID: <674e2674.df0a0220.33ed66.d434@mx.google.com>
+X-Google-Original-Message-ID: <Z04mcK7reFIiopvh@Ansuel-XPS.>
+Date: Mon, 2 Dec 2024 22:28:16 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [net PATCH 1/2] selftests: net: lib: fix broken ping with
+ coreutils ping util
+References: <20241130113314.6488-1-ansuelsmth@gmail.com>
+ <20241130154307.cskk55ecltjkinqz@skbuf>
+ <674b334a.050a0220.3b307b.ee8b@mx.google.com>
+ <20241130154840.lv4rmor4dv66cctf@skbuf>
+ <674e1af7.050a0220.3799ad.fa5e@mx.google.com>
+ <20241202212429.n4f2ig6mx4fb27dz@skbuf>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241202080043.5343-1-sid@itb.spb.ru>
-In-Reply-To: <20241202080043.5343-1-sid@itb.spb.ru>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 2 Dec 2024 16:26:01 -0500
-Message-ID: <CADnq5_PTvhr=Wz2OBPthKwM3nsshfq0679VoN-pqPk1H+dZtJQ@mail.gmail.com>
-Subject: Re: [PATCH] drm: amd: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
-To: Ivan Stepchenko <sid@itb.spb.ru>
-Cc: Kenneth Feng <kenneth.feng@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Tim Huang <Tim.Huang@amd.com>, "Dr. David Alan Gilbert" <linux@treblig.org>, 
-	Alexander Richards <electrodeyt@gmail.com>, 
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Jesse Zhang <jesse.zhang@amd.com>, 
-	Rex Zhu <Rex.Zhu@amd.com>, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, lvc-project@linuxtesting.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202212429.n4f2ig6mx4fb27dz@skbuf>
 
-On Mon, Dec 2, 2024 at 3:27=E2=80=AFAM Ivan Stepchenko <sid@itb.spb.ru> wro=
-te:
->
-> The function atomctrl_get_smc_sclk_range_table() does not check the retur=
-n
-> value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
-> retrieve SMU_Info table, it returns NULL which is later dereferenced.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
+On Mon, Dec 02, 2024 at 11:24:29PM +0200, Vladimir Oltean wrote:
+> On Mon, Dec 02, 2024 at 09:39:15PM +0100, Christian Marangi wrote:
+> > Mhh the problem seems to be -c 
+> > 
+> > Let me post some outputs...
+> > 
+> > root@OpenWrt:~# ping -V
+> > ping from iputils 20240117
+> > libcap: no, IDN: no, NLS: no, error.h: no, getrandom(): yes, __fpending(): yes
+> > root@OpenWrt:~# ping -c 10 192.168.1.1
+> > PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+> > 64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.102 ms
+> > 64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=0.084 ms
+> > 64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=0.236 ms
+> > ^C
+> > --- 192.168.1.1 ping statistics ---
+> > 3 packets transmitted, 3 received, 0% packet loss, time 2080ms
+> > rtt min/avg/max/mdev = 0.084/0.140/0.236/0.067 ms
+> > root@OpenWrt:~# ping 192.168.1.1 -c 10
+> > ping: -c: Name does not resolve
+> > 
+> > As you can see swapping the ip cause this "Name does not resolve" error.
+> 
+> Ok, I opened the iputils source code and there isn't any relevant recent
+> change there. But it uses getopt(3), and that seems to be implemented
+> more simplistically for musl libc:
+> https://wiki.musl-libc.org/functional-differences-from-glibc.html
+> "musl and the POSIX standard getopt stop processing options at the first
+> non-option argument with no permutation."
+> 
+> On GNU libc:
+> $ ping 192.168.1.1 -c 1
+> PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+> 64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.696 ms
+> 
+> --- 192.168.1.1 ping statistics ---
+> 1 packets transmitted, 1 received, 0% packet loss, time 0ms
+> rtt min/avg/max/mdev = 0.696/0.696/0.696/0.000 ms
 
-In practice this should never happen as this code only gets called on
-polaris chips and the vbios data table will always be present on those
-chips.  That said, I've applied it to align with the logic for other
-functions in this file.
+Well it's definitely that... As we use musl as glibc is BIIIG and won't
+ever fit 4mb of flash ahahha
 
-Thanks,
+Also I just notice msend suffer the very same problem...
 
-Alex
+root@OpenWrt:~# ip vrf exec vlan1 msend -g ff2e::0102:0304 -I lan1 -c 1
+Now sending to multicast group: [ff2e::0102:0304]:4444
+sendto: Address family not supported by protocol
+root@OpenWrt:~# ip vrf exec vlan1 msend -I lan1 -c -g 1ff2e::0102:0304
+Now sending to multicast group: [224.1.1.1]:4444
+Sending msg 1, TTL 1, to [224.1.1.1]:4444:
+Sending msg 2, TTL 1, to [224.1.1.1]:4444:
 
-> Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-> ---
->  drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/driver=
-s/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-> index fe24219c3bf4..4bd92fd782be 100644
-> --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-> +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-> @@ -992,6 +992,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr=
- *hwmgr, struct pp_atom_ctr
->                         GetIndexIntoMasterTable(DATA, SMU_Info),
->                         &size, &frev, &crev);
->
-> +       if (!psmu_info)
-> +               return -EINVAL;
->
->         for (i =3D 0; i < psmu_info->ucSclkEntryNum; i++) {
->                 table->entry[i].ucVco_setting =3D psmu_info->asSclkFcwRan=
-geEntry[i].ucVco_setting;
-> --
-> 2.34.1
->
+-- 
+	Ansuel
 
