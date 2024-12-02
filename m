@@ -1,190 +1,136 @@
-Return-Path: <stable+bounces-95997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FC99E0275
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:49:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C6B9E0116
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:59:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04B8A162A2E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:59:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB9B1FE46C;
+	Mon,  2 Dec 2024 11:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="kfCOHf6D"
+X-Original-To: stable@vger.kernel.org
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDDEAB284DF
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:58:44 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84EB1FE457;
-	Mon,  2 Dec 2024 11:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Vp4+FO7s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="deubl0XG";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Vp4+FO7s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="deubl0XG"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB4D1FE460;
-	Mon,  2 Dec 2024 11:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE41FE457;
+	Mon,  2 Dec 2024 11:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733140719; cv=none; b=gCnoFGqupNeHretfvjHGMtBue3IT6lK7cDHd0sF3N8MKJcT4ISYVci+s8OTILW+HQDGarH9nMG40oefi6VmzPG6dMyLXMzfUGn6LDvQE60Y8xmz+nsmxQHr3qMA+mHVhel8yCRJzVb5HOfJqN3hWOTNFWaj0oQOoer278/y2YRQ=
+	t=1733140774; cv=none; b=CObQCg2d0IbjHHDjgrMPhmLn/QvVJ048+mFxZuHlBBcUOBlZqjhJaWDTLzeiOlteylHs1ezEDR7tt9HVdgKH61MbFKa3EFhAtgAmUmV6BcT/Sb5lCtZ/I7kQjGZYNzmFcz0h9U/azyCDB+p5Hhf+iyQji4HNR4D7GpWcqs8dK98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733140719; c=relaxed/simple;
-	bh=QMyq9EbEbrvn4BKynSCwBcST9IgH4SAAb9sn/izyyP4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Mn4nGdMSp5FsldnR1qbrwzgy5r3YdLmAfzqphHrXFfAPFQ8xVx7nsKMwrKVEBFIbXc6NvMs6tV4/0AuTSwqiFy0YYJXkq0btRh4BfXCNFmGj6AA0bdG73T/wZ9ONY+LVrPuE+zfjKDk1z8k8dG0gchgTzTeUP8G9v/dT7pS+k/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Vp4+FO7s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=deubl0XG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Vp4+FO7s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=deubl0XG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 00D271F444;
-	Mon,  2 Dec 2024 11:58:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733140716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1733140774; c=relaxed/simple;
+	bh=N/FtLGxZSOjoESGAFkoZ7rNu2YPWJnOH24yyDQkCF1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jm2O/2bQJIrX8oWEc5xtit7oZanDxqrk5JQO6VQhdE2dLZW9OdUu9nSnBhMnsJDV5OkNlL6xjN9RSngypIKz2GvnqMVz1hAe/EzR7T0ar7VoS/fnNKJrDcoTZi/9xTSMHdvbGmHdHk1/mAfrUNN584cUYFbLXU7sOFFMxL1Mo50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=kfCOHf6D; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 889F91C00A0; Mon,  2 Dec 2024 12:59:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1733140761;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oYYrzFFBllny0Va36Wrisn0O7VuBee5DQnDnud69cTM=;
-	b=Vp4+FO7sVlT/aGd3PpprDn34s8VqCEKsXyrC/QCr1lAqXz1aAmMhOfousGcjIkA+GNmZGV
-	MR8wj8AByQLNX+7VqtrbMQr+5XSgFeQwkp7Rr3ntqyrwXzaBBc7hgjLvACRag1HnPXgzFv
-	dXt+fZl/6tfl7mhqD7uY73LK68NC0+k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733140716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oYYrzFFBllny0Va36Wrisn0O7VuBee5DQnDnud69cTM=;
-	b=deubl0XGkcZCRMCbl08UHHNQ9+vlXd9ngoRdhhXOduoXkw7mU9Hdr4MbZQxkaZXhtMHzVT
-	VXgswAUiR5Q8+yAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Vp4+FO7s;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=deubl0XG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733140716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oYYrzFFBllny0Va36Wrisn0O7VuBee5DQnDnud69cTM=;
-	b=Vp4+FO7sVlT/aGd3PpprDn34s8VqCEKsXyrC/QCr1lAqXz1aAmMhOfousGcjIkA+GNmZGV
-	MR8wj8AByQLNX+7VqtrbMQr+5XSgFeQwkp7Rr3ntqyrwXzaBBc7hgjLvACRag1HnPXgzFv
-	dXt+fZl/6tfl7mhqD7uY73LK68NC0+k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733140716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oYYrzFFBllny0Va36Wrisn0O7VuBee5DQnDnud69cTM=;
-	b=deubl0XGkcZCRMCbl08UHHNQ9+vlXd9ngoRdhhXOduoXkw7mU9Hdr4MbZQxkaZXhtMHzVT
-	VXgswAUiR5Q8+yAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB47913A31;
-	Mon,  2 Dec 2024 11:58:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JDiRIemgTWdQbAAAD6G6ig
-	(envelope-from <colyli@suse.de>); Mon, 02 Dec 2024 11:58:33 +0000
-Content-Type: text/plain;
-	charset=utf-8
+	bh=H5ubiw6vD4okQFCfJBW+Ugm6BtQvdoUcLByM+fyDWlU=;
+	b=kfCOHf6Dmy4t3nZYQCoE1xuCMpfTN/ZPug/6jz8E5HOnEaShyW/jfKEXm9TCCPlCibt3pc
+	2Iq5O9lku9yBP3uJeE0JAXWJxiqqABBXmlA+Lj5jUJ49CkPImVyzG6fc4ahCA8Tfntq00w
+	Bi/+mCXdm+r5lqCoOdf24UFOtWIwcWQ=
+Date: Mon, 2 Dec 2024 12:59:21 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Alexander =?iso-8859-1?Q?H=F6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>, robin@protonic.nl,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, corbet@lwn.net, linux-can@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10 3/6] can: j1939: fix error in J1939
+ documentation.
+Message-ID: <Z02hGYbHhkEeE3eQ@duo.ucw.cz>
+References: <20241112103803.1654174-1-sashal@kernel.org>
+ <20241112103803.1654174-3-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR again
-From: Coly Li <colyli@suse.de>
-In-Reply-To: <20241202115638.28957-1-colyli@suse.de>
-Date: Mon, 2 Dec 2024 19:58:21 +0800
-Cc: linux-bcache@vger.kernel.org,
- linux-block@vger.kernel.org,
- Liequan Che <cheliequan@inspur.com>,
- stable@vger.kernel.org,
- Zheng Wang <zyytlz.wz@163.com>,
- Mingzhe Zou <mingzhe.zou@easystack.cn>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UyTOBD7KB2x8PJGs"
+Content-Disposition: inline
+In-Reply-To: <20241112103803.1654174-3-sashal@kernel.org>
+
+
+--UyTOBD7KB2x8PJGs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1AE210DE-1BC5-4281-BD65-4748C11D9A71@suse.de>
-References: <20241202115638.28957-1-colyli@suse.de>
-To: axboe@kernel.dk
-X-Mailer: Apple Mail (2.3826.200.121)
-X-Rspamd-Queue-Id: 00D271F444
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_CC(0.00)[vger.kernel.org,inspur.com,163.com,easystack.cn];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FREEMAIL_ENVRCPT(0.00)[163.com];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	APPLE_MAILER_COMMON(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
 
+Hi!
 
+> From: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
+>=20
+> [ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
+>=20
+> The description of PDU1 format usage mistakenly referred to PDU2
+> format.
 
-> 2024=E5=B9=B412=E6=9C=882=E6=97=A5 19:56=EF=BC=8CColy Li =
-<colyli@suse.de> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> From: Liequan Che <cheliequan@inspur.com>
->=20
-> Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-> node allocations") leads a NULL pointer deference in =
-cache_set_flush().
->=20
-> 1721         if (!IS_ERR_OR_NULL(c->root))
-> 1722                 list_add(&c->root->list, &c->btree_cache);
->=20
-> =46rom the above code in cache_set_flush(), if previous registration =
-code
-> fails before allocating c->root, it is possible c->root is NULL as =
-what
-> it is initialized. __bch_btree_node_alloc() never returns NULL but
-> c->root is possible to be NULL at above line 1721.
->=20
-> This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
->=20
-> Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in =
-node allocations")
-> Signed-off-by: Liequan Che <cheliequan@inspur.com>
-> Cc: stable@vger.kernel.org
-> Cc: Zheng Wang <zyytlz.wz@163.com>
-> Reviewed-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-> Signed-off-by: Coly Li <colyli@suse.de>
+I'm pretty sure this does not fix user-visible bug.
+
+BR,
+								Pavel
+
+> Signed-off-by: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
+> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+> Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gm=
+x.net
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
-> drivers/md/bcache/super.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/networking/j1939.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/networking/j1939.rst b/Documentation/networkin=
+g/j1939.rst
+> index 0a4b73b03b997..59f81ba411608 100644
+> --- a/Documentation/networking/j1939.rst
+> +++ b/Documentation/networking/j1939.rst
+> @@ -83,7 +83,7 @@ format, the Group Extension is set in the PS-field.
+> =20
+>  On the other hand, when using PDU1 format, the PS-field contains a so-ca=
+lled
+>  Destination Address, which is _not_ part of the PGN. When communicating =
+a PGN
+> -from user space to kernel (or vice versa) and PDU2 format is used, the P=
+S-field
+> +from user space to kernel (or vice versa) and PDU1 format is used, the P=
+S-field
+>  of the PGN shall be set to zero. The Destination Address shall be set
+>  elsewhere.
+> =20
 
-Hi Jens,
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
-Could you please take this patch? It is tiny change but important, and =
-good to have it in next rc release.
+--UyTOBD7KB2x8PJGs
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thank you in advance.
+-----BEGIN PGP SIGNATURE-----
 
-Coly Li
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ02hGQAKCRAw5/Bqldv6
+8l9LAJwL6qfkl3olcEWNHAA4lyQ0gqDEHACfcaO8EgLoYfDotzr44LxkgMgl/VE=
+=/fMJ
+-----END PGP SIGNATURE-----
 
+--UyTOBD7KB2x8PJGs--
 
