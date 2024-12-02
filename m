@@ -1,134 +1,117 @@
-Return-Path: <stable+bounces-96139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDAD9E0932
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:58:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE319E09B0
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81AD4282256
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:58:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 666AFB82789
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4A1D95A3;
-	Mon,  2 Dec 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847D420ADC7;
+	Mon,  2 Dec 2024 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OGm7CBJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzxXuyXg"
 X-Original-To: stable@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5577513C8E8;
-	Mon,  2 Dec 2024 16:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CAA20A5FB
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733158713; cv=none; b=f69gYvNsUpECvrM66Lm448lgmnfucUHW43/OUgBdQrFiPcy5W3aw4Vwkg3zyaO8YbzNINDBR/rWQIC/HDGLYK1hNCYy6yY262eUjIiRPpA1mHF/wRuoClYTLkFsZTRjCA3YcEwXD22aENEHRX1VOlFQ8t9kWmTYfXFCooLxCFPQ=
+	t=1733152748; cv=none; b=iK8EsXfst+g7CYqr9rXhHutAqM2oewCcoAS5tPgnFYVHqs5xI7CPEVFzKvx9mRKH52cr4w1wMRsZqqMBJh06E4tFsScE+baoyEx2/X2Jz9FH++ex5xUjfr5VIFGm80mC813d4eKTxEgNAfFG7ik0biujbxpYjjo95kqwDiNm+z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733158713; c=relaxed/simple;
-	bh=+/aze2XdCAbp3s1wCqprW1SADqz2t0OMsYVnR+C5QD4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r25C9x4a26zUxHb9VGjBx+9G7m99bo3zttvG3OmcNT9KFTtTNGeAZuG1LLBUlPQDyKudysQkRGJ+oQVPTowGRvqZhYwj800GZnWomHLy+kg7su+JJcv0vAZuT6aE4aDUGFMuezK7/zaEWnhW0eyHXe04Utrb2rhSxG8qtDKPpZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OGm7CBJd; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 236B2E0003;
-	Mon,  2 Dec 2024 16:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733158709;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=crHXj6kSMxBwiHS4OFprzVGLLYPQotmxut5qDRHbC9A=;
-	b=OGm7CBJdwa/YOzj/A+yWhzEDKMSlz4FKa+GbTgVCyqjDEmP20x1pXABhO0rP2HKdX2UPUs
-	OfsxFl1WVvv4q7n4OT2/Ne3MtYcmxHpJ/RUDI+QaXypAZfPYdWlTOkYf2y7m3G4KQDYx94
-	bS/x2idB9+NXlDCAd7zQy+ixQP9vdCaXPrO9tzFijLXKN29OU1rh0vEp+WwZN0i+u3BwMm
-	PzgPC1wUKGW6DTNfNcHNTKYefvgc0khHOYcmF36L3s63aIS10UWlYTeGubjPGu/ER7sqKE
-	iFE7LGuXU55yNc4D5FwdF4QbeE58rSmbYn9Yc45LvcOIun//70kzgF4pMHLoag==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Stephen Boyd <stephen.boyd@linaro.org>
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] of: Fix error path in of_parse_phandle_with_args_map()
-Date: Mon,  2 Dec 2024 17:58:19 +0100
-Message-ID: <20241202165819.158681-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1733152748; c=relaxed/simple;
+	bh=jsuMjOiiKE64Wx+7dwfW2gx0Qu9rKX8hKy43MUmRxzA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eVH5EyjzSMpldN9V+2qcjQ52aEF948B+LdecMtk3TXLcVTiVyEmIt//nyyXlbV4qgsf3Ohn6fRskz7mizk0jXzrsdzOusk3iG/+gH99mrROG5Kev5HexXgHXIO7i1LjVgx2f54fFlDvnxkvEaG6V95bAoxtSimrTqCtGjcjqLfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzxXuyXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A859C4CED1;
+	Mon,  2 Dec 2024 15:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733152747;
+	bh=jsuMjOiiKE64Wx+7dwfW2gx0Qu9rKX8hKy43MUmRxzA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=NzxXuyXgooYMRk1s0r16RwEa5hd9O+7FsBGBQWekaG18r+/Z2DHXr14giiH6bEUtd
+	 vNRkvw7P/RdTPTLrSGWIR5jAE/PA3mbDxwMAjpB4BgPx2UC6YUF+66ZibotDj6OK7J
+	 AVv8L+jr38TAXtH7GJVFSOZgFsLLXAIyZyLFx9SI=
+Subject: FAILED: patch "[PATCH] xhci: Combine two if statements for Etron xHCI host" failed to apply to 5.4-stable tree
+To: ki.chiang65@gmail.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 16:18:51 +0100
+Message-ID: <2024120251-backrest-passion-3be3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 
-The current code uses some 'goto put;' to cancel the parsing operation
-and can lead to a return code value of 0 even on error cases.
 
-Indeed, some goto calls are done from a loop without setting the ret
-value explicitly before the goto call and so the ret value can be set to
-0 due to operation done in previous loop iteration. For instance match
-can be set to 0 in the previous loop iteration (leading to a new
-iteration) but ret can also be set to 0 it the of_property_read_u32()
-call succeed. In that case if no match are found or if an error is
-detected the new iteration, the return value can be wrongly 0.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Avoid those cases setting the ret value explicitly before the goto
-calls.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/of/base.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x d7b11fe5790203fcc0db182249d7bfd945e44ccb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120251-backrest-passion-3be3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 7dc394255a0a..809324607a5c 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1507,8 +1507,10 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 			map_len--;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d7b11fe5790203fcc0db182249d7bfd945e44ccb Mon Sep 17 00:00:00 2001
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+Date: Wed, 6 Nov 2024 12:14:43 +0200
+Subject: [PATCH] xhci: Combine two if statements for Etron xHCI host
+
+Combine two if statements, because these hosts have the same
+quirk flags applied.
+
+[Mathias: has stable tag because other fixes in series depend on this]
+
+Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-18-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 7803ff1f1c9f..db3c7e738213 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -394,12 +394,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
  
- 			/* Check if not found */
--			if (!new)
-+			if (!new) {
-+				ret = -EINVAL;
- 				goto put;
-+			}
- 
- 			if (!of_device_is_available(new))
- 				match = 0;
-@@ -1518,17 +1520,20 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 				goto put;
- 
- 			/* Check for malformed properties */
--			if (WARN_ON(new_size > MAX_PHANDLE_ARGS))
--				goto put;
--			if (map_len < new_size)
-+			if (WARN_ON(new_size > MAX_PHANDLE_ARGS) ||
-+			    map_len < new_size) {
-+				ret = -EINVAL;
- 				goto put;
-+			}
- 
- 			/* Move forward by new node's #<list>-cells amount */
- 			map += new_size;
- 			map_len -= new_size;
- 		}
--		if (!match)
-+		if (!match) {
-+			ret = -ENOENT;
- 			goto put;
-+		}
- 
- 		/* Get the <list>-map-pass-thru property (optional) */
- 		pass = of_get_property(cur, pass_name, NULL);
--- 
-2.47.0
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ168) {
+-		xhci->quirks |= XHCI_RESET_ON_RESUME;
+-		xhci->quirks |= XHCI_BROKEN_STREAMS;
+-	}
+-	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188) {
++	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
++	     pdev->device == PCI_DEVICE_ID_EJ188)) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
 
 
