@@ -1,119 +1,101 @@
-Return-Path: <stable+bounces-96112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7309E0856
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:23:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DF79E07B6
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D351640A3
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:54:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96ADF281A9F
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15664EB50;
-	Mon,  2 Dec 2024 15:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2647D137C37;
+	Mon,  2 Dec 2024 15:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Hc6KYnbg"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="op65QxVH"
 X-Original-To: stable@vger.kernel.org
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD07D3D96D
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88FE757EA
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733154870; cv=none; b=KSvSoV+MYITtL/5PFXttwpHwHXSssImKaShmtEJD3w4f7zkEopZ7ES8cRkBmBna9Zv6+FQpxQ39cuxWvx+cd4nIbCLNuoE2fqFmuJVdv37711DbJ53QCe9PA7FjwKAjtiI+NRnAFlLo9cHfYEwfpVp6PECs3+L+COpNxVRR2RFY=
+	t=1733155041; cv=none; b=vEfGdo7khZ1pc9pWka6BDPVVI+Sy1m5jPXnKuMHQdOwjDVtV0gCc7X5L5MTmj3OSf3NHDClp/GWuhuWYn/VZxPbc8/c22pLAdbNZ8i4YPaUKlT6ffq/Vt3x0L8+jjjbZKJGATgYnp59ElcEkgy1s29SdTaGyHUI1FRruT8V9Co8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733154870; c=relaxed/simple;
-	bh=Gn04xgzWmyYazGkpEXsn3YtRYZxU244QcdCW7cIEDAY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ff4SwTZkECDqAPlFL5GCdooxtvnv06tGreKF4jY2ZcA6mbl6MB9x3s+RhlFVvPVCp6faOdHomcnfZxLqIgy7hxtMkmOMESYDWUrTBKX3pMyXjv5Ux/bV2WNKEPib8NJdZEEyaMVqQQUSgPn1dVNyoV2BmdhwiJkgbJksmxzvgic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Hc6KYnbg; arc=none smtp.client-ip=193.68.50.107
+	s=arc-20240116; t=1733155041; c=relaxed/simple;
+	bh=yWFq+Poe5+N66thnGMSozM+ZhNaYMnx6L/VBZhX+XB4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EejG+gnnRCd7KiTwEtsLjZkbWLIehL6Pkuj5eQw3/cMVfiGrPZzoJDTtzxKC+F8KmTQGhZW3q6vdOK8W620UBePqK4kTLUae4Y+6tWLGgKn6pxOHYlpK/BpstL0LXfKUkUsGNRbVP9y22sDUg0J5HUOrGpZju2yZWsdHAtGVl8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=op65QxVH; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5FB2FA0365;
-	Mon,  2 Dec 2024 16:54:23 +0100 (CET)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id A4D04A06EB;
+	Mon,  2 Dec 2024 16:57:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=9i3OHHNU6Mu57gDL97RO
-	UoDZgWszh2jJBseiglMK1wg=; b=Hc6KYnbgb8gofzlAsTUMzmcacefg475coBkQ
-	XHk/e+pqycqNaNX0fymaq2dZFs88gYsGVt4w3EN2KJQ/Hp/0oAUEx60GPh1q8Lnz
-	uWfAi14uS2EFSQf31q82C3yC50Wj7LtHM1RpcTt9qXTxIluNCrXc3GyPqppDcwQd
-	eXpieGiQzrOoRfxUJWk83j1gblmn1dtW8VqaJhW4INqHQ22YQVqMqZEdQUmUbBa9
-	yeHnDspPxMKKR3kzcw7tW+5U8G8Fnmjlvr/6WMm2QGxI5DBeOgLybq5XnLYRUU9w
-	MgK639VITpDekOL7EON6GeefDeV8pqA6MUub5uBhddp7p2U2bcuQfAK5plrjnJNW
-	q5b/yWRgxyZwib5WgZLXwoIZJA0w5aPgZuwR5ncCx4p7xN8xQ/wZ3Wob6a80gPPv
-	t8loNrLm0Zy7V5sjp1BdOnZnfpvZ5/mRnlHciNhzusD6cBgh0WJ9iSpqNaSuVc2U
-	rcSjmapUVJvAnMvcoT3eowO2aq3IxeuRV+LoJEu7vk1yvKsMFgAaYbRkxTLb9ofT
-	cocNj35NLKWw+6IGef/+NOnu43LYByI0X4TbN84BXwYxcJYuqL+nuC4OgcgHTBK1
-	82MwJ3SXpD1Ejb+wUhD0r93A07RJvwKY82hJU7Kw4EFJjeFIK6fHpc0ezbvUkqtc
-	3khL5ZE=
-Message-ID: <8c2cb40f-c856-4446-9ab3-5bff35845563@prolan.hu>
-Date: Mon, 2 Dec 2024 16:54:22 +0100
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=3bEWoIa3XLMJ6jUI1yRMUgzskV81OmI43xN+QSpepsY=; b=
+	op65QxVH+H4z1dZqzi195qPetS/MSGjRRi1vK4sfcv2+JJDeBi8J2ggeLtzbL8SE
+	8GVIEXb3ejC9Tb8SDvu/wITuOyI2fAvFkhUkK1chkpypjhdsGQ6Ued2NKMFzuKCZ
+	nPS3iOzk0h1Od0O+FBpanfYU4o6e01G3nCwlBmi3GZAdz9Cjk9Zf7IXjQ/Av0csg
+	QyMxKNnT4EmA/J5mxNyGh+ej6GG8vJYoe6DBGkTl3qldlzgg8/F8xsf9mQuxP4WB
+	LqEKxf2/geK4uklfhHUndse4DOnChrqQ6X+BSetgjGmcWtx8Y0HKS8KomDyGZ7MM
+	R/4prvadSCmyXi5yzL8uMT4M98UF0KCgQ7AwKR5IbCprpmwyNEWPLaViGXYpyD0w
+	uV6i0zmRioMb4ZwmTSrOpHNFpsYJ2v0NmaN7/K0qqaSPb/9O4+Fn9HOv1wFHbIa1
+	d1DRAJsbqcn5xOAdRVn4+mkYnVmQnhjVxhR8Np2g5mB4MDzjpHw3XeJ6YtyUZG7O
+	SvR/dFC7hAWtgvmMGfvcwI3OBhNYQQc9GIdvyY5+BfH6yUYSNQk3trkAAH6MBi9b
+	aYau2vpkxeKQqKs1+t94qJC1uFyK+lFL1ACmPIfWm4NYKjq8GwjyplMmtPiCb2+k
+	IVQOP62FHTRF0XnkXX7XalmPdQS9XSlkAokVWxf+33w=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <stable@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Sasha
+ Levin" <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH 6.11 v3 0/3] Fix PPS channel routing
+Date: Mon, 2 Dec 2024 16:57:10 +0100
+Message-ID: <20241202155713.3564460-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 v2 1/3] dt-bindings: net: fec: add pps channel
- property
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
-	<sashal@kernel.org>
-CC: <stable@vger.kernel.org>, Francesco Dolcini
-	<francesco.dolcini@toradex.com>, Conor Dooley <conor.dooley@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>
-References: <20241202130733.3464870-1-csokas.bence@prolan.hu>
- <20241202130733.3464870-2-csokas.bence@prolan.hu>
- <2024120215-oblong-patient-779d@gregkh>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <2024120215-oblong-patient-779d@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733155037;VERSION=7982;MC=1247557910;ID=157278;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
 X-EsetId: 37303A2980D94855637261
 
-Hi,
+On certain i.MX8 series parts [1], the PPS channel 0
+is routed internally to eDMA, and the external PPS
+pin is available on channel 1. In addition, on
+certain boards, the PPS may be wired on the PCB to
+an EVENTOUTn pin other than 0. On these systems
+it is necessary that the PPS channel be able
+to be configured from the Device Tree.
 
-On 2024. 12. 02. 15:21, Greg Kroah-Hartman wrote:
-> On Mon, Dec 02, 2024 at 02:07:33PM +0100, Csókás, Bence wrote:
->> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->>
->> Add fsl,pps-channel property to select where to connect the PPS signal.
->> This depends on the internal SoC routing and on the board, for example
->> on the i.MX8 SoC it can be connected to an external pin (using channel 1)
->> or to internal eDMA as DMA request (channel 0).
->>
->> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
->> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
->>
->> (cherry picked from commit 1aa772be0444a2bd06957f6d31865e80e6ae4244)
->> ---
->>   Documentation/devicetree/bindings/net/fsl,fec.yaml | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
-> 
-> You can't forward patches on without signing off on them :(
-> 
-> Please read the kernel documentation for what signed-off-by means and
-> then redo these patch series.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+[1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
 
-I did that for the 6.6 series and Sasha's bot complained that there was 
-an author mismatch... I'll re-send it yet again, but the bot should 
-probably squelch that if it is the desired operation...
+Changes in v2:
+* add upstream hash (pick -x)
+Changes in v3:
+* Add S-o-b despite Sasha's complaining bot
 
-Bence
+Francesco Dolcini (3):
+  dt-bindings: net: fec: add pps channel property
+  net: fec: refactor PPS channel configuration
+  net: fec: make PPS channel configurable
+
+ Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
+ drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
+ 2 files changed, 13 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
 
 
