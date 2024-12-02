@@ -1,147 +1,211 @@
-Return-Path: <stable+bounces-95913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873979DF8AB
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 03:03:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE989DF99A
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 04:29:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507701628B9
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 02:03:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44681622CC
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 03:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D659C18C31;
-	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645571E32A6;
+	Mon,  2 Dec 2024 03:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRuJyEFN"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="M4EXkL/J";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="M4EXkL/J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82940F9E6;
-	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861DA1E32A9;
+	Mon,  2 Dec 2024 03:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733104987; cv=none; b=SMQo34RSwGeTD66hXjzDx2hGHJVNCEx8BHpREdUYYgA0HRisPEt8enZ/PzPBilVKJXad6LlE1cv58k3s3j8UwBtgQEjmgPdOsysEm4NsLEh30uvK9oU/iRZcnobQ3+j85l5WkKOlDodRcQb36FQyqto7fT8R8roQoJFTV0zZF2A=
+	t=1733110139; cv=none; b=qc2u+A2eeP7L17KExdxk9Al1yCVBEtaOe8IXs3doIGR4vsCXUOa4qc6NvdDmzcuiuvMQ2dwhjoEQ8sridXfKDWIqX7xZugBwe4rtilM+1I/Wt1Jtq6ooDQJj1I4bIEkAOVExD6Wr+0ikbRgcbXK0BLxFatiu5jpOIVO2uXWUNa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733104987; c=relaxed/simple;
-	bh=maCc5D4IZuHzk206sb4zyON9g3KEt5ma5MoKRfyBRZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GESZg5k1b9plySp0yf5pZDjCvMuotlt+o/aXHQy9wUaa9d0/kb6zH4GIFHOEybeNG2iEtqqV439GzoE2j6Qq/h6jd93Hfsv+2YCRgH+ZOKBtFbhJFDuifJySUDXoNQ81yDv8Knts+I/g6Y8pV8t7NR9bO5E6C+51S9ac8JSt7qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRuJyEFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2763BC4AF09;
-	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733104987;
-	bh=maCc5D4IZuHzk206sb4zyON9g3KEt5ma5MoKRfyBRZ0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gRuJyEFNZDgypUxMQuHdoQ+MsGDkyGthgvv4lWm78hsSAPwdud403aWnQy2oaP2Kh
-	 NbeYsl27bGbbb7MjhklsKTGmRHjx7e13pH1mhc/2GGIF9i59b/gFDjJ3DL3U6Wg8hQ
-	 F8CDSJaeQeXXcnIVfFYWqtYTg/6jwED15ukgAY/Wve46Yh+ns7REWhKXpxEK0VHEgy
-	 LNN5QHxFUwGNROibWg8CfskYvCzcj3nxwrzqZ5DpA6QLPISa/n5zCIv0ziNRfLlWvf
-	 s4qisPGdSEOTxKDGr7+U3dbigjnqW0MeHXyw2LPDaiu7pFOEGretBTF2SQ1zQ+uQRg
-	 rv8YT7n+sb8MQ==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ffa8092e34so39228891fa.1;
-        Sun, 01 Dec 2024 18:03:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUkZeOaq0TTSNjIS9/U+VE6rCKfcmnoP1lRkgTD7dQfVrCEgAvuUTp0wttV2zboO4Yx2/1xChBb7F8=@vger.kernel.org, AJvYcCV37JYFMFodWBuF26cE0wjuy3jWxDBW36mrphf1FpovAm0tu/qyQaYTcdKXsdaOrBF4cdIDbYh2rVqArlRM@vger.kernel.org, AJvYcCX5yW6/eoUBnnMnYOM0TYPuKGQWnxuoG0XOTGazrO4FuWXxUXREA+mIkM5tnqNtCtbCIn48TZaX@vger.kernel.org, AJvYcCXLTr9kxZ5WEYAJ/Ra0B6XO3XgWK+TvRSUO2yiw9w1bHPRBjPkGUahRxc4Wfv4Wgw0m1BhKxf8VXMiuqKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaxV1ldQyRKnHJwExsvlJPts/vpuUFe8gTDA1XZLsFnx2EQgEm
-	oJ9vX6nUqd+JHJNWf5KDJTN3EZBrp/5yEuzwk1HR2R9Itt5asgrOUqz/Q47/UTWgIaLBL61Zu1X
-	rModpe3NCGMROqHVelWZrRwrghFY=
-X-Google-Smtp-Source: AGHT+IHx9xjsynr/l63aLsJxVM7l7US4bOwRAcVoS46Xevv0GpLtiUvTO5j01dpQdv7tyLv/reDF3L8c7WnmJCFOTwI=
-X-Received: by 2002:a2e:be25:0:b0:2ff:cf31:262b with SMTP id
- 38308e7fff4ca-2ffd5ff565emr86295651fa.7.1733104985771; Sun, 01 Dec 2024
- 18:03:05 -0800 (PST)
+	s=arc-20240116; t=1733110139; c=relaxed/simple;
+	bh=9Bxbq+hWFlvJQom4Q1CUIdNFgOmOTbjcjZKUwnPaxjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rtdBxe56qppsEavvZySqdzW+UreYGG+16Jg0NHceberhSPim8z87bAv2tgb1JVtOkL7MIF4EcCtsot+gjlC06vX0O3gpSph94+UlbmxW4Y22s7VF5UP7T5++z3kuS194VO8IDwdK8mwJflb8BFsZiMiSbxdvyy1hi6JXsNp3Rmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=M4EXkL/J; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=M4EXkL/J; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0723921175;
+	Mon,  2 Dec 2024 03:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1733110129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=amV8OltlfnR3goQjt+ipgijZxmT0hanBOhDXSQ3kEMI=;
+	b=M4EXkL/JO1yD4hodsltssdWi8AQ6AQGUdFDM+3lJ4YwwrqgcWgA0BtFTQOmW3g80cD9aaW
+	+fdN0KCzaj+LDEI1QTCNGlNI3PsiTjD4ATUEiwd58KcDGeyh+uPkow3rEHzrXams09d5gc
+	fx5dvuWOyxaLT65bT6RWC8oW3xWcons=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1733110129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=amV8OltlfnR3goQjt+ipgijZxmT0hanBOhDXSQ3kEMI=;
+	b=M4EXkL/JO1yD4hodsltssdWi8AQ6AQGUdFDM+3lJ4YwwrqgcWgA0BtFTQOmW3g80cD9aaW
+	+fdN0KCzaj+LDEI1QTCNGlNI3PsiTjD4ATUEiwd58KcDGeyh+uPkow3rEHzrXams09d5gc
+	fx5dvuWOyxaLT65bT6RWC8oW3xWcons=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05BF4139D0;
+	Mon,  2 Dec 2024 03:28:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mkhDLm8pTWdgWwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Mon, 02 Dec 2024 03:28:47 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: do proper folio cleanup when cow_file_range() failed
+Date: Mon,  2 Dec 2024 13:58:26 +1030
+Message-ID: <42ee9dff1e240427f4a4d827c83e81b5598fe765.1733109950.git.wqu@suse.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241128111844.GE10431@google.com> <87o71xvuf3.ffs@tglx>
- <20241130114549.GI10431@google.com> <87iks3wt2t.ffs@tglx>
-In-Reply-To: <87iks3wt2t.ffs@tglx>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 2 Dec 2024 11:02:29 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARWpcbVsJFYCDN28vuuLfEibZmT+m5=qMEJcKD9Abzv4Q@mail.gmail.com>
-Message-ID: <CAK7LNARWpcbVsJFYCDN28vuuLfEibZmT+m5=qMEJcKD9Abzv4Q@mail.gmail.com>
-Subject: Re: [PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 20241015061522.25288-1-rui.zhang@intel.com, 
-	Zhang Rui <rui.zhang@intel.com>, hpa@zytor.com, peterz@infradead.org, 
-	thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com, 
-	len.brown@intel.com, srinivas.pandruvada@intel.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com, 
-	x86@kernel.org, linux-pm@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Sun, Dec 1, 2024 at 8:17=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de>=
- wrote:
->
-> The compiler can fully inline the actual handler function of an interrupt
-> entry into the .irqentry.text entry point. If such a function contains an
-> access which has an exception table entry, modpost complains about a
-> section mismatch:
->
->   WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ..=
-.
->
->   The relocation at __ex_table+0x447c references section ".irqentry.text"
->   which is not in the list of authorized sections.
->
-> Add .irqentry.text to OTHER_SECTIONS to cure the issue.
->
-> Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Just like cow_file_range(), from day 1 btrfs doesn't really clean the
+dirty flags, if it has an ordered extent created successfully.
 
-I found the context in LKML.
+Per error handling protocol (according to the iomap, and the btrfs
+handling if it failed at the beginning of the range), we should clear
+all dirty flags for the involved folios.
 
+Or the range of that folio will still be marked dirty, but has no
+EXTENT_DEALLLOC set inside the io tree.
 
-Closes: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+Since the folio range is still dirty, it will still be the target for
+the next writeback, but since there is no EXTENT_DEALLLOC, no new
+ordered extent will be created for it.
 
+This means the writeback of that folio range will fall back to COW
+fixup, which is being marked deprecated and will trigger a crash.
 
+Unlike the fix in cow_file_range(), which holds the folio and extent
+lock until error or a fully successfully run, here we have no such luxury
+as we can fallback to COW, and in that case the extent/folio range will
+be unlocked by cow_file_range().
 
-However, is this still relevant to the mainline kernel?
+So here we introduce a new helper, cleanup_dirty_folios(), to clear the
+dirty flags for the involved folios.
 
-In Linux 5.4.y, I agree this because smp_apic_timer_interrupt()
-is annotated as __irq_entry:
+Cc: stable@vger.kernel.org
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+ fs/btrfs/inode.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/=
-x86/kernel/apic/apic.c?id=3Dv5.4.286#n1145
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index e8232ac7917f..19e1b78508bd 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1969,6 +1969,46 @@ static int can_nocow_file_extent(struct btrfs_path *path,
+ 	return ret < 0 ? ret : can_nocow;
+ }
+ 
++static void cleanup_dirty_folios(struct btrfs_inode *inode,
++				 struct folio *locked_folio,
++				 u64 start, u64 end, int error)
++{
++	struct btrfs_fs_info *fs_info = inode->root->fs_info;
++	struct address_space *mapping = inode->vfs_inode.i_mapping;
++	pgoff_t start_index = start >> PAGE_SHIFT;
++	pgoff_t end_index = end >> PAGE_SHIFT;
++	u32 len;
++
++	ASSERT(end + 1 - start < U32_MAX);
++	len = end + 1 - start;
++
++	/*
++	 * Handle the locked folio first.
++	 * btrfs_folio_clamp_*() helpers can handle range out of the folio case.
++	 */
++	btrfs_folio_clamp_clear_dirty(fs_info, locked_folio, start, len);
++	btrfs_folio_clamp_set_writeback(fs_info, locked_folio, start, len);
++	btrfs_folio_clamp_clear_writeback(fs_info, locked_folio, start, len);
++
++	for (pgoff_t index = start_index; index <= end_index; index++) {
++		struct folio *folio;
++
++		/* Already handled at the beginning. */
++		if (index == locked_folio->index)
++			continue;
++		folio = __filemap_get_folio(mapping, index, FGP_LOCK, GFP_NOFS);
++		/* Cache already dropped, no need to do any cleanup. */
++		if (IS_ERR(folio))
++			continue;
++		btrfs_folio_clamp_clear_dirty(fs_info, folio, start, len);
++		btrfs_folio_clamp_set_writeback(fs_info, folio, start, len);
++		btrfs_folio_clamp_clear_writeback(fs_info, folio, start, len);
++		folio_unlock(folio);
++		folio_put(folio);
++	}
++	mapping_set_error(mapping, error);
++}
++
+ /*
+  * when nowcow writeback call back.  This checks for snapshots or COW copies
+  * of the extents that exist in the file, and COWs the file as required.
+@@ -2228,6 +2268,22 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+ 	return 0;
+ 
+ error:
++	/*
++	 * We have some range with ordered extent created.
++	 *
++	 * Ordered extents and extent maps will be cleaned up by
++	 * btrfs_mark_ordered_io_finished() later, but we also need to cleanup
++	 * the dirty flags of folios.
++	 *
++	 * Or they can be written back again, but without any EXTENT_DELALLOC flag
++	 * in io tree.
++	 * This will force the writeback to go COW fixup, which is being deprecated.
++	 *
++	 * Also such left-over dirty flags do no follow the error handling protocol.
++	 */
++	if (cur_offset > start)
++		cleanup_dirty_folios(inode, locked_folio, start, cur_offset - 1, ret);
++
+ 	/*
+ 	 * If an error happened while a COW region is outstanding, cur_offset
+ 	 * needs to be reset to cow_start to ensure the COW region is unlocked
+-- 
+2.47.1
 
-
-
-In this mainline kernel, DEFINE_IDTENTRY_SYSVEC()
-expands to a normal .text function which is explicitly
-annotated 'noinline'.
-
-
-
-
-
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: stable@vger.kernel.org
-> ---
->  scripts/mod/modpost.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -785,7 +785,7 @@ static void check_section(const char *mo
->                 ".ltext", ".ltext.*"
->  #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text",=
- \
->                 ".fixup", ".entry.text", ".exception.text", \
-> -               ".coldtext", ".softirqentry.text"
-> +               ".coldtext", ".softirqentry.text", ".irqentry.text"
->
->  #define ALL_TEXT_SECTIONS  ".init.text", ".exit.text", \
->                 TEXT_SECTIONS, OTHER_TEXT_SECTIONS
-
-
-
---
-Best Regards
-Masahiro Yamada
 
