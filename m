@@ -1,131 +1,181 @@
-Return-Path: <stable+bounces-95985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AF69DFF8B
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:01:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8729DFF84
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AE5628130A
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F7D2809CD
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038001FBC9E;
-	Mon,  2 Dec 2024 11:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA3B1FC0F9;
+	Mon,  2 Dec 2024 11:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="YwJAtjHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxBgzUk7"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457A11FBC8B
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 11:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2620156C40
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 11:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733137266; cv=none; b=doMo0QzUXkPCkm/3koIIwwuLRYi3g9dWTwdTuOGU29zZjS+KkIZ96gi9l8McV5DRYEva9RC5AahbB7Cabq6bd8sqKCJGJ1mYoujeKLUWbBjY8jTHJZHdimMKxYSigaYc3S8Ujwy9tqZX55DOIdYrwXIp97s912I67WtH1S0kPo8=
+	t=1733137218; cv=none; b=kPOxl/6q0aHoZxyIYYrVE6BNtr9N3icbqE4oYxaDqH739S66oFeeneHbGjqElJb/anYFugtKTo1TXadesSsMVeScCrulKj2D/faLbP2/pUuCEzQMKQ5U0OM8mPw2qjGlf/CYZnpQ38jiZiZY5AvpoYJNcj8vg196ynhniVvavAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733137266; c=relaxed/simple;
-	bh=5e/ABJTRlW4Kn8aITfXHP7G+RlpZfFW013vJEb0hG38=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T9FILAdGTDqdGfCrPtqzcJ5W1/Oy1rIcIR5pOyP6bNT4oSRAMEsyPb4JNSQuFh80zTkaCCAGy6ZlK2Tunr2v/ACLug13xdhVQ6Ngk5xl4NaxSj23WKAxj+MEYMia4LV4eoycyUCd1Cc41HlmjjQXEpAUA7mKs5G6z0gWZUE0Hig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=YwJAtjHg; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id BD033A0A10;
-	Mon,  2 Dec 2024 12:01:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=p0qYBdk4opynxBR2emw8
-	8DLKaZYatHYME02V72iRLWQ=; b=YwJAtjHgaARNiPJUs/1GryX9mOA27Wh9l6xk
-	iiY54yv8mPV3fn+k+pc8is3A+DUHVR0n+XYpexqg6jhAif+e/g0fedH1LdHuS8hB
-	ppSR7gorwa9ndkQWdqocFgxuA+YhFFsE+flppyKIfP8bR8TG1PryuZF9FZ+PWqyL
-	mXCPXkCDQ2OPHGgpMRJvup4BxCot1Cga9GMvQ7vwDUUbyhv7M55Tt+LdkK/lPiDo
-	sNnv7CHFzOyAGFMlHZZzElQcLkM3DhE/qBVxk+uLIrg5eYMvg0e3Zj7N81Ys9fJi
-	rHBhU6DwObgbh+4eT+RXMaf+WwivyL4vgpOFag/VYjPqa3I9023zTWi4E9kyw7hD
-	/C3S2qeQpkCkceIBbrKOilXUDyT5Pm6r+Dlb4JRsGSbUcIWH6sGwzmzQZVGD5FFg
-	JAi/JRHZV4OsPqKJcJUXOkbQfWxCW7I5BO131lWKe/nXbXZH9CWDoK79DxVBVz8e
-	pPIxNdEnLzkk4lSPVH/aXxlS3MOLkn2cYY53qpFhT45iM71qAcWW3K4yH6e7vEcM
-	rS9iZiO0Y/x0FKrd7so6qTJuK8eoJbL+XHwDpbyJ71xNMyG/NZnjnhj1ZHtllPCr
-	LMtttuRf1e4Nijr60aezo08vPxliry95wWFVgu2/PjvzZ1/kVAh09DLf3zLstce9
-	iqkksaU=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Frank
- Li" <Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH 6.12 3/3] net: fec: make PPS channel configurable
-Date: Mon, 2 Dec 2024 12:00:01 +0100
-Message-ID: <20241202110000.3454508-4-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202110000.3454508-1-csokas.bence@prolan.hu>
-References: <20241202110000.3454508-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733137218; c=relaxed/simple;
+	bh=01JvOvtAkPzLi7DuRMoM5PaCa7oWtOD1yqlWuWmlv4w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h+LkaNCWD+viQ42keMZ9WWHjieXDTpos06I0/88Eh4kdYYFKdpKrrHoYrmmyRhZIF7m8XZARlY1aRIpigXMqQj7WNwKjiHzT1itqS9kmSMZa8sCGSMnRRz0lUJ93BHtGYb7CxHCPLykVYKdBPzgaZhcdKu6GGsoalsEGFkJdiG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxBgzUk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0999FC4CED1;
+	Mon,  2 Dec 2024 11:00:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733137216;
+	bh=01JvOvtAkPzLi7DuRMoM5PaCa7oWtOD1yqlWuWmlv4w=;
+	h=Subject:To:Cc:From:Date:From;
+	b=XxBgzUk7KH2Fi8RDlVUJmKxhzPRYu4+FJDZAAEKcu+TF7cPd59G0jTw1lMH35d2Vu
+	 uu2rE45MsIEKzU5j1IWsS+Fh/xl63SoJ1gBG1vqjZyv+LSPzAax70pisW6pQ/vyank
+	 /TC/Gxjz+R0cdFjUhgadRdZKIRLCNky1Sh8kzWg0=
+Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix potential out-of-bound accesses for" failed to apply to 6.1-stable tree
+To: bsevens@google.com,tiwai@suse.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 12:00:01 +0100
+Message-ID: <2024120201-raving-freebase-0206@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733137263;VERSION=7982;MC=2490259619;ID=155739;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855637263
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x b909df18ce2a998afef81d58bbd1a05dc0788c40
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120201-raving-freebase-0206@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 37e1c895f1b8..7f6b57432071 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b909df18ce2a998afef81d58bbd1a05dc0788c40 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
+Date: Wed, 20 Nov 2024 12:41:44 +0000
+Subject: [PATCH] ALSA: usb-audio: Fix potential out-of-bound accesses for
+ Extigy and Mbox devices
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+A bogus device can provide a bNumConfigurations value that exceeds the
+initial value used in usb_get_configuration for allocating dev->config.
+
+This can lead to out-of-bounds accesses later, e.g. in
+usb_destroy_configuration.
+
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index cbfbb064a9c2..8bc959b60be3 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -555,6 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
  {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
  
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -566,10 +567,14 @@ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interfac
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&dev->descriptor, sizeof(dev->descriptor));
+-		config = dev->actconfig;
++				&new_device_descriptor, sizeof(new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++				new_device_descriptor.bNumConfigurations);
++		else
++			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -901,6 +906,7 @@ static void mbox2_setup_48_24_magic(struct usb_device *dev)
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -936,10 +942,14 @@ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ 	dev_dbg(&dev->dev, "device initialised!\n");
  
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.34.1
-
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1249,6 +1259,7 @@ static void mbox3_setup_defaults(struct usb_device *dev)
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	int descriptor_size;
+ 
+@@ -1262,10 +1273,14 @@ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
+ 
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
