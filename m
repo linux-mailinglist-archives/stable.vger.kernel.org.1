@@ -1,81 +1,136 @@
-Return-Path: <stable+bounces-95993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EB59E004D
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:26:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE949E00C6
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65DD9280054
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34FBD281533
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702171FF5F4;
-	Mon,  2 Dec 2024 11:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omS7o3JW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F30B1FA175;
+	Mon,  2 Dec 2024 11:40:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from manchmal.in-ulm.de (manchmal.in-ulm.de [217.10.9.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D771FDE11;
-	Mon,  2 Dec 2024 11:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184F11D932F
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 11:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.9.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733138158; cv=none; b=FfLyKr2+iP3bvkz/At8O6oNm9v+x2Q9zis/Ll+Kaybk97U6ctv2yzHHLXoFYNvmHmMc7csYBaDGa29AiUvCrZOR3ay3+hCvop305UBmp6rXPej6qpihrE7C8AxHv4AYvY+3MaMLp6lGH/G931pb3GsrmdwN6TGBCU4pe5GM15+I=
+	t=1733139606; cv=none; b=PtAFzWwSCPJs7O3D9Nam0pFGTyy2OLFeWOvaa9btzGkNS+8x6fb3cpboe9ytMjIa88tqu/4oMUeal3KlwjVCzF+1/VOvrrO+Aa8AdtXcGS3ORGj5UjZTFGrircpMgsnyJD+0WDwt/EhaeJ4sItJRbgAKFuIBcZO/bQSBboMrqtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733138158; c=relaxed/simple;
-	bh=+3o8VZcSOSYHSzMw7XPS/675FGXYgfrh1MvHYwk8GIQ=;
+	s=arc-20240116; t=1733139606; c=relaxed/simple;
+	bh=FJMhoaaRNnNJDTU0+pQdUKlkrTJXMrECZgUlazxVYBg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/PWvYbD0ShciuDXk6YLeY8IF1RVpcNEvuu8U2pSt87Zdw2I4206QL4W6si5DBct53oXELNniM7DFYIY1EpvXyo2NVJHvXCZcqOJbl77lg56mOz8zbWGTLvx9bBdMtXWgUjGcA9KOiuXLqEJ1YrDlBdJJ4XGccZ3g3L9FwFMNR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omS7o3JW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394A9C4CED1;
-	Mon,  2 Dec 2024 11:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733138157;
-	bh=+3o8VZcSOSYHSzMw7XPS/675FGXYgfrh1MvHYwk8GIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=omS7o3JWcbt+hGCYaDCnY0qIOSlOEMBYrH1qNUASVmrXQRy3iOSoDvdoCSQr7uNoK
-	 MRIEKTzIQec5LxJJ31XVc8aQPlfOFUIL3Owd3gy5+S2TVGwtdMGPAd01s+dQiVOyJf
-	 isNTAt39olxPCP3SKR+E1a9OdsLs2XO6a84FQBeU=
-Date: Mon, 2 Dec 2024 12:15:54 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David Sterba <dsterba@suse.com>
-Cc: stable@vger.kernel.org, linux-btrfs@vger.kernel.org, git@atemu.net,
-	Luca Stefani <luca.stefani.ge1@gmail.com>
-Subject: Re: [PATCH 6.6.x] btrfs: add cancellation points to trim loops
-Message-ID: <2024120245-molar-antidote-e93a@gregkh>
-References: <20241125180729.13148-1-dsterba@suse.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJkUTYT5h/5b5TnqkubGICfrheHNORM5oAQRDEYorQROTjbQ8Pegd4A9riQw5D4R7zY6LAy7pDL/MS6MyP4OogYrPtRdidt1fozpSS+Wg2DZdnHghuOQ0WEa4ShzNI49p70wI56tVGxPamjokCdOGGpQIK5xmBZx9Jg7wmEPiqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de; spf=pass smtp.mailfrom=manchmal.in-ulm.de; arc=none smtp.client-ip=217.10.9.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manchmal.in-ulm.de
+Date: Mon, 2 Dec 2024 12:33:48 +0100
+From: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	"Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>
+Subject: Re: drm/amd/display: Pass pwrseq inst for backlight and ABM
+Message-ID: <1733138635@msgid.manchmal.in-ulm.de>
+References: <CADnq5_PCqgDS=2Gh3QScfhutgY4wf4hoS15fW5Ox-nziXWGnBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Whtp/Gp/cK3HnY/o"
+Content-Disposition: inline
+In-Reply-To: <CADnq5_PCqgDS=2Gh3QScfhutgY4wf4hoS15fW5Ox-nziXWGnBg@mail.gmail.com>
+
+
+--Whtp/Gp/cK3HnY/o
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241125180729.13148-1-dsterba@suse.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 25, 2024 at 07:07:28PM +0100, David Sterba wrote:
-> From: Luca Stefani <luca.stefani.ge1@gmail.com>
-> 
-> There are reports that system cannot suspend due to running trim because
-> the task responsible for trimming the device isn't able to finish in
-> time, especially since we have a free extent discarding phase, which can
-> trim a lot of unallocated space. There are no limits on the trim size
-> (unlike the block group part).
-> 
-> Since trime isn't a critical call it can be interrupted at any time,
-> in such cases we stop the trim, report the amount of discarded bytes and
-> return an error.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
-> Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
-> CC: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> ---
+Alex Deucher wrote... [ back in January ]
 
-No git id?  :(
+> Please cherry pick upstream commit b17ef04bf3a4 ("drm/amd/display:
+> Pass pwrseq inst for backlight and ABM") to stable kernel 6.6.x and
+> newer.
+>
+> This fixes broken backlight adjustment on some AMD platforms with eDP pan=
+els.
+
+Hello,
+
+tl;dr: Was it possible to have this in 6.1.y?
+
+after a lenghty bisect session it seems[1] this commit b17ef04bf3a4
+("drm/amd/display: Pass pwrseq inst for backlight and ABM") indeed
+fixes an issue with a HP mt645[2]: Without it, the backlight stays at
+full brightness all the time, writing various values to the usual sysfs
+place has no effect.
+
+That commit was backported to 6.6.y (as 71be0f674070) but not to 6.1.y -
+which is the series where I'd like to see that issue fixed. However, is
+does not apply, lot of failed hunks and missing files. So I was
+wondering whether it had been skipped deliberately because a backport
+was deemed impossible - or whether it might be doable with some
+more-than-usual effort. In the latter case, I might be willing to do the
+task, but quite frankly, lacking any understanding of what the code
+does, I'd only try to resolve the conflicts and check whether things
+work.
+
+So I'd be glad if you could give me some insight here: Would it be worth
+the efforts trying to bring this to 6.1.y?
+
+Kind regards,
+
+    Christoph
+
+[1] Being a bit blurry here for a reason: I bisected on the 6.6.y
+branch, had to skip several commits as X would no longer start, and
+ended up with
+
+| There are only 'skip'ped commits left to test.
+| The first bad commit could be any of:
+| 18562b1691e2280858f291d00678468cf70bda5a
+| a5ba95c226b5c25cd5c8b9df29a1953c85a1531e
+| 71be0f674070a5ad54a1c4fb112bb2923b28ea50
+| We cannot bisect more!
+
+where the last one looks like the most obvious candidate, even more
+after reading this thread, and re-testing with that one on top of the
+last usable commit indeed gave a positive result.
+
+[2]
+=46rom lspci:
+
+| e5:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [A=
+MD/ATI] Rembrandt [Radeon 680M] [1002:1681] (rev 0d)
+
+--Whtp/Gp/cK3HnY/o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEWXMI+726A12MfJXdxCxY61kUkv0FAmdNmxgACgkQxCxY61kU
+kv2mhQ//Ruc2UNtc3AZi6pKpL0/QbKVcUFdcZTpHdsipfeITBr04SQI06xWYPpZV
+4ltj5+JfB1o93H68WkjsKMyBBmaz4BnMMebRdpjFbWln7KA0OTt2pJemVrnPRo2Y
+7bv0sDzGyZH/USYjD70e9QOAI3gQG686TEUX/TWp707/+XX827dQEXNcxu8OmXPn
+RohqFIs/dQvs6dhcJlB1O6ipo296PLOOiTS6a4hMBb/8iY4TUVbKebVCnO0CpUL0
+ks4ad0DyBMTrCQTAaLKjOdcx80b2V3wsuFy2jeXN5ptnyfUC2gdgs7wthhabsM10
+yzL9KQRXmV/M3TrdR/ItqtnRqj+kGy+AhzAOC4Ko6XvgS6WSfKwfc2jxPO2p1gEg
+EfjkYPDJGF1Le7K7L/TozJBVg58iczVcBtc8tSQ2+l1gfF9n2Q+WpOKQCW87nQ3E
+q/nB1YNiFCUw1B/8Nbw7iZPKQxag5T/Iaa66mP8RIX7AFGpWQ382z0Oga0SwlET5
+PErXeEd8dljVofZRCncQFy+lgwDLaTv0iZyGsF9cGV62E/0eO0CQkJC8oGT8SDwM
+nOk6E83oqMB/tKxMm3HTZBvhYIRpwWYsVCMkxSSMYM7YxsaWUVqnqlrycYwaS8Tv
+7fdaE2LAyZD8TfKgnBEVQN2xtEi2qZzd7n4VhGHBc8ynbC7ITRc=
+=JRsF
+-----END PGP SIGNATURE-----
+
+--Whtp/Gp/cK3HnY/o--
 
