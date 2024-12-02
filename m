@@ -1,116 +1,126 @@
-Return-Path: <stable+bounces-96119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499FC9E0876
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:28:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D1EA16A3D5
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:58:08 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B94A1304BA;
-	Mon,  2 Dec 2024 15:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="TErU9FmP"
-X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7279E0924
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:55:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2207757EA
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ECE2B3B740
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:18:12 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A52B17B500;
+	Mon,  2 Dec 2024 16:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvp9bOjj"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275E717ADE8
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733155086; cv=none; b=VMVYnsfwVM+bBUk5ERLZ1U4wN816oTrzmfDjKi4xcSuDW+l6uGc84SvYPVKYhijGd3g7lavHKvb8aQQdWKLFtoqNKkM7sGfW5SBUyRM9y/5aXz9pOnsYEAAb3mtjAsEcRvZK+k8u19/oGBE8o4xAxo3VUUluPJnlVLonc+qSjg8=
+	t=1733156287; cv=none; b=kWiyxIrWh1/GUdSEgb1iycNiDYykT8KmChSt25li7Vms3Wlq4DhSTwWiL5ZI45ggqu74rnjxeN83yTyZapYFE3sAV8hpcxg7F4v50/qP/v1mQ5Ad4E1fdW+Fes1OmAN3/tB0rJlCCksl6Mv3lzsqAWrYwTSQ/AtMN5BbclJ/RIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733155086; c=relaxed/simple;
-	bh=AsmS0O0LobS4HF34MnQU1zcw4SRgmr4teuSJuhQf67w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J8fIYXOV+s45yehyzHYStcZf8b37Xr3GadATqlY8E0TufQ08oBbPT5H6xrKDOWOKgVdsO3tCNazDZ9dgupiNXTgdwQnnHlDI6cYyWVDNyMZUxEPMZUykEsCtFd0l7ho0IJqymGvw0FnZoL3n4NyWqwV85QfOgIpRMUUGFGEPIHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=TErU9FmP; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 71367A07FF;
-	Mon,  2 Dec 2024 16:58:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=YOuKY9km4OF/f7YVbyq/
-	ULvcl4sIlXanZsvH0J4LkgQ=; b=TErU9FmPrbalC1B7IUBrXhMM2KwLnGQiJEKu
-	aqX9DVTFyEJq0saJmT9+zmXlLK1y/I4vJIMEVbqT/4Goz3wyPhtICMvX3QD6itB6
-	JxgOmXfQqjJJJP3VjW2MLGCCVIcE9tAwDT1xdwOOQKNcB2F9lWArTpmGsknmFLe5
-	HEgH8feImbNMaCTf+UpaWcqRc9/02avydA4C9LcS0tSUIEv1IenbBxoWnYKpp+52
-	zFP+LdllA17JrLzkcRebfAN5P4ESdPB+/OXci3uq9+xy5hpAnXeIdB9M+1wtoXu3
-	tkO6ArFufh0x4Vr50Y07qnz/w9ep737FSxuiCmVq7G68uo5761T4KWUJESxqIGra
-	RcAMSmvLrZ7u0yuddlks0GSSErOw882zE0/6uhAWPwRQDJ/k85IBnphjZBkFA9aT
-	aSFO4wI5vFedqHHL7x2OUXkvvkOV/2r07sz37XmcxsvSd7EFMiPtVHH8KbAoL2au
-	l4EiKpnJRBH6X4SuiR7Jhf1LzRd/GSyEjSnXSwuzRHJ6fO6bhNDQ/GsK6GyfGNmT
-	zOb8EpmW70VVhO+gH6OAF6enVtSourbdfNqgfPoZicAnqdlVblXytIXhrcTYDoN4
-	0opquN373P7Ho4jGRzqsz87fN4KXf+t0mZL7qGcqM0F4cpThSVsynxFMKubNFFEF
-	mURhLNQ=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Conor
- Dooley" <conor.dooley@microchip.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 v3 1/3] dt-bindings: net: fec: add pps channel property
-Date: Mon, 2 Dec 2024 16:57:58 +0100
-Message-ID: <20241202155800.3564611-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202155800.3564611-1-csokas.bence@prolan.hu>
-References: <20241202155800.3564611-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733156287; c=relaxed/simple;
+	bh=oGCY0Hx5op9yuS3JIlK82//A8cc80sJpYc3L1J7xkLY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ODFYjOeLUQznf5IMuiNjO33f4/ttcby1StChngoVgzpw4Re7MF5aORCkX6AaRo+z0g1IKR7KRUw0jTSRzdofUI9kMtdNZa0e49ucKjucKrk6+G7LRIfIN9BTFkpDgpyu6yLGiX3n1huOQW+83DRr3IykPcUTSPIKt5U1G69liKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvp9bOjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45361C4CED1;
+	Mon,  2 Dec 2024 16:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733156286;
+	bh=oGCY0Hx5op9yuS3JIlK82//A8cc80sJpYc3L1J7xkLY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=tvp9bOjj0xrXogIVOgcvBRt+XR26FxPAM2HOzi6fi0W49/G6GAHSVZuGY22K8Pop7
+	 ccLLRaTQWwSNQMKpt24j+Tll8/mNt2AwjKi8fhi6X0eTquj4ND0+DX80AIKRJyeP9Z
+	 xvaeKKo9fO/w2IZjutXNxYTspj+jAzd2rK3//ht4=
+Subject: FAILED: patch "[PATCH] fcntl: make F_DUPFD_QUERY associative" failed to apply to 6.11-stable tree
+To: brauner@kernel.org,jlayton@kernel.org,lennart@poettering.net
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 17:18:03 +0100
+Message-ID: <2024120203-carat-landlord-afcf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733155081;VERSION=7982;MC=607621074;ID=157283;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855637261
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Add fsl,pps-channel property to select where to connect the PPS signal.
-This depends on the internal SoC routing and on the board, for example
-on the i.MX8 SoC it can be connected to an external pin (using channel 1)
-or to internal eDMA as DMA request (channel 0).
+The patch below does not apply to the 6.11-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-(cherry picked from commit 1aa772be0444a2bd06957f6d31865e80e6ae4244)
----
- Documentation/devicetree/bindings/net/fsl,fec.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2714b0d1f36999dbd99a3474a24e7301acbd74f1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120203-carat-landlord-afcf@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,fec.yaml b/Documentation/devicetree/bindings/net/fsl,fec.yaml
-index 5536c06139ca..24e863fdbdab 100644
---- a/Documentation/devicetree/bindings/net/fsl,fec.yaml
-+++ b/Documentation/devicetree/bindings/net/fsl,fec.yaml
-@@ -183,6 +183,13 @@ properties:
-     description:
-       Register bits of stop mode control, the format is <&gpr req_gpr req_bit>.
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2714b0d1f36999dbd99a3474a24e7301acbd74f1 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 8 Oct 2024 13:30:49 +0200
+Subject: [PATCH] fcntl: make F_DUPFD_QUERY associative
+
+Currently when passing a closed file descriptor to
+fcntl(fd, F_DUPFD_QUERY, fd_dup) the order matters:
+
+    fd = open("/dev/null");
+    fd_dup = dup(fd);
+
+When we now close one of the file descriptors we get:
+
+    (1) fcntl(fd, fd_dup) // -EBADF
+    (2) fcntl(fd_dup, fd) // 0 aka not equal
+
+depending on which file descriptor is passed first. That's not a huge
+deal but it gives the api I slightly weird feel. Make it so that the
+order doesn't matter by requiring that both file descriptors are valid:
+
+(1') fcntl(fd, fd_dup) // -EBADF
+(2') fcntl(fd_dup, fd) // -EBADF
+
+Link: https://lore.kernel.org/r/20241008-duften-formel-251f967602d5@brauner
+Fixes: c62b758bae6a ("fcntl: add F_DUPFD_QUERY fcntl()")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-By: Lennart Poettering <lennart@poettering.net>
+Cc: stable@vger.kernel.org
+Reported-by: Lennart Poettering <lennart@poettering.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+diff --git a/fs/fcntl.c b/fs/fcntl.c
+index 22dd9dcce7ec..3d89de31066a 100644
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -397,6 +397,9 @@ static long f_dupfd_query(int fd, struct file *filp)
+ {
+ 	CLASS(fd_raw, f)(fd);
  
-+  fsl,pps-channel:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0
-+    description:
-+      Specifies to which timer instance the PPS signal is routed.
-+    enum: [0, 1, 2, 3]
++	if (fd_empty(f))
++		return -EBADF;
 +
-   mdio:
-     $ref: mdio.yaml#
-     unevaluatedProperties: false
--- 
-2.34.1
-
+ 	/*
+ 	 * We can do the 'fdput()' immediately, as the only thing that
+ 	 * matters is the pointer value which isn't changed by the fdput.
 
 
