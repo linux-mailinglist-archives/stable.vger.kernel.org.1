@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-96132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148099E0B31
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:38:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD509E0B5E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD19BB471BB
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1257CB60E0A
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD871D9A60;
-	Mon,  2 Dec 2024 16:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78E51DA31F;
+	Mon,  2 Dec 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZYRvVgS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGlYvSyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFB41D79BE
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F5518A6B8
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733158639; cv=none; b=OBTbnXQ381onXWS3Kd4qpWhg2fOlXa0hJfQYnRVIYQQkRLWveAfzrv9m4gXUjf/avHVQKQq/9FXE+dDsLKqngzSK29tiHSDUgeMGS7Kv6M600b2FN1nPduN1SMTI3ZEDdd3fVt1b5QgXRJJou4+oMc1xRsAnfetIE7wBfTBznDI=
+	t=1733158643; cv=none; b=TlPPeCNKAYttc2osf7jmikSed+FXfDh7adHXjsBv5YTwPpohJbbC+ZllvS0g4b3YKMWHb7vGyFLpoo2XRQH1TYHoVgUURNiC9KC/+DnN+s7tDJGjlSgDvg9U2EIhoR9ntrFzKE3fuCvLfIwZJEYj2nIBsenN1zJVgu4atM68OYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733158639; c=relaxed/simple;
-	bh=D5giJKW+DbgYWJrsncVZiFMVnlhu3N8VFjr8CzYomk0=;
+	s=arc-20240116; t=1733158643; c=relaxed/simple;
+	bh=neKYMfrpNpBUqoLyDJjB8lEOfUKNoZUFaKUxleYHkX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=enmBt/NIe/Quuqrabl5w3HoB+zV9SB02lYRSlkSbxGKVsBKZWHJgOTVrwRDv/0kDULxHRyFQBngLEWCsM5ItoB3R7daQwh5MUlnhpa0f89Qaxeg0zu4nhEd6y82nUBgIUpojG8Br/fWa8X4WzwxsflXl8hLHwUl/S6pZA455v/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZYRvVgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB22C4CED2;
-	Mon,  2 Dec 2024 16:57:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=itifuFL0GwWFZ9OzDxG6HwxQn+/jnIuG2x/8tBh+R2GzayVHnBPvlymCnN8YRb7+M3qv5giG+ZkyBcssEYUo8hSbYluxX1DxuSBoRGR7FfIrlZp50pgiBlinWHHp6ruNBpRcpVT4eKa5kqnuUbQIUJ399etCmeJIT3hZHVM8xpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGlYvSyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73849C4CED9;
+	Mon,  2 Dec 2024 16:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733158638;
-	bh=D5giJKW+DbgYWJrsncVZiFMVnlhu3N8VFjr8CzYomk0=;
+	s=k20201202; t=1733158642;
+	bh=neKYMfrpNpBUqoLyDJjB8lEOfUKNoZUFaKUxleYHkX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZYRvVgSsFBMvEkfvg/fE9N3Xt+W6C3URe+BGbc6Kg3drhW30olSyVgAF52hN8YaV
-	 b2nenL3e8qeatfKSzRpVsfSpY8lqIY3M7B21aBBPGT2rCcGTAk45QQ0yVEsdlD6yEm
-	 JZeOGht3Vng7uq7m2PLjmxjej4D2mpvWgwykZ64GPSI7MzAWd8/4Xonv9enYgRXSKs
-	 TCBl7Y+W6kFOWZBwdd1xtQBg2fz5rif8NZXmIhvp6Et6kT2jZ/exXI9So66nRTD1kn
-	 13V6eg73Lw7xCIUroQIeqvKxsvVDN7snHJSVy1FWc6FupDvtSi2jOeaREb44DMqasK
-	 EpmNTwHhpfbOw==
+	b=GGlYvSyOpigIiEYSu3ucJGIxq3asDRJNJmVuL9kzoq1qaLbP8iX0T/9HGHM/WzUCA
+	 VqrTYhZWCUYTTNxevaVEsDl8R8j9r8q1qycWr3/WauZPTPP7qxMlHFZad1ZDOieUGz
+	 8ougBK8+oOSUCw3C8XQ13q/hY7TUeqAVgLTP0MoLBApg0SlFb4e/+Zq3A16D1gmIu/
+	 +W5GNDxpMuIdqoygQD90W+okEHprpMKfBxThwwuBNnF9NPMASziU3haF8pb5Z98ASQ
+	 DTU7S8TGWxdJgm9thPcJRHx33XPhZVrn4KvSLI6WFzdDzvoMiOByADyyskr6U+GyDM
+	 2q43AGJFyNaVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
-Date: Mon,  2 Dec 2024 11:57:17 -0500
-Message-ID: <20241202103538-766eb716ba873293@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+Date: Mon,  2 Dec 2024 11:57:21 -0500
+Message-ID: <20241202102240-31cc940ea30775da@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202130605.2475446-1-bsevens@google.com>
+In-Reply-To:  <20241202130917.2486019-1-bsevens@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,10 +74,11 @@ Status in newer kernel trees:
 6.1.y | Not found
 5.15.y | Not found
 5.10.y | Not found
+5.4.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  b909df18ce2a9 ! 1:  60d67a01d849c ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+1:  b909df18ce2a9 ! 1:  0b77f74c2156e ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
     @@ Commit message
          Cc: stable@kernel.org
          Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
@@ -122,5 +123,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
