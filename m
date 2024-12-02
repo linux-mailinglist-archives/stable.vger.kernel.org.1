@@ -1,121 +1,91 @@
-Return-Path: <stable+bounces-96037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9E09E07C4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:59:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F85E9E07B9
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0B8DB265C0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61438B2620E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31D1203714;
-	Mon,  2 Dec 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF23C203711;
+	Mon,  2 Dec 2024 14:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PPoAYwi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUbKxlo2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80BE1FECAA
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 14:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9FF202F7B
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 14:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733148916; cv=none; b=SRSaYa0xkeQgBvbYykeIfBh3J2iP3MMK02MYzgowQeqCtjUZENDAtMJtQ3GhjsK2EURFlerrBkNP9ros0A+ZLA6+b6COTX3oCe3PSSiyG9Jgr1rVuuEmnEI3dzutLuMWmxaFnRY4mfRtlrWEObBbXPymMAH0c1KxJmcLYRJgXq0=
+	t=1733149304; cv=none; b=ZFkHuiQ9Ak6JI5bQHB5A0ol9poTA43vr5KOQUsxgx5ZL89BWIDK8qs2cdo3uKcdX1wpbRjC7OPQoMdD3LCKbso+gjBQ8ywD0CyxEWTTqy3OChzEn0ayOpiDgdX0VjZQnws5T3S5KHoeVtbvMnY15FB6BOu/Xi+hZMPfn279utS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733148916; c=relaxed/simple;
-	bh=ErEwmTVW+AJuBhiJwMY/EZuwY/ewg6Ae7ulD+DF5Jgs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=aqLvbT5e6/qv3EgURTmZwKpEeLPw2mUkMnUZRIjKm7lRh8pSHKDlU1BWq4d3REGIyoKY4Rp1+8HSBwZ0xyTFGtohonfXo4n6vbFYhwFG+7wGDrqUEbOgyvxty7CivsKGbo9ASBlzWF6phZglNwEfF9I0Zt9nGOKy+PVfkCTMXA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PPoAYwi+; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385d7fe2732so201214f8f.1
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 06:15:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733148913; x=1733753713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G4WY1vAA0r2fKbPXY4KjAS2UpwZ8hfCdwU02a05Yrls=;
-        b=PPoAYwi+eUePvErxy+KYvdLvS98V7Pdj0Cj7hD2p03ikjT1l5VaKmhtRSLQxidsAH0
-         j363wx3YAEEe9Pds/nm+sm2uEDFo+FzPq4fkq353hzlq3EARaYlXcgXYFcCe3jdiUa9w
-         Py+YhpNbogB4b5kUIyiKSil59OBIFu9HBJpdTrNSkqMPiy4h/kzIMbhzkWKYfZhJ2xOM
-         We/m7V6fxnK1sxEBpdxNmwLw/v+c1rUsE8ZgLuu8qLAyLXx57nNAD3nyphenx9sxLpW4
-         us395mC+EMtg9PXwf+swibPW0283mwuvxy0QiyZ0VjBFN1GHmzasKqjySe9alD4QfGS8
-         pqGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733148913; x=1733753713;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G4WY1vAA0r2fKbPXY4KjAS2UpwZ8hfCdwU02a05Yrls=;
-        b=FgCoR/uZImC2UIb8yWRFUTr65KUmX+Db7CXYVRYSUsFGWUzU34SuXaxf6YbVjWuWjU
-         UXyjbkE6B7cp9/iWaMLCmxz7DYVpHP5aYzBoDpjH3gjcT0WHd7tAwxksadDdH5CHHJ07
-         mQihjxGmGilJRZXnMxfUmVoRNZvPHJvfpHXOm+OdQiS1/Jkten7gghZb4qMk4XYm1KSU
-         zD2WYjeNZI4/5+NDJ9chjC9uYOclBxwvtGgo8fv7pmzdoYmOvgh+PQS3H3QG9PwekwXq
-         qQ2rLdlZbBj5H0ahJSM9REB8+G0KqSTnNtRk2wPrqEjIASqnV7NsyidNEPnq8wwI+3UI
-         naUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxnkNyrenAw/LhVTpQUONq2iMQPk8HhNQVwcYjBZS2EXNTFKfZswRmdH0ncj1EYCHhHyLveoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypnc8iPm1K6cdPWLg3DoAJafdKHjUuAS77SzvcuGNqNkLJ0LPV
-	JafUa/0DBCYlmmLi2swOlljnw7PawxhWZu1KbwO/9UETV7e2DWyWwkMUbasCflU=
-X-Gm-Gg: ASbGncv21lwl19ZEv9Y+0c8uzoD1ZHho36iREMr3XyviAeWn0eZTGpzNujOUhuw9pA4
-	CxgPc3bTvWHcwm9VqPwMYT7tlTwOLOW0PhpMZQXfByu5ybrsOC1m8caQr4Xfjmi+5PQnVMOFFzU
-	CfF46F9snQcGi6njdJcM6gMSTm2tf1rchyCthEsmhfkTYGBgQhsLf0YXPb91zsAwLm1oERPKk6f
-	OiAhwSf/org7nlrZUtH1znD2pf1lgw6zTKBxrZxPimTpvkR5XQyvTqotuUHwXkO
-X-Google-Smtp-Source: AGHT+IFElDO2xd8mFJCzbrH8EiF3i2wyF8UmcXsrEdAyTq41fa6hejn4lGjAijspgIkC6zPVj6Q6lw==
-X-Received: by 2002:a5d:5984:0:b0:385:de67:229e with SMTP id ffacd0b85a97d-385de672523mr4078648f8f.11.1733148912772;
-        Mon, 02 Dec 2024 06:15:12 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.218.23])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0dbe4ccsm152388855e9.13.2024.12.02.06.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 06:15:12 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Linus Walleij <linus.walleij@linaro.org>, Tomasz Figa <t.figa@samsung.com>, 
- Thomas Abraham <thomas.abraham@linaro.org>, 
- Kyungmin Park <kyungmin.park@samsung.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241106-samsung-pinctrl-put-v1-0-de854e26dd03@gmail.com>
-References: <20241106-samsung-pinctrl-put-v1-0-de854e26dd03@gmail.com>
-Subject: Re: [PATCH 0/2] pinctrl: samsung: fix fwnode refcount cleanup in
- error path and update comment
-Message-Id: <173314891106.48956.4220732642073324618.b4-ty@linaro.org>
-Date: Mon, 02 Dec 2024 15:15:11 +0100
+	s=arc-20240116; t=1733149304; c=relaxed/simple;
+	bh=gHUAW6NocCSkoZat0qV1AvtdstB7BwLfvlS/FYA0xxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1QMvADatEC29Ll3r47TTCvEA025plEf20qUa9v1lgJK92qDj/Xfcm81HRPwasXsEWRbZtk0C0yXJADXmfpgbYgOntbwLn99zAkC7n8GecN+IoUZ/nYZyIsD2fkhP2Bg4FF+MyVK/SsKJFUDwC+krLhLUMrESKOp6SvI7RkHSVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUbKxlo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0B2C4CED1;
+	Mon,  2 Dec 2024 14:21:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733149304;
+	bh=gHUAW6NocCSkoZat0qV1AvtdstB7BwLfvlS/FYA0xxI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sUbKxlo2GOAFT8EDuHF+bVbNZZvcD0SCp0Fa8YWCqXLRwWLiTUd+pRZDDSooTcU0k
+	 q/bbdVnI/zwSsDKCFGfO9XuPTdequd57q6+mbAJPdLRwiosjfzeXWH8gcZQSoLWWr0
+	 aOaYcHpZAE8fCHrtdLUU4wmDkfCglfxkRxoJ+TV8=
+Date: Mon, 2 Dec 2024 15:21:41 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
+Cc: stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 6.12 v2 1/3] dt-bindings: net: fec: add pps channel
+ property
+Message-ID: <2024120215-oblong-patient-779d@gregkh>
+References: <20241202130733.3464870-1-csokas.bence@prolan.hu>
+ <20241202130733.3464870-2-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241202130733.3464870-2-csokas.bence@prolan.hu>
 
-
-On Wed, 06 Nov 2024 23:04:38 +0100, Javier Carrasco wrote:
-> The first patch completes a previous fix where one error path stayed as
-> a direct return after the child nodes were acquired, and the second,
-> completely trivial, updates the function name used in the comment to
-> indicate where the references are released.
+On Mon, Dec 02, 2024 at 02:07:33PM +0100, Csókás, Bence wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
+> Add fsl,pps-channel property to select where to connect the PPS signal.
+> This depends on the internal SoC routing and on the board, for example
+> on the i.MX8 SoC it can be connected to an external pin (using channel 1)
+> or to internal eDMA as DMA request (channel 0).
+> 
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> 
+> (cherry picked from commit 1aa772be0444a2bd06957f6d31865e80e6ae4244)
+> ---
+>  Documentation/devicetree/bindings/net/fsl,fec.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
 
-Applied, thanks!
+You can't forward patches on without signing off on them :(
 
-[1/2] pinctrl: samsung: fix fwnode refcount cleanup if platform_get_irq_optional() fails
-      https://git.kernel.org/pinctrl/samsung/c/459915f55509f4bfd6076daa1428e28490ddee3b
-[2/2] pinctrl: samsung: update child reference drop comment
-      https://git.kernel.org/pinctrl/samsung/c/0ebb1e9e1b12ddcb86105a14b59ccbed76b6ce00
+Please read the kernel documentation for what signed-off-by means and
+then redo these patch series.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+thanks,
 
+greg k-h
 
