@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3449D9E07A0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:54:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A209E094B
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0B1AB3DAC4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9FF0B61297
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30907204F6D;
-	Mon,  2 Dec 2024 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1646920D4E8;
+	Mon,  2 Dec 2024 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWd1uqGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6ksmz3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D442040BB
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEC620CCF6
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151996; cv=none; b=RmRtcy2GYR65G7gaaWUaOBXaUDmTGVvd1n7wTX0nVQvJ9JZjWo9f1c4NK/VpPBEtjxNu0X5XZm5MvbESaSNESOL1ScnHcEzSFkyqo7LPTKmbRe++opMCnkqVumb/bV6DJG3jjuvNLWl9qWd4SllGyjg4AgpSND7opXXU9LZGWFU=
+	t=1733152136; cv=none; b=n6C9YrshtlH5WaKKc5Uh9Bcc6Oi7oBt2uEb4YeyUTqr7UaXzEaS/lINNL9dd4rzaQwHHCFgv5ooA4tioAMtXlPR+kPjoBq4aoYCG+zjrQSDKF7hasTtfwR1zYjECR8GVT1Qep6jBtSJVbDDmv962XZJ3//68cp5G1zQvoAnFZpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151996; c=relaxed/simple;
-	bh=N3mGuRqqwSc4PubXq84LYEbk4E7Mq8PeutrxOJYa3HE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZCfuuQmyiosAuxmbN/yOtqorlzRBVszRrfrOFO/aw3Y+q5Ac+cmNX8DxBRaTpL7kcb6s3dOlWYnjQaYqAATz/KYrwGr0VT9+I0cBMpTc69ZveuJjauv/JkY4P5RdJ1z7fa3mk7oicQIJB4CswlqNzXWEM8iNeQCLMjXtBoCzTpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWd1uqGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52998C4CED1;
-	Mon,  2 Dec 2024 15:06:35 +0000 (UTC)
+	s=arc-20240116; t=1733152136; c=relaxed/simple;
+	bh=oEmr8l2E7YGbjUSJnwlKbhPWwbHBV7loQxNLFSXWsDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z0/ouEIrehBAG6zFi3iZzGrVqb4/UUXROtCMNSCKja+b43FMvE9sNCioJgioQPvo3nz9gmq1Nf26l24TgMZxhDgsnl9z3cp/fKwlwUvG6YPJB5Tj1inH5kvjXW7X7imZYpguHrTcyBRHlTWdpbi3m7r6pE2J5hT+zSzxA7y6obw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6ksmz3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6878DC4CEEE;
+	Mon,  2 Dec 2024 15:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733151995;
-	bh=N3mGuRqqwSc4PubXq84LYEbk4E7Mq8PeutrxOJYa3HE=;
+	s=korg; t=1733152135;
+	bh=oEmr8l2E7YGbjUSJnwlKbhPWwbHBV7loQxNLFSXWsDE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pWd1uqGS9xVNSSIjFDDeLeuBEWQrS21UsAiuZQnVw4ZlCPkASgbCsUeitYUDjgIiS
-	 bQ/vL9x80hqgDBoAQag1Q3Mt55GY5qEDIwl27Jxs72vgLHdv7PNZ1QKCVgtzeH1Fxq
-	 NYrJ2jmMNOXgMlT2zPR/2VPV8WtnfKAlPuaoxM6I=
-Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE" failed to apply to 4.19-stable tree
-To: jiangkunkun@huawei.com,jingzhangos@google.com,oliver.upton@linux.dev
+	b=z6ksmz3RZ1Eu4l8zsix+M+gtepJKESFC8nkQOxJF83nMb169KbheiUa/1GRbQDVGE
+	 lAgeMUYpP3Ktlz+XpDKBn5FWYBlM83UDt8dalsOKjufAhkLGcZI8yNZmWcXILlR9k2
+	 jQQDxiMzQrjckudl+DggoH4yX+yzuJSDCCyOs3rU=
+Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device" failed to apply to 5.4-stable tree
+To: jiangkunkun@huawei.com,jingzhangos@google.com,lishusen2@huawei.com,oliver.upton@linux.dev
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Dec 2024 16:06:30 +0100
-Message-ID: <2024120229-transfer-capped-7af1@gregkh>
+Date: Mon, 02 Dec 2024 16:08:52 +0100
+Message-ID: <2024120252-submersed-reorder-64c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143
+git cherry-pick -x e9649129d33dca561305fc590a7c4ba8c3e5675a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120229-transfer-capped-7af1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120252-submersed-reorder-64c3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,49 +77,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 Mon Sep 17 00:00:00 2001
+From e9649129d33dca561305fc590a7c4ba8c3e5675a Mon Sep 17 00:00:00 2001
 From: Kunkun Jiang <jiangkunkun@huawei.com>
-Date: Thu, 7 Nov 2024 13:41:37 -0800
-Subject: [PATCH] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+Date: Thu, 7 Nov 2024 13:41:36 -0800
+Subject: [PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
 
-When DISCARD frees an ITE, it does not invalidate the
-corresponding ITE. In the scenario of continuous saves and
-restores, there may be a situation where an ITE is not saved
-but is restored. This is unreasonable and may cause restore
-to fail. This patch clears the corresponding ITE when DISCARD
-frees an ITE.
+vgic_its_save_device_tables will traverse its->device_list to
+save DTE for each device. vgic_its_restore_device_tables will
+traverse each entry of device table and check if it is valid.
+Restore if valid.
+
+But when MAPD unmaps a device, it does not invalidate the
+corresponding DTE. In the scenario of continuous saves
+and restores, there may be a situation where a device's DTE
+is not saved but is restored. This is unreasonable and may
+cause restore to fail. This patch clears the corresponding
+DTE when MAPD unmaps a device.
 
 Cc: stable@vger.kernel.org
-Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
+Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
+Co-developed-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Shusen Li <lishusen2@huawei.com>
 Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
 [Jing: Update with entry write helper]
 Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
+Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
 diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-index b77fa99eafed..198296933e7e 100644
+index 68ba7e2453cd..b77fa99eafed 100644
 --- a/arch/arm64/kvm/vgic/vgic-its.c
 +++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -782,6 +782,9 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
+@@ -1139,9 +1139,11 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	bool valid = its_cmd_get_validbit(its_cmd);
+ 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+ 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
++	int dte_esz = vgic_its_get_abi(its)->dte_esz;
+ 	struct its_device *device;
++	gpa_t gpa;
  
- 	ite = find_ite(its, device_id, event_id);
- 	if (ite && its_is_collection_mapped(ite->collection)) {
-+		struct its_device *device = find_its_device(its, device_id);
-+		int ite_esz = vgic_its_get_abi(its)->ite_esz;
-+		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
- 		/*
- 		 * Though the spec talks about removing the pending state, we
- 		 * don't bother here since we clear the ITTE anyway and the
-@@ -790,7 +793,8 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
- 		vgic_its_invalidate_cache(its);
+-	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
++	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
+ 		return E_ITS_MAPD_DEVICE_OOR;
  
- 		its_free_ite(kvm, ite);
+ 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+@@ -1162,7 +1164,7 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	 * is an error, so we are done in any case.
+ 	 */
+ 	if (!valid)
 -		return 0;
-+
-+		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
- 	}
++		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
  
- 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
+ 	device = vgic_its_alloc_device(its, device_id, itt_addr,
+ 				       num_eventid_bits);
 
 
