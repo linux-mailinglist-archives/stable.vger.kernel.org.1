@@ -1,117 +1,145 @@
-Return-Path: <stable+bounces-96090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE319E09B0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:20:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8803C9E0ACA
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 666AFB82789
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:23:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8F47B81492
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847D420ADC7;
-	Mon,  2 Dec 2024 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D14F209F51;
+	Mon,  2 Dec 2024 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzxXuyXg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="URPKnzxz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CAA20A5FB
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2CE209F26
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733152748; cv=none; b=iK8EsXfst+g7CYqr9rXhHutAqM2oewCcoAS5tPgnFYVHqs5xI7CPEVFzKvx9mRKH52cr4w1wMRsZqqMBJh06E4tFsScE+baoyEx2/X2Jz9FH++ex5xUjfr5VIFGm80mC813d4eKTxEgNAfFG7ik0biujbxpYjjo95kqwDiNm+z0=
+	t=1733153056; cv=none; b=PA4SbHJmLedBW5hz18bP5qxXh5zhM5yEVR6Cbs+Q+dQwlXinOtwkHwmk1dhUwqCD92AF0789TMVMJlNXLt6B2wBv6EIdjFxY6VourW4LQNSrZDau+544/YuxX2b1noDAe3vAonExsNvDRU6NmshJaNdx7RyD9QpV4L8ZS33jVGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733152748; c=relaxed/simple;
-	bh=jsuMjOiiKE64Wx+7dwfW2gx0Qu9rKX8hKy43MUmRxzA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eVH5EyjzSMpldN9V+2qcjQ52aEF948B+LdecMtk3TXLcVTiVyEmIt//nyyXlbV4qgsf3Ohn6fRskz7mizk0jXzrsdzOusk3iG/+gH99mrROG5Kev5HexXgHXIO7i1LjVgx2f54fFlDvnxkvEaG6V95bAoxtSimrTqCtGjcjqLfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzxXuyXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A859C4CED1;
-	Mon,  2 Dec 2024 15:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733152747;
-	bh=jsuMjOiiKE64Wx+7dwfW2gx0Qu9rKX8hKy43MUmRxzA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=NzxXuyXgooYMRk1s0r16RwEa5hd9O+7FsBGBQWekaG18r+/Z2DHXr14giiH6bEUtd
-	 vNRkvw7P/RdTPTLrSGWIR5jAE/PA3mbDxwMAjpB4BgPx2UC6YUF+66ZibotDj6OK7J
-	 AVv8L+jr38TAXtH7GJVFSOZgFsLLXAIyZyLFx9SI=
-Subject: FAILED: patch "[PATCH] xhci: Combine two if statements for Etron xHCI host" failed to apply to 5.4-stable tree
-To: ki.chiang65@gmail.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Dec 2024 16:18:51 +0100
-Message-ID: <2024120251-backrest-passion-3be3@gregkh>
+	s=arc-20240116; t=1733153056; c=relaxed/simple;
+	bh=GT/7Ze1ICZzO91X+fJzIIryCuvOoEcn09j4ZdKtLo6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=laU6clr6Kb88UzEnuhUCY+LUcBneGZsL5aehywW5QrX71P8ouscsqVE3GgSXy9IUta+J8IUuZQgAKrLprOCDCJpV8fJpWVTkzNFM+vLs0vp0FemPT38qMzF8AhGw1EuuEWLHkrFheqzwQ5TnzC9KdEaYNSO4xRbifxYa/++AD0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=URPKnzxz; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e399f8bb391so1471010276.2
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 07:24:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733153053; x=1733757853; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m76+jzfpV1Gl7IDVGFQkptedm6l1QHBc35AI5nAO280=;
+        b=URPKnzxzvYoI9ybhzsWZwVzc3sQib1Kf/2TWh+EvBAJ2eCmxCfi+VGggKbP7QX0Pnl
+         gBRZHTUe2agFetZFdYg1ZGMd5Hb16QFGmRygKH6h8wwKu0UYplSpnJe8J3tv5I1jZRY5
+         PngGCeFtm2Geo3mzxVDjBX6RfXd5/hUG3bM/xasjIx1luQTEFVnQPEzlHMtCVCluNAN8
+         OSngWCxmilD0WR1V5Pu5kh9n4GoGV8hUCfPOU6cnnw5kCC0ysOyRUHiWp9VcM/p0IDEA
+         cJFgIr13ouQd6/afFwCBWzkjp51FlplKybl9TKJnG2xF+X5l77+2EaOS3FmS2XT5k/Dx
+         PCcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733153053; x=1733757853;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m76+jzfpV1Gl7IDVGFQkptedm6l1QHBc35AI5nAO280=;
+        b=G9sB+QZhAaHRR33dT5TSNqUaYRQquWPfPdMop1E9lJsauolMfyii0ht+EZMb39QbZw
+         kq0y+ATeiUNa210nff5W3TtFXzlSl+xS5dL5WoyKDpjcs8UxGnATa7pIOxzl79XlXlXk
+         yha4W5u3Q9Ysw1TJkBowyZkocRxv1zOHgwZCNOPdC4So5AdMf/fi4Nk22EcXqCaNiaJS
+         xHK03mcG1iXex0d7VmzTfxD2KxcjPKCNGufc83sBC0HBlcnafidgdeu9YxLmjDSODMq5
+         8HMeIctoF1DW2KKIqwbc4Yh9yoOqEXmhDOp90uXx1lZJ1Ta/mctK21UMb7vwUs7BZxil
+         UgBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe/+T5yEbdhwUzzYbctBzOp1l+qaxvJdleEEejZvl9B+3aCokdhW7+SUZ0DilNFGkuVePSeag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEC2lEybG0c8zaNBPwjGBtspcYMJbPMSE20xZQcc+EvVHfiUur
+	F41DWJCvrbkA8+dYfYaX0cBFwHe9cnE2HFn7kMfvQJ64Yqy8z/hjPxiX7XRy0NHB89YuMkgwO1V
+	9yNV6DK4f5hlfUy9aCRYnXJ/1Qk4CsHClny9UJg==
+X-Gm-Gg: ASbGncv4xmmhqdH02zPYUqP+3yy+6eI9aOCXq3ShxrrZuwRwLjDl+Fwlhj5TbeN78Jd
+	sVayoa0QQ/QdlBT6jte94UAMN2kUXY52P
+X-Google-Smtp-Source: AGHT+IHH7hIx+e8n6avEfQWiti54KkaNN3HlOI/MmlmrT0lxi9lBcIhv+cnoSDvpFTNHzd+CyUH6RHneSifHab2NRNc=
+X-Received: by 2002:a05:6902:1895:b0:e33:20c2:223f with SMTP id
+ 3f1490d57ef6-e395b869e50mr21994700276.10.1733153052749; Mon, 02 Dec 2024
+ 07:24:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20241125122446.18684-1-ulf.hansson@linaro.org>
+In-Reply-To: <20241125122446.18684-1-ulf.hansson@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 2 Dec 2024 16:23:36 +0100
+Message-ID: <CAPDyKFqQaPs1oQ9zgvOSBGLnP=tNe0UdX4B=EPELdY2jFjGRuQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: Further prevent card detect during shutdown
+To: linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Anthony Pighin <anthony.pighin@nokia.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, 25 Nov 2024 at 13:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> Disabling card detect from the host's ->shutdown_pre() callback turned out
+> to not be the complete solution. More precisely, beyond the point when the
+> mmc_bus->shutdown() has been called, to gracefully power off the card, we
+> need to prevent card detect. Otherwise the mmc_rescan work may poll for the
+> card with a CMD13, to see if it's still alive, which then will fail and
+> hang as the card has already been powered off.
+>
+> To fix this problem, let's disable mmc_rescan prior to power off the card
+> during shutdown.
+>
+> Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
+> Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Applied for fixes and by adding a Closes tag, thanks!
+
+Kind regards
+Uffe
 
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x d7b11fe5790203fcc0db182249d7bfd945e44ccb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120251-backrest-passion-3be3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From d7b11fe5790203fcc0db182249d7bfd945e44ccb Mon Sep 17 00:00:00 2001
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-Date: Wed, 6 Nov 2024 12:14:43 +0200
-Subject: [PATCH] xhci: Combine two if statements for Etron xHCI host
-
-Combine two if statements, because these hosts have the same
-quirk flags applied.
-
-[Mathias: has stable tag because other fixes in series depend on this]
-
-Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-18-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 7803ff1f1c9f..db3c7e738213 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -394,12 +394,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
--			pdev->device == PCI_DEVICE_ID_EJ168) {
--		xhci->quirks |= XHCI_RESET_ON_RESUME;
--		xhci->quirks |= XHCI_BROKEN_STREAMS;
--	}
--	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
--			pdev->device == PCI_DEVICE_ID_EJ188) {
-+	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
-+	     pdev->device == PCI_DEVICE_ID_EJ188)) {
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
-
+> ---
+>  drivers/mmc/core/bus.c  | 2 ++
+>  drivers/mmc/core/core.c | 3 +++
+>  2 files changed, 5 insertions(+)
+>
+> diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
+> index 9283b28bc69f..1cf64e0952fb 100644
+> --- a/drivers/mmc/core/bus.c
+> +++ b/drivers/mmc/core/bus.c
+> @@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct device *dev)
+>         if (dev->driver && drv->shutdown)
+>                 drv->shutdown(card);
+>
+> +       __mmc_stop_host(host);
+> +
+>         if (host->bus_ops->shutdown) {
+>                 ret = host->bus_ops->shutdown(host);
+>                 if (ret)
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index a499f3c59de5..d996d39c0d6f 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -2335,6 +2335,9 @@ void mmc_start_host(struct mmc_host *host)
+>
+>  void __mmc_stop_host(struct mmc_host *host)
+>  {
+> +       if (host->rescan_disable)
+> +               return;
+> +
+>         if (host->slot.cd_irq >= 0) {
+>                 mmc_gpio_set_cd_wake(host, false);
+>                 disable_irq(host->slot.cd_irq);
+> --
+> 2.43.0
+>
 
