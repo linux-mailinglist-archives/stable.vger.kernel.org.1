@@ -1,135 +1,128 @@
-Return-Path: <stable+bounces-96019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45D39E02CE
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AEA9E02D7
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:08:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAB7016BEC4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:03:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551B216CC47
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E4B1FECD6;
-	Mon,  2 Dec 2024 13:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30FC1FF5E9;
+	Mon,  2 Dec 2024 13:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNXbx2Gu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XvpIv9M1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D1E1FECAA;
-	Mon,  2 Dec 2024 13:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB91D8A14
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 13:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733144541; cv=none; b=E+g/eozfx0HKY5DlsFES7hZp7Qr9ZtijuH5MKwnfSlS1W7nUmKckB11+MEoKIdhnAX6pLaqN04J5Cft4M+1zIqVGBCZSQ6BrxzM8ba/w7Tv35clZiNSX1hhK5bWYglxdLvnCCMWPxGe26Yi/W2S/XGYxiusWS0te+dMH5jDSodw=
+	t=1733144681; cv=none; b=uZSqhxwncakaA/e7+F3nqTyTlp+MTmYl12ZTJWOLkCevba2aDTywDMOJ14MYmSmSjOp5Hkr4oTg6sHb1iTcl1VCGWy1/2univoaSC9G7OJEe3RrHxnr06RiwdJeDxwy/ri8w+6xisKdBs/CqNPH7VeQHeK/n332XMqB0P1oeLCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733144541; c=relaxed/simple;
-	bh=Zs/rD6jzJ/nV0ysK8vRSIb8oO75WOyFspYTWwSHRkt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TrsRVULduynXeqF+AMgK0bov+7DRmykvszQ8F3NMeUHMyxzaXlqo8yOmXBT/OnSrM9Ro+QUmjhIkgnt75Ul5zPGhStDMMQC3h0+I26veHXmqM+vggRwGclyMHk0/IIZ2HMn3ewltE9YEvh/8oIooDMXUpgmPniRGcWAdfaF/Y5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNXbx2Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA21C4CED1;
-	Mon,  2 Dec 2024 13:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733144540;
-	bh=Zs/rD6jzJ/nV0ysK8vRSIb8oO75WOyFspYTWwSHRkt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qNXbx2GuQxnxDcN74QHvJaZnn2fuS+fG+cTpznQjPBTuVTQm/muHItjMaPBAYc6sA
-	 h7VlVeVQZgr59HlVAmO37q4IM7AUfr0ewhRKLpKAg2rd8x3+o+FeAv7FG5gVo3Hrkt
-	 Q4zJPsxtm3hYkTWMKs2goh8jaeTGfAGosXHuIK24=
-Date: Mon, 2 Dec 2024 14:02:17 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/73] 6.1.119-rc1 review
-Message-ID: <2024120206-dreamy-wilder-ec77@gregkh>
-References: <20241120125809.623237564@linuxfoundation.org>
- <eda70745-0ea2-43bd-bee3-8905e3a1d3cc@roeck-us.net>
+	s=arc-20240116; t=1733144681; c=relaxed/simple;
+	bh=5SzFAbmrIuuLhnpIScNVjFggB919kj6AcIhcCvny7Hw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=mEoX4tUsbdMhMLfkSUVhS87f4yQStAzkzb3y+xcjdjonWfaVPgr5uJOPBAYkw2AYqWv42wRKxFJ6NUqUPU+W+4ciG5IGKhVL1HyeAzyp1sLmOdq3DPWd6wWMPWcupTOQ5nu92clilrtsvZBYQS13oagXchzLnd+cWggLf/4YVYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XvpIv9M1; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3ea5e405870so1541639b6e.3
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 05:04:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733144678; x=1733749478; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4cBhcu5tPxZOdOqB/un0ZYBCIoqhbKvCypSo+LJw7AU=;
+        b=XvpIv9M1qyDvoLvzEqRc3+OnKOfI2sF1gDthr+0ZIkosproaLUYf7++/p0xK3XXAEW
+         6Im6z9fPcAfrZarZmn1vuD4EBTJW87BnXqESmgyI7Xq7nWzH5D4aaGC+RgQfxduV83VZ
+         SGKciQXfR+egGY/HmnMI729ZdnDHtCtfG9VPY2C0eiAyBiLAjVti85oqUitxJ0SVCjLT
+         tMovPcccguQqBoT5J1CpjVKATKz/oEhxSlilA+DXT+6X6v9bR/4mluSSSKXJzGEhV9Qt
+         0BY5tMrILdUmjhh0dtBgTqOc5v8nz8RTdR7ppBWysrU595+wddBm2npjFAHiQ31AlgrJ
+         gGgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733144678; x=1733749478;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4cBhcu5tPxZOdOqB/un0ZYBCIoqhbKvCypSo+LJw7AU=;
+        b=dzkW2bea6SbaVQtZ0qXrYjhO0K7FlizGFVpvwH20W9Rr5XzM2ogpGiBeprxSsJi2Mx
+         0HC1o+cM3/kXNQrEwlHd+tJNaAzBo2CyGr8cKUKJL4eannx379tXNq0drXNBuZgOZ49P
+         bFVGRcrqT/1cVPhtz6bP/bnZdEDIrvzVO9GuN1w6GwbNqB/9ZKlWb1DnC3BxEIksE7Rm
+         uDVwbHD6KGE7bJQkYe87OJrEsh0yaJNPPeHua3vvoFGTbxWb1fHKUNjh8OYHcaFgdS0v
+         /PCbpmVEoLmTyLJ3FnN33ocMpg0GHFtoHhTZITTuv5OfqIgl2/Es6SZGKAh2ilcBxc3U
+         xaDw==
+X-Gm-Message-State: AOJu0Yz3ibWUVWfe4Hbv7TwZinYo53njGGtbmBzntrI+fC/hzabXYn+8
+	JdtIgqULpyVYBk2dCy6UlMQTPdquuNyTdn7uq4afKSN3tNcWtnno2sH3fjYjsq6e0M7CK+/HIDP
+	26UGLeUrasx1HUPA3b0qkIiDF4H9YdnVpcJ55PYhnEPQCXetUd28=
+X-Gm-Gg: ASbGncuUPPnXQccQ+PaaotM0bK0hrYvjC9j8HpCKQoV/paleCbCLj6paA962N+R3cg5
+	Yjcsu8Mzx7Sf+CbByA/9ytfznoDLc1Ppl
+X-Google-Smtp-Source: AGHT+IEOmtFOZwTN+vKAJuSyZjG158JDX7sBPe506LACLmXQ+1Wnw+DpEiOcyzCcmFHfKXbuwV7o3I2ncAMo1jTS/nc=
+X-Received: by 2002:a05:6808:1986:b0:3e6:24ec:d6f5 with SMTP id
+ 5614622812f47-3ea6db8eeadmr19782665b6e.1.1733144678574; Mon, 02 Dec 2024
+ 05:04:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eda70745-0ea2-43bd-bee3-8905e3a1d3cc@roeck-us.net>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 2 Dec 2024 18:34:27 +0530
+Message-ID: <CA+G9fYuMnDvMK-4PRmyOk+KKFONrPPwRtFpnAVtUPrmQhcbOfw@mail.gmail.com>
+Subject: stable-rc-queue-6.6: Error: arch/arm/boot/dts/renesas/r7s72100-genmai.dts:114.1-5
+ Label or path bsc not found
+To: linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Nov 23, 2024 at 07:47:09AM -0800, Guenter Roeck wrote:
-> On 11/20/24 04:57, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.119 release.
-> > There are 73 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Fri, 22 Nov 2024 12:57:58 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.119-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> > -------------
-> > Pseudo-Shortlog of commits:
-> > 
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >      Linux 6.1.119-rc1
-> > 
-> > Michal Luczaj <mhal@rbox.co>
-> >      net: Make copy_safe_from_sockptr() match documentation
-> > 
-> > Eli Billauer <eli.billauer@gmail.com>
-> >      char: xillybus: Fix trivial bug with mutex
-> > 
-> > Mikulas Patocka <mpatocka@redhat.com>
-> >      parisc: fix a possible DMA corruption
-> > 
-> 
-> This results in:
-> 
-> include/linux/slab.h:229: warning: "ARCH_KMALLOC_MINALIGN" redefined
->   229 | #define ARCH_KMALLOC_MINALIGN ARCH_DMA_MINALIGN
->       |
-> In file included from include/linux/cache.h:6,
->                  from include/linux/mmzone.h:12,
->                  from include/linux/gfp.h:7,
->                  from include/linux/mm.h:7:
-> arch/parisc/include/asm/cache.h:28: note: this is the location of the previous definition
->    28 | #define ARCH_KMALLOC_MINALIGN   16      /* ldcw requires 16-byte alignment */
-> 
-> because commit 4ab5f8ec7d71a ("mm/slab: decouple ARCH_KMALLOC_MINALIGN
-> from ARCH_DMA_MINALIGN") was not applied as well.
-> 
-> Then there is
-> 
-> include/linux/dma-mapping.h:546:47: error: macro "cache_line_size" passed 1 arguments, but takes just 0
->   546 | static inline int dma_get_cache_alignment(void)
->       |                                               ^
-> arch/parisc/include/asm/cache.h:31: note: macro "cache_line_size" defined here
->    31 | #define cache_line_size()       dcache_stride
->       |
-> include/linux/dma-mapping.h:547:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
-> 
-> because commit 8c57da28dc3df ("dma: allow dma_get_cache_alignment()
-> to be overridden by the arch code") is missing as well.
-> 
-> Those two patches fix the compile errors. I have not tested if the resulting
-> images boot.
+The arm build failed with gcc-13 on the Linux stable-rc queue 6.6 due to
+following build warning / errors.
 
-Thanks, I'll go queue them up now.
+arm
+* arm, build
+  - build/gcc-13-defconfig-lkftconfig
 
-greg k-h
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build errors:
+------
+Error: arch/arm/boot/dts/renesas/r7s72100-genmai.dts:114.1-5 Label or
+path bsc not found
+FATAL ERROR: Syntax error parsing input tree
+
+Links:
+---
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.63-470-ge24527f04ed4/testrun/26165097/suite/build/test/gcc-13-defconfig-lkftconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.63-452-g90b0e9ad2d25/testrun/26154074/suite/build/test/gcc-13-defconfig-lkftconfig/history/
+
+Steps to reproduce:
+------------
+- tuxmake \
+        --runtime podman \
+        --target-arch arm \
+        --toolchain gcc-13 \
+        --kconfig
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pezSPMVBtcveKsnXdZEqo0TOjy/config
+
+metadata:
+----
+  git describe: v6.6.63-452-g90b0e9ad2d25
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: 90b0e9ad2d25b129a24f464eb4fc0c64b19291fb
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pcDuIKSwfb0J48oc9AheBNQtsu/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2pcDuIKSwfb0J48oc9AheBNQtsu/
+  toolchain: gcc-13
+  config: gcc-13-defconfig-lkftconfig
+  arch: arm
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
