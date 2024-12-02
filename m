@@ -1,151 +1,116 @@
-Return-Path: <stable+bounces-95916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AFA9DF9B4
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 04:57:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB923162772
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 03:57:14 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64271F8AD3;
-	Mon,  2 Dec 2024 03:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="NvaMaGS7"
-X-Original-To: stable@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FF09DF9CC
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 05:10:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2147A1D88A4
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 03:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 251A3B21209
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 04:10:42 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B241D5CC6;
+	Mon,  2 Dec 2024 04:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="KCwUc3i0"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3DF33062
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 04:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733111833; cv=none; b=cvHPP+11VsduHxD7DSQdsWX0hNoW/J19v3bi1p/fz03BSgO4m/G0Tcyx3OUAJjDjTtc/R47UzWWxk6OIficxKwgfO9eYGpBECwTqoxs+vnJZlUG1j9o5TQqORbfufoCmwBCGBP45THJFP+wMXxibehchQCrdMvg/MGPSzZnOpSM=
+	t=1733112637; cv=none; b=cGNSbeIhb4KIYXTo408KUHOKMlrK9nMn6XXaoGUsncZs+ZCNtgkK2zYaytx6w3fTYvWRubcLHHvWSIarIm1MyrJ2az9uJSSycfX05Samx3rD2PcFVyizo/BPRdITfbzs7cexEpO6SCuhO0x/K5TG3qL1OOqiyt/NEA74wtiWue0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733111833; c=relaxed/simple;
-	bh=lvRgxLkC9lDXJdMG2vSTeFG6EcXZW70sZ7LUOmHlaPk=;
+	s=arc-20240116; t=1733112637; c=relaxed/simple;
+	bh=vMWGWHg/et5CqkIdQLtUU5ObJLzO5NosJVeARTBqbag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WbHY1zDtEHS2kBxSTXCEb/bGdnK5iY0GQx2fBEhRN7tIwg56k9W/2Q+PSX5mGUm9+3Sm/VwFpkSBS0KR0pEN5kNA5ZK/P4pBJ/cQhAwaRZST6PObMAObgGBX7l1iiZPO4lxFMY0NOGEXMf1NU68G9Un+lUPEUfGc1TgSziq9Md4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=NvaMaGS7; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=NvaMaGS7;
-	dkim-atps=neutral
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id B45C089A
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 12:50:29 +0900 (JST)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ee36569f4cso2949981a91.2
-        for <stable@vger.kernel.org>; Sun, 01 Dec 2024 19:50:29 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uttmwql98aXrGkBmmk5xiCzc23GW1dJBlHx75q9s1HpveReL1uOUO1J6A5Ld/0NuETFb4v0aeW6zDu7pNDgXYsDLcahr8ESPszdsAm+C6B87azn/MGTS3a7qL9TUnYRokJ4vGR6GR7tPklexG7cZdU1aiarTGVSbvrjfnfdIgGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=KCwUc3i0; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21288ce11d7so32068865ad.2
+        for <stable@vger.kernel.org>; Sun, 01 Dec 2024 20:10:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1733111429; x=1733716229; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1733112635; x=1733717435; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4HQEXIyZsrJ4f5Rfkkqm9DWJBB35YS/0AB032iPU8C8=;
-        b=NvaMaGS7Lhs6gOfneg6q/yuMW0oKGkzAIEDbu9Iari/2K3IaYGExy6Ew6a1HpQBVJh
-         KFzrlrRh7N92+5iigaCtT+BWiFN0CHcRGOOA8rpQbJF2eOMAbwnjtydtzja5mjxwRtk7
-         hu2uAkufheMT5jFv/l2eWxWs3A6NFSiFjstPO+CRubRDL8eRoeqQ2SvYi4fS35FK5Sx7
-         ZK3DuLNqLU1LkuqTFnSQrtzQ9BGjQWsL2AswSMs6Dzv7+yx+P/8a++gJlHUdcM5WQz7M
-         JkY3VcrG+6GfvqsucIy2CO9GW6lzcC2YflQvr4WuThooB0tFiWfO5ye01+0RLrz3F0Pt
-         puvQ==
+        bh=76F7lD0eouVg6d3auGQDcfuDktfWQWRUnQNVSJA2ubk=;
+        b=KCwUc3i03mNYEK0a5dofjhlYqiVD5sd7+Mqn7AgpUcETYbTWRo7SOsSXUKKxfxx7UJ
+         SHyJWF5FvA1vjn7+utOgL9vrKI/9ue+EpkmWsAJ6DA/iGHXGXWfqb0Vp6Aw3tOxcccsi
+         lO6o/Y+KgpI184wI77H8nvGxk6ukX6XHInVyo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733111429; x=1733716229;
+        d=1e100.net; s=20230601; t=1733112635; x=1733717435;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4HQEXIyZsrJ4f5Rfkkqm9DWJBB35YS/0AB032iPU8C8=;
-        b=mhCV/MmyZ+Aa4Zi5Kx4bgku12n6QVle5BfJa+fDW47UbHWxQZNas1vkam54vWeX+L6
-         ZsO+KVQB1Cxd4F6Nhdb3EoREucl54B0NkekV5vKsmOrU3zstfvn+2IkKgkqP21Cv0/dt
-         coove8T93+iXhclq5Ry/5McNGns4hTWpcF4Oju7hycbfP2LXcyXcNER/FzFbwOOkkOPr
-         tYUQcoi2yZtmBgt5CpPZ1f7Ot4DLJFRJgbSV6l0JoZ4fRQ9ED3KH3h1qBai7qTeDu1gk
-         MJms8HP1wZ2836Lfm0CdHvjKFdzAPp9FYOfWpyjJjhXOWW9CBwpRtreBYE1WUB23ANZo
-         dWzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7neDbE1AtsdWzHcO7qxTVRJ1fL5CCX7tGms7ISZCFbQWtVVdX77yTtCm16PAIQj6KzfideBI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJVfgwWc9+7wv6U2jMdAaUmP2/QOm3TI1JGHZqtxzIkduQgur9
-	vg99TVEhD48y3euR9lAmyW18nsfI0lvse4SHvZ47jGSqJ+5JrveEt1P8MbN9Yyn4DkgpTF7mqz3
-	o1JBW4B6UZiG+ApUfNbA9NTl/uD+k7UyDQKPtlayPRkI0iCrwZEnvbgY=
-X-Gm-Gg: ASbGncsD9FwM4AtzjemToF23dbdVgzTsIWYyiowNW/XjmLMAATnVQ2msa7AFzLqOMhT
-	3TTm/vtcWT/PBXiRHlFy31f8r/Yp5VCTwb8WHY26CrKVYI98Ya8ZtcE3Epk6eWE+xRsY76qEZW6
-	fYuK+wwYXLP9enwJeswV2zfWC7jgw127Cfdd8iUDTXoKpbz6z1uCFnLqIYlaRs5w9Y2Z8P9igfz
-	6P1t4oDWztK9KwUdnIl+5f6cpvznAribgAZnX3Ao8JRGhCRquo/h49ccssAzf2+lW8k7zLBdo3y
-	YvUhln6Eie20zT05CgsizJbUn6ieI5UuXQ==
-X-Received: by 2002:a17:90b:4c0a:b0:2ee:9d57:243 with SMTP id 98e67ed59e1d1-2ee9d570daamr7510203a91.1.1733111428762;
-        Sun, 01 Dec 2024 19:50:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGrUfdYidb3+4gC1zE+19HgdSQ327HlbWrWwlG5RjKT0brQPVbmrEquIDL+z2sNxk15FEVzg==
-X-Received: by 2002:a17:90b:4c0a:b0:2ee:9d57:243 with SMTP id 98e67ed59e1d1-2ee9d570daamr7510191a91.1.1733111428381;
-        Sun, 01 Dec 2024 19:50:28 -0800 (PST)
-Received: from localhost (35.112.198.104.bc.googleusercontent.com. [104.198.112.35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eec5eabec6sm963644a91.34.2024.12.01.19.50.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 01 Dec 2024 19:50:27 -0800 (PST)
-Date: Mon, 2 Dec 2024 12:50:15 +0900
-From: Dominique MARTINET <dominique.martinet@atmark-techno.com>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, Greg Thelen <gthelen@google.com>,
-	John Sperbeck <jsperbeck@google.com>, stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
-Message-ID: <Z00udyMgW6XnAw6h@atmark-techno.com>
-References: <20241017071849.389636-1-oneukum@suse.com>
+        bh=76F7lD0eouVg6d3auGQDcfuDktfWQWRUnQNVSJA2ubk=;
+        b=agSbuavgZUfE4k+1HV1cAgxBb5tV7H6XqGGzIS6mjWqZ9WdYuxmUDyBnBwP8xOU98a
+         jGV/cuoxxIOEmBxvPTCcN6zNCBjtMycDHJraWGQhOCwGltSFY/2df1wJqkt1X5fmFWln
+         Et9zs9un/hddXwra8u1odwux2qOpX2qETT4EQRR8d1K0Dwd7NbKe2UV/S8R6iqlJUz+d
+         7QjHyvikF787oOwaVDq6W1h4EM4QpslOUQeTY7AC8LeJfCNib70szVteQ87URYfGJM7P
+         2RFw3ojIS13DAtp5KW5DxUNumLM5HOnTyxQU8VZn12rdWxTJ1dViy85Ozo6u2d3D4Juk
+         Q3Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSTxyKE3d6Dm3n3Q0ZXznUdBC6/zT8bhaFDyA1vaq7l0qUW3G/ziDV4Cear2+rlUMPXUnUgeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyndSWJijvGUF5v9kTddS/LU9iANCFEDVBx+/cliAdR6dOnPI/h
+	sTbBkwhjesi3wP3Oz4JJM833Zafh4oIMbH0DxM3DT+JS5Xq23kVgJYieWP72nA==
+X-Gm-Gg: ASbGncsVjTt0xCcqUNfO6Z7IIqLLCivvNO4XdQuD1Lnj59XDnmuqlKA+xP6gYovyftY
+	FJTcH6sPgUOTm9HoiLvo1PUwzaI+sgQ89ey/kCUGXk3EDtE4F3YHohG76YbHxx2AlTkEAA3uGtd
+	ML8A9aJo3sCDspJUBVzKD1xJSIpXJInM12vv7W39aOrLJMhQ007D9VfRL+CyjKarvK3eXtGQR1W
+	wIHrxBE9ylN0C4JaErISArgt/2qKfoKJrEv0EAzW+5TXnAEFqWXlA==
+X-Google-Smtp-Source: AGHT+IE880m9aaD/PfpcfjpV+6a29yccMszSLvtOM5pzxyZnHHZv7iq/hZ128/DKx4K03e9uIlt/rQ==
+X-Received: by 2002:a17:902:ce08:b0:20c:da66:3875 with SMTP id d9443c01a7336-2150175eb06mr346021735ad.24.1733112635088;
+        Sun, 01 Dec 2024 20:10:35 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:13dd:b39d:c5ab:31c2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21521905f2bsm67078175ad.93.2024.12.01.20.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Dec 2024 20:10:34 -0800 (PST)
+Date: Mon, 2 Dec 2024 13:10:28 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	20241015061522.25288-1-rui.zhang@intel.com,
+	Zhang Rui <rui.zhang@intel.com>, hpa@zytor.com,
+	peterz@infradead.org, thorsten.blum@toblux.com,
+	yuntao.wang@linux.dev, tony.luck@intel.com, len.brown@intel.com,
+	srinivas.pandruvada@intel.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
+	x86@kernel.org, linux-pm@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS
+Message-ID: <20241202041028.GJ10431@google.com>
+References: <20241128111844.GE10431@google.com>
+ <87o71xvuf3.ffs@tglx>
+ <20241130114549.GI10431@google.com>
+ <87iks3wt2t.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017071849.389636-1-oneukum@suse.com>
+In-Reply-To: <87iks3wt2t.ffs@tglx>
 
-Hi,
+On (24/12/01 12:17), Thomas Gleixner wrote:
+> The compiler can fully inline the actual handler function of an interrupt
+> entry into the .irqentry.text entry point. If such a function contains an
+> access which has an exception table entry, modpost complains about a
+> section mismatch:
+> 
+>   WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
+> 
+>   The relocation at __ex_table+0x447c references section ".irqentry.text"
+>   which is not in the list of authorized sections.
+> 
+> Add .irqentry.text to OTHER_SECTIONS to cure the issue.
 
-Oliver Neukum wrote on Thu, Oct 17, 2024 at 09:18:37AM +0200:
-> The fix for MAC addresses broke detection of the naming convention
-> because it gave network devices no random MAC before bind()
-> was called. This means that the check for the local assignment bit
-> was always negative as the address was zeroed from allocation,
-> instead of from overwriting the MAC with a unique hardware address.
-
-So we hit the exact inverse problem with this patch: our device ships an
-LTE modem which exposes a cdc-ethernet interface that had always been
-named usb0, and with this patch it started being named eth1, breaking
-too many hardcoded things expecting the name to be usb0 and making our
-devices unable to connect to the internet after updating the kernel.
-
-
-Long term we'll probably add an udev rule or something to make the name
-explicit in userspace and not risk this happening again, but perhaps
-there's a better way to keep the old behavior?
-
-(In particular this hit all stable kernels last month so I'm sure we
-won't be the only ones getting annoyed with this... Perhaps reverting
-both patches for stable branches might make sense if no better way
-forward is found -- I've added stable@ in cc for heads up/opinions)
-
-
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -1767,7 +1767,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
->  		// can rename the link if it knows better.
->  		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
->  		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
-> -		     (net->dev_addr [0] & 0x02) == 0))
-> +		     /* somebody touched it*/
-> +		     !is_zero_ether_addr(net->dev_addr)))
-
-... or actually now I'm looking at it again, perhaps is the check just
-backwards, or am I getting this wrong?
-previous check was rename if (mac[0] & 0x2 == 0), which reads to me as
-"nobody set the 2nd bit"
-new check now renames if !is_zero, so renames if it was set, which is
-the opposite?...
-
->  			strscpy(net->name, "eth%d", sizeof(net->name));
->  		/* WLAN devices should always be named "wlan%d" */
-
-Thanks,
--- 
-Dominique Martinet
+This works.  In fact, this looks like a local fix which we applied
+here on our side, but we were very unsure.  Thank you Thomas.
 
