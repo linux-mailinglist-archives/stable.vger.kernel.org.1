@@ -1,131 +1,142 @@
-Return-Path: <stable+bounces-95973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766669DFF75
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:57:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10D69DFF7E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CCC2280FC0
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:57:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9631E280C96
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EAA1FCF57;
-	Mon,  2 Dec 2024 10:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A751FCF41;
+	Mon,  2 Dec 2024 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="tWC9jP4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgNQPV1T"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E991FCCF5
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 10:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545251FC0E5
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 10:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733137055; cv=none; b=ETqjOv3uwthWXeDKWMKdIhknRuvZCskr2ja9gTitn7fNsbSCbN8deVwIsPLv/vBSbcf16CFmEWsDk6TIlCvXQ2fV4PEx/o1dBoEKFKhCZ5hgIf8Zu5ikmnAtxlYXxdwYHssIfeP+lf3k0LlyBrx4R6O0VohmlacsYBygH45g24A=
+	t=1733137164; cv=none; b=W9uKKtwOTNTLyHnhpmLObphdrE5Jy+4/j17aXcoZTu2DrqmfX4H/ziC0b14fVqMlaAZsuf/NyqrjAAy9ooUtXvSVh6NhuAJAyvcGC0zd6PgxIdVuvJD7AAjBdTGdnChvmSSVqN20RaOPh3IkXTfqQy4goTXq0pAT2lYhT7ZDdl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733137055; c=relaxed/simple;
-	bh=5e/ABJTRlW4Kn8aITfXHP7G+RlpZfFW013vJEb0hG38=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SCES5pG7BBEEqE4vLIsL3WCA563tPImvtInEaL47Bxp7q4SaD1JMB1pbq0oPzd/aD5OJRUXl7KrWlJZD11j7Q90JZfJ1F3cjF4S0JT6Q/NUBYlctMreyTqAyKzWphxSezKzdUxGzFvy5Rq9aJp/7n+VUBrOe8ekGxu1Ap+eiSoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=tWC9jP4t; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 64AAEA0365;
-	Mon,  2 Dec 2024 11:57:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=p0qYBdk4opynxBR2emw8
-	8DLKaZYatHYME02V72iRLWQ=; b=tWC9jP4t7IEnfIBiTcxPEQvF7H9vALlDxNMK
-	v4Ni8sJjMFkjtoD3MKSdmFsuVFXqDRaAiMoqs4hIkH2BhMAysmDIueSvgqQn3l0U
-	wG/+8qtFSBOjPXwYPcF65u4Uaw/1APj6GMKdUycmriAkCdRfwzbJ0900lo9VfvuH
-	v8JXy97M+6jwTWtD6M/ismqzxeiM3EKSMqq90ixzZKWz+34MLxpimoi691HebIcj
-	QL7AC7RENOy3I8G7ZFd7Np1HYqUv4ehxy9xsIfWFIwGU25pIcyfYNfdY6TMXJMWm
-	OPmgoGU6oq1KK8has3x8rPmki7nE17kW9LOGpMtrNB5nNv1z6T5Cx6ik0JTorCiJ
-	WfC3aJ+UTepofrvWeJUk7WdynjkOh+L/jXx8Mrd5LWDVwl6Lp9h2N1FoV52NU/si
-	+xy8GYpuTal/zoXGsi5eQScoQYD3gYn4GTPa0k6X0NpzTF2smMEE/Pq49xCRRiw9
-	rkYBdWEDEue8oTANxFopeP1ggO/3mZSNzSHJuMQFQ7G9sz80RE+NbFlxv5oSzkX1
-	on7dW02Xync776TIWS7ahvzS6qtyJ4SIuEoFe+ZfhEfacEBHqDvjBqUHoGuIM62z
-	OrHaD4olQsLHY7uiXs34expNsHUwND8t/UlE0/kjdoIp4513Ord+j5inuoKfT7tX
-	73NSeyE=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Frank
- Li" <Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH 6.11 3/3] net: fec: make PPS channel configurable
-Date: Mon, 2 Dec 2024 11:56:46 +0100
-Message-ID: <20241202105644.3453676-4-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202105644.3453676-1-csokas.bence@prolan.hu>
-References: <20241202105644.3453676-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733137164; c=relaxed/simple;
+	bh=8xU2YcsuYuZRdWgsiG8hu7m2QkusJoRzskvFlObvA1M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oP91oYoQqJRHLc+pbFC/OBlVy/SMnavTg+/adGSfydy/y7xbd8GDY8aWRwoj7YVUpZucBsgYAwD2UvoZU09bFZ0TwfPsNrNcVS3zktEtGqxinvZaFSAOlHM/CU28WeSNIjQZdILVDRyFM+lvh2eM2TRJZSmcPWQElX4iDi6Lf98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgNQPV1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D52C4CED1;
+	Mon,  2 Dec 2024 10:59:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733137163;
+	bh=8xU2YcsuYuZRdWgsiG8hu7m2QkusJoRzskvFlObvA1M=;
+	h=Subject:To:Cc:From:Date:From;
+	b=qgNQPV1TauUvy8o2DCg1Hk0Rqpe7wGZ8MepAJEiSOraSeihaYI/DQPU4UT7K3vIi7
+	 JQMb8RYsHdKsYO2PaKybI9PkfQYFi9ltWQy/0aB8hqOdEFo3MNz6r/xue2Wu+Gjzxg
+	 QyHza9JNs6ki2mpCudptqgvDp5KGJHzfFJaaUIww=
+Subject: FAILED: patch "[PATCH] xen: Fix the issue of resource not being properly released in" failed to apply to 5.4-stable tree
+To: chenqiuji666@gmail.com,jgross@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 11:59:20 +0100
+Message-ID: <2024120220-amuck-esophagus-6542@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733137049;VERSION=7982;MC=2860114820;ID=155633;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855637263
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x afc545da381ba0c651b2658966ac737032676f01
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120220-amuck-esophagus-6542@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 37e1c895f1b8..7f6b57432071 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From afc545da381ba0c651b2658966ac737032676f01 Mon Sep 17 00:00:00 2001
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+Date: Tue, 5 Nov 2024 21:09:19 +0800
+Subject: [PATCH] xen: Fix the issue of resource not being properly released in
+ xenbus_dev_probe()
+
+This patch fixes an issue in the function xenbus_dev_probe(). In the
+xenbus_dev_probe() function, within the if (err) branch at line 313, the
+program incorrectly returns err directly without releasing the resources
+allocated by err = drv->probe(dev, id). As the return value is non-zero,
+the upper layers assume the processing logic has failed. However, the probe
+operation was performed earlier without a corresponding remove operation.
+Since the probe actually allocates resources, failing to perform the remove
+operation could lead to problems.
+
+To fix this issue, we followed the resource release logic of the
+xenbus_dev_remove() function by adding a new block fail_remove before the
+fail_put block. After entering the branch if (err) at line 313, the
+function will use a goto statement to jump to the fail_remove block,
+ensuring that the previously acquired resources are correctly released,
+thus preventing the reference count leak.
+
+This bug was identified by an experimental static analysis tool developed
+by our team. The tool specializes in analyzing reference count operations
+and detecting potential issues where resources are not properly managed.
+In this case, the tool flagged the missing release operation as a
+potential problem, which led to the development of this patch.
+
+Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 9f097f1f4a4c..6d32ffb01136 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev)
+ 	if (err) {
+ 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
+ 		       dev->nodename);
+-		return err;
++		goto fail_remove;
+ 	}
  
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+ 	dev->spurious_threshold = 1;
+@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev)
+ 			 dev->nodename);
  
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.34.1
-
+ 	return 0;
++fail_remove:
++	if (drv->remove) {
++		down(&dev->reclaim_sem);
++		drv->remove(dev);
++		up(&dev->reclaim_sem);
++	}
+ fail_put:
+ 	module_put(drv->driver.owner);
+ fail:
 
 
