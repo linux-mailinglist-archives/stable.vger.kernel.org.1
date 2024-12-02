@@ -1,102 +1,218 @@
-Return-Path: <stable+bounces-96069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116C79E061C
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:01:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 894259E063C
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB1CA281112
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D003281193
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E5720899E;
-	Mon,  2 Dec 2024 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F21C2040A7;
+	Mon,  2 Dec 2024 15:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7NXiyek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvWV6eeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B23C208994;
-	Mon,  2 Dec 2024 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1518481C4
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151565; cv=none; b=Q15qWWu4sRiUM7Wqr0Is4D3m+XXnIRcGrzKuH74+PIHPIoc3rL8i4K/KGLkExiJQ+dwfsWlmUqXzjI01YnIweETXii+VRIKwX+1zLfpDe4PR0NVbQB4JZ+92UhuM/nKQ4jr6/FnmJyVyZMAxP77H6P/tqre/beBvHe9r7Hret84=
+	t=1733151956; cv=none; b=kAL3m75dI51FnxaD+ZrvnRTYFeErdv9WY7gYfwbxY4X1Bo5B0x5v3LI7GSMV765LsseH44Ke7Gd6Gx6yYuWo28f8fX+2xgoP7rYWgri4iJ6dvlgDQ3HbSrAFq1F7S35QeSQFgmkZQpO+CL74IuncgltDT4k0+JKgHbAEGeOKMBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151565; c=relaxed/simple;
-	bh=LiYSSsjPV5oZJjFaqrKAZlCJIqI0wg0L9vhGyObQsXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlNSk1EI6hVX4rcM0+4kkAl7Dma1j77lzHDnbhYmwbTVq6EsxUlZCiBE4xac2YrEgPG8fQGQ6ADoFjTa0FuZkMRM/R+urpJuDT9fZXE6zWzxLyKGhXx81GuDqkNQqvKN2IuMvzW5PSEU9msIf5XE4xXmJmsco8ny7WoO6Ql8gNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7NXiyek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5845FC4CED1;
-	Mon,  2 Dec 2024 14:59:24 +0000 (UTC)
+	s=arc-20240116; t=1733151956; c=relaxed/simple;
+	bh=o670mTOLIIlZ+1nkd1+S/v6Yh2/5vuVkvpiKm22Ddoo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pJ5CkTNja0X7Pe8I3SH5RHjtrwMskgFUce9dn95NcxNlYAHbe375Pzc38bRpb89XxyOY4ASxwUheoUTBCJaXXy5LUeazcfrclvYFILA+VwWpOgXTQr8uLWjINVHVz6rwJaPvWmWv7iUByoot+oWXhm7nacN2GYCygOkK1bq8Yts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvWV6eeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC68C4CED1;
+	Mon,  2 Dec 2024 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733151565;
-	bh=LiYSSsjPV5oZJjFaqrKAZlCJIqI0wg0L9vhGyObQsXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O7NXiyekRyOghU/6fR2Rbp/68Nv82j4bmaKH8InOG6HH73ZOx+MrqRE0WdBU1mlwV
-	 uQf6lZyrnLbghhoNyD18yWGRjcSB9g1iJhzHkcswtOi3rjEBpBJ3jEViSa2tQ0HPpt
-	 elQTD0JHUQ7pBkD7fbpt0fvkf0nMAKGBC+HqRd6I=
-Date: Mon, 2 Dec 2024 15:59:21 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Lever III <chuck.lever@oracle.com>
-Cc: Chuck Lever <cel@kernel.org>, linux-stable <stable@vger.kernel.org>,
-	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: Re: [PATCH 5.4] NFSD: Force all NFSv4.2 COPY requests to be
- synchronous
-Message-ID: <2024120210-finisher-surprise-fb97@gregkh>
-References: <20241120191315.6907-1-cel@kernel.org>
- <20241120191315.6907-2-cel@kernel.org>
- <2024120226-unearned-ragged-ab69@gregkh>
- <E476A582-052A-4455-B53E-729EB8D654C9@oracle.com>
+	s=korg; t=1733151956;
+	bh=o670mTOLIIlZ+1nkd1+S/v6Yh2/5vuVkvpiKm22Ddoo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=HvWV6eePYuJTtjitfqCpSE4+bvte/QihUthH00uB36Rwf2hMyW4TMiKz2/61twQg/
+	 X2LW6rPgoIy6R6p8QqoBpofDW6LTqn23Xv2Mdt/D525HEl3+pZcYMo5/ZBWynm4Ixn
+	 amcvherhPTTtt5YFh4xou8lrBGDZKSi5yMRAAmQE=
+Subject: FAILED: patch "[PATCH] Revert "KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata" failed to apply to 6.6-stable tree
+To: seanjc@google.com,mlevitsk@redhat.com,pbonzini@redhat.com,vkuznets@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 02 Dec 2024 16:05:45 +0100
+Message-ID: <2024120244-luxury-rebirth-25fd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <E476A582-052A-4455-B53E-729EB8D654C9@oracle.com>
 
-On Mon, Dec 02, 2024 at 02:19:13PM +0000, Chuck Lever III wrote:
-> 
-> 
-> > On Dec 2, 2024, at 4:09 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > 
-> > On Wed, Nov 20, 2024 at 02:13:15PM -0500, cel@kernel.org wrote:
-> >> From: Chuck Lever <chuck.lever@oracle.com>
-> >> 
-> >> [ Upstream commit 8d915bbf39266bb66082c1e4980e123883f19830 ]
-> > 
-> > What about kernel versions greater than 5.4?  Like 5.10, 5.15, 6.1, and
-> > 6.6 for this change?  Shouldn't it also be needed there?
-> 
-> Good catch. My rationale is:
-> 
-> Asynchronous COPY offload is needed to implement NFSv4.2
-> server-to-server COPY offload.
-> 
-> The upstream patches that address the CVE don't apply
-> cleanly to linux-5.4.y. However, 5.4 kernels do not have
-> NFSv4.2 server-to-server COPY offload, thus this change,
-> which simply disables async COPY, has no user-visible
-> impact. So I decided the easy, low-impact way to address
-> the CVE for v5.4 was applying only this patch.
-> 
-> The newer LTS kernels do have server-to-server COPY offload,
-> thus if this patch is applied, they would see a behavior
-> regression whenever CONFIG_NFSD_V4_2_INTER_SSC is enabled.
-> The upstream patches that address the CVE apply cleanly to
-> these kernels, and I've sent those to stable@ already.
-> 
-> As these were separate patch series, there wasn't an
-> obvious place to add a cover letter that explains this.
 
-Ok, that's fine, we'll just leave this as-is, thanks!
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 85434c3c73fcad58870016ddfe5eaa5036672675
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120244-luxury-rebirth-25fd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 85434c3c73fcad58870016ddfe5eaa5036672675 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Mon, 18 Nov 2024 17:14:33 -0800
+Subject: [PATCH] Revert "KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata
+ handling out of setup_vmcs_config()"
+
+Revert back to clearing VM_{ENTRY,EXIT}_LOAD_IA32_PERF_GLOBAL_CTRL in KVM's
+golden VMCS config, as applying the workaround during vCPU creation is
+pointless and broken.  KVM *unconditionally* clears the controls in the
+values returned by vmx_vmentry_ctrl() and vmx_vmexit_ctrl(), as KVM loads
+PERF_GLOBAL_CTRL if and only if its necessary to do so.  E.g. if KVM wants
+to run the guest with the same PERF_GLOBAL_CTRL as the host, then there's
+no need to re-load the MSR on entry and exit.
+
+Even worse, the buggy commit failed to apply the erratum where it's
+actually needed, add_atomic_switch_msr().  As a result, KVM completely
+ignores the erratum for all intents and purposes, i.e. uses the flawed
+VMCS controls to load PERF_GLOBAL_CTRL.
+
+To top things off, the patch was intended to be dropped, as the premise
+of an L1 VMM being able to pivot on FMS is flawed, and KVM can (and now
+does) fully emulate the controls in software.  Simply revert the commit,
+as all upstream supported kernels that have the buggy commit should also
+have commit f4c93d1a0e71 ("KVM: nVMX: Always emulate PERF_GLOBAL_CTRL
+VM-Entry/VM-Exit controls"), i.e. the (likely theoretical) live migration
+concern is a complete non-issue.
+
+Opportunistically drop the manual "kvm: " scope from the warning about
+the erratum, as KVM now uses pr_fmt() to provide the correct scope (v6.1
+kernels and earlier don't, but the erratum only applies to CPUs that are
+15+ years old; it's not worth a separate patch).
+
+This reverts commit 9d78d6fb186bc4aff41b5d6c4726b76649d3cb53.
+
+Link: https://lore.kernel.org/all/YtnZmCutdd5tpUmz@google.com
+Fixes: 9d78d6fb186b ("KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata handling out of setup_vmcs_config()")
+Cc: stable@vger.kernel.org
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Message-ID: <20241119011433.1797921-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 0f008f5ef6f0..893366e53732 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2548,28 +2548,6 @@ static bool cpu_has_sgx(void)
+ 	return cpuid_eax(0) >= 0x12 && (cpuid_eax(0x12) & BIT(0));
+ }
+ 
+-/*
+- * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
+- * can't be used due to errata where VM Exit may incorrectly clear
+- * IA32_PERF_GLOBAL_CTRL[34:32]. Work around the errata by using the
+- * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
+- */
+-static bool cpu_has_perf_global_ctrl_bug(void)
+-{
+-	switch (boot_cpu_data.x86_vfm) {
+-	case INTEL_NEHALEM_EP:	/* AAK155 */
+-	case INTEL_NEHALEM:	/* AAP115 */
+-	case INTEL_WESTMERE:	/* AAT100 */
+-	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
+-	case INTEL_NEHALEM_EX:	/* BA97 */
+-		return true;
+-	default:
+-		break;
+-	}
+-
+-	return false;
+-}
+-
+ static int adjust_vmx_controls(u32 ctl_min, u32 ctl_opt, u32 msr, u32 *result)
+ {
+ 	u32 vmx_msr_low, vmx_msr_high;
+@@ -2729,6 +2707,27 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
+ 		_vmexit_control &= ~x_ctrl;
+ 	}
+ 
++	/*
++	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
++	 * can't be used due to an errata where VM Exit may incorrectly clear
++	 * IA32_PERF_GLOBAL_CTRL[34:32].  Workaround the errata by using the
++	 * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
++	 */
++	switch (boot_cpu_data.x86_vfm) {
++	case INTEL_NEHALEM_EP:	/* AAK155 */
++	case INTEL_NEHALEM:	/* AAP115 */
++	case INTEL_WESTMERE:	/* AAT100 */
++	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
++	case INTEL_NEHALEM_EX:	/* BA97 */
++		_vmentry_control &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
++		_vmexit_control &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
++		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
++			     "does not work properly. Using workaround\n");
++		break;
++	default:
++		break;
++	}
++
+ 	rdmsrl(MSR_IA32_VMX_BASIC, basic_msr);
+ 
+ 	/* IA-32 SDM Vol 3B: VMCS size is never greater than 4kB. */
+@@ -4432,9 +4431,6 @@ static u32 vmx_vmentry_ctrl(void)
+ 			  VM_ENTRY_LOAD_IA32_EFER |
+ 			  VM_ENTRY_IA32E_MODE);
+ 
+-	if (cpu_has_perf_global_ctrl_bug())
+-		vmentry_ctrl &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
+-
+ 	return vmentry_ctrl;
+ }
+ 
+@@ -4452,10 +4448,6 @@ static u32 vmx_vmexit_ctrl(void)
+ 	if (vmx_pt_mode_is_system())
+ 		vmexit_ctrl &= ~(VM_EXIT_PT_CONCEAL_PIP |
+ 				 VM_EXIT_CLEAR_IA32_RTIT_CTL);
+-
+-	if (cpu_has_perf_global_ctrl_bug())
+-		vmexit_ctrl &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
+-
+ 	/* Loading of EFER and PERF_GLOBAL_CTRL are toggled dynamically */
+ 	return vmexit_ctrl &
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+@@ -8415,10 +8407,6 @@ __init int vmx_hardware_setup(void)
+ 	if (setup_vmcs_config(&vmcs_config, &vmx_capability) < 0)
+ 		return -EIO;
+ 
+-	if (cpu_has_perf_global_ctrl_bug())
+-		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
+-			     "does not work properly. Using workaround\n");
+-
+ 	if (boot_cpu_has(X86_FEATURE_NX))
+ 		kvm_enable_efer_bits(EFER_NX);
+ 
+
 
