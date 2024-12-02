@@ -1,179 +1,147 @@
-Return-Path: <stable+bounces-95912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0EF9DF782
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 01:19:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873979DF8AB
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 03:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8571627D2
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 00:19:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507701628B9
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 02:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C56136;
-	Mon,  2 Dec 2024 00:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D659C18C31;
+	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LoDpXO/f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRuJyEFN"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40514A01;
-	Mon,  2 Dec 2024 00:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82940F9E6;
+	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733098748; cv=none; b=jl0u/G0hsFbV2Ac/kZW06f4etwiPPJpqJjEzZVM69J4KaIdDDkZ9l03VnMp3c+5rUVif7uyMWEF2usWl2vQEwWgtUTfNWcVrWwHhI0cg3IA2jiLgPHIhmf/kTmPnEvApXklX7H+hb89/sapNYJp/RTfwsDy0US9pREkDIpEEfBM=
+	t=1733104987; cv=none; b=SMQo34RSwGeTD66hXjzDx2hGHJVNCEx8BHpREdUYYgA0HRisPEt8enZ/PzPBilVKJXad6LlE1cv58k3s3j8UwBtgQEjmgPdOsysEm4NsLEh30uvK9oU/iRZcnobQ3+j85l5WkKOlDodRcQb36FQyqto7fT8R8roQoJFTV0zZF2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733098748; c=relaxed/simple;
-	bh=uKByVRGJnnD8SRISLfagtyDrkyUPbnDvC+iinYG8u/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BbW/9EGb50h0yLl//vLUorMmY0SObCHvbDb9vD0vzC3fganoc2V9MqtB0I5WWTvK9liOy3AdXKjH1BNCSixa8qF3kgurAwluETo6jbvjoGCY3BA1fuAMkdoqCYEsQmPBlTyK+YycgxfIlvAQRPhHEnqTcDj/PNUW5MbdlJeHpQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=LoDpXO/f; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9096E827;
-	Mon,  2 Dec 2024 01:18:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1733098711;
-	bh=uKByVRGJnnD8SRISLfagtyDrkyUPbnDvC+iinYG8u/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LoDpXO/fAdtjl6KsyvTZ0gKNlzB66XsWgwm658uIF9cpe4JelQC9frf1th3Tq2Kiy
-	 ASzl3KDxZWDnn/RWFmiB8YODWhbPbd1y/wmAUs7ihh6z5DB6UcrXu7whLu6iUoxhQV
-	 C+gzXWPDm4SJGQOg0iJAiRX+5x3kIw4Q2jutIzcY=
-Date: Mon, 2 Dec 2024 02:18:46 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control
- owned by other fh
-Message-ID: <20241202001846.GD6105@pendragon.ideasonboard.com>
-References: <20241128223343.GH25731@pendragon.ideasonboard.com>
- <7eeab6bd-ce02-41a6-bcc1-7c2750ce0359@xs4all.nl>
- <CANiDSCseF3fsufMc-Ovoy-bQH85PqfKDM+zmfoisLw+Kq1biAw@mail.gmail.com>
- <20241129110640.GB4108@pendragon.ideasonboard.com>
- <CANiDSCvdjioy-OgC+dHde2zHAAbyfN2+MAY+YsLNdUSawjQFHw@mail.gmail.com>
- <e95b7d74-2c56-4f5a-a2f2-9c460d52fdb4@xs4all.nl>
- <CANiDSCvj4VVAcQOpR-u-BcnKA+2ifcuq_8ZML=BNOHT_55fBog@mail.gmail.com>
- <CANiDSCvwzY3DJ+U3EyzA7TCQu2qMUL6L1eTmZYbM+_Tk6DsPaA@mail.gmail.com>
- <20241129220339.GD2652@pendragon.ideasonboard.com>
- <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
+	s=arc-20240116; t=1733104987; c=relaxed/simple;
+	bh=maCc5D4IZuHzk206sb4zyON9g3KEt5ma5MoKRfyBRZ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GESZg5k1b9plySp0yf5pZDjCvMuotlt+o/aXHQy9wUaa9d0/kb6zH4GIFHOEybeNG2iEtqqV439GzoE2j6Qq/h6jd93Hfsv+2YCRgH+ZOKBtFbhJFDuifJySUDXoNQ81yDv8Knts+I/g6Y8pV8t7NR9bO5E6C+51S9ac8JSt7qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRuJyEFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2763BC4AF09;
+	Mon,  2 Dec 2024 02:03:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733104987;
+	bh=maCc5D4IZuHzk206sb4zyON9g3KEt5ma5MoKRfyBRZ0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gRuJyEFNZDgypUxMQuHdoQ+MsGDkyGthgvv4lWm78hsSAPwdud403aWnQy2oaP2Kh
+	 NbeYsl27bGbbb7MjhklsKTGmRHjx7e13pH1mhc/2GGIF9i59b/gFDjJ3DL3U6Wg8hQ
+	 F8CDSJaeQeXXcnIVfFYWqtYTg/6jwED15ukgAY/Wve46Yh+ns7REWhKXpxEK0VHEgy
+	 LNN5QHxFUwGNROibWg8CfskYvCzcj3nxwrzqZ5DpA6QLPISa/n5zCIv0ziNRfLlWvf
+	 s4qisPGdSEOTxKDGr7+U3dbigjnqW0MeHXyw2LPDaiu7pFOEGretBTF2SQ1zQ+uQRg
+	 rv8YT7n+sb8MQ==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ffa8092e34so39228891fa.1;
+        Sun, 01 Dec 2024 18:03:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUkZeOaq0TTSNjIS9/U+VE6rCKfcmnoP1lRkgTD7dQfVrCEgAvuUTp0wttV2zboO4Yx2/1xChBb7F8=@vger.kernel.org, AJvYcCV37JYFMFodWBuF26cE0wjuy3jWxDBW36mrphf1FpovAm0tu/qyQaYTcdKXsdaOrBF4cdIDbYh2rVqArlRM@vger.kernel.org, AJvYcCX5yW6/eoUBnnMnYOM0TYPuKGQWnxuoG0XOTGazrO4FuWXxUXREA+mIkM5tnqNtCtbCIn48TZaX@vger.kernel.org, AJvYcCXLTr9kxZ5WEYAJ/Ra0B6XO3XgWK+TvRSUO2yiw9w1bHPRBjPkGUahRxc4Wfv4Wgw0m1BhKxf8VXMiuqKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaxV1ldQyRKnHJwExsvlJPts/vpuUFe8gTDA1XZLsFnx2EQgEm
+	oJ9vX6nUqd+JHJNWf5KDJTN3EZBrp/5yEuzwk1HR2R9Itt5asgrOUqz/Q47/UTWgIaLBL61Zu1X
+	rModpe3NCGMROqHVelWZrRwrghFY=
+X-Google-Smtp-Source: AGHT+IHx9xjsynr/l63aLsJxVM7l7US4bOwRAcVoS46Xevv0GpLtiUvTO5j01dpQdv7tyLv/reDF3L8c7WnmJCFOTwI=
+X-Received: by 2002:a2e:be25:0:b0:2ff:cf31:262b with SMTP id
+ 38308e7fff4ca-2ffd5ff565emr86295651fa.7.1733104985771; Sun, 01 Dec 2024
+ 18:03:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
+References: <20241128111844.GE10431@google.com> <87o71xvuf3.ffs@tglx>
+ <20241130114549.GI10431@google.com> <87iks3wt2t.ffs@tglx>
+In-Reply-To: <87iks3wt2t.ffs@tglx>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 2 Dec 2024 11:02:29 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARWpcbVsJFYCDN28vuuLfEibZmT+m5=qMEJcKD9Abzv4Q@mail.gmail.com>
+Message-ID: <CAK7LNARWpcbVsJFYCDN28vuuLfEibZmT+m5=qMEJcKD9Abzv4Q@mail.gmail.com>
+Subject: Re: [PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 20241015061522.25288-1-rui.zhang@intel.com, 
+	Zhang Rui <rui.zhang@intel.com>, hpa@zytor.com, peterz@infradead.org, 
+	thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com, 
+	len.brown@intel.com, srinivas.pandruvada@intel.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com, 
+	x86@kernel.org, linux-pm@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 29, 2024 at 11:18:54PM +0100, Ricardo Ribalda wrote:
-> On Fri, 29 Nov 2024 at 23:03, Laurent Pinchart wrote:
-> > On Fri, Nov 29, 2024 at 07:47:31PM +0100, Ricardo Ribalda wrote:
-> > > Before we all go on a well deserved weekend, let me recap what we
-> > > know. If I did not get something correctly, let me know.
-> > >
-> > > 1) Well behaved devices do not allow to set or get an incomplete async
-> > > control. They will stall instead (ref: Figure 2-21 in UVC 1.5 )
-> > > 2) Both Laurent and Ricardo consider that there is a big chance that
-> > > some camera modules do not implement this properly. (ref: years of
-> > > crying over broken module firmware :) )
-> > >
-> > > 3) ctrl->handle is designed to point to the fh that originated the
-> > > control. So the logic can decide if the originator needs to be
-> > > notified or not. (ref: uvc_ctrl_send_event() )
-> > > 4) Right now we replace the originator in ctrl->handle for unfinished
-> > > async controls.  (ref:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/media/usb/uvc/uvc_ctrl.c#n2050)
-> > >
-> > > My interpretation is that:
-> > > A) We need to change 4). We shall not change the originator of
-> > > unfinished ctrl->handle.
-> > > B) Well behaved cameras do not need the patch "Do not set an async
-> > > control owned by another fh"
-> > > C) For badly behaved cameras, it is fine if we slightly break the
-> > > v4l2-compliance in corner cases, if we do not break any internal data
-> > > structure.
-> >
-> > The fact that some devices may not implement the documented behaviour
-> > correctly may not be a problem. Well-behaved devices will stall, which
-> > means we shouldn't query the device while as async update is in
-> > progress. Badly-behaved devices, whatever they do when queried, should
-> > not cause any issue if we don't query them.
-> 
-> I thought we could detect the stall and return safely. Isn't that the case?
-
-We could, but if we know the device will stall anyway, is there a reason
-not to avoid issuing the request in the first place ?
-
-> Why we have not seen issues with this?
-
-I haven't tested a PTZ device for a very long time, and you would need
-to hit a small time window to see the issue.
-
-> > We should not send GET_CUR and SET_CUR requests to the device while an
-> > async update is in progress, and use cached values instead. When we
-> > receive the async update event, we should clear the cache. This will be
-> > the same for both well-behaved and badly-behaved devices, so we can
-> > expose the same behaviour towards userspace.
-> 
-> seting ctrl->loaded = 0 when we get an event sounds like a good idea
-> and something we can implement right away.
-> If I have to resend the set I will add it to the end.
-> 
-> > We possibly also need some kind of timeout mechanism to cope with the
-> > async update event not being delivered by the device.
-> 
-> This is the part that worries me the most:
-> - timeouts make the code fragile
-> - What is a good value for timeout? 1 second, 30, 300? I do not think
-> that we can find a value.
-
-I've been thinking about the implementation of uvc_fh cleanup over the
-weekend, and having a timeout would have the nice advantage that we
-could reference-count uvc_fh instead of implementing a cleanup that
-walks over all controls when closing a file handle. I think it would
-make the code simpler, and possibly safer too.
-
-> > Regarding the userspace behaviour during an auto-update, we have
-> > multiple options:
-> >
-> > For control get,
-> >
-> > - We can return -EBUSY
-> > - We can return the old value from the cache
-> > - We can return the new value fromt he cache
-> >
-> > Returning -EBUSY would be simpler to implement.
+On Sun, Dec 1, 2024 at 8:17=E2=80=AFPM Thomas Gleixner <tglx@linutronix.de>=
+ wrote:
 >
-> Not only easy, I think it is the most correct,
-> 
-> > I don't think the behaviour should depend on whether the control is read
-> > on the file handle that initiated the async operation or on a different
-> > file handle.
-> >
-> > For control set, I don't think we can do much else than returning
-> > -EBUSY, regardless of which file handle the control is set on.
-> 
-> ACK.
-> 
-> > > I will send a new version with my interpretation.
-> > >
-> > > Thanks for a great discussion
-> 
-> Looking with some perspective... I believe that we should look into
-> the "userspace behaviour for auto controls" in a different patchset.
-> It is slightly unrelated to this discussion.
+> The compiler can fully inline the actual handler function of an interrupt
+> entry into the .irqentry.text entry point. If such a function contains an
+> access which has an exception table entry, modpost complains about a
+> section mismatch:
+>
+>   WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ..=
+.
+>
+>   The relocation at __ex_table+0x447c references section ".irqentry.text"
+>   which is not in the list of authorized sections.
+>
+> Add .irqentry.text to OTHER_SECTIONS to cure the issue.
+>
+> Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
--- 
-Regards,
+I found the context in LKML.
 
-Laurent Pinchart
+
+Closes: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+
+
+
+However, is this still relevant to the mainline kernel?
+
+In Linux 5.4.y, I agree this because smp_apic_timer_interrupt()
+is annotated as __irq_entry:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/=
+x86/kernel/apic/apic.c?id=3Dv5.4.286#n1145
+
+
+
+In this mainline kernel, DEFINE_IDTENTRY_SYSVEC()
+expands to a normal .text function which is explicitly
+annotated 'noinline'.
+
+
+
+
+
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: stable@vger.kernel.org
+> ---
+>  scripts/mod/modpost.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -785,7 +785,7 @@ static void check_section(const char *mo
+>                 ".ltext", ".ltext.*"
+>  #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text",=
+ \
+>                 ".fixup", ".entry.text", ".exception.text", \
+> -               ".coldtext", ".softirqentry.text"
+> +               ".coldtext", ".softirqentry.text", ".irqentry.text"
+>
+>  #define ALL_TEXT_SECTIONS  ".init.text", ".exit.text", \
+>                 TEXT_SECTIONS, OTHER_TEXT_SECTIONS
+
+
+
+--
+Best Regards
+Masahiro Yamada
 
