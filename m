@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5399E0706
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:28:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53CF9E087E
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C0D6B3CEA2
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA96DB2E297
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BEF2040BB;
-	Mon,  2 Dec 2024 15:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A35204093;
+	Mon,  2 Dec 2024 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5kbkG5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnAlKWoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362931D545
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B51D545
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151960; cv=none; b=s7K4ZJhy7BD022qFy67a2HsJzvjk9QKa+1ILES7eO44y1tnfwXlp9pEZ1fFdgMNT8I932dw4iDn5Y7WbuVcTJYX7KmXJ6neThpYFmGuqMJIRUK6E8d3SRHVeMhT29xuo+DFwUlB7ULZUN2ijnMzt94nITX6u0YBYgbljI1OMdM0=
+	t=1733151970; cv=none; b=RX6oGeBv9vlSkKvVVqI1CkVyUjVD0w1Jy9jRwmJDbtAVckpWdS2puKJ4iY3Xj5CfMeKO1bMmPyiiHSPcyo8DmsqcnWhbLyPlflP92nitMp2ZUNtmGbEOnkw8o23imysyo528VowdEo6Uw8p6zVxqZfTcU4m8g5NLbIET1gsCum0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151960; c=relaxed/simple;
-	bh=rzrKy92OIf5X+T6Z2RozWBDTXb1/OkGtOZ9WZ1rb+XE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dwhDXF1eWtXYn6DEcMgNVSFxXJQnAwCDXWCYqoLdELY2M1/TtqTiTW23h6ZMAdZin0CTG50ttWRGSwGiweopixI54fgCdCwMgPMzgr2EBb8sULPcLDragRlPos3yJ1Zqu5HK9kDPwQ9u4EO1/fsNhD8TSGWq8Dr0UppEfc85350=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5kbkG5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D18C4CED2;
-	Mon,  2 Dec 2024 15:05:59 +0000 (UTC)
+	s=arc-20240116; t=1733151970; c=relaxed/simple;
+	bh=YwucXexK3f9ZebQnAhCDkmBnmXwC9tIXFtcKmrGekqI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KJu+WK3j7E4SgFRB/Liwir6n5zregb9y0Wb6HA8aQHXbe6X1QQRoRljYwlXijrwQbxj2NV3k6GKOBq68RBOiLq5eKfEo4wwwD3JEMjwLaR8C679BMbE0UoRr0B9CzSKNZkWVXbmx8HGLu8PSsJlqnElGD5soOQum+U9qz93aT6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnAlKWoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B393C4CED1;
+	Mon,  2 Dec 2024 15:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733151959;
-	bh=rzrKy92OIf5X+T6Z2RozWBDTXb1/OkGtOZ9WZ1rb+XE=;
+	s=korg; t=1733151970;
+	bh=YwucXexK3f9ZebQnAhCDkmBnmXwC9tIXFtcKmrGekqI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=m5kbkG5oPtLrlc96d5TTCF0YCy9thEdtCucSldzu5wXciCGELWlUE75fKP8eAerK+
-	 ECvF6V67O3sSqJwGgICF7GsApM6FhLnNJXonEI1UuDnojqGw1b7eTPrPH3hZkeu1qQ
-	 XPltSlMyaQW3UU/qSD0siM+/iXxEffYcPlAcM4D4=
-Subject: FAILED: patch "[PATCH] Revert "KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata" failed to apply to 6.1-stable tree
-To: seanjc@google.com,mlevitsk@redhat.com,pbonzini@redhat.com,vkuznets@redhat.com
+	b=OnAlKWoD+Y7VDYSpsl8sook0PV52OzNLBqQjfvv7JiSa12mBy/Oal1EYJc3eB5tez
+	 YV1yrO//r6FZi2yCUHJlyHBcxZoKsMoZAfdHwhq/kwxKU0da1toeKH0jOVHUvoYhBC
+	 yzSG64JhnpzpNcoSbMdvh5QmLRVcqDhjq5dXkOz0=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Don't retire aborted MMIO instruction" failed to apply to 6.6-stable tree
+To: oliver.upton@linux.dev,glider@google.com,maz@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Dec 2024 16:05:46 +0100
-Message-ID: <2024120245-frighten-linseed-1821@gregkh>
+Date: Mon, 02 Dec 2024 16:06:06 +0100
+Message-ID: <2024120206-conflict-ambiguity-0106@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 85434c3c73fcad58870016ddfe5eaa5036672675
+git cherry-pick -x e735a5da64420a86be370b216c269b5dd8e830e2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120245-frighten-linseed-1821@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120206-conflict-ambiguity-0106@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,142 +77,100 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 85434c3c73fcad58870016ddfe5eaa5036672675 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 18 Nov 2024 17:14:33 -0800
-Subject: [PATCH] Revert "KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata
- handling out of setup_vmcs_config()"
+From e735a5da64420a86be370b216c269b5dd8e830e2 Mon Sep 17 00:00:00 2001
+From: Oliver Upton <oliver.upton@linux.dev>
+Date: Fri, 25 Oct 2024 20:31:03 +0000
+Subject: [PATCH] KVM: arm64: Don't retire aborted MMIO instruction
 
-Revert back to clearing VM_{ENTRY,EXIT}_LOAD_IA32_PERF_GLOBAL_CTRL in KVM's
-golden VMCS config, as applying the workaround during vCPU creation is
-pointless and broken.  KVM *unconditionally* clears the controls in the
-values returned by vmx_vmentry_ctrl() and vmx_vmexit_ctrl(), as KVM loads
-PERF_GLOBAL_CTRL if and only if its necessary to do so.  E.g. if KVM wants
-to run the guest with the same PERF_GLOBAL_CTRL as the host, then there's
-no need to re-load the MSR on entry and exit.
+Returning an abort to the guest for an unsupported MMIO access is a
+documented feature of the KVM UAPI. Nevertheless, it's clear that this
+plumbing has seen limited testing, since userspace can trivially cause a
+WARN in the MMIO return:
 
-Even worse, the buggy commit failed to apply the erratum where it's
-actually needed, add_atomic_switch_msr().  As a result, KVM completely
-ignores the erratum for all intents and purposes, i.e. uses the flawed
-VMCS controls to load PERF_GLOBAL_CTRL.
+  WARNING: CPU: 0 PID: 30558 at arch/arm64/include/asm/kvm_emulate.h:536 kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
+  Call trace:
+   kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
+   kvm_arch_vcpu_ioctl_run+0x98/0x15b4 arch/arm64/kvm/arm.c:1133
+   kvm_vcpu_ioctl+0x75c/0xa78 virt/kvm/kvm_main.c:4487
+   __do_sys_ioctl fs/ioctl.c:51 [inline]
+   __se_sys_ioctl fs/ioctl.c:893 [inline]
+   __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
+   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+   el0_svc_common+0x1e0/0x23c arch/arm64/kernel/syscall.c:132
+   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+   el0_svc+0x38/0x68 arch/arm64/kernel/entry-common.c:712
+   el0t_64_sync_handler+0x90/0xfc arch/arm64/kernel/entry-common.c:730
+   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
 
-To top things off, the patch was intended to be dropped, as the premise
-of an L1 VMM being able to pivot on FMS is flawed, and KVM can (and now
-does) fully emulate the controls in software.  Simply revert the commit,
-as all upstream supported kernels that have the buggy commit should also
-have commit f4c93d1a0e71 ("KVM: nVMX: Always emulate PERF_GLOBAL_CTRL
-VM-Entry/VM-Exit controls"), i.e. the (likely theoretical) live migration
-concern is a complete non-issue.
+The splat is complaining that KVM is advancing PC while an exception is
+pending, i.e. that KVM is retiring the MMIO instruction despite a
+pending synchronous external abort. Womp womp.
 
-Opportunistically drop the manual "kvm: " scope from the warning about
-the erratum, as KVM now uses pr_fmt() to provide the correct scope (v6.1
-kernels and earlier don't, but the erratum only applies to CPUs that are
-15+ years old; it's not worth a separate patch).
+Fix the glaring UAPI bug by skipping over all the MMIO emulation in
+case there is a pending synchronous exception. Note that while userspace
+is capable of pending an asynchronous exception (SError, IRQ, or FIQ),
+it is still safe to retire the MMIO instruction in this case as (1) they
+are by definition asynchronous, and (2) KVM relies on hardware support
+for pending/delivering these exceptions instead of the software state
+machine for advancing PC.
 
-This reverts commit 9d78d6fb186bc4aff41b5d6c4726b76649d3cb53.
-
-Link: https://lore.kernel.org/all/YtnZmCutdd5tpUmz@google.com
-Fixes: 9d78d6fb186b ("KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata handling out of setup_vmcs_config()")
 Cc: stable@vger.kernel.org
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Message-ID: <20241119011433.1797921-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: da345174ceca ("KVM: arm/arm64: Allow user injection of external data aborts")
+Reported-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241025203106.3529261-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 0f008f5ef6f0..893366e53732 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2548,28 +2548,6 @@ static bool cpu_has_sgx(void)
- 	return cpuid_eax(0) >= 0x12 && (cpuid_eax(0x12) & BIT(0));
+diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
+index cd6b7b83e2c3..ab365e839874 100644
+--- a/arch/arm64/kvm/mmio.c
++++ b/arch/arm64/kvm/mmio.c
+@@ -72,6 +72,31 @@ unsigned long kvm_mmio_read_buf(const void *buf, unsigned int len)
+ 	return data;
  }
  
--/*
-- * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
-- * can't be used due to errata where VM Exit may incorrectly clear
-- * IA32_PERF_GLOBAL_CTRL[34:32]. Work around the errata by using the
-- * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
-- */
--static bool cpu_has_perf_global_ctrl_bug(void)
--{
--	switch (boot_cpu_data.x86_vfm) {
--	case INTEL_NEHALEM_EP:	/* AAK155 */
--	case INTEL_NEHALEM:	/* AAP115 */
--	case INTEL_WESTMERE:	/* AAT100 */
--	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
--	case INTEL_NEHALEM_EX:	/* BA97 */
--		return true;
--	default:
--		break;
--	}
--
--	return false;
--}
--
- static int adjust_vmx_controls(u32 ctl_min, u32 ctl_opt, u32 msr, u32 *result)
- {
- 	u32 vmx_msr_low, vmx_msr_high;
-@@ -2729,6 +2707,27 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 		_vmexit_control &= ~x_ctrl;
- 	}
- 
-+	/*
-+	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
-+	 * can't be used due to an errata where VM Exit may incorrectly clear
-+	 * IA32_PERF_GLOBAL_CTRL[34:32].  Workaround the errata by using the
-+	 * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
-+	 */
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_NEHALEM_EP:	/* AAK155 */
-+	case INTEL_NEHALEM:	/* AAP115 */
-+	case INTEL_WESTMERE:	/* AAT100 */
-+	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
-+	case INTEL_NEHALEM_EX:	/* BA97 */
-+		_vmentry_control &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
-+		_vmexit_control &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
-+		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
-+			     "does not work properly. Using workaround\n");
-+		break;
-+	default:
-+		break;
-+	}
++static bool kvm_pending_sync_exception(struct kvm_vcpu *vcpu)
++{
++	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
++		return false;
 +
- 	rdmsrl(MSR_IA32_VMX_BASIC, basic_msr);
++	if (vcpu_el1_is_32bit(vcpu)) {
++		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
++		case unpack_vcpu_flag(EXCEPT_AA32_UND):
++		case unpack_vcpu_flag(EXCEPT_AA32_IABT):
++		case unpack_vcpu_flag(EXCEPT_AA32_DABT):
++			return true;
++		default:
++			return false;
++		}
++	} else {
++		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
++		case unpack_vcpu_flag(EXCEPT_AA64_EL1_SYNC):
++		case unpack_vcpu_flag(EXCEPT_AA64_EL2_SYNC):
++			return true;
++		default:
++			return false;
++		}
++	}
++}
++
+ /**
+  * kvm_handle_mmio_return -- Handle MMIO loads after user space emulation
+  *			     or in-kernel IO emulation
+@@ -84,8 +109,11 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
+ 	unsigned int len;
+ 	int mask;
  
- 	/* IA-32 SDM Vol 3B: VMCS size is never greater than 4kB. */
-@@ -4432,9 +4431,6 @@ static u32 vmx_vmentry_ctrl(void)
- 			  VM_ENTRY_LOAD_IA32_EFER |
- 			  VM_ENTRY_IA32E_MODE);
+-	/* Detect an already handled MMIO return */
+-	if (unlikely(!vcpu->mmio_needed))
++	/*
++	 * Detect if the MMIO return was already handled or if userspace aborted
++	 * the MMIO access.
++	 */
++	if (unlikely(!vcpu->mmio_needed || kvm_pending_sync_exception(vcpu)))
+ 		return 1;
  
--	if (cpu_has_perf_global_ctrl_bug())
--		vmentry_ctrl &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
--
- 	return vmentry_ctrl;
- }
- 
-@@ -4452,10 +4448,6 @@ static u32 vmx_vmexit_ctrl(void)
- 	if (vmx_pt_mode_is_system())
- 		vmexit_ctrl &= ~(VM_EXIT_PT_CONCEAL_PIP |
- 				 VM_EXIT_CLEAR_IA32_RTIT_CTL);
--
--	if (cpu_has_perf_global_ctrl_bug())
--		vmexit_ctrl &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
--
- 	/* Loading of EFER and PERF_GLOBAL_CTRL are toggled dynamically */
- 	return vmexit_ctrl &
- 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
-@@ -8415,10 +8407,6 @@ __init int vmx_hardware_setup(void)
- 	if (setup_vmcs_config(&vmcs_config, &vmx_capability) < 0)
- 		return -EIO;
- 
--	if (cpu_has_perf_global_ctrl_bug())
--		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
--			     "does not work properly. Using workaround\n");
--
- 	if (boot_cpu_has(X86_FEATURE_NX))
- 		kvm_enable_efer_bits(EFER_NX);
- 
+ 	vcpu->mmio_needed = 0;
 
 
