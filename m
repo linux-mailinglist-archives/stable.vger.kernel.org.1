@@ -1,154 +1,167 @@
-Return-Path: <stable+bounces-96104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D196F9E077F
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:48:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C9F9E0736
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53110B664D2
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:32:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 080132812A5
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404DC208988;
-	Mon,  2 Dec 2024 15:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A48209F44;
+	Mon,  2 Dec 2024 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wu00HmyT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2q4YbtqJ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wu00HmyT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2q4YbtqJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wf275xrI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F50208977;
-	Mon,  2 Dec 2024 15:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B1209F33;
+	Mon,  2 Dec 2024 15:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153525; cv=none; b=NxD4zRuJUtgpKYRNoYFLNISjsVrjg//LF+zy+C7M00piK18/mw/AY6+Ln0048KK72H/SEdl+LhGS5aRGb/28mYVH12Tte4guMrLv1h1JOYu/GrMPeKhMXQBgnK+7kD4/BIIoZVCtRY26S5dACIcAT7wtC86AafPXJEsa/qVmO7c=
+	t=1733153937; cv=none; b=LRYGVBgglettKfITolFTRIcBvvVL+rUnOFLXZidO1nfi0Bu/zs+wpqBfJBdcZNJTZ0rjk3uQ+6TNzEpbiuZyE+BH3jV4/gr4a0f2NixB44+byOoWkDriO2Szc4MCVQ+v2M7SKWfU/4esdZ2Uu8j6sEBJbkqlmGEoHvKjsYhrsNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153525; c=relaxed/simple;
-	bh=AL6/W8yKe23vy+X7fWRlbRKOBMwosQZdY7iuK+HII8c=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H/RVznsd2804M4rBVWnBVfW7tuDnbAoDLj4G3e/voF3nubpK1rKNuz8YiUCRD+dQmVq8I4CRZrychHlfLdDHWWn7pRNTw0BYV4y8msYUl7bY+aBD1oA5OWxINJgr3LI+uvrhdoG8Z0MkFoXElDtZQAS5Ydlz9ToJF5pg1J5WxzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wu00HmyT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2q4YbtqJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wu00HmyT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2q4YbtqJ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4A4F71F396;
-	Mon,  2 Dec 2024 15:32:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733153521; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Vig0FVnKQoZYt4Lm2U28rO83cnNy0o6si6kHazH11M=;
-	b=Wu00HmyTJc/aSSNng36PsNdW9IidXJ8LKiQhfbDaZWqrDPAjP7NsKb/bQdKHIf1pqsttrk
-	/xVJNefD+OfUy+4Q74DUiR9G/eLnCcohu3N11XIDK0hzdJDxKxKhj2PWq66rft6oTU22DE
-	4pSq+W5yw4/tlfzQpGNobU8gKEig16E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733153521;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Vig0FVnKQoZYt4Lm2U28rO83cnNy0o6si6kHazH11M=;
-	b=2q4YbtqJU9xxMOK10yrw2dOq+O9RGLcP1aJxgE0ucqBXEkj8nb/12shIaAzggE2PAcjAeA
-	GYEiiO0cYaB5cvBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733153521; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Vig0FVnKQoZYt4Lm2U28rO83cnNy0o6si6kHazH11M=;
-	b=Wu00HmyTJc/aSSNng36PsNdW9IidXJ8LKiQhfbDaZWqrDPAjP7NsKb/bQdKHIf1pqsttrk
-	/xVJNefD+OfUy+4Q74DUiR9G/eLnCcohu3N11XIDK0hzdJDxKxKhj2PWq66rft6oTU22DE
-	4pSq+W5yw4/tlfzQpGNobU8gKEig16E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733153521;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Vig0FVnKQoZYt4Lm2U28rO83cnNy0o6si6kHazH11M=;
-	b=2q4YbtqJU9xxMOK10yrw2dOq+O9RGLcP1aJxgE0ucqBXEkj8nb/12shIaAzggE2PAcjAeA
-	GYEiiO0cYaB5cvBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 13AFA139C2;
-	Mon,  2 Dec 2024 15:32:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qSivA/HSTWf3MgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 02 Dec 2024 15:32:01 +0000
-Date: Mon, 02 Dec 2024 16:32:00 +0100
-Message-ID: <87ed2qummn.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Asahi Lina <lina@asahilina.net>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Heiko Engemann <heikoengemann@gmail.com>,
-	Cyan Nyan <cyan.vtb@gmail.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: usb-audio: Add extra PID for RME Digiface USB
-In-Reply-To: <20241202-rme-digiface-usb-id-v1-1-50f730d7a46e@asahilina.net>
-References: <20241202-rme-digiface-usb-id-v1-1-50f730d7a46e@asahilina.net>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1733153937; c=relaxed/simple;
+	bh=6FMVUMuVmiKoknMUpwq7h0V6bMG4QeWN9obr8VkzD5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W9VramS0B3HIH8nQPh/wg1U0dV9Hcl1U0xAUvaLbF34f2XhBhDA7F9aWh5rcENy1tVqj+HoLQ4a0Nzn5Z4jPF5lxLRMXuGgBDUdUJKJmkiQJubH7iYXr6pnmK08OXwjxX5xpon0w1qZTMeW4zYeLNXEeUu561iRedlMIAVTqcB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wf275xrI; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-382610c7116so2941915f8f.0;
+        Mon, 02 Dec 2024 07:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733153934; x=1733758734; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BgMG9j17VIY/+uN0vXhoiOG0maPDfpV2MZAeVxSTQP8=;
+        b=Wf275xrIqEt3FSSFceo9CILdLZiXcCZH/GyrrfPdoFfdlSntN1O/HF9YoBFMCfY+xA
+         OBA5XRsQbbD+VHjE6OU6UN3Zga+xQcbvxTKPsGbe0ha8W9eaHWx8NI2ZJLZPZwyljzFm
+         TAjIOg3aL/46/akzL6YX+naL+g69RnzjKREpEz+2mLtW+gIxa+jB4vYzTQHhqXRzJxQK
+         4755AeeJ3ohKks4hdgqsUsmSLoL/XDK5BDYW0QnMabwoJmmZpann2aMKqO0ullQwzR/S
+         qIdM/WbszeV/VnkZxi4tsjAYlogy56T3TWlPqS5GDffSDOT/9sPOrD4XBwjcow0Ae4Md
+         hcWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733153934; x=1733758734;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgMG9j17VIY/+uN0vXhoiOG0maPDfpV2MZAeVxSTQP8=;
+        b=hZNq9LRpF6My/iIDI6R4H9dKhAtxQey+V8wtwEGEGq37yq9CRwnZDDqC+TWzkND3ln
+         FlI0mEPVRQbb1J90l9vVzCqtEIxZ8qHYLjsjpJ/+NttzgcGi9If9HWESzXnV6cdIAktO
+         HH59aANNSzhlitnuy6AfIY3CF7vjDzqA7b4wOnBG5BU/XQM3Yaer6BaXNilpFcoofvP8
+         egD5daMUYufjs47uTM2yrqPc8OTVouv71nRablqwHXij5eo1MsUUppMyQeMi68dKixwG
+         vz69LgOsz4zHzzirSg7hXfJSE69MZmWks6Sl1QRyDOYS1NcQlmUxmuUFRwC1Wh5zS0zH
+         OMrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFGp8BXE81YCAgf3bw0GAQ2VavXpcXVdXK7r8ygrP5TdDOYHXY8Bcd7/iVBvHH2QlRtgUP1tD/@vger.kernel.org, AJvYcCWxSqPjwTGNI5T5HNazfsTrPXZtEXVeeXPhqYUSiCLqmyJ0yEP1Mpj3RFHVa4PwVOdVK5tgMC+gd00=@vger.kernel.org, AJvYcCXYW6IzdhQkjf2kOOHfHZviPl+XZqjze9BS+HfEW6DwfrCwcNRLb94hhLUt3+0wzGvr/AedjbkdpVnLw0HS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB4LE4USHhl94tYZhu+i/AcPqHQQOftCAoj7uSgTEiuVtEfAUV
+	/cu3oIhuQKoGa22LMAy8B6WOQldKOCKM4d9vynwAZmR4AgkIaJIkddByeA==
+X-Gm-Gg: ASbGncuKYwZmJqnQhmD5y5iwGUyoyrDLZdepyQBVsp7Lxpiy6YXIRGCLT+EJN5NDQmz
+	CddtSyWde8KhSpdlYqjXWqGHQMcVYIURwL/oTSVFtSUAe/qNIWOsGcJ54//rl3iw/8yi9PmCtLI
+	PSu4drC7T2zM6ua112ll9HW8mQsEZzF7vOLLqZ3fuYlWaWBuGMIHpqVDPwp3XRvxOOpMqyigBMA
+	EIBwIGfG7rpWiDMQiCqnx3Ry6XwPmXC8aNyooxWajZYcX9XvwnvTDs9oYvIRCJ0gcpW/CXsD0+w
+	ayPYEJ2IUyIV68N2UdYwup/CtRBihN0iI3MAugcZxDaOog4gteiIzLD9ofLOQYp3vGm9Dcil5n7
+	hA67qV131AUltFnGFdqis4B9wGK2qceG4xoNQX5XJ
+X-Google-Smtp-Source: AGHT+IHhYi7myBSgKxUDvKABHp7+6thL5rVSy5IQiw2xBG1LGFtHDCgslmsCFo7yTW1tKtZUpIBt1g==
+X-Received: by 2002:a5d:64e2:0:b0:385:f092:e1a with SMTP id ffacd0b85a97d-385f0a152e1mr4081697f8f.11.1733153933559;
+        Mon, 02 Dec 2024 07:38:53 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:f58:c447:145b:2b51? (2a02-8389-41cf-e200-0f58-c447-145b-2b51.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:f58:c447:145b:2b51])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385f0056637sm4071203f8f.15.2024.12.02.07.38.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 07:38:52 -0800 (PST)
+Message-ID: <9e1310d8-bcd9-40f9-8d44-abddc595ae9b@gmail.com>
+Date: Mon, 2 Dec 2024 16:38:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -1.80
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[perex.cz,suse.com,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/11] iio: light: as73211: fix information leak in
+ triggered buffer
+To: Jonathan Cameron <jic23@kernel.org>, Christian Eggers <ceggers@arri.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Antoni Pokusinski <apokusinski01@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <jpaulo.silvagoncalves@gmail.com>, Gregor Boirie <gregor.boirie@parrot.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
+ <20241125-iio_memset_scan_holes-v1-10-0cb6e98d895c@gmail.com>
+ <20241130204923.45d71fa4@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241130204923.45d71fa4@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, 02 Dec 2024 14:17:15 +0100,
-Asahi Lina wrote:
+On 30/11/2024 21:49, Jonathan Cameron wrote:
+> On Mon, 25 Nov 2024 22:16:18 +0100
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 > 
-> It seems there is an alternate version of the hardware with a different
-> PID. User testing reveals this still works with the same interface as far
-> as the kernel is concerned, so just add the extra PID. Thanks to Heiko
-> Engemann for testing with this version.
+>> The 'scan' local struct is used to push data to userspace from a
+>> triggered buffer, but it leaves the first channel uninitialized if
+>> AS73211_SCAN_MASK_ALL is not set. That is used to optimize color channel
+>> readings.
+>>
+>> Set the temperature channel to zero if only color channels are
+>> relevant to avoid pushing uninitialized information to userspace.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Huh.
 > 
-> Due to the way quirks-table.h is structured, that means we have to turn
-> the entire quirk struct into a macro to avoid duplicating it...
+> If the temperature channel is turned off the data should shift. So should be read
+> into scan.chan[0] and [1] and [2], but not [3].
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Not skipping [0] as here.
+> 
+> So this code path currently doesn't work as far as I can tell.
+> 
+> Jonathan
+> 
+>> ---
+>>  drivers/iio/light/as73211.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+>> index be0068081ebb..99679b686146 100644
+>> --- a/drivers/iio/light/as73211.c
+>> +++ b/drivers/iio/light/as73211.c
+>> @@ -675,6 +675,9 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>>  				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+>>  		if (ret < 0)
+>>  			goto done;
+>> +
+>> +		/* Avoid leaking uninitialized data */
+>> +		scan.chan[0] = 0;
+>>  	}
+>>  
+>>  	if (data_result) {
+>>
+> 
 
-Applied now.  Thanks.
+Adding the driver maintainer (should have been added from the beginning)
+to the conversation.
 
+@Christian, could you please confirm this?
 
-Takashi
+Apparently, the optimization to read the color channels without
+temperature is not right. I don't have access to the AS7331 at the
+moment, but I remember that you could test my patches on your hardware
+with an AS73211, so maybe you can confirm whether wrong data is
+delivered or not in that case.
+
+Thanks and best regards,
+Javier Carrasco
+
 
