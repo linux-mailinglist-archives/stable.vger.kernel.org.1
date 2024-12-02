@@ -1,94 +1,112 @@
-Return-Path: <stable+bounces-95978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB69DFF83
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:00:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B83D99DFF89
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:01:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3815A1623D1
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E06D2809C6
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 11:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03301FBC8B;
-	Mon,  2 Dec 2024 11:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4D81F9407;
+	Mon,  2 Dec 2024 11:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="TO/cV82F"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="eSJs+Jbq"
 X-Original-To: stable@vger.kernel.org
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08117156C40
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 11:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE156C40
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 11:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733137216; cv=none; b=Y3GORBPmuU9F0LOd32Rm7LmqSeQu2Llg1TEMv3SQd6srnUCfDaq8119znBq0B8NDij9OEkkWI1zBF32xzjmbVdT4TXTYOlrfaIgXIUohe71mU0MofOSi2bZhwaT5GhEpVs1we/ERWt1H3g2q+E5gEaIv62ywzv3ibfjiE7iF2ts=
+	t=1733137257; cv=none; b=f76LBGYiYIslwqjw14c8te1AQFrjPK5/vfNnIQ5eHpXgWDquW9G6D/S9/kvm2lDOSTBORYXsxwXU8cShIVok4bo9/X8QQWtJxhmdIxg2GQJ/YLSwesmjIW6oaFyojMcnCcD3S4F5qgGMWDvWOBqa8+xRvNu/mT9VN9GIkQVDWiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733137216; c=relaxed/simple;
-	bh=lbIWNYMvSjyfLtOw1mvuOqw21VstXoAYqxbOHR064L0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iGA/96A7aVQWxZi5Fxj8Sa8+aM2dJtNTwAU1dYrC8uVOn/xwt5Vzj7dEL4Ky0Lq3f1I7fcVzFjs4oLcK6ErXznoBcPcU+e0qjHiYCtTAeMHa4JMytSsh1sUuj+/qKaBHwD7kvwkhJtnAsbLS9r8Wn9FOE0ydVtk7vW4Zcf9w7hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=TO/cV82F; arc=none smtp.client-ip=193.68.50.107
+	s=arc-20240116; t=1733137257; c=relaxed/simple;
+	bh=lcyJGzSJ/OyqT8N1bx8uWTBCfIdRy8oHgTOWiOTiQqM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H/te7x8AutsPotqF6ae3GWo5AWdIVHtJlG/qJ1NRrMPf40fytI3afaUbFN86V8dX8hVpZeQ7/5Xw2ZCLfT0zLvc4mcM1k7sPCp9gEQMneH+iC8FP17kXFWyGHsXcZAIK/qXabSkQheol27+XQiU/Z02RAqKC+O/PzhglIjwfrpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=eSJs+Jbq; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8087BA0242;
-	Mon,  2 Dec 2024 12:00:11 +0100 (CET)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 7474CA09FA;
+	Mon,  2 Dec 2024 12:00:53 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=Q6wYDtIQjR5+T/DQDg0D6iro4kbT0EVZiPNUQPiaEF8=; b=
-	TO/cV82FAQksNefTmleJL3UveV6C+2byr/zUJ8xewKkkicBmqtYY+o+ZWkMbnONq
-	cDKmZuAef+rqr0VbcSq5evqrHpGm7JaJqHY65RwNoMDLDrxQbEU8EoD0uEaqtbwk
-	JZYiAlmtVnksHor3nrXlO2Vp7lsMf5+u3C/r6qDNppK32Rj46HyDqzUJ3878UrSJ
-	jwFZXEGYk/6pSK2Zn3bEKBobWSHdJrPpoEQJWXzYRBxay9IvBU9S7nOx1u65zjnB
-	Vy5+96ZhzWPe1gZuYbsWikuWr2XkZy6iuTfxsfwFDy+7k34IpsyGjbwQPx3ipaP/
-	AP5JSEzj3hjhhQ/c7fgJA6x19dehAQwZJWlLU+W7qnjeH5K/4CAIoQlNrfjnkoif
-	2d/TPYs+sn5fj1fiX/XUIu8uoqEenqTc4DxgezD3YZm3jGX8Sw+mY3ayvmbG/669
-	Mhu5MTf8rKkWe3AQpOcJv+WKpkZ/MAW0HARG8llKZ+4CGWhATHXo7ho1T9gtx0PX
-	EI7oIpRZ0E5zMGQfhGjKsRwRwqwkN5Dxwa2sMA17S/1xVtsgUgL8bzjnfdRf6qpl
-	kIm9Y2MO02tas9aHnafHC5tN+kK6gSz0TqDqMcRuEvnz8t+N4dXfyJUzqPrLlPdM
-	/cTl7Rr8oarrehb/23/c4gnpLkELH6MJRhpXmz35O5k=
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=9QtBXFL+VFaymHlksRrX
+	NzOI21C8muB0L90mgKfGc0c=; b=eSJs+JbqKEQlhb3cNl28Ga461oVpU4MXTRIH
+	3UMoLrbZrSEynHM718EfbBlgjXd7b4TW0fV77FQbnWEQeNCTlw+I5cadEnJ/1x8g
+	GCeKsQa0EfMO3XiKYEnPrBHT1eekfqlvVo+Hs+m1BSYPkSYctfXab69QI7vs7GYy
+	2MAKcqsJRak5BL7EMpj5JkudIOMo/bP7nQKqwECJP2a22BEat94H5H75Yls4BHI+
+	KPqMGtV7ZO+F0UkJVheq38jtO41HiBoT8K6I9JTyKFPIqUBWgnZQy1yegrp/VCwh
+	onJ6mFZLmtP5ZCgC6YhLPdD3vHH+sOUmyRF5+JWOWrdelBWwRuMu6l0Ai/CPVDy2
+	abT9KdX36FLSGfiUGtVnud7YrTZ/ux8UZm/OnlvVqhjQ22FV9qi4OPcTMqoFryGO
+	JjeN3iADGK0UIoHx8E5NUvVDe1PN3Pud/lqipF/E/L4AuoEMgb+pBGe717FdQEKO
+	t2GLefAqapEZpppyo74fDq87u6XQLS11pC8t7TWdFNTYTUFKEX6eV97p+dM5imM7
+	2eoHqUum2WI+g0rqfWhLzHo/zRb6j1ISM6qgITDjzwLVeA1YnfFAfyKUdPqIJiSI
+	gKv8lILjcX5vjB4G7wzMVDvFVG70GZbvJlNr/bjHJRWS2cyVD1tS0JyswQu0j0dt
+	vP2lB1Y=
 From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
 To: <stable@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Sasha
- Levin" <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH 6.12 0/3] Fix PPS channel routing
-Date: Mon, 2 Dec 2024 11:59:57 +0100
-Message-ID: <20241202110000.3454508-1-csokas.bence@prolan.hu>
+CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
+	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Conor
+ Dooley" <conor.dooley@microchip.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 1/3] dt-bindings: net: fec: add pps channel property
+Date: Mon, 2 Dec 2024 11:59:59 +0100
+Message-ID: <20241202110000.3454508-2-csokas.bence@prolan.hu>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241202110000.3454508-1-csokas.bence@prolan.hu>
+References: <20241202110000.3454508-1-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733137210;VERSION=7982;MC=1981280818;ID=155695;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+Content-Type: text/plain
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733137252;VERSION=7982;MC=2867564212;ID=147635;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855637263
+X-EsetId: 37303A29ACD94855637263
 
-On certain i.MX8 series parts [1], the PPS channel 0
-is routed internally to eDMA, and the external PPS
-pin is available on channel 1. In addition, on
-certain boards, the PPS may be wired on the PCB to
-an EVENTOUTn pin other than 0. On these systems
-it is necessary that the PPS channel be able
-to be configured from the Device Tree.
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
+Add fsl,pps-channel property to select where to connect the PPS signal.
+This depends on the internal SoC routing and on the board, for example
+on the i.MX8 SoC it can be connected to an external pin (using channel 1)
+or to internal eDMA as DMA request (channel 0).
 
-Francesco Dolcini (3):
-  dt-bindings: net: fec: add pps channel property
-  net: fec: refactor PPS channel configuration
-  net: fec: make PPS channel configurable
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+ Documentation/devicetree/bindings/net/fsl,fec.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
- drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
- 2 files changed, 13 insertions(+), 5 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/net/fsl,fec.yaml b/Documentation/devicetree/bindings/net/fsl,fec.yaml
+index 5536c06139ca..24e863fdbdab 100644
+--- a/Documentation/devicetree/bindings/net/fsl,fec.yaml
++++ b/Documentation/devicetree/bindings/net/fsl,fec.yaml
+@@ -183,6 +183,13 @@ properties:
+     description:
+       Register bits of stop mode control, the format is <&gpr req_gpr req_bit>.
+ 
++  fsl,pps-channel:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    default: 0
++    description:
++      Specifies to which timer instance the PPS signal is routed.
++    enum: [0, 1, 2, 3]
++
+   mdio:
+     $ref: mdio.yaml#
+     unevaluatedProperties: false
 -- 
 2.34.1
 
