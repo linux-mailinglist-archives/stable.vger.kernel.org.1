@@ -1,78 +1,85 @@
-Return-Path: <stable+bounces-96005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381B69E01EA
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4499E01EF
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65670168E8F
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:16:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B11B16191C
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 12:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20278207A08;
-	Mon,  2 Dec 2024 12:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043BE207A37;
+	Mon,  2 Dec 2024 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GUe85AoL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SmA6ZQVI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35C9207A00
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 12:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB34A207A2E
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 12:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733141299; cv=none; b=i3e2GRL9gZs6YZHoOz16LXvZEARP3Xiy0/LZMiSe3cywlYNd6EFPvfWDXhbpJqu/52hiMHCgtiDJSejFGvkAntX3OZKWmiG05PRqkoktu0Ub6GcgBHD45riStMPXwcM1CbP7uos0+nvyetKZvr8dLQgP4AbWCfuC6JsTIthtbk8=
+	t=1733141315; cv=none; b=ndrTzANl/Nb0s11+vniiyil8rKAsk8sr/x4PkA5o7Ya5hpfODZ2s2mII/zD7MGiqNcOgqcYNhsG7DNJuFkjbyJkPHN5qXGlOzMW9qv5uLOIgWqiPWZ4mtREo7wWB1lPTNs0y542SCqJiCq1YkJQLynZSms3bhTvYupAG8hBMRBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733141299; c=relaxed/simple;
-	bh=cGAQSWJepBzc0MT/FCsHTfnVoA3MyBRgT1+4kNWkF+o=;
+	s=arc-20240116; t=1733141315; c=relaxed/simple;
+	bh=C1wq6c0mHMdc9VmbV4dPEaXH+AagKHJtDMHuWWXf5fw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iQErDAlM00XhWaNLW6g42Hx67Z0cx5YWm5XwasgNzSTau2vIkIyZwxQQdLJrb/8EHGuT4IkYssk1hipGleN/4yPSnARH5mnsrc2XIFEfZmXQsgOLvOti/n0mCcgLibEl3g5HbssC68GKjon7Of6H+H5/GnFasWiCU7qw2wqdFVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GUe85AoL; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-434aa472617so34986695e9.3
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 04:08:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733141296; x=1733746096; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1vgAdGJhbCaRsQHQEZj6qz9LHLA0TDdshcMw+CfT8UI=;
-        b=GUe85AoLq10mPQKAmqXwklw5rFe3YEMW5lRva/HHjuQfRZx6hh7ljOQJfvxbMoiORi
-         9YCH7vw3mJfEdeJkXVu2HqnI4fFSHvOWsk+317eqtwVt/YnIE67yS8nVcuGraKL005mz
-         89Td+RPAgQJi0VBT34OoRLXTnY5v3Xp1cvR3LdquxoZa214A8Hs52qM38V9MrpBJD84T
-         bZSUSx9JI+DnsMU0Nj9OY2FXNiJyst3oBZQSQPfl4Nid8xGU9awP+CUNm2byvteOEJaU
-         PNJ+CpxnLBoNjuyuF8bvKa3OiXVnZTqOy3AfNI6vgVe0y5UMdYMx64XbJNed7FP3DkVv
-         uLmA==
+	 In-Reply-To:Content-Type; b=I6WWuPg5jfViZ8rBgvjfb1BFU3V7EfUW0EZNT1HLRA9vThxoG3gJt5l9TduorhpMnACVasfjrFS/L7N4vvhgjZMkhd470aNMw5hdk4RIIGLXeSbPJAs8KUBtxyw3obHmDwVfWpJoFIizsfomy++++ciUfnDIZNz3uAywtzToxEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SmA6ZQVI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733141312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5FMOSeVMY1cbVocwmarJcRyRV5ri/bJhxkBF9Dys0uY=;
+	b=SmA6ZQVI/fOiDLdld6V9xmeenSGy/qHZtaBXiJetyjaxauBucfdPZUoHcvurbUCR7FV9FC
+	QbKNzCwjydW2lyKoI14awgZ60NBxeueN1wXsmN2wlYAr+Jy/6ft9BDFYl5YmNLhDkUr6Vq
+	e65MczdJLOk4rPUAFWrSu7bR92q09PY=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-573-X_W-5A4EPse1OWJoCfTGEg-1; Mon, 02 Dec 2024 07:08:31 -0500
+X-MC-Unique: X_W-5A4EPse1OWJoCfTGEg-1
+X-Mimecast-MFC-AGG-ID: X_W-5A4EPse1OWJoCfTGEg
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa55354400eso490004966b.1
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 04:08:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733141296; x=1733746096;
+        d=1e100.net; s=20230601; t=1733141310; x=1733746110;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1vgAdGJhbCaRsQHQEZj6qz9LHLA0TDdshcMw+CfT8UI=;
-        b=ppEQZ/cB2uPdh4yjNylTDcUl2qLHxOsJ3AYDQ0FsmQNUeEPBqfJ6NMqu7A7tRWkHT0
-         BiK1EIC0gAIggPxEjG/5070kH4vCSxkidOx03f1oestkDo+exsMALwVfLan1ktsWU5C3
-         1f4vCR+LDWIxtBf5g3cmBjJ+2pgzkLHGRtJ1miZDOvo3zY/57nR8y2liCZAFg3o+o6Gi
-         7AqOlkSMU2YcJLrjCCBm3rO7rKUoF4Mfqj1zgzPWzuai1sA/VAM5mXTj6+PAw0cIpY6K
-         NpCLNIjUaUC5uJzbn3xSp9pqkR2CbpWfo+o/mEttiVuEhbbXiO28Gb9xPtT4j032v67E
-         Ro/A==
-X-Forwarded-Encrypted: i=1; AJvYcCV9SOWe7E+0eVeaZkehZxmdPPU9JP5VoOYpy9WCa2aNUnZTmVy+L02Pbs3NzmfZSy3KrTovZwk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR2ppXZRoRSdpGvIYzNdSmGdPwlwD7qjSxkvfawhrDDAI12OQk
-	S1xiOIkz38APrraEoe/tcjFdurN/4A3kG5aCb6dR9HSHRLGwojUzFqwwwDlVdyQ=
-X-Gm-Gg: ASbGnctn8l1JcTad/J9Xa0u9d8TYJp/IVC9KIzIITeXpWV+74pEwgVGgGpi0hWFx06L
-	9JIhWw0h/G+QuoQfxrfjdZhA3rRxfjpar4pqGfnLmc63rNTwV6zLUpbhcsJDXrWjL5IAx9dlJEJ
-	RdUTc+alR2UTbliLw9LGbc/fBimkseuSDN6oktEAPJL7Y08srbCWvT/spvJBHBxpE1PwRJqacr4
-	vKP67THMTsC8IxY6uoMn+65a2TxxldmKDrCFt5zjt7VL0Byjig3SbSl/E0QCkU=
-X-Google-Smtp-Source: AGHT+IHwCI1uRKBu+CoSDtG3FpsX3X/yGCnxOmulEY/MrLWnsn3+gjARG1kvTaE8N/uMJfcAAEFB4w==
-X-Received: by 2002:a05:600c:1c8d:b0:42c:bae0:f05b with SMTP id 5b1f17b1804b1-434a9db7e8dmr172697185e9.1.1733141296136;
-        Mon, 02 Dec 2024 04:08:16 -0800 (PST)
-Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7d1a90sm180872265e9.32.2024.12.02.04.08.15
+        bh=5FMOSeVMY1cbVocwmarJcRyRV5ri/bJhxkBF9Dys0uY=;
+        b=ruJfKQJD93PlwrcMMO3KKDL1/88cWQl22I6lEKfp0j6K5L64mO6NoieANuz+M6bZhd
+         OukCqbccULVOFwRODGPeoo2z53cDkXe9S3D7tMElTnFoRHkCyVkEnb3VaNxMHX8DMjLs
+         m5aaW31fIP45miJl6a3ghb5bexQzFoUtybBohdAGjWds4zwFccRAen9neo6tmjIkywh2
+         dS/E1hDrErS+xGnvFPh88+5xpa8MP0D1B5gH0KIOMymNZzHQtZn0RLeybN3HWkNsLtGR
+         9Il0evp06FBE15enl1G29PItL6HqxprG8AOh8uFnxb1N6vMSaA8D+t+EE8IxQrHUZyBp
+         HusA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGYnK7whB1topYL29rVVOccX5MNErA1wbGt8Ip1Ac2rD/a2OFbObsCUjKQRLxpTilW4UeprxI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxveYpYBZYsuISsdrOh0v53GbG2MLEkbsepfQszP486QwCe9523
+	xJLmwOOpzFCElOW+a/8WZ4OlfvuFT42bLWeJ+e2kui0gkHmLSuk/VtDmf/kxrrYPGD0aca3266I
+	OFpkOsdGHhokiQzqSWmYAodgY6sc80F75m5M4GIQaF7NxgIbX6NgFGA==
+X-Gm-Gg: ASbGncvAdCvmuZ9IkZshjzejWCbdsE3er35lQ6JI6Zd23RQelDG1tEq761iRa5obISM
+	/4CCdLdSQNvRIwik3Frr7lNzMNYVKlMaV9UsmZFgEMCN2pnP25doPoM45pT0HaUBbzI/n45/cAT
+	KlyGZ1+V62We4TUtQG5cCbDeVYOMS9szX2mW7iiI/8LjQssF7x3w7jbcZLskPTOUwjHbK1J6zPF
+	aV87euExJnLxjdTktgAwFXs496eOZ1/fbKezidDMbiNzRRatSkj9A==
+X-Received: by 2002:a17:907:940d:b0:a9e:85f8:2a49 with SMTP id a640c23a62f3a-aa5945345c9mr2224919366b.8.1733141310232;
+        Mon, 02 Dec 2024 04:08:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEfgYYcsQDbDkGzEPsFI5C+i/hssRFuLXp/f5oNxls3R9bybGimSIbB1/JBOTHvVDRWJjMVeg==
+X-Received: by 2002:a17:907:940d:b0:a9e:85f8:2a49 with SMTP id a640c23a62f3a-aa5945345c9mr2224916666b.8.1733141309804;
+        Mon, 02 Dec 2024 04:08:29 -0800 (PST)
+Received: from [10.40.98.157] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5998e6dadsm503192466b.132.2024.12.02.04.08.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 04:08:15 -0800 (PST)
-Message-ID: <65002924-3b8b-47ab-aa90-4733ccc2f728@linaro.org>
-Date: Mon, 2 Dec 2024 12:08:14 +0000
+        Mon, 02 Dec 2024 04:08:29 -0800 (PST)
+Message-ID: <06e35b4e-a0f3-483f-843c-66c0b12e6cd0@redhat.com>
+Date: Mon, 2 Dec 2024 13:08:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,180 +87,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] media: venus: hfi_parser: avoid OOB access beyond
- payload word count
-To: Vikash Garodia <quic_vgarodia@quicinc.com>,
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Tomasz Figa
- <tfiga@chromium.org>, Hans Verkuil <hans.verkuil@cisco.com>
-Cc: Stanimir Varbanov <stanimir.varbanov@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241128-venus_oob_2-v2-0-483ae0a464b8@quicinc.com>
- <20241128-venus_oob_2-v2-2-483ae0a464b8@quicinc.com>
+Subject: Re: [PATCH v3 0/8] media: uvcvideo: Implement the Privacy GPIO as a
+ evdev
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Armin Wolf <W_Armin@gmx.de>,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ Yunke Cao <yunkec@chromium.org>, Hans Verkuil <hverkuil@xs4all.nl>,
+ stable@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <CANiDSCtjpPG3XzaEOEeczZWO5gL-V_sj_Fv5=w82D6zKC9hnpw@mail.gmail.com>
+ <20241114230630.GE31681@pendragon.ideasonboard.com>
+ <CANiDSCt_bQ=E1fkpH1SAft1UXiHc2WYZgKDa8sr5fggrd7aiJg@mail.gmail.com>
+ <d0dd293e-550b-4377-8a73-90bcfe8c2386@redhat.com>
+ <CANiDSCvS1qEfS9oY=R05YhdRQJZmAjDCxVXxfVO4-=v4W1jTDg@mail.gmail.com>
+ <5a199058-edab-4f9d-9e09-52305824f3bf@redhat.com>
+ <20241125131428.GD32280@pendragon.ideasonboard.com>
+ <233eaf78-49f1-43c1-b320-c75cfc04103f@redhat.com>
+ <20241125213521.GV19381@pendragon.ideasonboard.com>
+ <CANiDSCvfnNKG8KUQEeBsr3JhWjUE+nBr4BTaR-sfaQQV9ZqSwQ@mail.gmail.com>
+ <20241126165049.GH5461@pendragon.ideasonboard.com>
+ <CANiDSCu2FJiJP+e+gjWySQRUkKUxXYv2C70kRct2io7yetY56Q@mail.gmail.com>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241128-venus_oob_2-v2-2-483ae0a464b8@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CANiDSCu2FJiJP+e+gjWySQRUkKUxXYv2C70kRct2io7yetY56Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/11/2024 05:05, Vikash Garodia wrote:
-> words_count denotes the number of words in total payload, while data
-> points to payload of various property within it. When words_count
-> reaches last word, data can access memory beyond the total payload. This
-> can lead to OOB access. Refactor the parsing logic such that the
-> remaining payload is checked before parsing it.
+Hi,
+
+On 26-Nov-24 6:12 PM, Ricardo Ribalda wrote:
+> On Tue, 26 Nov 2024 at 17:51, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+>>
+>> On Tue, Nov 26, 2024 at 05:27:57PM +0100, Ricardo Ribalda wrote:
+>>> On Mon, 25 Nov 2024 at 22:35, Laurent Pinchart wrote:
+>>>> On Mon, Nov 25, 2024 at 03:41:19PM +0100, Hans de Goede wrote:
+>>>>> On 25-Nov-24 2:14 PM, Laurent Pinchart wrote:
+>>>>>> On Mon, Nov 25, 2024 at 01:01:14PM +0100, Hans de Goede wrote:
+>>>>>>> On 18-Nov-24 5:47 PM, Ricardo Ribalda wrote:
+>>>>>>>> On Mon, 18 Nov 2024 at 16:43, Hans de Goede wrote:
+>>>>>>>>> On 15-Nov-24 9:20 AM, Ricardo Ribalda wrote:
+>>>>>>>>>> On Fri, 15 Nov 2024 at 00:06, Laurent Pinchart wrote:
+>>>>>
+>>>>> <snip>
+>>>>>
+>>>>>>>>>>> Is there any ACPI- or WMI-provided information that could assist with
+>>>>>>>>>>> associating a privacy GPIO with a camera ?
+>>>>>>>
+>>>>>>> I just realized I did not answer this question from Laurent
+>>>>>>> in my previous reply.
+>>>>>>>
+>>>>>>> No unfortunately there is no ACPI- or WMI-provided information that
+>>>>>>> could assist with associating ACPI/WMI camera privacy controls with
+>>>>>>> a specific camera. Note that these are typically not exposed as a GPIO,
+>>>>>>> but rather as some vendor firmware interface.
+>>>>>>>
+>>>>>>> Thinking more about this I'm starting to believe more and more
+>>>>>>> that the privacy-control stuff should be handled by libcamera
+>>>>>>> and then specifically by the pipeline-handler, with some helper
+>>>>>>> code to share functionality where possible.
+>>>>>>>
+>>>>>>> E.g. on IPU6 equipped Windows laptops there may be some ACPI/WMI
+>>>>>>> driver which provides a /dev/input/event# SW_CAMERA_LENS_COVER node.
+>>>>>>
+>>>>>> Using an event device means that the user would need permissions to
+>>>>>> access it. Would distributions be able to tell the device apart from
+>>>>>> other event devices such as mouse/keyboard, where a logged user may not
+>>>>>> have permission to access all event devices in a multi-seat system ?
+>>>>>
+>>>>> input events modaliases contain a lot of info, including what sort
+>>>>> of events they report, e.g. :
+>>>>>
+>>>>> [hans@shalem uvc]$ cat /sys/class/input/input36/modalias
+>>>>> input:b0003v046Dp405Ee0111-e0,1,2,3,4,11,14,k71,72,73,74,75,77,78,79,7A,7B,7C,7D,7E,7F,80,81,82,83,84,85,86,87,88,89,8A,8B,8C,8E,8F,90,96,98,9B,9C,9E,9F,A1,A3,A4,A5,A6,A7,A8,A9,AB,AC,AD,AE,B0,B1,B2,B3,B4,B5,B6,B7,B8,B9,BA,BB,BC,BD,BE,BF,C0,C1,C2,CC,CE,CF,D0,D1,D2,D4,D8,D9,DB,DF,E0,E1,E4,E5,E6,E7,E8,E9,EA,EB,F0,F1,F4,100,110,111,112,113,114,115,116,117,118,119,11A,11B,11C,11D,11E,11F,161,162,166,16A,16E,172,174,176,177,178,179,17A,17B,17C,17D,17F,180,182,183,185,188,189,18C,18D,18E,18F,190,191,192,193,195,197,198,199,19A,19C,1A0,1A1,1A2,1A3,1A4,1A5,1A6,1A7,1A8,1A9,1AA,1AB,1AC,1AD,1AE,1AF,1B0,1B1,1B7,1BA,240,241,242,243,244,245,246,247,248,249,24A,24B,24C,24D,250,251,260,261,262,263,264,265,r0,1,6,8,B,C,a20,m4,l0,1,2,3,4,sfw
+>>>>>
+>>>>> So I believe that we can create a udev rule which matches on input
+>>>>> devices with SW_CAMERA_LENS_COVER functionality and set a uaccess
+>>>>> tag on those just like it is done for /dev/video# nodes.
+>>>>>
+>>>>> Or we can just use a specific input-device-name (sub) string
+>>>>> and match on that.
+>>>>>
+>>>>> This may require using a separate input_device with just
+>>>>> the SW_CAMERA_LENS_COVER functionality in some of the laptop
+>>>>> ACPI / WMI drivers, but that is an acceptable compromise IMHO.
+>>>>
+>>>> As long as it's doable I'm OK with it.
+>>>>
+>>>>> (we don't want to report privacy sensitive input events on
+>>>>> these nodes to avoid keylogging).
+>>>>>
+>>>>>> Would compositors be able to ignore the device to let libcamera handle
+>>>>>> it ?
+>>>>>
+>>>>> input devices can be opened multiple times and we want the compositor
+>>>>> to also open it to show camera on/off OSD icons / messages.
+>>>>
+>>>> I'm not sure we want that though, as the event should be associated with
+>>>> a particular camera in messages. It would be better if it still went
+>>>> through libcamera and pipewire.
+>>>
+>>> For OSD we do not necessarily need to know what camera the GPIO is
+>>> associated with.
+>>>
+>>> We just want to give instant feedback about a button on their device.
+>>> Eg in ChromeOS we just say: "camera off" not "user facing camera off"
+>>
+>> That may be true of Chrome OS, but in general, other systems may want to
+>> provide more detailed information. I wouldn't model the API and
+>> architecture just on Chrome OS.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> ---
->   drivers/media/platform/qcom/venus/hfi_parser.c | 57 +++++++++++++++++++++-----
->   1 file changed, 46 insertions(+), 11 deletions(-)
+> It is not about ChromeOS, it is about the use case.
 > 
-> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-> index 1cc17f3dc8948160ea6c3015d2c03e475b8aa29e..14349c2f84b205a8b79dee3acff1408bb63ac54a 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-> @@ -282,8 +282,8 @@ static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
->   u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
->   	       u32 size)
->   {
-> +	u32 *words = buf, *payload, codecs = 0, domain = 0;
->   	unsigned int words_count = size >> 2;
-> -	u32 *word = buf, *data, codecs = 0, domain = 0;
->   	int ret;
->   
->   	ret = hfi_platform_parser(core, inst);
-> @@ -301,36 +301,71 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
->   	}
->   
->   	while (words_count) {
-> -		data = word + 1;
-> +		payload = words + 1;
->   
-> -		switch (*word) {
-> +		switch (*words) {
->   		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
-> -			parse_codecs(core, data);
-> +			if (words_count < sizeof(struct hfi_codec_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_codecs(core, payload);
->   			init_codecs(core);
-> +			words_count -= sizeof(struct hfi_codec_supported);
-> +			words += sizeof(struct hfi_codec_supported);
->   			break;
->   		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
-> -			parse_max_sessions(core, data);
-> +			if (words_count < sizeof(struct hfi_max_sessions_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_max_sessions(core, payload);
-> +			words_count -= sizeof(struct hfi_max_sessions_supported);
-> +			words += sizeof(struct hfi_max_sessions_supported);
->   			break;
->   		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
-> -			parse_codecs_mask(&codecs, &domain, data);
-> +			if (words_count < sizeof(struct hfi_codec_mask_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_codecs_mask(&codecs, &domain, payload);
-> +			words_count -= sizeof(struct hfi_codec_mask_supported);
-> +			words += sizeof(struct hfi_codec_mask_supported);
->   			break;
->   		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
-> -			parse_raw_formats(core, codecs, domain, data);
-> +			if (words_count < sizeof(struct hfi_uncompressed_format_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_raw_formats(core, codecs, domain, payload);
-> +			words_count -= sizeof(struct hfi_uncompressed_format_supported);
-> +			words += sizeof(struct hfi_uncompressed_format_supported);
->   			break;
->   		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
-> -			parse_caps(core, codecs, domain, data);
-> +			if (words_count < sizeof(struct hfi_capabilities))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_caps(core, codecs, domain, payload);
-> +			words_count -= sizeof(struct hfi_capabilities);
-> +			words += sizeof(struct hfi_capabilities);
->   			break;
->   		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
-> -			parse_profile_level(core, codecs, domain, data);
-> +			if (words_count < sizeof(struct hfi_profile_level_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_profile_level(core, codecs, domain, payload);
-> +			words_count -= sizeof(struct hfi_profile_level_supported);
-> +			words += sizeof(struct hfi_profile_level_supported);
->   			break;
->   		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
-> -			parse_alloc_mode(core, codecs, domain, data);
-> +			if (words_count < sizeof(struct hfi_buffer_alloc_mode_supported))
-> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-> +
-> +			parse_alloc_mode(core, codecs, domain, payload);
-> +			words_count -= sizeof(struct hfi_buffer_alloc_mode_supported);
-> +			words += sizeof(struct hfi_buffer_alloc_mode_supported);
->   			break;
->   		default:
->   			break;
->   		}
->   
-> -		word++;
-> +		words++;
->   		words_count--;
->   	}
->   
+> We were talking about 2 usecases:
+> - instant feedback for a button. Actor: OSD / composer
+> - this camera is disabled, please use other camera or enable it: Actor
+> camera app, or camera "service" (read pipewire, libcamera, or the
+> permission handler for snap)
 > 
+> There are some examples showing that for "instant feedback" there is
+> no need to link the event to the camera:
+> - there is hardware where this is not possible to establish the link.
+> - ChromeOS does not show the camera name (when it has enough
+> information to do so)
+> - I believe Hans mentioned that Windows does not show the camera name.
+> - (Hans, are you wiring SW_CAMERA_LENS_COVER to the user right now?)
+> Do you know of a system where this info is needed?
 
-I like the changes made here.
+I would like to see this wired up in GNOME but I'm not aware of
+anyone actively working on this.
 
-Let me suggest you have the parse_something() return the size of the 
-buffer consumed or an error code.
+I expect that for GNOME a simple OSD with a camera icon with / without
+a cross through it will suffice and I expect such a simple implementation
+to directly talk to libinput at the compositor level.
 
-If you calculate the maximum pointer instead of the words_count
+If GNOME does ever wants to show a label on the OSD with a description
+of which camera it applies to, like it currently does for volume up/down/
+mute keys which affect the current default sound output), then I would
+expect it to talk to pipewire to get the events instead of directly
+through libinput.
 
-frame_size = payload + max;
+Either scenario can be supported with the SW_CAMERA_LENS_COVER userspace
+API, so IMHO this is an implementation detail which can be left up to
+whomever implements this for GNOME.
 
-/* Your while can look like this */
+FWIW if I were to implement this myself I would go for the simple solution
+of not showing a camera description like ChromeOS is currently doing.
 
-while (words < frame_size)
-switch(*words){
-case HFI_PROPERTY_X:
-     /* if the function returns the bytes consumed */
-     ret = parse_x();
-     break;
-case HFI_PROPERTY_X:
-     ret = parse_x();
-     break;
-}
+Regards,
 
-if (ret < 0)
-     return -ret;
-
-/* you can increment the pointer once at the bottom of the loop */
-words += ret;
-}
+Hans
 
 
-That way you can
-
-1. Get rid of words_count and not have to decrement it
-2. Have one variable words which is checked against the maximum
-    size while(words < frame_size)
-3. Have the function that consumes the data return
-    how much buffer it has consumed, instead of inlining in the
-    switch
-4. Increment at the bottom of the switch once instead
-    of several times in the switch
-
-IMO it would be clearer/neater that way. Please consider.
-
----
-bod
 
