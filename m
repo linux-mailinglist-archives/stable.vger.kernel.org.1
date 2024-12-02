@@ -1,127 +1,151 @@
-Return-Path: <stable+bounces-96150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F119E0B2A
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:37:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585989E0B41
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:43:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1410A161435
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2132826D0
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9561DDC26;
-	Mon,  2 Dec 2024 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA171DACA1;
+	Mon,  2 Dec 2024 18:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GRFvEwKo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vRwO00mB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ED61DACA1
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 18:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BBF1DD866
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 18:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733164640; cv=none; b=MhBmmzGrtKkvmJ42gg2JhCeYZA0TyYu7dVhmMB6Kn2JMwk169LRB86Y1XPy/FECsxTOwLJmcRZUEVPY34rnN5YLAd4xdcm5h73EeMh7psy1FUGCjypQbLW/6+lWkjZV3ic4yw/nrqiEUw7CmFY3QY4dSB+AInYsayw6Ty8zqpkI=
+	t=1733165005; cv=none; b=dJ8WkAUCwBnrY0lGV9h62vJQLa2gfOQusd3EDxNOH07WTQd/EKP6EozkCzFsPDul8XoQw3BQE055OKdAKnXhNBikNPyGtFPpfZGX8YYUDAwXxiteos3Av+gqP7fh8smPESg66zkACn3ejI+xdOdbci0tALI1sSuwjjSfdoeQE1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733164640; c=relaxed/simple;
-	bh=GySl7FH6k87Q3/FtrzBlUZC5QkSjJLlXFooz+T2dIAM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V4Gtu4+Br/1vRCUZCi3TfHAq8GF+uZvBQRMjxXg9S8JZo5Z1XbPEN5MLH/wZF1LUl0efWQ9hYmFrPIB9/opz7sgAaYn6bRPIBZuFiFA/jvegWdcjwvvK5stoDjvyRZ2STkU41q0YtGsQnHHvwfOROozed0MauiOE4+1E+mxgjZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GRFvEwKo; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-21271dc4084so35648995ad.2
-        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 10:37:17 -0800 (PST)
+	s=arc-20240116; t=1733165005; c=relaxed/simple;
+	bh=I6X+25HwarITYfnmWvypF7d0Hyw8TJMkjS5mLztaUow=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=kcV3tC/mnDFnvDQt4vGkVHSbBLTkrEu7X8RSlAVA8t4DJldE34VMrmErEHS47L2Zw244qKXcVZNWV5DecbF9QiWty0k7TodlrVc2wttqJwmUR6NkYarj/LoC/Ghh1b8zJ7KgtrphOxrLTRKhBUUx7kW99K4XKYibViYG5vzxJZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vRwO00mB; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-85b8d1fd1bbso834470241.1
+        for <stable@vger.kernel.org>; Mon, 02 Dec 2024 10:43:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733164637; x=1733769437; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gamT5R0QZH8leUSxmRBzCBBfWx5ZsvLWbSvscKjg3BQ=;
-        b=GRFvEwKo8P+z3RIniZZGU8ZS5QhAlh47NQF1niYUPq5a0K8TZhdGqrgyDiHUFMKhSV
-         NlKyBdkhATL7+Ov1TTYLblyS8tGnxx9L06Zk2Llod7pZHC+9YMn7lX8oDx2+V73/QfFG
-         qEN83AUjYEUBeg4Fjq6L3/KztU+WaKYHUj29Q=
+        d=linaro.org; s=google; t=1733165002; x=1733769802; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7Se8T5+LK18s+wDSD1Sg761iFvt2oWO3ZqKqGkylKq4=;
+        b=vRwO00mBVaQsZa7xkk9s+4adtMazWhEeR6wUdCQpB9KImqOqrvKi+Kzf5ooFxaE1jT
+         g8Gn9gHP9ypqTtsFwO01ySW75w9R69tVzD/miVcUloPC1U1PPQpv6kWKEXdf3vmgh3u/
+         X2R+BrEiadYCDDC2GR+um4g/rWu12d8oCpxunK2oXuqtQS9G4W6/ijD1RUBnGQFvXkfF
+         MS41wOcL5yKiywxzB3dkDs+q7IrcGJ96ofA+d1aT1ijwSXMj0hBf5yvlLF7fI+c2wPw+
+         9rqYFfW1eXJRla9ubo0oaFypYA887CFJJXVqI4qPEkQeDYaMSmYhi5ikLIUolHMi/CvY
+         +RZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733164637; x=1733769437;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gamT5R0QZH8leUSxmRBzCBBfWx5ZsvLWbSvscKjg3BQ=;
-        b=ID6U2TC0q3T5moJn4N6z6e5qwd/YiObXNUWDph0m7Mt6dN1/mp0exLxkQgDEx4Wf71
-         AjikhpDJx1tM45uKz5DR3+eOfYxyxt0o7l+BnzbWvbsYz9pifgEJ9xZc1PVug3dRaCV8
-         Z+Zs1uGbjMLdKmEpk0St8FAuAHWHkX+C0iodRuhgf86poA3X75cnCo/BxNiVlg5XFQMz
-         PFFzPCFxm9yFGUJcPhikvRDVoQ845WbzMUBvVhhCW8CHAcMeUTZzCI5MoR7fGV0uOM/o
-         IjFFWpHUqxDYjyzVQfoX5vItAlYUj5xLl/lAd+ipLkKdICEILiNQguW0DsWAurwtHdIl
-         AL7w==
-X-Gm-Message-State: AOJu0Yx8HNDnBydyGR6nVCXYgt94DMfKnIpSXlMcAmX2LnTHu2dvmUh8
-	lWun89WLqeEl5ah3fzJ8MEz777gpq9wBu9sR/I1SPAk76DoXahVedp4hg4O/MkVObmIDw5P3sX5
-	7mA0yMqPy6+diL6PJSMKcQHADoz7sOgHOPjeNU4vwmu+Nt/J8AnL9oFk/Mug4hCVL7GbKeFyHGR
-	kZAgyAgB7f5nALdAm4c1a9PieQw6gYXi+b3XDNrwnS3FZ/nynfMNVkHfw=
-X-Gm-Gg: ASbGncuNx1YjpGyuMCFgKJwCzZRnmeEtaMvMMjWHurzBmlHpPfyflwRxJX8Uk1i/h2b
-	tD0+CJgBJm/wgykyH+55B3KrR55NWSp3xwKoexB60iZ1ShqPlSPouOPQ6NkWFU1v4dgBc/KdpVJ
-	aSeMwoaZCa151U31s55N3ANjtVXEucRXv5DA1uEvFYgfkSQLsNGtu++PZNG2dKI+0KJI8JicdSv
-	cXHW1NJMO3GIik7Y8YHUeZPyxxC0Och4f/1ZB1E9u9HXEHyKpb8CWcNbLTzTL9lIIBFPd5OoCRi
-	nWbf4TunWlrWuz1ftCDFyo7c
-X-Google-Smtp-Source: AGHT+IGLkT6ebiwedqvqD1f42rQOK97GOKfKbbqS3UgkMvqu804h8LS9uj6tSTOvjSkk69IcJWBMig==
-X-Received: by 2002:a17:902:ec8a:b0:215:a05d:fb05 with SMTP id d9443c01a7336-215a05dff24mr58869175ad.32.1733164636589;
-        Mon, 02 Dec 2024 10:37:16 -0800 (PST)
-Received: from photon-bc6f59b69a50.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2154c2e1f62sm56463395ad.101.2024.12.02.10.37.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 10:37:16 -0800 (PST)
-From: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: quic_zijuhu@quicinc.com,
-	rafael@kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Sasha Levin <sashal@kernel.org>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Subject: [PATCH v5.10-v6.1] driver core: bus: Fix double free in driver API bus_register()
-Date: Mon,  2 Dec 2024 18:33:30 +0000
-Message-Id: <20241202183330.3741233-1-brennan.lamoreaux@broadcom.com>
-X-Mailer: git-send-email 2.39.4
+        d=1e100.net; s=20230601; t=1733165002; x=1733769802;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7Se8T5+LK18s+wDSD1Sg761iFvt2oWO3ZqKqGkylKq4=;
+        b=jnIRFPHCUB0Zxyn7bv/lTFiWFwNgvBDVkvkRe5diMb1VmPh0jy/4EjvL32spDxorqI
+         IlYRY1mQogk6vaFmH58P6SsFfjkFVHa2fG9nEkJQJERCIcJOD/utW7Y1DYMF0QcA005m
+         DEIr6n492WgdHgxbdEfYRUStSKEh3OW636aiaBrLBG5lvlwoXQ2LtG5nCNu/5oxOba8T
+         cS9HR9EPijSdkFYbcxMQOTfSsEx23KvJep0jOUQlroUvQbCrNa3YptSAVhHu3LYeBa1m
+         Co9MiwqmhIy6XlaLmPeUG4RYRx47lMCRCs5ornaMTU9KH5QILmQJ7eK87JlTvzpAcjM2
+         tzXA==
+X-Gm-Message-State: AOJu0Ywb3VSJcSH6UO1fPtDIqMkhmtUJHidfM+PvHONEIY9Fy2fGJ6ri
+	8BU0opLQ2HYkgYjkMPWL6XFOS9AzJOfcyS4ar4AiscaZdrSY7XkPK+7xn5NYQxR2ZYqDkbMhUfl
+	yIglKKE3nWZ8FkiaRUdzG7NkL6pwkpTI//WlPKBMRj0lyQ3ht5Bc=
+X-Gm-Gg: ASbGncvELyAbs1HhWUnC38ShxQo4A1l7VtXi8YxrwYM27b5C8fUEGrjWKPOJT8JuKRF
+	VNIjEJO9C1BSiNjAtK0d8D+zx6sDLSaNg
+X-Google-Smtp-Source: AGHT+IHs7hkrXZMkSka2KzYCMq2Db0uhY/f+zEXDn3gxFJFY3CqXCi3w1hz4Fk/YoO+opKa+72vNn7Buyj4pv8VOTe0=
+X-Received: by 2002:a05:6122:2a41:b0:510:185:5d9c with SMTP id
+ 71dfb90a1353d-51556a3e2b4mr30501129e0c.11.1733165002577; Mon, 02 Dec 2024
+ 10:43:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 3 Dec 2024 00:13:11 +0530
+Message-ID: <CA+G9fYtQ+8vKa1F1kmjBCH0kDR2PkPRVgDuqCg_X6kKeaYjuyA@mail.gmail.com>
+Subject: stable-rc: queue: v5.15: drivers/clocksource/timer-ti-dm-systimer.c:691:39:
+ error: expected '=', ',', ';', 'asm' or '__attribute__' before '__free'
+To: linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: javier.carrasco.cruz@gmail.com, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+The arm queues build gcc-12 defconfig-lkftconfig failed on the
+Linux stable-rc queue 5.15 for the arm architectures.
 
-[ Upstream commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 ]
+arm
+* arm, build
+ - build/gcc-12-defconfig-lkftconfig
 
-For bus_register(), any error which happens after kset_register() will
-cause that @priv are freed twice, fixed by setting @priv with NULL after
-the first free.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Brennan : Backport requires bus->p = NULL instead of priv = NULL ]
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Build errors:
+------
+drivers/clocksource/timer-ti-dm-systimer.c: In function
+'dmtimer_percpu_quirk_init':
+drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: expected
+'=', ',', ';', 'asm' or '__attribute__' before '__free'
+  691 |         struct device_node *arm_timer __free(device_node) =
+      |                                       ^~~~~~
+drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: implicit
+declaration of function '__free'; did you mean 'kfree'?
+[-Werror=implicit-function-declaration]
+  691 |         struct device_node *arm_timer __free(device_node) =
+      |                                       ^~~~~~
+      |                                       kfree
+drivers/clocksource/timer-ti-dm-systimer.c:691:46: error:
+'device_node' undeclared (first use in this function)
+  691 |         struct device_node *arm_timer __free(device_node) =
+      |                                              ^~~~~~~~~~~
+drivers/clocksource/timer-ti-dm-systimer.c:691:46: note: each
+undeclared identifier is reported only once for each function it
+appears in
+drivers/clocksource/timer-ti-dm-systimer.c:694:36: error: 'arm_timer'
+undeclared (first use in this function); did you mean 'add_timer'?
+  694 |         if (of_device_is_available(arm_timer)) {
+      |                                    ^~~~~~~~~
+      |                                    add_timer
+cc1: some warnings being treated as errors
+
+Links:
 ---
- drivers/base/bus.c | 2 ++
- 1 file changed, 2 insertions(+)
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/log
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/history/
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_5.15/build/v5.15.173-312-gc83ccef4e8ee/testrun/26166355/suite/build/test/gcc-12-defconfig-lkftconfig/details/
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 339a9edcde5f..941532ddfdc6 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -853,6 +853,8 @@ int bus_register(struct bus_type *bus)
- 	bus_remove_file(bus, &bus_attr_uevent);
- bus_uevent_fail:
- 	kset_unregister(&bus->p->subsys);
-+	/* Above kset_unregister() will kfree @bus->p */
-+	bus->p = NULL;
- out:
- 	kfree(bus->p);
- 	bus->p = NULL;
+Steps to reproduce:
+------------
+- tuxmake \
+        --runtime podman \
+        --target-arch arm \
+        --toolchain gcc-12 \
+        --kconfig
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/config
+
+metadata:
+----
+  git describe: v5.15.173-312-gc83ccef4e8ee
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: c83ccef4e8ee73e988561f85f18d2d73c7626ad0
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2pfZrBARu3w5Sf8rdEqEy3SJ2mX/
+  toolchain: gcc-12
+  config: gcc-12-defconfig-lkftconfig
+  arch: arm
+
 --
-2.39.4
-
+Linaro LKFT
+https://lkft.linaro.org
 
