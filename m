@@ -1,133 +1,102 @@
-Return-Path: <stable+bounces-96030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708A39E057E
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:50:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127D79E02F1
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:11:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DC59B3BCC1
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626F21614FF
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 13:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9672020010A;
-	Mon,  2 Dec 2024 13:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D24E201277;
+	Mon,  2 Dec 2024 13:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="YrY+66PG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5Yj3Ksk"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81ED1FECD3
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 13:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFECF1FDE05;
+	Mon,  2 Dec 2024 13:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733145039; cv=none; b=ORhy4zYEOd++UyKHyNpXjKvd2u1iNAii4eh3xN7cXtqz1KkpEErVbaKGcEuTYAAzyc7J2nRx9S3Afxo3AQMV6ydCiHkDh1AGumqdP5f9mlY09zYhBkKOUAd/ogm47Ei9n5eyTqLzW2nvq3zGK4KOVvuDIQA7N17T0Ct4AgIeknU=
+	t=1733145042; cv=none; b=eZCUpglPyIg5wEzocudWoRNsu97RJJfEgeZxMG2eE1+6GfBzfSFRN7aZSa4HwjCRyoQ1y5TEeY+mfBYUDGaNBr/EegQl0TkfO0glZVoJvrl+iUYN4ib0IojCbvxc0idXoEKrn9otSi3edZ1pJIWOn1qguKb/JrLz6QnKH1hBTe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733145039; c=relaxed/simple;
-	bh=8+LyaBWREjQInupjASE9sQ2Oa4JjlAvEDMvPzEVZRGg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P5Wg2UMXB7SEqgxjltdp1biAkdJgzlmk9BcnajmpMIHTXcZMXxGYZ7s6XQbMxwNMXVbEU+WjyB3ZgPUDoPYpPeopsUYMrtpLuqCaLDdmG5c6EYKoMFT92ttozP+LxAsQowfevNFP/w6qNMg9DAkN0cFSczQDSNz2XLNEV1Z5doU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=YrY+66PG; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 41FCBA00FF;
-	Mon,  2 Dec 2024 14:10:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=DXhKt42b/ZNrT+XgK2dm
-	5hyq3ayw20HDBubAXjXBvMY=; b=YrY+66PGHGOQhxuAvGMULBJNR4/6BPCAR5EX
-	cjuTvHYoOSGk0es4tfQhR8ai8ZbXYvXpBErXraFkFPAJkGDUSC0kDBdmvF4qHDBy
-	w9Oq+A73RjLsIORz6LCUiBi5QUOk/6Vto5lNim++qce4Dbo3eeuRSngn8U921NOv
-	AxTBWb4BTKtyyTcf5dAXBBrU6GX+Gq/159Y1BgC/ZIs57vp6hk7R68uwUVQDnE/l
-	LUD7W9rlUmmhwUejLvlbVprY6vccJ+YAhxF6CnddCUC0FdkHH5gaT9r5QhI0VSkD
-	P4SDIk5BGH6/hcLa4IzDU3IJrP+zLVS+bJdjWjM832anM4Q4A/Jdgnb6We3JoW2p
-	9jvRfPfQQ1XF7ijuCKnaNjJNt3t+BVhgxMQyDxTCwQsW2Z371osioJY/3xEJfOAK
-	2/KZsyZ4CdCBs7KuudpHLa6Giif7FF3s2V3KKlTnhYdt2AzHIgCOIhGFl/7G6JhD
-	XswChcFuTOktgxN2AG96oi9rnK01YNePuwWpQmsxKG2g2/68WIe43YOxkgi/suWu
-	+EbT5MuXD3NTGzvs/y9JUR2hM42LYCpY9U7CjA+MgBKugTIDoIV1PiMlEmQDuMnB
-	AX0qsm8Pl/HRYG6/8paVLov2GYh29vMx2DHbh08FIiXoEcgTV7F97HBmMmo8hHnj
-	32jLyGw=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Frank Li
-	<Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH 6.11 v2 3/3] net: fec: make PPS channel configurable
-Date: Mon, 2 Dec 2024 14:10:25 +0100
-Message-ID: <20241202131025.3465318-4-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202131025.3465318-1-csokas.bence@prolan.hu>
-References: <20241202131025.3465318-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733145042; c=relaxed/simple;
+	bh=HO4UUheOfZr/hJj7JF7ERpOZcPHzNpDSc4ckUhHJH4E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=p590FFn9GUmddivR+HHETblzL/GK3W+n9X+rSXcnE2Eqp5BXZR/mKSQ8U2CXpsUZHd/TfMilgudgj1qP2R4cgtw6z9XHcd6uq8huZ1da5PgRFiK32MwTANXOiNMkea/+tCoST+wuSSMA54INpVN0Em5+q5Oj+iLLLdghvYsX5hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5Yj3Ksk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7919FC4CED2;
+	Mon,  2 Dec 2024 13:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733145040;
+	bh=HO4UUheOfZr/hJj7JF7ERpOZcPHzNpDSc4ckUhHJH4E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=E5Yj3KskMWrA7Vb4iackjEGceMQM3OGRbHQI6Ax6Sz7BfIsCEI43Ds0iKeITuCtNu
+	 A6/NqqhOkr7TQwNRkFpBmAyDaf5EaWDoLE9HXkZcoDRCH0Tven+AB8y97GI6/07cmh
+	 0Lq6MPyatPVxqFWlnQKrIu+eGHOB0hnZrWJfOUaCHPcqaYBvbiiVxrBoLkxd5IDCE/
+	 wg1GTztHk700EomzXBV9sBGPl03cO3OxIUzYIONIJuyvg6OeHY8urIkN66tLVyRjOp
+	 szKwIqoTXFxdqXBY5Lr2aD/OMM7GhZwTh/yRyVTTZUUMeRV/bfn811I5XslMeo+JxS
+	 fO4cW3/tyg/Rg==
+From: Mark Brown <broonie@kernel.org>
+To: Cosmin Tanislav <demonsingur@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J . Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20241128130554.362486-1-demonsingur@gmail.com>
+References: <20241128130554.362486-1-demonsingur@gmail.com>
+Subject: Re: [PATCH v3] regmap: detach regmap from dev on regmap_exit
+Message-Id: <173314503922.36876.15664394255799919221.b4-ty@kernel.org>
+Date: Mon, 02 Dec 2024 13:10:39 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733145035;VERSION=7982;MC=602347955;ID=156988;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94855637261
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, 28 Nov 2024 15:05:50 +0200, Cosmin Tanislav wrote:
+> At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
+> is called, which adds a devres reference to the regmap, to be able to
+> retrieve a dev's regmap by name using dev_get_regmap().
+> 
+> When calling regmap_exit, the opposite does not happen, and the
+> reference is kept until the dev is detached.
+> 
+> [...]
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+Applied to
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Thanks!
 
-(cherry picked from commit 566c2d83887f0570056833102adc5b88e681b0c7)
----
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+[1/1] regmap: detach regmap from dev on regmap_exit
+      commit: 3061e170381af96d1e66799d34264e6414d428a7
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 37e1c895f1b8..7f6b57432071 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.34.1
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
