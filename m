@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-96044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F92A9E0801
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B689E08DE
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB64BB3C417
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:27:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BE5CB3C741
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 14:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09319204086;
-	Mon,  2 Dec 2024 14:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BBB205AC3;
+	Mon,  2 Dec 2024 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIdrIAGS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpUSH21W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD721FF5F9
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 14:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37FB205ABB
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733149594; cv=none; b=ibA2XYTMb4aj3CXMQRRD5twtWW6Jz+0vaaYKUCpdTIPG1eAIi7GbVhCeXKnIlDXCNvruO2x30zfOy0eRTKjMctjRhBAHGNEfHavwcLHIXJtu24J98ZZ9sBCGCp9xCZ73IHQv25qSooQijNlB03MlcnLKBKUbOQnRWrFFiLTfsVI=
+	t=1733149598; cv=none; b=Jc81JO5JILWVfkDWA8kUWZuuAFPh9QMzSJ1vciA+w+kcrxM3kLoHk4rbHBKBRkvpcWCztqw4wCM1a/hw7utAdeJCYkjUXqe8IEhT4qn3zCRoFRrDEA9gT45XmakPSdhPh5gxjCQwa1m5YHB4s06URjDqeND44klnJCPmtzORLDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733149594; c=relaxed/simple;
-	bh=qw84Ak0Qf5IJKLX8hGf6m0SwN8ouxitQzr8wFvZUwoo=;
+	s=arc-20240116; t=1733149598; c=relaxed/simple;
+	bh=D5n7lDtMv0tZ4UGOe5MOFI5huZPvwlHhiXJNfH4EzGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paAg5mlobDByb5An/zxnNllUWUkysRpA+guBlMZHTqtdyZa+x/ogs3N9kMUv3W34OFLqLm+wDxNwysbXcCPSTdK/3fkcE/PSioEWPssUFfMd7N1GHmxmFoiAG1NvVH4MxPJxKYJhIy8F/5cwsnM/fs9ggams02s2k85aqqQnyRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIdrIAGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6212C4CED1;
-	Mon,  2 Dec 2024 14:26:33 +0000 (UTC)
+	 MIME-Version; b=SxaZPTKLU2QIo0JzkmlVnL84PJRS9riVSGRoB6UKS0EP89vNtlFkHiHRBS1h+fGYwpVeHNDGEk+yB75zKchiYiLHr7c4jhNVjTNQIvWqML2fdcq/IdY5i82ubZBPnZSz+IgPybg858Mrp777r+6v8djzL21vdVUfbfmSRLAEFGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpUSH21W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17C3C4CED1;
+	Mon,  2 Dec 2024 14:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733149594;
-	bh=qw84Ak0Qf5IJKLX8hGf6m0SwN8ouxitQzr8wFvZUwoo=;
+	s=k20201202; t=1733149598;
+	bh=D5n7lDtMv0tZ4UGOe5MOFI5huZPvwlHhiXJNfH4EzGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIdrIAGSOrTBKa1P1M2VOUkYeQWU3KWDsEg2ev0H4UEwEkhB9qU2h4/s7XPTzStcx
-	 wNOMO1979bsrrvcTeECLQePgsblCBCU0q6Lq7rUFCF2GJuF08OLAv0yRCZrZv1d6OT
-	 0k0KZFF15FZAL0jsDcEx3XiYAdysb385THCIyBR8bKYPytaXXl3kFTcGJ0IcUA7Aq8
-	 3STdHpzAY+go4VjDBaTeQ82tJ1QcDF2F6RENfpUn9byjE7/WpZwYOXXwsCXv1dflnR
-	 sl2b6B04kK9ZWcasl9iGe1SWdQYI378kdGWkImIXWPO/FDwB5aTmYkINP6yvkB0q/G
-	 Wt+em2seQIklA==
+	b=UpUSH21W9SLpZKHcbG1UadZbQ/z5eArQ0MYuEiKej/LI8+D9Teu3Rh7VBVuJQm5TY
+	 BQUxQhWNV16a3OD39gkPW501tjMP8wI6YxewxbiftLItw8PcfRJWq2tMcsBdZ1zSyV
+	 DSB0V7KOge5u7UZaALaSCOYifynaIF607shmto8f4Fe8fyEMI/Du57l66BHfFeA4/3
+	 quC3YsUK1ehbefAKtbYtGZE5Egfq8/r2Id4kScCg2GFWFXdKZJUMCD/jUH2KgojyYr
+	 sWRiiw0LiLfkbb9da/Xnd33V0t2WjNC8ee5aZ9fxay5t+G82XCuuWdbM6Q9KsjyBeH
+	 Cnsw9fECoQ+6g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
+Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 1/2] Revert "arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled"
-Date: Mon,  2 Dec 2024 09:26:32 -0500
-Message-ID: <20241202073548-b9a426c29eccbc4c@stable.kernel.org>
+Subject: Re: [PATCH 6.11 1/3] dt-bindings: net: fec: add pps channel property
+Date: Mon,  2 Dec 2024 09:26:36 -0500
+Message-ID: <20241202082427-ab4af3e7ca87cb9b@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202081552.156183-1-wenst@chromium.org>
+In-Reply-To:  <20241202105644.3453676-2-csokas.bence@prolan.hu>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,12 +63,25 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-No upstream commit was identified. Using temporary commit for testing.
+Found matching upstream commit: 1aa772be0444a2bd06957f6d31865e80e6ae4244
+
+WARNING: Author mismatch between patch and found commit:
+Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+Commit author: Francesco Dolcini <francesco.dolcini@toradex.com>
+
+
+Status in newer kernel trees:
+6.12.y | Not found
+6.11.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  1aa772be0444a = 1:  5da2b2c0837a1 dt-bindings: net: fec: add pps channel property
+---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.11.y       |  Success    |  Success   |
 
