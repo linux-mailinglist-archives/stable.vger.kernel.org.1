@@ -1,193 +1,158 @@
-Return-Path: <stable+bounces-96154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE84C9E0BCD
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 20:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 528D69E0BD3
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 20:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3EC160865
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:15:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21BDC1618E8
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 19:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472A31DE3BC;
-	Mon,  2 Dec 2024 19:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA961DE3C8;
+	Mon,  2 Dec 2024 19:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jo8SSM4y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3SUtQ1+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564AB1DA103;
-	Mon,  2 Dec 2024 19:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF151DE3C0
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 19:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733166899; cv=none; b=ryuRSPMglLcb4+VdtQURuxSdS+l28zz2+UjsVXUAJ86wS+Mu6Gurf4lOP/LFfSCY1eiFAGgAYV+Gz0MI4uzvlUxxB7JGNwygb3Eft5AYIAPj93eB382hGpCwbkHR/zllMPlzVO7/uQwRk1QNyR06upnoPCcLbT7c05gyrv1er3g=
+	t=1733166959; cv=none; b=ef8286pTVAjiW80XvzF8iqZwajLo3rhLxx+4lOaDc9/Ezv+v+g9uP2aYCb4pG2MhaJdZMxSrivqDNLiVlvCkU3DFhAJLGwnFdgnat32rmbIZ3WLEq5/pXlv5L/MRo2JjSFsLvpgoHLYKxoAs1qgc+GiXSwCMDIbHONFJnB7ssBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733166899; c=relaxed/simple;
-	bh=2sxtv/y68ixCC2yd467bpPVnji8VQd77K8S22YQRQcc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffHqqUSQhrnYM+lwNNsoJOiU/nAAlJBFDJBjtoL2HsePvpe1ofcawssv/4Kp12fIZBcNA3GRhDW68qhS2/JD4KJi07jTneAOb7kq3FAytg1XlbUY7R1NseYZT6fST8/Nid2BnDiRHzc1tXvFb4hiUsYsIveY+g2Iw6MYfomxIvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jo8SSM4y; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-434a95095efso33380045e9.0;
-        Mon, 02 Dec 2024 11:14:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733166895; x=1733771695; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i7ZTXIXvVL7lx+KtLs1uQHgMBRSbrXmXN+OqvaN4WK0=;
-        b=jo8SSM4yZ5zLGNI4GpgbYdHAQQnHZ1yhTSOwYh6EmsXRslRLhEbEzV9pBtBgmjPwt2
-         mIr8O88PZMvLu91IehTBx8yHPwna8khmZp9HrF24rS+uEMaHlvowKDXpfIu/yX2MasJv
-         JqWBwX3MZm48kF11dVB6bXSWUwNtij4ny/YXN57Ioz7a9XpYlQXPe4fmAHyOexmBQo/C
-         KSSCPn92EH8agsV7rmlxNgp2cl5fGB4v9DGj+WtGb0N1V3Z9HUw/VEm6+c55/+hWSmlo
-         Zr5kMDvOkjEKP4CKCFuykO8tguhT65Xivk2loaGCQYoKG5rI52W9SWSbOAhZqylje4ST
-         UtYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733166895; x=1733771695;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i7ZTXIXvVL7lx+KtLs1uQHgMBRSbrXmXN+OqvaN4WK0=;
-        b=CxlSrZKUlXDiXKpL76k8B7jOFlYanpA8K4CMKSerfPqaS/IdHpLAspXU+mIpu9VuhT
-         anRIZ56wnrx2xwHDI+8pm8NrCgy4jwJqM5NmiKD31CMaJeqXJwrPIYi+vbwEheow/evS
-         WiYgpaVrxEfrdgdy1lzkHAFIfEforRrXjgXfeZ1Rn5CEtainwk1UNJulUhZv8LaqK/09
-         Hq5dcdr6zDKKZs1N/tz6+Jf4+/GBAn9n67cvhQWZA9dbQcvFoFE4bgDBt5pmQ5XPFVyk
-         +hvpXLTu/ic4kR2CFfcwLDH7NDAhVcVSydpXUWwJuNhx5PSI/1WMKdZ5RSflAecPiXS2
-         dhBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUi9G495H0Us4eXtGkoTkqXNGx8dR+/oAw/6Hdqm/jG9RY+ZNu8lnFmJUeyH43yFIi0KcgUJQytK+pWVOU6@vger.kernel.org, AJvYcCUwrHxcuTzsmpgUUv03VP4KLjFJyr8ILR/V3qSXKOnqSxryydHWkyc6szgW1A+RmWsFbnG43K5p@vger.kernel.org, AJvYcCWpJMpmpXyiSX+bgYvBczVh9lqoUDxQMVfgcEQdGFgPp7qPbQQFQSPEjBMOxwG6fv6JBAtMqF2P1nk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIJHZxRgNKben0dfBRO8UVUiyPohWVvIrCZ84GWg8JNH6iZFDk
-	bqwMK8ev56KvpFf58+RAqRRgeSBnVw6BcFHukwcm66LocS+OjXsN
-X-Gm-Gg: ASbGncuK1zGRSkTX+ZyRD/t6hhLWSGZpydfLewh8vU4iA/UX+QFo41/fAb1tfNd5N/b
-	PAXzhazcQ1Z5LnZdmv7D9xrNrYRfSOfdVYO74107+1F/rAtyZBRWwSxj+5cuqPRaYftZRKF/oj4
-	aazpMmIlSjd3vVswD9WlioPFTcJFx8Id5QMU7L1nwzW30C7lho2SRTY4LnPe0utYOFrkZeLGP3W
-	XTVwlDTmRLA7oXUYed/b38cZe+iIpGYUj0gPTWYE/UXKNu598/o5uPXous0YvLLgPHqOEHjmkSW
-	9W9CAU3bfNfuG8276Q7s9JZM9mnocdkoDhJIS24ogrJKRKL6NP7dvGAO/psA4v19xgYhBQXf3Sw
-	huPm4OH73lGY//hsDdHt9u/Kv1DejfTuQI8033BWsaE4=
-X-Google-Smtp-Source: AGHT+IF/PTp+oicDfX4BGvsTJRQTihlQjk/D7b6q437NfHoVa3y7GK1LeAWAHScaawXCknIYt1C5Bg==
-X-Received: by 2002:a5d:59a8:0:b0:382:4b69:9ca4 with SMTP id ffacd0b85a97d-385cbd89accmr16498545f8f.26.1733166895267;
-        Mon, 02 Dec 2024 11:14:55 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:d553:b993:925a:609c? (2a02-8389-41cf-e200-d553-b993-925a-609c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d553:b993:925a:609c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd36557sm13249601f8f.24.2024.12.02.11.14.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 11:14:54 -0800 (PST)
-Message-ID: <cce23b3b-aff6-4d3b-a55e-d0ce67a6a650@gmail.com>
-Date: Mon, 2 Dec 2024 20:14:53 +0100
+	s=arc-20240116; t=1733166959; c=relaxed/simple;
+	bh=qLsGyyWHddAJIGqhcafat1lla4GPmK3yLf+SvyW8PcM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lRYi6ZA+hGSIYrmFXNE/wHoIfnmKhs4gnWsZc8ZqRLMxcsCNypfNYCoPPy5zOlBfZ9TO4P7AslUACwsEbX1Rl8TobJYqbX43z+v7PA1MPMbB7gwoN6Zy+rh9B1YrJgoPPsqdocgq5IkUuEMwFpxt0+qeI+rjFPYW1HOkMEOrFQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3SUtQ1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4069C4CED1;
+	Mon,  2 Dec 2024 19:15:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733166958;
+	bh=qLsGyyWHddAJIGqhcafat1lla4GPmK3yLf+SvyW8PcM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=N3SUtQ1+KNZu5ECqH/TnKdGPVKOJqcuZqCQ3GwZgGy1qrluyqlpO0PQLjHen+jEI5
+	 nTpeTUAHVTzP/LBt70EjfFGI3ddd36HYtAhTyLg0kB2sPcEcFFw+SnwxjgSB7O9Qki
+	 BDHDCuzPD/y7MnbR3brfMkbfeFhKRUslpF/lP+d/AqEvyhrBpBBYnxRTkwka77NAbA
+	 TOor89Sz3VYXG5lo1VFkRykX9XWrKTalDDYjigw/eWanSmtulVYqGKnXAKZfKyWqYy
+	 A65NyC/H7NEPbhTCfO0Ans8Ay573FR/frwClIi40ojpLzL1rd+weKu9+fE2+hs1SjH
+	 afS+gFfx0qltw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jan Hendrik Farr <kernel@jfarr.cc>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6.y] Compiler Attributes: disable __counted_by for clang < 19.1.3
+Date: Mon,  2 Dec 2024 14:15:56 -0500
+Message-ID: <20241202122847-9d04cc548d1b3f9d@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241202162307.325302-1-kernel@jfarr.cc>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/11] iio: light: as73211: fix information leak in
- triggered buffer
-To: Christian Eggers <ceggers@arri.de>, Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
- <20241130204923.45d71fa4@jic23-huawei>
- <9e1310d8-bcd9-40f9-8d44-abddc595ae9b@gmail.com>
- <7089293.9J7NaK4W3v@n9w6sw14>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <7089293.9J7NaK4W3v@n9w6sw14>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/12/2024 19:00, Christian Eggers wrote:
-> Hi Jonathan, hi Javier,
-> 
-> On Monday, 2 December 2024, 16:38:50 CET, Javier Carrasco wrote:
->> On 30/11/2024 21:49, Jonathan Cameron wrote:
->>> On Mon, 25 Nov 2024 22:16:18 +0100
->>> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
->>>
->>>> The 'scan' local struct is used to push data to userspace from a
->>>> triggered buffer, but it leaves the first channel uninitialized if
->>>> AS73211_SCAN_MASK_ALL is not set. That is used to optimize color channel
->>>> readings.
->>>>
->>>> Set the temperature channel to zero if only color channels are
->>>> relevant to avoid pushing uninitialized information to userspace.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
->>>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->>> Huh.
->>>
->>> If the temperature channel is turned off the data should shift. So should be read
->>> into scan.chan[0] and [1] and [2], but not [3].
->>>
->>> Not skipping [0] as here.
->>>
->>> So this code path currently doesn't work as far as I can tell.
-> 
-> I've just tested and you are right! In our application we never had the case that
-> we didn't read the temperature channel. If I don't enable scan_elements/in_temp_en,
-> I need to put the data into scan.chan[0..2] in order to get correct values in my
-> application. This also means that the "Optimization for reading only color channel"
-> (and the following saturation block) isn't correct at all, especially if reading only
-> one or two of the available channels.
-> 
->>>
->>> Jonathan
->>>
->>>> ---
->>>>  drivers/iio/light/as73211.c | 3 +++
->>>>  1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
->>>> index be0068081ebb..99679b686146 100644
->>>> --- a/drivers/iio/light/as73211.c
->>>> +++ b/drivers/iio/light/as73211.c
->>>> @@ -675,6 +675,9 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->>>>  				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
->>>>  		if (ret < 0)
->>>>  			goto done;
->>>> +
->>>> +		/* Avoid leaking uninitialized data */
->>>> +		scan.chan[0] = 0;
->>>>  	}
->>>>  
->>>>  	if (data_result) {
->>>>
->>>
->>
->> Adding the driver maintainer (should have been added from the beginning)
->> to the conversation.
->>
->> @Christian, could you please confirm this?
->>
->> Apparently, the optimization to read the color channels without
->> temperature is not right. I don't have access to the AS7331 at the
->> moment, but I remember that you could test my patches on your hardware
->> with an AS73211, so maybe you can confirm whether wrong data is
->> delivered or not in that case.
-> 
-> Yes, the delivered data is wrong (as already stated above).
-> 
-> @Javier: If you like to rework this, I can test your patches (I have still
-> access to the hardware).  Otherwise I can also try to fix this on my own.
-> 
->>
->> Thanks and best regards,
->> Javier Carrasco
-> 
-> Thanks for reporting this!
-> Christian
->>
->>
->
+[ Sasha's backport helper bot ]
 
-Thanks for your prompt reply. I will rework it for v2, as the current
-patch does not apply. For this path, scan.chan[0]..scan.chan[2] will be
-read from the sensor, and scan.chan[3] will be set to zero.
+Hi,
 
-Best regards,
-Javier Carrasco
+The upstream commit SHA1 provided is correct: f06e108a3dc53c0f5234d18de0bd224753db5019
 
+
+Status in newer kernel trees:
+6.12.y | Not found
+6.11.y | Not found
+6.6.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  f06e108a3dc53 ! 1:  22bf799c95105 Compiler Attributes: disable __counted_by for clang < 19.1.3
+    @@ Metadata
+      ## Commit message ##
+         Compiler Attributes: disable __counted_by for clang < 19.1.3
+     
+    +    commit f06e108a3dc53c0f5234d18de0bd224753db5019 upstream.
+    +
+         This patch disables __counted_by for clang versions < 19.1.3 because
+         of the two issues listed below. It does this by introducing
+         CONFIG_CC_HAS_COUNTED_BY.
+    @@ Commit message
+         Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
+         Link: https://lore.kernel.org/r/20241029140036.577804-2-kernel@jfarr.cc
+         Signed-off-by: Kees Cook <kees@kernel.org>
+    +    (cherry picked from commit f06e108a3dc53c0f5234d18de0bd224753db5019)
+    +    Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
+     
+      ## drivers/misc/lkdtm/bugs.c ##
+     @@ drivers/misc/lkdtm/bugs.c: static void lkdtm_FAM_BOUNDS(void)
+    @@ drivers/misc/lkdtm/bugs.c: static void lkdtm_FAM_BOUNDS(void)
+      	pr_err("FAIL: survived access of invalid flexible array member index!\n");
+      
+     -	if (!__has_attribute(__counted_by__))
+    +-		pr_warn("This is expected since this %s was built a compiler supporting __counted_by\n",
+     +	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY))
+    - 		pr_warn("This is expected since this %s was built with a compiler that does not support __counted_by\n",
+    ++		pr_warn("This is expected since this %s was built with a compiler that does not support __counted_by\n",
+      			lkdtm_kernel_info);
+      	else if (IS_ENABLED(CONFIG_UBSAN_BOUNDS))
+    + 		pr_expected_config(CONFIG_UBSAN_TRAP);
+     
+      ## include/linux/compiler_attributes.h ##
+     @@
+    @@ include/linux/compiler_attributes.h
+      #endif
+      
+     -/*
+    -- * Optional: only supported since gcc >= 15
+    +- * Optional: only supported since gcc >= 14
+     - * Optional: only supported since clang >= 18
+     - *
+     - *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
+    -- * clang: https://github.com/llvm/llvm-project/pull/76348
+    +- * clang: https://reviews.llvm.org/D148381
+     - */
+     -#if __has_attribute(__counted_by__)
+     -# define __counted_by(member)		__attribute__((__counted_by__(member)))
+    @@ include/linux/compiler_types.h: struct ftrace_likely_data {
+     +# define __counted_by(member)
+     +#endif
+     +
+    - /*
+    -  * Apply __counted_by() when the Endianness matches to increase test coverage.
+    -  */
+    + /* Section for code which can't be instrumented at all */
+    + #define __noinstr_section(section)					\
+    + 	noinline notrace __attribute((__section__(section)))		\
+     
+      ## init/Kconfig ##
+     @@ init/Kconfig: config CC_HAS_ASM_INLINE
+    @@ init/Kconfig: config CC_HAS_ASM_INLINE
+      config PAHOLE_VERSION
+      	int
+      	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
+    -
+    - ## lib/overflow_kunit.c ##
+    -@@ lib/overflow_kunit.c: static void DEFINE_FLEX_test(struct kunit *test)
+    - {
+    - 	/* Using _RAW_ on a __counted_by struct will initialize "counter" to zero */
+    - 	DEFINE_RAW_FLEX(struct foo, two_but_zero, array, 2);
+    --#if __has_attribute(__counted_by__)
+    -+#ifdef CONFIG_CC_HAS_COUNTED_BY
+    - 	int expected_raw_size = sizeof(struct foo);
+    - #else
+    - 	int expected_raw_size = sizeof(struct foo) + 2 * sizeof(s16);
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Success   |
 
