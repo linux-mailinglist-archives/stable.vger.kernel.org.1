@@ -1,158 +1,86 @@
-Return-Path: <stable+bounces-96109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A470A9E078C
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:51:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58389E081F
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:13:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F264281863
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:51:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FB517550F
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5BC433B5;
-	Mon,  2 Dec 2024 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3CC757EA;
+	Mon,  2 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdfV0K/t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D875zyDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF914204B
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F24E4D9FE;
+	Mon,  2 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733154661; cv=none; b=bboeTNVD3v4Ex0MUW4bhfsWDj0NaiuPrXegYCkn6PAKk3YrrS3Mh0PSJEXwE9mBYSWhairakD8F4SZpWvL2wNzsKNZ6YRnlRFd8RrBiLP99j4nqeXIhGoZ19gWxWzwIDGZk5v5seQ0yhUGdhs98FWUPcpvB8/DEjnZhTkdxjfNg=
+	t=1733154672; cv=none; b=CdlRmS4Clr/gOzJRT7e1ajserZz7gYstC+5/G/LiyHA6vDibLIrFNyjMwfndBTKGsJjE4nQ/PwG9xBS4fM2iyuEGbCoqBXUwN31fc+WGGwFiHTX7drVCHj4zhvfvYndC6VciQ2UrsxgFj9BbS+ujoIdgICSDnJD3U/TyPWMScRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733154661; c=relaxed/simple;
-	bh=DQNeReyFFJAt8mKrUlfxEK7wRq07mbfjLFQgDCeqjnA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fkKnAVV4n7nEkrJq/ehsCL3sp6DYJncMmKVXA9BjnNX+j7E+S8qEZ8VaMj0mDHS585fnSHNgwyJRV7ftOCIb72xn5g/6heBpZ5ulkAKNz4nqkTce22KEgXHV/4zE/DfPxW0deyGh0XS1K9tnr9tWjV8fF8Rkb1oc3GJX/9d6ncA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdfV0K/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AA9C4CED1;
-	Mon,  2 Dec 2024 15:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733154661;
-	bh=DQNeReyFFJAt8mKrUlfxEK7wRq07mbfjLFQgDCeqjnA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tdfV0K/tVcr521hLTjCkVNUCvP1WiCMZ75Vf7hx5GSzzFPK/lKAsbHpuqgHWeDmuh
-	 obaKPcQ8rgsuDorh02Rkn+bgIoceyfYTGVGnHUQRwtHc8cMFw6zu1ebNbZagP9tJtI
-	 Am3BapGM5yPL2Qfu+Sb7TNX8/lufxyzemVA9xL+c=
-Subject: FAILED: patch "[PATCH] xhci: Fix control transfer error on Etron xHCI host" failed to apply to 6.1-stable tree
-To: ki.chiang65@gmail.com,gregkh@linuxfoundation.org,mathias.nyman@linux.intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Dec 2024 16:50:47 +0100
-Message-ID: <2024120247-spew-molasses-0b53@gregkh>
+	s=arc-20240116; t=1733154672; c=relaxed/simple;
+	bh=TdJIo9rbpSkZfR4W04BrtErK00BVRHFt+iRd8f3zNwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n5MygeMY/w2Ad8mb9IiHYdc0baCicxD4ihIx4iV/aJL/icZfXBoPlu8+oVMyxeo+F27TFfkoByYO0ifn9ksRLknjHE9IytVS8hp7meWyhWuRYBaQfRjBmq2eVNNS8zI3ZT/Rc/6Muwe89hUAQWodjpC3Dsa6aluWkONyja59fWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D875zyDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885B3C4CED9;
+	Mon,  2 Dec 2024 15:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733154672;
+	bh=TdJIo9rbpSkZfR4W04BrtErK00BVRHFt+iRd8f3zNwg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D875zyDzvbC7embwPNcDmI8b8WRxaML1SR7hhoT/eEngpaucpISXMgCkfR7H2LXGe
+	 PcONtEVqcsD9pUjib5w/vPCLXhxvpszpmCj/Lo0rLhwtCqbwPBhFsR3MzRPiKzw/Bh
+	 tsOnqjkYCsAgiVs/j2JpKo3DYSJqsydV0pPt+z7pKvsHp5C6fcUI4FdMw4ykVnDQqJ
+	 edwctG52X40+7U/VAtrAu9gxK3RnZeLgpr5L0PRybOB2ZCUIn3WklV7oAFJ1NGbKQN
+	 ny2WT5cPoi7MhXnHGzFD+BMRMaq0YmbMmLVXXV8Z/l5IyoYxENY/WEfpLqObJYFyh0
+	 Uhr8J5rGPlx+Q==
+From: Bjorn Andersson <andersson@kernel.org>
+To: konradybcio@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sa8775p: Fix the size of 'addr_space' regions
+Date: Mon,  2 Dec 2024 09:50:59 -0600
+Message-ID: <173315466523.263019.5335489688536018100.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241128145147.145618-1-manivannan.sadhasivam@linaro.org>
+References: <20241128145147.145618-1-manivannan.sadhasivam@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Thu, 28 Nov 2024 20:21:47 +0530, Manivannan Sadhasivam wrote:
+> For both the controller instances, size of the 'addr_space' region should
+> be 0x1fe00000 as per the hardware memory layout.
+> 
+> Otherwise, endpoint drivers cannot request even reasonable BAR size of 1MB.
+> 
+> 
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Applied, thanks!
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5e1c67abc9301d05130b7e267c204e7005503b33
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120247-spew-molasses-0b53@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+[1/1] arm64: dts: qcom: sa8775p: Fix the size of 'addr_space' regions
+      commit: e60b14f47d779edc38bc1f14d2c995d477cec6f9
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5e1c67abc9301d05130b7e267c204e7005503b33 Mon Sep 17 00:00:00 2001
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-Date: Wed, 6 Nov 2024 12:14:45 +0200
-Subject: [PATCH] xhci: Fix control transfer error on Etron xHCI host
-
-Performing a stability stress test on a USB3.0 2.5G ethernet adapter
-results in errors like this:
-
-[   91.441469] r8152 2-3:1.0 eth3: get_registers -71
-[   91.458659] r8152 2-3:1.0 eth3: get_registers -71
-[   91.475911] r8152 2-3:1.0 eth3: get_registers -71
-[   91.493203] r8152 2-3:1.0 eth3: get_registers -71
-[   91.510421] r8152 2-3:1.0 eth3: get_registers -71
-
-The r8152 driver will periodically issue lots of control-IN requests
-to access the status of ethernet adapter hardware registers during
-the test.
-
-This happens when the xHCI driver enqueue a control TD (which cross
-over the Link TRB between two ring segments, as shown) in the endpoint
-zero's transfer ring. Seems the Etron xHCI host can not perform this
-TD correctly, causing the USB transfer error occurred, maybe the upper
-driver retry that control-IN request can solve problem, but not all
-drivers do this.
-
-|     |
--------
-| TRB | Setup Stage
--------
-| TRB | Link
--------
--------
-| TRB | Data Stage
--------
-| TRB | Status Stage
--------
-|     |
-
-To work around this, the xHCI driver should enqueue a No Op TRB if
-next available TRB is the Link TRB in the ring segment, this can
-prevent the Setup and Data Stage TRB to be breaked by the Link TRB.
-
-Check if the XHCI_ETRON_HOST quirk flag is set before invoking the
-workaround in xhci_queue_ctrl_tx().
-
-Fixes: d0e96f5a71a0 ("USB: xhci: Control transfer support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-20-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index f62b243d0fc4..517df97ef496 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3733,6 +3733,20 @@ int xhci_queue_ctrl_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
- 	if (!urb->setup_packet)
- 		return -EINVAL;
- 
-+	if ((xhci->quirks & XHCI_ETRON_HOST) &&
-+	    urb->dev->speed >= USB_SPEED_SUPER) {
-+		/*
-+		 * If next available TRB is the Link TRB in the ring segment then
-+		 * enqueue a No Op TRB, this can prevent the Setup and Data Stage
-+		 * TRB to be breaked by the Link TRB.
-+		 */
-+		if (trb_is_link(ep_ring->enqueue + 1)) {
-+			field = TRB_TYPE(TRB_TR_NOOP) | ep_ring->cycle_state;
-+			queue_trb(xhci, ep_ring, false, 0, 0,
-+					TRB_INTR_TARGET(0), field);
-+		}
-+	}
-+
- 	/* 1 TRB for setup, 1 for status */
- 	num_trbs = 2;
- 	/*
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
