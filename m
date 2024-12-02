@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53CF9E087E
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:29:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FBF9E06A0
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:17:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA96DB2E297
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBC5016B5C9
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 15:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A35204093;
-	Mon,  2 Dec 2024 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E51F2040A7;
+	Mon,  2 Dec 2024 15:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnAlKWoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlFPPfIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B51D545
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF461FECDE
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 15:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151970; cv=none; b=RX6oGeBv9vlSkKvVVqI1CkVyUjVD0w1Jy9jRwmJDbtAVckpWdS2puKJ4iY3Xj5CfMeKO1bMmPyiiHSPcyo8DmsqcnWhbLyPlflP92nitMp2ZUNtmGbEOnkw8o23imysyo528VowdEo6Uw8p6zVxqZfTcU4m8g5NLbIET1gsCum0=
+	t=1733151986; cv=none; b=HakQHMscjCG7NRD71mO4jsD9ovYfkw1OM2SdEaKGW8AlAejh5uF13oSv2F7YNlqLs3aeJlAk2aTbrcL6OgugaAEoBx3LhYqrvucXmsbotkNU7HdkJLKpTyr72LVMwOZYEJ9mUeuEcvRV2PrlUImtp4aRc5tlhtZupEkkEH5YC5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151970; c=relaxed/simple;
-	bh=YwucXexK3f9ZebQnAhCDkmBnmXwC9tIXFtcKmrGekqI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KJu+WK3j7E4SgFRB/Liwir6n5zregb9y0Wb6HA8aQHXbe6X1QQRoRljYwlXijrwQbxj2NV3k6GKOBq68RBOiLq5eKfEo4wwwD3JEMjwLaR8C679BMbE0UoRr0B9CzSKNZkWVXbmx8HGLu8PSsJlqnElGD5soOQum+U9qz93aT6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnAlKWoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B393C4CED1;
-	Mon,  2 Dec 2024 15:06:09 +0000 (UTC)
+	s=arc-20240116; t=1733151986; c=relaxed/simple;
+	bh=fbJVdhyQAwRdrYcpbbcX57PbM6AVszYcLAxciC4E16Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KfSSO87+CbrO1U6PWoPZp0s+bTxmeaan92lqSyjep3hhXdHt0QPcMPOve7D8XeuusS90Wnet5GyJrAuIgjtoMszuxzp/Wdqz/JIejqgxblOroUQuX+qT1gZJFYWhUvMVte6BZj9USPxmHMS7WhhXxBldTQHz6j9xCLbqW2d//Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlFPPfIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C010C4CED1;
+	Mon,  2 Dec 2024 15:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733151970;
-	bh=YwucXexK3f9ZebQnAhCDkmBnmXwC9tIXFtcKmrGekqI=;
+	s=korg; t=1733151986;
+	bh=fbJVdhyQAwRdrYcpbbcX57PbM6AVszYcLAxciC4E16Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OnAlKWoD+Y7VDYSpsl8sook0PV52OzNLBqQjfvv7JiSa12mBy/Oal1EYJc3eB5tez
-	 YV1yrO//r6FZi2yCUHJlyHBcxZoKsMoZAfdHwhq/kwxKU0da1toeKH0jOVHUvoYhBC
-	 yzSG64JhnpzpNcoSbMdvh5QmLRVcqDhjq5dXkOz0=
-Subject: FAILED: patch "[PATCH] KVM: arm64: Don't retire aborted MMIO instruction" failed to apply to 6.6-stable tree
+	b=SlFPPfIFPnqGVCxcfQxbhAaTwxi6an/kbYn3B6ywDa2/BA739NMyvgOOG5WSlnnGG
+	 8M+HyyzTefPLYH3KM9k+8xHaR0+VkIZa7QZ73UkK3w90ww5gTab3uT5GxujasxScWl
+	 EbtmkFM3MbMhvnW6+4zDn6xToxNeEl3E1CzBGX24=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Don't retire aborted MMIO instruction" failed to apply to 5.10-stable tree
 To: oliver.upton@linux.dev,glider@google.com,maz@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Dec 2024 16:06:06 +0100
-Message-ID: <2024120206-conflict-ambiguity-0106@gregkh>
+Date: Mon, 02 Dec 2024 16:06:09 +0100
+Message-ID: <2024120209-cranberry-font-7473@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x e735a5da64420a86be370b216c269b5dd8e830e2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120206-conflict-ambiguity-0106@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120209-cranberry-font-7473@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
