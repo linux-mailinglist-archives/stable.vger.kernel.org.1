@@ -1,96 +1,134 @@
-Return-Path: <stable+bounces-96138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32299E092F
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDAD9E0932
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0D328226F
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81AD4282256
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4C51DACA1;
-	Mon,  2 Dec 2024 16:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4A1D95A3;
+	Mon,  2 Dec 2024 16:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eed7jgAg"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OGm7CBJd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2BC1DAC95
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5577513C8E8;
+	Mon,  2 Dec 2024 16:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733158652; cv=none; b=nD0UtGM8wxmAZvGIV0UiYU3qx+CmzwFMw36m9ZHUUUVNW0kliUuaBT90RT9SpzDtS5ULgbgYeUwLKuop8GOEhcQGIhn67/03wmlTqFEAHFRw4e5OXq4CNMwLTV6ShDcP6stKVW/t81tLeMMMhrjZ9FoTfc8lpGhaT6/TXY8Whxk=
+	t=1733158713; cv=none; b=f69gYvNsUpECvrM66Lm448lgmnfucUHW43/OUgBdQrFiPcy5W3aw4Vwkg3zyaO8YbzNINDBR/rWQIC/HDGLYK1hNCYy6yY262eUjIiRPpA1mHF/wRuoClYTLkFsZTRjCA3YcEwXD22aENEHRX1VOlFQ8t9kWmTYfXFCooLxCFPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733158652; c=relaxed/simple;
-	bh=9L1XHGwNfFo/RDZVsLVOGp2QONwPMnjqdVl0uPKlqII=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DqQo4VLtLeX9ZHuX08+kospc78SGCs/21j69aBpVhi4BHLjpN1XCHb535sL6F+C047NtYf2OT8Nll1bwAJZRUwBqkRgGABaGtd5x95KcadFkvMyRNbxItzOBlmj02sxujiCU3SXBAI+gzxEuOowtZYRAZRjCXrwW5CDx8TTUH9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eed7jgAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E1CC4CED1;
-	Mon,  2 Dec 2024 16:57:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733158651;
-	bh=9L1XHGwNfFo/RDZVsLVOGp2QONwPMnjqdVl0uPKlqII=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eed7jgAgHA9pA5NK07OTYohwUHBtktIo1w14osd93mVDZxdr4Ti2kXeBIoD1DCFC0
-	 8ucjY1FFuaqSJn4ZyP1ibzJcWxY5E2r6Xl2LSA7JolgbyfvnrON1he4l/OSJGYkMjy
-	 vJuDUpwJMtfXDzyB0rqhT/Ewrsivk79t7rdKAlgHjt56IPv8ng2RvSLdpS5RDTRPZy
-	 Pv8thWoyzIbvUAHNuGvemZAvvbh7pn7DxaW3KxH3MxODTnObICdJHnA0gjv7NpEMV9
-	 OH+NVdwvGFgw58KKn59RhhEyLzh8YQfIIe6MERKhBMWdKHqAKxJHpHQXc8HVFviuy3
-	 wP+ZLQBOAWsrA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 v2 2/3] net: fec: refactor PPS channel configuration
-Date: Mon,  2 Dec 2024 11:57:29 -0500
-Message-ID: <20241202104739-e9362086b350bb63@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202130733.3464870-3-csokas.bence@prolan.hu>
-References: 
+	s=arc-20240116; t=1733158713; c=relaxed/simple;
+	bh=+/aze2XdCAbp3s1wCqprW1SADqz2t0OMsYVnR+C5QD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r25C9x4a26zUxHb9VGjBx+9G7m99bo3zttvG3OmcNT9KFTtTNGeAZuG1LLBUlPQDyKudysQkRGJ+oQVPTowGRvqZhYwj800GZnWomHLy+kg7su+JJcv0vAZuT6aE4aDUGFMuezK7/zaEWnhW0eyHXe04Utrb2rhSxG8qtDKPpZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OGm7CBJd; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id 236B2E0003;
+	Mon,  2 Dec 2024 16:58:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1733158709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=crHXj6kSMxBwiHS4OFprzVGLLYPQotmxut5qDRHbC9A=;
+	b=OGm7CBJdwa/YOzj/A+yWhzEDKMSlz4FKa+GbTgVCyqjDEmP20x1pXABhO0rP2HKdX2UPUs
+	OfsxFl1WVvv4q7n4OT2/Ne3MtYcmxHpJ/RUDI+QaXypAZfPYdWlTOkYf2y7m3G4KQDYx94
+	bS/x2idB9+NXlDCAd7zQy+ixQP9vdCaXPrO9tzFijLXKN29OU1rh0vEp+WwZN0i+u3BwMm
+	PzgPC1wUKGW6DTNfNcHNTKYefvgc0khHOYcmF36L3s63aIS10UWlYTeGubjPGu/ER7sqKE
+	iFE7LGuXU55yNc4D5FwdF4QbeE58rSmbYn9Yc45LvcOIun//70kzgF4pMHLoag==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Stephen Boyd <stephen.boyd@linaro.org>
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] of: Fix error path in of_parse_phandle_with_args_map()
+Date: Mon,  2 Dec 2024 17:58:19 +0100
+Message-ID: <20241202165819.158681-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-[ Sasha's backport helper bot ]
+The current code uses some 'goto put;' to cancel the parsing operation
+and can lead to a return code value of 0 even on error cases.
 
-Hi,
+Indeed, some goto calls are done from a loop without setting the ret
+value explicitly before the goto call and so the ret value can be set to
+0 due to operation done in previous loop iteration. For instance match
+can be set to 0 in the previous loop iteration (leading to a new
+iteration) but ret can also be set to 0 it the of_property_read_u32()
+call succeed. In that case if no match are found or if an error is
+detected the new iteration, the return value can be wrongly 0.
 
-Found matching upstream commit: bf8ca67e21671e7a56e31da45360480b28f185f1
+Avoid those cases setting the ret value explicitly before the goto
+calls.
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-Commit author: Francesco Dolcini <francesco.dolcini@toradex.com>
-
-
-Status in newer kernel trees:
-6.12.y | Not found
-
-Note: The patch differs from the upstream commit:
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
-1:  bf8ca67e21671 ! 1:  bbf739e5f67f0 net: fec: refactor PPS channel configuration
-    @@ Commit message
-         Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-     
-    +    (cherry picked from commit bf8ca67e21671e7a56e31da45360480b28f185f1)
-    +
-      ## drivers/net/ethernet/freescale/fec_ptp.c ##
-     @@
-      #define FEC_CC_MULT	(1 << 31)
----
+ drivers/of/base.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 7dc394255a0a..809324607a5c 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1507,8 +1507,10 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
+ 			map_len--;
+ 
+ 			/* Check if not found */
+-			if (!new)
++			if (!new) {
++				ret = -EINVAL;
+ 				goto put;
++			}
+ 
+ 			if (!of_device_is_available(new))
+ 				match = 0;
+@@ -1518,17 +1520,20 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
+ 				goto put;
+ 
+ 			/* Check for malformed properties */
+-			if (WARN_ON(new_size > MAX_PHANDLE_ARGS))
+-				goto put;
+-			if (map_len < new_size)
++			if (WARN_ON(new_size > MAX_PHANDLE_ARGS) ||
++			    map_len < new_size) {
++				ret = -EINVAL;
+ 				goto put;
++			}
+ 
+ 			/* Move forward by new node's #<list>-cells amount */
+ 			map += new_size;
+ 			map_len -= new_size;
+ 		}
+-		if (!match)
++		if (!match) {
++			ret = -ENOENT;
+ 			goto put;
++		}
+ 
+ 		/* Get the <list>-map-pass-thru property (optional) */
+ 		pass = of_get_property(cur, pass_name, NULL);
+-- 
+2.47.0
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
 
