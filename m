@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-96129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C0E9E0952
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 18:02:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846BE9E092C
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 17:57:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA47D167470
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A60C2822DE
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 16:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939321D9A49;
-	Mon,  2 Dec 2024 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5091C1D9A5D;
+	Mon,  2 Dec 2024 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gY1z77+l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyrveSnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533291D95AA
-	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0EA13C8E8
+	for <stable@vger.kernel.org>; Mon,  2 Dec 2024 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733158633; cv=none; b=q1FsYsjkQdkezzHwqQkn3gNEW+30AQ28Mp032GRcjLOjsJck15mnFwKQmbWBAgQdaSH/l3hKzwkoFbdZqZYgYfxBJT3sSRWxXKU36vClj2rTiMclgo4M/F45zCgrFMuMQSMCTnE21Liw6FaMPGxqZik5/i8eNJlk3cjZ63zPn+s=
+	t=1733158635; cv=none; b=gE/xcgRNlBNTUaf4WrNhH41RyRWBTND0V8AP3xsbKCdsejTRjWUrk+RH1kaNhJL/dTkLtHwYYHmSAPRpEuRey6fPMP9HOrzJnWxWmwndiOVFIbwfGhRyNh0hvcOtcee7p27wpnAYuBTC3TkgXypysVPjGgMtRYdCdIKwfPMOzRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733158633; c=relaxed/simple;
-	bh=/Az+hhvtBqhlIbI6qoyG3vBI2JK04wplhHsjMA/yTYI=;
+	s=arc-20240116; t=1733158635; c=relaxed/simple;
+	bh=wofdtD6EoQ/MUxGXlfMytUC6A7VQmcWW0Va4yIwQ2lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6MiryFfuVzWfQbc/CF2x+gRYI72qxEOJAxA6JZhWfuCDbcQmYirU09gFo9btnH67OskXSI5s//SJ7CQZQbSUwKxer9Fe1dhn5OPRcaS2QtcuuvKOLPS6QMjV6vG8KzDNKnm5W+KlnnR+hRTGo2OJ77A5Y1Vtr2t6rBU2qEEwME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gY1z77+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC06C4CED1;
-	Mon,  2 Dec 2024 16:57:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pB+uuWxmPWd4JPCn2tJ1fKMySzYygFka5+534w0nyi62M+Ksa1XL89C2zsTR4F0Ptuk6ANFrd6YgDUcjngDFVx4Zc0UJSX1UMxzwFR76EceqU6E+t/JXDrdaJBcZEDBADdPROA5o+xgh0mbgPxJO5DG5l5e7SU+LJgUqEanWobM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyrveSnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71985C4CED1;
+	Mon,  2 Dec 2024 16:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733158632;
-	bh=/Az+hhvtBqhlIbI6qoyG3vBI2JK04wplhHsjMA/yTYI=;
+	s=k20201202; t=1733158634;
+	bh=wofdtD6EoQ/MUxGXlfMytUC6A7VQmcWW0Va4yIwQ2lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gY1z77+ltPwkJzEnzQVI4eGv9dGB7lkNLLjYIXryDkZuM3Uy0/NdBVbZm0TaTZlKm
-	 xkDXvJCamzT20VFakhVLBlM0lkpUdBlmGcavVfMe50XL8vO2lzzvg2qAhnyNbPS7Q1
-	 eYnRtCdnGh6jK9MPYciZBDF/PWlDqbRd/ELto26Hca8BT7VsxppcE6YweLj01kK6DS
-	 K5ZawmSGgHXFrIJF+A7a6qh5cmKwLadreBPHEyJkkyfgPcbKtfWXNZBvg47s9CG0m8
-	 znYl4Ug3e2aR1tQiNj6RMDfjvvpujNFluY+BXSyXdPzkBaYuSavUxKpJ6EllA04JUW
-	 /INuouLGsPD6w==
+	b=lyrveSnJmZm9jLwK3Bhi1Liz0eocEXT2thLpPBcQN7WahqhEoTlxGPx/0oj1XbW0/
+	 6G8RrqYeCAMnPU++y4a7xBcweK3wOtgaKdY5a9+bai9ZAvi6qrDDWZIKTjGdQZVgGz
+	 yTpgU7AgnqUanhldajABUSsulVINZQQfI58zs8Rb0TwtMme9G9Tu7phnO8ZZSvn+2Q
+	 xNxVLAITIbLfzcTOp1nF6MDRZSuP581uoJfd9ckIvkHYOgbWdJffZjVZKEr8BSIrbg
+	 AjGa4eOir62ryvuup5L0bbfMOd80RvSmAoH7I5TWp3IsUIZPjHosnFW0q4E2QiDcE5
+	 DMKYLu2ph/org==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 v2 3/3] net: fec: make PPS channel configurable
-Date: Mon,  2 Dec 2024 11:57:11 -0500
-Message-ID: <20241202105027-eb06894090dc9d47@stable.kernel.org>
+Subject: Re: [PATCH 6.11 v2 2/3] net: fec: refactor PPS channel configuration
+Date: Mon,  2 Dec 2024 11:57:13 -0500
+Message-ID: <20241202113223-26504e0cfaee0ef1@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202130733.3464870-4-csokas.bence@prolan.hu>
+In-Reply-To:  <20241202131025.3465318-3-csokas.bence@prolan.hu>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,13 +57,14 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 [ Sasha's backport helper bot ]
 
 Hi,
 
-Found matching upstream commit: 566c2d83887f0570056833102adc5b88e681b0c7
+Found matching upstream commit: bf8ca67e21671e7a56e31da45360480b28f185f1
 
 WARNING: Author mismatch between patch and found commit:
 Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
@@ -72,15 +73,25 @@ Commit author: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 Status in newer kernel trees:
 6.12.y | Not found
+6.11.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly, falling back to interdiff...
+1:  bf8ca67e21671 ! 1:  8dcad5070912f net: fec: refactor PPS channel configuration
+    @@ Commit message
+         Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
+         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+     
+    +    (cherry picked from commit bf8ca67e21671e7a56e31da45360480b28f185f1)
+    +
+      ## drivers/net/ethernet/freescale/fec_ptp.c ##
+     @@
+      #define FEC_CC_MULT	(1 << 31)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.11.y       |  Success    |  Success   |
 
