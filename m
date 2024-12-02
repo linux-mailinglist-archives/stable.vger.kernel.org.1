@@ -1,100 +1,121 @@
-Return-Path: <stable+bounces-95948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-95949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CAF9DFD4E
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:37:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0209DFD80
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 10:45:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9EF280D3B
-	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:37:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B156162B51
+	for <lists+stable@lfdr.de>; Mon,  2 Dec 2024 09:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF94F1F9F69;
-	Mon,  2 Dec 2024 09:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB81FBEBE;
+	Mon,  2 Dec 2024 09:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="glLFVMua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TI85l/MA"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F8C22331;
-	Mon,  2 Dec 2024 09:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0D1FBC9B;
+	Mon,  2 Dec 2024 09:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733132227; cv=none; b=Dr/b75IbNaCO80ar7fx8HhJ1heG6lw73xrXK8pR6r+AEglxm0egViFeMcPGnXQ8siZuOHd1Ee4J9yWxuDm7atq7ARv4MvC20NAQgdt4f5y6Ss1AAnrnD4IVLoIG98UZLBQn0Tm1DqUw4nprztTnWul+tvwB5N01ktTcrkz0X16A=
+	t=1733132721; cv=none; b=M71QHHXKvzxFPVqUENfulE7V5osAM1Rg6WdK4UwA5F2UQsAWGGN3qQmcYxv+G4ruvqwCl72uln3rnJsiugLUToN+y+8h55U2vMSK0rPB2HwLHbfAiNhqHnh9BUIQPQB9AKE1EhYh4yN98KN1pawXYS7e7VpJccOd3JwBJ7cfaw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733132227; c=relaxed/simple;
-	bh=lOayRBayZGSlXgUrI9KvTQ7rdb+QafjbTeNRnQUzG6M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LtLU9Fk3zpdEzixLFDoB/A+s6saRbsfz61aoTLM5UgT9ihgGI8tkjgOWuNO3nriqSWhieVVgQiArR1gpzT3xZtkEet8YFJZ8S4F0Vidzndob8G+kZL0NSZt5C0wC0MliK/ZoERGTIunGnkEGQNiiM3KDKLaQdIGaoLwbX7oN7Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=glLFVMua; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1733132212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vsUdwmzHEUtFp4dw0uNgWDj5eMaa/8lI8CftTMle4BI=;
-	b=glLFVMuaIeiD46Uyv90P/ajVMXJ/VOaRvcswdnYRFuhN0y+EZu27Of8BxNORqwI+3Kb49t
-	4DzqNEhsZlr0UJrt25WT6+tj2M9CiYWAzNPvnXVGWCywPDUPpOrZFiS2mPxCKpvWTBP9BG
-	hLTueajQ7kTDQsFVEe/0pcMPspNYTh8=
-To: Richard Weinberger <richard@nod.at>
-Cc: Zhihao Cheng <chengzhihao1@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Artem Bityutskiy <Artem.Bityutskiy@nokia.com>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mtd: ubi: Added a check for ubi_num
-Date: Mon,  2 Dec 2024 12:36:52 +0300
-Message-Id: <20241202093652.5911-1-arefev@swemel.ru>
+	s=arc-20240116; t=1733132721; c=relaxed/simple;
+	bh=5Zafu1CVVxBBjmaBRtdRdWwlT8bxSaY26er8YOulc1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Htk7014pwGQqvLxfxuqroBDoDvstg1XMqqzZYlkbSLw11Eya3PzjOWzYKMwCAObXk/pi7lubU6xI8KvcrazGPFZuFmux8YD+Iup+TC237vPt29OB75r//r+hRfVcrWofvfu43+cLSQjgic8dcfQERxwfO2c8/y7CV7c/HLVQYpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TI85l/MA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9ECC4CEDA;
+	Mon,  2 Dec 2024 09:45:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733132720;
+	bh=5Zafu1CVVxBBjmaBRtdRdWwlT8bxSaY26er8YOulc1s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TI85l/MAWf3cnShwzI1jEK+X29PVZq7UOLLcNwQ6pH9awCzHoxIvx99qWckR3btfP
+	 xRUohpmDHyQzg+W2P7VoqOiMFoIXSh6h40XudqomVHy1Y0hr90jYG4FSdYjToaaQJM
+	 SEd0D7M36NrL/kyHBRe20YhJ7aSZAnqOyYpx4lHs=
+Date: Mon, 2 Dec 2024 10:45:17 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+Cc: "sashal@kernel.org" <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+	"shivani.agarwal@broadcom.com" <shivani.agarwal@broadcom.com>
+Subject: Re: 5.10.225 stable kernel cgroup_mutex not held assertion failure
+Message-ID: <2024120252-abdominal-reimburse-d670@gregkh>
+References: <20240920092803.101047-1-shivani.agarwal@broadcom.com>
+ <4f827551507ed31b0a876c6a14cdca3209c432ae.camel@oracle.com>
+ <2024110612-lapping-rebate-ed25@gregkh>
+ <6455422802d8334173251dbb96527328e08183cf.camel@oracle.com>
+ <c10d6cc49868dd3c471c53fc3c4aba61c33edead.camel@oracle.com>
+ <2024112022-staleness-caregiver-0707@gregkh>
+ <2bb366f53aa7650e551dc2a5f5ec3b3bec832512.camel@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2bb366f53aa7650e551dc2a5f5ec3b3bec832512.camel@oracle.com>
 
-Added a check for ubi_num for negative numbers
-If the variable ubi_num takes negative values then we get:
+On Wed, Nov 20, 2024 at 05:47:36PM +0000, Siddh Raman Pant wrote:
+> On Wed, Nov 20 2024 at 20:28:36 +0530, gregkh@linuxfoundation.org
+> wrote:
+> > On Wed, Nov 20, 2024 at 02:46:32PM +0000, Siddh Raman Pant wrote:
+> > > On Wed, Nov 06 2024 at 11:54:32 +0530, Siddh Raman Pant wrote:
+> > > > On Wed, Nov 06 2024 at 11:40:39 +0530, gregkh@linuxfoundation.org
+> > > > wrote:
+> > > > > On Wed, Oct 30, 2024 at 07:29:38AM +0000, Siddh Raman Pant wrote:
+> > > > > > Hello maintainers,
+> > > > > > 
+> > > > > > On Fri, 20 Sep 2024 02:28:03 -0700, Shivani Agarwal wrote:
+> > > > > > > Thanks Fedor.
+> > > > > > > 
+> > > > > > > Upstream commit 1be59c97c83c is merged in 5.4 with commit 10aeaa47e4aa and
+> > > > > > > in 4.19 with commit 27d6dbdc6485. The issue is reproducible in 5.4 and 4.19
+> > > > > > > also.
+> > > > > > > 
+> > > > > > > I am sending the backport patch of d23b5c577715 and a7fb0423c201 for 5.4 and
+> > > > > > > 4.19 in the next email.
+> > > > > > 
+> > > > > > Please backport these changes to stable.
+> > > > > > 
+> > > > > > "cgroup/cpuset: Prevent UAF in proc_cpuset_show()" has already been
+> > > > > > backported and bears CVE-2024-43853. As reported, we may already have
+> > > > > > introduced another problem due to the missing backport.
+> > > > > 
+> > > > > What exact commits are needed here?  Please submit backported and tested
+> > > > > commits and we will be glad to queue them up.
+> > > > > 
+> > > > > thanks,
+> > > > > 
+> > > > > greg k-h
+> > > > 
+> > > > Please see the following thread where Shivani posted the patches:
+> > > > 
+> > > > https://lore.kernel.org/all/20240920092803.101047-1-shivani.agarwal@broadcom.com/ 
+> > > > 
+> > > > Thanks,
+> > > > Siddh
+> > > 
+> > > Ping...
+> > 
+> > I don't understand what you want here, sorry.
+> 
+> Please find attached the patch emails for 5.4 with this email. They
+> apply cleanly to the linux-5.4.y branch.
 
-qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
-[    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
-[    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
-[    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
-[    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
-[    0.745600]  kernel_init from ret_from_fork+0x14/0x28
-[    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
+Please resend these as patches, in the correct order, not as attachments
+as it's hard to review and handle them this way.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+thanks,
 
-Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-V1 -> V2: changed the tag Fixes and moved the check to ubi_mtd_param_parse()
- drivers/mtd/ubi/build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 30be4ed68fad..ef6a22f372f9 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -1537,7 +1537,7 @@ static int ubi_mtd_param_parse(const char *val, const struct kernel_param *kp)
- 	if (token) {
- 		int err = kstrtoint(token, 10, &p->ubi_num);
- 
--		if (err) {
-+		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
- 			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
- 			       token);
- 			return -EINVAL;
--- 
-2.25.1
-
+greg k-h
 
