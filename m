@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-97989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA129E267D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AC29E267E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11CB3289099
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9431628912D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84F51F76D5;
-	Tue,  3 Dec 2024 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A871F76D5;
+	Tue,  3 Dec 2024 16:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkxkHknT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhxsQBy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CDA81ADA;
-	Tue,  3 Dec 2024 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61631E3DF9;
+	Tue,  3 Dec 2024 16:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242424; cv=none; b=FENLviHSNx8XKFgdudUFtB2gn6vVgveELZFwZzjhV4sVfJQO130Eqrh7ITSphHhOdQjL9h/iJlTNRyMZCRmHiaoUDZX45TaDcISv00Wg33E9maLHJ4zR5DjMfB1Lz+AnFst57Dn1OPwr1lB1+b270MWky3JwZwH4n7O0ij3A2vU=
+	t=1733242431; cv=none; b=HAm/JfcIM2bXtyTvZvgRWcl8ZsZZZ5IPfUmRUKt0QGq0k+CNJEQYKdd+QDVKEfJgHz2yRbh3WzkFVcl7ZgNEhWW+37ajifJAvLBuHzL9PN+dxbsh7oUIcbOkHbczqAIQl9as16/R9RSqGh6Kf0rt2jnxlZNwWS+Mzg6FSlJoXPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242424; c=relaxed/simple;
-	bh=nbQabcspMjqnpbHybBmUePtxs3sO1zW79EkNsbCORLw=;
+	s=arc-20240116; t=1733242431; c=relaxed/simple;
+	bh=zDG9XFWZjKGVu+cNsfcwcYbsqMdWeMAWMrd+aELOF/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYKkAqPn8oxYxAajtUQkzv1xbV21QQhvLqywXBjCuhCz9x8RpNONm+JtHlPrpscs6ez7BMMe1axAPYaGtJ7UsU3Xw+YmYGpY0Ygkx9WIUx+hg3MQBki4NRVXpCl07D0sx91mXSn+x5JZfgC5YDlADvCITXpT4eFeyaV7ZEhuSjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkxkHknT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AF4C4CECF;
-	Tue,  3 Dec 2024 16:13:43 +0000 (UTC)
+	 MIME-Version; b=LZtlYnQZe6h83Rn5rXXrFc+TuRPSgD2pSjQj5kX7q8G6Q8sBGe2YD5l4/yMvKjyaOOYvDZQjT6G9mX4GAlRabAZh0otLOpaE+cfe8Pbb+fQhzrlyJV8W3efiDa/MrfUAeiz5GbbEwPP7pecFnN5tOlyDTFW2qLuNDX2dhCYQ+r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhxsQBy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B718C4CED6;
+	Tue,  3 Dec 2024 16:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242424;
-	bh=nbQabcspMjqnpbHybBmUePtxs3sO1zW79EkNsbCORLw=;
+	s=korg; t=1733242430;
+	bh=zDG9XFWZjKGVu+cNsfcwcYbsqMdWeMAWMrd+aELOF/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkxkHknTjnX/xXjZxcCqtC6+3A7uXpXWkjEG4b1MCP7PYkr1iTyRok/uBEx1G14Gg
-	 ZwO00oC3MkSQVjJWBIw4oAZ/DNPSIxk/Lz/1BPlDEnql3/mkUcf6lwu/AxaMMfg4lL
-	 xjkstNABrc8OB3RmGbdsDqpRwoJRNBeAWL5weqKM=
+	b=RhxsQBy2AjhcPgMo6kyhAXE9lfKLIjKwQj63NyiwkucBpPfKh1o0kAWqmlq4EEQre
+	 WvMSNCs7WXQraF9AfsAKWrg9kVCK/h7WA2Sqf6/GEkzvKvGDAWCKEJ+gzVJkrm/LJD
+	 lsfqUZimHuhPtcSU+JLN02PXZ4nIae5xvQX01VH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 700/826] parisc/ftrace: Fix function graph tracing disablement
-Date: Tue,  3 Dec 2024 15:47:07 +0100
-Message-ID: <20241203144811.063589457@linuxfoundation.org>
+	Jesse Taube <jesse@rivosinc.com>,
+	Evan Green <evan@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.12 701/826] RISC-V: Scalar unaligned access emulated on hotplug CPUs
+Date: Tue,  3 Dec 2024 15:47:08 +0100
+Message-ID: <20241203144811.103865115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,38 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Jesse Taube <jesse@rivosinc.com>
 
-commit a5f05a138a8cac035bf9da9b6ed0e532bc7942c8 upstream.
+commit 9c528b5f7927b857b40f3c46afbc869827af3c94 upstream.
 
-Due to an apparent copy-paste bug, the parisc implementation of
-ftrace_disable_ftrace_graph_caller() doesn't actually do anything.
-It enables the (already-enabled) static key rather than disabling it.
+The check_unaligned_access_emulated() function should have been called
+during CPU hotplug to ensure that if all CPUs had emulated unaligned
+accesses, the new CPU also does.
 
-The result is that after function graph tracing has been "disabled", any
-subsequent (non-graph) function tracing will inadvertently also enable
-the slow fgraph return address hijacking.
+This patch adds the call to check_unaligned_access_emulated() in
+the hotplug path.
 
-Fixes: 98f2926171ae ("parisc/ftrace: use static key to enable/disable function graph tracer")
-Cc: stable@vger.kernel.org # 5.16+
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 55e0bf49a0d0 ("RISC-V: Probe misaligned access speed in parallel")
+Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+Reviewed-by: Evan Green <evan@rivosinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241017-jesse_unaligned_vector-v10-2-5b33500160f8@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/ftrace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/unaligned_access_speed.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -87,7 +87,7 @@ int ftrace_enable_ftrace_graph_caller(vo
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -191,6 +191,7 @@ static int riscv_online_cpu(unsigned int
+ 	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
+ 		goto exit;
  
- int ftrace_disable_ftrace_graph_caller(void)
- {
--	static_key_enable(&ftrace_graph_enable.key);
-+	static_key_disable(&ftrace_graph_enable.key);
- 	return 0;
- }
- #endif
++	check_unaligned_access_emulated(NULL);
+ 	buf = alloc_pages(GFP_KERNEL, MISALIGNED_BUFFER_ORDER);
+ 	if (!buf) {
+ 		pr_warn("Allocation failure, not measuring misaligned performance\n");
 
 
 
