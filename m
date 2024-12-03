@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F88B9E235A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:35:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37259E25A1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65B29B61FD9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C928016067C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004DC1F7566;
-	Tue,  3 Dec 2024 15:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9315F1F7591;
+	Tue,  3 Dec 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIvTqjbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZhgdDz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B451EF0AE;
-	Tue,  3 Dec 2024 15:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5062F381B1;
+	Tue,  3 Dec 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239346; cv=none; b=cX0qiP7c2Utz/y/3ye6NXRGiZGixCdFbrxZ7VeHogKJwVZiTPtuS/ANGqs1dDTEdzjhenH9C48DZl+v8q1s/YdWRnB3Cq4odlqsU3TnOzjBara3mUsCEd2c0Ln3VpBDBDWoRmoY3wrsG2EhxP99bihUTNMxEyjIafL7UlOUkiyw=
+	t=1733241441; cv=none; b=IhgSwi3GsY2R7SsOeeQmPFyykXJ16nwEVI90JP5fHeceto5eN7ujE5CXBWjtUoGYeJt4M3dTVMq1GE8gaGXGTnlzQnGYrtR+UTW226EVFoChl7N7FVDNf8fB29a9R3DWze+I49s0f+2qS86o8rW+zo96KvEn4A3gCeHg2Uggz4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239346; c=relaxed/simple;
-	bh=drmQEq1YzuAfmNPnLPE97JETLZHHDnrnwvS3AwvQvN8=;
+	s=arc-20240116; t=1733241441; c=relaxed/simple;
+	bh=p2J5ikD9LjLWRS688Mdc5rws210Nnq1o7nVXEqmqmbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JF0z7bEuHro8Lb+4pq77SUVeEifM7yx50SAmW+2hTLJ6IACbAPDZoxOsxdXCoR+OORx2w+rbd42/vm4IrYPRpYe1B1NzoJGwOOvjY1w4UjagP4aLazY6VKWF+erC2yLnWq7Xos6HIJw0iZDbxm/TY7twLMRh9rQXpwvUl9Zj3ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIvTqjbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A31C4CECF;
-	Tue,  3 Dec 2024 15:22:26 +0000 (UTC)
+	 MIME-Version; b=WPaDjCI46yGh3aqZgtVcyr1uJgCJ0/6D1vXdHzIGisV/8IfciziPCDYwo646SODTpjLynQmUXS0tlI0Mzb4skOdElonlMaoERJoHITprxfP9RlAV9xDjZln61QlXZ5lZg7juB+NtksHlgAWlqapBjWWbPdVfKQu1GD5ZnsuRtL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZhgdDz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE47CC4CECF;
+	Tue,  3 Dec 2024 15:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239346;
-	bh=drmQEq1YzuAfmNPnLPE97JETLZHHDnrnwvS3AwvQvN8=;
+	s=korg; t=1733241441;
+	bh=p2J5ikD9LjLWRS688Mdc5rws210Nnq1o7nVXEqmqmbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIvTqjbo1EI+tFXZC2+s507JO0ZVU0ugW3FyF30bSeaweqf2vERjCPme2gXjJEUGc
-	 oiTpSdpS82pmicIj+cpPGrSgJXjOmz1HxwPh1y5n2+riuJVMxo+0SEgr6qJKfkh4UU
-	 fqt26qqjXxA5eEEE/Zl/0DUYTMuRRraB/1GvSDIU=
+	b=zZhgdDz8xp+xhL3/QUtuXCZYtbtbUD+0WqzAzZCw3Klznvb9i1uWCDgs6jkqCumr0
+	 1e3lGb6U6FwBV3E832PH7touwCcLWwRA2hrY9/dsb2jhz/i8QcQUVGe2Su13wyBmna
+	 Loa5a+qwBP3TYS5rYDizNOUDrMNROoAisVnHwelk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 575/817] net: mdio-ipq4019: add missing error check
+Subject: [PATCH 6.12 420/826] scsi: qedf: Fix a possible memory leak in qedf_alloc_and_init_sb()
 Date: Tue,  3 Dec 2024 15:42:27 +0100
-Message-ID: <20241203144018.358282494@linuxfoundation.org>
+Message-ID: <20241203144800.146934932@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 9cc8d0ecdd2aad42e377e971e3bb114339df609e ]
+[ Upstream commit c62c30429db3eb4ced35c7fcf6f04a61ce3a01bb ]
 
-If an optional resource is found but fails to remap, return on failure.
-Avoids any potential problems when using the iomapped resource as the
-assumption is that it's available.
+Hook "qed_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-Fixes: 23a890d493e3 ("net: mdio: Add the reset function for IPQ MDIO driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241121193152.8966-1-rosenp@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-2-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-ipq4019.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/qedf/qedf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/mdio/mdio-ipq4019.c b/drivers/net/mdio/mdio-ipq4019.c
-index 9d8f43b28aac5..ea1f64596a85c 100644
---- a/drivers/net/mdio/mdio-ipq4019.c
-+++ b/drivers/net/mdio/mdio-ipq4019.c
-@@ -352,8 +352,11 @@ static int ipq4019_mdio_probe(struct platform_device *pdev)
- 	/* The platform resource is provided on the chipset IPQ5018 */
- 	/* This resource is optional */
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	if (res)
-+	if (res) {
- 		priv->eth_ldo_rdy = devm_ioremap_resource(&pdev->dev, res);
-+		if (IS_ERR(priv->eth_ldo_rdy))
-+			return PTR_ERR(priv->eth_ldo_rdy);
-+	}
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index cf13148ba281c..e979ec1478c18 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -2738,6 +2738,7 @@ static int qedf_alloc_and_init_sb(struct qedf_ctx *qedf,
+ 	    sb_id, QED_SB_TYPE_STORAGE);
  
- 	bus->name = "ipq4019_mdio";
- 	bus->read = ipq4019_mdio_read_c22;
+ 	if (ret) {
++		dma_free_coherent(&qedf->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDF_ERR(&qedf->dbg_ctx,
+ 			 "Status block initialization failed (0x%x) for id = %d.\n",
+ 			 ret, sb_id);
 -- 
 2.43.0
 
