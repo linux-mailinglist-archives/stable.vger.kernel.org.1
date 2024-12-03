@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-96906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0D39E2238
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6749E2813
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76800B81CC3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C635BE2501
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15611F75A0;
-	Tue,  3 Dec 2024 15:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B253A1F75A4;
+	Tue,  3 Dec 2024 15:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROQ4jfKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDtZvbCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7221F7540;
-	Tue,  3 Dec 2024 15:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8591F76C0;
+	Tue,  3 Dec 2024 15:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238940; cv=none; b=T8yQz8sZuc43jL5wCI58HOtyzsC2QcF0cMHulKZpR7VQUs+Z8vq5G6f/RMRhG7KNzcEy28V3QXDV+D7TGRhQRsWoeUPF5sBWMhTv8ga7KHzNjKUGpEeds+LVH1UCVWuv2SXl4QJxH3Z6ZXMb0qzuZ6QkVSb4Z/QWUwmnLDcWbLA=
+	t=1733240994; cv=none; b=D0EtAjt6d7XkUa/VGWtZokAiywgEhAjlkVNUFhQemkeg7Ig6WkimxYnD1GThDRCl6zoc0V4mNUqSenaOqNOa+LjHZXeNSmSESmhv3ZTGKHIpbNP/8thhQsklQyVWdPV2z1vH+p2V2e9HPIEJGscKAWQy4yi1ESQWzW+Of6yHRjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238940; c=relaxed/simple;
-	bh=2OmEbhZtJYYNTxrO9QACjxia5YQqO2U0ZFdVzvn+fMU=;
+	s=arc-20240116; t=1733240994; c=relaxed/simple;
+	bh=+MhOUOZLdHtqJNIP6yut3jwXrt3DTpNOvtxPWXTnLps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNP5y7CBD1MB+5dZfF1FywiOTO5F5O5Ex3BXl6RUSvFGsv9jfbnssq8xOkGgAUDOnMXfbBiuDfwIK0I1YSjgZWKH+pGzTd8pmG5aKrlhwcSYWvUDaZqlYFKlslCL9J1iXZLT1/Ib8r7FST1mDhb2S7ycLEF3MoBQNaFO4NbmWGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROQ4jfKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124B0C4CECF;
-	Tue,  3 Dec 2024 15:15:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KsO3RH7zl17OsstoKZPI+B7Hi1ueMaYieglAXe/wkCqylLbMgb8OS0mEfDu0CLKPvLF6uZp5QkAESjkoyJOMpqY0Yl52WYBBuQxWRLCp80bOKGpZFkU9RaEMHzRZpLmpDV9S7noD1wqBvFFTFYmLmE0dJTLCkz+mm6p9J8O9Euc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDtZvbCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EC5C4CED6;
+	Tue,  3 Dec 2024 15:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238940;
-	bh=2OmEbhZtJYYNTxrO9QACjxia5YQqO2U0ZFdVzvn+fMU=;
+	s=korg; t=1733240994;
+	bh=+MhOUOZLdHtqJNIP6yut3jwXrt3DTpNOvtxPWXTnLps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROQ4jfKyvHHR1nbED9bBccGnCz0/0EsiUNr0up77g1fVdJIQi8ngSoR39GFxXtQRt
-	 TZlExWGgYnyq+kveSyMir5AKMRxsBc1qzvB2Izv47J0UWk06z6krvyrKp7iSoKnlwg
-	 MB7CwaP15lOkDSRg1vRALsTu9LTntuw+0lgKYk4E=
+	b=SDtZvbCxTkziOhFnTIhixbE2mw/UfWa/y/jjf/4ESSN5bjO5p/R0Xjpr2LSuIpQPj
+	 iCZEaQlmxuI27m9y0cnGndZZaOxGXwnNOOjfQa6Dw8l+QE+o7XnYIWzSuvfGOvhgSE
+	 GHsNOuFvAddaiCCRik6PZjb7ZvWYCxing2o3xI3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Mukul Joshi <mukul.joshi@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 450/817] cpufreq: loongson3: Check for error code from devm_mutex_init() call
+Subject: [PATCH 6.12 295/826] drm/amdkfd: Use dynamic allocation for CU occupancy array in kfd_get_cu_occupancy()
 Date: Tue,  3 Dec 2024 15:40:22 +0100
-Message-ID: <20241203144013.442545766@linuxfoundation.org>
+Message-ID: <20241203144755.273732137@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit db01e46689e9a986ca6b5d2f41b57d7a81551a4f ]
+[ Upstream commit 922f0e00017b09d9d47e3efac008c8b20ed546a0 ]
 
-Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using devm
-variant of it. Tomorrow it may even leak something. Add the missed
-check.
+The `kfd_get_cu_occupancy` function previously declared a large
+`cu_occupancy` array as a local variable, which could lead to stack
+overflows due to excessive stack usage. This commit replaces the static
+array allocation with dynamic memory allocation using `kcalloc`,
+thereby reducing the stack size.
 
-Fixes: ccf51454145b ("cpufreq: Add Loongson-3 CPUFreq driver support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+This change avoids the risk of stack overflows in kernel space,  in
+scenarios where `AMDGPU_MAX_QUEUES` is large. The  allocated memory is
+freed using `kfree` before the function returns  to prevent memory
+leaks.
+
+Fixes the below with gcc W=1:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c: In function ‘kfd_get_cu_occupancy’:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c:322:1: warning: the frame size of 1056 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+  322 | }
+      | ^
+
+Fixes: 6ae9e1aba97e ("drm/amdkfd: Update logic for CU occupancy calculations")
+Cc: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Mukul Joshi <mukul.joshi@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/loongson3_cpufreq.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/loongson3_cpufreq.c b/drivers/cpufreq/loongson3_cpufreq.c
-index 6b5e6798d9a28..a923e196ec86e 100644
---- a/drivers/cpufreq/loongson3_cpufreq.c
-+++ b/drivers/cpufreq/loongson3_cpufreq.c
-@@ -346,8 +346,11 @@ static int loongson3_cpufreq_probe(struct platform_device *pdev)
- {
- 	int i, ret;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index d4aa843aacfdd..6bab6fc6a35d6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -271,11 +271,9 @@ static int kfd_get_cu_occupancy(struct attribute *attr, char *buffer)
+ 	struct kfd_process *proc = NULL;
+ 	struct kfd_process_device *pdd = NULL;
+ 	int i;
+-	struct kfd_cu_occupancy cu_occupancy[AMDGPU_MAX_QUEUES];
++	struct kfd_cu_occupancy *cu_occupancy;
+ 	u32 queue_format;
  
--	for (i = 0; i < MAX_PACKAGES; i++)
--		devm_mutex_init(&pdev->dev, &cpufreq_mutex[i]);
-+	for (i = 0; i < MAX_PACKAGES; i++) {
-+		ret = devm_mutex_init(&pdev->dev, &cpufreq_mutex[i]);
-+		if (ret)
-+			return ret;
-+	}
+-	memset(cu_occupancy, 0x0, sizeof(cu_occupancy));
+-
+ 	pdd = container_of(attr, struct kfd_process_device, attr_cu_occupancy);
+ 	dev = pdd->dev;
+ 	if (dev->kfd2kgd->get_cu_occupancy == NULL)
+@@ -293,6 +291,10 @@ static int kfd_get_cu_occupancy(struct attribute *attr, char *buffer)
+ 	wave_cnt = 0;
+ 	max_waves_per_cu = 0;
  
- 	ret = do_service_request(0, 0, CMD_GET_VERSION, 0, 0);
- 	if (ret <= 0)
++	cu_occupancy = kcalloc(AMDGPU_MAX_QUEUES, sizeof(*cu_occupancy), GFP_KERNEL);
++	if (!cu_occupancy)
++		return -ENOMEM;
++
+ 	/*
+ 	 * For GFX 9.4.3, fetch the CU occupancy from the first XCC in the partition.
+ 	 * For AQL queues, because of cooperative dispatch we multiply the wave count
+@@ -318,6 +320,7 @@ static int kfd_get_cu_occupancy(struct attribute *attr, char *buffer)
+ 
+ 	/* Translate wave count to number of compute units */
+ 	cu_cnt = (wave_cnt + (max_waves_per_cu - 1)) / max_waves_per_cu;
++	kfree(cu_occupancy);
+ 	return snprintf(buffer, PAGE_SIZE, "%d\n", cu_cnt);
+ }
+ 
 -- 
 2.43.0
 
