@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3703B9E222E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A9B9E27D5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:42:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0CF164B03
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CB15BA4121
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020631F76D9;
-	Tue,  3 Dec 2024 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1D21F890C;
+	Tue,  3 Dec 2024 15:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4AWcvVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pe3hqcBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A5C646;
-	Tue,  3 Dec 2024 15:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682EF646;
+	Tue,  3 Dec 2024 15:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238963; cv=none; b=o4ivaEmjjUr8rtT3o92guPd/wAG3EztmDT/L02IQd6Uc5pUn23TKqsuhNtH9ndl/P5fwVrTGXXlLy4JNHtCqpB5LyG40ogkP1KbGtIe8aFDkl3IpTXPgCkIbkwsLWIImhfGmVoeHf2NJE75M//ElWVWXQXTGFV+nx3rA8lhIeO0=
+	t=1733238969; cv=none; b=E4bFmU3tinqsJw3isrASlDcPZGQIZxP0KzFiihzbCZmFwX3Qd/kCGDAMuBvHJnpe/YCZLQFqPe0BP4SLJWW9fBv1hpG/V71l/76tKca1Vn/RDXkkKBIS/Tn1QiTB86WQXD47OjuEiNc8zsM0us/Xl9HDNnqWM5u07v3C9Vyt0J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238963; c=relaxed/simple;
-	bh=bpKV+feo1p5ZyLIj0LM1Vy1sIPybkhJrj/aFQVykGpU=;
+	s=arc-20240116; t=1733238969; c=relaxed/simple;
+	bh=EvEIJcfsl1ENqHUs5T/ZkFx7G+QcL5W0pwPbTbGAlzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIzFsuuatQAbewJxXM9WnEt/Vvs1OH/TUaexUmrZjuvl7VbGyV3Y89ElKqbvLuzyycrJj7jLbalV2detB27bipjwP3v6jnbp9oYu3tViHRqukZBmc26sbcQgnigxPtrKlTd2hN3hQxDvOGe/md8ROMxmiTHJqIrEgaOTt/m5mJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4AWcvVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE63C4CECF;
-	Tue,  3 Dec 2024 15:16:03 +0000 (UTC)
+	 MIME-Version; b=e4+yHwLtmyvpNth7Fi/XS7uoE7i8LkLlmfCDREH7h4NEMdkH5qou0NHAaWyvDldihF332182UzFGSRk3uFLAbdyEc3Jn1q8AdVNuZ2puUhFPcs1YtHmMSBYrxk3thMAoKPNVzkPgMBxXPE1vXbDp3LxnSfjNgzbZ9CRC7+5LmHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe3hqcBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33F0C4CECF;
+	Tue,  3 Dec 2024 15:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238963;
-	bh=bpKV+feo1p5ZyLIj0LM1Vy1sIPybkhJrj/aFQVykGpU=;
+	s=korg; t=1733238969;
+	bh=EvEIJcfsl1ENqHUs5T/ZkFx7G+QcL5W0pwPbTbGAlzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4AWcvVCnunrxuFisZItlHo3Do1CJhcVqbmrvesowxHX/+rdQsKFM/YiFM0KqJVrj
-	 ZdC64hHvdz4OhrzrdG4S9T8KMXlkHbCwt2a5WmO5meOl+oL7ug/fnVIeVINmP8ogz4
-	 KsxFHp6N3pmUmFEI/ipDS3gmpkLZ0dJeWDAaxOB4=
+	b=Pe3hqcBIkEyFd8V+iq932bDjTM30HgAQCAsCiNu3KMjnbn/plPU/Wmm2MAsu/n5Ee
+	 pcTmlVKJRX8PywcEELIH7pHiEUd4f3Y8YhO1Hd0atafHrRHX3Vyl6DH658pKUZCl0v
+	 /dVJ1ARr617whPi+0znG6VuaUoKwiSYknERiy9p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
+	Michal Suchanek <msuchanek@suse.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 458/817] KVM: PPC: Book3S HV: Avoid returning to nested hypervisor on pending doorbells
-Date: Tue,  3 Dec 2024 15:40:30 +0100
-Message-ID: <20241203144013.752372532@linuxfoundation.org>
+Subject: [PATCH 6.11 459/817] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
+Date: Tue,  3 Dec 2024 15:40:31 +0100
+Message-ID: <20241203144013.790444857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,75 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-[ Upstream commit 26686db69917399fa30e3b3135360771e90f83ec ]
+[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
 
-Commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-dropped the use of vcore->dpdes for msgsndp / SMT emulation. Prior to that
-commit, the below code at L1 level (see [1] for terminology) was
-responsible for setting vc->dpdes for the respective L2 vCPU:
+These functions are not used outside of sstep.c
 
-if (!nested) {
-	kvmppc_core_prepare_to_enter(vcpu);
-	if (vcpu->arch.doorbell_request) {
-		vc->dpdes = 1;
-		smp_wmb();
-		vcpu->arch.doorbell_request = 0;
-	}
-
-L1 then sent vc->dpdes to L0 via kvmhv_save_hv_regs(), and while
-servicing H_ENTER_NESTED at L0, the below condition at L0 level made sure
-to abort and go back to L1 if vcpu->arch.doorbell_request = 1 so that L1
-sets vc->dpdes as per above if condition:
-
-} else if (vcpu->arch.pending_exceptions ||
-	   vcpu->arch.doorbell_request ||
-	   xive_interrupt_pending(vcpu)) {
-	vcpu->arch.ret = RESUME_HOST;
-	goto out;
-}
-
-This worked fine since vcpu->arch.doorbell_request was used more like a
-flag and vc->dpdes was used to pass around the doorbell state. But after
-Commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes"),
-vcpu->arch.doorbell_request is the only variable used to pass around
-doorbell state.
-With the plumbing for handling doorbells for nested guests updated to use
-vcpu->arch.doorbell_request over vc->dpdes, the above "else if" stops
-doorbells from working correctly as L0 aborts execution of L2 and
-instead goes back to L1.
-
-Remove vcpu->arch.doorbell_request from the above "else if" condition as
-it is no longer needed for L0 to correctly handle the doorbell status
-while running L2.
-
-[1] Terminology
-1. L0 : PowerNV linux running with HV privileges
-2. L1 : Pseries KVM guest running on top of L0
-2. L2 : Nested KVM guest running on top of L1
-
-Fixes: 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241109063301.105289-4-gautam@linux.ibm.com
+Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/include/asm/sstep.h |  5 -----
+ arch/powerpc/lib/sstep.c         | 12 ++++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index ccc9a8431b944..b0432e78fa629 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4915,7 +4915,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 			lpcr &= ~LPCR_MER;
- 		}
- 	} else if (vcpu->arch.pending_exceptions ||
--		   vcpu->arch.doorbell_request ||
- 		   xive_interrupt_pending(vcpu)) {
- 		vcpu->arch.ret = RESUME_HOST;
- 		goto out;
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index 50950deedb873..e3d0e714ff280 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -173,9 +173,4 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t instr);
+  */
+ extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
+ 
+-extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-			     const void *mem, bool cross_endian);
+-extern void emulate_vsx_store(struct instruction_op *op,
+-			      const union vsx_reg *reg, void *mem,
+-			      bool cross_endian);
+ extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index e65f3fb68d06b..ac3ee19531d8a 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -780,8 +780,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
+ #endif /* __powerpc64 */
+ 
+ #ifdef CONFIG_VSX
+-void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-		      const void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
++					     const void *mem, bool rev)
+ {
+ 	int size, read_size;
+ 	int i, j;
+@@ -863,11 +863,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_load);
+-NOKPROBE_SYMBOL(emulate_vsx_load);
+ 
+-void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+-		       void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
++					      void *mem, bool rev)
+ {
+ 	int size, write_size;
+ 	int i, j;
+@@ -955,8 +953,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_store);
+-NOKPROBE_SYMBOL(emulate_vsx_store);
+ 
+ static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+ 				       unsigned long ea, struct pt_regs *regs,
 -- 
 2.43.0
 
