@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-96753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464629E23A9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3079E2413
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805E2B88300
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BDF4287135
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B269D1F76D9;
-	Tue,  3 Dec 2024 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3411FF7C3;
+	Tue,  3 Dec 2024 15:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTCUih2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFANM83C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671E51F76A4;
-	Tue,  3 Dec 2024 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773B1F9EC0;
+	Tue,  3 Dec 2024 15:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238494; cv=none; b=qYM/8BS2EvYJSYyfeoMdop6YUwpjhy12p0A4mg5N2WVEhesbAiIYfhSq2D2zWAdJByppaZzVsAhjijaw367cFaMKNNu66uWqwQ9eTrxnlYoUdAMbYRhLTnNgALMmXtJk4LiOigl0PSt5m7oUaEeT21JO4JREy5LePg2XP9Z50b8=
+	t=1733240561; cv=none; b=iIL5qLxrAqMYnMslSwXZiNP+17UWoicDarHnKuuSi0+LqmIj9moWFscqWsG9D/PfxGWwpORpoERNUAOldwcLgknhFmz48Wv6nLonhjzcRrvLX2tCs/3DAfwUGnKMdm1RoXg33ctsf+y6qe0/1Gtnzwg4KpsxZ7Yd8QJOAO91DQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238494; c=relaxed/simple;
-	bh=+AKKajc7EaBjjao3KlU2Tczq8rb91XhKCaHEYRIRSCU=;
+	s=arc-20240116; t=1733240561; c=relaxed/simple;
+	bh=FLEGIasZzVnuLS5kPS69c+qPjFla9LHj9NYanyHdAE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaCL0xIW5Y8ZlJC2GqYTxZgwWTqtUMCTEMBirAxHetABFGjMiL4Ab7rFLl3eW8ShbGLUjuRlpxhpcqfl6JfcfNndqKNu+6ROceO1fUQ/Jlm6E1rR8FHJSEV6s6m6QCKEPBxV1jh5xwWxMqDWiQPnNXbdmeCV52v0Mympg+EC76I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTCUih2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5635C4CECF;
-	Tue,  3 Dec 2024 15:08:13 +0000 (UTC)
+	 MIME-Version; b=B3cEnooQGeYlLRgsC9m60aHXw7ubUZGdmlAD6CMcUR5wWtQyltaFdSPOeSeSUPJd7PRsg3fhyOzpsw1cAvolKx2uwHB+Ozzi4Ipm6qRDrkYs9rmmQnfIIDhjdn9zfP+ln9xiR7XE8eop/anbfUICRez+bozSJJkkxFxLsK81Zng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFANM83C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35771C4CECF;
+	Tue,  3 Dec 2024 15:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238494;
-	bh=+AKKajc7EaBjjao3KlU2Tczq8rb91XhKCaHEYRIRSCU=;
+	s=korg; t=1733240561;
+	bh=FLEGIasZzVnuLS5kPS69c+qPjFla9LHj9NYanyHdAE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTCUih2tR3J5wXGVAVHQs3PDcnuvvxsERjNUbUpJfdQr7VpL/yfLsxGMsO7j5IMka
-	 2VOqP87arJx7PsXaUEnXEkfGHESgtYWUs/J+jYnVlBnqOUQtZaMrvhxs45nG6tXfcS
-	 tRA4B+xVoqy1rEGiVMzupZe0D5L2AGZ2f8uieHH4=
+	b=MFANM83CHXFioYIAA2LxjcALuyW+2rvPegquQf64h37tE7mVlGXLkmZAHAyajAhdz
+	 zEV6yYLA7RCGPdllBUBpYeGrHbfLrX+1qrYsuLBPW+82DcqvNOQu9tV+BGxsdnPKgN
+	 yH4mFN0whfouCnTxImeM0XRn4LpPvdsVw9ddVqx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 296/817] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 6.12 141/826] arm64: dts: mt8183: fennel: add i2c2s i2c-scl-internal-delay-ns
 Date: Tue,  3 Dec 2024 15:37:48 +0100
-Message-ID: <20241203144007.373065402@linuxfoundation.org>
+Message-ID: <20241203144749.247626789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
 
-[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
+[ Upstream commit c802db127dfb9602aaa9338e433c0553d34f1a9c ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Add i2c2's i2c-scl-internal-delay-ns.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Patchwork: https://patchwork.freedesktop.org/patch/614075/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 6cd7fdc8c530 ("arm64: dts: mt8183: Add kukui-jacuzzi-fennel board")
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by:
+Link: https://lore.kernel.org/r/20241025-i2c-delay-v2-1-9be1bcaf35e0@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index cb538a262d1c1..db36c81d0f123 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1505,15 +1505,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
+index bbe6c338f465e..f9c1ec366b266 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
+@@ -25,3 +25,6 @@ trackpad@2c {
+ 	};
+ };
  
- 	irq = platform_get_irq_byname(pdev, name);
- 
--	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
-+	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
- 	if (ret) {
- 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
- 			      name, ret);
- 		return ret;
- 	}
- 
--	disable_irq(irq);
--
- 	return irq;
- }
- 
++&i2c2 {
++	i2c-scl-internal-delay-ns = <21500>;
++};
 -- 
 2.43.0
 
