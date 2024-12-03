@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F8D9E2A29
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:59:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE009E2B05
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 355F1BA7750
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8063B800CD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB80F1F757E;
-	Tue,  3 Dec 2024 15:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5210D1F76AD;
+	Tue,  3 Dec 2024 15:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzUY7ua6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxjZl/AT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684091F707A;
-	Tue,  3 Dec 2024 15:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2621362;
+	Tue,  3 Dec 2024 15:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239536; cv=none; b=UWByCu90lAniT+NVf3ulRjtOLkmuo/gnvp1bGIsHcejK5D4XRt1DIxUlpo45readd+o1A6LS5KxNwIIVYeW1mczpBeNHIPpnBJrvxVp8rzKahtfESNixjG3vlsziS6WuBYhgTzRN/dwZZRir4f5RL3pB4cJ2WHELiTG7/gvBlTI=
+	t=1733241599; cv=none; b=dH+17ZnA+R9puUr7ZMnkCQxVRDpkDVD+za5iNAV8V9HHIz0YeGwYqWHxM8oDMlj+nFE6AW45v2SSmhWZnH1o1ALv7f7mvsyZhy+UasovNCWbSEnoFkZONLAYt9axj8jdJttgrM1CzyL+hGAPyJyzG58E92BHjN+JbNR02BnbwHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239536; c=relaxed/simple;
-	bh=z88DFx1+rWQ6VqPIuUu2EiOQBRvSUAnrCiaMMzYSzP4=;
+	s=arc-20240116; t=1733241599; c=relaxed/simple;
+	bh=XW34TQYrsDcJVOIU7PwUsskcQDnTg5t5r1k6Xu+EIm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4gycSOaIn6zgNsWNhBrt/OA+c22pdKsXeZihyodYCKAxEUIrpauRhvou7uaOGok8Ue7a4k0+Ko42ri7d5W7DI+ZsLszCKNC/WCF/3KHly01A0pjxoQeIrikwakQL0uZddPBqOYQzhiK11AIDcXbJX3CK+eYAJaAgN6gGIeEK3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzUY7ua6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BE2C4CED6;
-	Tue,  3 Dec 2024 15:25:35 +0000 (UTC)
+	 MIME-Version; b=hDcN/jXUEdYpVJjiZxZmSM5HkmWb1AmH4ZWK0CHmJd0Ev/Gx4xHiL+jWse0tD5h7M6AJhfImJg3dQ94Ue64BLGaqDmMtgS9n80C1CRrgpa17hIfwB8uMDGrUyo+UMxz8TTAa4lCzVyaqQehTpUToENqMGfvqPa3FnzPrh/IoSno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxjZl/AT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B966C4CECF;
+	Tue,  3 Dec 2024 15:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239536;
-	bh=z88DFx1+rWQ6VqPIuUu2EiOQBRvSUAnrCiaMMzYSzP4=;
+	s=korg; t=1733241598;
+	bh=XW34TQYrsDcJVOIU7PwUsskcQDnTg5t5r1k6Xu+EIm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uzUY7ua6rVcB2p+Fa+QUH2rOuTsO9bVt6wkE0vwZ4LcCrO/nrkpVQwX+1u1BbdaVG
-	 z692T1InImY4X5Qs/fekE4elrGdgt8+GZa19/UWx+QBfnn0xLxJ4lplGo8g0yfuzA2
-	 HK9dgFqvzu5Gd1ivrqsGv4sRQuTLu2I7OBHtv/fE=
+	b=YxjZl/ATO6x4tE4W44oWwQlvdN/204a8j37TVsHIwKLs/BIZIwEDtHse+dHf7olCs
+	 8xUig66/HUzpL5jhf09K31ELq+w/AiKIpFgO3Cnue7lGUft1BvXH90rboxM9aKr90K
+	 FcIxX7dm/osD8UlheT1+ZQ03lK876I5uACgbzxrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Steve Kendall <skend@chromium.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 616/817] drm/radeon: Fix spurious unplug event on radeon HDMI
-Date: Tue,  3 Dec 2024 15:43:08 +0100
-Message-ID: <20241203144019.979969599@linuxfoundation.org>
+Subject: [PATCH 6.12 463/826] mailbox: mtk-cmdq: fix wrong use of sizeof in cmdq_get_clocks()
+Date: Tue,  3 Dec 2024 15:43:10 +0100
+Message-ID: <20241203144801.825381789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven 'Steve' Kendall <skend@chromium.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 7037bb04265ef05c6ffad56d884b0df76f57b095 ]
+[ Upstream commit 271ee263cc8771982809185007181ca10346fe73 ]
 
-On several HP models (tested on HP 3125 and HP Probook 455 G2),
-spurious unplug events are emitted upon login on Chrome OS.
-This is likely due to the way Chrome OS restarts graphics
-upon login, so it's possible it's an issue on other
-distributions but not as common, though I haven't
-reproduced the issue elsewhere.
-Use logic from an earlier version of the merged change
-(see link below) which iterates over connectors and finds
-matching encoders, rather than the other way around.
-Also fixes an issue with screen mirroring on Chrome OS.
-I've deployed this patch on Fedora and did not observe
-any regression on these devices.
+It should be size of the struct clk_bulk_data, not data pointer pass to
+devm_kcalloc().
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1569#note_1603002
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3771
-Fixes: 20ea34710f7b ("drm/radeon: Add HD-audio component notifier support (v6)")
-Signed-off-by: Steven 'Steve' Kendall <skend@chromium.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: aa1609f571ca ("mailbox: mtk-cmdq: Dynamically allocate clk_bulk_data structure")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_audio.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_audio.c b/drivers/gpu/drm/radeon/radeon_audio.c
-index 47aa06a9a9422..5b69cc8011b42 100644
---- a/drivers/gpu/drm/radeon/radeon_audio.c
-+++ b/drivers/gpu/drm/radeon/radeon_audio.c
-@@ -760,16 +760,20 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
- 	if (!rdev->audio.enabled || !rdev->mode_info.mode_config_initialized)
- 		return 0;
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 4bff73532085b..9c43ed9bdd37b 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -584,7 +584,7 @@ static int cmdq_get_clocks(struct device *dev, struct cmdq *cmdq)
+ 	struct clk_bulk_data *clks;
  
--	list_for_each_entry(encoder, &rdev_to_drm(rdev)->mode_config.encoder_list, head) {
-+	list_for_each_entry(connector, &dev->mode_config.connector_list, head) {
-+		const struct drm_connector_helper_funcs *connector_funcs =
-+				connector->helper_private;
-+		encoder = connector_funcs->best_encoder(connector);
-+
-+		if (!encoder)
-+			continue;
-+
- 		if (!radeon_encoder_is_digital(encoder))
- 			continue;
- 		radeon_encoder = to_radeon_encoder(encoder);
- 		dig = radeon_encoder->enc_priv;
- 		if (!dig->pin || dig->pin->id != port)
- 			continue;
--		connector = radeon_get_connector_for_encoder(encoder);
--		if (!connector)
--			continue;
- 		*enabled = true;
- 		ret = drm_eld_size(connector->eld);
- 		memcpy(buf, connector->eld, min(max_bytes, ret));
+ 	cmdq->clocks = devm_kcalloc(dev, cmdq->pdata->gce_num,
+-				    sizeof(cmdq->clocks), GFP_KERNEL);
++				    sizeof(*cmdq->clocks), GFP_KERNEL);
+ 	if (!cmdq->clocks)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
