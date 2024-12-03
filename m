@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4302B9E24B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7D89E223A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088E428745F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64E71682E5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4A61F76D0;
-	Tue,  3 Dec 2024 15:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E5A1F706C;
+	Tue,  3 Dec 2024 15:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LLlx0Qr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZZSw0hV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B01C1DAC9F;
-	Tue,  3 Dec 2024 15:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30931F669E;
+	Tue,  3 Dec 2024 15:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241064; cv=none; b=pOyJ29s1nMKttmk5UQDKFyacy1kXYY4s/2EJQTwUTrezKcy+AjpDLpu1cFL46ciHTE60/Pf6B/BzGCZ6CIzav1AI66SI/K+28eVExDZRedHPRJ4ZzmvFhFvtuMtzVGneW0fgMyi9bcxqErYefx0gg24tvUn8LTH59eJSObPBaJA=
+	t=1733239004; cv=none; b=PoAEV3Mdx47CGBRs8RfNFUp/SsV0nJATz+r7HCFg6Lsrh9D43y87Hi7ZDzszTtkABLl57amsaPBoLbht4qcE1lL4Ib4BXcpf4Z3tb7MBJGLdjE6wxTiXa+oEjn3wPCqhfu+Thc/6BTB2gMspdvp6b2xVmhCs7h7lG+WRQKHUUxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241064; c=relaxed/simple;
-	bh=pONlpk/VK1SszHYALSu3xDTg07Xey3M7DuBkzdDv9DM=;
+	s=arc-20240116; t=1733239004; c=relaxed/simple;
+	bh=YoOeaXPXQm9H8tyh6PvE6Bayi4G7N+wpe0ShEkh3lFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVYc7zKrId7yG29kVk0gDSw438B2v5Yc0Jt0G/Dcx7dhr7pPOjqSbwMAekSF+711untwUfJEVYffWUW50BN0C3q4qPo9JvvWKLZ17wBEjit3oVgn+tN1TnqqPdXnjXl1R7zmuHUB+MBIBbs5oSwyto19L1pUFJPBUluWzQ6ayoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LLlx0Qr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1B6C4CED6;
-	Tue,  3 Dec 2024 15:51:03 +0000 (UTC)
+	 MIME-Version; b=Lxs+ME3qQKI1XTl/cKlapeiJGLMzy8xOFxZDleSNtigerNMPni5oCA0MiVdc6mBelFydHCJ8usBDYin5ZrkcbU8qWy+5CGXxHJegxDWnOZ8WGXJJ6XzKEGmgHNot55MnQI93iKbprNk4MzSX49CpDaxGXCvaDH8X+30wPYhAfc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZZSw0hV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF22C4CECF;
+	Tue,  3 Dec 2024 15:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241064;
-	bh=pONlpk/VK1SszHYALSu3xDTg07Xey3M7DuBkzdDv9DM=;
+	s=korg; t=1733239004;
+	bh=YoOeaXPXQm9H8tyh6PvE6Bayi4G7N+wpe0ShEkh3lFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LLlx0QrqQbEmQA1oFi1YNEqlQF0THOG39pr9CSc5QLH/PHJ8T+CZESLBsVtncs3g
-	 24bHNx08WNUTTQ2cPejnhofRyJ2KS7rgkobGZcpooJ4MyXHiF1nIKM1XG/Lo5zJvoz
-	 ygCwlmpqnfGJ6DlrbwvSNtn9gEkzKYLigpw+sYGI=
+	b=UZZSw0hV17dtIgC39/xgB6ZEf45bT5P40wLndnaxudbRi9PZW+BGH0J4EPbId5jda
+	 DZIBErbZzNrb5q+XL4cO9c4UEC8LdQIOWXtqMnStdXLoAhwG7WeylGESS07qAPigSW
+	 inFh2PLkwjK4MJi0f7+sNkg4rMl+WNQNZNqX+v4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/826] ipv6: release nexthop on device removal
+Subject: [PATCH 6.11 470/817] clk: en7523: introduce chip_scu regmap
 Date: Tue,  3 Dec 2024 15:40:42 +0100
-Message-ID: <20241203144756.050355278@linuxfoundation.org>
+Message-ID: <20241203144014.218671781@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
+[ Upstream commit f72fc22038dd544fa4d39c06e8c81c09c0041ed4 ]
 
-The CI is hitting some aperiodic hangup at device removal time in the
-pmtu.sh self-test:
+Introduce chip_scu regmap pointer since EN7581 SoC will access chip-scu
+memory area via a syscon node. Remove first memory region mapping
+for EN7581 SoC. This patch does not introduce any backward incompatibility
+since the dts for EN7581 SoC is not upstream yet.
 
-unregister_netdevice: waiting for veth_A-R1 to become free. Usage count = 6
-ref_tracker: veth_A-R1@ffff888013df15d8 has 1/5 users at
-	dst_init+0x84/0x4a0
-	dst_alloc+0x97/0x150
-	ip6_dst_alloc+0x23/0x90
-	ip6_rt_pcpu_alloc+0x1e6/0x520
-	ip6_pol_route+0x56f/0x840
-	fib6_rule_lookup+0x334/0x630
-	ip6_route_output_flags+0x259/0x480
-	ip6_dst_lookup_tail.constprop.0+0x5c2/0x940
-	ip6_dst_lookup_flow+0x88/0x190
-	udp_tunnel6_dst_lookup+0x2a7/0x4c0
-	vxlan_xmit_one+0xbde/0x4a50 [vxlan]
-	vxlan_xmit+0x9ad/0xf20 [vxlan]
-	dev_hard_start_xmit+0x10e/0x360
-	__dev_queue_xmit+0xf95/0x18c0
-	arp_solicit+0x4a2/0xe00
-	neigh_probe+0xaa/0xf0
-
-While the first suspect is the dst_cache, explicitly tracking the dst
-owing the last device reference via probes proved such dst is held by
-the nexthop in the originating fib6_info.
-
-Similar to commit f5b51fe804ec ("ipv6: route: purge exception on
-removal"), we need to explicitly release the originating fib info when
-disconnecting a to-be-removed device from a live ipv6 dst: move the
-fib6_info cleanup into ip6_dst_ifdown().
-
-Tested running:
-
-./pmtu.sh cleanup_ipv6_exception
-
-in a tight loop for more than 400 iterations with no spat, running an
-unpatched kernel  I observed a splat every ~10 iterations.
-
-Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20241112-clk-en7581-syscon-v2-4-8ada5e394ae4@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: f98eded9e9ab ("clk: en7523: fix estimation of fixed rate for EN7581")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/clk-en7523.c | 81 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 61 insertions(+), 20 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index b4251915585f7..76bea6db59764 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -374,6 +374,7 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
- {
- 	struct rt6_info *rt = dst_rt6_info(dst);
- 	struct inet6_dev *idev = rt->rt6i_idev;
-+	struct fib6_info *from;
+diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
+index da112c9fe8ef9..7f83cbce01eeb 100644
+--- a/drivers/clk/clk-en7523.c
++++ b/drivers/clk/clk-en7523.c
+@@ -3,8 +3,10 @@
+ #include <linux/delay.h>
+ #include <linux/clk-provider.h>
+ #include <linux/io.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
++#include <linux/regmap.h>
+ #include <linux/reset-controller.h>
+ #include <dt-bindings/clock/en7523-clk.h>
+ #include <dt-bindings/reset/airoha,en7581-reset.h>
+@@ -247,15 +249,11 @@ static const u16 en7581_rst_map[] = {
+ 	[EN7581_XPON_MAC_RST]		= RST_NR_PER_BANK + 31,
+ };
  
- 	if (idev && idev->dev != blackhole_netdev) {
- 		struct inet6_dev *blackhole_idev = in6_dev_get(blackhole_netdev);
-@@ -383,6 +384,8 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
- 			in6_dev_put(idev);
- 		}
- 	}
-+	from = unrcu_pointer(xchg(&rt->from, NULL));
-+	fib6_info_release(from);
+-static unsigned int en7523_get_base_rate(void __iomem *base, unsigned int i)
++static u32 en7523_get_base_rate(const struct en_clk_desc *desc, u32 val)
+ {
+-	const struct en_clk_desc *desc = &en7523_base_clks[i];
+-	u32 val;
+-
+ 	if (!desc->base_bits)
+ 		return desc->base_value;
+ 
+-	val = readl(base + desc->base_reg);
+ 	val >>= desc->base_shift;
+ 	val &= (1 << desc->base_bits) - 1;
+ 
+@@ -265,16 +263,11 @@ static unsigned int en7523_get_base_rate(void __iomem *base, unsigned int i)
+ 	return desc->base_values[val];
  }
  
- static bool __rt6_check_expired(const struct rt6_info *rt)
-@@ -1455,7 +1458,6 @@ static DEFINE_SPINLOCK(rt6_exception_lock);
- static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 				 struct rt6_exception *rt6_ex)
+-static u32 en7523_get_div(void __iomem *base, int i)
++static u32 en7523_get_div(const struct en_clk_desc *desc, u32 val)
  {
--	struct fib6_info *from;
- 	struct net *net;
+-	const struct en_clk_desc *desc = &en7523_base_clks[i];
+-	u32 reg, val;
+-
+ 	if (!desc->div_bits)
+ 		return 1;
  
- 	if (!bucket || !rt6_ex)
-@@ -1467,8 +1469,6 @@ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 	/* purge completely the exception to allow releasing the held resources:
- 	 * some [sk] cache may keep the dst around for unlimited time
- 	 */
--	from = unrcu_pointer(xchg(&rt6_ex->rt6i->from, NULL));
--	fib6_info_release(from);
- 	dst_dev_put(&rt6_ex->rt6i->dst);
+-	reg = desc->div_reg ? desc->div_reg : desc->base_reg;
+-	val = readl(base + reg);
+ 	val >>= desc->div_shift;
+ 	val &= (1 << desc->div_bits) - 1;
  
- 	hlist_del_rcu(&rt6_ex->hlist);
+@@ -416,9 +409,12 @@ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_dat
+ 
+ 	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
+ 		const struct en_clk_desc *desc = &en7523_base_clks[i];
++		u32 reg = desc->div_reg ? desc->div_reg : desc->base_reg;
++		u32 val = readl(base + desc->base_reg);
+ 
+-		rate = en7523_get_base_rate(base, i);
+-		rate /= en7523_get_div(base, i);
++		rate = en7523_get_base_rate(desc, val);
++		val = readl(base + reg);
++		rate /= en7523_get_div(desc, val);
+ 
+ 		hw = clk_hw_register_fixed_rate(dev, desc->name, NULL, 0, rate);
+ 		if (IS_ERR(hw)) {
+@@ -454,21 +450,66 @@ static int en7523_clk_hw_init(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
++static void en7581_register_clocks(struct device *dev, struct clk_hw_onecell_data *clk_data,
++				   struct regmap *map, void __iomem *base)
++{
++	struct clk_hw *hw;
++	u32 rate;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
++		const struct en_clk_desc *desc = &en7523_base_clks[i];
++		u32 val, reg = desc->div_reg ? desc->div_reg : desc->base_reg;
++		int err;
++
++		err = regmap_read(map, desc->base_reg, &val);
++		if (err) {
++			pr_err("Failed reading fixed clk rate %s: %d\n",
++			       desc->name, err);
++			continue;
++		}
++		rate = en7523_get_base_rate(desc, val);
++
++		err = regmap_read(map, reg, &val);
++		if (err) {
++			pr_err("Failed reading fixed clk div %s: %d\n",
++			       desc->name, err);
++			continue;
++		}
++		rate /= en7523_get_div(desc, val);
++
++		hw = clk_hw_register_fixed_rate(dev, desc->name, NULL, 0, rate);
++		if (IS_ERR(hw)) {
++			pr_err("Failed to register clk %s: %ld\n",
++			       desc->name, PTR_ERR(hw));
++			continue;
++		}
++
++		clk_data->hws[desc->id] = hw;
++	}
++
++	hw = en7523_register_pcie_clk(dev, base);
++	clk_data->hws[EN7523_CLK_PCIE] = hw;
++
++	clk_data->num = EN7523_NUM_CLOCKS;
++}
++
+ static int en7581_clk_hw_init(struct platform_device *pdev,
+ 			      struct clk_hw_onecell_data *clk_data)
+ {
+-	void __iomem *base, *np_base;
++	void __iomem *np_base;
++	struct regmap *map;
+ 	u32 val;
+ 
+-	base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
++	map = syscon_regmap_lookup_by_compatible("airoha,en7581-chip-scu");
++	if (IS_ERR(map))
++		return PTR_ERR(map);
+ 
+-	np_base = devm_platform_ioremap_resource(pdev, 1);
++	np_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(np_base))
+ 		return PTR_ERR(np_base);
+ 
+-	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
++	en7581_register_clocks(&pdev->dev, clk_data, map, np_base);
+ 
+ 	val = readl(np_base + REG_NP_SCU_SSTR);
+ 	val &= ~(REG_PCIE_XSI0_SEL_MASK | REG_PCIE_XSI1_SEL_MASK);
+@@ -545,7 +586,7 @@ static int en7523_reset_register(struct platform_device *pdev,
+ 	if (!soc_data->reset.idx_map_nr)
+ 		return 0;
+ 
+-	base = devm_platform_ioremap_resource(pdev, 2);
++	base = devm_platform_ioremap_resource(pdev, 1);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+ 
 -- 
 2.43.0
 
