@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F29D9E2568
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF2E9E22A6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 866B2167E4A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F5A16855D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC041F75AE;
-	Tue,  3 Dec 2024 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECE91F757E;
+	Tue,  3 Dec 2024 15:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mwca+NLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeBLxVom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB011AB6C9;
-	Tue,  3 Dec 2024 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C05B1F754A;
+	Tue,  3 Dec 2024 15:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241320; cv=none; b=W6SKLlXNuFuWTyGAGUOl6RjbmTXMo1Sr83ZjBd3YXeIL9Yl9ISvznPgT1exWEk/Yv7JzIObmBQGFl08YUrMDjxAxKA/GPnC7KhE5p31eoDCr3Bql6JWnVHfEraP1qm7w+nJ5BX7/4Yln6MbsBz8AhYBanrejYO1dGQEVxhPCO8E=
+	t=1733239312; cv=none; b=jBAAECALm3P4jUWl12vXJVtssopBidYx2cfT/jkWyBqSk0gTgDiHfIxVZQrtyEsw8ydUMsBVljdZL8VyyCy1WhiFeEM2PQhZjok18Kwj0rYgVL+8QSXX+oFSwmewdBS+GVGK24b3l8YVWoeVIvjdLUUrS1cAy9g1MNVbM6XR5yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241320; c=relaxed/simple;
-	bh=VgJQxmdc/JjEVl4/+iJorIcHzFETFacC4M8Gm2DNjHo=;
+	s=arc-20240116; t=1733239312; c=relaxed/simple;
+	bh=ZhTKFNuSiLQdTJqPz2ZaTqGDusOuk7dUg+qL657swuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwMuRWJLSFKrh3wxxQ8xnUCXko4Vu3JrYdEtPU7+qRqq+DlxSdsRsQP7rmU2XBC42/xCaCj+gG+p/fV+r9+389fBg1uKNhYl+eUMdGFzywYVyRdXyVf+nnBaAoa3kA9BoCPaQ3kADLVuoxXnFUojq1MhwlfTWwQkHwMliLcRQF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mwca+NLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DC6C4CED6;
-	Tue,  3 Dec 2024 15:55:19 +0000 (UTC)
+	 MIME-Version; b=BGAJPk5wJAM1XSKghl5/zgFlb1URbcbPfZPcs1mFurFxYkko1o6PJ33QyPQVtzSh9ahOQGg+TSHUKj+z6NRNr01//r00kvwQldexJjYXIxh+oocpRWR6u1AuGD79rJX9gBHpZ55R+E2uBfWSpejXHhAJVXV9TmBxszRJav7kzpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeBLxVom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58811C4CECF;
+	Tue,  3 Dec 2024 15:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241320;
-	bh=VgJQxmdc/JjEVl4/+iJorIcHzFETFacC4M8Gm2DNjHo=;
+	s=korg; t=1733239311;
+	bh=ZhTKFNuSiLQdTJqPz2ZaTqGDusOuk7dUg+qL657swuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mwca+NLbOJZor+xUdAdGDu1QfWv+sV/GVIITemH8tEhgMPi0jwOjA1RKj1XzCzjSU
-	 2TtRDa+1umbPFLEvqA9xn5tD70jGiaR6IzYce93gzFscjLhALF7uFVht0UzB+xGOo6
-	 2twNtkXtVF7MWUK0VP0hhFdptHzdWRHHNcxX68/A=
+	b=jeBLxVom5A5cKaJsbtAsIfNWHa2TY8A1gQHsuZiEf3gkmxtzgtO2ubGMuxUNg6H6M
+	 jm+DI/zWrneDApOEyzBZ5LHIdh+TZ5CnoA4KYpOVU5WmsbdzG5T3Kylj3uXKczt1ur
+	 niEYDmoj2jlzqb5QmW5D47RboeM79qgimt9JWlig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 387/826] cpufreq: CPPC: Fix possible null-ptr-deref for cpufreq_cpu_get_raw()
-Date: Tue,  3 Dec 2024 15:41:54 +0100
-Message-ID: <20241203144758.858461469@linuxfoundation.org>
+Subject: [PATCH 6.11 543/817] svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()
+Date: Tue,  3 Dec 2024 15:41:55 +0100
+Message-ID: <20241203144017.099356875@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit a78e7207564258db6e373e86294a85f9d646d35a ]
+[ Upstream commit ce89e742a4c12b20f09a43fec1b21db33f2166cd ]
 
-cpufreq_cpu_get_raw() may return NULL if the cpu is not in
-policy->cpus cpu mask and it will cause null pointer dereference.
+There's issue as follows:
+RPC: Registered rdma transport module.
+RPC: Registered rdma backchannel transport module.
+RPC: Unregistered rdma transport module.
+RPC: Unregistered rdma backchannel transport module.
+BUG: unable to handle page fault for address: fffffbfff80c609a
+PGD 123fee067 P4D 123fee067 PUD 123fea067 PMD 10c624067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
+RIP: 0010:percpu_counter_destroy_many+0xf7/0x2a0
+Call Trace:
+ <TASK>
+ __die+0x1f/0x70
+ page_fault_oops+0x2cd/0x860
+ spurious_kernel_fault+0x36/0x450
+ do_kern_addr_fault+0xca/0x100
+ exc_page_fault+0x128/0x150
+ asm_exc_page_fault+0x26/0x30
+ percpu_counter_destroy_many+0xf7/0x2a0
+ mmdrop+0x209/0x350
+ finish_task_switch.isra.0+0x481/0x840
+ schedule_tail+0xe/0xd0
+ ret_from_fork+0x23/0x80
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Fixes: 740fcdc2c20e ("cpufreq: CPPC: Register EM based on efficiency class information")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+If register_sysctl() return NULL, then svc_rdma_proc_cleanup() will not
+destroy the percpu counters which init in svc_rdma_proc_init().
+If CONFIG_HOTPLUG_CPU is enabled, residual nodes may be in the
+'percpu_counters' list. The above issue may occur once the module is
+removed. If the CONFIG_HOTPLUG_CPU configuration is not enabled, memory
+leakage occurs.
+To solve above issue just destroy all percpu counters when
+register_sysctl() return NULL.
+
+Fixes: 1e7e55731628 ("svcrdma: Restore read and write stats")
+Fixes: 22df5a22462e ("svcrdma: Convert rdma_stat_sq_starve to a per-CPU counter")
+Fixes: df971cd853c0 ("svcrdma: Convert rdma_stat_recv to a per-CPU counter")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sunrpc/xprtrdma/svc_rdma.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 1a8f95e6cc8d0..c907638810057 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -423,6 +423,9 @@ static int cppc_get_cpu_power(struct device *cpu_dev,
- 	struct cppc_cpudata *cpu_data;
+diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
+index 58ae6ec4f25b4..415c0310101f0 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma.c
++++ b/net/sunrpc/xprtrdma/svc_rdma.c
+@@ -233,25 +233,34 @@ static int svc_rdma_proc_init(void)
  
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
-+	if (!policy)
-+		return 0;
+ 	rc = percpu_counter_init(&svcrdma_stat_read, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err;
+ 	rc = percpu_counter_init(&svcrdma_stat_recv, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_read;
+ 	rc = percpu_counter_init(&svcrdma_stat_sq_starve, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_recv;
+ 	rc = percpu_counter_init(&svcrdma_stat_write, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_sq;
+ 
+ 	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
+ 					       svcrdma_parm_table);
++	if (!svcrdma_table_header)
++		goto err_write;
 +
- 	cpu_data = policy->driver_data;
- 	perf_caps = &cpu_data->perf_caps;
- 	max_cap = arch_scale_cpu_capacity(cpu_dev->id);
+ 	return 0;
+ 
+-out_err:
++err_write:
++	rc = -ENOMEM;
++	percpu_counter_destroy(&svcrdma_stat_write);
++err_sq:
+ 	percpu_counter_destroy(&svcrdma_stat_sq_starve);
++err_recv:
+ 	percpu_counter_destroy(&svcrdma_stat_recv);
++err_read:
+ 	percpu_counter_destroy(&svcrdma_stat_read);
++err:
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
