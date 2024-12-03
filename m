@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-96643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5074B9E20EB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F159E20C2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF30316904A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FB9285394
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82911EF0BC;
-	Tue,  3 Dec 2024 15:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F841F669E;
+	Tue,  3 Dec 2024 15:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/H7rmWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHfb6k8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871891F7065;
-	Tue,  3 Dec 2024 15:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4397D1E3DF9;
+	Tue,  3 Dec 2024 15:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238175; cv=none; b=cYCJy6Hg4OOn5nwYe+bhUOKoQGLWlxfvL3jW9ysXIKBfufC/Qvbk55gJtlfpt4+R8oHpSdkgNpIOeGaIurFlhsxbUv3W35B6bLflkBjF2AiC2BsJqLGw98iu09w5CH1eYsYNTfoTOlNJdrvcM9tnuJCcWDLaMuQMjwXjelvz18M=
+	t=1733238207; cv=none; b=IltGXM5UOn7HREvR1BA+zvFRV7W6JEJROzoCHj822TK8oTYOYvDh4Vpbqg9BHOsWOmMC7rb46L7mNJ59dmATDKTQdklNV0YC+u3Zk6/Kc75A7Dj+SsAtMlSJ+DOuwJ58CKsB02V3QN/iaCmT65ZZgwpjqxBGkLy0vOCO0+d4/UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238175; c=relaxed/simple;
-	bh=3hz7pIfjV8ng/ItavyUt07Lf5L9Wr38+mHDJaQixuS0=;
+	s=arc-20240116; t=1733238207; c=relaxed/simple;
+	bh=lPhay12moMPc49NaIFUyAXdHfzxnkP3O+ImEML+n5dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkTfm9ZT3S8i3fjLBBxJ9Q4yUe0FQ+Mj3rhJKHIDa1mbpSF2uWSdJ1mv5xNnC9/BVAiTj8kck6wf8Q6NFieUqxlwISEdBPYMXQHW3vyZO663OkY9uk6aq6iRQKcE91eg/JhzaBmQKztRtG+l1PXAt4zuvMe24oz1crV1sXIMsZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/H7rmWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C20BC4CED6;
-	Tue,  3 Dec 2024 15:02:54 +0000 (UTC)
+	 MIME-Version; b=kLQKwC9gZfbHEE4emSTXiEt/EbWXFLOoWhyP97jV6y8hPn/MEAMUMBeGA+mAaHDxz6OS/j5KkLGJ6h3WU2J3odijT3pmJ/EUunVYKGFcI74YP6BXjiu8yk4V51XU6PLnIjlDrMk/o5whajwNSvWcAxLFNEwXrJL4yMEwF25Bc6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHfb6k8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD989C4CECF;
+	Tue,  3 Dec 2024 15:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238175;
-	bh=3hz7pIfjV8ng/ItavyUt07Lf5L9Wr38+mHDJaQixuS0=;
+	s=korg; t=1733238207;
+	bh=lPhay12moMPc49NaIFUyAXdHfzxnkP3O+ImEML+n5dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/H7rmWN6fW0WJCILtDlA/T8y9onnutov1oT3FJLZqxmDGPTrJHEwJlozDp98sxjB
-	 7EjAB9Ls620Q26AWEwCDtSaz3y+AJ74LNN8P0gv0gSZAzKQQL8vtNMHEl0CyNj+E96
-	 oPIaEysew7DzoXc0Ma485rRGuilzfJy8pktvGbi0=
+	b=PHfb6k8XzJSDZDor+ApKed4Wrin6erA8mxJlTPDImFzx3cSEkf08BeQOpoegnmVqM
+	 Tw8QLXj/ikLdMsEoHgsk9d1Qkgk3rehfLgU3B0pKYRIEagWe988k5dYI69Yt6a1x4Y
+	 9aZeOoGfSR6PfPS0/QP7od2k0CzF3K882IeLAiYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fei Shao <fshao@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 170/817] arm64: dts: mediatek: mt8188: Fix USB3 PHY port default status
-Date: Tue,  3 Dec 2024 15:35:42 +0100
-Message-ID: <20241203144002.362130389@linuxfoundation.org>
+Subject: [PATCH 6.11 171/817] arm64: dts: mediatek: mt8195-cherry: Use correct audio codec DAI
+Date: Tue,  3 Dec 2024 15:35:43 +0100
+Message-ID: <20241203144002.406551841@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,37 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit 6bb64877a41561bc78e0f4e9e04d524a0155d6aa ]
+[ Upstream commit 7d5794e6d964940e46286fadbe69a3245fa51e44 ]
 
-The T-PHY controller at 0x11e40000 controls two underlying USB2 and USB3
-PHY ports. The USB3 port works normally just like the others, so there's
-no point in disabling it separately. Otherwise, board DTs would have to
-enable both the T-PHY controller and one of its sub-nodes in particular,
-which is slightly redundant and confusing.
+The RT5682i and RT5682s drivers describe two DAIs: AIF1 supports both
+playback and capture, while AIF2 supports capture only.
 
-Remove the status line in the u3port1 node, so it's ready to be used
-once the T-PHY controller is enabled.
+Cherry doesn't specify which DAI to use. Although this doesn't cause
+real issues because AIF1 happens to be the first DAI, it should be
+corrected:
+    codec@1a: #sound-dai-cells: 1 was expected
 
-Fixes: 9461e0caac9e ("arm64: dts: Add MediaTek MT8188 dts and evaluation board and Makefile")
+Update #sound-dai-cells to 1 and adjust DAI link usages accordingly.
+
+Fixes: 87728e3ccf35 ("arm64: dts: mediatek: mt8195-cherry: Specify sound DAI links and routing")
 Signed-off-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20241021081311.543625-1-fshao@chromium.org
+Link: https://lore.kernel.org/r/20241021114318.1358681-1-fshao@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8188.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-index 041a85e1d9b55..b6193d73f688c 100644
---- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-@@ -1219,7 +1219,6 @@ u3port1: usb-phy@700 {
- 					 <&clk26m>;
- 				clock-names = "ref", "da_ref";
- 				#phy-cells = <1>;
--				status = "disabled";
- 			};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index d3a52acbe48a1..2960772cb9065 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -438,7 +438,7 @@ audio_codec: codec@1a {
+ 		/* Realtek RT5682i or RT5682s, sharing the same configuration */
+ 		reg = <0x1a>;
+ 		interrupts-extended = <&pio 89 IRQ_TYPE_EDGE_BOTH>;
+-		#sound-dai-cells = <0>;
++		#sound-dai-cells = <1>;
+ 		realtek,jd-src = <1>;
+ 
+ 		AVDD-supply = <&mt6359_vio18_ldo_reg>;
+@@ -1181,7 +1181,7 @@ hs-playback-dai-link {
+ 		link-name = "ETDM1_OUT_BE";
+ 		mediatek,clk-provider = "cpu";
+ 		codec {
+-			sound-dai = <&audio_codec>;
++			sound-dai = <&audio_codec 0>;
  		};
+ 	};
+ 
+@@ -1189,7 +1189,7 @@ hs-capture-dai-link {
+ 		link-name = "ETDM2_IN_BE";
+ 		mediatek,clk-provider = "cpu";
+ 		codec {
+-			sound-dai = <&audio_codec>;
++			sound-dai = <&audio_codec 0>;
+ 		};
+ 	};
  
 -- 
 2.43.0
