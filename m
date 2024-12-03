@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-97119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B149A9E22FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4479E2300
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C311636D5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA89163ED3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE1E1F7561;
-	Tue,  3 Dec 2024 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBEA1F7572;
+	Tue,  3 Dec 2024 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0N9u0ssv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNnM7CIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056781F7554;
-	Tue,  3 Dec 2024 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A991F7577;
+	Tue,  3 Dec 2024 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239574; cv=none; b=QBP2YCWJAQvROVCvc6S1khKrZevGU3T3jnKe7i1MJ6PWNkdb6omcamXiKNYtE3y2HT2nZFgiFxxNeMdESq1hvRwWnb2fpg9sRp2pOXOKOsiXsq/03SkCVnPqCjSdIFFVXdiyizPnWE9H2TKswIi5duTFX4CrcVndxaiRLv8ZqYY=
+	t=1733239579; cv=none; b=cQfQqfCj+OS5ZNraN2ISwUxdvMOcO0FCNnYdfVz1m3HpVcTOiU97DIurbGciR3pI4hucisixNCwJOuyo4tUkQwPBX+cs/jFZen+64skqarei4wAVUcrvolqlsD0DpXcTp2g6kM+xRkGrAOFJ/mrg+LRKj1YJN4Nhj9vd/SpWU6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239574; c=relaxed/simple;
-	bh=Ejfn6XHQ6tRp3l1uTpr3+2SVcEuNevR8WuBPj/6RSqw=;
+	s=arc-20240116; t=1733239579; c=relaxed/simple;
+	bh=Irb24CWYwuPS4Zjt1yKB1rJAKAjJAVswIA+FO7/5mGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hm6Zp+Ej7Gn5nFbHO+g4dmmJFy3O3rvJgna6wCt965eE9QL+v3TXmKPEmsBLIjk6OWeVoPbZGz8FCUG+tICz/gHkKrl038slXonjRE2MTggmWjuM17aB53itBTZHhsT9I8jxmraoqAwyBHdlQZqNp/pm+bKrhBMSbkoxlfYHk/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0N9u0ssv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830A7C4CECF;
-	Tue,  3 Dec 2024 15:26:13 +0000 (UTC)
+	 MIME-Version; b=kyYkHleDxNcMlChnwjxeIEj3KCSqSRWRK9dYtR3aAgaCylO8GZd+RuUuPYtMhW7bpueUHpZ/NEq2n4ePt1BsCosNW0/QCWG1lH/eww+FAV6l5Ro/239jXMUoY3xUvmvs1B/pCjrP9GwLOgzLzilgiRWn9SENsc1NceLadFe3ROY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNnM7CIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E897C4CECF;
+	Tue,  3 Dec 2024 15:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239573;
-	bh=Ejfn6XHQ6tRp3l1uTpr3+2SVcEuNevR8WuBPj/6RSqw=;
+	s=korg; t=1733239579;
+	bh=Irb24CWYwuPS4Zjt1yKB1rJAKAjJAVswIA+FO7/5mGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0N9u0ssvHECVCfnDg102klcahs1K41rOSdYkQioFO9M+wgvMoDYQisVv6GdZWbUmO
-	 iw39pbcFg6uRB+eIqpYv/pmj7PAxqJloKpLaZ1ukYcmSM7+yBtMB38vtOJ1UwzHkEd
-	 hG3Nx+ywYzCZbj55oGnBUXMqEYeqU4zVB2O8peYQ=
+	b=MNnM7CIXq8mIUKR7wUWn66NWZ6GSS5Ub4Fou61U57GtEvUrilTYZgtZhN4X8JPOQa
+	 YxduUzrHe8O0N2XmcBXss8bDxJcex0QT1o8c+a2lJ1j5PGO7pVNbxZyQhU+g1mdnaC
+	 GBT60uBoDUZKAtM+iGFFP8wzskGOgAjY+5uhlxvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.11 661/817] fsnotify: Fix ordering of iput() and watched_objects decrement
-Date: Tue,  3 Dec 2024 15:43:53 +0100
-Message-ID: <20241203144021.760655080@linuxfoundation.org>
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.11 662/817] comedi: Flush partial mappings in error case
+Date: Tue,  3 Dec 2024 15:43:54 +0100
+Message-ID: <20241203144021.799920807@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,64 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Jann Horn <jannh@google.com>
 
-commit 21d1b618b6b9da46c5116c640ac4b1cc8d40d63a upstream.
+commit ce8f9fb651fac95dd41f69afe54d935420b945bd upstream.
 
-Ensure the superblock is kept alive until we're done with iput().
-Holding a reference to an inode is not allowed unless we ensure the
-superblock stays alive, which fsnotify does by keeping the
-watched_objects count elevated, so iput() must happen before the
-watched_objects decrement.
-This can lead to a UAF of something like sb->s_fs_info in tmpfs, but the
-UAF is hard to hit because race orderings that oops are more likely, thanks
-to the CHECK_DATA_CORRUPTION() block in generic_shutdown_super().
+If some remap_pfn_range() calls succeeded before one failed, we still have
+buffer pages mapped into the userspace page tables when we drop the buffer
+reference with comedi_buf_map_put(bm). The userspace mappings are only
+cleaned up later in the mmap error path.
 
-Also, ensure that fsnotify_put_sb_watched_objects() doesn't call
-fsnotify_sb_watched_objects() on a superblock that may have already been
-freed, which would cause a UAF read of sb->s_fsnotify_info.
+Fix it by explicitly flushing all mappings in our VMA on the error path.
 
-Cc: stable@kernel.org
-Fixes: d2f277e26f52 ("fsnotify: rename fsnotify_{get,put}_sb_connectors()")
+See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
+error case").
+
+Cc: stable@vger.kernel.org
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
 Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20241017-comedi-tlb-v3-1-16b82f9372ce@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/mark.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/comedi/comedi_fops.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index c45b222cf9c1..4981439e6209 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -138,8 +138,11 @@ static void fsnotify_get_sb_watched_objects(struct super_block *sb)
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -2407,6 +2407,18 @@ static int comedi_mmap(struct file *file
  
- static void fsnotify_put_sb_watched_objects(struct super_block *sb)
- {
--	if (atomic_long_dec_and_test(fsnotify_sb_watched_objects(sb)))
--		wake_up_var(fsnotify_sb_watched_objects(sb));
-+	atomic_long_t *watched_objects = fsnotify_sb_watched_objects(sb);
+ 			start += PAGE_SIZE;
+ 		}
 +
-+	/* the superblock can go away after this decrement */
-+	if (atomic_long_dec_and_test(watched_objects))
-+		wake_up_var(watched_objects);
- }
++#ifdef CONFIG_MMU
++		/*
++		 * Leaving behind a partial mapping of a buffer we're about to
++		 * drop is unsafe, see remap_pfn_range_notrack().
++		 * We need to zap the range here ourselves instead of relying
++		 * on the automatic zapping in remap_pfn_range() because we call
++		 * remap_pfn_range() in a loop.
++		 */
++		if (retval)
++			zap_vma_ptes(vma, vma->vm_start, size);
++#endif
+ 	}
  
- static void fsnotify_get_inode_ref(struct inode *inode)
-@@ -150,8 +153,11 @@ static void fsnotify_get_inode_ref(struct inode *inode)
- 
- static void fsnotify_put_inode_ref(struct inode *inode)
- {
--	fsnotify_put_sb_watched_objects(inode->i_sb);
-+	/* read ->i_sb before the inode can go away */
-+	struct super_block *sb = inode->i_sb;
-+
- 	iput(inode);
-+	fsnotify_put_sb_watched_objects(sb);
- }
- 
- /*
--- 
-2.47.1
-
+ 	if (retval == 0) {
 
 
 
