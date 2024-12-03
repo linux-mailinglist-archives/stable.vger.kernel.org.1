@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-97948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6104D9E26A7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D70E9E23D2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1520F16ECDF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C716B16E742
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFA51F8905;
-	Tue,  3 Dec 2024 16:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B241F8AE6;
+	Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGlrGKlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWduCAR8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2D1F76BF;
-	Tue,  3 Dec 2024 16:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7838C1F75B6;
+	Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242281; cv=none; b=mVIUeO/hIiL/TDaZR42hy1d7xCDmbPlw+kjknvJHuyM9GV0tbYdMlDOcImaskddW2iyKIfYRTLNg+Sixd87Vg8dH6GAAJnmNdS41QRjkAdlm+W5nbYdujNz2XyOvNXfUMAWnHw8AcEMor8tNxr6kckXxNC33ktEjN643xd5JSoI=
+	t=1733240044; cv=none; b=oJk/lGUoyX9MQmTqPS/5RKF1lQU80qt7kKjfCyZMwjJuTX6ubA1zDCE+eypr6NbfaGN8YamxaA8kLFyqV1yuGKcWKkdIbdtd4VxTN+emuLr+L2v0pyCCS9ygbsxNyHT0b24x/9eLTWy5nGPC7D/6Kyysvg2Cw7WQNm6L8ITleH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242281; c=relaxed/simple;
-	bh=2El1YQMnWgR41JYs3LKSfGiXlq1pXqxi1eNGpahJVG8=;
+	s=arc-20240116; t=1733240044; c=relaxed/simple;
+	bh=xqVIpO7FpDnfYz8pABE71cwzm2zyryIn/YooLXY6gu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5RR9XXU0KM4LLMlSOu3byLmubevhijwM9xeDzVhoX+3mtrd2WT1AfH5CmotRw4IN2k4UeODPoTX0jd5XAnowAG1beh5m5KQD68zLRb84V9QA2rKEpcP9po/+YL/mPqJrXAY4YImOd9HsAGNgYWa5Gs9tzwVCbIqizYbBLixJVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGlrGKlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13075C4CED6;
-	Tue,  3 Dec 2024 16:11:17 +0000 (UTC)
+	 MIME-Version; b=TOX008kz4kaeljScktceg+4zixIUrqXxQp0MT1rJn16CecCDOouGseO891FiRaD+rukHDcLM1W+T6+RZY4XdOPek3uQPxa5WDw9Pfu/uLZDszlxCHLyv1i4z/CNb1tK5DeXHjNHF0JWm261KUmnCgdhrfTknja7doL063YsXQL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWduCAR8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3708C4CED6;
+	Tue,  3 Dec 2024 15:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242278;
-	bh=2El1YQMnWgR41JYs3LKSfGiXlq1pXqxi1eNGpahJVG8=;
+	s=korg; t=1733240044;
+	bh=xqVIpO7FpDnfYz8pABE71cwzm2zyryIn/YooLXY6gu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGlrGKlKkF62PgySUsNLTjTw5zK1zTJeeEdwFYG4ahrsZkm0ku/z+4Tjk6MLanjQY
-	 BY3+csWAqmWp+22pmWd2upoSGTz0vgtHw0jJ2eyafmb7IA3+OoYdPK9VZvrQEkIbkP
-	 ffma8wwqYIPLe6/USwYNsAe29m99EW7IzJrKS63g=
+	b=QWduCAR8vaNq7/5v/ILjZwwwv3wrdVuxVXB5ztmntW3szK8rh2WshJeHZ84nad/Yy
+	 cSZaW5JV1sGQPjaosXCHKjT1FDXccSns+4vBr0zQCTCec10cODy5jlKHQ52nmFgFvO
+	 peF+VQku7HF5zbLKDm+SpfxxNQzv+1ey6Nr2Lgmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.12 660/826] comedi: Flush partial mappings in error case
+	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 815/817] tools/power turbostat: Fix childs argument forwarding
 Date: Tue,  3 Dec 2024 15:46:27 +0100
-Message-ID: <20241203144809.497664634@linuxfoundation.org>
+Message-ID: <20241203144028.268609082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
 
-commit ce8f9fb651fac95dd41f69afe54d935420b945bd upstream.
+[ Upstream commit 1da0daf746342dfdc114e4dc8fbf3ece28666d4f ]
 
-If some remap_pfn_range() calls succeeded before one failed, we still have
-buffer pages mapped into the userspace page tables when we drop the buffer
-reference with comedi_buf_map_put(bm). The userspace mappings are only
-cleaned up later in the mmap error path.
+Add '+' to optstring when early scanning for --no-msr and --no-perf.
+It causes option processing to stop as soon as a nonoption argument is
+encountered, effectively skipping child's arguments.
 
-Fix it by explicitly flushing all mappings in our VMA on the error path.
-
-See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
-error case").
-
-Cc: stable@vger.kernel.org
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20241017-comedi-tlb-v3-1-16b82f9372ce@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3e4048466c39 ("tools/power turbostat: Add --no-msr option")
+Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/comedi_fops.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/power/x86/turbostat/turbostat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -2407,6 +2407,18 @@ static int comedi_mmap(struct file *file
- 
- 			start += PAGE_SIZE;
- 		}
-+
-+#ifdef CONFIG_MMU
-+		/*
-+		 * Leaving behind a partial mapping of a buffer we're about to
-+		 * drop is unsafe, see remap_pfn_range_notrack().
-+		 * We need to zap the range here ourselves instead of relying
-+		 * on the automatic zapping in remap_pfn_range() because we call
-+		 * remap_pfn_range() in a loop.
-+		 */
-+		if (retval)
-+			zap_vma_ptes(vma, vma->vm_start, size);
-+#endif
- 	}
- 
- 	if (retval == 0) {
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index aa9200319d0ea..a5ebee8b23bbe 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -9784,7 +9784,7 @@ void cmdline(int argc, char **argv)
+ 	 * Parse some options early, because they may make other options invalid,
+ 	 * like adding the MSR counter with --add and at the same time using --no-msr.
+ 	 */
+-	while ((opt = getopt_long_only(argc, argv, "MPn:", long_options, &option_index)) != -1) {
++	while ((opt = getopt_long_only(argc, argv, "+MPn:", long_options, &option_index)) != -1) {
+ 		switch (opt) {
+ 		case 'M':
+ 			no_msr = 1;
+-- 
+2.43.0
+
 
 
 
