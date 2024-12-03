@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E18A9E2571
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:01:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0179E2794
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9671F16C40D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18C62B4688B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A2E1F75B4;
-	Tue,  3 Dec 2024 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550831F7557;
+	Tue,  3 Dec 2024 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV62rSoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT75BfUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C841DE8A5;
-	Tue,  3 Dec 2024 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A731EF0AE;
+	Tue,  3 Dec 2024 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241350; cv=none; b=r3V1YhvSz5GNIBFGTfHqA5XErMP7ba6dvOdifqNZx1flLNquKz+KPReOq7S9QXEMjlcYYzSGV5O9+iqIQ1hBvYTNMEDEgBMkvkAvBlNU3tx7TrkZJDfCW6eTnOL1b4jFkeip9xNgCjDStVoeRPCLf7WbFd2W+jbs326cCqkAAAs=
+	t=1733239254; cv=none; b=tjhowzgBgDVq6V6hFZj2ooEh/yIG4xgZ0CEBiQRaJK59J9v81vKSIGbpokWH+zuBywBmzrH2SdHuHnd05rDMCxejos2Yh7CjfW3axLwGz3oBdRYUN8mVcTNV3jVIpzKHpi0VrfqCg62xN05ApiaPWRJF8xUI0UlmBodLmx6z+C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241350; c=relaxed/simple;
-	bh=1OS1If7vlGQ6UTbSNksApVBQfygm/ZcdHtUMpFtTjoY=;
+	s=arc-20240116; t=1733239254; c=relaxed/simple;
+	bh=+EWxVFaHc/tnUjQhyyqRfIVo35Fe1YfQBCXu1+ds3kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SugZKkPTAuW7pNMfpemzBN+Rzcc9+fi/Yu3udmYBwEaAiiTI6bsU1PF3qd50LN3EZdvKjTL2HM3a9aPff2WreX/vdBczh+sd0tkTHO5bZgvd9nskOvLu275VDlfJ0DG6n72SPrI58eLshpD0div8uiyFzCgAVllmHi0VWWff1aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV62rSoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D21C4CECF;
-	Tue,  3 Dec 2024 15:55:50 +0000 (UTC)
+	 MIME-Version; b=kgjmjOxhVRnDxEb2pFrXTIDtuTEDNZ2Tl9YZEUe+R1dsG6lI0ZBbm6hOHBVDy2Pcm9L0K8axJhN7a5MqxCLDcXl3v9c2gfJu6Nm3YxT4Iic2hWE5cPmOx6oc0OPBcJuMe/ypD+fUvDPAibXjPzaZ248nZndG2+KAcBMnjvFWEvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT75BfUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABCDC4CECF;
+	Tue,  3 Dec 2024 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241350;
-	bh=1OS1If7vlGQ6UTbSNksApVBQfygm/ZcdHtUMpFtTjoY=;
+	s=korg; t=1733239253;
+	bh=+EWxVFaHc/tnUjQhyyqRfIVo35Fe1YfQBCXu1+ds3kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wV62rSoV2MciV0U4yTFMQ1tKt1VM39NJv78IpYtTj+JaGtDYU8PpR3pVf+0zHsdEZ
-	 WhrTjEGtAbYcqRerp7wnFJeMRVnGiUsbl/CHSWHufjlFr0JITm/lW6JGliica53y/1
-	 AiweIetZVtMlw8HioOInqQT6aab7aaSa3treu1iw=
+	b=bT75BfUskf+Gl0SqELdmeF3KJaa+34MQVfYZXCHeMjPWCYMAjJrwAjxVlPAt0XXCH
+	 VpSn8PUiUWtX4Oz4PAhZDxLmpuW5gMwi7jWBUhiWYsBEaip4s5JExzk7GmLUCpuFFc
+	 LRLfwNySzsPQj0r6wg2/p9XoG6LfkH2UQSemu8no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 395/826] RDMA/rxe: Fix the qp flush warnings in req
-Date: Tue,  3 Dec 2024 15:42:02 +0100
-Message-ID: <20241203144759.171548450@linuxfoundation.org>
+Subject: [PATCH 6.11 551/817] phy: airoha: Fix REG_CSR_2L_JCPLL_SDM_HREN config in airoha_pcie_phy_init_ssc_jcpll()
+Date: Tue,  3 Dec 2024 15:42:03 +0100
+Message-ID: <20241203144017.416129292@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit ea4c990fa9e19ffef0648e40c566b94ba5ab31be ]
+[ Upstream commit 6fd016c965d241673a2e62afbf9eeb4bcbfbbe45 ]
 
-When the qp is in error state, the status of WQEs in the queue should be
-set to error. Or else the following will appear.
+Fix typo configuring REG_CSR_2L_JCPLL_SDM_HREN register in
+airoha_pcie_phy_init_ssc_jcpll routine.
 
-[  920.617269] WARNING: CPU: 1 PID: 21 at drivers/infiniband/sw/rxe/rxe_comp.c:756 rxe_completer+0x989/0xcc0 [rdma_rxe]
-[  920.617744] Modules linked in: rnbd_client(O) rtrs_client(O) rtrs_core(O) rdma_ucm rdma_cm iw_cm ib_cm crc32_generic rdma_rxe ip6_udp_tunnel udp_tunnel ib_uverbs ib_core loop brd null_blk ipv6
-[  920.618516] CPU: 1 PID: 21 Comm: ksoftirqd/1 Tainted: G           O       6.1.113-storage+ #65
-[  920.618986] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[  920.619396] RIP: 0010:rxe_completer+0x989/0xcc0 [rdma_rxe]
-[  920.619658] Code: 0f b6 84 24 3a 02 00 00 41 89 84 24 44 04 00 00 e9 2a f7 ff ff 39 ca bb 03 00 00 00 b8 0e 00 00 00 48 0f 45 d8 e9 15 f7 ff ff <0f> 0b e9 cb f8 ff ff 41 bf f5 ff ff ff e9 08 f8 ff ff 49 8d bc 24
-[  920.620482] RSP: 0018:ffff97b7c00bbc38 EFLAGS: 00010246
-[  920.620817] RAX: 0000000000000000 RBX: 000000000000000c RCX: 0000000000000008
-[  920.621183] RDX: ffff960dc396ebc0 RSI: 0000000000005400 RDI: ffff960dc4e2fbac
-[  920.621548] RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffffac406450
-[  920.621884] R10: ffffffffac4060c0 R11: 0000000000000001 R12: ffff960dc4e2f800
-[  920.622254] R13: ffff960dc4e2f928 R14: ffff97b7c029c580 R15: 0000000000000000
-[  920.622609] FS:  0000000000000000(0000) GS:ffff960ef7d00000(0000) knlGS:0000000000000000
-[  920.622979] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  920.623245] CR2: 00007fa056965e90 CR3: 00000001107f1000 CR4: 00000000000006e0
-[  920.623680] Call Trace:
-[  920.623815]  <TASK>
-[  920.623933]  ? __warn+0x79/0xc0
-[  920.624116]  ? rxe_completer+0x989/0xcc0 [rdma_rxe]
-[  920.624356]  ? report_bug+0xfb/0x150
-[  920.624594]  ? handle_bug+0x3c/0x60
-[  920.624796]  ? exc_invalid_op+0x14/0x70
-[  920.624976]  ? asm_exc_invalid_op+0x16/0x20
-[  920.625203]  ? rxe_completer+0x989/0xcc0 [rdma_rxe]
-[  920.625474]  ? rxe_completer+0x329/0xcc0 [rdma_rxe]
-[  920.625749]  rxe_do_task+0x80/0x110 [rdma_rxe]
-[  920.626037]  rxe_requester+0x625/0xde0 [rdma_rxe]
-[  920.626310]  ? rxe_cq_post+0xe2/0x180 [rdma_rxe]
-[  920.626583]  ? do_complete+0x18d/0x220 [rdma_rxe]
-[  920.626812]  ? rxe_completer+0x1a3/0xcc0 [rdma_rxe]
-[  920.627050]  rxe_do_task+0x80/0x110 [rdma_rxe]
-[  920.627285]  tasklet_action_common.constprop.0+0xa4/0x120
-[  920.627522]  handle_softirqs+0xc2/0x250
-[  920.627728]  ? sort_range+0x20/0x20
-[  920.627942]  run_ksoftirqd+0x1f/0x30
-[  920.628158]  smpboot_thread_fn+0xc7/0x1b0
-[  920.628334]  kthread+0xd6/0x100
-[  920.628504]  ? kthread_complete_and_exit+0x20/0x20
-[  920.628709]  ret_from_fork+0x1f/0x30
-[  920.628892]  </TASK>
-
-Fixes: ae720bdb703b ("RDMA/rxe: Generate error completion for error requester QP state")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20241025152036.121417-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: d7d2818b9383 ("phy: airoha: Add PCIe PHY driver for EN7581 SoC.")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20240918-airoha-en7581-phy-fixes-v1-3-8291729a87f8@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/phy/phy-airoha-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 479c07e6e4ed3..87a02f0deb000 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -663,10 +663,12 @@ int rxe_requester(struct rxe_qp *qp)
- 	if (unlikely(qp_state(qp) == IB_QPS_ERR)) {
- 		wqe = __req_next_wqe(qp);
- 		spin_unlock_irqrestore(&qp->state_lock, flags);
--		if (wqe)
-+		if (wqe) {
-+			wqe->status = IB_WC_WR_FLUSH_ERR;
- 			goto err;
--		else
-+		} else {
- 			goto exit;
-+		}
- 	}
- 
- 	if (unlikely(qp_state(qp) == IB_QPS_RESET)) {
+diff --git a/drivers/phy/phy-airoha-pcie.c b/drivers/phy/phy-airoha-pcie.c
+index 3e5f49d9942a6..9d222898760bc 100644
+--- a/drivers/phy/phy-airoha-pcie.c
++++ b/drivers/phy/phy-airoha-pcie.c
+@@ -799,7 +799,7 @@ static void airoha_pcie_phy_init_ssc_jcpll(struct airoha_pcie_phy *pcie_phy)
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_IFM,
+ 				   CSR_2L_PXP_JCPLL_SDM_IFM);
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_HREN,
+-				   REG_CSR_2L_JCPLL_SDM_HREN);
++				   CSR_2L_PXP_JCPLL_SDM_HREN);
+ 	airoha_phy_csr_2l_clear_bits(pcie_phy, REG_CSR_2L_JCPLL_RST_DLY,
+ 				     CSR_2L_PXP_JCPLL_SDM_DI_EN);
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SSC,
 -- 
 2.43.0
 
