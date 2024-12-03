@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C15A9E2608
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5649E22FC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30CA4288C71
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2325D284FA5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A336F1F76DB;
-	Tue,  3 Dec 2024 16:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A72F1F76BD;
+	Tue,  3 Dec 2024 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaORvhKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSIAIPSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625E51F12F7;
-	Tue,  3 Dec 2024 16:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A91F76B4;
+	Tue,  3 Dec 2024 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242079; cv=none; b=Q8zgmQ1I7qZ94cRfXlQpW9SXGoLdWTrHvWHRT2SvWZNJ9x5LBOhzdjxmGwQbjpBmyKxmAPi3EoT8NTwCZpIzvlCKhB9/ylZCoNR/9l9oY0oMH+djub86/z9eNioXVgAp80siYyIJx+9IqO9ARXMbMb5oEmqHxt7ApGN3hAnPxiY=
+	t=1733239852; cv=none; b=vB/Sqf2mYHu7hj8kEPfo76tWTqNWIRFu0+84YLglfuk8ULQKaJSkhL/9xui3Dhl0bj+0ZyOPJ8yGDzWbSzb2lav9Uvw3JRMVhho690Rq5SwZYq+l5Z0qmL7/vf5wfuIOHnIx7fXjui0Lna6OC+KxRQcxFJ1h72cF/Ru0mwdhSj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242079; c=relaxed/simple;
-	bh=e2Rvau8LMOnssE8W/BLygzCXbPQb8/mFu5i/3wgt6nM=;
+	s=arc-20240116; t=1733239852; c=relaxed/simple;
+	bh=fF6mVmuLdBrr2JSzymty37Yv9TqGdPTQ7khiv3IrKqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HY7/9OUPTDH5Prpbe2QInB2TlMqXnTT7fRSZ7AupSUclXOAfDALQV80gibcJj7T1M0HaIKFof1t1sY13JiZUPzp13t2AlD0ZYVcrTLZdNg6eR1REItNCMu9QmcHquHtbAmcDhyzUumwuoic/j9pvBM0RwhojrgIvbF+3qaP+TSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaORvhKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48FAC4CED6;
-	Tue,  3 Dec 2024 16:07:58 +0000 (UTC)
+	 MIME-Version; b=snc15FNzt7vUPy/RozNxH3TUNsYGJp+LQxvMyp9o2bJt1VQLESDem5t2/Nc+hsTZhj3r18IbIrbZPlWwpe+mnKzOKPGaaRfG6eDHZuquAF0Wg0AS4LxBeuGXX4Z8tpR0ViwRFNrzJNYegVNwuDqLgHNALFlTqBeuSvhJszCtP9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSIAIPSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404CEC4CED8;
+	Tue,  3 Dec 2024 15:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242079;
-	bh=e2Rvau8LMOnssE8W/BLygzCXbPQb8/mFu5i/3wgt6nM=;
+	s=korg; t=1733239852;
+	bh=fF6mVmuLdBrr2JSzymty37Yv9TqGdPTQ7khiv3IrKqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BaORvhKQ860zEKLgsLbC2epXojruwMg9VzylMU3DywxGYKLUgTzk/nuATR+v1kMgx
-	 jGv85qC3hFUZe/MHm6cKaN97h+4DVSmCoomEFGS2AggnlUI9iNhWEjPMjpUaAMMPAU
-	 fXQvYSXSD3diD9Sjd+bcuA/iHC4PxxH2Z1Li5yMI=
+	b=HSIAIPSsyY+RanXKwTjysiCxZ11/lf/I13MoqnikMSc03MeHrXD50m48o3k3SLDnV
+	 TClYTubz+s+7JCsJxih0msvNOkDZFNb8r0ejCwwQKNlal+iU+g6kPnijdoQRpBwM8N
+	 9z+UfgpxXkJ5pV52tmD0MvTB6/55eOekBKCUQMSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 601/826] iio: adc: ad4000: Check for error code from devm_mutex_init() call
-Date: Tue,  3 Dec 2024 15:45:28 +0100
-Message-ID: <20241203144807.200787211@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.11 757/817] counter: stm32-timer-cnt: fix device_node handling in probe_encoder()
+Date: Tue,  3 Dec 2024 15:45:29 +0100
+Message-ID: <20241203144025.544897800@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 8ebfd09255219ae55f8a101f6aeb0f64dd780d88 ]
+commit 147359e23e5c9652ff8c5a98a51a7323bd51c94a upstream.
 
-Even if it's not critical, the avoidance of checking the error code
-from devm_mutex_init() call today diminishes the point of using devm
-variant of it. Tomorrow it may even leak something. Add the missed
-check.
+Device nodes accessed via of_get_compatible_child() require
+of_node_put() to be called when the node is no longer required to avoid
+leaving a reference to the node behind, leaking the resource.
 
-Fixes: 938fd562b974 ("iio: adc: Add support for AD4000")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241030162013.2100253-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In this case, the usage of 'tnode' is straightforward and there are no
+error paths, allowing for a single of_node_put() when 'tnode' is no
+longer required.
+
+Cc: stable@vger.kernel.org
+Fixes: 29646ee33cc3 ("counter: stm32-timer-cnt: add checks on quadrature encoder capability")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241027-stm32-timer-cnt-of_node_put-v1-1-ebd903cdf7ac@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad4000.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/counter/stm32-timer-cnt.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-index fc9c9807f89d2..b3b82535f5c14 100644
---- a/drivers/iio/adc/ad4000.c
-+++ b/drivers/iio/adc/ad4000.c
-@@ -639,7 +639,9 @@ static int ad4000_probe(struct spi_device *spi)
- 	indio_dev->name = chip->dev_name;
- 	indio_dev->num_channels = 1;
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -700,6 +700,7 @@ static int stm32_timer_cnt_probe_encoder
+ 	}
  
--	devm_mutex_init(dev, &st->lock);
-+	ret = devm_mutex_init(dev, &st->lock);
-+	if (ret)
-+		return ret;
- 
- 	st->gain_milli = 1000;
- 	if (chip->has_hardware_gain) {
--- 
-2.43.0
-
+ 	ret = of_property_read_u32(tnode, "reg", &idx);
++	of_node_put(tnode);
+ 	if (ret) {
+ 		dev_err(dev, "Can't get index (%d)\n", ret);
+ 		return ret;
 
 
 
