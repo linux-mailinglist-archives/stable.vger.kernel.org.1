@@ -1,169 +1,129 @@
-Return-Path: <stable+bounces-96183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EACD9E113E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 03:29:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BFA7162DC4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 02:29:39 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF767CF16;
-	Tue,  3 Dec 2024 02:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlfTP42e"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873EB9E118B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 03:58:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE738460;
-	Tue,  3 Dec 2024 02:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F5283577
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 02:57:59 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAC41547F5;
+	Tue,  3 Dec 2024 02:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ghB7HFgx"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEA417555;
+	Tue,  3 Dec 2024 02:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733192977; cv=none; b=jCPOXLqg1DymMtUiUg6r11aahOaA+P68bsS2DVsF6TrCL9U0Mp0BqIp7HwBV4liHJG08WgnJELtJYCmAZWM9HQ9ypdPm7Y2RMUxFeGRgDjdllUlsJsBcXcjr12Jy8yvWo9f/aFjrLeX8mbJbzeQ852F8z+qi2baj5/9iEh7osXU=
+	t=1733194674; cv=none; b=rQhdXFfc32CrGNEn3cL6+XmGkFk0p2nxVvGC7p2zERu/ZNHaYuVx5LAHdveIPljMtR8/PDgQyXzoAHgs7S0fJ6jqV7jDjTAeB8NaDKqDlRJ63scIQsGVYEla97JHEnzbBgCdj2M5ma1qvsEnZK2RQn9VlTO6HhAAQi2m9/6xUtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733192977; c=relaxed/simple;
-	bh=PZN9zYd19RfhnrB//bv7GB/2Hbdkt8V1j4xAJFbC1II=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DBKEJtj2e+RK+/S8dtYh4XU9J9XBwa0t4x+nv9IdtFfjxlYDudYBsklyN0YpaNOpCGLkw2ogvnod/Mf2YyXuHlW+F4jRsoRAup20v+9RGZsvODnNCbRA78M6J958DgLbsLVEnvXCRj3jZLCLk/JH1L5wiSnlLBQ5vOzVGi6jiJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlfTP42e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46182C4CED1;
-	Tue,  3 Dec 2024 02:29:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733192976;
-	bh=PZN9zYd19RfhnrB//bv7GB/2Hbdkt8V1j4xAJFbC1II=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SlfTP42eEEYXzvAazMnAu6C2pAk9+igIWybmh9h6qATN/YD/p/y9Dw8EPSrfHlQNj
-	 lHJJDHwv1xR09v2qxAjCVkFnf9uKil2qwrKs3q89xer+XcfiYTwzPj/f3TLdiD/Sos
-	 x4aK81AjiEQWwjB5cxlPlNciMoBGmotXtrU9+RqFqVWiWJKWPIjbM4yd2b9CtEEcXL
-	 ScLgH7RM7QNdmeXLojQSCibqeReoQa06KLDsggZ9I6IzHO9Ccz8VXlkZZXBar91euG
-	 UirWIYIOxsO3hlvDI5pGIFI5+kJD5cvmnOGSriVQJjudseoLG5xMJ+FO8uUb5rn0i4
-	 Bjlsa4ld2OYAQ==
-Date: Mon, 2 Dec 2024 18:29:35 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: 'Dominique MARTINET' <dominique.martinet@atmark-techno.com>
-Cc: David Laight <David.Laight@aculab.com>, Oliver Neukum
- <oneukum@suse.com>, "edumazet@google.com" <edumazet@google.com>,
- "pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, Greg Thelen <gthelen@google.com>, John Sperbeck
- <jsperbeck@google.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
-Message-ID: <20241202182935.75e8850c@kernel.org>
-In-Reply-To: <Z05cdCEgqyea-qBD@atmark-techno.com>
-References: <20241017071849.389636-1-oneukum@suse.com>
-	<Z00udyMgW6XnAw6h@atmark-techno.com>
-	<e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
-	<Z01xo_7lbjTVkLRt@atmark-techno.com>
-	<20241202065600.4d98a3fe@kernel.org>
-	<Z05FQ-Z6yv16lSnY@atmark-techno.com>
-	<20241202162653.62e420c5@kernel.org>
-	<Z05cdCEgqyea-qBD@atmark-techno.com>
+	s=arc-20240116; t=1733194674; c=relaxed/simple;
+	bh=ksLcPTTN6aIXQk2yk9+00nYsruR0lXAdC8+wJ4K5zbM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eSz8CfHiXBQZ5m62D8OC86hFQw4It7aS/spVuzJPLIzghofNcXUwlscM4UwxaqS6yVXd9+VNo6636BSUHVNedGymz4NQFYRaUPZTnjEJRCJ7tG9+T8vETvgpkemfPc+lt6a3Z0jEGcV0rRPuR3iSlyKU6Q9mKDfKe0xwK1mr7nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ghB7HFgx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2IuJRo008414;
+	Tue, 3 Dec 2024 02:57:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	OkxoYtRe8gqyrp1JEdYQjp5yaa60JuuVaGEt7J4svyk=; b=ghB7HFgxk/v6+CLF
+	CPhvxN4LhSyVAUwhzEEO/LQkzcMr4VJRTds1wSO8KHn1S01rbE+f9BApdpJ0yQcy
+	u3ovuaWKu+B0Bdek/s3Y0wzj1FqlBvi0x0QZ1VRyAKByROutww6QSyQiwqKt00N+
+	bCoEFfkB053BhtYvnx4vOjdRo44s1dnxJGLkBnqF/Zv43nS3tZi77IolHuxM3daA
+	enQ8sAX5zgLC0vqsgLD1wlo2CZKvefH6xJXaU0d3cT6Hhy71aJTfzp+0usDoCl92
+	Y25yfoNnZwPBY3qvtK5USWmw/CFa8UPERtkXzM98tDzXyfqRnoN4iiYP96ZbMGLM
+	szW8Ug==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 437snqxpjc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Dec 2024 02:57:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B32vhJK019661
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 3 Dec 2024 02:57:43 GMT
+Received: from [10.134.71.247] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 2 Dec 2024
+ 18:57:42 -0800
+Message-ID: <293b507c-c442-4bd2-b525-dc1a6343acc7@quicinc.com>
+Date: Mon, 2 Dec 2024 18:57:41 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/msm/dpu: fix x1e80100 intf_6 underrun/vsync interrupt
+To: Stephan Gerhold <stephan.gerhold@linaro.org>,
+        Rob Clark
+	<robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: Sean Paul <sean@poorly.run>,
+        Marijn Suijten
+	<marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>,
+        Abel Vesa <abel.vesa@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <freedreno@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, Johan
+ Hovold <johan@kernel.org>,
+        <stable@vger.kernel.org>
+References: <20241115-x1e80100-dp2-fix-v1-1-727b9fe6f390@linaro.org>
+Content-Language: en-US
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20241115-x1e80100-dp2-fix-v1-1-727b9fe6f390@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: SQhYmXw73R4bsFsmERJuggRgm4Spl2CN
+X-Proofpoint-GUID: SQhYmXw73R4bsFsmERJuggRgm4Spl2CN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ phishscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=749 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412030024
 
-On Tue, 3 Dec 2024 10:18:44 +0900 'Dominique MARTINET' wrote:
-> Jakub Kicinski wrote on Mon, Dec 02, 2024 at 04:26:53PM -0800:
-> > > My problematic device here has FLAG_POINTTOPOINT and a (locally
-> > > admistered) mac address set, so it was not renamed up till now,
-> > > but the new check makes the locally admistered mac address being set
-> > > mean that it is no longer eligible to keep the usbX name.  
-> > 
-> > Ideally, udev would be the best option, like Greg said.
-> > This driver is already a fragile pile of workarounds.  
+
+
+On 11/15/2024 4:55 AM, Stephan Gerhold wrote:
+> The IRQ indexes for the intf_6 underrun/vsync interrupts are swapped.
+> DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 16) is the actual underrun interrupt and
+> DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 17) is the vsync interrupt.
 > 
-> Right, as I replied to Greg I'm fine with this as long as it's what was
-> intended.
-
-In theory unintentional != bug, but yes, its very likely unintentional.
-
-> Half of the reason I sent the mail in the first place is I don't
-> understand what commit 8a7d12d674ac ("net: usb: usbnet: fix name
-> regression") actually fixes: the commit message desribes something about
-> mac address not being set before bind() but the code does not change
-> what address is looked at (net->dev_addr), just which bits of the
-> address is checked; and I don't see what which bytes are being looked at
-> changing has anything to do with the "fixed" commit bab8eb0dd4cb9 ("usbnet:
-> modern method to get random MAC")
-
-We moved where the random address is assigned, we used to assign random
-(local) addr at init, now we assign it after calling ->bind().
-
-Previously we checked "if local" as a shorthand for checking "if driver
-updated". This check should really have been "if addr == node_id".
-
-> ... And now we've started discussing this and I understand the check
-> better, I also don't see what having a mac set by the previous driver
-> has to do with the link not being P2P either.
+> This causes timeout errors when using the DP2 controller, e.g.
+>    [dpu error]enc37 frame done timeout
+>    *ERROR* irq timeout id=37, intf_mode=INTF_MODE_VIDEO intf=6 wb=-1, pp=2, intr=0
+>    *ERROR* wait disable failed: id:37 intf:6 ret:-110
 > 
+> Correct them to fix these errors and make DP2 work properly.
 > 
-> (The other half was I was wondering what kind of policy stable would have
-> for this kind of things, but that was made clear enough)
+> Cc: stable@vger.kernel.org
+> Fixes: e3b1f369db5a ("drm/msm/dpu: Add X1E80100 support")
+> Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+> ---
+>   drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_2_x1e80100.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> 
-> > If you really really want the old behavior tho, let's convert 
-> > the zero check to  !is_zero_ether_addr() && !is_local_ether_addr().  
-> 
-> As far as I understand, !is_local_ether_addr (mac[0] & 0x2) implies
-> !is_zero_ether_addr (all bits of mac or'd), so that'd get us back to
-> exactly the old check.
 
-Let the compiler discover that, this is control path code, so write
-it for the human reader... The condition we want is "driver did not
-initialize the MAC address, or it initialized it to a local MAC
-address".
+Thanks for fixing this, good catch !
 
-> > Maybe factor out the P2P + address validation to a helper because
-> > the && vs || is getting complicated.  
-> 
-> ... And I can definitely relate to this part :)
-> 
-> So:
-> - final behavior wise I have no strong feeling, we'll fix our userspace
-> (... and documentation) whatever is decided here
-> - let's improve the comment and factor the check anyway.
-> As said above I don't understand why having a mac set matters, if that
-> can be explained I'll be happy to send a patch.
-> Or if we go with the local address version, something like the
-> following?
-> 
-> ----
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index 44179f4e807f..240ae86adf08 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -178,6 +178,13 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
->  }
->  EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
->  
-> +static bool usbnet_dev_is_two_host (struct usbnet *dev, struct net_device *net)
-
-static bool usenet_needs_usb_name_format(...
-
-> +{
-> +	/* device is marked point-to-point with a local mac address */
-
-	/* Point to point devices which don't have a real MAC address
-	 * (or report a fake local one) have historically used the usb%d
-	 * naming. Preserve this..
-	 */
-
-> +	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-> +		is_local_ether_addr(net->dev_addr);
-
-	if ((dev->driver_info->flags & FLAG_POINTTOPOINT) &&
-	    (is_zero_ether_addr(net->dev_addr) ||
-	     is_local_ether_addr(net->dev_addr));
-
-> +}
-
-Up to you if you want to send this.
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
