@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF9E9E2135
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0958C9E2744
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:23:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A5B9165453
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C9B1B2872A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C01F669E;
-	Tue,  3 Dec 2024 15:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF561F9F5C;
+	Tue,  3 Dec 2024 15:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iuCqY5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/KQpJn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D901A1F706B;
-	Tue,  3 Dec 2024 15:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8C51F9ECD;
+	Tue,  3 Dec 2024 15:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238418; cv=none; b=T6XU/a5NMqHIekulJDbo+n8GMpwkM2jxWekqryfdCsE/l5E0qNEDXoIVzsuX23sKPUH5ZjNQNr2UpNyjD7AQRV8umjkYb1IYqKsmOYkOpCVrxR88Uv0BHNV4wve3Gmf0tVbUQb9KDaVk+YqMGS8QgAUZARzipcbiPyKdjEFWe7E=
+	t=1733240278; cv=none; b=VBkZhjbw5e3UOIxTOO3IwsMRVcnfsdc2tha79HGlQAbCvhmvVYbIvKWrNKe50LfAXrbL0rjsQSEdEpUwP+6wUuye64eLOmI3uzUA85KMaYSkMkOVSi4jArSitU2+LadijU447XGheOwiXS1HSILa89J28M0QX+CvQMI9rsiPTTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238418; c=relaxed/simple;
-	bh=x5IxqqW8Mc5rhppTTlNvo5Y8m/0aP6UeWiDR4YQoQjs=;
+	s=arc-20240116; t=1733240278; c=relaxed/simple;
+	bh=bFFQQVWm0Z8Fa9qoR5gIV92IP0YsehTLOnT1QBUMnL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDHSgG54ClNFSbZBBOgu2WRt/lTa6JnDVRipttPlM+W4rsYrtpVt6FSQDJgJKSHk+VB5pEC5JOGn/sZLJwiQnmImeKAZ9tRLmqvQp/iqHEhJMNOeQKokwkcRrjLZ4Ybgn8MMY+cuc+R5zixSS9kpck0CpP5xk+d4Larqp1J7JxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iuCqY5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641BAC4CECF;
-	Tue,  3 Dec 2024 15:06:58 +0000 (UTC)
+	 MIME-Version; b=pr6jJ93INTRYd/9xHVCNaCr4ehBiRq4UszvscrPe2oWD87R3g/SQhkyWVP5S6fGV1zztTuTqBFT+xn6nH2VKrE74LfDKygo/1DuNPv01jeTE6TItfgalPVkquEh73tOU3o0QGAsK3Wqi41nCqyZFepZ5XVhXF48ijmaSlZL/2Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/KQpJn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5966C4CECF;
+	Tue,  3 Dec 2024 15:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238418;
-	bh=x5IxqqW8Mc5rhppTTlNvo5Y8m/0aP6UeWiDR4YQoQjs=;
+	s=korg; t=1733240278;
+	bh=bFFQQVWm0Z8Fa9qoR5gIV92IP0YsehTLOnT1QBUMnL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iuCqY5hgKRZme6PCgM1jHA9BazcXzZmOFj8zT72OstHcTwsdayQy6ImGamdlyjKH
-	 wH++IXV0jaLYBzo9iaW6wBkBQVbHmscMYbxTBIBdQOpqoPC8KrHHOQxCpUbGs014MH
-	 UA71QFbI+NZ4JBTCaYdD5WXah1+IRVmcfu/YvMKQ=
+	b=X/KQpJn8ZY7XnKEczGAazqsjmQcFumZGdd6umsvwJfb2F40G+UnF8jqjLiOLngHtn
+	 PL0DozVVC8Oq2D8n595nxBIw85xxnCGLjUm09GuHBFwle3p4+C25BfvBlFnvy+eWxk
+	 NoPqW2wwtwdp96n8tHLPOS43ZA2H37TPsWhVjns0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Hansson <newbyte@postmarketos.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 239/817] drm/panel: nt35510: Make new commands optional
-Date: Tue,  3 Dec 2024 15:36:51 +0100
-Message-ID: <20241203144005.088316883@linuxfoundation.org>
+Subject: [PATCH 6.12 085/826] cleanup: Remove address space of returned pointer
+Date: Tue,  3 Dec 2024 15:36:52 +0100
+Message-ID: <20241203144747.044310841@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 2418aa8516b26c5e332a1a8c216d4d620f965a56 ]
+[ Upstream commit f730fd535fc51573f982fad629f2fc6b4a0cde2f ]
 
-The commit introducing the Frida display started to write the
-SETVCMOFF registers unconditionally, and some (not all!) Hydis
-display seem to be affected by ghosting after the commit.
+Guard functions in local_lock.h are defined using DEFINE_GUARD() and
+DEFINE_LOCK_GUARD_1() macros having lock type defined as pointer in
+the percpu address space. The functions, defined by these macros
+return value in generic address space, causing:
 
-Make SETVCMOFF optional and only send these commands on the
-Frida display for now.
+cleanup.h:157:18: error: return from pointer to non-enclosed address space
 
-Reported-by: Stefan Hansson <newbyte@postmarketos.org>
-Fixes: 219a1f49094f ("drm/panel: nt35510: support FRIDA FRD400B25025-A-CTK")
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Tested-by: Stefan Hansson <newbyte@postmarketos.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240908-fix-nt35510-v2-1-d4834b9cdb9b@linaro.org
+and
+
+cleanup.h:214:18: error: return from pointer to non-enclosed address space
+
+when strict percpu checks are enabled.
+
+Add explicit casts to remove address space of the returned pointer.
+
+Found by GCC's named address space checks.
+
+Fixes: e4ab322fbaaa ("cleanup: Add conditional guard support")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240819074124.143565-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35510.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ include/linux/cleanup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35510.c b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
-index d3bfdfc9cff64..f54e0fa429378 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35510.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
-@@ -38,6 +38,7 @@
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 038b2d523bf88..518bd1fd86fbe 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -290,7 +290,7 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+ #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
+ 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
+ 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
+-	{ return *_T; }
++	{ return (void *)(__force unsigned long)*_T; }
  
- #define NT35510_CMD_CORRECT_GAMMA BIT(0)
- #define NT35510_CMD_CONTROL_DISPLAY BIT(1)
-+#define NT35510_CMD_SETVCMOFF BIT(2)
+ #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
+ 	EXTEND_CLASS(_name, _ext, \
+@@ -347,7 +347,7 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
+ 									\
+ static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
+ {									\
+-	return _T->lock;						\
++	return (void *)(__force unsigned long)_T->lock;			\
+ }
  
- #define MCS_CMD_MAUCCTR		0xF0 /* Manufacturer command enable */
- #define MCS_CMD_READ_ID1	0xDA
-@@ -721,11 +722,13 @@ static int nt35510_setup_power(struct nt35510 *nt)
- 	if (ret)
- 		return ret;
  
--	ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
--				NT35510_P1_VCMOFF_LEN,
--				nt->conf->vcmoff);
--	if (ret)
--		return ret;
-+	if (nt->conf->cmds & NT35510_CMD_SETVCMOFF) {
-+		ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
-+					NT35510_P1_VCMOFF_LEN,
-+					nt->conf->vcmoff);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/* Typically 10 ms */
- 	usleep_range(10000, 20000);
-@@ -1319,7 +1322,7 @@ static const struct nt35510_config nt35510_frida_frd400b25025 = {
- 	},
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
- 			MIPI_DSI_MODE_LPM,
--	.cmds = NT35510_CMD_CONTROL_DISPLAY,
-+	.cmds = NT35510_CMD_CONTROL_DISPLAY | NT35510_CMD_SETVCMOFF,
- 	/* 0x03: AVDD = 6.2V */
- 	.avdd = { 0x03, 0x03, 0x03 },
- 	/* 0x46: PCK = 2 x Hsync, BTP = 2.5 x VDDB */
 -- 
 2.43.0
 
