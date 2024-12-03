@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C82B9E204F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822969E2064
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4986F161CAB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F6A166ABF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404BE1F7553;
-	Tue,  3 Dec 2024 14:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABC41F7564;
+	Tue,  3 Dec 2024 14:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DesJkRoi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuWNDSK0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16F31EF093;
-	Tue,  3 Dec 2024 14:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472CB1EF0BA;
+	Tue,  3 Dec 2024 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237773; cv=none; b=LebhhK/Hc6MZGPZVS4fbBph60AJHHRAAaug18+7+TjvoVCGvkZKXfCqEe9JDWdcIF5MnxWo6FoAYoT35UrLLYpg5NyRQhAGePfdXoGw/LUMW1266feuAr9Pmajdhz0wHm6BBQaZVKEvh9JiGw1g1kDS/2EZi9hmv2qruPIz12Xs=
+	t=1733237803; cv=none; b=K4881Ye7qw2hIU9q+hX7qdgcvWjkZhpvzJ0rONzfdIAuNKgsEGyDAmh0IRm5w45srqZbbE4Y1yK2/xTr55aEUOL+VMfEov07jY7wlneQ81bmDF5AFqb5IMkuwoTjy4bMkpfsm2ZcGZmsuSOF9LUPhFi0lJC5Sa8EA0N+JMt+hJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237773; c=relaxed/simple;
-	bh=7UymvDdQVepGnRCK9q0m9XMnp8Qa6v/sUny1rnfQDQI=;
+	s=arc-20240116; t=1733237803; c=relaxed/simple;
+	bh=tXK/dPE5Qo8porZLaiQD8Fz3YRP3xB4M+fsfHBt7XgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bN5I0cApaCbLke5+lH5PcXeWcIqYazJsL4+yirG9EyJ4RkSulfiGUx8n/KLMjFzmTSJDu6UA38yPWxymhuaL5rncVOszAzJ81nO+sjevIm9YwWdl/IG8pQsSLNky0Tw5ptOIytcQIZk/M8ppAS79e7RDX155IOELhpnVsXFhFW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DesJkRoi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DB1C4CECF;
-	Tue,  3 Dec 2024 14:56:12 +0000 (UTC)
+	 MIME-Version; b=tU482QI475rCzEmiWOuoEbkUIOZd10LmaiCRLRkS1MVuec0fboyy5WSTgBeUgVas+DdnO9egMtRUF0RRgS2AGkHmlDEkify4cIZJTN/JerFtzJgckWwl2smnUO1ZimcpJKd2+CsdYhqBp6EdZC+HY02UAwA/VBpl6eo8RXRaPLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuWNDSK0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D78DC4CECF;
+	Tue,  3 Dec 2024 14:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237772;
-	bh=7UymvDdQVepGnRCK9q0m9XMnp8Qa6v/sUny1rnfQDQI=;
+	s=korg; t=1733237802;
+	bh=tXK/dPE5Qo8porZLaiQD8Fz3YRP3xB4M+fsfHBt7XgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DesJkRoig5I9epqGKRO1kMmJf6N+gc3JbaiaXMp+eTWKQ46FCKBoQiV3y4bvg14wK
-	 MTpTCZQZgqyahv5v8j4sxSydCuTIMxpJCI6+0TvgEsETePNAYT5MOvXy1+5Pmd91nO
-	 VPYIorPyz/Z1QGU81hK8IpxdQj71a/AQnxwz4p0c=
+	b=KuWNDSK0J9ls84zz/TRUiJPQkO5oJ1CwcBhnhBTt2W08Ni2aOhWbJy875m1ZqjRMA
+	 nzCLqxegsHXUVJFV2dxZvo/0xKbilw3Cky7cQ6bstVLUvM7ojW06uQf8ozeSohg7xo
+	 1e6CQKJ8eXCxR8hcg+iEB62IjRPPX/r8iTZQeoRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 064/817] initramfs: avoid filename buffer overrun
-Date: Tue,  3 Dec 2024 15:33:56 +0100
-Message-ID: <20241203143958.185941472@linuxfoundation.org>
+Subject: [PATCH 6.11 067/817] nvme-pci: fix freeing of the HMB descriptor table
+Date: Tue,  3 Dec 2024 15:33:59 +0100
+Message-ID: <20241203143958.304590637@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,116 +66,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Disseldorp <ddiss@suse.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e017671f534dd3f568db9e47b0583e853d2da9b5 ]
+[ Upstream commit 3c2fb1ca8086eb139b2a551358137525ae8e0d7a ]
 
-The initramfs filename field is defined in
-Documentation/driver-api/early-userspace/buffer-format.rst as:
+The HMB descriptor table is sized to the maximum number of descriptors
+that could be used for a given device, but __nvme_alloc_host_mem could
+break out of the loop earlier on memory allocation failure and end up
+using less descriptors than planned for, which leads to an incorrect
+size passed to dma_free_coherent.
 
- 37 cpio_file := ALGN(4) + cpio_header + filename + "\0" + ALGN(4) + data
-...
- 55 ============= ================== =========================
- 56 Field name    Field size         Meaning
- 57 ============= ================== =========================
-...
- 70 c_namesize    8 bytes            Length of filename, including final \0
+In practice this was not showing up because the number of descriptors
+tends to be low and the dma coherent allocator always allocates and
+frees at least a page.
 
-When extracting an initramfs cpio archive, the kernel's do_name() path
-handler assumes a zero-terminated path at @collected, passing it
-directly to filp_open() / init_mkdir() / init_mknod().
-
-If a specially crafted cpio entry carries a non-zero-terminated filename
-and is followed by uninitialized memory, then a file may be created with
-trailing characters that represent the uninitialized memory. The ability
-to create an initramfs entry would imply already having full control of
-the system, so the buffer overrun shouldn't be considered a security
-vulnerability.
-
-Append the output of the following bash script to an existing initramfs
-and observe any created /initramfs_test_fname_overrunAA* path. E.g.
-  ./reproducer.sh | gzip >> /myinitramfs
-
-It's easiest to observe non-zero uninitialized memory when the output is
-gzipped, as it'll overflow the heap allocated @out_buf in __gunzip(),
-rather than the initrd_start+initrd_size block.
-
----- reproducer.sh ----
-nilchar="A"	# change to "\0" to properly zero terminate / pad
-magic="070701"
-ino=1
-mode=$(( 0100777 ))
-uid=0
-gid=0
-nlink=1
-mtime=1
-filesize=0
-devmajor=0
-devminor=1
-rdevmajor=0
-rdevminor=0
-csum=0
-fname="initramfs_test_fname_overrun"
-namelen=$(( ${#fname} + 1 ))	# plus one to account for terminator
-
-printf "%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s" \
-	$magic $ino $mode $uid $gid $nlink $mtime $filesize \
-	$devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname
-
-termpadlen=$(( 1 + ((4 - ((110 + $namelen) & 3)) % 4) ))
-printf "%.s${nilchar}" $(seq 1 $termpadlen)
----- reproducer.sh ----
-
-Symlink filename fields handled in do_symlink() won't overrun past the
-data segment, due to the explicit zero-termination of the symlink
-target.
-
-Fix filename buffer overrun by aborting the initramfs FSM if any cpio
-entry doesn't carry a zero-terminator at the expected (name_len - 1)
-offset.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Link: https://lore.kernel.org/r/20241030035509.20194-2-ddiss@suse.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 87ad72a59a38 ("nvme-pci: implement host memory buffer support")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/initramfs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/nvme/host/pci.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/init/initramfs.c b/init/initramfs.c
-index 814241b648274..04e0990f451cf 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -359,6 +359,15 @@ static int __init do_name(void)
- {
- 	state = SkipIt;
- 	next_state = Reset;
-+
-+	/* name_len > 0 && name_len <= PATH_MAX checked in do_header */
-+	if (collected[name_len - 1] != '\0') {
-+		pr_err("initramfs name without nulterm: %.*s\n",
-+		       (int)name_len, collected);
-+		error("malformed archive");
-+		return 1;
-+	}
-+
- 	if (strcmp(collected, "TRAILER!!!") == 0) {
- 		free_hash();
- 		return 0;
-@@ -423,6 +432,12 @@ static int __init do_copy(void)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 4b9fda0b1d9a3..34daf6d8db07b 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -153,6 +153,7 @@ struct nvme_dev {
+ 	/* host memory buffer support: */
+ 	u64 host_mem_size;
+ 	u32 nr_host_mem_descs;
++	u32 host_mem_descs_size;
+ 	dma_addr_t host_mem_descs_dma;
+ 	struct nvme_host_mem_buf_desc *host_mem_descs;
+ 	void **host_mem_desc_bufs;
+@@ -1966,10 +1967,10 @@ static void nvme_free_host_mem(struct nvme_dev *dev)
  
- static int __init do_symlink(void)
+ 	kfree(dev->host_mem_desc_bufs);
+ 	dev->host_mem_desc_bufs = NULL;
+-	dma_free_coherent(dev->dev,
+-			dev->nr_host_mem_descs * sizeof(*dev->host_mem_descs),
++	dma_free_coherent(dev->dev, dev->host_mem_descs_size,
+ 			dev->host_mem_descs, dev->host_mem_descs_dma);
+ 	dev->host_mem_descs = NULL;
++	dev->host_mem_descs_size = 0;
+ 	dev->nr_host_mem_descs = 0;
+ }
+ 
+@@ -1977,7 +1978,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
+ 		u32 chunk_size)
  {
-+	if (collected[name_len - 1] != '\0') {
-+		pr_err("initramfs symlink without nulterm: %.*s\n",
-+		       (int)name_len, collected);
-+		error("malformed archive");
-+		return 1;
-+	}
- 	collected[N_ALIGN(name_len) + body_len] = '\0';
- 	clean_path(collected, 0);
- 	init_symlink(collected + N_ALIGN(name_len), collected);
+ 	struct nvme_host_mem_buf_desc *descs;
+-	u32 max_entries, len;
++	u32 max_entries, len, descs_size;
+ 	dma_addr_t descs_dma;
+ 	int i = 0;
+ 	void **bufs;
+@@ -1990,8 +1991,9 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
+ 	if (dev->ctrl.hmmaxd && dev->ctrl.hmmaxd < max_entries)
+ 		max_entries = dev->ctrl.hmmaxd;
+ 
+-	descs = dma_alloc_coherent(dev->dev, max_entries * sizeof(*descs),
+-				   &descs_dma, GFP_KERNEL);
++	descs_size = max_entries * sizeof(*descs);
++	descs = dma_alloc_coherent(dev->dev, descs_size, &descs_dma,
++			GFP_KERNEL);
+ 	if (!descs)
+ 		goto out;
+ 
+@@ -2020,6 +2022,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
+ 	dev->host_mem_size = size;
+ 	dev->host_mem_descs = descs;
+ 	dev->host_mem_descs_dma = descs_dma;
++	dev->host_mem_descs_size = descs_size;
+ 	dev->host_mem_desc_bufs = bufs;
+ 	return 0;
+ 
+@@ -2034,8 +2037,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
+ 
+ 	kfree(bufs);
+ out_free_descs:
+-	dma_free_coherent(dev->dev, max_entries * sizeof(*descs), descs,
+-			descs_dma);
++	dma_free_coherent(dev->dev, descs_size, descs, descs_dma);
+ out:
+ 	dev->host_mem_descs = NULL;
+ 	return -ENOMEM;
 -- 
 2.43.0
 
