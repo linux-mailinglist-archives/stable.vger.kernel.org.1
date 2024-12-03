@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4639E21E4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437669E2562
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7048D286CF0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA40E16B49E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FF1F473A;
-	Tue,  3 Dec 2024 15:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909491F75B4;
+	Tue,  3 Dec 2024 15:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMykYWpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMLxq6U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C00646;
-	Tue,  3 Dec 2024 15:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB2B1AB6C9;
+	Tue,  3 Dec 2024 15:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239097; cv=none; b=dj117S/gEodDwtRsX6v23rRugU9HyWnbrqkcCh1Yw9eOQwccnu0XvM30NlARV6Djh/We4+fZdCAATU+m5vGdxz/UeSQHRfAtedC0Ln4VnnE+FtfE7PIjvx3zKN2W0qCuhIgQ5GvEJ6xPU1qiVOHl0+P3u9OpcD27odbN7js4TPw=
+	t=1733241293; cv=none; b=LKbouImkrWwMWnLpZGbje/T7A8E3vN+xZlms8FC1oAPWMyle1R+B9E0XhGXStDYP8y9OJFAruuvoXtqd3IN5CV7bx91xANxoE69e8EQLyYYJAAel0/ByTIxIkLxbh7ir02xdF3bs2GEtQCsGSO5TS5NLHHr0H2pKzVT4EOveXJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239097; c=relaxed/simple;
-	bh=/a+p0kB74e5P4KezyJErXtX9fjbuQBX8e7Bo3sG4UJc=;
+	s=arc-20240116; t=1733241293; c=relaxed/simple;
+	bh=goEJOB3gllb1QBBWbA3fXTcKfIeOJFmEsxMPNinP/pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLulfo1De07XLu671TEwKdn4AS7Kvg6PJhs0rrAsHvQzDGSMEHwWgIBOQ/W3h3VcCs3R0SCD6xnA1Nj9kcYiP2yVqEQShn4AwMF6hdl0HGsjoulXsH84VClvndKBiyoXvuoubdJurQJPrQt6Gt7E79KA6f0PUTdNBl0LZy10zXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMykYWpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEECC4CECF;
-	Tue,  3 Dec 2024 15:18:16 +0000 (UTC)
+	 MIME-Version; b=my1JtC/Fv/SeGMNNAjbWnntYO22pvTkcUEwSPBB/oOYoynBwZNXp6xPYaDW5g6P1B7Jk3WF4wsUBIVv+Rl7/6vtnm8PScnygg97RxH1cdoZU4VlCTM+ZghCTVZZogqAummdbDv5gr5tySH5nlBmVelS/pD+Jo2p89/eV+7m9N6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMLxq6U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55574C4CED6;
+	Tue,  3 Dec 2024 15:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239097;
-	bh=/a+p0kB74e5P4KezyJErXtX9fjbuQBX8e7Bo3sG4UJc=;
+	s=korg; t=1733241292;
+	bh=goEJOB3gllb1QBBWbA3fXTcKfIeOJFmEsxMPNinP/pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMykYWpOwTJzwHi27DnG1cJqsNampJ81Tm9ULfKDH8iTvgmZbW7ZdniGLUsQa8esx
-	 uJnl1xAnD5xdN0LTR+pMl5RoES+b6UMRzxwUv6SC6eBcN3WYZfYTvuKM3AY53j9Lha
-	 lg/uf8sFBwV3gm8psmef61kN4aK5MccBwMq/RxGA=
+	b=rAMLxq6UQBlY7lPbXpebV/hl38arAfm5FXGctXqQKEGckDzNDg27JwZZ1djuAl4gr
+	 AnVFaKYf4jETio6fCrr4kPCa7aUP3PJ9qHM1kZ1CVfKPbusjYv/G31EvKZfLminPcN
+	 hpKRUdfML5TfBwMAumsvNoJlABdgINsspjsDgdc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	weiyufeng <weiyufeng@kylinos.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 501/817] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
-Date: Tue,  3 Dec 2024 15:41:13 +0100
-Message-ID: <20241203144015.430419157@linuxfoundation.org>
+Subject: [PATCH 6.12 347/826] erofs: fix file-backed mounts over FUSE
+Date: Tue,  3 Dec 2024 15:41:14 +0100
+Message-ID: <20241203144757.296721196@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: weiyufeng <weiyufeng@kylinos.cn>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 87d5403378cccc557af9e02a8a2c8587ad8b7e9a ]
+[ Upstream commit 3a23787ca8756920d65fda39f41353a4be1d1642 ]
 
-Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
-from hardware.  This unifies PCI error response checking and makes error
-checks consistent and easier to find.
+syzbot reported a null-ptr-deref in fuse_read_args_fill:
+ fuse_read_folio+0xb0/0x100 fs/fuse/file.c:905
+ filemap_read_folio+0xc6/0x2a0 mm/filemap.c:2367
+ do_read_cache_folio+0x263/0x5c0 mm/filemap.c:3825
+ read_mapping_folio include/linux/pagemap.h:1011 [inline]
+ erofs_bread+0x34d/0x7e0 fs/erofs/data.c:41
+ erofs_read_superblock fs/erofs/super.c:281 [inline]
+ erofs_fc_fill_super+0x2b9/0x2500 fs/erofs/super.c:625
 
-Link: https://lore.kernel.org/r/20240806065050.28725-1-412574090@163.com
-Signed-off-by: weiyufeng <weiyufeng@kylinos.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Unlike most filesystems, some network filesystems and FUSE need
+unavoidable valid `file` pointers for their read I/Os [1].
+Anyway, those use cases need to be supported too.
+
+[1] https://docs.kernel.org/filesystems/vfs.html
+
+Reported-by: syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/6727bbdf.050a0220.3c8d68.0a7e.GAE@google.com
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Tested-by: syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241114234905.1873723-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/data.c     | 10 ++++++----
+ fs/erofs/internal.h |  1 +
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index e9f1fb333a718..718bc6cf12cb3 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 61debd799cf90..fa51437e1d99d 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -38,7 +38,7 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset,
+ 	}
+ 	if (!folio || !folio_contains(folio, index)) {
+ 		erofs_put_metabuf(buf);
+-		folio = read_mapping_folio(buf->mapping, index, NULL);
++		folio = read_mapping_folio(buf->mapping, index, buf->file);
+ 		if (IS_ERR(folio))
+ 			return folio;
+ 	}
+@@ -61,9 +61,11 @@ void erofs_init_metabuf(struct erofs_buf *buf, struct super_block *sb)
+ {
+ 	struct erofs_sb_info *sbi = EROFS_SB(sb);
  
- 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
- 		return -1;
--	if (vendID == 0xffffffff)
-+	if (PCI_POSSIBLE_ERROR(vendID))
- 		return -1;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
-@@ -253,7 +253,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
- 			*dev_num = tdevice;
- 			ctrl->pci_bus->number = tbus;
- 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
--			if (!nobridge || (work == 0xffffffff))
-+			if (!nobridge || PCI_POSSIBLE_ERROR(work))
- 				return 0;
+-	if (erofs_is_fileio_mode(sbi))
+-		buf->mapping = file_inode(sbi->fdev)->i_mapping;
+-	else if (erofs_is_fscache_mode(sb))
++	buf->file = NULL;
++	if (erofs_is_fileio_mode(sbi)) {
++		buf->file = sbi->fdev;		/* some fs like FUSE needs it */
++		buf->mapping = buf->file->f_mapping;
++	} else if (erofs_is_fscache_mode(sb))
+ 		buf->mapping = sbi->s_fscache->inode->i_mapping;
+ 	else
+ 		buf->mapping = sb->s_bdev->bd_mapping;
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 4efd578d7c627..9b03c8f323a76 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -221,6 +221,7 @@ enum erofs_kmap_type {
  
- 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
+ struct erofs_buf {
+ 	struct address_space *mapping;
++	struct file *file;
+ 	struct page *page;
+ 	void *base;
+ 	enum erofs_kmap_type kmap_type;
 -- 
 2.43.0
 
