@@ -1,132 +1,125 @@
-Return-Path: <stable+bounces-96275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B499E1A01
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:55:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333449E19AF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:46:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2A51B350D9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB38B166B04
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC641E1C3E;
-	Tue,  3 Dec 2024 10:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CDC1E283E;
+	Tue,  3 Dec 2024 10:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Tv54ZrA5"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="zPA4v7eP"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6401E0B6C
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362D71E25E6;
+	Tue,  3 Dec 2024 10:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733221784; cv=none; b=thsIVrLdxU62W+LkwEQQXDu94wtEpIWIunrpUcscKXPgRdx4TkAS+x9kNEvK/BmHPDum51yQY2gax3afXXbVE8tglZEICp4qof8Udm4Xv1YUs1RWQISXZIJJTLAIBhIsmRDW0I75b7X5CB5i5GFu6r6XqB0oVG5G8aMj9JHsw4w=
+	t=1733222758; cv=none; b=D0tUlY2QFgaACd4X/LX5ldGjwjaExjZncYlunyig9ST4UGUnXrRZUt10S+GJ7EtNL7OAN7EEgZnRnfSLc/hAP8s9/NnZqLNM/YKz2wl8fnH9y+fc1045VVXiqZQn1RaWGy6An1lQrefF+C+I8FukJu6Z5PkCn2NrK1W/1CQNbBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733221784; c=relaxed/simple;
-	bh=SO2/6RdTJZQ4nWgovKQYC9cxzKtOymQ4yQuG2Ycp80I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UWbGsuNFhVJyzA7mCMMRCnx32x6aGFwtoz4BRWNOBz1sELE+D2iD5CxkceBGKEtG9n0TTlM1j/M4hAScWFxTLSlBdqLsn5v++VxV+PfN5tLLhTIwmdlBcaQVDC8nrCMXvvJo8FWajAEfl6x83twYxTLh3ScQFOXNywv2cW14cqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Tv54ZrA5; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id BE242A0029;
-	Tue,  3 Dec 2024 11:29:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=KFwwISF3N2I9Nwpx1P/a
-	QoASwk1XWgtZt8HzJy20fiw=; b=Tv54ZrA5DxEadGJTqWiNvmBuZv8RwH5PXayZ
-	4iD5fWP2QYjYUpd+O7H4XW5UUeXfUoCFL7s5nwn9Gjk7Tf9oc5tmMuAmsRjK/qLN
-	oX5FXZkLm4F/sA1GfaL9P09hsJoe7ljLhznRZLF/kli9au3Ll4h6GHViI3TqE/3w
-	uSJPxxk0s85Tv+k+cLaJz4GEVQZIiiDQXN8ASzD7tsUrq//+E6NVaYjxcOGc1fjb
-	sn5C+HE9H1R0n04GYGH3900y62O5grAmIHjP9lN7bvb8yg6HT+XWrUwdjyruojba
-	+6oArMBqD6GgTheXRz3QfSdPYOqpX/6M7hucdi25yt7hK30GOFeEHCpuKrlEaiP3
-	RTwud72EHDrFzjWCle+0rcAwFnArs3B9G1+CGVT/EIuVl9asPh64JVkMNAsAsJrP
-	zP9muB3mW4VGW++4aktDhvvvZ7+5/0BT0o8pf90JVV36l8sP1bvG9FGDZmaKELbj
-	imSAvtWhBzVlfKIbyY3BBDAzxt3Xe3Uyp0hlt6yYhI17NLEUxQrZ7IjpcBwpVNui
-	jsXu6YAROIRlAlplkR97hN5V9FBx/zTHR3neRJVnSi4HQlmumjZl4CZuwiJT28no
-	SUH2gG7kvnwj4IThraXnhXyWM0IQekNNLkjMaV6n+0Tg6Pl/2EB9r9WIVj4VJ8Z0
-	WcJ0Zio=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Frank Li
-	<Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>
-Subject: [PATCH 6.12 v4 3/3] net: fec: make PPS channel configurable
-Date: Tue, 3 Dec 2024 11:29:32 +0100
-Message-ID: <20241203102932.3581093-4-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241203102932.3581093-1-csokas.bence@prolan.hu>
-References: <20241203102932.3581093-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733222758; c=relaxed/simple;
+	bh=IsM5qwXmVYbtpLyfbaWedFs/VMNxgxhIv9ZcK9/X2/Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JkfphaGrCvCIcZ16c3sy4hgbMHbltlW9zpRQVASF08ipUHOu52z4Fs81FdMM73pnqFVCrMAMO/MIUA6kGMm4k2FyQoEvitD4PD4tshYHmputMVo9F/a65q71feej+hQxk9vXTUHKq97fFOvxvl0naT/LbEev3+nlOVh+Iy+EtPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=zPA4v7eP; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References; bh=eUOXxza2xZDbeONLJ88WTGExZzUw3RWWcYeyA48yLeY=; b=zP
+	A4v7ePAjjTQxnrQjzUzObzLd3YWI1sYezNf+8pFa3iW4WzerQgFaS6p9WWRS8WvvDhatu/O0UHXwd
+	QpoNH5WEKTxH/0S4XB1J+5CfC0SVoI/hEb9/Dh9BhxY5Lb2DLjIGnTTfTa14TgApRzy2HdgjflJNV
+	cVNRe85XeXKITI3CNsb2pcg5KCqVJhLIdF/3EWG+LZG6BY/dvhk5fuPcjTf0Uv55te0anokbByCx3
+	OMFEOW6YGgd+6Pe4I3S2DIyNM4+iaLg/9wHsIkX6mj9kRgWb7mW/q/YAhWikrvqnptPUD2Yh36EGh
+	WHnqkYmBJxeOHTEfTNw08hhBk7XrRfBQ==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1tIQPh-0001Oj-46; Tue, 03 Dec 2024 11:45:53 +0100
+Received: from [185.17.218.86] (helo=localhost)
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1tIQPg-000L6S-1L;
+	Tue, 03 Dec 2024 11:45:52 +0100
+From: Esben Haabendal <esben@geanix.com>
+Subject: [PATCH 0/6] rtc: Fix problems with missing UIE irqs
+Date: Tue, 03 Dec 2024 11:45:30 +0100
+Message-Id: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1733221773;VERSION=7982;MC=1818435781;ID=156228;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD94855637D61
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAErhTmcC/x2LQQqAMAzAviI9W5hVcPgV8SDaaS9TOxVB9neLx
+ yTkhcQqnKArXlC+JckWDaqygGkd48IoszGQo6YiV6OeE15iWg8M8nDCQL72rafZBQ/27cp/sK0
+ fcv4AkCfcgGMAAAA=
+X-Change-ID: 20241203-rtc-uie-irq-fixes-f2838782d0f8
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Esben Haabendal <esben@geanix.com>, 
+ stable@vger.kernel.org, Patrice Chotard <patrice.chotard@foss.st.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733222752; l=1634;
+ i=esben@geanix.com; s=20240523; h=from:subject:message-id;
+ bh=IsM5qwXmVYbtpLyfbaWedFs/VMNxgxhIv9ZcK9/X2/Y=;
+ b=4m2rQQdcFWIslwIXR8uaXwn9QhTkD+u/aJnbsc9jpodG1R+miZyhebqDjXFK0hnoSwtvJqSE7
+ 9r4bEt+i1d/Bjx+kTsuQ7Nc01QvjWyus4rDJ8q5znc+fABJWVbu69NQ
+X-Developer-Key: i=esben@geanix.com; a=ed25519;
+ pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27476/Tue Dec  3 10:52:11 2024)
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+This fixes a couple of different problems, that can cause RTC (alarm)
+irqs to be missing when generating UIE interrupts.
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+The first commit fixes a long-standing problem, which has been
+documented in a comment since 2010. This fixes a race that could cause
+UIE irqs to stop being generated, which was easily reproduced by
+timing the use of RTC_UIE_ON ioctl with the seconds tick in the RTC.
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+The last commit ensures that RTC (alarm) irqs are enabled whenever
+RTC_UIE_ON ioctl is used.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-(cherry picked from commit 566c2d83887f0570056833102adc5b88e681b0c7)
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+The driver specific commits avoids kernel warnings about unbalanced
+enable_irq/disable_irq, which gets triggered on first RTC_UIE_ON with
+the last commit. Before this series, the same warning should be seen
+on initial RTC_AIE_ON with those drivers.
+
+Signed-off-by: Esben Haabendal <esben@geanix.com>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Esben Haabendal (6):
+      rtc: interface: Fix long-standing race when setting alarm
+      rtc: isl12022: Fix initial enable_irq/disable_irq balance
+      rtc: cpcap: Fix initial enable_irq/disable_irq balance
+      rtc: st-lpc: Fix initial enable_irq/disable_irq balance
+      rtc: tps6586x: Fix initial enable_irq/disable_irq balance
+      rtc: interface: Ensure alarm irq is enabled when UIE is enabled
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 37e1c895f1b8..7f6b57432071 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
+ drivers/rtc/interface.c    | 27 +++++++++++++++++++++++++++
+ drivers/rtc/rtc-cpcap.c    |  1 +
+ drivers/rtc/rtc-isl12022.c |  1 +
+ drivers/rtc/rtc-st-lpc.c   |  1 +
+ drivers/rtc/rtc-tps6586x.c |  1 +
+ 5 files changed, 31 insertions(+)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241203-rtc-uie-irq-fixes-f2838782d0f8
+
+Best regards,
 -- 
-2.34.1
-
+Esben Haabendal <esben@geanix.com>
 
 
