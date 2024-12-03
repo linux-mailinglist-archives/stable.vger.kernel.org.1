@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-96587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0059E27BF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:40:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA09E2650
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A42AB2DA78
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BABAB84CB0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3431F7071;
-	Tue,  3 Dec 2024 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BFF1EF0BC;
+	Tue,  3 Dec 2024 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQal+AHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL07AxzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2723E1F4283;
-	Tue,  3 Dec 2024 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AF61DA4E;
+	Tue,  3 Dec 2024 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238005; cv=none; b=RAaobmgcD5rYGAACFvO3Kjfv2PzqPM365Vuu1jqigSwJoQKAFSXxbTMw+bOf5Zu6P2vFM59Qz448UbiiR6ml0eF1k7gkXDi1DtR6iP2zQY/P/MnpixULhMSkpu9bh1Koja3EkL8AKcf4QN27EUcGokyAaHdToptWgmmatdepqyI=
+	t=1733238014; cv=none; b=bcoCPZTe9I9WHXKPzvZYAfIH3yhfVnY8miiP1226/1pGeLr+1L2X/uxDQYtXvqGJz5331pLVn7Mo6hY/c6mzkpqz384G7dusMRGEa6Q91Puzj72JDPvIukw1HMcWYHlQHaP2f+dPReJBGDMpNYsRdageTo8kOFKMD93hXt/DhoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238005; c=relaxed/simple;
-	bh=xE3tMxoadMP0aLrBtTZDqKbqtukcLnA7OFPd9/Wr7PU=;
+	s=arc-20240116; t=1733238014; c=relaxed/simple;
+	bh=nDlws/fnM9g1fNJpoFejq0VL5xbpuejMAbXf3l9+m5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGp1/67K4G/29n4BbaBd/ax3Ml8g4j7QhDLCKIQ0DtEzRS7i4X7DobgRMWnyVJGQVNh8grAFVwcTGr9ypaCTFkij5ybe1hl7P3YMsUZ6G1Q5ZKhW//p2SC0pRF4p0/wHYtODXeuQUUUTjcIVQLwyOuQM9NwMktLbvuvuv099hUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQal+AHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBCC4CECF;
-	Tue,  3 Dec 2024 15:00:04 +0000 (UTC)
+	 MIME-Version; b=YIN3vN6MV8l5zkrMDvMiasJz0qCONXQsPa4NEZMBy0Che+ynIShJ/g+zgHDMezrplZKGMFFoJrNu81eer9jR9X15nIucNiL2RgSr8NMZzDxc1muwHmlXC1978KGTJmDgZ3CSciEJ3fC0vj9y3bMeEKVQxqTJeW9WBbr9v5OOFWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL07AxzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB38C4CECF;
+	Tue,  3 Dec 2024 15:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238005;
-	bh=xE3tMxoadMP0aLrBtTZDqKbqtukcLnA7OFPd9/Wr7PU=;
+	s=korg; t=1733238014;
+	bh=nDlws/fnM9g1fNJpoFejq0VL5xbpuejMAbXf3l9+m5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQal+AHSPEXp0UTH833e5tNZKy4n1g0ZPsUQdlW9ZFAzEgas+oiFZ1ujMGPcT36+u
-	 eEKl6rwbhXc14V0rRIyvsgiGKghcNN7+vWYexnSzdVqkud5s4xgRvnKzpRMWWLGk7f
-	 epzExrDTpDNLv64L1IqqMDK1Mw6d3Jxitzxn0sFM=
+	b=gL07AxzDXz0MaEca6iakaVu66oBlSnQgoon2SNYmNh+PJqebhKzjKuTFnsIVGxGGc
+	 QotaG2eSwm5FYnwJnPFAimGeRncr4eIXbsbWSiI/xwjKawweL0j6KCMs+uBLBjJAvA
+	 UHP778it0QdhSIF0aVko1m94pDbAdNH7z18LEBKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Will Deacon <will@kernel.org>,
-	Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 130/817] Revert "scripts/faddr2line: Check only two symbols when calculating symbol size"
-Date: Tue,  3 Dec 2024 15:35:02 +0100
-Message-ID: <20241203144000.795598126@linuxfoundation.org>
+Subject: [PATCH 6.11 133/817] time: Fix references to _msecs_to_jiffies() handling of values
+Date: Tue,  3 Dec 2024 15:35:05 +0100
+Message-ID: <20241203144000.913762315@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,70 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 56ac7bd2c58a4e93d19f0ccb181035d075b315d3 ]
+[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
 
-This reverts commit c02904f05ff805d6c0631634d5751ebd338f75ec.
+The details about the handling of the "normal" values were moved
+to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
+Refactor msecs_to_jiffies"). However, the same commit still mentioned
+__msecs_to_jiffies() in the added documentation.
 
-Such commit assumed that only two symbols are relevant for the symbol
-size calculation. However, this can lead to an incorrect symbol size
-calculation when there are mapping symbols emitted by readelf.
+Thus point to _msecs_to_jiffies() instead.
 
-For instance, when feeding 'update_irq_load_avg+0x1c/0x1c4', faddr2line
-might need to process the following readelf lines:
-
- 784284: ffffffc0081cca30   428 FUNC    GLOBAL DEFAULT     2 update_irq_load_avg
-  87319: ffffffc0081ccb0c     0 NOTYPE  LOCAL  DEFAULT     2 $x.62522
-  87321: ffffffc0081ccbdc     0 NOTYPE  LOCAL  DEFAULT     2 $x.62524
-  87323: ffffffc0081ccbe0     0 NOTYPE  LOCAL  DEFAULT     2 $x.62526
-  87325: ffffffc0081ccbe4     0 NOTYPE  LOCAL  DEFAULT     2 $x.62528
-  87327: ffffffc0081ccbe8     0 NOTYPE  LOCAL  DEFAULT     2 $x.62530
-  87329: ffffffc0081ccbec     0 NOTYPE  LOCAL  DEFAULT     2 $x.62532
-  87331: ffffffc0081ccbf0     0 NOTYPE  LOCAL  DEFAULT     2 $x.62534
-  87332: ffffffc0081ccbf4     0 NOTYPE  LOCAL  DEFAULT     2 $x.62535
- 783403: ffffffc0081ccbf4   424 FUNC    GLOBAL DEFAULT     2 sched_pelt_multiplier
-
-The symbol size of 'update_irq_load_avg' should be calculated with the
-address of 'sched_pelt_multiplier', after skipping the mapping symbols
-seen in between. However, the offending commit cuts the list short and
-faddr2line incorrectly assumes 'update_irq_load_avg' is the last symbol
-in the section, resulting in:
-
-  $ scripts/faddr2line vmlinux update_irq_load_avg+0x1c/0x1c4
-  skipping update_irq_load_avg address at 0xffffffc0081cca4c due to size mismatch (0x1c4 != 0x3ff9a59988)
-  no match for update_irq_load_avg+0x1c/0x1c4
-
-After reverting the commit the issue is resolved:
-
-  $ scripts/faddr2line vmlinux update_irq_load_avg+0x1c/0x1c4
-  update_irq_load_avg+0x1c/0x1c4:
-  cpu_of at kernel/sched/sched.h:1109
-  (inlined by) update_irq_load_avg at kernel/sched/pelt.c:481
-
-Fixes: c02904f05ff8 ("scripts/faddr2line: Check only two symbols when calculating symbol size")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/faddr2line | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/jiffies.h | 2 +-
+ kernel/time/time.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/faddr2line b/scripts/faddr2line
-index fe0cc45f03be1..1fa6beef9f978 100755
---- a/scripts/faddr2line
-+++ b/scripts/faddr2line
-@@ -252,7 +252,7 @@ __faddr2line() {
- 				found=2
- 				break
- 			fi
--		done < <(echo "${ELF_SYMS}" | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2 | ${GREP} -A1 --no-group-separator " ${sym_name}$")
-+		done < <(echo "${ELF_SYMS}" | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
- 
- 		if [[ $found = 0 ]]; then
- 			warn "can't find symbol: sym_name: $sym_name sym_sec: $sym_sec sym_addr: $sym_addr sym_elf_size: $sym_elf_size"
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index d9f1435a5a13c..26c7c0a4c7f8c 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -502,7 +502,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index e1879ca321033..1ad88e97b4ebc 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -556,7 +556,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
 -- 
 2.43.0
 
