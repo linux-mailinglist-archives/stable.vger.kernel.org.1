@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-97734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7629E2557
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7879E283C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73803287440
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30151BA6BC1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4009A1F76D7;
-	Tue,  3 Dec 2024 15:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544861F76B7;
+	Tue,  3 Dec 2024 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV/dqPrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjshTyJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F028A1F76AD;
-	Tue,  3 Dec 2024 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB7C1F76AD;
+	Tue,  3 Dec 2024 15:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241555; cv=none; b=derDNkmEfaGjTheCcZWJm7GsXLIyYzfNqifXH0/0cf1AdLvXnSKKfC09zM4RuC0g6WFbTxcqh1vuTtEgbx9335FEfCZzD7GndU4iMr/ntgEsEyB6dTmm+QOmzuwpxSx0dEg+8ZaWOd6g6TbD582nPvO1B1Ye+Bg+mi6Sab+hJ2E=
+	t=1733239396; cv=none; b=akBaASfpXtv29hyWby7YIt59q7TuAc4SM5gNGnXVkE1MsghLi/Dr7i0f7Hd2QhtWsZLpV11yhcBqyGbIp8azcdof6F/+isFklAvnKTqOHfoVID8ufyEP1zG0TCHohAZM/cTlSUAdrMS5qo/JrISs/n4ANcj1MnHSjxH2sNJCRgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241555; c=relaxed/simple;
-	bh=5BBlKC31T/kqtIsJWeKUUxDgnooFCSSA9rU0dEByqbs=;
+	s=arc-20240116; t=1733239396; c=relaxed/simple;
+	bh=RrNLYDp50Ty7TgNsqnmYHB5rcCzpojr2fNgUJBIAQlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSdB41qEMdK8nASGZCUEqYXgXca6J9UMjtXZdGEUaAlDjOlQo5LV8hGJtM703uHxvs7YUxcdMJ2n7ldgiRT0geBGyRDOAejEJHFWGLSi7jp+VQ7hq0aZlBbUh5jRVMlD5kH0kCmlwZf+wDj8nKrPRxz9c5TKyShNrJOyOMDnyG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TV/dqPrP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62920C4CECF;
-	Tue,  3 Dec 2024 15:59:14 +0000 (UTC)
+	 MIME-Version; b=BSBQXvxVbzdFp55Ir5GriImE8j1TLob+guhFEukUwZp1nv511wCKOKpupInCS5XyrQ3HWxBLArVQjvHi0tNuXlhEoY0WvPZqdO6bcmUa8/KVWVeqIpKlXzrNvasCayhaniKaUSNVA9kFC9MzXSso0Ingrz5tlda9i3/aHiwG5ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjshTyJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8982CC4CECF;
+	Tue,  3 Dec 2024 15:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241554;
-	bh=5BBlKC31T/kqtIsJWeKUUxDgnooFCSSA9rU0dEByqbs=;
+	s=korg; t=1733239395;
+	bh=RrNLYDp50Ty7TgNsqnmYHB5rcCzpojr2fNgUJBIAQlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TV/dqPrP2NL3lvXtAtRhyEmQD38lGEeFK29VqNuagJJOCtXBZL3jJE9zC3TyLbHCB
-	 4Vmi4KXfE/Qu6QKuXXdmBSFYWyp50Oc+it+T/XbCju2Vu3pZ3ENX2LLsjQCmXj91ml
-	 UKKgz+GtZoIQtEgJD2mAP1fdK04Xb4nKjEOqRPjk=
+	b=jjshTyJjlFBl4KuB0a2xnvPig2A8xuXEj8XBeU+IhVHkTagjwU8+WKQ0inYYPK4Tz
+	 cic7Gry99qXA25dG/fO022A4iPfjeVFC8uMSPI4S0O2grA2jbbRPQ92tshQVsmJnmv
+	 5aYz4y43B2V7pdU2Vh3BhV9noa6YImfxekFfCkuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 443/826] KVM: PPC: Book3S HV: Fix kmv -> kvm typo
-Date: Tue,  3 Dec 2024 15:42:50 +0100
-Message-ID: <20241203144801.041764196@linuxfoundation.org>
+Subject: [PATCH 6.11 599/817] usb: yurex: make waiting on yurex_write interruptible
+Date: Tue,  3 Dec 2024 15:42:51 +0100
+Message-ID: <20241203144019.308230820@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 590d2f9347f7974d7954400e5d937672fd844a8b ]
+[ Upstream commit e0aa9614ab0fd35b404e4b16ebe879f9fc152591 ]
 
-Fix typo in the following kvm function names from:
+The IO yurex_write() needs to wait for in order to have a device
+ready for writing again can take a long time time.
+Consequently the sleep is done in an interruptible state.
+Therefore others waiting for yurex_write() itself to finish should
+use mutex_lock_interruptible.
 
- kmvhv_counters_tracepoint_regfunc -> kvmhv_counters_tracepoint_regfunc
- kmvhv_counters_tracepoint_unregfunc -> kvmhv_counters_tracepoint_unregfunc
-
-Fixes: e1f288d2f9c6 ("KVM: PPC: Book3S HV nestedv2: Add support for reading VPA counters for pseries guests")
-Reported-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241114085020.1147912-1-kjain@linux.ibm.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
+Rule: add
+Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
+Link: https://lore.kernel.org/r/20240924084415.300557-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/kvm_book3s_64.h | 4 ++--
- arch/powerpc/kvm/book3s_hv.c             | 4 ++--
- arch/powerpc/kvm/trace_hv.h              | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/misc/iowarrior.c | 4 ----
+ drivers/usb/misc/yurex.c     | 5 ++++-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
-index 2ef9a5f4e5d14..11065313d4c12 100644
---- a/arch/powerpc/include/asm/kvm_book3s_64.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_64.h
-@@ -684,8 +684,8 @@ int kvmhv_nestedv2_set_ptbl_entry(unsigned long lpid, u64 dw0, u64 dw1);
- int kvmhv_nestedv2_parse_output(struct kvm_vcpu *vcpu);
- int kvmhv_nestedv2_set_vpa(struct kvm_vcpu *vcpu, unsigned long vpa);
+diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
+index a513766b4985d..365c100693458 100644
+--- a/drivers/usb/misc/iowarrior.c
++++ b/drivers/usb/misc/iowarrior.c
+@@ -911,7 +911,6 @@ static int iowarrior_probe(struct usb_interface *interface,
+ static void iowarrior_disconnect(struct usb_interface *interface)
+ {
+ 	struct iowarrior *dev = usb_get_intfdata(interface);
+-	int minor = dev->minor;
  
--int kmvhv_counters_tracepoint_regfunc(void);
--void kmvhv_counters_tracepoint_unregfunc(void);
-+int kvmhv_counters_tracepoint_regfunc(void);
-+void kvmhv_counters_tracepoint_unregfunc(void);
- int kvmhv_get_l2_counters_status(void);
- void kvmhv_set_l2_counters_status(int cpu, bool status);
+ 	usb_deregister_dev(interface, &iowarrior_class);
  
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 59f67a44621b7..57b6c1ba84d47 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4154,7 +4154,7 @@ void kvmhv_set_l2_counters_status(int cpu, bool status)
- 		lppaca_of(cpu).l2_counters_enable = 0;
+@@ -935,9 +934,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
+ 		mutex_unlock(&dev->mutex);
+ 		iowarrior_delete(dev);
+ 	}
+-
+-	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
+-		 minor - IOWARRIOR_MINOR_BASE);
  }
  
--int kmvhv_counters_tracepoint_regfunc(void)
-+int kvmhv_counters_tracepoint_regfunc(void)
- {
- 	int cpu;
+ /* usb specific object needed to register this driver with the usb subsystem */
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index 7c12b937d0759..bd94bf078de3b 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -441,7 +441,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 	if (count == 0)
+ 		goto error;
  
-@@ -4164,7 +4164,7 @@ int kmvhv_counters_tracepoint_regfunc(void)
- 	return 0;
- }
- 
--void kmvhv_counters_tracepoint_unregfunc(void)
-+void kvmhv_counters_tracepoint_unregfunc(void)
- {
- 	int cpu;
- 
-diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-index 77ebc724e6cdf..35fccaa575cc1 100644
---- a/arch/powerpc/kvm/trace_hv.h
-+++ b/arch/powerpc/kvm/trace_hv.h
-@@ -538,7 +538,7 @@ TRACE_EVENT_FN_COND(kvmppc_vcpu_stats,
- 	TP_printk("VCPU %d: l1_to_l2_cs_time=%llu ns l2_to_l1_cs_time=%llu ns l2_runtime=%llu ns",
- 		__entry->vcpu_id,  __entry->l1_to_l2_cs,
- 		__entry->l2_to_l1_cs, __entry->l2_runtime),
--	kmvhv_counters_tracepoint_regfunc, kmvhv_counters_tracepoint_unregfunc
-+	kvmhv_counters_tracepoint_regfunc, kvmhv_counters_tracepoint_unregfunc
- );
- #endif
- #endif /* _TRACE_KVM_HV_H */
+-	mutex_lock(&dev->io_mutex);
++	retval = mutex_lock_interruptible(&dev->io_mutex);
++	if (retval < 0)
++		return -EINTR;
++
+ 	if (dev->disconnected) {		/* already disconnected */
+ 		mutex_unlock(&dev->io_mutex);
+ 		retval = -ENODEV;
 -- 
 2.43.0
 
