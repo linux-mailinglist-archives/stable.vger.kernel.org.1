@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-97432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFE09E23F6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8830E9E2848
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6B6228764C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D14B610C4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18961FBC97;
-	Tue,  3 Dec 2024 15:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2771F9418;
+	Tue,  3 Dec 2024 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtucOF6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhUsda+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600571FBC82;
-	Tue,  3 Dec 2024 15:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8471F707A;
+	Tue,  3 Dec 2024 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240488; cv=none; b=uUJTzixFi2F0LNUGxBTn7qw/AXxLg6PC/zSb3zHJAQnz6I5WVFKBBPGf4CLXROgHFSge+FBNc28T5BpXBGxsw0Zn0uKyMnNOB8NbHX+gvHUuLHXFsUhC73j+DvrDgpJniEvyQloQebOfSjI7yo5+y6VdjRT5z7brtwd0VNgv12k=
+	t=1733238615; cv=none; b=B2ttuYGFkqTZpvUGiIySwz9FI8K/vga65Cu35q3SRf6oquQu9Ibbbefa1527cvf9eI4sIxUpKJr1zRbR0T1by6Ka7TD6/WyCrU5JfYJRPfT76WXmQhEIZM/4kNYzUEalDkzb52AzCyUPs6gTQVNb3ns3PA28YUc599lzeee04/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240488; c=relaxed/simple;
-	bh=LgvL5VTWmfSODKVp1ZEXAStYOGM3n0LVBLbVIXB8W/0=;
+	s=arc-20240116; t=1733238615; c=relaxed/simple;
+	bh=I43C62SGKVTphy1S+Iv/grESxuoAlMqK4JSQKuuNIk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACRpW/mRCFMpql39dRp8Q+rXj6JIq/XfkZXolrV9hanExU6PBoPLRcPU7CgcmR9h/yjxGazo14qtVXBOp9Az6Azom2FBtZBTXhxuaIl5TOwwD7natuG9WY0N5jWbdV+x/HNIgxoSk+E45wWnBc6YW7Z0TltJThFxn4z6346kedY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtucOF6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B20C4CED6;
-	Tue,  3 Dec 2024 15:41:27 +0000 (UTC)
+	 MIME-Version; b=RCxiHiWreiN++qP0LKdgsexAflI8ZzBaOcF9ZCW6E++HT6MS6CUY3jAhxZ6NazsLJ/b6WtmNDXamoAHIEPlvc85M/5BwejEt/1Nuvwinxsmxj/wTDOFnpJQVVESTsMx8y9D2c5Qh/1QuOaTwnitKT3AoXdnF4nMSdT259TkBZbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhUsda+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89026C4CED8;
+	Tue,  3 Dec 2024 15:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240488;
-	bh=LgvL5VTWmfSODKVp1ZEXAStYOGM3n0LVBLbVIXB8W/0=;
+	s=korg; t=1733238614;
+	bh=I43C62SGKVTphy1S+Iv/grESxuoAlMqK4JSQKuuNIk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtucOF6rFNeYmE9mVUYRuhWmfYT3QmFpBOjHHMlUGyTDfZyFCUf8GaJqIq1PEd+M1
-	 wt2lvjKpgkQEhO0WRVube8WzYGJoy43EkpKHvRt1BhO7THSVg2wJrgw7thR0gYZNnR
-	 oXcL7jlnMEabYJOsjwHKwjMqSmrQ2SHQ/1+WdOsU=
+	b=RhUsda+0a/eJTd2v3RD2E1QEo6DTLSjRQkRmYrqDCZqslYo0I2eIXNlaWXPvRqJZB
+	 MCo3fGo/pgoW0LoNOrketzQmsWLLXzIlUHmTRWw4lNnuyZEPH9DKRrT8OmAdSV6WbC
+	 itg78zbH/1f2gPZV3TqQcuCpbDq+Vk8Bzi7NIA2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Arnd Bergmann <arnd@arndb.de>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/826] watchdog: Add HAS_IOPORT dependency for SBC8360 and SBC7240
-Date: Tue,  3 Dec 2024 15:37:58 +0100
-Message-ID: <20241203144749.634698904@linuxfoundation.org>
+Subject: [PATCH 6.11 307/817] wifi: cw1200: Fix potential NULL dereference
+Date: Tue,  3 Dec 2024 15:37:59 +0100
+Message-ID: <20241203144007.799915226@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit d4d3125a3452a54acca69050be67b87ee2900e77 ]
+[ Upstream commit 2b94751626a6d49bbe42a19cc1503bd391016bd5 ]
 
-Both drivers use I/O port accesses without declaring a dependency on
-CONFIG_HAS_IOPORT. For sbc8360_wdt this causes a compile error on UML
-once inb()/outb() helpers become conditional.
+A recent refactoring was identified by static analysis to
+cause a potential NULL dereference, fix this!
 
-For sbc7240_wdt this causes no such errors with UML because this driver
-depends on both x86_32 and !UML. Nevertheless add HAS_IOPORT as
-a dependency for both drivers to be explicit and drop the !UML
-dependency for sbc7240_wdt as it is now redundant since UML implies no
-HAS_IOPORT.
-
-Fixes: 52df67b6b313 ("watchdog: add HAS_IOPORT dependencies")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202410121505.nyghqEkK-lkp@intel.com/
+Fixes: 2719a9e7156c ("wifi: cw1200: Convert to GPIO descriptors")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/st/cw1200/cw1200_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 684b9fe84fff5..94c96bcfefe34 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1509,7 +1509,7 @@ config 60XX_WDT
+diff --git a/drivers/net/wireless/st/cw1200/cw1200_spi.c b/drivers/net/wireless/st/cw1200/cw1200_spi.c
+index 4f346fb977a98..862964a8cc876 100644
+--- a/drivers/net/wireless/st/cw1200/cw1200_spi.c
++++ b/drivers/net/wireless/st/cw1200/cw1200_spi.c
+@@ -450,7 +450,7 @@ static int __maybe_unused cw1200_spi_suspend(struct device *dev)
+ {
+ 	struct hwbus_priv *self = spi_get_drvdata(to_spi_device(dev));
  
- config SBC8360_WDT
- 	tristate "SBC8360 Watchdog Timer"
--	depends on X86_32
-+	depends on X86_32 && HAS_IOPORT
- 	help
+-	if (!cw1200_can_suspend(self->core))
++	if (self && !cw1200_can_suspend(self->core))
+ 		return -EAGAIN;
  
- 	  This is the driver for the hardware watchdog on the SBC8360 Single
-@@ -1522,7 +1522,7 @@ config SBC8360_WDT
- 
- config SBC7240_WDT
- 	tristate "SBC Nano 7240 Watchdog Timer"
--	depends on X86_32 && !UML
-+	depends on X86_32 && HAS_IOPORT
- 	help
- 	  This is the driver for the hardware watchdog found on the IEI
- 	  single board computers EPIC Nano 7240 (and likely others). This
+ 	/* XXX notify host that we have to keep CW1200 powered on? */
 -- 
 2.43.0
 
