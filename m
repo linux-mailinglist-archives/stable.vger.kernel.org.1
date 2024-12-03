@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0959E2A6D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:08:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5779E294A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9E30B47B33
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136B6BC764A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A391F7547;
-	Tue,  3 Dec 2024 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060C11F8EE3;
+	Tue,  3 Dec 2024 15:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEGHYeRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opkmhdhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1431E3DF9;
-	Tue,  3 Dec 2024 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B741B1F75B6;
+	Tue,  3 Dec 2024 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238416; cv=none; b=SmKoXpYxXZmGJAxjUe1l4LDPiOlw/sQUNcHw1/gt5wrHLPmtvJGwMG2PgPuifbxlzYVy/ZyqBCoqHe6jn5uCkd7H/iGsTT46QltCQ8izbxE4QbLZ92fQIGoLN+d1nT4VsS4wrO/57SWAczyw4LHd1bSQ1feU9M/1kVmzZEExxaI=
+	t=1733240369; cv=none; b=UKTFhpawJ0Wa6NQ44X9mf9J1WyzmmEeWDUs0nCIvKQqL+braVtDvQ4fH4L1UtrMM5OjeyLUXiVYgm7P2DCrR0KnBp4jZTo3yQjf/OdnjnUCYcWSOPsv9/ERB0CCr6L1oHFM75zilnrj6dBfSYdQUn/fHPl1DkuD0+hTuqcGtuHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238416; c=relaxed/simple;
-	bh=qy84lbqVdGFSc8dZ4N6yvF99HwNGfUVn9Qqd7ScXduk=;
+	s=arc-20240116; t=1733240369; c=relaxed/simple;
+	bh=16osrepvjEBUSbonblMeDkHIPwcH5T+z/r7KL6j2P6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G+G3jX5CcHYS9KiGBzjfPruNZVVIli4f6gnxqsV3FqTLwe5G19WRy7K3Jxc9VmMsvyWWYThHhQYYmKdcgKsjG3gNCbOgD9y7TUPP9R9CWV8YzujKDNAI9I4LrrctVxGwesqepM0ex5xebQipgZXhPF2d22PwgdIQ84wm83xXChY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEGHYeRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9C9C4CECF;
-	Tue,  3 Dec 2024 15:06:55 +0000 (UTC)
+	 MIME-Version; b=Z97MvtAHvUITj4TQGF638NByQXwurUbrFj9gbCqpzl0Uuq7WZ30CMjGNc3IVL9PYoBY+CJ2psrPm0Um13sBrSQooU1Dm6iavwRhq0LdFmmUTGOR7XX/2d6SNSt7yC0481c4jOCdfcP3yeC92mTirGFfsvYvPCld7lyCYEiqws44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opkmhdhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429C2C4CECF;
+	Tue,  3 Dec 2024 15:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238415;
-	bh=qy84lbqVdGFSc8dZ4N6yvF99HwNGfUVn9Qqd7ScXduk=;
+	s=korg; t=1733240366;
+	bh=16osrepvjEBUSbonblMeDkHIPwcH5T+z/r7KL6j2P6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEGHYeRHryp+I+X164xYGmyuuTTFxVCF5NmlTT2h6vFpUpVJjT609hVybbSyVDufo
-	 FW7W+Ew/oAWCknnLdLsmGyTOgMhYqUqKseyvdq/KR5R2CZ9FOCVnFlh1Oys22jq0z9
-	 r/1ToutxHQOXuIbVao7Fef0TwU/oAzrMtkq2pJFI=
+	b=opkmhdhz+xVySwd/uupC6pVs+/UiNvxsCZMfx1bYIAIUOCdsWpAHSMwDfNfITDz5E
+	 N3v42g9MmZFUkA3nq8hdh4Ig33E8zOykCFmwRE1d9cLHnF5sxpTkhpy5pwTSSH/4Pp
+	 nDTHNYX4Bv4KprJsdgeEDhfUJaQkgb+5Oq2WwkPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 268/817] drm/vc4: Match drm_dev_enter and exit calls in vc4_hvs_lut_load
-Date: Tue,  3 Dec 2024 15:37:20 +0100
-Message-ID: <20241203144006.254895935@linuxfoundation.org>
+Subject: [PATCH 6.12 115/826] ARM: dts: microchip: sam9x60: Add missing property atmel,usart-mode
+Date: Tue,  3 Dec 2024 15:37:22 +0100
+Message-ID: <20241203144748.227437661@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Andrei Simion <andrei.simion@microchip.com>
 
-[ Upstream commit cf1c87d978d47339a39bfa7a6133ecd3f8f87525 ]
+[ Upstream commit 2f9d013a0c6f1b9109ada5acb28ee26eefc77c03 ]
 
-Commit 52efe364d196 ("drm/vc4: hvs: Don't write gamma luts on 2711")
-added a return path to vc4_hvs_lut_load that had called
-drm_dev_enter, but not drm_dev_exit.
+Add the atmel,usart-mode property to the UART nodes. This ensures
+compliance with the atmel,at91-usart.yaml schema and resolves the errors
+below:
+serial@200: $nodename:0: 'serial@200' does not match
+'^spi(@.*|-([0-9]|[1-9][0-9]+))?$'
+serial@200: atmel,use-dma-rx: False schema does not allow True
+serial@200: atmel,use-dma-tx: False schema does not allow True
+serial@200: atmel,fifo-size: False schema does not allow [[16]]
 
-Ensure we call drm_dev_exit.
+These errors indicate that the property
+atmel,usart-mode = <AT91_USART_MODE_SERIAL> is missing for
+UART nodes 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, and 12.
 
-Fixes: 52efe364d196 ("drm/vc4: hvs: Don't write gamma luts on 2711")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/dri-devel/37051126-3921-4afe-a936-5f828bff5752@samsung.com/
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-1-9d0396ca9f42@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes: 99c808335877 ("ARM: dts: at91: sam9x60: Add missing flexcom definitions")
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://lore.kernel.org/r/20240912093307.40488-1-andrei.simion@microchip.com
+[claudiu.beznea: move the atmel,usart-mode close to vendor specific
+ properties to cope with DTS coding style]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/microchip/sam9x60.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 64d2410b4b860..ad2d8f6f1e9ef 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -225,7 +225,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
- 		return;
- 
- 	if (hvs->vc4->gen == VC4_GEN_4)
--		return;
-+		goto exit;
- 
- 	/* The LUT memory is laid out with each HVS channel in order,
- 	 * each of which takes 256 writes for R, 256 for G, then 256
-@@ -242,6 +242,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
- 	for (i = 0; i < crtc->gamma_size; i++)
- 		HVS_WRITE(SCALER_GAMDATA, vc4_crtc->lut_b[i]);
- 
-+exit:
- 	drm_dev_exit(idx);
- }
- 
+diff --git a/arch/arm/boot/dts/microchip/sam9x60.dtsi b/arch/arm/boot/dts/microchip/sam9x60.dtsi
+index 04a6d716ecaf8..1e8fcb5d4700d 100644
+--- a/arch/arm/boot/dts/microchip/sam9x60.dtsi
++++ b/arch/arm/boot/dts/microchip/sam9x60.dtsi
+@@ -186,6 +186,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 13>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -388,6 +389,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 32>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -439,6 +441,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 33>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -598,6 +601,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 9>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -649,6 +653,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 10>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -700,6 +705,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 11>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -751,6 +757,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 5>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -821,6 +828,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 6>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -891,6 +899,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 7>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -961,6 +970,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 8>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -1086,6 +1096,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 15>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
+@@ -1137,6 +1148,7 @@ AT91_XDMAC_DT_PER_IF(1) |
+ 					dma-names = "tx", "rx";
+ 					clocks = <&pmc PMC_TYPE_PERIPHERAL 16>;
+ 					clock-names = "usart";
++					atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
+ 					atmel,use-dma-rx;
+ 					atmel,use-dma-tx;
+ 					atmel,fifo-size = <16>;
 -- 
 2.43.0
 
