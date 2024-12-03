@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F0B9E2179
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC269E241F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15993284E8E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 569A02868BD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4511FA240;
-	Tue,  3 Dec 2024 15:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A1B20011E;
+	Tue,  3 Dec 2024 15:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d67oPlMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr2KJIV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB2E1FA179;
-	Tue,  3 Dec 2024 15:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DED681ADA;
+	Tue,  3 Dec 2024 15:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238635; cv=none; b=txVdlIPtaKeBGRdJYyejzEAmk6T30ojCPztIsCq5nW3l7dU/7ZuT9NVOZcauDp4eZVOazPEDHES88LseMl+2liVj6AnLrSt6Shbi2prjWL8uM+dx+z/WwFw+4gzFABjVE07w5pakQDM6b+Oy2NvJMFPpU4iz+NHmSsQbfOgJXlI=
+	t=1733240599; cv=none; b=q1ckk5OE8reT7YB5qM8hdB1mrH3BopIjC5Mf60+R/bIeXudRiYaA/wLLAUizUxiFEwBTs9Zq1U9JJHPlj7LtM1hWwbKCs9PDE0QT1jclAz48FYmSbIR4d54RM+cNVu0iLB6jiV8D62PUsIhgMra6XUUpzi9LthpYehAxd2AUrdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238635; c=relaxed/simple;
-	bh=ZBnFLSH5mesefKiXD1690R4E0Wtn3t2cXrsHfhzVHBA=;
+	s=arc-20240116; t=1733240599; c=relaxed/simple;
+	bh=/5Y0Po6YBZqQtrCTHmbVxnnzAgL1rYu6SQgh2yREQ8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPDPGXG7eDlXvxkce0dKtGw/78Kbam7K+tkg3puhJBox/Nh7QOCO6VDQQj+Bycg5WwshRPqFro2SQT7+sFy4K2o7YTR3qJm/97kDof4i+cioh/Cs8Tpx3TZLWZAGeMv5TSfMvBSHGdpCnDpjOklsGQimnqyPvBMPOM7Bw3yy9H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d67oPlMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A679DC4CECF;
-	Tue,  3 Dec 2024 15:10:34 +0000 (UTC)
+	 MIME-Version; b=BRSkATWP1oumNzFYBm6VXiYKf+vwE9h4Es0wPhTqFVrFMjVeZLbR71xKLHiXhAbAQGV0TygXW2dxL4Fwc1DVeIU6MajikGtg2NuOnvvQ+djs1kpKaattlvE3jGfhEycj3LU+O8gEwo7nz37FLgLKkSTRbIao6IK0RH2xtNbhZXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr2KJIV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9936C4CECF;
+	Tue,  3 Dec 2024 15:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238635;
-	bh=ZBnFLSH5mesefKiXD1690R4E0Wtn3t2cXrsHfhzVHBA=;
+	s=korg; t=1733240599;
+	bh=/5Y0Po6YBZqQtrCTHmbVxnnzAgL1rYu6SQgh2yREQ8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d67oPlMVOxbkc1Ucz71CakF6xwSUEsfBhDaArvFl2BUMCQFSuPQgf3nqGw7QPGHy1
-	 Zic1fTOQQU+Hq57xdzVovs4TQe9xjmoq+sNSdYRJYJdQz5IdUr3+85vh+tj2Ade/gA
-	 JKqxBOqVGdJBSSZHyXnTpMoHRFsejdrS9QO2rJSM=
+	b=Rr2KJIV5OCe48+0BwGoLTzg8qp1mCVdlJG8KssJ6WX6KeYmvh1IULLlpdAdwVjpl6
+	 sgD+2M1yt79Dlhj6gT/s5iJ/onm1bDSK9sqQ9xjVU7bOjZPElYWFGWglYft4sV+yFV
+	 613KOn0rtMFWorFJ7M1U7CKUQPqUL+gi8g8NIb8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 338/817] wifi: iwlwifi: mvm: tell iwlmei when we finished suspending
+Subject: [PATCH 6.12 183/826] drm/mm: Mark drm_mm_interval_tree*() functions with __maybe_unused
 Date: Tue,  3 Dec 2024 15:38:30 +0100
-Message-ID: <20241203144009.014917251@linuxfoundation.org>
+Message-ID: <20241203144750.879846411@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d1a54ec21b8e7bca59141ff1ac6ce73e07d744f2 ]
+[ Upstream commit 53bd7c1c0077db533472ae32799157758302ef48 ]
 
-Since we no longer shut down the device in suspend, we also no longer
-call iwl_mvm_mei_device_state() and this is a problem because iwlmei
-expects this to be called when it runs its own suspend sequence. It
-checks mei->device_down in iwl_mei_remove() which is called upon
-suspend.
+The INTERVAL_TREE_DEFINE() uncoditionally provides a bunch of helper
+functions which in some cases may be not used. This, in particular,
+prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-Fix this by telling iwlmei when we're done accessing the device.
-When we'll wake up, the device should be untouched if CSME didn't use it
-during the suspend time. If CSME used it, we'll notice it through the
-CSR_FUNC_SCRATCH register.
+.../drm/drm_mm.c:152:1: error: unused function 'drm_mm_interval_tree_insert' [-Werror,-Wunused-function]
+  152 | INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  153 |                      u64, __subtree_last,
+      |                      ~~~~~~~~~~~~~~~~~~~~
+  154 |                      START, LAST, static inline, drm_mm_interval_tree)
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: e8bb19c1d590 ("wifi: iwlwifi: support fast resume")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241028135215.525287b90af2.Ibf183824471ea5580d9276d104444e53191e6900@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by marking drm_mm_interval_tree*() functions with __maybe_unused.
+
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 202b52b7fbf7 ("drm: Track drm_mm nodes with an interval tree")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829154640.1120050-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index af4c2e7dab083..e9979f8a8827e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1236,6 +1236,7 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
- 	fast_resume = mvm->fast_resume;
+diff --git a/drivers/gpu/drm/drm_mm.c b/drivers/gpu/drm/drm_mm.c
+index 5ace481c19011..1ed68d3cd80ba 100644
+--- a/drivers/gpu/drm/drm_mm.c
++++ b/drivers/gpu/drm/drm_mm.c
+@@ -151,7 +151,7 @@ static void show_leaks(struct drm_mm *mm) { }
  
- 	if (fast_resume) {
-+		iwl_mvm_mei_device_state(mvm, true);
- 		ret = iwl_mvm_fast_resume(mvm);
- 		if (ret) {
- 			iwl_mvm_stop_device(mvm);
-@@ -1376,10 +1377,13 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm, bool suspend)
- 		iwl_mvm_rm_aux_sta(mvm);
+ INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
+ 		     u64, __subtree_last,
+-		     START, LAST, static inline, drm_mm_interval_tree)
++		     START, LAST, static inline __maybe_unused, drm_mm_interval_tree)
  
- 	if (suspend &&
--	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000)
-+	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
- 		iwl_mvm_fast_suspend(mvm);
--	else
-+		/* From this point on, we won't touch the device */
-+		iwl_mvm_mei_device_state(mvm, false);
-+	} else {
- 		iwl_mvm_stop_device(mvm);
-+	}
- 
- 	iwl_mvm_async_handlers_purge(mvm);
- 	/* async_handlers_list is empty and will stay empty: HW is stopped */
+ struct drm_mm_node *
+ __drm_mm_interval_first(const struct drm_mm *mm, u64 start, u64 last)
 -- 
 2.43.0
 
