@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BD89E279D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DE39E2897
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49317BC1719
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E431BBE6DE0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97811F8AFA;
-	Tue,  3 Dec 2024 15:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D47A1F76DB;
+	Tue,  3 Dec 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDlYMsL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq7FM9/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7674A1F8AF9;
-	Tue,  3 Dec 2024 15:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116EC1F759C;
+	Tue,  3 Dec 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239879; cv=none; b=nT/0zOqzpPiMLHfX2ufhxp2tZXVOqsPaMkQuVuMD6aAkaA72S4WxdHO21mDLElj1Ls7vkVCXNKdtSllHp6eakUNI5Soz0gLWmFZA0O5soGrOMoFJhaHPb1woXkbKecxRvPyv6YLrTBXpw35hihoCMxHaHDcnJ5vLRULt+ki+Vxs=
+	t=1733242112; cv=none; b=ZfEjybaOLmfanPVFnEWmZgUwhJhKfI8VMmnemEhCKdcc1IgyYV7dIveO2hVSzyHcrOUtSVAmPlEo2UVe/8uc0MxDcD31ID+ua+aY9fhP+ZilPhJ5sQwIBuGO0WkyRBxdU1evwSA8AdgwlZ/AHT+wQqxUCvox0xwQlW56DwGH1vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239879; c=relaxed/simple;
-	bh=fYWqacPgxTwMtGNQwsI7dPitRwiv3VzParEZgbkPxWg=;
+	s=arc-20240116; t=1733242112; c=relaxed/simple;
+	bh=Ve5u589QsnB78UVBIoTInF688eA3BFs/TuPFW82Yo44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ4IMZCG0ubKEf7wqs8aIwPePUmP1vFBd50+mJUWd4dNmKU7zKE9UttiplNYgESjeM4djt+OGmVMDoBt9+TGifwdmOZrL3pv0Fz2mkR1JujiU48Dql7kYYZXcwoB4yAuasjHs7NJVP4hOb4Wg+OYLudLQTmFnTzSfrhK3YHgXzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDlYMsL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFDEC4CECF;
-	Tue,  3 Dec 2024 15:31:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=egtbWTswBrVntkn46cNGKuexeGrQtsg/aKoss3Wm2LTlGNQnLGjnUI1Jv/D2PJ5Cequbi2hFu81lbuHgx5XB0VyyOeVcxAEMBDbJ0Z/YymW2BWdQLa7bNcRcsgZCHdVjprXmqu0QJNIQoLmk/ygpJpwP3VgbHoEzs/qpbEBPjog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq7FM9/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DD2C4CECF;
+	Tue,  3 Dec 2024 16:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239879;
-	bh=fYWqacPgxTwMtGNQwsI7dPitRwiv3VzParEZgbkPxWg=;
+	s=korg; t=1733242111;
+	bh=Ve5u589QsnB78UVBIoTInF688eA3BFs/TuPFW82Yo44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDlYMsL9PE+iS8IRkzs7Zt8ZcWSsKiMTlJgN51mJnoFV9pdNz/5oxl0Kcw4onrTho
-	 Iu7eGHRNVhoGVVipQEdDEmhQYrPTYmtjGmZ6uL4hds5nmsPl9m1H/OjaDoIVTPM7La
-	 l7Etp2jo/uTFM00dzM4jofYFkgEkARVR8FqOX1G0=
+	b=oq7FM9/RUHIVvfLRSjFdWi5pLTUVECqq2TYYBna4shcVeON+LhzXIfDomDYfN4xpb
+	 FKJJhn+Me9yVKhaQZYNlinP2bQsL4+riBTcEqTaTMkuoggQmK0PHNjn4ApYnDfbYxE
+	 LinNRXXAbQpEI1+J/0MKooL6KFjv5lDI7TtVX6Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Russ Weight <russ.weight@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 765/817] um: Fix potential integer overflow during physmem setup
+Subject: [PATCH 6.12 610/826] firmware_loader: Fix possible resource leak in fw_log_firmware_info()
 Date: Tue,  3 Dec 2024 15:45:37 +0100
-Message-ID: <20241203144025.867399728@linuxfoundation.org>
+Message-ID: <20241203144807.548028933@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
+[ Upstream commit 369a9c046c2fdfe037f05b43b84c386bdbccc103 ]
 
-This issue happens when the real map size is greater than LONG_MAX,
-which can be easily triggered on UML/i386.
+The alg instance should be released under the exception path, otherwise
+there may be resource leak here.
 
-Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To mitigate this, free the alg instance with crypto_free_shash when kmalloc
+fails.
+
+Fixes: 02fe26f25325 ("firmware_loader: Add debug message with checksum for FW file")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Russ Weight <russ.weight@linux.dev>
+Link: https://lore.kernel.org/r/20241016110335.3677924-1-cuigaosheng1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/base/firmware_loader/main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
-index fb2adfb499452..ee693e0b2b58b 100644
---- a/arch/um/kernel/physmem.c
-+++ b/arch/um/kernel/physmem.c
-@@ -81,10 +81,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 			  unsigned long len, unsigned long long highmem)
- {
- 	unsigned long reserve = reserve_end - start;
--	long map_size = len - reserve;
-+	unsigned long map_size = len - reserve;
- 	int err;
+diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+index 324a9a3c087aa..c6664a7879697 100644
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -829,19 +829,18 @@ static void fw_log_firmware_info(const struct firmware *fw, const char *name, st
+ 	shash->tfm = alg;
  
--	if(map_size <= 0) {
-+	if (len <= reserve) {
- 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
- 			reserve, len);
- 		exit(1);
-@@ -95,7 +95,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
- 			    map_size, 1, 1, 1);
- 	if (err < 0) {
--		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
-+		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
- 			"failed - errno = %d\n", map_size,
- 			(void *) reserve_end, err);
- 		exit(1);
+ 	if (crypto_shash_digest(shash, fw->data, fw->size, sha256buf) < 0)
+-		goto out_shash;
++		goto out_free;
+ 
+ 	for (int i = 0; i < SHA256_DIGEST_SIZE; i++)
+ 		sprintf(&outbuf[i * 2], "%02x", sha256buf[i]);
+ 	outbuf[SHA256_BLOCK_SIZE] = 0;
+ 	dev_dbg(device, "Loaded FW: %s, sha256: %s\n", name, outbuf);
+ 
+-out_shash:
+-	crypto_free_shash(alg);
+ out_free:
+ 	kfree(shash);
+ 	kfree(outbuf);
+ 	kfree(sha256buf);
++	crypto_free_shash(alg);
+ }
+ #else
+ static void fw_log_firmware_info(const struct firmware *fw, const char *name,
 -- 
 2.43.0
 
