@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662229E2474
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444329E22D1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CFAC16B924
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D68D1BA16A7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBF01F891C;
-	Tue,  3 Dec 2024 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E8D1F757D;
+	Tue,  3 Dec 2024 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Isn+SKdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnD/vnOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95CA1F8907;
-	Tue,  3 Dec 2024 15:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EBB1F669E;
+	Tue,  3 Dec 2024 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240395; cv=none; b=opMTmMtLMgXETvfK+u+vd4MX1LMKFfMpIMoij5pyz7LYJiLJXb37VhJ6lPaH+O2tn8FOqkDl7QUpcKvkUznGjYAmrbfqmc1cmjEPqisoO3ZwvUWo5f5amq1HV4Ca2vNUKSxEBGdLJg8mqczcSEdk+lGL/9oxne7IienxPj2itT4=
+	t=1733238531; cv=none; b=U3b9Q6DfTJ43BfnS/FkYfHchmM1EOepBQ1t5V0T+cHKqynbhZNsMsxTpWDhXyGJoW8sxsscm5vYKZ1RIukrZJeCSYF0BUvvIyXI+Wkyu/Xw+Jw71uJ7ELcZryP0Q0TUquTapvx/XLl6Gvnn38eQJIfj1mQnMjSaVNRIiwP8f2so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240395; c=relaxed/simple;
-	bh=lEy/bsCUsjWOFm+GLefXxzxfuwAMYnkYMhAsvoSHhAU=;
+	s=arc-20240116; t=1733238531; c=relaxed/simple;
+	bh=Ho6LJw+KVSO7LDP4gf9YU5JS3a7EDJNAEh04h757iV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fizBNVYRFuB1+KadIPVqwsVinJ6hSwHGpDDlLAVwWu+CE2X6yTbJtZiGK7WHi+qhRlYLsHWS9KKy3TmYtS/P9L4s7Kc4rgbeFgPp9Ff3WPnKB0AEMsC4d450+YYSyvTpxC5EzxF5OOfdAL7sHt66jMcyqplrbnkroxW0y261iaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Isn+SKdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6005EC4CECF;
-	Tue,  3 Dec 2024 15:39:54 +0000 (UTC)
+	 MIME-Version; b=CqISFjG2KfrTZczWxpMIDMVKIVGSWqg1ML2qdgIIBR7KvCLHr1F1ilmWIdK0GK8nZfFF7XdpaRZ2VOu0CntfpobDxRa6jcGw+7g5ezeGOXlA6f7L8IKmYBZCdCQ/7AnzAa5DLGHduWLYJlbtlFrwcWj0Ojpxea6ErSIN3Vhue+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnD/vnOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FAEC4CECF;
+	Tue,  3 Dec 2024 15:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240394;
-	bh=lEy/bsCUsjWOFm+GLefXxzxfuwAMYnkYMhAsvoSHhAU=;
+	s=korg; t=1733238531;
+	bh=Ho6LJw+KVSO7LDP4gf9YU5JS3a7EDJNAEh04h757iV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Isn+SKdgu5xfCXt4MycN79r9ScuUwMtMSgRwAHK3UXAU5efZ+om6nqY7z1viLxPpr
-	 J/G1/A1Qd6/Aik5cKdu7nZ1km5WYCI+hA9fJoGJ/6h1fzDT0uEyJT4yggfDX7eITz6
-	 htVCVMA/C10VKrYq3cu6p0dBqZ8Fq7iKpYKNOdkE=
+	b=EnD/vnOEcs/MK7uA6OBAWdVxDHjsyWcSkoR9iPPrg5RlQOCQZAIjB+We1023v49Jd
+	 O/HtuZ/5iCu+AinD7JM9b3JPRvXZNHTJ0C+t8ErlZ+/Y4Wh6f6K3dm7P4aPn7KXNKE
+	 vOLdt5EZiVOpr1pTDI0T7OyXoA6FcZDV2aOt2GDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julien Massot <julien.massot@collabora.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/826] media: i2c: max96717: clean up on error in max96717_subdev_init()
+Subject: [PATCH 6.11 278/817] selftests/bpf: Fix txmsg_redir of test_txmsg_pull in test_sockmap
 Date: Tue,  3 Dec 2024 15:37:30 +0100
-Message-ID: <20241203144748.541484485@linuxfoundation.org>
+Message-ID: <20241203144006.658152272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit d56786977ba11ed15b066495c1363889bcb1c3bb ]
+[ Upstream commit b29e231d66303c12b7b8ac3ac2a057df06b161e8 ]
 
-Call v4l2_ctrl_handler_free() to clean up from v4l2_ctrl_handler_init().
+txmsg_redir in "Test pull + redirect" case of test_txmsg_pull should be
+1 instead of 0.
 
-Fixes: 19b5e5511ca4 ("media: i2c: max96717: add test pattern ctrl")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Julien Massot <julien.massot@collabora.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241012203731.1248619-3-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/max96717.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/max96717.c b/drivers/media/i2c/max96717.c
-index 4e85b8eb1e776..9259d58ba734e 100644
---- a/drivers/media/i2c/max96717.c
-+++ b/drivers/media/i2c/max96717.c
-@@ -697,8 +697,10 @@ static int max96717_subdev_init(struct max96717_priv *priv)
- 	priv->pads[MAX96717_PAD_SOURCE].flags = MEDIA_PAD_FL_SOURCE;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 8249f3c1fbd65..075c93ed143e6 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -1606,7 +1606,7 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
+ 	test_send_large(opt, cgrp);
  
- 	ret = media_entity_pads_init(&priv->sd.entity, 2, priv->pads);
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to init pads\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "Failed to init pads\n");
-+		goto err_free_ctrl;
-+	}
- 
- 	ret = v4l2_subdev_init_finalize(&priv->sd);
- 	if (ret) {
+ 	/* Test pull + redirect */
+-	txmsg_redir = 0;
++	txmsg_redir = 1;
+ 	txmsg_start = 1;
+ 	txmsg_end = 2;
+ 	test_send(opt, cgrp);
 -- 
 2.43.0
 
