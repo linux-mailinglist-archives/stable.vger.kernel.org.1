@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-97027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299CD9E2240
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9010C9E22A7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36CC28104C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD0B1685C9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3682C1F7577;
-	Tue,  3 Dec 2024 15:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C7D1F7585;
+	Tue,  3 Dec 2024 15:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihT+lpwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSVQuHOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DC1F754A;
-	Tue,  3 Dec 2024 15:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F611F7540;
+	Tue,  3 Dec 2024 15:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239309; cv=none; b=M4chglly1Z7HB4Zv+9xtGqJKqW+D3ACv23H7GVpx+Ko9UiIJ2rClN/YY4Jpo0q+3IjUOzmMhr4Im8kb+bJSbIighWNnlO088MhpmdePVYd5AMvNyG9ivWg+Y3J7H8G3qRa6HybJ42r7iRn2moDkQSQDfCkPb3AqA3PavDQ9yeM4=
+	t=1733239315; cv=none; b=qx0cIJKlb3pAqLb2bzsaYvxpJ0iYL8udSQmBQ8xzsVu06qb8Xs9Ctgp9R5wSSK2fUIM1cxjF7bhkE2cSyaPaGUacUrCxI/gZvDaQO3q/t7r9dh5yw7FhxzLnmh81bGNdbGpEErBFEod/dGI6khbMyBRp2HTjwN4swJ9TdDLJUeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239309; c=relaxed/simple;
-	bh=5E7+rSiQCMz3GQXAmYEmiaREfrMpN1DD+O3PiOnWBj0=;
+	s=arc-20240116; t=1733239315; c=relaxed/simple;
+	bh=wcXYaZKWeObILCt77wMtVucDECpRNzutPiJWIICYgZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgOIwLyxtN5VLRqIRWa8oGREGy2LaUq5cYYfBpWnGbmou0LHt69t+Kr5nQMPcCKCssPkPTy9Vwq7yCZw2rxQJW2W91d/zLiMwiIkcRO6eVhs1FoHaEtnV1LS0m9LjrQj5sGiCnYSsMbMNsEd4fn3CPzW1Z1qH9LdQgQ/BsftOwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihT+lpwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C51DC4CECF;
-	Tue,  3 Dec 2024 15:21:48 +0000 (UTC)
+	 MIME-Version; b=OU70nxDsQj2VoYansMkqp6OqvfeyA9xKDCSWgHFOsXZTb0jhc8eABv9dKApaI2UBKfTVNyYLppR1X9lCI3fryE23WyyW8PP+H7Foi5l6pt1dNvl51xg22+SpO79HkcXeRqwPxCmorm2sXPYc66bEcH52mZlif6WeEI76IdcxOYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSVQuHOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BEDC4CECF;
+	Tue,  3 Dec 2024 15:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239308;
-	bh=5E7+rSiQCMz3GQXAmYEmiaREfrMpN1DD+O3PiOnWBj0=;
+	s=korg; t=1733239314;
+	bh=wcXYaZKWeObILCt77wMtVucDECpRNzutPiJWIICYgZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihT+lpwIlUywwKfS+Rcavge6jaYL3a9GgyUs9qyczHflT3WELcJu4YLP+ngVqKIZv
-	 ZWpgognUzXiDG8YEmOkWJoFsJV/zQkfONmvgY6sAKhPYPhbv83AJz5TIQPoIzWfsff
-	 Bg182AFNe6PfN+Bp0TXeOZonc8EE50UwQs9hhc5c=
+	b=cSVQuHOtc3YrJpWeqJYIl83TqDVzHjR1oSTL4saIfyvi0IrzvUNIyPXev1XpKoV1N
+	 TimL0aGKSjvMnN2Mvi+gm/gYTqq2L+kNYSqIFVTf13TBTvfS40fHL1bAzgAOVeZnmg
+	 vJgjA1bcwFOpi2VzOCnWF5j2FYbGxBAichmKU13U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 569/817] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
-Date: Tue,  3 Dec 2024 15:42:21 +0100
-Message-ID: <20241203144018.122218355@linuxfoundation.org>
+Subject: [PATCH 6.11 570/817] net: microchip: vcap: Add typegroup table terminators in kunit tests
+Date: Tue,  3 Dec 2024 15:42:22 +0100
+Message-ID: <20241203144018.162435815@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,46 +69,132 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
+[ Upstream commit f164b296638d1eb1fb1c537e93ab5c8b49966546 ]
 
-Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
-`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
-and ensures the adapter can properly enter autosuspend when invalid WoL
-options are provided.
+VCAP API unit tests fail randomly with errors such as
 
-Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
+   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:387
+   Expected 134 + 7 == iter.offset, but
+       134 + 7 == 141 (0x8d)
+       iter.offset == 17214 (0x433e)
+   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:388
+   Expected 5 == iter.reg_idx, but
+       iter.reg_idx == 702 (0x2be)
+   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:389
+   Expected 11 == iter.reg_bitpos, but
+       iter.reg_bitpos == 15 (0xf)
+   # vcap_api_iterator_init_test: pass:0 fail:1 skip:0 total:1
+
+Comments in the code state that "A typegroup table ends with an all-zero
+terminator". Add the missing terminators.
+
+Some of the typegroups did have a terminator of ".offset = 0, .width = 0,
+.value = 0,". Replace those terminators with "{ }" (no trailing ',') for
+consistency and to excplicitly state "this is a terminator".
+
+Fixes: 67d637516fa9 ("net: microchip: sparx5: Adding KUNIT test for the VCAP API")
+Cc: Steen Hegelund <steen.hegelund@microchip.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241119213202.2884639-1-linux@roeck-us.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../ethernet/microchip/vcap/vcap_api_kunit.c    | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 9f191b6ce8215..531b1b6a37d19 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1652,13 +1652,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
- 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
- 	int ret;
+diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
+index 7251121ab196e..16eb3de60eb6d 100644
+--- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
++++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
+@@ -366,12 +366,13 @@ static void vcap_api_iterator_init_test(struct kunit *test)
+ 	struct vcap_typegroup typegroups[] = {
+ 		{ .offset = 0, .width = 2, .value = 2, },
+ 		{ .offset = 156, .width = 1, .value = 0, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 	struct vcap_typegroup typegroups2[] = {
+ 		{ .offset = 0, .width = 3, .value = 4, },
+ 		{ .offset = 49, .width = 2, .value = 0, },
+ 		{ .offset = 98, .width = 2, .value = 0, },
++		{ }
+ 	};
  
-+	if (wol->wolopts & ~WAKE_ALL)
-+		return -EINVAL;
-+
- 	ret = usb_autopm_get_interface(dev->intf);
- 	if (ret < 0)
- 		return ret;
+ 	vcap_iter_init(&iter, 52, typegroups, 86);
+@@ -399,6 +400,7 @@ static void vcap_api_iterator_next_test(struct kunit *test)
+ 		{ .offset = 147, .width = 3, .value = 0, },
+ 		{ .offset = 196, .width = 2, .value = 0, },
+ 		{ .offset = 245, .width = 1, .value = 0, },
++		{ }
+ 	};
+ 	int idx;
  
--	if (wol->wolopts & ~WAKE_ALL)
--		return -EINVAL;
--
- 	pdata->wol = wol->wolopts;
+@@ -433,7 +435,7 @@ static void vcap_api_encode_typegroups_test(struct kunit *test)
+ 		{ .offset = 147, .width = 3, .value = 5, },
+ 		{ .offset = 196, .width = 2, .value = 2, },
+ 		{ .offset = 245, .width = 5, .value = 27, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
  
- 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
+ 	vcap_encode_typegroups(stream, 49, typegroups, false);
+@@ -463,6 +465,7 @@ static void vcap_api_encode_bit_test(struct kunit *test)
+ 		{ .offset = 147, .width = 3, .value = 5, },
+ 		{ .offset = 196, .width = 2, .value = 2, },
+ 		{ .offset = 245, .width = 1, .value = 0, },
++		{ }
+ 	};
+ 
+ 	vcap_iter_init(&iter, 49, typegroups, 44);
+@@ -489,7 +492,7 @@ static void vcap_api_encode_field_test(struct kunit *test)
+ 		{ .offset = 147, .width = 3, .value = 5, },
+ 		{ .offset = 196, .width = 2, .value = 2, },
+ 		{ .offset = 245, .width = 5, .value = 27, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 	struct vcap_field rf = {
+ 		.type = VCAP_FIELD_U32,
+@@ -538,7 +541,7 @@ static void vcap_api_encode_short_field_test(struct kunit *test)
+ 		{ .offset = 0, .width = 3, .value = 7, },
+ 		{ .offset = 21, .width = 2, .value = 3, },
+ 		{ .offset = 42, .width = 1, .value = 1, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 	struct vcap_field rf = {
+ 		.type = VCAP_FIELD_U32,
+@@ -608,7 +611,7 @@ static void vcap_api_encode_keyfield_test(struct kunit *test)
+ 	struct vcap_typegroup tgt[] = {
+ 		{ .offset = 0, .width = 2, .value = 2, },
+ 		{ .offset = 156, .width = 1, .value = 1, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 
+ 	vcap_test_api_init(&admin);
+@@ -671,7 +674,7 @@ static void vcap_api_encode_max_keyfield_test(struct kunit *test)
+ 	struct vcap_typegroup tgt[] = {
+ 		{ .offset = 0, .width = 2, .value = 2, },
+ 		{ .offset = 156, .width = 1, .value = 1, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 	u32 keyres[] = {
+ 		0x928e8a84,
+@@ -732,7 +735,7 @@ static void vcap_api_encode_actionfield_test(struct kunit *test)
+ 		{ .offset = 0, .width = 2, .value = 2, },
+ 		{ .offset = 21, .width = 1, .value = 1, },
+ 		{ .offset = 42, .width = 1, .value = 0, },
+-		{ .offset = 0, .width = 0, .value = 0, },
++		{ }
+ 	};
+ 
+ 	vcap_encode_actionfield(&rule, &caf, &rf, tgt);
 -- 
 2.43.0
 
