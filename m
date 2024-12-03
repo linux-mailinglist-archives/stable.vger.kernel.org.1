@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C6B9E2852
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:56:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25FB9E286A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:59:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9657FB45F97
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 370D6B845AD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7907B1F6696;
-	Tue,  3 Dec 2024 15:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931341F6698;
+	Tue,  3 Dec 2024 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbfEADus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fno0VMEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7671E3DF9;
-	Tue,  3 Dec 2024 15:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5133A1F7585;
+	Tue,  3 Dec 2024 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238032; cv=none; b=i6j2buTBcz+13DEWYBKlO2w6cwuIyruYtxpJrDVtTQH0J4QG+n3qyUnNPH8XSs5s5PbWKg2r2/xFqNYgZEkR6ztf/4SL7M10WMtDt4oblkLJZAw8CTtNkwybWg5y91lxJNQuDpSgYSY5bsCJgAEblNFSQ3Q1vGSjnKDG+cfKBhQ=
+	t=1733237940; cv=none; b=T4neaI01XKfD07SlmdKzQp+bt9rU+RPciH19Pa1V1QCkob02XJ2yWH9/hB1Ebj8j9tytVeFhQCf+ckaw833Z5u/LDQE3A1i8REJD6VtKVafzebGKQdxbsgN52k0NuNLrr52WJRGrbIOL9IdXdwAWYPYMuVMSj5R+xLPRBynG+k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238032; c=relaxed/simple;
-	bh=J2T9JQHyLacT9Qrt1u+k06L1ITu0V+X8BRUAhphDawk=;
+	s=arc-20240116; t=1733237940; c=relaxed/simple;
+	bh=JgmB+kT6Txi2aE3gCGNQ4ja48vEGXCpIl9H2Z1ItRaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkmgMLNoL7MpfxrPBKFEP61CtoBTpNLF3weXfL8g1rB8ocZiwBhv8YCiA1PluzNRH20IO0bF1FGwNwM5d9SvgotSnN010OJnMg/60dgdrO7iiI0TKMPzFb4cUlVBtlCevEFKFTziv2hHARfjVCaWm4VXl73vQshJKS3RNTDvYN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbfEADus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F213BC4CECF;
-	Tue,  3 Dec 2024 15:00:30 +0000 (UTC)
+	 MIME-Version; b=N07j77q/4JXvIqTOLw/iKXPhAJWpFT56zdKVEk4cntCvdd59287ex9rRCgSQKpKPkoD7F2jNtm6uGJQARjggbqfg5ei3woaFm00PGS+1f/NJhuzqhxcFFJxS+BI3QnyLwQmpuBacnmvst14KC111hNWWvlGYHI5bxMFunqQskWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fno0VMEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43B8C4CECF;
+	Tue,  3 Dec 2024 14:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238031;
-	bh=J2T9JQHyLacT9Qrt1u+k06L1ITu0V+X8BRUAhphDawk=;
+	s=korg; t=1733237940;
+	bh=JgmB+kT6Txi2aE3gCGNQ4ja48vEGXCpIl9H2Z1ItRaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbfEADusWFifWJyVl9mJSZj5dIyazk3cT+xogS29ArWRFMWEAo26fDbbsn2RHF+vW
-	 WyA23BFdudQHjm3TellEYbBK+lsvlDoVBcMG6ip5qValDYk7wr1dgMDUN6sBS00Lbz
-	 MOAPfywBqGK5g8pdbu7f9C2To8mL1jmRiXlD3+og=
+	b=fno0VMEKh7KOdy/M9pMFNmq9F3TDIdeGP3/rm+Np/C9rm/Wu+GbP/bNi1ujSo6UVh
+	 GH5kMc6GKh/rbNJYi7ausNxzcttLZSvomXiJWhDNs0hnWskAWJOi06Su9RH/S/EOmy
+	 W6RE8bPwqwgxYorNkQ6I1ZzjvmwmANgT38WDD3TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Everest K.C." <everestkc@everestkc.com.np>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Antoine Tenart <atenart@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 108/817] crypto: cavium - Fix the if condition to exit loop after timeout
-Date: Tue,  3 Dec 2024 15:34:40 +0100
-Message-ID: <20241203143959.927199141@linuxfoundation.org>
+Subject: [PATCH 6.11 114/817] crypto: inside-secure - Fix the return value of safexcel_xcbcmac_cra_init()
+Date: Tue,  3 Dec 2024 15:34:46 +0100
+Message-ID: <20241203144000.164163644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,51 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Everest K.C <everestkc@everestkc.com.np>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit 53d91ca76b6c426c546542a44c78507b42008c9e ]
+[ Upstream commit a10549fcce2913be7dc581562ffd8ea35653853e ]
 
-The while loop breaks in the first run because of incorrect
-if condition. It also causes the statements after the if to
-appear dead.
-Fix this by changing the condition from if(timeout--) to
-if(!timeout--).
+The commit 320406cb60b6 ("crypto: inside-secure - Replace generic aes
+with libaes") replaced crypto_alloc_cipher() with kmalloc(), but did not
+modify the handling of the return value. When kmalloc() returns NULL,
+PTR_ERR_OR_ZERO(NULL) returns 0, but in fact, the memory allocation has
+failed, and -ENOMEM should be returned.
 
-This bug was reported by Coverity Scan.
-Report:
-CID 1600859: (#1 of 1): Logically dead code (DEADCODE)
-dead_error_line: Execution cannot reach this statement: udelay(30UL);
-
-Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
-Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
+Fixes: 320406cb60b6 ("crypto: inside-secure - Replace generic aes with libaes")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Acked-by: Antoine Tenart <atenart@kernel.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/cavium/cpt/cptpf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/inside-secure/safexcel_hash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
-index 6872ac3440010..ec17beee24c07 100644
---- a/drivers/crypto/cavium/cpt/cptpf_main.c
-+++ b/drivers/crypto/cavium/cpt/cptpf_main.c
-@@ -44,7 +44,7 @@ static void cpt_disable_cores(struct cpt_device *cpt, u64 coremask,
- 		dev_err(dev, "Cores still busy %llx", coremask);
- 		grp = cpt_read_csr64(cpt->reg_base,
- 				     CPTX_PF_EXEC_BUSY(0));
--		if (timeout--)
-+		if (!timeout--)
- 			break;
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index e17577b785c33..f44c08f5f5ec4 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -2093,7 +2093,7 @@ static int safexcel_xcbcmac_cra_init(struct crypto_tfm *tfm)
  
- 		udelay(CSR_DELAY);
-@@ -394,7 +394,7 @@ static void cpt_disable_all_cores(struct cpt_device *cpt)
- 		dev_err(dev, "Cores still busy");
- 		grp = cpt_read_csr64(cpt->reg_base,
- 				     CPTX_PF_EXEC_BUSY(0));
--		if (timeout--)
-+		if (!timeout--)
- 			break;
+ 	safexcel_ahash_cra_init(tfm);
+ 	ctx->aes = kmalloc(sizeof(*ctx->aes), GFP_KERNEL);
+-	return PTR_ERR_OR_ZERO(ctx->aes);
++	return ctx->aes == NULL ? -ENOMEM : 0;
+ }
  
- 		udelay(CSR_DELAY);
+ static void safexcel_xcbcmac_cra_exit(struct crypto_tfm *tfm)
 -- 
 2.43.0
 
