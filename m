@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F079E2232
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C8D9E2530
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC5F9166781
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A7E8169022
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB2B1F76DE;
-	Tue,  3 Dec 2024 15:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B271EF0AC;
+	Tue,  3 Dec 2024 15:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAA9hGQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIup0Xzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B528646;
-	Tue,  3 Dec 2024 15:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F951DF981;
+	Tue,  3 Dec 2024 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238981; cv=none; b=n07iWA+swtFcDNLUDz/AajO3dqcfg20iThGaEeccVhthNVcJDEoHzaDzwxn/OI0fQm+7vok1ZvEarmYjsFk3WMI6euXzHHqVStb9EHu3wZEbN97LzRjJpxTXK8upxviUywYafPXR/g0m9OdxPojv55Qs4KGy6gJHO2OVOYULjWo=
+	t=1733241135; cv=none; b=oGRrWgq8ymlDWG3GugEIRPKjVWmPCiGlRJHMAvkwk0znMzPHxjJg8JUmevLMNkzSo5Kn1WTufzzEZHHJA4qQMqW4cR8/i9/bGIu2iWzcYQY6pj/6jd7yYJwZ4hbXJmwcz52wWntSDs000K91j66N+5B7VDJPdo+7ByzVfh4iGpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238981; c=relaxed/simple;
-	bh=Iwq86FMKsBq7AqJE6GnZOPvlj5h/fUEs7C9OdOI0DR4=;
+	s=arc-20240116; t=1733241135; c=relaxed/simple;
+	bh=QBtZOCzm7G5wR3UwNyjTQlCRlyhWO575X7JzeJy9pOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HL1amMxPAbpbzWvKJ2qh28Rv4II1L34s6gxQbivWdkCP6/l8SXPQPIZKXrowQ5+tDrBowFcffn1++AUg4mqe93D1MpcieHC93Z5q3tEmzLXPSnXKTBBpRpTIJuxcSW6v7Fgaxz8WRLUoS30B8VPtncwlcWbJhOApXHXYU66/n+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAA9hGQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CD3C4CECF;
-	Tue,  3 Dec 2024 15:16:20 +0000 (UTC)
+	 MIME-Version; b=E27h7D8G5FOnh6UjaA+oDYfngztG4gMNRzxjCummUSW6VlLMJqQrXJGqbLtgkTak8pP72ij4V1D6wsS4aJtwQ2KXRaG7cVs3oIIubWlfOxFXUIpbXYMKzXt88VbH19BK4rNlLRnZsnEeP05jZG8zzuLhH0xt1fY/Ng0JU9Lv7uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIup0Xzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43584C4CECF;
+	Tue,  3 Dec 2024 15:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238981;
-	bh=Iwq86FMKsBq7AqJE6GnZOPvlj5h/fUEs7C9OdOI0DR4=;
+	s=korg; t=1733241135;
+	bh=QBtZOCzm7G5wR3UwNyjTQlCRlyhWO575X7JzeJy9pOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAA9hGQhLekBBjCfsuOeKJFvahM6se3BndZtKnb4QBvxBI3CTEYizXe9rTwwaMZE/
-	 /vdrM87sUXnmcsdfiQGSKbLglXe5Sf6vA4fpNpxVnf1qkkJz09CDEujrO/7BpVK5aY
-	 RxInjqTQFoOVEKObUNVFMXqZjsuc202IA7DJf4xU=
+	b=rIup0Xzh43brICUkcwAMyt1PLT9xoJfb03zoqjFx0f/cdGokvjznR4TsFUKRFy4bn
+	 pIVRIZ14AJNfPZtS2shMM8ri+oCQC42nhRtglYAz/pegAceEhFVAtsWPMedSMavtRL
+	 xl19tFL2XoAom2+9t0IsT41jKb5OfWw5mx44eY0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 463/817] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
+Subject: [PATCH 6.12 308/826] selftests/bpf: Add txmsg_pass to pull/push/pop in test_sockmap
 Date: Tue,  3 Dec 2024 15:40:35 +0100
-Message-ID: <20241203144013.947255467@linuxfoundation.org>
+Message-ID: <20241203144755.776560622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
+[ Upstream commit 66c54c20408d994be34be2c070fba08472f69eee ]
 
-When information such as info->screen_base is not ready, calling
-sh7760fb_free_mem() does not release memory correctly. Call
-dma_free_coherent() instead.
+Add txmsg_pass to test_txmsg_pull/push/pop. If txmsg_pass is missing,
+tx_prog will be NULL, and no program will be attached to the sockmap.
+As a result, pull/push/pop are never invoked.
 
-Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-2-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 08a4943dc5418..d0ee5fec647ad 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -409,12 +409,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 		vram = PAGE_SIZE;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 075c93ed143e6..0f065273fde32 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -1596,11 +1596,13 @@ static void test_txmsg_cork_hangs(int cgrp, struct sockmap_options *opt)
+ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
+ {
+ 	/* Test basic start/end */
++	txmsg_pass = 1;
+ 	txmsg_start = 1;
+ 	txmsg_end = 2;
+ 	test_send(opt, cgrp);
  
- 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
--
- 	if (!fbmem)
- 		return -ENOMEM;
+ 	/* Test >4k pull */
++	txmsg_pass = 1;
+ 	txmsg_start = 4096;
+ 	txmsg_end = 9182;
+ 	test_send_large(opt, cgrp);
+@@ -1629,11 +1631,13 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
+ static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
+ {
+ 	/* Test basic pop */
++	txmsg_pass = 1;
+ 	txmsg_start_pop = 1;
+ 	txmsg_pop = 2;
+ 	test_send_many(opt, cgrp);
  
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
--		sh7760fb_free_mem(info);
-+		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
- 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
+ 	/* Test pop with >4k */
++	txmsg_pass = 1;
+ 	txmsg_start_pop = 4096;
+ 	txmsg_pop = 4096;
+ 	test_send_large(opt, cgrp);
+@@ -1662,11 +1666,13 @@ static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
+ static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
+ {
+ 	/* Test basic push */
++	txmsg_pass = 1;
+ 	txmsg_start_push = 1;
+ 	txmsg_end_push = 1;
+ 	test_send(opt, cgrp);
+ 
+ 	/* Test push 4kB >4k */
++	txmsg_pass = 1;
+ 	txmsg_start_push = 4096;
+ 	txmsg_end_push = 4096;
+ 	test_send_large(opt, cgrp);
+@@ -1687,6 +1693,7 @@ static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
+ 
+ static void test_txmsg_push_pop(int cgrp, struct sockmap_options *opt)
+ {
++	txmsg_pass = 1;
+ 	txmsg_start_push = 1;
+ 	txmsg_end_push = 10;
+ 	txmsg_start_pop = 5;
 -- 
 2.43.0
 
