@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EB09E2234
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DBA9E257B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:01:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D372B2833CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BFFC1611E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1FE1F7576;
-	Tue,  3 Dec 2024 15:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397221F75AE;
+	Tue,  3 Dec 2024 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJXrLJA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC2uCasR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21B91F75A6;
-	Tue,  3 Dec 2024 15:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7551AB6C9;
+	Tue,  3 Dec 2024 15:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239285; cv=none; b=us03BmAm8Es1y5TsokpbI3I/E1noWCGFBEj8gmL8aqLZV5KpULMvq6BtzamAMA++RnRRDEMgsNYeFn8HRIKcXWU+XdGwvOa25pEtPxgEq8PgeUz8csEoJusUfmZpCgsKOydRIfW8qeAuAfKDXVEq3rAB4raHrgPvdgTj8csU6YM=
+	t=1733241396; cv=none; b=QbxIgBZxzoBO5zOwee12M6CKX2yTqPOmsYupQN7luD3piNS3DlGtmbB1k4DYrfXNEge/6DtuWyj83in1EJgsT1RmQMLEDMy7W5p8D+IDedATR19NVN2huQSjKUToDcOVFtlb2/smDc+6ej7CTQaS6aUpeAZ9J2WjL6Cn0VAuP1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239285; c=relaxed/simple;
-	bh=gKU10Dq8Jib4ZmVq9HHF1NFOjMmhdn+GmMyTwyoCY1c=;
+	s=arc-20240116; t=1733241396; c=relaxed/simple;
+	bh=5kthRmue5gCh03vNaWTy73z0rbBoIc8sgpkTMyl+ImA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmi9NuKc4mzgdnJcckXwfWyBNZxZJS1I2GtwmEA539LQEJqclMjmIJ6Y+d/yPYgbgZF74xuQ3EkYYfk2a+1ypC297vQikubgvxYfYqpQ6eL+Ojef9KzpOeXH/AE2F1JnB+9TV0J/LoDdglGJpPjFQz/XHUqbcsoG5jBPQgHErmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJXrLJA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB16C4CECF;
-	Tue,  3 Dec 2024 15:21:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cU4v7JQKfG4S9OvuZgHuwbIzVLUjnuy03o59sL3lCOryJL9c44gbJ3vboC6vxwT7gCNpF1LNeG37ymoaxNUGY1ByYeFPWspxhJlD2GAPnvLjbhfUEAgZETg5tEUeqxlrE5HJ7mdxeMmmVzkyRbDVimXH2jaT/3tgp8EDBjgrmUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC2uCasR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5F0C4CECF;
+	Tue,  3 Dec 2024 15:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239285;
-	bh=gKU10Dq8Jib4ZmVq9HHF1NFOjMmhdn+GmMyTwyoCY1c=;
+	s=korg; t=1733241395;
+	bh=5kthRmue5gCh03vNaWTy73z0rbBoIc8sgpkTMyl+ImA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJXrLJA/Nt7c6MqDyYZgMIbolpDlHkou0vASdBtYdpMmAMlQK1RP285xteYdpTPBX
-	 erP9/FTmjiwQibhKKQCwNWiAoJOX93StvpDj3wa2GClMAUifDFqvnLr13aAWbfSoHQ
-	 Ldl/9xkSgUrL5SCOBXur4Vs3yP4Aofgk1D2Kd2Os=
+	b=iC2uCasRPMUUE7UkKEgnLoTKZZWiey3UdSNnFJNB8qqKKVrC7Xr82Q4ywawxQ/77M
+	 BAJbDp/NkzDN6nD4mb4rMwC6+5WktDaiAZkRJ+Gub7xxFz1K0WjT+XzBVeGfkaoBQA
+	 caXryx93IrqXWBN/S71biSrvdjRyyYKqx0yWnjcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 561/817] LoongArch: BPF: Sign-extend return values
+Subject: [PATCH 6.12 406/826] clk: imx: fracn-gppll: correct PLL initialization flow
 Date: Tue,  3 Dec 2024 15:42:13 +0100
-Message-ID: <20241203144017.807675311@linuxfoundation.org>
+Message-ID: <20241203144759.600660081@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 73c359d1d356cf10236ccd358bd55edab33e9424 ]
+[ Upstream commit 557be501c38e1864b948fc6ccdf4b035d610a2ea ]
 
-(1) Description of Problem:
+Per i.MX93 Reference Mannual 22.4 Initialization information
+1. Program appropriate value of DIV[ODIV], DIV[RDIV] and DIV[MFI]
+   as per Integer mode.
+2. Wait for 5 μs.
+3. Program the following field in CTRL register.
+   Set CTRL[POWERUP] to 1'b1 to enable PLL block.
+4. Poll PLL_STATUS[PLL_LOCK] register, and wait till PLL_STATUS[PLL_LOCK]
+   is 1'b1 and pll_lock output signal is 1'b1.
+5. Set CTRL[CLKMUX_EN] to 1'b1 to enable PLL output clock.
 
-When testing BPF JIT with the latest compiler toolchains on LoongArch,
-there exist some strange failed test cases, dmesg shows something like
-this:
+So move the CLKMUX_EN operation after PLL locked.
 
-  # dmesg -t | grep FAIL | head -1
-  ... ret -3 != -3 (0xfffffffd != 0xfffffffd)FAIL ...
-
-(2) Steps to Reproduce:
-
-  # echo 1 > /proc/sys/net/core/bpf_jit_enable
-  # modprobe test_bpf
-
-(3) Additional Info:
-
-There are no failed test cases compiled with the lower version of GCC
-such as 13.3.0, while the problems only appear with higher version of
-GCC such as 14.2.0.
-
-This is because the problems were hidden by the lower version of GCC due
-to redundant sign extension instructions generated by compiler, but with
-optimization of higher version of GCC, the sign extension instructions
-have been removed.
-
-(4) Root Cause Analysis:
-
-The LoongArch architecture does not expose sub-registers, and hold all
-32-bit values in a sign-extended format. While BPF, on the other hand,
-exposes sub-registers, and use zero-extension (similar to arm64/x86).
-
-This has led to some subtle bugs, where a BPF JITted program has not
-sign-extended the a0 register (return value in LoongArch land), passed
-the return value up the kernel, for example:
-
-  | int from_bpf(void);
-  |
-  | long foo(void)
-  | {
-  |    return from_bpf();
-  | }
-
-Here, a0 would be 0xffffffff instead of the expected 0xffffffffffffffff.
-
-Internally, the LoongArch JIT uses a5 as a dedicated register for BPF
-return values. That is to say, the LoongArch BPF uses a5 for BPF return
-values, which are zero-extended, whereas the LoongArch ABI uses a0 which
-is sign-extended.
-
-(5) Final Solution:
-
-Keep a5 zero-extended, but explicitly sign-extend a0 (which is used
-outside BPF land). Because libbpf currently defines the return value
-of an ebpf program as a 32-bit unsigned integer, just use addi.w to
-extend bit 31 into bits 63 through 32 of a5 to a0. This is similar to
-commit 2f1b0d3d7331 ("riscv, bpf: Sign-extend return values").
-
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 1b26cb8a77a4 ("clk: imx: support fracn gppll")
+Co-developed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-2-89152574d1d7@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-fracn-gppll.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 7dbefd4ba2107..dd350cba1252f 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -179,7 +179,7 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
+diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
+index 591e0364ee5c1..4749c3e0b7051 100644
+--- a/drivers/clk/imx/clk-fracn-gppll.c
++++ b/drivers/clk/imx/clk-fracn-gppll.c
+@@ -303,13 +303,13 @@ static int clk_fracn_gppll_prepare(struct clk_hw *hw)
+ 	val |= POWERUP_MASK;
+ 	writel_relaxed(val, pll->base + PLL_CTRL);
  
- 	if (!is_tail_call) {
- 		/* Set return value */
--		move_reg(ctx, LOONGARCH_GPR_A0, regmap[BPF_REG_0]);
-+		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
- 		/* Return to the caller */
- 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
- 	} else {
+-	val |= CLKMUX_EN;
+-	writel_relaxed(val, pll->base + PLL_CTRL);
+-
+ 	ret = clk_fracn_gppll_wait_lock(pll);
+ 	if (ret)
+ 		return ret;
+ 
++	val |= CLKMUX_EN;
++	writel_relaxed(val, pll->base + PLL_CTRL);
++
+ 	val &= ~CLKMUX_BYPASS;
+ 	writel_relaxed(val, pll->base + PLL_CTRL);
+ 
 -- 
 2.43.0
 
