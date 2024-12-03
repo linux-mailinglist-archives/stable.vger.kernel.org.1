@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-98046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B51C9E270E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCDD9E26AA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:16:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2903169226
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 341AE28625C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582741F893D;
-	Tue,  3 Dec 2024 16:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28621F892E;
+	Tue,  3 Dec 2024 16:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvEfqCHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGtnGiQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8AD1EE00B;
-	Tue,  3 Dec 2024 16:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E881EE00B;
+	Tue,  3 Dec 2024 16:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242614; cv=none; b=eGHNpr1MmKvjSFW4nYBAAKjfZINb09+9jqQYSlgUxK1Ac3cXhqYjy/Cladnnx9shWXeMrEl4yrGFCR/6dq34Z+1RGVSZVRYVMlB7rrWLTcomxJwapspMsPSTS1eKsHcRBFD5ZAJhwFotI285+hWU16dJN+uo2UTInzW0+Lvw50k=
+	t=1733242539; cv=none; b=hok9vPqu6yN5cVQFM8Nvd+3+jpvhQ5rrKX5rjNFzyOM9jhTfsauMBq9DyoJcC7nlXUS5/zM9sx893G2ynMeDKwvSvi46GbpShKBIuFsgvowxXLKtMLXgmWBUasp9KpaRt8/4Wts3qm6DXQwXMLL90Vu05waMuZxD42ot9ts7f34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242614; c=relaxed/simple;
-	bh=+0+6r2MHINbDQULt5wKOXblsY2cj8glUBQ0Fgyco8G8=;
+	s=arc-20240116; t=1733242539; c=relaxed/simple;
+	bh=wITLZtuH9JBrKuEgJLLYzsHA5vI3faEu6PRQQTAK+SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n3pXIkQXKLGQdfNUpQLxyqAjiEYcYnDRSZffabBOeymiXGsRB1Wg5BXYqSDbXfOQOzMblLgTsXBPpUqosdNFhzkwXCrqlHqRMEHgZPNOx4Ge3otT24c/0SGIIIMUkCak7y2/5MJ0k7B7W6+ahbOsL1pckLd9eAVcNxnACwkYx/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvEfqCHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6795EC4CECF;
-	Tue,  3 Dec 2024 16:16:53 +0000 (UTC)
+	 MIME-Version; b=fmnbCdYytZwxTucz6ZL59SDn5BmbrTZYcWoQrS2GPHg4Sig9qw/kp2xDkuCfn3jaO9hGj324uR17F+DcU6jL3LswQpnteKl+oKPovvERlVIIibesnfjlYL789Va146gWtmIFJq+4uxmRoV5QDSeCDJfS799i2P3cEWmwm/p2N8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGtnGiQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F72DC4CECF;
+	Tue,  3 Dec 2024 16:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242613;
-	bh=+0+6r2MHINbDQULt5wKOXblsY2cj8glUBQ0Fgyco8G8=;
+	s=korg; t=1733242539;
+	bh=wITLZtuH9JBrKuEgJLLYzsHA5vI3faEu6PRQQTAK+SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvEfqCHqgmdY++Q5zw33TSSWACdWm2u5NxddPBg7w4ssBq1t/TqEJqnXjXshY9zls
-	 2+B/PWWSWngLKRo1W7pKwp84UoOeRSumRSRLueXZQrAFx8su7fyzH7qs9mSE+AMMN+
-	 QH7Bdj+jlyUHYOTZmVhCQgaOwfNgK6A0e5PBPwyU=
+	b=mGtnGiQXCFgU9F+NaN7IcSQTC/CRhNpSXJDqq6hMfiU0ByYe5Xd3vOXeju/T1jgRQ
+	 7YBNgUheNuUFl7Lhh4UNuvSc4nNiDwGbzsw9qzuM0dmNNcCOOn+np+58aTxjknpQS6
+	 v0DAzdknC9uGEbKKgbZyWSHnfK0o9ZfxFzX4lCX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.12 715/826] serial: amba-pl011: fix build regression
-Date: Tue,  3 Dec 2024 15:47:22 +0100
-Message-ID: <20241203144811.654184578@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.12 717/826] mtd: ubi: fix unreleased fwnode_handle in find_volume_fwnode()
+Date: Tue,  3 Dec 2024 15:47:24 +0100
+Message-ID: <20241203144811.731922825@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,52 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit b5a23a60e8ab5711f4952912424347bf3864ce8d upstream.
+commit 07593293ffabba14125c8998525adde5a832bfa3 upstream.
 
-When CONFIG_DMA_ENGINE is disabled, the driver now fails to build:
+The 'fw_vols' fwnode_handle initialized via
+device_get_named_child_node() requires explicit calls to
+fwnode_handle_put() when the variable is no longer required.
 
-drivers/tty/serial/amba-pl011.c: In function 'pl011_unthrottle_rx':
-drivers/tty/serial/amba-pl011.c:1822:16: error: 'struct uart_amba_port' has no member named 'using_rx_dma'
- 1822 |         if (uap->using_rx_dma) {
-      |                ^~
-drivers/tty/serial/amba-pl011.c:1823:20: error: 'struct uart_amba_port' has no member named 'dmacr'
- 1823 |                 uap->dmacr |= UART011_RXDMAE;
-      |                    ^~
-drivers/tty/serial/amba-pl011.c:1824:32: error: 'struct uart_amba_port' has no member named 'dmacr'
- 1824 |                 pl011_write(uap->dmacr, uap, REG_DMACR);
-      |                                ^~
+Add the missing calls to fwnode_handle_put() before the function
+returns.
 
-Add the missing #ifdef check around these field accesses, matching
-what other parts of this driver do.
-
-Fixes: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411140617.nkjeHhsK-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20241115110021.744332-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 51932f9fc487 ("mtd: ubi: populate ubi volume fwnode")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/amba-pl011.c |    2 ++
+ drivers/mtd/ubi/vmt.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1819,10 +1819,12 @@ static void pl011_unthrottle_rx(struct u
+--- a/drivers/mtd/ubi/vmt.c
++++ b/drivers/mtd/ubi/vmt.c
+@@ -143,8 +143,10 @@ static struct fwnode_handle *find_volume
+ 		    vol->vol_id != volid)
+ 			continue;
  
- 	pl011_write(uap->im, uap, REG_IMSC);
- 
-+#ifdef CONFIG_DMA_ENGINE
- 	if (uap->using_rx_dma) {
- 		uap->dmacr |= UART011_RXDMAE;
- 		pl011_write(uap->dmacr, uap, REG_DMACR);
++		fwnode_handle_put(fw_vols);
+ 		return fw_vol;
  	}
-+#endif
++	fwnode_handle_put(fw_vols);
  
- 	uart_port_unlock_irqrestore(&uap->port, flags);
+ 	return NULL;
  }
 
 
