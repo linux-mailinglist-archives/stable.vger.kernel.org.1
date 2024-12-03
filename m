@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F3F9E29F3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F84A9E2A9C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DC85BA44C0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1771B66E6E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA1B1F76A2;
-	Tue,  3 Dec 2024 15:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18131F76A8;
+	Tue,  3 Dec 2024 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6wSrjrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTfG9sRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4782D7BF;
-	Tue,  3 Dec 2024 15:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4A71F76A2;
+	Tue,  3 Dec 2024 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239034; cv=none; b=C1OhLc7f/iScOBQvh/xPRihYvsL6RcyV6oVMX6ay4ke3NnP5jFe4avmTFIh8rKbvVZIuyPWygQBByKFOtTUE6Uqt/OWQaj0tvK8xOguX/uw42pTf7ZfdiA/gnUQUK6Fq3pboREG4G4cLymMfPaHqB4Y+rQ1nw5tGTxESg2iapwM=
+	t=1733241081; cv=none; b=P/a5AafM0lux6MoH6V+s0+czIKqKVi7LNsS9rCpJ2Y8nud423QDh7We4jkkIRq3V/nE9e+K8LO92QSc8YMM9RNkTf4QRm+vjHQBPK90KtjGfuFqa6zks+NE7lmFzIjfc7aNsqkBXG34NhpQuSmdwxgYjgtMhbgJXPmghemE7QGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239034; c=relaxed/simple;
-	bh=xKEiPI0uWQNmi7GmdGKRdTIY+N0A5oz60DTmCnwC1Q4=;
+	s=arc-20240116; t=1733241081; c=relaxed/simple;
+	bh=yCyvTZynhZ8S9ypKO1/f4lO93u+pQKb4n21mDiiS9HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3VW+dZanFSjObHhEAd1xFLoyjQP6wpoRzktfTBwqr6HGPIlCUSIPMhtMkFG7WRYqvIyCh6GJ3CYbnMAnNSaNUSv7MAHQEUvqOtpKFqyM326hWQrhqqWH3QAS65qTArG+uKNfhBlzmyXVmXWwUrjQk7leYjLHjts/Z1EvhMVkr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6wSrjrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5662BC4CECF;
-	Tue,  3 Dec 2024 15:17:13 +0000 (UTC)
+	 MIME-Version; b=XIZAiNFaN1wpAeJ0giuyNV3wIcQdvtfHNpn/CNkITeYnRzmklj1sRbP5hsN6N4jAO110cM9eddONSBacliV7tIZpLj9ELdXJejX7jDN4FB7wGCan6dtAgaE0XuGxMV5Fj0OrpPUUzbnp5KaYoMxf5c99sIJ/4BmeHnMgrTKQURU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTfG9sRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E1CC4CECF;
+	Tue,  3 Dec 2024 15:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239033;
-	bh=xKEiPI0uWQNmi7GmdGKRdTIY+N0A5oz60DTmCnwC1Q4=;
+	s=korg; t=1733241081;
+	bh=yCyvTZynhZ8S9ypKO1/f4lO93u+pQKb4n21mDiiS9HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6wSrjrmL98IUqs9ulS8w0k1HBJ2mY2I/a4Ecj17x8a6kOdLGxhxHuD/qnf6HSHmQ
-	 5spogiWIZtK8EHlNTJcA1s9sk4r9v1NJ0ge8tLO0az1DDa+8hzY0CxfTRW2N09+BDv
-	 h5ZqDHECZCF1hzELe1PX7Xsr8Oumdn3r00YP4LEk=
+	b=WTfG9sRuXwjjxOp724t8iHyVutYEQOJTNJB0LIIUfDJ8IMpsHEQQYOFB+WQ3LARl7
+	 +M2E5S71zFAiNXF3ZYXbd1Xqv0iMWGfy1FOTAUc5rE/ftXE7GnNNBn6Y+hXuuIzdJZ
+	 wus094HUgOs1wH+A20s7UrYYOwrecA9LP0tQb548=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 474/817] arm64: dts: qcom: sc8180x: Add a SoC-specific compatible to cpufreq-hw
-Date: Tue,  3 Dec 2024 15:40:46 +0100
-Message-ID: <20241203144014.372523081@linuxfoundation.org>
+Subject: [PATCH 6.12 320/826] drm/amdgpu: fix ACA bank count boundary check error
+Date: Tue,  3 Dec 2024 15:40:47 +0100
+Message-ID: <20241203144756.245535764@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 5df30684415d5a902f23862ab5bbed2a2df7fbf1 ]
+[ Upstream commit 2bb7dced1c2f8c0e705cc74840f776406db492c3 ]
 
-Comply with bindings guidelines and get rid of errors such as:
+fix ACA bank count boundary check error.
 
-cpufreq@18323000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['qcom,cpufreq-hw'] is too short
-
-Fixes: 8575f197b077 ("arm64: dts: qcom: Introduce the SC8180x platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: f5e4cc8461c4 ("drm/amdgpu: implement RAS ACA driver framework")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 6e707d993aeb3..b1451f8ad2a60 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -3730,7 +3730,7 @@ lmh@18358800 {
- 		};
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+index 2ca1271731357..9d6345146495f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+@@ -158,7 +158,7 @@ static int aca_smu_get_valid_aca_banks(struct amdgpu_device *adev, enum aca_smu_
+ 		return -EINVAL;
+ 	}
  
- 		cpufreq_hw: cpufreq@18323000 {
--			compatible = "qcom,cpufreq-hw";
-+			compatible = "qcom,sc8180x-cpufreq-hw", "qcom,cpufreq-hw";
- 			reg = <0 0x18323000 0 0x1400>, <0 0x18325800 0 0x1400>;
- 			reg-names = "freq-domain0", "freq-domain1";
+-	if (start + count >= max_count)
++	if (start + count > max_count)
+ 		return -EINVAL;
  
+ 	count = min_t(int, count, max_count);
 -- 
 2.43.0
 
