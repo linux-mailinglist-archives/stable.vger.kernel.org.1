@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FF59E20AC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8449E20BD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDEE92861AE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0EF165399
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3218A1F7065;
-	Tue,  3 Dec 2024 15:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A061F76BB;
+	Tue,  3 Dec 2024 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIcnptIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APgEm5OC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65B033FE;
-	Tue,  3 Dec 2024 15:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC01F76B6;
+	Tue,  3 Dec 2024 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238141; cv=none; b=YDwTPXrvwV0lzsx6PIdmWH/ymsphdt4/njUTJEFXD8wptYe8ftV8LS2D9xdehez0aKZ7ELEhljrXcVI8IgWZBV2eCDw41t0lMZrXgD/yi6QRzDlALdAOWxKas7BduXNuJBvJ8gexEcMw/IlPeIBJ4KP+BImbF/g7JlxMhrdXmk8=
+	t=1733238051; cv=none; b=hgzjWUdqukNp2/858JP4JLQq2BFKftq1IngNJ3Ngdh/JPBLMzKy8UanlWW01eb1VtpDb8nSni+7OdtfQKjCaEjvxJL9lnqnuTUEthJlvypO9dUnbkmJFMmgLe2bF36y9hCKZbykwptjoKDYtVjHVJLbSdtKEfRVsNLyN1I80yag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238141; c=relaxed/simple;
-	bh=9pDLS6NzoRt4DRxLfIXChlb5msUlud5+91TRQgVu2RM=;
+	s=arc-20240116; t=1733238051; c=relaxed/simple;
+	bh=R+Gc4pkOrE7Qdq2M5Z0s9ymWKgGIzJzXMumBfnamojw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yg00FDZ3499y1buhpvz4qTJwdVOzwmHRFqFwg2wvz4wF0YSt8c1wWrDCXoLvKATAZDTFfWYc/XT1wGih8IQ8SKMGsJha4V4DZ98QdL8XkST2hXR0hhsD60uc0uMgPaLtICSqwCPj0Cw0UGxecLeu5hKES5aqKc4gjn69l3FM2Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIcnptIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CA2C4CECF;
-	Tue,  3 Dec 2024 15:02:16 +0000 (UTC)
+	 MIME-Version; b=BD1pJL0wTUnc9C3EGZfaHNGW2kuOl4CPEV3i6nMA9e/D51DLsXbBQ90kHkQAK6I0mt/ZCyNTjvfy3fqzXYTkOF1wdFg2+ow+hPedJorZdU4tgl9gdTsf87BMoKpVsEhExXsBYXl/iz1bExRAu5ntQSn0vLa8r9pQ7lqqt1DfJpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APgEm5OC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAF8C4CED6;
+	Tue,  3 Dec 2024 15:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238137;
-	bh=9pDLS6NzoRt4DRxLfIXChlb5msUlud5+91TRQgVu2RM=;
+	s=korg; t=1733238051;
+	bh=R+Gc4pkOrE7Qdq2M5Z0s9ymWKgGIzJzXMumBfnamojw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIcnptIMSlaQ74aaF66LyseN9aBFugjf0l/5NUmmb0+w54474HVwmobdKL+hNSAjM
-	 99u07ECGue9gQwZAp/B8VYGmbbvI7xvA9lAKKqLomEbJv+tF6YjIHsotcObQfu7yni
-	 iVmwb1/3mk0FWd4fgbXHcVn5cQBaLmmas+hSbgEE=
+	b=APgEm5OCbcJ6LeMkHjF/jiUC9slX1lMn+CCxCUiHJsJ2+jHBVw4Q8Epo5vfAd6iqB
+	 A23a8i/4biFtVvAlQF/AD0uqdWg0v1w4V7XTMLRJ5JIaqToq85Iz6OD0q+6/V1jmeF
+	 M6J4OhegSW6Cv56PuCrw8s2dkA9C6At8e10N57RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Pablo Sun <pablo.sun@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 143/817] ARM: dts: renesas: genmai: Fix partition size for QSPI NOR Flash
-Date: Tue,  3 Dec 2024 15:35:15 +0100
-Message-ID: <20241203144001.307606267@linuxfoundation.org>
+Subject: [PATCH 6.11 146/817] arm64: dts: mediatek: mt8188: Fix wrong clock provider in MFG1 power domain
+Date: Tue,  3 Dec 2024 15:35:18 +0100
+Message-ID: <20241203144001.426727890@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,38 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Pablo Sun <pablo.sun@mediatek.com>
 
-[ Upstream commit 48e17816c3effa3545e21cd4f7d5a00c55c17a18 ]
+[ Upstream commit 4007651c25553b10dbc6e7bff6b7abd2863c1702 ]
 
-Second partition was too large, looks like two digits got mixed up.
-Fixes:
+The clock index "CLK_APMIXED_MFGPLL" belongs to the "apmixedsys" provider,
+so fix the index.
 
-mtd: partition "user1" extends beyond the end of device "18000000.flash" -- size truncated to 0x4000000
+In addition, add a "mfg1" label so following commits could set
+domain-supply for MFG1 power domain.
 
-Fixes: 30e0a8cf886c ("ARM: dts: renesas: genmai: Add FLASH nodes")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20240914182948.94031-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: eaf73e4224a3 ("arm64: dts: mediatek: mt8188: Add support for SoC power domains")
+Signed-off-by: Pablo Sun <pablo.sun@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241002022138.29241-2-pablo.sun@mediatek.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8188.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-index 29ba098f5dd5e..28e703e0f152b 100644
---- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-+++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
-@@ -53,7 +53,7 @@ partition@0 {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+index 29d012d28edb1..041a85e1d9b55 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+@@ -508,9 +508,9 @@ mfg0: power-domain@MT8188_POWER_DOMAIN_MFG0 {
+ 					#size-cells = <0>;
+ 					#power-domain-cells = <1>;
  
- 			partition@4000000 {
- 				label = "user1";
--				reg = <0x04000000 0x40000000>;
-+				reg = <0x04000000 0x04000000>;
- 			};
- 		};
- 	};
+-					power-domain@MT8188_POWER_DOMAIN_MFG1 {
++					mfg1: power-domain@MT8188_POWER_DOMAIN_MFG1 {
+ 						reg = <MT8188_POWER_DOMAIN_MFG1>;
+-						clocks = <&topckgen CLK_APMIXED_MFGPLL>,
++						clocks = <&apmixedsys CLK_APMIXED_MFGPLL>,
+ 							 <&topckgen CLK_TOP_MFG_CORE_TMP>;
+ 						clock-names = "mfg", "alt";
+ 						mediatek,infracfg = <&infracfg_ao>;
 -- 
 2.43.0
 
