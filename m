@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF999E2220
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE029E2480
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF4D161BBB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F3C287D22
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDA41DA3D;
-	Tue,  3 Dec 2024 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDCF1F76B0;
+	Tue,  3 Dec 2024 15:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWjVm7Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHyfQvAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF38F1F4709;
-	Tue,  3 Dec 2024 15:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1292C80;
+	Tue,  3 Dec 2024 15:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238935; cv=none; b=bxQKZmV7h8hzU+xIu9xpCY37T8oe0poA7BxKPLERqWFWluGyIOmQjirLPACn8I8JoAX7O1IimwXgTONqFJQ+Hr5PIWJoilU2ZHGpm1RproFNykGcnqoi4G9RoAvmBzpYLVJTKlVjNMjBzqRJZrdlA/uVTWjxAllTBgugEp/4FTw=
+	t=1733240959; cv=none; b=Z6NKsSbjuqgU2yZHAhA/2xImJpr5mq3ta01x02x/6EJ1RHCQAR5CD56Hr00vfL9FJR3t6uan0dvBDotrw+ig8DOXoTvBBYr/OUEiMy5EWOFwbAgdEhksCHSL3hrjy9GaupzYRqBZrKFJaq93eSFZ0ywSzo4j5T0w2Ph+jHuF9kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238935; c=relaxed/simple;
-	bh=7or15xdQG9Z2OP+PbyLKC8V5RzjxPDV14zbduAg0yRE=;
+	s=arc-20240116; t=1733240959; c=relaxed/simple;
+	bh=h+A1vpS25tvamGn0SWbrCJoIJEiPTCdKBNOpi+313Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xt3L3/d15Z/6mkR70agt1t0Ul3M2gNwv6VrZddBIHBDwhwBFiq0MlpNbh9BXnTVJVOtJxpC99uMzvbr9iWPqUFeBUIShjnq7o6rutwN8yWSlYrVAWjyVODEJHRO0oRCkyYVNkeflaYxDSrRz3fjMhAXbn75OWGIwcDGrRvxPnAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWjVm7Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BFCC4CED6;
-	Tue,  3 Dec 2024 15:15:34 +0000 (UTC)
+	 MIME-Version; b=J7qbqrRSMdrnVrMv1mfhFYQoLFz1aRzwcwwy5QjlJ6KKYtzjiQbKNtr5daXf8elBZZSxq5dxf+tvvUSWRYo9czv7U3fmJaIAODx2l6xK40nVoDd1vL++Wz1CA/HrhDWdr8AM0rShSjjkXKDJX4Nv+z4n9WNZNdCCSIvtLRJHZdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHyfQvAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829D6C4CECF;
+	Tue,  3 Dec 2024 15:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238934;
-	bh=7or15xdQG9Z2OP+PbyLKC8V5RzjxPDV14zbduAg0yRE=;
+	s=korg; t=1733240959;
+	bh=h+A1vpS25tvamGn0SWbrCJoIJEiPTCdKBNOpi+313Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWjVm7YlUMjwJV0/p5/Ys9ULMzE4fnTnBu6utaL4ozpIhkqbiwA81thZQCv696JJs
-	 vpgTrYpXdgtXVoL/ZA7yLRERKax+LMvjbTa1eYwIE5dxjWVBqvBh0ifNrVgeUQlbIB
-	 Rux9/lKrM+sJ98Zo1JN/aPBmy7bU0P1/FTWsA4C4=
+	b=oHyfQvARU9x+AxeSyJeLNfM0d9h5OW5jRbAzgKs71g2yiMAOECD9c8CgKBHshmfR2
+	 MtISeAUjaVVyMq2y9VV3JMRKQX1L837BVjtGnbNjTKGXr0DAmr5LYJLee/KpbUDziq
+	 sm6KfCSPeR6tG5nXBSJ/frzPHjQMILf1FYD5ZGis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 440/817] scsi: qedf: Fix a possible memory leak in qedf_alloc_and_init_sb()
-Date: Tue,  3 Dec 2024 15:40:12 +0100
-Message-ID: <20241203144013.055508605@linuxfoundation.org>
+Subject: [PATCH 6.12 286/826] drm: zynqmp_kms: Unplug DRM device before removal
+Date: Tue,  3 Dec 2024 15:40:13 +0100
+Message-ID: <20241203144754.928312781@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit c62c30429db3eb4ced35c7fcf6f04a61ce3a01bb ]
+[ Upstream commit 2e07c88914fc5289c21820b1aa94f058feb38197 ]
 
-Hook "qed_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+Prevent userspace accesses to the DRM device from causing
+use-after-frees by unplugging the device before we remove it. This
+causes any further userspace accesses to result in an error without
+further calls into this driver's internals.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-2-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
+Closes: https://lore.kernel.org/dri-devel/4d8f4c9b-2efb-4774-9a37-2f257f79b2c9@linux.dev/
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240809193600.3360015-2-sean.anderson@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 4813087e58a15..6f1fc88c59fc0 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -2738,6 +2738,7 @@ static int qedf_alloc_and_init_sb(struct qedf_ctx *qedf,
- 	    sb_id, QED_SB_TYPE_STORAGE);
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+index bd1368df78703..4556af2faa0f1 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+@@ -536,7 +536,7 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
+ {
+ 	struct drm_device *drm = &dpsub->drm->dev;
  
- 	if (ret) {
-+		dma_free_coherent(&qedf->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDF_ERR(&qedf->dbg_ctx,
- 			 "Status block initialization failed (0x%x) for id = %d.\n",
- 			 ret, sb_id);
+-	drm_dev_unregister(drm);
++	drm_dev_unplug(drm);
+ 	drm_atomic_helper_shutdown(drm);
+ 	drm_encoder_cleanup(&dpsub->drm->encoder);
+ 	drm_kms_helper_poll_fini(drm);
 -- 
 2.43.0
 
