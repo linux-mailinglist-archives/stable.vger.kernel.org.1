@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4AD9E22AA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6007F9E2882
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:02:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C233168EB9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A93B802B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D7F1F75B6;
-	Tue,  3 Dec 2024 15:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38A51F75A5;
+	Tue,  3 Dec 2024 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWgPDBW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcrLPdwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D5F1F75A0;
-	Tue,  3 Dec 2024 15:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8CC1AB6C9;
+	Tue,  3 Dec 2024 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239335; cv=none; b=Xc/MXKY5RqvDy6HOvjk42Jv178DSOYHsFMLx49gB2ercAny86YftYJJPLCz8ZeO4RqJc0ky8YQx8lC8fkiq5DDKBbul0MA99q/YxDXvSQHsWpKtcmLdYf45UK1ExsVJO4+3gksnPPNj+loL/JXQ0m0XedyyFqZlXeWBi2iF4afo=
+	t=1733241337; cv=none; b=ml1jyhYQdxw6FolQP8Ze+dYVCeiDp8YfyGf3mEgiHs8hQ5FGBfoKTrswMwJml0kwvtA32NKDaqv6MGdewRjsix9hJ9IN8ZdKIhHkrBkhOUxOCwZXe9CfH5XLi7oMiudVgqYvbAT9mIGafDw3AzVcgBWFySyCZzRNrftgEH7BMDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239335; c=relaxed/simple;
-	bh=+AWonIdbxwALlKB9bx5oC73uP1zRV1Qxby3loHXvAD8=;
+	s=arc-20240116; t=1733241337; c=relaxed/simple;
+	bh=nkwfEBm5iG9GbY23q9AzEJ0YNOFz8Xge4bzozwOOuGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPij5BTsEnHuJRIIvuneeFp5vTiq68PHapkw55S5ARIyIHK0zKqTYFXD7NMJCjMXpj8tjenalqomPBzBCyg23iYhnsfvUVjrI8VTLrH18cMFjW8mYc1k3zK5aQzN/Z+pFwmnzz9Cx6gdRBPIXukDTJ79BHxKZh6GkAKZlJEQYBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWgPDBW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F69C4CECF;
-	Tue,  3 Dec 2024 15:22:14 +0000 (UTC)
+	 MIME-Version; b=gjnQ9N61oo/2DAVCJq1+SzIXWDi2IeUbmYhRCmkw6PwozrvLWlZ7WGTZymXkH1KbCKOqAAIoV1Ttst3OpiF3WCbMykPhaw0/ruTsfl1C5DWIdOLTmVSbjP2TZJjFFvMdgRvq9TXMxgVLaXLeBU5hgZgQFEhxhPkD6tQDPhvFxbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcrLPdwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C233BC4CED6;
+	Tue,  3 Dec 2024 15:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239335;
-	bh=+AWonIdbxwALlKB9bx5oC73uP1zRV1Qxby3loHXvAD8=;
+	s=korg; t=1733241337;
+	bh=nkwfEBm5iG9GbY23q9AzEJ0YNOFz8Xge4bzozwOOuGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWgPDBW9wVuQxva5/Ds+P6cLwZyqNCFYweYswRdywrR8xUqHi21WDjQJyQSPyPhSp
-	 OjCmXdNQLDARutg1ZcxSjUutQf55iXSuehVCvYOYVxJEtf2vSCdFVg+AguNfbWdfvw
-	 yQGlejAOc7Z6SdR1S2bWarPyk8Z+TxM2yRXiMZI4=
+	b=qcrLPdwxZAsGdo+6+VmxbKNO7+0OSAdhdGj7Rw4yaexuGlHXJMeQcBLAY9uAEz10S
+	 pZEcHDdOcjxHMgNxC8T/WfegMKJ6OZowEIr0Mht54aUybBYeqWz+drvn/P7Ou9oo4D
+	 dlNC2xGpjjcnfAj0sC+N6r1EmQcWrQFy/HVPgb9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Yuyu Li <liyuyu6@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 547/817] hwmon: (tps23861) Fix reporting of negative temperatures
+Subject: [PATCH 6.12 392/826] RDMA/hns: Modify debugfs name
 Date: Tue,  3 Dec 2024 15:41:59 +0100
-Message-ID: <20241203144017.258125732@linuxfoundation.org>
+Message-ID: <20241203144759.052270534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Yuyu Li <liyuyu6@huawei.com>
 
-[ Upstream commit de2bf507fabba9c0c678cf5ed54beb546f5ca29a ]
+[ Upstream commit 370a9351bf84afc5a56a3f02ba3805bbfcb53c32 ]
 
-Negative temperatures are reported as large positive temperatures
-due to missing sign extension from unsigned int to long. Cast unsigned
-raw register values to signed before performing the calculations
-to fix the problem.
+The sub-directory of hns_roce debugfs is named after the device's
+kernel name currently, but it will be inconvenient to use when
+the device is renamed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Modify the name to pci name as users can always easily find the
+correspondence between an RDMA device and its pci name.
 
-Fixes: fff7b8ab2255 ("hwmon: add Texas Instruments TPS23861 driver")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Message-ID: <20241121173604.2021-1-m.masimov@maxima.ru>
-[groeck: Updated subject and description]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: eb7854d63db5 ("RDMA/hns: Support SW stats with debugfs")
+Signed-off-by: Yuyu Li <liyuyu6@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241024124000.2931869-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tps23861.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tps23861.c b/drivers/hwmon/tps23861.c
-index dfcfb09d9f3cd..80fb03f30c302 100644
---- a/drivers/hwmon/tps23861.c
-+++ b/drivers/hwmon/tps23861.c
-@@ -132,7 +132,7 @@ static int tps23861_read_temp(struct tps23861_data *data, long *val)
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_debugfs.c b/drivers/infiniband/hw/hns/hns_roce_debugfs.c
+index e8febb40f6450..b869cdc541189 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_debugfs.c
++++ b/drivers/infiniband/hw/hns/hns_roce_debugfs.c
+@@ -5,6 +5,7 @@
  
--	*val = (regval * TEMPERATURE_LSB) - 20000;
-+	*val = ((long)regval * TEMPERATURE_LSB) - 20000;
+ #include <linux/debugfs.h>
+ #include <linux/device.h>
++#include <linux/pci.h>
  
- 	return 0;
- }
+ #include "hns_roce_device.h"
+ 
+@@ -86,7 +87,7 @@ void hns_roce_register_debugfs(struct hns_roce_dev *hr_dev)
+ {
+ 	struct hns_roce_dev_debugfs *dbgfs = &hr_dev->dbgfs;
+ 
+-	dbgfs->root = debugfs_create_dir(dev_name(&hr_dev->ib_dev.dev),
++	dbgfs->root = debugfs_create_dir(pci_name(hr_dev->pci_dev),
+ 					 hns_roce_dbgfs_root);
+ 
+ 	create_sw_stat_debugfs(hr_dev, dbgfs->root);
 -- 
 2.43.0
 
