@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5841A9E2476
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5579E214E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE26816BE00
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16ED1695B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078741F9EAB;
-	Tue,  3 Dec 2024 15:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5CF1F893B;
+	Tue,  3 Dec 2024 15:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw+A88ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCH3bfbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BD71F4276;
-	Tue,  3 Dec 2024 15:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6E61F8938;
+	Tue,  3 Dec 2024 15:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240414; cv=none; b=sY4RVFle8QYUUCUau23wWhhnDflMAvhma47E74Qcg2exe9qeL6oM9+Z/LEEx3W2c9OrxLo4QLEwBcIcGbx/k6Epr41IUI3XH8utSvUxNu/gS5+jIQAKITZm3PreIeqG2vw6TtX2hH70zA4cTdVXZAmxXaIZpXYWSgBp0rA554vg=
+	t=1733238453; cv=none; b=WV57a0CwgG5hlxEKOnCKATlxUPWkSz5mDHCq6wGOg3ehn6erOMZCNXvY6MjPnn9YDnDFmCw/Wcygt5aDIAiIzCzNR2wjbtcaPsrMLfdc7Pri8+nhBuV9noIHmdh7pomYFQeNwwNsLC2CGAB3T4PFNqBTCPnNoB1vWflUR2TAybA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240414; c=relaxed/simple;
-	bh=UvW8cyRhpQJfb+sjGv/qtF62rxFl/17pipYAQfWhBdw=;
+	s=arc-20240116; t=1733238453; c=relaxed/simple;
+	bh=Fym2598a3lUCrZbudiv5EokzJDfGi9tcH+XzOMBaFdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXOS8NsDm4igxo1kWKpZKeZDsxY430bYqcyIT5DsRc/SitfHNnfA1tRH1JlPcF9I/TcA3FclR3kPqJYdSgV+2v7Oa9IZF/+0nCo1W0GFzM67VfmAXKIvj1ZZ1vaDWUHUetEWsEW+uBaXD3xDUHzz3QKg5/I4Fy6fGzAqpyEjHSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hw+A88ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2750EC4CECF;
-	Tue,  3 Dec 2024 15:40:13 +0000 (UTC)
+	 MIME-Version; b=AL2cWUQS7Y4iIG8ypm26jTL7jW4vFWc4mkjVM7PT3m3TlUNs3pbrfNbi2nqk0vJFIeXazeS9Yuw/U0b3G7Datdh0fLHRD8Mi9wTXaPrZ/p/8CX+OX6FElX2rDcL5cDCH3tprzMMNLStpaFR3UsNXJPLGFNACXD4unH6VmCz8DM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCH3bfbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBC6C4CED8;
+	Tue,  3 Dec 2024 15:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240414;
-	bh=UvW8cyRhpQJfb+sjGv/qtF62rxFl/17pipYAQfWhBdw=;
+	s=korg; t=1733238453;
+	bh=Fym2598a3lUCrZbudiv5EokzJDfGi9tcH+XzOMBaFdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hw+A88ep1aQTJzx6MJS0Sq6lVdBhujCWB2C47X7S8mvVaJy7Gjd2kebHy3oWAXQv/
-	 hiyRx45W75vnctdbrs+s/GP7EWsdy3h0b+1kwbdZG0rhHzdZLqARO2Mcc8O6QXw6t8
-	 L5BeyajJuaqYq20i9FYlnXsBVmkgRpPQyUSWOw9w=
+	b=MCH3bfbYdvO0CXDOmRTcfgvBH56716xxIK4hdDNcmt0QJb1eRiIY4AdNQi6p8IHQi
+	 vSUoGHyMbTp92ElOY4eyaHvMFjQb+q6dlamxhYlrznNPbHvtZ3YZAFrTCuP2XnramN
+	 c6OaGh1Fv55yDfVapbkkjFZyujQfQxkYNxdI8+Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/826] arm64: dts: mt8183: kukui: Fix the address of eeprom at i2c4
-Date: Tue,  3 Dec 2024 15:37:34 +0100
-Message-ID: <20241203144748.696207734@linuxfoundation.org>
+Subject: [PATCH 6.11 283/817] drm/msm/dpu: on SDM845 move DSPP_3 to LM_5 block
+Date: Tue,  3 Dec 2024 15:37:35 +0100
+Message-ID: <20241203144006.852679510@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit edbde4923f208aa83abb48d4b2463299e5fc2586 ]
+[ Upstream commit 768a272d5357269b17b4b06dd8647e21bdc0ca3c ]
 
-The address of eeprom should be 50.
+On the SDM845 platform the DSPP_3 is used by the LM_5. Correct
+corresponding entries in the sdm845_lm array.
 
-Fixes: ff33d889567e ("arm64: dts: mt8183: Add kukui kodama board")
-Fixes: d1eaf77f2c66 ("arm64: dts: mt8183: Add kukui kakadu board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-2-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: c72375172194 ("drm/msm/dpu/catalog: define DSPP blocks found on sdm845")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/612584/
+Link: https://lore.kernel.org/r/20240905-dpu-fix-sdm845-catalog-v1-1-3363d03998bd@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi | 4 ++--
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-index bfb9e42c8acaa..ff02f63bac29b 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-@@ -92,9 +92,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+index 7a23389a57327..59eeea3dd2e9f 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+@@ -161,7 +161,6 @@ static const struct dpu_lm_cfg sdm845_lm[] = {
+ 		.features = MIXER_SDM845_MASK,
+ 		.sblk = &sdm845_lm_sblk,
+ 		.pingpong = PINGPONG_NONE,
+-		.dspp = DSPP_3,
+ 	}, {
+ 		.name = "lm_4", .id = LM_4,
+ 		.base = 0x0, .len = 0x320,
+@@ -175,6 +174,7 @@ static const struct dpu_lm_cfg sdm845_lm[] = {
+ 		.sblk = &sdm845_lm_sblk,
+ 		.lm_pair = LM_2,
+ 		.pingpong = PINGPONG_3,
++		.dspp = DSPP_3,
+ 	},
+ };
  
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-index 5c1bf6a1e4758..da6e767b4ceed 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-@@ -79,9 +79,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
- 
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c64";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
 -- 
 2.43.0
 
