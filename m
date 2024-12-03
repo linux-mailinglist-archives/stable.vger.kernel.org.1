@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6401D9E2622
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D199E2521
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25297167D42
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A054BC023A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A97D1F76AA;
-	Tue,  3 Dec 2024 16:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76C51F7585;
+	Tue,  3 Dec 2024 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i267Vp0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjVNq5XO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2649F1F755B;
-	Tue,  3 Dec 2024 16:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DEA1F7554;
+	Tue,  3 Dec 2024 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241830; cv=none; b=gtDCJ/RpS+8/jFLUomueqISluuDMiIRLqOk/h2CPX4SRmn0hHfg6fmkFL6mBpZdgavz/6G7xChkp10NYVa4QodZoNidJ1XpxQJdt3Vo937f0+7PKZ9m/R5RZ0CpYZx+bCqCqiaphwSUlURg3KW40xSo8j/FnDsJ5HUxsAwGMjOQ=
+	t=1733239733; cv=none; b=l24ZR7cVGn+nbc3YX8VTT+hGO12+mc0Bz8ePoh0vqMrnXo9lsuQ2ujepbn7p1jAyhYonrGo6/rMjhpwhdyoXIL7Nie5ww9fmXlrYJxwSDURIdpknWmYRuRvdzgV1meSBaKUplTcg+qVgXpUiwyTLs1T9qWw2E5d9tEGxZEhfAgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241830; c=relaxed/simple;
-	bh=IrCIng0ergirWJ6hWgRtEJqZeBB5zIugjiesZ9D8Ovo=;
+	s=arc-20240116; t=1733239733; c=relaxed/simple;
+	bh=GuIJeetjBQLrqzX0wkiP/jZVI70c8wQe2kt4RNSQio8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyE9bi25N0C2cvpcWYgDOOX4oHGpEASfhhiCixQt3eg0Ag/lvOikJoEbwB+vra1Wpuwtbq15jm+gr5eRn3xkeEdUZaILSvAiInC7Rg9EMombWhhyWCecCPJtzjUnKCErwLdONHuxe32bhfW0Bp36bdxKnz2Y6uPFF9rooBRT6Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i267Vp0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D2EC4CECF;
-	Tue,  3 Dec 2024 16:03:49 +0000 (UTC)
+	 MIME-Version; b=BI9cUyHSA+roPrNjqtd20fxYXAHyhFZy8dzfpenWJeJ9me8lruI+/toJDsukbONY8dfWbbojuzmzDEeWc3C4Zn5JR+7YpPjp5C3GYsOniOl1bPpzmqTGfWa1xKV8dJo4RdncS776WJP0rzyhDmPCXQN/LczJq2Com9yCg94xwMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjVNq5XO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E25C4CECF;
+	Tue,  3 Dec 2024 15:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241829;
-	bh=IrCIng0ergirWJ6hWgRtEJqZeBB5zIugjiesZ9D8Ovo=;
+	s=korg; t=1733239733;
+	bh=GuIJeetjBQLrqzX0wkiP/jZVI70c8wQe2kt4RNSQio8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i267Vp0DdM3/x9DMnfFgSNyfnlfjqPk3JKUTilJyg2U1yFjSlNWHRyj0V89ydvgkE
-	 FaMpa0mO28H9WXGmUgqRRjzXTSS0ihJLMODnCAt80s7zF7rUkUi6OrDpb8Gdx88hks
-	 +12qI44R/+BA0j4n41w3VgF1vSuIf2ekw6tHoBAU=
+	b=rjVNq5XOs2hwC+6d16+2UkDwQX2WjxaWT7t3lX3XW1Ysc7aWf7bWmqY0xgnZ2nO2W
+	 8zwPp5+LdGV2xD4RMK8USINjHowf6b71COHjee1omHYXiz9R1nEtG9fxZ57gwSq/zp
+	 qVxfw0HT4R8o1qfWw/mkV0mi3jE3WtMhyO6WklQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 529/826] NFSD: Fix nfsd4_shutdown_copy()
+	Aleksei Vetrov <vvvvvv@google.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.11 684/817] wifi: nl80211: fix bounds checker error in nl80211_parse_sched_scan
 Date: Tue,  3 Dec 2024 15:44:16 +0100
-Message-ID: <20241203144804.391996396@linuxfoundation.org>
+Message-ID: <20241203144022.671232670@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Aleksei Vetrov <vvvvvv@google.com>
 
-[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
+commit 9c46a3a5b394d6d123866aa44436fc2cd342eb0d upstream.
 
-nfsd4_shutdown_copy() is just this:
+The channels array in the cfg80211_scan_request has a __counted_by
+attribute attached to it, which points to the n_channels variable. This
+attribute is used in bounds checking, and if it is not set before the
+array is filled, then the bounds sanitizer will issue a warning or a
+kernel panic if CONFIG_UBSAN_TRAP is set.
 
-	while ((copy = nfsd4_get_copy(clp)) != NULL)
-		nfsd4_stop_copy(copy);
+This patch sets the size of allocated memory as the initial value for
+n_channels. It is updated with the actual number of added elements after
+the array is filled.
 
-nfsd4_get_copy() bumps @copy's reference count, preventing
-nfsd4_stop_copy() from releasing @copy.
-
-A while loop like this usually works by removing the first element
-of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
-alters the async_copies list.
-
-Best I can tell, then, is that nfsd4_shutdown_copy() continues to
-loop until other threads manage to remove all the items from this
-list. The spinning loop blocks shutdown until these items are gone.
-
-Possibly the reason we haven't seen this issue in the field is
-because client_has_state() prevents __destroy_client() from calling
-nfsd4_shutdown_copy() if there are any items on this list. In a
-subsequent patch I plan to remove that restriction.
-
-Fixes: e0639dc5805a ("NFSD introduce async copy feature")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aleksei Vetrov <vvvvvv@google.com>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://patch.msgid.link/20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index d32f2dfd148fe..7a1fdafa42ea1 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1292,7 +1292,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
- 	nfs4_put_copy(copy);
- }
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9776,6 +9776,7 @@ nl80211_parse_sched_scan(struct wiphy *w
+ 	request = kzalloc(size, GFP_KERNEL);
+ 	if (!request)
+ 		return ERR_PTR(-ENOMEM);
++	request->n_channels = n_channels;
  
--static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
-+static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy = NULL;
- 
-@@ -1301,6 +1301,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
- 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
- 					copies);
- 		refcount_inc(&copy->refcount);
-+		copy->cp_clp = NULL;
-+		if (!list_empty(&copy->copies))
-+			list_del_init(&copy->copies);
- 	}
- 	spin_unlock(&clp->async_lock);
- 	return copy;
-@@ -1310,7 +1313,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy;
- 
--	while ((copy = nfsd4_get_copy(clp)) != NULL)
-+	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
- 		nfsd4_stop_copy(copy);
- }
- #ifdef CONFIG_NFSD_V4_2_INTER_SSC
--- 
-2.43.0
-
+ 	if (n_ssids)
+ 		request->ssids = (void *)request +
 
 
 
