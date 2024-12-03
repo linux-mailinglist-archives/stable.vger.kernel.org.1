@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4721E9E2843
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:55:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305E19E2579
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A2F7B3935B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5AF5285794
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0FC1F7540;
-	Tue,  3 Dec 2024 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2A61F76A4;
+	Tue,  3 Dec 2024 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8TPcF+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CPdGkMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF011F473A;
-	Tue,  3 Dec 2024 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5984F23CE;
+	Tue,  3 Dec 2024 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239608; cv=none; b=XGLuzIdtfeepkligtopfSuVyE6OzeMHMAm+q7FqgMFdUSZ5dtM37QTvdJrqrlyLHgf0bYik4ZrZdiLferqpIEIygLzRD8qbK4GyhR3K8iuMuaBbdVInvm3U3PsjIHy/w7/IoKTOsuomuqB2wkgMeH2SjEEnYrgM192Ae7ZhuwyU=
+	t=1733241690; cv=none; b=XRKdbd2kO2FgD0HGgBaKdFxMtpGXg8KRRzScFYqn7cC+Gu43a2awDW5CPDTrGCJRXvjd6LuGN0ZGZpas16fnv9gwh2qH6YpQ+kSBYm26C2WQFYCLBcTcDxAPkEvhpL5+Jrnzt9l7H+feMvuYXvbMr2bBj5S0f6zNvDICN41+mms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239608; c=relaxed/simple;
-	bh=tND0Z5nxZk4GPzN0NINDBHsPKblSNIiEM7JGZX5p7h8=;
+	s=arc-20240116; t=1733241690; c=relaxed/simple;
+	bh=Dk3YHLzE5B/TqyEajFtNdwYgXniGsMgxhJ445cjNC94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnA+c9TFOzwG2fpGpB1fEVyCn2uVl4eL5DX6thyynLdHBqV2i5kWcbNQFv/JmJVLOAUp/GTadifvyhBRpexrQ1N5DuqMsmPZ+v5eVm4lO8Xw9+jCNqADW7z9q8Zvk2jrVLLiEoIWguIrhQfgzrCsZk0erVTReXBC2SUHLsF4P0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8TPcF+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A9AC4CECF;
-	Tue,  3 Dec 2024 15:26:48 +0000 (UTC)
+	 MIME-Version; b=BqTw1NAmv4c5redIS/7wzC6LV/6XztXYeEkpLB1hSKjgC+zzhuX4RoI9FmC61seoVrTtVIJc4OW9ssVuvfQ56EjSYJqcEqr91SOZA09XIAZMjc7pmWYKG7QYueyQqUDsAviG8VkpEZAQPrphSCeM4HbtWWXZqvvvCS5k3IIeGow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CPdGkMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD08AC4CECF;
+	Tue,  3 Dec 2024 16:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239608;
-	bh=tND0Z5nxZk4GPzN0NINDBHsPKblSNIiEM7JGZX5p7h8=;
+	s=korg; t=1733241690;
+	bh=Dk3YHLzE5B/TqyEajFtNdwYgXniGsMgxhJ445cjNC94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8TPcF+wVrS6gNcklNt6aYJPGzHfTYjghQ0L/5yjV1iuKMiJ5EkTbh3M3wZDk5YVE
-	 TRtPBaJoZ542Sz/i7UGeSGj3TSv3wuJLjBMen59tLObRol0YUazKX1x88P9IRBS2kN
-	 dS+yl22uBOYMubfI4Ycg3XFXJCQgPb0Lwlr668Oc=
+	b=0CPdGkMPkbQ50Xr+oG8i06IY2RB32c686dIOeyH3lprfl/AfTd1EFb+lPX+0tH3u2
+	 Smpdc9YtaV1bZ/+zXwYCDY90XwyYJ0Ebl6rfXBlwc6OcBK70f1F5mr1s5ilYjT2O7c
+	 qPiuW85/eIRPg1fV9na/D9kq3Yc5wIA8Jr4thWSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Luca Boccassi <bluca@debian.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.11 645/817] KVM: x86: switch hugepage recovery thread to vhost_task
-Date: Tue,  3 Dec 2024 15:43:37 +0100
-Message-ID: <20241203144021.133588029@linuxfoundation.org>
+	Miguel Ojeda <ojeda@kernel.org>,
+	Francesco Zardi <frazar00@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 491/826] rust: block: fix formatting of `kernel::block::mq::request` module
+Date: Tue,  3 Dec 2024 15:43:38 +0100
+Message-ID: <20241203144802.909832718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,339 +63,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Francesco Zardi <frazar00@gmail.com>
 
-commit d96c77bd4eeba469bddbbb14323d2191684da82a upstream.
+[ Upstream commit 28e848386b92645f93b9f2fdba5882c3ca7fb3e2 ]
 
-kvm_vm_create_worker_thread() is meant to be used for kthreads that
-can consume significant amounts of CPU time on behalf of a VM or in
-response to how the VM behaves (for example how it accesses its memory).
-Therefore it wants to charge the CPU time consumed by that work to
-the VM's container.
+Fix several issues with rustdoc formatting for the
+`kernel::block::mq::Request` module, in particular:
 
-However, because of these threads, cgroups which have kvm instances
-inside never complete freezing.  This can be trivially reproduced:
+  - An ordered list not rendering correctly, fixed by using numbers
+    prefixes instead of letters.
 
-  root@test ~# mkdir /sys/fs/cgroup/test
-  root@test ~# echo $$ > /sys/fs/cgroup/test/cgroup.procs
-  root@test ~# qemu-system-x86_64 -nographic -enable-kvm
+  - Code snippets formatted as regular text, fixed by wrapping the
+    code with `back-ticks`.
 
-and in another terminal:
+  - References to types missing intra-doc links, fixed by wrapping the
+    types with [square brackets].
 
-  root@test ~# echo 1 > /sys/fs/cgroup/test/cgroup.freeze
-  root@test ~# cat /sys/fs/cgroup/test/cgroup.events
-  populated 1
-  frozen 0
-
-The cgroup freezing happens in the signal delivery path but
-kvm_nx_huge_page_recovery_worker, while joining non-root cgroups, never
-calls into the signal delivery path and thus never gets frozen. Because
-the cgroup freezer determines whether a given cgroup is frozen by
-comparing the number of frozen threads to the total number of threads
-in the cgroup, the cgroup never becomes frozen and users waiting for
-the state transition may hang indefinitely.
-
-Since the worker kthread is tied to a user process, it's better if
-it behaves similarly to user tasks as much as possible, including
-being able to send SIGSTOP and SIGCONT.  In fact, vhost_task is all
-that kvm_vm_create_worker_thread() wanted to be and more: not only it
-inherits the userspace process's cgroups, it has other niceties like
-being parented properly in the process tree.  Use it instead of the
-homegrown alternative.
-
-Incidentally, the new code is also better behaved when you flip recovery
-back and forth to disabled and back to enabled.  If your recovery period
-is 1 minute, it will run the next recovery after 1 minute independent
-of how many times you flipped the parameter.
-
-(Commit message based on emails from Tejun).
-
-Reported-by: Tejun Heo <tj@kernel.org>
-Reported-by: Luca Boccassi <bluca@debian.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Tested-by: Luca Boccassi <bluca@debian.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1108
+Signed-off-by: Francesco Zardi <frazar00@gmail.com>
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Link: https://lore.kernel.org/r/20240903173027.16732-3-frazar00@gmail.com
+[ Added an extra intra-doc link. Took the chance to add some periods
+  for consistency. Reworded slightly. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |    4 +
- arch/x86/kvm/Kconfig            |    1 
- arch/x86/kvm/mmu/mmu.c          |   68 ++++++++++++--------------
- include/linux/kvm_host.h        |    6 --
- virt/kvm/kvm_main.c             |  103 ----------------------------------------
- 5 files changed, 35 insertions(+), 147 deletions(-)
+ rust/kernel/block/mq/request.rs | 67 +++++++++++++++++++--------------
+ 1 file changed, 38 insertions(+), 29 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -26,6 +26,7 @@
- #include <linux/irqbypass.h>
- #include <linux/hyperv.h>
- #include <linux/kfifo.h>
-+#include <linux/sched/vhost_task.h>
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index a0e22827f3f4e..7943f43b95753 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -16,50 +16,55 @@
+     sync::atomic::{AtomicU64, Ordering},
+ };
  
- #include <asm/apic.h>
- #include <asm/pvclock-abi.h>
-@@ -1445,7 +1446,8 @@ struct kvm_arch {
- 	bool sgx_provisioning_allowed;
+-/// A wrapper around a blk-mq `struct request`. This represents an IO request.
++/// A wrapper around a blk-mq [`struct request`]. This represents an IO request.
+ ///
+ /// # Implementation details
+ ///
+ /// There are four states for a request that the Rust bindings care about:
+ ///
+-/// A) Request is owned by block layer (refcount 0)
+-/// B) Request is owned by driver but with zero `ARef`s in existence
+-///    (refcount 1)
+-/// C) Request is owned by driver with exactly one `ARef` in existence
+-///    (refcount 2)
+-/// D) Request is owned by driver with more than one `ARef` in existence
+-///    (refcount > 2)
++/// 1. Request is owned by block layer (refcount 0).
++/// 2. Request is owned by driver but with zero [`ARef`]s in existence
++///    (refcount 1).
++/// 3. Request is owned by driver with exactly one [`ARef`] in existence
++///    (refcount 2).
++/// 4. Request is owned by driver with more than one [`ARef`] in existence
++///    (refcount > 2).
+ ///
+ ///
+-/// We need to track A and B to ensure we fail tag to request conversions for
++/// We need to track 1 and 2 to ensure we fail tag to request conversions for
+ /// requests that are not owned by the driver.
+ ///
+-/// We need to track C and D to ensure that it is safe to end the request and hand
++/// We need to track 3 and 4 to ensure that it is safe to end the request and hand
+ /// back ownership to the block layer.
+ ///
+ /// The states are tracked through the private `refcount` field of
+ /// `RequestDataWrapper`. This structure lives in the private data area of the C
+-/// `struct request`.
++/// [`struct request`].
+ ///
+ /// # Invariants
+ ///
+-/// * `self.0` is a valid `struct request` created by the C portion of the kernel.
++/// * `self.0` is a valid [`struct request`] created by the C portion of the
++///   kernel.
+ /// * The private data area associated with this request must be an initialized
+ ///   and valid `RequestDataWrapper<T>`.
+ /// * `self` is reference counted by atomic modification of
+-///   self.wrapper_ref().refcount().
++///   `self.wrapper_ref().refcount()`.
++///
++/// [`struct request`]: srctree/include/linux/blk-mq.h
+ ///
+ #[repr(transparent)]
+ pub struct Request<T: Operations>(Opaque<bindings::request>, PhantomData<T>);
  
- 	struct kvm_x86_pmu_event_filter __rcu *pmu_event_filter;
--	struct task_struct *nx_huge_page_recovery_thread;
-+	struct vhost_task *nx_huge_page_recovery_thread;
-+	u64 nx_huge_page_last;
+ impl<T: Operations> Request<T> {
+-    /// Create an `ARef<Request>` from a `struct request` pointer.
++    /// Create an [`ARef<Request>`] from a [`struct request`] pointer.
+     ///
+     /// # Safety
+     ///
+     /// * The caller must own a refcount on `ptr` that is transferred to the
+-    ///   returned `ARef`.
+-    /// * The type invariants for `Request` must hold for the pointee of `ptr`.
++    ///   returned [`ARef`].
++    /// * The type invariants for [`Request`] must hold for the pointee of `ptr`.
++    ///
++    /// [`struct request`]: srctree/include/linux/blk-mq.h
+     pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
+         // INVARIANT: By the safety requirements of this function, invariants are upheld.
+         // SAFETY: By the safety requirement of this function, we own a
+@@ -84,12 +89,14 @@ pub(crate) unsafe fn start_unchecked(this: &ARef<Self>) {
+     }
  
- #ifdef CONFIG_X86_64
- 	/* The number of TDP MMU pages across all roots. */
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -29,6 +29,7 @@ config KVM
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_IRQ_ROUTING
- 	select HAVE_KVM_READONLY_MEM
-+	select VHOST_TASK
- 	select KVM_ASYNC_PF
- 	select USER_RETURN_NOTIFIER
- 	select KVM_MMIO
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7160,7 +7160,7 @@ static int set_nx_huge_pages(const char
- 			kvm_mmu_zap_all_fast(kvm);
- 			mutex_unlock(&kvm->slots_lock);
+     /// Try to take exclusive ownership of `this` by dropping the refcount to 0.
+-    /// This fails if `this` is not the only `ARef` pointing to the underlying
+-    /// `Request`.
++    /// This fails if `this` is not the only [`ARef`] pointing to the underlying
++    /// [`Request`].
+     ///
+-    /// If the operation is successful, `Ok` is returned with a pointer to the
+-    /// C `struct request`. If the operation fails, `this` is returned in the
+-    /// `Err` variant.
++    /// If the operation is successful, [`Ok`] is returned with a pointer to the
++    /// C [`struct request`]. If the operation fails, `this` is returned in the
++    /// [`Err`] variant.
++    ///
++    /// [`struct request`]: srctree/include/linux/blk-mq.h
+     fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::request, ARef<Self>> {
+         // We can race with `TagSet::tag_to_rq`
+         if let Err(_old) = this.wrapper_ref().refcount().compare_exchange(
+@@ -109,7 +116,7 @@ fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::request, ARef<Self>> {
  
--			wake_up_process(kvm->arch.nx_huge_page_recovery_thread);
-+			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
- 		}
- 		mutex_unlock(&kvm_lock);
- 	}
-@@ -7306,7 +7306,7 @@ static int set_nx_huge_pages_recovery_pa
- 		mutex_lock(&kvm_lock);
+     /// Notify the block layer that the request has been completed without errors.
+     ///
+-    /// This function will return `Err` if `this` is not the only `ARef`
++    /// This function will return [`Err`] if `this` is not the only [`ARef`]
+     /// referencing the request.
+     pub fn end_ok(this: ARef<Self>) -> Result<(), ARef<Self>> {
+         let request_ptr = Self::try_set_end(this)?;
+@@ -123,13 +130,13 @@ pub fn end_ok(this: ARef<Self>) -> Result<(), ARef<Self>> {
+         Ok(())
+     }
  
- 		list_for_each_entry(kvm, &vm_list, vm_list)
--			wake_up_process(kvm->arch.nx_huge_page_recovery_thread);
-+			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
+-    /// Return a pointer to the `RequestDataWrapper` stored in the private area
++    /// Return a pointer to the [`RequestDataWrapper`] stored in the private area
+     /// of the request structure.
+     ///
+     /// # Safety
+     ///
+     /// - `this` must point to a valid allocation of size at least size of
+-    ///   `Self` plus size of `RequestDataWrapper`.
++    ///   [`Self`] plus size of [`RequestDataWrapper`].
+     pub(crate) unsafe fn wrapper_ptr(this: *mut Self) -> NonNull<RequestDataWrapper> {
+         let request_ptr = this.cast::<bindings::request>();
+         // SAFETY: By safety requirements for this function, `this` is a
+@@ -141,7 +148,7 @@ pub(crate) unsafe fn wrapper_ptr(this: *mut Self) -> NonNull<RequestDataWrapper>
+         unsafe { NonNull::new_unchecked(wrapper_ptr) }
+     }
  
- 		mutex_unlock(&kvm_lock);
- 	}
-@@ -7409,62 +7409,56 @@ static void kvm_recover_nx_huge_pages(st
- 	srcu_read_unlock(&kvm->srcu, rcu_idx);
+-    /// Return a reference to the `RequestDataWrapper` stored in the private
++    /// Return a reference to the [`RequestDataWrapper`] stored in the private
+     /// area of the request structure.
+     pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper {
+         // SAFETY: By type invariant, `self.0` is a valid allocation. Further,
+@@ -152,13 +159,15 @@ pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper {
+     }
  }
  
--static long get_nx_huge_page_recovery_timeout(u64 start_time)
-+static void kvm_nx_huge_page_recovery_worker_kill(void *data)
- {
--	bool enabled;
--	uint period;
--
--	enabled = calc_nx_huge_pages_recovery_period(&period);
--
--	return enabled ? start_time + msecs_to_jiffies(period) - get_jiffies_64()
--		       : MAX_SCHEDULE_TIMEOUT;
+-/// A wrapper around data stored in the private area of the C `struct request`.
++/// A wrapper around data stored in the private area of the C [`struct request`].
++///
++/// [`struct request`]: srctree/include/linux/blk-mq.h
+ pub(crate) struct RequestDataWrapper {
+     /// The Rust request refcount has the following states:
+     ///
+     /// - 0: The request is owned by C block layer.
+-    /// - 1: The request is owned by Rust abstractions but there are no ARef references to it.
+-    /// - 2+: There are `ARef` references to the request.
++    /// - 1: The request is owned by Rust abstractions but there are no [`ARef`] references to it.
++    /// - 2+: There are [`ARef`] references to the request.
+     refcount: AtomicU64,
  }
  
--static int kvm_nx_huge_page_recovery_worker(struct kvm *kvm, uintptr_t data)
-+static bool kvm_nx_huge_page_recovery_worker(void *data)
- {
--	u64 start_time;
-+	struct kvm *kvm = data;
-+	bool enabled;
-+	uint period;
- 	long remaining_time;
- 
--	while (true) {
--		start_time = get_jiffies_64();
--		remaining_time = get_nx_huge_page_recovery_timeout(start_time);
--
--		set_current_state(TASK_INTERRUPTIBLE);
--		while (!kthread_should_stop() && remaining_time > 0) {
--			schedule_timeout(remaining_time);
--			remaining_time = get_nx_huge_page_recovery_timeout(start_time);
--			set_current_state(TASK_INTERRUPTIBLE);
--		}
--
--		set_current_state(TASK_RUNNING);
--
--		if (kthread_should_stop())
--			return 0;
-+	enabled = calc_nx_huge_pages_recovery_period(&period);
-+	if (!enabled)
-+		return false;
- 
--		kvm_recover_nx_huge_pages(kvm);
-+	remaining_time = kvm->arch.nx_huge_page_last + msecs_to_jiffies(period)
-+		- get_jiffies_64();
-+	if (remaining_time > 0) {
-+		schedule_timeout(remaining_time);
-+		/* check for signals and come back */
-+		return true;
- 	}
-+
-+	__set_current_state(TASK_RUNNING);
-+	kvm_recover_nx_huge_pages(kvm);
-+	kvm->arch.nx_huge_page_last = get_jiffies_64();
-+	return true;
+@@ -204,7 +213,7 @@ fn atomic_relaxed_op_return(target: &AtomicU64, op: impl Fn(u64) -> u64) -> u64
  }
  
- int kvm_mmu_post_init_vm(struct kvm *kvm)
- {
--	int err;
--
- 	if (nx_hugepage_mitigation_hard_disabled)
- 		return 0;
- 
--	err = kvm_vm_create_worker_thread(kvm, kvm_nx_huge_page_recovery_worker, 0,
--					  "kvm-nx-lpage-recovery",
--					  &kvm->arch.nx_huge_page_recovery_thread);
--	if (!err)
--		kthread_unpark(kvm->arch.nx_huge_page_recovery_thread);
-+	kvm->arch.nx_huge_page_last = get_jiffies_64();
-+	kvm->arch.nx_huge_page_recovery_thread = vhost_task_create(
-+		kvm_nx_huge_page_recovery_worker, kvm_nx_huge_page_recovery_worker_kill,
-+		kvm, "kvm-nx-lpage-recovery");
- 
--	return err;
-+	if (!kvm->arch.nx_huge_page_recovery_thread)
-+		return -ENOMEM;
-+
-+	vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
-+	return 0;
- }
- 
- void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
- {
- 	if (kvm->arch.nx_huge_page_recovery_thread)
--		kthread_stop(kvm->arch.nx_huge_page_recovery_thread);
-+		vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
- }
- 
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2370,12 +2370,6 @@ static inline int kvm_arch_vcpu_run_pid_
- }
- #endif /* CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE */
- 
--typedef int (*kvm_vm_thread_fn_t)(struct kvm *kvm, uintptr_t data);
--
--int kvm_vm_create_worker_thread(struct kvm *kvm, kvm_vm_thread_fn_t thread_fn,
--				uintptr_t data, const char *name,
--				struct task_struct **thread_ptr);
--
- #ifdef CONFIG_KVM_XFER_TO_GUEST_WORK
- static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
- {
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6573,106 +6573,3 @@ void kvm_exit(void)
- 	kvm_irqfd_exit();
- }
- EXPORT_SYMBOL_GPL(kvm_exit);
--
--struct kvm_vm_worker_thread_context {
--	struct kvm *kvm;
--	struct task_struct *parent;
--	struct completion init_done;
--	kvm_vm_thread_fn_t thread_fn;
--	uintptr_t data;
--	int err;
--};
--
--static int kvm_vm_worker_thread(void *context)
--{
--	/*
--	 * The init_context is allocated on the stack of the parent thread, so
--	 * we have to locally copy anything that is needed beyond initialization
--	 */
--	struct kvm_vm_worker_thread_context *init_context = context;
--	struct task_struct *parent;
--	struct kvm *kvm = init_context->kvm;
--	kvm_vm_thread_fn_t thread_fn = init_context->thread_fn;
--	uintptr_t data = init_context->data;
--	int err;
--
--	err = kthread_park(current);
--	/* kthread_park(current) is never supposed to return an error */
--	WARN_ON(err != 0);
--	if (err)
--		goto init_complete;
--
--	err = cgroup_attach_task_all(init_context->parent, current);
--	if (err) {
--		kvm_err("%s: cgroup_attach_task_all failed with err %d\n",
--			__func__, err);
--		goto init_complete;
--	}
--
--	set_user_nice(current, task_nice(init_context->parent));
--
--init_complete:
--	init_context->err = err;
--	complete(&init_context->init_done);
--	init_context = NULL;
--
--	if (err)
--		goto out;
--
--	/* Wait to be woken up by the spawner before proceeding. */
--	kthread_parkme();
--
--	if (!kthread_should_stop())
--		err = thread_fn(kvm, data);
--
--out:
--	/*
--	 * Move kthread back to its original cgroup to prevent it lingering in
--	 * the cgroup of the VM process, after the latter finishes its
--	 * execution.
--	 *
--	 * kthread_stop() waits on the 'exited' completion condition which is
--	 * set in exit_mm(), via mm_release(), in do_exit(). However, the
--	 * kthread is removed from the cgroup in the cgroup_exit() which is
--	 * called after the exit_mm(). This causes the kthread_stop() to return
--	 * before the kthread actually quits the cgroup.
--	 */
--	rcu_read_lock();
--	parent = rcu_dereference(current->real_parent);
--	get_task_struct(parent);
--	rcu_read_unlock();
--	cgroup_attach_task_all(parent, current);
--	put_task_struct(parent);
--
--	return err;
--}
--
--int kvm_vm_create_worker_thread(struct kvm *kvm, kvm_vm_thread_fn_t thread_fn,
--				uintptr_t data, const char *name,
--				struct task_struct **thread_ptr)
--{
--	struct kvm_vm_worker_thread_context init_context = {};
--	struct task_struct *thread;
--
--	*thread_ptr = NULL;
--	init_context.kvm = kvm;
--	init_context.parent = current;
--	init_context.thread_fn = thread_fn;
--	init_context.data = data;
--	init_completion(&init_context.init_done);
--
--	thread = kthread_run(kvm_vm_worker_thread, &init_context,
--			     "%s-%d", name, task_pid_nr(current));
--	if (IS_ERR(thread))
--		return PTR_ERR(thread);
--
--	/* kthread_run is never supposed to return NULL */
--	WARN_ON(thread == NULL);
--
--	wait_for_completion(&init_context.init_done);
--
--	if (!init_context.err)
--		*thread_ptr = thread;
--
--	return init_context.err;
--}
+ /// Store the result of `op(target.load)` in `target` if `target.load() !=
+-/// pred`, returning true if the target was updated.
++/// pred`, returning [`true`] if the target was updated.
+ fn atomic_relaxed_op_unless(target: &AtomicU64, op: impl Fn(u64) -> u64, pred: u64) -> bool {
+     target
+         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| {
+-- 
+2.43.0
+
 
 
 
