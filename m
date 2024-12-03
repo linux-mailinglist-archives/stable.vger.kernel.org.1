@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F709E278E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2C79E2138
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7406BC718D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 365A2165915
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ED31F8935;
-	Tue,  3 Dec 2024 15:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55AD1F706C;
+	Tue,  3 Dec 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORrffSSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsiph/Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F73B1F892B;
-	Tue,  3 Dec 2024 15:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A334A1F6696;
+	Tue,  3 Dec 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240284; cv=none; b=JC94YM97iwFeBv0uCIH+XWjjC0Lfwy6LvfW3gxHV07iuROHFg40RLys2ywGFWisVM2GHCf9HREXcLp/zDLdrrjMRt3QFrBQrW4Tu6JgANu6ub41y52E0HeTye3C/luCVWa58+KD5yhIm22WGJyDvKeRDAX+ziIp1ypD4blHSsN0=
+	t=1733238424; cv=none; b=bsjsfmwRgF5qPS3us3XTzOB6EF/tZZdwY8Tf1rrfAHBSia3gUc7PSwTLavS95UemLBp7nEn3/xb/WHpFaSZ6I+QwQEfMmzycWJXry/QplCuiX7wzUiHCRJzCEmH94AlK2bgDWIV/F9dNEDW351z4gXNt5+gxoZavCUFP3cqiurA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240284; c=relaxed/simple;
-	bh=dHGVSgarK0bcnz2zaFyGsWgjZspUSY+5lu+GR78+BVA=;
+	s=arc-20240116; t=1733238424; c=relaxed/simple;
+	bh=5wOmkz+5xV9vHHHU3TI+Bq66GZjMD7o306r4sSlJhU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oa+aJjPAPIJT7u8KAID6Zk5Q5UpodccB74BdSOkWUufXNl3bRY0hn1dPp+jtfi9uSD7usE3zTsT7O9HrCjlP8x1wcuuF+PMTLM/UvxSaHJZit/DK2K7rYSNovY2Vvbi5/GE4yaMaSsj9wL8bPtH7zUayJ7EVcB53GAcydBSiZu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORrffSSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB009C4CED8;
-	Tue,  3 Dec 2024 15:38:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jz3vW/9oFzRk9K2yaZlsLIUObgSZtEpDdWBShQpbGwslMRzesNNlXDR0mYSL0bEsR763b+dUJWApD1+DX1RM42xhsXc/uZjzvlMykW0aAhrLgoH8dx7+/zqpl7oIsdsFNEjZylOZmcCJjRDVnU6rvqgsDzbjLgkHTEdtkCfQSgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsiph/Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A641C4CECF;
+	Tue,  3 Dec 2024 15:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240284;
-	bh=dHGVSgarK0bcnz2zaFyGsWgjZspUSY+5lu+GR78+BVA=;
+	s=korg; t=1733238424;
+	bh=5wOmkz+5xV9vHHHU3TI+Bq66GZjMD7o306r4sSlJhU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORrffSSqN5GdNbtx70wutf0BEyQRLtXj4UnaX16kZaYOW1CxvE+t4im0zr3J4GEiB
-	 DewJlcDlX/TCpQ5V8mPN1OlHDHTYOHJcjFJVzYj+/sfI1BC60BGMiRxQ2m7763pegk
-	 r/MNNVb2oGGwToPg/pVWnq9ZvZYjfveBD78DRUXE=
+	b=zsiph/GfdHqr3LQAS6uyZ26J0R5yTCDxChDo6ajsdFkTH09cGIEIx2yJeC2oEQVCa
+	 c5/hRsr+gB0s7A0qprCJztboB3xg4X9JWtxQ3lNouz7azxLkFKEMr6tsK3FLPgADJN
+	 HVF3azXj2Cmv9WsVg2UmblScxWMAiLct4io5k3h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/826] time: Partially revert cleanup on msecs_to_jiffies() documentation
+Subject: [PATCH 6.11 241/817] drm/v3d: Flush the MMU before we supply more memory to the binner
 Date: Tue,  3 Dec 2024 15:36:53 +0100
-Message-ID: <20241203144747.083665596@linuxfoundation.org>
+Message-ID: <20241203144005.165363777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit b05aefc1f5886c8aece650c9c1639c87b976191a ]
+[ Upstream commit d2fb8811108b2c1285c56f4fba4fff8fe3525593 ]
 
-The documentation's intention is to compare msecs_to_jiffies() (first
-sentence) with __msecs_to_jiffies() (second sentence), which is what the
-original documentation did. One of the cleanups in commit f3cb80804b82
-("time: Fix various kernel-doc problems") may have thought the paragraph
-was talking about the latter since that is what it is being documented.
+We must ensure that the MMU is flushed before we supply more memory to
+the binner, otherwise we might end up with invalid MMU accesses by the
+GPU.
 
-Thus revert that part of the change.
-
-Fixes: f3cb80804b82 ("time: Fix various kernel-doc problems")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241025110141.157205-1-ojeda@kernel.org
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923141348.2422499-3-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_drv.h | 1 +
+ drivers/gpu/drm/v3d/v3d_irq.c | 2 ++
+ drivers/gpu/drm/v3d/v3d_mmu.c | 2 +-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 642647f5046be..e1879ca321033 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -558,7 +558,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
-  *   handling any 32-bit overflows.
-  *   for the details see __msecs_to_jiffies()
-  *
-- * __msecs_to_jiffies() checks for the passed in value being a constant
-+ * msecs_to_jiffies() checks for the passed in value being a constant
-  * via __builtin_constant_p() allowing gcc to eliminate most of the
-  * code, __msecs_to_jiffies() is called if the value passed does not
-  * allow constant folding and the actual conversion must be done at
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+index a0febdb6f2145..eae37dcaaaeb7 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.h
++++ b/drivers/gpu/drm/v3d/v3d_drv.h
+@@ -560,6 +560,7 @@ void v3d_irq_disable(struct v3d_dev *v3d);
+ void v3d_irq_reset(struct v3d_dev *v3d);
+ 
+ /* v3d_mmu.c */
++int v3d_mmu_flush_all(struct v3d_dev *v3d);
+ int v3d_mmu_set_page_table(struct v3d_dev *v3d);
+ void v3d_mmu_insert_ptes(struct v3d_bo *bo);
+ void v3d_mmu_remove_ptes(struct v3d_bo *bo);
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index d469bda52c1a5..20bf33702c3c4 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -70,6 +70,8 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
+ 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 
++	v3d_mmu_flush_all(v3d);
++
+ 	V3D_CORE_WRITE(0, V3D_PTB_BPOA, bo->node.start << V3D_MMU_PAGE_SHIFT);
+ 	V3D_CORE_WRITE(0, V3D_PTB_BPOS, obj->size);
+ 
+diff --git a/drivers/gpu/drm/v3d/v3d_mmu.c b/drivers/gpu/drm/v3d/v3d_mmu.c
+index e36ec3343b06e..5bb7821c0243c 100644
+--- a/drivers/gpu/drm/v3d/v3d_mmu.c
++++ b/drivers/gpu/drm/v3d/v3d_mmu.c
+@@ -28,7 +28,7 @@
+ #define V3D_PTE_WRITEABLE BIT(29)
+ #define V3D_PTE_VALID BIT(28)
+ 
+-static int v3d_mmu_flush_all(struct v3d_dev *v3d)
++int v3d_mmu_flush_all(struct v3d_dev *v3d)
+ {
+ 	int ret;
+ 
 -- 
 2.43.0
 
