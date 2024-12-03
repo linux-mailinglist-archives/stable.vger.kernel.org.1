@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-98104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082309E272F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:22:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C829E2708
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DEB16D565
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45C15289788
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40C61F8907;
-	Tue,  3 Dec 2024 16:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043B1F8937;
+	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+a55xz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOFJsxDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922661F706D;
-	Tue,  3 Dec 2024 16:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C81E25E3;
+	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242803; cv=none; b=bDhawxISEmTPxX9A3gNwLlFU/bJtbazunVh4gHB9F8aOKdtY82ghrrSK8cUd/N5MkWlbZiSEycZ97cN2MJUVK5Fvs7lpgn7o9Zuz60aakJT3quoXUZjfqJSiRXn9b2Jft21lx3rCvrsRV2JUfHmhgy6GxCEgFLCQPvmm1OJIMcs=
+	t=1733242820; cv=none; b=Nk+2WKH2NqY7+WFfXEKMbEzW/K5cLwanxWLloY2Xim1UyAOBQUhGwHV3NXd/6FV9mvLDQONg3vmeowDas0X2WTyei2v1byn+dRKrgkupfc1+VtWZpJJ9Vfx/utPwu6irXTOcjPaDiGwA3rEICLyS2AftjKvW9PBFVpGiZ9owDEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242803; c=relaxed/simple;
-	bh=dhWo5qMh631ATD5nxH5DEXkDYYaB4AOrnf+kr8dGosI=;
+	s=arc-20240116; t=1733242820; c=relaxed/simple;
+	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9kFeTyqpSpu8Zy1BFppRYUJxkjM56liarmpUTZZmChU/T5578khiW5pK18AgPgq5SVTNrfQuSoop9q0pqk1rtH7j0aHcOImt2E6PZR2Pk9iGefMuCYO3R+bkuvavXUmXy2jw0nFSEDEmz1cHDjvVw4ot/RXIQAFcMOVRUDz1I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+a55xz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DC5C4CECF;
-	Tue,  3 Dec 2024 16:20:02 +0000 (UTC)
+	 MIME-Version; b=R/aIDDktOsfOc8Fbwj+4q4IfV4fxM48YK9GSqYnDwIf4Y/RMcgMFlILGgaR6/EmB/n6idDkseWJjFnUlbHrSDV6KWWobtdMxEg/U1Z5H5Y9qd/Nca6BZkX6a+pwDsDiZPY/zkTLMx1MyUOg3yh2+Sz5xlemUVTwooCBH8lnBZF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOFJsxDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58DC4CECF;
+	Tue,  3 Dec 2024 16:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242803;
-	bh=dhWo5qMh631ATD5nxH5DEXkDYYaB4AOrnf+kr8dGosI=;
+	s=korg; t=1733242820;
+	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+a55xz9J14n0xryb/dbUB0YPyddUwEpNz0ID4A/o/mdk0zXyH6YHkREDRYkXp6hE
-	 y/nQl2VrUt4Psm0uOXAQpfkyoK7vaDFUTGQpxXT+5yLBrao/vGSgdP9dmRfEH05PAK
-	 iUkS201tPykjodTK351ENu7CjJomjfVFBseu5cmo=
+	b=kOFJsxDv/bNxXo+4JozOQECQ3aJAhC5s8mMxYwZGVIwOM3XG2qIaUktictBi1g20l
+	 ik565XTYeqv+yBKbk8jhbKi4RdZPxZ6wz3wEV2w0yQ86agjlrtJFaqPuPUAED9QgLk
+	 lgXASGBM7LEKi+ns2CwTeQMZ7eO9/K7wHnTQ4RF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhangPeng <zhangpeng362@huawei.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 787/826] hostfs: Fix the NULL vs IS_ERR() bug for __filemap_get_folio()
-Date: Tue,  3 Dec 2024 15:48:34 +0100
-Message-ID: <20241203144814.459655295@linuxfoundation.org>
+Subject: [PATCH 6.12 788/826] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
+Date: Tue,  3 Dec 2024 15:48:35 +0100
+Message-ID: <20241203144814.499396037@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,37 +72,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: ZhangPeng <zhangpeng362@huawei.com>
+From: Mirsad Todorovac <mtodorovac69@gmail.com>
 
-[ Upstream commit bed2cc482600296fe04edbc38005ba2851449c10 ]
+[ Upstream commit ff1060813d9347e8c45c8b8cff93a4dfdb6726ad ]
 
-The __filemap_get_folio() function returns error pointers.
-It never returns NULL. So use IS_ERR() to check it.
+On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
+following error report:
 
-Fixes: 1da86618bdce ("fs: Convert aops->write_begin to take a folio")
-Signed-off-by: ZhangPeng <zhangpeng362@huawei.com>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
+NULL not ERR_PTR on failure
+
+kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
+
+Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs_kern.c | 4 ++--
+ net/9p/trans_usbg.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 6d1cf2436ead6..084f6ed2dd7a6 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -471,8 +471,8 @@ static int hostfs_write_begin(struct file *file, struct address_space *mapping,
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 975b76839dca1..6b694f117aef2 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
+ 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
  
- 	*foliop = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
- 			mapping_gfp_mask(mapping));
--	if (!*foliop)
--		return -ENOMEM;
-+	if (IS_ERR(*foliop))
-+		return PTR_ERR(*foliop);
- 	return 0;
- }
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (IS_ERR(dev)) {
++	if (!dev) {
+ 		kfree(usb9pfs_opts);
+-		return ERR_CAST(dev);
++		return ERR_PTR(-ENOMEM);
+ 	}
  
+ 	usb9pfs_opts->dev = dev;
 -- 
 2.43.0
 
