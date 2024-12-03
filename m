@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79F79E2301
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF639E25D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D963C16532F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0632328899F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BD11F7540;
-	Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB1D1F76D7;
+	Tue,  3 Dec 2024 16:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnX9wUhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSfYYCtR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8932B1F473A;
-	Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757B1F76BF;
+	Tue,  3 Dec 2024 16:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239582; cv=none; b=aCQZHLO7NVesG8LhCZyT/zKbPsKnWz9qjX19uaY2+FxQxtwqtmHJs5CHtB5QbeL9i5nBG4HF7JBrXtkjcA0DvrJgcrsoweE7zkg95PsztruyxLciSNI222wu5DpQ0xlMG3HYDz2TPjRMIut2ZWtmFyzuDj7JuPIAJZcqGxP/tfk=
+	t=1733241909; cv=none; b=bSnXbdkaYoNdyawd8lx2m2Iaie4w3HuJnsuJmdQS8Rt58q6bDTfbgHBQYqVCFf07V3Nig+4UthvjoXWY00BRE9r9nZ7ppsxccJpGIfAmGbRMAZx47pHKfb+wO6d1TWFTc3RdKvQN3F6TyrQqYPAHHv5IKiaUMsrGFGAmLqzHX78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239582; c=relaxed/simple;
-	bh=8e2TIKsFXvFdzopn1khVssc14IWpLOZqcOsOgeTJdGE=;
+	s=arc-20240116; t=1733241909; c=relaxed/simple;
+	bh=9pUFYdokfSy2BuCb9iOZeJjy8zHMCsGIRksDYDf/3J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJhZ8Lf5VohWjdjVnO712FiFgrSorR/7RYGqPP2Rhsc+8X63WsVRKu6jrhmeT71jxwsZm8sqI1vhMpHi41saAe+jBzdh/Qoi1M8sWAJSLxxou4uicCkvDqPV6WPq1AIwCHgEfuBf2StYfVD22nykuB0O6raYnEuG3or9qQF1j1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnX9wUhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11747C4CECF;
-	Tue,  3 Dec 2024 15:26:21 +0000 (UTC)
+	 MIME-Version; b=rWJmR8y6CNia1i7oUfbrNd3TeiuTNFRfJHVdSMYlZxYMgsNfMrAx4DQ/IljiNTNK96Bv2PVhgxjW3zouxdN4O1kSx+7QFv8+GpyJTnVjqFAmUwC73HmAGRJq6Sml4t6ndAxmVC9+JbAlWRcMN9GD5twTXOatqLldnQkcVwww+6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSfYYCtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FF7C4CECF;
+	Tue,  3 Dec 2024 16:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239582;
-	bh=8e2TIKsFXvFdzopn1khVssc14IWpLOZqcOsOgeTJdGE=;
+	s=korg; t=1733241909;
+	bh=9pUFYdokfSy2BuCb9iOZeJjy8zHMCsGIRksDYDf/3J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnX9wUhlpLlFGwtxQmSRQtx/kaBjQXuyGqZeJH/GA4BGvlgg55wFR4cX1mQk3KUlW
-	 5SFsTI3ln1NUAIeRM4ikU4RI3WRgzazn2Q8hME4T3K4lYdXvmmz2rfJ+UXKPbF+d0R
-	 ciyhDRhXYprTGJyDDZvyjsD9KKOFln9g2dJgFXuQ=
+	b=oSfYYCtRc4d931K98DX2f1v1rMWrjD8G3kj8OoL6SzCdZeVuGzJGf5NnQ3mjXngbF
+	 WJ5BCNzPHUr0rzI33NlzEQ8dVvWSJcQ0pHDtV+28uk7JsgFRAmB52dgqZfx5x/XQBj
+	 MCMEdHORKdWhoOC33A/HLBh4mQeOwmwPMCBTshAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.11 663/817] apparmor: test: Fix memory leak for aa_unpack_strdup()
-Date: Tue,  3 Dec 2024 15:43:55 +0100
-Message-ID: <20241203144021.838287690@linuxfoundation.org>
+	Jinsu Lee <jinsu1.lee@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 509/826] f2fs: fix to avoid forcing direct write to use buffered IO on inline_data inode
+Date: Tue,  3 Dec 2024 15:43:56 +0100
+Message-ID: <20241203144803.613254430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
+[ Upstream commit 26e6f59d0bbaac76fa3413462d780bd2b5f9f653 ]
 
-The string allocated by kmemdup() in aa_unpack_strdup() is not
-freed and cause following memory leaks, free them to fix it.
+Jinsu Lee reported a performance regression issue, after commit
+5c8764f8679e ("f2fs: fix to force buffered IO on inline_data
+inode"), we forced direct write to use buffered IO on inline_data
+inode, it will cause performace regression due to memory copy
+and data flush.
 
-	unreferenced object 0xffffff80c6af8a50 (size 8):
-	  comm "kunit_try_catch", pid 225, jiffies 4294894407
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
-	unreferenced object 0xffffff80c2a29090 (size 8):
-	  comm "kunit_try_catch", pid 227, jiffies 4294894409
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+It's fine to not force direct write to use buffered IO, as it
+can convert inline inode before committing direct write IO.
 
-Cc: stable@vger.kernel.org
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c8764f8679e ("f2fs: fix to force buffered IO on inline_data inode")
+Reported-by: Jinsu Lee <jinsu1.lee@samsung.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/af03dd2c-e361-4f80-b2fd-39440766cf6e@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack_test.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/f2fs/file.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -281,6 +281,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index b96403ab7a925..71ddecaf771f8 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -863,7 +863,11 @@ static bool f2fs_force_buffered_io(struct inode *inode, int rw)
+ 		return true;
+ 	if (f2fs_compressed_file(inode))
+ 		return true;
+-	if (f2fs_has_inline_data(inode))
++	/*
++	 * only force direct read to use buffered IO, for direct write,
++	 * it expects inline data conversion before committing IO.
++	 */
++	if (f2fs_has_inline_data(inode) && rw == READ)
+ 		return true;
  
- static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
-@@ -296,6 +298,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
- }
- 
- static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
-@@ -313,6 +317,8 @@ static void policy_unpack_test_unpack_st
- 	KUNIT_EXPECT_EQ(test, size, 0);
- 	KUNIT_EXPECT_NULL(test, string);
- 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
-+
-+	kfree(string);
- }
- 
- static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
+ 	/* disallow direct IO if any of devices has unaligned blksize */
+-- 
+2.43.0
+
 
 
 
