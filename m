@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-97284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8349E2384
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6104D9E26A7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C375B286FD0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1520F16ECDF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D941B1F8AE7;
-	Tue,  3 Dec 2024 15:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFA51F8905;
+	Tue,  3 Dec 2024 16:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yr7Yzvrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGlrGKlK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CAD1F76CE;
-	Tue,  3 Dec 2024 15:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2D1F76BF;
+	Tue,  3 Dec 2024 16:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240041; cv=none; b=aV/no++AAGIpQB15RlESAqQw+meDJQdG9ZY98C57YP/hr7hkITCUc+FLdjDIVTqE4HtwCAEDxp22dHigxDpwxMMNFTv6XT0rdHKXgI9SNnLCEqsPMrbzbqCF/9WY5G8PC8Apxa87BnSEyvcSQrYZAgzQnOwhxsiJ0gzBuKtZEMg=
+	t=1733242281; cv=none; b=mVIUeO/hIiL/TDaZR42hy1d7xCDmbPlw+kjknvJHuyM9GV0tbYdMlDOcImaskddW2iyKIfYRTLNg+Sixd87Vg8dH6GAAJnmNdS41QRjkAdlm+W5nbYdujNz2XyOvNXfUMAWnHw8AcEMor8tNxr6kckXxNC33ktEjN643xd5JSoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240041; c=relaxed/simple;
-	bh=xi3OpyQN02erjHC2Z138Pa8dXteOxTgQppeeHjmyGFI=;
+	s=arc-20240116; t=1733242281; c=relaxed/simple;
+	bh=2El1YQMnWgR41JYs3LKSfGiXlq1pXqxi1eNGpahJVG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUH0mHQfAUjUxOMCMuDYoNmnimafE04KUNp/qmNjXFLvftZkuyZAFvxpPJ251YnmtsTZiVfltdzLkvVkY00ppXW76U4TPHjEJw5rncX2pKwWeNHvjlg70Jxot32Wyw+zA8mOFLT2wmIQzkA40Fy4GNeYIc8StPFstS9B7KJBJKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yr7Yzvrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC6C4CED6;
-	Tue,  3 Dec 2024 15:34:00 +0000 (UTC)
+	 MIME-Version; b=t5RR9XXU0KM4LLMlSOu3byLmubevhijwM9xeDzVhoX+3mtrd2WT1AfH5CmotRw4IN2k4UeODPoTX0jd5XAnowAG1beh5m5KQD68zLRb84V9QA2rKEpcP9po/+YL/mPqJrXAY4YImOd9HsAGNgYWa5Gs9tzwVCbIqizYbBLixJVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGlrGKlK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13075C4CED6;
+	Tue,  3 Dec 2024 16:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240041;
-	bh=xi3OpyQN02erjHC2Z138Pa8dXteOxTgQppeeHjmyGFI=;
+	s=korg; t=1733242278;
+	bh=2El1YQMnWgR41JYs3LKSfGiXlq1pXqxi1eNGpahJVG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yr7YzvrpytIXvVD4nkBc2NPVx34f9/fZhJJqgRXj+MkwSvNCIne+jvWn99ahKbpMB
-	 3Cdn7qTVzCzpYxDH4uEWUmrQzdfYCfF/MJ9gf4Es+OuDNRqj0H5TGQovOM8qourIIX
-	 GLnempTUTPS7tFO/3fxIzY9tMgAjeUsnE2xEGz7w=
+	b=WGlrGKlKkF62PgySUsNLTjTw5zK1zTJeeEdwFYG4ahrsZkm0ku/z+4Tjk6MLanjQY
+	 BY3+csWAqmWp+22pmWd2upoSGTz0vgtHw0jJ2eyafmb7IA3+OoYdPK9VZvrQEkIbkP
+	 ffma8wwqYIPLe6/USwYNsAe29m99EW7IzJrKS63g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 814/817] tools/power turbostat: Fix trailing \n parsing
-Date: Tue,  3 Dec 2024 15:46:26 +0100
-Message-ID: <20241203144028.228912848@linuxfoundation.org>
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.12 660/826] comedi: Flush partial mappings in error case
+Date: Tue,  3 Dec 2024 15:46:27 +0100
+Message-ID: <20241203144809.497664634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit fed8511cc8996989178823052dc0200643e1389a ]
+commit ce8f9fb651fac95dd41f69afe54d935420b945bd upstream.
 
-parse_cpu_string() parses the string input either from command line or
-from /sys/fs/cgroup/cpuset.cpus.effective to get a list of CPUs that
-turbostat can run with.
+If some remap_pfn_range() calls succeeded before one failed, we still have
+buffer pages mapped into the userspace page tables when we drop the buffer
+reference with comedi_buf_map_put(bm). The userspace mappings are only
+cleaned up later in the mmap error path.
 
-The cpu string returned by /sys/fs/cgroup/cpuset.cpus.effective contains
-a trailing '\n', but strtoul() fails to treat this as an error.
+Fix it by explicitly flushing all mappings in our VMA on the error path.
 
-That says, for the code below
-	val = ("\n", NULL, 10);
-val returns 0, and errno is also not set.
+See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
+error case").
 
-As a result, CPU0 is erroneously considered as allowed CPU and this
-causes failures when turbostat tries to run on CPU0.
-
- get_counters: Could not migrate to CPU 0
- ...
- turbostat: re-initialized with num_cpus 8, allowed_cpus 5
- get_counters: Could not migrate to CPU 0
-
-Add a check to return immediately if '\n' or '\0' is detected.
-
-Fixes: 8c3dd2c9e542 ("tools/power/turbostat: Abstrct function for parsing cpu string")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20241017-comedi-tlb-v3-1-16b82f9372ce@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/comedi/comedi_fops.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 089220aaa5c92..aa9200319d0ea 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -5385,6 +5385,9 @@ static int parse_cpu_str(char *cpu_str, cpu_set_t *cpu_set, int cpu_set_size)
- 		if (*next == '-')	/* no negative cpu numbers */
- 			return 1;
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -2407,6 +2407,18 @@ static int comedi_mmap(struct file *file
  
-+		if (*next == '\0' || *next == '\n')
-+			break;
+ 			start += PAGE_SIZE;
+ 		}
 +
- 		start = strtoul(next, &next, 10);
++#ifdef CONFIG_MMU
++		/*
++		 * Leaving behind a partial mapping of a buffer we're about to
++		 * drop is unsafe, see remap_pfn_range_notrack().
++		 * We need to zap the range here ourselves instead of relying
++		 * on the automatic zapping in remap_pfn_range() because we call
++		 * remap_pfn_range() in a loop.
++		 */
++		if (retval)
++			zap_vma_ptes(vma, vma->vm_start, size);
++#endif
+ 	}
  
- 		if (start >= CPU_SUBSET_MAXCPUS)
--- 
-2.43.0
-
+ 	if (retval == 0) {
 
 
 
