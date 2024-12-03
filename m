@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-96792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0181E9E21BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72C29E241A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A6216A913
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D3802871A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82761F8EF1;
-	Tue,  3 Dec 2024 15:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030D1203704;
+	Tue,  3 Dec 2024 15:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1Qn/hwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn9pqW2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655261F75B3;
-	Tue,  3 Dec 2024 15:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46C72036E9;
+	Tue,  3 Dec 2024 15:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238606; cv=none; b=DD/8RA/BOrfEQ2OzRzV2FJJ4Uql/1X0g95VtTwqhl26Cbh/BqObWJuGxNH0JmtsaPO7a2v4i9P9feQL8GDf03UTRYxF3I6UHevyEYu97I0e2yjnVsrwJtl0OBZ5HPlIisgOy+SeNncugHrkUZtfla29l56fuKb9IS7DC/I+qCUY=
+	t=1733240586; cv=none; b=XTz7Uhd6E1qyYQM40uvpjPchq516qvRJh14KGkElYAv6oi1o8PNdB/evsX+0pNFA/pmZp0VEKda0JJ4iPw9in0uX4nTHkBBq6ANKo93RhIhbB4iTOS+ka5NXuseDwYfQalYLJqdzrw86/H/3fK0lAENSiotE3V6GIny9t3jBG3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238606; c=relaxed/simple;
-	bh=mkmWDhrRN/DOD7kKNqnbkoQZAOa6+15xzif9HBrQZgM=;
+	s=arc-20240116; t=1733240586; c=relaxed/simple;
+	bh=ywqUev0QsxqmZG4xTEtcCvRnrX8ZXkTc/Dd9VXn95ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccZls4vbDfMOq6dQB/y5eqMizw1rE6CoA2qFbld4/KR3jixW0pCMkIlaACV1hyRmVysYHkyzu5xq+Z4biSCSdKZ/3KPMLnqrcpz81vc0+sIVH9PvwQWS2YRT6/IUvx6kxpWUcGp7ZZDL8yuLUvEy4m0CMxriBAX3sUb4F/4Rc5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1Qn/hwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CB6C4CECF;
-	Tue,  3 Dec 2024 15:10:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aH71twlKnRjTRLBT3yByP6quQ0oaLGv8KMbIIRHcSnKSEvLdbk+K1xIfnRyzLEl/5aDONQDr2s+cuWX8v2AJq7y0VbUtziF4A1M1OxmOeeWhbWEEoYSyWgd1LEgWmOO4pfCj50lq3hqln7xks0VQ/82Tv+PgvmtG2w3pQulSudk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn9pqW2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E06C4CED8;
+	Tue,  3 Dec 2024 15:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238606;
-	bh=mkmWDhrRN/DOD7kKNqnbkoQZAOa6+15xzif9HBrQZgM=;
+	s=korg; t=1733240586;
+	bh=ywqUev0QsxqmZG4xTEtcCvRnrX8ZXkTc/Dd9VXn95ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1Qn/hwCRZn9qeSBaZtg7kXu0bXzCFXQEeWK0PNENKInpLffjVOERNc6EpxRvBpM4
-	 bLtMF/6hIfifGB/3MhlEdO2d3SA1I+FCfYd6TH5hDUZL6KS2Ug5ohV/FqXkdg6UDwA
-	 6rP7DXjVjDqERLsB3YdpO1hqDLCJcFfPu1dY7Sh4=
+	b=Fn9pqW2Gs5Ymk41hEx9JeLjPJ/E/ORz+F+ynTBmxz3v89Ni3/pt+VRZYr/hrlJbsh
+	 7a4ncTmCoxDy4C+h/lF/IjqE8pOvLYg3Hgyx6NU6Ld/3xtl3Nhq0K5v2He/UGCg3NM
+	 YyAVV8fbWa/mcZthqgliBT0VsJpfPqKThb3uHG7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 334/817] ipv6: release nexthop on device removal
+Subject: [PATCH 6.12 179/826] platform/x86/intel/pmt: allow user offset for PMT callbacks
 Date: Tue,  3 Dec 2024 15:38:26 +0100
-Message-ID: <20241203144008.856794950@linuxfoundation.org>
+Message-ID: <20241203144750.719165384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-[ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
+[ Upstream commit 0c32840763b1579c923b4216c18bb756ca4ba473 ]
 
-The CI is hitting some aperiodic hangup at device removal time in the
-pmtu.sh self-test:
+Usage of the telem sysfs file allows for partial reads at an offset.
+The current callback method returns the buffer starting from offset 0
+only.
 
-unregister_netdevice: waiting for veth_A-R1 to become free. Usage count = 6
-ref_tracker: veth_A-R1@ffff888013df15d8 has 1/5 users at
-	dst_init+0x84/0x4a0
-	dst_alloc+0x97/0x150
-	ip6_dst_alloc+0x23/0x90
-	ip6_rt_pcpu_alloc+0x1e6/0x520
-	ip6_pol_route+0x56f/0x840
-	fib6_rule_lookup+0x334/0x630
-	ip6_route_output_flags+0x259/0x480
-	ip6_dst_lookup_tail.constprop.0+0x5c2/0x940
-	ip6_dst_lookup_flow+0x88/0x190
-	udp_tunnel6_dst_lookup+0x2a7/0x4c0
-	vxlan_xmit_one+0xbde/0x4a50 [vxlan]
-	vxlan_xmit+0x9ad/0xf20 [vxlan]
-	dev_hard_start_xmit+0x10e/0x360
-	__dev_queue_xmit+0xf95/0x18c0
-	arp_solicit+0x4a2/0xe00
-	neigh_probe+0xaa/0xf0
+Include the requested offset in the callback and update the necessary
+address calculations with the offset.
 
-While the first suspect is the dst_cache, explicitly tracking the dst
-owing the last device reference via probes proved such dst is held by
-the nexthop in the originating fib6_info.
+Note: offset addition is moved from the caller to the local usage. For
+non-callback usage this is unchanged behavior.
 
-Similar to commit f5b51fe804ec ("ipv6: route: purge exception on
-removal"), we need to explicitly release the originating fib info when
-disconnecting a to-be-removed device from a live ipv6 dst: move the
-fib6_info cleanup into ip6_dst_ifdown().
-
-Tested running:
-
-./pmtu.sh cleanup_ipv6_exception
-
-in a tight loop for more than 400 iterations with no spat, running an
-unpatched kernel  I observed a splat every ~10 iterations.
-
-Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e92affc74cd8 ("platform/x86/intel/vsec: Add PMT read callbacks")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Link: https://lore.kernel.org/r/20241114130358.2467787-2-michael.j.ruhl@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/pmt/class.c     | 8 +++++---
+ drivers/platform/x86/intel/pmt/class.h     | 2 +-
+ drivers/platform/x86/intel/pmt/telemetry.c | 2 +-
+ include/linux/intel_vsec.h                 | 3 ++-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index b4dcd8f3e7bab..606cdd87745a6 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -374,6 +374,7 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
- {
- 	struct rt6_info *rt = dst_rt6_info(dst);
- 	struct inet6_dev *idev = rt->rt6i_idev;
-+	struct fib6_info *from;
- 
- 	if (idev && idev->dev != blackhole_netdev) {
- 		struct inet6_dev *blackhole_idev = in6_dev_get(blackhole_netdev);
-@@ -383,6 +384,8 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
- 			in6_dev_put(idev);
- 		}
- 	}
-+	from = unrcu_pointer(xchg(&rt->from, NULL));
-+	fib6_info_release(from);
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index c04bb7f97a4db..c3ca2ac91b056 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -59,10 +59,12 @@ pmt_memcpy64_fromio(void *to, const u64 __iomem *from, size_t count)
  }
  
- static bool __rt6_check_expired(const struct rt6_info *rt)
-@@ -1455,7 +1458,6 @@ static DEFINE_SPINLOCK(rt6_exception_lock);
- static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 				 struct rt6_exception *rt6_ex)
+ int pmt_telem_read_mmio(struct pci_dev *pdev, struct pmt_callbacks *cb, u32 guid, void *buf,
+-			void __iomem *addr, u32 count)
++			void __iomem *addr, loff_t off, u32 count)
  {
--	struct fib6_info *from;
- 	struct net *net;
+ 	if (cb && cb->read_telem)
+-		return cb->read_telem(pdev, guid, buf, count);
++		return cb->read_telem(pdev, guid, buf, off, count);
++
++	addr += off;
  
- 	if (!bucket || !rt6_ex)
-@@ -1467,8 +1469,6 @@ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 	/* purge completely the exception to allow releasing the held resources:
- 	 * some [sk] cache may keep the dst around for unlimited time
- 	 */
--	from = unrcu_pointer(xchg(&rt6_ex->rt6i->from, NULL));
--	fib6_info_release(from);
- 	dst_dev_put(&rt6_ex->rt6i->dst);
+ 	if (guid == GUID_SPR_PUNIT)
+ 		/* PUNIT on SPR only supports aligned 64-bit read */
+@@ -96,7 +98,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 		count = entry->size - off;
  
- 	hlist_del_rcu(&rt6_ex->hlist);
+ 	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
+-				    entry->base + off, count);
++				    entry->base, off, count);
+ 
+ 	return count;
+ }
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index a267ac9644230..b2006d57779d6 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -62,7 +62,7 @@ struct intel_pmt_namespace {
+ };
+ 
+ int pmt_telem_read_mmio(struct pci_dev *pdev, struct pmt_callbacks *cb, u32 guid, void *buf,
+-			void __iomem *addr, u32 count);
++			void __iomem *addr, loff_t off, u32 count);
+ bool intel_pmt_is_early_client_hw(struct device *dev);
+ int intel_pmt_dev_create(struct intel_pmt_entry *entry,
+ 			 struct intel_pmt_namespace *ns,
+diff --git a/drivers/platform/x86/intel/pmt/telemetry.c b/drivers/platform/x86/intel/pmt/telemetry.c
+index c9feac859e574..0cea617c6c2e2 100644
+--- a/drivers/platform/x86/intel/pmt/telemetry.c
++++ b/drivers/platform/x86/intel/pmt/telemetry.c
+@@ -219,7 +219,7 @@ int pmt_telem_read(struct telem_endpoint *ep, u32 id, u64 *data, u32 count)
+ 	if (offset + NUM_BYTES_QWORD(count) > size)
+ 		return -EINVAL;
+ 
+-	pmt_telem_read_mmio(ep->pcidev, ep->cb, ep->header.guid, data, ep->base + offset,
++	pmt_telem_read_mmio(ep->pcidev, ep->cb, ep->header.guid, data, ep->base, offset,
+ 			    NUM_BYTES_QWORD(count));
+ 
+ 	return ep->present ? 0 : -EPIPE;
+diff --git a/include/linux/intel_vsec.h b/include/linux/intel_vsec.h
+index 11ee185566c31..b94beab64610b 100644
+--- a/include/linux/intel_vsec.h
++++ b/include/linux/intel_vsec.h
+@@ -74,10 +74,11 @@ enum intel_vsec_quirks {
+  * @pdev:  PCI device reference for the callback's use
+  * @guid:  ID of data to acccss
+  * @data:  buffer for the data to be copied
++ * @off:   offset into the requested buffer
+  * @count: size of buffer
+  */
+ struct pmt_callbacks {
+-	int (*read_telem)(struct pci_dev *pdev, u32 guid, u64 *data, u32 count);
++	int (*read_telem)(struct pci_dev *pdev, u32 guid, u64 *data, loff_t off, u32 count);
+ };
+ 
+ /**
 -- 
 2.43.0
 
