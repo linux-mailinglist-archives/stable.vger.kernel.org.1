@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-96549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FBD9E2902
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:21:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CFF9E292D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88654B83DFC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B49EB3E415
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8951F7583;
-	Tue,  3 Dec 2024 14:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10B41F75B5;
+	Tue,  3 Dec 2024 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vseA/CRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyGSNxzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674611F4283;
-	Tue,  3 Dec 2024 14:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0341F75AF;
+	Tue,  3 Dec 2024 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237874; cv=none; b=q2PDvxE8elGlXd8apypYXacwQ1nQFlkhKrk3dYYCcYo4vIhgFoxO1B8bKPNuzplQb/iRIjP/bi2ixoryvxd1rOuWoigTnpO10i0o7WDV8YHwLrGLxnun/d9WuEIbp6jmv6y+mZD+tJAmtOSpjJCYRzUnzZm4zEsYiwmkX98SEZg=
+	t=1733237891; cv=none; b=A8mGvmyw0uVJ+VjfRY3KWINHTtp5d1C5TauvQnQkvE+5wWW4XQuVRTwn+NiWZz8h59HDN0dgSWUdU6oa2AKmqZzM+tlfbDc+3k4CL4TKZy0i/UN6eC8ang5Qtdp/xIB36z2R/u3wpOjNnodtw72WecfUvpK2V901kaL77qCmCAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237874; c=relaxed/simple;
-	bh=JbWQ7NigycLmy7/TjhZHZDjf1lNLCyYuYmRq7xXgpbg=;
+	s=arc-20240116; t=1733237891; c=relaxed/simple;
+	bh=xeHSGiZu4Y9YH8u7wKaLwD1Eu/3DYTTXRxo1M4yixcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYq49TNbXi9ZEKaj2lJUjYBZZxm8Rn2BidH76ft/Z+CdBSHY8lVGnww34ZD2W12lVKJKCfSHD/DpFnxAheHqM5KREsvFGjE4ccJwOzwMEZ1xSBX2wfoQSwyLdMyAYepsEYhhzM+UQMHfIyxAWzIkTnyYR5E3G9U2TCHsBLAEGo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vseA/CRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D68C4CECF;
-	Tue,  3 Dec 2024 14:57:53 +0000 (UTC)
+	 MIME-Version; b=rY7dmQLD72temD3FcqXI9bCvynh5LN9JDUoY3iq5Y/ehHU0aB3bw4UyWnoEWBkSpKLPH/iylcAbE3X+gEKub5dVa3hFq7Sn2RcwmMHcqUUA6ADssl2cRq6i6kcp9BnVVXGg2nxhlpDeoj7ZzZwRNB0xXPV37q9hpAwn1SBrmhgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyGSNxzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BAFC4CECF;
+	Tue,  3 Dec 2024 14:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237874;
-	bh=JbWQ7NigycLmy7/TjhZHZDjf1lNLCyYuYmRq7xXgpbg=;
+	s=korg; t=1733237891;
+	bh=xeHSGiZu4Y9YH8u7wKaLwD1Eu/3DYTTXRxo1M4yixcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vseA/CRqy3Iq4iYoiq3oSSzeuDJtkmuWngEdR/+33cXdZyLHlKpnqeSbYT0dNXkup
-	 yWX78xvgRb9qpySTkgsleGwkGh9wEZRBDMak6OA+WaDfbYdiqPskGv/MiwX+tikJLJ
-	 bkrmXI5rMxLtrDEKy/vy766PUScDmeg6LkzqXgmY=
+	b=yyGSNxzNOFpXf6bcIiabCBX9DNg3kj1Pbt98MVHtw8Ed2nVfbVrjdZoJZcoHkDQSz
+	 Zs2dJ/7kYBReCFk9tPBuOVaa+dbwC1jFw23V4zuNvlbOZkovFykYFCK58GLRHBYXu9
+	 YctiFqh3m6nezegU+fL3wzin/SsjVWWSgr9YaZ7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ahsan Atta <ahsan.atta@intel.com>,
 	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 093/817] crypto: qat/qat_420xx - fix off by one in uof_get_name()
-Date: Tue,  3 Dec 2024 15:34:25 +0100
-Message-ID: <20241203143959.334535809@linuxfoundation.org>
+Subject: [PATCH 6.11 097/817] crypto: qat - remove faulty arbiter config reset
+Date: Tue,  3 Dec 2024 15:34:29 +0100
+Message-ID: <20241203143959.491426979@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,36 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ahsan Atta <ahsan.atta@intel.com>
 
-[ Upstream commit 93a11608fb3720e1bc2b19a2649ac2b49cca1921 ]
+[ Upstream commit 70199359902f1c7187dcb28a1be679a7081de7cc ]
 
-This is called from uof_get_name_420xx() where "num_objs" is the
-ARRAY_SIZE() of fw_objs[].  The > needs to be >= to prevent an out of
-bounds access.
+Resetting the service arbiter config can cause potential issues
+related to response ordering and ring flow control check in the
+event of AER or device hang. This is because it results in changing
+the default response ring size from 32 bytes to 16 bytes. The service
+arbiter config reset also disables response ring flow control check.
+Thus, by removing this reset we can prevent the service arbiter from
+being configured inappropriately, which leads to undesired device
+behaviour in the event of errors.
 
-Fixes: fcf60f4bcf54 ("crypto: qat - add support for 420xx devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
+Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-index 78f0ea49254db..9faef33e54bd3 100644
---- a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-@@ -375,7 +375,7 @@ static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num,
- 	else
- 		id = -EINVAL;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c b/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
+index 65bd26b25abce..f93d9cca70cee 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
+@@ -90,10 +90,6 @@ void adf_exit_arb(struct adf_accel_dev *accel_dev)
  
--	if (id < 0 || id > num_objs)
-+	if (id < 0 || id >= num_objs)
- 		return NULL;
+ 	hw_data->get_arb_info(&info);
  
- 	return fw_objs[id];
+-	/* Reset arbiter configuration */
+-	for (i = 0; i < ADF_ARB_NUM; i++)
+-		WRITE_CSR_ARB_SARCONFIG(csr, arb_off, i, 0);
+-
+ 	/* Unmap worker threads to service arbiters */
+ 	for (i = 0; i < hw_data->num_engines; i++)
+ 		WRITE_CSR_ARB_WT2SAM(csr, arb_off, wt_off, i, 0);
 -- 
 2.43.0
 
