@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE309E2127
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C901D9E212A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12E5E285F27
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C964286173
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2F81F7584;
-	Tue,  3 Dec 2024 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811701F75A0;
+	Tue,  3 Dec 2024 15:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SurjCit8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQQuRoiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1831F7560;
-	Tue,  3 Dec 2024 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3CA1F7547;
+	Tue,  3 Dec 2024 15:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238459; cv=none; b=dAZaS+CkH/GK7qdNc5vTRa9O9x8UKPqRQFLk9DEHn/4d7tDsxBLi2yJ9+VPZ6TJfsFRlMVZlOUBt7/WRo+f3zPxzfv/EDFW7EK7+YIiqvdUcgVGkaGuLkjHJeldbRgxblwO/Ezf+HLacV7/1p/PMVSd8BYe/k/o/fVY1LpzNQzI=
+	t=1733238465; cv=none; b=fRZYT+KSKz+3s4NXvNpNIzGBhSP5CMGu7tSKt7aKbpXMNXPfa0LuZIuHFf7iDcP9/R9hPhbHhDKphJBfn9zSs+tZ2uC1K4ec+RMOKhLMp9G59dvSUxdrPGKxFyFAQIxdiVmC+xs6TUTMU3RXmvJxnTI1A9AKJe+1R/F/TiZpkn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238459; c=relaxed/simple;
-	bh=FzKHRwArrEtrlS9QW0CDn7BzYiZQbbIXiGq2Hv2Vc6c=;
+	s=arc-20240116; t=1733238465; c=relaxed/simple;
+	bh=a11dov/IHx/T8FK8CUdK+ulG6wex4qFRvw1RgJvKoK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reyRxmjGQQUgT127W6f3nzcZ0a7YpwYb+pUqhVhkvu/1wqyEzi+oD9QaqMFDAnlSGXUevuUCyAQbQBiX1Wlj69s00XwtdmN0P57ofZ0PB30krJTYcMXSsY7JOr/2WZ6MIUgsQ9OtTvJxbJ8ohnLZ7cokDwpaJuV3Y00Q69CgSKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SurjCit8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECECDC4CED6;
-	Tue,  3 Dec 2024 15:07:38 +0000 (UTC)
+	 MIME-Version; b=j1WPp9pVh0AC1IePIh7SgJQatbN6DTvi9UqP/KH5iOxRCzK3KEwd423bZtNbCL57y3lL+vNjz1QBoRhKN3cQYvRJxH7KYAhH4HzGpydx9scvRRifGFUUNda9sasLkZobLNV8GMXfVUzjdkWDG/5VnFVBA8B2D3CJk8cnwfi5Sms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQQuRoiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC81C4CED6;
+	Tue,  3 Dec 2024 15:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238459;
-	bh=FzKHRwArrEtrlS9QW0CDn7BzYiZQbbIXiGq2Hv2Vc6c=;
+	s=korg; t=1733238465;
+	bh=a11dov/IHx/T8FK8CUdK+ulG6wex4qFRvw1RgJvKoK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SurjCit8x3fMPOXVpX8P7fESrw4SLlos8WsrXkJ/9QzuoRq4ev6nlymbqQgavuabw
-	 vsOAgGRJb1PKVvNPBfmLQ5hVL4oMumSDJ5p5OAGcPYZcVWZFmt8tHAAwOjHPi0QAp0
-	 yIMT5pGGJfCXFxL9N98f/A2tuJpObKrD/GphNCpE=
+	b=uQQuRoiGDnIOTVPaGQulg5FQ3Q8AKLjQNWI0Tr/psmRZiShzU2m5zO1gGO52MMLv+
+	 A0vBWOlwIBnuVPZ7SQEIS3GAHsKJzs7xe3esIl1hTTDHv0xl9BbtvccSqGjlMpJh4K
+	 ql1UbvG+wzfy0JO9FYcGg6k45X47VMiZvtKlrPao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 285/817] drm/msm/dpu: drop LM_3 / LM_4 on MSM8998
-Date: Tue,  3 Dec 2024 15:37:37 +0100
-Message-ID: <20241203144006.933995995@linuxfoundation.org>
+Subject: [PATCH 6.11 287/817] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c
+Date: Tue,  3 Dec 2024 15:37:39 +0100
+Message-ID: <20241203144007.012504679@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,47 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit c59afe50773d5c972f6684f9bbd9a2ddb2fb92fa ]
+[ Upstream commit e26f8eac6bb20b20fdb8f7dc695711ebce4c7c5c ]
 
-On the MSM8998 platform ther are no LM_3 and LM_4 blocks. Drop them from
-the MSM8998 catalog.
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Fixes: 94391a14fc27 ("drm/msm/dpu1: Add MSM8998 to hw catalog")
-Reported-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/612585/
-Link: https://lore.kernel.org/r/20240905-dpu-fix-sdm845-catalog-v1-3-3363d03998bd@linaro.org
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h  | 12 ------------
- 1 file changed, 12 deletions(-)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
-index 1d3e9666c7411..64c94e919a698 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
-@@ -156,18 +156,6 @@ static const struct dpu_lm_cfg msm8998_lm[] = {
- 		.sblk = &msm8998_lm_sblk,
- 		.lm_pair = LM_5,
- 		.pingpong = PINGPONG_2,
--	}, {
--		.name = "lm_3", .id = LM_3,
--		.base = 0x47000, .len = 0x320,
--		.features = MIXER_MSM8998_MASK,
--		.sblk = &msm8998_lm_sblk,
--		.pingpong = PINGPONG_NONE,
--	}, {
--		.name = "lm_4", .id = LM_4,
--		.base = 0x48000, .len = 0x320,
--		.features = MIXER_MSM8998_MASK,
--		.sblk = &msm8998_lm_sblk,
--		.pingpong = PINGPONG_NONE,
- 	}, {
- 		.name = "lm_5", .id = LM_5,
- 		.base = 0x49000, .len = 0x320,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 0db62eb0dab3f..09317860e7382 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -343,6 +343,11 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			mutex_unlock(&pfvf->mbox.lock);
++			return;
++		}
++
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
+ 	}
+@@ -1074,6 +1079,11 @@ static int otx2_set_fecparam(struct net_device *netdev,
+ 
+ 	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
+ 						   0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		err = PTR_ERR(rsp);
++		goto end;
++	}
++
+ 	if (rsp->fec >= 0)
+ 		pfvf->linfo.fec = rsp->fec;
+ 	else
 -- 
 2.43.0
 
