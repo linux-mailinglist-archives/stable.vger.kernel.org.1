@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048E99E2605
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8879E2352
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:35:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCAF288C5E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DA6216C527
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C05A23CE;
-	Tue,  3 Dec 2024 16:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B5C1F75BD;
+	Tue,  3 Dec 2024 15:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHDVLfWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQxIZcwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA261E766E;
-	Tue,  3 Dec 2024 16:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27101F7540;
+	Tue,  3 Dec 2024 15:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242073; cv=none; b=G0JKkzeiZwpfFex5ZeJRO6XsJqTVnAnmb2zsamsiHIAp50rMVdRHyoKgwdHyrO3tYgrVBixoRE8tv6kIf+aqY1dRoiOMeDLmT4ow6U7SxQIC4h8Ura+9ZGXZnGD4rRV3SZ2vjXQn+yxFSVPg/YU7L0jQ17/xD9+xlsHJstG4lBI=
+	t=1733239849; cv=none; b=oIDOjYjadTuZS2ffEfH9xV+Ef5HTH4tscF3QKyKnOuIlrg/f7UfAKxQHwrFpVD9Gt/H6SdvYcz78NifreFEEIF66Vtu/cXqhE74pane1cX1d4JSVaSTWbgh+vczcX7jD7HxXz4UmsFafhsa3b/GWXwbSziq98Giee/7eEMqf+ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242073; c=relaxed/simple;
-	bh=AlxRXdag/kHDbSf3MCgL3+/YrJJb9b57V0ZPa6HzsEU=;
+	s=arc-20240116; t=1733239849; c=relaxed/simple;
+	bh=NLWlcCW1BcmkA9YjYd3PzgpGqmfHdykZZ4ViJLNVDHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9qt96JXm6R2j3LVcdN2l2fH5Hbo29f52z+Ry2XgSphOobAoMOkCGw+nOAL5qyp+1h8FNfpSG5cSrkGI8CaAMuQ9pCi/gLcs4mATs1o+dMbYRysrv6GcX/5lWMth8INidb9JlfRusdIkULTisGkaMhLSbPd3BHKeZ2hHLqd8/qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHDVLfWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D89C4CECF;
-	Tue,  3 Dec 2024 16:07:51 +0000 (UTC)
+	 MIME-Version; b=XMKXGwSXaaTq866MUEBOGXSBXiOUlqtNkpHSUmWD2BNj6cTU12X1D+tSYlc7lKpO+h9B/23rS/4HjkT2jGAv9mdeRG1WaYSI66m0biiWkBnAQ8F/wT5gDcPM31RJlEuKLcM7c9VVsN7QRpWHHH5tbM7dJ9B5TkiwCOZwu3JchvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQxIZcwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC19C4CECF;
+	Tue,  3 Dec 2024 15:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242072;
-	bh=AlxRXdag/kHDbSf3MCgL3+/YrJJb9b57V0ZPa6HzsEU=;
+	s=korg; t=1733239849;
+	bh=NLWlcCW1BcmkA9YjYd3PzgpGqmfHdykZZ4ViJLNVDHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHDVLfWVygpFmjZo96gTIlJZFtyYGsEb9cRyoLtT00TK0wwg8eLJ44U6v77wZNmq9
-	 EsiFB5YrtYRwbC+cE+yT7PNo134jIKs7SMK+ujGM5UCgp5837/UVCcHgQvWF9dBpXY
-	 c8o5ZdFp4tM/xLyvltt6eZHxN+FkK1uv2ixcWLz8=
+	b=vQxIZcwvsG1LV9xzOkCePQz6M4kF8jv7JPD08xBtAjuN8od8QLiIcbLtOyCjy2aNq
+	 AmyQ574F+7cVVNDvUheDr0N/Unx7nQxQP8YEIV1nmEsEo8Urxy32scpJRKQvyvd6Tg
+	 pVBUQIO7q6FyYq7yfAweI6FPbTImn3kCaCNghq8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 599/826] iio: backend: fix wrong pointer passed to IS_ERR()
-Date: Tue,  3 Dec 2024 15:45:26 +0100
-Message-ID: <20241203144807.121880903@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Umang Jain <umang.jain@ideasonboard.com>
+Subject: [PATCH 6.11 756/817] staging: vchiq_arm: Fix missing refcount decrement in error path for fw_node
+Date: Tue,  3 Dec 2024 15:45:28 +0100
+Message-ID: <20241203144025.506278859@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit fa4076314480bcb2bb32051027735b1cde07eea2 ]
+commit 22a3703af127e897dc7df89372b85bb9dc331c5f upstream.
 
-It should be fwnode_back passed to IS_ERR().
+An error path was introduced without including the required call to
+of_node_put() to decrement the node's refcount and avoid leaking memory.
+If the call to kzalloc() for 'mgmt' fails, the probe returns without
+decrementing the refcount.
 
-Fixes: c464cc610f51 ("iio: add child nodes support in iio backend framework")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://patch.msgid.link/20241028135215.1549-1-yangyingliang@huaweicloud.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use the automatic cleanup facility to fix the bug and protect the code
+against new error paths where the call to of_node_put() might be missing
+again.
+
+Cc: stable@vger.kernel.org
+Fixes: 1c9e16b73166 ("staging: vc04_services: vchiq_arm: Split driver static and runtime data")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241014-vchiq_arm-of_node_put-v2-2-cafe0a4c2666@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-backend.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index 20b3b5212da76..fb34a8e4d04e7 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -737,8 +737,8 @@ static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, con
- 	}
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1715,7 +1715,6 @@ MODULE_DEVICE_TABLE(of, vchiq_of_match);
  
- 	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
--	if (IS_ERR(fwnode))
--		return dev_err_cast_probe(dev, fwnode,
-+	if (IS_ERR(fwnode_back))
-+		return dev_err_cast_probe(dev, fwnode_back,
- 					  "Cannot get Firmware reference\n");
+ static int vchiq_probe(struct platform_device *pdev)
+ {
+-	struct device_node *fw_node;
+ 	const struct vchiq_platform_info *info;
+ 	struct vchiq_drv_mgmt *mgmt;
+ 	int ret;
+@@ -1724,8 +1723,8 @@ static int vchiq_probe(struct platform_d
+ 	if (!info)
+ 		return -EINVAL;
  
- 	guard(mutex)(&iio_back_lock);
--- 
-2.43.0
-
+-	fw_node = of_find_compatible_node(NULL, NULL,
+-					  "raspberrypi,bcm2835-firmware");
++	struct device_node *fw_node __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "raspberrypi,bcm2835-firmware");
+ 	if (!fw_node) {
+ 		dev_err(&pdev->dev, "Missing firmware node\n");
+ 		return -ENOENT;
+@@ -1736,7 +1735,6 @@ static int vchiq_probe(struct platform_d
+ 		return -ENOMEM;
+ 
+ 	mgmt->fw = devm_rpi_firmware_get(&pdev->dev, fw_node);
+-	of_node_put(fw_node);
+ 	if (!mgmt->fw)
+ 		return -EPROBE_DEFER;
+ 
 
 
 
