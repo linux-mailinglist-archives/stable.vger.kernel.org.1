@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DFB9E24D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9E79E238E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AB13287606
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4982B8016D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89551F890C;
-	Tue,  3 Dec 2024 15:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480C71F4707;
+	Tue,  3 Dec 2024 15:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbm0CDae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eot1/g0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B381F8905;
-	Tue,  3 Dec 2024 15:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C61DA3D;
+	Tue,  3 Dec 2024 15:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241148; cv=none; b=VQSRHnGjEQcb1/kvXOGmMU/bHH7O26Qi01IrE36wM1XGd8KRQYwOVUJdKr3f3TZB/13Iod/UxJQbF19YMdPuIf5mtEUhwpdFRXaoHN7XAct+yV+UNyiVebyS72m9wi7SA5Pwkbk0r8vmdU/OKnQZD+NmVt7/00alSsqkXGSGwsM=
+	t=1733239077; cv=none; b=GeEwec7DkEx2EYTZ9k0fG78gNiEssDNva68RPcEZb4OWKotlMx/d0SMhhGHgx7hvkmNdN3V5f+jhvP0+qH1idGwqUhOxT5+NxpXvMHAliQF1EbwEIm2vvmD7kkGFZcaadY/bxnKATIZq9FEAYI+dzc3niaFjHc6njXsX2JTJAsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241148; c=relaxed/simple;
-	bh=KHLYNXih0jjZNOLMFby5rPpqJlBEBpbhu71JJNqj1X0=;
+	s=arc-20240116; t=1733239077; c=relaxed/simple;
+	bh=IsrTh9vX1eb1GNYZok50NonL6/OihAWu092pH2AqMxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImWthH62PeTWL6QIJsaUDkJlbzPf1LlfAnSTqvoHEXRDVqTwsS3DP2fUf7TK9h9xFveMcVXw5pRurBrZJ+azjt3QIY82MVql0yP429Fpw3U4QX5lGvoAGrObCzuGX+9QlBeiEoqha2O+zrGfpxij1tBkjfAQO9szztezDSNq6Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbm0CDae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8DAC4CECF;
-	Tue,  3 Dec 2024 15:52:27 +0000 (UTC)
+	 MIME-Version; b=J4NVLi2rO9p3HAWJOqWxaFUMkgNG7UqZ/pRgMZPTSmN1OH4sMHmJsS98F2pwa2FbFB1okr+DLqOIrLyNS90WeUAzO+X0LtCfxlktkfmlG/3LFxAlvifZ9lhoF0wPzQnBvyuVPGKEIvqydHWx5pO7qBe7tsTjP4a6LLNah2vJChk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eot1/g0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE48C4CECF;
+	Tue,  3 Dec 2024 15:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241148;
-	bh=KHLYNXih0jjZNOLMFby5rPpqJlBEBpbhu71JJNqj1X0=;
+	s=korg; t=1733239076;
+	bh=IsrTh9vX1eb1GNYZok50NonL6/OihAWu092pH2AqMxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbm0CDaeVT8D2MyT5zsQ9bYh2VyCTiC/2lDDoR8wI6nvoBQxXFOI2QrjGlqsNlgdH
-	 IOEAAzHQT7F6RwGWhe4URmnOAniRYRV4/KEvJA+zWWF+KGttp3xkTip4MGkwRUmPUc
-	 l61BEzmhia8kNSjBF+6Nfcjnd17vD4DZukv31thQ=
+	b=Eot1/g0K8+LtFa/FBdmPJ8fJDDBmsLhG6vRHaAFrD43/z0cGGyjNoLbtGzUXkO+bY
+	 m9nOHf7chwdEZM9DRGE11EPpIV7+2nTYIDCxUVAWsmwODKb6LuFLXSqJUfeWxUIgE/
+	 AOo2hPCTtcRdr2cgmdhP7/zXthpAdxzpsf4FMjfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 338/826] Bluetooth: btintel: Do no pass vendor events to stack
-Date: Tue,  3 Dec 2024 15:41:05 +0100
-Message-ID: <20241203144756.947407127@linuxfoundation.org>
+Subject: [PATCH 6.11 494/817] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
+Date: Tue,  3 Dec 2024 15:41:06 +0100
+Message-ID: <20241203144015.156689750@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 510e8380b0382ee3b070748656b00f83c9a5bf80 ]
+[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
 
-During firmware download, vendor specific events like boot up and
-secure send result are generated. These events can be safely processed at
-the driver level. Passing on these events to stack prints unnecessary
-log as below.
+There's issue as follows when concurrently installing the f2fs.ko
+module and mounting the f2fs file system:
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
+Call Trace:
+ <TASK>
+ f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
+ __get_meta_page+0x1d4/0x920 [f2fs]
+ get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
+ validate_checkpoint+0xac/0x290 [f2fs]
+ f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
+ f2fs_fill_super+0x1007/0x39b0 [f2fs]
+ mount_bdev+0x183/0x250
+ legacy_get_tree+0xf4/0x1e0
+ vfs_get_tree+0x88/0x340
+ do_new_mount+0x283/0x5e0
+ path_mount+0x2b2/0x15b0
+ __x64_sys_mount+0x1fe/0x270
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-    Bluetooth: hci0: Malformed MSFT vendor event: 0x02
+Above issue happens as the biset of the f2fs file system is not
+initialized before register "f2fs_fs_type".
+To address above issue just register "f2fs_fs_type" at the last in
+init_f2fs_fs(). Ensure that all f2fs file system resources are
+initialized.
 
-Fixes: 3368aa357f3b ("Bluetooth: msft: Handle MSFT Monitor Device Event")
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: f543805fcd60 ("f2fs: introduce private bioset")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c      | 6 ++++--
- drivers/bluetooth/btintel_pcie.c | 9 ++++++---
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ fs/f2fs/super.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 4b17202075b00..645047fb92fd2 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -3368,7 +3368,8 @@ int btintel_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 				 * indicating that the bootup completed.
- 				 */
- 				btintel_bootup(hdev, ptr, len);
--				break;
-+				kfree_skb(skb);
-+				return 0;
- 			case 0x06:
- 				/* When the firmware loading completes the
- 				 * device sends out a vendor specific event
-@@ -3376,7 +3377,8 @@ int btintel_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 				 * loading.
- 				 */
- 				btintel_secure_send_result(hdev, ptr, len);
--				break;
-+				kfree_skb(skb);
-+				return 0;
- 			}
- 		}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 0f6e2b3f6a4c5..615ca1f0ef59b 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4972,9 +4972,6 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_init_shrinker();
+ 	if (err)
+ 		goto free_sysfs;
+-	err = register_filesystem(&f2fs_fs_type);
+-	if (err)
+-		goto free_shrinker;
+ 	f2fs_create_root_stats();
+ 	err = f2fs_init_post_read_processing();
+ 	if (err)
+@@ -4997,7 +4994,12 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_casefold_cache;
+ 	return 0;
++free_casefold_cache:
++	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+ 	f2fs_destroy_compress_cache();
+ free_compress_mempool:
+@@ -5012,8 +5014,6 @@ static int __init init_f2fs_fs(void)
+ 	f2fs_destroy_post_read_processing();
+ free_root_stats:
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+-free_shrinker:
+ 	f2fs_exit_shrinker();
+ free_sysfs:
+ 	f2fs_exit_sysfs();
+@@ -5037,6 +5037,7 @@ static int __init init_f2fs_fs(void)
  
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 16ee962d40861..8bd663f4bac1b 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -536,7 +536,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 				if (btintel_pcie_in_op(data)) {
- 					btintel_pcie_wr_sleep_cntrl(data, BTINTEL_PCIE_STATE_D0);
- 					data->alive_intr_ctxt = BTINTEL_PCIE_INTEL_HCI_RESET2;
--					break;
-+					kfree_skb(skb);
-+					return 0;
- 				}
- 
- 				if (btintel_pcie_in_iml(data)) {
-@@ -553,7 +554,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 						btintel_wake_up_flag(data->hdev,
- 								     INTEL_WAIT_FOR_D0);
- 				}
--				break;
-+				kfree_skb(skb);
-+				return 0;
- 			case 0x06:
- 				/* When the firmware loading completes the
- 				 * device sends out a vendor specific event
-@@ -561,7 +563,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 				 * loading.
- 				 */
- 				btintel_secure_send_result(hdev, ptr, len);
--				break;
-+				kfree_skb(skb);
-+				return 0;
- 			}
- 		}
- 
+ static void __exit exit_f2fs_fs(void)
+ {
++	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+@@ -5045,7 +5046,6 @@ static void __exit exit_f2fs_fs(void)
+ 	f2fs_destroy_iostat_processing();
+ 	f2fs_destroy_post_read_processing();
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_exit_shrinker();
+ 	f2fs_exit_sysfs();
+ 	f2fs_destroy_garbage_collection_cache();
 -- 
 2.43.0
 
