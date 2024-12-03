@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-97355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68E39E23CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE719E23B0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB942874D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D19285A17
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BE8205AD0;
-	Tue,  3 Dec 2024 15:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E49E1FE444;
+	Tue,  3 Dec 2024 15:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GL81Q+bc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABm9Pqnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23D204F84;
-	Tue,  3 Dec 2024 15:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0681FCF41;
+	Tue,  3 Dec 2024 15:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240246; cv=none; b=e7v5/Z3rS6KCR3oOASn1Y5k7iSMzs937v6zmC8FNgb3XHsRL7EwbJs0qk5Iv52kWvqdBaRvWJEKTAIvTuj/ZaWHG9fgzoFtgPhJbwQOSlqbzfOFmU41syLLcfO8L81sYpEyUw5CV+PWDmP8WAhwMni81poCM1H4hrSQfn8/YdTs=
+	t=1733240151; cv=none; b=Hb+nFfQTHCrFcvKvwin0z1UDjNsiQVeRw13hMtzzOg9vijNqhLljBZSy/5R3tYkIKc6bco2X8EYxvF/M28Rf9UDD/T3sVUzSgl/DSvtDC8b1qO+uZBBesmqtn1huW4Lc/A39Yd9+lKJAVZ76zW/ea1+c+q5KQEQOBIaOXrg2/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240246; c=relaxed/simple;
-	bh=aOue+mhFXTb0ZsrGbKxmnrDIlIQjRhZN5B+qbvGfQk4=;
+	s=arc-20240116; t=1733240151; c=relaxed/simple;
+	bh=e+UwYOZIK4HcUXo5zsI1wD/35ca+H0sgJ/OH7B85+zY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPhI6V5jPCZ/BFbyuSMUAewmSNgrf5j2xM6KyDCk/vY32IGt7mGXUATI1JjPnTF2EzwvwbGLjSOSlYFiLeUCSO8TavDt8k7z8fq7aNYGIRVu9zUdvIwkXDITFtbWJgQsMvP1oTUoSqcNMKOGL2eKOqHhijLFvxjJic//SHP3zAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GL81Q+bc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC56C4CECF;
-	Tue,  3 Dec 2024 15:37:25 +0000 (UTC)
+	 MIME-Version; b=rUafvzK1NROHFX5r8twq7FKqM+Ye2Q02D3LoDLIK50U+xT3UAuc4bJJbGjP4Q+/r7wdv/wiVkNjvDbbZMvuYjisz93cPQthzU0wQvGQt7FKcoE9cXlE1rc/kQZ7isUYc5habutYFnOxSo/cB+QfD5B7CGRJLJd3ZEDGYf+LW8zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABm9Pqnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EFBC4CECF;
+	Tue,  3 Dec 2024 15:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240246;
-	bh=aOue+mhFXTb0ZsrGbKxmnrDIlIQjRhZN5B+qbvGfQk4=;
+	s=korg; t=1733240151;
+	bh=e+UwYOZIK4HcUXo5zsI1wD/35ca+H0sgJ/OH7B85+zY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GL81Q+bcEzAhOC3aEB6VQZVUSM15S0Ac6Yiw6HSY8rMKMeKeP/eSKmkhaHluBjyCZ
-	 a3hy4RYA36NiWpdxk5X82Ksb6EhEPmItdqTG4jr+UDdB5jQ2oEeA9bKaZzZoDDb4QR
-	 EKxoqvou0mnSu5ZTGD8nW7pA+1UHZWM5EYSGcNIM=
+	b=ABm9Pqnu5eS5MOGIUvD2yESZ5BuPJDvdzWChThStb+fbQp5z0Dzs+n6yA/1fhupE/
+	 xqXy14yMU69qvkblGKyTqVHyW/tE0odPsI3dIOarNDp0Spv/enezgAQmDzp7SKRn7w
+	 QSw46X6JutgpXp1m2JBPWBNM12xhY+wmw0jnF6hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/826] netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
-Date: Tue,  3 Dec 2024 15:35:59 +0100
-Message-ID: <20241203144744.711400036@linuxfoundation.org>
+Subject: [PATCH 6.12 033/826] block: take chunk_sectors into account in bio_split_write_zeroes
+Date: Tue,  3 Dec 2024 15:36:00 +0100
+Message-ID: <20241203144744.751359547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,65 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 22f9400a6f3560629478e0a64247b8fcc811a24d ]
+[ Upstream commit 60dc5ea6bcfd078b71419640d49afa649acf9450 ]
 
-In fscache_create_volume(), there is a missing memory barrier between the
-bit-clearing operation and the wake-up operation. This may cause a
-situation where, after a wake-up, the bit-clearing operation hasn't been
-detected yet, leading to an indefinite wait. The triggering process is as
-follows:
+For zoned devices, write zeroes must be split at the zone boundary
+which is represented as chunk_sectors.  For other uses like the
+internally RAIDed NVMe devices it is probably at least useful.
 
-  [cookie1]                [cookie2]                  [volume_work]
-fscache_perform_lookup
-  fscache_create_volume
-                        fscache_perform_lookup
-                          fscache_create_volume
-			                        fscache_create_volume_work
-                                                  cachefiles_acquire_volume
-                                                  clear_and_wake_up_bit
-    test_and_set_bit
-                            test_and_set_bit
-                              goto maybe_wait
-      goto no_wait
+Enhance get_max_io_size to know about write zeroes and use it in
+bio_split_write_zeroes.  Also add a comment about the seemingly
+nonsensical zero max_write_zeroes limit.
 
-In the above process, cookie1 and cookie2 has the same volume. When cookie1
-enters the -no_wait- process, it will clear the bit and wake up the waiting
-process. If a barrier is missing, it may cause cookie2 to remain in the
--wait- process indefinitely.
-
-In commit 3288666c7256 ("fscache: Use clear_and_wake_up_bit() in
-fscache_create_volume_work()"), barriers were added to similar operations
-in fscache_create_volume_work(), but fscache_create_volume() was missed.
-
-By combining the clear and wake operations into clear_and_wake_up_bit() to
-fix this issue.
-
-Fixes: bfa22da3ed65 ("fscache: Provide and use cache methods to lookup/create/free a volume")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-6-wozizhi@huawei.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 885fa13f6559 ("block: implement splitting of REQ_OP_WRITE_ZEROES bios")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20241104062647.91160-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/fscache_volume.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ block/blk-merge.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/fs/netfs/fscache_volume.c b/fs/netfs/fscache_volume.c
-index cb75c07b5281a..ced14ac78cc1c 100644
---- a/fs/netfs/fscache_volume.c
-+++ b/fs/netfs/fscache_volume.c
-@@ -322,8 +322,7 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait)
- 	}
- 	return;
- no_wait:
--	clear_bit_unlock(FSCACHE_VOLUME_CREATING, &volume->flags);
--	wake_up_bit(&volume->flags, FSCACHE_VOLUME_CREATING);
-+	clear_and_wake_up_bit(FSCACHE_VOLUME_CREATING, &volume->flags);
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index ad763ec313b6a..75d2461b69e40 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -166,17 +166,6 @@ struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
+ 	return bio_submit_split(bio, split_sectors);
  }
  
- /*
+-struct bio *bio_split_write_zeroes(struct bio *bio,
+-		const struct queue_limits *lim, unsigned *nsegs)
+-{
+-	*nsegs = 0;
+-	if (!lim->max_write_zeroes_sectors)
+-		return bio;
+-	if (bio_sectors(bio) <= lim->max_write_zeroes_sectors)
+-		return bio;
+-	return bio_submit_split(bio, lim->max_write_zeroes_sectors);
+-}
+-
+ static inline unsigned int blk_boundary_sectors(const struct queue_limits *lim,
+ 						bool is_atomic)
+ {
+@@ -211,7 +200,9 @@ static inline unsigned get_max_io_size(struct bio *bio,
+ 	 * We ignore lim->max_sectors for atomic writes because it may less
+ 	 * than the actual bio size, which we cannot tolerate.
+ 	 */
+-	if (is_atomic)
++	if (bio_op(bio) == REQ_OP_WRITE_ZEROES)
++		max_sectors = lim->max_write_zeroes_sectors;
++	else if (is_atomic)
+ 		max_sectors = lim->atomic_write_max_sectors;
+ 	else
+ 		max_sectors = lim->max_sectors;
+@@ -398,6 +389,26 @@ struct bio *bio_split_zone_append(struct bio *bio,
+ 	return bio_submit_split(bio, split_sectors);
+ }
+ 
++struct bio *bio_split_write_zeroes(struct bio *bio,
++		const struct queue_limits *lim, unsigned *nsegs)
++{
++	unsigned int max_sectors = get_max_io_size(bio, lim);
++
++	*nsegs = 0;
++
++	/*
++	 * An unset limit should normally not happen, as bio submission is keyed
++	 * off having a non-zero limit.  But SCSI can clear the limit in the
++	 * I/O completion handler, and we can race and see this.  Splitting to a
++	 * zero limit obviously doesn't make sense, so band-aid it here.
++	 */
++	if (!max_sectors)
++		return bio;
++	if (bio_sectors(bio) <= max_sectors)
++		return bio;
++	return bio_submit_split(bio, max_sectors);
++}
++
+ /**
+  * bio_split_to_limits - split a bio to fit the queue limits
+  * @bio:     bio to be split
 -- 
 2.43.0
 
