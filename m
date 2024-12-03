@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-96490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB029E2025
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9239E2027
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F9A2892D7
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD2F165570
 	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23EC1F7562;
-	Tue,  3 Dec 2024 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3714B1F756A;
+	Tue,  3 Dec 2024 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvLrg8p9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8xsq66/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7901EF093;
-	Tue,  3 Dec 2024 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77B61F7560;
+	Tue,  3 Dec 2024 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237666; cv=none; b=e2nAXh2vS7PhqwLQM+CIE2qQQGABfQXE0ctZiMDImOa16LDmzjE/zzN9aL55iKaDEN3BcMC8qyHY/l9b2zAfuuhH8b/0I0NHoGYiNlNVqp7GKecGKkKHsoZuCR/+GXTB7K/SYSO/y6gnCr1XmXajaFJ5T1vhDMHU4nJMZLUtfF8=
+	t=1733237673; cv=none; b=tqQkyO6bTTBbDmLXDlvz7FLxrY9Jc9tBo0qOsbXjOAyNUYBDZRbaubFE1/ik5GNL8OkPIJFss4x7dNGtp84TJoKDA9xYmghVEZPwmkfBuFv8YK7NkQSPK2tIbdro0i/ECTnIYKBKt138ffb1X3v3cH0nyHOs4mPXE341AgJoRw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237666; c=relaxed/simple;
-	bh=bpNe5wQtMgSPqieczrCme/kEb/2nq0I5pEkMKyoxIIQ=;
+	s=arc-20240116; t=1733237673; c=relaxed/simple;
+	bh=SQwf3q//4/jXG9fRSDzq2m2sJM1ZKyB5B3r2bTXq0uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUVhxJ/9xO8zoh4SK3YEvf6BxL/V1S/79suodf+f7EtrkUc3gUrDQuIb9cB1dWtao/JBrZL2AA7dK8brgImBdYKtjcCDmY/luHUEeMj0fchPn3MKpMLuo1IFAaq5MBXvv/czGAFli0BzgY84DwpR/0aG6O437iaIPTStR9lhdGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvLrg8p9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78F8C4CECF;
-	Tue,  3 Dec 2024 14:54:25 +0000 (UTC)
+	 MIME-Version; b=anEhVPy4sC7L9YUWeaV03nP4cTys1au3fV7ZnrzN/O7jo0nEEaxDDXg19KCKNlAOT9ahqcFj8MWe8r2wo0xBZlYkbgel29ArG7zorvjXlaXs8f6ecId60iEWJ4IvjBD8uLwrf122AewU3mmBYG9wmMHrRAhDruWs55Yis3w67dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8xsq66/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB534C4CECF;
+	Tue,  3 Dec 2024 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237666;
-	bh=bpNe5wQtMgSPqieczrCme/kEb/2nq0I5pEkMKyoxIIQ=;
+	s=korg; t=1733237672;
+	bh=SQwf3q//4/jXG9fRSDzq2m2sJM1ZKyB5B3r2bTXq0uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvLrg8p9FfHjcfpO+qVN2Xu5kqMpHmw+0s8pJ5wgMylAWxGkn/M9hWs71EJ3O+pTZ
-	 W8TJy+CucPJYjdlr6v8BONshH+8WyNbmDP0OcJdDYRwuzC6+eidAl0svzG+OLQYJmL
-	 QwdC1oihaGtqe545o2INMlvls990diAPisN+b+fI=
+	b=v8xsq66/fXeJ4BZj1yCRgnOgYNQJl/jZBfTZZC6OuvayLHK9YTbLhkWr9h8+RU0Uf
+	 wvvM5tqh3iG8mJrpRCV605LN31h2v54eFQ3u5SAHpXeVORjjIeDZIK1m1XYzxafbNF
+	 PvjEqx4gACQFPTgmc3ouVS8Fydsuhjew+V4q1Wt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 006/817] ASoC: codecs: rt5640: Always disable IRQs from rt5640_cancel_work()
-Date: Tue,  3 Dec 2024 15:32:58 +0100
-Message-ID: <20241203143955.873002905@linuxfoundation.org>
+Subject: [PATCH 6.11 008/817] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+Date: Tue,  3 Dec 2024 15:33:00 +0100
+Message-ID: <20241203143955.954916925@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,100 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 032532f91a1d06d0750f16c49a9698ef5374a68f ]
+[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
 
-Disable IRQs from rt5640_cancel_work(), this fixes a crash caused by
-the IRQ never getting freed when the driver is unbound from the i2c_client
-with jack-detection active:
+The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
+but as happens on more models it is using IN1 instead of IN3 for
+its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
+for jack-detection.
 
-[  193.138780] rt5640 i2c-rt5640: ASoC: unknown pin LDO2
-[  193.138830] rt5640 i2c-rt5640: ASoC: unknown pin MICBIAS1
-[  193.671218] BUG: kernel NULL pointer dereference, address: 0000000000000078
-[  193.671239] #PF: supervisor read access in kernel mode
-[  193.671248] #PF: error_code(0x0000) - not-present page
-...
-[  193.671531]  ? asm_exc_page_fault+0x22/0x30
-[  193.671551]  ? rt5640_jack_inserted+0x10/0x80 [snd_soc_rt5640]
-[  193.671574]  rt5640_detect_headset+0x93/0x130 [snd_soc_rt5640]
-[  193.671596]  rt5640_jack_work+0x93/0x355 [snd_soc_rt5640]
+Add a DMI quirk for this to fix the internal-mic and jack-detection.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024215612.92147-1-hdegoede@redhat.com
+Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 16f3425a3e35c..855139348edb4 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2419,10 +2419,20 @@ static irqreturn_t rt5640_jd_gpio_irq(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--static void rt5640_cancel_work(void *data)
-+static void rt5640_disable_irq_and_cancel_work(void *data)
- {
- 	struct rt5640_priv *rt5640 = data;
- 
-+	if (rt5640->jd_gpio_irq_requested) {
-+		free_irq(rt5640->jd_gpio_irq, rt5640);
-+		rt5640->jd_gpio_irq_requested = false;
-+	}
-+
-+	if (rt5640->irq_requested) {
-+		free_irq(rt5640->irq, rt5640);
-+		rt5640->irq_requested = false;
-+	}
-+
- 	cancel_delayed_work_sync(&rt5640->jack_work);
- 	cancel_delayed_work_sync(&rt5640->bp_work);
- }
-@@ -2463,13 +2473,7 @@ static void rt5640_disable_jack_detect(struct snd_soc_component *component)
- 	if (!rt5640->jack)
- 		return;
- 
--	if (rt5640->jd_gpio_irq_requested)
--		free_irq(rt5640->jd_gpio_irq, rt5640);
--
--	if (rt5640->irq_requested)
--		free_irq(rt5640->irq, rt5640);
--
--	rt5640_cancel_work(rt5640);
-+	rt5640_disable_irq_and_cancel_work(rt5640);
- 
- 	if (rt5640->jack->status & SND_JACK_MICROPHONE) {
- 		rt5640_disable_micbias1_ovcd_irq(component);
-@@ -2477,8 +2481,6 @@ static void rt5640_disable_jack_detect(struct snd_soc_component *component)
- 		snd_soc_jack_report(rt5640->jack, 0, SND_JACK_BTN_0);
- 	}
- 
--	rt5640->jd_gpio_irq_requested = false;
--	rt5640->irq_requested = false;
- 	rt5640->jd_gpio = NULL;
- 	rt5640->jack = NULL;
- }
-@@ -2798,7 +2800,8 @@ static int rt5640_suspend(struct snd_soc_component *component)
- 	if (rt5640->jack) {
- 		/* disable jack interrupts during system suspend */
- 		disable_irq(rt5640->irq);
--		rt5640_cancel_work(rt5640);
-+		cancel_delayed_work_sync(&rt5640->jack_work);
-+		cancel_delayed_work_sync(&rt5640->bp_work);
- 	}
- 
- 	snd_soc_component_force_bias_level(component, SND_SOC_BIAS_OFF);
-@@ -3032,7 +3035,7 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
- 	INIT_DELAYED_WORK(&rt5640->jack_work, rt5640_jack_work);
- 
- 	/* Make sure work is stopped on probe-error / remove */
--	ret = devm_add_action_or_reset(&i2c->dev, rt5640_cancel_work, rt5640);
-+	ret = devm_add_action_or_reset(&i2c->dev, rt5640_disable_irq_and_cancel_work, rt5640);
- 	if (ret)
- 		return ret;
- 
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index ba4293ae7c24f..2e786836588fb 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1132,6 +1132,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Vexia Edu Atla 10 tablet */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Voyo Winpad A15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
 -- 
 2.43.0
 
