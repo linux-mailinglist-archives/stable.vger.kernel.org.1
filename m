@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6DB9E22B2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ADF9E25C2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E605D28655A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70FE2888C0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9752F1F7550;
-	Tue,  3 Dec 2024 15:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B2B1F76BF;
+	Tue,  3 Dec 2024 16:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IgKU+75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bunTEEOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5544E646;
-	Tue,  3 Dec 2024 15:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C211DE8A5;
+	Tue,  3 Dec 2024 16:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239678; cv=none; b=ekyDsa+Mh+6ID5FO7qgTZcByozvTK9Uig3MhBHL3SydX23cyYJ1hHUVzBVWHwTbCprWMVA+rIW4M3f/1Ynu+h7eGwExNQ6yoVnKDFWZ0CI/85EIpo8EP4kp5yJHOVx8vc7xAfbPDsqomKRvEnenXVdQBF9tuRmAOqaaVan50G2E=
+	t=1733241878; cv=none; b=kA9jOvsOE9ninxfcfGtC04YqX65Srmu4OQ/GlzHmSNmruL3vRp+qC1f7vmL5HGO7DUsNQYYADPxplXBwyj14eS2HE9X1CE7HzJzIa+7QLo66rEKlKSiariKXejT4sJuQjYl85p9nHyr3dmU4AbPK5ZoIXmiQoiXrIy/3+NzrQwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239678; c=relaxed/simple;
-	bh=04xIX9LovVNxuiEQLtxStMjdoEVIeSic7Vi60g5lyzA=;
+	s=arc-20240116; t=1733241878; c=relaxed/simple;
+	bh=K4X/61PgwI7fJdet9Gn3GzPVNPHQZ/3siF7ARNCFSQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9sDSg/+fIiITcyM9BlGQqoh5gZSIlyLIL+9A/zBrmTzeRo0nK0bB2Xze6KfQjjY5DaEKGtvYVrQh3yHIbrG5BesnfkrfbXl1MqVXK7QAuT/MkA3chBd1oZQWDOaoIJ/zCIBXWjvmJZ8mMIEEmyDOlxNcES5+MZhGMIaLNa13fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IgKU+75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43C4C4CECF;
-	Tue,  3 Dec 2024 15:27:57 +0000 (UTC)
+	 MIME-Version; b=n45rvCRTBRXSIrAcC2E4mPBVtTOQUz8Zke00PxS0ICnGSJ+xuQ8VAAHxsGSSTm+2+4bsfP5hQmqGtOq5ltF6sO9dHI0lOUw4HwLK4TxE+PiUuUV5rSCvy3/i0PxRy/uL2V8Z9yKTKvovLGNQ3EYWshEMncMJc9NXSmrSJMRTHiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bunTEEOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7443C4CECF;
+	Tue,  3 Dec 2024 16:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239678;
-	bh=04xIX9LovVNxuiEQLtxStMjdoEVIeSic7Vi60g5lyzA=;
+	s=korg; t=1733241878;
+	bh=K4X/61PgwI7fJdet9Gn3GzPVNPHQZ/3siF7ARNCFSQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2IgKU+75Kxc9+EmQcrayGRW+BogUxKyjvEaC2gzL5+TIEbs29iNUIh2tSUrOG3JYj
-	 G9JphuRx+EBXypUQkpWLLGqLlGCOIsywT/cUD4AMmnAxQs1yDKipDI6v47thntP8bl
-	 xXUZIrbNcSdPRa09NJdip7nR8gYdsDwVnYxaUFII=
+	b=bunTEEOyyYZaXFk7pS43scux50LrDH7o0XaZKJkQ4Nbet+JUDEW+wl9AzQ+C6WTBS
+	 S45YySZfX4COPohAB6HFYw/O56cSgSV66cD+HuOSGk5yaVZLGVC1mSCe8L55sbdhnw
+	 Lm9UfBR3Ib9HWGcOgkTisAK4KG7zljCL7/CNSJsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew McClain <mmcclain@noprivs.com>,
-	Sai Kumar Cholleti <skmr537@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.11 696/817] gpio: exar: set value when external pull-up or pull-down is present
+	Yishai Hadas <yishaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 541/826] vfio/mlx5: Fix unwind flows in mlx5vf_pci_save/resume_device_data()
 Date: Tue,  3 Dec 2024 15:44:28 +0100
-Message-ID: <20241203144023.144648738@linuxfoundation.org>
+Message-ID: <20241203144804.856848377@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Kumar Cholleti <skmr537@gmail.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-commit 72cef64180de04a7b055b4773c138d78f4ebdb77 upstream.
+[ Upstream commit cb04444c243c001fc27f275e84792ff1c2b96867 ]
 
-Setting GPIO direction = high, sometimes results in GPIO value = 0.
+Fix unwind flows in mlx5vf_pci_save_device_data() and
+mlx5vf_pci_resume_device_data() to avoid freeing the migf pointer at the
+'end' label, as this will be handled by fput(migf->filp) through
+mlx5vf_release_file().
 
-If a GPIO is pulled high, the following construction results in the
-value being 0 when the desired value is 1:
+To ensure mlx5vf_release_file() functions correctly, move the
+initialization of migf fields (such as migf->lock) to occur before any
+potential unwind flow, as these fields may be accessed within
+mlx5vf_release_file().
 
-$ echo "high" > /sys/class/gpio/gpio336/direction
-$ cat /sys/class/gpio/gpio336/value
-0
-
-Before the GPIO direction is changed from an input to an output,
-exar_set_value() is called with value = 1, but since the GPIO is an
-input when exar_set_value() is called, _regmap_update_bits() reads a 1
-due to an external pull-up.  regmap_set_bits() sets force_write =
-false, so the value (1) is not written.  When the direction is then
-changed, the GPIO becomes an output with the value of 0 (the hardware
-default).
-
-regmap_write_bits() sets force_write = true, so the value is always
-written by exar_set_value() and an external pull-up doesn't affect the
-outcome of setting direction = high.
-
-The same can happen when a GPIO is pulled low, but the scenario is a
-little more complicated.
-
-$ echo high > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-$ echo in > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-0
-
-$ echo low > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-Fixes: 36fb7218e878 ("gpio: exar: switch to using regmap")
-Co-developed-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Sai Kumar Cholleti <skmr537@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241105071523.2372032-1-skmr537@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9945a67ea4b3 ("vfio/mlx5: Refactor PD usage")
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241114095318.16556-3-yishaih@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-exar.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/vfio/pci/mlx5/main.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
---- a/drivers/gpio/gpio-exar.c
-+++ b/drivers/gpio/gpio-exar.c
-@@ -99,11 +99,13 @@ static void exar_set_value(struct gpio_c
- 	struct exar_gpio_chip *exar_gpio = gpiochip_get_data(chip);
- 	unsigned int addr = exar_offset_to_lvl_addr(exar_gpio, offset);
- 	unsigned int bit = exar_offset_to_bit(exar_gpio, offset);
-+	unsigned int bit_value = value ? BIT(bit) : 0;
+diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
+index 242c23eef452e..8833e60d42f56 100644
+--- a/drivers/vfio/pci/mlx5/main.c
++++ b/drivers/vfio/pci/mlx5/main.c
+@@ -640,14 +640,11 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
+ 					O_RDONLY);
+ 	if (IS_ERR(migf->filp)) {
+ 		ret = PTR_ERR(migf->filp);
+-		goto end;
++		kfree(migf);
++		return ERR_PTR(ret);
+ 	}
  
--	if (value)
--		regmap_set_bits(exar_gpio->regmap, addr, BIT(bit));
--	else
--		regmap_clear_bits(exar_gpio->regmap, addr, BIT(bit));
-+	/*
-+	 * regmap_write_bits() forces value to be written when an external
-+	 * pull up/down might otherwise indicate value was already set.
-+	 */
-+	regmap_write_bits(exar_gpio->regmap, addr, BIT(bit), bit_value);
+ 	migf->mvdev = mvdev;
+-	ret = mlx5vf_cmd_alloc_pd(migf);
+-	if (ret)
+-		goto out_free;
+-
+ 	stream_open(migf->filp->f_inode, migf->filp);
+ 	mutex_init(&migf->lock);
+ 	init_waitqueue_head(&migf->poll_wait);
+@@ -663,6 +660,11 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
+ 	INIT_LIST_HEAD(&migf->buf_list);
+ 	INIT_LIST_HEAD(&migf->avail_list);
+ 	spin_lock_init(&migf->list_lock);
++
++	ret = mlx5vf_cmd_alloc_pd(migf);
++	if (ret)
++		goto out;
++
+ 	ret = mlx5vf_cmd_query_vhca_migration_state(mvdev, &length, &full_size, 0);
+ 	if (ret)
+ 		goto out_pd;
+@@ -692,10 +694,8 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
+ 	mlx5vf_free_data_buffer(buf);
+ out_pd:
+ 	mlx5fv_cmd_clean_migf_resources(migf);
+-out_free:
++out:
+ 	fput(migf->filp);
+-end:
+-	kfree(migf);
+ 	return ERR_PTR(ret);
  }
  
- static int exar_direction_output(struct gpio_chip *chip, unsigned int offset,
+@@ -1016,13 +1016,19 @@ mlx5vf_pci_resume_device_data(struct mlx5vf_pci_core_device *mvdev)
+ 					O_WRONLY);
+ 	if (IS_ERR(migf->filp)) {
+ 		ret = PTR_ERR(migf->filp);
+-		goto end;
++		kfree(migf);
++		return ERR_PTR(ret);
+ 	}
+ 
++	stream_open(migf->filp->f_inode, migf->filp);
++	mutex_init(&migf->lock);
++	INIT_LIST_HEAD(&migf->buf_list);
++	INIT_LIST_HEAD(&migf->avail_list);
++	spin_lock_init(&migf->list_lock);
+ 	migf->mvdev = mvdev;
+ 	ret = mlx5vf_cmd_alloc_pd(migf);
+ 	if (ret)
+-		goto out_free;
++		goto out;
+ 
+ 	buf = mlx5vf_alloc_data_buffer(migf, 0, DMA_TO_DEVICE);
+ 	if (IS_ERR(buf)) {
+@@ -1041,20 +1047,13 @@ mlx5vf_pci_resume_device_data(struct mlx5vf_pci_core_device *mvdev)
+ 	migf->buf_header[0] = buf;
+ 	migf->load_state = MLX5_VF_LOAD_STATE_READ_HEADER;
+ 
+-	stream_open(migf->filp->f_inode, migf->filp);
+-	mutex_init(&migf->lock);
+-	INIT_LIST_HEAD(&migf->buf_list);
+-	INIT_LIST_HEAD(&migf->avail_list);
+-	spin_lock_init(&migf->list_lock);
+ 	return migf;
+ out_buf:
+ 	mlx5vf_free_data_buffer(migf->buf[0]);
+ out_pd:
+ 	mlx5vf_cmd_dealloc_pd(migf);
+-out_free:
++out:
+ 	fput(migf->filp);
+-end:
+-	kfree(migf);
+ 	return ERR_PTR(ret);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
