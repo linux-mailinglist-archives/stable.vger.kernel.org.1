@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4355A9E2754
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:25:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C47D9E2171
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF5F9B62A1E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0CD2285A98
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F6B200B98;
-	Tue,  3 Dec 2024 15:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB691F9403;
+	Tue,  3 Dec 2024 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6oeg+ym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q838SFFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816CD204F63;
-	Tue,  3 Dec 2024 15:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB8F1F8EE9;
+	Tue,  3 Dec 2024 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240589; cv=none; b=r4tzfZFfuYy5Z4kD0y2BfWtfiOA+mYoQgZgWlnwzCkHy54lex7HQ1mULOy/dzJAjH3hOWZEu0VfImVPWrnJL15I5TdgqlN3xrsXmJRmAswkvW/u6rJzeDcF5l0PgBO6nMpYx88uyCT3SrQFbLGnel5AbqgQK10jKbEtBoaTFV8E=
+	t=1733238612; cv=none; b=fm8DE+KUXeqsY0hivOmOSeQe6L6bGv4PHK80rxG/vFLCSN+z3g3I6CHtgkgpWNJX9JabzfkZ4XA2A+0k93A9E3nkZUiL8N6I3x4gek/6iisnipvOXKnBbdfEJ/LWQrAb1LySoS5CU/emJD9AXMbjxs7RNjUJkm1ARQm4+szK/wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240589; c=relaxed/simple;
-	bh=sQStcBw1M9JFkJ5OQIX3kT77GaVhZZPDFpazxn2DaZ0=;
+	s=arc-20240116; t=1733238612; c=relaxed/simple;
+	bh=ecrJLj5DzDf72jsVtd8nqedg+w4x7bNlk9h5IWPHMMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gsfbtkb1Ie/y6SBwNVZACAxK3mLxGOeYGV6HAIUmy0X3J4QsdEk0lT3bpK+68bB7zlGw7hi34Tz6V5Xa4vwpMkjQalsjEg1VR64GchGXuXomkHKkUNQOjyTEgTb/feL8Y5nS/5cs16tfqLaySQHwHuDeurQYZ0T9tXO6KOQGVys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6oeg+ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF50C4CECF;
-	Tue,  3 Dec 2024 15:43:08 +0000 (UTC)
+	 MIME-Version; b=QPDrUsHvas271GXc0/3EreaqcOzgl7qj3PCWaEgvQbGeUaZVuetNI89Nke+6RinWPDDcY/62cE4aawKmoL42tkVkitWh++mNXdy04iOsvpNhB3zgo8LKo6GZ0cAUb14ARnW4vVSys9qhVY/BWkmxghjewHY4N++02WOiAxy7CuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q838SFFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4C5C4CECF;
+	Tue,  3 Dec 2024 15:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240589;
-	bh=sQStcBw1M9JFkJ5OQIX3kT77GaVhZZPDFpazxn2DaZ0=;
+	s=korg; t=1733238612;
+	bh=ecrJLj5DzDf72jsVtd8nqedg+w4x7bNlk9h5IWPHMMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6oeg+ymFjQsgupnCcDQMdcN/Go0m3DkA7BNMV3mpi3vNxSAHJBDYl6hCc537a5bo
-	 kAi8vCwM+oE/p/LgSZsRs5fLuXtD1uWLBIizyVL0uLltyU0+0eYpMWL3PtbdfSxlPK
-	 wy8AjzGwV5taZQkS/7WblFsTi3IVGsNM/mHDdcpM=
+	b=Q838SFFrqBJN7bszr6fIrPinOrLnQjH/IL3THk/gyczuWjokhut5h4G998OfdzFrz
+	 Epocbm2+vdmwepbQKWee3CUTCn+ap/Vch/NYJFGRxW8pDAPrz3MpIpYBED2BRMRGxs
+	 oepm0nH1Q+rvjWUurrri60orZMl4hFc3y/y32Xic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lingbo Kong <quic_lingbok@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/826] platform/x86: panasonic-laptop: Return errno correctly in show callback
-Date: Tue,  3 Dec 2024 15:38:27 +0100
-Message-ID: <20241203144750.757720494@linuxfoundation.org>
+Subject: [PATCH 6.11 336/817] wifi: cfg80211: Remove the Medium Synchronization Delay validity check
+Date: Tue,  3 Dec 2024 15:38:28 +0100
+Message-ID: <20241203144008.936926033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-[ Upstream commit 5c7bebc1a3f0661db558d60e14dde27fc216d9dc ]
+[ Upstream commit b4ebb58cb9a4b1b5cb5278b09d6afdcd71b2a6b4 ]
 
-When an error occurs in sysfs show callback, we should return the errno
-directly instead of formatting it as the result, which produces
-meaningless output and doesn't inform the userspace of the error.
+Currently, when the driver attempts to connect to an AP MLD with multiple
+APs, the cfg80211_mlme_check_mlo_compat() function requires the Medium
+Synchronization Delay values from different APs of the same AP MLD to be
+equal, which may result in connection failures.
 
-Fixes: 468f96bfa3a0 ("platform/x86: panasonic-laptop: Add support for battery charging threshold (eco mode)")
-Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241118064637.61832-3-ziyao@disroot.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This is because when the driver receives a multi-link probe response from
+an AP MLD with multiple APs, cfg80211 updates the Elements for each AP
+based on the multi-link probe response. If the Medium Synchronization Delay
+is set in the multi-link probe response, the Elements for each AP belonging
+to the same AP MLD will have the Medium Synchronization Delay set
+simultaneously. If non-multi-link probe responses are received from
+different APs of the same MLD AP, cfg80211 will still update the Elements
+based on the non-multi-link probe response. Since the non-multi-link probe
+response does not set the Medium Synchronization Delay
+(IEEE 802.11be-2024-35.3.4.4), if the Elements from a non-multi-link probe
+response overwrite those from a multi-link probe response that has set the
+Medium Synchronization Delay, the Medium Synchronization Delay values for
+APs belonging to the same AP MLD will not be equal. This discrepancy causes
+the cfg80211_mlme_check_mlo_compat() function to fail, leading to
+connection failures. Commit ccb964b4ab16
+("wifi: cfg80211: validate MLO connections better") did not take this into
+account.
+
+To address this issue, remove this validity check.
+
+Fixes: ccb964b4ab16 ("wifi: cfg80211: validate MLO connections better")
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Link: https://patch.msgid.link/20241031134223.970-1-quic_lingbok@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/wireless/mlme.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index 2bf94d0ab3243..22ca70eb82271 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -614,8 +614,7 @@ static ssize_t eco_mode_show(struct device *dev, struct device_attribute *attr,
- 		result = 1;
- 		break;
- 	default:
--		result = -EIO;
--		break;
-+		return -EIO;
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 4052041a19ead..98637ded58a68 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -340,12 +340,6 @@ cfg80211_mlme_check_mlo_compat(const struct ieee80211_multi_link_elem *mle_a,
+ 		return -EINVAL;
  	}
- 	return sysfs_emit(buf, "%u\n", result);
- }
-@@ -761,7 +760,12 @@ static ssize_t current_brightness_store(struct device *dev, struct device_attrib
- static ssize_t cdpower_show(struct device *dev, struct device_attribute *attr,
- 			    char *buf)
- {
--	return sysfs_emit(buf, "%d\n", get_optd_power_state());
-+	int state = get_optd_power_state();
-+
-+	if (state < 0)
-+		return state;
-+
-+	return sysfs_emit(buf, "%d\n", state);
- }
  
- static ssize_t cdpower_store(struct device *dev, struct device_attribute *attr,
+-	if (ieee80211_mle_get_eml_med_sync_delay((const u8 *)mle_a) !=
+-	    ieee80211_mle_get_eml_med_sync_delay((const u8 *)mle_b)) {
+-		NL_SET_ERR_MSG(extack, "link EML medium sync delay mismatch");
+-		return -EINVAL;
+-	}
+-
+ 	if (ieee80211_mle_get_eml_cap((const u8 *)mle_a) !=
+ 	    ieee80211_mle_get_eml_cap((const u8 *)mle_b)) {
+ 		NL_SET_ERR_MSG(extack, "link EML capabilities mismatch");
 -- 
 2.43.0
 
