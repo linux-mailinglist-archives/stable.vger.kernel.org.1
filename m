@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-97081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D6F9E28A2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:05:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FF79E25E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD408B39E29
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E023016D3A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E2D1F472A;
-	Tue,  3 Dec 2024 15:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35B21DE8A5;
+	Tue,  3 Dec 2024 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCje+ksx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suAc4sJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F322D7BF;
-	Tue,  3 Dec 2024 15:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE5323CE;
+	Tue,  3 Dec 2024 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239466; cv=none; b=R1tgODHWJiMLDd9ftchcbxAYdJgre5SaZeX/5RKlK0T0aAslktAO7Elxb1AnLVjX2qzydo5Y4pDUHuj39RLZkUVS05dq6RUg6i1gd2rUrc6NThUfSS84yIPmLOJ6eCUTRaZ96qhgwzcaopVN/9dHDpZD7ioosuUxsVY4Vz0VoYY=
+	t=1733241619; cv=none; b=ZMlJlBbSYzJUKtc54nOtZLMAgiuaoMzIPpv9DkHjIH2QIpOE7ZQ9DSbgOPU3L1ArAxKlrUUqKMJ+NkPdAkJl7toQjBU2WH+J+wI4J0ZXpuJzzUN3P9oSiXFMyT7jBa9hnqJ7XDFsmWGnE4Q/TyxQ2q9oAxg+LxHlQ0s26ZzYRtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239466; c=relaxed/simple;
-	bh=GZR/ntGGEg3o7tTWFMl/PzvDo/p7PvMTFlL/xn9fFTo=;
+	s=arc-20240116; t=1733241619; c=relaxed/simple;
+	bh=2qP7msLqtb+debtNjPcjVXXWSsqf39qridvVWfuc0gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uVKmtj9nog1j+L6lXFqlwfi/Vv6jVAsxF/eNxRSCgYcHyPMd2nXNMWagSxhNYrb1bCc9yEpITUk8FpQdB1IbeYm75hVTKMxoLhq4WECuQ0Y7iGprwZv9V/s7mzV/ztVfzPriqCNySd8E1bLf0pP1fH8fVLWN8Gs0QnjUtpXqD2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCje+ksx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69459C4CECF;
-	Tue,  3 Dec 2024 15:24:25 +0000 (UTC)
+	 MIME-Version; b=TVucPqTG/fgUjGNU4+vg3WEO0PSf5SFhrDJxED9iDgGLW38vXf0Bny9OFRK3c2qkrrg2V7jQ7j0gemCaQcYH8mmOnYCXzfvISnLp6ErjBR2bwjMNrSSNcgfurbVASqW8NWoB/G9FWqhS2JqFhnz4NnvZSeVucYj3qzu8EEUMymc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suAc4sJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A287C4CECF;
+	Tue,  3 Dec 2024 16:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239465;
-	bh=GZR/ntGGEg3o7tTWFMl/PzvDo/p7PvMTFlL/xn9fFTo=;
+	s=korg; t=1733241619;
+	bh=2qP7msLqtb+debtNjPcjVXXWSsqf39qridvVWfuc0gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCje+ksxrxcbwEsiY5J7wTcSrXWKjGMy0KF6DpKuEC0kreRnD3fyR0XZuFZlKX+sQ
-	 znkzLJ6x9ChSgwBeM4sw1ySuHbs3pSgFIOKfrHR1ci91cfgvp46V3UWQf7xJj4Sp4n
-	 9Qma0ui+rWy436pBUs/IWN1eAYi5kdPIBf4EwAO0=
+	b=suAc4sJJ34C5SoK8w/s7TsPuRnBT64wWS0grlVtbMp7Jhve10aLyeY1dek3VHU0l+
+	 yoUzd7hsbo3ogcte+zdE+Fnc2NmXcxBARx6uUqb/aeJ37seez9ZNhAn0gzvFvHAZmT
+	 IVW3k9C1AWF1ds71r6IfjKwcNLFnq6ktZ/5E2qZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Fei Shao <fshao@chromium.org>,
-	Trevor Wu <trevor.wu@mediatek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 624/817] ASoC: mediatek: Check num_codecs is not zero to avoid panic during probe
+Subject: [PATCH 6.12 469/826] gfs2: Fix unlinked inode cleanup
 Date: Tue,  3 Dec 2024 15:43:16 +0100
-Message-ID: <20241203144020.293220092@linuxfoundation.org>
+Message-ID: <20241203144802.058675458@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,141 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 2f2020327cc8561d7c520d2f2d9acea84fa7b3a3 ]
+[ Upstream commit 7c6f714d88475ceae5342264858a641eafa19632 ]
 
-Following commit 13f58267cda3 ("ASoC: soc.h: don't create dummy
-Component via COMP_DUMMY()"), COMP_DUMMY() became an array with zero
-length, and only gets populated with the dummy struct after the card is
-registered. Since the sound card driver's probe happens before the card
-registration, accessing any of the members of a dummy component during
-probe will result in undefined behavior.
+Before commit f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete"
+work"), function delete_work_func() was used to trigger the eviction of
+in-memory inodes from remote as well as deleting unlinked inodes at a
+later point.  These two kinds of work were then split into two kinds of
+work, and the two places in the code were deferred deletion of inodes is
+required accidentally ended up queuing the wrong kind of work.  This
+caused unlinked inodes to be left behind, which could in the worst case
+fill up filesystems and require a filesystem check to recover.
 
-This can be observed in the mt8188 and mt8195 machine sound drivers. By
-omitting a dai link subnode in the sound card's node in the Devicetree,
-the default uninitialized dummy codec is used, and when its dai_name
-pointer gets passed to strcmp() it results in a null pointer dereference
-and a kernel panic.
+Fix that by queuing the right kind of work in try_rgrp_unlink() and
+gfs2_drop_inode().
 
-In addition to that, set_card_codec_info() in the generic helpers file,
-mtk-soundcard-driver.c, will populate a dai link with a dummy codec when
-a dai link node is present in DT but with no codec property.
-
-The result is that at probe time, a dummy codec can either be
-uninitialized with num_codecs = 0, or be an initialized dummy codec,
-with num_codecs = 1 and dai_name = "snd-soc-dummy-dai". In order to
-accommodate for both situations, check that num_codecs is not zero
-before accessing the codecs' fields but still check for the codec's dai
-name against "snd-soc-dummy-dai" as needed.
-
-While at it, also drop the check that dai_name is not null in the mt8192
-driver, introduced in commit 4d4e1b6319e5 ("ASoC: mediatek: mt8192:
-Check existence of dai_name before dereferencing"), as it is actually
-redundant given the preceding num_codecs != 0 check.
-
-Fixes: 13f58267cda3 ("ASoC: soc.h: don't create dummy Component via COMP_DUMMY()")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Acked-by: Trevor Wu <trevor.wu@mediatek.com>
-Link: https://patch.msgid.link/20241126-asoc-mtk-dummy-panic-v1-1-42d53e168d2e@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete" work")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-mt6359.c               | 9 +++++++--
- sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c | 4 ++--
- sound/soc/mediatek/mt8195/mt8195-mt6359.c               | 9 +++++++--
- 3 files changed, 16 insertions(+), 6 deletions(-)
+ fs/gfs2/glock.c | 2 +-
+ fs/gfs2/glock.h | 1 +
+ fs/gfs2/rgrp.c  | 2 +-
+ fs/gfs2/super.c | 2 +-
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-index 08ae962afeb92..4eed90d13a532 100644
---- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-@@ -1279,10 +1279,12 @@ static int mt8188_mt6359_soc_card_probe(struct mtk_soc_card_data *soc_card_data,
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 509115202ccf9..a51fe42732c4c 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1013,7 +1013,7 @@ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl)
+ 				  &gl->gl_delete, 0);
+ }
  
- 	for_each_card_prelinks(card, i, dai_link) {
- 		if (strcmp(dai_link->name, "DPTX_BE") == 0) {
--			if (strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
-+			if (dai_link->num_codecs &&
-+			    strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
- 				dai_link->init = mt8188_dptx_codec_init;
- 		} else if (strcmp(dai_link->name, "ETDM3_OUT_BE") == 0) {
--			if (strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
-+			if (dai_link->num_codecs &&
-+			    strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
- 				dai_link->init = mt8188_hdmi_codec_init;
- 		} else if (strcmp(dai_link->name, "DL_SRC_BE") == 0 ||
- 			   strcmp(dai_link->name, "UL_SRC_BE") == 0) {
-@@ -1294,6 +1296,9 @@ static int mt8188_mt6359_soc_card_probe(struct mtk_soc_card_data *soc_card_data,
- 			   strcmp(dai_link->name, "ETDM2_OUT_BE") == 0 ||
- 			   strcmp(dai_link->name, "ETDM1_IN_BE") == 0 ||
- 			   strcmp(dai_link->name, "ETDM2_IN_BE") == 0) {
-+			if (!dai_link->num_codecs)
-+				continue;
-+
- 			if (!strcmp(dai_link->codecs->dai_name, MAX98390_CODEC_DAI)) {
- 				/*
- 				 * The TDM protocol settings with fixed 4 slots are defined in
-diff --git a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
-index 8b323fb199251..de8737dcf53d7 100644
---- a/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c
-@@ -1099,7 +1099,7 @@ static int mt8192_mt6359_legacy_probe(struct mtk_soc_card_data *soc_card_data)
- 			dai_link->ignore = 0;
- 		}
+-static bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
++bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+ 	unsigned long delay;
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index adf0091cc98f9..63e101d448e96 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -245,6 +245,7 @@ static inline int gfs2_glock_nq_init(struct gfs2_glock *gl,
+ void gfs2_glock_cb(struct gfs2_glock *gl, unsigned int state);
+ void gfs2_glock_complete(struct gfs2_glock *gl, int ret);
+ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl);
++bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later);
+ void gfs2_cancel_delete_work(struct gfs2_glock *gl);
+ void gfs2_flush_delete_work(struct gfs2_sbd *sdp);
+ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp);
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 29c7728167652..5393031297153 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -1879,7 +1879,7 @@ static void try_rgrp_unlink(struct gfs2_rgrpd *rgd, u64 *last_unlinked, u64 skip
+ 		 */
+ 		ip = gl->gl_object;
  
--		if (dai_link->num_codecs && dai_link->codecs[0].dai_name &&
-+		if (dai_link->num_codecs &&
- 		    strcmp(dai_link->codecs[0].dai_name, RT1015_CODEC_DAI) == 0)
- 			dai_link->ops = &mt8192_rt1015_i2s_ops;
+-		if (ip || !gfs2_queue_try_to_evict(gl))
++		if (ip || !gfs2_queue_verify_delete(gl, false))
+ 			gfs2_glock_put(gl);
+ 		else
+ 			found++;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6678060ed4d2b..e22c1edc32b39 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1045,7 +1045,7 @@ static int gfs2_drop_inode(struct inode *inode)
+ 		struct gfs2_glock *gl = ip->i_iopen_gh.gh_gl;
+ 
+ 		gfs2_glock_hold(gl);
+-		if (!gfs2_queue_try_to_evict(gl))
++		if (!gfs2_queue_verify_delete(gl, true))
+ 			gfs2_glock_put_async(gl);
+ 		return 0;
  	}
-@@ -1129,7 +1129,7 @@ static int mt8192_mt6359_soc_card_probe(struct mtk_soc_card_data *soc_card_data,
- 		int i;
- 
- 		for_each_card_prelinks(card, i, dai_link)
--			if (dai_link->num_codecs && dai_link->codecs[0].dai_name &&
-+			if (dai_link->num_codecs &&
- 			    strcmp(dai_link->codecs[0].dai_name, RT1015_CODEC_DAI) == 0)
- 				dai_link->ops = &mt8192_rt1015_i2s_ops;
- 	}
-diff --git a/sound/soc/mediatek/mt8195/mt8195-mt6359.c b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
-index 2832ef78eaed7..8ebf6c7502aa3 100644
---- a/sound/soc/mediatek/mt8195/mt8195-mt6359.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
-@@ -1380,10 +1380,12 @@ static int mt8195_mt6359_soc_card_probe(struct mtk_soc_card_data *soc_card_data,
- 
- 	for_each_card_prelinks(card, i, dai_link) {
- 		if (strcmp(dai_link->name, "DPTX_BE") == 0) {
--			if (strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
-+			if (dai_link->num_codecs &&
-+			    strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
- 				dai_link->init = mt8195_dptx_codec_init;
- 		} else if (strcmp(dai_link->name, "ETDM3_OUT_BE") == 0) {
--			if (strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
-+			if (dai_link->num_codecs &&
-+			    strcmp(dai_link->codecs->dai_name, "snd-soc-dummy-dai"))
- 				dai_link->init = mt8195_hdmi_codec_init;
- 		} else if (strcmp(dai_link->name, "DL_SRC_BE") == 0 ||
- 			   strcmp(dai_link->name, "UL_SRC1_BE") == 0 ||
-@@ -1396,6 +1398,9 @@ static int mt8195_mt6359_soc_card_probe(struct mtk_soc_card_data *soc_card_data,
- 			   strcmp(dai_link->name, "ETDM2_OUT_BE") == 0 ||
- 			   strcmp(dai_link->name, "ETDM1_IN_BE") == 0 ||
- 			   strcmp(dai_link->name, "ETDM2_IN_BE") == 0) {
-+			if (!dai_link->num_codecs)
-+				continue;
-+
- 			if (!strcmp(dai_link->codecs->dai_name, MAX98390_CODEC_DAI)) {
- 				if (!(codec_init & MAX98390_CODEC_INIT)) {
- 					dai_link->init = mt8195_max98390_init;
 -- 
 2.43.0
 
