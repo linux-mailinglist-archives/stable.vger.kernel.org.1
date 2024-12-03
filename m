@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636549E2192
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D259E2448
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28591283EE1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 152B528792D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B67A1F75BD;
-	Tue,  3 Dec 2024 15:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88111F892C;
+	Tue,  3 Dec 2024 15:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7ooLxNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9sKP7eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A73A1F75A8;
-	Tue,  3 Dec 2024 15:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D271FA27C;
+	Tue,  3 Dec 2024 15:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238763; cv=none; b=M1aRQ6NS0U4kn5emi9ade29i7/PWJbe12YKkD7EJJ7DfHTOrTWnF1b2oxvxxfSbY61EASsLxk0ibz5rvFt+8bYij6xVTrNYH1IuxQNa/CYO+hF37rSj0CX8Z+VT0d7Lp/oN3KJpEIHeg1z9ZqQXVXosYMr5mGx6Tvvgyvh3dkSk=
+	t=1733240793; cv=none; b=jP3NkPVIDcRfU03G6N9djZbTSIeh7O2LVKoHrJm8SRf6qye/uSgVc8XBXGtqujUt0eA+fZNBg1p8/lNFkiHyfxP/TY8cTAnv/dTXjclR1M9aLsUZA7mkpaUV+RiYf8T//58YKyAVldh0NJSDA3uX/eSDRcAO4OLZGuXmcfoMipI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238763; c=relaxed/simple;
-	bh=lpksFKOjvn2kPdDhVO8Fgx2h2UhMWK3Lu7MqpdNvh2A=;
+	s=arc-20240116; t=1733240793; c=relaxed/simple;
+	bh=A9X6OUJNnAhR89BKAClii9eqngW4ntngGpFl7tPXvXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQHvgetttbntzaIKhCPZF8MqaPhLo59zLnKNxB3gsLaCVLZs7+TMvPUFUGEDKz/dhzm8dNeWx7X3jP/wlS2eWPvCLfX9dqTG3HXfnCLV5EyVoM+k0jjo0ZNB4K1X/2qzVeCfzrBXz/okeLyh8g4iHcYZsRm9C6nnQHQwdckmZss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7ooLxNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F065C4CEDD;
-	Tue,  3 Dec 2024 15:12:42 +0000 (UTC)
+	 MIME-Version; b=T09nBvePAgD/s+9Y78NRwK4H4etqOu1PijqB+Mt34ZtFTWbEBO5a6XxHXayOHBPTULekYCrZos6U5ThTPrQSORdluFQl9TxNaorPzLofhGqWNaOqr2QWDgdhFUbh6zRWx+sKuKUTvIkUh2husZmvAdZ4nQBU6yLS0KAdzKli3Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9sKP7eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06476C4CECF;
+	Tue,  3 Dec 2024 15:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238762;
-	bh=lpksFKOjvn2kPdDhVO8Fgx2h2UhMWK3Lu7MqpdNvh2A=;
+	s=korg; t=1733240793;
+	bh=A9X6OUJNnAhR89BKAClii9eqngW4ntngGpFl7tPXvXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7ooLxNAHJio6j6JeieRbE0t9JbNpTGzXB2iCUOvVB7p+6PFhohsvWOunrUWQKEx9
-	 aCLnKvXGjHROBW7Z2lC+f/xqQGHYhqKhLqmvh0DRB+4/sH6Be8ziE3ZbZswX0AcEg6
-	 Wv+cjahjJJhdQ93oAnT0u1Gm4BSmDwSzsxkri4SI=
+	b=c9sKP7ebcC6tEI5yuUytnN8X9zX/m89sQtyZ2cuJzeY2iadnlM8cXFdGicgE+rMYM
+	 RzvFLdspjiwYEbeLoinpSgEN54RTDV4U9wA0HudI9ce56SazmYWxmJTO/HC1Fq9mh7
+	 SpalI4DXi+7NWLSWm41uosH+jebcimF/pAUndTHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 390/817] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for PMIC devices
+Subject: [PATCH 6.12 235/826] wifi: cfg80211: check radio iface combination for multi radio per wiphy
 Date: Tue,  3 Dec 2024 15:39:22 +0100
-Message-ID: <20241203144011.094430947@linuxfoundation.org>
+Message-ID: <20241203144752.921466750@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 0350d783ab888cb1cb48ced36cc28b372723f1a4 ]
+[ Upstream commit bd9813d13be439851a7ff3e6372e53caa6e387a6 ]
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+Currently, wiphy_verify_combinations() fails for the multi-radio per wiphy
+due to the condition check on new global interface combination that DFS
+only works on one channel. In a multi-radio scenario, new global interface
+combination encompasses the capabilities of all radio combinations, so it
+supports more than one channel with DFS. For multi-radio per wiphy,
+interface combination verification needs to be performed for radio specific
+interface combinations. This is necessary as the new global interface
+combination combines the capabilities of all radio combinations.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
-
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: a01b1e9f9955 ("wifi: mac80211: add support for DFS with multiple radios")
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20240917140239.886083-1-quic_periyasa@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 54 +++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ net/wireless/core.c | 64 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index f4d50e35b8489..f588e0f1fd0ad 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -231,21 +231,11 @@ static const struct resource tmu_resources[] = {
- };
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 74ca18833df17..7d313fb66d76b 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -603,16 +603,20 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
+ }
+ EXPORT_SYMBOL(wiphy_new_nm);
  
- static struct mfd_cell bxt_wc_dev[] = {
--	{
--		.name = "bxt_wcove_gpadc",
--		.num_resources = ARRAY_SIZE(adc_resources),
--		.resources = adc_resources,
--	},
- 	{
- 		.name = "bxt_wcove_thermal",
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_bcu",
--		.num_resources = ARRAY_SIZE(bcu_resources),
--		.resources = bcu_resources,
--	},
- 	{
- 		.name = "bxt_wcove_gpio",
- 		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -264,6 +254,22 @@ static const struct mfd_cell bxt_wc_tmu_dev[] = {
- 	},
- };
+-static int wiphy_verify_combinations(struct wiphy *wiphy)
++static
++int wiphy_verify_iface_combinations(struct wiphy *wiphy,
++				    const struct ieee80211_iface_combination *iface_comb,
++				    int n_iface_comb,
++				    bool combined_radio)
+ {
+ 	const struct ieee80211_iface_combination *c;
+ 	int i, j;
  
-+static const struct mfd_cell bxt_wc_bcu_dev[] = {
-+	{
-+		.name = "bxt_wcove_bcu",
-+		.num_resources = ARRAY_SIZE(bcu_resources),
-+		.resources = bcu_resources,
-+	},
-+};
+-	for (i = 0; i < wiphy->n_iface_combinations; i++) {
++	for (i = 0; i < n_iface_comb; i++) {
+ 		u32 cnt = 0;
+ 		u16 all_iftypes = 0;
+ 
+-		c = &wiphy->iface_combinations[i];
++		c = &iface_comb[i];
+ 
+ 		/*
+ 		 * Combinations with just one interface aren't real,
+@@ -625,9 +629,13 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
+ 		if (WARN_ON(!c->num_different_channels))
+ 			return -EINVAL;
+ 
+-		/* DFS only works on one channel. */
+-		if (WARN_ON(c->radar_detect_widths &&
+-			    (c->num_different_channels > 1)))
++		/* DFS only works on one channel. Avoid this check
++		 * for multi-radio global combination, since it hold
++		 * the capabilities of all radio combinations.
++		 */
++		if (!combined_radio &&
++		    WARN_ON(c->radar_detect_widths &&
++			    c->num_different_channels > 1))
+ 			return -EINVAL;
+ 
+ 		if (WARN_ON(!c->n_limits))
+@@ -648,13 +656,21 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
+ 			if (WARN_ON(wiphy->software_iftypes & types))
+ 				return -EINVAL;
+ 
+-			/* Only a single P2P_DEVICE can be allowed */
+-			if (WARN_ON(types & BIT(NL80211_IFTYPE_P2P_DEVICE) &&
++			/* Only a single P2P_DEVICE can be allowed, avoid this
++			 * check for multi-radio global combination, since it
++			 * hold the capabilities of all radio combinations.
++			 */
++			if (!combined_radio &&
++			    WARN_ON(types & BIT(NL80211_IFTYPE_P2P_DEVICE) &&
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
+ 
+-			/* Only a single NAN can be allowed */
+-			if (WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
++			/* Only a single NAN can be allowed, avoid this
++			 * check for multi-radio global combination, since it
++			 * hold the capabilities of all radio combinations.
++			 */
++			if (!combined_radio &&
++			    WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
+ 
+@@ -693,6 +709,34 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
+ 	return 0;
+ }
+ 
++static int wiphy_verify_combinations(struct wiphy *wiphy)
++{
++	int i, ret;
++	bool combined_radio = false;
 +
-+static const struct mfd_cell bxt_wc_adc_dev[] = {
-+	{
-+		.name = "bxt_wcove_gpadc",
-+		.num_resources = ARRAY_SIZE(adc_resources),
-+		.resources = adc_resources,
-+	},
-+};
++	if (wiphy->n_radio) {
++		for (i = 0; i < wiphy->n_radio; i++) {
++			const struct wiphy_radio *radio = &wiphy->radio[i];
 +
- static struct mfd_cell bxt_wc_chgr_dev[] = {
- 	{
- 		.name = "bxt_wcove_usbc",
-@@ -509,23 +515,23 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
- 
--	/* Add chained IRQ handler for BCU IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_BCU_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_bcu,
--					 &pmic->irq_chip_data_bcu);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_bcu_dev, ARRAY_SIZE(bxt_wc_bcu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_BCU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_bcu,
-+					&pmic->irq_chip_data_bcu);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
-+		return ret;
- 
--	/* Add chained IRQ handler for ADC IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_ADC_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_adc,
--					 &pmic->irq_chip_data_adc);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_adc_dev, ARRAY_SIZE(bxt_wc_adc_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_ADC_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_adc,
-+					&pmic->irq_chip_data_adc);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
-+		return ret;
- 
- 	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
- 					pmic->irq_chip_data,
++			ret = wiphy_verify_iface_combinations(wiphy,
++							      radio->iface_combinations,
++							      radio->n_iface_combinations,
++							      false);
++			if (ret)
++				return ret;
++		}
++
++		combined_radio = true;
++	}
++
++	ret = wiphy_verify_iface_combinations(wiphy,
++					      wiphy->iface_combinations,
++					      wiphy->n_iface_combinations,
++					      combined_radio);
++
++	return ret;
++}
++
+ int wiphy_register(struct wiphy *wiphy)
+ {
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 -- 
 2.43.0
 
