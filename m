@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD8A9E282B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464629E23A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 428F6B34CA8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805E2B88300
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A191FECD8;
-	Tue,  3 Dec 2024 15:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B269D1F76D9;
+	Tue,  3 Dec 2024 15:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fA5FL+au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTCUih2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851271F9EC0;
-	Tue,  3 Dec 2024 15:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671E51F76A4;
+	Tue,  3 Dec 2024 15:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240558; cv=none; b=Svvukb+zTHeR0M5JySTAEMFpWLV3OxFTsJUTaN1SGUaGk1FD+CaTCDLRYjF47aM077Zub9czg2B+TsNIhg2eXfOf8LOSK4Qw8NastsE2yLmp3Uw4vNE99Eq2JID8gAxeBDaewJmeExVcuNqbSCLG2KaoxaCc5OuBYYojVBZdx0c=
+	t=1733238494; cv=none; b=qYM/8BS2EvYJSYyfeoMdop6YUwpjhy12p0A4mg5N2WVEhesbAiIYfhSq2D2zWAdJByppaZzVsAhjijaw367cFaMKNNu66uWqwQ9eTrxnlYoUdAMbYRhLTnNgALMmXtJk4LiOigl0PSt5m7oUaEeT21JO4JREy5LePg2XP9Z50b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240558; c=relaxed/simple;
-	bh=of4jIEJ13ulclsTkVCjnqMNs8ri6kv9m70D7kQyHGMY=;
+	s=arc-20240116; t=1733238494; c=relaxed/simple;
+	bh=+AKKajc7EaBjjao3KlU2Tczq8rb91XhKCaHEYRIRSCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fw7wBaixlqGQifH1mkNJYtYPCLQfb3YK7TnCq6nxYD3ZlGGHKm3fkw244Eu90uXGMx5JR4SmTvbOz+8E299iHjLF0J0sO4PeaiqiEz2BW8zv0KvJZLWSMePy7ii9VLBtJ/mCv1RgMIlQzGY5eEwwzD1cvjqGv+oBAVR4x/dUBNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fA5FL+au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCB9C4CECF;
-	Tue,  3 Dec 2024 15:42:37 +0000 (UTC)
+	 MIME-Version; b=WaCL0xIW5Y8ZlJC2GqYTxZgwWTqtUMCTEMBirAxHetABFGjMiL4Ab7rFLl3eW8ShbGLUjuRlpxhpcqfl6JfcfNndqKNu+6ROceO1fUQ/Jlm6E1rR8FHJSEV6s6m6QCKEPBxV1jh5xwWxMqDWiQPnNXbdmeCV52v0Mympg+EC76I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTCUih2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5635C4CECF;
+	Tue,  3 Dec 2024 15:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240558;
-	bh=of4jIEJ13ulclsTkVCjnqMNs8ri6kv9m70D7kQyHGMY=;
+	s=korg; t=1733238494;
+	bh=+AKKajc7EaBjjao3KlU2Tczq8rb91XhKCaHEYRIRSCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fA5FL+au/V3f65EpE1lAL9KyHQjJdhyE+bN9d6At0w4N8FNo3SpIp8uwlk8taqMBt
-	 05VtCLa0sKWAquSlH0JwlMUb/DOnRqDz0iiTIZUVldSfp/8EoamOziqZvWSEu3Qroc
-	 Wq+vkgsR1oSsa/+DU787Vl8kHbBmXmWcY/4MyGSM=
+	b=XTCUih2tR3J5wXGVAVHQs3PDcnuvvxsERjNUbUpJfdQr7VpL/yfLsxGMsO7j5IMka
+	 2VOqP87arJx7PsXaUEnXEkfGHESgtYWUs/J+jYnVlBnqOUQtZaMrvhxs45nG6tXfcS
+	 tRA4B+xVoqy1rEGiVMzupZe0D5L2AGZ2f8uieHH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Muhammed Efe Cetin <efectn@6tel.net>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/826] arm64: dts: rockchip: Remove enable-active-low from two boards
-Date: Tue,  3 Dec 2024 15:37:47 +0100
-Message-ID: <20241203144749.204262342@linuxfoundation.org>
+Subject: [PATCH 6.11 296/817] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  3 Dec 2024 15:37:48 +0100
+Message-ID: <20241203144007.373065402@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 4a9d7e6596f90631f21bca9cb46c6de05d8e86d4 ]
+[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
 
-The 'enable-active-low' property is not a valid, because it is the
-default behaviour of the fixed regulator.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Only 'enable-active-high' is valid, and when this property is absent
-the fixed regulator will act as active low by default.
-
-Both the rk3588-orange-pi-5 and the Wolfvision pf5 io expander overlay
-smuggled those enable-active-low properties in, so remove them to
-make dtbscheck happier.
-
-Fixes: 28799a7734a0 ("arm64: dts: rockchip: add wolfvision pf5 io expander board")
-Cc: Michael Riesch <michael.riesch@wolfvision.net>
-Fixes: b6bc755d806e ("arm64: dts: rockchip: Add Orange Pi 5")
-Cc: Muhammed Efe Cetin <efectn@6tel.net>
-
-Reviewed-by: Michael Riesch <michael.riesch@wolfvision.net>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-10-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Patchwork: https://patchwork.freedesktop.org/patch/614075/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso     | 1 -
- arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts              | 1 -
- 2 files changed, 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
-index ebcaeafc3800d..fa61633aea152 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
-@@ -49,7 +49,6 @@ vcc1v8_eth: vcc1v8-eth-regulator {
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index cb538a262d1c1..db36c81d0f123 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1505,15 +1505,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
  
- 	vcc3v3_eth: vcc3v3-eth-regulator {
- 		compatible = "regulator-fixed";
--		enable-active-low;
- 		gpio = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vcc3v3_eth_enn>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
-index feea6b20a6bf5..6b77be6432495 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
-@@ -71,7 +71,6 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 	irq = platform_get_irq_byname(pdev, name);
  
- 	vcc_3v3_sd_s0: vcc-3v3-sd-s0-regulator {
- 		compatible = "regulator-fixed";
--		enable-active-low;
- 		gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
- 		regulator-name = "vcc_3v3_sd_s0";
- 		regulator-boot-on;
+-	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
++	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
+ 			      name, ret);
+ 		return ret;
+ 	}
+ 
+-	disable_irq(irq);
+-
+ 	return irq;
+ }
+ 
 -- 
 2.43.0
 
