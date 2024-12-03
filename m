@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3029D9E1F9A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A296A9E1F95
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA9C4284A07
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB802167900
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536241F667E;
-	Tue,  3 Dec 2024 14:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B771F7076;
+	Tue,  3 Dec 2024 14:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2hJ+uYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDO3QjRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121F71F4276;
-	Tue,  3 Dec 2024 14:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44321F4279;
+	Tue,  3 Dec 2024 14:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236738; cv=none; b=sAyZXjy+KB4BzBE5ZBCdjya3LmkhXG3/MvHIX2AVnPKdrmQz7Eq3gdKhaDMmT2XD6hylN6aAYepQopVqNfsae4ylB+VfTDfdcL3Dyi6dE8taTGagXj0QIqwHmO9ZxCMkNUZC9+tpgmPi8RvAfCmuMendp0FnmxRAsgSTg6Ig84w=
+	t=1733236653; cv=none; b=OpYiRcU3bgr8XW+OjXDs0BJTecwALSnNtMaHzvnoiPT50paueFWZn2k25Dw3PQjRbxxiH114ZrFDjhqIOUQG2C69oOS+cq0ubHCc/D0xm7H+fH6Wc9tKHZpJ2TPOL47mzX9OyS8UmRvdPzXviTfgmCX3eKuIbiQEYDKUtJZxn1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236738; c=relaxed/simple;
-	bh=8b//6Yha7eJUmmZOgJoZH2QOeQkGaevJUdU/pKB2GJE=;
+	s=arc-20240116; t=1733236653; c=relaxed/simple;
+	bh=Q01+UBs3Qa3zOkNdv/NF6Ok8ez8TzZJs7PbVRzJPXHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGqqm0P6L0wn5UJe04FNPDisZP2QNLwlZPWQHysfA0bgwBR/7T0JLNzB887NJWXtgjl2+cUggfem7zQpyeGTfyZsSyHLehLiN4ilAql+J510IT/jeYXYFcUKbriETBjw3u9648Aj6Xzv9wpviB7vGe97HwiKUbCShFVhtf8wQaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2hJ+uYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D758C4CECF;
-	Tue,  3 Dec 2024 14:38:57 +0000 (UTC)
+	 MIME-Version; b=d04UIZcVAjw0PW5cN0buY1e59vUygB+0JpYrDpW1d+qotUClj0E6nbZViGrN+9ktjbjT7Tjcko8pUKE5wyem5gQouFYPFJp533zsMHRmKy+DOaiHVA1y/545UACSgrHp/6lvHQKZ3AyH0qFr/piw/9tPEHgYe6ZSXaL0X5SIawg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDO3QjRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B4AC4CECF;
+	Tue,  3 Dec 2024 14:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236737;
-	bh=8b//6Yha7eJUmmZOgJoZH2QOeQkGaevJUdU/pKB2GJE=;
+	s=korg; t=1733236653;
+	bh=Q01+UBs3Qa3zOkNdv/NF6Ok8ez8TzZJs7PbVRzJPXHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2hJ+uYX/1fBTvOKk9FyfaG0khkOmeO4W5bDKmdv6UFnY2UBBjR+ij+xFEW8GVH8q
-	 L02ZEJpAl3hvLgEVn7s59J2ADNo+0JIs4FCmBtxCLSShpiX/zoPsTBoWeffU/MiLaX
-	 LQxkQmmll9BVvyi7UzAMIsFy5HhfWZeAI3wyWvwQ=
+	b=RDO3QjRWO0Ki44tDPJl/lWnsv2B7RzN/bZY8jDZUMRjIalf3LqlBf9M2pJJTFsJYR
+	 cHFLcWv6TXxEbCMoaZ3WSfvy3F4M+5XGyL5g3y2mbao17onShh9B9NvWIVN9C31+34
+	 vjkmLP3jBDvGyDwL3qNp74qqeoGtqA93RE+rpNxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Zhang Changzhong <zhangchangzhong@huawei.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 062/138] mtd: rawnand: atmel: Fix possible memory leak
-Date: Tue,  3 Dec 2024 15:31:31 +0100
-Message-ID: <20241203141925.931368727@linuxfoundation.org>
+Subject: [PATCH 4.19 064/138] mfd: rt5033: Fix missing regmap_del_irq_chip()
+Date: Tue,  3 Dec 2024 15:31:33 +0100
+Message-ID: <20241203141926.008501253@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,68 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Zhang Changzhong <zhangchangzhong@huawei.com>
 
-[ Upstream commit 6d734f1bfc336aaea91313a5632f2f197608fadd ]
+[ Upstream commit d256d612f47529ed0b332298e2d5ea981a4dd5b8 ]
 
-The pmecc "user" structure is allocated in atmel_pmecc_create_user() and
-was supposed to be freed with atmel_pmecc_destroy_user(), but this other
-helper is never called. One solution would be to find the proper
-location to call the destructor, but the trend today is to switch to
-device managed allocations, which in this case fits pretty well.
+Fix missing call to regmap_del_irq_chip() in error handling path by
+using devm_regmap_add_irq_chip().
 
-Replace kzalloc() by devm_kzalloc() and drop the destructor entirely.
-
-Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
-Closes: https://lore.kernel.org/all/ZvmIvRJCf6VhHvpo@gallifrey/
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20241001203149.387655-1-miquel.raynal@bootlin.com
+Fixes: 0b271258544b ("mfd: rt5033: Add Richtek RT5033 driver core.")
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Link: https://lore.kernel.org/r/1730302867-8391-1-git-send-email-zhangchangzhong@huawei.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c | 8 +-------
- drivers/mtd/nand/raw/atmel/pmecc.h | 2 --
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/mfd/rt5033.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
-index 9d3997840889b..8880e0401e6c4 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -365,7 +365,7 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
- 	size = ALIGN(size, sizeof(s32));
- 	size += (req->ecc.strength + 1) * sizeof(s32) * 3;
+diff --git a/drivers/mfd/rt5033.c b/drivers/mfd/rt5033.c
+index 94cdad91c0657..71f35bfac3f28 100644
+--- a/drivers/mfd/rt5033.c
++++ b/drivers/mfd/rt5033.c
+@@ -85,8 +85,8 @@ static int rt5033_i2c_probe(struct i2c_client *i2c,
+ 	}
+ 	dev_info(&i2c->dev, "Device found Device ID: %04x\n", dev_id);
  
--	user = kzalloc(size, GFP_KERNEL);
-+	user = devm_kzalloc(pmecc->dev, size, GFP_KERNEL);
- 	if (!user)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -411,12 +411,6 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
- }
- EXPORT_SYMBOL_GPL(atmel_pmecc_create_user);
- 
--void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user)
--{
--	kfree(user);
--}
--EXPORT_SYMBOL_GPL(atmel_pmecc_destroy_user);
--
- static int get_strength(struct atmel_pmecc_user *user)
- {
- 	const int *strengths = user->pmecc->caps->strengths;
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.h b/drivers/mtd/nand/raw/atmel/pmecc.h
-index 808f1be0d6ad7..1b6ac2ce73f49 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.h
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.h
-@@ -59,8 +59,6 @@ struct atmel_pmecc *devm_atmel_pmecc_get(struct device *dev);
- struct atmel_pmecc_user *
- atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
- 			struct atmel_pmecc_user_req *req);
--void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user);
--
- void atmel_pmecc_reset(struct atmel_pmecc *pmecc);
- int atmel_pmecc_enable(struct atmel_pmecc_user *user, int op);
- void atmel_pmecc_disable(struct atmel_pmecc_user *user);
+-	ret = regmap_add_irq_chip(rt5033->regmap, rt5033->irq,
+-			IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++	ret = devm_regmap_add_irq_chip(rt5033->dev, rt5033->regmap,
++			rt5033->irq, IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+ 			0, &rt5033_irq_chip, &rt5033->irq_data);
+ 	if (ret) {
+ 		dev_err(&i2c->dev, "Failed to request IRQ %d: %d\n",
 -- 
 2.43.0
 
