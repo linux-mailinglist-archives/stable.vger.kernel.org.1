@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-96859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FC79E2544
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6CC9E2479
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DA2CBA3435
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1597F287B5C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863FB1F76D8;
-	Tue,  3 Dec 2024 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DD31F755B;
+	Tue,  3 Dec 2024 15:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAV/DFV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTZcJwvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E801F76CA;
-	Tue,  3 Dec 2024 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEF91DAC9F;
+	Tue,  3 Dec 2024 15:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238805; cv=none; b=dIYqJnXr5xGRT/8mtrCNjJJTPVdWmchACvtG+6viugzNUQ5g3XaEb6OHRvUKalnNyqZtTayD1bTllvaSWmJDxnqqlNZsfd3QEUPWc+Q2CkJe3eoF8ckdGLKq4+aN0cMzRB8tsx8OhZpIcHPhi/7AHpJlNrd3FWsLkeBQrJI+XUs=
+	t=1733240929; cv=none; b=VqJdQMy4EvzxUCa1W8VSawuG0dddrZ3COownVJTT/m3MiHNk5UZuHGlyk1vwCJavTCVUOsABsV6tHzWLa9wjuamgk2zzUmupfFYiiy+klmOJkiJrPZ9HD73ejbtrVjK0ni1nnryJO8qza8V0kzu7BdXA5/FC4JJAHTc/kWGhhec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238805; c=relaxed/simple;
-	bh=EzffqqCKUP6jXoXix28ZXxpa82C619lWfzPvGBYnYVU=;
+	s=arc-20240116; t=1733240929; c=relaxed/simple;
+	bh=oMqbbhhE9JYsLSYW2pIPPfoCRBhXavXzrcmRkEMealU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0XProXWLZf1QDgiI9f2O5KdXftZoJ9wHU3UEwqIrBgVP7ELYKJn8y7aI4g+naP8yVy70a0rOPIIxoZQiXEUwc9RSXMIhqxh4NarV0gICSV36AT07yjl3Dx9nQPu+r+76AxXZsNf6pbfZhDoiz5Fxz6xDDzU2x51/KmXOBfDiJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAV/DFV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE910C4CECF;
-	Tue,  3 Dec 2024 15:13:24 +0000 (UTC)
+	 MIME-Version; b=J5vJRHLXPHDNP+mbUEhAzvCxtjWqFTaqv2h2rjVtF4VkPVlkqyIEbGfZ2kdBRMQsYS3CY1wP764ehgvS6Ua3eZQNXmNd4+TdzAXiLzg5IyynOiINWRMqDuLW7/jwjIFmVaajOx9cfyIhzf/ww6CKAsJz1Lr7FzoZRFWquPt3N/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTZcJwvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E119C4CECF;
+	Tue,  3 Dec 2024 15:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238805;
-	bh=EzffqqCKUP6jXoXix28ZXxpa82C619lWfzPvGBYnYVU=;
+	s=korg; t=1733240928;
+	bh=oMqbbhhE9JYsLSYW2pIPPfoCRBhXavXzrcmRkEMealU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAV/DFV1a8tshTN/iFIU3z0yQWEgq28POVH4mVuKKNE34EUf9RAnqxhj6EpPQ3/nU
-	 CBheLDav35uAHScQ2HawlRYTWKtQ25nXEj0xZaVwdMgzP51wZZ/ji8nFJA+/Ju/aDP
-	 s6vyHLYwh6vklcOwwWCNDsrRTdOu6CYH7orA26xU=
+	b=BTZcJwvRy+vdldFxBDusxdstARdG1MjIHn3u5+eioCZKyepecQaF8jLZMKz8QvEBQ
+	 9tw8vAUrDJ5fbSpqXjqHhG4yDT+dhF+pqbh4QmiWyFeSPhbwMxcbwtpmxxCjweyBHg
+	 hYyxXuOQTB5EnnkNIoaWoRVDtt1sLk/ZAsB3SSv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 401/817] powerpc/mm/fault: Fix kfence page fault reporting
+Subject: [PATCH 6.12 246/826] netdevsim: copy addresses for both in and out paths
 Date: Tue,  3 Dec 2024 15:39:33 +0100
-Message-ID: <20241203144011.526997540@linuxfoundation.org>
+Message-ID: <20241203144753.361788722@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 06dbbb4d5f7126b6307ab807cbf04ecfc459b933 ]
+[ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
 
-copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
-/proc/kcore can have some unmapped kfence objects which when read via
-copy_from_kernel_nofault() can cause page faults. Since *_nofault()
-functions define their own fixup table for handling fault, use that
-instead of asking kfence to handle such faults.
+The current code only copies the address for the in path, leaving the out
+path address set to 0. This patch corrects the issue by copying the addresses
+for both the in and out paths. Before this patch:
 
-Hence we search the exception tables for the nip which generated the
-fault. If there is an entry then we let the fixup table handler handle the
-page fault by returning an error from within ___do_page_fault().
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=0.0.0.0
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
 
-This can be easily triggered if someone tries to do dd from /proc/kcore.
-eg. dd if=/proc/kcore of=/dev/null bs=1M
+After this patch:
 
-Some example false negatives:
+  = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=192.168.0.2
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
 
-  ===============================
-  BUG: KFENCE: invalid read in copy_from_kernel_nofault+0x9c/0x1a0
-  Invalid read at 0xc0000000fdff0000:
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-  BUG: KFENCE: use-after-free read in copy_from_kernel_nofault+0x9c/0x1a0
-  Use-after-free read at 0xc0000000fe050000 (in kfence-#2):
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/a411788081d50e3b136c6270471e35aba3dfafa3.1729271995.git.ritesh.list@gmail.com
+Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-3-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/fault.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/ipsec.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 81c77ddce2e30..c156fe0d53c37 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -439,10 +439,16 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
- 	/*
- 	 * The kernel should never take an execute fault nor should it
- 	 * take a page fault to a kernel address or a page fault to a user
--	 * address outside of dedicated places
-+	 * address outside of dedicated places.
-+	 *
-+	 * Rather than kfence directly reporting false negatives, search whether
-+	 * the NIP belongs to the fixup table for cases where fault could come
-+	 * from functions like copy_from_kernel_nofault().
- 	 */
- 	if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write))) {
--		if (kfence_handle_page_fault(address, is_write, regs))
-+		if (is_kfence_address((void *)address) &&
-+		    !search_exception_tables(instruction_pointer(regs)) &&
-+		    kfence_handle_page_fault(address, is_write, regs))
- 			return 0;
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index f0d58092e7e96..3612b0633bd17 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -176,14 +176,13 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs,
+ 		return ret;
+ 	}
  
- 		return SIGSEGV;
+-	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
++	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN)
+ 		sa.rx = true;
+ 
+-		if (xs->props.family == AF_INET6)
+-			memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
+-		else
+-			memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+-	}
++	if (xs->props.family == AF_INET6)
++		memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
++	else
++		memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+ 
+ 	/* the preparations worked, so save the info */
+ 	memcpy(&ipsec->sa[sa_idx], &sa, sizeof(sa));
 -- 
 2.43.0
 
