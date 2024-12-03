@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17AA9E23D8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4A59E229A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41238B3C5F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0B17B84078
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCA51F7585;
-	Tue,  3 Dec 2024 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29421F7572;
+	Tue,  3 Dec 2024 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDbnnC/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xd0368x/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3991F4283;
-	Tue,  3 Dec 2024 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E69C1F666B;
+	Tue,  3 Dec 2024 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237871; cv=none; b=bxk0c1nXIlNIlJ1t/01DlsH47hlusiFbU/U9fo+O+ceT0OMVZOnrgCt5GsxzTkCXbI1aSiNl/Eg2yrrGUh46yRZrKU8TghHVsKPFrsJ6Qe7gTAQ7M1BGfJ0/0j3JI61Dampso/3FFwNscBaRULUQQKxEQug9u/JkgF78OeRhz/4=
+	t=1733237894; cv=none; b=ChOeFeTzEf7syQmE7M6EfEj80fWk8mGWjfV9K5f3IRxJ2sz+SViEb5mS2BlX+aHK+2mvdR/Oak/QDhzIgV7ux34mKQUwft6Bfn9eqhrmqNJgV4Vz8mV5H4GQJTPDdfoQqu3wkMmBarRL4z4rfRFT59CqSOSmWp0kqlDYdkKsjyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237871; c=relaxed/simple;
-	bh=DzkyBjfzY1D0GLhdWadJrm9ljIbkWKkW0Rlh25Uw7lg=;
+	s=arc-20240116; t=1733237894; c=relaxed/simple;
+	bh=E3v6c/Kp9frBe+Zzcu16Jug+RqY0ygy2pZagO8mtT9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5uDVV733TSxnElZtpMStz5eLofH0vLjA2kI48vDEIkOFXKMAY3p50rZWHVXhFdt50kfPZuwzqWxkkUuybComG66RVBd0IiV0b5UNhhDju8nCokGcbg2Xsa6l5O+iOy+x5UF8ZSOu56ksPnyrRvNiEct1bRmU/ocheJGxJieJas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDbnnC/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8931AC4CECF;
-	Tue,  3 Dec 2024 14:57:50 +0000 (UTC)
+	 MIME-Version; b=JQex58Q1+BBTtn9CeCqLskdnApWLLcyczfmkfoqFTdzRYNvNW8kHz8zLV5KTaH4FrwYja1r/Z1t8fd0WJg3fR7Zv6Z0JEJGUtwBirIQ+4t5ZbISAsbvlUFa2vS1zJCBQST6ey1oXT9+gzPTBWp6GfzZzX/h1Eupct1XyP40geAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xd0368x/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDE0C4CECF;
+	Tue,  3 Dec 2024 14:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237871;
-	bh=DzkyBjfzY1D0GLhdWadJrm9ljIbkWKkW0Rlh25Uw7lg=;
+	s=korg; t=1733237894;
+	bh=E3v6c/Kp9frBe+Zzcu16Jug+RqY0ygy2pZagO8mtT9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDbnnC/6cBpOulGASa7jdj8JPb/+iMPh/fHEcflvaMJpjeCRAJhe+Jlufm+T/9y/8
-	 gAQ0liwjcFQJOc2QAoabbaYZNpHZ1xPcxDAmqUpFNdWg3lZ0MC7qdCyIrunIQnXz5p
-	 1kPkEdOkTBYijpTGgSYDoUvWe7IPVVN4FPMGpotc=
+	b=xd0368x/MaTqj3oIDA+Ee8iGZJy4hlRzAfHVBHfc7IxP35ImtWRPt5A5BHV1FCYec
+	 X6dMDqcy2ELrx/WeKn7zyXA+B/mfPqQKVt18lZA0ryI1g2mfJ7XpM7Fk3ODjAjQpra
+	 1QrkdYogDBuT50D7G6ohtUykvWYWeQo6WZ5GMjmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danny Tsen <dtsen@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 092/817] crypto: powerpc/p10-aes-gcm - Add dependency on CRYPTO_SIMDand re-enable CRYPTO_AES_GCM_P10
-Date: Tue,  3 Dec 2024 15:34:24 +0100
-Message-ID: <20241203143959.293289937@linuxfoundation.org>
+Subject: [PATCH 6.11 098/817] thermal: core: Initialize thermal zones before registering them
+Date: Tue,  3 Dec 2024 15:34:30 +0100
+Message-ID: <20241203143959.531116184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,39 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Danny Tsen <dtsen@linux.ibm.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8b6c1e466eecab70c2ed686f636d56eda19f4cd6 ]
+[ Upstream commit 662f920f7e390db5d1a6792a2b0ffa59b6c962fc ]
 
-Added CRYPTO_SIMD for CRYPTO_AES_GCM_P10.
+Since user space can start interacting with a new thermal zone as soon
+as device_register() called by thermal_zone_device_register_with_trips()
+returns, it is better to initialize the thermal zone before calling
+device_register() on it.
 
-Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
-
-Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d0df264fbd3c ("thermal/core: Remove pointless thermal_zone_device_reset() function")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3336146.44csPzL39Z@rjwysocki.net
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/crypto/Kconfig | 2 +-
+ drivers/thermal/thermal_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 46a4c85e85e24..951a437264611 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -107,12 +107,12 @@ config CRYPTO_AES_PPC_SPE
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 795be67ca878b..2f9128cf55e92 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1498,6 +1498,7 @@ thermal_zone_device_register_with_trips(const char *type,
+ 		thermal_zone_destroy_device_groups(tz);
+ 		goto remove_id;
+ 	}
++	thermal_zone_device_init(tz);
+ 	result = device_register(&tz->device);
+ 	if (result)
+ 		goto release_device;
+@@ -1543,7 +1544,6 @@ thermal_zone_device_register_with_trips(const char *type,
  
- config CRYPTO_AES_GCM_P10
- 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
--	depends on BROKEN
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
- 	select CRYPTO_AEAD
- 	select CRYPTO_SKCIPHER
-+	select CRYPTO_SIMD
- 	help
- 	  AEAD cipher: AES cipher algorithms (FIPS-197)
- 	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+ 	mutex_unlock(&thermal_list_lock);
+ 
+-	thermal_zone_device_init(tz);
+ 	/* Update the new thermal zone and mark it as already updated. */
+ 	if (atomic_cmpxchg(&tz->need_update, 1, 0))
+ 		thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
 -- 
 2.43.0
 
