@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-97219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69239E235C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:36:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F659E260D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7DDC163B32
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:31:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC13288CA2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4EA1F890E;
-	Tue,  3 Dec 2024 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1FE81ADA;
+	Tue,  3 Dec 2024 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQ0ntAyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGek2T1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7961F8906;
-	Tue,  3 Dec 2024 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19421F12F7;
+	Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239858; cv=none; b=aFXGBUpF3xxe0kA2+wABJnT0NndzXsy+YoBZCB98mKp/XE9yaUoR/2wwKdpS5SSSVZMbTjn1hjYJmH03NwNL3D7m9nUDXhACDrvQEBO2YUaOkWcmcgGyahF2f4XRK+lwOJ7O8QuPPyJL7gLMV9dTL+2SHCtN8l//SomvNDA3k6s=
+	t=1733242092; cv=none; b=TASO8AQXQIsfeUoDP/bWb7t8G/DrnvTuDMEBtRb0tpkH7lFmUkF3HYWL3WUMvU0SX1s4CB53wFGQeQ9LomnUZHjwMCtohg28AF1IpmuHYJW0syvEYKWFT14kFjJxQLpudfnS4R+kTqGI1B1bIrxGkXs97Sw+TOZDzp0lWv5Ph8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239858; c=relaxed/simple;
-	bh=UEzyhcbI43iylZCI/v2GDCH0AB4BaXckl+qAR9rthE8=;
+	s=arc-20240116; t=1733242092; c=relaxed/simple;
+	bh=iYgUN5Ia7Xy0H5rKrb1mXYMmxqEvYMTAYnjEmrGpODs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSCNdsNEf6NaUV/mYELBHjBIQYIMYzkF/FNfMq05YR/tRsf6xQxM1UCVGkWmT3pItjiyTXiw8Ff9ZEEhGhhxhTqcOKzHKvUH3XX8U0s4xojWXaiMjxQpyX/mtwLEWbBYu9HJrW8WELybTiYeFsMv2wYdmN2eHvdEfNd1HBXsYYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQ0ntAyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F001EC4CEDD;
-	Tue,  3 Dec 2024 15:30:57 +0000 (UTC)
+	 MIME-Version; b=rFqvdbgDz9Ju8ROMKAcsVYW1FTU70iSMMtxtrvGmLa4jKjDwqRkJEEIgJzMg/Se431EGtdPvuWcK/NXYDnGpjrhGw5DbC9Nxjx2Jwf79aEdjULpNZz8KAVVPIixk8MpwQQtoHeDTd1aKeK8zpoiQQZT1FEUgkWgo/ZPAuIIuNP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGek2T1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7C8C4CECF;
+	Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239858;
-	bh=UEzyhcbI43iylZCI/v2GDCH0AB4BaXckl+qAR9rthE8=;
+	s=korg; t=1733242091;
+	bh=iYgUN5Ia7Xy0H5rKrb1mXYMmxqEvYMTAYnjEmrGpODs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQ0ntAydDxUcoU6k7je7n5nsDeOFNhBEVNkLBRos+77gyr0r+1OznpwIrFhcJHiQW
-	 DuPoxWfDtBGoLBSHS8bCbHReB44sjgIZEZM8zAGJyfycW5u5N359juuwHZKn5T4mk4
-	 XTs/5u11PKZIiAHG6sPn3vahtZBmtQnQ2ar3/IJk=
+	b=ZGek2T1aksltRPXwR5v0XpyrIL5y2Oegkwgmlr4iAcV8ec3n/+OuH5BL5dw/wz4pi
+	 Mvhe5yKeszBiayBUvb6rUjMAuBPl2f3ZGGoXJXivkJOPR7Z5d6xpCm18F+zMax+Atm
+	 jaq3e4rALh+2FIFXRowYXfqqnmOPDECvdD0xjIxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 759/817] lib: string_helpers: silence snprintf() output truncation warning
-Date: Tue,  3 Dec 2024 15:45:31 +0100
-Message-ID: <20241203144025.622142363@linuxfoundation.org>
+	Charles Han <hanchunchao@inspur.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 605/826] phy: realtek: usb: fix NULL deref in rtk_usb3phy_probe
+Date: Tue,  3 Dec 2024 15:45:32 +0100
+Message-ID: <20241203144807.355106862@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-commit a508ef4b1dcc82227edc594ffae583874dd425d7 upstream.
+[ Upstream commit bf373d2919d98f3d1fe1b19a0304f72fe74386d9 ]
 
-The output of ".%03u" with the unsigned int in range [0, 4294966295] may
-get truncated if the target buffer is not 12 bytes. This can't really
-happen here as the 'remainder' variable cannot exceed 999 but the
-compiler doesn't know it. To make it happy just increase the buffer to
-where the warning goes away.
+In rtk_usb3phy_probe() devm_kzalloc() may return NULL
+but this returned value is not checked.
 
-Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241101205453.9353-1-brgl@bgdev.pl
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: adda6e82a7de ("phy: realtek: usb: Add driver for the Realtek SoC USB 3.0 PHY")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241025070744.149070-1-hanchunchao@inspur.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/string_helpers.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/realtek/phy-rtk-usb3.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/lib/string_helpers.c
-+++ b/lib/string_helpers.c
-@@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_si
- 	static const unsigned int rounding[] = { 500, 50, 5 };
- 	int i = 0, j;
- 	u32 remainder = 0, sf_cap;
--	char tmp[8];
-+	char tmp[12];
- 	const char *unit;
+diff --git a/drivers/phy/realtek/phy-rtk-usb3.c b/drivers/phy/realtek/phy-rtk-usb3.c
+index dfcf4b921bba6..96af483e5444b 100644
+--- a/drivers/phy/realtek/phy-rtk-usb3.c
++++ b/drivers/phy/realtek/phy-rtk-usb3.c
+@@ -577,6 +577,8 @@ static int rtk_usb3phy_probe(struct platform_device *pdev)
  
- 	tmp[0] = '\0';
+ 	rtk_phy->dev			= &pdev->dev;
+ 	rtk_phy->phy_cfg = devm_kzalloc(dev, sizeof(*phy_cfg), GFP_KERNEL);
++	if (!rtk_phy->phy_cfg)
++		return -ENOMEM;
+ 
+ 	memcpy(rtk_phy->phy_cfg, phy_cfg, sizeof(*phy_cfg));
+ 
+-- 
+2.43.0
+
 
 
 
