@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8BD9E2591
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797939E22F9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 510072871A0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390C416AEAF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB6F1F76B5;
-	Tue,  3 Dec 2024 16:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2081F76AF;
+	Tue,  3 Dec 2024 15:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNYmZJf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dE1qBQvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A82B1F76A4;
-	Tue,  3 Dec 2024 16:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6EC1F707A;
+	Tue,  3 Dec 2024 15:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241723; cv=none; b=ERZdFXODSeVKxeaFqrHux+/DAMnw3fZeD04O3FT6jkAx1a8L6Nd5yGSxmnFdQBfjZg/fWxcCuDMpOGtxhNQQdrDJUz9qjCgB/qrJrNE0tkbYP9sxGVHpVpEeggUa0WPkm2gZyaRCUrSFiQzlpppoVosR0gaDOymLdWodLcJJmrQ=
+	t=1733239553; cv=none; b=EtOtzm6JEy8hSUROTk7SM7IiiPczL8qCX+Hje2FY/xF8PunetxN5Lv6Xt3NKu3YkrJOfpWzQ6S1Jy+YPnB4XYQWvuT4mC6pVRwtqwXOOQqdo+itsVBPbi8KjoBDQ8KL31qESrnRpna0PoLUo1mk1WqI2hceFQQ0Ak/71pXlqO9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241723; c=relaxed/simple;
-	bh=/j6F0g9IFuHiHuxHHLa99NqfmZVdU3OZ/ycOZ5vwPAI=;
+	s=arc-20240116; t=1733239553; c=relaxed/simple;
+	bh=pvGS32thNLbIMX3hivXOxmQgSepA2yRD1yVLxfS7Tm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKJK7zdNux78vyib45ZU7r7CWkm49xWrL2CD1+eXS1rIZNEPKpVncnNl7j3hRHkUp5nHOssxSdKNe1JVum/yTHRBZ1/VgUWYtI55WCzFkdOpWlD4uCE+eDiABXRZvCdyZqQVMxJkbQhqayhxuzA3dm+Z5IgKwyjnb81NUpx5cA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNYmZJf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D73BC4CECF;
-	Tue,  3 Dec 2024 16:02:02 +0000 (UTC)
+	 MIME-Version; b=SBtEt+97j5MQGBMa//0aiZKhw6/9c+l5ONXx94pMuflnSdmyy5VXxv9Eidl3xVIHF7dbPcv/kvovua8cqedTYlyYgXJrBkfdjdL4mp6HLJPmnyzUfmKxIpDBNff9BJGHN39nDrtv3Abb4uQtT8jKg2vBhDEoipy/YTwJbjWzrZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dE1qBQvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567C6C4CECF;
+	Tue,  3 Dec 2024 15:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241722;
-	bh=/j6F0g9IFuHiHuxHHLa99NqfmZVdU3OZ/ycOZ5vwPAI=;
+	s=korg; t=1733239553;
+	bh=pvGS32thNLbIMX3hivXOxmQgSepA2yRD1yVLxfS7Tm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNYmZJf5Rzj8WVuUKOtRmFlkaopGlKi2enlcpQgwuGjfdwFC9PLhyLwhLQq/yZiBo
-	 fo+J0nent6gyLEzR2b8fJqC8GiNU5GCsY7FhxEFTPelgWUmKJsPXTL4RxuYPFpixrF
-	 2FjSvyb98bBBGcfrPbN2kBqaf/gobJ2kcf3uqKgU=
+	b=dE1qBQvNCXjvNxpzwgnEUtBkc3z4hWW1qQUJdnvEjdsijDRWmrNfW0sTsrDvazPH1
+	 Ul2vnvHxcRA4CJGnLBrD9MzUpKJvSrJA9ysyTRZxBOiKf1TqmTLqGX/XVsublaWRCb
+	 vAX+ukFdem8hejF1Z20ZAX74QRPbCl4yJw70N3pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng1@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 498/826] f2fs: check curseg->inited before write_sum_page in change_curseg
-Date: Tue,  3 Dec 2024 15:43:45 +0100
-Message-ID: <20241203144803.180296207@linuxfoundation.org>
+	Shusen Li <lishusen2@huawei.com>,
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.11 654/817] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+Date: Tue,  3 Dec 2024 15:43:46 +0100
+Message-ID: <20241203144021.486192978@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng1@oppo.com>
+From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-[ Upstream commit 43563069e1c1df417d2eed6eca8a22fc6b04691d ]
+commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
 
-In the __f2fs_init_atgc_curseg->get_atssr_segment calling,
-curseg->segno is NULL_SEGNO, indicating that there is no summary
-block that needs to be written.
+vgic_its_save_device_tables will traverse its->device_list to
+save DTE for each device. vgic_its_restore_device_tables will
+traverse each entry of device table and check if it is valid.
+Restore if valid.
 
-Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
-Signed-off-by: Yongpeng Yang <yangyongpeng1@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But when MAPD unmaps a device, it does not invalidate the
+corresponding DTE. In the scenario of continuous saves
+and restores, there may be a situation where a device's DTE
+is not saved but is restored. This is unreasonable and may
+cause restore to fail. This patch clears the corresponding
+DTE when MAPD unmaps a device.
+
+Cc: stable@vger.kernel.org
+Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
+Co-developed-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 7b54b1851d346..edf205093f435 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2926,7 +2926,8 @@ static int change_curseg(struct f2fs_sb_info *sbi, int type)
- 	struct f2fs_summary_block *sum_node;
- 	struct page *sum_page;
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1143,9 +1143,11 @@ static int vgic_its_cmd_handle_mapd(stru
+ 	bool valid = its_cmd_get_validbit(its_cmd);
+ 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+ 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
++	int dte_esz = vgic_its_get_abi(its)->dte_esz;
+ 	struct its_device *device;
++	gpa_t gpa;
  
--	write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
-+	if (curseg->inited)
-+		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
+-	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
++	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
+ 		return E_ITS_MAPD_DEVICE_OOR;
  
- 	__set_test_and_inuse(sbi, new_segno);
+ 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+@@ -1166,7 +1168,7 @@ static int vgic_its_cmd_handle_mapd(stru
+ 	 * is an error, so we are done in any case.
+ 	 */
+ 	if (!valid)
+-		return 0;
++		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
  
--- 
-2.43.0
-
+ 	device = vgic_its_alloc_device(its, device_id, itt_addr,
+ 				       num_eventid_bits);
 
 
 
