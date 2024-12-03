@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-97299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F49E23F9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB0C9E23FD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29F016C42D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 387FC16BA5C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADD220B208;
-	Tue,  3 Dec 2024 15:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3997B20B21C;
+	Tue,  3 Dec 2024 15:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqcUIuYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+n4LN7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4469C20B1FF;
-	Tue,  3 Dec 2024 15:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA07320B218;
+	Tue,  3 Dec 2024 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240088; cv=none; b=kruAKFT5ANXsbWrJI2GamgEdPwp0y1rHdsSu/PP8HTmv38S3oCYW997n9RvdYZE/I2yuW/muO6wWD56hr0uRfOIEFG/Jp6NfTu5zjTvueeMqc2OIwKNWDGsQMdp8h6RSDnGYTVeHPeYFkShuHKu0zyjG74wCRHkKpIUo/Fq+1G8=
+	t=1733240094; cv=none; b=BHFlqrEnEZWYiftrG5EBmyPCHVOoOCZpIrFHLEWuqkoSuT5pC5d+ywbz7hRfQzxWImq6CecjtHiNr8PZNwwo9rLcRy4C8hMl0S3Lq0/ICwQeh5+WdCR+vM4sIYu1JqwzVzWh44k5Csp2zpD40WB746uvjSbL5uNfepiAmdb09aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240088; c=relaxed/simple;
-	bh=PfwNBCON4l98BqWbOAzktifPfe86rtru5kMLPmNane4=;
+	s=arc-20240116; t=1733240094; c=relaxed/simple;
+	bh=e4nWDdH+kNNVukUmZ6C1qCNBT2pGiLuk00/Qh34/jSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSnXhR8TMdmEls3SqsECtwcBMwDHf18gFkKn2I/x4Mk2Pqe1LSyBiw6elbxLztq92C57mJnzUdzFY0YZxnJOpnx9hJjLkNLxdK3WSJ8iZPi1G9ML9YE1CS3mnX1iOUzy/mivCRLsTUaS726Jod3h3y7tCVsDbKHk5kmk3WfFL6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqcUIuYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFA3C4CED6;
-	Tue,  3 Dec 2024 15:34:47 +0000 (UTC)
+	 MIME-Version; b=atV0eNMXYbjGgHybFw7HNZNq9fQJqz/WE0L5LHyDGXfPZnWJqG+BCFMzF/5UZfbxZrULmzW3K+XZgLs9JgmzuwfADetTbCx9HXOp6tS8CpEIeKxoZRZ9kGKXqtt+PCQa2rtTyyHVzb7ugZbDA61kKnnuebg7CImH1yzDLXzRpIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+n4LN7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709CAC4CECF;
+	Tue,  3 Dec 2024 15:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240088;
-	bh=PfwNBCON4l98BqWbOAzktifPfe86rtru5kMLPmNane4=;
+	s=korg; t=1733240093;
+	bh=e4nWDdH+kNNVukUmZ6C1qCNBT2pGiLuk00/Qh34/jSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqcUIuYNyCaXAO3MmYfoivDLHgxGwtySV8j3ItMSn1vMkqCB83nZ+SQrOvIpPO9kq
-	 l5uU+pAagT1f4nUCDryPsoMKsxsOZlRrwq0iMDMk0a/sZCGOzEO/hg8X9W+Rc2eztP
-	 Q6Vg9JLtem4wNAo/fIQIEzthFgverL7RXsg3Z2Pk=
+	b=Q+n4LN7HKKooiyl/0nT7HbBIY9BOXQrm3pi1qHQkgI7ePnYfs+x0sqQxmGyiq6f9u
+	 eWXFY6t0w/6I4ZGqReUXyOW/vpilGKCtGIF7vI0uXfFWlFFRPLl2Oz2h2rKeaoD6LZ
+	 3QbPklNroArvPpl1MpbP6p7gSiH+6CGERn/ppi7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/826] s390/cpum_sf: Fix and protect memory allocation of SDBs with mutex
-Date: Tue,  3 Dec 2024 15:35:46 +0100
-Message-ID: <20241203144744.208755180@linuxfoundation.org>
+Subject: [PATCH 6.12 020/826] initramfs: avoid filename buffer overrun
+Date: Tue,  3 Dec 2024 15:35:47 +0100
+Message-ID: <20241203144744.246705694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,53 +66,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: David Disseldorp <ddiss@suse.de>
 
-[ Upstream commit f55bd479d8663a4a4e403b3d308d3d1aa33d92df ]
+[ Upstream commit e017671f534dd3f568db9e47b0583e853d2da9b5 ]
 
-Reservation of the PMU hardware is done at first event creation
-and is protected by a pair of mutex_lock() and mutex_unlock().
-After reservation of the PMU hardware the memory
-required for the PMUs the event is to be installed on is
-allocated by allocate_buffers() and alloc_sampling_buffer().
-This done outside of the mutex protection.
-Without mutex protection two or more concurrent invocations of
-perf_event_init() may run in parallel.
-This can lead to allocation of Sample Data Blocks (SDBs)
-multiple times for the same PMU.
-Prevent this and protect memory allocation of SDBs by
-mutex.
+The initramfs filename field is defined in
+Documentation/driver-api/early-userspace/buffer-format.rst as:
 
-Fixes: 8a6fe8f21ec4 ("s390/cpum_sf: Use refcount_t instead of atomic_t")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+ 37 cpio_file := ALGN(4) + cpio_header + filename + "\0" + ALGN(4) + data
+...
+ 55 ============= ================== =========================
+ 56 Field name    Field size         Meaning
+ 57 ============= ================== =========================
+...
+ 70 c_namesize    8 bytes            Length of filename, including final \0
+
+When extracting an initramfs cpio archive, the kernel's do_name() path
+handler assumes a zero-terminated path at @collected, passing it
+directly to filp_open() / init_mkdir() / init_mknod().
+
+If a specially crafted cpio entry carries a non-zero-terminated filename
+and is followed by uninitialized memory, then a file may be created with
+trailing characters that represent the uninitialized memory. The ability
+to create an initramfs entry would imply already having full control of
+the system, so the buffer overrun shouldn't be considered a security
+vulnerability.
+
+Append the output of the following bash script to an existing initramfs
+and observe any created /initramfs_test_fname_overrunAA* path. E.g.
+  ./reproducer.sh | gzip >> /myinitramfs
+
+It's easiest to observe non-zero uninitialized memory when the output is
+gzipped, as it'll overflow the heap allocated @out_buf in __gunzip(),
+rather than the initrd_start+initrd_size block.
+
+---- reproducer.sh ----
+nilchar="A"	# change to "\0" to properly zero terminate / pad
+magic="070701"
+ino=1
+mode=$(( 0100777 ))
+uid=0
+gid=0
+nlink=1
+mtime=1
+filesize=0
+devmajor=0
+devminor=1
+rdevmajor=0
+rdevminor=0
+csum=0
+fname="initramfs_test_fname_overrun"
+namelen=$(( ${#fname} + 1 ))	# plus one to account for terminator
+
+printf "%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s" \
+	$magic $ino $mode $uid $gid $nlink $mtime $filesize \
+	$devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname
+
+termpadlen=$(( 1 + ((4 - ((110 + $namelen) & 3)) % 4) ))
+printf "%.s${nilchar}" $(seq 1 $termpadlen)
+---- reproducer.sh ----
+
+Symlink filename fields handled in do_symlink() won't overrun past the
+data segment, due to the explicit zero-termination of the symlink
+target.
+
+Fix filename buffer overrun by aborting the initramfs FSM if any cpio
+entry doesn't carry a zero-terminator at the expected (name_len - 1)
+offset.
+
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Link: https://lore.kernel.org/r/20241030035509.20194-2-ddiss@suse.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/initramfs.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index 5b765e3ccf0ca..3317f4878eaa7 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -759,7 +759,6 @@ static int __hw_perf_event_init(struct perf_event *event)
- 		reserve_pmc_hardware();
- 		refcount_set(&num_events, 1);
- 	}
--	mutex_unlock(&pmc_reserve_mutex);
- 	event->destroy = hw_perf_event_destroy;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index bc911e466d5bb..b2f7583bb1f5c 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -360,6 +360,15 @@ static int __init do_name(void)
+ {
+ 	state = SkipIt;
+ 	next_state = Reset;
++
++	/* name_len > 0 && name_len <= PATH_MAX checked in do_header */
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs name without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
++	}
++
+ 	if (strcmp(collected, "TRAILER!!!") == 0) {
+ 		free_hash();
+ 		return 0;
+@@ -424,6 +433,12 @@ static int __init do_copy(void)
  
- 	/* Access per-CPU sampling information (query sampling info) */
-@@ -848,6 +847,7 @@ static int __hw_perf_event_init(struct perf_event *event)
- 		if (is_default_overflow_handler(event))
- 			event->overflow_handler = cpumsf_output_event_pid;
- out:
-+	mutex_unlock(&pmc_reserve_mutex);
- 	return err;
- }
- 
+ static int __init do_symlink(void)
+ {
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs symlink without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
++	}
+ 	collected[N_ALIGN(name_len) + body_len] = '\0';
+ 	clean_path(collected, 0);
+ 	init_symlink(collected + N_ALIGN(name_len), collected);
 -- 
 2.43.0
 
