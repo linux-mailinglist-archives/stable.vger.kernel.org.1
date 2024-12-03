@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-96624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844B79E20DB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BAD9E20AE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D2316625A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1916428621A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F7E1F7577;
-	Tue,  3 Dec 2024 15:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4BF1F706C;
+	Tue,  3 Dec 2024 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJe4N1Ap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzRo0jah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BA91F7547;
-	Tue,  3 Dec 2024 15:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD6B33FE;
+	Tue,  3 Dec 2024 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238120; cv=none; b=Yd/Gfz8jFel+xW3dx24cVGX1ieRC8K1pKd6Pg4k3HKbLg/vkyIGJLyO0ivpGITNjGVThUTR8X6lMiDlGBwf1Z4TaXbqWOpqnZvHf8poBHpvPAUwS+u0/ZamTReFUY5rnHpCiBEhwF6rFHf1bI0iPTWFOIuTC//gIOE1d97f9ZEE=
+	t=1733238143; cv=none; b=WPVqZhpGIWPyb6li4yIhn1I8x8UGyaDpbWvEZuCK0n9Ve9xT4rcgV3437iuK+aRKjjbWx360Q/Caj044b/P6TflOJzjx8G4k0BoHPiEM/OL0d74L4w2hft6TRQ22KylGX21u4Lxq9TsAbItK+iM+WnAe0ydHNGCxWXU8an+O9AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238120; c=relaxed/simple;
-	bh=AzM2+U1Php47t+7wTLJ46JgoTWJ7vcHT9XXbaa3Flrc=;
+	s=arc-20240116; t=1733238143; c=relaxed/simple;
+	bh=Q3DUTYFc0mBzuNmaTCKzwPTV/Bt96phQ/Gc3IkAMQyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lzo7XpOsV+zG5xhKF+QCotf5lqvur8y8u+bUU6sVXiVqFEwlm6gMoLOTHRxq/i+KcnAw+S/vK7WSdafYXPSfRWH562nw0exbYG7qxgRLo/hDJnbLyW/tpiK3KCt1DgNLJDRQ7/oCON+py4x8ZUwsOFJqM/EyQkGC+naB4OpyLlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJe4N1Ap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E2C4CECF;
-	Tue,  3 Dec 2024 15:01:59 +0000 (UTC)
+	 MIME-Version; b=spPjyayKnCFzmFUoWbfKpf14cfnVekqhCX5ckteKxvlQ8i5zRf/2xtCR/FdzQpqWgej1smalEYXz6aZy0hx8+QHh+PQvDM4iyKth8xYJsY/zXTO3XEogmmjw3v8eSI+hs+ZUXPNXf2wNHM50Ye4CACYQD6vXcCuLhfXb2ieL0SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzRo0jah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFFAC4CECF;
+	Tue,  3 Dec 2024 15:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238120;
-	bh=AzM2+U1Php47t+7wTLJ46JgoTWJ7vcHT9XXbaa3Flrc=;
+	s=korg; t=1733238143;
+	bh=Q3DUTYFc0mBzuNmaTCKzwPTV/Bt96phQ/Gc3IkAMQyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJe4N1Apd//1v5lcJ59J3VKcC0h4G7SC0nLpvc1vU/uMbITGgDlc/QFbv3yM+a6cw
-	 xjd7GP9yk0bMtAtbRDHkaFpa/j5t2sqpjtyHywVKDHurSLXKLjtZn/J0prJ+jJjAUX
-	 Kgmgj1maKj1P4gQ+H+ksBTdsVo7HgMAq3M/xZHzI=
+	b=lzRo0jahC1u+Kp9fvw7PPaczsREF3X6ywlgKUGJu+Jz7n/Z8JjSzRbrcqlkpWcj0l
+	 Lb8i/GsFmafQpoV7Dl8QhROlvbnQnciJEzrnNl8uPfqOFgIePYWFr7J8M7OWWcQsIx
+	 PXkwZsVzdy2F3+Sw693CDHSUMGwZ/DkbatQTcyxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Horia Geanta <horia.geanta@freescale.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 167/817] kernel-doc: allow object-like macros in ReST output
-Date: Tue,  3 Dec 2024 15:35:39 +0100
-Message-ID: <20241203144002.246811860@linuxfoundation.org>
+Subject: [PATCH 6.11 169/817] arm64: dts: mediatek: mt8173-elm-hana: Add vdd-supply to second source trackpad
+Date: Tue,  3 Dec 2024 15:35:41 +0100
+Message-ID: <20241203144002.323721576@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,152 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit bb8fd09e2811e2386bb40b9f0d3c7dd6e7961a1e ]
+[ Upstream commit f766fae08f6a2eaeb45d8d2c053724c91526835c ]
 
-output_function_rst() does not handle object-like macros. It presents
-a trailing "()" while output_function_man() handles these macros
-correctly.
+The Hana device has a second source option trackpad, but it is missing
+its regulator supply. It only works because the regulator is marked as
+always-on.
 
-Update output_function_rst() to handle object-like macros.
-Don't show the "Parameters" heading if there are no parameters.
+Add the regulator supply, but leave out the post-power-on delay. Instead,
+document the post-power-on delay along with the reason for not adding
+it in a comment.
 
-For output_function_man(), don't show the "ARGUMENTS" heading if there
-are no parameters.
-
-I have tested this quite a bit with my ad hoc test files for both ReST
-and man format outputs. The generated output looks good.
-
-Fixes: cbb4d3e6510b ("scripts/kernel-doc: handle object-like macros")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Horia Geanta <horia.geanta@freescale.com>
-Tested-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20241015181107.536894-1-rdunlap@infradead.org
+Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241018082001.1296963-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kernel-doc | 43 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/scripts/kernel-doc b/scripts/kernel-doc
-index c608820f0bf51..320544321ecba 100755
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -569,6 +569,8 @@ sub output_function_man(%) {
-     my %args = %{$_[0]};
-     my ($parameter, $section);
-     my $count;
-+    my $func_macro = $args{'func_macro'};
-+    my $paramcount = $#{$args{'parameterlist'}}; # -1 is empty
- 
-     print ".TH \"$args{'function'}\" 9 \"$args{'function'}\" \"$man_date\" \"Kernel Hacker's Manual\" LINUX\n";
- 
-@@ -600,7 +602,10 @@ sub output_function_man(%) {
-         $parenth = "";
-     }
- 
--    print ".SH ARGUMENTS\n";
-+    $paramcount = $#{$args{'parameterlist'}}; # -1 is empty
-+    if ($paramcount >= 0) {
-+    	print ".SH ARGUMENTS\n";
-+	}
-     foreach $parameter (@{$args{'parameterlist'}}) {
-         my $parameter_name = $parameter;
-         $parameter_name =~ s/\[.*//;
-@@ -822,10 +827,16 @@ sub output_function_rst(%) {
-     my $oldprefix = $lineprefix;
- 
-     my $signature = "";
--    if ($args{'functiontype'} ne "") {
--        $signature = $args{'functiontype'} . " " . $args{'function'} . " (";
--    } else {
--        $signature = $args{'function'} . " (";
-+    my $func_macro = $args{'func_macro'};
-+    my $paramcount = $#{$args{'parameterlist'}}; # -1 is empty
-+
-+	if ($func_macro) {
-+        $signature = $args{'function'};
-+	} else {
-+		if ($args{'functiontype'}) {
-+        	$signature = $args{'functiontype'} . " ";
-+		}
-+		$signature .= $args{'function'} . " (";
-     }
- 
-     my $count = 0;
-@@ -844,7 +855,9 @@ sub output_function_rst(%) {
-         }
-     }
- 
--    $signature .= ")";
-+    if (!$func_macro) {
-+    	$signature .= ")";
-+    }
- 
-     if ($sphinx_major < 3) {
-         if ($args{'typedef'}) {
-@@ -888,9 +901,11 @@ sub output_function_rst(%) {
-     # Put our descriptive text into a container (thus an HTML <div>) to help
-     # set the function prototypes apart.
-     #
--    print ".. container:: kernelindent\n\n";
-     $lineprefix = "  ";
--    print $lineprefix . "**Parameters**\n\n";
-+	if ($paramcount >= 0) {
-+    	print ".. container:: kernelindent\n\n";
-+   		print $lineprefix . "**Parameters**\n\n";
-+    }
-     foreach $parameter (@{$args{'parameterlist'}}) {
-         my $parameter_name = $parameter;
-         $parameter_name =~ s/\[.*//;
-@@ -1704,7 +1719,7 @@ sub check_return_section {
- sub dump_function($$) {
-     my $prototype = shift;
-     my $file = shift;
--    my $noret = 0;
-+    my $func_macro = 0;
- 
-     print_lineno($new_start_line);
- 
-@@ -1769,7 +1784,7 @@ sub dump_function($$) {
-         # declaration_name and opening parenthesis (notice the \s+).
-         $return_type = $1;
-         $declaration_name = $2;
--        $noret = 1;
-+        $func_macro = 1;
-     } elsif ($prototype =~ m/^()($name)\s*$prototype_end/ ||
-         $prototype =~ m/^($type1)\s+($name)\s*$prototype_end/ ||
-         $prototype =~ m/^($type2+)\s*($name)\s*$prototype_end/)  {
-@@ -1796,7 +1811,7 @@ sub dump_function($$) {
-     # of warnings goes sufficiently down, the check is only performed in
-     # -Wreturn mode.
-     # TODO: always perform the check.
--    if ($Wreturn && !$noret) {
-+    if ($Wreturn && !$func_macro) {
-         check_return_section($file, $declaration_name, $return_type);
-     }
- 
-@@ -1814,7 +1829,8 @@ sub dump_function($$) {
-                             'parametertypes' => \%parametertypes,
-                             'sectionlist' => \@sectionlist,
-                             'sections' => \%sections,
--                            'purpose' => $declaration_purpose
-+                            'purpose' => $declaration_purpose,
-+							'func_macro' => $func_macro
-                            });
-     } else {
-         output_declaration($declaration_name,
-@@ -1827,7 +1843,8 @@ sub dump_function($$) {
-                             'parametertypes' => \%parametertypes,
-                             'sectionlist' => \@sectionlist,
-                             'sections' => \%sections,
--                            'purpose' => $declaration_purpose
-+                            'purpose' => $declaration_purpose,
-+							'func_macro' => $func_macro
-                            });
-     }
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
+index 8d1cbc92bce32..ae0379fd42a91 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
+@@ -49,6 +49,14 @@ trackpad2: trackpad@2c {
+ 		interrupts-extended = <&pio 117 IRQ_TYPE_LEVEL_LOW>;
+ 		reg = <0x2c>;
+ 		hid-descr-addr = <0x0020>;
++		/*
++		 * The trackpad needs a post-power-on delay of 100ms,
++		 * but at time of writing, the power supply for it on
++		 * this board is always on. The delay is therefore not
++		 * added to avoid impacting the readiness of the
++		 * trackpad.
++		 */
++		vdd-supply = <&mt6397_vgp6_reg>;
+ 		wakeup-source;
+ 	};
+ };
 -- 
 2.43.0
 
