@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC229E18C4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361A99E18C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20E901668BC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:05:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FE1166B42
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576C41E0B6D;
-	Tue,  3 Dec 2024 10:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF0A1E0B6F;
+	Tue,  3 Dec 2024 10:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRkw66Vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luLvCtzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF9E1E0B6C
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F011213D890
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733220300; cv=none; b=Qo7wGjvnJbqUVKvjTCQnwsEgeDo1IN5oNT5vQX8xDZNAXRcBniOsAJKfzTCwfHz1p+k7V5uaUjixPjXS++nnA+BxlxcXVrifvxI4sezwCBJwuC/XDT6vIBgBP7pg6jdDa5K2jNFBw3B0kIcJEhy4AmZ5DGUwJ9R4PFQWuobONIA=
+	t=1733220311; cv=none; b=BaC2xkYNEjPuQZ0Y4fUGJjrans/LfBIX9WYg0QzWaL49ZJcFWJrMYtXhQa+FR8sQa7wqN2XhSldVRLFBSry3ePFyJnCVw39sfLpox9xJs2gOv38MOb0SN8FMBEa9qx7i+6wJo9Xi7njI9w/HLqNDo1Z9f1J9GT6Hq1BQ6PGFxzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733220300; c=relaxed/simple;
-	bh=8RDu5Nuz4oFGqgCI0T+30OS9NIJ10FDY8WTt1R7kVRk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sRqZu832h9IdEBcLT7JAx9I4CR1cdxCsVLnBMG703Y/T9peQ26HkxOBONR/1km0A2lLUjJgkA4Wi0WNlx8o0Q97FidUxqGu+ENwTiSjUuNOVE1fT3kMB7ePWUIgV17COeA5CkvT0NhDEHx1V2dyT7kPjtO4AThjeuqKpEnmgGXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRkw66Vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A16C4CECF;
-	Tue,  3 Dec 2024 10:04:58 +0000 (UTC)
+	s=arc-20240116; t=1733220311; c=relaxed/simple;
+	bh=iRp2oxXERIR2SDZbGMsExvA1fLrI18RQ4A6e1zgI7ZU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R88k6g+bV9oX11Vhy4z18tQLgrhTyfY4DrNlVOS8tm1uhmPjQiPHH7wEDSO42M4ln/CmUQR/SJWZcBjSspOfFcGumTjdorWU/n7dI+uhiTJx/uHbwqVRIilQY9b0sudUde1HthpE794P5XiiK3qU/ZrERod8URm7Yfz7/dlcoFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luLvCtzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A1EC4CECF;
+	Tue,  3 Dec 2024 10:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733220299;
-	bh=8RDu5Nuz4oFGqgCI0T+30OS9NIJ10FDY8WTt1R7kVRk=;
+	s=korg; t=1733220310;
+	bh=iRp2oxXERIR2SDZbGMsExvA1fLrI18RQ4A6e1zgI7ZU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qRkw66VxshocQqIu52t6sO/AsSNdD18JkHobChRL31p/zW6cpuZWLn4HV3gV1D9rH
-	 PPciYViBaHqQrqjFLKHsnOfPf/HOKpWWOX1x4qr2B22AS8eOY9N4ImGaPY7btw/m4a
-	 3Bn0ylspB/mIMqvsucCnvvAXxXmkl2p5OMFgqvNQ=
-Subject: FAILED: patch "[PATCH] serial: amba-pl011: Fix RX stall when DMA is used" failed to apply to 6.6-stable tree
+	b=luLvCtzYe9IX0t3vM6dD6dhTmhUBqlojWZX2t1HM7olCpcupb4hFTEsjGV8BhJuVZ
+	 uM2zZrRkXKSgwPu7YhjOjAqshLxDSat/zbu5Am7d63Lgy0iuv4LzJxuyDjA658b9TZ
+	 jelXEhY06QiFtLM2bnoymkzQjS0v04VvVUTzbyBA=
+Subject: FAILED: patch "[PATCH] serial: amba-pl011: Fix RX stall when DMA is used" failed to apply to 5.10-stable tree
 To: kkartik@nvidia.com,gregkh@linuxfoundation.org,linus.walleij@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Dec 2024 11:04:55 +0100
-Message-ID: <2024120355-monitor-shaft-8108@gregkh>
+Date: Tue, 03 Dec 2024 11:04:57 +0100
+Message-ID: <2024120357-gathering-handling-0bdf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120355-monitor-shaft-8108@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120357-gathering-handling-0bdf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
