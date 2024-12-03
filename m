@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A499E2477
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC299E2200
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0064287BCD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EFAF16BF31
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85461F8907;
-	Tue,  3 Dec 2024 15:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93521F76D1;
+	Tue,  3 Dec 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxcYPJLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ilvt9l3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32771DAC9F;
-	Tue,  3 Dec 2024 15:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49901F76CA;
+	Tue,  3 Dec 2024 15:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240925; cv=none; b=CwqrBPEfEx1MnY4kM9+RJffq3N2Too90fg66sl5x2AxqgqCUWi47L0QfsleSGcadEZSFhi+uipfJZhzZXr1ZXi7/U8jhJFSyEo1ck4Gpd1KY8/OD8zBr8av2YDmQgIiU10Kbl+zDyQEMYSyICXl0o2hI1EYPfm5d56zf1BXOg4Y=
+	t=1733238800; cv=none; b=AxcekkqDfojwi+gmpWLIPAi/vjPP6qUiRPDX2zzXUMuD9Na+3zgd4zQ/BQyBuT7E24wHb3rSvEe3NCxVCA/wCIRBACvZNPIENU0dUbVon/iB3BtIrIN8yGByURe8JzZKh6QGGoRHE8P/BLaXiRhy5VvnPCl/PkQ1lOh+UAyUyVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240925; c=relaxed/simple;
-	bh=qYleLKZ1uO9MIAsVC+ulF2/X3L/DronYZMe2Yf0FYro=;
+	s=arc-20240116; t=1733238800; c=relaxed/simple;
+	bh=dRyt/wimvU59WMxbIAxtNwOnYhWsa9DWTHRaMaYT1UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opp34vKYpi2RJD8Y8Y9y6w6soGEleYDf8OrThyeAEsYVzwqny8hCfMHjpi6MDXRqmFkHXuGkeKz9uPcJHFfziv8LkdQ8m07ZIUgsTXr1OPDZYrmH/70I3/mfLJU8JuHysabmkaRul3nkMFBsVjFmZJJNvxwellG7vRVwyR00X1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxcYPJLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD947C4CED6;
-	Tue,  3 Dec 2024 15:48:44 +0000 (UTC)
+	 MIME-Version; b=Q84b3oFFFGLUjPFXhIvY4dXvshXfFtlFCgcSdGyxsYje0BjuAZJNkeSYcuiEwVN9d0yrH/jnDr90Xa38vwtaOZfGHCvdL+/54WV6SKTtYDoRylUUjfFiyvyACURb7G6brsYKDHSSXYrdBHAfMUmaTzlo2hlJMUuGoyxmJ2RpLO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ilvt9l3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33B0C4CECF;
+	Tue,  3 Dec 2024 15:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240925;
-	bh=qYleLKZ1uO9MIAsVC+ulF2/X3L/DronYZMe2Yf0FYro=;
+	s=korg; t=1733238799;
+	bh=dRyt/wimvU59WMxbIAxtNwOnYhWsa9DWTHRaMaYT1UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxcYPJLSBF61kZgI4uwSpkwuxw7hk8pM8U67ia2N9NCcwbJmvGAzbC2naw/n44sIb
-	 chILQnrFXZwWnlhKV00ep7s9PO0e5K8NDT79Xq7Xk8Fu3+wuzq6obj49MihAgtMM5k
-	 z521ft/agGuJ4IpKDVQApGcLoXRTlc/G085GC89w=
+	b=Ilvt9l3qtZhWyje5VEX+TWX/hwAlt8BfDLsrBsrVVZoUPqttRywz9ZitoaD7BmUcv
+	 HrmmXc6vco6Zw8x0KfGzim/cWrDinWdpNJMX0+zVUmKck+1ra9xzhFBTfTpRPtsvAQ
+	 B5nijQt0SzK53hG9zx/6XFmU25gW95I0HYCcIN80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 245/826] libbpf: never interpret subprogs in .text as entry programs
+Subject: [PATCH 6.11 400/817] mtd: rawnand: atmel: Fix possible memory leak
 Date: Tue,  3 Dec 2024 15:39:32 +0100
-Message-ID: <20241203144753.323238381@linuxfoundation.org>
+Message-ID: <20241203144011.488792286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit db089c9158c1d535a36dfc010e5db37fccea2561 ]
+[ Upstream commit 6d734f1bfc336aaea91313a5632f2f197608fadd ]
 
-Libbpf pre-1.0 had a legacy logic of allowing singular non-annotated
-(i.e., not having explicit SEC() annotation) function to be treated as
-sole entry BPF program (unless there were other explicit entry
-programs).
+The pmecc "user" structure is allocated in atmel_pmecc_create_user() and
+was supposed to be freed with atmel_pmecc_destroy_user(), but this other
+helper is never called. One solution would be to find the proper
+location to call the destructor, but the trend today is to switch to
+device managed allocations, which in this case fits pretty well.
 
-This behavior was dropped during libbpf 1.0 transition period (unless
-LIBBPF_STRICT_SEC_NAME flag was unset in libbpf_mode). When 1.0 was
-released and all the legacy behavior was removed, the bug slipped
-through leaving this legacy behavior around.
+Replace kzalloc() by devm_kzalloc() and drop the destructor entirely.
 
-Fix this for good, as it actually causes very confusing behavior if BPF
-object file only has subprograms, but no entry programs.
-
-Fixes: bd054102a8c7 ("libbpf: enforce strict libbpf 1.0 behaviors")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241010211731.4121837-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Closes: https://lore.kernel.org/all/ZvmIvRJCf6VhHvpo@gallifrey/
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20241001203149.387655-1-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 8 +-------
+ drivers/mtd/nand/raw/atmel/pmecc.h | 2 --
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index dde03484cc42c..1a54ea3a9208d 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4389,7 +4389,7 @@ static int bpf_object__collect_externs(struct bpf_object *obj)
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index 4d7dc8a9c3738..a22aab4ed4e8a 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -362,7 +362,7 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+ 	size = ALIGN(size, sizeof(s32));
+ 	size += (req->ecc.strength + 1) * sizeof(s32) * 3;
  
- static bool prog_is_subprog(const struct bpf_object *obj, const struct bpf_program *prog)
- {
--	return prog->sec_idx == obj->efile.text_shndx && obj->nr_programs > 1;
-+	return prog->sec_idx == obj->efile.text_shndx;
+-	user = kzalloc(size, GFP_KERNEL);
++	user = devm_kzalloc(pmecc->dev, size, GFP_KERNEL);
+ 	if (!user)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -408,12 +408,6 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
  }
+ EXPORT_SYMBOL_GPL(atmel_pmecc_create_user);
  
- struct bpf_program *
+-void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user)
+-{
+-	kfree(user);
+-}
+-EXPORT_SYMBOL_GPL(atmel_pmecc_destroy_user);
+-
+ static int get_strength(struct atmel_pmecc_user *user)
+ {
+ 	const int *strengths = user->pmecc->caps->strengths;
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.h b/drivers/mtd/nand/raw/atmel/pmecc.h
+index 7851c05126cf1..cc0c5af1f4f1a 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.h
++++ b/drivers/mtd/nand/raw/atmel/pmecc.h
+@@ -55,8 +55,6 @@ struct atmel_pmecc *devm_atmel_pmecc_get(struct device *dev);
+ struct atmel_pmecc_user *
+ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+ 			struct atmel_pmecc_user_req *req);
+-void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user);
+-
+ void atmel_pmecc_reset(struct atmel_pmecc *pmecc);
+ int atmel_pmecc_enable(struct atmel_pmecc_user *user, int op);
+ void atmel_pmecc_disable(struct atmel_pmecc_user *user);
 -- 
 2.43.0
 
