@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FFE9E2551
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BBF9E21F9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23E3216CDCF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D002817BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5454C1F75AE;
-	Tue,  3 Dec 2024 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B322D7BF;
+	Tue,  3 Dec 2024 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uk2c/bnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aX17n16+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE9E1AB6C9;
-	Tue,  3 Dec 2024 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60A11DA3D;
+	Tue,  3 Dec 2024 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241237; cv=none; b=TdmS3D5BwysF8CmutPtOMu8XefSWf3VuA1j0FrYGl3oTzvDCs+b0htXntIJL2DGqbNkMkl/nbmkf/TCgp5rXSAVvmCRCd9zmwNOXSEX7aoBWXcz5RCa+iTq2hL66zpSF1JH4Li6cL5+HfLs4fB03UDkQYHEX1SfOcbw4qiIZFGo=
+	t=1733239143; cv=none; b=t/FBmYIES/t2uqOqc+9s+4B/ZfmnOyniiRLAA/BXhHYWFxJqHiBjVc0BZWS4vZ2nOuH2VGTtxbF/qmO9SkunD7wXVE5kk00mJJyzQfDdbEq0ZWbI4STl6f8hCPSW3nsWlqs3rX2nbyNbl3sV6uIWt4rCMrGEPsAqfZW01IGCKgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241237; c=relaxed/simple;
-	bh=QiHNC0/Y0yzy3JdLuoMLZlvDmyiXu7tHoKBYU0vbKkY=;
+	s=arc-20240116; t=1733239143; c=relaxed/simple;
+	bh=+bsHvGcib7yfl9NrcxdzPCmOt6JTLPnKsUubMLioqxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaElbOC5SadWETCpdpObLHWWfG4AcHe/CNduMm0uxXi/yBCAju4K5xIJQeBbZZFPHH4fgByvbzvFDUVOm02Un5NscshVos6Rq5VIDHP8K5+fsfQipCvuexYW3j/PQ7zWbh7NTJ0XHGKqd0wZmrFuKfzzRGOICWLSaRlwiZTHTyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uk2c/bnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF85C4CED6;
-	Tue,  3 Dec 2024 15:53:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L4tHFHm8+mgPMEYXxQc/jyiBc7O42+cmgFOyMos8aNnzf/JP4+Q+/RBBTHaLUgK7hjbZ0eogq6MBSgEU6Tvw2WBHG2bs8yqdQV26+QSrvQEENbQwsmQ75ImVesnbjItM9CFlZhEaagbzp9AzTZXmHuOiG29dymfus2susBog6c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aX17n16+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DFCC4CECF;
+	Tue,  3 Dec 2024 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241236;
-	bh=QiHNC0/Y0yzy3JdLuoMLZlvDmyiXu7tHoKBYU0vbKkY=;
+	s=korg; t=1733239143;
+	bh=+bsHvGcib7yfl9NrcxdzPCmOt6JTLPnKsUubMLioqxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uk2c/bnfKObC4UTGL5hdiL7tvKDX5Z4hvFqH2B662jV1IBF3j85RWmjKxCG3Veg34
-	 hXh48aRsdcsbnSgmuAAjHl+Omn7oEpB/U5dDlEBkqemaDJ9kzE3HXrIxjB9xvbBfBC
-	 3g6ADibj7jE16RMcG7BFzQRoYuC6oecLzPBpDNyY=
+	b=aX17n16+NtOUsqkSnNt0lLeh3YMZY8acaawJyGZQo4idBS625sXixnmrKNKZwnG8E
+	 ORTa6zqacNqY9VwODvXpLH+gQEy9oGngl+xENlP97m60fGoiYTCNThxQX+9O2cxlpm
+	 MyAc5edo6kKhNzKsTIhKR+8z3nzomr+8dJja0RHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 363/826] trace/trace_event_perf: remove duplicate samples on the first tracepoint event
+Subject: [PATCH 6.11 518/817] PCI: j721e: Use T_PERST_CLK_US macro
 Date: Tue,  3 Dec 2024 15:41:30 +0100
-Message-ID: <20241203144757.920325546@linuxfoundation.org>
+Message-ID: <20241203144016.113357129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
 
-[ Upstream commit afe5960dc208fe069ddaaeb0994d857b24ac19d1 ]
+[ Upstream commit f96b6971373382855bc964f1c067bd6dc41cf0ab ]
 
-When a tracepoint event is created with attr.freq = 1,
-'hwc->period_left' is not initialized correctly. As a result,
-in the perf_swevent_overflow() function, when the first time the event occurs,
-it calculates the event overflow and the perf_swevent_set_period() returns 3,
-this leads to the event are recorded for three duplicate times.
+Use the T_PERST_CLK_US macro, and the fsleep() function instead of
+usleep_range().
 
-Step to reproduce:
-    1. Enable the tracepoint event & starting tracing
-         $ echo 1 > /sys/kernel/tracing/events/module/module_free
-         $ echo 1 > /sys/kernel/tracing/tracing_on
-
-    2. Record with perf
-         $ perf record -a --strict-freq -F 1 -e "module:module_free"
-
-    3. Trigger module_free event.
-         $ modprobe -i sunrpc
-         $ modprobe -r sunrpc
-
-Result:
-     - Trace pipe result:
-         $ cat trace_pipe
-         modprobe-174509  [003] .....  6504.868896: module_free: sunrpc
-
-     - perf sample:
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-
-By setting period_left via perf_swevent_set_period() as other sw_event did,
-This problem could be solved.
-
-After patch:
-     - Trace pipe result:
-         $ cat trace_pipe
-         modprobe 1153096 [068] 613468.867774: module:module_free: xfs
-
-     - perf sample
-         modprobe 1153096 [068] 613468.867794: module:module_free: xfs
-
-Link: https://lore.kernel.org/20240913021347.595330-1-yeoreum.yun@arm.com
-Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/linux-pci/20240102-j7200-pcie-s2r-v7-6-a2f9156da6c3@bootlin.com
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Stable-dep-of: 22a9120479a4 ("PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_event_perf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/controller/cadence/pci-j721e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 05e7912418126..3ff9caa4a71bb 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -352,10 +352,16 @@ void perf_uprobe_destroy(struct perf_event *p_event)
- int perf_trace_add(struct perf_event *p_event, int flags)
- {
- 	struct trace_event_call *tp_event = p_event->tp_event;
-+	struct hw_perf_event *hwc = &p_event->hw;
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index d676a4ed57803..963b66b6a6832 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -542,7 +542,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		 * after 100 us.
+ 		 */
+ 		if (gpiod) {
+-			usleep_range(100, 200);
++			fsleep(PCIE_T_PERST_CLK_US);
+ 			gpiod_set_value_cansleep(gpiod, 1);
+ 		}
  
- 	if (!(flags & PERF_EF_START))
- 		p_event->hw.state = PERF_HES_STOPPED;
- 
-+	if (is_sampling_event(p_event)) {
-+		hwc->last_period = hwc->sample_period;
-+		perf_swevent_set_period(p_event);
-+	}
-+
- 	/*
- 	 * If TRACE_REG_PERF_ADD returns false; no custom action was performed
- 	 * and we need to take the default action of enqueueing our event on
 -- 
 2.43.0
 
