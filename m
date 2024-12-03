@@ -1,75 +1,56 @@
-Return-Path: <stable+bounces-97754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E7A9E256A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C819E22CF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95782288698
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A90316A138
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450081F75AC;
-	Tue,  3 Dec 2024 16:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036601F472A;
+	Tue,  3 Dec 2024 15:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrLkeqcy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx8BrNl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008EF23CE;
-	Tue,  3 Dec 2024 16:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22E52D7BF;
+	Tue,  3 Dec 2024 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241623; cv=none; b=eFHFFthgDxX4tIZRWgp0JDBxM8FR/L4rha02PMlgz67nNROONWWaQkpRehYRbP1IeIBF+0V5FxHgEpybOU7XxGOc0TFHEkrEMYXfSIihzUmAt4ougOiZT74QVuCo7gUVuWpSCQDl3kRyJcDiRiQ0yyLJSTOTkpSeKxQMhRX8mj8=
+	t=1733239471; cv=none; b=EGomRymEVzdlLzef8AEKFInU+oOWKPGRee7B+/6S5z6H5Cx49Ry9Sqfnf7vEV5JGbeFeu86uLpax+ZrYZNuvGmwI2YwvX0xp9INrey2TJP7Qax3nwvjMnGVwgOr6uKvN/H0+oyP4klHSdr6dee3zqwqxLC2KPqFDl/82ur2I5wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241623; c=relaxed/simple;
-	bh=Xtio/wPbrwiM9ZiHC/wEEdCnmq7EiMwgQ/tZm2uqI6M=;
+	s=arc-20240116; t=1733239471; c=relaxed/simple;
+	bh=bIH1DQ/EmuhHrVVY87X4xLLY+A/Eeoo8vB0ne8KvVRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViI3vet7G6Q6mMD4q6kE4DE9Hb043EAjeL9nEKPLxJUkPnYasOIc5L21xrQvwj/NXooraMeBBCJw4D8ts8ZBbeaAiXkC53p4VTIVHMKk+pyMypf0GpM7v5ESp6/qWvIvG4Aks4k5SPutX/GM+ZqAiF/xlYZ75f9pc4KpzrLUX90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrLkeqcy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3097DC4CECF;
-	Tue,  3 Dec 2024 16:00:22 +0000 (UTC)
+	 MIME-Version; b=YNemvIY8zXFoHAbpwJYYGs3a75E36AaZPT+AIJ9burS7pvjw3x0sI2F9HlCaBLSf2v/Q+rYx2acWpxquegofAsTH4Smy8jHQ7HGlkr3ahc0wedc3ZPIMgqxG3adlcIpsXB6GUcMWKlnq4aobj+qEbafgpr+IfSF6bho4OYybCGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx8BrNl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2BDC4CED6;
+	Tue,  3 Dec 2024 15:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241622;
-	bh=Xtio/wPbrwiM9ZiHC/wEEdCnmq7EiMwgQ/tZm2uqI6M=;
+	s=korg; t=1733239471;
+	bh=bIH1DQ/EmuhHrVVY87X4xLLY+A/Eeoo8vB0ne8KvVRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrLkeqcytivIHt/1c6N5CF1Oq7A/vIXWcI+9HAN2vN76y0QTiz15dXTN8Va/ZkvPn
-	 g9BXVAcuYPWxUbvREnPmxIPofLopyyyFPh+4k/5SNeYvwFy1U+7xMf1atS/D3Ym+zA
-	 RCRYJi+tiqetEOJvBST/fYDzI3boeHoJIsOMH+aQ=
+	b=bx8BrNl3XasBoZMDcv+tfOw/bHwFTYcD9oNe/rMjURAMyFPJ23zBezSoWuT4l4C7X
+	 QKc32TIjRCcbFeZgae+ygRoMLHZhAqQERSi5nEjST+KOse4IOi+kU/WNzgqG1qyPjq
+	 nMgx0wz7Gw4ecWWBp1It9Mfflhuq0iL5tQ0O8KMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Yang Jihong <yangjihong@bytedance.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ze Gao <zegao2021@gmail.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Weilin Wang <weilin.wang@intel.com>,
-	Will Deacon <will@kernel.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	ak@linux.intel.com,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Sun Haiyong <sunhaiyong@loongson.cn>,
-	John Garry <john.g.garry@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 470/826] perf stat: Uniquify event name improvements
-Date: Tue,  3 Dec 2024 15:43:17 +0100
-Message-ID: <20241203144802.097952233@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.11 626/817] net_sched: sch_fq: dont follow the fast path if Tx is behind now
+Date: Tue,  3 Dec 2024 15:43:18 +0100
+Message-ID: <20241203144020.371540547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,231 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 057f8bfc6f7070577523d1e3081081bbf4229c1c ]
+commit 122aba8c80618eca904490b1733af27fb8f07528 upstream.
 
-Without aggregation on Intel:
-```
-$ perf stat -e instructions,cycles ...
-```
-Will use "cycles" for the name of the legacy cycles event but as
-"instructions" has a sysfs name it will and a "[cpu]" PMU suffix. This
-often breaks things as the space between the event and the PMU name
-look like an extra column. The existing uniquify logic was also
-uniquifying in cases when all events are core and not with uncore
-events, it was not correctly handling modifiers, etc.
+Recent kernels cause a lot of TCP retransmissions
 
-Change the logic so that an initial pass that can disable
-uniquification is run. For individual counters, disable uniquification
-in more cases such as for consistency with legacy events or for
-libpfm4 events. Don't use the "[pmu]" style suffix in uniquification,
-always use "pmu/.../". Change how modifiers/terms are handled in the
-uniquification so that they look like parse-able events.
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  2.24 GBytes  19.2 Gbits/sec  2767    442 KBytes
+[  5]   1.00-2.00   sec  2.23 GBytes  19.1 Gbits/sec  2312    350 KBytes
+                                                      ^^^^
 
-This fixes "102: perf stat metrics (shadow stat) test:" that has been
-failing due to "instructions [cpu]" breaking its column/awk logic when
-values aren't aggregated. This started happening when instructions
-could match a sysfs rather than a legacy event, so the fixes tag
-reflects this.
+Replacing the qdisc with pfifo makes retransmissions go away.
 
-Fixes: 617824a7f0f7 ("perf parse-events: Prefer sysfs/JSON hardware events over legacy")
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-[ Fix Intel TPEBS counting mode test ]
-Acked-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Cc: Yang Jihong <yangjihong@bytedance.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ze Gao <zegao2021@gmail.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: Weilin Wang <weilin.wang@intel.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
-Cc: Yang Li <yang.lee@linux.alibaba.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: ak@linux.intel.com
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Sun Haiyong <sunhaiyong@loongson.cn>
-Cc: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20240926144851.245903-3-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It appears that a flow may have a delayed packet with a very near
+Tx time. Later, we may get busy processing Rx and the target Tx time
+will pass, but we won't service Tx since the CPU is busy with Rx.
+If Rx sees an ACK and we try to push more data for the delayed flow
+we may fastpath the skb, not realizing that there are already "ready
+to send" packets for this flow sitting in the qdisc.
+
+Don't trust the fastpath if we are "behind" according to the projected
+Tx time for next flow waiting in the Qdisc. Because we consider anything
+within the offload window to be okay for fastpath we must consider
+the entire offload window as "now".
+
+Qdisc config:
+
+qdisc fq 8001: dev eth0 parent 1234:1 limit 10000p flow_limit 100p \
+  buckets 32768 orphan_mask 1023 bands 3 \
+  priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 \
+  weights 589824 196608 65536 quantum 3028b initial_quantum 15140b \
+  low_rate_threshold 550Kbit \
+  refill_delay 40ms timer_slack 10us horizon 10s horizon_drop
+
+For iperf this change seems to do fine, the reordering is gone.
+The fastpath still gets used most of the time:
+
+  gc 0 highprio 0 fastpath 142614 throttled 418309 latency 19.1us
+   xx_behind 2731
+
+where "xx_behind" counts how many times we hit the new "return false".
+
+CC: stable@vger.kernel.org
+Fixes: 076433bd78d7 ("net_sched: sch_fq: add fast path for mostly idle qdisc")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241124022148.3126719-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[stable: drop the offload horizon, it's not supported / 0]
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../perf/tests/shell/test_stat_intel_tpebs.sh |  11 +-
- tools/perf/util/stat-display.c                | 101 ++++++++++++++----
- 2 files changed, 85 insertions(+), 27 deletions(-)
+ net/sched/sch_fq.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/tests/shell/test_stat_intel_tpebs.sh b/tools/perf/tests/shell/test_stat_intel_tpebs.sh
-index c60b29add9801..9a11f42d153ca 100755
---- a/tools/perf/tests/shell/test_stat_intel_tpebs.sh
-+++ b/tools/perf/tests/shell/test_stat_intel_tpebs.sh
-@@ -8,12 +8,15 @@ grep -q GenuineIntel /proc/cpuinfo || { echo Skipping non-Intel; exit 2; }
- # Use this event for testing because it should exist in all platforms
- event=cache-misses:R
- 
-+# Hybrid platforms output like "cpu_atom/cache-misses/R", rather than as above
-+alt_name=/cache-misses/R
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -331,6 +331,12 @@ static bool fq_fastpath_check(const stru
+ 		 */
+ 		if (q->internal.qlen >= 8)
+ 			return false;
 +
- # Without this cmd option, default value or zero is returned
--echo "Testing without --record-tpebs"
--result=$(perf stat -e "$event" true 2>&1)
--[[ "$result" =~ $event ]] || exit 1
-+#echo "Testing without --record-tpebs"
-+#result=$(perf stat -e "$event" true 2>&1)
-+#[[ "$result" =~ $event || "$result" =~ $alt_name ]] || exit 1
- 
- # In platforms that do not support TPEBS, it should execute without error.
- echo "Testing with --record-tpebs"
- result=$(perf stat -e "$event" --record-tpebs -a sleep 0.01 2>&1)
--[[ "$result" =~ "perf record" && "$result" =~ $event ]] || exit 1
-+[[ "$result" =~ "perf record" && "$result" =~ $event || "$result" =~ $alt_name ]] || exit 1
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index ea96e4ebad8c8..cbff43ff8d0fb 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -871,38 +871,66 @@ static void printout(struct perf_stat_config *config, struct outstate *os,
- 
- static void uniquify_event_name(struct evsel *counter)
- {
--	char *new_name;
--	char *config;
--	int ret = 0;
-+	const char *name, *pmu_name;
-+	char *new_name, *config;
-+	int ret;
- 
--	if (counter->uniquified_name || counter->use_config_name ||
--	    !counter->pmu_name || !strncmp(evsel__name(counter), counter->pmu_name,
--					   strlen(counter->pmu_name)))
-+	/* The evsel was already uniquified. */
-+	if (counter->uniquified_name)
- 		return;
- 
--	config = strchr(counter->name, '/');
-+	/* Avoid checking to uniquify twice. */
-+	counter->uniquified_name = true;
-+
-+	/* The evsel has a "name=" config term or is from libpfm. */
-+	if (counter->use_config_name || counter->is_libpfm_event)
-+		return;
-+
-+	/* Legacy no PMU event, don't uniquify. */
-+	if  (!counter->pmu ||
-+	     (counter->pmu->type < PERF_TYPE_MAX && counter->pmu->type != PERF_TYPE_RAW))
-+		return;
-+
-+	/* A sysfs or json event replacing a legacy event, don't uniquify. */
-+	if (counter->pmu->is_core && counter->alternate_hw_config != PERF_COUNT_HW_MAX)
-+		return;
-+
-+	name = evsel__name(counter);
-+	pmu_name = counter->pmu->name;
-+	/* Already prefixed by the PMU name. */
-+	if (!strncmp(name, pmu_name, strlen(pmu_name)))
-+		return;
-+
-+	config = strchr(name, '/');
- 	if (config) {
--		if (asprintf(&new_name,
--			     "%s%s", counter->pmu_name, config) > 0) {
--			free(counter->name);
--			counter->name = new_name;
--		}
--	} else {
--		if (evsel__is_hybrid(counter)) {
--			ret = asprintf(&new_name, "%s/%s/",
--				       counter->pmu_name, counter->name);
-+		int len = config - name;
-+
-+		if (config[1] == '/') {
-+			/* case: event// */
-+			ret = asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, config + 2);
- 		} else {
--			ret = asprintf(&new_name, "%s [%s]",
--				       counter->name, counter->pmu_name);
-+			/* case: event/.../ */
-+			ret = asprintf(&new_name, "%s/%.*s,%s", pmu_name, len, name, config + 1);
- 		}
-+	} else {
-+		config = strchr(name, ':');
-+		if (config) {
-+			/* case: event:.. */
-+			int len = config - name;
- 
--		if (ret) {
--			free(counter->name);
--			counter->name = new_name;
-+			ret = asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, config + 1);
-+		} else {
-+			/* case: event */
-+			ret = asprintf(&new_name, "%s/%s/", pmu_name, name);
- 		}
++		/* Ordering invariants fall apart if some delayed flows
++		 * are ready but we haven't serviced them, yet.
++		 */
++		if (q->time_next_delayed_flow <= now)
++			return false;
  	}
--
--	counter->uniquified_name = true;
-+	if (ret > 0) {
-+		free(counter->name);
-+		counter->name = new_name;
-+	} else {
-+		/* ENOMEM from asprintf. */
-+		counter->uniquified_name = false;
-+	}
- }
  
- static bool hybrid_uniquify(struct evsel *evsel, struct perf_stat_config *config)
-@@ -1559,6 +1587,31 @@ static void print_cgroup_counter(struct perf_stat_config *config, struct evlist
- 		print_metric_end(config, os);
- }
- 
-+static void disable_uniquify(struct evlist *evlist)
-+{
-+	struct evsel *counter;
-+	struct perf_pmu *last_pmu = NULL;
-+	bool first = true;
-+
-+	evlist__for_each_entry(evlist, counter) {
-+		/* If PMUs vary then uniquify can be useful. */
-+		if (!first && counter->pmu != last_pmu)
-+			return;
-+		first = false;
-+		if (counter->pmu) {
-+			/* Allow uniquify for uncore PMUs. */
-+			if (!counter->pmu->is_core)
-+				return;
-+			/* Keep hybrid event names uniquified for clarity. */
-+			if (perf_pmus__num_core_pmus() > 1)
-+				return;
-+		}
-+	}
-+	evlist__for_each_entry_continue(evlist, counter) {
-+		counter->uniquified_name = true;
-+	}
-+}
-+
- void evlist__print_counters(struct evlist *evlist, struct perf_stat_config *config,
- 			    struct target *_target, struct timespec *ts,
- 			    int argc, const char **argv)
-@@ -1572,6 +1625,8 @@ void evlist__print_counters(struct evlist *evlist, struct perf_stat_config *conf
- 		.first = true,
- 	};
- 
-+	disable_uniquify(evlist);
-+
- 	if (config->iostat_run)
- 		evlist->selected = evlist__first(evlist);
- 
--- 
-2.43.0
-
+ 	sk = skb->sk;
 
 
 
