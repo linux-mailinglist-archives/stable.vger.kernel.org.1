@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-96716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4869E2129
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BF49E2102
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6BE163255
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38929284F60
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54CD1F6696;
-	Tue,  3 Dec 2024 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D11F7070;
+	Tue,  3 Dec 2024 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1/VxAeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D19IfN17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726691E3DF9;
-	Tue,  3 Dec 2024 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775D51F6691;
+	Tue,  3 Dec 2024 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238386; cv=none; b=IAiy/ThYLE07pi+62mQYsRLEzWcGLknK4G5KgfFb5hcRSyA4piT32mn8jCg3IIlurmHCATowC+t2HXEuo87XgKlrJQLzeHBWPQyk1o2yHnPoWykdymLL65ZYhVUVWpnRNy+J6mJB9espm7OC8CI9izu9xV8HeSDZu3F3ZwN+c+M=
+	t=1733238392; cv=none; b=PWMt+QHwa1l2RwVixY9QeOnGxEGAbV+lMgiGXf4j35G2KyYXEvOWshjz1YBKSLU596POqTYQVUApMhIiyKAxn+ZKEq50qnZ/BbxoBQ1ttfXcwM7gqxx2i5TThPnTXbv/ku5S2fZnWEo1ybEKaOWVzJI/1P7s4R9tRNZPEdJVQn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238386; c=relaxed/simple;
-	bh=bQxzpaPcvrLTJBBM+co7KmeFJ/XIfp/GHNMhFGPPxQ8=;
+	s=arc-20240116; t=1733238392; c=relaxed/simple;
+	bh=iJQz+2ZklzyMdcx211TTGgSEF7Xbl+EOdjdn00Dwn5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caPvcQkjObW+rFgVsoLLkhr90l9+NnPpjr73Wts88SBqEAk9C3OK/Tgs1WU6lhLuQkU0C0qkyU511sWqaDCOaCBjyTgDZ2qZkfCplU//h0tJSLfYiXQR82PzLRCazoB6eHWy70lK2wJS2bdECYjuOh3p0CWxzrjAwXUMWX89u0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1/VxAeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED667C4CECF;
-	Tue,  3 Dec 2024 15:06:25 +0000 (UTC)
+	 MIME-Version; b=slTezXKj5oEv5KbyWfZPMmf4PQ9G0ebRTLv//hRhp6pLN4ULsM96dThMgBgHNEAwBh5nn7JNF7BD67hGvVPabD9oJp4yftX6o7d7vp8cXkLtFHqoiLmjmqukys+R0QQA2Mtg1TH3YQYn29DzMZ/gNgkkeOX1pPuI1zxaZgS/w+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D19IfN17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0A7C4CECF;
+	Tue,  3 Dec 2024 15:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238386;
-	bh=bQxzpaPcvrLTJBBM+co7KmeFJ/XIfp/GHNMhFGPPxQ8=;
+	s=korg; t=1733238392;
+	bh=iJQz+2ZklzyMdcx211TTGgSEF7Xbl+EOdjdn00Dwn5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1/VxAeSOMdYYtZLrjz+pH4Be+xYe18mVBHXBy0/f/icl7XymFa23QidUl+YY43qQ
-	 wM/VxjlVOvaJacgKu2cgvF2QKnJj1DMi0ilNcwinD8PACcFeh76uco51PZO+UY1Ylc
-	 J/6Q+d4jbBI7I/lMHJ28OvN1MNIuTMaEFXsa8vzc=
+	b=D19IfN17Zb/kMZoF9PLHVpfOdsHjQifFO7OU9+gc0XDv1sl3o0aTWVP/f9if+FrNu
+	 Rh7WXJX62sUyuoMKH105d7LeSWMXF+K3/gfEITEIGWVh7sMbE2pwKJ9zSNnxm5OQU6
+	 k0YL/V0oDVpdmzZWra9iqOI+WCpETLgh8sElJ4CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Daniel Xu <dxu@dxuuu.xyz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 259/817] bpf: Fix the xdp_adjust_tail sample prog issue
-Date: Tue,  3 Dec 2024 15:37:11 +0100
-Message-ID: <20241203144005.898991298@linuxfoundation.org>
+Subject: [PATCH 6.11 261/817] selftests/bpf: Fix backtrace printing for selftests crashes
+Date: Tue,  3 Dec 2024 15:37:13 +0100
+Message-ID: <20241203144005.976845027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,39 +68,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
+[ Upstream commit 5bf1557e3d6a69113649d831276ea2f97585fc33 ]
 
-During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
-is discarded by the kernel. After checking the issues by tracking SKB package,
-it is identified that they were caused by checksum errors. Refer to checksum
-of the arch/arm64/include/asm/checksum.h for fixing.
+test_progs uses glibc specific functions backtrace() and
+backtrace_symbols_fd() to print backtrace in case of SIGSEGV.
 
-v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
- implementation consistent.
+Recent commit (see fixes) updated test_progs.c to define stub versions
+of the same functions with attriubte "weak" in order to allow linking
+test_progs against musl libc. Unfortunately this broke the backtrace
+handling for glibc builds.
 
-Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+As it turns out, glibc defines backtrace() and backtrace_symbols_fd()
+as weak:
+
+  $ llvm-readelf --symbols /lib64/libc.so.6 \
+     | grep -P '( backtrace_symbols_fd| backtrace)$'
+  4910: 0000000000126b40   161 FUNC    WEAK   DEFAULT    16 backtrace
+  6843: 0000000000126f90   852 FUNC    WEAK   DEFAULT    16 backtrace_symbols_fd
+
+So does test_progs:
+
+ $ llvm-readelf --symbols test_progs \
+    | grep -P '( backtrace_symbols_fd| backtrace)$'
+  2891: 00000000006ad190    15 FUNC    WEAK   DEFAULT    13 backtrace
+ 11215: 00000000006ad1a0    41 FUNC    WEAK   DEFAULT    13 backtrace_symbols_fd
+
+In such situation dynamic linker is not obliged to favour glibc
+implementation over the one defined in test_progs.
+
+Compiling with the following simple modification to test_progs.c
+demonstrates the issue:
+
+  $ git diff
+  ...
+  \--- a/tools/testing/selftests/bpf/test_progs.c
+  \+++ b/tools/testing/selftests/bpf/test_progs.c
+  \@@ -1817,6 +1817,7 @@ int main(int argc, char **argv)
+          if (err)
+                  return err;
+
+  +       *(int *)0xdeadbeef  = 42;
+          err = cd_flavor_subdir(argv[0]);
+          if (err)
+                  return err;
+
+  $ ./test_progs
+  [0]: Caught signal #11!
+  Stack trace:
+  <backtrace not supported>
+  Segmentation fault (core dumped)
+
+Resolve this by hiding stub definitions behind __GLIBC__ macro check
+instead of using "weak" attribute.
+
+Fixes: c9a83e76b5a9 ("selftests/bpf: Fix compile if backtrace support missing in libc")
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
+Tested-by: Tony Ambardar <tony.ambardar@gmail.com>
+Reviewed-by: Tony Ambardar <tony.ambardar@gmail.com>
+Acked-by: Daniel Xu <dxu@dxuuu.xyz>
+Link: https://lore.kernel.org/bpf/20241003210307.3847907-1-eddyz87@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/xdp_adjust_tail_kern.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/test_progs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
-index ffdd548627f0a..da67bcad1c638 100644
---- a/samples/bpf/xdp_adjust_tail_kern.c
-+++ b/samples/bpf/xdp_adjust_tail_kern.c
-@@ -57,6 +57,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
+diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
+index 05bd298b15f4c..080e4fd012d3d 100644
+--- a/tools/testing/selftests/bpf/test_progs.c
++++ b/tools/testing/selftests/bpf/test_progs.c
+@@ -20,11 +20,13 @@
  
- static __always_inline __u16 csum_fold_helper(__u32 csum)
+ #include "network_helpers.h"
+ 
++/* backtrace() and backtrace_symbols_fd() are glibc specific,
++ * use header file when glibc is available and provide stub
++ * implementations when another libc implementation is used.
++ */
+ #ifdef __GLIBC__
+ #include <execinfo.h> /* backtrace */
+-#endif
+-
+-/* Default backtrace funcs if missing at link */
++#else
+ __weak int backtrace(void **buffer, int size)
  {
-+	csum = (csum & 0xffff) + (csum >> 16);
- 	return ~((csum & 0xffff) + (csum >> 16));
+ 	return 0;
+@@ -34,6 +36,7 @@ __weak void backtrace_symbols_fd(void *const *buffer, int size, int fd)
+ {
+ 	dprintf(fd, "<backtrace not supported>\n");
  }
++#endif /*__GLIBC__ */
  
+ static bool verbose(void)
+ {
 -- 
 2.43.0
 
