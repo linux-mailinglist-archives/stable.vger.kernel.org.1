@@ -1,146 +1,211 @@
-Return-Path: <stable+bounces-98136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49829E2C6D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4959E2CDC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1B23B3D3E8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A830B67599
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9781F76AE;
-	Tue,  3 Dec 2024 17:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCDF1FBEA9;
+	Tue,  3 Dec 2024 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4fWRbkN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kvuqWreo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EEA1F4731;
-	Tue,  3 Dec 2024 17:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20F81FA251
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 17:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733246684; cv=none; b=TPxOAyd8f0kbfrsbq4PlOLn9Wgye7uXEzZ6qaMds+OUDyGNyHW8prOSs/jw+zSQ7wzTmot6+0RzLmqUgoBikQO8fz/GfunEZqjbQ8X6nrGMNz6+OQ5GlfYIHYK6ctknEp7z7m/VseWisBPXfw+Y2hMAz74y0ToQL7HR/x7/JvSM=
+	t=1733246811; cv=none; b=AizSRi95sKkh6ixnmYgOTO6Fl+lJs0vcgAsIsp8WEhLiZ61IjJ/VfApbfXhXkCHTP8yIWAQQjsCqM7zY/n8Xkx9YfEFClhZg5xGqQNp+HNToRs/+kLvOUcPumZ16zwf8F7oy8+bwWs4VmF56GPw9Yu3Hdwnhzh5yLwA9mvSZtTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733246684; c=relaxed/simple;
-	bh=LNXxnd+wAtX8yjnWtSQBVcGs5jeF1cYxXYnclU8AnDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AH/Z3ZLqcyBNVYaPZ9iXv1RjrKlhRaZeYsy2eyTBJ6gsUNJ1MiWEpOXUghSfcxrRShhvHW6MOlxnGh+1xUL6Ilwe62mBgNI0ZYtEWNhyLrJUQ4oZf7mgF/NeZYA2Juo63QURc9tGDC1m/LwC6qgRPs/PNTlk1EOJrf5PE+uGIaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4fWRbkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5597DC4CECF;
-	Tue,  3 Dec 2024 17:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733246683;
-	bh=LNXxnd+wAtX8yjnWtSQBVcGs5jeF1cYxXYnclU8AnDU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G4fWRbkNm3jIkzfpx0pDOYw+KFGofLZR7Wkua0flCruEk9CYgjatRvlLgPHHy1ilD
-	 +WRMYBCdOJKYuHwHcfz4P+AY/FiH5A4c7paI3nsojLe8d1UYXjPFZL+Jieq4TPzKR+
-	 YPT3BdwA8JIKaPoJohyzwnFAjVS28hYvsatDGWDDhC4Q/1A8D+ZDHVquBLJlUBDzBf
-	 5KmDbKd0dGmv32Q3W+TRwteyk0Xw/ATWLjtku9mZw4eUTOYrofbJjNzMySg3fB0o0R
-	 Ic+q6vFVxzRcugP5nf1717ZCRcdX59WvuMK0vU0no9HyLqBGhGi8l5kbrtLsAE7Pw0
-	 fS+HssiZ74Uhg==
-Date: Tue, 3 Dec 2024 17:24:39 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/6] arm64/sme: Flush foreign register state in
- do_sme_acc()
-Message-ID: <44d67835-1e43-47cc-9a18-c279c885dcec@sirena.org.uk>
-References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
- <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
- <Z08khk6Mg6+T6VV9@e133380.arm.com>
- <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
- <Z085GKS8jzEhcZdW@e133380.arm.com>
+	s=arc-20240116; t=1733246811; c=relaxed/simple;
+	bh=MCDy6HkUfDKHYjRUBvEabLuhWMTUUHI+2O5UXR9PdkA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uLAkfQwugytT6bBXNl9sERRyUiEq1L1+Jw6DiXUHAI/q+CnHogL0XsUJqwPry/91dmyDN6j/9S3+84Uzw0pH1Pepr86cTek0OwmAjgOf0daH5UuS7yEsYTa1LT94oviiV6RD0MKm2kAK4RafwQQkqx5sLhRmJm9yhRBzJOgQv1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kvuqWreo; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-434a9f9a225so55975e9.1
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 09:26:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733246807; x=1733851607; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=esMBl0uOLbGzsFzbKrL9tw7lBRfURdjOWkpYSobO80c=;
+        b=kvuqWreoEPTh05IQgWB1Xv6RDHveXyeGC6mbLxyug6E3zrExlcgZLcS7CX0oXYQZxa
+         FRMqWUSH79q/5HilViq8aYbF4L7698F8x7oj5QUYyChRYt21NgYNCAaieu/PXhsTE0V2
+         IN8XQd7bCDgCYgp7kQ5Lb4RpH5H+uM2/pH+hy5oHcvjHPVvaxXSRR1ziPJlj6y33Ei+e
+         0V/S/U3+LxnCxmDtw4OVdUaJ6g+g17KsQd5sbGwmVHsdmcrJvKTF5nkRWns5pxo7iG6f
+         +80TuNeq1CeJe1koiliq58tCB7GS7MFoam0U+sqBdfzC9VABIH8o3o+xloP4cJcHruUF
+         SMxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733246807; x=1733851607;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=esMBl0uOLbGzsFzbKrL9tw7lBRfURdjOWkpYSobO80c=;
+        b=V6pKbqXpMJscop8qTE0FrxpiRlp6KT7BeLCemKZ1vS0Xc6dHS+wERJ5ys/myDW9suu
+         J646cc6zrIQ45cXlQh9SSMG6s5KHOCWUP+9vKSqwRvMGcBOcwXL0vIvS/qKPXbv2FT1S
+         V5M5XmYQEtMSrd/16XYiEFa+56u0/qdNkE6SsYumuOsrd9lKn0SKUhd3WN3lh3jvDd5t
+         kFdCnquQakG7JrVbuO3v/qcyf7ECaTPJPDmVqjn5arlmv98S54SxByo6bwLNT2n6Mvlc
+         KdemmAzLNuTr7denFg+ZbKtSKoHOnsJj2YmOXfrlk6q46foch1EVEwE5+d0A1X0CdpLS
+         d1+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVlB1Pm69C0t1ka703uj6UBQOxK0BzraZi/yKc22VtVXSLrB7Hqto7d4rfiBJkqf7qLAtio+mg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNMIY8uWFoHaIv251+ZpEN7l0GZRhXnNOixcG2J1x41BC3+KA6
+	nkovhgiF0D6TKNwUN5E9sChIbt8PTCBd1F1pZOh7AmAnTk79t1WWryoSpf6uaA==
+X-Gm-Gg: ASbGnct+h3aQZXvk1VM0RVD5dymXv/hLXhSgBiU+mbhhdHB3A2C7QGkhD07tG3DUuW1
+	9BIM2Iakupk+t7uTDP50sPkW77EiiKL82lsGHvtWYxuB0ga/bIXnN+XHQs+/zh4GbayzbVbYmHV
+	MtMvHr7vce+qdpQyBTEeBePOD7rwIZk5pxlJJYc5WrCm4e2TmUX7dWC1Y8v+hH92NQCArqdwbYs
+	xqsUsKlwvU018SEqiXu5aZth+QsnfaObI+KCtY=
+X-Google-Smtp-Source: AGHT+IHu3tfTAoXvieXaIRaJiRZryx8cWpn3+5PzdcsLUtGUjPoPKMn6gY/KMYeGtkKYB5HV7URZ6Q==
+X-Received: by 2002:a05:600c:2144:b0:434:9d0b:bd7c with SMTP id 5b1f17b1804b1-434d12b8df7mr1213685e9.3.1733246806576;
+        Tue, 03 Dec 2024 09:26:46 -0800 (PST)
+Received: from localhost ([2a00:79e0:9d:4:92ba:3294:39ee:2d61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385f8448d32sm4515574f8f.96.2024.12.03.09.26.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 09:26:45 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Subject: [PATCH 0/3] fixes for udmabuf (memfd sealing checks and a leak)
+Date: Tue, 03 Dec 2024 18:25:34 +0100
+Message-Id: <20241203-udmabuf-fixes-v1-0-f99281c345aa@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tHDCWXL5Z30wlzvr"
-Content-Disposition: inline
-In-Reply-To: <Z085GKS8jzEhcZdW@e133380.arm.com>
-X-Cookie: Alimony is the high cost of leaving.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA4/T2cC/x3LTQqAIBBA4avIrBP8y0VXiRaaY80iC8UIpLsnL
+ T8er0HBTFhgYg0y3lToTB1yYLDuLm3IKXSDEspIJTSv4XC+Rh7pwcKDMHpE77y1GvpzZfxDX+b
+ lfT+rWACQXwAAAA==
+X-Change-ID: 20241203-udmabuf-fixes-d0435ebab663
+To: Gerd Hoffmann <kraxel@redhat.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Simona Vetter <simona.vetter@ffwll.ch>, 
+ John Stultz <john.stultz@linaro.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+ Jann Horn <jannh@google.com>, Julian Orth <ju.orth@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733246801; l=2909;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=MCDy6HkUfDKHYjRUBvEabLuhWMTUUHI+2O5UXR9PdkA=;
+ b=7R1+MVXGDrX8ZjzD+lYpU8vJrqqQZsU/jjVE8x5Xvlp659inhHh4Hs6EU5+zsTLaWSIvHEjrU
+ U58t58Lkh24B4O1A8seSqKkOWQKwCT4vgQTfc8JN9wGpHh4WP31+uUE
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
+I have tested that patches 2 and 3 work using the following reproducers.
+I did not write a reproducer for the issue described in patch 1.
 
---tHDCWXL5Z30wlzvr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reproducer for F_SEAL_FUTURE_WRITE not being respected:
+```
+#define _GNU_SOURCE
+#include <err.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <linux/udmabuf.h>
 
-On Tue, Dec 03, 2024 at 05:00:08PM +0000, Dave Martin wrote:
-> On Tue, Dec 03, 2024 at 04:00:45PM +0000, Mark Brown wrote:
+#define SYSCHK(x) ({          \
+  typeof(x) __res = (x);      \
+  if (__res == (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
 
-> > It's to ensure that the last recorded CPU for the current task is
-> > invalid so that if the state was loaded on another CPU and we switch
-> > back to that CPU we reload the state from memory, we need to at least
-> > trigger configuration of the SME VL.
+int main(void) {
+  int memfd = SYSCHK(memfd_create("test", MFD_ALLOW_SEALING));
+  SYSCHK(ftruncate(memfd, 0x1000));
+  SYSCHK(fcntl(memfd, F_ADD_SEALS, F_SEAL_SHRINK|F_SEAL_FUTURE_WRITE));
+  int udmabuf_fd = SYSCHK(open("/dev/udmabuf", O_RDWR));
+  struct udmabuf_create create_arg = {
+    .memfd = memfd,
+    .flags = 0,
+    .offset = 0,
+    .size = 0x1000
+  };
+  int buf_fd = SYSCHK(ioctl(udmabuf_fd, UDMABUF_CREATE, &create_arg));
+  printf("created udmabuf buffer fd %d\n", buf_fd);
+  char *map = SYSCHK(mmap(NULL, 0x1000, PROT_READ|PROT_WRITE, MAP_SHARED, buf_fd, 0));
+  *map = 'a';
+}
+```
 
-> OK, so the logic here is something like:
+Reproducer for the memory leak (if you run this for a while, your memory
+usage will steadily go up, and /sys/kernel/debug/dma_buf/bufinfo will
+contain a ton of entries):
+```
+#define _GNU_SOURCE
+#include <err.h>
+#include <errno.h>
+#include <assert.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <sys/resource.h>
+#include <linux/udmabuf.h>
 
-> Disregarding SME, the FPSIMD/SVE regs are up to date, which is fine
-> because SME is trapped.
+#define SYSCHK(x) ({          \
+  typeof(x) __res = (x);      \
+  if (__res == (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
 
-> When we take the SME trap, we suddenly have some work to do in order to
-> make sure that the SME-specific parts of the register state are up to
-> date, so we need to mark the state as stale before setting TIF_SME and
-> returning.
+int main(void) {
+  int memfd = SYSCHK(memfd_create("test", MFD_ALLOW_SEALING));
+  SYSCHK(ftruncate(memfd, 0x1000));
+  SYSCHK(fcntl(memfd, F_ADD_SEALS, F_SEAL_SHRINK));
+  int udmabuf_fd = SYSCHK(open("/dev/udmabuf", O_RDWR));
 
-We know that the only bit of register state which is not up to date at
-this point is the SME vector length, we don't configure that for tasks
-that do not have SME.  SVCR is always configured since we have to exit
-streaming mode for FPSIMD and SVE to work properly so we know it's
-already 0, all the other SME specific state is gated by controls in
-SVCR.
+  // prevent creating new FDs
+  struct rlimit rlim = { .rlim_cur = 1, .rlim_max = 1 };
+  SYSCHK(setrlimit(RLIMIT_NOFILE, &rlim));
 
-> fpsimd_flush_task_state() means that we do the necessary work when re-
-> entering userspace, but is there a problem with simply marking all the
-> FPSIMD/vector state as stale?  If FPSR or FPCR is dirty for example, it
-> now looks like they won't get written back to thread struct if there is
-> a context switch before current re-enters userspace?
+  while (1) {
+    struct udmabuf_create create_arg = {
+      .memfd = memfd,
+      .flags = 0,
+      .offset = 0,
+      .size = 0x1000
+    };
+    int buf_fd = ioctl(udmabuf_fd, UDMABUF_CREATE, &create_arg);
+    assert(buf_fd == -1);
+    assert(errno == EMFILE);
+  }
+}
+```
 
-> Maybe the other flags distinguish these cases -- I haven't fully got my
-> head around it.
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Jann Horn (3):
+      udmabuf: fix racy memfd sealing check
+      udmabuf: also check for F_SEAL_FUTURE_WRITE
+      udmabuf: fix memory leak on last export_udmabuf() error path
 
-We are doing fpsimd_flush_task_state() in the TIF_FOREIGN_FPSTATE case
-so we know there is no dirty state in the registers.
+ drivers/dma-buf/udmabuf.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
+---
+base-commit: b86545e02e8c22fb89218f29d381fa8e8b91d815
+change-id: 20241203-udmabuf-fixes-d0435ebab663
 
-> (Actually, the ARM ARM says (IMHTLZ) that toggling PSTATE.SM by any
-> means causes FPSR to become 0x800009f.  I'm not sure where that fits in
-> -- do we handle that anywhere?  I guess the "soft" SM toggling via
+-- 
+Jann Horn <jannh@google.com>
 
-Urgh, not seen that one - that needs handling in the signal entry path
-and ptrace.  That will have been defined while the feature was being
-implemented.  It's not relevant here though since we are in the SME
-access trap, we might be trapping due to a SMSTART or equivalent
-operation but that SMSTART has not yet run at the point where we return
-to userspace.
-
-> ptrace, signal delivery or maybe exec, ought to set this?  Not sure how
-> that interacts with the expected behaviour of the fenv(3) API...  Hmm.
-> I see no corresponding statement about FPCR.)
-
-Fun.  I'm not sure how the ABI is defined there by libc.
-
---tHDCWXL5Z30wlzvr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdPPtYACgkQJNaLcl1U
-h9APOAf/UFW40tTbHb8uLiLKWdPsreOHsimNJmtyKr1ffXaDSWdfVPDpmIkD2Pq0
-IfxTti7phJ0HbaSbSPQE5Q4wAuoWBKPBF1MA//sROlRYOrgRyGnoh4wYPHsKyHsC
-te9Y7m8YRG5BjAWU9AZxXDqrAzAD0Z2FUzPWHoeCfZfMzF39LVeT9fWrXifq//JL
-pukr0jwLO8Cl6h5beYMmvhhV+tUFooMIyswL0ao+U8oR34CtbTO43JsGwvIQ4jtN
-jkLXq4qeAFpbCdfepZcfO0GM3MIFMBu646I3pUVppZj0FAtQzShBrTdEz8IxAr4/
-Ae/GFy0QGUkCC6ZHRyE/6ZC3sp7Vmw==
-=MArm
------END PGP SIGNATURE-----
-
---tHDCWXL5Z30wlzvr--
 
