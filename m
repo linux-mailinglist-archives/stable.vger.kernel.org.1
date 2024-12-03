@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB069E29EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A7D9E28DE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E15ABA2BDA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA705BE698B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D63646;
-	Tue,  3 Dec 2024 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA191F8910;
+	Tue,  3 Dec 2024 16:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2AihQjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5r5X4Vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712C1F473A;
-	Tue,  3 Dec 2024 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0841F76CA;
+	Tue,  3 Dec 2024 16:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239692; cv=none; b=UiIVUDDdylndqZYkSo9Pqjt5+yUhwZT4KNictRwWm3nyOlGknnAAqLY7UEItrU9mhkQTDXCQyWOzs0sLNW21zPDrvq6RgYnZAgLj2YnkKNBGYxt7IfdI2trL0LKuHSZbz5A5jriEDH131zueZ213swQlLelTqlGoG59Nn5BzFsY=
+	t=1733242008; cv=none; b=abLoQSz8iJPhWeolTFI4zZb8a+YogLWmgeeGwh9NSKdxV1rG4HLwMA8Gh9gWxSmRN6She/PFF8+WxwdcZ7suPLV25Pn4hCP8dMQo567cplJFyG15nrAw020CKnPLlqnkvjZSM24EfQNAWWXv5HpoT5YFwigZP3GGxhA2BbO/pkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239692; c=relaxed/simple;
-	bh=1Hq2MRV3oQ1to6ALcPXjS8KTasfwbkgqvZYbmZs2pNM=;
+	s=arc-20240116; t=1733242008; c=relaxed/simple;
+	bh=XZj6Sbs7bYMMwX4fyeKBDGIzQdHszWbKU+eGIbVGZkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzQuLT6WkhZe8tZWKClJe+gdmqdmWXCdXVKOg/qbXJrnx1rJeUTZRc4xzGCqukkBoBzHiREZs41DZmUUJ3/2eShyKrjsa/r9VGvaZoviSeMkDUK7H7jfC9F/s8bUmEPHjufXXgL863ucD+FZh0LHFhHnEIHGZhzoW/gOSPfsdE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2AihQjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE2DC4CECF;
-	Tue,  3 Dec 2024 15:28:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lFUhFJKcLzY4ETcxmlvdKZ6c+cjcEaAdBriNkER5l6S1AOT/dSifjOoB39Oj51ZKiNkfqbVe6z2h+TuUPYqU0A1+dPXE9K/S/gL97YHhtewHZxW6UaxBWEZ7pcrD0PNzEwSiJpms5VQvSwKgkNHq7xfRm3dYDLI+7nJeY5g6x6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5r5X4Vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B066C4CECF;
+	Tue,  3 Dec 2024 16:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239692;
-	bh=1Hq2MRV3oQ1to6ALcPXjS8KTasfwbkgqvZYbmZs2pNM=;
+	s=korg; t=1733242008;
+	bh=XZj6Sbs7bYMMwX4fyeKBDGIzQdHszWbKU+eGIbVGZkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2AihQjfTdsFMTN2jwUG4p3SqSKYYzUUYtOsrpE7Q4uynWErPlLn8FOlTRsrKEa8I
-	 UvxLNNLSsAbpsaeh/YY+7PJoKheFZ/mfdXU6DDXxtcKnwLpPbBwQoJoL/O8Si2BWcW
-	 zhxPA37kXpRGxyTC5p5uVNhD4vA5kGJB8ku/n71o=
+	b=q5r5X4VpCXixkK3YuMWL5gi54gNcFkJLYVySNTRSxmY/98U5q52/oMjmB6LGJkbnF
+	 xMPB/kOPVaPKTzR18uAm/B3/wk/j2ul3rH3Kyp0Abut5JTAIBD8wIweg+P1alcICmk
+	 hJHKn3n6uXKR3wPD53YBmNbRMETosiSvbNXwViFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.11 701/817] cifs: support mounting with alternate password to allow password rotation
-Date: Tue,  3 Dec 2024 15:44:33 +0100
-Message-ID: <20241203144023.341729398@linuxfoundation.org>
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 549/826] power: supply: bq27xxx: Fix registers of bq27426
+Date: Tue,  3 Dec 2024 15:44:36 +0100
+Message-ID: <20241203144805.166364213@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,146 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meetakshi Setiya <msetiya@microsoft.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-commit b9aef1b13a0a92aa7058ba235afb24b5b89153ca upstream.
+[ Upstream commit 34f99d3b706a519e556841f405c224ca708b1f54 ]
 
-Fixes the case for example where the password specified on mount is a
-recently expired password, but password2 is valid.  Without this patch
-this mount scenario would fail.
+Correct bq27426 registers, according to technical reference manual
+it does not have Design Capacity register so it is not register
+compatible with bq27421.
 
-This patch introduces the following changes to support password rotation on
-mount:
-
-1. If an existing session is not found and the new session setup results in
-EACCES, EKEYEXPIRED or EKEYREVOKED, swap password and password2 (if
-available), and retry the mount.
-
-2. To match the new mount with an existing session, add conditions to check
-if a) password and password2 of the new mount and the existing session are
-the same, or b) password of the new mount is the same as the password2 of
-the existing session, and password2 of the new mount is the same as the
-password of the existing session.
-
-3. If an existing session is found, but needs reconnect, retry the session
-setup after swapping password and password2 (if available), in case the
-previous attempt results in EACCES, EKEYEXPIRED or EKEYREVOKED.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ef6a16033b47 ("power: supply: bq27xxx: Add support for BQ27426")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20241016-fix_bq27426-v2-1-aa6c0f51a9f6@mainlining.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |   57 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 50 insertions(+), 7 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c | 37 ++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1908,11 +1908,35 @@ static int match_session(struct cifs_ses
- 			    CIFS_MAX_USERNAME_LEN))
- 			return 0;
- 		if ((ctx->username && strlen(ctx->username) != 0) &&
--		    ses->password != NULL &&
--		    strncmp(ses->password,
--			    ctx->password ? ctx->password : "",
--			    CIFS_MAX_PASSWORD_LEN))
--			return 0;
-+		    ses->password != NULL) {
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 750fda543308c..51fb88aca0f9f 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -449,9 +449,29 @@ static u8
+ 		[BQ27XXX_REG_AP] = 0x18,
+ 		BQ27XXX_DM_REG_ROWS,
+ 	},
++	bq27426_regs[BQ27XXX_REG_MAX] = {
++		[BQ27XXX_REG_CTRL] = 0x00,
++		[BQ27XXX_REG_TEMP] = 0x02,
++		[BQ27XXX_REG_INT_TEMP] = 0x1e,
++		[BQ27XXX_REG_VOLT] = 0x04,
++		[BQ27XXX_REG_AI] = 0x10,
++		[BQ27XXX_REG_FLAGS] = 0x06,
++		[BQ27XXX_REG_TTE] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTF] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTES] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTECP] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_NAC] = 0x08,
++		[BQ27XXX_REG_RC] = 0x0c,
++		[BQ27XXX_REG_FCC] = 0x0e,
++		[BQ27XXX_REG_CYCT] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_AE] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_SOC] = 0x1c,
++		[BQ27XXX_REG_DCAP] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_AP] = 0x18,
++		BQ27XXX_DM_REG_ROWS,
++	},
+ #define bq27411_regs bq27421_regs
+ #define bq27425_regs bq27421_regs
+-#define bq27426_regs bq27421_regs
+ #define bq27441_regs bq27421_regs
+ #define bq27621_regs bq27421_regs
+ 	bq27z561_regs[BQ27XXX_REG_MAX] = {
+@@ -769,10 +789,23 @@ static enum power_supply_property bq27421_props[] = {
+ };
+ #define bq27411_props bq27421_props
+ #define bq27425_props bq27421_props
+-#define bq27426_props bq27421_props
+ #define bq27441_props bq27421_props
+ #define bq27621_props bq27421_props
+ 
++static enum power_supply_property bq27426_props[] = {
++	POWER_SUPPLY_PROP_STATUS,
++	POWER_SUPPLY_PROP_PRESENT,
++	POWER_SUPPLY_PROP_VOLTAGE_NOW,
++	POWER_SUPPLY_PROP_CURRENT_NOW,
++	POWER_SUPPLY_PROP_CAPACITY,
++	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
++	POWER_SUPPLY_PROP_TEMP,
++	POWER_SUPPLY_PROP_TECHNOLOGY,
++	POWER_SUPPLY_PROP_CHARGE_FULL,
++	POWER_SUPPLY_PROP_CHARGE_NOW,
++	POWER_SUPPLY_PROP_MANUFACTURER,
++};
 +
-+			/* New mount can only share sessions with an existing mount if:
-+			 * 1. Both password and password2 match, or
-+			 * 2. password2 of the old mount matches password of the new mount
-+			 *    and password of the old mount matches password2 of the new
-+			 *	  mount
-+			 */
-+			if (ses->password2 != NULL && ctx->password2 != NULL) {
-+				if (!((strncmp(ses->password, ctx->password ?
-+					ctx->password : "", CIFS_MAX_PASSWORD_LEN) == 0 &&
-+					strncmp(ses->password2, ctx->password2,
-+					CIFS_MAX_PASSWORD_LEN) == 0) ||
-+					(strncmp(ses->password, ctx->password2,
-+					CIFS_MAX_PASSWORD_LEN) == 0 &&
-+					strncmp(ses->password2, ctx->password ?
-+					ctx->password : "", CIFS_MAX_PASSWORD_LEN) == 0)))
-+					return 0;
-+
-+			} else if ((ses->password2 == NULL && ctx->password2 != NULL) ||
-+				(ses->password2 != NULL && ctx->password2 == NULL)) {
-+				return 0;
-+
-+			} else {
-+				if (strncmp(ses->password, ctx->password ?
-+					ctx->password : "", CIFS_MAX_PASSWORD_LEN))
-+					return 0;
-+			}
-+		}
- 	}
- 
- 	if (strcmp(ctx->local_nls->charset, ses->local_nls->charset))
-@@ -2256,6 +2280,7 @@ struct cifs_ses *
- cifs_get_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
- {
- 	int rc = 0;
-+	int retries = 0;
- 	unsigned int xid;
- 	struct cifs_ses *ses;
- 	struct sockaddr_in *addr = (struct sockaddr_in *)&server->dstaddr;
-@@ -2274,6 +2299,8 @@ cifs_get_smb_ses(struct TCP_Server_Info
- 			cifs_dbg(FYI, "Session needs reconnect\n");
- 
- 			mutex_lock(&ses->session_mutex);
-+
-+retry_old_session:
- 			rc = cifs_negotiate_protocol(xid, ses, server);
- 			if (rc) {
- 				mutex_unlock(&ses->session_mutex);
-@@ -2286,6 +2313,13 @@ cifs_get_smb_ses(struct TCP_Server_Info
- 			rc = cifs_setup_session(xid, ses, server,
- 						ctx->local_nls);
- 			if (rc) {
-+				if (((rc == -EACCES) || (rc == -EKEYEXPIRED) ||
-+					(rc == -EKEYREVOKED)) && !retries && ses->password2) {
-+					retries++;
-+					cifs_dbg(FYI, "Session reconnect failed, retrying with alternate password\n");
-+					swap(ses->password, ses->password2);
-+					goto retry_old_session;
-+				}
- 				mutex_unlock(&ses->session_mutex);
- 				/* problem -- put our reference */
- 				cifs_put_smb_ses(ses);
-@@ -2361,6 +2395,7 @@ cifs_get_smb_ses(struct TCP_Server_Info
- 	ses->chans_need_reconnect = 1;
- 	spin_unlock(&ses->chan_lock);
- 
-+retry_new_session:
- 	mutex_lock(&ses->session_mutex);
- 	rc = cifs_negotiate_protocol(xid, ses, server);
- 	if (!rc)
-@@ -2373,8 +2408,16 @@ cifs_get_smb_ses(struct TCP_Server_Info
- 	       sizeof(ses->smb3signingkey));
- 	spin_unlock(&ses->chan_lock);
- 
--	if (rc)
--		goto get_ses_fail;
-+	if (rc) {
-+		if (((rc == -EACCES) || (rc == -EKEYEXPIRED) ||
-+			(rc == -EKEYREVOKED)) && !retries && ses->password2) {
-+			retries++;
-+			cifs_dbg(FYI, "Session setup failed, retrying with alternate password\n");
-+			swap(ses->password, ses->password2);
-+			goto retry_new_session;
-+		} else
-+			goto get_ses_fail;
-+	}
- 
- 	/*
- 	 * success, put it on the list and add it as first channel
+ static enum power_supply_property bq27z561_props[] = {
+ 	POWER_SUPPLY_PROP_STATUS,
+ 	POWER_SUPPLY_PROP_PRESENT,
+-- 
+2.43.0
+
 
 
 
