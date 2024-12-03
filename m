@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032759E22F2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B249E25D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD9FE286DD4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D935288A02
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A521F7572;
-	Tue,  3 Dec 2024 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5591F76D7;
+	Tue,  3 Dec 2024 16:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzGO3fNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5K2PeCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A3F2500DA;
-	Tue,  3 Dec 2024 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0001F8923;
+	Tue,  3 Dec 2024 16:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239838; cv=none; b=uaSoZTbKJBIHXcf81+Ia1QpdaAH87dHCcb37xdRqoKrqU+WDFz3MgUqrspL68RsGaJsRcV1kfGBah+IMLi7hpJAu3bYdHQngMowbf1HbxOUikbHh/DUO2GJvkTr6VkIwfdQlLz7met1qwXZYR9KhSyEznppTYvQwmm5kMdIB/wg=
+	t=1733241919; cv=none; b=lRQHyGM4nsTQwfUsqEPjqmUaP5qf87fV00Vmfk6pMXiVTGM8QzC8N2EnyTWlcimGNya6icPPlUS8AYpiVGPHGA6Gf1O/DW9F3a750KJ/B4oh6TXHdxTvHHeQ4dopKmScOC7TkGIMQtSH/kAM5hHen9uhUwlfFpk/3NVU1Ty/8Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239838; c=relaxed/simple;
-	bh=h8tmbYW+rF8X0CdzVSDSUrlqF2cxIx2Wdo6ebVWgza8=;
+	s=arc-20240116; t=1733241919; c=relaxed/simple;
+	bh=CDDezxI2BV5nd4xaFPYlc5jgz5abV9E1UNLrTjrGL/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISWnqhryZf1tg44OWM0V26UtNjKMUIzHzshXIFm98UHP1m2FJJQcELBJl38jBd+ttFBFX2DSSaYlqu0uxcdomIeJ5Izm6AOk/68Xq/t+qFy077HMiGoWeecRu3mbbgm41ZU7maWXg7FCQLvuD+1Zd17VDyZ7feSm+MwVsF7Z/DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzGO3fNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F73C4CECF;
-	Tue,  3 Dec 2024 15:30:37 +0000 (UTC)
+	 MIME-Version; b=Z3+9HWbubyhbprzsQAvVPPO2rjP6ZpQxUJOl0Jrz9SAgfkRouHSI3d1qNdAofep8grJQaEeDvI12JLwpC4c3TbtMsGnK2iWT+bYb4Jq6Nl4o6CDye9YPOGD3xPISpLSJEXViYwnt5fptKtJlLV/UxZ7OkEEoWpSYSS20xPkwx6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5K2PeCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7A5C4CED8;
+	Tue,  3 Dec 2024 16:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239838;
-	bh=h8tmbYW+rF8X0CdzVSDSUrlqF2cxIx2Wdo6ebVWgza8=;
+	s=korg; t=1733241919;
+	bh=CDDezxI2BV5nd4xaFPYlc5jgz5abV9E1UNLrTjrGL/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzGO3fNfaiMDleYiuXhyWRWvJRvj2i1kWNyYfKLryEo30odzswB2bnX9YLJRRGR9j
-	 wGV62O9NIC/3kUZ2Vnh60biNKA5sFV38mrYrstTXV59md/+Dphb/x7Dpd2wP5jQq3j
-	 qAeOu49JSvjicH34ueg40pTygc5lCZyieb3jezt8=
+	b=c5K2PeCc+xrOY0kOg1erPqUQu1z7jCUs/PlDJ/8DPQ9GSp85HLS31LVZ3osmdCGgh
+	 2Bnuw3iJywfwPN8jYW5SH+W6Tgs4xqsLcuocbAEIkzdGbVGRNODmXEPuUyXVJ54CBm
+	 Bgy8SF0rQDN69sBy/o3VZsF3UzJRRLqa4wJxfM6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.11 710/817] ubi: wl: Put source PEB into correct list if trying locking LEB failed
+	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 555/826] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
 Date: Tue,  3 Dec 2024 15:44:42 +0100
-Message-ID: <20241203144023.705139591@linuxfoundation.org>
+Message-ID: <20241203144805.396838412@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
+[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
 
-During wear-leveing work, the source PEB will be moved into scrub list
-when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
-for non-scrub type source PEB. The problem could bring extra and
-ineffective wear-leveing jobs, which makes more or less negative effects
-for the life time of flash. Specifically, the process is divided 2 steps:
-1. wear_leveling_worker // generate false scrub type PEB
-     ubi_eba_copy_leb // MOVE_RETRY is returned
-       leb_write_trylock // trylock failed
-     scrubbing = 1;
-     e1 is put into ubi->scrub
-2. wear_leveling_worker // schedule false scrub type PEB for wl
-     scrubbing = 1
-     e1 = rb_entry(rb_first(&ubi->scrub))
+Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
+memory leak that occurs when the device is unplugged. This ensures
+proper cleanup of pseudo fixed-link PHYs.
 
-The problem can be reproduced easily by running fsstress on a small
-UBIFS partition(<64M, simulated by nandsim) for 5~10mins
-(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
-message is shown:
- ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
-
-Since scrub type source PEB has set variable scrubbing as '1', and
-variable scrubbing is checked before variable keep, so the problem can
-be fixed by setting keep variable as 1 directly if the source LEB cannot
-be locked.
-
-Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
-CC: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
+Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/wl.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -846,7 +846,14 @@ static int wear_leveling_worker(struct u
- 			goto out_not_moved;
- 		}
- 		if (err == MOVE_RETRY) {
--			scrubbing = 1;
-+			/*
-+			 * For source PEB:
-+			 * 1. The scrubbing is set for scrub type PEB, it will
-+			 *    be put back into ubi->scrub list.
-+			 * 2. Non-scrub type PEB will be put back into ubi->used
-+			 *    list.
-+			 */
-+			keep = 1;
- 			dst_leb_clean = 1;
- 			goto out_not_moved;
- 		}
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 094a47b8b97eb..9f191b6ce8215 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2380,6 +2380,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
+ 			if (phy_is_pseudo_fixed_link(phydev)) {
+ 				fixed_phy_unregister(phydev);
++				phy_device_free(phydev);
+ 			} else {
+ 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
+ 							     0xfffffff0);
+@@ -4246,8 +4247,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 
+ 	phy_disconnect(net->phydev);
+ 
+-	if (phy_is_pseudo_fixed_link(phydev))
++	if (phy_is_pseudo_fixed_link(phydev)) {
+ 		fixed_phy_unregister(phydev);
++		phy_device_free(phydev);
++	}
+ 
+ 	usb_scuttle_anchored_urbs(&dev->deferred);
+ 
+-- 
+2.43.0
+
 
 
 
