@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-97114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440B19E2290
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FAF9E2599
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE13B284C7F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFAD1285952
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44A91F758E;
-	Tue,  3 Dec 2024 15:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53941F76CD;
+	Tue,  3 Dec 2024 16:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQJayF1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyz25doL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902EA1F7569;
-	Tue,  3 Dec 2024 15:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AC31F76AE;
+	Tue,  3 Dec 2024 16:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239559; cv=none; b=ZlR1YZASUFqTjeKcZD82DdddvIqhhD2eb7r34vNHLD/uxo8+SooOR+hlheZgVWvRtJCZauSLrOQzGwpDa/EBtPdr0pP4ZGex9puJ686lHWd0CuC3bkaj4EKtcwwmyFq5FzZw0rWksJhtpdXLUOuPxoohHDw5EKnslJ8CNLgYsmo=
+	t=1733241741; cv=none; b=gZZDGJ+RQZWnyuy0fqsB/L0/1VJTasJAt/k3uSPo7t7CDB+OHsiJyLF+SWi4veEvsKpYxe9m/31HlEDeHOeTeCs7apeHs7ITOymmM9G6jvvZ+L4kW+sLElLRYx7tkQtEjNA+7eMsSGs0hL2qi5ikVO8oAYN3kSR/NPQzwkidk2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239559; c=relaxed/simple;
-	bh=6S8V+sNMV1lNzzZGNnOnhgafGV6tlGobR5pG8j0GB1U=;
+	s=arc-20240116; t=1733241741; c=relaxed/simple;
+	bh=7to+yEVMXWELQ/WqZScCjS8BJbxh+Cyruy/+qfN9DDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jje7Ee+OyR7xcvvGFE+cqtRVX71PaEPTBsfNEThwo2uoOlxD1vM6iTAD6+SAZQuC7tjZcqOSqTIyEvnxM0cEhG2JfzKcpZXHUj6D6ds/CucgMtKbeMyv2qgD6BLo0Tb0/KLZSBZPkYDp0yn10rABNtVfY2PfjkKSyTJ7i2OaSF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQJayF1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19931C4CECF;
-	Tue,  3 Dec 2024 15:25:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l/rVgN8bCcQwRtyvkieMW53M4wAWjW7sDlYfNiclCB9h1zeOszhepQj0dWgaUjI9Thz/zCGfaGekdnc3x+rPD5uwiE68tbfMCWDqH7atbRrAgld0SPQbguRNiPqZ0J/kib5z4NZY1D2E+JfKFbQNmrw6UOPJ70wxxUHvC6vylDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyz25doL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDEFC4CED8;
+	Tue,  3 Dec 2024 16:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239559;
-	bh=6S8V+sNMV1lNzzZGNnOnhgafGV6tlGobR5pG8j0GB1U=;
+	s=korg; t=1733241741;
+	bh=7to+yEVMXWELQ/WqZScCjS8BJbxh+Cyruy/+qfN9DDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQJayF1rjTuX6BuNoYkCMBEARueEYeFSHOKApcOtS5p1jDWJogyCM4lVtuyWj4Hoz
-	 C6+8AEHrOozjZQJ8POL8sp08AdgeqNxVn101+lGU6LrD5Ea7821l1d87fiL3MDR+gu
-	 wap3knyY+eg48maFGx5xRP+KAT3jNjPAMg3opGbs=
+	b=jyz25doLmWFcSqx6DCLzyKX0A0rbvrErXbr02BB3ZHawkC+v+RooxQeL8JLRXISwG
+	 wDqRBEhlUiMk4uOGZpzJHfb21D9Ks1hYqXv2oqT/0FdRvLn+5Xuqs6kWLjcMxPu3SY
+	 FWOalpjDDzTTaxXV+xh/9rRMXiADLLP94gnobqIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.11 656/817] PCI: Fix use-after-free of slot->bus on hot remove
-Date: Tue,  3 Dec 2024 15:43:48 +0100
-Message-ID: <20241203144021.565852074@linuxfoundation.org>
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Qiang Yu <quic_qianyu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 6.12 502/826] PCI: qcom: Enable MSI interrupts together with Link up if Global IRQ is supported
+Date: Tue,  3 Dec 2024 15:43:49 +0100
+Message-ID: <20241203144803.337433699@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
+[ Upstream commit ba4a2e2317b9faeca9193ed6d3193ddc3cf2aba3 ]
 
-Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
+Currently, if 'Global IRQ' is supported by the platform, only the Link up
+interrupt is enabled in the PARF_INT_ALL_MASK register. This masks MSIs
+on some platforms. The MSI bits in PARF_INT_ALL_MASK register are enabled
+by default in the hardware, but commit 4581403f6792 ("PCI: qcom: Enumerate
+endpoints based on Link up event in 'global_irq' interrupt") disabled them
+and enabled only the Link up interrupt. While MSI continued to work on the
+SM8450 platform that was used to test the offending commit, on other
+platforms like SM8250, X1E80100, MSIs are getting masked. And they require
+enabling the MSI interrupt bits in the register to unmask (enable) the
+MSIs.
 
-Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
-commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
-firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
-thunderbolt driver.
+Even though the MSI interrupt enable bits in PARF_INT_ALL_MASK are
+described as 'diagnostic' interrupts in the internal documentation,
+disabling them masks MSI on these platforms. Due to this, MSIs were not
+reported to be received these platforms while supporting 'Global IRQ'.
 
-The reset clears the Presence Detect State and Data Link Layer Link Active
-bits at the USB4 Host Router's Root Port and thus causes hot removal of the
-dock.
+So, enable the MSI interrupts along with the Link up interrupt in the
+PARF_INT_ALL_MASK register if 'Global IRQ' is supported. This ensures that
+the MSIs continue to work and also the driver is able to catch the Link
+up interrupt for enumerating endpoint devices.
 
-The crash occurs when pciehp is unbound from one of the dock's Downstream
-Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
-pci_slot contains a pointer to the pci_bus below the Downstream Port, but
-a reference on that pci_bus is never acquired.  The pci_bus is destroyed
-before the pci_slot, so a use-after-free ensues when pci_slot_release()
-accesses slot->bus.
-
-In principle this should not happen because pci_stop_bus_device() unbinds
-pciehp (and therefore destroys the pci_slot) before the pci_bus is
-destroyed by pci_remove_bus_device().
-
-However the stacktrace provided by Dennis shows that pciehp is unbound from
-pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
-the significance of this, one needs to know that the PCI core uses a two
-step process to remove a portion of the hierarchy:  It first unbinds all
-drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
-removes the devices in pci_remove_bus_device().  There is no precaution to
-prevent driver binding in-between pci_stop_bus_device() and
-pci_remove_bus_device().
-
-In Dennis' case, it seems removal of the hierarchy by pciehp races with
-driver binding by pci_bus_add_devices().  pciehp is bound to the
-Downstream Port after pci_stop_bus_device() has run, so it is unbound by
-pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
-pci_bus has already been destroyed at that point, accesses to it result in
-a use-after-free.
-
-One might conclude that driver binding needs to be prevented after
-pci_stop_bus_device() has run.  However it seems risky that pci_slot points
-to pci_bus without holding a reference.  Solely relying on correct ordering
-of driver unbind versus pci_bus destruction is certainly not defensive
-programming.
-
-If pci_slot has a need to access data in pci_bus, it ought to acquire a
-reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
-crash is not reproducible with this change.
-
-Abridged stacktrace:
-
-  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
-  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
-  pci_bus 0000:20: dev 00, created physical slot 12
-  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
-  ...
-  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
-  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
-  RIP: 0010:dev_driver_string+0x12/0x40
-  pci_destroy_slot
-  pciehp_remove
-  pcie_port_remove_service
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  device_unregister
-  remove_iter
-  device_for_each_child
-  pcie_portdrv_remove
-  pci_device_remove
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  pci_remove_bus_device (recursive invocation)
-  pci_remove_bus_device
-  pciehp_unconfigure_device
-  pciehp_disable_slot
-  pciehp_handle_presence_or_link_change
-  pciehp_ist
-
-Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
-Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
-Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in 'global_irq' interrupt")
+Closes: https://lore.kernel.org/linux-pci/9a692c98-eb0a-4d86-b642-ea655981ff53@kernel.org/
+Link: https://lore.kernel.org/r/20241007051255.4378-1-manivannan.sadhasivam@linaro.org
+Reported-by: Konrad Dybcio <konradybcio@kernel.org>
+Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SL7
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Qiang Yu <quic_qianyu@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/slot.c |    4 +++-
+ drivers/pci/controller/dwc/pcie-qcom.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
- 	up_read(&pci_bus_sem);
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index ef44a82be058b..2b33d03ed0541 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -133,6 +133,7 @@
  
- 	list_del(&slot->list);
-+	pci_bus_put(slot->bus);
+ /* PARF_INT_ALL_{STATUS/CLEAR/MASK} register fields */
+ #define PARF_INT_ALL_LINK_UP			BIT(13)
++#define PARF_INT_MSI_DEV_0_7			GENMASK(30, 23)
  
- 	kfree(slot);
- }
-@@ -261,7 +262,7 @@ placeholder:
- 		goto err;
+ /* PARF_NO_SNOOP_OVERIDE register fields */
+ #define WR_NO_SNOOP_OVERIDE_EN			BIT(1)
+@@ -1716,7 +1717,8 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+ 			goto err_host_deinit;
+ 		}
+ 
+-		writel_relaxed(PARF_INT_ALL_LINK_UP, pcie->parf + PARF_INT_ALL_MASK);
++		writel_relaxed(PARF_INT_ALL_LINK_UP | PARF_INT_MSI_DEV_0_7,
++			       pcie->parf + PARF_INT_ALL_MASK);
  	}
  
--	slot->bus = parent;
-+	slot->bus = pci_bus_get(parent);
- 	slot->number = slot_nr;
- 
- 	slot->kobj.kset = pci_slots_kset;
-@@ -269,6 +270,7 @@ placeholder:
- 	slot_name = make_slot_name(name);
- 	if (!slot_name) {
- 		err = -ENOMEM;
-+		pci_bus_put(slot->bus);
- 		kfree(slot);
- 		goto err;
- 	}
+ 	qcom_pcie_icc_opp_update(pcie);
+-- 
+2.43.0
+
 
 
 
