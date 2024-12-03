@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-97995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CF29E2682
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29CC9E26D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FA728912F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA1D167178
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DDB1F8907;
-	Tue,  3 Dec 2024 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9701F8AC8;
+	Tue,  3 Dec 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqYbNock"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVBPU9ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A1381ADA;
-	Tue,  3 Dec 2024 16:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186991F8AC1;
+	Tue,  3 Dec 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242443; cv=none; b=cM7+8LyC+FYLh0OIFclJe9WdME9h57g4+8QcF6RPny4tQ/DkkEEkACIGhMXmt3rTmvYa1M0AvRuWPXIDzFKltBoutvApoCaIow5eXU/ToJ8zvAnT2UMAg+pyixFwPg0Kl8ktbTa9mRP/QUtLvi5Y7d0ksMaACvvUKSNzjL6K638=
+	t=1733242450; cv=none; b=WfeIg0GCIKJI7o7O5JMYAaXBCqtJ1ai5E87Dw4aaM0SO5fWc6cc1NhbDWQ0b3rohTcbswDQDKdOio2Sru3c6yvgu+xn9LYuC+ezVeALU7WINRRG7K2A54auG4/usc3OkeDRHXbrGmWMgyA/i60CzylGvCDgr55NBBOY+BzIofC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242443; c=relaxed/simple;
-	bh=ShuYn0X10JdcVGjWiDJoBzOn2D2AN7faZxALcMBtL1o=;
+	s=arc-20240116; t=1733242450; c=relaxed/simple;
+	bh=/IdRcZXmv0p69h2srg6/cN7kkmBHpczsbV2flJikA0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifrX1XCYqQ3apEXDvG3NyyWKBXw2dIknarftyhmLGEXbbUJHIy9pQe5/dUTbqim4xLF4xJKnaJKJ5+Aurji4nXTs88+JpwR6cZcEU19JwCPc+mWdt3y2pPgVQMXstjZTfdCUxc24fjr1mA1NOxeqctn/UAhExVjkdckBksE7/e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqYbNock; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA64C4CECF;
-	Tue,  3 Dec 2024 16:14:03 +0000 (UTC)
+	 MIME-Version; b=QNu4U7YvXxYUA0A/8q+o0xFR49pEE+IMawhfH6Y7Jtt0utJJ0WzO7N1bUZ1ZQSpPrWdp7FZYHLiDM4OweKShFV7KOeONVwfW5JJBu+P4qTRCP1SAArEkSDxEX6fb0tfjpyQy8haJhf8EFyWeust6ePUJKJuFO1ZYASircCroo88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVBPU9ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87291C4CED6;
+	Tue,  3 Dec 2024 16:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242443;
-	bh=ShuYn0X10JdcVGjWiDJoBzOn2D2AN7faZxALcMBtL1o=;
+	s=korg; t=1733242450;
+	bh=/IdRcZXmv0p69h2srg6/cN7kkmBHpczsbV2flJikA0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqYbNockRMRuBzIZM6+51MWMzC7FjFhPeCJEujJUGfu0YrSPHE0FIMUXMstNYTENU
-	 2i/bNDO0TQ1h1vbHDiqp+2kJihpEkJpvobtu+0v7HUzJcPPp0YaJVwzmNhflFzL+ic
-	 PNWUOsavdkIXzt6olgJreq5uonBsBuztksW3YFVM=
+	b=UVBPU9ulZFdj3Gp70bkW4PfrpkkNiesQ+/sBdYqWEUnNf+8YIF6/UzysgYPr6bVT+
+	 SfUMk/9RTf5vQINcLxIl0BsxaviHjqqYxl85XqHnGBl7j2m0VIcu67m1qBifqV9hgZ
+	 SEvBhf7Ii2T+RbBUMcwcBRDcdKKlRxSWCJurnK0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.12 705/826] platform/chrome: cros_ec_typec: fix missing fwnode reference decrement
-Date: Tue,  3 Dec 2024 15:47:12 +0100
-Message-ID: <20241203144811.260605789@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 707/826] x86/CPU/AMD: Terminate the erratum_1386_microcode array
+Date: Tue,  3 Dec 2024 15:47:14 +0100
+Message-ID: <20241203144811.339229999@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,37 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 9c41f371457bd9a24874e3c7934d9745e87fbc58 upstream.
+commit ff6cdc407f4179748f4673c39b0921503199a0ad upstream.
 
-The device_for_each_child_node() macro requires explicit calls to
-fwnode_handle_put() upon early exits (return, break, goto) to decrement
-the fwnode's refcount, and avoid levaing a node reference behind.
+The erratum_1386_microcode array requires an empty entry at the end.
+Otherwise x86_match_cpu_with_stepping() will continue iterate the array after
+it ended.
 
-Add the missing fwnode_handle_put() after the common label for all error
-paths.
+Add an empty entry to erratum_1386_microcode to its end.
 
-Cc: stable@vger.kernel.org
-Fixes: fdc6b21e2444 ("platform/chrome: Add Type C connector class driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241013-cross_ec_typec_fwnode_handle_put-v2-1-9182b2cd7767@gmail.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: 29ba89f189528 ("x86/CPU/AMD: Improve the erratum 1386 workaround")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241126134722.480975-1-bigeasy@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec_typec.c |    1 +
+ arch/x86/kernel/cpu/amd.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -409,6 +409,7 @@ static int cros_typec_init_ports(struct
- 	return 0;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -798,6 +798,7 @@ static void init_amd_bd(struct cpuinfo_x
+ static const struct x86_cpu_desc erratum_1386_microcode[] = {
+ 	AMD_CPU_DESC(0x17,  0x1, 0x2, 0x0800126e),
+ 	AMD_CPU_DESC(0x17, 0x31, 0x0, 0x08301052),
++	{},
+ };
  
- unregister_ports:
-+	fwnode_handle_put(fwnode);
- 	cros_unregister_ports(typec);
- 	return ret;
- }
+ static void fix_erratum_1386(struct cpuinfo_x86 *c)
 
 
 
