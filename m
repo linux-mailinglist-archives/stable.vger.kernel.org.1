@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DD39E2329
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F4F9E2665
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C487285B2C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 726F616057A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6129C1F756A;
-	Tue,  3 Dec 2024 15:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E11E1F76BF;
+	Tue,  3 Dec 2024 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8O5sXRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLy4nGUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E25E1DFD91;
-	Tue,  3 Dec 2024 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F061223CE;
+	Tue,  3 Dec 2024 16:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239929; cv=none; b=lqoruSDU6i4drs3np9itz5ADuHgK1EYf3mHH9+Bkfjr6u2sUeEPEQkQ8sIy9+uFQ7GDdCUhSXqw7u3EcSAyuRUPm5W2aM4GFu9pNcp39vqEbu3cFvbJxWlW+bzDs2Chdyg9XOcZ6oMfIotGmCWp6VU2ja+/4sVhSwt6AzJXzesw=
+	t=1733242060; cv=none; b=SZ0NDzlZDib3eROX8oNnRWDqqk+Jc8GgHty5pMBiFFC5/BCz3EJne4+wSsENQjSkpF1rYiM+uB9gVUwTfwHXBEzcL56+SGoEMoZVbmb2PpwB7z7jmixLIkWRcE9mrb838zVqcDdoCQYUZdEpR3AiCkggp5IWdR/TwuWjuUuLFcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239929; c=relaxed/simple;
-	bh=KPl/28Qnt1IPJe6kf1jCqy84PQxOpGT39FZkSkDl8os=;
+	s=arc-20240116; t=1733242060; c=relaxed/simple;
+	bh=orxU6+enaatr/yFKZysiPWIkS4vmaSr3qGHUIX/Opts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urSX+5u8sM3HNLcCAy/bmvlvfLARcRbe+feO5gD0IZwBV+8Nov5sINfK02SrsFhmPCgVDGSzOBEZnyap0tC5X5j+lAKOKG6s6pHp6WaSxkJFr/PstZbMKlgYLuJmmmpjIXd8yuywaDMbgn57fddPTROAfu7DGhfo0pyj70X/v0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8O5sXRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6D6C4CECF;
-	Tue,  3 Dec 2024 15:32:08 +0000 (UTC)
+	 MIME-Version; b=BSGMonDhBk96sapchh72414cHPeE5REUhO5ajn7q5pruU8+RkYJw/QDrbcQ9lz4HB2KaqZ06tUZfwIizyBSwtyrx+R5bjjg4o89H7m6h+RnJnRfh4JjcVzrEdyxmeqbH6mOMpVWKE4cYvm8+NN/VGVkAutpNPVScDrIZ6LN7lgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLy4nGUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B2DC4CECF;
+	Tue,  3 Dec 2024 16:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239928;
-	bh=KPl/28Qnt1IPJe6kf1jCqy84PQxOpGT39FZkSkDl8os=;
+	s=korg; t=1733242059;
+	bh=orxU6+enaatr/yFKZysiPWIkS4vmaSr3qGHUIX/Opts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8O5sXRCK7ikd6AQ6G8Qr6Kj9BJnLR8B5V591aHMK1Va5g5o8m5ynandBLyyogJlV
-	 sjo+hf8oOFiiNjWGpWRpDsgghfBs7pfkkxKiAh/65DuPpj+UWuLptb9KRajgmiuAus
-	 skwRlfuDzNRen0n5Q/OeG5ScQEcTC+T3P/4L9v9I=
+	b=dLy4nGUKIl9qmm/YitdPkl/Gt5vl09Wn5EOzpdWaXgHoiiOoY93olj9ZmAtfKJVF/
+	 BXEM5lkywL6owmxGY3eYFExmFvBVYn+drxtUgS7lhPMaowOkNwNh8UUPRBLwvzKTyI
+	 efmapGTQSd6skcfWp1v2/bLzqUkH8d6qJY/DhOzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [PATCH 6.11 751/817] usb: misc: ljca: move usb_autopm_put_interface() after wait for response
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Keita Morisaki <keyz@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 596/826] devres: Fix page faults when tracing devres from unloaded modules
 Date: Tue,  3 Dec 2024 15:45:23 +0100
-Message-ID: <20241203144025.310872087@linuxfoundation.org>
+Message-ID: <20241203144807.006878887@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Keita Morisaki <keyz@google.com>
 
-commit 5c5d8eb8af06df615e8b1dc88e5847196c846045 upstream.
+[ Upstream commit 765399553714e934a219d698953d435f4f99caa7 ]
 
-Do not mark interface as ready to suspend when we are still waiting
-for response messages from the device.
+The devres ftrace event logs the name of the devres node, which is often a
+function name (e.g., "devm_work_drop") stringified by macros like
+devm_add_action. Currently, ftrace stores this name as a string literal
+address, which can become invalid when the module containing the string is
+unloaded. This results in page faults when ftrace tries to access the name.
 
-Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com> # ThinkPad X1 Yoga Gen 8, ov2740
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://lore.kernel.org/r/20241112075514.680712-1-stanislaw.gruszka@linux.intel.com
+This behavior is problematic because the devres ftrace event is designed to
+trace resource management throughout a device driver's lifecycle, including
+during module unload. The event should be available even after the module
+is unloaded to properly diagnose resource issues.
+
+Fix the issue by copying the devres node name into the ftrace ring buffer
+using __assign_str(), instead of storing just the address. This ensures
+that ftrace can always access the name, even if the module is unloaded.
+
+This change increases the memory usage for each of the ftrace entry by
+12-16 bytes assuming the average devres node name is 20 bytes long,
+depending on the size of const char *.
+
+Note that this change does not affect anything unless all of following
+conditions are met.
+- CONFIG_DEBUG_DEVRES is enabled
+- ftrace tracing is enabled
+- The devres event is enabled in ftrace tracing
+
+Fixes: 09705dcb63d2 ("devres: Enable trace events")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Keita Morisaki <keyz@google.com>
+Link: https://lore.kernel.org/r/20240928125005.714781-1-keyz@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/usb-ljca.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/base/trace.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/misc/usb-ljca.c
-+++ b/drivers/usb/misc/usb-ljca.c
-@@ -332,14 +332,11 @@ static int ljca_send(struct ljca_adapter
+diff --git a/drivers/base/trace.h b/drivers/base/trace.h
+index e52b6eae060dd..3b83b13a57ff1 100644
+--- a/drivers/base/trace.h
++++ b/drivers/base/trace.h
+@@ -24,18 +24,18 @@ DECLARE_EVENT_CLASS(devres,
+ 		__field(struct device *, dev)
+ 		__field(const char *, op)
+ 		__field(void *, node)
+-		__field(const char *, name)
++		__string(name, name)
+ 		__field(size_t, size)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(devname);
+ 		__entry->op = op;
+ 		__entry->node = node;
+-		__entry->name = name;
++		__assign_str(name);
+ 		__entry->size = size;
+ 	),
+ 	TP_printk("%s %3s %p %s (%zu bytes)", __get_str(devname),
+-		  __entry->op, __entry->node, __entry->name, __entry->size)
++		  __entry->op, __entry->node, __get_str(name), __entry->size)
+ );
  
- 	ret = usb_bulk_msg(adap->usb_dev, adap->tx_pipe, header,
- 			   msg_len, &transferred, LJCA_WRITE_TIMEOUT_MS);
--
--	usb_autopm_put_interface(adap->intf);
--
- 	if (ret < 0)
--		goto out;
-+		goto out_put;
- 	if (transferred != msg_len) {
- 		ret = -EIO;
--		goto out;
-+		goto out_put;
- 	}
- 
- 	if (ack) {
-@@ -347,11 +344,14 @@ static int ljca_send(struct ljca_adapter
- 						  timeout);
- 		if (!ret) {
- 			ret = -ETIMEDOUT;
--			goto out;
-+			goto out_put;
- 		}
- 	}
- 	ret = adap->actual_length;
- 
-+out_put:
-+	usb_autopm_put_interface(adap->intf);
-+
- out:
- 	spin_lock_irqsave(&adap->lock, flags);
- 	adap->ex_buf = NULL;
+ DEFINE_EVENT(devres, devres_log,
+-- 
+2.43.0
+
 
 
 
