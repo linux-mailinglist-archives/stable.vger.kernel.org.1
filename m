@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6449E243C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7029E219F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F182878B4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC43280FBF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285B21F8F04;
-	Tue,  3 Dec 2024 15:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BD31F8906;
+	Tue,  3 Dec 2024 15:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJIveJ2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh2N36Ye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6191F8AEF;
-	Tue,  3 Dec 2024 15:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A461F707A;
+	Tue,  3 Dec 2024 15:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240738; cv=none; b=DmJuYUUTSmqQAA1/SivhedVEzrDXeIUk11zlrBPvPJ0YiOSY5tXRy4Ao0cIXSauljCqwrAT3aw9cMzt1y5e4EsN1KowfVk1VnIOQVAodZZmis4Ch0Uc82U+7IC3mWyRslVx7Q7NX8I3l2xMR4Dwken90MFj6YJ5vObYb2P+1FIk=
+	t=1733238819; cv=none; b=dbFpNbyOU1kOVgVx0Vt5W4yiaTA1UoLGrfk3uirVM0US4UaB3fs2n5dGy+iT71DdzVqr5ImcKtlKH0VKCEZeE6WAHapN/7AKAwRngkioK6oJ+/mGS2pOdlpZM2ICy8oUSeDrbaw8rr5OQgWw0Jr7s0qBUSGoQM4Pl212JeivfAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240738; c=relaxed/simple;
-	bh=sibBjDl2k/e07GGTXMAHkkKVjgAVVSiFhzOskMSD6WU=;
+	s=arc-20240116; t=1733238819; c=relaxed/simple;
+	bh=uQSN6PA3ugvKxf7Y2CzyGZ+e1W0l+BpJghtVCY2uW8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UCOlI6R/Ps5kKqi+w7W3/Slqo2AUwx+SLr0fi0BNF+JHZE1ZvRmP8dYxVqi5m6mcKqeWUMXojW42IlS0YL/6AS+zMFAv5dP98ka9eUgmnc+4GeTPUOxi6cV9V/XMxuyRatPsmGzN7JJoKRa14iBA67/dtUAXLTlngNQrHqdaQxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJIveJ2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AC3C4CECF;
-	Tue,  3 Dec 2024 15:45:38 +0000 (UTC)
+	 MIME-Version; b=RIeiyG1x3t/Fe4j5hzrjg1C40dPDRDFjsMb+n1mq+JxYT9HHwM7zhzlWd42AhyaONhKOVrIdt4YSFNZnelo/Ezd/NCC4qxE+Lfud9WauX6Mihh4e7nYmYGR9V12M/w4K0+qMT13Ilku94ITVLGbPQRW7/lqle1baTejKnuEv8DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh2N36Ye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD1AC4CECF;
+	Tue,  3 Dec 2024 15:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240738;
-	bh=sibBjDl2k/e07GGTXMAHkkKVjgAVVSiFhzOskMSD6WU=;
+	s=korg; t=1733238819;
+	bh=uQSN6PA3ugvKxf7Y2CzyGZ+e1W0l+BpJghtVCY2uW8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJIveJ2pUA6Ory2mXb2KRlT3/jd+DHjY2Sc+abSF4ap6NUf8IbgjtM05hTlUiwRQM
-	 r7LBGO3TghOoc0MhIUyzCFLSrgRUAaF8hrfoQjy/eTVg1lQFHEoQ7UXaRw1qtXIE1O
-	 5eKUHAwPB0OY3qAStE6HkD3+avYmb0JdaWkXp2YE=
+	b=Wh2N36YePJtjXKC88yIuPLxAv2FA5PxdQ40EtNqQhF2BxYxpgyVJ8mruyt3Dcqq4v
+	 nA9/7gk0ZxCjwJ0JIVidAzE54X2a+JZOZAi6iLblndKBjV2+7s4G6tdD8J0ZX0Sqfk
+	 JOVi8Tv5eLPNFlhDD0/HyiS7NUDwd7Sy9dqRJlTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 221/826] selftests/bpf: Fix uprobe_multi compilation error
+Subject: [PATCH 6.11 376/817] RDMA/core: Provide rdma_user_mmap_disassociate() to disassociate mmap pages
 Date: Tue,  3 Dec 2024 15:39:08 +0100
-Message-ID: <20241203144752.362144939@linuxfoundation.org>
+Message-ID: <20241203144010.521497849@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit c27d8235ba97139d7a085367ff57773902eb3fc5 ]
+[ Upstream commit 51976c6cd786151b6a1bdf8b8b3334beac0ba99c ]
 
-When building selftests, the following was seen:
+Provide a new api rdma_user_mmap_disassociate() for drivers to
+disassociate mmap pages for a device.
 
-uprobe_multi.c: In function ‘trigger_uprobe’:
-uprobe_multi.c:108:40: error: ‘MADV_PAGEOUT’ undeclared (first use in this function)
-  108 |                 madvise(addr, page_sz, MADV_PAGEOUT);
-      |                                        ^~~~~~~~~~~~
-uprobe_multi.c:108:40: note: each undeclared identifier is reported only once for each function it appears in
-make: *** [Makefile:850: bpf-next/tools/testing/selftests/bpf/uprobe_multi] Error 1
+Since drivers can now disassociate mmaps by calling this api,
+introduce a new disassociation_lock to specifically prevent
+races between this disassociation process and new mmaps. And
+thus the old hw_destroy_rwsem is not needed in this api.
 
-...even with updated UAPI headers. It seems the above value is
-defined in UAPI <linux/mman.h> but including that file triggers
-other redefinition errors.  Simplest solution is to add a
-guarded definition, as was done for MADV_POPULATE_READ.
-
-Fixes: 3c217a182018 ("selftests/bpf: add build ID tests")
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20240926144948.172090-1-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240927103323.1897094-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 615b94746a54 ("RDMA/hns: Disassociate mmap pages for all uctx when HW is being reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/uprobe_multi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/core/uverbs.h      |  2 ++
+ drivers/infiniband/core/uverbs_main.c | 43 +++++++++++++++++++++++++--
+ include/rdma/ib_verbs.h               |  8 +++++
+ 3 files changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/uprobe_multi.c b/tools/testing/selftests/bpf/uprobe_multi.c
-index c7828b13e5ffd..dd38dc68f6359 100644
---- a/tools/testing/selftests/bpf/uprobe_multi.c
-+++ b/tools/testing/selftests/bpf/uprobe_multi.c
-@@ -12,6 +12,10 @@
- #define MADV_POPULATE_READ 22
- #endif
+diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
+index 821d93c8f7123..dfd2e5a86e6fe 100644
+--- a/drivers/infiniband/core/uverbs.h
++++ b/drivers/infiniband/core/uverbs.h
+@@ -160,6 +160,8 @@ struct ib_uverbs_file {
+ 	struct page *disassociate_page;
  
-+#ifndef MADV_PAGEOUT
-+#define MADV_PAGEOUT 21
+ 	struct xarray		idr;
++
++	struct mutex disassociation_lock;
+ };
+ 
+ struct ib_uverbs_event {
+diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
+index bc099287de9a6..48b97e6c1fc6f 100644
+--- a/drivers/infiniband/core/uverbs_main.c
++++ b/drivers/infiniband/core/uverbs_main.c
+@@ -76,6 +76,7 @@ static dev_t dynamic_uverbs_dev;
+ static DEFINE_IDA(uverbs_ida);
+ static int ib_uverbs_add_one(struct ib_device *device);
+ static void ib_uverbs_remove_one(struct ib_device *device, void *client_data);
++static struct ib_client uverbs_client;
+ 
+ static char *uverbs_devnode(const struct device *dev, umode_t *mode)
+ {
+@@ -217,6 +218,7 @@ void ib_uverbs_release_file(struct kref *ref)
+ 
+ 	if (file->disassociate_page)
+ 		__free_pages(file->disassociate_page, 0);
++	mutex_destroy(&file->disassociation_lock);
+ 	mutex_destroy(&file->umap_lock);
+ 	mutex_destroy(&file->ucontext_lock);
+ 	kfree(file);
+@@ -700,8 +702,13 @@ static int ib_uverbs_mmap(struct file *filp, struct vm_area_struct *vma)
+ 		ret = PTR_ERR(ucontext);
+ 		goto out;
+ 	}
++
++	mutex_lock(&file->disassociation_lock);
++
+ 	vma->vm_ops = &rdma_umap_ops;
+ 	ret = ucontext->device->ops.mmap(ucontext, vma);
++
++	mutex_unlock(&file->disassociation_lock);
+ out:
+ 	srcu_read_unlock(&file->device->disassociate_srcu, srcu_key);
+ 	return ret;
+@@ -723,6 +730,8 @@ static void rdma_umap_open(struct vm_area_struct *vma)
+ 	/* We are racing with disassociation */
+ 	if (!down_read_trylock(&ufile->hw_destroy_rwsem))
+ 		goto out_zap;
++	mutex_lock(&ufile->disassociation_lock);
++
+ 	/*
+ 	 * Disassociation already completed, the VMA should already be zapped.
+ 	 */
+@@ -734,10 +743,12 @@ static void rdma_umap_open(struct vm_area_struct *vma)
+ 		goto out_unlock;
+ 	rdma_umap_priv_init(priv, vma, opriv->entry);
+ 
++	mutex_unlock(&ufile->disassociation_lock);
+ 	up_read(&ufile->hw_destroy_rwsem);
+ 	return;
+ 
+ out_unlock:
++	mutex_unlock(&ufile->disassociation_lock);
+ 	up_read(&ufile->hw_destroy_rwsem);
+ out_zap:
+ 	/*
+@@ -821,7 +832,7 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
+ {
+ 	struct rdma_umap_priv *priv, *next_priv;
+ 
+-	lockdep_assert_held(&ufile->hw_destroy_rwsem);
++	mutex_lock(&ufile->disassociation_lock);
+ 
+ 	while (1) {
+ 		struct mm_struct *mm = NULL;
+@@ -847,8 +858,10 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
+ 			break;
+ 		}
+ 		mutex_unlock(&ufile->umap_lock);
+-		if (!mm)
++		if (!mm) {
++			mutex_unlock(&ufile->disassociation_lock);
+ 			return;
++		}
+ 
+ 		/*
+ 		 * The umap_lock is nested under mmap_lock since it used within
+@@ -878,7 +891,31 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
+ 		mmap_read_unlock(mm);
+ 		mmput(mm);
+ 	}
++
++	mutex_unlock(&ufile->disassociation_lock);
++}
++
++/**
++ * rdma_user_mmap_disassociate() - Revoke mmaps for a device
++ * @device: device to revoke
++ *
++ * This function should be called by drivers that need to disable mmaps for the
++ * device, for instance because it is going to be reset.
++ */
++void rdma_user_mmap_disassociate(struct ib_device *device)
++{
++	struct ib_uverbs_device *uverbs_dev =
++		ib_get_client_data(device, &uverbs_client);
++	struct ib_uverbs_file *ufile;
++
++	mutex_lock(&uverbs_dev->lists_mutex);
++	list_for_each_entry(ufile, &uverbs_dev->uverbs_file_list, list) {
++		if (ufile->ucontext)
++			uverbs_user_mmap_disassociate(ufile);
++	}
++	mutex_unlock(&uverbs_dev->lists_mutex);
+ }
++EXPORT_SYMBOL(rdma_user_mmap_disassociate);
+ 
+ /*
+  * ib_uverbs_open() does not need the BKL:
+@@ -949,6 +986,8 @@ static int ib_uverbs_open(struct inode *inode, struct file *filp)
+ 	mutex_init(&file->umap_lock);
+ 	INIT_LIST_HEAD(&file->umaps);
+ 
++	mutex_init(&file->disassociation_lock);
++
+ 	filp->private_data = file;
+ 	list_add_tail(&file->list, &dev->uverbs_file_list);
+ 	mutex_unlock(&dev->lists_mutex);
+diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
+index 6c5712ae559d8..5acdf98b3e789 100644
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2948,6 +2948,14 @@ int rdma_user_mmap_entry_insert_range(struct ib_ucontext *ucontext,
+ 				      size_t length, u32 min_pgoff,
+ 				      u32 max_pgoff);
+ 
++#if IS_ENABLED(CONFIG_INFINIBAND_USER_ACCESS)
++void rdma_user_mmap_disassociate(struct ib_device *device);
++#else
++static inline void rdma_user_mmap_disassociate(struct ib_device *device)
++{
++}
 +#endif
 +
- int __attribute__((weak)) uprobe(void)
- {
- 	return 0;
+ static inline int
+ rdma_user_mmap_entry_insert_exact(struct ib_ucontext *ucontext,
+ 				  struct rdma_user_mmap_entry *entry,
 -- 
 2.43.0
 
