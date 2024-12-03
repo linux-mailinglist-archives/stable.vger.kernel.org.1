@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6700C9E2482
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B53F9E23CB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 210DA16D6FB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D20B88086
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8BF1FA85A;
-	Tue,  3 Dec 2024 15:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AD01F7071;
+	Tue,  3 Dec 2024 15:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCfEWSIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrLeyNab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDC31F8AFF;
-	Tue,  3 Dec 2024 15:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29B41F7587;
+	Tue,  3 Dec 2024 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240465; cv=none; b=u+rSu3OrR4Eh2UEi9dfNRfs2LG3H64Prfd/5bSCc6HrlPQx5g+6WKgNaFaJ+Uzcp6psYYrqr9HW0YGGu7y4gTDvw0AL4ouDGrY0sslP31s/yazD0hBDTOP7z19J3YF+Bfa8ENJxNUoodDjkSiNoClUAowM2GL/KJpN5szNHXShQ=
+	t=1733238479; cv=none; b=snLUsaLoAT8+0QBVSRUgCJcREE6rdxdXfrm+iiwoemnjfMoy6WUg/GnS3efgMp42tkvHcv42+gHBno9N95v8AYhOT9qN+qtDu20ISSfMyuLu+iD4RfCgn2q5v6TlsLX5WW0isuF/muEtei0IyUvdreTH9jUT5uCzemSrExc/XTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240465; c=relaxed/simple;
-	bh=S62T9uQ9zNmz08A1pkqckSPkZUcPiNv1yrtS3ESgZ/Y=;
+	s=arc-20240116; t=1733238479; c=relaxed/simple;
+	bh=LpLmmlFVNd5gvlbeiNBNLteU/fBUE5ixHKwE/e3T3fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6j/PdTOCXrJCenSgAKoVBTfapb11vUgKBUV34imdCAbXAjrhp2iXKnDur4GIEZBFn6ZoKzPt217cMMchCnxMfS0yGR/GNCnHNnw71C4rP29OhFmoA7k39Emm+1SdfgChdJdWUlrIjwJQdcmrxlkNgtW8IWEPFgwAU63uDwz9TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCfEWSIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAC4C4CECF;
-	Tue,  3 Dec 2024 15:41:04 +0000 (UTC)
+	 MIME-Version; b=uSiTX/Wy2TdeGqsOuueFkL4BOXkXJN5X/YOfRrpWMC7z6EOtf/30bTS0uAqO9ZVtw7RSyMJtxvpnLERSEbRUV3lMbwDNh1OWM4aDG71k7tZtErzFR3ic95wswuQTdCkHXvsAtKniM6KJvKgklX0eO0396mrdQ/mwoN3FA+NGWy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrLeyNab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495ABC4CECF;
+	Tue,  3 Dec 2024 15:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240464;
-	bh=S62T9uQ9zNmz08A1pkqckSPkZUcPiNv1yrtS3ESgZ/Y=;
+	s=korg; t=1733238479;
+	bh=LpLmmlFVNd5gvlbeiNBNLteU/fBUE5ixHKwE/e3T3fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCfEWSItKrCeNnAwGXyBZBovaZNK/ndXsx6D0/6r14SJowLmyrbdD/z97/4A4rjM9
-	 JKMv+CxDkBkacwrCWn5kF/17MEb/jMFjjrTxVG3MWnawDC6KOTp6TKi8HcD8wJUGCY
-	 PB5OG9UAAiOqCIaTXyNTErotM6fDERSwF/cXVK7E=
+	b=wrLeyNabfcFnW6CmQeiZWNYM9/wRxcS+hXZs6nEPsNfbZBi1kRNB0IvMzmuaxoDm8
+	 S4V/RI7iTTqNquq5suVPRtqMJXKMtnmXU17Jj2nEjcFBhapMBAvyBsR/nuOhY+KQrF
+	 uBvfapN8k43ytas6PQgDK2FCgAHtHZEib6695/LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/826] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+Subject: [PATCH 6.11 291/817] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dcbnl.c
 Date: Tue,  3 Dec 2024 15:37:43 +0100
-Message-ID: <20241203144749.048898959@linuxfoundation.org>
+Message-ID: <20241203144007.170115393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
+[ Upstream commit 69297b0d3369488af259e3a7cf53d69157938ea1 ]
 
-Only cgroup v2 can be attached by bpf programs, so this patch introduces
-that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
-cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
-("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
-has been reverted.
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
-Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 8e67558177f8 ("octeontx2-pf: PFC config support with DCBx")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 30444e0960276..e275eaf2de7f8 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2140,8 +2140,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
- 	if (ret)
- 		goto exit_stats;
- 
--	ret = cgroup_bpf_inherit(root_cgrp);
--	WARN_ON_ONCE(ret);
-+	if (root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(root_cgrp);
-+		WARN_ON_ONCE(ret);
-+	}
- 
- 	trace_cgroup_setup_root(root);
- 
-@@ -5708,9 +5710,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
- 	if (ret)
- 		goto out_kernfs_remove;
- 
--	ret = cgroup_bpf_inherit(cgrp);
--	if (ret)
--		goto out_psi_free;
-+	if (cgrp->root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(cgrp);
-+		if (ret)
-+			goto out_psi_free;
-+	}
- 
- 	/*
- 	 * New cgroup inherits effective freeze counter, and
-@@ -6024,7 +6028,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
- 
- 	cgroup1_check_for_release(parent);
- 
--	cgroup_bpf_offline(cgrp);
-+	if (cgrp->root == &cgrp_dfl_root)
-+		cgroup_bpf_offline(cgrp);
- 
- 	/* put the base reference */
- 	percpu_ref_kill(&cgrp->self.refcnt);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+index aa01110f04a33..294fba58b6709 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+@@ -315,6 +315,11 @@ int otx2_config_priority_flow_ctrl(struct otx2_nic *pfvf)
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pfc_rsp *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			err = PTR_ERR(rsp);
++			goto unlock;
++		}
++
+ 		if (req->rx_pause != rsp->rx_pause || req->tx_pause != rsp->tx_pause) {
+ 			dev_warn(pfvf->dev,
+ 				 "Failed to config PFC\n");
 -- 
 2.43.0
 
