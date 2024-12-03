@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-97909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB799E29A8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AC39E2B91
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A397CB631EF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D45ACBE6EA7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5C21F8905;
-	Tue,  3 Dec 2024 16:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32301F76DE;
+	Tue,  3 Dec 2024 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2lC0hdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsxAyQEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9B51F76DB;
-	Tue,  3 Dec 2024 16:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E051F75BC;
+	Tue,  3 Dec 2024 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242149; cv=none; b=my0UzxVS6c18oG2mEuKwxCso7LE1EGtlWjDDaaDmhJ6dlQf2TN+Tr9+kH1+M/9pP6zC/ZG9ZN5DrVv9vz+0bGJ0Gx4w9oa3nb6Q+HNiXjPPNyaJETSKpRty3Wc4HppaxfhJc+/4B4v1N0SoMse8lP0nEdoe/Pchhuk+9fuuGedM=
+	t=1733242156; cv=none; b=ivU/Nh11RMDfpwTjvi6q3xyKKZkLZn9ZnwViLFC8U9Cf//sGnC5hccRXop0DsNy3/43oVeB+jX1WB5ZC6+bBCZOcIhFpq8eyoVmLVTQK+yfT7hUTRbtpaIOGQOyqlJDB/58VK7TXLJ5QwRaOTy9BGzuF7CpmHzh0lNgpIW2cVOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242149; c=relaxed/simple;
-	bh=aycgpjbKgoHQ5qLrlQR3M4/0lGkJGKEFk8UkXZv04JY=;
+	s=arc-20240116; t=1733242156; c=relaxed/simple;
+	bh=FcS29hTitd+//2w+gJhCcntTtaYRbVDZ8SA9Notz6o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/F3VFB6lCpffuQMBTTgLU5kSY8ChYHXS8c9gcB+UxIvb2MJt2CuPMzuc2X7SKhowPjonZmpyhtFnDtTPoXGnni1IoEsm0HIIu3DLm3IVcyVm32QE07x/cI2/LRz+413S0SiOUx0jhS1k6fFXZvb5rjBLY3pCLgGC5as8V23YXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2lC0hdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB0CC4CED6;
-	Tue,  3 Dec 2024 16:09:08 +0000 (UTC)
+	 MIME-Version; b=o4lQfrAHLox9M8m+2Q1G64t4B83h/0/72dM+HvUHf2Cr8Tv6ow6hqpbpCutj0WONLinOJuz3Glw2/v8eyZ1wzGTz9wedK03InrouUTTYMstioilyHpVy4p4JUdWL5NV3567RgJnOiMqFDJwfX9f6DdfF3fUmh5mLma1mWW+DVrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsxAyQEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56B3C4CECF;
+	Tue,  3 Dec 2024 16:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242149;
-	bh=aycgpjbKgoHQ5qLrlQR3M4/0lGkJGKEFk8UkXZv04JY=;
+	s=korg; t=1733242156;
+	bh=FcS29hTitd+//2w+gJhCcntTtaYRbVDZ8SA9Notz6o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2lC0hdJug5PvmuUPlgNOsyvD54K9gMLbfbwvJGPS4qWMGr3QyJCAgylqxgYw2arc
-	 usFC5mpoJmesa8tzHQfkgUgrCRYfCCpgnCJLqWrPQXWhsK+JGi5Jd4+qzJKEnsMwyF
-	 xI7FxH2EUagAYov+vv6xWRCCMwnmx84FU1eRN//A=
+	b=NsxAyQEIIIbNHbIZoubEpyQRxkvT3XXVOEGS6AWUV3kglAoafn62s+/xCYUhNYVJe
+	 G35HmscGIoShB+HTLpifXqLzpfLPNNbgU2eeYkwAqKNVAGNRGYYHwyzQPUk2rKTq+K
+	 8VQE8E3y5Pyt3aguZfRQk1GqvGzcfKLkqL/O85Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiuhong Wang <xiuhong.wang@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Daniel Rosenberg <drosen@google.com>
-Subject: [PATCH 6.12 622/826] f2fs: fix fiemap failure issue when page size is 16KB
-Date: Tue,  3 Dec 2024 15:45:49 +0100
-Message-ID: <20241203144808.016638627@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 624/826] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
+Date: Tue,  3 Dec 2024 15:45:51 +0100
+Message-ID: <20241203144808.094233415@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,110 +65,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiuhong Wang <xiuhong.wang@unisoc.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit a7a7c1d423a6351a6541e95c797da5358e5ad1ea upstream.
+commit afc545da381ba0c651b2658966ac737032676f01 upstream.
 
-After enable 16K page size, an infinite loop may occur in
-fiemap (fm_length=UINT64_MAX) on a file, such as the 16KB
-scratch.img during the remount operation in Android.
+This patch fixes an issue in the function xenbus_dev_probe(). In the
+xenbus_dev_probe() function, within the if (err) branch at line 313, the
+program incorrectly returns err directly without releasing the resources
+allocated by err = drv->probe(dev, id). As the return value is non-zero,
+the upper layers assume the processing logic has failed. However, the probe
+operation was performed earlier without a corresponding remove operation.
+Since the probe actually allocates resources, failing to perform the remove
+operation could lead to problems.
 
-The condition for whether fiemap continues to map is to check
-whether the number of bytes corresponding to the next map.m_lblk
-exceeds blks_to_bytes(inode,max_inode_blocks(inode)) if there are HOLE.
-The latter does not take into account the maximum size of a file with 16KB
-page size, so the loop cannot be jumped out.
+To fix this issue, we followed the resource release logic of the
+xenbus_dev_remove() function by adding a new block fail_remove before the
+fail_put block. After entering the branch if (err) at line 313, the
+function will use a goto statement to jump to the fail_remove block,
+ensuring that the previously acquired resources are correctly released,
+thus preventing the reference count leak.
 
-The following is the fail trace:
-When f2fs_map_blocks reaches map.m_lblk=3936, it needs to go to the
-first direct node block, so the map is 3936 + 4090 = 8026,
-The next map is the second direct node block, that is,
-8026 + 4090 = 12116,
-The next map is the first indirect node block, that is,
-12116 + 4090 * 4090 = 16740216,
-The next map is the second indirect node block, that is,
-16740216 + 4090 * 4090 = 33468316,
-The next map is the first double indirect node block, that is,
-33468316 + 4090 * 4090 * 4090 = 68451397316
-Since map.m_lblk represents the address of a block, which is 32
-bits, truncation will occur, that is, 68451397316 becomes
-4026887876, and the number of bytes corresponding to the block
-number does not exceed blks_to_bytes(inode,max_inode_blocks(inode)),
-so the loop will not be jumped out.
-The next time, it will be considered that it should still be a
-double indirect node block, that is,
-4026887876 + 4090 * 4090 * 4090 = 72444816876, which will be
-truncated to 3725340140, and the loop will not be jumped out.
+This bug was identified by an experimental static analysis tool developed
+by our team. The tool specializes in analyzing reference count operations
+and detecting potential issues where resources are not properly managed.
+In this case, the tool flagged the missing release operation as a
+potential problem, which led to the development of this patch.
 
-156.374871: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 0, start blkaddr = 0x8e00, len = 0x200, flags = 2,seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.374916: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 512, start blkaddr = 0x0, len = 0x0, flags = 0 , seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.374920: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 513, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-......
-156.385747: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3935, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385752: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3936, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385755: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 8026, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385758: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 12116, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385761: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 16740216, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385764: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 33468316, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385767: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385770: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385772: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-156.385775: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
-
-Commit a6a010f5def5 ("f2fs: Restrict max filesize for 16K f2fs")
-has set the maximum allowed file size to (U32_MAX + 1) * F2FS_BLKSIZE,
-so max_file_blocks should be used here to limit it, that is,
-maxbytes defined above. And the max_inode_blocks function is not
-called by other functions except here, so cleanup it.
-
-Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Daniel Rosenberg <drosen@google.com>
+Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   22 +---------------------
- 1 file changed, 1 insertion(+), 21 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1902,25 +1902,6 @@ static int f2fs_xattr_fiemap(struct inod
- 	return (err < 0 ? err : 0);
- }
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev
+ 	if (err) {
+ 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
+ 		       dev->nodename);
+-		return err;
++		goto fail_remove;
+ 	}
  
--static loff_t max_inode_blocks(struct inode *inode)
--{
--	loff_t result = ADDRS_PER_INODE(inode);
--	loff_t leaf_count = ADDRS_PER_BLOCK(inode);
--
--	/* two direct node blocks */
--	result += (leaf_count * 2);
--
--	/* two indirect node blocks */
--	leaf_count *= NIDS_PER_BLOCK;
--	result += (leaf_count * 2);
--
--	/* one double indirect node block */
--	leaf_count *= NIDS_PER_BLOCK;
--	result += leaf_count;
--
--	return result;
--}
--
- int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		u64 start, u64 len)
- {
-@@ -1993,8 +1974,7 @@ next:
- 	if (!compr_cluster && !(map.m_flags & F2FS_MAP_FLAGS)) {
- 		start_blk = next_pgofs;
+ 	dev->spurious_threshold = 1;
+@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev
+ 			 dev->nodename);
  
--		if (blks_to_bytes(inode, start_blk) < blks_to_bytes(inode,
--						max_inode_blocks(inode)))
-+		if (blks_to_bytes(inode, start_blk) < maxbytes)
- 			goto prep_next;
- 
- 		flags |= FIEMAP_EXTENT_LAST;
+ 	return 0;
++fail_remove:
++	if (drv->remove) {
++		down(&dev->reclaim_sem);
++		drv->remove(dev);
++		up(&dev->reclaim_sem);
++	}
+ fail_put:
+ 	module_put(drv->driver.owner);
+ fail:
 
 
 
