@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-96430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B038B9E1F9F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9C99E1FA5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E372284A79
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92BDF284ABE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479AA3BB24;
-	Tue,  3 Dec 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C311F471F;
+	Tue,  3 Dec 2024 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kfhd8j9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sw7uY3P+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C3717BB16;
-	Tue,  3 Dec 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA56617BB16;
+	Tue,  3 Dec 2024 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236784; cv=none; b=YO+MZf8Yh8lEFjWhZ0o5QBHTXZCBEhr+tbUTXesWa76FOnoYGdWrh/ku+Cu4s53OGI+sIthe55Ks8D2yn2/hiwnuNNHeoekK5Z7KIp48ruRZ4q1SJixOBrAuvJuy7Ou5k1Q96DXMXcbET/ZEhHxhkq3/2UhVDL5f8At5EPpdhLo=
+	t=1733236820; cv=none; b=egvqrlXrc/rj0N8kVhJgfNSxFK5nAJyDvg0ESoUTfXCy5VRacK4QFhMC1y/qI2TNEfiWBYVBjlJ4dxz/VTydg+SwRDYhBVpupigN821AvUREzSblUN2ygMrU7YAz4+LUPLirxtbjzG2x4z4anUpO+Y8D5QmofiVrPV1+rsplKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236784; c=relaxed/simple;
-	bh=ScdG3CDh8b9GK0vF5W518esrVDIJ62Ii5tdx8NVHwV4=;
+	s=arc-20240116; t=1733236820; c=relaxed/simple;
+	bh=nXJzriwb7vuesv5u0ZuCZW4V0Mv9UhQbLOqXmtWtiqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYXzx4OxYuLkhVtFW9KueQ05UvmCpj2y2KmS1EYFbRuW76f7vxAHYZcg7Wh+8g0Untnw+l1q2/INZhfKlB7H+xccQHeT8P3cFqHLDkCQInitvZyu5mJ6L3s5yA2D32ACl9I8M+SmD+zI/XtVSc+Jow1vX4d/Js1P65oA/tjVMCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kfhd8j9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7A8C4CECF;
-	Tue,  3 Dec 2024 14:39:43 +0000 (UTC)
+	 MIME-Version; b=kWORZ2YRP8DXQ7KsGZ8eFIi9jS+gU94Gfb8Odjr2BLWOPQKcqOyHlbq7/5mMlZOm6fwNDrwemrbFu8sTauBCnQ5yCqfvczzv2wxtDkUmLuEGXwnC5HDYiiIhm3WtrHMZP69eq0EuzzE0UrpfGPdYIXKSt2YtJKXgJvgGRsD1UOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sw7uY3P+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398D7C4CECF;
+	Tue,  3 Dec 2024 14:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236783;
-	bh=ScdG3CDh8b9GK0vF5W518esrVDIJ62Ii5tdx8NVHwV4=;
+	s=korg; t=1733236820;
+	bh=nXJzriwb7vuesv5u0ZuCZW4V0Mv9UhQbLOqXmtWtiqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kfhd8j9ySwlPzmqLSd80tyEsHzRyPZ8RWewkEbjSEZbXc6eiyStL2Q2qqDL81gMaV
-	 fvRDs8gRwCRPP4DPjTSRZfygjOK/90mxEVNfyy6SVli61t8jOk/GPHNHVISZAdbXbJ
-	 rbH5PSz2d6vHYDfAxgQEiHvYHP6FvG5zk7VsyHdg=
+	b=Sw7uY3P+tglvt1RqGkMesmOy8hwNbXC5JynKq8psIQiKZLEecJHYOOcVhzYhzSUUu
+	 c7+ptOuwUPBdkQNKfL0z27Amv4Cb9IyFDO7pozA3a7tQ+Vb9ikWrT+IoOYYbG8QpgK
+	 /T8YXSeSiQnq4jYMDJqRT8Nz+NOIx4WgYraDOiLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 4.19 099/138] usb: ehci-spear: fix call balance of sehci clk handling routines
-Date: Tue,  3 Dec 2024 15:32:08 +0100
-Message-ID: <20241203141927.351557517@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 100/138] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
+Date: Tue,  3 Dec 2024 15:32:09 +0100
+Message-ID: <20241203141927.391349508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -65,51 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
+commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
 
-If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
-it should not be disabled in any path.
+find_group_other() and find_group_orlov() read *_lo, *_hi with
+ext4_free_inodes_count without additional locking. This can cause
+data-race warning, but since the lock is held for most writes and free
+inodes value is generally not a problem even if it is incorrect, it is
+more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
 
-Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
-in all error paths to ensure proper cleanup.
+==================================================================
+BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
+ ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
+ __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
+read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
+ ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
+ find_group_other fs/ext4/ialloc.c:594 [inline]
+ __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ehci-spear.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/super.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/ehci-spear.c
-+++ b/drivers/usb/host/ehci-spear.c
-@@ -110,7 +110,9 @@ static int spear_ehci_hcd_drv_probe(stru
- 	/* registers start at offset 0x0 */
- 	hcd_to_ehci(hcd)->caps = hcd->regs;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -258,9 +258,9 @@ __u32 ext4_free_group_clusters(struct su
+ __u32 ext4_free_inodes_count(struct super_block *sb,
+ 			      struct ext4_group_desc *bg)
+ {
+-	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
++	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
+ 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
+-		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
++		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+ }
  
--	clk_prepare_enable(sehci->clk);
-+	retval = clk_prepare_enable(sehci->clk);
-+	if (retval)
-+		goto err_put_hcd;
- 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
- 	if (retval)
- 		goto err_stop_ehci;
-@@ -135,8 +137,7 @@ static int spear_ehci_hcd_drv_remove(str
+ __u32 ext4_used_dirs_count(struct super_block *sb,
+@@ -314,9 +314,9 @@ void ext4_free_group_clusters_set(struct
+ void ext4_free_inodes_set(struct super_block *sb,
+ 			  struct ext4_group_desc *bg, __u32 count)
+ {
+-	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
++	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
+ 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
+-		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
++		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
+ }
  
- 	usb_remove_hcd(hcd);
- 
--	if (sehci->clk)
--		clk_disable_unprepare(sehci->clk);
-+	clk_disable_unprepare(sehci->clk);
- 	usb_put_hcd(hcd);
- 
- 	return 0;
+ void ext4_used_dirs_set(struct super_block *sb,
 
 
 
