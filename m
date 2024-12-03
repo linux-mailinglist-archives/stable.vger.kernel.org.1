@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-98035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04779E26FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 640349E2703
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C54161710
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A043816611F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA2A1F8912;
-	Tue,  3 Dec 2024 16:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A891F8924;
+	Tue,  3 Dec 2024 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNtJSJoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKS59iky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574421F7591;
-	Tue,  3 Dec 2024 16:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B7A1F8912;
+	Tue,  3 Dec 2024 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242576; cv=none; b=ufP34rTsE8RRHn80wdwowJ0kCooKUmRDHlCYu/wyOoRgZgf7T3HbU7sCohleasxfLDFZqD1Gh5PDWusLCbFhacdJP5qUhHs5QOs/Pz8kRjJ2LfMdgjIb3fmB/6ejet2LUctDRW7wtWPrxFGHV3nCc+F2OihYqAfcU4aoyHn3I20=
+	t=1733242593; cv=none; b=TBGVDphXQdpaExLXctcATkYKzCcmHPegs1CDIDnjqaryXiOom5d7Y3VNwxbuUGtaOs/D7uItBUb+o/L+FFtbUiad6+KxB8tzgKWoXbv/3J2a6u0oetZay6YuPEFQ2kpXWoBxqx0Ywhqkz0h0Tl779tFHxZE0ayCAttdS5K+Lz9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242576; c=relaxed/simple;
-	bh=dhP9x+WGtQJT6vdTTQMiJvsrWRFAi/UeJw/pbgx6k9E=;
+	s=arc-20240116; t=1733242593; c=relaxed/simple;
+	bh=3xtWHADH6UFYgqNy1XmE22ZWcr/s2GVfG3iYQaVi+pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n78s1njssmSJHvkZ515yn9tJx0nuwVeoiWJfvKg41Eau5fNUSztoKoSjkqtOuv+WCvIIS/DNDllav/0c7kGdjx+CFXa5aWQKs2wVi5Jpf07wqeVvf7zUCno5Bm1Sb4CP3tD2wZk0JCn4ME2rkCwYuQyx2z0MsNz6Qx7STsvZ1jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNtJSJoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41ECC4CECF;
-	Tue,  3 Dec 2024 16:16:15 +0000 (UTC)
+	 MIME-Version; b=KLFn3fabr4Z2qGOPTOF/uhypmdneQefD4dySoVTTC9VfPZUbFDsY0pphenNOazg2r30h83I9azJHasT7yUFzN9AMJPrekO2/cEB/cPmoekPIMf2OsenfKsKPcofTYS4jLq6GwIHi4Wwc1RQ71iKB9evytH3vldB4xM3tpzm9MT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKS59iky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF14C4CECF;
+	Tue,  3 Dec 2024 16:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242576;
-	bh=dhP9x+WGtQJT6vdTTQMiJvsrWRFAi/UeJw/pbgx6k9E=;
+	s=korg; t=1733242593;
+	bh=3xtWHADH6UFYgqNy1XmE22ZWcr/s2GVfG3iYQaVi+pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNtJSJoe8T1UKFWffoA1XfXuZN2TLAMIB5RnrGKk/IL1EGkCock/Eu+jEkDhPtFpl
-	 rKZ/xHI+z2So2yGbVkh71/umCX+li4UtOvWNyT2SngJLqewBHSPFcFPZ81hkxN9kIS
-	 zNnFJC/7z3StMK6m/6LISseQVaT0g0hCszh/agZQ=
+	b=LKS59ikyLdFGcBzDuKqVoOlQ2qliRW+3i9/4HUZKntd6TutC6OgRMBxrOclicrY+Q
+	 H8BbBPixU9y59T1VyR1b3AL14pk+KVk3POpFTftEEbBc+E6aFnwBzAf68v9zkwsrih
+	 +8Y3suc/+oexXAueiYv5bxhoLq0uqRzNyykimZcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 718/826] block: Prevent potential deadlock in blk_revalidate_disk_zones()
-Date: Tue,  3 Dec 2024 15:47:25 +0100
-Message-ID: <20241203144811.771528828@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 719/826] um: vector: Do not use drvdata in release
+Date: Tue,  3 Dec 2024 15:47:26 +0100
+Message-ID: <20241203144811.810449385@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,153 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit 0b83c86b444ab467134b0e618f45ad2216a4973c upstream.
+commit 51b39d741970742a5c41136241a9c48ac607cf82 upstream.
 
-The function blk_revalidate_disk_zones() calls the function
-disk_update_zone_resources() after freezing the device queue. In turn,
-disk_update_zone_resources() calls queue_limits_start_update() which
-takes a queue limits mutex lock, resulting in the ordering:
-q->q_usage_counter check -> q->limits_lock. However, the usual ordering
-is to always take a queue limit lock before freezing the queue to commit
-the limits updates, e.g., the code pattern:
+The drvdata is not available in release. Let's just use container_of()
+to get the vector_device instance. Otherwise, removing a vector device
+will result in a crash:
 
-lim = queue_limits_start_update(q);
-...
-blk_mq_freeze_queue(q);
-ret = queue_limits_commit_update(q, &lim);
-blk_mq_unfreeze_queue(q);
+RIP: 0033:vector_device_release+0xf/0x50
+RSP: 00000000e187bc40  EFLAGS: 00010202
+RAX: 0000000060028f61 RBX: 00000000600f1baf RCX: 00000000620074e0
+RDX: 000000006220b9c0 RSI: 0000000060551c80 RDI: 0000000000000000
+RBP: 00000000e187bc50 R08: 00000000603ad594 R09: 00000000e187bb70
+R10: 000000000000135a R11: 00000000603ad422 R12: 00000000623ae028
+R13: 000000006287a200 R14: 0000000062006d30 R15: 00000000623700b6
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 16 Comm: kworker/0:1 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+Workqueue: events mc_work_proc
+Stack:
+ 60028f61 623ae028 e187bc80 60276fcd
+ 6220b9c0 603f5820 623ae028 00000000
+ e187bcb0 603a2bcd 623ae000 62370010
+Call Trace:
+ [<60028f61>] ? vector_device_release+0x0/0x50
+ [<60276fcd>] device_release+0x70/0xba
+ [<603a2bcd>] kobject_put+0xba/0xe7
+ [<60277265>] put_device+0x19/0x1c
+ [<60281266>] platform_device_put+0x26/0x29
+ [<60281e5f>] platform_device_unregister+0x2c/0x2e
+ [<60029422>] vector_remove+0x52/0x58
+ [<60031316>] ? mconsole_reply+0x0/0x50
+ [<600310c8>] mconsole_remove+0x160/0x1cc
+ [<603b19f4>] ? strlen+0x0/0x15
+ [<60066611>] ? __dequeue_entity+0x1a9/0x206
+ [<600666a7>] ? set_next_entity+0x39/0x63
+ [<6006666e>] ? set_next_entity+0x0/0x63
+ [<60038fa6>] ? um_set_signals+0x0/0x43
+ [<6003070c>] mc_work_proc+0x77/0x91
+ [<60057664>] process_scheduled_works+0x1b3/0x2dd
+ [<60055f32>] ? assign_work+0x0/0x58
+ [<60057f0a>] worker_thread+0x1e9/0x293
+ [<6005406f>] ? set_pf_worker+0x0/0x64
+ [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+ [<6005d748>] ? kthread_exit+0x0/0x3a
+ [<60057d21>] ? worker_thread+0x0/0x293
+ [<6005dbf1>] kthread+0x126/0x12b
+ [<600219c5>] new_thread_handler+0x85/0xb6
 
-Thus, blk_revalidate_disk_zones() introduces a potential circular
-locking dependency deadlock that lockdep sometimes catches with the
-splat:
-
-[   51.934109] ======================================================
-[   51.935916] WARNING: possible circular locking dependency detected
-[   51.937561] 6.12.0+ #2107 Not tainted
-[   51.938648] ------------------------------------------------------
-[   51.940351] kworker/u16:4/157 is trying to acquire lock:
-[   51.941805] ffff9fff0aa0bea8 (&q->limits_lock){+.+.}-{4:4}, at: disk_update_zone_resources+0x86/0x170
-[   51.944314]
-               but task is already holding lock:
-[   51.945688] ffff9fff0aa0b890 (&q->q_usage_counter(queue)#3){++++}-{0:0}, at: blk_revalidate_disk_zones+0x15f/0x340
-[   51.948527]
-               which lock already depends on the new lock.
-
-[   51.951296]
-               the existing dependency chain (in reverse order) is:
-[   51.953708]
-               -> #1 (&q->q_usage_counter(queue)#3){++++}-{0:0}:
-[   51.956131]        blk_queue_enter+0x1c9/0x1e0
-[   51.957290]        blk_mq_alloc_request+0x187/0x2a0
-[   51.958365]        scsi_execute_cmd+0x78/0x490 [scsi_mod]
-[   51.959514]        read_capacity_16+0x111/0x410 [sd_mod]
-[   51.960693]        sd_revalidate_disk.isra.0+0x872/0x3240 [sd_mod]
-[   51.962004]        sd_probe+0x2d7/0x520 [sd_mod]
-[   51.962993]        really_probe+0xd5/0x330
-[   51.963898]        __driver_probe_device+0x78/0x110
-[   51.964925]        driver_probe_device+0x1f/0xa0
-[   51.965916]        __driver_attach_async_helper+0x60/0xe0
-[   51.967017]        async_run_entry_fn+0x2e/0x140
-[   51.968004]        process_one_work+0x21f/0x5a0
-[   51.968987]        worker_thread+0x1dc/0x3c0
-[   51.969868]        kthread+0xe0/0x110
-[   51.970377]        ret_from_fork+0x31/0x50
-[   51.970983]        ret_from_fork_asm+0x11/0x20
-[   51.971587]
-               -> #0 (&q->limits_lock){+.+.}-{4:4}:
-[   51.972479]        __lock_acquire+0x1337/0x2130
-[   51.973133]        lock_acquire+0xc5/0x2d0
-[   51.973691]        __mutex_lock+0xda/0xcf0
-[   51.974300]        disk_update_zone_resources+0x86/0x170
-[   51.975032]        blk_revalidate_disk_zones+0x16c/0x340
-[   51.975740]        sd_zbc_revalidate_zones+0x73/0x160 [sd_mod]
-[   51.976524]        sd_revalidate_disk.isra.0+0x465/0x3240 [sd_mod]
-[   51.977824]        sd_probe+0x2d7/0x520 [sd_mod]
-[   51.978917]        really_probe+0xd5/0x330
-[   51.979915]        __driver_probe_device+0x78/0x110
-[   51.981047]        driver_probe_device+0x1f/0xa0
-[   51.982143]        __driver_attach_async_helper+0x60/0xe0
-[   51.983282]        async_run_entry_fn+0x2e/0x140
-[   51.984319]        process_one_work+0x21f/0x5a0
-[   51.985873]        worker_thread+0x1dc/0x3c0
-[   51.987289]        kthread+0xe0/0x110
-[   51.988546]        ret_from_fork+0x31/0x50
-[   51.989926]        ret_from_fork_asm+0x11/0x20
-[   51.991376]
-               other info that might help us debug this:
-
-[   51.994127]  Possible unsafe locking scenario:
-
-[   51.995651]        CPU0                    CPU1
-[   51.996694]        ----                    ----
-[   51.997716]   lock(&q->q_usage_counter(queue)#3);
-[   51.998817]                                lock(&q->limits_lock);
-[   52.000043]                                lock(&q->q_usage_counter(queue)#3);
-[   52.001638]   lock(&q->limits_lock);
-[   52.002485]
-                *** DEADLOCK ***
-
-Prevent this issue by moving the calls to blk_mq_freeze_queue() and
-blk_mq_unfreeze_queue() around the call to queue_limits_commit_update()
-in disk_update_zone_resources(). In case of revalidation failure, the
-call to disk_free_zone_resources() in blk_revalidate_disk_zones()
-is still done with the queue frozen as before.
-
-Fixes: 843283e96e5a ("block: Fake max open zones limit when there is no limit")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241126104705.183996-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-5-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/um/drivers/vector_kern.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1541,6 +1541,7 @@ static int disk_update_zone_resources(st
- 	unsigned int nr_seq_zones, nr_conv_zones = 0;
- 	unsigned int pool_size;
- 	struct queue_limits lim;
-+	int ret;
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -815,7 +815,8 @@ static struct platform_driver uml_net_dr
  
- 	disk->nr_zones = args->nr_zones;
- 	disk->zone_capacity = args->zone_capacity;
-@@ -1593,7 +1594,11 @@ static int disk_update_zone_resources(st
- 	}
+ static void vector_device_release(struct device *dev)
+ {
+-	struct vector_device *device = dev_get_drvdata(dev);
++	struct vector_device *device =
++		container_of(dev, struct vector_device, pdev.dev);
+ 	struct net_device *netdev = device->dev;
  
- commit:
--	return queue_limits_commit_update(q, &lim);
-+	blk_mq_freeze_queue(q);
-+	ret = queue_limits_commit_update(q, &lim);
-+	blk_mq_unfreeze_queue(q);
-+
-+	return ret;
- }
- 
- static int blk_revalidate_conv_zone(struct blk_zone *zone, unsigned int idx,
-@@ -1814,14 +1819,15 @@ int blk_revalidate_disk_zones(struct gen
- 	 * Set the new disk zone parameters only once the queue is frozen and
- 	 * all I/Os are completed.
- 	 */
--	blk_mq_freeze_queue(q);
- 	if (ret > 0)
- 		ret = disk_update_zone_resources(disk, &args);
- 	else
- 		pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
--	if (ret)
-+	if (ret) {
-+		blk_mq_freeze_queue(q);
- 		disk_free_zone_resources(disk);
--	blk_mq_unfreeze_queue(q);
-+		blk_mq_unfreeze_queue(q);
-+	}
- 
- 	kfree(args.conv_zones_bitmap);
- 
+ 	list_del(&device->list);
 
 
 
