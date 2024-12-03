@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8E69E226F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044579E23E9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8020AB85C01
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B8A161BD1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27441F7561;
-	Tue,  3 Dec 2024 15:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF401FAC25;
+	Tue,  3 Dec 2024 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x27QNxyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPcSUwFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8084033FE;
-	Tue,  3 Dec 2024 15:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F991F890F;
+	Tue,  3 Dec 2024 15:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238114; cv=none; b=A2o0376GqmHvIkxmhxgQK4BLFE3Q/Yf+zchIAvBSxR1N8bggT/drZZgfvi2rXPCbUgj0vila3oXVBTa8fZ8r330A4sD4hh/uXOox+CkEQ/znZ+8c38NpkRQwoYtuOsqupF8if/nsHhukQEAhzOUMw+YVDd4QHtIw5fPLocv+m+c=
+	t=1733240062; cv=none; b=PqfaZHmf/at+4TcN/bVVeBromO06bg8Hh6XjpTLVPI6LcvXByYB5oQZZPSGGkzjL1JFIjB5HTmCJESUoy0vndsO9CFhRUyds/qcUAoc8MSc6jtoAb4C8u5DDiAEXBuXoLDBwzJldX/MQbG7fXz3UeJQLiTKBXl2eJHUZtEWwNHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238114; c=relaxed/simple;
-	bh=/cIo/kEPF/v0imRnRrVFSLF54/2hjdQpINf9XYN2EiQ=;
+	s=arc-20240116; t=1733240062; c=relaxed/simple;
+	bh=LqDIrgEnb+5IXZsegJZEOxzisTyyvY5a63MfebA9FqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2a6fI+QMILaNHQk8tjkfqEwz/kCtNxUzTre37ARn3RTQzU+ftAgDa25/4wJ9O8mHlwAlz31hhKaxQNn6YvFSpgIu0MJW0kiAbHtDPy9HBvOu9oouiPXxteBbWqvyPOkrELtXkJ5iHvw930JPchFKnMAKjyoqSZ2cIC9kUTAQbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x27QNxyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EC7C4CECF;
-	Tue,  3 Dec 2024 15:01:53 +0000 (UTC)
+	 MIME-Version; b=WYTg/5FUpRV/t3TF75zi4qH7v2Vqx8FIzdgIg3hRYAb/UeU6/3k8xFBzK5RPja0uK5+EbYruseOSoiYhM/UbwUoNKRcWDvM6SbaqoRm16sDdbsKUXqPQPNjfTxImV7y4nlbwPp+rgEoqItdupEC3wqzZPwkyQFQlu5m3kqZD4Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPcSUwFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1E3C4CECF;
+	Tue,  3 Dec 2024 15:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238114;
-	bh=/cIo/kEPF/v0imRnRrVFSLF54/2hjdQpINf9XYN2EiQ=;
+	s=korg; t=1733240061;
+	bh=LqDIrgEnb+5IXZsegJZEOxzisTyyvY5a63MfebA9FqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x27QNxyL3fh8nb60N5Od24UWxEUbXmyJjOZkrI15T/yObQ80w8OdU0EeTPibMBtI7
-	 Z6UgqEOse64QogA/QynYDoSlw9cekO5rvpFiCtdXrfSfMiKdjLHV1TrRclW+VBCke9
-	 fgEXCRiWttdDERDdeVeKVa3VJNDC2PefbjRc2JL0=
+	b=cPcSUwFt1sspHE0nBu+HBydDnIlKqkBFC+FKIdCpf/DW7lq5X6OTee68ILIVeuSch
+	 ORh+e7pML/2R2F9KfpFpO+1XmhECQw4EBb4Onx40yjpK9Ey44m1EE0XTIbr+93oim8
+	 drj2W2W9jPbVhBSGgIjxwzlDlN8upsAzMWtSuq+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 165/817] arm64: dts: mt8183: kukui: Fix the address of eeprom at i2c4
+Subject: [PATCH 6.12 010/826] kselftest/arm64: mte: fix printf type warnings about longs
 Date: Tue,  3 Dec 2024 15:35:37 +0100
-Message-ID: <20241203144002.168998962@linuxfoundation.org>
+Message-ID: <20241203144743.847521705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit edbde4923f208aa83abb48d4b2463299e5fc2586 ]
+[ Upstream commit 96dddb7b9406259baace9a1831e8da155311be6f ]
 
-The address of eeprom should be 50.
+When checking MTE tags, we print some diagnostic messages when the tests
+fail. Some variables uses there are "longs", however we only use "%x"
+for the format specifier.
 
-Fixes: ff33d889567e ("arm64: dts: mt8183: Add kukui kodama board")
-Fixes: d1eaf77f2c66 ("arm64: dts: mt8183: Add kukui kakadu board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-2-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Update the format specifiers to "%lx", to match the variable types they
+are supposed to print.
+
+Fixes: f3b2a26ca78d ("kselftest/arm64: Verify mte tag inclusion via prctl")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240816153251.2833702-9-andre.przywara@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi | 4 ++--
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/arm64/mte/check_tags_inclusion.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-index bfb9e42c8acaa..ff02f63bac29b 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-@@ -92,9 +92,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
- 
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-index 5c1bf6a1e4758..da6e767b4ceed 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-@@ -79,9 +79,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
- 
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c64";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
+diff --git a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+index 2b1425b92b699..a3d1e23fe02af 100644
+--- a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
++++ b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+@@ -65,7 +65,7 @@ static int check_single_included_tags(int mem_type, int mode)
+ 			ptr = mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) == tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%x\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAG(tag));
+ 				result = KSFT_FAIL;
+@@ -97,7 +97,7 @@ static int check_multiple_included_tags(int mem_type, int mode)
+ 			ptr = mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) < tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%lx\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAGS(excl_mask));
+ 				result = KSFT_FAIL;
 -- 
 2.43.0
 
