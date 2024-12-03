@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826909E21AD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AB69E2865
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:58:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E362829F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AD7BBE1428
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAFF1F8ADD;
-	Tue,  3 Dec 2024 15:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBF11F8916;
+	Tue,  3 Dec 2024 15:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imP6SSsV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUZjwK3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812A51F7545;
-	Tue,  3 Dec 2024 15:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4DE153800;
+	Tue,  3 Dec 2024 15:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238868; cv=none; b=ai+WCkz1fVNDt9HzGFnyoqVPk4ee9vOYes63pUXLU3e9Qz6He9tsgk8aMWKZMaDvojCewhnkIs3u8t1oX9WoBroI9QOAp9CLW6RjIJ9RCvxgjjX1KRQ3orSLnQQlyKmNW9StL7wBW7r7eHAhX7EPOHpSkUVs72FQ9cz1eVe5T3U=
+	t=1733240844; cv=none; b=Ei4FMFWxV21YEWrLwssdoThOgvIpTx/ANK9MxVSSFH318lEZUjm2IT0lWiRHw1INwpKE8H+cSvgM/s4ORnU4Gfxqp7HxaRMfJXoYhWPfbSUqanEz8Dnz8OCq2VC/+0Lo2yh2yDF+hq8XUxssiEp2yYFOoJumourc0bE5Kr8SKTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238868; c=relaxed/simple;
-	bh=cORNmTO4W6jF0OmNvYAy2nAdgjequoI6Qiq+HoC0gqo=;
+	s=arc-20240116; t=1733240844; c=relaxed/simple;
+	bh=Auu7U2Fbhl0ATMPaJB6w9U83Z8WI3QsBeh8CmPgwn4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZrxqE5FpELLqewGzXzJpJccKKe0KkHBnJIK8i/xvPo1pCkJd8GBCHKFoCcFCq320PU1k6qewlboUJClnXOeh5z/9GYwAtBsxbmodZINds3cFJSaCpeQIJqTtvYfDIAfKu0FGWmUBcM6bsNNcgdD6TnfX9x+BMg1rFEUvl1lVls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imP6SSsV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A155C4CECF;
-	Tue,  3 Dec 2024 15:14:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rCqbxprx8+5CWXELnXdS9K4IxfwPTGuheAs2ewRadMLyMS9ahZZP4hncJspZ7HrueVJ2Utu/B0jJ2W5Fg7BauxzhNSJ4Xg1x8/WREt4Hiaen+IadiCyDT8kyHalGPREB+030gjqPC90RlFUejlwqZYualtaFIQAS2gc7NNzlFQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUZjwK3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B473AC4CECF;
+	Tue,  3 Dec 2024 15:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238868;
-	bh=cORNmTO4W6jF0OmNvYAy2nAdgjequoI6Qiq+HoC0gqo=;
+	s=korg; t=1733240844;
+	bh=Auu7U2Fbhl0ATMPaJB6w9U83Z8WI3QsBeh8CmPgwn4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imP6SSsVh3iAto2Rg/rUPFffOU/KKnOct2hHv6QtJgtPxdN39kAUHP0/FxsRsHrWm
-	 f9GC7W33hCN73+R7e+/UmKLe0MYqF/hiyE2nuuz91wy2xiITfh1wPX/6rTUYDAahEu
-	 22FK8OWLd71XiMFUj96KUYGLGZcONmD/f7XZH/zM=
+	b=BUZjwK3oE5SdaD6CBCF5igdsFTYGcBl7IxnWSfVrsMqm2l7lFlFc3ZBE/Y20TkUov
+	 OeTfCF7cIfZhPNgYql1S2ozBf7XyS1Hsl97GcQwq80h6TvOZYOnvM8vkPL3cDyYaKf
+	 QXojBZ9Mp0KVzAQNJp2yKVPgNQucyZ8g+mpaUwCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Marek Vasut <marex@denx.de>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 407/817] iommu/amd: Remove amd_iommu_domain_update() from page table freeing
+Subject: [PATCH 6.12 252/826] wifi: wilc1000: Set MAC after operation mode
 Date: Tue,  3 Dec 2024 15:39:39 +0100
-Message-ID: <20241203144011.763029639@linuxfoundation.org>
+Message-ID: <20241203144753.598386388@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 322d889ae7d39f8538a6deac35869aa3be1855bd ]
+[ Upstream commit 29dd3e48b9bd88bf65a1e760126fa18d1def7b30 ]
 
-It is a serious bug if the domain is still mapped to any DTEs when it is
-freed as we immediately start freeing page table memory, so any remaining
-HW touch will UAF.
+It seems it is necessary to set WILC MAC address after operation mode,
+otherwise the MAC address of the WILC MAC is reset back to what is in
+nvmem. This causes a failure to associate with AP after the WILC MAC
+address was overridden by userspace.
 
-If it is not mapped then dev_list is empty and amd_iommu_domain_update()
-does nothing.
+Test case:
+"
+ap$ cat << EOF > hostap.conf
+interface=wlan0
+ssid=ssid
+hw_mode=g
+channel=6
+wpa=2
+wpa_passphrase=pass
+wpa_key_mgmt=WPA-PSK
+EOF
+ap$ hostapd -d hostap.conf
+ap$ ifconfig wlan0 10.0.0.1
+"
 
-Remove it and add a WARN_ON() to catch this class of bug.
+"
+sta$ ifconfig wlan0 hw ether 00:11:22:33:44:55
+sta$ wpa_supplicant -i wlan0 -c <(wpa_passphrase ssid pass)
+sta$ ifconfig wlan0 10.0.0.2
+sta$ ping 10.0.0.1 # fails without this patch
+"
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/4-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 016991606aa0 ("iommu/amd/pgtbl_v2: Take protection domain lock before invalidating TLB")
+AP still indicates SA with original MAC address from nvmem without this patch:
+"
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=60:01:23:45:67:89 bssid=ff:ff:ff:ff:ff:ff ...
+                                          ^^^^^^^^^^^^^^^^^
+"
+
+Fixes: 83d9b54ee5d4 ("wifi: wilc1000: read MAC address from fuse at probe")
+Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241003132504.52233-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable.c | 3 ---
- drivers/iommu/amd/iommu.c      | 2 ++
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/netdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
-index 05aed3cb46f1b..b3991ad1ae8ea 100644
---- a/drivers/iommu/amd/io_pgtable.c
-+++ b/drivers/iommu/amd/io_pgtable.c
-@@ -578,9 +578,6 @@ static void v1_free_pgtable(struct io_pgtable *iop)
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
+index 9ecf3fb29b558..8bc127c5a538c 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -608,6 +608,9 @@ static int wilc_mac_open(struct net_device *ndev)
+ 		return ret;
+ 	}
  
- 	/* Update data structure */
- 	amd_iommu_domain_clr_pt_root(dom);
--
--	/* Make changes visible to IOMMUs */
--	amd_iommu_domain_update(dom);
- }
- 
- static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *cookie)
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 1a61f14459e4f..881f6c589257c 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2262,6 +2262,8 @@ void protection_domain_free(struct protection_domain *domain)
- 	if (!domain)
- 		return;
- 
-+	WARN_ON(!list_empty(&domain->dev_list));
++	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
++				vif->idx);
 +
- 	if (domain->iop.pgtbl_cfg.tlb)
- 		free_io_pgtable_ops(&domain->iop.iop.ops);
+ 	netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
+ 	ret = wilc_set_mac_address(vif, ndev->dev_addr);
+ 	if (ret) {
+@@ -618,9 +621,6 @@ static int wilc_mac_open(struct net_device *ndev)
+ 		return ret;
+ 	}
  
+-	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
+-				vif->idx);
+-
+ 	mgmt_regs.interface_stypes = vif->mgmt_reg_stypes;
+ 	/* so we detect a change */
+ 	vif->mgmt_reg_stypes = 0;
 -- 
 2.43.0
 
