@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6299E9E2A0D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:54:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16F09E295E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 903F7B2DFF3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF370B8496C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2740E1F7548;
-	Tue,  3 Dec 2024 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A211F76A8;
+	Tue,  3 Dec 2024 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8XBIRhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgTrVl2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA71F6698;
-	Tue,  3 Dec 2024 14:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BE01F7569;
+	Tue,  3 Dec 2024 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237933; cv=none; b=sGo/NTln29xG6pyWZGoVB68Cebn0LfSwk4AGcvGn7JfYV5ZaEMTH1qd0ytjdxiT7Ff3XXgP6fnQ6xFjZA4uPd+IkbFocZ9T6J47gLSe51Z6lxNmgVgxrl66gxVbeW2M8LgQOmp9ja3T7s+t5dRizKxLIKCeL/2BG1AZnPt0DIzk=
+	t=1733237962; cv=none; b=TL9yuIhjzf3YBlu0V01htSXWQH6UnJXtL2manfC9VC6Q/yACoG+a8I3txt86cvoE+v1UD+pCJegLUlS7IyblW2udUeruWuOr8ZC3fa8wTUbmmC85uki/gOv/YFDtBJF8Bd3oX7m7awtmFFcaF8aGk8mwXjWKECGa+EomGtAPyR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237933; c=relaxed/simple;
-	bh=0FjO6V32k4rEnGmdMBWAXFSOkcEHGD3lHpsTCaslh0U=;
+	s=arc-20240116; t=1733237962; c=relaxed/simple;
+	bh=MxPh5gR3Dx7MVH2XfM2Lc5alaPSnUqanVJE0opTDvNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2cnGaP/s7ARCAuz/8c31Py6YlCtQhB4Crz1s58on8MQzHkRV3KCTSOHA8e8m6YUhlWc6YbqpvOI4VpCEAeetHJhbOuSRCuCPzOylXllE965FcbRlcDvTpAeq3ZnxGaaWta+Ap66KTIQsm6OjnS+/06icgmtrreeYcL/1VcJabM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8XBIRhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60151C4CECF;
-	Tue,  3 Dec 2024 14:58:53 +0000 (UTC)
+	 MIME-Version; b=Onzcc/TbLCtBpJCEG8H4X9/7XodfyxlxRfAXxTyYi8mQM5ykpAijkp/GS+q+SHRYinIKdcDS7oK0itcvoETr5RbxydNsPXsHjhBCbCH6ngzDftOcqGCeZ/rt4U0eqnte7htYbQYLIslbPvv1kvG/hx9N+prF7CJ8wjMMmyHcP+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgTrVl2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C793C4CECF;
+	Tue,  3 Dec 2024 14:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237933;
-	bh=0FjO6V32k4rEnGmdMBWAXFSOkcEHGD3lHpsTCaslh0U=;
+	s=korg; t=1733237962;
+	bh=MxPh5gR3Dx7MVH2XfM2Lc5alaPSnUqanVJE0opTDvNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8XBIRhRt7iuTETTKY7ENc8tRjZoyMurGuNRZGNrhWlqqLz1DOu9WlZTwgFX3SL8W
-	 dvEnU5svHs+39XKqZuJwJffi77W9YJl1DZrrKY622XJIRfXHFngZ3EYZM/U+RP8Wdw
-	 xEBEvI9wknsvm0MGqRjw8HYZ5d+DiF242BiPSW2s=
+	b=LgTrVl2pSJnmH3WAPI4FXzcGwTaK3ykuy3PK1T8jW/D3jHKqpZDd1r8x94S1BqDG7
+	 WncIid74RtcVv48X4mrPo8VDr2aIW20HhPDv4TxeNbvcQzEYDzg1nqZ9UDpR1Td4Se
+	 98YbvMQPb4F1e6rMwsprH8LD4+UHObcAmvtmnpLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Orange Kao <orange@aiven.io>,
-	Tony Luck <tony.luck@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 112/817] EDAC/igen6: Avoid segmentation fault on module unload
-Date: Tue,  3 Dec 2024 15:34:44 +0100
-Message-ID: <20241203144000.083541435@linuxfoundation.org>
+Subject: [PATCH 6.11 119/817] hwmon: (pmbus/core) clear faults after setting smbalert mask
+Date: Tue,  3 Dec 2024 15:34:51 +0100
+Message-ID: <20241203144000.359837434@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,54 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Orange Kao <orange@aiven.io>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit fefaae90398d38a1100ccd73b46ab55ff4610fba ]
+[ Upstream commit 509c3a362675bc995771df74d545548f98e37621 ]
 
-The segmentation fault happens because:
+pmbus_write_smbalert_mask() ignores the errors if the chip can't set
+smbalert mask the standard way. It is not necessarily a problem for the irq
+support if the chip is otherwise properly setup but it may leave an
+uncleared fault behind.
 
-During modprobe:
-1. In igen6_probe(), igen6_pvt will be allocated with kzalloc()
-2. In igen6_register_mci(), mci->pvt_info will point to
-   &igen6_pvt->imc[mc]
+pmbus_core will pick the fault on the next register_check(). The register
+check will fails regardless of the actual register support by the chip.
 
-During rmmod:
-1. In mci_release() in edac_mc.c, it will kfree(mci->pvt_info)
-2. In igen6_remove(), it will kfree(igen6_pvt);
+This leads to missing attributes or debugfs entries for chips that should
+provide them.
 
-Fix this issue by setting mci->pvt_info to NULL to avoid the double
-kfree.
+We cannot rely on register_check() as PMBUS_SMBALERT_MASK may be read-only.
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219360
-Signed-off-by: Orange Kao <orange@aiven.io>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241104124237.124109-2-orange@aiven.io
+Unconditionally clear the page fault after setting PMBUS_SMBALERT_MASK to
+avoid the problem.
+
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 221819ca4c36 ("hwmon: (pmbus/core) Add interrupt support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Message-ID: <20241105-tps25990-v4-5-0e312ac70b62@baylibre.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/igen6_edac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/pmbus/pmbus_core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 189a2fc29e74f..07dacf8c10be3 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1245,6 +1245,7 @@ static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
- 	imc->mci = mci;
- 	return 0;
- fail3:
-+	mci->pvt_info = NULL;
- 	kfree(mci->ctl_name);
- fail2:
- 	edac_mc_free(mci);
-@@ -1269,6 +1270,7 @@ static void igen6_unregister_mcis(void)
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index e592446b26653..019c5982ba564 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -3199,7 +3199,17 @@ static int pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
  
- 		edac_mc_del_mc(mci->pdev);
- 		kfree(mci->ctl_name);
-+		mci->pvt_info = NULL;
- 		edac_mc_free(mci);
- 		iounmap(imc->window);
- 	}
+ static int pmbus_write_smbalert_mask(struct i2c_client *client, u8 page, u8 reg, u8 val)
+ {
+-	return _pmbus_write_word_data(client, page, PMBUS_SMBALERT_MASK, reg | (val << 8));
++	int ret;
++
++	ret = _pmbus_write_word_data(client, page, PMBUS_SMBALERT_MASK, reg | (val << 8));
++
++	/*
++	 * Clear fault systematically in case writing PMBUS_SMBALERT_MASK
++	 * is not supported by the chip.
++	 */
++	pmbus_clear_fault_page(client, page);
++
++	return ret;
+ }
+ 
+ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
 -- 
 2.43.0
 
