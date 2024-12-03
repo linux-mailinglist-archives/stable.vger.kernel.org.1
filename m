@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA729E22BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B8F9E264F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7FB2866F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1D0F161152
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0771F75AE;
-	Tue,  3 Dec 2024 15:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF7E1F8917;
+	Tue,  3 Dec 2024 16:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHG8Rqop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YspDb20d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C71F7587;
-	Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E191F76D9;
+	Tue,  3 Dec 2024 16:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239696; cv=none; b=YXKdaQpuntA32zZsfvSgLZ1EThQay6TEe8tIzPWh8i+IRlGPJx4JBkCEZs7X3gsJuA3PulA6tZxdqvM7Wl07//6idHrarIhN6vv/Q9vG4uKC3KXNYLxpJhngPFZj75wQoEEP4DVENKi8aCHHv66A3oqRXFdUZO0kC6KbYWRkGEI=
+	t=1733241987; cv=none; b=JNV5jGm7ZXQYn6lxeZ0TzjLBGzwH19l8vS6Tj4EbOynkbzKvVmhfibwWZ5jn7XQw4rX+nSS2gvEYgq04aUdSc3UANUewTrCSrboZLnku1m/+yDusQ9ZJFm90T5NrGUdPJDdvEbmED6yUQWt7e32wiyAYJWenL75d+CBFMrAHbsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239696; c=relaxed/simple;
-	bh=XJ7kNfq1SUZEqWZKVWuYXnLZgyIr6/WYG3Rc7lmG748=;
+	s=arc-20240116; t=1733241987; c=relaxed/simple;
+	bh=e6hwQfJD/A8TDVxgSBW39uTnhqnilvyEA1azgXctm3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGZUY6mzJAMvBcgrRUjCO8+7/t8Cc1yQ1pxfqxA/9OHGgRDDauMD/xnlFC+z/w9B7eQXcUv3/MD9dXFA0Rzx4GMnUNFdBUEN0KSUmo9Dtslg4dBdv/TP/D0muqX10TsGpRC+WIaiMPqpwYSKDyQWBgVuUed93mXRTLPFsShnuWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHG8Rqop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B17DC4CED6;
-	Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
+	 MIME-Version; b=nv/TIORsIghyODzs95ePtFsUNhXgAEb54kwsWYwYJMT2X80InkmBUrovKWziT/GItoZP7G7vZfGT/1yMKgAMi1IlVwqswjYXDXJrjsAeFV9tyk4mtiHcRoxGJruaXarVoBNtD3SyCejh4OQzDSaeKjzT2nrq1oANODvciawPufw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YspDb20d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D39CC4CEE7;
+	Tue,  3 Dec 2024 16:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239695;
-	bh=XJ7kNfq1SUZEqWZKVWuYXnLZgyIr6/WYG3Rc7lmG748=;
+	s=korg; t=1733241987;
+	bh=e6hwQfJD/A8TDVxgSBW39uTnhqnilvyEA1azgXctm3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHG8RqopNO7Squ+aWDrpBYpDBCMSRol50iL22jLzXUxVJ3r1wB/vKu5TTpfoS4ZcX
-	 tqXcAgJFO4q5l/ul6BXsudolBgFjowWrW/WiXhsrNrLQhPATAQnNTZGePQI5A5CJU5
-	 S1u6xHWrONCMqXr3s3PIGlhQT6BnLlEchEcvvfhs=
+	b=YspDb20dp8WxQ8YSuvQiWvZUmwph+Bgfmv25IvtiDCO2zEzgPX5e6jprXIMLK8BmT
+	 z1in+NkxJEBsWNLGE88kCey0K1SgnVVCnWhS385nSjE5pFajlflVnsg0Fhntl00wWw
+	 EJqireKWtRxXuBKrqdJ8w8FUZP/Kw1wqlhOGfYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.11 702/817] parisc/ftrace: Fix function graph tracing disablement
+	John Fastabend <john.fastabend@gmail.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 547/826] LoongArch: BPF: Sign-extend return values
 Date: Tue,  3 Dec 2024 15:44:34 +0100
-Message-ID: <20241203144023.381331513@linuxfoundation.org>
+Message-ID: <20241203144805.088300048@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit a5f05a138a8cac035bf9da9b6ed0e532bc7942c8 upstream.
+[ Upstream commit 73c359d1d356cf10236ccd358bd55edab33e9424 ]
 
-Due to an apparent copy-paste bug, the parisc implementation of
-ftrace_disable_ftrace_graph_caller() doesn't actually do anything.
-It enables the (already-enabled) static key rather than disabling it.
+(1) Description of Problem:
 
-The result is that after function graph tracing has been "disabled", any
-subsequent (non-graph) function tracing will inadvertently also enable
-the slow fgraph return address hijacking.
+When testing BPF JIT with the latest compiler toolchains on LoongArch,
+there exist some strange failed test cases, dmesg shows something like
+this:
 
-Fixes: 98f2926171ae ("parisc/ftrace: use static key to enable/disable function graph tracer")
-Cc: stable@vger.kernel.org # 5.16+
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # dmesg -t | grep FAIL | head -1
+  ... ret -3 != -3 (0xfffffffd != 0xfffffffd)FAIL ...
+
+(2) Steps to Reproduce:
+
+  # echo 1 > /proc/sys/net/core/bpf_jit_enable
+  # modprobe test_bpf
+
+(3) Additional Info:
+
+There are no failed test cases compiled with the lower version of GCC
+such as 13.3.0, while the problems only appear with higher version of
+GCC such as 14.2.0.
+
+This is because the problems were hidden by the lower version of GCC due
+to redundant sign extension instructions generated by compiler, but with
+optimization of higher version of GCC, the sign extension instructions
+have been removed.
+
+(4) Root Cause Analysis:
+
+The LoongArch architecture does not expose sub-registers, and hold all
+32-bit values in a sign-extended format. While BPF, on the other hand,
+exposes sub-registers, and use zero-extension (similar to arm64/x86).
+
+This has led to some subtle bugs, where a BPF JITted program has not
+sign-extended the a0 register (return value in LoongArch land), passed
+the return value up the kernel, for example:
+
+  | int from_bpf(void);
+  |
+  | long foo(void)
+  | {
+  |    return from_bpf();
+  | }
+
+Here, a0 would be 0xffffffff instead of the expected 0xffffffffffffffff.
+
+Internally, the LoongArch JIT uses a5 as a dedicated register for BPF
+return values. That is to say, the LoongArch BPF uses a5 for BPF return
+values, which are zero-extended, whereas the LoongArch ABI uses a0 which
+is sign-extended.
+
+(5) Final Solution:
+
+Keep a5 zero-extended, but explicitly sign-extend a0 (which is used
+outside BPF land). Because libbpf currently defines the return value
+of an ebpf program as a 32-bit unsigned integer, just use addi.w to
+extend bit 31 into bits 63 through 32 of a5 to a0. This is similar to
+commit 2f1b0d3d7331 ("riscv, bpf: Sign-extend return values").
+
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/ftrace.c |    2 +-
+ arch/loongarch/net/bpf_jit.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -87,7 +87,7 @@ int ftrace_enable_ftrace_graph_caller(vo
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 7dbefd4ba2107..dd350cba1252f 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -179,7 +179,7 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
  
- int ftrace_disable_ftrace_graph_caller(void)
- {
--	static_key_enable(&ftrace_graph_enable.key);
-+	static_key_disable(&ftrace_graph_enable.key);
- 	return 0;
- }
- #endif
+ 	if (!is_tail_call) {
+ 		/* Set return value */
+-		move_reg(ctx, LOONGARCH_GPR_A0, regmap[BPF_REG_0]);
++		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
+ 		/* Return to the caller */
+ 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
+ 	} else {
+-- 
+2.43.0
+
 
 
 
