@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-96528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE199E2509
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440489E22BB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7D3B31F91
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A28C8B61A98
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535131F7585;
-	Tue,  3 Dec 2024 14:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147351F759D;
+	Tue,  3 Dec 2024 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWPQBl7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiY5O4tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAE11F669E;
-	Tue,  3 Dec 2024 14:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFCA1F7094;
+	Tue,  3 Dec 2024 14:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237796; cv=none; b=QBCeW6t0eTQ0Sqi6EFSIJVnXNFl6ezeSiY+nRE3OkDeMcuzO6Qu3Ok3wm1XulZWAp7Bsky4U8aGv+xbutLfiJNjfGgB+Aw/nl3AjT19PTEDXV3ez98DHVVSzrnYaNTQtl4iOQ81bm0NaMz934+hDVrKF722/z7SSojNbE1qcMOM=
+	t=1733237690; cv=none; b=ui5/J36SIWEskPUfFtJj10+f+rBtI7Ri6NEnqSktFY2HR5YBMlR6BYcgHY0TM5dOqIBzv8WWVBOOa8to8cgVGDx0pkgQCpBV2VFaUV5B5k4BKKCAetXBjlT3WsdsBVm415scupoqVS81OpvCJqDbOHj20IMOByMpdel9jwUMSOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237796; c=relaxed/simple;
-	bh=o29tiPNEIHXJ2Nkn1mslYGc2s6+naJYd1QK5EpLf4Rk=;
+	s=arc-20240116; t=1733237690; c=relaxed/simple;
+	bh=bojYfjp+KdETvWfBWarpk326ou1s1B3V//LBni3s8ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6k50q8hDNXxLpl4PIEYbMsDZ71tAWpksDGJLUTM5Gz58WAk5h5bSt8gFahItk4pLdoeK9C8C9MLa7XRJlljvI59ZxeI9TCxQ+nqnu+t5QKcbNBsLfIj1hP42q3ONngKYp8BXTSmFunylm5ZVwC6p6JXsp9PaHqsaEvTiZinXOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWPQBl7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEF3C4CECF;
-	Tue,  3 Dec 2024 14:56:35 +0000 (UTC)
+	 MIME-Version; b=OjLgOryRo/ZlGsUp5N2eHRwi9Jg5nlUybwklq66slC3/51Sb8gjst31qKqu8x8jj7fz/icuL6dekVZFPoXjvQPuZX1onSF6nPyh3j42msq3xE2zZKN3bdcwMYuB30NcnpkQGsX/5sNFLqD0NhGf6seAXY69y19okOfLQyturZSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiY5O4tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC39C4CECF;
+	Tue,  3 Dec 2024 14:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237795;
-	bh=o29tiPNEIHXJ2Nkn1mslYGc2s6+naJYd1QK5EpLf4Rk=;
+	s=korg; t=1733237690;
+	bh=bojYfjp+KdETvWfBWarpk326ou1s1B3V//LBni3s8ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWPQBl7dmFuSRBnUK43Dikvtr0G9fwEXI5CdoxNUClPo+Rr7fanNDfkflFxthoyyE
-	 bI2XS5bfHe+tD5HaJmy7q+ZoYQpQMDsZ7o+3HE35PJFghre0HHwqb1u9Xe6bGImH3O
-	 LXKSq+BMPMmOLdMbJAVR0GOskEKTLYaPfvHr4TaA=
+	b=ZiY5O4tfiMnnz4PLgNaJXIoQ8vEbhWpgmf/7xbcbu6T6Iemuo4Zd3Z/DfzmanGKXF
+	 tMS5Yz/oZx3tOL1efmE4FMOVPa3DgpRUhcVGNQB2sJtqe5DxbqJ6aBDfgh+HbhsJAu
+	 FCpJxGWI9L24Q0dXI+rzm3FDacrTyz4JjaRw0mfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Harith George <harith.g@alifsemi.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 041/817] ASoC: max9768: Fix event generation for playback mute
-Date: Tue,  3 Dec 2024 15:33:33 +0100
-Message-ID: <20241203143957.263245924@linuxfoundation.org>
+Subject: [PATCH 6.11 043/817] ARM: 9420/1: smp: Fix SMP for xip kernels
+Date: Tue,  3 Dec 2024 15:33:35 +0100
+Message-ID: <20241203143957.341230731@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -65,47 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Harith G <harith.g@alifsemi.com>
 
-[ Upstream commit 2ae6da569e34e1d26c5275442d17ffd75fd343b3 ]
+[ Upstream commit 9e9b0cf9319b4db143014477b0bc4b39894248f1 ]
 
-The max9768 has a custom control for playback mute which unconditionally
-returns 0 from the put() operation, rather than returning 1 on change to
-ensure notifications are generated to userspace. Check to see if the value
-has changed and return appropriately.
+Fix the physical address calculation of the following to get smp working
+on xip kernels.
+- secondary_data needed for secondary cpu bootup.
+- secondary_startup address passed through psci.
+- identity mapped code region needed for enabling mmu for secondary cpus.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20241112-asoc-max9768-event-v1-1-ba5d50599787@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Harith George <harith.g@alifsemi.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max9768.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/kernel/head.S     | 4 ++++
+ arch/arm/kernel/psci_smp.c | 7 +++++++
+ arch/arm/mm/idmap.c        | 7 +++++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/sound/soc/codecs/max9768.c b/sound/soc/codecs/max9768.c
-index e4793a5d179ef..8af3c7e5317fb 100644
---- a/sound/soc/codecs/max9768.c
-+++ b/sound/soc/codecs/max9768.c
-@@ -54,10 +54,17 @@ static int max9768_set_gpio(struct snd_kcontrol *kcontrol,
+diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
+index 28873cda464f5..f22c50d4bd417 100644
+--- a/arch/arm/kernel/head.S
++++ b/arch/arm/kernel/head.S
+@@ -411,7 +411,11 @@ ENTRY(secondary_startup)
+ 	/*
+ 	 * Use the page tables supplied from  __cpu_up.
+ 	 */
++#ifdef CONFIG_XIP_KERNEL
++	ldr	r3, =(secondary_data + PLAT_PHYS_OFFSET - PAGE_OFFSET)
++#else
+ 	adr_l	r3, secondary_data
++#endif
+ 	mov_l	r12, __secondary_switched
+ 	ldrd	r4, r5, [r3, #0]		@ get secondary_data.pgdir
+ ARM_BE8(eor	r4, r4, r5)			@ Swap r5 and r4 in BE:
+diff --git a/arch/arm/kernel/psci_smp.c b/arch/arm/kernel/psci_smp.c
+index d4392e1774848..3bb0c4dcfc5c9 100644
+--- a/arch/arm/kernel/psci_smp.c
++++ b/arch/arm/kernel/psci_smp.c
+@@ -45,8 +45,15 @@ extern void secondary_startup(void);
+ static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
  {
- 	struct snd_soc_component *c = snd_soc_kcontrol_component(kcontrol);
- 	struct max9768 *max9768 = snd_soc_component_get_drvdata(c);
-+	bool val = !ucontrol->value.integer.value[0];
-+	int ret;
- 
--	gpiod_set_value_cansleep(max9768->mute, !ucontrol->value.integer.value[0]);
-+	if (val != gpiod_get_value_cansleep(max9768->mute))
-+		ret = 1;
-+	else
-+		ret = 0;
- 
--	return 0;
-+	gpiod_set_value_cansleep(max9768->mute, val);
-+
-+	return ret;
+ 	if (psci_ops.cpu_on)
++#ifdef CONFIG_XIP_KERNEL
++		return psci_ops.cpu_on(cpu_logical_map(cpu),
++			((phys_addr_t)(&secondary_startup)
++			- XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++			+ CONFIG_XIP_PHYS_ADDR));
++#else
+ 		return psci_ops.cpu_on(cpu_logical_map(cpu),
+ 					virt_to_idmap(&secondary_startup));
++#endif
+ 	return -ENODEV;
  }
  
- static const DECLARE_TLV_DB_RANGE(volume_tlv,
+diff --git a/arch/arm/mm/idmap.c b/arch/arm/mm/idmap.c
+index 448e57c6f6534..4a833e89782aa 100644
+--- a/arch/arm/mm/idmap.c
++++ b/arch/arm/mm/idmap.c
+@@ -84,8 +84,15 @@ static void identity_mapping_add(pgd_t *pgd, const char *text_start,
+ 	unsigned long addr, end;
+ 	unsigned long next;
+ 
++#ifdef CONFIG_XIP_KERNEL
++	addr = (phys_addr_t)(text_start) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++		+ CONFIG_XIP_PHYS_ADDR;
++	end = (phys_addr_t)(text_end) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
++		+ CONFIG_XIP_PHYS_ADDR;
++#else
+ 	addr = virt_to_idmap(text_start);
+ 	end = virt_to_idmap(text_end);
++#endif
+ 	pr_info("Setting up static identity map for 0x%lx - 0x%lx\n", addr, end);
+ 
+ 	prot |= PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AF;
 -- 
 2.43.0
 
