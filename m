@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-96889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB27E9E21B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6179E27B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF02282F09
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E052BE294A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFB51F8AF8;
-	Tue,  3 Dec 2024 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5369C1F7558;
+	Tue,  3 Dec 2024 15:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBpyNPeq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loazB+yY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2951F75BB;
-	Tue,  3 Dec 2024 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113171DAC9F;
+	Tue,  3 Dec 2024 15:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238891; cv=none; b=GRoEtPAyG9OIMfPME0WRDe0pa/RsYTbo1QP4Cv5EPeS/NANE5tmH/6mYZCIRNXuBn1vdbJRlqVbfdFXHXvDt8SQRGroi9lQHoTSnQDvx5Gp0WwxxwGZ9s6+8QOl8Ve0cWPwVfGo1W9AzRuFzn2NscHdFa+klygcEHE2Ua71VIyQ=
+	t=1733241048; cv=none; b=RdwTlxbzyNCoW05dfhi+6yfTrAqjR5QfMS9v+iAEkPGQ5UyxKus1eRpgWgL/MQ+JQCl9/zyK/D7HA1kWfP+usnH00IxaU/8srORNVQMTdYmGVKoMAjUMIhhaSXtbRN6fJR3RyFTdn2n9Q1bBgKOzLHiJbxGE87XYv5y/WLXFl18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238891; c=relaxed/simple;
-	bh=1h9wZxQ7pKHRn8iCOtTGHQeI29XP3eQLpz9hzIuZNQo=;
+	s=arc-20240116; t=1733241048; c=relaxed/simple;
+	bh=KiGioabhB6aq1WMDOJtjRiYWNF5/L8GaKyT6aiiOxdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EVWj3TVguspSSinaeh9/sIw9TOUSvNytHElrvJJJkNB4rdudDm9mYBUyQgfq/L+jaeXsptFeKIgrr244k1kdmuqIy+HtDSmPRd+4nkZOzAcOn7c6rsBJaSohB/klPP5nQE+0Z6VtDjLLc/9MCNLCiZyNKElraWDFrg+FQ9zUurA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBpyNPeq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EDBC4CECF;
-	Tue,  3 Dec 2024 15:14:50 +0000 (UTC)
+	 MIME-Version; b=uIE0qkptEaAg2yIZlv85iNBASDClWaoAVYaCEe6dyu0KB+1C5z+DaCdCCqOAEF6XjTKUQ1TsJxuHURzXS4e/6JL56fOSRbItsHmXfl9P4+I1He/lU0zaYr/C4ND14mhnHUwuhB7ef7U2R9IyKfxqWMg7I9xJGlt3mn6jaYzU3M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loazB+yY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B13CC4CED9;
+	Tue,  3 Dec 2024 15:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238891;
-	bh=1h9wZxQ7pKHRn8iCOtTGHQeI29XP3eQLpz9hzIuZNQo=;
+	s=korg; t=1733241047;
+	bh=KiGioabhB6aq1WMDOJtjRiYWNF5/L8GaKyT6aiiOxdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBpyNPeq+NdDfKbWWgwaz1NhwUfEQo7qJenwwzwRVnRzK4Df8WdFAwyXcnbVoWm4R
-	 TyXprZqxb3vU/k5vAIoarV8N/NJT+xBbOhS+87nJyJwyVjq0RILwhexHHpTWb/BVLm
-	 +40d10iYMkG85uFG6Npg0lsxuDcbQXjlPWmruyuc=
+	b=loazB+yYhDkkBSwjIbJWtwUIU6nOf/P63QW9K8e3k3/A20TRYi9y/jbjqF7wfEOeK
+	 4XQJRRHTWRc6YtLyvUS/sBk2aZKn4H6Ynk7AVCqJbT5QzXNpS6uFf1nHKfGFluifk1
+	 UmDJKEfpTQuXTbMAwMz7APJP2YtoZ03jju3HrB70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@gmail.com>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Philippe Schenker <philippe.schenker@toradex.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 432/817] checkpatch: always parse orig_commit in fixes tag
-Date: Tue,  3 Dec 2024 15:40:04 +0100
-Message-ID: <20241203144012.745370511@linuxfoundation.org>
+Subject: [PATCH 6.12 278/826] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  3 Dec 2024 15:40:05 +0100
+Message-ID: <20241203144754.618651856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,121 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 2f07b652384969f5d0b317e1daa5f2eb967bc73d ]
+[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
 
-Do not require the presence of `$balanced_parens` to get the commit SHA;
-this allows a `Fixes: deadbeef` tag to get a correct suggestion rather
-than a suggestion containing a reference to HEAD.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Given this patch:
-
-: From: Tamir Duberstein <tamird@gmail.com>
-: Subject: Test patch
-: Date: Fri, 25 Oct 2024 19:30:51 -0400
-:
-: This is a test patch.
-:
-: Fixes: bd17e036b495
-: Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-: --- /dev/null
-: +++ b/new-file
-: @@ -0,0 +1 @@
-: +Test.
-
-Before:
-
-WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: c10a7d25e68f ("Test patch")'
-
-After:
-
-WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")'
-
-The prior behavior incorrectly suggested the patch's own SHA and title
-line rather than the referenced commit's.  This fixes that.
-
-Ironically this:
-
-Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Cc: Andy Whitcroft <apw@canonical.com>
-Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: Louis Peens <louis.peens@corigine.com>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Cc: Philippe Schenker <philippe.schenker@toradex.com>
-Cc: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Patchwork: https://patchwork.freedesktop.org/patch/614075/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/checkpatch.pl | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 4427572b24771..b03d526e4c454 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3209,36 +3209,31 @@ sub process {
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 37927bdd6fbed..14db7376c712d 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1522,15 +1522,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
  
- # Check Fixes: styles is correct
- 		if (!$in_header_lines &&
--		    $line =~ /^\s*fixes:?\s*(?:commit\s*)?[0-9a-f]{5,}\b/i) {
--			my $orig_commit = "";
--			my $id = "0123456789ab";
--			my $title = "commit title";
--			my $tag_case = 1;
--			my $tag_space = 1;
--			my $id_length = 1;
--			my $id_case = 1;
-+		    $line =~ /^\s*(fixes:?)\s*(?:commit\s*)?([0-9a-f]{5,40})(?:\s*($balanced_parens))?/i) {
-+			my $tag = $1;
-+			my $orig_commit = $2;
-+			my $title;
- 			my $title_has_quotes = 0;
- 			$fixes_tag = 1;
--
--			if ($line =~ /(\s*fixes:?)\s+([0-9a-f]{5,})\s+($balanced_parens)/i) {
--				my $tag = $1;
--				$orig_commit = $2;
--				$title = $3;
--
--				$tag_case = 0 if $tag eq "Fixes:";
--				$tag_space = 0 if ($line =~ /^fixes:? [0-9a-f]{5,} ($balanced_parens)/i);
--
--				$id_length = 0 if ($orig_commit =~ /^[0-9a-f]{12}$/i);
--				$id_case = 0 if ($orig_commit !~ /[A-F]/);
--
-+			if (defined $3) {
- 				# Always strip leading/trailing parens then double quotes if existing
--				$title = substr($title, 1, -1);
-+				$title = substr($3, 1, -1);
- 				if ($title =~ /^".*"$/) {
- 					$title = substr($title, 1, -1);
- 					$title_has_quotes = 1;
- 				}
-+			} else {
-+				$title = "commit title"
- 			}
+ 	irq = platform_get_irq_byname(pdev, name);
  
-+
-+			my $tag_case = not ($tag eq "Fixes:");
-+			my $tag_space = not ($line =~ /^fixes:? [0-9a-f]{5,40} ($balanced_parens)/i);
-+
-+			my $id_length = not ($orig_commit =~ /^[0-9a-f]{12}$/i);
-+			my $id_case = not ($orig_commit !~ /[A-F]/);
-+
-+			my $id = "0123456789ab";
- 			my ($cid, $ctitle) = git_commit_info($orig_commit, $id,
- 							     $title);
+-	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
++	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
+ 			      name, ret);
+ 		return ret;
+ 	}
+ 
+-	disable_irq(irq);
+-
+ 	return irq;
+ }
  
 -- 
 2.43.0
