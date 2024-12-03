@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A539D9E1FC6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8F39E2111
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82D46B817EF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62D31B81864
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CDA1E4A9;
-	Tue,  3 Dec 2024 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B141F471F;
+	Tue,  3 Dec 2024 14:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eT70xml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZfOtzFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B3E1EE029;
-	Tue,  3 Dec 2024 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2A817BB16;
+	Tue,  3 Dec 2024 14:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236775; cv=none; b=PdHIZ3rCStOIdta3X179/9NNzVosxBuDUyzr2aDCcHUp7pA8YFbGFBB48u6QNnCC2+fe3Q1FT9XQXYjLkLEaEtxI/CZJ1mEyZCyFChaakmcGoxNu0CQpKEht9gXjtnnj9BvoP9B/LmlTjWeDu2Zj7QpPH3C6j6LM+9YlGbaKm28=
+	t=1733236781; cv=none; b=MlmoaknqilGmrwsW3X4F/PlhaFvRPeSHjSvbbhdARHuX7+I5HB/eWyskYk+gySrVwlel3fnrwsKHfwNXvyNsiGodLgY/xXFrlL2lZzz5wkXOtdjf92RzpI/NpLtVlmFQks+Fi+fgw/wJ+yiUBJybHqUWMU2JgrNIGNxAjPhKE3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236775; c=relaxed/simple;
-	bh=rtW3Nt225JR0qRex2+PmlXQdutBbQhnmZJR3BYrmm9I=;
+	s=arc-20240116; t=1733236781; c=relaxed/simple;
+	bh=JlY4hdPL1598l86pqdsXG5cy+AzOU/zpQuIVse5xEqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbAwJ4kFflXKzOzpa+7dlAYuxVpt6D2jfI+kyKqLlCQp40aruMvC+MtQnhlv0mQFRDhqUv+DK9d92T7qtLZG4CaqJo/tl+eQEPbz0yCAHJzwqs8o4XdO1OWAzpxOxMZgK4jy4y8qWcJDb+EWojX0i58G9n+dM/WCSfl0WZrjJZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eT70xml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908B7C4CECF;
-	Tue,  3 Dec 2024 14:39:33 +0000 (UTC)
+	 MIME-Version; b=LNjFHGpeBTozuUIIrxxR2m5WknXIWIL+Jcis15SuSwzIOJG3Z0eMnx/ch9axnHiY5SmLbK8xLeqbTJNJpg4KQiTwyjTFECGZRKjuwyMatSrNv4mHiTkd/eXKRa57gOQE7qeWT47P166R0bbUYA/+e0GKODm3T0iqqzsmFps+8hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZfOtzFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E278C4CED6;
+	Tue,  3 Dec 2024 14:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236774;
-	bh=rtW3Nt225JR0qRex2+PmlXQdutBbQhnmZJR3BYrmm9I=;
+	s=korg; t=1733236780;
+	bh=JlY4hdPL1598l86pqdsXG5cy+AzOU/zpQuIVse5xEqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eT70xmlZ6MdBM7rE8AgOByVXqkZGZi86700nB1SiQcebl/fvfEJvsXBSzDwq24Cj
-	 tIv+VcP7oFAIG0JUrJcpW1OJSrvJjbsB6W4ro/UsqOroyiK0OySOz3sqX9wXKTXNqb
-	 +zq0XAt6aL0qGXpBlmR9rf1N9wK2nHucyDgqSU2M=
+	b=2ZfOtzFXfs1sRSs7jKtlgXAuD90te0MXCp7fdAaQF81gle2qzlL+f1wu4ClAzfnAV
+	 0Q+eApSZyJY66YyniwdXkdDEwnLpdi7g4gkl2LsWoBZ9WNxaWiQCi2XTvSH1ssE/cU
+	 0r/XPZzkAditErITBfL86rYZ/DcyeUrlULS1G0e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 4.19 114/138] um: ubd: Do not use drvdata in release
-Date: Tue,  3 Dec 2024 15:32:23 +0100
-Message-ID: <20241203141927.927867215@linuxfoundation.org>
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 4.19 116/138] serial: 8250: omap: Move pm_runtime_get_sync
+Date: Tue,  3 Dec 2024 15:32:25 +0100
+Message-ID: <20241203141928.003368392@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,79 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Bin Liu <b-liu@ti.com>
 
-commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-The drvdata is not available in release. Let's just use container_of()
-to get the ubd instance. Otherwise, removing a ubd device will result
-in a crash:
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
-RSP: 00000000e2083bf0  EFLAGS: 00010246
-RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
-RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
-RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
-R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
-R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
-Workqueue: events mc_work_proc
-Stack:
- 00000000 604f7ef0 62c5d000 62405d20
- e2083c30 6002c776 6002c755 600e47ff
- e2083c60 6025ffe3 04208060 603d36e0
-Call Trace:
- [<6002c776>] ubd_device_release+0x21/0x55
- [<6002c755>] ? ubd_device_release+0x0/0x55
- [<600e47ff>] ? kfree+0x0/0x100
- [<6025ffe3>] device_release+0x70/0xba
- [<60381d6a>] kobject_put+0xb5/0xe2
- [<6026027b>] put_device+0x19/0x1c
- [<6026a036>] platform_device_put+0x26/0x29
- [<6026ac5a>] platform_device_unregister+0x2c/0x2e
- [<6002c52e>] ubd_remove+0xb8/0xd6
- [<6002bb74>] ? mconsole_reply+0x0/0x50
- [<6002b926>] mconsole_remove+0x160/0x1cc
- [<6002bbbc>] ? mconsole_reply+0x48/0x50
- [<6003379c>] ? um_set_signals+0x3b/0x43
- [<60061c55>] ? update_min_vruntime+0x14/0x70
- [<6006251f>] ? dequeue_task_fair+0x164/0x235
- [<600620aa>] ? update_cfs_group+0x0/0x40
- [<603a0e77>] ? __schedule+0x0/0x3ed
- [<60033761>] ? um_set_signals+0x0/0x43
- [<6002af6a>] mc_work_proc+0x77/0x91
- [<600520b4>] process_scheduled_works+0x1af/0x2c3
- [<6004ede3>] ? assign_work+0x0/0x58
- [<600527a1>] worker_thread+0x2f7/0x37a
- [<6004ee3b>] ? set_pf_worker+0x0/0x64
- [<6005765d>] ? arch_local_irq_save+0x0/0x2d
- [<60058e07>] ? kthread_exit+0x0/0x3a
- [<600524aa>] ? worker_thread+0x0/0x37a
- [<60058f9f>] kthread+0x130/0x135
- [<6002068e>] new_thread_handler+0x85/0xb6
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/ubd_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -854,7 +854,7 @@ static int ubd_open_dev(struct ubd *ubd_
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -643,12 +643,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
  
- static void ubd_device_release(struct device *dev)
- {
--	struct ubd *ubd_dev = dev_get_drvdata(dev);
-+	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
  
- 	blk_cleanup_queue(ubd_dev->queue);
- 	*ubd_dev = ((struct ubd) DEFAULT_UBD);
+-	pm_runtime_get_sync(port->dev);
+-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 
+ 	up->ier = 0;
 
 
 
