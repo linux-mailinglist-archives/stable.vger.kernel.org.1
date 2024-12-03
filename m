@@ -1,171 +1,106 @@
-Return-Path: <stable+bounces-96298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DAD9E1BBA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:13:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7519E1BFE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:21:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61437282DBA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:13:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31FC316517D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738AB1E501C;
-	Tue,  3 Dec 2024 12:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAAE1E47C7;
+	Tue,  3 Dec 2024 12:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iJaBU//F"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="ICjuNhDF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD901E47DE
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 12:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64471D6DC8
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 12:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733228034; cv=none; b=mBNv6ItImyjpjddJM/pXojN8oilbl9DwpAajCyBU6T/YZHthpa1z2GZiW4gJTopT6FeR02DeBJK9gV7rDCCFRp3QE+GVR5cO7durUn5dtghf1zVNKPHS06JQfUTWixAgWCqrhmPEx7ZJ/pCgynk7oIxEDaKo359eC8/HkRMpOG0=
+	t=1733228469; cv=none; b=ncs/4r+FyVXVYSzrWqLMogOYjr5Y4ZSG+QKjDxMQQY1xgUMoVI05mTeV3FjbLmqy/6uvsqpdbdgTmtFLDM0nEs3vntBXh7P8WSoKWGNpjUqwJkkNTffX2pRW+K+FFzLT1auUFksEmE4yxzuugWv5NVaLFSHIXHI2dSEqLOpgATQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733228034; c=relaxed/simple;
-	bh=ACKWQL0UkQUS7cOWEjRNwI1FfFj12bO7OxDuhVTv4KE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZWeRscKqQYtzWBvmKGaYkM0P+B3OfBzxceHLSDv5kxZOW9jlEnBY9W8O+89YAvsyEAOhUYWBTLMM0+L9iJQHVHt2ej+HgYP1m0kr2dVscM+qPtz+exi6qVNC1qVsRULuZhDnOhZDA+QoDM+cex9wCR66EZ4NOQx6ee+XOoikeNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iJaBU//F; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa545dc7105so841516166b.3
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 04:13:52 -0800 (PST)
+	s=arc-20240116; t=1733228469; c=relaxed/simple;
+	bh=1WImKTFIXOmnid3RYi3wzcqOj3BPOQI6o3xUPdhcFHM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mI7qo8UprghFClO8x+I1KqkUIaAgV3lK+9bOB9T65B0zqLTND7n+BK7qs7otZnduLjLodzcD3SruEIAly/9U8IpjXzEsl5cILBcOE5pvAVgCaMqs86jh7OMfXxuGokQMs5oCNXxiuB9NxXDgh6prWw0I1MrTyhtNGptSTxzkvFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=ICjuNhDF; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa578d10d50so874866666b.1
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 04:21:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733228031; x=1733832831; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+D27OUR16Cl4TWEJRos/7LAnM8aBb1wRGjF74GArkfA=;
-        b=iJaBU//FeDPXTTN/bLEC/FYuS4UdJNU9LBIInxQ2hL9/uIPfaEEbPe6nrQSVsyxQzN
-         S1CrogAScPi0v5ZoFgCNPO8qna9dHoSmu090XDuCyRuVuAvsPaXsnOqZTx1nJ2xEGavV
-         p9XR0sQLmNscztj39ZcYPGDh8J7SLGmiUDbILRNxwID9qTSJeCxKA7QILxzbqzhbqb+k
-         8U47/FRcBEP7pEFRfSUjDWCD9lEwl5gy7pxMZuM+869WnJY06gy7SX3M7bwxYzkXzUdi
-         x5khK2CtaQdj8/AW7jXF4/yBZK44Cg52q31l+BrMdxEoKRIEQ9Q7j2nym+bspyJRophE
-         JjAA==
+        d=ionos.com; s=google; t=1733228466; x=1733833266; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1WImKTFIXOmnid3RYi3wzcqOj3BPOQI6o3xUPdhcFHM=;
+        b=ICjuNhDFjYor4tRS3Vakn5n3YoTmX2DZonPbqp4VNKYEY39gZm3niP0BU2lcfQqZql
+         /cu+xtvauwoCaYHQhkLWVCaxs5ebzddVAz2kibYeJbp6riyX+5sgcPyAGnCMSeSpNMiF
+         wu6+FgtR9qEpr5wRhNluf1mo8XTPJDDYupT2CN05+KChmVORoEXMYFtBPEqlnpjJ97mv
+         5cf98xAwnW/rq0Ace23lbTTSxuCrMvw+IgCLcrFLUq47atA8JgW7g9xzA25z9X9OVX2D
+         wJq6gLL6Av7ZbGq7TSxDhkFkIM8RdT4pMMqiO4GldWXgJYEuyNEEGKwxeKBxYdknqMIv
+         Vp6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733228031; x=1733832831;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+D27OUR16Cl4TWEJRos/7LAnM8aBb1wRGjF74GArkfA=;
-        b=fjO9xpqNXEZC6FJTjEK5o4G75VVd+Z0sPyxs+SSitQEVHBzLD1ZfCgdlHxV0TAylk0
-         tUscVTEcluinyhRvzeiQcQTdyxCdszF1fYBed/WqQh0KNFiI9x1nJ7/8X1vw8r/X36l/
-         l3CVFKsjH/DjvVbpnxQNkHlCEW7Llk26G9hx7McfbVZisSPou71nYukPAE0PEEv4Q7fD
-         hRWN09eY+8GH3Qbzls6K7kPiXdQPzkBt1nqiFsNYIDhBe25A1ZRJOiw/aJnV8gTpZJys
-         3EogNPBGvDTMvJnzkQX0ap6QCo0lVZmdyt86tIbcDsfmM89zvJbEC9s5Q6BvZJbsBi62
-         Etbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUH7LYZFAkvC+enTOwMtAqpOTRaTwS4pQeiexjawZzTs3v8jNraEoWn0TVa5gqsKqLQfZp77wQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEBTYOgeGd6DjDj7KBE7xkihRWbrieQg0P3eXyl/A07DTYtIQu
-	EgOuE9qnJzwxx3+0Ljl4AHr24G0MvD2hOl2hYCZasQ7uVu399DIsT965wq5iGMM=
-X-Gm-Gg: ASbGncuKcH3PRkEaVj+HstLhKsv+6p79W9zXJkgln+0ffdXkD2+h/+9pfXDkNmhOsqX
-	TeiUiuIA2Va9g4v3KJ4jA0bFvQGa+E8DdA4RQCX3v0xJvcMzc3aRFvBAR3ecwzbdZa6D7KmcxZD
-	nC7ACSFS4CV5byY5tf6Pr3mpHkpOszomwxPIzM4Te7NsEKyWPJfLvcMSbgsws7V3sxxg8SsrY97
-	Jf6SwVVAe5fPrQ/TNda9ty7sV9DLcHFHp8QTfHzdBbc6IG9b8vIdu0YiD6fZ+084shqjVf/ta2k
-	SDo7N7n5Ku9WBgM0g+lRUbjJGrnnaQlvfA==
-X-Google-Smtp-Source: AGHT+IG/LNiQRH1H/AD37FJTCdb/ukxG6+4AcIb4aIX7NrDNY7ETqg4yetmoSzQOoqOa1fQIjvYgLw==
-X-Received: by 2002:a17:906:1daa:b0:aa5:1661:1949 with SMTP id a640c23a62f3a-aa5f7f2413dmr188219066b.40.1733228030629;
-        Tue, 03 Dec 2024 04:13:50 -0800 (PST)
-Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5996c245bsm607603766b.8.2024.12.03.04.13.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 04:13:50 -0800 (PST)
-From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Subject: [PATCH v2 0/8] USB31DRD phy updates for Google Tensor gs101
- (orientation & DWC3 rpm)
-Date: Tue, 03 Dec 2024 12:13:48 +0000
-Message-Id: <20241203-gs101-phy-lanes-orientation-phy-v2-0-40dcf1b7670d@linaro.org>
+        d=1e100.net; s=20230601; t=1733228466; x=1733833266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1WImKTFIXOmnid3RYi3wzcqOj3BPOQI6o3xUPdhcFHM=;
+        b=ckZw/onEmPTA1EnalVkFTX0R9VMy6trxcRnGsHTLR0oCpgX210gZVW8BlyIME57q5F
+         bMvjPfJdbnf+5S19/znlbGziOq69as7ZGYp6qBvIoAW0s0sWOHpO+xkmqWSCZAscsuOK
+         pS37tvgygjUeaB2zPo59Gecu23Gpw0HIXMpUwcH94yYPhLly7BFckbpZi8EZ4y7WFlSB
+         TZz9ok6mOtP6DIiVGhj9o8WV6nAXr4DowMw0L+eT9ZI9APVw5CwKmKk43cpw7HpAlFun
+         SuLyUXFT2tzapwssefrhLIQxVJvqR4krqEw9zltb6CVMrK6v4cSvGkUYcsYkZMwV1PG9
+         aobA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzY0oXo2E4xqq5Q9FLiKrJ8sD/uJ5mWsU4kjkQWPvKyaQlzp2wOOSY+XSDbVZd64JrEvTOJVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzASlLmXwsdp/4FaSE1k7HnwG4GjYmgeeSuDIlEp/JcRhHwrrLH
+	O2bUQtYgUCkcJ4kwqGnbL+7WlqeHJN6Du6WdTqO180BIPwhtCb6Evspl203zrqbE6bqcOnH0K/N
+	NpWBCu7nvIf8yEYvgJKx1Hd5mhUaNlD3h2qlsgFcQyzORpMm/S40=
+X-Gm-Gg: ASbGnctAFtM5+jx0hHjxDqAACcrIpR8gG/gyaP53eE+BTn6Jn48+rLm6yHq01x6nJ+3
+	NfEwoRTDFQLivG3YKe4OcTSPaQVHA9Tfj7uorcvrohGvDzeuixVQRKOCnnESN
+X-Google-Smtp-Source: AGHT+IECgoPf7qHpNyXgItUjiYOWa+tp6n6p4rrfllPoXDocCVMcuQlttw8uJtNTEg/Pe8c6cPGDTSHhCImfY9HBpRY=
+X-Received: by 2002:a17:907:774c:b0:aa5:2bfb:2ec5 with SMTP id
+ a640c23a62f3a-aa5f7cc3150mr256183566b.5.1733228466291; Tue, 03 Dec 2024
+ 04:21:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPz1TmcC/42NQQqDMBBFryKz7pTMIFq76j2Ki2hGHZBEEpGKe
- PemnqDL9+H9d0CSqJLgWRwQZdOkwWfgWwH9ZP0oqC4zsOGSiGscExnCZdpxtl4Shqz71a7Zu1Z
- uHJu+co/SMeSXJcqgn6vwbjNPmtYQ9yu40W/9/3sjNEhdPfTCZVOZ7jWrtzHcQxyhPc/zC6gJ1
- QTPAAAA
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Sam Protsenko <semen.protsenko@linaro.org>, 
- Will McVicker <willmcvicker@google.com>, Roy Luo <royluo@google.com>, 
- kernel-team@android.com, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.13.0
+References: <20241118222828.240530-1-max.kellermann@ionos.com>
+ <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
+ <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
+ <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com>
+ <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
+ <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
+ <CA+2bHPZW5ngyrAs8LaYzm__HGewf0De51MvffNZW4h+WX7kfwA@mail.gmail.com>
+ <CAO8a2SiRwVUDT8e3fN1jfFOw3Z92dtWafZd8M6MHB57D3d_wvg@mail.gmail.com>
+ <CAO8a2SiN+cnsK5LGMV+6jZM=VcO5kmxkTH1mR1bLF6Z5cPxH9A@mail.gmail.com>
+ <CAKPOu+8u1Piy9KVvo+ioL93i2MskOvSTn5qqMV14V6SGRuMpOw@mail.gmail.com> <CAO8a2SizOPGE6z0g3qFV4E_+km_fxNx8k--9wiZ4hUG8_XE_6A@mail.gmail.com>
+In-Reply-To: <CAO8a2SizOPGE6z0g3qFV4E_+km_fxNx8k--9wiZ4hUG8_XE_6A@mail.gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Tue, 3 Dec 2024 13:20:55 +0100
+Message-ID: <CAKPOu+_-RdM59URnGWp9x+Htzg5xHqUW9djFYi8msvDYwdGxyw@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
+To: Alex Markuze <amarkuze@redhat.com>
+Cc: Patrick Donnelly <pdonnell@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
+	Ilya Dryomov <idryomov@gmail.com>, Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, 
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, dario@cure53.de, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Nov 25, 2024 at 3:33=E2=80=AFPM Alex Markuze <amarkuze@redhat.com> =
+wrote:
+> You and Illia agree on this point. I'll wait for replies and take your
+> original patch into the testing branch unless any concerns are raised.
 
-This series enables USB3 Type-C lane orientation detection and
-configuration on platforms that support this (Google gs101), and it
-also allows the DWC3 core to enter runtime suspend even when UDC is
-active.
-
-For lane orientation, this driver now optionally (based on DT)
-subscribes to the TCPC's lane orientation notifier and remembers the
-orientation to later be used during phy_init().
-
-To enable DWC3 runtime suspend, the gadget needs to inform the core via
-dwc3_gadget_interrupt() with event type == DWC3_DEVICE_EVENT_DISCONNECT
-of a cable disconnect. For that to allow to happen, this driver
-therefore needs to stop forcing the Vbus and bvalid signals to active
-and instead change their state based on actual conditions. The same
-TCPC notifier is used to detect this, and program the hardware
-accordingly.
-
-That signal state is based on advice given by Thinh in
-https://lore.kernel.org/all/20240813230625.jgkatqstyhcmpezv@synopsys.com/
-
-Both changes together now allow cable orientation detection to work, as
-the DWC3 will now call phy_exit() on cable disconnect, and we can
-reprogram the lane mux in phy_init().
-
-On top of that, there are some small related cleanup patches.
-
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
----
-Changes in v2:
-- squash patches #2 and #3 from v1 to actually disallow
-  orientation-switch on !gs101 (not just optional) (Conor)
-- update bindings commit message to clarify that the intention for the
-  driver is to work with old and new DTS (Conor)
-- add cc-stable and fixes tags to power gating patch (Krzysztof)
-- fix an #include and typo (Peter)
-- Link to v1: https://lore.kernel.org/r/20241127-gs101-phy-lanes-orientation-phy-v1-0-1b7fce24960b@linaro.org
-
----
-André Draszik (8):
-      dt-bindings: phy: samsung,usb3-drd-phy: align to universal style
-      dt-bindings: phy: samsung,usb3-drd-phy: gs101: require Type-C properties
-      phy: exynos5-usbdrd: convert to dev_err_probe
-      phy: exynos5-usbdrd: fix EDS distribution tuning (gs101)
-      phy: exynos5-usbdrd: gs101: ensure power is gated to SS phy in phy_exit()
-      phy: exynos5-usbdrd: gs101: configure SS lanes based on orientation
-      phy: exynos5-usbdrd: subscribe to orientation notifier if required
-      phy: exynos5-usbdrd: allow DWC3 runtime suspend with UDC bound (E850+)
-
- .../bindings/phy/samsung,usb3-drd-phy.yaml         |  24 +++
- drivers/phy/samsung/Kconfig                        |   1 +
- drivers/phy/samsung/phy-exynos5-usbdrd.c           | 223 ++++++++++++++++-----
- 3 files changed, 202 insertions(+), 46 deletions(-)
----
-base-commit: ed9a4ad6e5bd3a443e81446476718abebee47e82
-change-id: 20241127-gs101-phy-lanes-orientation-phy-29d20c6d84d2
-
-Best regards,
--- 
-André Draszik <andre.draszik@linaro.org>
-
+How long will you wait? It's been more than two weeks since I reported
+this DoS vulnerability.
 
