@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726689E238A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F659E263A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:10:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52F57BC06B7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6DE616F260
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DC91F757E;
-	Tue,  3 Dec 2024 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB011F76DD;
+	Tue,  3 Dec 2024 16:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCjgXt95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqlarwtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655681F707A;
-	Tue,  3 Dec 2024 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189D81F7561;
+	Tue,  3 Dec 2024 16:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239774; cv=none; b=Qa3Il5qo0YpAKRZ/hnrVVD5Fo+VwEhUJGp8gQYrnd2dG2XlKRNfB0ivDjsilNuKQr+/ER3t5GpCuOiGVg7XCW44rDUIfi48R+1iUgiV72hWXOhdlmX4dBXcE04O2zRI25iE8l1jvBQi9F7EhN9uJXi/NaCGFpSWCbfkrlETzXjg=
+	t=1733241926; cv=none; b=LNXDtZv/bDy9DniqclJqrxT4fF+1CVRwSuIRdyaax1ZrW/IEXHcGuFYpmSKwNN+N5Qg8HtCUXLz/iXnHAEACqZ7YtdxD0+rB37BvuQx+dIdxiPwrOtqH6ThceTUUmQ6aR0Vxg7bcOdxoXFsudCyNCFmovGA1VAmUj7B71JF5Nug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239774; c=relaxed/simple;
-	bh=HIoTBJqtg+mtWjh1xUCHSalE02E1XLe6AwoddDGEQtc=;
+	s=arc-20240116; t=1733241926; c=relaxed/simple;
+	bh=FqgsXGfUZ9Cw/qQ7PojtUDEqF0pOKOosjZgR0AwneL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2VZr/vwBf+FPa6N9nGrlZi5qglGsoWYYCr7hfKECPBWXxZTGVr9F6gm/2ourX8qdXPkbaTb+vbTdX2mGCgkE1tX3nNvokO11/g82r74fNHeY0CKVfplc7A+VsOQ5/Qv58kXIr7q6GNNmFRcsV2LwEMuF68hPiT8olGtXiuFtsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCjgXt95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE119C4CEDD;
-	Tue,  3 Dec 2024 15:29:33 +0000 (UTC)
+	 MIME-Version; b=kblpDdcDQ8x19nRb0YramTGB8vbRFNzEWe37T5Z+6DDhqZ3YbH14CLIroGai4fmyKVJMDqq7byVocAtbPD/MuRr5T+9ymxiyrGgB9eq62Cht7A8SpcH8EUHbaO6Jg7XUGhGPbuKOKc/Xc4DgO/eiW2QzLAM/xC8GAAFPllVQh+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqlarwtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B578C4CECF;
+	Tue,  3 Dec 2024 16:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239774;
-	bh=HIoTBJqtg+mtWjh1xUCHSalE02E1XLe6AwoddDGEQtc=;
+	s=korg; t=1733241926;
+	bh=FqgsXGfUZ9Cw/qQ7PojtUDEqF0pOKOosjZgR0AwneL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCjgXt95yp8zLF2RDdU9SjaFQzW+VvURzCkN4lIZvbC6cmLy6j9u2+rRg7WdT6ZBH
-	 gJT7NbAM6d5dt4g7BJq1qXVBREkSV+Y46jUUoj9prewluSIKeIiDzjSX4xFaZtgFpB
-	 X+4qb+ZDNPqaof/ihHQHoLdPEDq2IXUgDy2GWzHg=
+	b=lqlarwtXk2lDq653rajy5FS7eQMx3lZPj2p6LPffzFahbGxnaFs+rKis15ffjxH/K
+	 oApQgfzJGs1hfxgJqYlmQofM2C/zmTezOqjupk8MZ7o+ihusaI2B7+iT8mCGSOSqwA
+	 EjpBvJQG672fKuKjo47paHi6PkeWDRzbtBa49jIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.11 712/817] um: net: Do not use drvdata in release
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 557/826] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
 Date: Tue,  3 Dec 2024 15:44:44 +0100
-Message-ID: <20241203144023.783203539@linuxfoundation.org>
+Message-ID: <20241203144805.474017262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit d1db692a9be3b4bd3473b64fcae996afaffe8438 upstream.
+[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
 
-The drvdata is not available in release. Let's just use container_of()
-to get the uml_net instance. Otherwise, removing a network device will
-result in a crash:
+Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
+`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
+and ensures the adapter can properly enter autosuspend when invalid WoL
+options are provided.
 
-RIP: 0033:net_device_release+0x10/0x6f
-RSP: 00000000e20c7c40  EFLAGS: 00010206
-RAX: 000000006002e4e7 RBX: 00000000600f1baf RCX: 00000000624074e0
-RDX: 0000000062778000 RSI: 0000000060551c80 RDI: 00000000627af028
-RBP: 00000000e20c7c50 R08: 00000000603ad594 R09: 00000000e20c7b70
-R10: 000000000000135a R11: 00000000603ad422 R12: 0000000000000000
-R13: 0000000062c7af00 R14: 0000000062406d60 R15: 00000000627700b6
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 UID: 0 PID: 29 Comm: kworker/0:2 Not tainted 6.12.0-rc6-g59b723cd2adb #1
-Workqueue: events mc_work_proc
-Stack:
- 627af028 62c7af00 e20c7c80 60276fcd
- 62778000 603f5820 627af028 00000000
- e20c7cb0 603a2bcd 627af000 62770010
-Call Trace:
- [<60276fcd>] device_release+0x70/0xba
- [<603a2bcd>] kobject_put+0xba/0xe7
- [<60277265>] put_device+0x19/0x1c
- [<60281266>] platform_device_put+0x26/0x29
- [<60281e5f>] platform_device_unregister+0x2c/0x2e
- [<6002ec9c>] net_remove+0x63/0x69
- [<60031316>] ? mconsole_reply+0x0/0x50
- [<600310c8>] mconsole_remove+0x160/0x1cc
- [<60087d40>] ? __remove_hrtimer+0x38/0x74
- [<60087ff8>] ? hrtimer_try_to_cancel+0x8c/0x98
- [<6006b3cf>] ? dl_server_stop+0x3f/0x48
- [<6006b390>] ? dl_server_stop+0x0/0x48
- [<600672e8>] ? dequeue_entities+0x327/0x390
- [<60038fa6>] ? um_set_signals+0x0/0x43
- [<6003070c>] mc_work_proc+0x77/0x91
- [<60057664>] process_scheduled_works+0x1b3/0x2dd
- [<60055f32>] ? assign_work+0x0/0x58
- [<60057f0a>] worker_thread+0x1e9/0x293
- [<6005406f>] ? set_pf_worker+0x0/0x64
- [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
- [<6005d748>] ? kthread_exit+0x0/0x3a
- [<60057d21>] ? worker_thread+0x0/0x293
- [<6005dbf1>] kthread+0x126/0x12b
- [<600219c5>] new_thread_handler+0x85/0xb6
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Link: https://patch.msgid.link/20241104163203.435515-4-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/net_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/um/drivers/net_kern.c
-+++ b/arch/um/drivers/net_kern.c
-@@ -336,7 +336,7 @@ static struct platform_driver uml_net_dr
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 9f191b6ce8215..531b1b6a37d19 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1652,13 +1652,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+ 	int ret;
  
- static void net_device_release(struct device *dev)
- {
--	struct uml_net *device = dev_get_drvdata(dev);
-+	struct uml_net *device = container_of(dev, struct uml_net, pdev.dev);
- 	struct net_device *netdev = device->dev;
- 	struct uml_net_private *lp = netdev_priv(netdev);
++	if (wol->wolopts & ~WAKE_ALL)
++		return -EINVAL;
++
+ 	ret = usb_autopm_get_interface(dev->intf);
+ 	if (ret < 0)
+ 		return ret;
  
+-	if (wol->wolopts & ~WAKE_ALL)
+-		return -EINVAL;
+-
+ 	pdata->wol = wol->wolopts;
+ 
+ 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
+-- 
+2.43.0
+
 
 
 
