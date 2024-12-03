@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-96785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6BC9E28B7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77C69E28DC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BD3BA2107
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF17ABE0775
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB081F8AE1;
-	Tue,  3 Dec 2024 15:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A2E1F8916;
+	Tue,  3 Dec 2024 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INGcj7G6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOBkgyJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4CC1F8914;
-	Tue,  3 Dec 2024 15:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312A61F8909;
+	Tue,  3 Dec 2024 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238586; cv=none; b=c5EPyu6ZYFmbOQzbXrNIjgDtxzT2uLC+eXqWXlQl4xora/2bjAX5KF2HnES3s6V4wmP6peL/yx0nPabXBkCt4DH+aZAgzuYsg4BLw8ABjE7k0OCGLRKoeNIBjbkeLMyQEBi6qDUo9EbpmkSmXgCwHM5zad0dIE85vMv9TQLGhTQ=
+	t=1733240689; cv=none; b=oitqXpdkMtSImkbksyQgN/9QtPTK9mi+jRDZPmhSd/Et7bNJ5s+AVJdLS9+X71N5K+ITiLXozUN32H/B+c1JvdNfT7I3E+WQJMX/GJCLIhMp5EbdJGzbUXJc1BYslZhQ7h8ZuEq3z7hFzcNhOzMqHd2Sr1OxRXAueunm4fyIbvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238586; c=relaxed/simple;
-	bh=vzks/Ii0p2Z7Cy9f9+QwVbE4iowGt/E+UBjHwS5RQ48=;
+	s=arc-20240116; t=1733240689; c=relaxed/simple;
+	bh=duF8xSfCMS2XJqKyZskmgUqeR8Fb1nrK/lvkDmPdx18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RG3GPfqk2rrKBEGlNaSCIZ0yPt6uyu0C9jVHsT0upVrtGtnYuacjJHVzreuxgbxOo+GJYX+ryOcNEuPM6GQA2/GV2SQZh05yTR8wDqJu3kBZLowgXR3ncNCMY0ALVoPAbrHvOqQk7gJ6bC1rnJXPLRmm4l7elmRi6eYHr3GwDlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INGcj7G6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3DDC4CED6;
-	Tue,  3 Dec 2024 15:09:45 +0000 (UTC)
+	 MIME-Version; b=EuCWVPoBbZTtv8bhPXfwCCz9oamVvPj556rV4ZTqdIbFZbHQubO1eYcj1/2ArC5ibEsWn9eq4yOlrlf0usEdQXJ9Z+WmtYdV+XBNeCwdP4G4XPIOPN+C+wumyC/hrQqKHDGIZ160o3aIM7w9Tzp6Pk9Ts8RuYwnXEOLhIgWK1ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOBkgyJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B39C4CECF;
+	Tue,  3 Dec 2024 15:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238586;
-	bh=vzks/Ii0p2Z7Cy9f9+QwVbE4iowGt/E+UBjHwS5RQ48=;
+	s=korg; t=1733240689;
+	bh=duF8xSfCMS2XJqKyZskmgUqeR8Fb1nrK/lvkDmPdx18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INGcj7G6C+JJQWAoo3mNFPUMugOMIhXgMxB8ZCSS7+zvjxBh+wkfI8gPs5WqtfCzW
-	 zRFcOzFhr2IB5mEtI1cxxVtc1kuHC5+JSdU5HVlYdmxM3G+bY28IXSpBjL7Plf1MvL
-	 lXOwL9NpNE2hsmjxEhsqdBp+16cHUtjANwGR36Y0=
+	b=UOBkgyJQnK/bdaM/6BfctGDbVH7Xi3bYdiqTclP3PsWw6pbRaGvp0QBujN2VQumOz
+	 WL4ifpy+Q9dYxyR5BA/3UH+PAV3PRlRqkdGY02Jkxbc499XluYQrwm2m2gWZWCzDnS
+	 Ix6/fEErkpwe7CoAFfNhaZpZQV8O+vdWfkWq9Ru0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 328/817] selftests/bpf: Fix SENDPAGE data logic in test_sockmap
-Date: Tue,  3 Dec 2024 15:38:20 +0100
-Message-ID: <20241203144008.622529349@linuxfoundation.org>
+Subject: [PATCH 6.12 176/826] sched_ext: scx_bpf_dispatch_from_dsq_set_*() are allowed from unlocked context
+Date: Tue,  3 Dec 2024 15:38:23 +0100
+Message-ID: <20241203144750.603940719@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 4095031463d4e99b534d2cd82035a417295764ae ]
+[ Upstream commit 72b85bf6a7f6f6c38c39a1e5b04bc1da1bf5016e ]
 
-In the SENDPAGE test, "opt->iov_length * cnt" size of data will be sent
-cnt times by sendfile.
-1. In push/pop tests, they will be invoked cnt times, for the simplicity of
-msg_verify_data, change chunk_sz to iov_length
-2. Change iov_length in test_send_large from 1024 to 8192. We have pop test
-where txmsg_start_pop is 4096. 4096 > 1024, an error will be returned.
+4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
+added four kfuncs for dispatching while iterating. They are allowed from the
+dispatch and unlocked contexts but two of the kfuncs were only added in the
+dispatch section. Add missing declarations in the unlocked section.
 
-Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-3-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ kernel/sched/ext.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 0f065273fde32..1d59bed90d80b 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -420,16 +420,18 @@ static int msg_loop_sendpage(int fd, int iov_length, int cnt,
- {
- 	bool drop = opt->drop_expected;
- 	unsigned char k = 0;
-+	int i, j, fp;
- 	FILE *file;
--	int i, fp;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index ecb88c5285447..16613631543f1 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6473,6 +6473,8 @@ __bpf_kfunc_end_defs();
  
- 	file = tmpfile();
- 	if (!file) {
- 		perror("create file for sendpage");
- 		return 1;
- 	}
--	for (i = 0; i < iov_length * cnt; i++, k++)
--		fwrite(&k, sizeof(char), 1, file);
-+	for (i = 0; i < cnt; i++, k = 0) {
-+		for (j = 0; j < iov_length; j++, k++)
-+			fwrite(&k, sizeof(char), 1, file);
-+	}
- 	fflush(file);
- 	fseek(file, 0, SEEK_SET);
- 
-@@ -623,7 +625,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		 * This is really only useful for testing edge cases in code
- 		 * paths.
- 		 */
--		total_bytes = (float)iov_count * (float)iov_length * (float)cnt;
-+		total_bytes = (float)iov_length * (float)cnt;
-+		if (!opt->sendpage)
-+			total_bytes *= (float)iov_count;
- 		if (txmsg_apply)
- 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
- 		else
-@@ -701,7 +705,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 
- 			if (data) {
- 				int chunk_sz = opt->sendpage ?
--						iov_length * cnt :
-+						iov_length :
- 						iov_length * iov_count;
- 
- 				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
-@@ -1466,8 +1470,8 @@ static void test_send_many(struct sockmap_options *opt, int cgrp)
- 
- static void test_send_large(struct sockmap_options *opt, int cgrp)
- {
--	opt->iov_length = 256;
--	opt->iov_count = 1024;
-+	opt->iov_length = 8192;
-+	opt->iov_count = 32;
- 	opt->rate = 2;
- 	test_exec(cgrp, opt);
- }
+ BTF_KFUNCS_START(scx_kfunc_ids_unlocked)
+ BTF_ID_FLAGS(func, scx_bpf_create_dsq, KF_SLEEPABLE)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice)
++BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq, KF_RCU)
+ BTF_ID_FLAGS(func, scx_bpf_dispatch_vtime_from_dsq, KF_RCU)
+ BTF_KFUNCS_END(scx_kfunc_ids_unlocked)
 -- 
 2.43.0
 
