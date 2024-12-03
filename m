@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625139E2287
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C6B9E2852
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:56:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524F0B28BFE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9657FB45F97
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEE31F706C;
-	Tue,  3 Dec 2024 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7907B1F6696;
+	Tue,  3 Dec 2024 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbY55AqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbfEADus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDFE1DA4E;
-	Tue,  3 Dec 2024 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7671E3DF9;
+	Tue,  3 Dec 2024 15:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238021; cv=none; b=Irt2amrsL4mZ4Vg8IM98542SjbWJifbwJQf24THLgrF4Gh8dMjbAdHEXF8nZHfqkDhM//bFpt9VU8o6ar2mbPoH3ZH9YONPVEmpKdHE903BFEEpBOFqihi1VHy8FPSdeqHjS3D3ynYjT2LzRHCnI3W+CP3UUC2+qVyFdcNJuOwM=
+	t=1733238032; cv=none; b=i6j2buTBcz+13DEWYBKlO2w6cwuIyruYtxpJrDVtTQH0J4QG+n3qyUnNPH8XSs5s5PbWKg2r2/xFqNYgZEkR6ztf/4SL7M10WMtDt4oblkLJZAw8CTtNkwybWg5y91lxJNQuDpSgYSY5bsCJgAEblNFSQ3Q1vGSjnKDG+cfKBhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238021; c=relaxed/simple;
-	bh=7A5knFrkxNyYBx4FYtDhdpaSbg/ULhsLlQ0vL2avbkk=;
+	s=arc-20240116; t=1733238032; c=relaxed/simple;
+	bh=J2T9JQHyLacT9Qrt1u+k06L1ITu0V+X8BRUAhphDawk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVaRgzdQinv3pl08RQpVsUvG9uPtEnr90HG4YSvH/xEvkAy7dcRORg/q94Zi1AnVpzMWNlAvz9HSiixv0Fj3cEB8KIAO45dJ9evepmdv2eJCSWdOtTIZuqmuPviwj8F6ChgaXerSuqYQVOfE/QnTEyoiddyXYsFj2vl9MYDhB2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbY55AqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E0AC4CECF;
-	Tue,  3 Dec 2024 15:00:20 +0000 (UTC)
+	 MIME-Version; b=lkmgMLNoL7MpfxrPBKFEP61CtoBTpNLF3weXfL8g1rB8ocZiwBhv8YCiA1PluzNRH20IO0bF1FGwNwM5d9SvgotSnN010OJnMg/60dgdrO7iiI0TKMPzFb4cUlVBtlCevEFKFTziv2hHARfjVCaWm4VXl73vQshJKS3RNTDvYN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbfEADus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F213BC4CECF;
+	Tue,  3 Dec 2024 15:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238021;
-	bh=7A5knFrkxNyYBx4FYtDhdpaSbg/ULhsLlQ0vL2avbkk=;
+	s=korg; t=1733238031;
+	bh=J2T9JQHyLacT9Qrt1u+k06L1ITu0V+X8BRUAhphDawk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbY55AqMfyYwSDCbLmvqUMijTCTm0KeD4K7na2DQqs2UJLs9dJMo3mYgGK/jjfSov
-	 UIP8Uhyv4A8yRDe0+UKwCaBI3IWGl+Cm80JKgWcV8kyV98/0NWR3P4u7/BpG0gIfkM
-	 CODfAkUWClxlGNEZgiKIunigmJP9lAxbYtdPd560=
+	b=BbfEADusWFifWJyVl9mJSZj5dIyazk3cT+xogS29ArWRFMWEAo26fDbbsn2RHF+vW
+	 WyA23BFdudQHjm3TellEYbBK+lsvlDoVBcMG6ip5qValDYk7wr1dgMDUN6sBS00Lbz
+	 MOAPfywBqGK5g8pdbu7f9C2To8mL1jmRiXlD3+og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Diego Garcia Rodriguez <diego.garcia.rodriguez@intel.com>,
+	"Everest K.C." <everestkc@everestkc.com.np>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 105/817] EDAC/skx_common: Differentiate memory error sources
-Date: Tue,  3 Dec 2024 15:34:37 +0100
-Message-ID: <20241203143959.807402833@linuxfoundation.org>
+Subject: [PATCH 6.11 108/817] crypto: cavium - Fix the if condition to exit loop after timeout
+Date: Tue,  3 Dec 2024 15:34:40 +0100
+Message-ID: <20241203143959.927199141@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,145 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Everest K.C <everestkc@everestkc.com.np>
 
-[ Upstream commit 2397f795735219caa9c2fe61e7bcdd0652e670d3 ]
+[ Upstream commit 53d91ca76b6c426c546542a44c78507b42008c9e ]
 
-The current skx_common determines whether the memory error source is the
-near memory of the 2LM system and then retrieves the decoded error results
-from the ADXL components (near-memory vs. far-memory) accordingly.
+The while loop breaks in the first run because of incorrect
+if condition. It also causes the statements after the if to
+appear dead.
+Fix this by changing the condition from if(timeout--) to
+if(!timeout--).
 
-However, some memory controllers may have limitations in correctly
-reporting the memory error source, leading to the retrieval of incorrect
-decoded parts from the ADXL.
+This bug was reported by Coverity Scan.
+Report:
+CID 1600859: (#1 of 1): Logically dead code (DEADCODE)
+dead_error_line: Execution cannot reach this statement: udelay(30UL);
 
-To address these limitations, instead of simply determining whether the
-memory error is from the near memory of the 2LM system, it is necessary to
-distinguish the memory error source details as follows:
-
-  Memory error from the near memory of the 2LM system.
-  Memory error from the far memory of the 2LM system.
-  Memory error from the 1LM system.
-  Not a memory error.
-
-This will enable the i10nm_edac driver to take appropriate actions for
-those memory controllers that have limitations in reporting the memory
-error source.
-
-Fixes: ba987eaaabf9 ("EDAC/i10nm: Add Intel Granite Rapids server support")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Diego Garcia Rodriguez <diego.garcia.rodriguez@intel.com>
-Link: https://lore.kernel.org/r/20241015072236.24543-2-qiuxu.zhuo@intel.com
+Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
+Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 34 ++++++++++++++++------------------
- drivers/edac/skx_common.h |  7 +++++++
- 2 files changed, 23 insertions(+), 18 deletions(-)
+ drivers/crypto/cavium/cpt/cptpf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 8d18099fd528c..42266120ef427 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -119,7 +119,7 @@ void skx_adxl_put(void)
- }
- EXPORT_SYMBOL_GPL(skx_adxl_put);
+diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
+index 6872ac3440010..ec17beee24c07 100644
+--- a/drivers/crypto/cavium/cpt/cptpf_main.c
++++ b/drivers/crypto/cavium/cpt/cptpf_main.c
+@@ -44,7 +44,7 @@ static void cpt_disable_cores(struct cpt_device *cpt, u64 coremask,
+ 		dev_err(dev, "Cores still busy %llx", coremask);
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
--static bool skx_adxl_decode(struct decoded_addr *res, bool error_in_1st_level_mem)
-+static bool skx_adxl_decode(struct decoded_addr *res, enum error_source err_src)
- {
- 	struct skx_dev *d;
- 	int i, len = 0;
-@@ -136,7 +136,7 @@ static bool skx_adxl_decode(struct decoded_addr *res, bool error_in_1st_level_me
- 	}
+ 		udelay(CSR_DELAY);
+@@ -394,7 +394,7 @@ static void cpt_disable_all_cores(struct cpt_device *cpt)
+ 		dev_err(dev, "Cores still busy");
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
- 	res->socket  = (int)adxl_values[component_indices[INDEX_SOCKET]];
--	if (error_in_1st_level_mem) {
-+	if (err_src == ERR_SRC_2LM_NM) {
- 		res->imc     = (adxl_nm_bitmap & BIT_NM_MEMCTRL) ?
- 			       (int)adxl_values[component_indices[INDEX_NM_MEMCTRL]] : -1;
- 		res->channel = (adxl_nm_bitmap & BIT_NM_CHANNEL) ?
-@@ -620,31 +620,27 @@ static void skx_mce_output_error(struct mem_ctl_info *mci,
- 			     optype, skx_msg);
- }
- 
--static bool skx_error_in_1st_level_mem(const struct mce *m)
-+static enum error_source skx_error_source(const struct mce *m)
- {
--	u32 errcode;
-+	u32 errcode = GET_BITFIELD(m->status, 0, 15) & MCACOD_MEM_ERR_MASK;
- 
--	if (!skx_mem_cfg_2lm)
--		return false;
--
--	errcode = GET_BITFIELD(m->status, 0, 15) & MCACOD_MEM_ERR_MASK;
--
--	return errcode == MCACOD_EXT_MEM_ERR;
--}
-+	if (errcode != MCACOD_MEM_CTL_ERR && errcode != MCACOD_EXT_MEM_ERR)
-+		return ERR_SRC_NOT_MEMORY;
- 
--static bool skx_error_in_mem(const struct mce *m)
--{
--	u32 errcode;
-+	if (!skx_mem_cfg_2lm)
-+		return ERR_SRC_1LM;
- 
--	errcode = GET_BITFIELD(m->status, 0, 15) & MCACOD_MEM_ERR_MASK;
-+	if (errcode == MCACOD_EXT_MEM_ERR)
-+		return ERR_SRC_2LM_NM;
- 
--	return (errcode == MCACOD_MEM_CTL_ERR || errcode == MCACOD_EXT_MEM_ERR);
-+	return ERR_SRC_2LM_FM;
- }
- 
- int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 			void *data)
- {
- 	struct mce *mce = (struct mce *)data;
-+	enum error_source err_src;
- 	struct decoded_addr res;
- 	struct mem_ctl_info *mci;
- 	char *type;
-@@ -652,8 +648,10 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	if (mce->kflags & MCE_HANDLED_CEC)
- 		return NOTIFY_DONE;
- 
-+	err_src = skx_error_source(mce);
-+
- 	/* Ignore unless this is memory related with an address */
--	if (!skx_error_in_mem(mce) || !(mce->status & MCI_STATUS_ADDRV))
-+	if (err_src == ERR_SRC_NOT_MEMORY || !(mce->status & MCI_STATUS_ADDRV))
- 		return NOTIFY_DONE;
- 
- 	memset(&res, 0, sizeof(res));
-@@ -667,7 +665,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	/* Try driver decoder first */
- 	if (!(driver_decode && driver_decode(&res))) {
- 		/* Then try firmware decoder (ACPI DSM methods) */
--		if (!(adxl_component_count && skx_adxl_decode(&res, skx_error_in_1st_level_mem(mce))))
-+		if (!(adxl_component_count && skx_adxl_decode(&res, err_src)))
- 			return NOTIFY_DONE;
- 	}
- 
-diff --git a/drivers/edac/skx_common.h b/drivers/edac/skx_common.h
-index 473421ba7a18a..58b8ac62becf5 100644
---- a/drivers/edac/skx_common.h
-+++ b/drivers/edac/skx_common.h
-@@ -146,6 +146,13 @@ enum {
- 	INDEX_MAX
- };
- 
-+enum error_source {
-+	ERR_SRC_1LM,
-+	ERR_SRC_2LM_NM,
-+	ERR_SRC_2LM_FM,
-+	ERR_SRC_NOT_MEMORY,
-+};
-+
- #define BIT_NM_MEMCTRL	BIT_ULL(INDEX_NM_MEMCTRL)
- #define BIT_NM_CHANNEL	BIT_ULL(INDEX_NM_CHANNEL)
- #define BIT_NM_DIMM	BIT_ULL(INDEX_NM_DIMM)
+ 		udelay(CSR_DELAY);
 -- 
 2.43.0
 
