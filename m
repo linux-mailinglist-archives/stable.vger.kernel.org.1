@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-96860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C6A9E2ADB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA109E2A2D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70030B84C66
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0F60BE14A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3681F76DD;
-	Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B3D1F8923;
+	Tue,  3 Dec 2024 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfUgBgic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5dyps5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334C61F76BA;
-	Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1841DFE2A;
+	Tue,  3 Dec 2024 15:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238808; cv=none; b=jnXhrmocYc5biGlkkZ+NgaSkwOMXGqXwUOVJd3Y/VVnahdqFIvjoxsjEHADDCT0JemAn9AjnLTgF4o5xhQ/rVj4oPTEfgfuSJSQnzxHEAP35ntXjHYALAq52UGYsff65bKnpXwrTngVDEMxvpgWVjrny/mRhlwrske5VtzTW5bI=
+	t=1733240854; cv=none; b=SLkRPJkK7hZlPCJNJTkxe+BfxWSQBlKyHo0LUf4XnsBb9plIcnGl+K/eoaekHcHgDH22CMeEbxRMlX05DJmM+VvoKp3bMwg8c8/mz3ZWokvvEiPfF43bt0njtbLh2ElKzctNR3zAWq0S6AbbQOhTxmun7uEtT51IQsdwLiwRaX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238808; c=relaxed/simple;
-	bh=TIOanA+WgY8YDCWCcYSWiW+TDBqu0SqAhcrPi1r5uB4=;
+	s=arc-20240116; t=1733240854; c=relaxed/simple;
+	bh=3PGld6tgBaC7xb9at7lKdctB4lqmblVEgGg7GDksyWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJOqZlLRvqawHW+UuBEyds0u45E5Wbxaa8wMNDcN37AlyBViC0gxBbLFj6zV5XJRxp9O/98dk/2pRkc24ohcCfaXQqAwLV3UH2a5BqQNX/nv4v4qR6uuZzjRNp3LJw2mAsyleE1GcLGI3d1FZVEaiLcdTHNVsGiP2fxSApkJfs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfUgBgic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB91AC4CECF;
-	Tue,  3 Dec 2024 15:13:27 +0000 (UTC)
+	 MIME-Version; b=PuMMFzJCjgeUAHjbyRdkr+pFEoM/F84JWSo01DNgxTgWZZ9RncWH0QbgsP0bHeYNpn2KjdJkgnca60fr+d0Z+lHX1sRz1Y6NJn41A0op1RKYugPwYNH3quR+SXxYQrsXnUG1GUsqSa+9+SM1Kkjy1d9vAAVvv5hcoK6WabEwyaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5dyps5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49144C4CECF;
+	Tue,  3 Dec 2024 15:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238808;
-	bh=TIOanA+WgY8YDCWCcYSWiW+TDBqu0SqAhcrPi1r5uB4=;
+	s=korg; t=1733240853;
+	bh=3PGld6tgBaC7xb9at7lKdctB4lqmblVEgGg7GDksyWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfUgBgic2iRSOb5pJf6DTRsOJcR1PUmuWYc3Q3wBqZ+hXiK+jyiZuLzXZue5xd8eC
-	 RBD49kSJVbosWhS0qbFAiIp4c+ZUDcnyCYbaf85WBempLg3oJjHoe78M/5Vap6hG0v
-	 CbMIc6vAqxgmangxj/zsEJHIVOxQOXw5PCBG9GXU=
+	b=e5dyps5zJdWKOg3OjDNVfdBzB5zSmYAN4Vk3K8ajA1K56ogvnaohgXvp4YiS7XC4f
+	 PHBgsLRWIPkh9Y9j39TbQfuIls52Fl3KSR9JyXJOXnhQUe83eArpntVG9JLhIhk2el
+	 GlJUJxZisrOMMyvnHNou8uh6p26DVP4BwL2yLIcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Ryan Walklin <ryan@testtoast.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 402/817] clk: sophgo: avoid integer overflow in sg2042_pll_recalc_rate()
-Date: Tue,  3 Dec 2024 15:39:34 +0100
-Message-ID: <20241203144011.565386363@linuxfoundation.org>
+Subject: [PATCH 6.12 255/826] drm: panel: nv3052c: correct spi_device_id for RG35XX panel
+Date: Tue,  3 Dec 2024 15:39:42 +0100
+Message-ID: <20241203144753.713708901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Ryan Walklin <ryan@testtoast.com>
 
-[ Upstream commit 00f8f70a0e8c6601861628be26270a0b6f4bbb34 ]
+[ Upstream commit 45608a3eb4902f32010a8328c0a01ccda4b38c9b ]
 
-This was found by a static analyzer.
-There may be a potential integer overflow issue in
-sg2042_pll_recalc_rate(). numerator is defined as u64 while
-parent_rate is defined as unsigned long and ctrl_table.fbdiv
-is defined as unsigned int. On 32-bit machine, the result of
-the calculation will be limited to "u32" without correct casting.
-Integer overflow may occur on high-performance systems.
+The Anbernic RG35XX devices use an SPI LCD panel from an unknown OEM,
+with an NV3052C driver chip.
 
-Fixes: 48cf7e01386e ("clk: sophgo: Add SG2042 clock driver")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Link: https://lore.kernel.org/r/20241023145146.13130-1-zichenxie0106@gmail.com
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+As discussed previously, the integrating vendor and device name are
+preferred instead of the OEM serial. A previous patch corrected the
+device tree binding and of_device_id in the NV3052C driver, however the
+spi_device_id also needs correction.
+
+Correct the spi_device_id for the RG35XX panel.
+
+Signed-off-by: Ryan Walklin <ryan@testtoast.com>
+Fixes: 76dce2a96c0f ("drm: panel: nv3052c: Correct WL-355608-A8 panel compatible")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241020083836.175733-1-ryan@testtoast.com
+[DB: corrected the Fixes tag]
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sophgo/clk-sg2042-pll.c | 2 +-
+ drivers/gpu/drm/panel/panel-newvision-nv3052c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sophgo/clk-sg2042-pll.c b/drivers/clk/sophgo/clk-sg2042-pll.c
-index ff9deeef509b8..1537f4f05860e 100644
---- a/drivers/clk/sophgo/clk-sg2042-pll.c
-+++ b/drivers/clk/sophgo/clk-sg2042-pll.c
-@@ -153,7 +153,7 @@ static unsigned long sg2042_pll_recalc_rate(unsigned int reg_value,
- 
- 	sg2042_pll_ctrl_decode(reg_value, &ctrl_table);
- 
--	numerator = parent_rate * ctrl_table.fbdiv;
-+	numerator = (u64)parent_rate * ctrl_table.fbdiv;
- 	denominator = ctrl_table.refdiv * ctrl_table.postdiv1 * ctrl_table.postdiv2;
- 	do_div(numerator, denominator);
- 	return numerator;
+diff --git a/drivers/gpu/drm/panel/panel-newvision-nv3052c.c b/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
+index d3baccfe6286b..06e16a7c14a75 100644
+--- a/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
++++ b/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
+@@ -917,7 +917,7 @@ static const struct nv3052c_panel_info wl_355608_a8_panel_info = {
+ static const struct spi_device_id nv3052c_ids[] = {
+ 	{ "ltk035c5444t", },
+ 	{ "fs035vg158", },
+-	{ "wl-355608-a8", },
++	{ "rg35xx-plus-panel", },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(spi, nv3052c_ids);
 -- 
 2.43.0
 
