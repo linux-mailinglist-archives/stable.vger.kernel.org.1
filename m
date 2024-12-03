@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778EF9E2473
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267D49E215C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73E216B29B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1249284A32
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF611F890E;
-	Tue,  3 Dec 2024 15:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06421F8934;
+	Tue,  3 Dec 2024 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usGSNC2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3TgIZk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C91F7591;
-	Tue,  3 Dec 2024 15:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3A61F7558;
+	Tue,  3 Dec 2024 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240379; cv=none; b=axCX/TTcEL9iexJpuOfRi3eLQRwcHXx6QnRgiNzrLcYi3a/1wvBJMiANyHAMAn2UH4bm47m3+wPG9sKHgPTgAyHUc5WIYv6m9BM69UlyIk4C7LYqrY2YZfPlOytnxtpYg6wBBm94Tr39Z4I+xOMKMUTCQnuxAi1jBZh8tnsoTKo=
+	t=1733238523; cv=none; b=LcwokU4NfbSlSlM/iYJtZxo96kyf6YYDApyivMiefjt5WL1oIfnXdExjMc9LC9FUoPITmD4vCdtw2N0ui0nTffka1Pt1Fsr3uG+buWj57w9mITH+JImvhgWq2W9aCLEUGS8S2GhLeRYJwOe0rKBV42gkmNPeS7GLEtJiFRWudCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240379; c=relaxed/simple;
-	bh=ZQQBLUoanNzRBplCJfuc2aHvMqYKT8n4O1MiNrpoMl8=;
+	s=arc-20240116; t=1733238523; c=relaxed/simple;
+	bh=vk94M8PKiEOX5QXek4pypW2pb2QX/x0aSLlUmKudfJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQEqSmgA36cdRkf/48FXX18cMiPU9Qt7L0IxJl6i6LJ/9rN6tFR0yU9vhGpcGsGYS7L4IrjEy5TDaf0Q9hbKGWSvnQJ7Ts65xbx+ewVqOqgCRm8TaXuiAJIML8IzrJKSdW4xmEirJlpq0+Fb6YBVA9VVDDLMgBY6t40bZhpRg08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usGSNC2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F40C4CECF;
-	Tue,  3 Dec 2024 15:39:38 +0000 (UTC)
+	 MIME-Version; b=nt98z9J5F4nD/NtbB3vsWRkFKcoQIbOykyeA9dIj0I8O6K18+q00V3Szhs3N05DX6yRZp2UQkAdrtdtQzFO0anSJvvEILu5v/WUdGMCspwIK7q3+GpyH+wRkvx96P/FT9ikQvzbXe36doYMkCozgC+QDBL5B526KaMPPkWlDZJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3TgIZk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B7EC4CED6;
+	Tue,  3 Dec 2024 15:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240378;
-	bh=ZQQBLUoanNzRBplCJfuc2aHvMqYKT8n4O1MiNrpoMl8=;
+	s=korg; t=1733238523;
+	bh=vk94M8PKiEOX5QXek4pypW2pb2QX/x0aSLlUmKudfJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usGSNC2uM/0jt4VbU++zLPjLMUN/gvUMSvrEtyB98XRqkBVB0/nuaQwRIg/1uIVuJ
-	 l6DP1NNG//p7f7enzqbJBtC23UsK4PNC3Y4JxBCX1rzJq/e0nmsM2PvGeonMZVT6ZJ
-	 rbjjIN2+QVsb5ldtQERuR3u1FUBqHwgbNdPIK1Qs=
+	b=D3TgIZk50RdwMn4l0MeEZEJ7b/IbKlFHR2KkBvxvC4kLLGsz653Ojt81/119r4frd
+	 1+F1WDH9hotY4YVx5S49buLjtefX2NJs0o3ne9ZxSeKIV8dFCZgozptb6oavNkFPBb
+	 zQKrE9aHv5/XoYXdbhVu21WiQOxjpvkpSWPP3Ay4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/826] arm64: dts: qcom: x1e80100-vivobook-s15: Drop orientation-switch from USB SS[0-1] QMP PHYs
-Date: Tue,  3 Dec 2024 15:37:26 +0100
-Message-ID: <20241203144748.387710600@linuxfoundation.org>
+Subject: [PATCH 6.11 275/817] netdevsim: copy addresses for both in and out paths
+Date: Tue,  3 Dec 2024 15:37:27 +0100
+Message-ID: <20241203144006.539967053@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 27344eb70c8fd60fe7c570e2e12f169ff89d2c47 ]
+[ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
 
-The orientation-switch is already set in the x1e80100 SoC dtsi,
-so drop from Vivobook S15 dts.
+The current code only copies the address for the in path, leaving the out
+path address set to 0. This patch corrects the issue by copying the addresses
+for both the in and out paths. Before this patch:
 
-Fixes: d0e2f8f62dff ("arm64: dts: qcom: Add device tree for ASUS Vivobook S 15")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20241014-x1e80100-dts-drop-orientation-switch-v1-2-26afa6d4afd9@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=0.0.0.0
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+
+After this patch:
+
+  = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=192.168.0.2
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+
+Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-3-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/netdevsim/ipsec.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
-index fb4a48a1e2a8a..2926a1aba7687 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
-@@ -594,8 +594,6 @@ &usb_1_ss0_qmpphy {
- 	vdda-phy-supply = <&vreg_l3e_1p2>;
- 	vdda-pll-supply = <&vreg_l1j_0p8>;
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index f0d58092e7e96..3612b0633bd17 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -176,14 +176,13 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs,
+ 		return ret;
+ 	}
  
--	orientation-switch;
--
- 	status = "okay";
- };
+-	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
++	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN)
+ 		sa.rx = true;
  
-@@ -628,8 +626,6 @@ &usb_1_ss1_qmpphy {
- 	vdda-phy-supply = <&vreg_l3e_1p2>;
- 	vdda-pll-supply = <&vreg_l2d_0p9>;
+-		if (xs->props.family == AF_INET6)
+-			memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
+-		else
+-			memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+-	}
++	if (xs->props.family == AF_INET6)
++		memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
++	else
++		memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
  
--	orientation-switch;
--
- 	status = "okay";
- };
- 
+ 	/* the preparations worked, so save the info */
+ 	memcpy(&ipsec->sa[sa_idx], &sa, sizeof(sa));
 -- 
 2.43.0
 
