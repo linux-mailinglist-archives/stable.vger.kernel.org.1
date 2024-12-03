@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0179E2794
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220C89E250A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18C62B4688B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB37F2873CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550831F7557;
-	Tue,  3 Dec 2024 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9421F76BA;
+	Tue,  3 Dec 2024 15:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT75BfUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTvou2L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A731EF0AE;
-	Tue,  3 Dec 2024 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F291F75A5;
+	Tue,  3 Dec 2024 15:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239254; cv=none; b=tjhowzgBgDVq6V6hFZj2ooEh/yIG4xgZ0CEBiQRaJK59J9v81vKSIGbpokWH+zuBywBmzrH2SdHuHnd05rDMCxejos2Yh7CjfW3axLwGz3oBdRYUN8mVcTNV3jVIpzKHpi0VrfqCg62xN05ApiaPWRJF8xUI0UlmBodLmx6z+C8=
+	t=1733241354; cv=none; b=jB8V8u6UNNVKs6dVn588KPXr4MZVWoaK+Qs6DJ07v23ECeOF8oJDuFT44rsJKPzJpEu3sHcH4Ia8dqLQL+7MCykTs/GRS2vcPDfaGjuF4RWtK1/Mzpn+j++fMN7DaQ806T3xhB4jnFqcEUzED2Q46AcDWCIwbsB9iMMHteH+Zug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239254; c=relaxed/simple;
-	bh=+EWxVFaHc/tnUjQhyyqRfIVo35Fe1YfQBCXu1+ds3kU=;
+	s=arc-20240116; t=1733241354; c=relaxed/simple;
+	bh=advwuFeVF6J9mu/7edBLRuFagyamcZcQCEtXQpfo6Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgjmjOxhVRnDxEb2pFrXTIDtuTEDNZ2Tl9YZEUe+R1dsG6lI0ZBbm6hOHBVDy2Pcm9L0K8axJhN7a5MqxCLDcXl3v9c2gfJu6Nm3YxT4Iic2hWE5cPmOx6oc0OPBcJuMe/ypD+fUvDPAibXjPzaZ248nZndG2+KAcBMnjvFWEvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT75BfUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABCDC4CECF;
-	Tue,  3 Dec 2024 15:20:53 +0000 (UTC)
+	 MIME-Version; b=kC6hlQnrhHnjwLlTnnegNmOPZ3UcAQwNXKScYFit5scKUVqDn5Z7eXSCUTu5juXj7/OOw1gifz0PlOj2I1E3ez/430jwnpGLE9rgMp4Iyvi62gz1QTsAIw5U2C84KEf4duZiIH8z5qxTMyCYO0UnECLpA5uptbmQlG/XHqWhkVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTvou2L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A26C4CECF;
+	Tue,  3 Dec 2024 15:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239253;
-	bh=+EWxVFaHc/tnUjQhyyqRfIVo35Fe1YfQBCXu1+ds3kU=;
+	s=korg; t=1733241354;
+	bh=advwuFeVF6J9mu/7edBLRuFagyamcZcQCEtXQpfo6Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bT75BfUskf+Gl0SqELdmeF3KJaa+34MQVfYZXCHeMjPWCYMAjJrwAjxVlPAt0XXCH
-	 VpSn8PUiUWtX4Oz4PAhZDxLmpuW5gMwi7jWBUhiWYsBEaip4s5JExzk7GmLUCpuFFc
-	 LRLfwNySzsPQj0r6wg2/p9XoG6LfkH2UQSemu8no=
+	b=KTvou2L7c7STKkeGlUFhWNbkgbD0dr6z1m12+MGS/hHoSIMBk3FjvDF6AhE8C0nJ5
+	 x/fjybzTHuz5QdagiKwwq72VtRfESg/JU+bq7ywpkwhjSzMlwEOZTrbVY7dS2nmA25
+	 5fhUNoQuXvLyL+FieNI5K7N4RGtEE3gMq/KMbzrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 551/817] phy: airoha: Fix REG_CSR_2L_JCPLL_SDM_HREN config in airoha_pcie_phy_init_ssc_jcpll()
+Subject: [PATCH 6.12 396/826] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
 Date: Tue,  3 Dec 2024 15:42:03 +0100
-Message-ID: <20241203144017.416129292@linuxfoundation.org>
+Message-ID: <20241203144759.209723603@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit 6fd016c965d241673a2e62afbf9eeb4bcbfbbe45 ]
+[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
 
-Fix typo configuring REG_CSR_2L_JCPLL_SDM_HREN register in
-airoha_pcie_phy_init_ssc_jcpll routine.
+Invalidate rkey is cpu endian and immediate data is in big endian format.
+Both immediate data and invalidate the remote key returned by
+HW is in little endian format.
 
-Fixes: d7d2818b9383 ("phy: airoha: Add PCIe PHY driver for EN7581 SoC.")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20240918-airoha-en7581-phy-fixes-v1-3-8291729a87f8@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+While handling the commit in fixes tag, the difference between
+immediate data and invalidate rkey endianness was not considered.
+
+Without changes of this patch, Kernel ULP was failing while processing
+inv_rkey.
+
+dmesg log snippet -
+nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
+
+Do endianness conversion based on completion queue entry flag.
+Also, the HW completions are already converted to host endianness in
+bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
+is no need to convert it again in bnxt_re_poll_cq. Modified the union to
+hold the correct data type.
+
+Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-airoha-pcie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/phy-airoha-pcie.c b/drivers/phy/phy-airoha-pcie.c
-index 3e5f49d9942a6..9d222898760bc 100644
---- a/drivers/phy/phy-airoha-pcie.c
-+++ b/drivers/phy/phy-airoha-pcie.c
-@@ -799,7 +799,7 @@ static void airoha_pcie_phy_init_ssc_jcpll(struct airoha_pcie_phy *pcie_phy)
- 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_IFM,
- 				   CSR_2L_PXP_JCPLL_SDM_IFM);
- 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_HREN,
--				   REG_CSR_2L_JCPLL_SDM_HREN);
-+				   CSR_2L_PXP_JCPLL_SDM_HREN);
- 	airoha_phy_csr_2l_clear_bits(pcie_phy, REG_CSR_2L_JCPLL_RST_DLY,
- 				     CSR_2L_PXP_JCPLL_SDM_DI_EN);
- 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SSC,
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index e66ae9f22c710..160096792224b 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3633,7 +3633,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
+ 	wc->byte_len = orig_cqe->length;
+ 	wc->qp = &gsi_qp->ib_qp;
+ 
+-	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
++	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
+ 	wc->src_qp = orig_cqe->src_qp;
+ 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
+ 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
+@@ -3778,7 +3778,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
+ 				 (unsigned long)(cqe->qp_handle),
+ 				 struct bnxt_re_qp, qplib_qp);
+ 			wc->qp = &qp->ib_qp;
+-			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
++			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
++				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
++			else
++				wc->ex.invalidate_rkey = cqe->invrkey;
+ 			wc->src_qp = cqe->src_qp;
+ 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
+ 			wc->port_num = 1;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 820611a239433..f55958e5fddb4 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -391,7 +391,7 @@ struct bnxt_qplib_cqe {
+ 	u16				cfa_meta;
+ 	u64				wr_id;
+ 	union {
+-		__le32			immdata;
++		u32			immdata;
+ 		u32			invrkey;
+ 	};
+ 	u64				qp_handle;
 -- 
 2.43.0
 
