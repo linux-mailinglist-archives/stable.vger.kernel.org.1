@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-97838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640AB9E25CF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C5D9E229F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AB0B2889BD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E27728531D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE10E1F76AA;
-	Tue,  3 Dec 2024 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDB01F7540;
+	Tue,  3 Dec 2024 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/k3Chkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcCh9rmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB9223CE;
-	Tue,  3 Dec 2024 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD5B1E3DED;
+	Tue,  3 Dec 2024 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241906; cv=none; b=FPWUfPyq39DNKNpCAYxyW4lCuc8DKq8Tn/7HrZfGToK5mm3ea0QpKlt/4+nQCDxP/wb5jRLE74Y3SkIWprvPoauII53k3qpB9Mcy2ASFGL6GQpegp1yKXZkfSxEPSKwFRvH2QiJzf10Fk+GrXsf8KPFXy4EpWn3ya2E5NeP+krU=
+	t=1733239617; cv=none; b=o3ryfrvpcPW1AKQd+qtlGO3hChW0w/0/WnFBRcw5ZykMdsT7uQx7dIzosojUkeZgLkEKFkhMT5ALfh8KskzBnq2MERyASWQ/oXEPP//LOnUVtSJVz0HSYZjKs74u7AAI0qg1r2fCWnkM0lSjersNTJIF3eLYJKysS7WYyec2NOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241906; c=relaxed/simple;
-	bh=5/JkGQ3t2oMuJeij3zxKDH6w3aLa0NXfsh8G2we84/s=;
+	s=arc-20240116; t=1733239617; c=relaxed/simple;
+	bh=Gt0K0m38e7Rguw3T9siMpUBjGFVhuuxKVWKUKiX9nNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KheFz8aHxiUDI1BYovCzb+5OrtcfSZwqoECsk3imdxokfpkvmxupWdK2pypZsWWGjweV14clYpyuVh+u00wpsvpUN0Qb7je1Gn/qtpi/PqBF5Eex6k+gRWvvN6KsEp1OGBmEXM6unA5yhIr891QIDVaTLJwemVmDPEZu/zXMkYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/k3Chkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54060C4CECF;
-	Tue,  3 Dec 2024 16:05:05 +0000 (UTC)
+	 MIME-Version; b=Y/CuBfIMt17wNCLlkpgAEDZZqVQ0qpSDzZwhyXCwok17O0qq2lfRvW0QquFxsVKpm4c3OLGnYw9gFA6vOAbpqpiCfmOmipeK8Oy9VedXWHzY4AT+jIt6584KtDYI6RhXPGCp8O/xOyjgMQgK5hLYrQUJlQp3nZij1N7m/jxHPhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcCh9rmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24060C4CECF;
+	Tue,  3 Dec 2024 15:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241905;
-	bh=5/JkGQ3t2oMuJeij3zxKDH6w3aLa0NXfsh8G2we84/s=;
+	s=korg; t=1733239617;
+	bh=Gt0K0m38e7Rguw3T9siMpUBjGFVhuuxKVWKUKiX9nNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/k3ChkfXyhe0y/CnIiOmDJKMNicHlPG+/vUxvrw/gTyZLVj1ya6SOInANkRDtyFZ
-	 V81MVPIgX9BVHd2EsqVGbA+ckGmqDSTLvZOvAsS55YFhIxa8UT46Bk6TR3IDcuGCTk
-	 mBnp3RGRJ4beBhw6B0VmTfrF4dacuYRNr59RYurI=
+	b=qcCh9rmGZ3bFKjGKvR2aZa5MDiFX61h21fvcl5Ic1sjlfsOuAPBWpGzY/qaYTxaeC
+	 3IgNWP0YaJyNIte71O/CpvZtuyardJx8w2G9yUvnPWLHGoHz+hAArO9stG7JIzq+h0
+	 WU4DFzkihZNOJFW98MEzzW9qMncWLAO2Wl+s44Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 518/826] perf trace: Avoid garbage when not printing a syscalls arguments
-Date: Tue,  3 Dec 2024 15:44:05 +0100
-Message-ID: <20241203144803.969202023@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.11 674/817] xhci: Combine two if statements for Etron xHCI host
+Date: Tue,  3 Dec 2024 15:44:06 +0100
+Message-ID: <20241203144022.266481304@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,68 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 1302e352b26f34991b619b5d0b621b76d20a3883 ]
+commit d7b11fe5790203fcc0db182249d7bfd945e44ccb upstream.
 
-syscall__scnprintf_args may not place anything in the output buffer
-(e.g., because the arguments are all zero). If that happened in
-trace__fprintf_sys_enter, its fprintf would receive an unitialized
-buffer leading to garbage output.
+Combine two if statements, because these hosts have the same
+quirk flags applied.
 
-Fix the problem by passing the (possibly zero) bounds of the argument
-buffer to the output fprintf.
+[Mathias: has stable tag because other fixes in series depend on this]
 
-Fixes: a98392bb1e169a04 ("perf trace: Use beautifiers on syscalls:sys_enter_ handlers")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241107232128.108981-2-benjamin@engflow.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-18-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-trace.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 6fc437be662a1..ffa1295273099 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2702,6 +2702,7 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
- 	char msg[1024];
- 	void *args, *augmented_args = NULL;
- 	int augmented_args_size;
-+	size_t printed = 0;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -401,12 +401,8 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
  
- 	if (sc == NULL)
- 		return -1;
-@@ -2717,8 +2718,8 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
- 
- 	args = perf_evsel__sc_tp_ptr(evsel, args, sample);
- 	augmented_args = syscall__augmented_args(sc, sample, &augmented_args_size, trace->raw_augmented_syscalls_args_size);
--	syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
--	fprintf(trace->output, "%s", msg);
-+	printed += syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
-+	fprintf(trace->output, "%.*s", (int)printed, msg);
- 	err = 0;
- out_put:
- 	thread__put(thread);
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ168) {
+-		xhci->quirks |= XHCI_RESET_ON_RESUME;
+-		xhci->quirks |= XHCI_BROKEN_STREAMS;
+-	}
+-	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188) {
++	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
++	     pdev->device == PCI_DEVICE_ID_EJ188)) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
 
 
 
