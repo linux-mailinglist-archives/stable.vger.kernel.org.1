@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-97208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9124C9E22ED
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63D49E263F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D9C286B9B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097AC16B5C0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD9B1F7071;
-	Tue,  3 Dec 2024 15:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778FA23CE;
+	Tue,  3 Dec 2024 16:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDjIEHtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7Rb0E9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6A6646;
-	Tue,  3 Dec 2024 15:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BA91F76D1;
+	Tue,  3 Dec 2024 16:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239826; cv=none; b=AsC1F6NFIsUxsC9SpVE3LOzR831z0jdC7CxJN/7bhn+JNEGjm9dzui+ra0fIxFnpN9zbkL+Sg2tOMc/7z2DZLsnOQmzdNrilW/Jbm61nT7/m8uBzuHVjns5W2bKQpXTVjxQ2nJpIZE8MBE3pwdoduQ1kg1RkkkeGNkKOKDgwAIg=
+	t=1733241943; cv=none; b=UgEd/pKIK94yz+qhFYF037DM6TSc6KXsThPpb29M7beiXy+a3HjUrcZk8m9LrixlCY9dsxIrbU0HK38QhGFvNeaSAHK+Ylh3f+MbIwgLCDSGHo1MMAJBLOd4WHcGQT0c98zev6fuSnz1PF894f51wQuf0zmQSHmeqvqpHwjEAUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239826; c=relaxed/simple;
-	bh=IvyaFagk1EquxhlXYpuzzRiCznZj1qdGzd6XDZVKNq4=;
+	s=arc-20240116; t=1733241943; c=relaxed/simple;
+	bh=evqfyOL5nVOaSX8tZ00jbQDIH0AVuX8WGszBPzuPAUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcsiMrOkAwkEN3+o7De1/CteOLMgp+9wUBdrYyxkalzVm4B8LKGM8WIDvMCio7e6ZnihChFoK9Nf90axXOA4e0VOk5vFi1vWvODBRXYluDs/kJI12fEuKjUPxpZGmqTEFCoIPo0h/AQrVfpGCHATpN1J09z6/NS6F57+DHdiD5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDjIEHtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEA8C4CECF;
-	Tue,  3 Dec 2024 15:30:26 +0000 (UTC)
+	 MIME-Version; b=FSJz3yC+gUj1bhCyHwD45T5MGY9UN6KgMXE1khAybg1G4xTxBP1P86pZXryvFHuqEsbZKi+pu6MQw2ZiQHIvZYYYHogD+J3CXStNwK83snCwSl7OGrEpA/kpcTxpgK/0KvAbTjSe/XBxnlOqS6IwaRxySZzp1hdtS/VyTNEQ1gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7Rb0E9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93770C4CECF;
+	Tue,  3 Dec 2024 16:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239826;
-	bh=IvyaFagk1EquxhlXYpuzzRiCznZj1qdGzd6XDZVKNq4=;
+	s=korg; t=1733241943;
+	bh=evqfyOL5nVOaSX8tZ00jbQDIH0AVuX8WGszBPzuPAUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDjIEHtfNdlOhIxEacvSlKqfCWVoP9TQaG13Y53rsBKD9jZA/O9nHmAjFgkzIWkdC
-	 0fOVy1XkSuEp6A+MtZQdpyYJbnp9ETiGb9Q+j3xDVQ/Vp9L8Oz5mvJd2X7UwU2yZNb
-	 XzsrtNED78Uy8QLHShAfcEdxnZWuOLwgpnI8WOL0=
+	b=F7Rb0E9wfCnHXOuwEXidfatdwHflQ5Cdvt929NnrwIFtmpXR1FHIxXXwR91n23+wL
+	 lZqLlrX3Jw2hbcT/m2+AAT13O9iofM86fPRN02sBAXQrVTOqzjdXXR0pLC/uI6znTG
+	 T8YaVbU8IPjUBJgTRRYbVwRVzp9eZDVpeBtinE6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.11 716/817] serial: amba-pl011: Fix RX stall when DMA is used
-Date: Tue,  3 Dec 2024 15:44:48 +0100
-Message-ID: <20241203144023.940840262@linuxfoundation.org>
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Thorsten Winkler <twinkler@linux.ibm.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	David Wei <dw@davidwei.uk>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 562/826] s390/iucv: MSG_PEEK causes memory leak in iucv_sock_destruct()
+Date: Tue,  3 Dec 2024 15:44:49 +0100
+Message-ID: <20241203144805.666675305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
 
-commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf upstream.
+[ Upstream commit ebaf81317e42aa990ad20b113cfe3a7b20d4e937 ]
 
-Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
-also disables the RX DMA by clearing the RXDMAE bit of the DMACR
-register. However, to properly unthrottle RX when DMA is used, the
-function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
-the DMACR register, which it currently lacks. This causes RX to stall
-after the throttle API is called.
+Passing MSG_PEEK flag to skb_recv_datagram() increments skb refcount
+(skb->users) and iucv_sock_recvmsg() does not decrement skb refcount
+at exit.
+This results in skb memory leak in skb_queue_purge() and WARN_ON in
+iucv_sock_destruct() during socket close. To fix this decrease
+skb refcount by one if MSG_PEEK is set in order to prevent memory
+leak and WARN_ON.
 
-Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
-used.
+WARNING: CPU: 2 PID: 6292 at net/iucv/af_iucv.c:286 iucv_sock_destruct+0x144/0x1a0 [af_iucv]
+CPU: 2 PID: 6292 Comm: afiucv_test_msg Kdump: loaded Tainted: G        W          6.10.0-rc7 #1
+Hardware name: IBM 3931 A01 704 (z/VM 7.3.0)
+Call Trace:
+        [<001587c682c4aa98>] iucv_sock_destruct+0x148/0x1a0 [af_iucv]
+        [<001587c682c4a9d0>] iucv_sock_destruct+0x80/0x1a0 [af_iucv]
+        [<001587c704117a32>] __sk_destruct+0x52/0x550
+        [<001587c704104a54>] __sock_release+0xa4/0x230
+        [<001587c704104c0c>] sock_close+0x2c/0x40
+        [<001587c702c5f5a8>] __fput+0x2e8/0x970
+        [<001587c7024148c4>] task_work_run+0x1c4/0x2c0
+        [<001587c7023b0716>] do_exit+0x996/0x1050
+        [<001587c7023b13aa>] do_group_exit+0x13a/0x360
+        [<001587c7023b1626>] __s390x_sys_exit_group+0x56/0x60
+        [<001587c7022bccca>] do_syscall+0x27a/0x380
+        [<001587c7049a6a0c>] __do_syscall+0x9c/0x160
+        [<001587c7049ce8a8>] system_call+0x70/0x98
+        Last Breaking-Event-Address:
+        [<001587c682c4a9d4>] iucv_sock_destruct+0x84/0x1a0 [af_iucv]
 
-Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eac3731bd04c ("[S390]: Add AF_IUCV socket support")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Thorsten Winkler <twinkler@linux.ibm.com>
+Signed-off-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20241119152219.3712168-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/iucv/af_iucv.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct u
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index c00323fa9eb66..7929df08d4e02 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -1236,7 +1236,9 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		return -EOPNOTSUPP;
  
- 	pl011_write(uap->im, uap, REG_IMSC);
+ 	/* receive/dequeue next skb:
+-	 * the function understands MSG_PEEK and, thus, does not dequeue skb */
++	 * the function understands MSG_PEEK and, thus, does not dequeue skb
++	 * only refcount is increased.
++	 */
+ 	skb = skb_recv_datagram(sk, flags, &err);
+ 	if (!skb) {
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+@@ -1252,9 +1254,8 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
  
-+	if (uap->using_rx_dma) {
-+		uap->dmacr |= UART011_RXDMAE;
-+		pl011_write(uap->dmacr, uap, REG_DMACR);
-+	}
+ 	cskb = skb;
+ 	if (skb_copy_datagram_msg(cskb, offset, msg, copied)) {
+-		if (!(flags & MSG_PEEK))
+-			skb_queue_head(&sk->sk_receive_queue, skb);
+-		return -EFAULT;
++		err = -EFAULT;
++		goto err_out;
+ 	}
+ 
+ 	/* SOCK_SEQPACKET: set MSG_TRUNC if recv buf size is too small */
+@@ -1271,11 +1272,8 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	err = put_cmsg(msg, SOL_IUCV, SCM_IUCV_TRGCLS,
+ 		       sizeof(IUCV_SKB_CB(skb)->class),
+ 		       (void *)&IUCV_SKB_CB(skb)->class);
+-	if (err) {
+-		if (!(flags & MSG_PEEK))
+-			skb_queue_head(&sk->sk_receive_queue, skb);
+-		return err;
+-	}
++	if (err)
++		goto err_out;
+ 
+ 	/* Mark read part of skb as used */
+ 	if (!(flags & MSG_PEEK)) {
+@@ -1331,8 +1329,18 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	/* SOCK_SEQPACKET: return real length if MSG_TRUNC is set */
+ 	if (sk->sk_type == SOCK_SEQPACKET && (flags & MSG_TRUNC))
+ 		copied = rlen;
++	if (flags & MSG_PEEK)
++		skb_unref(skb);
+ 
+ 	return copied;
 +
- 	uart_port_unlock_irqrestore(&uap->port, flags);
++err_out:
++	if (!(flags & MSG_PEEK))
++		skb_queue_head(&sk->sk_receive_queue, skb);
++	else
++		skb_unref(skb);
++
++	return err;
  }
  
+ static inline __poll_t iucv_accept_poll(struct sock *parent)
+-- 
+2.43.0
+
 
 
 
