@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834549E267F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788F99E23D1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D35C1670CC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 251181600C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4960F1F8925;
-	Tue,  3 Dec 2024 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99E1F8ADF;
+	Tue,  3 Dec 2024 15:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0frSzVuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iccdhsap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C881F8919;
-	Tue,  3 Dec 2024 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734F1F7584;
+	Tue,  3 Dec 2024 15:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242153; cv=none; b=hyfQOV2YJVUsL7HFq1aR48Y3R65vN8LZtvGCXec3oJx5w5dC+8sbYmwQfrZi17JPmS6eedfCXHueYYyGBdGD1n5wRfFm4yEOm3PkpuLiHpIBvKUlOF7TUnG7NbavuuP2SZqBmSfAGa4wjOhuQnWpy5e7RL3NT1Hqr3/ttdUe4SA=
+	t=1733240036; cv=none; b=VM7cUwRamzoCHV2ach8VkSLpI09JRWgwJKJV21lb/GhzDa7YH8zT8EFNFLy9HjwW05XTcFxZqS+1YPEr8QjZd8aeHtvZMtBm36xm5NVqYCSAR/LgkO1HwHAjiTELRy0yYxOoujrd+Bba9jwLPM8QsT3Lrzopk13USwyXBL85pEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242153; c=relaxed/simple;
-	bh=UU7pBpyc83pkRwuHopwMxN6yAqRv5I33uiZnfsolPbc=;
+	s=arc-20240116; t=1733240036; c=relaxed/simple;
+	bh=famLKMmmULrNwF4kQLQh29iTI6ty2QOe9dB39G6mjyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fq+SBuQG0678X5qaM/RjfEMa7DkU7vB+MceHDWtCWk2Fh53KIbCyFiC6pu/mrjCjplyZYgrHDYJoEBwrPy+890bQ8aH1aWqpdOvj3uxW/vkaTcPrMBh7y1ZJOOdbkWNezzaCgICDF2PzSj1CTV5/S5LfIqPp/S57R6t0tMn+4rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0frSzVuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B108C4CED6;
-	Tue,  3 Dec 2024 16:09:12 +0000 (UTC)
+	 MIME-Version; b=MNLZxAy+5KMbvuigW8q9ifhExwVGQzRH0k1qACkhk4Rm/H9EIlYjOAmN6iKJLGz6Gudc2/yvqWEpC24t6F7G+3WMyeZH4mmS7CsIvEsNppmiHFr3SUq2Jt9g/g0YZ6BXcBKf+x/N6ufxo1cb3kp8cGCRRUEYc1hcfAGZ8D99l80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iccdhsap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D5EC4CECF;
+	Tue,  3 Dec 2024 15:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242152;
-	bh=UU7pBpyc83pkRwuHopwMxN6yAqRv5I33uiZnfsolPbc=;
+	s=korg; t=1733240035;
+	bh=famLKMmmULrNwF4kQLQh29iTI6ty2QOe9dB39G6mjyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0frSzVuf3hJuTeoq9HKWiGoSKo7Xkcy4f+p65EmyysLKn0nrR/QTnn7YIsDtJqVC3
-	 D7oXPyNckwgXEBJ+hZyGng8FIUtLITLEDyz0wpWpGHIBJJMYXkfRUcaHXmeXv+iJGK
-	 lQUSVRRLJ3lUthLo06GD+nc3QxBhhBoVqdBxKKLs=
+	b=iccdhsapx7D/ON9ALK8PGyj6oCPil96jkePlhhCqIP1lykma/RRLWXT6PruGX9dNP
+	 WASg5WlBGEikh9DlkWUzb8ceyz4kz+i1fvO5NyHNcyjtvh9JisOmJb5nrnmlRCaDTc
+	 fgPFtMUGvHO3GnLyk8eIszETHIUNwcp9IFyICtNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 623/826] net_sched: sch_fq: dont follow the fast path if Tx is behind now
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 778/817] jffs2: fix use of uninitialized variable
 Date: Tue,  3 Dec 2024 15:45:50 +0100
-Message-ID: <20241203144808.056084231@linuxfoundation.org>
+Message-ID: <20241203144026.380957167@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-commit 122aba8c80618eca904490b1733af27fb8f07528 upstream.
+[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
 
-Recent kernels cause a lot of TCP retransmissions
+When building the kernel with -Wmaybe-uninitialized, the compiler
+reports this warning:
 
-[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-[  5]   0.00-1.00   sec  2.24 GBytes  19.2 Gbits/sec  2767    442 KBytes
-[  5]   1.00-2.00   sec  2.23 GBytes  19.1 Gbits/sec  2312    350 KBytes
-                                                      ^^^^
+In function 'jffs2_mark_erased_block',
+    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
+fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
+  474 |         jffs2_erase_failed(c, jeb, bad_offset);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
+fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
+  402 |         uint32_t bad_offset;
+      |                  ^~~~~~~~~~
 
-Replacing the qdisc with pfifo makes retransmissions go away.
+When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
+without initializing bad_offset, which is later used at the filebad
+label in jffs2_mark_erased_block.
+Fix it by initializing this variable.
 
-It appears that a flow may have a delayed packet with a very near
-Tx time. Later, we may get busy processing Rx and the target Tx time
-will pass, but we won't service Tx since the CPU is busy with Rx.
-If Rx sees an ACK and we try to push more data for the delayed flow
-we may fastpath the skb, not realizing that there are already "ready
-to send" packets for this flow sitting in the qdisc.
-
-Don't trust the fastpath if we are "behind" according to the projected
-Tx time for next flow waiting in the Qdisc. Because we consider anything
-within the offload window to be okay for fastpath we must consider
-the entire offload window as "now".
-
-Qdisc config:
-
-qdisc fq 8001: dev eth0 parent 1234:1 limit 10000p flow_limit 100p \
-  buckets 32768 orphan_mask 1023 bands 3 \
-  priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 \
-  weights 589824 196608 65536 quantum 3028b initial_quantum 15140b \
-  low_rate_threshold 550Kbit \
-  refill_delay 40ms timer_slack 10us horizon 10s horizon_drop
-
-For iperf this change seems to do fine, the reordering is gone.
-The fastpath still gets used most of the time:
-
-  gc 0 highprio 0 fastpath 142614 throttled 418309 latency 19.1us
-   xx_behind 2731
-
-where "xx_behind" counts how many times we hit the new "return false".
-
-CC: stable@vger.kernel.org
-Fixes: 076433bd78d7 ("net_sched: sch_fq: add fast path for mostly idle qdisc")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241124022148.3126719-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[stable: drop the offload horizon, it's not supported / 0]
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/jffs2/erase.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -331,6 +331,12 @@ static bool fq_fastpath_check(const stru
- 		 */
- 		if (q->internal.qlen >= 8)
- 			return false;
-+
-+		/* Ordering invariants fall apart if some delayed flows
-+		 * are ready but we haven't serviced them, yet.
-+		 */
-+		if (q->time_next_delayed_flow <= now)
-+			return false;
- 	}
- 
- 	sk = skb->sk;
+diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
+index acd32f05b5198..ef3a1e1b6cb06 100644
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -338,10 +338,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
+ 		} while(--retlen);
+ 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
+ 		if (retlen) {
+-			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
+-				*wordebuf,
+-				jeb->offset +
+-				c->sector_size-retlen * sizeof(*wordebuf));
++			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
++			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
++				*wordebuf, *bad_offset);
+ 			return -EIO;
+ 		}
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
