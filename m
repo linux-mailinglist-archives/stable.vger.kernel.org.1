@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-97795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789A09E25A0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B149A9E22FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3272863A1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C311636D5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54611F76A4;
-	Tue,  3 Dec 2024 16:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE1E1F7561;
+	Tue,  3 Dec 2024 15:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVDnQ6+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0N9u0ssv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27AA153800;
-	Tue,  3 Dec 2024 16:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056781F7554;
+	Tue,  3 Dec 2024 15:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241758; cv=none; b=i1IlCzQLLOfkLCN1zwvje8j6OmtgZ1e6xd81hRFD3z5nbtYGpL2mg/mDpR0wuC+5xhw2u3gaM5DzKXfV3zhqSnh/AXkgGUimNXNCSBIotKUwUjQ2aXRQQtOZLmwGS68FOwxykFb3QuCxGIqT8sjcBwXQsDq6quKR4llNJ4YGTFM=
+	t=1733239574; cv=none; b=QBP2YCWJAQvROVCvc6S1khKrZevGU3T3jnKe7i1MJ6PWNkdb6omcamXiKNYtE3y2HT2nZFgiFxxNeMdESq1hvRwWnb2fpg9sRp2pOXOKOsiXsq/03SkCVnPqCjSdIFFVXdiyizPnWE9H2TKswIi5duTFX4CrcVndxaiRLv8ZqYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241758; c=relaxed/simple;
-	bh=jK71MPsxSoIpJ2AGEUzq8m43sTmfiO73Mhzc50GtsuY=;
+	s=arc-20240116; t=1733239574; c=relaxed/simple;
+	bh=Ejfn6XHQ6tRp3l1uTpr3+2SVcEuNevR8WuBPj/6RSqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVIiXZkYKiItF1L6P9OElD6rdaaLLB0eOuhrz8X6U4sjpHrJlaGP791lepfPE2lTW+ipU2m8kW7OiKbnMZlwjAS3XI0VBxw23pFhcG1rbJVMfVDp8HURkIYcPcMYaCORm3ZX3sE6YgZ1qkNIRf0eq3Ech27va/pPccis+ht/3us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVDnQ6+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266FFC4CECF;
-	Tue,  3 Dec 2024 16:02:37 +0000 (UTC)
+	 MIME-Version; b=hm6Zp+Ej7Gn5nFbHO+g4dmmJFy3O3rvJgna6wCt965eE9QL+v3TXmKPEmsBLIjk6OWeVoPbZGz8FCUG+tICz/gHkKrl038slXonjRE2MTggmWjuM17aB53itBTZHhsT9I8jxmraoqAwyBHdlQZqNp/pm+bKrhBMSbkoxlfYHk/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0N9u0ssv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830A7C4CECF;
+	Tue,  3 Dec 2024 15:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241758;
-	bh=jK71MPsxSoIpJ2AGEUzq8m43sTmfiO73Mhzc50GtsuY=;
+	s=korg; t=1733239573;
+	bh=Ejfn6XHQ6tRp3l1uTpr3+2SVcEuNevR8WuBPj/6RSqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVDnQ6+CThOjkuWktWFiTstH4DKhydQgPU5dCW6jiaGd+yFQ4SPe6jGloAKOrEPxO
-	 dZNzrATnqHa1JmwckZrSy3NP/PiVVixdgbUgRfAxq/Icql70IjIQgR5jpeCc5czXxu
-	 +PqCViNxacQ1macMspUCb6NB9AgbtW3Tar/aE3qc=
+	b=0N9u0ssvHECVCfnDg102klcahs1K41rOSdYkQioFO9M+wgvMoDYQisVv6GdZWbUmO
+	 iw39pbcFg6uRB+eIqpYv/pmj7PAxqJloKpLaZ1ukYcmSM7+yBtMB38vtOJ1UwzHkEd
+	 hG3Nx+ywYzCZbj55oGnBUXMqEYeqU4zVB2O8peYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Guilherme Amadio <amadio@gentoo.org>,
-	linuxarm@huawei.com,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 506/826] perf build: Add missing cflags when building with custom libtraceevent
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.11 661/817] fsnotify: Fix ordering of iput() and watched_objects decrement
 Date: Tue,  3 Dec 2024 15:43:53 +0100
-Message-ID: <20241203144803.495952910@linuxfoundation.org>
+Message-ID: <20241203144021.760655080@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit d5a0a4ab4af4c27de097b78d6f1b7e7f7e31908f ]
+commit 21d1b618b6b9da46c5116c640ac4b1cc8d40d63a upstream.
 
-When building with custom libtraceevent, below errors occur:
+Ensure the superblock is kept alive until we're done with iput().
+Holding a reference to an inode is not allowed unless we ensure the
+superblock stays alive, which fsnotify does by keeping the
+watched_objects count elevated, so iput() must happen before the
+watched_objects decrement.
+This can lead to a UAF of something like sb->s_fs_info in tmpfs, but the
+UAF is hard to hit because race orderings that oops are more likely, thanks
+to the CHECK_DATA_CORRUPTION() block in generic_shutdown_super().
 
-  $ make -C tools/perf NO_LIBPYTHON=1 PKG_CONFIG_PATH=<custom libtraceevent>
-  In file included from util/session.h:5,
-                   from builtin-buildid-list.c:17:
-  util/trace-event.h:153:10: fatal error: traceevent/event-parse.h: No such file or directory
-    153 | #include <traceevent/event-parse.h>
-        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
-  <snip similar errors of missing headers>
+Also, ensure that fsnotify_put_sb_watched_objects() doesn't call
+fsnotify_sb_watched_objects() on a superblock that may have already been
+freed, which would cause a UAF read of sb->s_fsnotify_info.
 
-This is because the include path is missed in the cflags. Add it.
-
-Fixes: 0f0e1f445690 ("perf build: Use pkg-config for feature check for libtrace{event,fs}")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Guilherme Amadio <amadio@gentoo.org>
-Cc: linuxarm@huawei.com
-Link: https://lore.kernel.org/r/20241024133236.31016-1-yangyicong@huawei.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: d2f277e26f52 ("fsnotify: rename fsnotify_{get,put}_sb_connectors()")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/Makefile.config | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/mark.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index d4332675babb7..2ce71d2e5fae0 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -1194,7 +1194,7 @@ endif
- ifneq ($(NO_LIBTRACEEVENT),1)
-   $(call feature_check,libtraceevent)
-   ifeq ($(feature-libtraceevent), 1)
--    CFLAGS += -DHAVE_LIBTRACEEVENT
-+    CFLAGS += -DHAVE_LIBTRACEEVENT $(shell $(PKG_CONFIG) --cflags libtraceevent)
-     LDFLAGS += $(shell $(PKG_CONFIG) --libs-only-L libtraceevent)
-     EXTLIBS += $(shell $(PKG_CONFIG) --libs-only-l libtraceevent)
-     LIBTRACEEVENT_VERSION := $(shell $(PKG_CONFIG) --modversion libtraceevent).0.0
+diff --git a/fs/notify/mark.c b/fs/notify/mark.c
+index c45b222cf9c1..4981439e6209 100644
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -138,8 +138,11 @@ static void fsnotify_get_sb_watched_objects(struct super_block *sb)
+ 
+ static void fsnotify_put_sb_watched_objects(struct super_block *sb)
+ {
+-	if (atomic_long_dec_and_test(fsnotify_sb_watched_objects(sb)))
+-		wake_up_var(fsnotify_sb_watched_objects(sb));
++	atomic_long_t *watched_objects = fsnotify_sb_watched_objects(sb);
++
++	/* the superblock can go away after this decrement */
++	if (atomic_long_dec_and_test(watched_objects))
++		wake_up_var(watched_objects);
+ }
+ 
+ static void fsnotify_get_inode_ref(struct inode *inode)
+@@ -150,8 +153,11 @@ static void fsnotify_get_inode_ref(struct inode *inode)
+ 
+ static void fsnotify_put_inode_ref(struct inode *inode)
+ {
+-	fsnotify_put_sb_watched_objects(inode->i_sb);
++	/* read ->i_sb before the inode can go away */
++	struct super_block *sb = inode->i_sb;
++
+ 	iput(inode);
++	fsnotify_put_sb_watched_objects(sb);
+ }
+ 
+ /*
 -- 
-2.43.0
+2.47.1
 
 
 
