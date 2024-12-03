@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-96759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897699E2ACD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:28:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B17D9E2B20
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F35F8BA1333
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:11:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A40BC69C7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ED51F756E;
-	Tue,  3 Dec 2024 15:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954FF1FAC54;
+	Tue,  3 Dec 2024 15:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhzvkECR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8bbpb+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C244A1F8924;
-	Tue,  3 Dec 2024 15:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5393D1F8AFF;
+	Tue,  3 Dec 2024 15:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238511; cv=none; b=mdhf/G+ZSRMmPRHzoRA79cRvLpSkq8fatPzcAmQ1RNuzziTNFqEJj5B5oXq6vRM/6/Cnav0FnsAk2j3YOBh1itHWQDlx0fXFVcn0HbfbYYD94P0xPOC4KImspt87IuJLkYTctP4QGESB8eqDn5ct6hAgndrb+OvMt5u+iqaQ7XI=
+	t=1733240478; cv=none; b=d8NIGALYb19exswymRgg/recIC8JbLZfe9K5/3czayN5VGr5Aqg+tAu5KEkaN9vSPyz30cCFxKYLUPjqNklH3QntANnugADkgiz5+pxEWNE6KfgJVNRQDIEjlq/NqzrF71r3r8C3e858bXtsmnwNbvBSXmSc0SbGWs1o6r4qvJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238511; c=relaxed/simple;
-	bh=Cxg1T9H+esJn7zb7CUzvcgJLlYwMrsIzbjhBelhao0o=;
+	s=arc-20240116; t=1733240478; c=relaxed/simple;
+	bh=8ZYc0NxV8EYV51Gbwk1Ns4Ps/9SdUxDfmmoUCZXJoFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezn2Vp/AAFYQpDFtsCmzCgK8y2FICSJZyqQf642KHM2Nz1bKCt7RVbhUOYsxYfyIjREA5p2w9vf2FD3fC8vo0P/Zlr2TrgwOD5lDHdU6oVb306GIniJcb0ADZz65oHTGo+fgnGcZNseoqRjuM9zOijuUNc9AkhMhgClCy48/enw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhzvkECR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E0DC4CECF;
-	Tue,  3 Dec 2024 15:08:31 +0000 (UTC)
+	 MIME-Version; b=aei9XDSsUrGhxsibSvXFltOHV2FOewyJJq+uq3gXztsjjoiUAsGLFsznj7glqMSfcdeiHpIP3waoSXD1V4N7YLmJetT6LEiarNP1bUNo3/btfNoDlmIDDSylNPOhb3oCNVJDWhRkM6SOHgwrLdxhIKKnl4Sk2tKf625jGH5XJx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8bbpb+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B781FC4CECF;
+	Tue,  3 Dec 2024 15:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238511;
-	bh=Cxg1T9H+esJn7zb7CUzvcgJLlYwMrsIzbjhBelhao0o=;
+	s=korg; t=1733240478;
+	bh=8ZYc0NxV8EYV51Gbwk1Ns4Ps/9SdUxDfmmoUCZXJoFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhzvkECRTMPUFGZiUh7S7lDMKouGFNm9g/+P/9KoVpRqgQp5QEvXFsTpR5ojMKe2y
-	 dAR/ZCGCvfk5vsCDGAia4hlYPy1HePEGCCCQNrUOh6hz1U6mPtNChPbTxbxfe8WLK5
-	 QgiYaUtk5bB5UekCV1BTvcLfCCvNiCN60RstKucc=
+	b=K8bbpb+ehnEvUmPH/mC8mL9xJ0Sx4J8vpifsCsBMNdHpi6CYzBtesAMRoYYl5DllG
+	 ujTXiSkHIwLbAqCOCKB4+2o4ycEW9vjcfyNoCyj5yZCbRdXT/Ie5MKj4u0lJbC3A/R
+	 Qub0w5lrXFcWrVQWAJr/zd9m5cjQ1PWt6ygVLP4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Anurag Dutta <a-dutta@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 301/817] drm/amd/display: Increase idle worker HPD detection time
-Date: Tue,  3 Dec 2024 15:37:53 +0100
-Message-ID: <20241203144007.566044282@linuxfoundation.org>
+Subject: [PATCH 6.12 148/826] arm64: dts: ti: k3-j7200: Fix clock ids for MCSPI instances
+Date: Tue,  3 Dec 2024 15:37:55 +0100
+Message-ID: <20241203144749.519620318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Anurag Dutta <a-dutta@ti.com>
 
-[ Upstream commit 60612f75992d96955fb7154468c58d5d168cf1ab ]
+[ Upstream commit 3a47e381670f130870caef6e1155ac531b17b032 ]
 
-[Why]
-Idle worker thread waits HPD_DETECTION_TIME for HPD processing complete.
-Some displays require longer time for that.
+The clock IDs for multiple MCSPI instances across wakeup as
+well as main domain in J7200 are incorrect when compared with
+documentation [1]. This results in kernel crashes when the said
+instances are enabled. Fix the clock ids to their appropriate
+values.
 
-[How]
-Increase HPD_DETECTION_TIME to 100ms.
+[1]https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j7200/clocks.html
 
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: a88b19b13fb4 ("drm/amd/display: Reduce HPD Detection Interval for IPS")
+Fixes: 8f6c475f4ca7 ("arm64: dts: ti: k3-j7200: Add MCSPI nodes")
+
+Signed-off-by: Anurag Dutta <a-dutta@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Link: https://lore.kernel.org/r/20241023104532.3438851-2-a-dutta@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j7200-main.dtsi       | 16 ++++++++--------
+ arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi |  6 +++---
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-index df3d124c4d7a1..4593c158cc156 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -36,7 +36,7 @@
- #include "amdgpu_dm_debugfs.h"
+diff --git a/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
+index 41adfa64418d0..1d11da926a871 100644
+--- a/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
+@@ -1163,7 +1163,7 @@ main_spi0: spi@2100000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 266 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 266 1>;
++		clocks = <&k3_clks 266 4>;
+ 		status = "disabled";
+ 	};
  
- #define HPD_DETECTION_PERIOD_uS 5000000
--#define HPD_DETECTION_TIME_uS 1000
-+#define HPD_DETECTION_TIME_uS 100000
+@@ -1174,7 +1174,7 @@ main_spi1: spi@2110000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 267 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 267 1>;
++		clocks = <&k3_clks 267 4>;
+ 		status = "disabled";
+ 	};
  
- void amdgpu_dm_crtc_handle_vblank(struct amdgpu_crtc *acrtc)
- {
+@@ -1185,7 +1185,7 @@ main_spi2: spi@2120000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 268 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 268 1>;
++		clocks = <&k3_clks 268 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1196,7 +1196,7 @@ main_spi3: spi@2130000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 269 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 269 1>;
++		clocks = <&k3_clks 269 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1207,7 +1207,7 @@ main_spi4: spi@2140000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 270 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 270 1>;
++		clocks = <&k3_clks 270 2>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1218,7 +1218,7 @@ main_spi5: spi@2150000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 271 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 271 1>;
++		clocks = <&k3_clks 271 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1229,7 +1229,7 @@ main_spi6: spi@2160000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 272 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 272 1>;
++		clocks = <&k3_clks 272 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -1240,7 +1240,7 @@ main_spi7: spi@2170000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 273 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 273 1>;
++		clocks = <&k3_clks 273 4>;
+ 		status = "disabled";
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+index 5097d192c2b20..b18b2f2deb969 100644
+--- a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+@@ -494,7 +494,7 @@ mcu_spi0: spi@40300000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 274 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 274 0>;
++		clocks = <&k3_clks 274 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -505,7 +505,7 @@ mcu_spi1: spi@40310000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 275 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 275 0>;
++		clocks = <&k3_clks 275 4>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -516,7 +516,7 @@ mcu_spi2: spi@40320000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		power-domains = <&k3_pds 276 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 276 0>;
++		clocks = <&k3_clks 276 2>;
+ 		status = "disabled";
+ 	};
+ 
 -- 
 2.43.0
 
