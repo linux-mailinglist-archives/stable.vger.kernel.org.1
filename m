@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B249E25D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FD29E2336
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D935288A02
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B3AF16A53C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5591F76D7;
-	Tue,  3 Dec 2024 16:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B51F75B6;
+	Tue,  3 Dec 2024 15:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5K2PeCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB//VaxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0001F8923;
-	Tue,  3 Dec 2024 16:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755651E3DED;
+	Tue,  3 Dec 2024 15:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241919; cv=none; b=lRQHyGM4nsTQwfUsqEPjqmUaP5qf87fV00Vmfk6pMXiVTGM8QzC8N2EnyTWlcimGNya6icPPlUS8AYpiVGPHGA6Gf1O/DW9F3a750KJ/B4oh6TXHdxTvHHeQ4dopKmScOC7TkGIMQtSH/kAM5hHen9uhUwlfFpk/3NVU1Ty/8Ns=
+	t=1733239742; cv=none; b=c3mN+qqucI07phU6WbkMXXKdfzevxhSztx1CnWC/hZx2Au3REMI9HRpQpN8Ul3thWsMaaI7ulR3febiwwe0My5MciPW5tLICtBKdEFbIdbUIUtlsqJDa2IGmQ9Ef2XOxeJZWj3w5mIrHyPQdF7BGr6s1cJ6j2hdrts7nhKx1nl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241919; c=relaxed/simple;
-	bh=CDDezxI2BV5nd4xaFPYlc5jgz5abV9E1UNLrTjrGL/0=;
+	s=arc-20240116; t=1733239742; c=relaxed/simple;
+	bh=eQFa/wfaRaEwFwuL9oZIFmxS5hnoKhx1NfV0GHfaLO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3+9HWbubyhbprzsQAvVPPO2rjP6ZpQxUJOl0Jrz9SAgfkRouHSI3d1qNdAofep8grJQaEeDvI12JLwpC4c3TbtMsGnK2iWT+bYb4Jq6Nl4o6CDye9YPOGD3xPISpLSJEXViYwnt5fptKtJlLV/UxZ7OkEEoWpSYSS20xPkwx6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5K2PeCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7A5C4CED8;
-	Tue,  3 Dec 2024 16:05:18 +0000 (UTC)
+	 MIME-Version; b=mBHlthq9leG+HSe/4Mg8aYgeJ17EbAmcs3L30mvUWqUaSVlhSHJu+fel5GJBW9LGU1jxqL3TRwixpUNdGx7Dr2zyHS0l2WKRtUCVxbjPq/V+jlSQHlVmTdS7yjo+1Xvz/WYtqK9nf/h6dSdn6esjESC2N04TIMgHfFnpnRVCzwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB//VaxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D35C4CED6;
+	Tue,  3 Dec 2024 15:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241919;
-	bh=CDDezxI2BV5nd4xaFPYlc5jgz5abV9E1UNLrTjrGL/0=;
+	s=korg; t=1733239742;
+	bh=eQFa/wfaRaEwFwuL9oZIFmxS5hnoKhx1NfV0GHfaLO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5K2PeCc+xrOY0kOg1erPqUQu1z7jCUs/PlDJ/8DPQ9GSp85HLS31LVZ3osmdCGgh
-	 2Bnuw3iJywfwPN8jYW5SH+W6Tgs4xqsLcuocbAEIkzdGbVGRNODmXEPuUyXVJ54CBm
-	 Bgy8SF0rQDN69sBy/o3VZsF3UzJRRLqa4wJxfM6I=
+	b=eB//VaxQaftg+YDeOl32hZQQl3aiChCqW2JxslJ+VT2LnsgjJryveZhWv/kq84XWd
+	 k+WLG5mp/qO1P8oIHx+S6T/EMvWMuVQvfXlk/fN/LCP1QUta3QuVahha5/HC0TG5yN
+	 dc52RfXTxIOP04VVBM5zilKqdtD/Ji/koIz+PI8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 555/826] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
-Date: Tue,  3 Dec 2024 15:44:42 +0100
-Message-ID: <20241203144805.396838412@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.11 711/817] um: ubd: Do not use drvdata in release
+Date: Tue,  3 Dec 2024 15:44:43 +0100
+Message-ID: <20241203144023.743466615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
+commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
 
-Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
-memory leak that occurs when the device is unplugged. This ensures
-proper cleanup of pseudo fixed-link PHYs.
+The drvdata is not available in release. Let's just use container_of()
+to get the ubd instance. Otherwise, removing a ubd device will result
+in a crash:
 
-Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
-Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
+RSP: 00000000e2083bf0  EFLAGS: 00010246
+RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
+RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
+RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
+R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
+R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
+Workqueue: events mc_work_proc
+Stack:
+ 00000000 604f7ef0 62c5d000 62405d20
+ e2083c30 6002c776 6002c755 600e47ff
+ e2083c60 6025ffe3 04208060 603d36e0
+Call Trace:
+ [<6002c776>] ubd_device_release+0x21/0x55
+ [<6002c755>] ? ubd_device_release+0x0/0x55
+ [<600e47ff>] ? kfree+0x0/0x100
+ [<6025ffe3>] device_release+0x70/0xba
+ [<60381d6a>] kobject_put+0xb5/0xe2
+ [<6026027b>] put_device+0x19/0x1c
+ [<6026a036>] platform_device_put+0x26/0x29
+ [<6026ac5a>] platform_device_unregister+0x2c/0x2e
+ [<6002c52e>] ubd_remove+0xb8/0xd6
+ [<6002bb74>] ? mconsole_reply+0x0/0x50
+ [<6002b926>] mconsole_remove+0x160/0x1cc
+ [<6002bbbc>] ? mconsole_reply+0x48/0x50
+ [<6003379c>] ? um_set_signals+0x3b/0x43
+ [<60061c55>] ? update_min_vruntime+0x14/0x70
+ [<6006251f>] ? dequeue_task_fair+0x164/0x235
+ [<600620aa>] ? update_cfs_group+0x0/0x40
+ [<603a0e77>] ? __schedule+0x0/0x3ed
+ [<60033761>] ? um_set_signals+0x0/0x43
+ [<6002af6a>] mc_work_proc+0x77/0x91
+ [<600520b4>] process_scheduled_works+0x1af/0x2c3
+ [<6004ede3>] ? assign_work+0x0/0x58
+ [<600527a1>] worker_thread+0x2f7/0x37a
+ [<6004ee3b>] ? set_pf_worker+0x0/0x64
+ [<6005765d>] ? arch_local_irq_save+0x0/0x2d
+ [<60058e07>] ? kthread_exit+0x0/0x3a
+ [<600524aa>] ? worker_thread+0x0/0x37a
+ [<60058f9f>] kthread+0x130/0x135
+ [<6002068e>] new_thread_handler+0x85/0xb6
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/um/drivers/ubd_kern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 094a47b8b97eb..9f191b6ce8215 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2380,6 +2380,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
- 			if (phy_is_pseudo_fixed_link(phydev)) {
- 				fixed_phy_unregister(phydev);
-+				phy_device_free(phydev);
- 			} else {
- 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
- 							     0xfffffff0);
-@@ -4246,8 +4247,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -779,7 +779,7 @@ static int ubd_open_dev(struct ubd *ubd_
  
- 	phy_disconnect(net->phydev);
+ static void ubd_device_release(struct device *dev)
+ {
+-	struct ubd *ubd_dev = dev_get_drvdata(dev);
++	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
  
--	if (phy_is_pseudo_fixed_link(phydev))
-+	if (phy_is_pseudo_fixed_link(phydev)) {
- 		fixed_phy_unregister(phydev);
-+		phy_device_free(phydev);
-+	}
- 
- 	usb_scuttle_anchored_urbs(&dev->deferred);
- 
--- 
-2.43.0
-
+ 	blk_mq_free_tag_set(&ubd_dev->tag_set);
+ 	*ubd_dev = ((struct ubd) DEFAULT_UBD);
 
 
 
