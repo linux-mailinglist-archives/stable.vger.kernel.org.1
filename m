@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A349E28ED
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACFA9E29BD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19BFBA380C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBF17BE2911
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CAF1F6696;
-	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568B01DFE2A;
+	Tue,  3 Dec 2024 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/MLjv4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKrpZmM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA041F76DE;
-	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128211DAC9F;
+	Tue,  3 Dec 2024 15:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238862; cv=none; b=CPyUJpVDpfIyBTAq5AdwpyCNUWhsE4eepcLGx/1uc9yOVRLIEidq8+GqyX+oEOzFyYOj/QL7QutGr/BQrIPtymPOuchPgfY5YJBjQ3AP2A2qQ/+FJfdFkv8UhUOpJqDoXIo3dV9IpUq6IR4pSY31BFze5bqm61BhLH4OTgy3vyI=
+	t=1733241041; cv=none; b=RNQmHciPbPlDXoN/yE4iFhz+pxvGNg+Slzyr90xQ8Hnk8Eb1Dk0oL1AVvAiu9LIkf82vjmFPklzES75V5LtcvsCRkjhtMz5hbCUJuGoWWqBoqjUktyJPjKRUu8RHkj0v1pi6gJ8aLuXOpQT0xndQSca4hStBWDPmLr66bBtkd38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238862; c=relaxed/simple;
-	bh=S/tIqSVhJvLYfnRXc9psqzeQGqH3vTB19+oB44n50AY=;
+	s=arc-20240116; t=1733241041; c=relaxed/simple;
+	bh=eEcnM+6JzH/2xcB/LgrXBa4pi+RbXsrvTwbTklr/eU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UD62698d1KCFK9IhWQ1KSoD/yM7ynmaFE2MoNcq2lYSJ4TVX41FEqYDz47vbsGFCGSe/FtGsmriJUgcrFxfYOtHO6ZNglmkCOT+pqqcslyukotZAK2sKLparIZxEW/xT4xShAKZgWsrISUZq6CY3uceeRpp/oWZ67ythygDtZZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/MLjv4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377C8C4CECF;
-	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
+	 MIME-Version; b=QLgrQa9mUQ4yTxh78W/CpfdLExFlkIyxyF+rcRtUf4s08xk7X/VOpOE5tHDj2dcOighkTAIEMRj8jtfoVebWBSnzaWv0+TTVnYVSw1DLI6/SBYYasJEuCh7Xn9oI1qirX7VhPSNLkWqrxCfN1Y+Z0wBy/sHvoJ7K8TkidKXOTek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKrpZmM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B49C4CED6;
+	Tue,  3 Dec 2024 15:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238862;
-	bh=S/tIqSVhJvLYfnRXc9psqzeQGqH3vTB19+oB44n50AY=;
+	s=korg; t=1733241040;
+	bh=eEcnM+6JzH/2xcB/LgrXBa4pi+RbXsrvTwbTklr/eU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/MLjv4dHYzpHi7/YPR35wV3goAXT4n2p4f81GfUKTed0rlwfaGwXLKDtyDol4vz1
-	 0mSQTV4zuoyr1Dv2Jyfn9mkm0plZsvoZwdkEwFOIDO7OYN0If/UkQoOI4vTu3TQhX8
-	 phq2ma1ip00yjXfuv4Q83oHo7EwkGBg/UEajLHso=
+	b=kKrpZmM++9QgrHiMvuMkGvRgRD/e+Amk7bY0hU2aDV1tIb6w+unxrVvTu0kxWZ9F/
+	 /K6aimDgZY4B3fMbdwrqB/KDbev6hxfT7px9u0PTVgJ+n8y/QUzfVfF7nNtHOIUL9f
+	 Vv1LBR6h5vct3G7tcw8nducyz9zcuiOHTGyg0riQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Vincent Chen <vincent.chen@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 423/817] RISC-V: KVM: Fix APLIC in_clrip and clripnum write emulation
-Date: Tue,  3 Dec 2024 15:39:55 +0100
-Message-ID: <20241203144012.397493109@linuxfoundation.org>
+Subject: [PATCH 6.12 276/826] drm/panfrost: Remove unused id_mask from struct panfrost_model
+Date: Tue,  3 Dec 2024 15:40:03 +0100
+Message-ID: <20241203144754.542656407@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Steven Price <steven.price@arm.com>
 
-[ Upstream commit 60821fb4dd7345e5662094accf0a52845306de8c ]
+[ Upstream commit 581d1f8248550f2b67847e6d84f29fbe3751ea0a ]
 
-In the section "4.7 Precise effects on interrupt-pending bits"
-of the RISC-V AIA specification defines that:
+The id_mask field of struct panfrost_model has never been used.
 
-"If the source mode is Level1 or Level0 and the interrupt domain
-is configured in MSI delivery mode (domaincfg.DM = 1):
-The pending bit is cleared whenever the rectified input value is
-low, when the interrupt is forwarded by MSI, or by a relevant
-write to an in_clrip register or to clripnum."
-
-Update the aplic_write_pending() to match the spec.
-
-Fixes: d8dd9f113e16 ("RISC-V: KVM: Fix APLIC setipnum_le/be write emulation")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20241029085542.30541-1-yongxuan.wang@sifive.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Signed-off-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241025140008.385081-1-steven.price@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/aia_aplic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-index da6ff1bade0df..f59d1c0c8c43a 100644
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -143,7 +143,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
- 	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
- 		if (!pending)
--			goto skip_write_pending;
-+			goto noskip_write_pending;
- 		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
- 		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
- 			goto skip_write_pending;
-@@ -152,6 +152,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 			goto skip_write_pending;
- 	}
- 
-+noskip_write_pending:
- 	if (pending)
- 		irqd->state |= APLIC_IRQ_STATE_PENDING;
- 	else
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index fd8e44992184f..b52dd510e0367 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -177,7 +177,6 @@ static void panfrost_gpu_init_quirks(struct panfrost_device *pfdev)
+ struct panfrost_model {
+ 	const char *name;
+ 	u32 id;
+-	u32 id_mask;
+ 	u64 features;
+ 	u64 issues;
+ 	struct {
 -- 
 2.43.0
 
