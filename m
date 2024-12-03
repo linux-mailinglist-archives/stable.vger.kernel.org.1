@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8CB9E20EC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FB59E211F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2430E282429
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E2B168F2D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7F11F706C;
-	Tue,  3 Dec 2024 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E881F130E;
+	Tue,  3 Dec 2024 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00y3w9H2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYom7K5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885711F130D;
-	Tue,  3 Dec 2024 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3751F7070;
+	Tue,  3 Dec 2024 15:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238324; cv=none; b=J0bf4mPcZsXbsGc8NKFbdynuWBXUr1oGCw1BicRdCnKaNV6SBWIO2jsXiML4GDzA94hU0FTnjszxP2r9BxjARTOXVI/DbFG6jaOA+WpAwrYlTsucIEBNflYTR6WDQKSMCImV4S+AQGDOso4rJVLxIC2UF1SKwQ8USp8ZlQ6I1i8=
+	t=1733238329; cv=none; b=pSbX+MqWlVnrrA1nEXrXSsT5iVfcEg8PKjIKLaUJjFxICELClnwAfZd9yrZ6C7BAP6WSgt7llUPs0mjIFXAz89hBau+BTvxUVStKryoAgDbORTmfyXbXAz31HFfFK1tKs3V+E60i60U6IXWADoMK3oyEA/dks3G2wXEI8q6QfXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238324; c=relaxed/simple;
-	bh=MqknNH7NPJ9Hjeov2x7W0vcCeh07V0JuycNu9JrxP5A=;
+	s=arc-20240116; t=1733238329; c=relaxed/simple;
+	bh=THsQmTLAZN09O8IzC/y5SLltSI7vJonIfOgMfGYxxQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPFV3736733ZSqgRhWHLvz5eix7zct1uyQ7D18mY2an8maENl+10Qx8/BRKzH8qcZ69PMuHi9L/SKImikPhZYr/sQuFrmFLn5suXRogUubPHHAd+egUvHB4mGdx5U4YltZkuDLfgJY1/uxvuG0snAdro6BS/x1SMdt5eAZI8rFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00y3w9H2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DD0C4CECF;
-	Tue,  3 Dec 2024 15:05:23 +0000 (UTC)
+	 MIME-Version; b=Ks9fMUoLcQDpjemWsBQDEki/H5ZG+6S3KoKTlL5t3JAu/Dg0+Lakzfav/AmhYrALU2bbXvjYXFomobkAsFpQR5bChiuv8lce1de2T3UVL8+h7rAhtWyZIqMYbYzjUmYpX88EZh1zg8tjnJ8yTCVsQU2nh555Bf1cl6zw3A+AaQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYom7K5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F0AC4CED6;
+	Tue,  3 Dec 2024 15:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238324;
-	bh=MqknNH7NPJ9Hjeov2x7W0vcCeh07V0JuycNu9JrxP5A=;
+	s=korg; t=1733238329;
+	bh=THsQmTLAZN09O8IzC/y5SLltSI7vJonIfOgMfGYxxQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00y3w9H2mJ5KrkwSJeBg2Q9UzjgfK1HfquflRk6111NNwQ+ZxIm+rj2s7FIe7kI0G
-	 TYc8XS0yqSEEBiD8Blm45lc5mITT35njfxIeynwTOO3kUOqeFCrLwTan8ZDyQgQ1Bk
-	 MNS17L+kfXSIjr9ZT96boHn/jPeKOnRhXyqIq2vg=
+	b=bYom7K5j9M3LXy/2zrNkl6/kGFT5li46+WuJwVhELbm54nrJ7MpuW02JFDoQG3WRk
+	 WckyDPJOQsLkTv83AyuZI4t1XINDkqEn4Pwx/qVmbbtl2CFz61wcgz1QSOfSYYJMzu
+	 UiwI5lauda3UGL2KORdGWIDWouyaSJSZSvb8xRpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Fedrau <dima.fedrau@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 209/817] pwm: Assume a disabled PWM to emit a constant inactive output
-Date: Tue,  3 Dec 2024 15:36:21 +0100
-Message-ID: <20241203144003.905191606@linuxfoundation.org>
+Subject: [PATCH 6.11 211/817] arm64: dts: rockchip: correct analog audio name on Indiedroid Nova
+Date: Tue,  3 Dec 2024 15:36:23 +0100
+Message-ID: <20241203144003.986310192@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -61,73 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit b2eaa1170e45dc18eb09dcc9abafbe9a7502e960 ]
+[ Upstream commit 42d85557527266804579bc5d20c101d93f6be3c6 ]
 
-Some PWM hardwares (e.g. MC33XS2410) cannot implement a zero duty cycle
-but can instead disable the hardware which also results in a constant
-inactive output.
+Correct the audio name for the Indiedroid Nova from
+rockchip,es8388-codec to rockchip,es8388. This name change corrects a
+kernel log error of "ASoC: driver name too long 'rockchip,es8388-codec'
+-> 'rockchip_es8388'".
 
-There are some checks (enabled with CONFIG_PWM_DEBUG) to help
-implementing a driver without violating the normal rounding rules. Make
-them less strict to let above described hardware pass without warning.
-
-Reported-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Link: https://lore.kernel.org/r/20241103205215.GA509903@debian
-Fixes: 3ad1f3a33286 ("pwm: Implement some checks for lowlevel drivers")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Tested-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Link: https://lore.kernel.org/r/20241105153521.1001864-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 3900160e164b ("arm64: dts: rockchip: Add Indiedroid Nova board")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://lore.kernel.org/r/20241031150505.967909-2-macroalpha82@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588s-indiedroid-nova.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 8acbcf5b66739..53c3a76a185ed 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -75,7 +75,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 	    state->duty_cycle < state->period)
- 		dev_warn(pwmchip_parent(chip), ".apply ignored .polarity\n");
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-indiedroid-nova.dts b/arch/arm64/boot/dts/rockchip/rk3588s-indiedroid-nova.dts
+index d8c50fdcca3b5..a4b930f6987f4 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-indiedroid-nova.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-indiedroid-nova.dts
+@@ -62,7 +62,7 @@ sdio_pwrseq: sdio-pwrseq {
  
--	if (state->enabled &&
-+	if (state->enabled && s2.enabled &&
- 	    last->polarity == state->polarity &&
- 	    last->period > s2.period &&
- 	    last->period <= state->period)
-@@ -83,7 +83,11 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 			 ".apply didn't pick the best available period (requested: %llu, applied: %llu, possible: %llu)\n",
- 			 state->period, s2.period, last->period);
- 
--	if (state->enabled && state->period < s2.period)
-+	/*
-+	 * Rounding period up is fine only if duty_cycle is 0 then, because a
-+	 * flat line doesn't have a characteristic period.
-+	 */
-+	if (state->enabled && s2.enabled && state->period < s2.period && s2.duty_cycle)
- 		dev_warn(pwmchip_parent(chip),
- 			 ".apply is supposed to round down period (requested: %llu, applied: %llu)\n",
- 			 state->period, s2.period);
-@@ -99,7 +103,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 			 s2.duty_cycle, s2.period,
- 			 last->duty_cycle, last->period);
- 
--	if (state->enabled && state->duty_cycle < s2.duty_cycle)
-+	if (state->enabled && s2.enabled && state->duty_cycle < s2.duty_cycle)
- 		dev_warn(pwmchip_parent(chip),
- 			 ".apply is supposed to round down duty_cycle (requested: %llu/%llu, applied: %llu/%llu)\n",
- 			 state->duty_cycle, state->period,
+ 	sound {
+ 		compatible = "audio-graph-card";
+-		label = "rockchip,es8388-codec";
++		label = "rockchip,es8388";
+ 		widgets = "Microphone", "Mic Jack",
+ 			  "Headphone", "Headphones";
+ 		routing = "LINPUT2", "Mic Jack",
 -- 
 2.43.0
 
