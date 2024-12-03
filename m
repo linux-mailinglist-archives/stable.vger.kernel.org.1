@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45859E23F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECF69E2434
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DF57B86815
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECC2165B55
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26E81F7584;
-	Tue,  3 Dec 2024 15:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC11200120;
+	Tue,  3 Dec 2024 15:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOCRNAsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEDWddzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1081F130E;
-	Tue,  3 Dec 2024 15:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4D51F12E0;
+	Tue,  3 Dec 2024 15:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238241; cv=none; b=OD/OpetPLWUsOb8O6a5J+IEmEjFGdgULggJ4CBbZjDepIAOoNthyuZWA71oLuKPA3lyl0XFmRlTWm1QR9p/1JOMd2KSl7CYvBpIdP/gx9uzErtVy1Le8rXTI+CLVUq334QdSmkrh6+tFg0rDUBBcbNj3uA1Dz/0z/KkJ+ckS3HM=
+	t=1733240171; cv=none; b=HdUBP9KSnHg4SHagadUig8yIAlfkqBVgUCYMXvTrmbWQ9sLUXBLDU6ctnbL9d2nxwbPijIPDMcC3Hl5kPhOLfIWxkfuwG/mVmHTGakh8SFYmZ2Sf/KZ7ZQ16QZ3l9OWxpSQ3GYek8YsOVSZ8tRy9OPP7BNVJMiwDSan62kV6pAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238241; c=relaxed/simple;
-	bh=Xz8aWCWxwblNrrGWRoqxpjrQ7gjC+r8xroB0hQXyebo=;
+	s=arc-20240116; t=1733240171; c=relaxed/simple;
+	bh=TaUxiZGBN6asaTV4nyhYgyQLqdHDuWJ2K8k42zMdy0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kgBs56BCvOV3j9Dh+I/miL4J5ih5ndXAbmfx5GyORkj0f7n5V+A4o1O1GWMyNgmCAZp/8IdNLCTkIK6g8/dpa2qkjMB1jqkEuNJPuYTS2nr2p0dx6UCeVFInGVXGgF9+8DwZ0wg3ai/FrNAonfoAUMNWsiAEgJldx02tqbCG/i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOCRNAsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DC7C4CECF;
-	Tue,  3 Dec 2024 15:04:00 +0000 (UTC)
+	 MIME-Version; b=AoePmLX9RWIO+lf3kdx7eph97C/YpJF1z8Lvn+Re/fSb3x25qkUndYtcUROVwgqoAt0SYAeKy/7nrPhstFkfB+WqYRigTmlD/tJva/rftMIutYIOE+5XbLZ9Ve+K6UgyNnCxKZlzxqltB1IxXDPKZt1hS9SHIoSAV0zsbb0gjk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEDWddzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556B9C4CECF;
+	Tue,  3 Dec 2024 15:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238241;
-	bh=Xz8aWCWxwblNrrGWRoqxpjrQ7gjC+r8xroB0hQXyebo=;
+	s=korg; t=1733240171;
+	bh=TaUxiZGBN6asaTV4nyhYgyQLqdHDuWJ2K8k42zMdy0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOCRNAsdGsPetOuKJ9PV4/Sq+YErL8J6/eYxO8ogwWko6WT0Mrly/EUr4V0UK6H9B
-	 zUCejRw054a0FwYUEZH3qsOm+7n1QSPmT/9jotVJY9OOvrP4DkxG5q4I9+13Q0nRSw
-	 n0ZVDfHfoMlcNygoQgUd2471NuBTsYPkVggOMaPI=
+	b=mEDWddzImSnu2rfeYofbtdz39fpAznoSeKqdS92i7bQXMvQifjDZN75rbu8Ki4UYw
+	 bkSss4eNn679AgjsQ6okh2i8zIJnLpWvS02tLpOyRuLdXg6YXNATpNhuGvwOn+OMOA
+	 T5cNZf7mUkEOhHKMfZpHkLixJVhup4TVLLJU+m2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	David Thompson <davthompson@nvidia.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 203/817] selftests/resctrl: Protect against array overrun during iMC config parsing
+Subject: [PATCH 6.12 048/826] EDAC/bluefield: Fix potential integer overflow
 Date: Tue,  3 Dec 2024 15:36:15 +0100
-Message-ID: <20241203144003.669334514@linuxfoundation.org>
+Message-ID: <20241203144745.345260696@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 48ed4e799e8fbebae838dca404a8527763d41191 ]
+[ Upstream commit 1fe774a93b46bb029b8f6fa9d1f25affa53f06c6 ]
 
-The MBM and MBA tests need to discover the event and umask with which to
-configure the performance event used to measure read memory bandwidth.
-This is done by parsing the
-/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
-file for each iMC instance that contains the formatted
-output: "event=<event>,umask=<umask>"
+The 64-bit argument for the "get DIMM info" SMC call consists of mem_ctrl_idx
+left-shifted 16 bits and OR-ed with DIMM index.  With mem_ctrl_idx defined as
+32-bits wide the left-shift operation truncates the upper 16 bits of
+information during the calculation of the SMC argument.
 
-Parsing of cas_count_read contents is done by initializing an array of
-MAX_TOKENS elements with tokens (deliminated by "=,") from this file.
-Remove the unnecessary append of a delimiter to the string needing to be
-parsed. Per the strtok() man page: "delimiter bytes at the start or end of
-the string are ignored". This has no impact on the token placement within
-the array.
+The mem_ctrl_idx stack variable must be defined as 64-bits wide to prevent any
+potential integer overflow, i.e. loss of data from upper 16 bits.
 
-After initialization, the actual event and umask is determined by
-parsing the tokens directly following the "event" and "umask" tokens
-respectively.
-
-Iterating through the array up to index "i < MAX_TOKENS" but then
-accessing index "i + 1" risks array overrun during the final iteration.
-Avoid array overrun by ensuring that the index used within for
-loop will always be valid.
-
-Fixes: 1d3f08687d76 ("selftests/resctrl: Read memory bandwidth from perf IMC counter and from resctrl file system")
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 82413e562ea6 ("EDAC, mellanox: Add ECC support for BlueField DDR4")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Link: https://lore.kernel.org/r/20240930151056.10158-1-davthompson@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl_val.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/edac/bluefield_edac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index 8c275f6b4dd77..f118f659e8960 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -83,13 +83,12 @@ void get_event_and_umask(char *cas_count_cfg, int count, bool op)
- 	char *token[MAX_TOKENS];
- 	int i = 0;
- 
--	strcat(cas_count_cfg, ",");
- 	token[0] = strtok(cas_count_cfg, "=,");
- 
- 	for (i = 1; i < MAX_TOKENS; i++)
- 		token[i] = strtok(NULL, "=,");
- 
--	for (i = 0; i < MAX_TOKENS; i++) {
-+	for (i = 0; i < MAX_TOKENS - 1; i++) {
- 		if (!token[i])
- 			break;
- 		if (strcmp(token[i], "event") == 0) {
+diff --git a/drivers/edac/bluefield_edac.c b/drivers/edac/bluefield_edac.c
+index 5b3164560648e..0e539c1073510 100644
+--- a/drivers/edac/bluefield_edac.c
++++ b/drivers/edac/bluefield_edac.c
+@@ -180,7 +180,7 @@ static void bluefield_edac_check(struct mem_ctl_info *mci)
+ static void bluefield_edac_init_dimms(struct mem_ctl_info *mci)
+ {
+ 	struct bluefield_edac_priv *priv = mci->pvt_info;
+-	int mem_ctrl_idx = mci->mc_idx;
++	u64 mem_ctrl_idx = mci->mc_idx;
+ 	struct dimm_info *dimm;
+ 	u64 smc_info, smc_arg;
+ 	int is_empty = 1, i;
 -- 
 2.43.0
 
