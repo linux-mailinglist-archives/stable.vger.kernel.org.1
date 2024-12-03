@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-97690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30239E29F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:49:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760739E294E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3DC7B36CB6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EB6AB62797
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE21F7591;
-	Tue,  3 Dec 2024 15:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F711F75B6;
+	Tue,  3 Dec 2024 15:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6+VriQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qplOnr4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315F71DE8A5;
-	Tue,  3 Dec 2024 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A8C1EF0AE;
+	Tue,  3 Dec 2024 15:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241393; cv=none; b=i+nfan4EjGkOQWd6o8EyvW8YTRHbUsaqu7S7pbqSNXH/CF4Xe1qn7MHM1FmuLyay44sIjONhR/TBqCXiVIu3/AB6+T6uHeqVSqAZ4+7IceCRaz/M7l9/EWqcD6IOrfYX1f5LqdbQ+scCNJN8ibhtuWZtxiExW9cGoobWomyzWUo=
+	t=1733239288; cv=none; b=orbSBoD/dqcT8Y1eKSao4pJtUZtRwccOaKeLWOPhyk3hoSJ8HIR3DVH7mcv3HU3DfLHdR2F1o6MNPbvTRv5a08Bras9XfUX28IXiFu1NgT9lEau5Ra+5HoiZ/gPGB5+5mcbkoozNYRhum43FrQF//y4kAIZ3oLb1T52Lscqc1Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241393; c=relaxed/simple;
-	bh=JFCe6ui0fJM8Wpsf7XsAfpxSkQxuxiaZf3Sk68sE0fk=;
+	s=arc-20240116; t=1733239288; c=relaxed/simple;
+	bh=zs8ILcSfykSA60K89fdWjh/GsV0kaWq3SxOAx9FONgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8w/uD0z+BcjCgPi6txFVrNU+EjkL6n892H7KhZfBIZ7FD9unrutnzkR3tXhrMnoN9PvPZKTNK3+svcQGR8OkNEyTMXZOL1W/JrhqR/4sLh9clNHf6pFhD/zQz8RMkyL9h7+bp0nC/8NH6cAoMux1UhT3wPxviZeygZ6OJghN/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6+VriQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326E3C4CECF;
-	Tue,  3 Dec 2024 15:56:32 +0000 (UTC)
+	 MIME-Version; b=QlaD1gv/x2h3ePoLlwLzCfPfxlHV1ZMHP+C7fOgoJ8R+OhEAz5+2T6pK7gQNH2/SypDYMQfAcsvtfj1ZvVL60r+8aHuh7UAFHm2ACVKHvA5mQM+tDE12smrfFrEuvxB4wpayOQlbtX4gxhIPXn8fZzMI4RDuITV/Sdx31LhL2pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qplOnr4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF23C4CED6;
+	Tue,  3 Dec 2024 15:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241392;
-	bh=JFCe6ui0fJM8Wpsf7XsAfpxSkQxuxiaZf3Sk68sE0fk=;
+	s=korg; t=1733239288;
+	bh=zs8ILcSfykSA60K89fdWjh/GsV0kaWq3SxOAx9FONgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6+VriQkxMXc9wjyO5Kfq4N0wDU93DoNf06vj6BG5H1wJulSVf9dMoerjrCftC5vB
-	 H8Rm2JJ5UiVJjvZEoBJc4H1MlFVNuLlu6qwvpSbxnqpz9K6I6bQDz9OAa/Pnx9DFQa
-	 ZUwJ3glwxgVlbufY0Z53lcuedtimQVxMOvWQgE8U=
+	b=qplOnr4Vwbk043yvyKGZ3YKeBagF2IGicFHu58sL1hKq62c02WYaM9X45gAucdFmV
+	 AP6Flk/ImToJzsUX+k+naBtSVrfYUNSyRtiVFZF1dZ1fG0IZLDz6C+XAOtetqH1KwZ
+	 PU+k70s5dPgNDjVy4n1nBHAzsoAotRGDAuHFfWX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Kyle Tso <kyletso@google.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 405/826] clk: imx: lpcg-scu: SW workaround for errata (e10858)
-Date: Tue,  3 Dec 2024 15:42:12 +0100
-Message-ID: <20241203144759.559757837@linuxfoundation.org>
+Subject: [PATCH 6.11 562/817] power: supply: core: Remove might_sleep() from power_supply_put()
+Date: Tue,  3 Dec 2024 15:42:14 +0100
+Message-ID: <20241203144017.846852279@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 5ee063fac85656bea9cfe3570af147ba1701ba18 ]
+[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
 
-Back-to-back LPCG writes can be ignored by the LPCG register due to
-a HW bug. The writes need to be separated by at least 4 cycles of
-the gated clock. See https://www.nxp.com.cn/docs/en/errata/IMX8_1N94W.pdf
+The put_device() call in power_supply_put() may call
+power_supply_dev_release(). The latter function does not sleep so
+power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
+call from power_supply_put(). This patch suppresses false positive
+complaints about calling a sleeping function from atomic context if
+power_supply_put() is called from atomic context.
 
-The workaround is implemented as follows:
-1. For clocks running greater than or equal to 24MHz, a read
-followed by the write will provide sufficient delay.
-2. For clocks running below 24MHz, add a delay of 4 clock cylces
-after the write to the LPCG register.
-
-Fixes: 2f77296d3df9 ("clk: imx: add lpcg clock support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-1-89152574d1d7@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Cc: Kyle Tso <kyletso@google.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-lpcg-scu.c | 37 ++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/power/supply/power_supply_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-lpcg-scu.c b/drivers/clk/imx/clk-lpcg-scu.c
-index dd5abd09f3e20..620afdf8dc03e 100644
---- a/drivers/clk/imx/clk-lpcg-scu.c
-+++ b/drivers/clk/imx/clk-lpcg-scu.c
-@@ -6,10 +6,12 @@
- 
- #include <linux/bits.h>
- #include <linux/clk-provider.h>
-+#include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/units.h>
- 
- #include "clk-scu.h"
- 
-@@ -41,6 +43,29 @@ struct clk_lpcg_scu {
- 
- #define to_clk_lpcg_scu(_hw) container_of(_hw, struct clk_lpcg_scu, hw)
- 
-+/* e10858 -LPCG clock gating register synchronization errata */
-+static void lpcg_e10858_writel(unsigned long rate, void __iomem *reg, u32 val)
-+{
-+	writel(val, reg);
-+
-+	if (rate >= 24 * HZ_PER_MHZ || rate == 0) {
-+		/*
-+		 * The time taken to access the LPCG registers from the AP core
-+		 * through the interconnect is longer than the minimum delay
-+		 * of 4 clock cycles required by the errata.
-+		 * Adding a readl will provide sufficient delay to prevent
-+		 * back-to-back writes.
-+		 */
-+		readl(reg);
-+	} else {
-+		/*
-+		 * For clocks running below 24MHz, wait a minimum of
-+		 * 4 clock cycles.
-+		 */
-+		ndelay(4 * (DIV_ROUND_UP(1000 * HZ_PER_MHZ, rate)));
-+	}
-+}
-+
- static int clk_lpcg_scu_enable(struct clk_hw *hw)
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index b43c2557241e7..06ce24abbe77f 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -483,8 +483,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
+  */
+ void power_supply_put(struct power_supply *psy)
  {
- 	struct clk_lpcg_scu *clk = to_clk_lpcg_scu(hw);
-@@ -57,7 +82,8 @@ static int clk_lpcg_scu_enable(struct clk_hw *hw)
- 		val |= CLK_GATE_SCU_LPCG_HW_SEL;
- 
- 	reg |= val << clk->bit_idx;
--	writel(reg, clk->reg);
-+
-+	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
- 
- 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
- 
-@@ -74,7 +100,7 @@ static void clk_lpcg_scu_disable(struct clk_hw *hw)
- 
- 	reg = readl_relaxed(clk->reg);
- 	reg &= ~(CLK_GATE_SCU_LPCG_MASK << clk->bit_idx);
--	writel(reg, clk->reg);
-+	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
- 
- 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
- }
-@@ -145,13 +171,8 @@ static int __maybe_unused imx_clk_lpcg_scu_resume(struct device *dev)
- {
- 	struct clk_lpcg_scu *clk = dev_get_drvdata(dev);
- 
--	/*
--	 * FIXME: Sometimes writes don't work unless the CPU issues
--	 * them twice
--	 */
+-	might_sleep();
 -
--	writel(clk->state, clk->reg);
- 	writel(clk->state, clk->reg);
-+	lpcg_e10858_writel(0, clk->reg, clk->state);
- 	dev_dbg(dev, "restore lpcg state 0x%x\n", clk->state);
- 
- 	return 0;
+ 	atomic_dec(&psy->use_cnt);
+ 	put_device(&psy->dev);
+ }
 -- 
 2.43.0
 
