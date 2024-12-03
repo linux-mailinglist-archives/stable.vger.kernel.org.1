@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E14D9E265B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB60F9E265E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8A3288F5E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB94288914
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCF41F8909;
-	Tue,  3 Dec 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63981F76D5;
+	Tue,  3 Dec 2024 16:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVn1FJ63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbhgjBpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA871E3DF9;
-	Tue,  3 Dec 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CD31E3DF9;
+	Tue,  3 Dec 2024 16:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242333; cv=none; b=rMqC1HwdBGgVy+sq5uF5pEBPywMlMFAh5K6ThH1PAmXO49K6TOa6K0gpLJeLV9S9ZnAjcFk+sBjRCtioy5lErD4tl6kc8JC7YSgYxY9LwQlFRFFDU4E0+BwwJT0wdUwCp0OdU5x4JeMb55UcNJpssxchgLSxKldgFfZ+HsOpRMc=
+	t=1733242344; cv=none; b=oy0+n2/KOvzMJF1zzG7+VJIJLooF5BN4vW5DBkrm5JQGB20+0zyRpsuYfKm6Zv3lPQma8c4YbzlMiwafUFoENG5GfGOKpA4WSHSLnyGW0bhj2mQV0BMj0lhcoY9HlaDIyfZONaM92B1vgg5mLYt5/cGoPAjFUHeKTh5XvFpZzAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242333; c=relaxed/simple;
-	bh=Vbh0QBm8JFEvxk87oSym+zFi8IS7KaoPNkTSaG9MH8U=;
+	s=arc-20240116; t=1733242344; c=relaxed/simple;
+	bh=JoCh0g+u6T4wFMS+mCi+ey0uloxgeXS9JjQ02e8tJE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kknqO07XIG+6EvcWx3pOfcPFbIX8iCpQE2nR+w+weqGhrOUWJDK0BFVM3kMT+FHph6tWl0Rab4Wp8GaxSAL2i3dGP/fbhM4gFCpUITMky2KPN85C4nl/ilcCaqXoLElV93TrKxIX4hXgs/3Zi8O/oYra2eaqtvHPuFPp0m4JoZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVn1FJ63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21EAC4CECF;
-	Tue,  3 Dec 2024 16:12:12 +0000 (UTC)
+	 MIME-Version; b=JiLjhyNQLx6pufkLtsFhC2S30x20xMNmhJYTrHTw1l+IYzQGF+6vJo+JcJv1indp/rY+M6xJhYn77Rh6bcUUX4qiUanj+ofFXUgWvNKkiRZTIzzdvmcCg7p7/vfQaovqkj3tV7kI9UNTpHhbK2NDFvO+SPPIRnigyrOiMSthMvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbhgjBpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A310DC4CECF;
+	Tue,  3 Dec 2024 16:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242333;
-	bh=Vbh0QBm8JFEvxk87oSym+zFi8IS7KaoPNkTSaG9MH8U=;
+	s=korg; t=1733242344;
+	bh=JoCh0g+u6T4wFMS+mCi+ey0uloxgeXS9JjQ02e8tJE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVn1FJ63dG/KZyCNadvqqWZccsJxR32QvXeGD1gV7dnwXNWhNHyb1tK1xVBAAxifm
-	 1W7WKGWpE5KWL4DNAJqAQgGMaWsa/kx9AMgMI2/ZTwkPjsC/lUJkG4yl1ZSGKcegT+
-	 EMhTJRH2zrRgeMQRb75xfPwbMWb/Kk7BW4Ljqgbo=
+	b=EbhgjBpRwstQqiZMr6scfyECHKth2PyjgR6BNztY2ptMJJPzTvIudHiZEc2jJlaNB
+	 Uy66Jn4wbFWRqwNDDm2UYQsdLn2ZLsWE/SXwJvrHtqqnEdiZUE9kMgPIjfOCRMVjzo
+	 2Y/qDT6qyw0PKKTf6npaDfYffyTVPvvvnFG5xD1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 675/826] xhci: Dont issue Reset Device command to Etron xHCI host
-Date: Tue,  3 Dec 2024 15:46:42 +0100
-Message-ID: <20241203144810.084040164@linuxfoundation.org>
+Subject: [PATCH 6.12 677/826] usb: xhci: Limit Stop Endpoint retries
+Date: Tue,  3 Dec 2024 15:46:44 +0100
+Message-ID: <20241203144810.163125261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,98 +65,139 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 76d98856b1c6d06ce18f32c20527a4f9d283e660 upstream.
+commit 42b7581376015c1bbcbe5831f043cd0ac119d028 upstream.
 
-Sometimes the hub driver does not recognize the USB device connected
-to the external USB2.0 hub when the system resumes from S4.
+Some host controllers fail to atomically transition an endpoint to the
+Running state on a doorbell ring and enter a hidden "Restarting" state,
+which looks very much like Stopped, with the important difference that
+it will spontaneously transition to Running anytime soon.
 
-After the SetPortFeature(PORT_RESET) request is completed, the hub
-driver calls the HCD reset_device callback, which will issue a Reset
-Device command and free all structures associated with endpoints
-that were disabled.
+A Stop Endpoint command queued in the Restarting state typically fails
+with Context State Error and the completion handler sees the Endpoint
+Context State as either still Stopped or already Running. Even a case
+of Halted was observed, when an error occurred right after the restart.
 
-This happens when the xHCI driver issue a Reset Device command to
-inform the Etron xHCI host that the USB device associated with a
-device slot has been reset. Seems that the Etron xHCI host can not
-perform this command correctly, affecting the USB device.
+The Halted state is already recovered from by resetting the endpoint.
+The Running state is handled by retrying Stop Endpoint.
 
-To work around this, the xHCI driver should obtain a new device slot
-with reference to commit 651aaf36a7d7 ("usb: xhci: Handle USB transaction
-error on address command"), which is another way to inform the Etron
-xHCI host that the USB device has been reset.
+The Stopped state was recognized as a problem on NEC controllers and
+worked around also by retrying, because the endpoint soon restarts and
+then stops for good. But there is a risk: the command may fail if the
+endpoint is "stopped for good" already, and retries will fail forever.
 
-Add a new XHCI_ETRON_HOST quirk flag to invoke the workaround in
-xhci_discover_or_reset_device().
+The possibility of this was not realized at the time, but a number of
+cases were discovered later and reproduced. Some proved difficult to
+deal with, and it is outright impossible to predict if an endpoint may
+fail to ever start at all due to a hardware bug. One such bug (albeit
+on ASM3142, not on NEC) was found to be reliably triggered simply by
+toggling an AX88179 NIC up/down in a tight loop for a few seconds.
 
-Fixes: 2a8f82c4ceaf ("USB: xhci: Notify the xHC when a device is reset.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+An endless retries storm is quite nasty. Besides putting needless load
+on the xHC and CPU, it causes URBs never to be given back, paralyzing
+the device and connection/disconnection logic for the whole bus if the
+device is unplugged. User processes waiting for URBs become unkillable,
+drivers and kworker threads lock up and xhci_hcd cannot be reloaded.
+
+For peace of mind, impose a timeout on Stop Endpoint retries in this
+case. If they don't succeed in 100ms, consider the endpoint stopped
+permanently for some reason and just give back the unlinked URBs. This
+failure case is rare already and work is under way to make it rarer.
+
+Start this work today by also handling one simple case of race with
+Reset Endpoint, because it costs just two lines to implement.
+
+Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-19-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20241106101459.775897-32-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    1 +
- drivers/usb/host/xhci.c     |   19 +++++++++++++++++++
- drivers/usb/host/xhci.h     |    1 +
- 3 files changed, 21 insertions(+)
+ drivers/usb/host/xhci-ring.c |   28 ++++++++++++++++++++++++----
+ drivers/usb/host/xhci.c      |    2 ++
+ drivers/usb/host/xhci.h      |    1 +
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -397,6 +397,7 @@ static void xhci_pci_quirks(struct devic
- 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
- 	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
- 	     pdev->device == PCI_DEVICE_ID_EJ188)) {
-+		xhci->quirks |= XHCI_ETRON_HOST;
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -52,6 +52,7 @@
+  *   endpoint rings; it generates events on the event ring for these.
+  */
+ 
++#include <linux/jiffies.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/dma-mapping.h>
+@@ -1151,16 +1152,35 @@ static void xhci_handle_cmd_stop_ep(stru
+ 			return;
+ 		case EP_STATE_STOPPED:
+ 			/*
+-			 * NEC uPD720200 sometimes sets this state and fails with
+-			 * Context Error while continuing to process TRBs.
+-			 * Be conservative and trust EP_CTX_STATE on other chips.
++			 * Per xHCI 4.6.9, Stop Endpoint command on a Stopped
++			 * EP is a Context State Error, and EP stays Stopped.
++			 *
++			 * But maybe it failed on Halted, and somebody ran Reset
++			 * Endpoint later. EP state is now Stopped and EP_HALTED
++			 * still set because Reset EP handler will run after us.
++			 */
++			if (ep->ep_state & EP_HALTED)
++				break;
++			/*
++			 * On some HCs EP state remains Stopped for some tens of
++			 * us to a few ms or more after a doorbell ring, and any
++			 * new Stop Endpoint fails without aborting the restart.
++			 * This handler may run quickly enough to still see this
++			 * Stopped state, but it will soon change to Running.
++			 *
++			 * Assume this bug on unexpected Stop Endpoint failures.
++			 * Keep retrying until the EP starts and stops again, on
++			 * chips where this is known to help. Wait for 100ms.
+ 			 */
+ 			if (!(xhci->quirks & XHCI_NEC_HOST))
+ 				break;
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+-			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
++			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
++					GET_EP_CTX_STATE(ep_ctx));
+ 
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
 --- a/drivers/usb/host/xhci.c
 +++ b/drivers/usb/host/xhci.c
-@@ -3692,6 +3692,8 @@ void xhci_free_device_endpoint_resources
- 				xhci->num_active_eps);
- }
+@@ -8,6 +8,7 @@
+  * Some code borrowed from the Linux EHCI driver.
+  */
  
-+static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev);
-+
- /*
-  * This submits a Reset Device Command, which will set the device state to 0,
-  * set the device address to 0, and disable all the endpoints except the default
-@@ -3762,6 +3764,23 @@ static int xhci_discover_or_reset_device
- 						SLOT_STATE_DISABLED)
- 		return 0;
- 
-+	if (xhci->quirks & XHCI_ETRON_HOST) {
-+		/*
-+		 * Obtaining a new device slot to inform the xHCI host that
-+		 * the USB device has been reset.
-+		 */
-+		ret = xhci_disable_slot(xhci, udev->slot_id);
-+		xhci_free_virt_device(xhci, udev->slot_id);
-+		if (!ret) {
-+			ret = xhci_alloc_dev(hcd, udev);
-+			if (ret == 1)
-+				ret = 0;
-+			else
-+				ret = -EINVAL;
-+		}
-+		return ret;
-+	}
-+
- 	trace_xhci_discover_or_reset_device(slot_ctx);
- 
- 	xhci_dbg(xhci, "Resetting device with slot ID %u\n", slot_id);
++#include <linux/jiffies.h>
+ #include <linux/pci.h>
+ #include <linux/iommu.h>
+ #include <linux/iopoll.h>
+@@ -1777,6 +1778,7 @@ static int xhci_urb_dequeue(struct usb_h
+ 			ret = -ENOMEM;
+ 			goto done;
+ 		}
++		ep->stop_time = jiffies;
+ 		ep->ep_state |= EP_STOP_CMD_PENDING;
+ 		xhci_queue_stop_endpoint(xhci, command, urb->dev->slot_id,
+ 					 ep_index, 0);
 --- a/drivers/usb/host/xhci.h
 +++ b/drivers/usb/host/xhci.h
-@@ -1624,6 +1624,7 @@ struct xhci_hcd {
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
-+#define XHCI_ETRON_HOST	BIT_ULL(49)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
+@@ -690,6 +690,7 @@ struct xhci_virt_ep {
+ 	/* Bandwidth checking storage */
+ 	struct xhci_bw_info	bw_info;
+ 	struct list_head	bw_endpoint_list;
++	unsigned long		stop_time;
+ 	/* Isoch Frame ID checking storage */
+ 	int			next_frame_id;
+ 	/* Use new Isoch TRB layout needed for extended TBC support */
 
 
 
