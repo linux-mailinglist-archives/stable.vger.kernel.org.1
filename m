@@ -1,182 +1,245 @@
-Return-Path: <stable+bounces-98168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC429E2D04
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:27:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B004D9E2D38
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EBEF2814AF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E0D2825DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B8F205AD6;
-	Tue,  3 Dec 2024 20:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CFB189F56;
+	Tue,  3 Dec 2024 20:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="nNiAQJL4"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gTLWXnnR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5DA205AB4
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 20:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BD21DB34E;
+	Tue,  3 Dec 2024 20:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733257648; cv=none; b=cVwHNXZ1HDh7SksnBBsidZrpa4ORLQLJ8SAOijYtmDmMcy5UfzY9hElw5CIbC0GsZz6j0IY3qN4XhHJvCp+SIsm+XWn78IHYwIlTbpIyyjbEZ4k8NT4oSt4ti+2imTmGWr/VAM4R8Je8jQrNkRL9ndfPlqi7QxuzQY966LNA4b4=
+	t=1733258174; cv=none; b=WJEICjFaSumciJuHLNysgZPDScIS9afielHPTvbaBZOXhC1LsB2mCVVR3mltBA1X9zPBQnS3w327dgrfgeoULBQYfdk8AHLQJQWv18KF55ehTwHITISY89mbvzvvFQb2onLSEkGAZ8/a87za5CXb4ZVPQdGznDI1k84aJLbtOb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733257648; c=relaxed/simple;
-	bh=0nDNLU0QqS5naP5m8r89FpLO0RTYBNZNYYgROoCW2E4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RyJufET/gAUGVinLp5N145OOK9vusRoplAzcelgZjIizKpWVKwuDBzXfjFD4oGdDgR+MghryFBqpP0ORxpd2ZZLOLjqf+9pPTimotMfYvO3631XcGDnjVcJEJpu2O7zEWzeBzN8LfTzXHslAtdK4LlJLxHt+g5CQ0cX4k947p9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=nNiAQJL4; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53e152731d0so167275e87.0
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 12:27:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733257644; x=1733862444; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7mYLgWRx19EhLntfJHR6XQME2VsuqQ9Oja4sZu+CCPU=;
-        b=nNiAQJL4p+XXcPHhKsKcXMuphD045MyRDvwWnS9DrTSuLUN6ICTydZFDjwW0NnAqEY
-         cipiFgIXuYy7LiQ1auwrxAsLmFFBEEyCnRfEd/ekA8+Dkx7lrYm+YEllUxFjQZWRk9hk
-         0CRZ253H0zxmBFOHVYiYWY9rFiQi6MP4q+Bnqkx15UzhhxKvioKMAQq+1qVKfPuPReGT
-         qfcpBsPRxLcchlb6btpNMU68bNfOU4wOUdYMUi1MCxkB70sMY6fmH1xdoTTzfGqrKoMT
-         y332dbJc3Dj5IBsH3tsbTCJcOctC5Uj0649Q5P28ju3R2mQCIsWs4jfC/NYJuzInzMjI
-         WaUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733257644; x=1733862444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7mYLgWRx19EhLntfJHR6XQME2VsuqQ9Oja4sZu+CCPU=;
-        b=xUfS1Ei+RbCaRTbL9mpuXT5N4nigpsFiR6cbBoNJUVE6fB2K21XNRgRnZnM9YWOV3m
-         ++d2aJk9DnbCyWMvQElTJ6jPY4cKl1wkgo7f2c+CRgnNaf9+czE5FPAGt4MIKxjLzsVf
-         QhWlHkGc2iE1qu57DzfbdDa/0W37NMVvanI99nfFZ2lGp4OhygZ9tTCgZC6pq+GNS6J4
-         cTDMUium6L+W8r3K4dfc9+i3NwaKN+cyc3EA5liOd7SW7hXvRRJPIztffqsqTNPaxJA0
-         DRWvVSBPd5ZSfsclvIfKmreJQkHpQogw4EralAM2RSYmpm9R7fWRvNU2ws0pFiLdiCZS
-         783g==
-X-Forwarded-Encrypted: i=1; AJvYcCUIo2Ly1GfIEdevaCc7nSzvy+L/MMsmCmhEWUvu0DbQ+GSyKT1vLUROvVpd+yeV+m5RpSHiUY8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc+QopdLL/gmf3jXcYGGJM/4aqa04it/zoAhARiCMVipjkqCJL
-	YBsQ6JtvTeWUwyCqVRf/6HmrG/bcHCLKM0pQu/qmFiAF4IGurb5RPRhDtpCxeJItG+zon5CiIZL
-	XfHTVipXNwCPRpsk3ImSb+NDnZc/IT8MnxUjTdCTFy20BRiBi3+4=
-X-Gm-Gg: ASbGncsvGgLM0L3iESOYefB/X0RRgQOUT/42wrFoLr6oZdXA+BIO7fuhIg/YPx5/P6Y
-	jpjpNA4M8FQgB0fSzMb63lgHRlK47IVA=
-X-Google-Smtp-Source: AGHT+IHTJDxVt4kVp1R1qLjhVx/yNmiNeG07rAAd6X/haudry/By7fRJmRzYReE4NmWiWYuDtOH6tXvmTboOfqMnWHw=
-X-Received: by 2002:a05:6512:3f06:b0:53d:dfbd:3e68 with SMTP id
- 2adb3069b0e04-53e12db7668mr1445334e87.7.1733257644249; Tue, 03 Dec 2024
- 12:27:24 -0800 (PST)
+	s=arc-20240116; t=1733258174; c=relaxed/simple;
+	bh=4Waxk1OrNO6GTFs5DQaMfzgQ3SOLEn10SlKSkxh4Wqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A1ouv4HwwpJiNwBBtTMd1dxxxwIj/DgSQWnAJkxIoqIaxteAGiktmQDEk5IwNT7uat2411Tla86cs0q7x1/4zHxhbU7U+Ojhb28TCQrMx6T15ZqlFfKZE+J1PhpyPdv1qVWr9tlVBE8WXmZgryi41Rwv50KAWEOZVaxrV2nLYPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gTLWXnnR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 64865670;
+	Tue,  3 Dec 2024 21:35:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733258141;
+	bh=4Waxk1OrNO6GTFs5DQaMfzgQ3SOLEn10SlKSkxh4Wqw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gTLWXnnRHlD/aULJBcJfMgCX1Aiwui4OhNloCG5ZGnfFARmqFxHR5mzxT6hbVfzpH
+	 EYHQ7g3jUTm3SBXv6E2+ToDBIuzzix6Tgx8XzJ+PfyrXFc0rmGvwc+6PR5VdxyWliP
+	 Ybne+jhjC04jfD25h2XPbWrp4bBXafcWw6U5wv40=
+Date: Tue, 3 Dec 2024 22:35:57 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] media: uvcvideo: Remove dangling pointers
+Message-ID: <20241203203557.GC5196@pendragon.ideasonboard.com>
+References: <20241202-uvc-fix-async-v5-0-6658c1fe312b@chromium.org>
+ <20241202-uvc-fix-async-v5-2-6658c1fe312b@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203180553.16893-1-ebiggers@kernel.org>
-In-Reply-To: <20241203180553.16893-1-ebiggers@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 3 Dec 2024 21:27:13 +0100
-Message-ID: <CAMRc=MfMoZHW5qea4AkftGt=nZJGgBDF_Ws+ESVXmyA=cV_ECw@mail.gmail.com>
-Subject: Re: [PATCH] crypto: qce - fix priority to be less than ARMv8 CE
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Thara Gopinath <thara.gopinath@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241202-uvc-fix-async-v5-2-6658c1fe312b@chromium.org>
 
-On Tue, Dec 3, 2024 at 7:06=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> w=
-rote:
->
-> From: Eric Biggers <ebiggers@google.com>
->
-> As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
-> on the CPU, and is also less well tested, give it a lower priority.
-> Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
-> equivalents, and the ciphers such as AES-XTS had the same priority which
-> meant the QCE versions were chosen if they happened to be loaded later.
->
-> Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+Hi Ricardo,
+
+Thank you for the patch.
+
+On Mon, Dec 02, 2024 at 02:24:36PM +0000, Ricardo Ribalda wrote:
+> When an async control is written, we copy a pointer to the file handle
+> that started the operation. That pointer will be used when the device is
+> done. Which could be anytime in the future.
+> 
+> If the user closes that file descriptor, its structure will be freed,
+> and there will be one dangling pointer per pending async control, that
+> the driver will try to use.
+> 
+> Clean all the dangling pointers during release().
+> 
+> To avoid adding a performance penalty in the most common case (no async
+> operation), a counter has been introduced with some logic to make sure
+> that it is properly handled.
+> 
 > Cc: stable@vger.kernel.org
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Thara Gopinath <thara.gopinath@gmail.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > ---
->  drivers/crypto/qce/aead.c     | 2 +-
->  drivers/crypto/qce/sha.c      | 2 +-
->  drivers/crypto/qce/skcipher.c | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/crypto/qce/aead.c b/drivers/crypto/qce/aead.c
-> index 7d811728f047..97b56e92ea33 100644
-> --- a/drivers/crypto/qce/aead.c
-> +++ b/drivers/crypto/qce/aead.c
-> @@ -784,11 +784,11 @@ static int qce_aead_register_one(const struct qce_a=
-ead_def *def, struct qce_devi
->         alg->encrypt                    =3D qce_aead_encrypt;
->         alg->decrypt                    =3D qce_aead_decrypt;
->         alg->init                       =3D qce_aead_init;
->         alg->exit                       =3D qce_aead_exit;
->
-> -       alg->base.cra_priority          =3D 300;
-> +       alg->base.cra_priority          =3D 275;
->         alg->base.cra_flags             =3D CRYPTO_ALG_ASYNC |
->                                           CRYPTO_ALG_ALLOCATES_MEMORY |
->                                           CRYPTO_ALG_KERN_DRIVER_ONLY |
->                                           CRYPTO_ALG_NEED_FALLBACK;
->         alg->base.cra_ctxsize           =3D sizeof(struct qce_aead_ctx);
-> diff --git a/drivers/crypto/qce/sha.c b/drivers/crypto/qce/sha.c
-> index fc72af8aa9a7..71b748183cfa 100644
-> --- a/drivers/crypto/qce/sha.c
-> +++ b/drivers/crypto/qce/sha.c
-> @@ -480,11 +480,11 @@ static int qce_ahash_register_one(const struct qce_=
-ahash_def *def,
->         else if (IS_SHA256(def->flags))
->                 tmpl->hash_zero =3D sha256_zero_message_hash;
->
->         base =3D &alg->halg.base;
->         base->cra_blocksize =3D def->blocksize;
-> -       base->cra_priority =3D 300;
-> +       base->cra_priority =3D 175;
->         base->cra_flags =3D CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONL=
-Y;
->         base->cra_ctxsize =3D sizeof(struct qce_sha_ctx);
->         base->cra_alignmask =3D 0;
->         base->cra_module =3D THIS_MODULE;
->         base->cra_init =3D qce_ahash_cra_init;
-> diff --git a/drivers/crypto/qce/skcipher.c b/drivers/crypto/qce/skcipher.=
-c
-> index 5b493fdc1e74..ffb334eb5b34 100644
-> --- a/drivers/crypto/qce/skcipher.c
-> +++ b/drivers/crypto/qce/skcipher.c
-> @@ -459,11 +459,11 @@ static int qce_skcipher_register_one(const struct q=
-ce_skcipher_def *def,
->                                           IS_DES(def->flags) ? qce_des_se=
-tkey :
->                                           qce_skcipher_setkey;
->         alg->encrypt                    =3D qce_skcipher_encrypt;
->         alg->decrypt                    =3D qce_skcipher_decrypt;
->
-> -       alg->base.cra_priority          =3D 300;
-> +       alg->base.cra_priority          =3D 275;
->         alg->base.cra_flags             =3D CRYPTO_ALG_ASYNC |
->                                           CRYPTO_ALG_ALLOCATES_MEMORY |
->                                           CRYPTO_ALG_KERN_DRIVER_ONLY;
->         alg->base.cra_ctxsize           =3D sizeof(struct qce_cipher_ctx)=
-;
->         alg->base.cra_alignmask         =3D 0;
->
-> base-commit: ceb8bf2ceaa77fe222fe8fe32cb7789c9099ddf1
-> --
-> 2.47.1
->
+>  drivers/media/usb/uvc/uvc_ctrl.c | 52 ++++++++++++++++++++++++++++++++++++++--
+>  drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
+>  drivers/media/usb/uvc/uvcvideo.h |  9 ++++++-
+>  3 files changed, 60 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> index 9a80a7d8e73a..af1e38f5c6e9 100644
+> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> @@ -1579,6 +1579,37 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
+>  	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
+>  }
+>  
+> +static void uvc_ctrl_get_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
+> +{
+> +	lockdep_assert_held(&handle->chain->ctrl_mutex);
+> +
+> +	if (ctrl->handle)
+> +		dev_warn_ratelimited(&handle->stream->dev->udev->dev,
+> +				     "UVC non compliance: Setting an async control with a pending operation.");
+> +
+> +	if (handle == ctrl->handle)
+> +		return;
+> +
+> +	if (ctrl->handle)
+> +		ctrl->handle->pending_async_ctrls--;
+> +
+> +	ctrl->handle = handle;
+> +	handle->pending_async_ctrls++;
+> +}
+> +
+> +static void uvc_ctrl_put_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
+> +{
+> +	lockdep_assert_held(&handle->chain->ctrl_mutex);
+> +
+> +	if (ctrl->handle != handle) /* Nothing to do here.*/
+> +		return;
+> +
+> +	ctrl->handle = NULL;
+> +	if (WARN_ON(!handle->pending_async_ctrls))
+> +		return;
+> +	handle->pending_async_ctrls--;
+> +}
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+get/put have strong connotations in the kernel, related to acquiring a
+reference to a given object, and releasing it. The usage here is
+different, and I think it makes the usage below confusing. I prefer the
+original single function.
 
-But the QCE driver will still be worked on due to features that we
-want to support that the CE don't have.
+> +
+>  void uvc_ctrl_status_event(struct uvc_video_chain *chain,
+>  			   struct uvc_control *ctrl, const u8 *data)
+>  {
+> @@ -1589,7 +1620,8 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
+>  	mutex_lock(&chain->ctrl_mutex);
+>  
+>  	handle = ctrl->handle;
+> -	ctrl->handle = NULL;
+> +	if (handle)
+> +		uvc_ctrl_put_handle(handle, ctrl);
+>  
+>  	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
+>  		s32 value = __uvc_ctrl_get_value(mapping, data);
+> @@ -1865,7 +1897,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+>  
+>  		if (!rollback && handle &&
+>  		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+> -			ctrl->handle = handle;
+> +			uvc_ctrl_get_handle(handle, ctrl);
+>  	}
+>  
+>  	return 0;
+> @@ -2774,6 +2806,22 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
+>  	return 0;
+>  }
+>  
+> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
+> +{
+> +	struct uvc_entity *entity;
+> +
+> +	guard(mutex)(&handle->chain->ctrl_mutex);
+> +
+> +	if (!handle->pending_async_ctrls)
+> +		return;
+> +
+> +	list_for_each_entry(entity, &handle->chain->dev->entities, list)
 
-Bart
+	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
+
+> +		for (unsigned int i = 0; i < entity->ncontrols; ++i)
+> +			uvc_ctrl_put_handle(handle, &entity->controls[i]);
+
+	}
+
+> +
+> +	WARN_ON(handle->pending_async_ctrls);
+> +}
+> +
+>  /*
+>   * Cleanup device controls.
+>   */
+> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
+> index 97c5407f6603..b425306a3b8c 100644
+> --- a/drivers/media/usb/uvc/uvc_v4l2.c
+> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
+> @@ -652,6 +652,8 @@ static int uvc_v4l2_release(struct file *file)
+>  
+>  	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
+>  
+> +	uvc_ctrl_cleanup_fh(handle);
+> +
+>  	/* Only free resources if this is a privileged handle. */
+>  	if (uvc_has_privileges(handle))
+>  		uvc_queue_release(&stream->queue);
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 07f9921d83f2..92ecdd188587 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -337,7 +337,11 @@ struct uvc_video_chain {
+>  	struct uvc_entity *processing;		/* Processing unit */
+>  	struct uvc_entity *selector;		/* Selector unit */
+>  
+> -	struct mutex ctrl_mutex;		/* Protects ctrl.info */
+> +	struct mutex ctrl_mutex;		/*
+> +						 * Protects ctrl.info,
+> +						 * ctrl.handle and
+> +						 * uvc_fh.pending_async_ctrls
+> +						 */
+>  
+>  	struct v4l2_prio_state prio;		/* V4L2 priority state */
+>  	u32 caps;				/* V4L2 chain-wide caps */
+> @@ -612,6 +616,7 @@ struct uvc_fh {
+>  	struct uvc_video_chain *chain;
+>  	struct uvc_streaming *stream;
+>  	enum uvc_handle_state state;
+> +	unsigned int pending_async_ctrls;
+>  };
+>  
+>  struct uvc_driver {
+> @@ -797,6 +802,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
+>  int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+>  		      struct uvc_xu_control_query *xqry);
+>  
+> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
+> +
+>  /* Utility functions */
+>  struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
+>  					    u8 epaddr);
+> 
+
+-- 
+Regards,
+
+Laurent Pinchart
 
