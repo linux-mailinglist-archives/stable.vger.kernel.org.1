@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE3E9E25C0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0229E23EB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9540FBA1660
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E73287600
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D3B1F7558;
-	Tue,  3 Dec 2024 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042581F8EF8;
+	Tue,  3 Dec 2024 15:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJpfBRxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZNkmAKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8691F669E;
-	Tue,  3 Dec 2024 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15A61F890C;
+	Tue,  3 Dec 2024 15:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238529; cv=none; b=Ngi1YSH6uYmRVe65XfDq/+XPKDjQ3IDKXLHgoRL2q0UjVbma9c4wgNzDm1o57IhwioC7qHLoUPei7puRwaKxqqJtS0avfgeoPbRAcO4tejyGPsf30ZbNNVMMSkJbTgiXx4PmfW9Gp71XmQsVxu+SIrIpi+lRu3VO8qTEhUVUONo=
+	t=1733240391; cv=none; b=KvFEuuLErirvS6wbk1ljzLf7IQNhLoPtu7ubNUVAh0gFir5T1pII+L3nH7LwTwpaEaSiAtmYTr7NrBjMERqWAT/4RgPWpnxMVaQnxES1DZ4A0NHfcIJ3nVeSrJ7fxus3DihOTjFMJ1XWqV2KBF/GT8IgcRAOBAMCniWO5Qs5SrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238529; c=relaxed/simple;
-	bh=7SEIdVK+9ZHyvXNs9lGBtE0ifn4v39yd8tvU958fWcE=;
+	s=arc-20240116; t=1733240391; c=relaxed/simple;
+	bh=R9wNawVk99ZND58BKT3vI/9+/UoE9rDBeA5/2B9owag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJ8lDrAcLPLGid7UQ0dwmG56YxhsK12AQ5BT3HDLJdDFJIwF2Hwogq6mHZ/J6ByHHj3CDW/ukoJuydhU+pZsiyVhlY7c9+BGh2zR0qRf7KWY7s2yB72iYiQGxKeZvmjq1Et0F4BSSpzJ5d1dnVj2Rgf6PmW6csEwE+jnDdOdNXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJpfBRxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824FFC4CECF;
-	Tue,  3 Dec 2024 15:08:48 +0000 (UTC)
+	 MIME-Version; b=PYheYdaqvUdN6uZoRP7IQi0XG7jZAXDYB3tI5r+gZGaBAklyC7bLEJecFn+1+j2qyUKwI4D7I7AQhFCSmYqGWUOrNX0zZ7meZE+jg+fWhTu0ZJqeNGmS4mUAfkiX7MbtBXYbH2+LKbizsVzCvQNNY80F2cpc4DxnfzFDgY0A5fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZNkmAKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28091C4CECF;
+	Tue,  3 Dec 2024 15:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238528;
-	bh=7SEIdVK+9ZHyvXNs9lGBtE0ifn4v39yd8tvU958fWcE=;
+	s=korg; t=1733240391;
+	bh=R9wNawVk99ZND58BKT3vI/9+/UoE9rDBeA5/2B9owag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJpfBRxph2OlTkNoaFzZBs+DMdL1wt2U6voy3Xgycq2AKhqjJlnErKKlBuWJjcloR
-	 T0WqCmccFHKnwqjbeUzemHNMpcZ7/ooeiLuwgZLTzeWGa7Ry7i/ezRpu99QIAEn714
-	 jYfPqqArLTTHQiYSoWmwmGA/gB7t4ulYj+Z7UwsA=
+	b=OZNkmAKBiOZ6JGtKWMOkZEDrWUBFjIPSTeKSIATrTjZmDlYDKclhAkCFp81mahiUJ
+	 Kuf/23rdsAed0jeF73nZ6Fy7OgA2bQQufSgSH2oyyJhFIHijNYXtJ8B8F9wYlDiU+y
+	 GTnxesv7+riaADnMGkcOXXUfVjnOgs80PlmmPxag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 277/817] selftests/bpf: Fix msg_verify_data in test_sockmap
+Subject: [PATCH 6.12 122/826] tpm: fix signed/unsigned bug when checking event logs
 Date: Tue,  3 Dec 2024 15:37:29 +0100
-Message-ID: <20241203144006.618743235@linuxfoundation.org>
+Message-ID: <20241203144748.503420741@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Gregory Price <gourry@gourry.net>
 
-[ Upstream commit ee9b352ce4650ffc0d8ca0ac373d7c009c7e561e ]
+[ Upstream commit e6d654e9f5a97742cfe794b1c4bb5d3fb2d25e98 ]
 
-Function msg_verify_data should have context of bytes_cnt and k instead of
-assuming they are zero. Otherwise, test_sockmap with data integrity test
-will report some errors. I also fix the logic related to size and index j
+A prior bugfix that fixes a signed/unsigned error causes
+another signed unsigned error.
 
-1/ 6  sockmap::txmsg test passthrough:FAIL
-2/ 6  sockmap::txmsg test redirect:FAIL
-7/12  sockmap::txmsg test apply:FAIL
-10/11  sockmap::txmsg test push_data:FAIL
-11/17  sockmap::txmsg test pull-data:FAIL
-12/ 9  sockmap::txmsg test pop-data:FAIL
-13/ 1  sockmap::txmsg test push/pop data:FAIL
-...
-Pass: 24 Fail: 52
+A situation where log_tbl->size is invalid can cause the
+size passed to memblock_reserve to become negative.
 
-After applying this patch, some of the errors are solved, but for push,
-pull and pop, we may need more fixes to msg_verify_data, added a TODO
+log_size from the main event log is an unsigned int, and
+the code reduces to the following
 
-10/11  sockmap::txmsg test push_data:FAIL
-11/17  sockmap::txmsg test pull-data:FAIL
-12/ 9  sockmap::txmsg test pop-data:FAIL
-...
-Pass: 37 Fail: 15
+u64 value = (int)unsigned_value;
 
-Besides, added a custom errno EDATAINTEGRITY for msg_verify_data, we
-shall not ignore the error in txmsg_cork case.
+This results in sign extension, and the value sent to
+memblock_reserve becomes effectively negative.
 
-Fixes: 753fb2ee0934 ("bpf: sockmap, add msg_peek tests to test_sockmap")
-Fixes: 16edddfe3c5d ("selftests/bpf: test_sockmap, check test failure")
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241012203731.1248619-2-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: be59d57f9806 ("efi/tpm: Fix sanity check of unsigned tbl_size being less than zero")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 30 ++++++++++++++--------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/firmware/efi/tpm.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 3e02d7267de8b..8249f3c1fbd65 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -56,6 +56,8 @@ static void running_handler(int a);
- #define BPF_SOCKHASH_FILENAME "test_sockhash_kern.bpf.o"
- #define CG_PATH "/sockmap"
- 
-+#define EDATAINTEGRITY 2001
-+
- /* global sockets */
- int s1, s2, c1, c2, p1, p2;
- int test_cnt;
-@@ -510,23 +512,25 @@ static int msg_alloc_iov(struct msghdr *msg,
- 	return -ENOMEM;
- }
- 
--static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
-+/* TODO: Add verification logic for push, pull and pop data */
-+static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
-+				 unsigned char *k_p, int *bytes_cnt_p)
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index e8d69bd548f3f..9c3613e6af158 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -40,7 +40,8 @@ int __init efi_tpm_eventlog_init(void)
  {
--	int i, j = 0, bytes_cnt = 0;
--	unsigned char k = 0;
-+	int i, j, bytes_cnt = *bytes_cnt_p;
-+	unsigned char k = *k_p;
+ 	struct linux_efi_tpm_eventlog *log_tbl;
+ 	struct efi_tcg2_final_events_table *final_tbl;
+-	int tbl_size;
++	unsigned int tbl_size;
++	int final_tbl_size;
+ 	int ret = 0;
  
--	for (i = 0; i < msg->msg_iovlen; i++) {
-+	for (i = 0, j = 0; i < msg->msg_iovlen && size; i++, j = 0) {
- 		unsigned char *d = msg->msg_iov[i].iov_base;
- 
- 		/* Special case test for skb ingress + ktls */
- 		if (i == 0 && txmsg_ktls_skb) {
- 			if (msg->msg_iov[i].iov_len < 4)
--				return -EIO;
-+				return -EDATAINTEGRITY;
- 			if (memcmp(d, "PASS", 4) != 0) {
- 				fprintf(stderr,
- 					"detected skb data error with skb ingress update @iov[%i]:%i \"%02x %02x %02x %02x\" != \"PASS\"\n",
- 					i, 0, d[0], d[1], d[2], d[3]);
--				return -EIO;
-+				return -EDATAINTEGRITY;
- 			}
- 			j = 4; /* advance index past PASS header */
- 		}
-@@ -536,7 +540,7 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
- 				fprintf(stderr,
- 					"detected data corruption @iov[%i]:%i %02x != %02x, %02x ?= %02x\n",
- 					i, j, d[j], k - 1, d[j+1], k);
--				return -EIO;
-+				return -EDATAINTEGRITY;
- 			}
- 			bytes_cnt++;
- 			if (bytes_cnt == chunk_sz) {
-@@ -546,6 +550,8 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
- 			size--;
- 		}
+ 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
+@@ -80,26 +81,26 @@ int __init efi_tpm_eventlog_init(void)
+ 		goto out;
  	}
-+	*k_p = k;
-+	*bytes_cnt_p = bytes_cnt;
- 	return 0;
- }
  
-@@ -602,6 +608,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		float total_bytes, txmsg_pop_total;
- 		int fd_flags = O_NONBLOCK;
- 		struct timeval timeout;
-+		unsigned char k = 0;
-+		int bytes_cnt = 0;
- 		fd_set w;
+-	tbl_size = 0;
++	final_tbl_size = 0;
+ 	if (final_tbl->nr_events != 0) {
+ 		void *events = (void *)efi.tpm_final_log
+ 				+ sizeof(final_tbl->version)
+ 				+ sizeof(final_tbl->nr_events);
  
- 		fcntl(fd, fd_flags);
-@@ -696,7 +704,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 						iov_length * cnt :
- 						iov_length * iov_count;
+-		tbl_size = tpm2_calc_event_log_size(events,
+-						    final_tbl->nr_events,
+-						    log_tbl->log);
++		final_tbl_size = tpm2_calc_event_log_size(events,
++							  final_tbl->nr_events,
++							  log_tbl->log);
+ 	}
  
--				errno = msg_verify_data(&msg, recv, chunk_sz);
-+				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
- 				if (errno) {
- 					perror("data verify msg failed");
- 					goto out_errno;
-@@ -704,7 +712,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 				if (recvp) {
- 					errno = msg_verify_data(&msg_peek,
- 								recvp,
--								chunk_sz);
-+								chunk_sz,
-+								&k,
-+								&bytes_cnt);
- 					if (errno) {
- 						perror("data verify msg_peek failed");
- 						goto out_errno;
-@@ -812,7 +822,7 @@ static int sendmsg_test(struct sockmap_options *opt)
- 				s.bytes_sent, sent_Bps, sent_Bps/giga,
- 				s.bytes_recvd, recvd_Bps, recvd_Bps/giga,
- 				peek_flag ? "(peek_msg)" : "");
--		if (err && txmsg_cork)
-+		if (err && err != -EDATAINTEGRITY && txmsg_cork)
- 			err = 0;
- 		exit(err ? 1 : 0);
- 	} else if (rxpid == -1) {
+-	if (tbl_size < 0) {
++	if (final_tbl_size < 0) {
+ 		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
+ 		ret = -EINVAL;
+ 		goto out_calc;
+ 	}
+ 
+ 	memblock_reserve(efi.tpm_final_log,
+-			 tbl_size + sizeof(*final_tbl));
+-	efi_tpm_final_log_size = tbl_size;
++			 final_tbl_size + sizeof(*final_tbl));
++	efi_tpm_final_log_size = final_tbl_size;
+ 
+ out_calc:
+ 	early_memunmap(final_tbl, sizeof(*final_tbl));
 -- 
 2.43.0
 
