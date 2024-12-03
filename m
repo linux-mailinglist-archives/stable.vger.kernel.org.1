@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7B39E23EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317FE9E215E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50B37B844A1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19D4AB8359A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63D1F76BF;
-	Tue,  3 Dec 2024 14:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B0F1F6696;
+	Tue,  3 Dec 2024 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNFoJyS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="df6b9Frs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A99D1F7566;
-	Tue,  3 Dec 2024 14:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB63E1F4709;
+	Tue,  3 Dec 2024 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237921; cv=none; b=gTYiIUaHBEXWpI7w3V1VSqcppDD++ivT4uFinsWZ9FlYR7UZ1XKRcFoiCjreTScFDh/uFzOYF3v+BzsIjxiHcR+rYU0phUKPCZBHLqP/0DXMuTzI3AZIWAqmq2t19HsrgclYVhkyWIaw8pjr39dmy+Rg4clkuZC7IjnYtZE96mg=
+	t=1733237842; cv=none; b=h24/Blhl4PKff+93c47sCXtJ/f67lV+Ndf3VJqE18TjyBbA26Ynb+NH0xNihGf5OzE27C47xyzYxUybpiYuzUL1cU1lDEtSmhvbqzlNSRWgfob3c6DfhaIngCYTHorEHbIzF7vAGG99G2VghHuuZXh+Frv/Sj46/VOnck8OLAeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237921; c=relaxed/simple;
-	bh=myDHcu0VlxiALjvtcrL6Ad36KlTj1dLc9NxuMVX9yN4=;
+	s=arc-20240116; t=1733237842; c=relaxed/simple;
+	bh=okTR3qavnKt9NpcADArA5ywEG4QFJAlivnJ81YSiV+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM2cctQLTno17YDpO99YRBML3zceDt+0txI/96PwSCgldmhPqNKDJbxRLxYlF7PO1DIp63k9nsY4bnOVTrdOcgRkYVCdm8wc/Rz3p4YIxnFKnCSgcuv4g0V9RAD8FhZ8UHGS4riH3gZtUcx/tYOo1ZPY7bvNpAt5pba/EXgGaj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNFoJyS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7800EC4CED8;
-	Tue,  3 Dec 2024 14:58:40 +0000 (UTC)
+	 MIME-Version; b=Swp41AOmeZAqfhgxPA0fy4rghUHcC83WfRUjsEdyMLHhIqggU9+6EYYjS9gmthePuZa3lTJzcPoP9KZQk9XHmgJlPLunuI2e9+fI86B/PZrMQ64ClqKdDligd0lagtB+pclkheI3b49DbARcXZXf1nbCfVU1A8pkimmmJvAUpZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=df6b9Frs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFADFC4CECF;
+	Tue,  3 Dec 2024 14:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237921;
-	bh=myDHcu0VlxiALjvtcrL6Ad36KlTj1dLc9NxuMVX9yN4=;
+	s=korg; t=1733237842;
+	bh=okTR3qavnKt9NpcADArA5ywEG4QFJAlivnJ81YSiV+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNFoJyS79Bi6WtNFQd1eTJ32GkLtVieVesN8XqDK65eFmUnclNaJ7SNcY/R+4J9Lf
-	 Ebyx/FU1H8HRIJ5kAiJ15Z20RItypVCsMGRtQm/87g6K1AOywkQYKQWlk7qLrE8Fkr
-	 R6CgMe00FnYF3smhX+dMev+MKpXQkXnT4qvcR1U0=
+	b=df6b9FrsjqnHMjwQe5daKk1xbaWCrlpOn5/cLUruDaJKjDvTAZF3YDpTCMI9jCtcx
+	 b9M0+Ql4+HqJJvyqUroCURCR+cgews6o/0RsljerzzZElZR7HaZo8Uf5nSANkT3vu4
+	 OXPftwEmrFNrCCsrBvUAsv2LG3SY18mIlrXvXOiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 066/817] kselftest/arm64: Fix encoding for SVE B16B16 test
-Date: Tue,  3 Dec 2024 15:33:58 +0100
-Message-ID: <20241203143958.265579018@linuxfoundation.org>
+Subject: [PATCH 6.11 068/817] m68k: mvme147: Fix SCSI controller IRQ numbers
+Date: Tue,  3 Dec 2024 15:34:00 +0100
+Message-ID: <20241203143958.343035460@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,37 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 69c0d824779843b51ca2339b2163db4d3b40c54c ]
+[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
 
-The test for SVE_B16B16 had a cut'n'paste of a SME instruction, fix it with
-a relevant SVE instruction.
+Sometime long ago the m68k IRQ code was refactored and the interrupt
+numbers for SCSI controller on this board ended up wrong, and it hasn't
+worked since.
 
-Fixes: 44d10c27bd75 ("kselftest/arm64: Add 2023 DPISA hwcap test coverage")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241028-arm64-b16b16-test-v1-1-59a4a7449bdf@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+The PCC adds 0x40 to the vector for its interrupts so they end up in
+the user interrupt range. Hence, the kernel number should be the kernel
+offset for user interrupt range + the PCC interrupt number.
+
+Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/abi/hwcap.c | 4 ++--
+ arch/m68k/include/asm/mvme147hw.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
-index 41c245478e412..14e146a23879a 100644
---- a/tools/testing/selftests/arm64/abi/hwcap.c
-+++ b/tools/testing/selftests/arm64/abi/hwcap.c
-@@ -355,8 +355,8 @@ static void sveaes_sigill(void)
+diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
+index e28eb1c0e0bfb..dbf88059e47a4 100644
+--- a/arch/m68k/include/asm/mvme147hw.h
++++ b/arch/m68k/include/asm/mvme147hw.h
+@@ -93,8 +93,8 @@ struct pcc_regs {
+ #define M147_SCC_B_ADDR		0xfffe3000
+ #define M147_SCC_PCLK		5000000
  
- static void sveb16b16_sigill(void)
- {
--	/* BFADD ZA.H[W0, 0], {Z0.H-Z1.H} */
--	asm volatile(".inst 0xC1E41C00" : : : );
-+	/* BFADD Z0.H, Z0.H, Z0.H */
-+	asm volatile(".inst 0x65000000" : : : );
- }
+-#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
+-#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
++#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
++#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
  
- static void svepmull_sigill(void)
+ /* SCC interrupts, for MVME147 */
+ 
 -- 
 2.43.0
 
