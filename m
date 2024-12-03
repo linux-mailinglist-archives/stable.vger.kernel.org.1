@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECCB9E2C05
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:29:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485B99E2BC6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3422B448DF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856FEB42E6A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856341F76AD;
-	Tue,  3 Dec 2024 16:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7ECA1F76BF;
+	Tue,  3 Dec 2024 16:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxJ68xa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQmaSsqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A061F7594;
-	Tue,  3 Dec 2024 16:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BAD81ADA;
+	Tue,  3 Dec 2024 16:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242170; cv=none; b=g/gAyqPQtuxSftlmUaZeoxl4D/XcW0TilQImM0xs64C6h7GEjD7Em0HCtGPPOq8kKN0wCz30ZuCfuQLrs4JDkhKM3tpBTyzFToYQNpcGd++tTiuH3Fj1n1UwMH6ABbYpa3hKK+SYq8LJsOvuWxLsalxGP1znHGgGUwRLvtgVMu4=
+	t=1733242336; cv=none; b=rY+7B/+DcDSvUm0EV9oGUkgPmdFe4Q97DuO5zwUvBFzh9rpNcrRlRGSMR9Z2zRqaNECzeeCblk8GYknnkIErkJWhzFts4BcqqBH7+tqvEdV9IuB2tRU+hgTicujly1s03w7ZU+GIeuVCgHG4bUmj3WlN0yk5NTtxBn+GNM7eexo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242170; c=relaxed/simple;
-	bh=umbg/WYitkCWXtcv3QZnQiPAnM+PiqIva8r5JhrENyk=;
+	s=arc-20240116; t=1733242336; c=relaxed/simple;
+	bh=RJ3FMkLbu7yLb2aQ7QYVdjbmWjvAW8Tduh+Kye34CNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWQ5uvhvIrG4YQX7Ya5P+gutAJbdGTNsYc4a8xIt1NNhaBuhUoHilM/JY7He/WvPJzRWRmInsiLsL08fdL0X1eENc80iQUQZYOjCO3iM6z6zUwkdjtjSRaIohK0k9HiBOrJH8pE9TLQe1r/hjl3FX8tlc75iwdORVde9TvybD14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxJ68xa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE33C4CECF;
-	Tue,  3 Dec 2024 16:09:29 +0000 (UTC)
+	 MIME-Version; b=uVxM3638gPYAaENRcCSa6KftXELafUvqiIcwg8QIAAtKxXxMTyiMwNQ9un/uL2CL1vWCOowbTQ1H2s5bMIL2YjxeoWjYbQDB5vMC+1SGjGdCRUC/zAI/ixM7NSpUberhn0lAsHDdaMKo+bvOFh5YcG/AC4LbRyIPc53aCBWtJdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQmaSsqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088F8C4CECF;
+	Tue,  3 Dec 2024 16:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242169;
-	bh=umbg/WYitkCWXtcv3QZnQiPAnM+PiqIva8r5JhrENyk=;
+	s=korg; t=1733242336;
+	bh=RJ3FMkLbu7yLb2aQ7QYVdjbmWjvAW8Tduh+Kye34CNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxJ68xa5BFys13Jb7cxtG/QIz/9gLAtklH6Q5S6vNdgprGu8K5gxfyccP4oskyJaZ
-	 xjkHOTHq8znuIg8qQOfbS3bC7ZeCgWkkNJIX7u/C/xPMFD+opxVea1iCBaX/IJ/s3r
-	 V+mA3MsjJXgMt99xFj7fbGfwz5OIsQUf+hv6DNQc=
+	b=lQmaSsqmN1bfi19uoFb3ziGyo8YMmL3vehLo/umhXLAd1KGxyHYdvyXag2E4eDEdq
+	 D39Pzm2Ah1nYjktF/L7TuzUHzfr33kP2crZgL6CzcxVe0043xeDd7fIEsT75O3WOJv
+	 qHOfBJiz1vUVsUms9If459fEk94R8DMELYawdmQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.12 628/826] usb: typec: ucsi: glink: fix off-by-one in connector_status
-Date: Tue,  3 Dec 2024 15:45:55 +0100
-Message-ID: <20241203144808.250181705@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 649/826] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+Date: Tue,  3 Dec 2024 15:46:16 +0100
+Message-ID: <20241203144809.069262519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,39 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-commit 4a22918810980897393fa1776ea3877e4baf8cca upstream.
+commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
 
-UCSI connector's indices start from 1 up to 3, PMIC_GLINK_MAX_PORTS.
-Correct the condition in the pmic_glink_ucsi_connector_status()
-callback, fixing Type-C orientation reporting for the third USB-C
-connector.
+When DISCARD frees an ITE, it does not invalidate the
+corresponding ITE. In the scenario of continuous saves and
+restores, there may be a situation where an ITE is not saved
+but is restored. This is unreasonable and may cause restore
+to fail. This patch clears the corresponding ITE when DISCARD
+frees an ITE.
 
-Fixes: 76716fd5bf09 ("usb: typec: ucsi: glink: move GPIO reading into connector_status callback")
 Cc: stable@vger.kernel.org
-Reported-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241109-ucsi-glue-fixes-v2-1-8b21ff4f9fbe@linaro.org
+Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -185,7 +185,7 @@ static void pmic_glink_ucsi_connector_st
- 	struct pmic_glink_ucsi *ucsi = ucsi_get_drvdata(con->ucsi);
- 	int orientation;
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -782,6 +782,9 @@ static int vgic_its_cmd_handle_discard(s
  
--	if (con->num >= PMIC_GLINK_MAX_PORTS ||
-+	if (con->num > PMIC_GLINK_MAX_PORTS ||
- 	    !ucsi->port_orientation[con->num - 1])
- 		return;
+ 	ite = find_ite(its, device_id, event_id);
+ 	if (ite && its_is_collection_mapped(ite->collection)) {
++		struct its_device *device = find_its_device(its, device_id);
++		int ite_esz = vgic_its_get_abi(its)->ite_esz;
++		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
+ 		/*
+ 		 * Though the spec talks about removing the pending state, we
+ 		 * don't bother here since we clear the ITTE anyway and the
+@@ -790,7 +793,8 @@ static int vgic_its_cmd_handle_discard(s
+ 		vgic_its_invalidate_cache(its);
  
+ 		its_free_ite(kvm, ite);
+-		return 0;
++
++		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
+ 	}
+ 
+ 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
 
 
 
