@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1211A9E2255
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D3F9E24AF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E517B44DD6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81D6168CA1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68051F8924;
-	Tue,  3 Dec 2024 15:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CF21F8932;
+	Tue,  3 Dec 2024 15:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf7c2wom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g437i7+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645191F76A4;
-	Tue,  3 Dec 2024 15:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050F91F8935;
+	Tue,  3 Dec 2024 15:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238716; cv=none; b=hMUyDOUEmv6S9nJK0rKNZpRqoA58VarGtk91OenQpT/RQnj3Af4XVYPk6qS9x2Kv1MRMWEbRXLUlM4kcOUpbeT2yHsKrw9YFasvfEBp+jshqp2Y8Ke0gfty63qa8rJ+oh6SDD6JXKRDj0Zitmo0eD71Z/nfqvYFgSX+b8xdGRHY=
+	t=1733240616; cv=none; b=SZJDPH9Owzv0NmrGIrfqOlAtLCsohdT/+s+DjmjHy40AZypx42Cqs2AvZh9DZ/sJ4ohvDO/5+CNsTityCdZDei1jx2j8+7WV/Rmy+TM/iKjapjkRH08A8ld0NJMUQc3yNatp3MSwF4oy1FL5Uvu3wTOYiY22SFZKorzDz0+k8MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238716; c=relaxed/simple;
-	bh=cG4mjA+nJ8XL+NjPshtIoT2nRFmtFjuANg/v1M7Wqhs=;
+	s=arc-20240116; t=1733240616; c=relaxed/simple;
+	bh=VmZ1bXk8DzCIWFReGhcYq4TWxdTNUVDl4ZIop+wy/dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PPhjJ+sDGOiHUqWudRP85d6b1aOpXmJKk9AiQgzQIYUFSASjlzJ1POlRpvJRj3C5eiA7m5G1KMeviXpxyS//ua0JHsw7tFNYKWdVX86KFUL2nRfbrfGb2+7rmCMCnaXdFlfXwIA1f3GJJWilTz/FGeG/BLhVLeMBe87DQU2xiTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf7c2wom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59C3C4CECF;
-	Tue,  3 Dec 2024 15:11:55 +0000 (UTC)
+	 MIME-Version; b=UtBecXkP1TxFW6T3zBK3iU8/jmatqVmXzc/MHQelU+a72IT068fosMrP2tC9xr+Z2cc3byZSwc9tyshrF07BOMpZoLnrMbQP+XBhGwSvAtVKiGWgrKv0cC5DVnwJvU/qs9JaxEtRLf2eqXWyPWorJPDh3zUOkiR56A/FIdgCz8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g437i7+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60158C4CECF;
+	Tue,  3 Dec 2024 15:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238716;
-	bh=cG4mjA+nJ8XL+NjPshtIoT2nRFmtFjuANg/v1M7Wqhs=;
+	s=korg; t=1733240615;
+	bh=VmZ1bXk8DzCIWFReGhcYq4TWxdTNUVDl4ZIop+wy/dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf7c2womv47KOUahdl5QShnJVxB/xxJFchVPcKqfeD8lJNhRmq1gFtLy9CJj6SXk3
-	 ZC2eEWvxDjpY6yJN7DVVfbL8at9VgYoQJgzBDEuxUgEf4uDaKOhcTvPooffVYy8X2a
-	 2rm8s20z7iHbmL5gYWAqZB/wFcBzcLmpAkqfVZoo=
+	b=g437i7+v9VU1kU36UYnBnqe3612ZGrGbh5f/3KYR7C0l0ceajJnGqJoOvfKFQJR40
+	 GDBG/kC2B6dl5Hq3k/jdDzkIVJ/wOGKIHoORX1v62gWmigdVURhy5uV7jO8p4GqTHY
+	 y0OYGoOf3IQT5+UIcpvHLJ8yNr70hq58V38Oq0nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 342/817] bpf: Allow return values 0 and 1 for kprobe session
-Date: Tue,  3 Dec 2024 15:38:34 +0100
-Message-ID: <20241203144009.173384140@linuxfoundation.org>
+Subject: [PATCH 6.12 188/826] drm/vc4: hvs: Correct logic on stopping an HVS channel
+Date: Tue,  3 Dec 2024 15:38:35 +0100
+Message-ID: <20241203144751.075633792@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 17c4b65a24938c6dd79496cce5df15f70d9c253c ]
+[ Upstream commit 7ab6512e7942889c0962588355cb92424a690be6 ]
 
-The kprobe session program can return only 0 or 1,
-instruct verifier to check for that.
+When factoring out __vc4_hvs_stop_channel, the logic got inverted from
+	if (condition)
+	  // stop channel
+to
+	if (condition)
+	  goto out
+	//stop channel
+	out:
+and also changed the exact register writes used to stop the channel.
 
-Fixes: 535a3692ba72 ("bpf: Add support for kprobe session attach")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241108134544.480660-2-jolsa@kernel.org
+Correct the logic so that the channel is actually stopped, and revert
+to the original register writes.
+
+Fixes: 6d01a106b4c8 ("drm/vc4: crtc: Move HVS init and close to a function")
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-32-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index b34a358c75e0f..61c3896087b2c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15798,6 +15798,15 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
- 			return -ENOTSUPP;
- 		}
- 		break;
-+	case BPF_PROG_TYPE_KPROBE:
-+		switch (env->prog->expected_attach_type) {
-+		case BPF_TRACE_KPROBE_SESSION:
-+			range = retval_range(0, 1);
-+			break;
-+		default:
-+			return 0;
-+		}
-+		break;
- 	case BPF_PROG_TYPE_SK_LOOKUP:
- 		range = retval_range(SK_DROP, SK_PASS);
- 		break;
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index 14415943a1157..1d011fa8a7eac 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -420,13 +420,11 @@ void vc4_hvs_stop_channel(struct vc4_hvs *hvs, unsigned int chan)
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
+ 
+-	if (HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE)
++	if (!(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE))
+ 		goto out;
+ 
+-	HVS_WRITE(SCALER_DISPCTRLX(chan),
+-		  HVS_READ(SCALER_DISPCTRLX(chan)) | SCALER_DISPCTRLX_RESET);
+-	HVS_WRITE(SCALER_DISPCTRLX(chan),
+-		  HVS_READ(SCALER_DISPCTRLX(chan)) & ~SCALER_DISPCTRLX_ENABLE);
++	HVS_WRITE(SCALER_DISPCTRLX(chan), SCALER_DISPCTRLX_RESET);
++	HVS_WRITE(SCALER_DISPCTRLX(chan), 0);
+ 
+ 	/* Once we leave, the scaler should be disabled and its fifo empty. */
+ 	WARN_ON_ONCE(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_RESET);
 -- 
 2.43.0
 
