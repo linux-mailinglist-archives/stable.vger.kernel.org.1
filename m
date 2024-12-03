@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-97258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F59A9E2343
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553999E2699
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90C5286E60
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D444B16AC55
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CA01F940B;
-	Tue,  3 Dec 2024 15:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9111F76DD;
+	Tue,  3 Dec 2024 16:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2y4sDDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9H5ZP/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F201F9427;
-	Tue,  3 Dec 2024 15:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACB21F75AC;
+	Tue,  3 Dec 2024 16:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239969; cv=none; b=uxTlDHfbxIEDU1avHaEK/n2WeUvlP2hjSm+rUOTU5RMZjPVK41aEBEZPtICdrqGzCRDn6PEZPFjFPCJi3xgjWutbXA58vHoNut33kIaODNwTbbfi6bmH8YWgmUW28MLWD+JlrqAoyRBWEgIWXa1kwGygH1FUKXdwH/Lits+eb+Y=
+	t=1733242231; cv=none; b=dVIgfl0a8mixCGiTdItXFxIwSoeiCWW0ggT0CrdZgIPhPIjmu7Ss35U7wA9Rkr2impUFQVb0oYP8q2siK3o+Wb1nUi93j6PsHwVtCthnEmv6vARqKuaOIsZMCfQV+Sa2nvRArggmDBZ4hGmZ+b+NU31c4YA6RyITw+D+mGkDx0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239969; c=relaxed/simple;
-	bh=a1Lx1MyLFcfFzb/O/HMzJstB3gGifxbyaKax/XP/yEI=;
+	s=arc-20240116; t=1733242231; c=relaxed/simple;
+	bh=1vM/ug5GADet7ubmddJUX2NmI4cKxIXvUDDVRvVNAns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVL4t78jIQU7C1F60/m6wqndIJvrq8Z40LAMKtPP+uDJu3JEp4BLlW2UneFtvM0m7BkyIdaN/i0FDB8c1IpW+5gqtFKp/8TsVU1NHE+ZKl5XQLuVYWgUHNeb/hVDg7abWNMdCHWGmy8SUnHvIZEn64pkUOrIEwBqEZZ/KqjE2xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2y4sDDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0195C4CECF;
-	Tue,  3 Dec 2024 15:32:48 +0000 (UTC)
+	 MIME-Version; b=ogAiOohCZy38PTAzeHsbijUr96Mi7V6lJ9PiqGZFsBkKxU77sA7uo9DtpMBgRA+OZLkr98KGBf5M46MpL46HBoQW64h+scsD6uKhY8MOLsiTj0cgI8oJGVzLxggq9ivZTRfubDCiiJQY/Waj+TdIAJAG77QXIvb3qCFZUvSKFRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9H5ZP/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB39C4CECF;
+	Tue,  3 Dec 2024 16:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239969;
-	bh=a1Lx1MyLFcfFzb/O/HMzJstB3gGifxbyaKax/XP/yEI=;
+	s=korg; t=1733242231;
+	bh=1vM/ug5GADet7ubmddJUX2NmI4cKxIXvUDDVRvVNAns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2y4sDDFBjDAT/k4o+3+Nrx3Ka+87DMvtBiH6hHeWkjycRYwK69+IKQHVBWhKozLM
-	 E8jkHvBfLk6Vfq1N2B/xCSIaSSO/JX/PlbpYXreTNwwNJf6Y0KV547NoJFTRiamA0K
-	 uj5bk4L5+PptPOi5DLweMi79MgjeWKvhxXg9eP9A=
+	b=H9H5ZP/4V7a6i3lMjFs98KCTRuZQmD7hIfLnN7257jAWctl/Gwm8jswYmAHFo7mzO
+	 D7OEEl9hzo6mSvGDDIU2Q5grVh27nyUoRXwviqDlDXhVfh2fxjVOHlfdr7QXpGwz6u
+	 o07YVKWglJhmbuKtHpM9CQrzGQzOjOc1zxk0Hm48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 797/817] Rename .data.unlikely to .data..unlikely
-Date: Tue,  3 Dec 2024 15:46:09 +0100
-Message-ID: <20241203144027.122250283@linuxfoundation.org>
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.12 644/826] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
+Date: Tue,  3 Dec 2024 15:46:11 +0100
+Message-ID: <20241203144808.869921813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit bb43a59944f45e89aa158740b8a16ba8f0b0fa2b ]
+commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
 
-Commit 7ccaba5314ca ("consolidate WARN_...ONCE() static variables")
-was intended to collect all .data.unlikely sections into one chunk.
-However, this has not worked when CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
-or CONFIG_LTO_CLANG is enabled, because .data.unlikely matches the
-.data.[0-9a-zA-Z_]* pattern in the DATA_MAIN macro.
+As per the kernel documentation[1], hardlockup detector should
+be disabled in KVM guests as it may give false positives. On
+PPC, hardlockup detector is enabled inside KVM guests because
+disable_hardlockup_detector() is marked as early_initcall and it
+relies on kvm_guest static key (is_kvm_guest()) which is initialized
+later during boot by check_kvm_guest(), which is a core_initcall.
+check_kvm_guest() is also called in pSeries_smp_probe(), which is called
+before initcalls, but it is skipped if KVM guest does not have doorbell
+support or if the guest is launched with SMT=1.
 
-Commit cb87481ee89d ("kbuild: linker script do not match C names unless
-LD_DEAD_CODE_DATA_ELIMINATION is configured") was introduced to suppress
-the issue for the default CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=n case,
-providing a minimal fix for stable backporting. We were aware this did
-not address the issue for CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y. The
-plan was to apply correct fixes and then revert cb87481ee89d. [1]
+Call check_kvm_guest() in disable_hardlockup_detector() so that
+is_kvm_guest() check goes through fine and hardlockup detector can be
+disabled inside the KVM guest.
 
-Seven years have passed since then, yet the #ifdef workaround remains in
-place.
+[1]: Documentation/admin-guide/sysctl/kernel.rst
 
-Using a ".." separator in the section name fixes the issue for
-CONFIG_LD_DEAD_CODE_DATA_ELIMINATION and CONFIG_LTO_CLANG.
-
-[1]: https://lore.kernel.org/linux-kbuild/CAK7LNASck6BfdLnESxXUeECYL26yUDm0cwRZuM4gmaWUkxjL5g@mail.gmail.com/
-
-Fixes: cb87481ee89d ("kbuild: linker script do not match C names unless LD_DEAD_CODE_DATA_ELIMINATION is configured")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
+Cc: stable@vger.kernel.org # v5.14+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/vmlinux.lds.h | 2 +-
- include/linux/rcupdate.h          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/setup_64.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 1ae44793132a8..bee5a71f4b41e 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -349,7 +349,7 @@
- 	*(.data..decrypted)						\
- 	*(.ref.data)							\
- 	*(.data..shared_aligned) /* percpu related */			\
--	*(.data.unlikely)						\
-+	*(.data..unlikely)						\
- 	__start_once = .;						\
- 	*(.data.once)							\
- 	__end_once = .;							\
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 13f6f00aecf9c..1986d017b67fb 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -390,7 +390,7 @@ static inline int debug_lockdep_rcu_enabled(void)
-  */
- #define RCU_LOCKDEP_WARN(c, s)						\
- 	do {								\
--		static bool __section(".data.unlikely") __warned;	\
-+		static bool __section(".data..unlikely") __warned;	\
- 		if (debug_lockdep_rcu_enabled() && (c) &&		\
- 		    debug_lockdep_rcu_enabled() && !__warned) {		\
- 			__warned = true;				\
--- 
-2.43.0
-
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -920,6 +920,7 @@ static int __init disable_hardlockup_det
+ 	hardlockup_detector_disable();
+ #else
+ 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
++		check_kvm_guest();
+ 		if (is_kvm_guest())
+ 			hardlockup_detector_disable();
+ 	}
 
 
 
