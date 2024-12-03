@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F609E22BA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0049E25BB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9BF416CCCC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5543E1685EF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D85E1F7547;
-	Tue,  3 Dec 2024 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D731F76BE;
+	Tue,  3 Dec 2024 15:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxFpnW0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isLwLlh+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF10A1EE001;
-	Tue,  3 Dec 2024 15:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485811F75B4;
+	Tue,  3 Dec 2024 15:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239376; cv=none; b=D87ntnKOi4QcAxS9Q+zndoDZXPg+7kMSFTZaCkojtXxBzDgq4HzNYVGHDvU8W2+XqGt8W7onMgKrhewMhEpPrs3wPxZNhP58Eh2dbLRLn6ckW27SfNBTIqY6Mt3hx6rmOIkpppHVVdNh0QCXwe049ycV9mZg3+m04ZaQD4GnuDU=
+	t=1733241512; cv=none; b=OXiHx7TPBHmydaqB82nXYrTV7NlHDAULJGAE7+uXicN2237KRmxoWSvn8GgrmptQ+Tc6mDKqqVX590v+xBUCQxacjOof7yXpL9jqk4sSb7vign89eEAmtiSP00WdNieZaMebSbpB+ssbbJo6u3StHpf8fVEwYhW8aTXwa4exvz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239376; c=relaxed/simple;
-	bh=zBY+yNphbu6B+a9druOS8fRq37gsgZiurPe8H1Yw2Lw=;
+	s=arc-20240116; t=1733241512; c=relaxed/simple;
+	bh=Sg6EQT8ULsJbz5hkGa+oL/d8tu3TaBABL+BuncVYysU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcOJAf32zjWl60R97deP+WmoiSmKRRhww6xx1hdQNTpq+3Kv3cm68nKkkvPc537BLs3/i2SA5BZQZ88/l716mBak0erosXb4++75MjwWnG5q25RM94/mZ3V49ls7cmv6eVia74FbtCA/DHWRzATVoGGW8rdKfQRjBzU1XnizasU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxFpnW0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A58C4CED6;
-	Tue,  3 Dec 2024 15:22:55 +0000 (UTC)
+	 MIME-Version; b=Y5tp8f2TsTfcKPd+AucLYcKuAqrQg/VGDlHTapxwLoQm8rsvG5ttKW+wcOq0PW7kwK6v8+sbjlEg7qacTL4RX3V1VHHS3BIlexce4p+mikIeKguv89uK51pCHMFtv7erb1Vs17jMFdIBhHRy6SIO5ezpP32xtP/igDKv8wyox+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isLwLlh+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC796C4CECF;
+	Tue,  3 Dec 2024 15:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239375;
-	bh=zBY+yNphbu6B+a9druOS8fRq37gsgZiurPe8H1Yw2Lw=;
+	s=korg; t=1733241512;
+	bh=Sg6EQT8ULsJbz5hkGa+oL/d8tu3TaBABL+BuncVYysU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxFpnW0L/witwmvIB2YdcLXWFrMQXlPIZrYehOxUg1Ys4TPuXM97hFVshOUJ7btxd
-	 JZoBKhLyQ46PtVKhaIpOJG0F/ViyCIJfaFdXrY/IcDQkFFp41P4yejL3dUKOgEQlwj
-	 6D0dGDkP9i/nJWdSdV55uHVxN3NQ02K12vCcOuDk=
+	b=isLwLlh+dHnYE7XCObSpSiTj4d6fv/YFrSo+M4eYg0p3TFB8Q1V35XVg/Ry8GuPUP
+	 F7VPcuhht0z4P6NV1q+/L5GVZzpCL15xeKPMKUZNzowPjN8k3RCpdziCa7trUTVo9d
+	 Lr57Nn+Ku3442XmQ5zykzaOEsEK41dGK+Xn8cZrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 593/817] rxrpc: Improve setsockopt() handling of malformed user input
+Subject: [PATCH 6.12 438/826] dax: delete a stale directory pmem
 Date: Tue,  3 Dec 2024 15:42:45 +0100
-Message-ID: <20241203144019.071483415@linuxfoundation.org>
+Message-ID: <20241203144800.849301662@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 02020056647017e70509bb58c3096448117099e1 ]
+[ Upstream commit b8e6d7ce50673c39514921ac61f7af00bbb58b87 ]
 
-copy_from_sockptr() does not return negative value on error; instead, it
-reports the number of bytes that failed to copy. Since it's deprecated,
-switch to copy_safe_from_sockptr().
+After commit: 83762cb5c7c4 ("dax: Kill DEV_DAX_PMEM_COMPAT") the pmem/
+directory is not needed anymore and Makefile changes were made
+accordingly in this commit, but there is a Makefile and pmem.c in pmem/
+which are now stale and pmem.c is empty, remove them.
 
-Note: Keeping the `optlen != sizeof(unsigned int)` check as
-copy_safe_from_sockptr() by itself would also accept
-optlen > sizeof(unsigned int). Which would allow a more lenient handling
-of inputs.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 83762cb5c7c4 ("dax: Kill DEV_DAX_PMEM_COMPAT")
+Suggested-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20241017101144.1654085-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/af_rxrpc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/dax/pmem/Makefile |  7 -------
+ drivers/dax/pmem/pmem.c   | 10 ----------
+ 2 files changed, 17 deletions(-)
+ delete mode 100644 drivers/dax/pmem/Makefile
+ delete mode 100644 drivers/dax/pmem/pmem.c
 
-diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
-index f4844683e1203..9d8bd0b37e41d 100644
---- a/net/rxrpc/af_rxrpc.c
-+++ b/net/rxrpc/af_rxrpc.c
-@@ -707,9 +707,10 @@ static int rxrpc_setsockopt(struct socket *sock, int level, int optname,
- 			ret = -EISCONN;
- 			if (rx->sk.sk_state != RXRPC_UNBOUND)
- 				goto error;
--			ret = copy_from_sockptr(&min_sec_level, optval,
--				       sizeof(unsigned int));
--			if (ret < 0)
-+			ret = copy_safe_from_sockptr(&min_sec_level,
-+						     sizeof(min_sec_level),
-+						     optval, optlen);
-+			if (ret)
- 				goto error;
- 			ret = -EINVAL;
- 			if (min_sec_level > RXRPC_SECURITY_MAX)
+diff --git a/drivers/dax/pmem/Makefile b/drivers/dax/pmem/Makefile
+deleted file mode 100644
+index 191c31f0d4f00..0000000000000
+--- a/drivers/dax/pmem/Makefile
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_DEV_DAX_PMEM) += dax_pmem.o
+-obj-$(CONFIG_DEV_DAX_PMEM) += dax_pmem_core.o
+-
+-dax_pmem-y := pmem.o
+-dax_pmem_core-y := core.o
+-dax_pmem_compat-y := compat.o
+diff --git a/drivers/dax/pmem/pmem.c b/drivers/dax/pmem/pmem.c
+deleted file mode 100644
+index dfe91a2990fec..0000000000000
+--- a/drivers/dax/pmem/pmem.c
++++ /dev/null
+@@ -1,10 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2016 - 2018 Intel Corporation. All rights reserved. */
+-#include <linux/percpu-refcount.h>
+-#include <linux/memremap.h>
+-#include <linux/module.h>
+-#include <linux/pfn_t.h>
+-#include <linux/nd.h>
+-#include "../bus.h"
+-
+-
 -- 
 2.43.0
 
