@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5A59E2298
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413289E25B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F43283FF6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 068A628868C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798441F754A;
-	Tue,  3 Dec 2024 15:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54851F76BA;
+	Tue,  3 Dec 2024 16:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEp8YKq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnpl9Ak/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365611F7550;
-	Tue,  3 Dec 2024 15:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B5123CE;
+	Tue,  3 Dec 2024 16:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239591; cv=none; b=ZZGbw6wdR8vfoF8BPlhmY/o832LfaSx/yqEZur+lKMuUrWkkCdCJenOLnZ55MT+42TB/gvgKZXd6UBg6Bqq5YW6V9abTdd24hAt13nOWCncrWSAKYJK+urnn07H94Gh09+wdVyEzaJ4SG3VDSrcPydgotg297Gay+Wrt1dbNg3A=
+	t=1733241826; cv=none; b=eQd3IA813fXaQt7cbTcpUPxM55Iq5NOBE30LY9/niFu/oNjfaTRAnQdBWLcQ+0bndFoHxv6QxOCbITiIIgqhhnlbMUpK5ooleveJ/6fAu7bRDQlF+Ex6izwFOz+JKwtRwCB9QDoyt07FflxV+IKyQncqTifARtz+RRWHcQlPhZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239591; c=relaxed/simple;
-	bh=9/v/4AdA0cguy491thvDgKmSucLO/NLfA9Rd54byxUA=;
+	s=arc-20240116; t=1733241826; c=relaxed/simple;
+	bh=OUq1uUE4RCylziVipS0TpLKsForytiOZHgrIZ9YnrEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqTmHzxQrEBENIjk24DXYXo/ryDIZtCANt7WvTuHwVmBxQ4c7p/MDJ1D+gOR6khzvyXCe+MAqzet6XuIDEUpL15/MoU1R0t3ZTYfynHJlLVFvyu1/yCZlDaLNs+TTdsrdzVTiyPchrGE1t6p7nAsYfIjHU4jI2YqJ+BTA2BsmUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEp8YKq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2961C4CECF;
-	Tue,  3 Dec 2024 15:26:30 +0000 (UTC)
+	 MIME-Version; b=SZP1E5QjQZaglE9a5YVTdYgU0yKOSCC5FPHAgHXrWA7wH86ORQ0cfHoadYSBJdGRyqRgPRKb89ChYoEggWLhCB7Lbu2NX3EKiN2V2llD2IxiCOyh5GtEL9w19+fZ99skx5hQUgPN7F4/aKtdGcWEGzwYWF0trhnlNjd9fHlXP+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnpl9Ak/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B4BC4CECF;
+	Tue,  3 Dec 2024 16:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239591;
-	bh=9/v/4AdA0cguy491thvDgKmSucLO/NLfA9Rd54byxUA=;
+	s=korg; t=1733241826;
+	bh=OUq1uUE4RCylziVipS0TpLKsForytiOZHgrIZ9YnrEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEp8YKq+rLuB9lDfKKr7bRwb0LR2ryufA2I95YA/1nzaHgFg01aSl3pYAGv5oW47m
-	 KYs+ba10YRVSowWd8LSk0eexXSnNAuKsy3V+4p20s8jKONYdLyzk7N6rC312doAki2
-	 ljFIBw9jJLgpGJo37BYgDs29NdK0cebROgvu+AxY=
+	b=Bnpl9Ak/NxeBo5Gf/3RIR+eMZSC9zm1QaNQkmbwNsl+Ef/S8/xjkYNF+Wr7oOIScq
+	 sZ9Dv/WhYDVvuUCyDKYzeX6dOVvLFVlZzjebWlrqG1x8pxWqvhEgwbqzA0zPNFASb6
+	 IjU0SoLrr8zku7v+v9vwve31+GBM1xo0+JnY7B90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
-	Ahmed Ehab <bottaawesome633@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 6.11 666/817] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Greg Ungerer <gerg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 511/826] m68k: mcfgpio: Fix incorrect register offset for CONFIG_M5441x
 Date: Tue,  3 Dec 2024 15:43:58 +0100
-Message-ID: <20241203144021.954206394@linuxfoundation.org>
+Message-ID: <20241203144803.689701955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Ehab <bottaawesome633@gmail.com>
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 
-commit d7fe143cb115076fed0126ad8cf5ba6c3e575e43 upstream.
+[ Upstream commit f212140962c93cd5da43283a18e31681540fc23d ]
 
-Syzbot reports a problem that a warning will be triggered while
-searching a lock class in look_up_lock_class().
+Fix a typo in the CONFIG_M5441x preprocessor condition, where the GPIO
+register offset was incorrectly set to 8 instead of 0. This prevented
+proper GPIO configuration for m5441x targets.
 
-The cause of the issue is that a new name is created and used by
-lockdep_set_subclass() instead of using the existing one. This results
-in a lock instance has a different name pointer than previous registered
-one stored in lock class, and WARN_ONCE() is triggered because of that
-in look_up_lock_class().
-
-To fix this, change lockdep_set_subclass() to use the existing name
-instead of a new one. Hence, no new name will be created by
-lockdep_set_subclass(). Hence, the warning is avoided.
-
-[boqun: Reword the commit log to state the correct issue]
-
-Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/lkml/20240824221031.7751-1-bottaawesome633@gmail.com/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bea8bcb12da0 ("m68knommu: Add support for the Coldfire m5441x.")
+Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/lockdep.h |    2 +-
+ arch/m68k/include/asm/mcfgpio.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -173,7 +173,7 @@ static inline void lockdep_init_map(stru
- 			      (lock)->dep_map.lock_type)
- 
- #define lockdep_set_subclass(lock, sub)					\
--	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
-+	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
- 			      (lock)->dep_map.wait_type_inner,		\
- 			      (lock)->dep_map.wait_type_outer,		\
- 			      (lock)->dep_map.lock_type)
+diff --git a/arch/m68k/include/asm/mcfgpio.h b/arch/m68k/include/asm/mcfgpio.h
+index 019f244395464..9c91ecdafc453 100644
+--- a/arch/m68k/include/asm/mcfgpio.h
++++ b/arch/m68k/include/asm/mcfgpio.h
+@@ -136,7 +136,7 @@ static inline void gpio_free(unsigned gpio)
+  * read-modify-write as well as those controlled by the EPORT and GPIO modules.
+  */
+ #define MCFGPIO_SCR_START		40
+-#elif defined(CONFIGM5441x)
++#elif defined(CONFIG_M5441x)
+ /* The m5441x EPORT doesn't have its own GPIO port, uses PORT C */
+ #define MCFGPIO_SCR_START		0
+ #else
+-- 
+2.43.0
+
 
 
 
