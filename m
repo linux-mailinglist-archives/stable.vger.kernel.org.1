@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D70E9E23D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B299E264A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C716B16E742
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FF628814A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B241F8AE6;
-	Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBB01F890B;
+	Tue,  3 Dec 2024 16:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWduCAR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXqj1IlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7838C1F75B6;
-	Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4D542AA0;
+	Tue,  3 Dec 2024 16:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240044; cv=none; b=oJk/lGUoyX9MQmTqPS/5RKF1lQU80qt7kKjfCyZMwjJuTX6ubA1zDCE+eypr6NbfaGN8YamxaA8kLFyqV1yuGKcWKkdIbdtd4VxTN+emuLr+L2v0pyCCS9ygbsxNyHT0b24x/9eLTWy5nGPC7D/6Kyysvg2Cw7WQNm6L8ITleH4=
+	t=1733242281; cv=none; b=QQadjze1jwU2ubbx+qc5jMVh5QF4SQBvmAPuxORjw6hOcAB/MOBMBWkb4N+kjkggEwkaNDoRw8SfIg8XBFyD6NwNcTwwoqp/wVLFdIlaS4iS44wF69endm7bPnhiA94sjIYh9YSTTgxuUWtGJAbxE2I5QCOFRYwqXSg33nulrGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240044; c=relaxed/simple;
-	bh=xqVIpO7FpDnfYz8pABE71cwzm2zyryIn/YooLXY6gu8=;
+	s=arc-20240116; t=1733242281; c=relaxed/simple;
+	bh=YMYcLp6RtgxiX4yvs08JcNXryuCCRohTwQ6lNpQQ8Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOX008kz4kaeljScktceg+4zixIUrqXxQp0MT1rJn16CecCDOouGseO891FiRaD+rukHDcLM1W+T6+RZY4XdOPek3uQPxa5WDw9Pfu/uLZDszlxCHLyv1i4z/CNb1tK5DeXHjNHF0JWm261KUmnCgdhrfTknja7doL063YsXQL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWduCAR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3708C4CED6;
-	Tue,  3 Dec 2024 15:34:03 +0000 (UTC)
+	 MIME-Version; b=cWcCPbDlhrUfniRwoMy3kYsfVOYF7cGyINovPRwHubLS2LIQXy14jgPrvYC/B98A04HXBVyUHAbJI5SBFUmQnvp+G7fA2maTlJU+s43oQq0kJMq3AYinKOPbHP134B7bhVKS60JGDVHUmVam1Ub0ZSW7eW9g08xHF5VMFmpG/Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXqj1IlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA72C4CED8;
+	Tue,  3 Dec 2024 16:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240044;
-	bh=xqVIpO7FpDnfYz8pABE71cwzm2zyryIn/YooLXY6gu8=;
+	s=korg; t=1733242281;
+	bh=YMYcLp6RtgxiX4yvs08JcNXryuCCRohTwQ6lNpQQ8Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWduCAR8vaNq7/5v/ILjZwwwv3wrdVuxVXB5ztmntW3szK8rh2WshJeHZ84nad/Yy
-	 cSZaW5JV1sGQPjaosXCHKjT1FDXccSns+4vBr0zQCTCec10cODy5jlKHQ52nmFgFvO
-	 peF+VQku7HF5zbLKDm+SpfxxNQzv+1ey6Nr2Lgmk=
+	b=LXqj1IlXZlUewqwy7PDGabwNIbTj4rH5Wola+ujcCGNKl891YX8W5MD6s/kTE5Dyw
+	 u6OSlprlYhQ1qFncWDtu6sxvWD5SACDbS4kEtdnzA5FTSYknjdLKiixYsvZU47Zxj2
+	 v0Zy4FWO1XwD0aNMPDDFFt3j0Chd0jpB3Kz7H8bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 815/817] tools/power turbostat: Fix childs argument forwarding
-Date: Tue,  3 Dec 2024 15:46:27 +0100
-Message-ID: <20241203144028.268609082@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.12 661/826] apparmor: test: Fix memory leak for aa_unpack_strdup()
+Date: Tue,  3 Dec 2024 15:46:28 +0100
+Message-ID: <20241203144809.537859393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 1da0daf746342dfdc114e4dc8fbf3ece28666d4f ]
+commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
 
-Add '+' to optstring when early scanning for --no-msr and --no-perf.
-It causes option processing to stop as soon as a nonoption argument is
-encountered, effectively skipping child's arguments.
+The string allocated by kmemdup() in aa_unpack_strdup() is not
+freed and cause following memory leaks, free them to fix it.
 
-Fixes: 3e4048466c39 ("tools/power turbostat: Add --no-msr option")
-Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	unreferenced object 0xffffff80c6af8a50 (size 8):
+	  comm "kunit_try_catch", pid 225, jiffies 4294894407
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80c2a29090 (size 8):
+	  comm "kunit_try_catch", pid 227, jiffies 4294894409
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+
+Cc: stable@vger.kernel.org
+Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/policy_unpack_test.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index aa9200319d0ea..a5ebee8b23bbe 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -9784,7 +9784,7 @@ void cmdline(int argc, char **argv)
- 	 * Parse some options early, because they may make other options invalid,
- 	 * like adding the MSR counter with --add and at the same time using --no-msr.
- 	 */
--	while ((opt = getopt_long_only(argc, argv, "MPn:", long_options, &option_index)) != -1) {
-+	while ((opt = getopt_long_only(argc, argv, "+MPn:", long_options, &option_index)) != -1) {
- 		switch (opt) {
- 		case 'M':
- 			no_msr = 1;
--- 
-2.43.0
-
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -281,6 +281,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
+ }
+ 
+ static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
+@@ -296,6 +298,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
+ }
+ 
+ static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
+@@ -313,6 +317,8 @@ static void policy_unpack_test_unpack_st
+ 	KUNIT_EXPECT_EQ(test, size, 0);
+ 	KUNIT_EXPECT_NULL(test, string);
+ 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
++
++	kfree(string);
+ }
+ 
+ static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
 
 
 
