@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4409E2635
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:10:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032759E22F2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D130169BD2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD9FE286DD4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522571F76D9;
-	Tue,  3 Dec 2024 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A521F7572;
+	Tue,  3 Dec 2024 15:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfdY1the"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzGO3fNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C6F1F76D7;
-	Tue,  3 Dec 2024 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A3F2500DA;
+	Tue,  3 Dec 2024 15:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241916; cv=none; b=g8gPVp5mxManhaGlsnOdAYZK4Rp53wyMRj7mDi7f2rJTRYmTAF26hVDzLpnGFTKEYEuaR6WUBIr8qPG2KyTSmlZkxlmWgycO2MDz+PjN+54GvW8jcM+/2OU0juTBA+SG4/MbPcTpMgjSGIQzidf8rym3hsc3lXhkrEw+KZfAlg8=
+	t=1733239838; cv=none; b=uaSoZTbKJBIHXcf81+Ia1QpdaAH87dHCcb37xdRqoKrqU+WDFz3MgUqrspL68RsGaJsRcV1kfGBah+IMLi7hpJAu3bYdHQngMowbf1HbxOUikbHh/DUO2GJvkTr6VkIwfdQlLz7met1qwXZYR9KhSyEznppTYvQwmm5kMdIB/wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241916; c=relaxed/simple;
-	bh=FnuyJTtBRQOtmzXdswAv2DgSA724ndbaLQGki8MBQ/w=;
+	s=arc-20240116; t=1733239838; c=relaxed/simple;
+	bh=h8tmbYW+rF8X0CdzVSDSUrlqF2cxIx2Wdo6ebVWgza8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4YYPC2FbhJ4IYUKa5rZmjqYI9N5FCwuAMolUwkkivkT6CCI53pDeAquNx6LEcJ7ZtRU4vO11avRnMzjXKQKpc9swjI8p4nX09Gpsy+ojm8AqgXnPpsUg3WRGVFUIiyYcfvu9uUr/1MMd7lOy/0sc08buD956j0BDk8ffUv3wYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfdY1the; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71522C4CEDE;
-	Tue,  3 Dec 2024 16:05:15 +0000 (UTC)
+	 MIME-Version; b=ISWnqhryZf1tg44OWM0V26UtNjKMUIzHzshXIFm98UHP1m2FJJQcELBJl38jBd+ttFBFX2DSSaYlqu0uxcdomIeJ5Izm6AOk/68Xq/t+qFy077HMiGoWeecRu3mbbgm41ZU7maWXg7FCQLvuD+1Zd17VDyZ7feSm+MwVsF7Z/DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzGO3fNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F73C4CECF;
+	Tue,  3 Dec 2024 15:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241915;
-	bh=FnuyJTtBRQOtmzXdswAv2DgSA724ndbaLQGki8MBQ/w=;
+	s=korg; t=1733239838;
+	bh=h8tmbYW+rF8X0CdzVSDSUrlqF2cxIx2Wdo6ebVWgza8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfdY1theglrByuhcgatO8VllMxFHFa1NAA2Y8Ggum+ed07ET6NxvPJ7Wf1/3698Mv
-	 uBBPIlbOSoRBjxB1RX9HxHgtd/uT8xiCvIHg/+91oQT2I4fGLLRPylCEiGda92+bFP
-	 d6UUKAxyfzNHaE96gqcjxAhIRG8ewUcvLOHLzOlk=
+	b=QzGO3fNfaiMDleYiuXhyWRWvJRvj2i1kWNyYfKLryEo30odzswB2bnX9YLJRRGR9j
+	 wGV62O9NIC/3kUZ2Vnh60biNKA5sFV38mrYrstTXV59md/+Dphb/x7Dpd2wP5jQq3j
+	 qAeOu49JSvjicH34ueg40pTygc5lCZyieb3jezt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Efstathiades <john.efstathiades@pebblebay.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 554/826] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
-Date: Tue,  3 Dec 2024 15:44:41 +0100
-Message-ID: <20241203144805.358784028@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.11 710/817] ubi: wl: Put source PEB into correct list if trying locking LEB failed
+Date: Tue,  3 Dec 2024 15:44:42 +0100
+Message-ID: <20241203144023.705139591@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
+commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
 
-In lan78xx_probe(), the buffer `buf` was being freed twice: once
-implicitly through `usb_free_urb(dev->urb_intr)` with the
-`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
-a double free issue.
+During wear-leveing work, the source PEB will be moved into scrub list
+when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
+for non-scrub type source PEB. The problem could bring extra and
+ineffective wear-leveing jobs, which makes more or less negative effects
+for the life time of flash. Specifically, the process is divided 2 steps:
+1. wear_leveling_worker // generate false scrub type PEB
+     ubi_eba_copy_leb // MOVE_RETRY is returned
+       leb_write_trylock // trylock failed
+     scrubbing = 1;
+     e1 is put into ubi->scrub
+2. wear_leveling_worker // schedule false scrub type PEB for wl
+     scrubbing = 1
+     e1 = rb_entry(rb_first(&ubi->scrub))
 
-To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
-simplify the initialization sequence and removed the redundant
-`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
-it is correctly managed by  `usb_fill_int_urb()` and freed by
-`usb_free_urb()` as intended.
+The problem can be reproduced easily by running fsstress on a small
+UBIFS partition(<64M, simulated by nandsim) for 5~10mins
+(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
+message is shown:
+ ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
 
-Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
-Cc: John Efstathiades <john.efstathiades@pebblebay.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since scrub type source PEB has set variable scrubbing as '1', and
+variable scrubbing is checked before variable keep, so the problem can
+be fixed by setting keep variable as 1 directly if the source LEB cannot
+be locked.
+
+Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
+CC: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/mtd/ubi/wl.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 8adf77e3557e7..094a47b8b97eb 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4414,29 +4414,30 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- 	period = ep_intr->desc.bInterval;
- 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr);
--	buf = kmalloc(maxp, GFP_KERNEL);
--	if (!buf) {
-+
-+	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!dev->urb_intr) {
- 		ret = -ENOMEM;
- 		goto out5;
- 	}
- 
--	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
--	if (!dev->urb_intr) {
-+	buf = kmalloc(maxp, GFP_KERNEL);
-+	if (!buf) {
- 		ret = -ENOMEM;
--		goto out6;
--	} else {
--		usb_fill_int_urb(dev->urb_intr, dev->udev,
--				 dev->pipe_intr, buf, maxp,
--				 intr_complete, dev, period);
--		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+		goto free_urbs;
- 	}
- 
-+	usb_fill_int_urb(dev->urb_intr, dev->udev,
-+			 dev->pipe_intr, buf, maxp,
-+			 intr_complete, dev, period);
-+	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
-+
- 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out);
- 
- 	/* Reject broken descriptors. */
- 	if (dev->maxpacket == 0) {
- 		ret = -ENODEV;
--		goto out6;
-+		goto free_urbs;
- 	}
- 
- 	/* driver requires remote-wakeup capability during autosuspend. */
-@@ -4444,7 +4445,7 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- 	ret = lan78xx_phy_init(dev);
- 	if (ret < 0)
--		goto out7;
-+		goto free_urbs;
- 
- 	ret = register_netdev(netdev);
- 	if (ret != 0) {
-@@ -4466,10 +4467,8 @@ static int lan78xx_probe(struct usb_interface *intf,
- 
- out8:
- 	phy_disconnect(netdev->phydev);
--out7:
-+free_urbs:
- 	usb_free_urb(dev->urb_intr);
--out6:
--	kfree(buf);
- out5:
- 	lan78xx_unbind(dev, intf);
- out4:
--- 
-2.43.0
-
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -846,7 +846,14 @@ static int wear_leveling_worker(struct u
+ 			goto out_not_moved;
+ 		}
+ 		if (err == MOVE_RETRY) {
+-			scrubbing = 1;
++			/*
++			 * For source PEB:
++			 * 1. The scrubbing is set for scrub type PEB, it will
++			 *    be put back into ubi->scrub list.
++			 * 2. Non-scrub type PEB will be put back into ubi->used
++			 *    list.
++			 */
++			keep = 1;
+ 			dst_leb_clean = 1;
+ 			goto out_not_moved;
+ 		}
 
 
 
