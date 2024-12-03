@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-96329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0321B9E1FDF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D11B9E1FD9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 378F4B33CE1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30624B66A91
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826B51F707F;
-	Tue,  3 Dec 2024 14:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DBE1F4734;
+	Tue,  3 Dec 2024 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9aXHv17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkkYMgV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2611F4276;
-	Tue,  3 Dec 2024 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724611F12FC;
+	Tue,  3 Dec 2024 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236426; cv=none; b=Ukf8Tq4WdAAeo4WpzbkMQOPZEh8DPq9yZHV3jyJZaIALxG3NZnOqobkelTDfclEIrU8/mwtRdViHp8E8Ot2zVDqYJYT55sVxJXTkp8RRIBWvaHQoeFsLvQuHozckIslceSWHHCYd0KNuWySyPxT9i1edg7u8YIfEkKKbiGPcVdc=
+	t=1733236432; cv=none; b=auA6hk5+GlEpultTetz3myUXO89MF7xBwcXscL/p8e/VsqpCiuAtnL8duCNZ6F2gZXX2raoCtAUOrjSJv8m9OV3npRPHjCDBMN7FFLduqknpdoPt+4Ed+JgQiAkvxCialYaSoYl9oYzwIh7ZW+tMtsfDvkFMnK0QYP3Y1BmyvIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236426; c=relaxed/simple;
-	bh=gSbCp1fbFV7f5MaQiOitXRGBbtI4YZHeyTKJSZItU0k=;
+	s=arc-20240116; t=1733236432; c=relaxed/simple;
+	bh=Gbe4kaFJvZB16o1HJ+mRCco7lwL+r8ZcrPZZLXTUJGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1erbqxPqihiLnqQE6ZzRGvJtYvhrwIS27YCBbonPDAq32gzI5L41GaOW26iE9jeABVMIlyyEGffRtLkXhU4zqw/sCnB62BIagXWS5JBHuhfaOBV9rklyLbkmUxUJyMuxB4ycDt4cUPAQcjIhz9Tp2sWslzmlB+IG7mxWjwFb2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9aXHv17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F829C4CECF;
-	Tue,  3 Dec 2024 14:33:45 +0000 (UTC)
+	 MIME-Version; b=BZ60MdBtyZTSfDSCOIvZkKDfZVh5Bt+dbF0tb+jwpwzdC8RdFyf3jz2BZX7m6NU7wJCtpATSOyoYfhxUMyGOwm+OlJ6GPBNCCAj34JCmq+7ZCWgvvpqHERcV7/ikPUxsbkE8qFOuQY/6UsP0eBa20rGXlb+HE8e6/M0PkI/j82s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkkYMgV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D681CC4CECF;
+	Tue,  3 Dec 2024 14:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236425;
-	bh=gSbCp1fbFV7f5MaQiOitXRGBbtI4YZHeyTKJSZItU0k=;
+	s=korg; t=1733236432;
+	bh=Gbe4kaFJvZB16o1HJ+mRCco7lwL+r8ZcrPZZLXTUJGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9aXHv17Pd0g30cx60IbwvZkerfBFC3mV4/lBNRkkNjjdgwJeSM9cGu1VpiE+hrX+
-	 5DvhRyLkPHge8QuWnvbakvR9Jc8yC8LCZC7vSgiueKLlrhV18HntRstF498xkkBghu
-	 asfN6bbaT/I5zwEwqeyL/ESwCkNRDOdwkxFCapok=
+	b=jkkYMgV33RBX9pOLY4dKZSUgNkivCiOFtWpqIchsnk4BhsJXgje1MxhEzIR8epukl
+	 0yotS+GBvdYolHGh4C9Htm3xZ4VkuTHseNoaG/4imZcAAo0Xle/D/ObTHnnOaFHmfl
+	 W0+M+Of29Kg6dYYbBqLM7VW5h7ITBstKoLad7U+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Puranjay Mohan <pjy@amazon.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 016/138] nvme: fix metadata handling in nvme-passthrough
-Date: Tue,  3 Dec 2024 15:30:45 +0100
-Message-ID: <20241203141924.166757779@linuxfoundation.org>
+Subject: [PATCH 4.19 018/138] m68k: mvme147: Fix SCSI controller IRQ numbers
+Date: Tue,  3 Dec 2024 15:30:47 +0100
+Message-ID: <20241203141924.242596025@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -70,67 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Puranjay Mohan <pjy@amazon.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
+[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
 
-On an NVMe namespace that does not support metadata, it is possible to
-send an IO command with metadata through io-passthru. This allows issues
-like [1] to trigger in the completion code path.
-nvme_map_user_request() doesn't check if the namespace supports metadata
-before sending it forward. It also allows admin commands with metadata to
-be processed as it ignores metadata when bdev == NULL and may report
-success.
+Sometime long ago the m68k IRQ code was refactored and the interrupt
+numbers for SCSI controller on this board ended up wrong, and it hasn't
+worked since.
 
-Reject an IO command with metadata when the NVMe namespace doesn't
-support it and reject an admin command if it has metadata.
+The PCC adds 0x40 to the vector for its interrupts so they end up in
+the user interrupt range. Hence, the kernel number should be the kernel
+offset for user interrupt range + the PCC interrupt number.
 
-[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
-
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
-  to make it work on 4.19 ]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/m68k/include/asm/mvme147hw.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6adff541282be..fcf062f3b507d 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -802,11 +802,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 	bool write = nvme_is_write(cmd);
- 	struct nvme_ns *ns = q->queuedata;
- 	struct gendisk *disk = ns ? ns->disk : NULL;
-+	bool supports_metadata = disk && blk_get_integrity(disk);
-+	bool has_metadata = meta_buffer && meta_len;
- 	struct request *req;
- 	struct bio *bio = NULL;
- 	void *meta = NULL;
- 	int ret;
+diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
+index 9c7ff67c5ffd6..46ce392db6fc6 100644
+--- a/arch/m68k/include/asm/mvme147hw.h
++++ b/arch/m68k/include/asm/mvme147hw.h
+@@ -90,8 +90,8 @@ struct pcc_regs {
+ #define M147_SCC_B_ADDR		0xfffe3000
+ #define M147_SCC_PCLK		5000000
  
-+	if (has_metadata && !supports_metadata)
-+		return -EINVAL;
-+
- 	req = nvme_alloc_request(q, cmd, 0, NVME_QID_ANY);
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
-@@ -821,7 +826,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 			goto out;
- 		bio = req->bio;
- 		bio->bi_disk = disk;
--		if (disk && meta_buffer && meta_len) {
-+		if (has_metadata) {
- 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
- 					meta_seed, write);
- 			if (IS_ERR(meta)) {
+-#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
+-#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
++#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
++#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
+ 
+ /* SCC interrupts, for MVME147 */
+ 
 -- 
 2.43.0
 
