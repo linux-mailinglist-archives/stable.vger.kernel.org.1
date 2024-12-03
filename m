@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DC19E23E4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B472C9E2649
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD93F2875A5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45C36B2C4B4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2201F8AF8;
-	Tue,  3 Dec 2024 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53721F669E;
+	Tue,  3 Dec 2024 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZISTvPO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwhyT6vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A0C1F75B6;
-	Tue,  3 Dec 2024 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823631F6698;
+	Tue,  3 Dec 2024 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240363; cv=none; b=flOBeugUQ5e3Z56laQhLsHv/UShLmYmlcUZXsmQr1PZLLJTas913KRdRTUwA/0y/2lzKkxMFAV9TggHyNxtd6UeGG14mIA78CMVJbIh9eH9ZzEXCTGj99+1LhlQzmYOfbVwyeAROeCpFfpSHoo535yscqr0vPkh2tvopRtax7vI=
+	t=1733238534; cv=none; b=TtDfzLDMtqyECdo0IruXaXJcfJgPKywc03plSp9AcwMSGfOYsTdYM67On+wepa3z2myRkD2FkxNS1wxb8t9TG1w8sNJLYOS+uEiDuRDKgF/vIEyMjX51ktiI/SN5sleaGn9rDjz3+ZTC8MHCv/eWOjU4GS6kEYneaSAJz2oeHU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240363; c=relaxed/simple;
-	bh=QWHldTxWXLiWo4Md401aSGfe7AEUhdK1nRe5LwJDJPU=;
+	s=arc-20240116; t=1733238534; c=relaxed/simple;
+	bh=XB9usfeA0bTK9OyNQR0NxxGrk4wdmcf1VAIrj5fSbcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmCfRKLBpR4vVpBFqzgsKHSSe7lH9mWJNfVNSXqgj01SWLZnXqFmh6TlV9iJQ4EXT9bhu0COCsFyMqphjnEmkwGGRGGael4E+3SLfiCKY7i3yTH+ecrXwG7snYx59KhWSxLW711WOvfEEqlgxKhp0s8oOgk9cByjrGOm6Ft9Ves=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZISTvPO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28055C4CECF;
-	Tue,  3 Dec 2024 15:39:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GWsgH+GwLhxsmuowUgFma3K2kCzl1alU1DRuJlD2bLVdJCw0pu2dRXPp5l9fkRcR8Sb7HvjJUTIDxNx/VFXrucOEE8/YPyp15caEaUgC1Fax/uSvscUOKaKDHPplXg9tVi5LhR31+Um+epLvHXnEudv15g7lkUeaZfQ9pG1PAEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwhyT6vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10108C4CECF;
+	Tue,  3 Dec 2024 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240363;
-	bh=QWHldTxWXLiWo4Md401aSGfe7AEUhdK1nRe5LwJDJPU=;
+	s=korg; t=1733238534;
+	bh=XB9usfeA0bTK9OyNQR0NxxGrk4wdmcf1VAIrj5fSbcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZISTvPO6DihDJLThMvzl8vd1emMaZk7IbKWgeYDMw3I3fVEJun6PqXAIU6wDhXa/O
-	 fwV67GJtyiU+Xx89UueZUKII8zhFFB2W4x/+Yal3ZqpPWyWPVeYiHz68OCusY+MiLc
-	 28A6Uxeap5r+3cOaNhM+f1ewB82ca08DSgS+67q8=
+	b=YwhyT6vdU+xspgMgiSckLqQoKCU3hIwGu28wbccqsfWgaU1GXdqWgMtqTIe6ofXpS
+	 mXc08NXQc2djTfIgv32yLc3FPCQRJI+xoa3i7QRuHbOb6Sxg0H4Ep9pHzEZOaSiP9s
+	 uDZ49vRJ4M2IYpglZHbnuwUJwQtaHOt8bki8dQYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/826] arm64: dts: qcom: sda660-ifc6560: fix l10a voltage ranges
+Subject: [PATCH 6.11 269/817] drm/vc4: Match drm_dev_enter and exit calls in vc4_hvs_atomic_flush
 Date: Tue,  3 Dec 2024 15:37:21 +0100
-Message-ID: <20241203144748.188330984@linuxfoundation.org>
+Message-ID: <20241203144006.296303737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 1dd7d9d41dedf8d42e04c0f2febd4dbe5a062d4a ]
+[ Upstream commit 6b0bd1b02ea24b10522c92b2503981970b26d1a2 ]
 
-L10A, being a fixed regulator, should have min_voltage = max_voltage,
-otherwise fixed rulator fails to probe. Fix the max_voltage range to be
-equal to minimum.
+Commit 92c17d16476c ("drm/vc4: hvs: Ignore atomic_flush if we're disabled")
+added a path which returned early without having called drm_dev_exit.
 
-Fixes: 4edbcf264fe2 ("arm64: dts: qcom: sda660-ifc6560: document missing USB PHY supplies")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Link: https://lore.kernel.org/r/20240907-sdm660-wifi-v1-4-e316055142f8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Ensure all paths call drm_dev_exit.
+
+Fixes: 92c17d16476c ("drm/vc4: hvs: Ignore atomic_flush if we're disabled")
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-2-9d0396ca9f42@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-index 60412281ab27d..962c8aa400440 100644
---- a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-+++ b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-@@ -104,7 +104,7 @@ vreg_l10a_1p8: vreg-l10a-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vreg_l10a_1p8";
- 		regulator-min-microvolt = <1804000>;
--		regulator-max-microvolt = <1896000>;
-+		regulator-max-microvolt = <1804000>;
- 		regulator-always-on;
- 		regulator-boot-on;
- 	};
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index ad2d8f6f1e9ef..50bfc514943a1 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -584,7 +584,7 @@ void vc4_hvs_atomic_flush(struct drm_crtc *crtc,
+ 	}
+ 
+ 	if (vc4_state->assigned_channel == VC4_HVS_CHANNEL_DISABLED)
+-		return;
++		goto exit;
+ 
+ 	if (debug_dump_regs) {
+ 		DRM_INFO("CRTC %d HVS before:\n", drm_crtc_index(crtc));
+@@ -667,6 +667,7 @@ void vc4_hvs_atomic_flush(struct drm_crtc *crtc,
+ 		vc4_hvs_dump_state(hvs);
+ 	}
+ 
++exit:
+ 	drm_dev_exit(idx);
+ }
+ 
 -- 
 2.43.0
 
