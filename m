@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB5D9E2224
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9A79E250C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4AD2282B1A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CDA287A47
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F55F1F7572;
-	Tue,  3 Dec 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CE81F75A5;
+	Tue,  3 Dec 2024 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpqvkL7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcP/mjoC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2791F7569;
-	Tue,  3 Dec 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A48381B1;
+	Tue,  3 Dec 2024 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239265; cv=none; b=nxD7VkvKPEE/9H9WnB8g+sFzJnrI1d9tauVU9fdLC5R3xqcbg/0d/hJr42mpLbTzdUtYa1pM5CXHSgHJVuwz1KsEhEZGp5xzM0GvbFw0Gk+wZe/bKu5Zur+mSeNIqHT8fkeLvNK58F+feab7S9MGB9gPb9P0W1jcaOrRkJ7THns=
+	t=1733241372; cv=none; b=FWlKNl6V3F4Msx/fvm6lahlKL/DRP2t44/1bkkcmwQGGXbhrgiZS5lqx+f2mT3kpGz0q2TvxE3vrfLs1hjcU2UMAFszTS2/5gGr/mIFH5ZIwbEgSNAk6mK/8XGnPNxn7pZFuBt71EXWrrZqIcMTwSP6I9qdfevyepEcH8tQL7ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239265; c=relaxed/simple;
-	bh=QZX1YLgP8PtJRi5oBSti+COEd0BXYQEThAYFVR/KbMg=;
+	s=arc-20240116; t=1733241372; c=relaxed/simple;
+	bh=gBQDiQVHs0w7N4iCuPeWs5knZG7qUTQ4VycGtLXoBKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPAZaaxcA7z2VkpN9Zot8bP1TKTWUqmpgXSz+aWyh3bFVZVsCPDFIMfvzQHxTaoUtOygm0Z8TFbxoEbF18dS4tSanKXGFVsP1kcmByGaNLCJYPV6Su3bgUnPsS89EM6tOjkL4UxcYtK9hSvdh4T2Jvo0lIn/DXLzaHpM9lDhQrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpqvkL7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9316C4CED6;
-	Tue,  3 Dec 2024 15:21:04 +0000 (UTC)
+	 MIME-Version; b=Y1T/Rt5tDGHuKdfN9KCTFukHQjxNVRs10A1ebFwl65yyKse74hLS9HRvSMyphgN9fPlGI6eygHOqzb/0GUAp5QJnqn+c3zoTB1bZB88D3LONTV08zmNC5vu5Ln5QUQnaQVOJ4fUDEQaimqWyicLncVkJOYo5NKrtigrefix9omM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcP/mjoC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E243DC4CECF;
+	Tue,  3 Dec 2024 15:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239265;
-	bh=QZX1YLgP8PtJRi5oBSti+COEd0BXYQEThAYFVR/KbMg=;
+	s=korg; t=1733241372;
+	bh=gBQDiQVHs0w7N4iCuPeWs5knZG7qUTQ4VycGtLXoBKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpqvkL7BaWWFIhF48Tp+xalmRAL8Hos74hL1pX8cbQAKBW/MB93BjL1kTFizbMIZ0
-	 y48h64+S5HgJujcOimaQTQQBphBQv/pHtSlg7G/E62oHagR0SFTFoPjC3IrzitNH/c
-	 BywiHo6W27l8cMpUyZvQSirMFlGBOuuqThnkP6vQ=
+	b=qcP/mjoCFWe8/nowtnXDNDkbFRWHbl9EbvZR/1q133zPOCgyQXnao1h51FRiguiof
+	 Qv8AwSFD46RUaZKLmXEpRDngsVGDytfKFixWOrtxGK6EUHAo+pRIV+9UM/RM1z7eXX
+	 9YwuhYuuBlpq3bP/uTjQHQ2s6bo/XoU+LTYeJd9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 555/817] vfio/mlx5: Fix unwind flows in mlx5vf_pci_save/resume_device_data()
+Subject: [PATCH 6.12 400/826] RDMA/mlx5: Call dev_put() after the blocking notifier
 Date: Tue,  3 Dec 2024 15:42:07 +0100
-Message-ID: <20241203144017.576210771@linuxfoundation.org>
+Message-ID: <20241203144759.365282965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit cb04444c243c001fc27f275e84792ff1c2b96867 ]
+[ Upstream commit 6d9c7b272966f13ebbf39687620f395d97f4d15d ]
 
-Fix unwind flows in mlx5vf_pci_save_device_data() and
-mlx5vf_pci_resume_device_data() to avoid freeing the migf pointer at the
-'end' label, as this will be handled by fput(migf->filp) through
-mlx5vf_release_file().
+Move dev_put() call to occur directly after the blocking
+notifier, instead of within the event handler.
 
-To ensure mlx5vf_release_file() functions correctly, move the
-initialization of migf fields (such as migf->lock) to occur before any
-potential unwind flow, as these fields may be accessed within
-mlx5vf_release_file().
-
-Fixes: 9945a67ea4b3 ("vfio/mlx5: Refactor PD usage")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241114095318.16556-3-yishaih@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev functions")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Link: https://patch.msgid.link/342ff94b3dcbb07da1c7dab862a73933d604b717.1730381292.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/mlx5/main.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c                 | 1 -
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
-index 61d9b0f9146d1..8de6037c88194 100644
---- a/drivers/vfio/pci/mlx5/main.c
-+++ b/drivers/vfio/pci/mlx5/main.c
-@@ -641,14 +641,11 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
- 					O_RDONLY);
- 	if (IS_ERR(migf->filp)) {
- 		ret = PTR_ERR(migf->filp);
--		goto end;
-+		kfree(migf);
-+		return ERR_PTR(ret);
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 4999239c8f413..32e57cc343361 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3234,7 +3234,6 @@ static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
+ 			}
+ 			err = ib_device_set_netdev(&dev->ib_dev, ndev,
+ 						   portnum + 1);
+-			dev_put(ndev);
+ 			if (err)
+ 				return err;
+ 			/* Rescan gids after new netdev assignment */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 8577db3308cc5..d661267d98ffc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -516,6 +516,7 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
+ 		blocking_notifier_call_chain(&dev0->priv.lag_nh,
+ 					     MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE,
+ 					     ndev);
++		dev_put(ndev);
  	}
- 
- 	migf->mvdev = mvdev;
--	ret = mlx5vf_cmd_alloc_pd(migf);
--	if (ret)
--		goto out_free;
--
- 	stream_open(migf->filp->f_inode, migf->filp);
- 	mutex_init(&migf->lock);
- 	init_waitqueue_head(&migf->poll_wait);
-@@ -664,6 +661,11 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
- 	INIT_LIST_HEAD(&migf->buf_list);
- 	INIT_LIST_HEAD(&migf->avail_list);
- 	spin_lock_init(&migf->list_lock);
-+
-+	ret = mlx5vf_cmd_alloc_pd(migf);
-+	if (ret)
-+		goto out;
-+
- 	ret = mlx5vf_cmd_query_vhca_migration_state(mvdev, &length, &full_size, 0);
- 	if (ret)
- 		goto out_pd;
-@@ -693,10 +695,8 @@ mlx5vf_pci_save_device_data(struct mlx5vf_pci_core_device *mvdev, bool track)
- 	mlx5vf_free_data_buffer(buf);
- out_pd:
- 	mlx5fv_cmd_clean_migf_resources(migf);
--out_free:
-+out:
- 	fput(migf->filp);
--end:
--	kfree(migf);
- 	return ERR_PTR(ret);
- }
- 
-@@ -1018,13 +1018,19 @@ mlx5vf_pci_resume_device_data(struct mlx5vf_pci_core_device *mvdev)
- 					O_WRONLY);
- 	if (IS_ERR(migf->filp)) {
- 		ret = PTR_ERR(migf->filp);
--		goto end;
-+		kfree(migf);
-+		return ERR_PTR(ret);
- 	}
- 
-+	stream_open(migf->filp->f_inode, migf->filp);
-+	mutex_init(&migf->lock);
-+	INIT_LIST_HEAD(&migf->buf_list);
-+	INIT_LIST_HEAD(&migf->avail_list);
-+	spin_lock_init(&migf->list_lock);
- 	migf->mvdev = mvdev;
- 	ret = mlx5vf_cmd_alloc_pd(migf);
- 	if (ret)
--		goto out_free;
-+		goto out;
- 
- 	buf = mlx5vf_alloc_data_buffer(migf, 0, DMA_TO_DEVICE);
- 	if (IS_ERR(buf)) {
-@@ -1043,20 +1049,13 @@ mlx5vf_pci_resume_device_data(struct mlx5vf_pci_core_device *mvdev)
- 	migf->buf_header[0] = buf;
- 	migf->load_state = MLX5_VF_LOAD_STATE_READ_HEADER;
- 
--	stream_open(migf->filp->f_inode, migf->filp);
--	mutex_init(&migf->lock);
--	INIT_LIST_HEAD(&migf->buf_list);
--	INIT_LIST_HEAD(&migf->avail_list);
--	spin_lock_init(&migf->list_lock);
- 	return migf;
- out_buf:
- 	mlx5vf_free_data_buffer(migf->buf[0]);
- out_pd:
- 	mlx5vf_cmd_dealloc_pd(migf);
--out_free:
-+out:
- 	fput(migf->filp);
--end:
--	kfree(migf);
- 	return ERR_PTR(ret);
  }
  
 -- 
