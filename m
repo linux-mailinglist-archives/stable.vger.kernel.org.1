@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605439E24E1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826909E21AD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C5A16F571
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E362829F5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6A51F8910;
-	Tue,  3 Dec 2024 15:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAFF1F8ADD;
+	Tue,  3 Dec 2024 15:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Q12Bgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imP6SSsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7C31DF981;
-	Tue,  3 Dec 2024 15:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812A51F7545;
+	Tue,  3 Dec 2024 15:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240841; cv=none; b=V0l7GkL2i04sF5cX/U9fp0ww0dWf5LAojuMpjK8BOvyAb00S+uShJoHCqKQbKUe38ZAv7oCvKgmrGgXpI9epNKPofAbtmShxTxseLcQvwBeyFk+/1RvE7aP8ub699ORUw3UPzue0/Lg8siRVYarXQobYZm//abz5+keP+gZZAhM=
+	t=1733238868; cv=none; b=ai+WCkz1fVNDt9HzGFnyoqVPk4ee9vOYes63pUXLU3e9Qz6He9tsgk8aMWKZMaDvojCewhnkIs3u8t1oX9WoBroI9QOAp9CLW6RjIJ9RCvxgjjX1KRQ3orSLnQQlyKmNW9StL7wBW7r7eHAhX7EPOHpSkUVs72FQ9cz1eVe5T3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240841; c=relaxed/simple;
-	bh=xl+Gg2xJoe5gpvE0yMLtV2Gy3UUpSCezwgbA24qeKLg=;
+	s=arc-20240116; t=1733238868; c=relaxed/simple;
+	bh=cORNmTO4W6jF0OmNvYAy2nAdgjequoI6Qiq+HoC0gqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4/7qNcVSJETm0r8CQLxbtZZ2PXxtHz8yMogF3nHu/is1FXG8eKCgZMAEYhCv/BnQMudYNBd17IS4kt+jzXPKEVSSGY7h4YLBHqzW48pAy4rYbRB7yeTbf2BGCRqEfuXtkVrnRdtBqPgCIvqjGr6Y3qlvbvR187F4xYpXRU+U3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Q12Bgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993AFC4CECF;
-	Tue,  3 Dec 2024 15:47:20 +0000 (UTC)
+	 MIME-Version; b=XZrxqE5FpELLqewGzXzJpJccKKe0KkHBnJIK8i/xvPo1pCkJd8GBCHKFoCcFCq320PU1k6qewlboUJClnXOeh5z/9GYwAtBsxbmodZINds3cFJSaCpeQIJqTtvYfDIAfKu0FGWmUBcM6bsNNcgdD6TnfX9x+BMg1rFEUvl1lVls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imP6SSsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A155C4CECF;
+	Tue,  3 Dec 2024 15:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240841;
-	bh=xl+Gg2xJoe5gpvE0yMLtV2Gy3UUpSCezwgbA24qeKLg=;
+	s=korg; t=1733238868;
+	bh=cORNmTO4W6jF0OmNvYAy2nAdgjequoI6Qiq+HoC0gqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/Q12Bgf9TLPD2EIlqmYBZT+KSTJfGeyHeQgVh/20G++1xQ1ZrbxJ1ya1QHSwZWAW
-	 geKfrLtTDM5uYYsXt+Y3oQsivE3uIAju3nfFbxDI5vz7Koa/WXK+GZ34n4SgAQ9IDG
-	 n1yqzFu2W87PguT0GrZI8dueszU9DMvIDkRV4ZNk=
+	b=imP6SSsVh3iAto2Rg/rUPFffOU/KKnOct2hHv6QtJgtPxdN39kAUHP0/FxsRsHrWm
+	 f9GC7W33hCN73+R7e+/UmKLe0MYqF/hiyE2nuuz91wy2xiITfh1wPX/6rTUYDAahEu
+	 22FK8OWLd71XiMFUj96KUYGLGZcONmD/f7XZH/zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/826] wifi: mwifiex: add missing locking for cfg80211 calls
-Date: Tue,  3 Dec 2024 15:39:38 +0100
-Message-ID: <20241203144753.558250028@linuxfoundation.org>
+Subject: [PATCH 6.11 407/817] iommu/amd: Remove amd_iommu_domain_update() from page table freeing
+Date: Tue,  3 Dec 2024 15:39:39 +0100
+Message-ID: <20241203144011.763029639@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 0d7c2194f17c764df0354af13551cc6f92ef5a44 ]
+[ Upstream commit 322d889ae7d39f8538a6deac35869aa3be1855bd ]
 
-cfg80211_rx_assoc_resp() and cfg80211_rx_mlme_mgmt() need to be called
-with the wiphy locked, so lock it before calling these functions.
+It is a serious bug if the domain is still mapped to any DTEs when it is
+freed as we immediately start freeing page table memory, so any remaining
+HW touch will UAF.
 
-Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240918-mwifiex-cleanup-1-v2-1-2d0597187d3c@pengutronix.de
+If it is not mapped then dev_list is empty and amd_iommu_domain_update()
+does nothing.
+
+Remove it and add a WARN_ON() to catch this class of bug.
+
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/4-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 016991606aa0 ("iommu/amd/pgtbl_v2: Take protection domain lock before invalidating TLB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cmdevt.c | 2 ++
- drivers/net/wireless/marvell/mwifiex/util.c   | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/iommu/amd/io_pgtable.c | 3 ---
+ drivers/iommu/amd/iommu.c      | 2 ++
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-index 1cff001bdc514..b30ed321c6251 100644
---- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
-@@ -938,8 +938,10 @@ void mwifiex_process_assoc_resp(struct mwifiex_adapter *adapter)
- 		assoc_resp.links[0].bss = priv->req_bss;
- 		assoc_resp.buf = priv->assoc_rsp_buf;
- 		assoc_resp.len = priv->assoc_rsp_size;
-+		wiphy_lock(priv->wdev.wiphy);
- 		cfg80211_rx_assoc_resp(priv->netdev,
- 				       &assoc_resp);
-+		wiphy_unlock(priv->wdev.wiphy);
- 		priv->assoc_rsp_size = 0;
- 	}
+diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
+index 05aed3cb46f1b..b3991ad1ae8ea 100644
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -578,9 +578,6 @@ static void v1_free_pgtable(struct io_pgtable *iop)
+ 
+ 	/* Update data structure */
+ 	amd_iommu_domain_clr_pt_root(dom);
+-
+-	/* Make changes visible to IOMMUs */
+-	amd_iommu_domain_update(dom);
  }
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 42c04bf858da3..1f1f6280a0f25 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -494,7 +494,9 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 			}
- 		}
  
-+		wiphy_lock(priv->wdev.wiphy);
- 		cfg80211_rx_mlme_mgmt(priv->netdev, skb->data, pkt_len);
-+		wiphy_unlock(priv->wdev.wiphy);
- 	}
+ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *cookie)
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 1a61f14459e4f..881f6c589257c 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2262,6 +2262,8 @@ void protection_domain_free(struct protection_domain *domain)
+ 	if (!domain)
+ 		return;
  
- 	if (priv->adapter->host_mlme_enabled &&
++	WARN_ON(!list_empty(&domain->dev_list));
++
+ 	if (domain->iop.pgtbl_cfg.tlb)
+ 		free_io_pgtable_ops(&domain->iop.iop.ops);
+ 
 -- 
 2.43.0
 
