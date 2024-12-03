@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1949E27D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 844B99E27F4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:46:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD5F7B6355F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B318B857E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231C1F75B5;
-	Tue,  3 Dec 2024 15:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10871F75A2;
+	Tue,  3 Dec 2024 15:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qzn297W8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjhXy65Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D941F75AE;
-	Tue,  3 Dec 2024 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2581F756A;
+	Tue,  3 Dec 2024 15:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238048; cv=none; b=WZDa8HNs2tgFJNLyH+jEEPIyuUo8P7u+2YE51obHKE4b/Uh0/1Q9wc8TeLuhsHcUg0RVdlVc3xXW2xCJsLZpIuVq8usf8kLAOtavH4OoBM6QWMGFTbEVetlWI0j6H0Kf6xjVXPQj2fstQiuZpDLaYMSktNqjbErUmpn0/T1JBpM=
+	t=1733238082; cv=none; b=U0m/b/si+5E2iRDvvly5QMHSGTlg2jI6EOXfrzEMd3/ptj2v2GtGDESMHF1J6nWsT5tK7XByGIDnP/pBLxxtUrhTOUxDa4qsT/1GpgGThyRtD1/UxrR25yrijiHGNRbX+XMo5kQap+m0KPCJ3M12opUQsr6LaP/qi+EjE6Vg+5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238048; c=relaxed/simple;
-	bh=n9T0XJhE3B0JRL4zIn6nyENTL1QCKXawv5ImqUoJx7I=;
+	s=arc-20240116; t=1733238082; c=relaxed/simple;
+	bh=TsNEIb71hasoJ8qLTfy4rYiUBZf2SSh4R5P1IzM+MY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNoOwWFJwbdVTuRbNqiDr2zTyckzBOT0H7IdmmcBcCaCyjny0kmXRgCb/4C68JAwM5c6Pffy48AFnUuG/+7b5B2uddz0dVj/BjXMpPFzxUOXtFV+kpim8OFk3GiCuC6U2QHioEGq3RgPu+UOFWQSltN4kAI1UoQdcHa4oEbHDzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qzn297W8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BCBC4CEDD;
-	Tue,  3 Dec 2024 15:00:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p1s1ynaYF8kTn08zKYPPfWE52/7wRvvvLe1Lr5TAr59BWd4wP4J3riRw80lxnxjmZM1C/PbQGgkkUKTP5jm5DB3xA78csSUIWgyMWq16e3mtCzT2Pq6JRIi3ROveeiqTGIxgY6EfxZCWTFIBrF/4f2595nvR1mBmxfnSJW7NDFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjhXy65Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B8BC4CECF;
+	Tue,  3 Dec 2024 15:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238047;
-	bh=n9T0XJhE3B0JRL4zIn6nyENTL1QCKXawv5ImqUoJx7I=;
+	s=korg; t=1733238082;
+	bh=TsNEIb71hasoJ8qLTfy4rYiUBZf2SSh4R5P1IzM+MY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qzn297W8gta/MeaNMkmwpNVEHp4AgZT7B35wypLnO2sFTdeJ60PyXNI4Osjy7KFkD
-	 NDkji9fEfqXKAQDZbZHwCQAImr+X2QmdpeWuWqpgjjGunGbg18qTSLsy5Gh2vO/8pa
-	 gs7P0MgVy2NFeff8uBDTddKP8cVi0epl2XNayW4I=
+	b=kjhXy65YAhhP0kMJcCgsslugyWy1VSSOF7RVnbqkDuUz5E+hcazmQiBeLABdG7JvU
+	 BKl/D3C5KgRP+8wgiiGr7L83pgaWRtg+xEoFMJj1Q9gcaslKmZ12931xj1Fn6Hlngn
+	 wFH60GHI1IyaWAtbgVSS9xORKwKxwVs7Kl081648=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 145/817] microblaze: Export xmb_manager functions
-Date: Tue,  3 Dec 2024 15:35:17 +0100
-Message-ID: <20241203144001.387047476@linuxfoundation.org>
+Subject: [PATCH 6.11 155/817] mmc: mmc_spi: drop buggy snprintf()
+Date: Tue,  3 Dec 2024 15:35:27 +0100
+Message-ID: <20241203144001.776463799@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,62 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit badf752b5e4b17d281f93f409d4718388ff912e6 ]
+[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
 
-When TMR_MANAGER is enabled as module there is a need to export functions
-which are present in architecture code.
+GCC 13 complains about the truncated output of snprintf():
 
-It has been found by running:
-make W=1 C=1 allmodconfig
-sed -i -e 's/WERROR=y/WERROR=n/g' .config
-make C=1 W=1
+drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
+drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |                                                                ^
+drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  228 |                 cmd->opcode, maptype(cmd));
 
-which errors out like this:
-ERROR: modpost: "xmb_manager_register" [drivers/misc/xilinx_tmr_manager.ko] undefined!
-ERROR: modpost: "xmb_inject_err" [drivers/misc/xilinx_tmr_inject.ko] undefined!
+Drop it and fold the string it generates into the only place where it's
+emitted - the dev_dbg() call at the end of the function.
 
-Fixes: a5e3aaa654c1 ("microblaze: Add xmb_manager_register function")
-Reported-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/e322dbbbde0feef83f44304ea13249d365d1dc5f.1718799090.git.michal.simek@amd.com
+Fixes: 15a0580ced08 ("mmc_spi host driver")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/kernel/microblaze_ksyms.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/mmc/host/mmc_spi.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/microblaze/kernel/microblaze_ksyms.c b/arch/microblaze/kernel/microblaze_ksyms.c
-index c892e173ec990..a8553f54152b7 100644
---- a/arch/microblaze/kernel/microblaze_ksyms.c
-+++ b/arch/microblaze/kernel/microblaze_ksyms.c
-@@ -16,6 +16,7 @@
- #include <asm/page.h>
- #include <linux/ftrace.h>
- #include <linux/uaccess.h>
-+#include <asm/xilinx_mb_manager.h>
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index c9caa1ece7ef9..5a19d3e949134 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -222,10 +222,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	u8 	leftover = 0;
+ 	unsigned short rotator;
+ 	int 	i;
+-	char	tag[32];
+-
+-	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+-		cmd->opcode, maptype(cmd));
  
- #ifdef CONFIG_FUNCTION_TRACER
- extern void _mcount(void);
-@@ -46,3 +47,12 @@ extern void __udivsi3(void);
- EXPORT_SYMBOL(__udivsi3);
- extern void __umodsi3(void);
- EXPORT_SYMBOL(__umodsi3);
-+
-+#ifdef CONFIG_MB_MANAGER
-+extern void xmb_manager_register(uintptr_t phys_baseaddr, u32 cr_val,
-+				 void (*callback)(void *data),
-+				 void *priv, void (*reset_callback)(void *data));
-+EXPORT_SYMBOL(xmb_manager_register);
-+extern asmlinkage void xmb_inject_err(void);
-+EXPORT_SYMBOL(xmb_inject_err);
-+#endif
+ 	/* Except for data block reads, the whole response will already
+ 	 * be stored in the scratch buffer.  It's somewhere after the
+@@ -378,8 +374,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	}
+ 
+ 	if (value < 0)
+-		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
+-			tag, cmd->resp[0], cmd->resp[1]);
++		dev_dbg(&host->spi->dev,
++			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
++			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
+ 
+ 	/* disable chipselect on errors and some success cases */
+ 	if (value >= 0 && cs_on)
 -- 
 2.43.0
 
