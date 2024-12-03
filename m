@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624FE9E1F63
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:35:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF39D9E1F6B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5193316411B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F6C283ED8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27ADA1F6664;
-	Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F831F75BE;
+	Tue,  3 Dec 2024 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHvYKXld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy1pBSdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76451F4704;
-	Tue,  3 Dec 2024 14:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B631F7548;
+	Tue,  3 Dec 2024 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236467; cv=none; b=vAJVG73gbRO6TNb2Xy5vQcn6ITNRP4DUsbDoZ3aRdBSN7/j67vqclylDx9GLCgU3O6sBuiS+wswKcGcQQvH8/NpGJVTLN7991OTvoqbCbBEdLzlzH9xJmJIhXf67lfPzZb8HgQmA2zpg4ovzSIn1NoJAKFsixfxgE82XU1uDDws=
+	t=1733236496; cv=none; b=FJMhCkSKQo2BXyDLxnG+bBRZanSW/PiNYbQSLZw3Tj1vEV4BxojwMOEv6tNMXTzq+KO4Cq+x0zfOBuFV/uvNllI/xyjxf5xDRUjd+/YvbQDrxMvBanMFcSWBYQNgOBdGPheDzXowYEe58h4rzu2yz1TMZmI8Ev7BIcJK6ZMkez0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236467; c=relaxed/simple;
-	bh=J2bEWlbxF0iFM0DAbZ1HPRu6loGq9VASk5nR4fdg/9c=;
+	s=arc-20240116; t=1733236496; c=relaxed/simple;
+	bh=mbCtnilK72EPOtw+J5FOmQmy7k91Whe2hfd6oD2jBZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XM+LaONRY3fN7azt+luqIFTFFDh9qCdlJkk1jr0zwMH7sT5adp3YYTdcvGI4CfuHhQvB0c5gZsE2etJB9YDKaZpl/9UdZ9oOUSNmNpBl3wcW54bHeBqC/gk6VmIF1PhsJyfn4ISGvKuoy9J6+Lkwpm1VSwNpcM1+7KMMXrePwwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHvYKXld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0DCC4CED9;
-	Tue,  3 Dec 2024 14:34:24 +0000 (UTC)
+	 MIME-Version; b=aCseRwpO/2GeWjKgSKp4yxYga0r4PcH+L3hgkzBmdxsuQkXdLfr9EQm+Rb2OBByynMzmEYFMCLp+FAwKhJDprLiuiOabvdSGqc5vMjuB81nxO4JA1jq37XFYmQG3fcDc5ft5xJgdVmnDt4PsdZS5IUjWsvjIs3UcdgBqJh6qDXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy1pBSdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152AAC4CECF;
+	Tue,  3 Dec 2024 14:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236465;
-	bh=J2bEWlbxF0iFM0DAbZ1HPRu6loGq9VASk5nR4fdg/9c=;
+	s=korg; t=1733236496;
+	bh=mbCtnilK72EPOtw+J5FOmQmy7k91Whe2hfd6oD2jBZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHvYKXldFcKxnIWGtueCfrpOoPEa5g403/uRcyI0emjL9e94FQr13iUX8JRj3whlQ
-	 KE685klZ3uDiuDBWnCnabhUSBnuZcobLdOcszXTpO5JvDIkZ9C2wDCcJPOXlwGN5bs
-	 gN8ECSKUiVYGDeUzpEqkDozKTfYIM3tGexxs8dwc=
+	b=Hy1pBSdheUMQiO7hnTnERwEiSXozn1LjSM1YGyOdGzqdSP31EdGgmNsDkaZ0W8y+r
+	 klWDSXfeGYXKX3xqkR9xGTDWj3aU2GMYy/aIXgvhlYaMZu4oPVPee0kBR2m3exX7NA
+	 9QIzSrbqxJ85KsZUm2cHk9nuSVMrvROxAi8Li8GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 027/138] crypto: bcm - add error check in the ahash_hmac_init function
-Date: Tue,  3 Dec 2024 15:30:56 +0100
-Message-ID: <20241203141924.588567308@linuxfoundation.org>
+Subject: [PATCH 4.19 029/138] time: Fix references to _msecs_to_jiffies() handling of values
+Date: Tue,  3 Dec 2024 15:30:58 +0100
+Message-ID: <20241203141924.667915131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,45 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 19630cf57233e845b6ac57c9c969a4888925467b ]
+[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
 
-The ahash_init functions may return fails. The ahash_hmac_init should
-not return ok when ahash_init returns error. For an example, ahash_init
-will return -ENOMEM when allocation memory is error.
+The details about the handling of the "normal" values were moved
+to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
+Refactor msecs_to_jiffies"). However, the same commit still mentioned
+__msecs_to_jiffies() in the added documentation.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Thus point to _msecs_to_jiffies() instead.
+
+Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/cipher.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/jiffies.h | 2 +-
+ kernel/time/time.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/bcm/cipher.c b/drivers/crypto/bcm/cipher.c
-index c63992fbbc988..4349961982cc9 100644
---- a/drivers/crypto/bcm/cipher.c
-+++ b/drivers/crypto/bcm/cipher.c
-@@ -2510,6 +2510,7 @@ static int ahash_hmac_setkey(struct crypto_ahash *ahash, const u8 *key,
- 
- static int ahash_hmac_init(struct ahash_request *req)
- {
-+	int ret;
- 	struct iproc_reqctx_s *rctx = ahash_request_ctx(req);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct iproc_ctx_s *ctx = crypto_ahash_ctx(tfm);
-@@ -2519,7 +2520,9 @@ static int ahash_hmac_init(struct ahash_request *req)
- 	flow_log("ahash_hmac_init()\n");
- 
- 	/* init the context as a hash */
--	ahash_init(req);
-+	ret = ahash_init(req);
-+	if (ret)
-+		return ret;
- 
- 	if (!spu_no_incr_hash(ctx)) {
- 		/* SPU-M can do incr hashing but needs sw for outer HMAC */
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index fa928242567db..add50d10f4102 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -349,7 +349,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index f7d4fa5ddb9e2..4087cf51142c0 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -576,7 +576,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
 -- 
 2.43.0
 
