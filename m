@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2340A9E22C2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2809E256F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C227E16793F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0B4128586A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8ACE1F76CB;
-	Tue,  3 Dec 2024 15:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CC91F76D1;
+	Tue,  3 Dec 2024 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ink5xFZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWgjjMOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849A81F75BC;
-	Tue,  3 Dec 2024 15:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9801F75AC;
+	Tue,  3 Dec 2024 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239405; cv=none; b=rGMLPCIsIQgYLx/V+JuQ2ZS0r6Eeg85fErUU+SfB3E/XRo9v10Erz0MmRCiwKg780RTg3CCFg0iFrVuEbIj7P/RzrEVoC3ZZd4HHxxLi3DDi90JTjJpvsnt/jEjCccgC0cDTyV9Ba6+TZGvjF4QNU6qSxkjIhoDgfclkh0Dj21c=
+	t=1733241650; cv=none; b=oY2tMCMRKCADKBmbA+Ht6M7sV9Cbg1LwcGZemekpwmWKmWvibpehnyV70Mka7KWwznsJCKvcRRHvx0kzD6Bmui5HuXpYSDQ/Vuri3nalU+xVZoqvog1MclSpvLi+lfWvSjjqqsCrjjNs5KWesFoEc+WYHd5vKdZ1aiEJIblj2Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239405; c=relaxed/simple;
-	bh=GRcbKDdt9WuXLSCV/u+XVBTbDK9b7EcMazbWAW5I/J4=;
+	s=arc-20240116; t=1733241650; c=relaxed/simple;
+	bh=Zd+QnFcLhhyJ0572m+oBPI3tN4KM0B2XVwUjE7TTDmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxKCXqNQnhjFHjC0/CgdZ5yBR6UgFC5g9JlQDNFfmEJTUH/yB/iEK0/MZYg6TQkr0frecirCA9JjpiIkCr5mPPju1j567wPnrT5to4U9iahBQyYSPmElqWa8dQ5mvvOs9lNlSxKF61UEkEUUz16cevFK1yOiN4WqE4XAYCAcUZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ink5xFZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC854C4CED6;
-	Tue,  3 Dec 2024 15:23:24 +0000 (UTC)
+	 MIME-Version; b=MzVvAHPFZNq7XXpuE8Du5lYgdjODlIUJ0ZL3j9rSrSoTXHvBdsWWbJJ+Bpgf8m/PJkEebhWfzOcSIG8I1P3ZvJlGQJ/egTtGsXuyMnqh/NfmBBCnKFaqa9DvhgGyj6RiRwEL+55BC5uLG8SxgCZwO/YTAUN6Byh3x76dQPqRGjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWgjjMOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C66BC4CED6;
+	Tue,  3 Dec 2024 16:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239405;
-	bh=GRcbKDdt9WuXLSCV/u+XVBTbDK9b7EcMazbWAW5I/J4=;
+	s=korg; t=1733241650;
+	bh=Zd+QnFcLhhyJ0572m+oBPI3tN4KM0B2XVwUjE7TTDmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ink5xFZLU8DIMLtnva9DdFHvDPiLNrD30gOvhFHKLaJKw6yMg4+PkVHxnOHMTz6Vy
-	 M/N33QFX8P/0jl52k0XHnAn5UVZedxEPOl0K6qnDdsgqgFRP7JD7tIZ0aqnS/Ymjaq
-	 gA0TPErwKbCaZCN5eX6Z6qqW6q/NygAsMEfCxE8k=
+	b=sWgjjMORbFWeVxIcIad1w7RwDzkI+H3IIt3dHCzJYuMPuuuzBOTzjMePZZw1Dqbll
+	 nhhl0nmqgdOBn4A0Ero1+5RGjWDrt4y2JUkqzjlwsbcYi3u0DY9BDelT6B01k+rjDQ
+	 4z3D2afmcsyACJy0pSovFgjSC1hJQ5uolLmLSuU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 602/817] misc: apds990x: Fix missing pm_runtime_disable()
-Date: Tue,  3 Dec 2024 15:42:54 +0100
-Message-ID: <20241203144019.426607886@linuxfoundation.org>
+Subject: [PATCH 6.12 448/826] clk: ralink: mtmips: fix clock plan for Ralink SoC RT3883
+Date: Tue,  3 Dec 2024 15:42:55 +0100
+Message-ID: <20241203144801.235556652@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit 3c5d8b819d27012264edd17e6ae7fffda382fe44 ]
+[ Upstream commit 33239152305567b3e9bf052f71fd4baecd626341 ]
 
-The pm_runtime_disable() is missing in probe error path,
-so add it to fix it.
+Clock plan for Ralink SoC RT3883 needs an extra 'periph' clock to properly
+set some peripherals that has this clock as their parent. When this driver
+was mainlined we could not find any active users of this SoC so we cannot
+perform any real tests for it. Now, one user of a Belkin f9k1109 version 1
+device which uses this SoC appear and reported some issues in openWRT:
+- https://github.com/openwrt/openwrt/issues/16054
+The peripherals that are wrong are 'uart', 'i2c', 'i2s' and 'uartlite' which
+has a not defined 'periph' clock as parent. Hence, introduce it to have a
+properly working clock plan for this SoC.
 
-Fixes: 92b1f84d46b2 ("drivers/misc: driver for APDS990X ALS and proximity sensors")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240923035556.3009105-1-ruanjinjie@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f3b15586eef ("clk: ralink: add clock and reset driver for MTMIPS SoCs")
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20240910044024.120009-2-sergio.paracuellos@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/apds990x.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/clk/ralink/clk-mtmips.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/apds990x.c b/drivers/misc/apds990x.c
-index 6d4edd69db126..e7d73c972f65d 100644
---- a/drivers/misc/apds990x.c
-+++ b/drivers/misc/apds990x.c
-@@ -1147,7 +1147,7 @@ static int apds990x_probe(struct i2c_client *client)
- 		err = chip->pdata->setup_resources();
- 		if (err) {
- 			err = -EINVAL;
--			goto fail3;
-+			goto fail4;
- 		}
- 	}
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 50a443bf79ecd..62f9801ecd3a4 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -267,6 +267,11 @@ static struct mtmips_clk_fixed rt305x_fixed_clocks[] = {
+ 	CLK_FIXED("xtal", NULL, 40000000)
+ };
  
-@@ -1155,7 +1155,7 @@ static int apds990x_probe(struct i2c_client *client)
- 				apds990x_attribute_group);
- 	if (err < 0) {
- 		dev_err(&chip->client->dev, "Sysfs registration failed\n");
--		goto fail4;
-+		goto fail5;
- 	}
- 
- 	err = request_threaded_irq(client->irq, NULL,
-@@ -1166,15 +1166,17 @@ static int apds990x_probe(struct i2c_client *client)
- 	if (err) {
- 		dev_err(&client->dev, "could not get IRQ %d\n",
- 			client->irq);
--		goto fail5;
-+		goto fail6;
- 	}
- 	return err;
--fail5:
-+fail6:
- 	sysfs_remove_group(&chip->client->dev.kobj,
- 			&apds990x_attribute_group[0]);
--fail4:
-+fail5:
- 	if (chip->pdata && chip->pdata->release_resources)
- 		chip->pdata->release_resources();
-+fail4:
-+	pm_runtime_disable(&client->dev);
- fail3:
- 	regulator_bulk_disable(ARRAY_SIZE(chip->regs), chip->regs);
- fail2:
++static struct mtmips_clk_fixed rt3883_fixed_clocks[] = {
++	CLK_FIXED("xtal", NULL, 40000000),
++	CLK_FIXED("periph", "xtal", 40000000)
++};
++
+ static struct mtmips_clk_fixed rt3352_fixed_clocks[] = {
+ 	CLK_FIXED("periph", "xtal", 40000000)
+ };
+@@ -779,8 +784,8 @@ static const struct mtmips_clk_data rt3352_clk_data = {
+ static const struct mtmips_clk_data rt3883_clk_data = {
+ 	.clk_base = rt3883_clks_base,
+ 	.num_clk_base = ARRAY_SIZE(rt3883_clks_base),
+-	.clk_fixed = rt305x_fixed_clocks,
+-	.num_clk_fixed = ARRAY_SIZE(rt305x_fixed_clocks),
++	.clk_fixed = rt3883_fixed_clocks,
++	.num_clk_fixed = ARRAY_SIZE(rt3883_fixed_clocks),
+ 	.clk_factor = NULL,
+ 	.num_clk_factor = 0,
+ 	.clk_periph = rt5350_pherip_clks,
 -- 
 2.43.0
 
