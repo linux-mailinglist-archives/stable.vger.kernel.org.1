@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-97137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AFF9E22A3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99029E2867
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B78E285D3A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C7FB87646
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD741F7071;
-	Tue,  3 Dec 2024 15:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D61F75AC;
+	Tue,  3 Dec 2024 16:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jEGwy7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8eG0WGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996F31F707A;
-	Tue,  3 Dec 2024 15:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C255A23CE;
+	Tue,  3 Dec 2024 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239626; cv=none; b=kSC/BCavd7euR7trB56AMGITQTxm4teXwt83B6yE8hKICFhViV8hFUobUJB+m5EiCQ88C+zdpav97LbRHwQ/t2x5oRglOw5jMIy6GoJzB+r8LaAtLg6kt5JyEnfuhqxhybAmYlTakU0/dip6CZYlz7fL1V6Xo74CTvb/DznLkwI=
+	t=1733241693; cv=none; b=oJEaE28e3er+qhtdxVPmD9/mE9C455aTD+fDd5gSAil38oY842QN4cwToOhzMELsAKMaxABk049e6cYqjHJ76U79LSmyiWa2YNd3DEsVVlz+wWPV/wLLliZiXxRBvwM0OYinXdbEnxVgZ3AMsZMOQ9ce2VICdVPXe8YVMvRUGSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239626; c=relaxed/simple;
-	bh=0tvd5s/tu9tDD9nXNXWLbiH245FFf1RSFDBMOY2QOuo=;
+	s=arc-20240116; t=1733241693; c=relaxed/simple;
+	bh=bVIIB4W2Yz2Mzl6/SMxO4o3LVkrBnhJ3VJ3e2SvBR+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nB+9nyvQoU0U6XipuK/zdse7a1bp3qtOqcqN+YnIIqBgejngVbc5nO9thNal4qGCZL4bwBMUp2mU0xfFCBtxOcMPJoFxS6kgsNPyUVllb2+B/F2iD7crxem7c5NWRYRaBDdMlO0fuEla3dXT/Bb5oeKlFA167gdVzNEoPXujwg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jEGwy7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39B1C4CECF;
-	Tue,  3 Dec 2024 15:27:05 +0000 (UTC)
+	 MIME-Version; b=jHMM3cHA3GYIqezCqXRbrMDYOUoA09lDQpwKLAoxccd9fhZRkbN6WD9WCxuv/F2/kb6keWWklBT7Oib2yoQMboQ7FBhDyKy13So6723lLhMqp9zftD+dURRUOfxDS8r80fVyjakoyoXRxiyVykiWTHgzsP/WU/JDQg2ge12tRpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8eG0WGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2808BC4CECF;
+	Tue,  3 Dec 2024 16:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239626;
-	bh=0tvd5s/tu9tDD9nXNXWLbiH245FFf1RSFDBMOY2QOuo=;
+	s=korg; t=1733241693;
+	bh=bVIIB4W2Yz2Mzl6/SMxO4o3LVkrBnhJ3VJ3e2SvBR+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jEGwy7K5V6yf9KbUbyWyvR0MF40i2Aq1aC+yLdLRUl8j2B2SXb+fr+QuCGvWpJYE
-	 LQHJD6FCqKeu9XnT/KBiq9N/cMq1cdMEb6Sa44sVNuwlvnseM1rYPbSmejjGPIgp8B
-	 Rs34ATJ0bSQ1gZBfPmOhetU3q/d0FukjvjNWIR2o=
+	b=K8eG0WGee9C3XY2TEcAOnPMQrVvQs6dprAW6KrfobpS3rBkQMxm3mx/0r5Ra05qKP
+	 etH7gfln6E2nrO1/sx+1ZiCyRM+CmoWN2pcZunNlLASdtdBEglV6L7Dlv7oQ3bvPwi
+	 5wkeERIOKv8g3FLYJ7kjJ2iqYWF9HGwXK6qwto7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.11 647/817] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
+	Li Huafei <lihuafei1@huawei.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	sesse@google.com,
+	kjain@linux.ibm.com,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 492/826] perf disasm: Use disasm_line__free() to properly free disasm_line
 Date: Tue,  3 Dec 2024 15:43:39 +0100
-Message-ID: <20241203144021.211979345@linuxfoundation.org>
+Message-ID: <20241203144802.948748346@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Li Huafei <lihuafei1@huawei.com>
 
-commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
+[ Upstream commit b4e0e9a1e30059f4523c9b6a1f8045ad89b5db8a ]
 
-As per the kernel documentation[1], hardlockup detector should
-be disabled in KVM guests as it may give false positives. On
-PPC, hardlockup detector is enabled inside KVM guests because
-disable_hardlockup_detector() is marked as early_initcall and it
-relies on kvm_guest static key (is_kvm_guest()) which is initialized
-later during boot by check_kvm_guest(), which is a core_initcall.
-check_kvm_guest() is also called in pSeries_smp_probe(), which is called
-before initcalls, but it is skipped if KVM guest does not have doorbell
-support or if the guest is launched with SMT=1.
+The structure disasm_line contains members that require dynamically
+allocated memory and need to be freed correctly using
+disasm_line__free().
 
-Call check_kvm_guest() in disable_hardlockup_detector() so that
-is_kvm_guest() check goes through fine and hardlockup detector can be
-disabled inside the KVM guest.
+This patch fixes the incorrect release in
+symbol__disassemble_capstone().
 
-[1]: Documentation/admin-guide/sysctl/kernel.rst
-
-Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d17edc113de ("perf annotate: Use libcapstone to disassemble")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: sesse@google.com
+Cc: kjain@linux.ibm.com
+Link: https://lore.kernel.org/r/20241019154157.282038-1-lihuafei1@huawei.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup_64.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/disasm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -920,6 +920,7 @@ static int __init disable_hardlockup_det
- 	hardlockup_detector_disable();
- #else
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-+		check_kvm_guest();
- 		if (is_kvm_guest())
- 			hardlockup_detector_disable();
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 2c8063660f2e8..5d5fcc4dee078 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -1720,7 +1720,7 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+ 		 */
+ 		list_for_each_entry_safe(dl, tmp, &notes->src->source, al.node) {
+ 			list_del(&dl->al.node);
+-			free(dl);
++			disasm_line__free(dl);
+ 		}
  	}
+ 	count = -1;
+-- 
+2.43.0
+
 
 
 
