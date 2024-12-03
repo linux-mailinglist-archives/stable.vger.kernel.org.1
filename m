@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E21F9E20C1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA6E9E20C4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A67616917F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E271F1691CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F651DA4E;
-	Tue,  3 Dec 2024 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111281F7557;
+	Tue,  3 Dec 2024 15:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7jfhkhr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVeC0tV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B511F429B;
-	Tue,  3 Dec 2024 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E581F429B;
+	Tue,  3 Dec 2024 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238064; cv=none; b=u4X6IriMt5x3q5oJr95UAkzT8coVt0P9KLTSdkqh7q1NJdBILstWqR2PLyQuW+NHbcdtzZIWG6izg2ZQGFy8Pw3gA7kAVb9CORztj14eiLL+1hhUFh1rYkdV67WavOcLnkYMz0pYQeEpNX4Rq6avNRxy1QEfZfxz/XW4iESuR+o=
+	t=1733238070; cv=none; b=rSytqAFwbMCVcOWv3ztxa4coI/725SYxwf7EkEQhfKWu/H4GV4OjyZHtcEb2zvwqIBIBHtfwrK4KHyjp/aProgejqkCZppoW5yNx2Q1S9/sBBqGX7kta2ZdDrlQyY2utcRxdi1vZszjQNIF+BXYGt2/nHoWksQGwDqSqBf/8m90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238064; c=relaxed/simple;
-	bh=df9F+FekPvKw5Yykxyqs04a9/ypqm4pmq7zol0YimKE=;
+	s=arc-20240116; t=1733238070; c=relaxed/simple;
+	bh=ao9zbR9aVOHXnfcaAyn/dn1nJVcSGj2O5I+Ae/KZlL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1SPC7UA2i3GC0WVSXKtsXUXSbShujtxt8a7eKEBzwf1YlYSwlNREbfWmoSxxpRCqxO78Vxco5LyymINhB9DgHYKtjo/F4cRjLt6NEbGAzFlH2WEayhHQ5FCNvxCtFWvS5DmXwu8QGE7IOJ8KKniTphpdPDV6MYcKFtywetIgGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7jfhkhr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB29DC4CECF;
-	Tue,  3 Dec 2024 15:01:03 +0000 (UTC)
+	 MIME-Version; b=n3la8CW/fp5vL/w20Y97p226NMpMI2X5iDPesy2SQdyArEum3BcHWNxJWdC5RoH2Lm+nyD9HC6O0ShTuA8laVUDH1HQKkDzZqZi9QScfdVshY00quB9veN5E2QMjSBqiB/p2nerSov3XXKLFQEDJHds5WwRVh2EZTeJeFA5uNu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVeC0tV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A711C4CECF;
+	Tue,  3 Dec 2024 15:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238064;
-	bh=df9F+FekPvKw5Yykxyqs04a9/ypqm4pmq7zol0YimKE=;
+	s=korg; t=1733238070;
+	bh=ao9zbR9aVOHXnfcaAyn/dn1nJVcSGj2O5I+Ae/KZlL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7jfhkhrTxdr8M+Ap2JT0++IqHR3NdepiinbWxLAx2ZIl6GkOUqjchaGXTMJXEBuG
-	 K6Qw7DFd+6LZm8/Qd8kTt7I12rK4HQAq1y4jTB9H+tdpzhSp+TTNPYPL3i+ylCxBfg
-	 vcFVuMmpnW/PaUlhJDQz7oiG7fh/IcW+TczTWqFk=
+	b=eVeC0tV29FTf8vtq2lN/EttrLre5t7EGTdSeenKHHlwUcyIdsWGqs6cmu3n33Gkkw
+	 G8TuHo0SRKhJxaN+TM2OdCVh7anRbCRbWYClZQqoNSVtytLB5+JRN7WQIjsYljAhKV
+	 jj632s+cs7VLP18eHK22ZHAhu2rBfkgYC4d46c7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 150/817] soc: ti: smartreflex: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Tue,  3 Dec 2024 15:35:22 +0100
-Message-ID: <20241203144001.582184450@linuxfoundation.org>
+Subject: [PATCH 6.11 152/817] arm64: dts: qcom: sm6350: Fix GPU frequencies missing on some speedbins
+Date: Tue,  3 Dec 2024 15:35:24 +0100
+Message-ID: <20241203144001.659622212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,43 +66,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 16a0a69244240cfa32c525c021c40f85e090557a ]
+[ Upstream commit 600c499f8f5297c2c91e8146a8217f299e445ef6 ]
 
-If request_irq() fails in sr_late_init(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+Make sure the GPU frequencies are marked as supported for the respective
+speedbins according to downstream msm-4.19 kernel:
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+* 850 MHz: Speedbins 0 + 180
+* 800 MHz: Speedbins 0 + 180 + 169
+* 650 MHz: Speedbins 0 + 180 + 169 + 138
+* 565 MHz: Speedbins 0 + 180 + 169 + 138 + 120
+* 430 MHz: Speedbins 0 + 180 + 169 + 138 + 120
+* 355 MHz: Speedbins 0 + 180 + 169 + 138 + 120
+* 253 MHz: Speedbins 0 + 180 + 169 + 138 + 120
 
-Fixes: 1279ba5916f6 ("OMAP3+: SR: disable interrupt by default")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912034147.3014213-1-ruanjinjie@huawei.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: bd9b76750280 ("arm64: dts: qcom: sm6350: Add GPU nodes")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20241002-sm6350-gpu-speedbin-fix-v1-1-8a5d90c5097d@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/smartreflex.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/soc/ti/smartreflex.c b/drivers/soc/ti/smartreflex.c
-index d6219060b616d..38add2ab56137 100644
---- a/drivers/soc/ti/smartreflex.c
-+++ b/drivers/soc/ti/smartreflex.c
-@@ -202,10 +202,10 @@ static int sr_late_init(struct omap_sr *sr_info)
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 7986ddb30f6e8..4f8477de7e1b1 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1376,43 +1376,43 @@ gpu_opp_table: opp-table {
+ 				opp-850000000 {
+ 					opp-hz = /bits/ 64 <850000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_TURBO_L1>;
+-					opp-supported-hw = <0x02>;
++					opp-supported-hw = <0x03>;
+ 				};
  
- 	if (sr_class->notify && sr_class->notify_flags && sr_info->irq) {
- 		ret = devm_request_irq(&sr_info->pdev->dev, sr_info->irq,
--				       sr_interrupt, 0, sr_info->name, sr_info);
-+				       sr_interrupt, IRQF_NO_AUTOEN,
-+				       sr_info->name, sr_info);
- 		if (ret)
- 			goto error;
--		disable_irq(sr_info->irq);
- 	}
+ 				opp-800000000 {
+ 					opp-hz = /bits/ 64 <800000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_TURBO>;
+-					opp-supported-hw = <0x04>;
++					opp-supported-hw = <0x07>;
+ 				};
  
- 	return ret;
+ 				opp-650000000 {
+ 					opp-hz = /bits/ 64 <650000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_NOM_L1>;
+-					opp-supported-hw = <0x08>;
++					opp-supported-hw = <0x0f>;
+ 				};
+ 
+ 				opp-565000000 {
+ 					opp-hz = /bits/ 64 <565000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_NOM>;
+-					opp-supported-hw = <0x10>;
++					opp-supported-hw = <0x1f>;
+ 				};
+ 
+ 				opp-430000000 {
+ 					opp-hz = /bits/ 64 <430000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_SVS_L1>;
+-					opp-supported-hw = <0xff>;
++					opp-supported-hw = <0x1f>;
+ 				};
+ 
+ 				opp-355000000 {
+ 					opp-hz = /bits/ 64 <355000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_SVS>;
+-					opp-supported-hw = <0xff>;
++					opp-supported-hw = <0x1f>;
+ 				};
+ 
+ 				opp-253000000 {
+ 					opp-hz = /bits/ 64 <253000000>;
+ 					opp-level = <RPMH_REGULATOR_LEVEL_LOW_SVS>;
+-					opp-supported-hw = <0xff>;
++					opp-supported-hw = <0x1f>;
+ 				};
+ 			};
+ 		};
 -- 
 2.43.0
 
