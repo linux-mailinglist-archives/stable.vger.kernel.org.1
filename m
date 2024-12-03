@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-97926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901289E268C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAED9E238B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E321680D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C22491618B0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347221F8919;
-	Tue,  3 Dec 2024 16:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58E11FAC25;
+	Tue,  3 Dec 2024 15:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+g+n1oN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lE9P1Upz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF0F1F890F;
-	Tue,  3 Dec 2024 16:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736181FAC30;
+	Tue,  3 Dec 2024 15:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242208; cv=none; b=MMn/5I09BHTx5jXYxZuobQi4sIqYTo1/jJjyeDi6OyrsTXNw5aRvJh4xmS4RjS+vBxz8VYAqMI2h+KbgE7bB/M/UMphVEnm39rR2fKbwG80CV+UMfnO+jn9Vz/7UFlPXdK6XXn1lwMGQ9CiQF4U7uy9WeSINYWARdCc21jdfmWY=
+	t=1733239957; cv=none; b=oILLGMwWHZU/DmHw7qiYlH3i9TvtGX5CftEpWC0TYn56vaQ+ZkPGWHlxomaRS+qPLLW8ENxnEdJS8gTaE2TDmuv2PqvjTmOeE/FH3ssGjcsHGGcTvMAU64EUOFo5oE4IhmLcphJfPR6Ps692bS//PS8tSmIzpjPxHu2AP5H3xso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242208; c=relaxed/simple;
-	bh=Zijc12XzfaIusIn1NUP6QlzCXvFJRwOQGotSEzNyKSs=;
+	s=arc-20240116; t=1733239957; c=relaxed/simple;
+	bh=E0NMorDQRCNZA7f2OZOQUSlx4zsLya2ICNw7/rQE2Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKBlwTPYEOhT4fTCp9L64Y1JfiVjLJEdZVefHtGH0MkmT5MQqsol6eDE+GCFEMoJAna+pROZFF/wNxLXhlV7Qpy+8Gn4l2m9Vggg7y63Yy3asmfem9cah2JvLpTKzhQVLVnKY805CFKa4Fi1x4FFyi9V6Sai+J/LqSGi43Z1OOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+g+n1oN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D930C4CED8;
-	Tue,  3 Dec 2024 16:10:07 +0000 (UTC)
+	 MIME-Version; b=hXYoCINicSaiE55qKlfBk+HQWka8z8JOYvGnfVmaWTub4lCZrGLqJy+9MGM9bJwuozxOBB71XPbvxI87s2cdz31/VXgrRCaupvNeSiAhMZFn2ix0fbvAkwUhQTacRYKrYXvEovcdI56HsbRFDE7STJCTqHnifNk2rdBPbXdGu0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lE9P1Upz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AB2C4CECF;
+	Tue,  3 Dec 2024 15:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242207;
-	bh=Zijc12XzfaIusIn1NUP6QlzCXvFJRwOQGotSEzNyKSs=;
+	s=korg; t=1733239957;
+	bh=E0NMorDQRCNZA7f2OZOQUSlx4zsLya2ICNw7/rQE2Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+g+n1oNZSXs7KyWptrYxyjGxv7qGa8FOVHb7G86GnYrprnl/L0O9DnJBh24Y1aIG
-	 2ICI6gC/yduDAvjmBpCBEfDlGpGloaC/SyI0pTDlJzU5S29WTh+cScNq2XX7viUi6f
-	 O/g5HjgewtTUlI3VsoTMZmDw/uCzKKodUemUqsQI=
+	b=lE9P1UpzDdqrpBdN5Aw4w9Lj1v5o3Jqlml+GsNpYWVOPUn4CM58cPZhXnrhLuW4+z
+	 JMKU49fr6MMc23w7x6waldHThJvP+JIcG5F5Q/h9+HFHdcyo4rz6cxLoYMtNwQGfiW
+	 yTuhhGMAXd2HessYnjhOf1C53pMZRk/tkskpvLB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 638/826] perf/x86/intel/pt: Fix buffer full but size is 0 case
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 793/817] x86/Documentation: Update algo in init_size description of boot protocol
 Date: Tue,  3 Dec 2024 15:46:05 +0100
-Message-ID: <20241203144808.638077173@linuxfoundation.org>
+Message-ID: <20241203144026.965137426@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
+[ Upstream commit be4ca6c53e66cb275cf0d71f32dac0c4606b9dc0 ]
 
-If the trace data buffer becomes full, a truncated flag [T] is reported
-in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
-data must have been added to make the buffer full.
+The init_size description of boot protocol has an example of the runtime
+start address for the compressed bzImage. For non-relocatable kernel
+it relies on the pref_address value (if not 0), but for relocatable case
+only pays respect to the load_addres and kernel_alignment, and it is
+inaccurate for the latter. Boot loader must consider the pref_address
+as the Linux kernel relocates to it before being decompressed as nicely
+described in this commit message a year ago:
 
-That happens when the buffer fills up from empty to full before the
-Intel PT driver has updated the buffer position.  Then the driver
-calculates the new buffer position before calculating the data size.
-If the old and new positions are the same, the data size is reported
-as 0, even though it is really the whole buffer size.
+  43b1d3e68ee7 ("kexec: Allocate kernel above bzImage's pref_address")
 
-Fix by detecting when the buffer position is wrapped, and adjust the
-data size calculation accordingly.
+Due to this documentation inaccuracy some of the bootloaders (*) made a
+mistake in the calculations and if kernel image is big enough, this may
+lead to unbootable configurations.
 
-Example
+*)
+  In particular, kexec-tools missed that and resently got a couple of
+  changes which will be part of v2.0.30 release. For the record,
+  commit 43b1d3e68ee7 only fixed the kernel kexec implementation and
+  also missed to update the init_size description.
 
-  Use a very small buffer size (8K) and observe the size of truncated [T]
-  data. Before the fix, it is possible to see records of 0 size.
+While at it, make an example C-like looking as it's done elsewhere in
+the document and fix indentation as presribed by the reStructuredText
+specifications, so the syntax highliting will work properly.
 
-  Before:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 2 times to write data ]
-    [ perf record: Captured and wrote 0.105 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
-    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
-
- After:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 3 times to write data ]
-    [ perf record: Captured and wrote 0.040 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
-    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 43b1d3e68ee7 ("kexec: Allocate kernel above bzImage's pref_address")
+Fixes: d297366ba692 ("x86: document new bzImage fields")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20241125105005.1616154-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c |   11 ++++++++---
- arch/x86/events/intel/pt.h |    2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ Documentation/arch/x86/boot.rst | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -828,11 +828,13 @@ static void pt_buffer_advance(struct pt_
- 	buf->cur_idx++;
+diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+index 4fd492cb49704..ad2d8ddad27fe 100644
+--- a/Documentation/arch/x86/boot.rst
++++ b/Documentation/arch/x86/boot.rst
+@@ -896,10 +896,19 @@ Offset/size:	0x260/4
  
- 	if (buf->cur_idx == buf->cur->last) {
--		if (buf->cur == buf->last)
-+		if (buf->cur == buf->last) {
- 			buf->cur = buf->first;
--		else
-+			buf->wrapped = true;
-+		} else {
- 			buf->cur = list_entry(buf->cur->list.next, struct topa,
- 					      list);
-+		}
- 		buf->cur_idx = 0;
- 	}
- }
-@@ -846,8 +848,11 @@ static void pt_buffer_advance(struct pt_
- static void pt_update_head(struct pt *pt)
- {
- 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
-+	bool wrapped = buf->wrapped;
- 	u64 topa_idx, base, old;
+   The kernel runtime start address is determined by the following algorithm::
  
-+	buf->wrapped = false;
+-	if (relocatable_kernel)
+-	runtime_start = align_up(load_address, kernel_alignment)
+-	else
+-	runtime_start = pref_address
++   	if (relocatable_kernel) {
++   		if (load_address < pref_address)
++   			load_address = pref_address;
++   		runtime_start = align_up(load_address, kernel_alignment);
++   	} else {
++   		runtime_start = pref_address;
++   	}
 +
- 	if (buf->single) {
- 		local_set(&buf->data_size, buf->output_off);
- 		return;
-@@ -865,7 +870,7 @@ static void pt_update_head(struct pt *pt
- 	} else {
- 		old = (local64_xchg(&buf->head, base) &
- 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
--		if (base < old)
-+		if (base < old || (base == old && wrapped))
- 			base += buf->nr_pages << PAGE_SHIFT;
++Hence the necessary memory window location and size can be estimated by
++a boot loader as::
++
++   	memory_window_start = runtime_start;
++   	memory_window_size = init_size;
  
- 		local_add(base - old, &buf->data_size);
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -65,6 +65,7 @@ struct pt_pmu {
-  * @head:	logical write offset inside the buffer
-  * @snapshot:	if this is for a snapshot/overwrite counter
-  * @single:	use Single Range Output instead of ToPA
-+ * @wrapped:	buffer advance wrapped back to the first topa table
-  * @stop_pos:	STOP topa entry index
-  * @intr_pos:	INT topa entry index
-  * @stop_te:	STOP topa entry pointer
-@@ -82,6 +83,7 @@ struct pt_buffer {
- 	local64_t		head;
- 	bool			snapshot;
- 	bool			single;
-+	bool			wrapped;
- 	long			stop_pos, intr_pos;
- 	struct topa_entry	*stop_te, *intr_te;
- 	void			**data_pages;
+ ============	===============
+ Field name:	handover_offset
+-- 
+2.43.0
+
 
 
 
