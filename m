@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5BD9E2A86
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326189E2A6C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1780B60F90
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 490A5B38805
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0001F706C;
-	Tue,  3 Dec 2024 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14FE1F7547;
+	Tue,  3 Dec 2024 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+wkNCGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTtdG3a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE9D1EF0AE;
-	Tue,  3 Dec 2024 15:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B581F472A;
+	Tue,  3 Dec 2024 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239447; cv=none; b=tbpgYAzl0/rUouteutMvv0xqdp+52C8voF+AAveb5glXH/Cj+TAiFD4xLZGMWpcg8Vm9oocvI1tjcf74de5gvD+EZnGc6hbOzq5B7BP9T9BYrOBpOtbyNxtQFocKd3u/XhKNju20dZ6CxmKjj7j+w6vpvU+Sf0+7GQTYMXo1Dig=
+	t=1733239510; cv=none; b=rSZ30rB4uzIzF0kyTrygp47Lx/6hSKiaioKrJcA58wwLlyNitfDPEmRC2AUFA1PTmbWz52X4U2gHCdS30YqynC6GWzRL1dxlvbDdDPFLSgD0+/1BN7aOe/zr7AHP0oKhHzbG2K/QLhivZww+JIesMQqmx5jiymCnNHWgubAHGLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239447; c=relaxed/simple;
-	bh=6No7yeTCh1M8kHTP8ND1PQPYn+ko0SkkCsoz3gP4ecM=;
+	s=arc-20240116; t=1733239510; c=relaxed/simple;
+	bh=eGciI+ZMTTs+2HA7z+tD0sFJeyLmLtwP7vWWyyURaR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThLcBt2CwRoXlqCBXCCXgxPHpct1Giyx93sDpbAfJwQisZJ2gyUsURnUpRDDjKtg/D0hhIQtjugrO9eM5YtJQ4bfsRiAARWPmquTBWwiIQuVAKD25gWw442i/3E+Hxco9XdnU5VwY0tyHON2mXAekJ39cZwYBEB+rGJE9U1m/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+wkNCGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48192C4CECF;
-	Tue,  3 Dec 2024 15:24:05 +0000 (UTC)
+	 MIME-Version; b=IvcCntVPdhi51qMMMiH4cKWnm6YTpKum97p29VIuCUV56P5Tf7TOwvcd9WNYb4n+s2jNnB4gS2t3F6R8N42Mwv8G1BuBZvIYTCoVjK6XQyJJlJjJNlTqYtLYqVejZvE+Rqkkw5hNt1WXEJ7ECphYAFOjMhQcgtFEt1HZxM+zmos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTtdG3a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A1BC4CECF;
+	Tue,  3 Dec 2024 15:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239445;
-	bh=6No7yeTCh1M8kHTP8ND1PQPYn+ko0SkkCsoz3gP4ecM=;
+	s=korg; t=1733239510;
+	bh=eGciI+ZMTTs+2HA7z+tD0sFJeyLmLtwP7vWWyyURaR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+wkNCGvY0QLBxzdgEY3YXPwoyri9rqBK1agf6n9W59c42DetNADRbXQLzF8XRnCE
-	 iW787WsbhTFZHL17TIaHzz4rtAEEhdYizbhXdfO9cIXPfe6yNkimu6n84t6Pi/Kjoz
-	 ENIqedU/iqvFwQ8yfvEo7TTYi8XBjkMR00+agtOA=
+	b=jTtdG3a/ZYaWQKU7zyhOi+YDNsL4aRZY7qpB97ZZBtAKZ6Spml+N/nhqDWi/bsh4J
+	 bcuAVE/taRVvWO7lav6cHKhfVDYnY8aksXtHhSEyqmGzaFrOpYuOjWMMCV6uqaRCWC
+	 D5yx6xwP6j/0PHWYTUa9JKml9RQmMKuy/oxU/orw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 609/817] counter: ti-ecap-capture: Add check for clk_enable()
-Date: Tue,  3 Dec 2024 15:43:01 +0100
-Message-ID: <20241203144019.704313526@linuxfoundation.org>
+Subject: [PATCH 6.11 611/817] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+Date: Tue,  3 Dec 2024 15:43:03 +0100
+Message-ID: <20241203144019.782907270@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,42 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1437d9f1c56fce9c24e566508bce1d218dd5497a ]
+[ Upstream commit e56aac6e5a25630645607b6856d4b2a17b2311a5 ]
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+The "command" variable can be controlled by the user via debugfs.  The
+worry is that if con_index is zero then "&uc->ucsi->connector[con_index
+- 1]" would be an array underflow.
 
-Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-Reviewed-by: Julien Panis <jpanis@baylibre.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241104194059.47924-1-jiashengjiangcool@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/c69ef0b3-61b0-4dde-98dd-97b97f81d912@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/ti-ecap-capture.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index 675447315cafb..b119aeede693e 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -574,8 +574,13 @@ static int ecap_cnt_resume(struct device *dev)
- {
- 	struct counter_device *counter_dev = dev_get_drvdata(dev);
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-+	int ret;
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index 763ff99f000d9..14c2dc9255b54 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -644,6 +644,10 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
+ 	    uc->has_multiple_dp) {
+ 		con_index = (uc->last_cmd_sent >> 16) &
+ 			UCSI_CMD_CONNECTOR_MASK;
++		if (con_index == 0) {
++			ret = -EINVAL;
++			goto unlock;
++		}
+ 		con = &uc->ucsi->connector[con_index - 1];
+ 		ucsi_ccg_update_set_new_cam_cmd(uc, con, &command);
+ 	}
+@@ -651,6 +655,7 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
+ 	ret = ucsi_sync_control_common(ucsi, command);
  
--	clk_enable(ecap_dev->clk);
-+	ret = clk_enable(ecap_dev->clk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable clock %d\n", ret);
-+		return ret;
-+	}
+ 	pm_runtime_put_sync(uc->dev);
++unlock:
+ 	mutex_unlock(&uc->lock);
  
- 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
- 
+ 	return ret;
 -- 
 2.43.0
 
