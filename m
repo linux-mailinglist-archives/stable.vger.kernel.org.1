@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344729E22F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739A59E255F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD6BB16C5A2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39217287AE9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2B51F75A4;
-	Tue,  3 Dec 2024 15:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB141F76DA;
+	Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGyI/9MV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6o392SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E101F757D;
-	Tue,  3 Dec 2024 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B77C1F75A5;
+	Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239527; cv=none; b=d5z+eNeUQnxiPL7JD+ObCHOKPMkIJo4ed9gfa7RXbZc39HOmwtP2GyXuvWQGBF2I70QcyaWaY4DseTspJD/9mIPrX9+e4YUc6SDsYa1QYFWsIRbglNgBj7bjRdEGM9qweWVtKS6p3KY3Bnw9leN4kS/NszXIP8SHvWtwL5dwmS4=
+	t=1733241579; cv=none; b=EYw1G613/jB6eOlK1c6peveuw88JPasI9h0a/3zhKYrmGHD5OVoCePXyECxfISlc7V1WQs5bv6dA+srazmvZbhEGR+10DygiqGw3yaTZ05dFM3wFxv4MnJ5T3U0uaPxZ/HWxd3V9VLOmSlO3EWIsWfs1XGAEFNQXUYJM1i0oFdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239527; c=relaxed/simple;
-	bh=OnoN/C5DLREs/+QSMvC1Ss/28PotDfTnRAyr4uPdgJE=;
+	s=arc-20240116; t=1733241579; c=relaxed/simple;
+	bh=UTOYdG73x+18bi7rjWsEvYMKG9uw+broJ8dmOIj5G/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhgEc2Zgi74v6oG8bgevQRBwnjPOE00kQwICNIYqY7e2bwbFHmn/cphEgt5gq0EVoR60bCCnv1d3vRre0zhjq5E8NjPiVCTgLEaA+RoYqYMusfm7HhHvgUZxGsBFsR1LOfHCSo5yFSgquik2+N1Ys45XNCJBqFMLhUeb3o1Q2GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGyI/9MV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FBEC4CECF;
-	Tue,  3 Dec 2024 15:25:26 +0000 (UTC)
+	 MIME-Version; b=fvntTiTtDKazwioIPaWhHq4FF7YA56R63jBEAjhOm+HfJl41vFQHLw7CBpjZw0RSpASN8uY4g7uhvEcshiG5KHgfAfuu/6MeNiZom6FYjCNiCbx7A4HL0IhRAbg9ujeny/qg/zQ5mo/Pg+n85qBYmxiHTySMBoy96VzuzKIjmNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6o392SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B76DC4CECF;
+	Tue,  3 Dec 2024 15:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239527;
-	bh=OnoN/C5DLREs/+QSMvC1Ss/28PotDfTnRAyr4uPdgJE=;
+	s=korg; t=1733241578;
+	bh=UTOYdG73x+18bi7rjWsEvYMKG9uw+broJ8dmOIj5G/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGyI/9MV1hWpb6bNTGn5uVT4czhnE/DnOAjCS5TuQzMIg5c/Gsgr1RhzDQi6XPqiK
-	 j82+YE7+6au0EQ0EI77VlfwgGO+F4BrsT461GxikywA65Xv2PUHFTk4gQyyN4K4yG5
-	 Vb837zmo6p0h7oeSGGcbCxPYBjSFG7W8PeMtTS8U=
+	b=v6o392SRpHRaUrK3HqEV/XxOwQKhks3sSthCcK3uiv+FdDLsPb+dQzUZxQH1YK+N3
+	 i7tbMOvzclGsZjfT5W1gEFaOGRMB8mJAW/oHpoDQdAiE/qEX8FkyI7eXhdxPQ7j/yX
+	 u5m4yPf7sVgJ8r9Qr7TrUA+4ab1RNgcv/bQHPR18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 613/817] ALSA: hda/realtek: Update ALC256 depop procedure
+Subject: [PATCH 6.12 458/826] RDMA/bnxt_re: Correct the sequence of device suspend
 Date: Tue,  3 Dec 2024 15:43:05 +0100
-Message-ID: <20241203144019.861558163@linuxfoundation.org>
+Message-ID: <20241203144801.622266519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit cc3d0b5dd989d3238d456f9fd385946379a9c13d ]
+[ Upstream commit 68b3bca2df00f0a63f0aa2db2b2adc795665229e ]
 
-Old procedure has a chance to meet Headphone no output.
+When in fatal error condition, mark device as detached first
+and then complete all pending HWRM commands as firmware is not
+going to process them and eventually time out. Move the device
+to error only if suspend is called when device is in Fatal state.
 
-Fixes: 4a219ef8f370 ("ALSA: hda/realtek - Add ALC256 HP depop function")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/463c5f93715d4714967041a0a8cec28e@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Also, remove some outdated comments. Remove the stop_irq call
+which is no longer required.
+
+Fixes: cc5b9b48d447 ("RDMA/bnxt_re: Recover the device when FW error is detected")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1731660464-27838-4-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 42 ++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 23 deletions(-)
+ drivers/infiniband/hw/bnxt_re/main.c | 28 +++++-----------------------
+ 1 file changed, 5 insertions(+), 23 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 149079afa7969..dcbb7981496c9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3602,25 +3602,22 @@ static void alc256_init(struct hda_codec *codec)
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index 9eb290ec71a85..2ac8ddbed576f 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -2033,12 +2033,6 @@ static int bnxt_re_suspend(struct auxiliary_device *adev, pm_message_t state)
+ 	rdev = en_info->rdev;
+ 	en_dev = en_info->en_dev;
+ 	mutex_lock(&bnxt_re_mutex);
+-	/* L2 driver may invoke this callback during device error/crash or device
+-	 * reset. Current RoCE driver doesn't recover the device in case of
+-	 * error. Handle the error by dispatching fatal events to all qps
+-	 * ie. by calling bnxt_re_dev_stop and release the MSIx vectors as
+-	 * L2 driver want to modify the MSIx table.
+-	 */
  
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
-+		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 
--	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
--
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense || spec->ultra_low_power)
--		msleep(85);
--
--	snd_hda_codec_write(codec, hp_pin, 0,
-+		snd_hda_codec_write(codec, hp_pin, 0,
- 			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
- 
--	if (hp_pin_sense || spec->ultra_low_power)
--		msleep(100);
-+		msleep(75);
-+
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
- 
-+		msleep(75);
-+		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
-+	}
- 	alc_update_coef_idx(codec, 0x46, 3 << 12, 0);
--	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
- 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 1 << 15); /* Clear bit */
- 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 0 << 15);
- 	/*
-@@ -3644,29 +3641,28 @@ static void alc256_shutup(struct hda_codec *codec)
- 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
-+		snd_hda_codec_write(codec, hp_pin, 0,
- 			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
- 
--	if (hp_pin_sense || spec->ultra_low_power)
--		msleep(85);
-+		msleep(75);
- 
- 	/* 3k pull low control for Headset jack. */
- 	/* NOTE: call this before clearing the pin, otherwise codec stalls */
- 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
- 	 * when booting with headset plugged. So skip setting it for the codec alc257
+ 	ibdev_info(&rdev->ibdev, "Handle device suspend call");
+ 	/* Check the current device state from bnxt_en_dev and move the
+@@ -2046,17 +2040,12 @@ static int bnxt_re_suspend(struct auxiliary_device *adev, pm_message_t state)
+ 	 * This prevents more commands to HW during clean-up,
+ 	 * in case the device is already in error.
  	 */
--	if (spec->en_3kpull_low)
--		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
-+		if (spec->en_3kpull_low)
-+			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
- 
--	if (!spec->no_shutup_pins)
--		snd_hda_codec_write(codec, hp_pin, 0,
-+		if (!spec->no_shutup_pins)
-+			snd_hda_codec_write(codec, hp_pin, 0,
- 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
- 
--	if (hp_pin_sense || spec->ultra_low_power)
--		msleep(100);
-+		msleep(75);
+-	if (test_bit(BNXT_STATE_FW_FATAL_COND, &rdev->en_dev->en_state))
++	if (test_bit(BNXT_STATE_FW_FATAL_COND, &rdev->en_dev->en_state)) {
+ 		set_bit(ERR_DEVICE_DETACHED, &rdev->rcfw.cmdq.flags);
+-
+-	bnxt_re_dev_stop(rdev);
+-	bnxt_re_stop_irq(adev);
+-	/* Move the device states to detached and  avoid sending any more
+-	 * commands to HW
+-	 */
+-	set_bit(BNXT_RE_FLAG_ERR_DEVICE_DETACHED, &rdev->flags);
+-	set_bit(ERR_DEVICE_DETACHED, &rdev->rcfw.cmdq.flags);
+-	wake_up_all(&rdev->rcfw.cmdq.waitq);
++		set_bit(BNXT_RE_FLAG_ERR_DEVICE_DETACHED, &rdev->flags);
++		wake_up_all(&rdev->rcfw.cmdq.waitq);
++		bnxt_re_dev_stop(rdev);
 +	}
  
- 	alc_auto_setup_eapd(codec, false);
- 	alc_shutup_pins(codec);
+ 	if (rdev->pacing.dbr_pacing)
+ 		bnxt_re_set_pacing_dev_state(rdev);
+@@ -2075,13 +2064,6 @@ static int bnxt_re_resume(struct auxiliary_device *adev)
+ 	struct bnxt_re_dev *rdev;
+ 
+ 	mutex_lock(&bnxt_re_mutex);
+-	/* L2 driver may invoke this callback during device recovery, resume.
+-	 * reset. Current RoCE driver doesn't recover the device in case of
+-	 * error. Handle the error by dispatching fatal events to all qps
+-	 * ie. by calling bnxt_re_dev_stop and release the MSIx vectors as
+-	 * L2 driver want to modify the MSIx table.
+-	 */
+-
+ 	bnxt_re_add_device(adev, BNXT_RE_POST_RECOVERY_INIT);
+ 	rdev = en_info->rdev;
+ 	ibdev_info(&rdev->ibdev, "Device resume completed");
 -- 
 2.43.0
 
