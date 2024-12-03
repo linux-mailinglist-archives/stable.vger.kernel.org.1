@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7C39E247D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB0F9E2218
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AB4287CBB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5E81614C8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B590A1F756A;
-	Tue,  3 Dec 2024 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883A1F76DB;
+	Tue,  3 Dec 2024 15:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkEgXvtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRiNJbXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD4153800;
-	Tue,  3 Dec 2024 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99081DA3D;
+	Tue,  3 Dec 2024 15:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240942; cv=none; b=GtXRuaZDVjOaEAwm3PNCcMYwOadL4NjBnXH82Ih7SoOrLjD1c7sjaMRr4I37FM5bVvUResOBV4nxrlbNJCNC5dINbWCJbwJ2E03lCDoH85i3YJ1v5cqSsYitgCwxr8GYYYfHVChYFKnugJIOJkeM9LMasoINqR2cGCDPGIb4rOg=
+	t=1733238908; cv=none; b=nTJzfNgBMpDgY/UXu4AD+5rBiuZjQzG5lUYLjNLXe40PXYIliOB8+GWmKYogMUYitrOVwr6MFZzfv6Kng6jNdPMS3uENnZZdI2KwpL6b0gvKydQFP8n90Tn4p6VDNzqLxaQ/y8FYbE29u6n9RhXGeS9l7ahCDYwczYt6mSOim1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240942; c=relaxed/simple;
-	bh=pIBVjTzuRx/ZawJF0ypHRope5VOdStqmeRFaW6MPiks=;
+	s=arc-20240116; t=1733238908; c=relaxed/simple;
+	bh=LuOCEpcK4w5DMVZq0yg1fAsF0wKL8my4uoqPSpAXWPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1ppzNoIRTJ0RzTU3TKng2kv637Y+mZzHUMSJXvjAjBu1dkWoqudYsHb+Dx535ATEyRu++MdzdO2K7flMQUVg6UFbDd66N5UNE4qN0OREdc9iKRRcgFef/eFvG97sU3Shk0w2opw2yZSCFgKHVWvsnoFusa5NG/+TPWyntQzmOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkEgXvtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF8C4CECF;
-	Tue,  3 Dec 2024 15:49:01 +0000 (UTC)
+	 MIME-Version; b=a98/iAx2K2mNKL0liFzJZgP66SzxZlK4Jqo//IMBYWWjZsou6EXQi+qXN/aCLBI0vwi2xvXp1VPq7G4NAl8nWksVeOdNFsj1o4NuhXTlomY+oHjqZyDHXjy0HCJ5z1zbgJzSK7zBpPl0J9ahG7FftF0hlZOYTsGGhFolY593OKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRiNJbXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CB0C4CECF;
+	Tue,  3 Dec 2024 15:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240942;
-	bh=pIBVjTzuRx/ZawJF0ypHRope5VOdStqmeRFaW6MPiks=;
+	s=korg; t=1733238908;
+	bh=LuOCEpcK4w5DMVZq0yg1fAsF0wKL8my4uoqPSpAXWPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkEgXvtP4nRafIdOeKW+g00c1WPt8I1OqZShHsOYNDvmNQ4uWC69cymZt9kjubolQ
-	 +DkWFD08aSgOA9W0DqXCSnkjnAB2ARevj5/uNU+fQBClr4Ho0P4M/j+kKWPsdkoTe9
-	 /GJ0W10jWHUHdLsdG8UUjXqZhiEomcBzYsi0bvU0=
+	b=uRiNJbXksjMKIVmaYpEjpmn8I19OF934x9Rg1wB8BQpmcovDuaBHnBKWA3O/A9uJK
+	 GPHBXRY0CDKPPFid51nduZANPnaTrG8gu5tRoTz+N7Y8SpiUwEmi60HqwuWk2Xi4LZ
+	 FdsyKwN8EIVFc4io0Prk648SzzS02e6qud7inQZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Baolin Liu <liubaolin@kylinos.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/826] drm/etnaviv: Request pages from DMA32 zone on addressing_limited
-Date: Tue,  3 Dec 2024 15:40:08 +0100
-Message-ID: <20241203144754.732887287@linuxfoundation.org>
+Subject: [PATCH 6.11 437/817] scsi: target: Fix incorrect function name in pscsi_create_type_disk()
+Date: Tue,  3 Dec 2024 15:40:09 +0100
+Message-ID: <20241203144012.939135554@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Baolin Liu <liubaolin@kylinos.cn>
 
-[ Upstream commit 13c96ac9a3f0f1c7ba1ff0656ea508e7fa065e7e ]
+[ Upstream commit da5aeca99dd0b6c7bf6679382756ea6bda195f72 ]
 
-Remove __GFP_HIGHMEM when requesting a page from DMA32 zone,
-and since all vivante GPUs in the system will share the same
-DMA constraints, move the check of whether to get a page from
-DMA32 to etnaviv_bind().
+In pr_err(), bdev_open_by_path() should be renamed to
+bdev_file_open_by_path()
 
-Fixes: b72af445cd38 ("drm/etnaviv: request pages from DMA32 zone when needed")
-Suggested-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Fixes: 034f0cf8fdf9 ("target: port block device access to file")
+Signed-off-by: Baolin Liu <liubaolin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241030021800.234980-1-liubaolin12138@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_drv.c | 10 ++++++++++
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c |  8 --------
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/target/target_core_pscsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-index 6500f3999c5fa..19ec67a5a918e 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-@@ -538,6 +538,16 @@ static int etnaviv_bind(struct device *dev)
- 	priv->num_gpus = 0;
- 	priv->shm_gfp_mask = GFP_HIGHUSER | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
- 
-+	/*
-+	 * If the GPU is part of a system with DMA addressing limitations,
-+	 * request pages for our SHM backend buffers from the DMA32 zone to
-+	 * hopefully avoid performance killing SWIOTLB bounce buffering.
-+	 */
-+	if (dma_addressing_limited(dev)) {
-+		priv->shm_gfp_mask |= GFP_DMA32;
-+		priv->shm_gfp_mask &= ~__GFP_HIGHMEM;
-+	}
-+
- 	priv->cmdbuf_suballoc = etnaviv_cmdbuf_suballoc_new(drm->dev);
- 	if (IS_ERR(priv->cmdbuf_suballoc)) {
- 		dev_err(drm->dev, "Failed to create cmdbuf suballocator\n");
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 7c7f97793ddd0..5e753dd42f721 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -839,14 +839,6 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
- 	if (ret)
- 		goto fail;
- 
--	/*
--	 * If the GPU is part of a system with DMA addressing limitations,
--	 * request pages for our SHM backend buffers from the DMA32 zone to
--	 * hopefully avoid performance killing SWIOTLB bounce buffering.
--	 */
--	if (dma_addressing_limited(gpu->dev))
--		priv->shm_gfp_mask |= GFP_DMA32;
--
- 	/* Create buffer: */
- 	ret = etnaviv_cmdbuf_init(priv->cmdbuf_suballoc, &gpu->buffer,
- 				  PAGE_SIZE);
+diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
+index f98ebb18666bf..da7017113f92a 100644
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -369,7 +369,7 @@ static int pscsi_create_type_disk(struct se_device *dev, struct scsi_device *sd)
+ 	bdev_file = bdev_file_open_by_path(dev->udev_path,
+ 				BLK_OPEN_WRITE | BLK_OPEN_READ, pdv, NULL);
+ 	if (IS_ERR(bdev_file)) {
+-		pr_err("pSCSI: bdev_open_by_path() failed\n");
++		pr_err("pSCSI: bdev_file_open_by_path() failed\n");
+ 		scsi_device_put(sd);
+ 		return PTR_ERR(bdev_file);
+ 	}
 -- 
 2.43.0
 
