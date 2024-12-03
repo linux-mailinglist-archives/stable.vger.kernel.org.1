@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-96523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0C29E24E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE199E2509
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0DFB677AF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7D3B31F91
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C9B1F75A8;
-	Tue,  3 Dec 2024 14:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535131F7585;
+	Tue,  3 Dec 2024 14:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGR3vAEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWPQBl7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EE21F7088;
-	Tue,  3 Dec 2024 14:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAE11F669E;
+	Tue,  3 Dec 2024 14:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237779; cv=none; b=DlXkYdiDix94I0lrj8RDn8vhQVvNcZ6OMxDN48AqQLplHRAvhJaT6xtepFDSeNud+cCFMpvGHs+qxyKBNLma4fPju22UIhvRK1ZjRYoW6+uqJ8Vh7l5kxx22OQSdumMdQJhBmOsfhDbwdV6ufn6VUwAIs+pcn7vDzFk2IbEYE9U=
+	t=1733237796; cv=none; b=QBCeW6t0eTQ0Sqi6EFSIJVnXNFl6ezeSiY+nRE3OkDeMcuzO6Qu3Ok3wm1XulZWAp7Bsky4U8aGv+xbutLfiJNjfGgB+Aw/nl3AjT19PTEDXV3ez98DHVVSzrnYaNTQtl4iOQ81bm0NaMz934+hDVrKF722/z7SSojNbE1qcMOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237779; c=relaxed/simple;
-	bh=8quSxeUOsc4kzDT2pRYv1Wy/9oLnsuhuNnj2XVWmg30=;
+	s=arc-20240116; t=1733237796; c=relaxed/simple;
+	bh=o29tiPNEIHXJ2Nkn1mslYGc2s6+naJYd1QK5EpLf4Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RekcTrNgmx1qH6LTeeeWvUVyUFYXHVkWr4ZdMVNaNTE4jz9OW6BzG/YAA6z5H0QJdZ6E9C/vLJpCi2+Lm10XOIysV3ANY3ur28vXRS9ECg8RU84wwGBdx4wW2R7nD+2NOfyXcDuvFOpiJO+TeNhkh9X1Yu64RfjWRosTnusUD98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGR3vAEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE1CC4CED6;
-	Tue,  3 Dec 2024 14:56:18 +0000 (UTC)
+	 MIME-Version; b=V6k50q8hDNXxLpl4PIEYbMsDZ71tAWpksDGJLUTM5Gz58WAk5h5bSt8gFahItk4pLdoeK9C8C9MLa7XRJlljvI59ZxeI9TCxQ+nqnu+t5QKcbNBsLfIj1hP42q3ONngKYp8BXTSmFunylm5ZVwC6p6JXsp9PaHqsaEvTiZinXOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWPQBl7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEF3C4CECF;
+	Tue,  3 Dec 2024 14:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237779;
-	bh=8quSxeUOsc4kzDT2pRYv1Wy/9oLnsuhuNnj2XVWmg30=;
+	s=korg; t=1733237795;
+	bh=o29tiPNEIHXJ2Nkn1mslYGc2s6+naJYd1QK5EpLf4Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGR3vAEpU5FHO3dzWiKRK1tqwuW4r9/TtGIT+6gtFcPV4hJCZKlRefgjgWCwjZH2H
-	 BZ6sgEuSvTCPIC9aoBunngsAq1SWVQ7unEuafyqS4t4q3sivQ5nVAzR6Jf9ESvTUNd
-	 gTqhepHKwNN/Nv4KU8KCLxZS71oDEAm/YNh6+FNY=
+	b=SWPQBl7dmFuSRBnUK43Dikvtr0G9fwEXI5CdoxNUClPo+Rr7fanNDfkflFxthoyyE
+	 bI2XS5bfHe+tD5HaJmy7q+ZoYQpQMDsZ7o+3HE35PJFghre0HHwqb1u9Xe6bGImH3O
+	 LXKSq+BMPMmOLdMbJAVR0GOskEKTLYaPfvHr4TaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wang <00107082@163.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 036/817] proc/softirqs: replace seq_printf with seq_put_decimal_ull_width
-Date: Tue,  3 Dec 2024 15:33:28 +0100
-Message-ID: <20241203143957.060832110@linuxfoundation.org>
+Subject: [PATCH 6.11 041/817] ASoC: max9768: Fix event generation for playback mute
+Date: Tue,  3 Dec 2024 15:33:33 +0100
+Message-ID: <20241203143957.263245924@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,37 +65,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Wang <00107082@163.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 84b9749a3a704dcc824a88aa8267247c801d51e4 ]
+[ Upstream commit 2ae6da569e34e1d26c5275442d17ffd75fd343b3 ]
 
-seq_printf is costy, on a system with n CPUs, reading /proc/softirqs
-would yield 10*n decimal values, and the extra cost parsing format string
-grows linearly with number of cpus. Replace seq_printf with
-seq_put_decimal_ull_width have significant performance improvement.
-On an 8CPUs system, reading /proc/softirqs show ~40% performance
-gain with this patch.
+The max9768 has a custom control for playback mute which unconditionally
+returns 0 from the put() operation, rather than returning 1 on change to
+ensure notifications are generated to userspace. Check to see if the value
+has changed and return appropriately.
 
-Signed-off-by: David Wang <00107082@163.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241112-asoc-max9768-event-v1-1-ba5d50599787@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/softirqs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/max9768.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/softirqs.c b/fs/proc/softirqs.c
-index f4616083faef3..04bb29721419b 100644
---- a/fs/proc/softirqs.c
-+++ b/fs/proc/softirqs.c
-@@ -20,7 +20,7 @@ static int show_softirqs(struct seq_file *p, void *v)
- 	for (i = 0; i < NR_SOFTIRQS; i++) {
- 		seq_printf(p, "%12s:", softirq_to_name[i]);
- 		for_each_possible_cpu(j)
--			seq_printf(p, " %10u", kstat_softirqs_cpu(i, j));
-+			seq_put_decimal_ull_width(p, " ", kstat_softirqs_cpu(i, j), 10);
- 		seq_putc(p, '\n');
- 	}
- 	return 0;
+diff --git a/sound/soc/codecs/max9768.c b/sound/soc/codecs/max9768.c
+index e4793a5d179ef..8af3c7e5317fb 100644
+--- a/sound/soc/codecs/max9768.c
++++ b/sound/soc/codecs/max9768.c
+@@ -54,10 +54,17 @@ static int max9768_set_gpio(struct snd_kcontrol *kcontrol,
+ {
+ 	struct snd_soc_component *c = snd_soc_kcontrol_component(kcontrol);
+ 	struct max9768 *max9768 = snd_soc_component_get_drvdata(c);
++	bool val = !ucontrol->value.integer.value[0];
++	int ret;
+ 
+-	gpiod_set_value_cansleep(max9768->mute, !ucontrol->value.integer.value[0]);
++	if (val != gpiod_get_value_cansleep(max9768->mute))
++		ret = 1;
++	else
++		ret = 0;
+ 
+-	return 0;
++	gpiod_set_value_cansleep(max9768->mute, val);
++
++	return ret;
+ }
+ 
+ static const DECLARE_TLV_DB_RANGE(volume_tlv,
 -- 
 2.43.0
 
