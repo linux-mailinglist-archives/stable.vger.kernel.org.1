@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420279E24D5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9122C9E21F6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B310A167C00
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBB2D167714
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636111F76DD;
-	Tue,  3 Dec 2024 15:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4C81F75A2;
+	Tue,  3 Dec 2024 15:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvW6y7Xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoMcnYL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BF51FA178;
-	Tue,  3 Dec 2024 15:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775B81F758E;
+	Tue,  3 Dec 2024 15:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240773; cv=none; b=DN/pCUHzLE2YQWPGCft9PF3I8ju7voUFD62rRvevAXoQl9nHlJV+PX7OGtc+42NDdJy/e17sONvzBq/u2yMbneu1QC0FQJR3iF4QKPELqsbeMhhjWAg0Jk1s59rFWx4/BDj8mMPG325ULlPiNvfCTo0LS/e/K+3sWdgkG9QguCA=
+	t=1733238751; cv=none; b=S94bmZzOxE8eHhJ/UPMZiCYnfYT2o0t2wMxfyvlGXRBNsnZniFR8az8SYN6qP9q05eKJC9oxzxHYao22dpahi5mlLdteFSutzRX/fAhNmNycHHW+QQAO0GJWtIxprkhZO1cPKUoUGvONMvDxl4enpJyb5Mexia/GgLMk9Asp7mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240773; c=relaxed/simple;
-	bh=XCtz3qoFBZG/Dq+cHzvqg6I4FDHnYXnXBiPxcG722Sg=;
+	s=arc-20240116; t=1733238751; c=relaxed/simple;
+	bh=9x4mX64Xa/Eyrx0xjZAQFejxC3Y6MZcGZs6WKaz7Y5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eA8wtm8on0Su58Eg1v204Xrl+s9DZg7VtldLxeiYEPJSui2kp+pM435txOf5yPbShk4w6laIJaYsMaXJjDn1nyN98hd9gMYPWuSAihCY8RcTJhyI/w2Rc56Wtnz3h2FnTVF9MELHG7WzTtsdaRQ3M/Kk7/FVaIhhe6+MIXy9gJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvW6y7Xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE5EC4CED6;
-	Tue,  3 Dec 2024 15:46:12 +0000 (UTC)
+	 MIME-Version; b=ruMsfzQhwXyY8FBWp7I9/C4s1l0IB/Rz450xySjT3KGDi+L3qSklCDTcDhPdJZ7gadoa6RFjVgbGBpdvzQQccUtmxzl+GceGh8sXEHFLGrsLIE315XjPFVOKJeyUpzu0ylhLfm+pLtq+nwakrHXPRtKB4PZoRtgLc+ODwVZDdT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoMcnYL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42B6C4CECF;
+	Tue,  3 Dec 2024 15:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240772;
-	bh=XCtz3qoFBZG/Dq+cHzvqg6I4FDHnYXnXBiPxcG722Sg=;
+	s=korg; t=1733238751;
+	bh=9x4mX64Xa/Eyrx0xjZAQFejxC3Y6MZcGZs6WKaz7Y5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvW6y7Xund4ATd5RjYTPSaMNZtNkSjRH+K3xcxnmi2YnkVcBH4GxBbl3fMg1u2kgw
-	 tf1ydZcnLimyImwxTQFgDhv7g0wLr0zRVO7jmDaAsnSyQKE1fKW8YEYo3NrxcWWhoL
-	 bGmys+c1gWfI2Dhl0ocnVRwovuJ3XD+47Dl8GUFc=
+	b=WoMcnYL6P4hHOl3X4mT8IjJ9bwKoXYt5zMbXhcxqyjEAAk1EyYYazD9vDYt4ux8uc
+	 z7Jn9YgWss/NHfPFbpH+/rsAg3Man0mxqxGuZSXJl4fGYt491qlTzZ8FRepAZsf6O0
+	 gVZdyzBktWzw8C6zrIN4MzDzr0yZrIZpw2A9sQzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/826] selftests: bpf: Add missing per-arch include path
-Date: Tue,  3 Dec 2024 15:39:17 +0100
-Message-ID: <20241203144752.717491485@linuxfoundation.org>
+Subject: [PATCH 6.11 386/817] mfd: tps65010: Use IRQF_NO_AUTOEN flag in request_irq() to fix race
+Date: Tue,  3 Dec 2024 15:39:18 +0100
+Message-ID: <20241203144010.939187056@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 19090f0306f1748980596c6c71f1c4b128639cff ]
+[ Upstream commit 2174f9a8c9db50f74df769edd5a4ab822c73b6d2 ]
 
-The prog_tests programs do not include the per-arch tools include
-path, e.g. tools/arch/riscv/include. Some architectures depend those
-files to build properly.
+As the comment said, disable_irq() after request_irq() still has a
+time gap in which interrupts can come. request_irq() with IRQF_NO_AUTOEN
+flag will disable IRQ auto-enable when request IRQ.
 
-Include tools/arch/$(SUBARCH)/include in the selftests bpf build.
-
-Fixes: 6d74d178fe6e ("tools: Add riscv barrier implementation")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240927131355.350918-2-bjorn@kernel.org
+Fixes: 72cd799544f2 ("[PATCH] I2C: add i2c driver for TPS6501x")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240912031530.2211654-1-ruanjinjie@huawei.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mfd/tps65010.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 75016962f7956..43a0293184785 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -10,6 +10,7 @@ TOOLSDIR := $(abspath ../../..)
- LIBDIR := $(TOOLSDIR)/lib
- BPFDIR := $(LIBDIR)/bpf
- TOOLSINCDIR := $(TOOLSDIR)/include
-+TOOLSARCHINCDIR := $(TOOLSDIR)/arch/$(SRCARCH)/include
- BPFTOOLDIR := $(TOOLSDIR)/bpf/bpftool
- APIDIR := $(TOOLSINCDIR)/uapi
- ifneq ($(O),)
-@@ -44,7 +45,7 @@ CFLAGS += -g $(OPT_FLAGS) -rdynamic					\
- 	  -Wall -Werror -fno-omit-frame-pointer				\
- 	  $(GENFLAGS) $(SAN_CFLAGS) $(LIBELF_CFLAGS)			\
- 	  -I$(CURDIR) -I$(INCLUDE_DIR) -I$(GENDIR) -I$(LIBDIR)		\
--	  -I$(TOOLSINCDIR) -I$(APIDIR) -I$(OUTPUT)
-+	  -I$(TOOLSINCDIR) -I$(TOOLSARCHINCDIR) -I$(APIDIR) -I$(OUTPUT)
- LDFLAGS += $(SAN_LDFLAGS)
- LDLIBS += $(LIBELF_LIBS) -lz -lrt -lpthread
- 
+diff --git a/drivers/mfd/tps65010.c b/drivers/mfd/tps65010.c
+index 2b9105295f301..710364435b6b9 100644
+--- a/drivers/mfd/tps65010.c
++++ b/drivers/mfd/tps65010.c
+@@ -544,17 +544,13 @@ static int tps65010_probe(struct i2c_client *client)
+ 	 */
+ 	if (client->irq > 0) {
+ 		status = request_irq(client->irq, tps65010_irq,
+-				     IRQF_TRIGGER_FALLING, DRIVER_NAME, tps);
++				     IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN,
++				     DRIVER_NAME, tps);
+ 		if (status < 0) {
+ 			dev_dbg(&client->dev, "can't get IRQ %d, err %d\n",
+ 					client->irq, status);
+ 			return status;
+ 		}
+-		/* annoying race here, ideally we'd have an option
+-		 * to claim the irq now and enable it later.
+-		 * FIXME genirq IRQF_NOAUTOEN now solves that ...
+-		 */
+-		disable_irq(client->irq);
+ 		set_bit(FLAG_IRQ_ENABLE, &tps->flags);
+ 	} else
+ 		dev_warn(&client->dev, "IRQ not configured!\n");
 -- 
 2.43.0
 
