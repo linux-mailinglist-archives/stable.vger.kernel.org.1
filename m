@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-97055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C469E225B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7629E2557
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FBD9283CA5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73803287440
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9589D1F7584;
-	Tue,  3 Dec 2024 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4009A1F76D7;
+	Tue,  3 Dec 2024 15:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGTgmRrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV/dqPrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549C31F7569;
-	Tue,  3 Dec 2024 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F028A1F76AD;
+	Tue,  3 Dec 2024 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239390; cv=none; b=u25yaBhPh3jqHvTXlEfQ1y12gPVBEQWCV2E56vBBqCQV/L/7L+BJeXDen16GtONPUk8eMNKurRSQtddJSdDQNNvZZGjfGMHSyxugo2qsrlMNtbaSzw4LUyJiglEQk1FGJTYqfyqe4Vqk1g32SWA6t3zFXPvdIceaMlkub/ICxew=
+	t=1733241555; cv=none; b=derDNkmEfaGjTheCcZWJm7GsXLIyYzfNqifXH0/0cf1AdLvXnSKKfC09zM4RuC0g6WFbTxcqh1vuTtEgbx9335FEfCZzD7GndU4iMr/ntgEsEyB6dTmm+QOmzuwpxSx0dEg+8ZaWOd6g6TbD582nPvO1B1Ye+Bg+mi6Sab+hJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239390; c=relaxed/simple;
-	bh=RbGC9zLHgLLIo7LNRVkk8UdTFv4iCtmUzE4lA1iZnQM=;
+	s=arc-20240116; t=1733241555; c=relaxed/simple;
+	bh=5BBlKC31T/kqtIsJWeKUUxDgnooFCSSA9rU0dEByqbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZFUGSdg23JA9tpa0LKPjrEnem6pYSVVreT9yI84FuriqjRxkRSOaW0/hYur3AKZAKGsgAO27QNJBmAOeG2nd6SXyEzs9CmVdXosQlknmiQL2PajiYyP/F8NeYOyOGOz9Dg0UmGlnc7WT5w09vgI3+EEoy0TMrdoHID4OTdVM28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGTgmRrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D68C4CECF;
-	Tue,  3 Dec 2024 15:23:09 +0000 (UTC)
+	 MIME-Version; b=YSdB41qEMdK8nASGZCUEqYXgXca6J9UMjtXZdGEUaAlDjOlQo5LV8hGJtM703uHxvs7YUxcdMJ2n7ldgiRT0geBGyRDOAejEJHFWGLSi7jp+VQ7hq0aZlBbUh5jRVMlD5kH0kCmlwZf+wDj8nKrPRxz9c5TKyShNrJOyOMDnyG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TV/dqPrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62920C4CECF;
+	Tue,  3 Dec 2024 15:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239390;
-	bh=RbGC9zLHgLLIo7LNRVkk8UdTFv4iCtmUzE4lA1iZnQM=;
+	s=korg; t=1733241554;
+	bh=5BBlKC31T/kqtIsJWeKUUxDgnooFCSSA9rU0dEByqbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGTgmRrUU08f+ndGFyuoDkQd38NpkNf2FVsGN5YzvTKDZHuEXmSwQKEL7Xsue56Uu
-	 SVu3ZvMlh5kzPWyghniQSKtC7G+ZfxjIYC0XwpcN1DozRUBjc+DVM261SUpt7eaP+V
-	 sjPyPSc/ZDt6oZLr+XSWdlY388LkK7dk71Xd00dk=
+	b=TV/dqPrP2NL3lvXtAtRhyEmQD38lGEeFK29VqNuagJJOCtXBZL3jJE9zC3TyLbHCB
+	 4Vmi4KXfE/Qu6QKuXXdmBSFYWyp50Oc+it+T/XbCju2Vu3pZ3ENX2LLsjQCmXj91ml
+	 UKKgz+GtZoIQtEgJD2mAP1fdK04Xb4nKjEOqRPjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 597/817] iio: light: al3010: Fix an error handling path in al3010_probe()
-Date: Tue,  3 Dec 2024 15:42:49 +0100
-Message-ID: <20241203144019.228407305@linuxfoundation.org>
+Subject: [PATCH 6.12 443/826] KVM: PPC: Book3S HV: Fix kmv -> kvm typo
+Date: Tue,  3 Dec 2024 15:42:50 +0100
+Message-ID: <20241203144801.041764196@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit a4b7064d34186cf4970fe0333c3b27346cf8f819 ]
+[ Upstream commit 590d2f9347f7974d7954400e5d937672fd844a8b ]
 
-If i2c_smbus_write_byte_data() fails in al3010_init(),
-al3010_set_pwr(false) is not called.
+Fix typo in the following kvm function names from:
 
-In order to avoid such a situation, move the devm_add_action_or_reset()
-witch calls al3010_set_pwr(false) right after a successful
-al3010_set_pwr(true).
+ kmvhv_counters_tracepoint_regfunc -> kvmhv_counters_tracepoint_regfunc
+ kmvhv_counters_tracepoint_unregfunc -> kvmhv_counters_tracepoint_unregfunc
 
-Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/ee5d10a2dd2b70f29772d5df33774d3974a80f30.1725993353.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: e1f288d2f9c6 ("KVM: PPC: Book3S HV nestedv2: Add support for reading VPA counters for pseries guests")
+Reported-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241114085020.1147912-1-kjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/al3010.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/kvm_book3s_64.h | 4 ++--
+ arch/powerpc/kvm/book3s_hv.c             | 4 ++--
+ arch/powerpc/kvm/trace_hv.h              | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-index 53569587ccb7b..7cbb8b2033009 100644
---- a/drivers/iio/light/al3010.c
-+++ b/drivers/iio/light/al3010.c
-@@ -87,7 +87,12 @@ static int al3010_init(struct al3010_data *data)
- 	int ret;
+diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
+index 2ef9a5f4e5d14..11065313d4c12 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_64.h
++++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+@@ -684,8 +684,8 @@ int kvmhv_nestedv2_set_ptbl_entry(unsigned long lpid, u64 dw0, u64 dw1);
+ int kvmhv_nestedv2_parse_output(struct kvm_vcpu *vcpu);
+ int kvmhv_nestedv2_set_vpa(struct kvm_vcpu *vcpu, unsigned long vpa);
  
- 	ret = al3010_set_pwr(data->client, true);
-+	if (ret < 0)
-+		return ret;
+-int kmvhv_counters_tracepoint_regfunc(void);
+-void kmvhv_counters_tracepoint_unregfunc(void);
++int kvmhv_counters_tracepoint_regfunc(void);
++void kvmhv_counters_tracepoint_unregfunc(void);
+ int kvmhv_get_l2_counters_status(void);
+ void kvmhv_set_l2_counters_status(int cpu, bool status);
  
-+	ret = devm_add_action_or_reset(&data->client->dev,
-+				       al3010_set_pwr_off,
-+				       data);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -190,12 +195,6 @@ static int al3010_probe(struct i2c_client *client)
- 		return ret;
- 	}
- 
--	ret = devm_add_action_or_reset(&client->dev,
--					al3010_set_pwr_off,
--					data);
--	if (ret < 0)
--		return ret;
--
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 59f67a44621b7..57b6c1ba84d47 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4154,7 +4154,7 @@ void kvmhv_set_l2_counters_status(int cpu, bool status)
+ 		lppaca_of(cpu).l2_counters_enable = 0;
  }
  
+-int kmvhv_counters_tracepoint_regfunc(void)
++int kvmhv_counters_tracepoint_regfunc(void)
+ {
+ 	int cpu;
+ 
+@@ -4164,7 +4164,7 @@ int kmvhv_counters_tracepoint_regfunc(void)
+ 	return 0;
+ }
+ 
+-void kmvhv_counters_tracepoint_unregfunc(void)
++void kvmhv_counters_tracepoint_unregfunc(void)
+ {
+ 	int cpu;
+ 
+diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
+index 77ebc724e6cdf..35fccaa575cc1 100644
+--- a/arch/powerpc/kvm/trace_hv.h
++++ b/arch/powerpc/kvm/trace_hv.h
+@@ -538,7 +538,7 @@ TRACE_EVENT_FN_COND(kvmppc_vcpu_stats,
+ 	TP_printk("VCPU %d: l1_to_l2_cs_time=%llu ns l2_to_l1_cs_time=%llu ns l2_runtime=%llu ns",
+ 		__entry->vcpu_id,  __entry->l1_to_l2_cs,
+ 		__entry->l2_to_l1_cs, __entry->l2_runtime),
+-	kmvhv_counters_tracepoint_regfunc, kmvhv_counters_tracepoint_unregfunc
++	kvmhv_counters_tracepoint_regfunc, kvmhv_counters_tracepoint_unregfunc
+ );
+ #endif
+ #endif /* _TRACE_KVM_HV_H */
 -- 
 2.43.0
 
