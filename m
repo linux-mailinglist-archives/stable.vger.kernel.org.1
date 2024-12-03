@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-97786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1349E2AB2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:22:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B60E9E2B5C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89E41B8470B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90FFCB6191C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AA01F76BF;
-	Tue,  3 Dec 2024 16:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB1B1F76B5;
+	Tue,  3 Dec 2024 16:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVlrr/zV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTyjpEH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC831F75B9;
-	Tue,  3 Dec 2024 16:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A3B1F76A4;
+	Tue,  3 Dec 2024 16:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241726; cv=none; b=DQvlpEzgkF7wiGMGxgWLJFcQeJCVjYt14Iyqj3LeMIDYrs7hX+70qE+4LkmexygDaDTq4WFJcATAwPCNt8fSQVNnJpS4EjTTlTapHp5rlM6hVtLP4RkVHUOS0w2hp7H326cKhMJ++L9ZJGslSgcvDKNwDBcZ8XEFKYYcstRuylY=
+	t=1733241738; cv=none; b=cRAPMxClBCsVutUpEmFKWSOIE0EriLtld0rEeZNb59Y0kFWBsZeMpFz4nKgbQZ2sBgoYE3lkLQf0NHciOw7T9z/5zxe0mhItAj7vSQ/zMKBeDYLvx1RTuT+Q8rLa5u+PJCk9Wo5yTXK03YWXqoDZ277hnQoUp3fNHlZO1vemakY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241726; c=relaxed/simple;
-	bh=yGdJLdG32CmLEvV7AhUpkp7NBCaeHesBUG6pmvaaI1o=;
+	s=arc-20240116; t=1733241738; c=relaxed/simple;
+	bh=IG433edcuEtlHaqbUXwUEf46RKYOLHCPKKdQjP/eohw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HstKQ+LzEeoYu7xshM4nggv9UZv547qVrAVZBn2c+ja/GhSJePBSmD3N2vmUgwI5teCEIFLB1FMVZhbcMs+LAQIl214N4pFCBS2DsZn9aemJwANDD3HRiAEyZAGh5SFZktOPuCGcL4s1E8aevnY1lYxp189s7N7xzfmWDkXBA88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVlrr/zV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98375C4CECF;
-	Tue,  3 Dec 2024 16:02:05 +0000 (UTC)
+	 MIME-Version; b=m7VgJvNgwfczKHIIJnKjBktc1UcrKepxlG1/jtaYZRPI+4+Oy8GJrKh2zvpqXjpQaxc4Q0vFqLBjEH2yBTIvvbpoPdjK9Qg72d3IGWfhtM7fz6vDZmN+1mTVEJHOOM0BdLFiLiCN43ra+FxRVxlkDznKVEYbW6t4amqJARB6H/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTyjpEH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9362AC4CECF;
+	Tue,  3 Dec 2024 16:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241726;
-	bh=yGdJLdG32CmLEvV7AhUpkp7NBCaeHesBUG6pmvaaI1o=;
+	s=korg; t=1733241738;
+	bh=IG433edcuEtlHaqbUXwUEf46RKYOLHCPKKdQjP/eohw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVlrr/zVuSrTgAwekwdrxOlJgm1311Ivo8zRWPpycLdXb1cLYP80Hynvaynnq92LA
-	 N5ULwrS6vXEadXWNRcFBc8L0MMM69VXoo8gZAZJb/OgHYN6zkPbR7pa82NeVsj4ne6
-	 8BseRsSuQFbAMjyrzkmpWBpNqTlenAo8peQ52xPQ=
+	b=jTyjpEH0LY3NI839V/ED5/3nSVdX/gcNPXKoHvPijQedsDUlPeo9S2MLsV+5xVPf6
+	 RGmu2M0FDCW+3p5Y/nmMGaJ2nSTHhukMC7Q2YWp1vKhX5h1PtOv/VKCuL1Qk4OXfLm
+	 7KWN2BC5gv+CVGtvqwBNAxnySxzK5RvE1Cz6AsPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeng Heng <zengheng4@huawei.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 499/826] f2fs: Fix not used variable index
-Date: Tue,  3 Dec 2024 15:43:46 +0100
-Message-ID: <20241203144803.219241685@linuxfoundation.org>
+Subject: [PATCH 6.12 501/826] f2fs: fix to avoid use GC_AT when setting gc_mode as GC_URGENT_LOW or GC_URGENT_MID
+Date: Tue,  3 Dec 2024 15:43:48 +0100
+Message-ID: <20241203144803.299351845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -61,61 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 0c3a38a4b442893f8baca72e44a2a27d52d6cc75 ]
+[ Upstream commit 296b8cb34e65fa93382cf919be5a056f719c9a26 ]
 
-Fix the following compilation warning:
-fs/f2fs/data.c:2391:10: warning: variable ‘index’ set but not used
-[-Wunused-but-set-variable]
- 2391 |  pgoff_t index;
+If gc_mode is set to GC_URGENT_LOW or GC_URGENT_MID, cost benefit GC
+approach should be used, but if ATGC is enabled at the same time,
+Age-threshold approach will be selected, which can only do amount of
+GC and it is much less than the numbers of CB approach.
 
-Only define and set the variable index when the CONFIG_F2FS_FS_COMPRESSION
-is enabled.
+some traces:
+  f2fs_gc-254:48-396     [007] ..... 2311600.684028: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1053, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.684527: f2fs_get_victim: dev = (254,48), type = No TYPE, policy = (Background GC, LFS-mode, Age-threshold), victim = 10, cost = 4294364975, ofs_unit = 1, pre_victim_secno = -1, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.714835: f2fs_gc_end: dev = (254,48), ret = 0, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.714843: f2fs_background_gc: dev = (254,48), wait_ms = 50, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.771785: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:
+  f2fs_gc-254:48-396     [007] ..... 2311600.772275: f2fs_gc_end: dev = (254,48), ret = -61, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
 
-Fixes: db92e6c729d8 ("f2fs: convert f2fs_mpage_readpages() to use folio")
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Fixes: 0e5e81114de1 ("f2fs: add GC_URGENT_LOW mode in gc_urgent")
+Fixes: d98af5f45520 ("f2fs: introduce gc_urgent_mid mode")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++--
+ fs/f2fs/gc.c                            | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 94f7b084f6016..9202082a3902c 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2385,10 +2385,10 @@ static int f2fs_mpage_readpages(struct inode *inode,
- 		.nr_cpages = 0,
- 	};
- 	pgoff_t nc_cluster_idx = NULL_CLUSTER;
-+	pgoff_t index;
- #endif
- 	unsigned nr_pages = rac ? readahead_count(rac) : 1;
- 	unsigned max_nr_pages = nr_pages;
--	pgoff_t index;
- 	int ret = 0;
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index fdedf1ea944ba..513296bb6f297 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -311,10 +311,13 @@ Description:	Do background GC aggressively when set. Set to 0 by default.
+ 		GC approach and turns SSR mode on.
+ 		gc urgent low(2): lowers the bar of checking I/O idling in
+ 		order to process outstanding discard commands and GC a
+-		little bit aggressively. uses cost benefit GC approach.
++		little bit aggressively. always uses cost benefit GC approach,
++		and will override age-threshold GC approach if ATGC is enabled
++		at the same time.
+ 		gc urgent mid(3): does GC forcibly in a period of given
+ 		gc_urgent_sleep_time and executes a mid level of I/O idling check.
+-		uses cost benefit GC approach.
++		always uses cost benefit GC approach, and will override
++		age-threshold GC approach if ATGC is enabled at the same time.
  
- 	map.m_pblk = 0;
-@@ -2406,9 +2406,9 @@ static int f2fs_mpage_readpages(struct inode *inode,
- 			prefetchw(&folio->flags);
- 		}
+ What:		/sys/fs/f2fs/<disk>/gc_urgent_sleep_time
+ Date:		August 2017
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 9322a7200e310..e0469316c7cd4 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -257,6 +257,8 @@ static int select_gc_type(struct f2fs_sb_info *sbi, int gc_type)
  
-+#ifdef CONFIG_F2FS_FS_COMPRESSION
- 		index = folio_index(folio);
- 
--#ifdef CONFIG_F2FS_FS_COMPRESSION
- 		if (!f2fs_compressed_file(inode))
- 			goto read_single_page;
- 
+ 	switch (sbi->gc_mode) {
+ 	case GC_IDLE_CB:
++	case GC_URGENT_LOW:
++	case GC_URGENT_MID:
+ 		gc_mode = GC_CB;
+ 		break;
+ 	case GC_IDLE_GREEDY:
 -- 
 2.43.0
 
