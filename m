@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820969E21E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411B59E2522
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BDAFB477A5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E40DB2B060
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DCE3BB24;
-	Tue,  3 Dec 2024 14:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A887F1F7065;
+	Tue,  3 Dec 2024 14:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3WwX9VJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9EfYrzP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3BE1EE024;
-	Tue,  3 Dec 2024 14:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF711F4294;
+	Tue,  3 Dec 2024 14:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236429; cv=none; b=pWw3AkFOjBVs4rE+ojfnsuFXj5edWHJ9/lNzdWOCe5dIVvIIkKlcEOzcbb8d55/sPzRuj59d4VlbTd+5Wxi9a5tWyoOrJ2phS8Nb63k7D2+m1A4qpGGVulNCB9RYjdvOrRlhfNuoGFRmmfkv0/FdFOkl0OGhdlVmFJbViOJlQsI=
+	t=1733236449; cv=none; b=hYa4sG0f7ZVlnehU2TVlFBvrQQ/4TIKQP6/tUKJN1YweuFWbt5hfXjUoo190pxJgS6TgduiBO9RhWQq0ariSt2IIpaHAlJqGBSTKbrLQ+OL/v6eFtJE83dH2MCc8t0okG1d3fZeXRCoVa/JFqS/gV+mParqF7ZWqg3LQS5i4UCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236429; c=relaxed/simple;
-	bh=+YMQII4bgB8EZrVnXZW4RfbmZBFVVQ24FYUbT8wmEWg=;
+	s=arc-20240116; t=1733236449; c=relaxed/simple;
+	bh=605oniLymwtQ3asqA2Wrf6YbNX9MrORkOTfnGy5hAsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaCkE/CLGgN5HN0eBKwSXXrcl0q3xHLPAJB0tNlLVihZLWRPjF+aIJgHtprwvR8Yc7ezzmdH6mZlODf0I52kr7y/HSrCkgIwVR4uq6veqe/8qJ8CXQI4wAf3IwADUyR/gz5eSmpLsIj9jgufssqN+lN4Z3pKu7reWUZVwL01qnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3WwX9VJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92179C4CECF;
-	Tue,  3 Dec 2024 14:33:48 +0000 (UTC)
+	 MIME-Version; b=MCwAEhe7WOf4ZGNtq1VHFKluWF9l8MFsUz6b132HaWWepQ4U+q1Lh9dwkGHudKXwdsA59f5O5/J6XuXYV6CPnL4qqI2jv+N3alCl09fMGfKkKjfODVZuvTemKTRCjMCWi12M7pIRJFp3lMBMRWj98gkCPEfHPbn7U3YoTEIqF2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9EfYrzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE40AC4CEDA;
+	Tue,  3 Dec 2024 14:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236429;
-	bh=+YMQII4bgB8EZrVnXZW4RfbmZBFVVQ24FYUbT8wmEWg=;
+	s=korg; t=1733236449;
+	bh=605oniLymwtQ3asqA2Wrf6YbNX9MrORkOTfnGy5hAsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3WwX9VJidyIlDPygkfmXG4t9nAliYfR2qlrFQJjrC0xfFxwyKzmEOzayE4/A8GWs
-	 kcQC9ZXiU0oYG5UPAlXL3D0nyUMrgcjKYUV2fUayu89MityCMJcU09gmvGPmqSIHLj
-	 wdnowiW2TAdx7LIlFvHmiP1T6cv9ECoaHCk16wCE=
+	b=g9EfYrzPH69g1BzgB3wacKayA7ZnQ7TMoUZ/x1z75UWL7JK01aguklVq9Hvi5Ihb1
+	 7fPahh0rEb8VoEw/1jLLjM+iQv7tFOzG9kjxzE7zrZVDLRYDYVMpkuPrAkuWiFsYeY
+	 nLDOYb1x2eaz7V3Y1Lu9PSgk7nNeetYWBx1J69aE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 017/138] initramfs: avoid filename buffer overrun
-Date: Tue,  3 Dec 2024 15:30:46 +0100
-Message-ID: <20241203141924.204798881@linuxfoundation.org>
+Subject: [PATCH 4.19 022/138] s390/syscalls: Avoid creation of arch/arch/ directory
+Date: Tue,  3 Dec 2024 15:30:51 +0100
+Message-ID: <20241203141924.395942715@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,116 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Disseldorp <ddiss@suse.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit e017671f534dd3f568db9e47b0583e853d2da9b5 ]
+[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
 
-The initramfs filename field is defined in
-Documentation/driver-api/early-userspace/buffer-format.rst as:
+Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
 
- 37 cpio_file := ALGN(4) + cpio_header + filename + "\0" + ALGN(4) + data
-...
- 55 ============= ================== =========================
- 56 Field name    Field size         Meaning
- 57 ============= ================== =========================
-...
- 70 c_namesize    8 bytes            Length of filename, including final \0
+  $ find arch/arch
+  arch/arch
+  arch/arch/s390
+  arch/arch/s390/include
+  arch/arch/s390/include/generated
+  arch/arch/s390/include/generated/asm
+  arch/arch/s390/include/generated/uapi
+  arch/arch/s390/include/generated/uapi/asm
 
-When extracting an initramfs cpio archive, the kernel's do_name() path
-handler assumes a zero-terminated path at @collected, passing it
-directly to filp_open() / init_mkdir() / init_mknod().
+The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
+where the relative path is incorrect.
 
-If a specially crafted cpio entry carries a non-zero-terminated filename
-and is followed by uninitialized memory, then a file may be created with
-trailing characters that represent the uninitialized memory. The ability
-to create an initramfs entry would imply already having full control of
-the system, so the buffer overrun shouldn't be considered a security
-vulnerability.
+Strictly speaking, 'targets' was not necessary in the first place
+because this Makefile uses 'filechk' instead of 'if_changed'.
 
-Append the output of the following bash script to an existing initramfs
-and observe any created /initramfs_test_fname_overrunAA* path. E.g.
-  ./reproducer.sh | gzip >> /myinitramfs
+However, this commit keeps it, as it will be useful when converting
+'filechk' to 'if_changed' later.
 
-It's easiest to observe non-zero uninitialized memory when the output is
-gzipped, as it'll overflow the heap allocated @out_buf in __gunzip(),
-rather than the initrd_start+initrd_size block.
-
----- reproducer.sh ----
-nilchar="A"	# change to "\0" to properly zero terminate / pad
-magic="070701"
-ino=1
-mode=$(( 0100777 ))
-uid=0
-gid=0
-nlink=1
-mtime=1
-filesize=0
-devmajor=0
-devminor=1
-rdevmajor=0
-rdevminor=0
-csum=0
-fname="initramfs_test_fname_overrun"
-namelen=$(( ${#fname} + 1 ))	# plus one to account for terminator
-
-printf "%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s" \
-	$magic $ino $mode $uid $gid $nlink $mtime $filesize \
-	$devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname
-
-termpadlen=$(( 1 + ((4 - ((110 + $namelen) & 3)) % 4) ))
-printf "%.s${nilchar}" $(seq 1 $termpadlen)
----- reproducer.sh ----
-
-Symlink filename fields handled in do_symlink() won't overrun past the
-data segment, due to the explicit zero-termination of the symlink
-target.
-
-Fix filename buffer overrun by aborting the initramfs FSM if any cpio
-entry doesn't carry a zero-terminator at the expected (name_len - 1)
-offset.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Link: https://lore.kernel.org/r/20241030035509.20194-2-ddiss@suse.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/initramfs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/s390/kernel/syscalls/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/init/initramfs.c b/init/initramfs.c
-index fceede4cff6e4..59901e5197775 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -323,6 +323,15 @@ static int __init do_name(void)
- {
- 	state = SkipIt;
- 	next_state = Reset;
-+
-+	/* name_len > 0 && name_len <= PATH_MAX checked in do_header */
-+	if (collected[name_len - 1] != '\0') {
-+		pr_err("initramfs name without nulterm: %.*s\n",
-+		       (int)name_len, collected);
-+		error("malformed archive");
-+		return 1;
-+	}
-+
- 	if (strcmp(collected, "TRAILER!!!") == 0) {
- 		free_hash();
- 		return 0;
-@@ -385,6 +394,12 @@ static int __init do_copy(void)
+diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
+index 4d929edc80a62..b801966c94e92 100644
+--- a/arch/s390/kernel/syscalls/Makefile
++++ b/arch/s390/kernel/syscalls/Makefile
+@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
+ uapi-hdrs-y := $(uapi)/unistd_32.h
+ uapi-hdrs-y += $(uapi)/unistd_64.h
  
- static int __init do_symlink(void)
- {
-+	if (collected[name_len - 1] != '\0') {
-+		pr_err("initramfs symlink without nulterm: %.*s\n",
-+		       (int)name_len, collected);
-+		error("malformed archive");
-+		return 1;
-+	}
- 	collected[N_ALIGN(name_len) + body_len] = '\0';
- 	clean_path(collected, 0);
- 	ksys_symlink(collected + N_ALIGN(name_len), collected);
+-targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
++targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
+ 
+ PHONY += kapi uapi
+ 
 -- 
 2.43.0
 
