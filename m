@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981189E21DF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DFB9E24D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D1D22865ED
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AB13287606
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709821F706C;
-	Tue,  3 Dec 2024 15:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89551F890C;
+	Tue,  3 Dec 2024 15:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg9vA/ew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbm0CDae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0E8646;
-	Tue,  3 Dec 2024 15:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B381F8905;
+	Tue,  3 Dec 2024 15:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239074; cv=none; b=DwbD9VeVuawksUuiIC8RSwhlYU9RHHHJal3VHCFb/xbXKbll7Cyv9PGjAg6em1D6hIdrgHdOG5tyUQdLsaqVDAUrL2OAU7pdJ7dP1OGBJv36qhl1LpnioYlZ5hmxvOvRjJKr2A8w2EXl9XQqKRdvHIgE/pfzkwG8dwHZvblM2CQ=
+	t=1733241148; cv=none; b=VQSRHnGjEQcb1/kvXOGmMU/bHH7O26Qi01IrE36wM1XGd8KRQYwOVUJdKr3f3TZB/13Iod/UxJQbF19YMdPuIf5mtEUhwpdFRXaoHN7XAct+yV+UNyiVebyS72m9wi7SA5Pwkbk0r8vmdU/OKnQZD+NmVt7/00alSsqkXGSGwsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239074; c=relaxed/simple;
-	bh=VFGoja24ObbiPPCYRfkJzxQBqzacdlj8poVG/oxKEWw=;
+	s=arc-20240116; t=1733241148; c=relaxed/simple;
+	bh=KHLYNXih0jjZNOLMFby5rPpqJlBEBpbhu71JJNqj1X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHcPioSrUjr9BkBaOnArVsYE/7PxRndcsQry/lKsCauLTjFCiiMs6olxBQHCr0G2WzcvkgDAgrjGVmWOXjja8BStBRVDX6mvrUpRHEcOSH1MtP64ExkCYQE9ifFsCuGAXhsnwiop9QYj4uJpJLTUZ0l8OAQwlQ/0mXUN8AZ86ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg9vA/ew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C8EC4CED8;
-	Tue,  3 Dec 2024 15:17:53 +0000 (UTC)
+	 MIME-Version; b=ImWthH62PeTWL6QIJsaUDkJlbzPf1LlfAnSTqvoHEXRDVqTwsS3DP2fUf7TK9h9xFveMcVXw5pRurBrZJ+azjt3QIY82MVql0yP429Fpw3U4QX5lGvoAGrObCzuGX+9QlBeiEoqha2O+zrGfpxij1tBkjfAQO9szztezDSNq6Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbm0CDae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8DAC4CECF;
+	Tue,  3 Dec 2024 15:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239074;
-	bh=VFGoja24ObbiPPCYRfkJzxQBqzacdlj8poVG/oxKEWw=;
+	s=korg; t=1733241148;
+	bh=KHLYNXih0jjZNOLMFby5rPpqJlBEBpbhu71JJNqj1X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mg9vA/ewmDMLnPhLII4lXJlpTTq+eAJVglUQJcjBqrVCVd2izEiQOlNPSkZIt2jBT
-	 tgtIPWWrBvlaBeuIAH70xVBfO+dcNxxU0ZZW5Q7/Tbh7txAo2z/AQr2g7USUVBd4Kl
-	 qg2jGC7yQPdxGNsGCLg2hjfs16FhkAAeO5gCR5Q0=
+	b=vbm0CDaeVT8D2MyT5zsQ9bYh2VyCTiC/2lDDoR8wI6nvoBQxXFOI2QrjGlqsNlgdH
+	 IOEAAzHQT7F6RwGWhe4URmnOAniRYRV4/KEvJA+zWWF+KGttp3xkTip4MGkwRUmPUc
+	 l61BEzmhia8kNSjBF+6Nfcjnd17vD4DZukv31thQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 493/817] f2fs: compress: fix inconsistent update of i_blocks in release_compress_blocks and reserve_compress_blocks
+Subject: [PATCH 6.12 338/826] Bluetooth: btintel: Do no pass vendor events to stack
 Date: Tue,  3 Dec 2024 15:41:05 +0100
-Message-ID: <20241203144015.118357706@linuxfoundation.org>
+Message-ID: <20241203144756.947407127@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 26413ce18e85de3dda2cd3d72c3c3e8ab8f4f996 ]
+[ Upstream commit 510e8380b0382ee3b070748656b00f83c9a5bf80 ]
 
-After release a file and subsequently reserve it, the FSCK flag is set
-when the file is deleted, as shown in the following backtrace:
+During firmware download, vendor specific events like boot up and
+secure send result are generated. These events can be safely processed at
+the driver level. Passing on these events to stack prints unnecessary
+log as below.
 
-F2FS-fs (dm-48): Inconsistent i_blocks, ino:401231, iblocks:1448, sectors:1472
-fs_rec_info_write_type+0x58/0x274
-f2fs_rec_info_write+0x1c/0x2c
-set_sbi_flag+0x74/0x98
-dec_valid_block_count+0x150/0x190
-f2fs_truncate_data_blocks_range+0x2d4/0x3cc
-f2fs_do_truncate_blocks+0x2fc/0x5f0
-f2fs_truncate_blocks+0x68/0x100
-f2fs_truncate+0x80/0x128
-f2fs_evict_inode+0x1a4/0x794
-evict+0xd4/0x280
-iput+0x238/0x284
-do_unlinkat+0x1ac/0x298
-__arm64_sys_unlinkat+0x48/0x68
-invoke_syscall+0x58/0x11c
+    Bluetooth: hci0: Malformed MSFT vendor event: 0x02
 
-For clusters of the following type, i_blocks are decremented by 1 and
-i_compr_blocks are incremented by 7 in release_compress_blocks, while
-updates to i_blocks and i_compr_blocks are skipped in reserve_compress_blocks.
-
-raw node:
-D D D D D D D D
-after compress:
-C D D D D D D D
-after reserve:
-C D D D D D D D
-
-Let's update i_blocks and i_compr_blocks properly in reserve_compress_blocks.
-
-Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 3368aa357f3b ("Bluetooth: msft: Handle MSFT Monitor Device Event")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btintel.c      | 6 ++++--
+ drivers/bluetooth/btintel_pcie.c | 9 ++++++---
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 80ebc13ccb35b..38d11635261ee 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3798,7 +3798,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 		to_reserved = cluster_size - compr_blocks - reserved;
- 
- 		/* for the case all blocks in cluster were reserved */
--		if (to_reserved == 1) {
-+		if (reserved && to_reserved == 1) {
- 			dn->ofs_in_node += cluster_size;
- 			goto next;
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 4b17202075b00..645047fb92fd2 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -3368,7 +3368,8 @@ int btintel_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 				 * indicating that the bootup completed.
+ 				 */
+ 				btintel_bootup(hdev, ptr, len);
+-				break;
++				kfree_skb(skb);
++				return 0;
+ 			case 0x06:
+ 				/* When the firmware loading completes the
+ 				 * device sends out a vendor specific event
+@@ -3376,7 +3377,8 @@ int btintel_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 				 * loading.
+ 				 */
+ 				btintel_secure_send_result(hdev, ptr, len);
+-				break;
++				kfree_skb(skb);
++				return 0;
+ 			}
  		}
+ 
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 16ee962d40861..8bd663f4bac1b 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -536,7 +536,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 				if (btintel_pcie_in_op(data)) {
+ 					btintel_pcie_wr_sleep_cntrl(data, BTINTEL_PCIE_STATE_D0);
+ 					data->alive_intr_ctxt = BTINTEL_PCIE_INTEL_HCI_RESET2;
+-					break;
++					kfree_skb(skb);
++					return 0;
+ 				}
+ 
+ 				if (btintel_pcie_in_iml(data)) {
+@@ -553,7 +554,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 						btintel_wake_up_flag(data->hdev,
+ 								     INTEL_WAIT_FOR_D0);
+ 				}
+-				break;
++				kfree_skb(skb);
++				return 0;
+ 			case 0x06:
+ 				/* When the firmware loading completes the
+ 				 * device sends out a vendor specific event
+@@ -561,7 +563,8 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 				 * loading.
+ 				 */
+ 				btintel_secure_send_result(hdev, ptr, len);
+-				break;
++				kfree_skb(skb);
++				return 0;
+ 			}
+ 		}
+ 
 -- 
 2.43.0
 
