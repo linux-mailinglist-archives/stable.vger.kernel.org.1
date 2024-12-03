@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-97556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0348B9E24F8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0B9E219B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9F016F806
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11B4828174E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428BC1F75A5;
-	Tue,  3 Dec 2024 15:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A8B1F76C9;
+	Tue,  3 Dec 2024 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bgsKhhV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MD5dyR8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15A41EE001;
-	Tue,  3 Dec 2024 15:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4DD1F76B4;
+	Tue,  3 Dec 2024 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240919; cv=none; b=W2iDLangfDorsbC/pFnss3L8v/UZALfeHW/4RRroyvXigtZy6IFxeZFq4s3/Me2FMwa+Ty4z4wvM/+B/fN9eQgYyMnbG5IcBF76dIAVWEIERKDf1rwe7uJ2bwR6s0FP++D8AUC+GpcuM+1d7AeDMHNWDhiK9OwJvMfpKIH2mXi4=
+	t=1733238793; cv=none; b=stLq724a3+3gFXnSBrPTzPgSXwNrDRSQxKdY9Depk8BSE342kSB1T/pyDFoatORyJLTRJXu5t/jICHceNNqxUseXotqPCt2FPuUheDcEArVR6aS77RSNbCRckK4Gt8U/FHeSYMriT6DcvW5leUTRlBL8YkAP6HVsOpCWWXffZxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240919; c=relaxed/simple;
-	bh=nq5eYT+pc2lhWL785i5fOrRpe0DMkKMtcCsMHy2oW6E=;
+	s=arc-20240116; t=1733238793; c=relaxed/simple;
+	bh=7mypEYCIX9hZ0OSxh56vQVPnt9rQbwYGd1GkMODWlN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNH/+JZGRaKbZtZ3bWfYf20kOp2eDB7JtFL/gO+0QYdq9+Jj6csqOkDJ2XanvQd1vS+WTR1ViSwIxbsd79DR6PG6COZOBoIitiLQL4UMifOkkqh+HH7C/NP7lP5hAxiOiA5XqiGDlqDKsXcX64g+4cfFGAxfcsJIFtgxs27JgYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bgsKhhV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD5FC4CECF;
-	Tue,  3 Dec 2024 15:48:38 +0000 (UTC)
+	 MIME-Version; b=gUYom/6TMzY+dAcobPcJ8ETSIHX0kT1AIRs0NGmwnK6FLu2O0eBw6JlnQEqEBaHrpfOO0U3fUx5Ir4yuZUjsqRB/jwrBBhTi26/gNX1oAWj99Kgu/sOIHlyjpeUYGQctlfgQ5nnSmwIvwgLWkaTQSRwLVT0Hv0XgvSmoDC8yy6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MD5dyR8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA0C4CECF;
+	Tue,  3 Dec 2024 15:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240918;
-	bh=nq5eYT+pc2lhWL785i5fOrRpe0DMkKMtcCsMHy2oW6E=;
+	s=korg; t=1733238793;
+	bh=7mypEYCIX9hZ0OSxh56vQVPnt9rQbwYGd1GkMODWlN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bgsKhhVrzsi1CsWbBf44ci4nLeKIUWvqHX8J8eTobJT+zGEUV0w5eZLUtQQQ4akQ
-	 ZFSTnaRYGrJjqUaMwmqxxp57k5fvkXn/mM8EksAZ3QFlKRrmUVVyWy/PRRtiEkMZEQ
-	 E9qRAicSbIEzS2QMiXTSIDo28LKX6DVsGcv9ezII=
+	b=MD5dyR8Q2+xd0H6P9Uqx3DtJtwWFyhe8Na20loBjWYdelU0mCjU9Wk8fByI3rfF7g
+	 fxXRNMwGeiXI7VSQqgoIgtDyuFX3N3zx9wOIRpV9ytgUDQNOQLPvmVJ7VY5oFopILY
+	 jHa5f+IOPXhYbgCK1h8F98DjBlMyt0OUc3yuluVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Sachin P Bappalige <sachinpb@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/826] accel/ivpu: Prevent recovery invocation during probe and resume
+Subject: [PATCH 6.11 398/817] powerpc/fadump: Move fadump_cma_init to setup_arch() after initmem_init()
 Date: Tue,  3 Dec 2024 15:39:30 +0100
-Message-ID: <20241203144753.246958974@linuxfoundation.org>
+Message-ID: <20241203144011.410551520@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,181 +66,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 5eaa497411197c41b0813d61ba3fbd6267049082 ]
+[ Upstream commit 05b94cae1c47f94588c3e7096963c1007c4d9c1d ]
 
-Refactor IPC send and receive functions to allow correct
-handling of operations that should not trigger a recovery process.
+During early init CMA_MIN_ALIGNMENT_BYTES can be PAGE_SIZE,
+since pageblock_order is still zero and it gets initialized
+later during initmem_init() e.g.
+setup_arch() -> initmem_init() -> sparse_init() -> set_pageblock_order()
 
-Expose ivpu_send_receive_internal(), which is now utilized by the D0i3
-entry, DCT initialization, and HWS initialization functions.
-These functions have been modified to return error codes gracefully,
-rather than initiating recovery.
+One such use case where this causes issue is -
+early_setup() -> early_init_devtree() -> fadump_reserve_mem() -> fadump_cma_init()
 
-The updated functions are invoked within ivpu_probe() and ivpu_resume(),
-ensuring that any errors encountered during these stages result in a proper
-teardown or shutdown sequence. The previous approach of triggering recovery
-within these functions could lead to a race condition, potentially causing
-undefined behavior and kernel crashes due to null pointer dereferences.
+This causes CMA memory alignment check to be bypassed in
+cma_init_reserved_mem(). Then later cma_activate_area() can hit
+a VM_BUG_ON_PAGE(pfn & ((1 << order) - 1)) if the reserved memory
+area was not pageblock_order aligned.
 
-Fixes: 45e45362e095 ("accel/ivpu: Introduce ivpu_ipc_send_receive_active()")
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-23-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Fix it by moving the fadump_cma_init() after initmem_init(),
+where other such cma reservations also gets called.
+
+<stack trace>
+==============
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10010
+flags: 0x13ffff800000000(node=1|zone=0|lastcpupid=0x7ffff) CMA
+raw: 013ffff800000000 5deadbeef0000100 5deadbeef0000122 0000000000000000
+raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: VM_BUG_ON_PAGE(pfn & ((1 << order) - 1))
+------------[ cut here ]------------
+kernel BUG at mm/page_alloc.c:778!
+
+Call Trace:
+__free_one_page+0x57c/0x7b0 (unreliable)
+free_pcppages_bulk+0x1a8/0x2c8
+free_unref_page_commit+0x3d4/0x4e4
+free_unref_page+0x458/0x6d0
+init_cma_reserved_pageblock+0x114/0x198
+cma_init_reserved_areas+0x270/0x3e0
+do_one_initcall+0x80/0x2f8
+kernel_init_freeable+0x33c/0x530
+kernel_init+0x34/0x26c
+ret_from_kernel_user_thread+0x14/0x1c
+
+Fixes: 11ac3e87ce09 ("mm: cma: use pageblock_order as the single alignment")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_ipc.c     | 35 +++++++++++--------------------
- drivers/accel/ivpu/ivpu_ipc.h     |  7 +++----
- drivers/accel/ivpu/ivpu_jsm_msg.c | 19 +++++++----------
- 3 files changed, 23 insertions(+), 38 deletions(-)
+ arch/powerpc/include/asm/fadump.h  | 7 +++++++
+ arch/powerpc/kernel/fadump.c       | 6 +-----
+ arch/powerpc/kernel/setup-common.c | 6 ++++--
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
-index 78b32a8232419..29b723039a345 100644
---- a/drivers/accel/ivpu/ivpu_ipc.c
-+++ b/drivers/accel/ivpu/ivpu_ipc.c
-@@ -291,15 +291,16 @@ int ivpu_ipc_receive(struct ivpu_device *vdev, struct ivpu_ipc_consumer *cons,
- 	return ret;
- }
- 
--static int
-+int
- ivpu_ipc_send_receive_internal(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
- 			       enum vpu_ipc_msg_type expected_resp_type,
--			       struct vpu_jsm_msg *resp, u32 channel,
--			       unsigned long timeout_ms)
-+			       struct vpu_jsm_msg *resp, u32 channel, unsigned long timeout_ms)
- {
- 	struct ivpu_ipc_consumer cons;
- 	int ret;
- 
-+	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev));
+diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
+index ef40c9b6972a6..3638f04447f59 100644
+--- a/arch/powerpc/include/asm/fadump.h
++++ b/arch/powerpc/include/asm/fadump.h
+@@ -34,4 +34,11 @@ extern int early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
+ 				      int depth, void *data);
+ extern int fadump_reserve_mem(void);
+ #endif
 +
- 	ivpu_ipc_consumer_add(vdev, &cons, channel, NULL);
- 
- 	ret = ivpu_ipc_send(vdev, &cons, req);
-@@ -325,19 +326,21 @@ ivpu_ipc_send_receive_internal(struct ivpu_device *vdev, struct vpu_jsm_msg *req
- 	return ret;
- }
- 
--int ivpu_ipc_send_receive_active(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
--				 enum vpu_ipc_msg_type expected_resp, struct vpu_jsm_msg *resp,
--				 u32 channel, unsigned long timeout_ms)
-+int ivpu_ipc_send_receive(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
-+			  enum vpu_ipc_msg_type expected_resp, struct vpu_jsm_msg *resp,
-+			  u32 channel, unsigned long timeout_ms)
++#if defined(CONFIG_FA_DUMP) && defined(CONFIG_CMA)
++void fadump_cma_init(void);
++#else
++static inline void fadump_cma_init(void) { }
++#endif
++
+ #endif /* _ASM_POWERPC_FADUMP_H */
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 162327d66982e..ac7b4e1645e55 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -78,7 +78,7 @@ static struct cma *fadump_cma;
+  * But for some reason even if it fails we still have the memory reservation
+  * with us and we can still continue doing fadump.
+  */
+-static void __init fadump_cma_init(void)
++void __init fadump_cma_init(void)
  {
- 	struct vpu_jsm_msg hb_req = { .type = VPU_JSM_MSG_QUERY_ENGINE_HB };
- 	struct vpu_jsm_msg hb_resp;
- 	int ret, hb_ret;
+ 	unsigned long long base, size;
+ 	int rc;
+@@ -122,8 +122,6 @@ static void __init fadump_cma_init(void)
+ 		(unsigned long)cma_get_base(fadump_cma) >> 20,
+ 		fw_dump.reserve_dump_area_size);
+ }
+-#else
+-static void __init fadump_cma_init(void) { }
+ #endif /* CONFIG_CMA */
  
--	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev));
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
+ /*
+@@ -632,8 +630,6 @@ int __init fadump_reserve_mem(void)
  
- 	ret = ivpu_ipc_send_receive_internal(vdev, req, expected_resp, resp, channel, timeout_ms);
- 	if (ret != -ETIMEDOUT)
--		return ret;
-+		goto rpm_put;
+ 		pr_info("Reserved %lldMB of memory at %#016llx (System RAM: %lldMB)\n",
+ 			(size >> 20), base, (memblock_phys_mem_size() >> 20));
+-
+-		fadump_cma_init();
+ 	}
  
- 	hb_ret = ivpu_ipc_send_receive_internal(vdev, &hb_req, VPU_JSM_MSG_QUERY_ENGINE_HB_DONE,
- 						&hb_resp, VPU_IPC_CHAN_ASYNC_CMD,
-@@ -345,21 +348,7 @@ int ivpu_ipc_send_receive_active(struct ivpu_device *vdev, struct vpu_jsm_msg *r
- 	if (hb_ret == -ETIMEDOUT)
- 		ivpu_pm_trigger_recovery(vdev, "IPC timeout");
- 
--	return ret;
--}
--
--int ivpu_ipc_send_receive(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
--			  enum vpu_ipc_msg_type expected_resp, struct vpu_jsm_msg *resp,
--			  u32 channel, unsigned long timeout_ms)
--{
--	int ret;
--
--	ret = ivpu_rpm_get(vdev);
--	if (ret < 0)
--		return ret;
--
--	ret = ivpu_ipc_send_receive_active(vdev, req, expected_resp, resp, channel, timeout_ms);
--
-+rpm_put:
- 	ivpu_rpm_put(vdev);
  	return ret;
- }
-diff --git a/drivers/accel/ivpu/ivpu_ipc.h b/drivers/accel/ivpu/ivpu_ipc.h
-index 4fe38141045ea..fb4de7fb8210e 100644
---- a/drivers/accel/ivpu/ivpu_ipc.h
-+++ b/drivers/accel/ivpu/ivpu_ipc.h
-@@ -101,10 +101,9 @@ int ivpu_ipc_send(struct ivpu_device *vdev, struct ivpu_ipc_consumer *cons,
- int ivpu_ipc_receive(struct ivpu_device *vdev, struct ivpu_ipc_consumer *cons,
- 		     struct ivpu_ipc_hdr *ipc_buf, struct vpu_jsm_msg *jsm_msg,
- 		     unsigned long timeout_ms);
--
--int ivpu_ipc_send_receive_active(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
--				 enum vpu_ipc_msg_type expected_resp, struct vpu_jsm_msg *resp,
--				 u32 channel, unsigned long timeout_ms);
-+int ivpu_ipc_send_receive_internal(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
-+				   enum vpu_ipc_msg_type expected_resp_type,
-+				   struct vpu_jsm_msg *resp, u32 channel, unsigned long timeout_ms);
- int ivpu_ipc_send_receive(struct ivpu_device *vdev, struct vpu_jsm_msg *req,
- 			  enum vpu_ipc_msg_type expected_resp, struct vpu_jsm_msg *resp,
- 			  u32 channel, unsigned long timeout_ms);
-diff --git a/drivers/accel/ivpu/ivpu_jsm_msg.c b/drivers/accel/ivpu/ivpu_jsm_msg.c
-index 46ef16c3c0691..88105963c1b28 100644
---- a/drivers/accel/ivpu/ivpu_jsm_msg.c
-+++ b/drivers/accel/ivpu/ivpu_jsm_msg.c
-@@ -270,9 +270,8 @@ int ivpu_jsm_pwr_d0i3_enter(struct ivpu_device *vdev)
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 943430077375a..b6b01502e5047 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -997,9 +997,11 @@ void __init setup_arch(char **cmdline_p)
+ 	initmem_init();
  
- 	req.payload.pwr_d0i3_enter.send_response = 1;
+ 	/*
+-	 * Reserve large chunks of memory for use by CMA for KVM and hugetlb. These must
+-	 * be called after initmem_init(), so that pageblock_order is initialised.
++	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
++	 * hugetlb. These must be called after initmem_init(), so that
++	 * pageblock_order is initialised.
+ 	 */
++	fadump_cma_init();
+ 	kvm_cma_reserve();
+ 	gigantic_hugetlb_cma_reserve();
  
--	ret = ivpu_ipc_send_receive_active(vdev, &req, VPU_JSM_MSG_PWR_D0I3_ENTER_DONE,
--					   &resp, VPU_IPC_CHAN_GEN_CMD,
--					   vdev->timeout.d0i3_entry_msg);
-+	ret = ivpu_ipc_send_receive_internal(vdev, &req, VPU_JSM_MSG_PWR_D0I3_ENTER_DONE, &resp,
-+					     VPU_IPC_CHAN_GEN_CMD, vdev->timeout.d0i3_entry_msg);
- 	if (ret)
- 		return ret;
- 
-@@ -430,8 +429,8 @@ int ivpu_jsm_hws_setup_priority_bands(struct ivpu_device *vdev)
- 
- 	req.payload.hws_priority_band_setup.normal_band_percentage = 10;
- 
--	ret = ivpu_ipc_send_receive_active(vdev, &req, VPU_JSM_MSG_SET_PRIORITY_BAND_SETUP_RSP,
--					   &resp, VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
-+	ret = ivpu_ipc_send_receive_internal(vdev, &req, VPU_JSM_MSG_SET_PRIORITY_BAND_SETUP_RSP,
-+					     &resp, VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
- 	if (ret)
- 		ivpu_warn_ratelimited(vdev, "Failed to set priority bands: %d\n", ret);
- 
-@@ -544,9 +543,8 @@ int ivpu_jsm_dct_enable(struct ivpu_device *vdev, u32 active_us, u32 inactive_us
- 	req.payload.pwr_dct_control.dct_active_us = active_us;
- 	req.payload.pwr_dct_control.dct_inactive_us = inactive_us;
- 
--	return ivpu_ipc_send_receive_active(vdev, &req, VPU_JSM_MSG_DCT_ENABLE_DONE,
--					    &resp, VPU_IPC_CHAN_ASYNC_CMD,
--					    vdev->timeout.jsm);
-+	return ivpu_ipc_send_receive_internal(vdev, &req, VPU_JSM_MSG_DCT_ENABLE_DONE, &resp,
-+					      VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
- }
- 
- int ivpu_jsm_dct_disable(struct ivpu_device *vdev)
-@@ -554,7 +552,6 @@ int ivpu_jsm_dct_disable(struct ivpu_device *vdev)
- 	struct vpu_jsm_msg req = { .type = VPU_JSM_MSG_DCT_DISABLE };
- 	struct vpu_jsm_msg resp;
- 
--	return ivpu_ipc_send_receive_active(vdev, &req, VPU_JSM_MSG_DCT_DISABLE_DONE,
--					    &resp, VPU_IPC_CHAN_ASYNC_CMD,
--					    vdev->timeout.jsm);
-+	return ivpu_ipc_send_receive_internal(vdev, &req, VPU_JSM_MSG_DCT_DISABLE_DONE, &resp,
-+					      VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
- }
 -- 
 2.43.0
 
