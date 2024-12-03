@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD5F9E2566
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7349E236A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2732A288726
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5EDEB44F7A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A461F76A4;
-	Tue,  3 Dec 2024 16:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D851F472A;
+	Tue,  3 Dec 2024 15:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmeyTokV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj0DuD6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183C71DE8A5;
-	Tue,  3 Dec 2024 16:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C781F4709;
+	Tue,  3 Dec 2024 15:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241613; cv=none; b=qLsJAdMLJQ2JDQshUDRTBQKKT+VgDftWnodUKrQpfKTAXsvahV/jzKD7aOxykgHierWwpqZc8ed1h1H4iAt5q83q0nfszk0hE/8EBpr5oAvmg7NLLtEkvzmaj76rGh45sIEiV0VZDthQQ8OKEW/v2wGJ1xYr7bFtce3yW8UQ/g8=
+	t=1733239460; cv=none; b=JQLx1vSOa3VjrNwdHVLtaqujT3m1UuLpHycfB55unbbUOgxYaoo4PFRIKORqrEl8ddDMKUJF/mUbuBCZcTBjAMCtPaMjbd3pZMuf/COLTlM8m07CdbFYeQHJqFu7k8XM+yzze3HO9ngKzkEyHVaIEyLf8Jj4kwROILa0ZhdbMqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241613; c=relaxed/simple;
-	bh=akShsFEil0YacuqeQe43BUgNuPtIIN64SmY3xWamGDQ=;
+	s=arc-20240116; t=1733239460; c=relaxed/simple;
+	bh=kmHyJ8TDZIhOO44L+SFnzuKKCBXHvjEXhrfHT5cihbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bah2sNfCU76sKYPRNWwBzpKh5by5iyeaDc1SWX1SsTdRQEhEmzNTSrlcZt2XsljvYha5X9l+Wv8DfnPLYVzI3Cj48X80IYNoQNDGnip3uC54foJmynxzyNKh05z5HKPF/HbuCJHgW5sAyRkEX1wuVeca7xpA5GkfIA6eA/B0UVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmeyTokV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB5EC4CECF;
-	Tue,  3 Dec 2024 16:00:12 +0000 (UTC)
+	 MIME-Version; b=qNTdu0jc7FebYjnsjYkvwX6U4cdD2iCRt2YHs2aCKvqYlf2v06B5tLC62LkJ1gkl09i64egrvkcd8nMuT9pwcByi7QJmgqpCy2Pv1C/mYabJ7qJr1aXZAWTIRfKQim1rE1N4pFrh+8w0WCq8DNHyyDfjgOwr0Pr/dnSfcFav9KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj0DuD6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C527C4CECF;
+	Tue,  3 Dec 2024 15:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241612;
-	bh=akShsFEil0YacuqeQe43BUgNuPtIIN64SmY3xWamGDQ=;
+	s=korg; t=1733239460;
+	bh=kmHyJ8TDZIhOO44L+SFnzuKKCBXHvjEXhrfHT5cihbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmeyTokVOps9Yb6UGG+K6493tZdwxxBSOEaP1vc47hmwyBiXRmzAicwg1fmgqmAx0
-	 CniH5mDmK3H+cOPRJccsBzyGpKeIIWa6jmsgW2XiWk2YdiafhzX3hjNiTLioAQqEr9
-	 ikfSf7OIdxLxEFv5YFQyS92UoXnwgJfX2Q0OcG08=
+	b=Uj0DuD6vU2X+tV9kCwTtcHAzq89yceiBkGMLjtJ6BoV9A/zuKNyeA1wZKWDhPn4+B
+	 2mCcDLKJ+YPSwR5fpluXuLc4A7yHtUL9HnDabbio+t2rJ5R5jdrWCZB5YIk6+hFns0
+	 pyNtUmzWq5mAGTXnBiWpJJ1frvZ/a6vgAgCZWALw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 467/826] gfs2: Rename GLF_VERIFY_EVICT to GLF_VERIFY_DELETE
+Subject: [PATCH 6.11 622/817] ALSA: core: Fix possible NULL dereference caused by kunit_kzalloc()
 Date: Tue,  3 Dec 2024 15:43:14 +0100
-Message-ID: <20241203144801.980796502@linuxfoundation.org>
+Message-ID: <20241203144020.214759027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 820ce8ed53ce2111aa5171f7349f289d7e9d0693 ]
+[ Upstream commit 9ad467a2b2716d4ed12f003b041aa6c776a13ff5 ]
 
-Rename the GLF_VERIFY_EVICT flag to GLF_VERIFY_DELETE: that flag
-indicates that we want to delete an inode / verify that it has been
-deleted.
+kunit_kzalloc() may return a NULL pointer, dereferencing it without
+NULL check may lead to NULL dereference.
+Add NULL checks for all the kunit_kzalloc() in sound_kunit.c
 
-To match, rename gfs2_queue_verify_evict() to
-gfs2_queue_verify_delete().
-
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 7c6f714d8847 ("gfs2: Fix unlinked inode cleanup")
+Fixes: 3e39acf56ede ("ALSA: core: Add sound core KUnit test")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241126192448.12645-1-zichenxie0106@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c  | 14 +++++++-------
- fs/gfs2/incore.h |  2 +-
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ sound/core/sound_kunit.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 269c3bc7fced7..5addf4ebf33bd 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1013,11 +1013,11 @@ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl)
- 				  &gl->gl_delete, 0);
- }
+diff --git a/sound/core/sound_kunit.c b/sound/core/sound_kunit.c
+index bfed1a25fc8f7..84e337ecbddd0 100644
+--- a/sound/core/sound_kunit.c
++++ b/sound/core/sound_kunit.c
+@@ -172,6 +172,7 @@ static void test_format_fill_silence(struct kunit *test)
+ 	u32 i, j;
  
--static bool gfs2_queue_verify_evict(struct gfs2_glock *gl)
-+static bool gfs2_queue_verify_delete(struct gfs2_glock *gl)
+ 	buffer = kunit_kzalloc(test, SILENCE_BUFFER_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(buf_samples); i++) {
+ 		for (j = 0; j < ARRAY_SIZE(valid_fmt); j++)
+@@ -208,8 +209,12 @@ static void test_playback_avail(struct kunit *test)
+ 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
+ 	u32 i;
+ 
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
++
+ 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
+ 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(p_avail_data); i++) {
+ 		r->buffer_size = p_avail_data[i].buffer_size;
+@@ -232,8 +237,12 @@ static void test_capture_avail(struct kunit *test)
+ 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
+ 	u32 i;
+ 
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
++
+ 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
+ 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(c_avail_data); i++) {
+ 		r->buffer_size = c_avail_data[i].buffer_size;
+@@ -247,6 +256,7 @@ static void test_capture_avail(struct kunit *test)
+ static void test_card_set_id(struct kunit *test)
  {
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+ 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
  
--	if (test_and_set_bit(GLF_VERIFY_EVICT, &gl->gl_flags))
-+	if (test_and_set_bit(GLF_VERIFY_DELETE, &gl->gl_flags))
- 		return false;
- 	return queue_delayed_work(sdp->sd_delete_wq,
- 				  &gl->gl_delete, 5 * HZ);
-@@ -1052,19 +1052,19 @@ static void delete_work_func(struct work_struct *work)
- 		if (gfs2_try_evict(gl)) {
- 			if (test_bit(SDF_KILL, &sdp->sd_flags))
- 				goto out;
--			if (gfs2_queue_verify_evict(gl))
-+			if (gfs2_queue_verify_delete(gl))
- 				return;
- 		}
- 		goto out;
- 	}
- 
--	if (test_and_clear_bit(GLF_VERIFY_EVICT, &gl->gl_flags)) {
-+	if (test_and_clear_bit(GLF_VERIFY_DELETE, &gl->gl_flags)) {
- 		inode = gfs2_lookup_by_inum(sdp, no_addr, gl->gl_no_formal_ino,
- 					    GFS2_BLKST_UNLINKED);
- 		if (IS_ERR(inode)) {
- 			if (PTR_ERR(inode) == -EAGAIN &&
- 			    !test_bit(SDF_KILL, &sdp->sd_flags) &&
--			    gfs2_queue_verify_evict(gl))
-+			    gfs2_queue_verify_delete(gl))
- 				return;
- 		} else {
- 			d_prune_aliases(inode);
-@@ -2118,7 +2118,7 @@ static void glock_hash_walk(glock_examiner examiner, const struct gfs2_sbd *sdp)
- void gfs2_cancel_delete_work(struct gfs2_glock *gl)
+ 	snd_card_set_id(card, VALID_NAME);
+ 	KUNIT_EXPECT_STREQ(test, card->id, VALID_NAME);
+@@ -280,6 +290,7 @@ static void test_pcm_format_name(struct kunit *test)
+ static void test_card_add_component(struct kunit *test)
  {
- 	clear_bit(GLF_TRY_TO_EVICT, &gl->gl_flags);
--	clear_bit(GLF_VERIFY_EVICT, &gl->gl_flags);
-+	clear_bit(GLF_VERIFY_DELETE, &gl->gl_flags);
- 	if (cancel_delayed_work(&gl->gl_delete))
- 		gfs2_glock_put(gl);
- }
-@@ -2371,7 +2371,7 @@ static const char *gflags2str(char *buf, const struct gfs2_glock *gl)
- 		*p++ = 'N';
- 	if (test_bit(GLF_TRY_TO_EVICT, gflags))
- 		*p++ = 'e';
--	if (test_bit(GLF_VERIFY_EVICT, gflags))
-+	if (test_bit(GLF_VERIFY_DELETE, gflags))
- 		*p++ = 'E';
- 	*p = 0;
- 	return buf;
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index aa4ef67a34e03..bd1348bff90eb 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -329,7 +329,7 @@ enum {
- 	GLF_BLOCKING			= 15,
- 	GLF_UNLOCKED			= 16, /* Wait for glock to be unlocked */
- 	GLF_TRY_TO_EVICT		= 17, /* iopen glocks only */
--	GLF_VERIFY_EVICT		= 18, /* iopen glocks only */
-+	GLF_VERIFY_DELETE		= 18, /* iopen glocks only */
- };
+ 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
  
- struct gfs2_glock {
+ 	snd_component_add(card, TEST_FIRST_COMPONENT);
+ 	KUNIT_ASSERT_STREQ(test, card->components, TEST_FIRST_COMPONENT);
 -- 
 2.43.0
 
