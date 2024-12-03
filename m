@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DFA9E2391
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C979E2671
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 292FE2870CD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9149BB866E9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B476C1F943D;
-	Tue,  3 Dec 2024 15:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4DF1F7547;
+	Tue,  3 Dec 2024 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs0moJHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmIKgYux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729EE1F4276;
-	Tue,  3 Dec 2024 15:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96D1E3DF9;
+	Tue,  3 Dec 2024 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240082; cv=none; b=lIbP7IDACrTciuXkcCJ7k6g7SiCJIN6RgzTR1ESmezCMmuyKu5MKUzxpBA8+7/VNz3YJQImTqII47U6swQeylVvhzbdJf3x8Hy0su8Sy+r40pUK4twQKtZoRocJStZcCuALKeortcJeuCeInG8aZTo3oJXipDzqZC+5u9yw5JlY=
+	t=1733238224; cv=none; b=aCrDX4igaE32gcF502Yvo/cbcrDtyumhtU2494ElbFepunaqvbZFlLJc8Pf6A/vc+hbDYItjD5evHWnrgy1s8oubR6Wz89iSzPXOiB0zwI4HpTGnJK9sTZFcRz9KBdSyj4P8CjpypNve8mnxNJvsuYQD7MVEtnr1RYBpgItuMow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240082; c=relaxed/simple;
-	bh=YOBZBYJDlnNRIdaWm/92MQDR9Ta648h3poi3nWrtKRY=;
+	s=arc-20240116; t=1733238224; c=relaxed/simple;
+	bh=A8yysjUcoKurANisjSM8+QP/yqxdbVTDT2HVvYw2D+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U75dakAvom7l+oIXaVNNZ/pQJ3Zet6WKkhE5GHNOVDHOkAB2OXkUOo2X779uJ07PkOKurVEGIg0t1QWs/r8JWjwv9Y4Apg/s5tQHUm0HLiGQmtKygxLzHfHauAEpJol2Xwi38w8pO1rRreLuNsNY9TfkefGYydA2Bkbe7lo+2Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs0moJHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E983DC4CECF;
-	Tue,  3 Dec 2024 15:34:41 +0000 (UTC)
+	 MIME-Version; b=ukBMINNfOng2L+vxQZZ74EgS9/poHmK5Bd/2U9t/f182z11qf5IIK/eOL3UPRwEFjS0RAL74BdIWezYMEHGxsI2u7RuF+br+169/zojQOJX7m0QeCv+vJdfHNWG9SCvTYpw10iXbhLlu+84U+80xqjZe+iIG5/HLNO7LP4nuQaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmIKgYux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92E1C4CECF;
+	Tue,  3 Dec 2024 15:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240082;
-	bh=YOBZBYJDlnNRIdaWm/92MQDR9Ta648h3poi3nWrtKRY=;
+	s=korg; t=1733238224;
+	bh=A8yysjUcoKurANisjSM8+QP/yqxdbVTDT2HVvYw2D+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs0moJHH7Icj1rma4bBhtEu5oUZGCX1mN4q+auseGFD3z+cSRDAWWLddU2/6BiR/I
-	 gdZhGUKMRvOnG9TBRTlY3C88hurmOXO/NoC0iiIVuydxxdDtuH5tsdvVMPmJJVfOCO
-	 sOw/WfRtJ+bjJp/EfveYT03ToQoajxBhhoJ+dJFY=
+	b=kmIKgYux84rTvcwQr0/JVCYDiHEJEfipz2lNMhhl4XT4ROyt4o5+c2coF1nusRAiS
+	 KkUNhF8aC3LuL6IyUO9LeJjEMN7aIWx9ybnj6mlOK3NBEcOn7x4VNfyDgEZDJGDki2
+	 0BLJuDR7FFElmkddQPdSDhOWmUGecuDpI+Nx5sRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/826] ext4: avoid remount errors with abort mount option
-Date: Tue,  3 Dec 2024 15:35:44 +0100
-Message-ID: <20241203144744.128025404@linuxfoundation.org>
+Subject: [PATCH 6.11 173/817] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+Date: Tue,  3 Dec 2024 15:35:45 +0100
+Message-ID: <20241203144002.483300508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 76486b104168ae59703190566e372badf433314b ]
+[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
 
-When we remount filesystem with 'abort' mount option while changing
-other mount options as well (as is LTP test doing), we can return error
-from the system call after commit d3476f3dad4a ("ext4: don't set
-SB_RDONLY after filesystem errors") because the application of mount
-option changes detects shutdown filesystem and refuses to do anything.
-The behavior of application of other mount options in presence of
-'abort' mount option is currently rather arbitary as some mount option
-changes are handled before 'abort' and some after it.
+Only cgroup v2 can be attached by bpf programs, so this patch introduces
+that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
+cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
+("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
+has been reverted.
 
-Move aborting of the filesystem to the end of remount handling so all
-requested changes are properly applied before the filesystem is shutdown
-to have a reasonably consistent behavior.
-
-Fixes: d3476f3dad4a ("ext4: don't set SB_RDONLY after filesystem errors")
-Reported-by: Jan Stancek <jstancek@redhat.com>
-Link: https://lore.kernel.org/all/Zvp6L+oFnfASaoHl@t14s
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: Jan Stancek <jstancek@redhat.com>
-Link: https://patch.msgid.link/20241004221556.19222-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
+Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ kernel/cgroup/cgroup.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 16a4ce704460e..4645f16296732 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6518,9 +6518,6 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 		goto restore_opts;
- 	}
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 2592cbbc95ae8..39402a9eb6b04 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2133,8 +2133,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
+ 	if (ret)
+ 		goto exit_stats;
  
--	if (test_opt2(sb, ABORT))
--		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
--
- 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
- 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
+-	ret = cgroup_bpf_inherit(root_cgrp);
+-	WARN_ON_ONCE(ret);
++	if (root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(root_cgrp);
++		WARN_ON_ONCE(ret);
++	}
  
-@@ -6689,6 +6686,14 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
- 		ext4_stop_mmpd(sbi);
+ 	trace_cgroup_setup_root(root);
  
-+	/*
-+	 * Handle aborting the filesystem as the last thing during remount to
-+	 * avoid obsure errors during remount when some option changes fail to
-+	 * apply due to shutdown filesystem.
-+	 */
-+	if (test_opt2(sb, ABORT))
-+		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
-+
- 	return 0;
+@@ -5641,9 +5643,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
+ 	if (ret)
+ 		goto out_kernfs_remove;
  
- restore_opts:
+-	ret = cgroup_bpf_inherit(cgrp);
+-	if (ret)
+-		goto out_psi_free;
++	if (cgrp->root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(cgrp);
++		if (ret)
++			goto out_psi_free;
++	}
+ 
+ 	/*
+ 	 * New cgroup inherits effective freeze counter, and
+@@ -5957,7 +5961,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
+ 
+ 	cgroup1_check_for_release(parent);
+ 
+-	cgroup_bpf_offline(cgrp);
++	if (cgrp->root == &cgrp_dfl_root)
++		cgroup_bpf_offline(cgrp);
+ 
+ 	/* put the base reference */
+ 	percpu_ref_kill(&cgrp->self.refcnt);
 -- 
 2.43.0
 
