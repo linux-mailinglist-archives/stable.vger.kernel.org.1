@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CAE9E25CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490DB9E275A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DB82889F7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 341DAB33952
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B4E1F76BF;
-	Tue,  3 Dec 2024 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846351F7557;
+	Tue,  3 Dec 2024 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHALDG0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAsrZ1ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8641823CE;
-	Tue,  3 Dec 2024 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B0E1F707A;
+	Tue,  3 Dec 2024 15:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241888; cv=none; b=qHkq8LlkoNNlyd9Cx1oE/YfhtEm71hZt6L8VHZmPOrnoBpOaeplgHkz9T1f51bkK/FaYrpOUxFDnvFJ1jrrHET9xZ2FTY0+knPUAT7D01nDKZrV2oGHErvKYqANkiBuo3KHa7MFy25Tk0AFR+7JVR5yu2M8X8WPYpIl4lHHlbTY=
+	t=1733239597; cv=none; b=PsbBogAc2gstHK82yvcdHd2IghwWwoXCnL598B2dJN+SANvaYHsIgPoTX7DeZdHRrw/xYqnj5IZ0lSyiOk4D6nZZGqfcZUme3Lz36c5u+RMz/VJzTQt1NIm0nBfIPNFMj+/NKzK8DrbNMtILj9cabm/msRROpVvg+s4SGkJWc/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241888; c=relaxed/simple;
-	bh=PfWCZpqWlwY33BPic0cW9bdU0kAcfBG63b3ErhJ0bqY=;
+	s=arc-20240116; t=1733239597; c=relaxed/simple;
+	bh=m9zedYvgZqm+jUD+9kQl36tBD5pHpDWe9qX/WH0fzJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2yK8jJJ2F/42o16tkmCGzH19fGKE5Ty7Z/HJuiA0YRgVeHc5QOCBvmKQfTC1TjmiGQH4mnhsdlsEDvHjLp3k06PCDb08Jdby9bl9yKKGnAymtyOJ7vz+W5RZB05r1+Ralv/R6Ky8LGTTyovtvL5tslsxtvsFmEPlLSO2x3wpP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHALDG0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3116C4CECF;
-	Tue,  3 Dec 2024 16:04:47 +0000 (UTC)
+	 MIME-Version; b=GqIqy84n3TztXbgIesq1j2F9OKxU/4PDwrad34gpRNgWatxJYMmTofR8MfNlkDdHgUocm8cjJ/KsYDzgoNMMod0F4T84AIKbjsVForMV1zBKeSYicp+RB9GU4d0Gfs8F0SQAmaTadAUfeX8G6iqGHOCfcV3827z0d4QDq8mFl1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAsrZ1ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE29CC4CECF;
+	Tue,  3 Dec 2024 15:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241888;
-	bh=PfWCZpqWlwY33BPic0cW9bdU0kAcfBG63b3ErhJ0bqY=;
+	s=korg; t=1733239597;
+	bh=m9zedYvgZqm+jUD+9kQl36tBD5pHpDWe9qX/WH0fzJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHALDG0ODvRWwqvLZRryGj+8hz3+pQWGoLcyOVfyygBzAz7C6WbzgWwcoB3Msu4+q
-	 9LN7kdKMb0M9E09h1RayN5lS9rt3zNXk1GdXn5ECUL7YogTzkgG7ywz5pAOJXkXAN7
-	 IWPLpHCt2YetaXGX1dEGdJ7ZHST0oq128j1o27Dk=
+	b=rAsrZ1otBukzZytYzMAr+CpMSrBuCmaWViTojoQ+cQP0WPiVwvrDWP4FmjfPM4Kur
+	 dLtVuVh/+xJfxiT4Mai19mwyzOdv0Lwl25txypH3I72FGEz/fGttSfangY065nzvv4
+	 Xv/pLe8XvpEoaVntQKqS851Rk1k6qdDEUiPm66ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 513/826] svcrdma: Address an integer overflow
+	Anjelique Melendez <quic_amelende@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 668/817] pinctrl: qcom: spmi: fix debugfs drive strength
 Date: Tue,  3 Dec 2024 15:44:00 +0100
-Message-ID: <20241203144803.768272966@linuxfoundation.org>
+Message-ID: <20241203144022.031672566@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 3c63d8946e578663b868cb9912dac616ea68bfd0 ]
+commit 6bc0ebfb1d920f13c522545f114cdabb49e9408a upstream.
 
-Dan Carpenter reports:
-> Commit 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data
-> structure") from Jun 22, 2020 (linux-next), leads to the following
-> Smatch static checker warning:
->
->	net/sunrpc/xprtrdma/svc_rdma_recvfrom.c:498 xdr_check_write_chunk()
->	warn: potential user controlled sizeof overflow 'segcount * 4 * 4'
->
-> net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
->     488 static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
->     489 {
->     490         u32 segcount;
->     491         __be32 *p;
->     492
->     493         if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
->                                                               ^^^^^^^^
->
->     494                 return false;
->     495
->     496         /* A bogus segcount causes this buffer overflow check to fail. */
->     497         p = xdr_inline_decode(&rctxt->rc_stream,
-> --> 498                               segcount * rpcrdma_segment_maxsz * sizeof(*p));
->
->
-> segcount is an untrusted u32.  On 32bit systems anything >= SIZE_MAX / 16 will
-> have an integer overflow and some those values will be accepted by
-> xdr_inline_decode().
+Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
+mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
+driver which had the 'low' and 'high' drive strength settings switched
+but failed to update the debugfs interface which still gets this wrong.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data structure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the debugfs code so that the exported values match the hardware
+settings.
+
+Note that this probably means that most devicetrees that try to describe
+the firmware settings got this wrong if the settings were derived from
+debugfs. Before the above mentioned commit the settings would have
+actually matched the firmware settings even if they were described
+incorrectly, but now they are inverted.
+
+Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength mapping")
+Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
+Cc: Anjelique Melendez <quic_amelende@quicinc.com>
+Cc: stable@vger.kernel.org	# 3.19
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/20241025121622.1496-1-johan+linaro@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index ae3fb9bc8a216..292022f0976e1 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -493,7 +493,13 @@ static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
- 	if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
- 		return false;
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -667,7 +667,7 @@ static void pmic_gpio_config_dbg_show(st
+ 		"push-pull", "open-drain", "open-source"
+ 	};
+ 	static const char *const strengths[] = {
+-		"no", "high", "medium", "low"
++		"no", "low", "medium", "high"
+ 	};
  
--	/* A bogus segcount causes this buffer overflow check to fail. */
-+	/* Before trusting the segcount value enough to use it in
-+	 * a computation, perform a simple range check. This is an
-+	 * arbitrary but sensible limit (ie, not architectural).
-+	 */
-+	if (unlikely(segcount > RPCSVC_MAXPAGES))
-+		return false;
-+
- 	p = xdr_inline_decode(&rctxt->rc_stream,
- 			      segcount * rpcrdma_segment_maxsz * sizeof(*p));
- 	return p != NULL;
--- 
-2.43.0
-
+ 	pad = pctldev->desc->pins[pin].drv_data;
 
 
 
