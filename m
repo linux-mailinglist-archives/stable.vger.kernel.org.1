@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8BE9E294B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A349E28ED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3153CB45E7E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19BFBA380C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C151F7558;
-	Tue,  3 Dec 2024 15:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CAF1F6696;
+	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7vjY+KP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/MLjv4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CF21F8AC0;
-	Tue,  3 Dec 2024 15:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA041F76DE;
+	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240886; cv=none; b=rwx26RhjXZp0FmT+c5t3TzFeFXKJQiOnR+qTibkFBhqzCgWC4PlrGQ+/fDiVppJ/2sgI7sVBGr3m+dmog+XBYBk5cteQQ3g9WlKRyJaWxwg9/Dq1JuoCGz+2wr/6YlmdUYJGQLuVWDEWiNWP6tFMmPQVuPHVn0Cw17uA6R+p8WI=
+	t=1733238862; cv=none; b=CPyUJpVDpfIyBTAq5AdwpyCNUWhsE4eepcLGx/1uc9yOVRLIEidq8+GqyX+oEOzFyYOj/QL7QutGr/BQrIPtymPOuchPgfY5YJBjQ3AP2A2qQ/+FJfdFkv8UhUOpJqDoXIo3dV9IpUq6IR4pSY31BFze5bqm61BhLH4OTgy3vyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240886; c=relaxed/simple;
-	bh=J6ZnwQxcubtdlhT3iiruTrDtBFogibI3vHGRqq6P3Vs=;
+	s=arc-20240116; t=1733238862; c=relaxed/simple;
+	bh=S/tIqSVhJvLYfnRXc9psqzeQGqH3vTB19+oB44n50AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKoB5EG/niTjlTHF6ZIWQ79gCCWd2hKEFsFVcvCeMVSphXKJPQgLQqCmDQ60OttrWVIxe8BmLir4hPFNP6X47MbBBaN/SEBUhr5eHMJvOauLNTwShThK/3uRvNbvgZC5xwhTL25NS29mWLuT6nl/J2wZYun1u1Zk7EBl3nCCTxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7vjY+KP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE6CC4CECF;
-	Tue,  3 Dec 2024 15:48:05 +0000 (UTC)
+	 MIME-Version; b=UD62698d1KCFK9IhWQ1KSoD/yM7ynmaFE2MoNcq2lYSJ4TVX41FEqYDz47vbsGFCGSe/FtGsmriJUgcrFxfYOtHO6ZNglmkCOT+pqqcslyukotZAK2sKLparIZxEW/xT4xShAKZgWsrISUZq6CY3uceeRpp/oWZ67ythygDtZZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/MLjv4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377C8C4CECF;
+	Tue,  3 Dec 2024 15:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240886;
-	bh=J6ZnwQxcubtdlhT3iiruTrDtBFogibI3vHGRqq6P3Vs=;
+	s=korg; t=1733238862;
+	bh=S/tIqSVhJvLYfnRXc9psqzeQGqH3vTB19+oB44n50AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7vjY+KPBXld+eui4gXDixHmDfY61O99T9WXO8UCEZn4Md8vkUSPb8hf5RJn0npL0
-	 iECw77iW+wpeYtkJEP2a1l7TLdya5idR9nke4ojbNNgXeTwTO4iGssEVTL6doE09l0
-	 VVRoUf8nVGYjwmBI9Z9oCXsmJG8Mpi2esET/Lo9Q=
+	b=J/MLjv4dHYzpHi7/YPR35wV3goAXT4n2p4f81GfUKTed0rlwfaGwXLKDtyDol4vz1
+	 0mSQTV4zuoyr1Dv2Jyfn9mkm0plZsvoZwdkEwFOIDO7OYN0If/UkQoOI4vTu3TQhX8
+	 phq2ma1ip00yjXfuv4Q83oHo7EwkGBg/UEajLHso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dipendra Khadka <kdipendra88@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Vincent Chen <vincent.chen@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/826] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dcbnl.c
-Date: Tue,  3 Dec 2024 15:39:51 +0100
-Message-ID: <20241203144754.060484867@linuxfoundation.org>
+Subject: [PATCH 6.11 423/817] RISC-V: KVM: Fix APLIC in_clrip and clripnum write emulation
+Date: Tue,  3 Dec 2024 15:39:55 +0100
+Message-ID: <20241203144012.397493109@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipendra Khadka <kdipendra88@gmail.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit 69297b0d3369488af259e3a7cf53d69157938ea1 ]
+[ Upstream commit 60821fb4dd7345e5662094accf0a52845306de8c ]
 
-Add error pointer check after calling otx2_mbox_get_rsp().
+In the section "4.7 Precise effects on interrupt-pending bits"
+of the RISC-V AIA specification defines that:
 
-Fixes: 8e67558177f8 ("octeontx2-pf: PFC config support with DCBx")
-Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+"If the source mode is Level1 or Level0 and the interrupt domain
+is configured in MSI delivery mode (domaincfg.DM = 1):
+The pending bit is cleared whenever the rectified input value is
+low, when the interrupt is forwarded by MSI, or by a relevant
+write to an in_clrip register or to clripnum."
+
+Update the aplic_write_pending() to match the spec.
+
+Fixes: d8dd9f113e16 ("RISC-V: KVM: Fix APLIC setipnum_le/be write emulation")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20241029085542.30541-1-yongxuan.wang@sifive.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/kvm/aia_aplic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-index aa01110f04a33..294fba58b6709 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-@@ -315,6 +315,11 @@ int otx2_config_priority_flow_ctrl(struct otx2_nic *pfvf)
- 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
- 		rsp = (struct cgx_pfc_rsp *)
- 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
-+		if (IS_ERR(rsp)) {
-+			err = PTR_ERR(rsp);
-+			goto unlock;
-+		}
-+
- 		if (req->rx_pause != rsp->rx_pause || req->tx_pause != rsp->tx_pause) {
- 			dev_warn(pfvf->dev,
- 				 "Failed to config PFC\n");
+diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
+index da6ff1bade0df..f59d1c0c8c43a 100644
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -143,7 +143,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
+ 	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
+ 	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
+ 		if (!pending)
+-			goto skip_write_pending;
++			goto noskip_write_pending;
+ 		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
+ 		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
+ 			goto skip_write_pending;
+@@ -152,6 +152,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
+ 			goto skip_write_pending;
+ 	}
+ 
++noskip_write_pending:
+ 	if (pending)
+ 		irqd->state |= APLIC_IRQ_STATE_PENDING;
+ 	else
 -- 
 2.43.0
 
