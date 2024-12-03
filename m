@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244BB9E2A82
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9EA9E2B06
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:37:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A5CFB639BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5CB4BA5171
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801B41F7561;
-	Tue,  3 Dec 2024 15:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1821E1F757D;
+	Tue,  3 Dec 2024 15:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bO8yIaHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRBcH1NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8FF1DE8A5;
-	Tue,  3 Dec 2024 15:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94E21F6696;
+	Tue,  3 Dec 2024 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241254; cv=none; b=QNF708bbent1barv7zPRH93O+6mynnj1/gkrJ3S4a/S6P7xba448zy1qvRRLYQctCBrFAAthtpetZLenprNafHKceD9/dEs1KU4LZQU39qrDBbP41LN1eWakAq+MV1q8/QsFfBlGFn5fFoQkBEFMuL/GZjQvuj3kL62Te3ocJ/w=
+	t=1733239211; cv=none; b=DsUaT713PRPZkX7UiOadcZNPKPHesr50qJ4RT3EQyEPS8bU5as3mpyEsE2hylJqC+MaKZP+HZ+RAUkWM7IsxHkDvpGpqLjvV/6OGzHQT7pj9xmUVzmJHroE71l1daUK5ZHRAW7kC+6oFR4BCBr3kaxzoxR5Zw76R8rXy6VoBRd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241254; c=relaxed/simple;
-	bh=sCgKF1giCkT8Yb5426MscmAxUmpNRHyl3yihG80FvfE=;
+	s=arc-20240116; t=1733239211; c=relaxed/simple;
+	bh=Frn/a7UpvEDZ9h0mO1tU2pdP0q4et8HQC0KqLH3t0kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt3U8yoLAIo5wWCtDIKogPAGjLlr1+wfjEFsKVunE80sP85DhahPqmY2eqM8NGhtdZn3x/8qdjQToSYja/z0AaYvA1kBpgwemnlhfLfoCdeR6humPZJgaTxosyxSQQDT9Xxa57VhnK9J2Nt2Qxt8hF85r2U8x7uzCpUXyrI9ibs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bO8yIaHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A165AC4CECF;
-	Tue,  3 Dec 2024 15:54:13 +0000 (UTC)
+	 MIME-Version; b=MCHJeWTA/zZcH8e0rmw6lJrdzxN6euEhQO3eLpSdqNhVOCEiuhknHPBDZFO4oFxy8Qzfeld2F56pnq2rpwqvSmzDxunaljXcl7Mw1YsD1bd4ykuV3UtGc7XHJgUZ4cAUcCRGv77YsUBnga5QJHeqJa6ej/bJN9uGKo5AuY6kGxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRBcH1NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA36C4CECF;
+	Tue,  3 Dec 2024 15:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241254;
-	bh=sCgKF1giCkT8Yb5426MscmAxUmpNRHyl3yihG80FvfE=;
+	s=korg; t=1733239211;
+	bh=Frn/a7UpvEDZ9h0mO1tU2pdP0q4et8HQC0KqLH3t0kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bO8yIaHADxR+SWs69JLFtycu00ku+5W/GzFMqK4nrrIt3T2b/PB8kZ8CHDNLC4WOa
-	 GV82oxqVIh4MfKb72Ci6OYCYGnYvtsGWGccJjyaQo3uubpcrRvpcug0Fc/TuM9iWy1
-	 CAxH8XM45LSrKiBJ+8HKuBISdm4RUZp9R1CKPs2c=
+	b=bRBcH1NXrc/odX/7AkuwNwOS9B2aq2hOWmjr4BCvDMXkIs2RlQjw4E98NUS9ACaQR
+	 ON4Iz8GDNBiPOqrVvduworDziP+o+2ked4DnylyvUviiGafR9v9kxW5vYh20lojxdT
+	 +/5UizJ9uJMHdRGGvsQMoMNGGPo17y3vcXxg4VaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 368/826] scsi: hisi_sas: Enable all PHYs that are not disabled by user during controller reset
-Date: Tue,  3 Dec 2024 15:41:35 +0100
-Message-ID: <20241203144758.119326525@linuxfoundation.org>
+Subject: [PATCH 6.11 536/817] remoteproc: qcom: pas: add minidump_id to SM8350 resources
+Date: Tue,  3 Dec 2024 15:41:48 +0100
+Message-ID: <20241203144016.822448210@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 08a07dc71d7fc6f58c35c4fc0bcede2811c5aa4c ]
+[ Upstream commit e8983156d54f59f57e648ecd44f01c16572da842 ]
 
-For the controller reset operation(such as FLR or clear nexus ha in SCSI
-EH), we will disable all PHYs and then enable PHY based on the
-hisi_hba->phy_state obtained in hisi_sas_controller_reset_prepare(). If
-the device is removed before controller reset or the PHY is not attached
-to any device in directly attached scenario, the corresponding bit of
-phy_state is not set. After controller reset done, the PHY is disabled.
-The device cannot be identified even if user reconnect the disk.
+Specify minidump_id for the SM8350 DSPs. It was omitted for in the
+original commit e8b4e9a21af7 ("remoteproc: qcom: pas: Add SM8350 PAS
+remoteprocs").
 
-Therefore, for PHYs that are not disabled by user, hisi_sas_phy_enable()
-needs to be executed even if the corresponding bit of phy_state is not
-set.
-
-Fixes: 89954f024c3a ("scsi: hisi_sas: Ensure all enabled PHYs up during controller reset")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-5-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: e8b4e9a21af7 ("remoteproc: qcom: pas: Add SM8350 PAS remoteprocs")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-2-bd204e39d24e@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 6219807ce3b9e..ffd15fa4f9e59 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1545,10 +1545,16 @@ void hisi_sas_controller_reset_done(struct hisi_hba *hisi_hba)
- 	/* Init and wait for PHYs to come up and all libsas event finished. */
- 	for (phy_no = 0; phy_no < hisi_hba->n_phy; phy_no++) {
- 		struct hisi_sas_phy *phy = &hisi_hba->phy[phy_no];
-+		struct asd_sas_phy *sas_phy = &phy->sas_phy;
- 
--		if (!(hisi_hba->phy_state & BIT(phy_no)))
-+		if (!sas_phy->phy->enabled)
- 			continue;
- 
-+		if (!(hisi_hba->phy_state & BIT(phy_no))) {
-+			hisi_sas_phy_enable(hisi_hba, phy_no, 1);
-+			continue;
-+		}
-+
- 		async_schedule_domain(hisi_sas_async_init_wait_phyup,
- 				      phy, &async);
- 	}
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 65467876f09e2..a4abec1e1e846 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -900,6 +900,7 @@ static const struct adsp_data sm8250_adsp_resource = {
+ 	.crash_reason_smem = 423,
+ 	.firmware_name = "adsp.mdt",
+ 	.pas_id = 1,
++	.minidump_id = 5,
+ 	.auto_boot = true,
+ 	.proxy_pd_names = (char*[]){
+ 		"lcx",
+@@ -1081,6 +1082,7 @@ static const struct adsp_data sm8350_cdsp_resource = {
+ 	.crash_reason_smem = 601,
+ 	.firmware_name = "cdsp.mdt",
+ 	.pas_id = 18,
++	.minidump_id = 7,
+ 	.auto_boot = true,
+ 	.proxy_pd_names = (char*[]){
+ 		"cx",
 -- 
 2.43.0
 
