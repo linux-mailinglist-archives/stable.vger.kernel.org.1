@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-96551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7339E2084
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DB19E2077
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B76AF165B00
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48C7C28A519
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AA61F669E;
-	Tue,  3 Dec 2024 14:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489D51F75A4;
+	Tue,  3 Dec 2024 14:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEOlrqpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1fVtKZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2A61F4283;
-	Tue,  3 Dec 2024 14:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C81F759F;
+	Tue,  3 Dec 2024 14:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237880; cv=none; b=Vu//elozxsaJQx1L3FJ/pcGpJC7vyHrPGiQB+c1SxK9ZasmjhZIQtPfJ4L4IzEDE7J27xdP+Zd4FIpDq4chzu03kgm5IsMbM3B/aFfvAIkt1JzDa17Wtule1IRAWwIYJc43CdlTJ1wcJfcjD8xAADgJVOjgumVT73BPQPa/8kgo=
+	t=1733237888; cv=none; b=UHNt+owUO3yY54tyQYFk+VIju6IIgrCcvmsjPe2+Zomji9JR+oind866mMS+GW5sEENW6pxn6Mf2XIkE5+yPPeGEsCPSYRkJAmdh9P78l8iS9BTgLgIOmne90kTmSzyUb58vH6LWA3eNGCI5GJyPPRWl9SCDHTSQc5bXd6JApxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237880; c=relaxed/simple;
-	bh=wEfd+0k6eiaXMiLnOjYEOuyMH6PZ6Al6+/9H5adGW1A=;
+	s=arc-20240116; t=1733237888; c=relaxed/simple;
+	bh=ZO4Y2fA/V6S0dHp8vRxtT8IZlwKdPtnc9BYE1gc49Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9t0qjA9z2fokAzmdCPIhRKr5PDIF/3v+lQwu+8LQs9HGcH7T+Dfw3V76c6i5lNIa84a7ppQdW5pIqqLZsL5wGWGFs+sXpURjE2tEw863lS+n+iSVLVWYaAv46oDokk29ZduSEcr30uVrPTBBeenvarNodS2QwYMHna0jPIHNjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEOlrqpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD65C4CECF;
-	Tue,  3 Dec 2024 14:58:00 +0000 (UTC)
+	 MIME-Version; b=ZkTrY0SOKkIrymbyomYhdoajr1yRQID+M3L0U4LjArfrd/ZP2dZpNZSXnwnJB1bycrcFwBf7nXJF1HBQ3pdr/dBTyQfUxWgpt0bEHfhDGly6rAZofXOE4qjiNDIHYMDfntkkhyLvfZboIehKOkLCf4WRMDQAhW53B/NGaFYDk/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1fVtKZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F013C4CECF;
+	Tue,  3 Dec 2024 14:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237880;
-	bh=wEfd+0k6eiaXMiLnOjYEOuyMH6PZ6Al6+/9H5adGW1A=;
+	s=korg; t=1733237887;
+	bh=ZO4Y2fA/V6S0dHp8vRxtT8IZlwKdPtnc9BYE1gc49Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEOlrqpYoYMReeAn4MO4ru6anv+zt2fhxdIJQXfb4IfeWd11wXyCEe0oMUceQNuXt
-	 NkfGrmHw5CLRbDDJTrycoEvPHTITF+6x68L52AUp+3j9KCnofir5WmXo0gnpOPnJFh
-	 FsxlICzbjzeTHdUPcuG6uXVB+cZJjZJnosP72YXk=
+	b=Q1fVtKZjW5ftQIBveH9CdEsLCqHrMoAZT06MXLHA5gQXPGObe/AG6u89CSDNDiO02
+	 NG9fxH+QkLTTho9JlusN0fNBj2HuVUSs765RN4j08ejrkxXhtP/in5efEyDklZYB4l
+	 SkyIN9vTwccFDWLOQZt/dfu/Jzn/+J5dbEAfTJv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	David Thompson <davthompson@nvidia.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 095/817] firmware: google: Unregister driver_info on failure
-Date: Tue,  3 Dec 2024 15:34:27 +0100
-Message-ID: <20241203143959.413727649@linuxfoundation.org>
+Subject: [PATCH 6.11 096/817] EDAC/bluefield: Fix potential integer overflow
+Date: Tue,  3 Dec 2024 15:34:28 +0100
+Message-ID: <20241203143959.452618319@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,51 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 32b0901e141f6d4cf49d820b53eb09b88b1f72f7 ]
+[ Upstream commit 1fe774a93b46bb029b8f6fa9d1f25affa53f06c6 ]
 
-When platform_device_register_full() returns error, the gsmi_init() returns
-without unregister gsmi_driver_info, fix by add missing
-platform_driver_unregister() when platform_device_register_full() failed.
+The 64-bit argument for the "get DIMM info" SMC call consists of mem_ctrl_idx
+left-shifted 16 bits and OR-ed with DIMM index.  With mem_ctrl_idx defined as
+32-bits wide the left-shift operation truncates the upper 16 bits of
+information during the calculation of the SMC argument.
 
-Fixes: 8942b2d5094b ("gsmi: Add GSMI commands to log S0ix info")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Link: https://lore.kernel.org/r/20241015131344.20272-1-yuancan@huawei.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+The mem_ctrl_idx stack variable must be defined as 64-bits wide to prevent any
+potential integer overflow, i.e. loss of data from upper 16 bits.
+
+Fixes: 82413e562ea6 ("EDAC, mellanox: Add ECC support for BlueField DDR4")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Link: https://lore.kernel.org/r/20240930151056.10158-1-davthompson@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/google/gsmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/edac/bluefield_edac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
-index d304913314e49..24e666d5c3d1a 100644
---- a/drivers/firmware/google/gsmi.c
-+++ b/drivers/firmware/google/gsmi.c
-@@ -918,7 +918,8 @@ static __init int gsmi_init(void)
- 	gsmi_dev.pdev = platform_device_register_full(&gsmi_dev_info);
- 	if (IS_ERR(gsmi_dev.pdev)) {
- 		printk(KERN_ERR "gsmi: unable to register platform device\n");
--		return PTR_ERR(gsmi_dev.pdev);
-+		ret = PTR_ERR(gsmi_dev.pdev);
-+		goto out_unregister;
- 	}
- 
- 	/* SMI access needs to be serialized */
-@@ -1056,10 +1057,11 @@ static __init int gsmi_init(void)
- 	gsmi_buf_free(gsmi_dev.name_buf);
- 	kmem_cache_destroy(gsmi_dev.mem_pool);
- 	platform_device_unregister(gsmi_dev.pdev);
--	pr_info("gsmi: failed to load: %d\n", ret);
-+out_unregister:
- #ifdef CONFIG_PM
- 	platform_driver_unregister(&gsmi_driver_info);
- #endif
-+	pr_info("gsmi: failed to load: %d\n", ret);
- 	return ret;
- }
- 
+diff --git a/drivers/edac/bluefield_edac.c b/drivers/edac/bluefield_edac.c
+index 5b3164560648e..0e539c1073510 100644
+--- a/drivers/edac/bluefield_edac.c
++++ b/drivers/edac/bluefield_edac.c
+@@ -180,7 +180,7 @@ static void bluefield_edac_check(struct mem_ctl_info *mci)
+ static void bluefield_edac_init_dimms(struct mem_ctl_info *mci)
+ {
+ 	struct bluefield_edac_priv *priv = mci->pvt_info;
+-	int mem_ctrl_idx = mci->mc_idx;
++	u64 mem_ctrl_idx = mci->mc_idx;
+ 	struct dimm_info *dimm;
+ 	u64 smc_info, smc_arg;
+ 	int is_empty = 1, i;
 -- 
 2.43.0
 
