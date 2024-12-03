@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97179E2524
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0499E21D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D189168AB3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96E0285D2E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F141F893F;
-	Tue,  3 Dec 2024 15:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CDD1F757D;
+	Tue,  3 Dec 2024 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oThAT9HE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGKF0NCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A403C1F7561;
-	Tue,  3 Dec 2024 15:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14941F756A;
+	Tue,  3 Dec 2024 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241071; cv=none; b=XNKC0VCw0iq1XKNOIa9dT5rrDl8Q+aI4pPdXSgZzHl7BkP17berOLKJt9tkkSLuhWSickelYVciavalNMWjH0KgENRriC7p7rxqv56X9OaFg8APipd3FCjF9d3RifJu8M7uqbjTqY3sFxQBCqgen4LP4iFcNmmWvnoL3MWxnhhg=
+	t=1733239010; cv=none; b=VSGazlAkJMhvte3619sy8NldUUpc8a5XE3opaJo5qHjOFEFMAkQJTh39y+knj54rbaJqJw0utTrqUq0VMPeuFm5iQA31/pZ0cv/YKJIkdsj97AVSrgvntysOD5/K6UEJFt25jQl5cyBcurQ1gu9SFOQL5HV1kr+YqENcNk1A5Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241071; c=relaxed/simple;
-	bh=2ndcP1kAN5Pr6tAGEHajqlBS/hSuOzG121gBETvdDOE=;
+	s=arc-20240116; t=1733239010; c=relaxed/simple;
+	bh=mzAxJcw7w8FCfZfjtyzj96e9OjSGrEjIXQ7YJzZ4PUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMvl4FE4ZQjW2Is2deql5jkhvhHfhpCs9ad/wDjzEudKcQmaxGy+0cQAzJAnUCjkcUTT0/56NQVHzhjhv6pEey5VpE3fJ1yydM+bi6OHPpHng5nOpU05BnR3VIwhmaE6TM5tjsFBOm9YUfeyi51Mur5ZsLq4ytQvCZcaiTv7clg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oThAT9HE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2F7C4CECF;
-	Tue,  3 Dec 2024 15:51:10 +0000 (UTC)
+	 MIME-Version; b=MXVKdCSknq2aQGcyMDek1Gj1E/CZXnMXK/JBOHCh0acqnUPkOBGWRt+FZPIUKVCFAnBfsk8n3TRcqvEN1ezjdb0usWskCpzkneaU0UjHvklVCvdYwHitXx0tUg4bsH3x3QIvw0Q4JIPdJbCs0vFPbzqAip5Eq1+BDoKkDGJTzKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGKF0NCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29475C4CECF;
+	Tue,  3 Dec 2024 15:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241071;
-	bh=2ndcP1kAN5Pr6tAGEHajqlBS/hSuOzG121gBETvdDOE=;
+	s=korg; t=1733239010;
+	bh=mzAxJcw7w8FCfZfjtyzj96e9OjSGrEjIXQ7YJzZ4PUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oThAT9HENQw9BgbR4vmTG7zAdpzqnBPAUBZ7UlG2u5Jx0Nc4mkr9U5/1cN+cYf6IJ
-	 R+Rt25snR/MpPCxUoVU+1a52sDMCi33LIyP1NCog6GOHG59ux52IqShyW0ItPPvoVc
-	 BK9yn9t9qQ/H7KIT861XQ3dm+c0COKt0Mxt+n57s=
+	b=KGKF0NCI2RuDyVcKANiuaCGFe+sZFaxseQ2zVsLL4O5CivA4wJW8uW2PCn7WzapeA
+	 e0WopQb6KhELCzLUae/43Pb/IWL9sLAQMunF7pULimmicxzt9TFjYHw22vIJDjpBoR
+	 lWVre3C3tU6FEU+S38oSHuHYzvK+Uwx+r0i86jEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lingbo Kong <quic_lingbok@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/826] wifi: cfg80211: Remove the Medium Synchronization Delay validity check
+Subject: [PATCH 6.11 472/817] dt-bindings: clock: axi-clkgen: include AXI clk
 Date: Tue,  3 Dec 2024 15:40:44 +0100
-Message-ID: <20241203144756.128646961@linuxfoundation.org>
+Message-ID: <20241203144014.296274680@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lingbo Kong <quic_lingbok@quicinc.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit b4ebb58cb9a4b1b5cb5278b09d6afdcd71b2a6b4 ]
+[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
 
-Currently, when the driver attempts to connect to an AP MLD with multiple
-APs, the cfg80211_mlme_check_mlo_compat() function requires the Medium
-Synchronization Delay values from different APs of the same AP MLD to be
-equal, which may result in connection failures.
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one and add clock-names to differentiate between parent clocks and
+the bus clock.
 
-This is because when the driver receives a multi-link probe response from
-an AP MLD with multiple APs, cfg80211 updates the Elements for each AP
-based on the multi-link probe response. If the Medium Synchronization Delay
-is set in the multi-link probe response, the Elements for each AP belonging
-to the same AP MLD will have the Medium Synchronization Delay set
-simultaneously. If non-multi-link probe responses are received from
-different APs of the same MLD AP, cfg80211 will still update the Elements
-based on the non-multi-link probe response. Since the non-multi-link probe
-response does not set the Medium Synchronization Delay
-(IEEE 802.11be-2024-35.3.4.4), if the Elements from a non-multi-link probe
-response overwrite those from a multi-link probe response that has set the
-Medium Synchronization Delay, the Medium Synchronization Delay values for
-APs belonging to the same AP MLD will not be equal. This discrepancy causes
-the cfg80211_mlme_check_mlo_compat() function to fail, leading to
-connection failures. Commit ccb964b4ab16
-("wifi: cfg80211: validate MLO connections better") did not take this into
-account.
-
-To address this issue, remove this validity check.
-
-Fixes: ccb964b4ab16 ("wifi: cfg80211: validate MLO connections better")
-Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-Link: https://patch.msgid.link/20241031134223.970-1-quic_lingbok@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 6 ------
- 1 file changed, 6 deletions(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 4dac818547210..a5eb92d93074e 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -340,12 +340,6 @@ cfg80211_mlme_check_mlo_compat(const struct ieee80211_multi_link_elem *mle_a,
- 		return -EINVAL;
- 	}
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+index 5e942bccf2778..2b2041818a0a4 100644
+--- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -26,9 +26,21 @@ properties:
+     description:
+       Specifies the reference clock(s) from which the output frequency is
+       derived. This must either reference one clock if only the first clock
+-      input is connected or two if both clock inputs are connected.
+-    minItems: 1
+-    maxItems: 2
++      input is connected or two if both clock inputs are connected. The last
++      clock is the AXI bus clock that needs to be enabled so we can access the
++      core registers.
++    minItems: 2
++    maxItems: 3
++
++  clock-names:
++    oneOf:
++      - items:
++          - const: clkin1
++          - const: s_axi_aclk
++      - items:
++          - const: clkin1
++          - const: clkin2
++          - const: s_axi_aclk
  
--	if (ieee80211_mle_get_eml_med_sync_delay((const u8 *)mle_a) !=
--	    ieee80211_mle_get_eml_med_sync_delay((const u8 *)mle_b)) {
--		NL_SET_ERR_MSG(extack, "link EML medium sync delay mismatch");
--		return -EINVAL;
--	}
--
- 	if (ieee80211_mle_get_eml_cap((const u8 *)mle_a) !=
- 	    ieee80211_mle_get_eml_cap((const u8 *)mle_b)) {
- 		NL_SET_ERR_MSG(extack, "link EML capabilities mismatch");
+   '#clock-cells':
+     const: 0
+@@ -40,6 +52,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - '#clock-cells'
+ 
+ additionalProperties: false
+@@ -50,5 +63,6 @@ examples:
+       compatible = "adi,axi-clkgen-2.00.a";
+       #clock-cells = <0>;
+       reg = <0xff000000 0x1000>;
+-      clocks = <&osc 1>;
++      clocks = <&osc 1>, <&clkc 15>;
++      clock-names = "clkin1", "s_axi_aclk";
+     };
 -- 
 2.43.0
 
