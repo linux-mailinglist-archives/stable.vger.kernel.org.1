@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-97892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161649E2BB4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE859E2BC1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF32B62DE5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C11F1B684B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2BC1F76AD;
-	Tue,  3 Dec 2024 16:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDD11F75BC;
+	Tue,  3 Dec 2024 16:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d82809gd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNiZj6GN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC62B1F759C;
-	Tue,  3 Dec 2024 16:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4E21E47AD;
+	Tue,  3 Dec 2024 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242088; cv=none; b=ZqyCIFrsDErsaElFKhVbmkrAal9MKyEwF0wA1haS0VrE9PNhh3GHapr+No2gfuDcA0gwDGLcRlZtv3lbgO3Hg+RqP7zEq77ib5ezIp4tV1HleGge/Y62f+YgikBAUVyTzP6bF+64z06yah2NzjcXhaSOPYaMYKEQNcdwqbxYHb0=
+	t=1733242183; cv=none; b=USgM3rG0NBubBXo+91Jptk4mXC4PGbfHRocpo4XneFy9HaQU0nNPIQ7wA+soMZvFzvMNZI+R7BPE7VmFKwARK+7THwSUz8kgMLggrBpnRaxoAUDRragLwBCaHKY4U5OvWEDD4exG+rNFvBtiARXBnDH6KZ2UiZnTgm/NjW8KRrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242088; c=relaxed/simple;
-	bh=dYy0xzenxuJukqlE95VyuvQZqHOk9NmHthFXBVhvfD4=;
+	s=arc-20240116; t=1733242183; c=relaxed/simple;
+	bh=UObyBiRxMIyGIitS+Sd9G3/rUnsAsOz6B+EQrALmWsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8iwiF9RJXIK6/lldRa1sBtkjmQatZPCo2JsT3/0r9N8OcrltIqG2mNyXqsiy1HNmcDvYJPTjxWCKkSQwdQnrxl1huR5w20o4EFMAqlD0cGUh+8jYmzvDsrTw+/0BASnQ8HL0jCPbq5oNGhZztwPfZtThPtuFCLqX1zB3RUUv30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d82809gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732AC4CECF;
-	Tue,  3 Dec 2024 16:08:07 +0000 (UTC)
+	 MIME-Version; b=uDoFNMIt1dB69Y6YIG8wWkqrHt5ecLULm3NqiOJP6a2EE92qw/2Tju4uV8bDhjL6aBQ8X8R4bHkN94NZdeWD9lUUgjXNQFYhGEECh+0LRgTsk8/zRcnXs7zvnhF6hUj2GWBgajxfjbCPWMCyxMdQ0DUtWwoY6xkGI1NYBjIzIdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNiZj6GN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394DFC4CECF;
+	Tue,  3 Dec 2024 16:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242088;
-	bh=dYy0xzenxuJukqlE95VyuvQZqHOk9NmHthFXBVhvfD4=;
+	s=korg; t=1733242183;
+	bh=UObyBiRxMIyGIitS+Sd9G3/rUnsAsOz6B+EQrALmWsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d82809gdFTrIhfJUrTxyg5V3m4T/nQiB7gT/xbUtl9sd6JOnBhCsd7M7vkAeuMj5U
-	 r9xrUxWybHRwMXi9o8SgKOBjOVtF2pPeZFfAfQXF0W4cGp/8OVBUnfOCD+TQWdcngL
-	 v/XNsmZ8lTSjWnQjarX7Y4lu4AF9wf8wvLhu8JLI=
+	b=vNiZj6GN3TRMMzWvdyamXbLmBiRp0y/ppONCoqFUJ+RQAaA2RnzrdjIlNBQXhjFtZ
+	 PAGnpAQtEqMwE2F2xx1FDojMaPkVmtOgG4wocj5ue6CoCD9WHVV+7A/t2xIG9aEipC
+	 w+wVTNfJbRg0FCIY/fynqs6poGSEO3yQ2Ln83bGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Zicheng Qu <quzicheng@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 604/826] phy: realtek: usb: fix NULL deref in rtk_usb2phy_probe
-Date: Tue,  3 Dec 2024 15:45:31 +0100
-Message-ID: <20241203144807.316626641@linuxfoundation.org>
+Subject: [PATCH 6.12 614/826] drm/amd/display: Fix null check for pipe_ctx->plane_state in hwss_setup_dpp
+Date: Tue,  3 Dec 2024 15:45:41 +0100
+Message-ID: <20241203144807.703627436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,35 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 04e3e9188291a183b27306ddb833722c0d083d6a ]
+[ Upstream commit 2bc96c95070571c6c824e0d4c7783bee25a37876 ]
 
-In rtk_usb2phy_probe() devm_kzalloc() may return NULL
-but this returned value is not checked.
+This commit addresses a null pointer dereference issue in
+hwss_setup_dpp(). The issue could occur when pipe_ctx->plane_state is
+null. The fix adds a check to ensure `pipe_ctx->plane_state` is not null
+before accessing. This prevents a null pointer dereference.
 
-Fixes: 134e6d25f6bd ("phy: realtek: usb: Add driver for the Realtek SoC USB 2.0 PHY")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241025065912.143692-1-hanchunchao@inspur.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/realtek/phy-rtk-usb2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/phy/realtek/phy-rtk-usb2.c b/drivers/phy/realtek/phy-rtk-usb2.c
-index e3ad7cea51099..e8ca2ec5998fe 100644
---- a/drivers/phy/realtek/phy-rtk-usb2.c
-+++ b/drivers/phy/realtek/phy-rtk-usb2.c
-@@ -1023,6 +1023,8 @@ static int rtk_usb2phy_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index 7ee2be8f82c46..bb766c2a74176 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -881,6 +881,9 @@ void hwss_setup_dpp(union block_sequence_params *params)
+ 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
+ 	struct dc_plane_state *plane_state = pipe_ctx->plane_state;
  
- 	rtk_phy->dev			= &pdev->dev;
- 	rtk_phy->phy_cfg = devm_kzalloc(dev, sizeof(*phy_cfg), GFP_KERNEL);
-+	if (!rtk_phy->phy_cfg)
-+		return -ENOMEM;
- 
- 	memcpy(rtk_phy->phy_cfg, phy_cfg, sizeof(*phy_cfg));
- 
++	if (!plane_state)
++		return;
++
+ 	if (dpp && dpp->funcs->dpp_setup) {
+ 		// program the input csc
+ 		dpp->funcs->dpp_setup(dpp,
 -- 
 2.43.0
 
