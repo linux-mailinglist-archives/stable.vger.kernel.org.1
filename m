@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDB69E23E1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D2A9E2425
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005A3287557
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A6EDB86D5B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5798B1F76D2;
-	Tue,  3 Dec 2024 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B951F759C;
+	Tue,  3 Dec 2024 15:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQrFAXN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJFqKsWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C461F754A;
-	Tue,  3 Dec 2024 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023BE1F7587;
+	Tue,  3 Dec 2024 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240327; cv=none; b=aVGdrhgLXmrXaDH8Lj1Vi8JndZIBs1ySW6mB+rdXZla9W9GW+C/p7keweas6cmOz1aNxjwRfiRQFGl265bXD7issqmT7PznsV9rnhPNIEtL9by+0BZpzVf7ok9DPL+QAYHrYufUuQaFj/i8dg0Q81XiUiBmnFCjf0HuwFwq4DOM=
+	t=1733238287; cv=none; b=E441V43ijYxLEz0/zpO8L3yD+NaAHMN5Hiauchfswmz4mTUoy3HfXeSzI5ZPU2lSTZKCCF3CIKXD1fJvkR+k2BwsYwz4PMKwoOsp8U8MptQzSTj24FRfA5sa5OWx4CWVAVN5RbefIYUOTERcip0yD9lyPwX+xg696m1yyJ31SZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240327; c=relaxed/simple;
-	bh=mVrY+ksnOlUGkJ0lviqsOKO9VLd+8YP9ZLpIoYDqd70=;
+	s=arc-20240116; t=1733238287; c=relaxed/simple;
+	bh=hN4mUQBu9ip7sdkzz2f+kftMv5RgjNatBGfYtZPgUY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVcV0KUZK++ZBXVrWmgCgoR99/KTdiFL3XzrYtIDdJrkJrNl+ZcsokINfGkTwD2YzwGZ17OEEohN0sTnWCrAjV+6htEdNQD+NBFJPE/mdK7qDivOwLW6sL1wO8Yi8zTqwiizPOimqmWXCPH224cUT4i5FiR70E2UpsH8fUvzg3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQrFAXN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED01C4CECF;
-	Tue,  3 Dec 2024 15:38:46 +0000 (UTC)
+	 MIME-Version; b=SfJR8ORgV/jWtvXeMFLdHMl3M3XC0Bm1l4dH4ehWeAanwnWCbCN8ILl/HTaD5e8bogmo8s+SDfqb6CFhIhINhuMKopfrcqFcpcyaHYdPcpLZxWR94NyBuADTMzVIIzXPsF94UhMoyI8bHMgnfWSaYwwos+KsLeR33sDYFGbcuBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJFqKsWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D8C4CECF;
+	Tue,  3 Dec 2024 15:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240327;
-	bh=mVrY+ksnOlUGkJ0lviqsOKO9VLd+8YP9ZLpIoYDqd70=;
+	s=korg; t=1733238286;
+	bh=hN4mUQBu9ip7sdkzz2f+kftMv5RgjNatBGfYtZPgUY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQrFAXN3KzsRm+5tvQTWq59OTSkidrrIiznY2rRQPoxm3CNHqR5Iw4HVczK64Z27h
-	 2xpyhbR85dZjd0UhTpMFQm1JWeKfcd2IAxwampSJZqpRwqRiRyXdUMbyqXZGmZ2bvq
-	 1K12H92aV2z5tVi+32DXBQ4n95ycHM36VizgDVSg=
+	b=qJFqKsWg7lSnAFs6t8nQwIY1x7Y/Q1I5zV3Vba8X5E4Ey4Qdi8VNHSGdjaV9WszIL
+	 r+M5b6BFqmBqeYXeUo6QkdAXtFsBq3ZmKa7hYJlKvDXRw+JQgY7M4GAE0z/M4dIInB
+	 mlGQTuSbVQtpL4lXtkzOV45E/cCc31nvmdkdM5pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/826] rcu/nocb: Fix missed RCU barrier on deoffloading
-Date: Tue,  3 Dec 2024 15:36:37 +0100
-Message-ID: <20241203144746.203957774@linuxfoundation.org>
+Subject: [PATCH 6.11 226/817] wifi: p54: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  3 Dec 2024 15:36:38 +0100
+Message-ID: <20241203144004.570580301@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 2996980e20b7a54a1869df15b3445374b850b155 ]
+[ Upstream commit bcd1371bd85e560ccc9159b7747f94bfe43b77a6 ]
 
-Currently, running rcutorture test with torture_type=rcu fwd_progress=8
-n_barrier_cbs=8 nocbs_nthreads=8 nocbs_toggle=100 onoff_interval=60
-test_boost=2, will trigger the following warning:
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-	WARNING: CPU: 19 PID: 100 at kernel/rcu/tree_nocb.h:1061 rcu_nocb_rdp_deoffload+0x292/0x2a0
-	RIP: 0010:rcu_nocb_rdp_deoffload+0x292/0x2a0
-	 Call Trace:
-	  <TASK>
-	  ? __warn+0x7e/0x120
-	  ? rcu_nocb_rdp_deoffload+0x292/0x2a0
-	  ? report_bug+0x18e/0x1a0
-	  ? handle_bug+0x3d/0x70
-	  ? exc_invalid_op+0x18/0x70
-	  ? asm_exc_invalid_op+0x1a/0x20
-	  ? rcu_nocb_rdp_deoffload+0x292/0x2a0
-	  rcu_nocb_cpu_deoffload+0x70/0xa0
-	  rcu_nocb_toggle+0x136/0x1c0
-	  ? __pfx_rcu_nocb_toggle+0x10/0x10
-	  kthread+0xd1/0x100
-	  ? __pfx_kthread+0x10/0x10
-	  ret_from_fork+0x2f/0x50
-	  ? __pfx_kthread+0x10/0x10
-	  ret_from_fork_asm+0x1a/0x30
-	  </TASK>
-
-CPU0                               CPU2                          CPU3
-//rcu_nocb_toggle             //nocb_cb_wait                   //rcutorture
-
-// deoffload CPU1             // process CPU1's rdp
-rcu_barrier()
-    rcu_segcblist_entrain()
-        rcu_segcblist_add_len(1);
-        // len == 2
-        // enqueue barrier
-        // callback to CPU1's
-        // rdp->cblist
-                             rcu_do_batch()
-                                 // invoke CPU1's rdp->cblist
-                                 // callback
-                                 rcu_barrier_callback()
-                                                             rcu_barrier()
-                                                               mutex_lock(&rcu_state.barrier_mutex);
-                                                               // still see len == 2
-                                                               // enqueue barrier callback
-                                                               // to CPU1's rdp->cblist
-                                                               rcu_segcblist_entrain()
-                                                                   rcu_segcblist_add_len(1);
-                                                                   // len == 3
-                                 // decrement len
-                                 rcu_segcblist_add_len(-2);
-                             kthread_parkme()
-
-// CPU1's rdp->cblist len == 1
-// Warn because there is
-// still a pending barrier
-// trigger warning
-WARN_ON_ONCE(rcu_segcblist_n_cbs(&rdp->cblist));
-cpus_read_unlock();
-
-                                                                // wait CPU1 to comes online and
-                                                                // invoke barrier callback on
-                                                                // CPU1 rdp's->cblist
-                                                                wait_for_completion(&rcu_state.barrier_completion);
-// deoffload CPU4
-cpus_read_lock()
-  rcu_barrier()
-    mutex_lock(&rcu_state.barrier_mutex);
-    // block on barrier_mutex
-    // wait rcu_barrier() on
-    // CPU3 to unlock barrier_mutex
-    // but CPU3 unlock barrier_mutex
-    // need to wait CPU1 comes online
-    // when CPU1 going online will block on cpus_write_lock
-
-The above scenario will not only trigger a WARN_ON_ONCE(), but also
-trigger a deadlock.
-
-Thanks to nocb locking, a second racing rcu_barrier() on an offline CPU
-will either observe the decremented callback counter down to 0 and spare
-the callback enqueue, or rcuo will observe the new callback and keep
-rdp->nocb_cb_sleep to false.
-
-Therefore check rdp->nocb_cb_sleep before parking to make sure no
-further rcu_barrier() is waiting on the rdp.
-
-Fixes: 1fcb932c8b5c ("rcu/nocb: Simplify (de-)offloading state machine")
-Suggested-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: cd8d3d321285 ("p54spi: p54spi driver")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240910124314.698896-2-ruanjinjie@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intersil/p54/p54spi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 16865475120ba..2605dd234a13c 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -891,7 +891,18 @@ static void nocb_cb_wait(struct rcu_data *rdp)
- 	swait_event_interruptible_exclusive(rdp->nocb_cb_wq,
- 					    nocb_cb_wait_cond(rdp));
- 	if (kthread_should_park()) {
--		kthread_parkme();
-+		/*
-+		 * kthread_park() must be preceded by an rcu_barrier().
-+		 * But yet another rcu_barrier() might have sneaked in between
-+		 * the barrier callback execution and the callbacks counter
-+		 * decrement.
-+		 */
-+		if (rdp->nocb_cb_sleep) {
-+			rcu_nocb_lock_irqsave(rdp, flags);
-+			WARN_ON_ONCE(rcu_segcblist_n_cbs(&rdp->cblist));
-+			rcu_nocb_unlock_irqrestore(rdp, flags);
-+			kthread_parkme();
-+		}
- 	} else if (READ_ONCE(rdp->nocb_cb_sleep)) {
- 		WARN_ON(signal_pending(current));
- 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("WokeEmpty"));
+diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
+index d33a994906a7b..27f44a9f0bc1f 100644
+--- a/drivers/net/wireless/intersil/p54/p54spi.c
++++ b/drivers/net/wireless/intersil/p54/p54spi.c
+@@ -624,7 +624,7 @@ static int p54spi_probe(struct spi_device *spi)
+ 	gpio_direction_input(p54spi_gpio_irq);
+ 
+ 	ret = request_irq(gpio_to_irq(p54spi_gpio_irq),
+-			  p54spi_interrupt, 0, "p54spi",
++			  p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi",
+ 			  priv->spi);
+ 	if (ret < 0) {
+ 		dev_err(&priv->spi->dev, "request_irq() failed");
+@@ -633,8 +633,6 @@ static int p54spi_probe(struct spi_device *spi)
+ 
+ 	irq_set_irq_type(gpio_to_irq(p54spi_gpio_irq), IRQ_TYPE_EDGE_RISING);
+ 
+-	disable_irq(gpio_to_irq(p54spi_gpio_irq));
+-
+ 	INIT_WORK(&priv->work, p54spi_work);
+ 	init_completion(&priv->fw_comp);
+ 	INIT_LIST_HEAD(&priv->tx_pending);
 -- 
 2.43.0
 
