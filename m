@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B1A9E236E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:37:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4889E269B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 539B9168711
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A87C316BF29
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748031F76B5;
-	Tue,  3 Dec 2024 15:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566FA1F8919;
+	Tue,  3 Dec 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKWZdcC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHxhaCBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E4B1F4276;
-	Tue,  3 Dec 2024 15:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C5E81ADA;
+	Tue,  3 Dec 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239903; cv=none; b=Nwwfym/aBpeXSdaTzQ2O3XPp1WLNe6YE3v1WO1wfs2R4Ua9QldLq0tvN9Bui4yM5C8RN+6MrEqfvQKR38MbiIy2mrZJsVqTlK65pTLtemwAfngTUucgoAdtKyYDE0iOkcA14wdDFJrlaYsduyvUCUnK48m+YgIfddFMzu2DtT+o=
+	t=1733242245; cv=none; b=ZwNlICPj77y1mQDGszlbTa1qSUuNcRD7HpPmuiGRi7g+31xUa/sdacKr55DWrJ/IZnFmzVW2GNcJ3hKd7VfTaENtbqe6OKc0dOals5dEn6d/C4wgqifHfM56l3A83AyDtrv45TRT+KupCQ3cWfEKx5p6JaSyGwUUNJofHe4++18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239903; c=relaxed/simple;
-	bh=k7EP/1XSfF0K1SovAbbfLFHDJkwNJQaqZrea7hIs8Q4=;
+	s=arc-20240116; t=1733242245; c=relaxed/simple;
+	bh=VEZEAUpfmbEC6+YHmAvJcDEx63bLyVPhyQ/gb/tK3eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0SluPezGxQMfvj9e5Z7gXmFmSFr52m0Gau/L2Sz32QsAfDnRAdDaUkj8/pEO5uSb9lYwvmeS6acOxlHbGSiQ4nY4oPB7djaNGwhYuzRPNFxnIzbGOIa7k5RHfTayyUVEd2imA9vKzoW5pU04/NBepSjtmW/bwhDTOkb2jup1XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKWZdcC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB83C4CED6;
-	Tue,  3 Dec 2024 15:31:42 +0000 (UTC)
+	 MIME-Version; b=oJkUnuptZ+DVf7UogaUwyuM7yjUo3WKaq4NwBWa0bHWfW6ZK9cRNVn1bzwgMisR58KigZScgL8ysQOn4oXlEVpMcJUSlRVW7IZLFBR9R1yqDuKQusWPYm4j5tGpyrcqclmXBP/ueC2w+bpx8GzwvFjDilaIdCpsclnLFYWlZEl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHxhaCBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7574FC4CECF;
+	Tue,  3 Dec 2024 16:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239902;
-	bh=k7EP/1XSfF0K1SovAbbfLFHDJkwNJQaqZrea7hIs8Q4=;
+	s=korg; t=1733242244;
+	bh=VEZEAUpfmbEC6+YHmAvJcDEx63bLyVPhyQ/gb/tK3eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKWZdcC+Y20yuw0LN++WcpXqq+6uR55nEHw3S95v+L4NMkztVI5RXJY9h4+rl/iS7
-	 KpnVyYU5C4BUCwPZOtLUmXihTOK2jfOnozSGUZeaQ4EIPZ777XhrD4L8PBRskrMUS1
-	 7NnnzlKhsf/MvCpkpYLO8cd4UNNqhukunjeUEqKc=
+	b=iHxhaCBBS2pBJlUdNm85ogkT4RaeJQ2MZok9jpUhed07NX6RlE83d/YEPHUxTSgyc
+	 6iWjF5UWcwI3Tm8oT7Q/sS6cX97+snbrbppdaykAZMGiewv5274OHRTZ/9i0zJxugl
+	 KJDmGDkxLdu4yOCviCQPWXaLJYiHXvflGdcmKuBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongliang Gao <leonylgao@tencent.com>,
-	Jingqun Li <jingqunli@tencent.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 773/817] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
+Subject: [PATCH 6.12 618/826] ALSA: core: Fix possible NULL dereference caused by kunit_kzalloc()
 Date: Tue,  3 Dec 2024 15:45:45 +0100
-Message-ID: <20241203144026.187900690@linuxfoundation.org>
+Message-ID: <20241203144807.860982126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongliang Gao <leonylgao@tencent.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
+[ Upstream commit 9ad467a2b2716d4ed12f003b041aa6c776a13ff5 ]
 
-If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
-uninitialized data, or an illegal date/time read from the RTC hardware.
+kunit_kzalloc() may return a NULL pointer, dereferencing it without
+NULL check may lead to NULL dereference.
+Add NULL checks for all the kunit_kzalloc() in sound_kunit.c
 
-When calling rtc_tm_to_ktime later, the result may be a very large value
-(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
-they will continually expire, may causing kernel softlockup.
-
-Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
-Acked-by: Jingqun Li <jingqunli@tencent.com>
-Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 3e39acf56ede ("ALSA: core: Add sound core KUnit test")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241126192448.12645-1-zichenxie0106@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/core/sound_kunit.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index cca650b2e0b94..aaf76406cd7d7 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -904,13 +904,18 @@ void rtc_timer_do_work(struct work_struct *work)
- 	struct timerqueue_node *next;
- 	ktime_t now;
- 	struct rtc_time tm;
-+	int err;
+diff --git a/sound/core/sound_kunit.c b/sound/core/sound_kunit.c
+index bfed1a25fc8f7..84e337ecbddd0 100644
+--- a/sound/core/sound_kunit.c
++++ b/sound/core/sound_kunit.c
+@@ -172,6 +172,7 @@ static void test_format_fill_silence(struct kunit *test)
+ 	u32 i, j;
  
- 	struct rtc_device *rtc =
- 		container_of(work, struct rtc_device, irqwork);
+ 	buffer = kunit_kzalloc(test, SILENCE_BUFFER_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
  
- 	mutex_lock(&rtc->ops_lock);
- again:
--	__rtc_read_time(rtc, &tm);
-+	err = __rtc_read_time(rtc, &tm);
-+	if (err) {
-+		mutex_unlock(&rtc->ops_lock);
-+		return;
-+	}
- 	now = rtc_tm_to_ktime(tm);
- 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
- 		if (next->expires > now)
+ 	for (i = 0; i < ARRAY_SIZE(buf_samples); i++) {
+ 		for (j = 0; j < ARRAY_SIZE(valid_fmt); j++)
+@@ -208,8 +209,12 @@ static void test_playback_avail(struct kunit *test)
+ 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
+ 	u32 i;
+ 
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
++
+ 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
+ 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(p_avail_data); i++) {
+ 		r->buffer_size = p_avail_data[i].buffer_size;
+@@ -232,8 +237,12 @@ static void test_capture_avail(struct kunit *test)
+ 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
+ 	u32 i;
+ 
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
++
+ 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
+ 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(c_avail_data); i++) {
+ 		r->buffer_size = c_avail_data[i].buffer_size;
+@@ -247,6 +256,7 @@ static void test_capture_avail(struct kunit *test)
+ static void test_card_set_id(struct kunit *test)
+ {
+ 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
+ 
+ 	snd_card_set_id(card, VALID_NAME);
+ 	KUNIT_EXPECT_STREQ(test, card->id, VALID_NAME);
+@@ -280,6 +290,7 @@ static void test_pcm_format_name(struct kunit *test)
+ static void test_card_add_component(struct kunit *test)
+ {
+ 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
+ 
+ 	snd_component_add(card, TEST_FIRST_COMPONENT);
+ 	KUNIT_ASSERT_STREQ(test, card->components, TEST_FIRST_COMPONENT);
 -- 
 2.43.0
 
