@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B109E1F6F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43999E1F71
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92B62818D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C07281B76
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3021F667A;
-	Tue,  3 Dec 2024 14:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07331F756F;
+	Tue,  3 Dec 2024 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1zepymF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+s9NlaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A413A1F7060;
-	Tue,  3 Dec 2024 14:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3341F7060;
+	Tue,  3 Dec 2024 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236513; cv=none; b=LruKKQP3sajKzTbr+36yin/LDT4HM/LiSD6a4EIn655R8zLT9bAMaL1LN9cEHN8PXcRX+5JPWhOmxxHKhwmW0YeIbpnvzV6blAWdSYyO+m6xmsCa+WAy4k3u8NdkpwEo75IcPGOjIb75eTwxrlAYC2zETky5mYMGvu1hQpKO5CM=
+	t=1733236520; cv=none; b=bmvkYmS4k4BP02PODcaAOfhqU+JljI3wJknPuq3ljfQ2NQ4mXqJM03wEKBzFm5OorlqoKPa9RSPLK5zs/vU4kCOAfz3m1o26oMdoeHuhy+7zCm9PWnYNdEKvUplE0iHcQ+apZUUWZfF+IhXmpEH1o/n+DUVvm/oDiOtjaksc1iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236513; c=relaxed/simple;
-	bh=4e+atGT+razKs3WZZUPJBMpKSHnke8gLiE3jwDra9+Q=;
+	s=arc-20240116; t=1733236520; c=relaxed/simple;
+	bh=RKJ5FosPv8hGvM30v2uCVur69Ggd2ejj40jlwTZJDdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tY/wHK4RUgsyhjHOu7VFnA/g63kJH55QtbY2zoWgIbrp0FO5FeDXkPATtZ0SQN3Kvxy0tFFxq2YVQFYgZtWS/xKy5L0Fgb6KqDLO0fHiObVGL9RP9i+LBQSuyGPRBQagMgMYdUCTjeH4tvIOcjIU9/I9JlOLGPXCJjrLQTxBxsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1zepymF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23623C4CED6;
-	Tue,  3 Dec 2024 14:35:12 +0000 (UTC)
+	 MIME-Version; b=TplvVRIjW7yF1eS+OHiOokoI/TW9k9gVQw/uSb/RL5O8DRFayju8mTbMEaLgf0oX1aglc7xBkplj6MKgus/siLcb+1xP664onljuAqoDVKARzFXXlYOVf8B1wDzN3IqVaNEqtMmoWWTUMfFKgyrifFt723wQdmKQHqQCKhhIiHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+s9NlaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1B1C4CECF;
+	Tue,  3 Dec 2024 14:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236513;
-	bh=4e+atGT+razKs3WZZUPJBMpKSHnke8gLiE3jwDra9+Q=;
+	s=korg; t=1733236520;
+	bh=RKJ5FosPv8hGvM30v2uCVur69Ggd2ejj40jlwTZJDdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1zepymFj8jObzZ3Qyfb7mqGQm70anPqH1aSGk8J6BTmJcvf+Sk3JR4qJTS9SjRN4
-	 M9kEJFw/5UGzSsTvQ/BguxJKOxhE1HwH6/fWzwx7/ZuZZgyK4h7Ocbic3DOorLGx4v
-	 BUMDPmaRCHJheZvwm+hYhOEyEzPdDv0z7nqy9kP4=
+	b=P+s9NlaXLgnyTRvBFQUi44qXi4D128TbngBCkDipgseNsAUWGMk2EfyihD4RdpoJr
+	 1Xwn7CNUKsnnvsv6CU1CyFIJ1PZTDbmvwAhoGxYhz0ypFiFXbXnxIe2ByHq27kRVgi
+	 V+oKnfqQm9MpANkZCr66nOdqFvc+eu5jfusz3y9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-	Matthew Auld <matthew.william.auld@gmail.com>,
-	Jason Ekstrand <jason.ekstrand@intel.com>,
-	Kenneth Graunke <kenneth@whitecape.org>,
+	Eric Anholt <eric@anholt.net>,
+	Emil Velikov <emil.velikov@collabora.com>,
+	Stefan Agner <stefan@agner.ch>,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	Alison Wang <alison.wang@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 042/138] drm/i915/gtt: Enable full-ppgtt by default everywhere
-Date: Tue,  3 Dec 2024 15:31:11 +0100
-Message-ID: <20241203141925.168805464@linuxfoundation.org>
+Subject: [PATCH 4.19 044/138] drm/fsl-dcu: Drop drm_gem_prime_export/import
+Date: Tue,  3 Dec 2024 15:31:13 +0100
+Message-ID: <20241203141925.244798997@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -70,55 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit 79556df293b2efbb3ccebb6db02120d62e348b44 ]
+[ Upstream commit 40e546c5f9ca0054087ce5ee04de96a4f28e9a97 ]
 
-We should we have all the kinks worked out and full-ppgtt now works
-reliably on gen7 (Ivybridge, Valleyview/Baytrail and Haswell). If we can
-let userspace have full control over their own ppgtt, it makes softpinning
-far more effective, in turn making GPU dispatch far more efficient by
-virtue of better mm segregation.  On the other hand, switching over to a
-different GTT for every client does incur noticeable overhead, but only
-for very lightweight tasks.
+They're the default.
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Cc: Matthew Auld <matthew.william.auld@gmail.com>
-Reviewed-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Jason Ekstrand <jason.ekstrand@intel.com>
-Cc: Kenneth Graunke <kenneth@whitecape.org>
-Acked-by: Kenneth Graunke <kenneth@whitecape.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20180717095751.1034-1-chris@chris-wilson.co.uk
+Aside: Would be really nice to switch the others over to
+drm_gem_object_funcs.
+
+Reviewed-by: Eric Anholt <eric@anholt.net>
+Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
+Acked-by: Stefan Agner <stefan@agner.ch>
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Stefan Agner <stefan@agner.ch>
+Cc: Alison Wang <alison.wang@nxp.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20190614203615.12639-16-daniel.vetter@ffwll.ch
 Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_gem_gtt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
-index d4c6aa7fbac8d..0b5b45fe0fe78 100644
---- a/drivers/gpu/drm/i915/i915_gem_gtt.c
-+++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
-@@ -180,13 +180,11 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
- 		return 0;
- 	}
- 
--	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv)) {
--		if (has_full_48bit_ppgtt)
--			return 3;
-+	if (has_full_48bit_ppgtt)
-+		return 3;
- 
--		if (has_full_ppgtt)
--			return 2;
--	}
-+	if (has_full_ppgtt)
-+		return 2;
- 
- 	return 1;
- }
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index 15816141e5fbe..3eab7b4c16b2b 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -148,8 +148,6 @@ static struct drm_driver fsl_dcu_drm_driver = {
+ 	.gem_vm_ops		= &drm_gem_cma_vm_ops,
+ 	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
+ 	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
+-	.gem_prime_import	= drm_gem_prime_import,
+-	.gem_prime_export	= drm_gem_prime_export,
+ 	.gem_prime_get_sg_table	= drm_gem_cma_prime_get_sg_table,
+ 	.gem_prime_import_sg_table = drm_gem_cma_prime_import_sg_table,
+ 	.gem_prime_vmap		= drm_gem_cma_prime_vmap,
 -- 
 2.43.0
 
