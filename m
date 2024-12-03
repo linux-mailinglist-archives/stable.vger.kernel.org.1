@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAED9E238B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D33E9E26FC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C22491618B0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD1FBC5491
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58E11FAC25;
-	Tue,  3 Dec 2024 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FEE1F8939;
+	Tue,  3 Dec 2024 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lE9P1Upz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elBsGo7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736181FAC30;
-	Tue,  3 Dec 2024 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AA51F8935;
+	Tue,  3 Dec 2024 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239957; cv=none; b=oILLGMwWHZU/DmHw7qiYlH3i9TvtGX5CftEpWC0TYn56vaQ+ZkPGWHlxomaRS+qPLLW8ENxnEdJS8gTaE2TDmuv2PqvjTmOeE/FH3ssGjcsHGGcTvMAU64EUOFo5oE4IhmLcphJfPR6Ps692bS//PS8tSmIzpjPxHu2AP5H3xso=
+	t=1733242211; cv=none; b=EBflcyTJq8Rw5VN2Lckj0P9DHP7ZItFYa4cJ5np4v3X6V5Ia5bypgnPqiyx/L7J8e34GtlwX0FpbKvX5JlpDkDcatgA1x7yDF5UZblk8K4maC8MJ/8AhlWjAT0D/rBYRZ0pkxDoGR6Grb5BgdLBxep0zjBIfCu5c4PltNS4ZL1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239957; c=relaxed/simple;
-	bh=E0NMorDQRCNZA7f2OZOQUSlx4zsLya2ICNw7/rQE2Go=;
+	s=arc-20240116; t=1733242211; c=relaxed/simple;
+	bh=gUWkV9p4y8Mv7SSeSmze5sw1IZWpR4j9+QJTDzp1YVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXYoCINicSaiE55qKlfBk+HQWka8z8JOYvGnfVmaWTub4lCZrGLqJy+9MGM9bJwuozxOBB71XPbvxI87s2cdz31/VXgrRCaupvNeSiAhMZFn2ix0fbvAkwUhQTacRYKrYXvEovcdI56HsbRFDE7STJCTqHnifNk2rdBPbXdGu0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lE9P1Upz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AB2C4CECF;
-	Tue,  3 Dec 2024 15:32:36 +0000 (UTC)
+	 MIME-Version; b=CUaUMgClLhJ+XN3JhvNPZKHKOpBqBCk69uIJBz9ZDMK94GHtAIhjMgSu31yXlGD5SSxbFuvvAelDWz0QUAo66O/thziRVhlDJWLoowKtWE1egBvR4KaPVo2sf8vmR1ypnAB+kXrN509Sykh0Z2YiyoEERnZebaxdWIUbPOILdEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elBsGo7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7633AC4CECF;
+	Tue,  3 Dec 2024 16:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239957;
-	bh=E0NMorDQRCNZA7f2OZOQUSlx4zsLya2ICNw7/rQE2Go=;
+	s=korg; t=1733242210;
+	bh=gUWkV9p4y8Mv7SSeSmze5sw1IZWpR4j9+QJTDzp1YVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lE9P1UpzDdqrpBdN5Aw4w9Lj1v5o3Jqlml+GsNpYWVOPUn4CM58cPZhXnrhLuW4+z
-	 JMKU49fr6MMc23w7x6waldHThJvP+JIcG5F5Q/h9+HFHdcyo4rz6cxLoYMtNwQGfiW
-	 yTuhhGMAXd2HessYnjhOf1C53pMZRk/tkskpvLB8=
+	b=elBsGo7MwkgvXoZBFBLQbPoFn1z78uGlyAXBLPXw1xHRIUUwYb7/UPQ0tTCI8dnvV
+	 Pj2I1qqhKxI80pTxvTeNa5A+FkYuIUkN+ApCUOpWw7zmgmEV7jq/jBwhzhd7zTc344
+	 Mfx0ZQP09qmY9ALxyxoiHoGlxkHA7d0M3uSqiC34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 793/817] x86/Documentation: Update algo in init_size description of boot protocol
-Date: Tue,  3 Dec 2024 15:46:05 +0100
-Message-ID: <20241203144026.965137426@linuxfoundation.org>
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 639/826] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
+Date: Tue,  3 Dec 2024 15:46:06 +0100
+Message-ID: <20241203144808.676486745@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit be4ca6c53e66cb275cf0d71f32dac0c4606b9dc0 ]
+commit 3b2f2d22fb424e9bebda4dbf6676cbfc7f9f62cd upstream.
 
-The init_size description of boot protocol has an example of the runtime
-start address for the compressed bzImage. For non-relocatable kernel
-it relies on the pref_address value (if not 0), but for relocatable case
-only pays respect to the load_addres and kernel_alignment, and it is
-inaccurate for the latter. Boot loader must consider the pref_address
-as the Linux kernel relocates to it before being decompressed as nicely
-described in this commit message a year ago:
+Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
+values instead of 64-bit, since the upper bits of the corresponding
+64-bit registers are not guaranteed to be zero.
 
-  43b1d3e68ee7 ("kexec: Allocate kernel above bzImage's pref_address")
+Note: there haven't been any reports of this bug actually causing
+incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
+64 bits, but zero-extension is likely to happen in practice because most
+instructions that operate on 32-bit registers zero-extend to 64 bits.
 
-Due to this documentation inaccuracy some of the bootloaders (*) made a
-mistake in the calculations and if kernel image is big enough, this may
-lead to unbootable configurations.
-
-*)
-  In particular, kexec-tools missed that and resently got a couple of
-  changes which will be part of v2.0.30 release. For the record,
-  commit 43b1d3e68ee7 only fixed the kernel kexec implementation and
-  also missed to update the init_size description.
-
-While at it, make an example C-like looking as it's done elsewhere in
-the document and fix indentation as presribed by the reStructuredText
-specifications, so the syntax highliting will work properly.
-
-Fixes: 43b1d3e68ee7 ("kexec: Allocate kernel above bzImage's pref_address")
-Fixes: d297366ba692 ("x86: document new bzImage fields")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20241125105005.1616154-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/x86/boot.rst | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ arch/x86/crypto/aegis128-aesni-asm.S |   29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index 4fd492cb49704..ad2d8ddad27fe 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -896,10 +896,19 @@ Offset/size:	0x260/4
+--- a/arch/x86/crypto/aegis128-aesni-asm.S
++++ b/arch/x86/crypto/aegis128-aesni-asm.S
+@@ -21,7 +21,7 @@
+ #define T1	%xmm7
  
-   The kernel runtime start address is determined by the following algorithm::
+ #define STATEP	%rdi
+-#define LEN	%rsi
++#define LEN	%esi
+ #define SRC	%rdx
+ #define DST	%rcx
  
--	if (relocatable_kernel)
--	runtime_start = align_up(load_address, kernel_alignment)
--	else
--	runtime_start = pref_address
-+   	if (relocatable_kernel) {
-+   		if (load_address < pref_address)
-+   			load_address = pref_address;
-+   		runtime_start = align_up(load_address, kernel_alignment);
-+   	} else {
-+   		runtime_start = pref_address;
-+   	}
-+
-+Hence the necessary memory window location and size can be estimated by
-+a boot loader as::
-+
-+   	memory_window_start = runtime_start;
-+   	memory_window_size = init_size;
+@@ -76,32 +76,32 @@ SYM_FUNC_START_LOCAL(__load_partial)
+ 	xor %r9d, %r9d
+ 	pxor MSG, MSG
  
- ============	===============
- Field name:	handover_offset
--- 
-2.43.0
-
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1, %r8
+ 	jz .Lld_partial_1
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1E, %r8
+ 	add SRC, %r8
+ 	mov (%r8), %r9b
+ 
+ .Lld_partial_1:
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x2, %r8
+ 	jz .Lld_partial_2
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1C, %r8
+ 	add SRC, %r8
+ 	shl $0x10, %r9
+ 	mov (%r8), %r9w
+ 
+ .Lld_partial_2:
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x4, %r8
+ 	jz .Lld_partial_4
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x18, %r8
+ 	add SRC, %r8
+ 	shl $32, %r9
+@@ -111,11 +111,11 @@ SYM_FUNC_START_LOCAL(__load_partial)
+ .Lld_partial_4:
+ 	movq %r9, MSG
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x8, %r8
+ 	jz .Lld_partial_8
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x10, %r8
+ 	add SRC, %r8
+ 	pslldq $8, MSG
+@@ -139,7 +139,7 @@ SYM_FUNC_END(__load_partial)
+  *   %r10
+  */
+ SYM_FUNC_START_LOCAL(__store_partial)
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	mov DST, %r9
+ 
+ 	movq T0, %r10
+@@ -677,7 +677,7 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aes
+ 	call __store_partial
+ 
+ 	/* mask with byte count: */
+-	movq LEN, T0
++	movd LEN, T0
+ 	punpcklbw T0, T0
+ 	punpcklbw T0, T0
+ 	punpcklbw T0, T0
+@@ -702,7 +702,8 @@ SYM_FUNC_END(crypto_aegis128_aesni_dec_t
+ 
+ /*
+  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
+- *                                  u64 assoclen, u64 cryptlen);
++ *                                  unsigned int assoclen,
++ *                                  unsigned int cryptlen);
+  */
+ SYM_FUNC_START(crypto_aegis128_aesni_final)
+ 	FRAME_BEGIN
+@@ -715,8 +716,8 @@ SYM_FUNC_START(crypto_aegis128_aesni_fin
+ 	movdqu 0x40(STATEP), STATE4
+ 
+ 	/* prepare length block: */
+-	movq %rdx, MSG
+-	movq %rcx, T0
++	movd %edx, MSG
++	movd %ecx, T0
+ 	pslldq $8, T0
+ 	pxor T0, MSG
+ 	psllq $3, MSG /* multiply by 8 (to get bit count) */
 
 
 
