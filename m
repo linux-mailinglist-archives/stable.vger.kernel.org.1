@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EF39E2B93
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED449E2A1B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57EDABE5915
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B10BB63069
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C7E1F7561;
-	Tue,  3 Dec 2024 16:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8816B1F7540;
+	Tue,  3 Dec 2024 15:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsd6OPMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5QvvdPX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B5D23CE;
-	Tue,  3 Dec 2024 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451AA1F473A;
+	Tue,  3 Dec 2024 15:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241816; cv=none; b=HsL1AgweZTUFjlQy8sBdr350uqSTJM5KU//JHcbNDOLtX1W0LSyljP1XJhXeUQQyzZo+m/dJjvbexeuRNhYwZjWnnPjl7r+4fZOM/CmPfolLznpQxzZbU1md7RzWrytbohin0zRZbdfqjfeGbgu5L+gaxdoOqDifyW2lfXyAbdw=
+	t=1733239646; cv=none; b=r9xmQsXWOrcoCviwnwMgFQksF9Bo7tsdMIb3bfCtpxu5GrKYCOJ+2Cw4oyX/dcb88Zhi/PygUYEPJsVuUsMNJClq4lOqgRF+1OHW2EWAuddwzqV/Q/L8ByH1I3sC53j+76TAJO2bCK4kdYl6k3E05oleNgC0ZV9jAvQwf/ilDPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241816; c=relaxed/simple;
-	bh=Fz1ql5BD+R4DAz+3t4T3GMjWcTelKQwv8F7qmUEZyhE=;
+	s=arc-20240116; t=1733239646; c=relaxed/simple;
+	bh=zflU1Ly/8wgRyPPZVOrRXN+C0fGav3GNhq9se84Fn0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuKHGemEj23jDG2kifAHaCFY8sDNHlmmYY6nBOnnjNX5Q9Xm5nz5HNLzv56g6BdWr/OF77/CkGNuwqpbtemN5nIPb+yADtoLHE57Y+ixsXCKKq10ghDEazPi0+BB7XriW+Db6J/ixS8UN+PXHMubdsZDZ+MeNEauHUZSePBjW9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsd6OPMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C66CC4CECF;
-	Tue,  3 Dec 2024 16:03:36 +0000 (UTC)
+	 MIME-Version; b=tup30a0QoKXYgbi9kz3N4SEbt2xYipW39R3YV1HAIHo3k0JmVjok2FlbcgsPZLileAS/Q0kixNtNXPKvjDaJgzRbiRACoX4nRL5g2O7vqKOaA/YUDC82xhPsg58GzImfS/XkFtQn+mgX5q88gNyeWzmgGhHuhHBNxNOJWIQGkwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5QvvdPX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2313C4CECF;
+	Tue,  3 Dec 2024 15:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241816;
-	bh=Fz1ql5BD+R4DAz+3t4T3GMjWcTelKQwv8F7qmUEZyhE=;
+	s=korg; t=1733239646;
+	bh=zflU1Ly/8wgRyPPZVOrRXN+C0fGav3GNhq9se84Fn0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsd6OPMIC/GjfM3caN8UCwYgKTRfpy+S85tuojiK7KGiC+EhZslDsM+2OBhqJ4xBQ
-	 hPE5TO9m1utdu0ou5G00MMlu+saq3UG8BNvLVG0xWh4RSHrTDKfCnpwP/bp1+GYQIg
-	 1NW87H0x3+bVmcSCf+Bj/zVSKy0hISD4Dsn2110A=
+	b=K5QvvdPXTsitGfnKd9iJQ+Pjg/h3v0g4W61c/Mn3I4p0nHovelwJNd8FGrDcQ/MIH
+	 BYM97mtU9fbIGcio+hVrQ++NuYd6lQsaBfPKQEG1nzuWJQjvHsI6Juoq42ayb0eg5f
+	 XWybH97qMphV9tVYYmnf8J8Q7N/ao8qfXQbTJ/sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 526/826] NFSD: Cap the number of bytes copied by nfs4_reset_recoverydir()
-Date: Tue,  3 Dec 2024 15:44:13 +0100
-Message-ID: <20241203144804.276555484@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.11 686/817] wifi: brcmfmac: release root node in all execution paths
+Date: Tue,  3 Dec 2024 15:44:18 +0100
+Message-ID: <20241203144022.748898209@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit f64ea4af43161bb86ffc77e6aeb5bcf5c3229df0 ]
+commit 2e19a3b590ebf2e351fc9d0e7c323430e65b6b6d upstream.
 
-It's only current caller already length-checks the string, but let's
-be safe.
+The fixed patch introduced an additional condition to enter the scope
+where the 'root' device_node is released (!settings->board_type,
+currently 'err'), which avoid decrementing the refcount with a call to
+of_node_put() if that second condition is not satisfied.
 
-Fixes: 0964a3d3f1aa ("[PATCH] knfsd: nfsd4 reboot dirname fix")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the call to of_node_put() to the point where 'root' is no longer
+required to avoid leaking the resource if err is not zero.
+
+Cc: stable@vger.kernel.org
+Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4recover.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index b7d61eb8afe9e..4a765555bf845 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -659,7 +659,8 @@ nfs4_reset_recoverydir(char *recdir)
- 		return status;
- 	status = -ENOTDIR;
- 	if (d_is_dir(path.dentry)) {
--		strcpy(user_recovery_dirname, recdir);
-+		strscpy(user_recovery_dirname, recdir,
-+			sizeof(user_recovery_dirname));
- 		status = 0;
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -110,9 +110,8 @@ void brcmf_of_probe(struct device *dev,
+ 		}
+ 		strreplace(board_type, '/', '-');
+ 		settings->board_type = board_type;
+-
+-		of_node_put(root);
  	}
- 	path_put(&path);
--- 
-2.43.0
-
++	of_node_put(root);
+ 
+ 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+ 		return;
 
 
 
