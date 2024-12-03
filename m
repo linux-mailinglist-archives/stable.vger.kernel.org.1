@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AF69E29B7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:44:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47DB9E2A4A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21F47B64343
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48AA7BE4864
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB361F75A0;
-	Tue,  3 Dec 2024 15:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00D21F76C6;
+	Tue,  3 Dec 2024 15:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi7R+t+7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVVkbpT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2201EF0AE;
-	Tue,  3 Dec 2024 15:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECA11F76AD;
+	Tue,  3 Dec 2024 15:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239291; cv=none; b=rTzw0I7RqqNmAsh/199hj5ZXpqVauPI4I25Z0CJxbZcR+3jzq+hP7ULNHrPtkZTHTndBHAVZzzE9lgDhPSX2pWR7kyfL2yQHHQAdHTBJWyCbzXS/eJ7dspFagXAZbMWlvr5l+m8E7tJmzougTvcS8qByfszCWqu3WHRwPkuggFY=
+	t=1733241551; cv=none; b=s4p0rSkvRHwqRJYAym1Qy0LIjym+XD3nhLPC6DdLUIPSKUqvT9SDrXBm8nIoq4xg5pvXZ65wYBmTpBCo7ZGQC+veIDKXZ/1IOTLA8K9jJSjTCWjKHJLmOzWslWhKMkcb5yxg0jataHkbx8qGRpSrxilRhY6iHzuHe64Y33y8qBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239291; c=relaxed/simple;
-	bh=UyuJjcVeP2PlWV4P/9dy1Yzx5ld3er5iLDV6SypyUEo=;
+	s=arc-20240116; t=1733241551; c=relaxed/simple;
+	bh=2pcbLMwS/ywUH6BG88CNXMOpnr1V3FhQ07B3Cz5QXH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cainrig9tC13vf1GDaTR0Ji8cbbfugn1YvPVv6v3Cwcuw88ugT2WEHkCXP4tOEKLCWN8AP1JjAKSDNFaair3KQ5YLE6HJ3KFv2lcbwQDGv7aaHs+RLTmcHt5YLLF8RhLP4ckk5FW825QWkmIKGkBs1loQFXfVCp5DUnMH+IkNMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi7R+t+7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F05C4CECF;
-	Tue,  3 Dec 2024 15:21:30 +0000 (UTC)
+	 MIME-Version; b=fR+euMeU8XrW859SEoEczaMMkSpsZ4Q/68j4QyhpKYFHkU/7jdqDYQmXUxcX7Ok2SF+pr/TRYvPArAnUwT5iMudXZaRu3J7oAjXuj4EOlxPRUez8XIOssvgqtcBDeCclyf8l1juMPgtD47II4c/sr+jL5Rlm8kCnH6MvfC2/iy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVVkbpT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1059C4CECF;
+	Tue,  3 Dec 2024 15:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239291;
-	bh=UyuJjcVeP2PlWV4P/9dy1Yzx5ld3er5iLDV6SypyUEo=;
+	s=korg; t=1733241551;
+	bh=2pcbLMwS/ywUH6BG88CNXMOpnr1V3FhQ07B3Cz5QXH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pi7R+t+72Ct71WgQoVNOLWslDjYGNKeVhDBKvd0BTu1W7k0f/FFUaDLJmPvpLUxt5
-	 UGdsqhk7p6HXOh4kHtVuc8yc4Bj5HmZUH9N5Zuu3eHd7Yx7x1NxYrU7JZIpD1b1Azh
-	 w+0fri7FyjhXfW7kMGjm3LS6HxU1Nkbc+8QdwbnA=
+	b=yVVkbpT/h+tKuRoAtDz95pZ6ftnFci5X0Ix+Zwo50wSbZdRrwxmzHNtjkTCJe630/
+	 ZDpROLheTxtoVzhCk+1HikkaFYDVeL1Ro9x3JdBpVPNMq2dtWJQeDdF+rnq41rya6w
+	 kFk+MI0P0j2gFPgkvpM3lDKGjtNdpXsqSZa+zopE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 563/817] power: supply: bq27xxx: Fix registers of bq27426
+Subject: [PATCH 6.12 408/826] clk: imx: clk-scu: fix clk enable state save and restore
 Date: Tue,  3 Dec 2024 15:42:15 +0100
-Message-ID: <20241203144017.886448404@linuxfoundation.org>
+Message-ID: <20241203144759.677598733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Dong Aisheng <aisheng.dong@nxp.com>
 
-[ Upstream commit 34f99d3b706a519e556841f405c224ca708b1f54 ]
+[ Upstream commit e81361f6cf9bf4a1848b0813bc4becb2250870b8 ]
 
-Correct bq27426 registers, according to technical reference manual
-it does not have Design Capacity register so it is not register
-compatible with bq27421.
+The scu clk_ops only inplements prepare() and unprepare() callback.
+Saving the clock state during suspend by checking clk_hw_is_enabled()
+is not safe as it's possible that some device drivers may only
+disable the clocks without unprepare. Then the state retention will not
+work for such clocks.
 
-Fixes: 5ef6a16033b47 ("power: supply: bq27xxx: Add support for BQ27426")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20241016-fix_bq27426-v2-1-aa6c0f51a9f6@mainlining.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixing it by checking clk_hw_is_prepared() which is more reasonable
+and safe.
+
+Fixes: d0409631f466 ("clk: imx: scu: add suspend/resume support")
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Carlos Song <carlos.song@nxp.com>
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-4-89152574d1d7@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 37 ++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-scu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 750fda543308c..51fb88aca0f9f 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -449,9 +449,29 @@ static u8
- 		[BQ27XXX_REG_AP] = 0x18,
- 		BQ27XXX_DM_REG_ROWS,
- 	},
-+	bq27426_regs[BQ27XXX_REG_MAX] = {
-+		[BQ27XXX_REG_CTRL] = 0x00,
-+		[BQ27XXX_REG_TEMP] = 0x02,
-+		[BQ27XXX_REG_INT_TEMP] = 0x1e,
-+		[BQ27XXX_REG_VOLT] = 0x04,
-+		[BQ27XXX_REG_AI] = 0x10,
-+		[BQ27XXX_REG_FLAGS] = 0x06,
-+		[BQ27XXX_REG_TTE] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTF] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTES] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTECP] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_NAC] = 0x08,
-+		[BQ27XXX_REG_RC] = 0x0c,
-+		[BQ27XXX_REG_FCC] = 0x0e,
-+		[BQ27XXX_REG_CYCT] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_AE] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_SOC] = 0x1c,
-+		[BQ27XXX_REG_DCAP] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_AP] = 0x18,
-+		BQ27XXX_DM_REG_ROWS,
-+	},
- #define bq27411_regs bq27421_regs
- #define bq27425_regs bq27421_regs
--#define bq27426_regs bq27421_regs
- #define bq27441_regs bq27421_regs
- #define bq27621_regs bq27421_regs
- 	bq27z561_regs[BQ27XXX_REG_MAX] = {
-@@ -769,10 +789,23 @@ static enum power_supply_property bq27421_props[] = {
- };
- #define bq27411_props bq27421_props
- #define bq27425_props bq27421_props
--#define bq27426_props bq27421_props
- #define bq27441_props bq27421_props
- #define bq27621_props bq27421_props
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index b1dd0c08e091b..b27186aaf2a15 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -596,7 +596,7 @@ static int __maybe_unused imx_clk_scu_suspend(struct device *dev)
+ 		clk->rate = clk_scu_recalc_rate(&clk->hw, 0);
+ 	else
+ 		clk->rate = clk_hw_get_rate(&clk->hw);
+-	clk->is_enabled = clk_hw_is_enabled(&clk->hw);
++	clk->is_enabled = clk_hw_is_prepared(&clk->hw);
  
-+static enum power_supply_property bq27426_props[] = {
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_CAPACITY,
-+	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-+	POWER_SUPPLY_PROP_TEMP,
-+	POWER_SUPPLY_PROP_TECHNOLOGY,
-+	POWER_SUPPLY_PROP_CHARGE_FULL,
-+	POWER_SUPPLY_PROP_CHARGE_NOW,
-+	POWER_SUPPLY_PROP_MANUFACTURER,
-+};
-+
- static enum power_supply_property bq27z561_props[] = {
- 	POWER_SUPPLY_PROP_STATUS,
- 	POWER_SUPPLY_PROP_PRESENT,
+ 	if (clk->parent)
+ 		dev_dbg(dev, "save parent %s idx %u\n", clk_hw_get_name(clk->parent),
 -- 
 2.43.0
 
