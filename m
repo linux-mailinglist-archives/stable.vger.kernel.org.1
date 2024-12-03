@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E549E251A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD4C9E2215
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A4312886D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CA728217D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95CF1F76AB;
-	Tue,  3 Dec 2024 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CC21F76BD;
+	Tue,  3 Dec 2024 15:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvSyOBZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+/db+fG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C511F7060;
-	Tue,  3 Dec 2024 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021051F76B5;
+	Tue,  3 Dec 2024 15:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241414; cv=none; b=g5YpCm7IS8lpi3QqDdkq9iHJbLVcFtbdRBj4iaJ7btGpsHxJ7ukIkERfRVW2tjVyRBkvmHFcS5dwxFpu6JLSmP05eY+wZj2zT4MkLSYBie5YhycNyj0nbvpIJ5fUkC4f99y7nszURS0O9pXLV5Usl/DshsSnu9OozWwZCnyryYU=
+	t=1733239203; cv=none; b=NzPIFX4SMeCy7tF4wdSoa4ZGFCm4d8EivRCK6b9vDGc4ipK2EK2huc9bnUrQT1h8uJnIqbBUBUK2Xp720GhR5lk/6u4gzVVdE3rbDx3uviwzU7u6YWEBjVcrlZJWW6CylP9UAm+Heljw09QVH1wdba1Ybaf9oMsBPFFclX6I1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241414; c=relaxed/simple;
-	bh=Vdy5sXJ6kk9XA0wvnxrIzucZcZADWzRtXNQ08A3ILA4=;
+	s=arc-20240116; t=1733239203; c=relaxed/simple;
+	bh=p5Y9tbXR79kZwB/3eR3lvRGi+eIU/JIVwpemCfOsIlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2Uk/I2Dj7WqUtAkM3xfr8Hyyi6I3BVe+7u3ZiE02ZpG1uFBupWb8nkU8VFU1Be0fHQSJLlsnPyh5ZXZRQbKS5r69ZneME/TFtv3IXCPl0I2dViYFhHsvv8YOgIfQv0nYIT7zEQqUvi6wWfCCMyKTdSbdU87Ge7weMZd08smLQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvSyOBZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE45CC4CECF;
-	Tue,  3 Dec 2024 15:56:53 +0000 (UTC)
+	 MIME-Version; b=uxg/YE02q7eEgWjaFRgDU4C9b+wuhnYcVpwnlskxl3vNKyzIPPYwbToAuXdRzrunL5JjsXYuYl1hgcMJU+r2ZbwKzK8ilE6idVRW0nAdnv10Fvst7VjSp8cWupoB5awHrCVORmwBaeeMP3PABnA5yDb2+5I9X0drzBZBkF+YpMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+/db+fG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F56DC4CED6;
+	Tue,  3 Dec 2024 15:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241414;
-	bh=Vdy5sXJ6kk9XA0wvnxrIzucZcZADWzRtXNQ08A3ILA4=;
+	s=korg; t=1733239202;
+	bh=p5Y9tbXR79kZwB/3eR3lvRGi+eIU/JIVwpemCfOsIlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvSyOBZGbigKf1ei6T3lKI7uR3crHqr6aUoFFJftC2ikCLcVTJCKCN7n/vcutbE6H
-	 sVuHjomFcC24agGlC7/1JiNRc1kIjI4NQQGTyvgL8bvI52XU6GPCl89Mliz5oUDLP6
-	 za1I6o43DnmFIfdl507kDywDZjAGCoCGMXWFa2z0=
+	b=E+/db+fGD2WBQPwb+tBkPOJXPC80nSx5H2kvG9SoSYsySPjokRm1gIOVuHmaLdTrP
+	 8fFKoa9FAuKZtkBS6PEfszrE+DcUKQKVbniD10lqvz2nTX/GM6a+RO09CeyUZucrCt
+	 qEg9X+mGHqhCOH1ns/a6ESCa1FgyvuxI2Ln8RlIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 379/826] mtd: hyperbus: rpc-if: Add missing MODULE_DEVICE_TABLE
+Subject: [PATCH 6.11 534/817] remoteproc: qcom: pas: Remove subdevs on the error path of adsp_probe()
 Date: Tue,  3 Dec 2024 15:41:46 +0100
-Message-ID: <20241203144758.548127738@linuxfoundation.org>
+Message-ID: <20241203144016.744267884@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 7d189579a287d5c568db623c5fc2344cce98a887 ]
+[ Upstream commit 587b67cf62a91b10a47f41c20ed8ad71db375334 ]
 
-The rpc-if-hyperflash driver can be compiled as a module, but lacks
-MODULE_DEVICE_TABLE() and will therefore not be loaded automatically.
-Fix this.
+Current implementation of adsp_probe() in qcom_q6v5_pas.c does not
+remove the subdevs of adsp on the error path. Fix this bug by calling
+qcom_remove_{ssr,sysmon,pdm,smd,glink}_subdev(), qcom_q6v5_deinit(), and
+adsp_unassign_memory_region() appropriately.
 
-Fixes: 5de15b610f78 ("mtd: hyperbus: add Renesas RPC-IF driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240731080846.257139-1-biju.das.jz@bp.renesas.com
+Fixes: 4b48921a8f74 ("remoteproc: qcom: Use common SMD edge handler")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://lore.kernel.org/r/a1cabc64240022a7f1d5237aa2aa6f72d8fb7052.1731038950.git.joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/rpc-if.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/remoteproc/qcom_q6v5_pas.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/hyperbus/rpc-if.c b/drivers/mtd/hyperbus/rpc-if.c
-index b22aa57119f23..e7a28f3316c3f 100644
---- a/drivers/mtd/hyperbus/rpc-if.c
-+++ b/drivers/mtd/hyperbus/rpc-if.c
-@@ -163,9 +163,16 @@ static void rpcif_hb_remove(struct platform_device *pdev)
- 	pm_runtime_disable(hyperbus->rpc.dev);
- }
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 88e7b84f223c0..65467876f09e2 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -759,16 +759,16 @@ static int adsp_probe(struct platform_device *pdev)
  
-+static const struct platform_device_id rpc_if_hyperflash_id_table[] = {
-+	{ .name = "rpc-if-hyperflash" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(platform, rpc_if_hyperflash_id_table);
-+
- static struct platform_driver rpcif_platform_driver = {
- 	.probe	= rpcif_hb_probe,
- 	.remove_new = rpcif_hb_remove,
-+	.id_table = rpc_if_hyperflash_id_table,
- 	.driver	= {
- 		.name	= "rpc-if-hyperflash",
- 	},
+ 	ret = adsp_init_clock(adsp);
+ 	if (ret)
+-		goto free_rproc;
++		goto unassign_mem;
+ 
+ 	ret = adsp_init_regulator(adsp);
+ 	if (ret)
+-		goto free_rproc;
++		goto unassign_mem;
+ 
+ 	ret = adsp_pds_attach(&pdev->dev, adsp->proxy_pds,
+ 			      desc->proxy_pd_names);
+ 	if (ret < 0)
+-		goto free_rproc;
++		goto unassign_mem;
+ 	adsp->proxy_pd_count = ret;
+ 
+ 	ret = qcom_q6v5_init(&adsp->q6v5, pdev, rproc, desc->crash_reason_smem, desc->load_state,
+@@ -784,18 +784,28 @@ static int adsp_probe(struct platform_device *pdev)
+ 					      desc->ssctl_id);
+ 	if (IS_ERR(adsp->sysmon)) {
+ 		ret = PTR_ERR(adsp->sysmon);
+-		goto detach_proxy_pds;
++		goto deinit_remove_pdm_smd_glink;
+ 	}
+ 
+ 	qcom_add_ssr_subdev(rproc, &adsp->ssr_subdev, desc->ssr_name);
+ 	ret = rproc_add(rproc);
+ 	if (ret)
+-		goto detach_proxy_pds;
++		goto remove_ssr_sysmon;
+ 
+ 	return 0;
+ 
++remove_ssr_sysmon:
++	qcom_remove_ssr_subdev(rproc, &adsp->ssr_subdev);
++	qcom_remove_sysmon_subdev(adsp->sysmon);
++deinit_remove_pdm_smd_glink:
++	qcom_remove_pdm_subdev(rproc, &adsp->pdm_subdev);
++	qcom_remove_smd_subdev(rproc, &adsp->smd_subdev);
++	qcom_remove_glink_subdev(rproc, &adsp->glink_subdev);
++	qcom_q6v5_deinit(&adsp->q6v5);
+ detach_proxy_pds:
+ 	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
++unassign_mem:
++	adsp_unassign_memory_region(adsp);
+ free_rproc:
+ 	device_init_wakeup(adsp->dev, false);
+ 
 -- 
 2.43.0
 
