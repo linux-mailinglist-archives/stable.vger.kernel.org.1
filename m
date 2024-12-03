@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-97225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4B69E2AC3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:25:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542F09E2B54
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 472B9B616C5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 142C7B62815
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72431F8ADF;
-	Tue,  3 Dec 2024 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958FE1F8EF5;
+	Tue,  3 Dec 2024 15:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0OvHxj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrZg9Nhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915121F8AC8;
-	Tue,  3 Dec 2024 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D5F1F76AB;
+	Tue,  3 Dec 2024 15:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239876; cv=none; b=goYc0O95HEyKLE1bi0hkKkr4Oa6iZoyFFBKQbx+VxiVZ4saW/zRbP+Iv886qXdD381j3onEOxvkLHVoxABzseWIRMFz6SLegXqyJ08VA18WRSPHNGmk4DXPFcX8tUjyjwTTOOeWuJWz9Twwr9A6CGxNv3WBb/70Y9QrbOGRO4SY=
+	t=1733239885; cv=none; b=eoIuRgD+WKl2MjFnotYegbspEz30qYxPWFSgdItg9eLGMXMLjXFh2XA64ct8vKWCz5FB6a9+SMaaR/xnWBvlHXVQ1Q23aGxUWj6gjVs9AjAoo7oHk09MmhaHiOkwqkMkXBsn8Jt2qVV2JFT222q5qtreisa1DCFfko42n4hIHNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239876; c=relaxed/simple;
-	bh=/3PfJj1qKtTNRKQXg0OTVl70GuPUiPyimNDrVwdNMY8=;
+	s=arc-20240116; t=1733239885; c=relaxed/simple;
+	bh=Rc8C3tSFKNZBAGaLaqOOrZETvtWdh+qvh1vHQgkAHR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ay4MfcI81sDpte6erSMaojCHIaOH2UYg7//ngSSbQoiSFNJMNecgC1JIps3/0qbkN+rf48ZG/ibnfzFC26adVYDI0ik9UJGhlxJ6PvEiPEiM59M95q90lMxwjYi3hb/Wx8plL6qZzIFa9Brl8whkGJYBscQ7l0DWq1YijbIphC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0OvHxj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191BCC4CECF;
-	Tue,  3 Dec 2024 15:31:15 +0000 (UTC)
+	 MIME-Version; b=PaKK7TH9TJ1z+PmZUMP3uxMXC6hKP2LJdz78MGqKemWzx7VSzwN0DH/UXHSq7KGzxntappu0xp8VFq2t0UXKnIXbz6rWVzPwgao6Egq4ReLTEu01MBiDyD3UMY8EGxr55I4bG8nE1vRzpvOv5NrGlwHxA+qRPQGExBmmFms4SY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrZg9Nhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA593C4CECF;
+	Tue,  3 Dec 2024 15:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239876;
-	bh=/3PfJj1qKtTNRKQXg0OTVl70GuPUiPyimNDrVwdNMY8=;
+	s=korg; t=1733239885;
+	bh=Rc8C3tSFKNZBAGaLaqOOrZETvtWdh+qvh1vHQgkAHR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0OvHxj9Ju9IlODGpgXvAlG+STcvOV7vr4A3T9vj1fsvz5z1rcmSSFzEInPK2s2oZ
-	 QIDHDa7KnS92fPt+FFR3eKhT6uZCRk3H1AOnYTZfTnMYu5v3R4OuQwCBXg2oBhn6mi
-	 pYfr5RMviEoyS3XpHzWS9PPjaDIbQ0z3iWrBwfsE=
+	b=KrZg9Nhlk//izQtB6FWULzibUDLCM+E58Y0Hx+WcpfLSin4R0s11vRg0Cn2ThUlOW
+	 L8FcSWcyddriOfYxOccpS+BF13UL0Eb/rex3YzmB6R508JG6cIrsN9sSEIS8uqLBMI
+	 VYa4fGa8zF8tq1hWRFY/2LqP+7nfdBFC8rJas9As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.11 764/817] SUNRPC: make sure cache entry active before cache_show
-Date: Tue,  3 Dec 2024 15:45:36 +0100
-Message-ID: <20241203144025.820051007@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 767/817] kfifo: dont include dma-mapping.h in kfifo.h
+Date: Tue,  3 Dec 2024 15:45:39 +0100
+Message-ID: <20241203144025.950551339@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,58 +65,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 2862eee078a4d2d1f584e7f24fa50dddfa5f3471 upstream.
+[ Upstream commit 44059790a5cb9258ae6137387e4c39b717fd2ced ]
 
-The function `c_show` was called with protection from RCU. This only
-ensures that `cp` will not be freed. Therefore, the reference count for
-`cp` can drop to zero, which will trigger a refcount use-after-free
-warning when `cache_get` is called. To resolve this issue, use
-`cache_get_rcu` to ensure that `cp` remains active.
+Nothing in kfifo.h directly needs dma-mapping.h, only two macros
+use DMA_MAPPING_ERROR when actually instantiated.  Drop the
+dma-mapping.h include to reduce include bloat.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 7 PID: 822 at lib/refcount.c:25
-refcount_warn_saturate+0xb1/0x120
-CPU: 7 UID: 0 PID: 822 Comm: cat Not tainted 6.12.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb1/0x120
+Add an explicity <linux/io.h> include to drivers/mailbox/omap-mailbox.c
+as that file uses __raw_readl and __raw_writel through a complicated
+include chain involving <linux/dma-mapping.h>
 
-Call Trace:
- <TASK>
- c_show+0x2fc/0x380 [sunrpc]
- seq_read_iter+0x589/0x770
- seq_read+0x1e5/0x270
- proc_reg_read+0xe1/0x140
- vfs_read+0x125/0x530
- ksys_read+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d52b761e4b1a ("kfifo: add kfifo_dma_out_prepare_mapped()")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241023055317.313234-1-hch@lst.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mailbox/omap-mailbox.c | 1 +
+ include/linux/kfifo.h          | 1 -
+ samples/kfifo/dma-example.c    | 1 +
+ 3 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1431,7 +1431,9 @@ static int c_show(struct seq_file *m, vo
- 		seq_printf(m, "# expiry=%lld refcnt=%d flags=%lx\n",
- 			   convert_to_wallclock(cp->expiry_time),
- 			   kref_read(&cp->ref), cp->flags);
--	cache_get(cp);
-+	if (!cache_get_rcu(cp))
-+		return 0;
-+
- 	if (cache_check(cd, cp, NULL))
- 		/* cache_check does a cache_put on failure */
- 		seq_puts(m, "# ");
+diff --git a/drivers/mailbox/omap-mailbox.c b/drivers/mailbox/omap-mailbox.c
+index 7a87424657a15..bd0b9762cef4f 100644
+--- a/drivers/mailbox/omap-mailbox.c
++++ b/drivers/mailbox/omap-mailbox.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>
+ #include <linux/kfifo.h>
+ #include <linux/err.h>
++#include <linux/io.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+diff --git a/include/linux/kfifo.h b/include/linux/kfifo.h
+index 564868bdce898..fd743d4c4b4bd 100644
+--- a/include/linux/kfifo.h
++++ b/include/linux/kfifo.h
+@@ -37,7 +37,6 @@
+  */
+ 
+ #include <linux/array_size.h>
+-#include <linux/dma-mapping.h>
+ #include <linux/spinlock.h>
+ #include <linux/stddef.h>
+ #include <linux/types.h>
+diff --git a/samples/kfifo/dma-example.c b/samples/kfifo/dma-example.c
+index 48df719dac8c6..8076ac410161a 100644
+--- a/samples/kfifo/dma-example.c
++++ b/samples/kfifo/dma-example.c
+@@ -9,6 +9,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/module.h>
+ #include <linux/scatterlist.h>
++#include <linux/dma-mapping.h>
+ 
+ /*
+  * This module shows how to handle fifo dma operations.
+-- 
+2.43.0
+
 
 
 
