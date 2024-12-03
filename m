@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B229E254B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14539E21FB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA4D316D208
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6596E2820F8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDB81F7558;
-	Tue,  3 Dec 2024 15:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CA11F473A;
+	Tue,  3 Dec 2024 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWy6TgCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyUhQe9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEB91362;
-	Tue,  3 Dec 2024 15:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6681415696E;
+	Tue,  3 Dec 2024 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241244; cv=none; b=imY3v7v3CdgQCSfEpRNPlaOZfEXAK29HGcN4nRyQ/46uEySJdCytb7mgTscAafdOebNodbODUK9Qu62WqOzOHrGMDCyglzJz2tVDPOXv/HXO0ALQTmQOgfsk5ljwPK6mcEahMmPVlhaj5FjKvIjJRXYrfi5RFXvfYSyjqDpDrr0=
+	t=1733239154; cv=none; b=DAhOI0D9M781MVSr2cY4InCvUlRQZHCtXwxoBXxqGGyFGTwK8OfNGRtD2Te0iNeZimVcit/oTBdZ0PVF91X8bJJPr6daq7TBpHcuaqJByZcHLZEx6rT75Lfp76em1RRpZ2LTNGgOuIlrsbtDryfcBuBZF8XsOv3EuykYRAxE7Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241244; c=relaxed/simple;
-	bh=MVR32JMcRrNyrCKD3fpSK95t4sjMrmhKgTXiZx38QQQ=;
+	s=arc-20240116; t=1733239154; c=relaxed/simple;
+	bh=rQSnjqVof/LC5nPW5Efw+DuW6OALxO9K5nNfqoyFjRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2tJsfLu5evlpLTKdHd30jrkK7E/IRx7oV3A/pZ9vjASVy5hy1tVQ3KvOqIbEC7YZRraWH9m/Vwc57DR5kU0nPNKYDogUVM1LJMLg4N0pvKtSQakJ3M+FMs08nJKujjSeLjLQSeza0YGFmYmXAfaQzg/wKQmQdp3jt4ZvpUMGrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWy6TgCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6422EC4CECF;
-	Tue,  3 Dec 2024 15:54:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sa7qPbMbJDdCO6WmPT6QSbFnuLOejK3mYc93D+W+tiXPNRSTCvKfkNu9qDsO9K+2As5RxWKmq2/e0kxH0rCqsLjDprAk0V/ccKZ9/d7zEpUm5xCPJE0rJYotT++BfeTYfaq1RGsQAkDu3wniJPzMOXomKJ18wlJEmmgu8Fp0vew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyUhQe9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB27EC4CECF;
+	Tue,  3 Dec 2024 15:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241243;
-	bh=MVR32JMcRrNyrCKD3fpSK95t4sjMrmhKgTXiZx38QQQ=;
+	s=korg; t=1733239154;
+	bh=rQSnjqVof/LC5nPW5Efw+DuW6OALxO9K5nNfqoyFjRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWy6TgCG9Uvi4KC2X4nOm9npj/xGyJ+N8DXbcWMTQ84Hsm8rxor5mygPcHDok52I6
-	 GB5R9dL2TsQdhi4xFbSXFWa9T+SUeK6rvJ9cJX0VrfF6t4YrNsRe/TPG1LE3IAXTem
-	 YLm4eFEnYBgmc1o2BXwKnDyTfJ9MDdxUnSiQsSfo=
+	b=gyUhQe9TmebqpGO5kmMTRMrkeB6bgyM7rnEt6+xsv4iB6H62v7biF6SaStIQjCmch
+	 /FrP+W+iy2k36ZhIfODaYdbvL+NXl8txywXn6DzUFNMF1EOv64pdeTcT008Jechrei
+	 DFcL2Cr7M+38fD6LkHtR9X726OGwxWI6UIfVICPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 365/826] pinctrl: renesas: Select PINCTRL_RZG2L for RZ/V2H(P) SoC
+Subject: [PATCH 6.11 520/817] PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds
 Date: Tue,  3 Dec 2024 15:41:32 +0100
-Message-ID: <20241203144757.998182602@linuxfoundation.org>
+Message-ID: <20241203144016.191221228@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 5dcde519a067ac5c85c273e550dde1873e2199bf ]
+[ Upstream commit 22a9120479a40a56c13c5e473a0100fad2e017c0 ]
 
-Add explicit selection of the PINCTRL_RZG2L config option for the
-RZ/V2H(P) (R9A09G057) SoC, ensuring pin control driver is enabled
-for this SoC.
+According to Section 2.2 of the PCI Express Card Electromechanical
+Specification (Revision 5.1), in order to ensure that the power and the
+reference clock are stable, PERST# has to be deasserted after a delay of
+100 milliseconds (TPVPERL).
 
-Fixes: 9bd95ac86e70 ("pinctrl: renesas: rzg2l: Add support for RZ/V2H SoC")
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20241010132726.702658-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Currently, it is being assumed that the power is already stable, which
+is not necessarily true.
+
+Hence, change the delay to PCIE_T_PVPERL_MS to guarantee that power and
+reference clock are stable.
+
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Fixes: f96b69713733 ("PCI: j721e: Use T_PERST_CLK_US macro")
+Link: https://lore.kernel.org/r/20241104074420.1862932-1-s-vadapalli@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/cadence/pci-j721e.c | 26 ++++++++++------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
-index 14bd55d647319..7f3f41c7fe54c 100644
---- a/drivers/pinctrl/renesas/Kconfig
-+++ b/drivers/pinctrl/renesas/Kconfig
-@@ -41,6 +41,7 @@ config PINCTRL_RENESAS
- 	select PINCTRL_PFC_R8A779H0 if ARCH_R8A779H0
- 	select PINCTRL_RZG2L if ARCH_RZG2L
- 	select PINCTRL_RZV2M if ARCH_R9A09G011
-+	select PINCTRL_RZG2L if ARCH_R9A09G057
- 	select PINCTRL_PFC_SH7203 if CPU_SUBTYPE_SH7203
- 	select PINCTRL_PFC_SH7264 if CPU_SUBTYPE_SH7264
- 	select PINCTRL_PFC_SH7269 if CPU_SUBTYPE_SH7269
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index d37e43dbc30b8..9a0e760e4b523 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -538,15 +538,14 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		pcie->refclk = clk;
+ 
+ 		/*
+-		 * The "Power Sequencing and Reset Signal Timings" table of the
+-		 * PCI Express Card Electromechanical Specification, Revision
+-		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+-		 * should be deasserted after minimum of 100us once REFCLK is
+-		 * stable. The REFCLK to the connector in RC mode is selected
+-		 * while enabling the PHY. So deassert PERST# after 100 us.
++		 * Section 2.2 of the PCI Express Card Electromechanical
++		 * Specification (Revision 5.1) mandates that the deassertion
++		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
++		 * This shall ensure that the power and the reference clock
++		 * are stable.
+ 		 */
+ 		if (gpiod) {
+-			fsleep(PCIE_T_PERST_CLK_US);
++			msleep(PCIE_T_PVPERL_MS);
+ 			gpiod_set_value_cansleep(gpiod, 1);
+ 		}
+ 
+@@ -637,15 +636,14 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+ 			return ret;
+ 
+ 		/*
+-		 * The "Power Sequencing and Reset Signal Timings" table of the
+-		 * PCI Express Card Electromechanical Specification, Revision
+-		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+-		 * should be deasserted after minimum of 100us once REFCLK is
+-		 * stable. The REFCLK to the connector in RC mode is selected
+-		 * while enabling the PHY. So deassert PERST# after 100 us.
++		 * Section 2.2 of the PCI Express Card Electromechanical
++		 * Specification (Revision 5.1) mandates that the deassertion
++		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
++		 * This shall ensure that the power and the reference clock
++		 * are stable.
+ 		 */
+ 		if (pcie->reset_gpio) {
+-			fsleep(PCIE_T_PERST_CLK_US);
++			msleep(PCIE_T_PVPERL_MS);
+ 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+ 		}
+ 
 -- 
 2.43.0
 
