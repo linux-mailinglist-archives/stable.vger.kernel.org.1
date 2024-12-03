@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2BA9E23E7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83A89E2567
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB6516B925
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2783BB867F4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ABB1F8906;
-	Tue,  3 Dec 2024 15:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FAB1F7572;
+	Tue,  3 Dec 2024 15:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/yFjslH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsPPVho5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6971F8907;
-	Tue,  3 Dec 2024 15:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8291F33FE;
+	Tue,  3 Dec 2024 15:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240067; cv=none; b=qPq1a8JKKVHyb/0PANo/YCLLXYgbSaHUCnqDbi8NiQuWse+lKHL80+OvaF5qVz7QQMzlYiT5RRVM8BhZl0E7ddpOHJ/g6Bt3D18MwdzZzm75/8fmMxTmvAHH0t1bfuaGVelJzV6+SxkzsyM+SjgLGBZcPP93xQPYwM8uXUUfHH0=
+	t=1733238238; cv=none; b=rA1JQ1y2FWCzsfAv5Ah5F+oNqrf7fuGzlmtqy+nBL24KkaEJTbNry5Cr07IiOMxjzr+lzYZOS9PkxF27BOo0icy+f0pOj8m4Er55PMLdUTuqmlB0Rls7v0bMSXDNDYfOldUmk7oojA0d8z5pFo2cWRmZBlH3OxxNnF3rSdhZ4yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240067; c=relaxed/simple;
-	bh=vajo7+Q0KfgWE+qV8JkWI6bEfGj1e2sSrZbbjf+3GQE=;
+	s=arc-20240116; t=1733238238; c=relaxed/simple;
+	bh=l4vJl4Ueh1KcKjj/yQdkrqmdHiuFIbZCjtskqA19T/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/GfaaIKYVLB7WiTUQI8xQZvWsHwmw6BFIYAQqpadonSx3HxL+Ecl60u0UHi2D1wJja7+2SjPk8lugw3pIio5d7AXK2324pXHPrx3vXu0uj5YZ3AmMrUetX1KnP9prypbIlMmqtQ1wZUV35PpumaNibdwGAVxVtTB/r/My86i54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/yFjslH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33358C4CECF;
-	Tue,  3 Dec 2024 15:34:27 +0000 (UTC)
+	 MIME-Version; b=g59BHZP3nr9P5Ok3QA9SZysnHWXZOMzDN1Nza4jpRv8u25sHFQDBuaaQKNs2/oK0C7wHQsvd5iGqvT4zUeBmmOKQ9qkab3pcsCLSdZNinDFdcWRw6KYP/XX2tqPCM7AkfxjCCjGz6aHnapquavMCTzm3AN3EXfOxYg3sVnOWPOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsPPVho5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093D9C4CECF;
+	Tue,  3 Dec 2024 15:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240067;
-	bh=vajo7+Q0KfgWE+qV8JkWI6bEfGj1e2sSrZbbjf+3GQE=;
+	s=korg; t=1733238238;
+	bh=l4vJl4Ueh1KcKjj/yQdkrqmdHiuFIbZCjtskqA19T/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/yFjslHrTnm4HR7xfxKm2+hDNjteTMZFjHjx65w9DulmBu9HKergdbUI//TsJ+Dc
-	 GPmoic5hO+VrHh6M/Erfk3GQeYrt+spKohMLf4O2uKCEkg7zJ6MkNccR0lzPdcewJ7
-	 4uYvpvuSk8zaTaQBrJw5xsCE8cTfKgpPKh+MymeY=
+	b=PsPPVho5bSo2tUjl3GzP7Y92qpeUL5EThW+ZxqFV0xfYqdrfCkkQ5KF8Dw5wNKbnd
+	 M2OWGW/MBud8VcnnDaLTqXEmjwOdNeyV9/r/4G6UJiely0c3jnIS3N6tGhJHSTbmUw
+	 3INWusUg32da15i2IkP5GFPtZic6QojsLkmic1gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nathan Morrisson <nmorrisson@phytec.com>,
+	Wadim Egorov <w.egorov@phytec.de>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/826] fs/block: Check for IOCB_DIRECT in generic_atomic_write_valid()
-Date: Tue,  3 Dec 2024 15:35:39 +0100
-Message-ID: <20241203144743.934074920@linuxfoundation.org>
+Subject: [PATCH 6.11 168/817] arm64: dts: ti: k3-am62x-phyboard-lyra: Drop unnecessary McASP AFIFOs
+Date: Tue,  3 Dec 2024 15:35:40 +0100
+Message-ID: <20241203144002.285374572@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Nathan Morrisson <nmorrisson@phytec.com>
 
-[ Upstream commit c3be7ebbbce5201e151f17e28a6c807602f369c9 ]
+[ Upstream commit c33a0a02a29bde53a85407f86f332ac4bbc5ab87 ]
 
-Currently FMODE_CAN_ATOMIC_WRITE is set if the bdev can atomic write and
-the file is open for direct IO. This does not work if the file is not
-opened for direct IO, yet fcntl(O_DIRECT) is used on the fd later.
+Drop the McASP AFIFOs for better audio latency. This adds back a
+change that was lost while refactoring the device tree.
 
-Change to check for direct IO on a per-IO basis in
-generic_atomic_write_valid(). Since we want to report -EOPNOTSUPP for
-non-direct IO for an atomic write, change to return an error code.
-
-Relocate the block fops atomic write checks to the common write path, as to
-catch non-direct IO.
-
-Fixes: c34fc6f26ab8 ("fs: Initial atomic write support")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241019125113.369994-3-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 554dd562a5f2 ("arm64: dts: ti: k3-am625-phyboard-lyra-rdk: Drop McASP AFIFOs")
+Signed-off-by: Nathan Morrisson <nmorrisson@phytec.com>
+Reviewed-by: Wadim Egorov <w.egorov@phytec.de>
+Link: https://lore.kernel.org/r/20241002224754.2917895-1-nmorrisson@phytec.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/fops.c       | 18 ++++++++++--------
- fs/read_write.c    | 13 ++++++++-----
- include/linux/fs.h |  2 +-
- 3 files changed, 19 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62x-phyboard-lyra.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index 968b47b615c4b..2d01c90076813 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -36,11 +36,8 @@ static blk_opf_t dio_bio_write_op(struct kiocb *iocb)
- }
+diff --git a/arch/arm64/boot/dts/ti/k3-am62x-phyboard-lyra.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-phyboard-lyra.dtsi
+index e4633af87eb9c..d6ce53c6d7481 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62x-phyboard-lyra.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62x-phyboard-lyra.dtsi
+@@ -433,8 +433,6 @@ &mcasp2 {
+ 			0 0 0 0
+ 			0 0 0 0
+ 	>;
+-	tx-num-evt = <32>;
+-	rx-num-evt = <32>;
+ 	status = "okay";
+ };
  
- static bool blkdev_dio_invalid(struct block_device *bdev, struct kiocb *iocb,
--				struct iov_iter *iter, bool is_atomic)
-+				struct iov_iter *iter)
- {
--	if (is_atomic && !generic_atomic_write_valid(iocb, iter))
--		return true;
--
- 	return iocb->ki_pos & (bdev_logical_block_size(bdev) - 1) ||
- 		!bdev_iter_is_aligned(bdev, iter);
- }
-@@ -368,13 +365,12 @@ static ssize_t __blkdev_direct_IO_async(struct kiocb *iocb,
- static ssize_t blkdev_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
- {
- 	struct block_device *bdev = I_BDEV(iocb->ki_filp->f_mapping->host);
--	bool is_atomic = iocb->ki_flags & IOCB_ATOMIC;
- 	unsigned int nr_pages;
- 
- 	if (!iov_iter_count(iter))
- 		return 0;
- 
--	if (blkdev_dio_invalid(bdev, iocb, iter, is_atomic))
-+	if (blkdev_dio_invalid(bdev, iocb, iter))
- 		return -EINVAL;
- 
- 	nr_pages = bio_iov_vecs_to_alloc(iter, BIO_MAX_VECS + 1);
-@@ -383,7 +379,7 @@ static ssize_t blkdev_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
- 			return __blkdev_direct_IO_simple(iocb, iter, bdev,
- 							nr_pages);
- 		return __blkdev_direct_IO_async(iocb, iter, bdev, nr_pages);
--	} else if (is_atomic) {
-+	} else if (iocb->ki_flags & IOCB_ATOMIC) {
- 		return -EINVAL;
- 	}
- 	return __blkdev_direct_IO(iocb, iter, bdev, bio_max_segs(nr_pages));
-@@ -625,7 +621,7 @@ static int blkdev_open(struct inode *inode, struct file *filp)
- 	if (!bdev)
- 		return -ENXIO;
- 
--	if (bdev_can_atomic_write(bdev) && filp->f_flags & O_DIRECT)
-+	if (bdev_can_atomic_write(bdev))
- 		filp->f_mode |= FMODE_CAN_ATOMIC_WRITE;
- 
- 	ret = bdev_open(bdev, mode, filp->private_data, NULL, filp);
-@@ -700,6 +696,12 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	if ((iocb->ki_flags & (IOCB_NOWAIT | IOCB_DIRECT)) == IOCB_NOWAIT)
- 		return -EOPNOTSUPP;
- 
-+	if (iocb->ki_flags & IOCB_ATOMIC) {
-+		ret = generic_atomic_write_valid(iocb, from);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	size -= iocb->ki_pos;
- 	if (iov_iter_count(from) > size) {
- 		shorted = iov_iter_count(from) - size;
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 2c32635308281..befec0b5c537a 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -1830,18 +1830,21 @@ int generic_file_rw_checks(struct file *file_in, struct file *file_out)
- 	return 0;
- }
- 
--bool generic_atomic_write_valid(struct kiocb *iocb, struct iov_iter *iter)
-+int generic_atomic_write_valid(struct kiocb *iocb, struct iov_iter *iter)
- {
- 	size_t len = iov_iter_count(iter);
- 
- 	if (!iter_is_ubuf(iter))
--		return false;
-+		return -EINVAL;
- 
- 	if (!is_power_of_2(len))
--		return false;
-+		return -EINVAL;
- 
- 	if (!IS_ALIGNED(iocb->ki_pos, len))
--		return false;
-+		return -EINVAL;
- 
--	return true;
-+	if (!(iocb->ki_flags & IOCB_DIRECT))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
- }
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index faf7596ace971..4b5cad44a1268 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3726,6 +3726,6 @@ static inline bool vfs_empty_path(int dfd, const char __user *path)
- 	return !c;
- }
- 
--bool generic_atomic_write_valid(struct kiocb *iocb, struct iov_iter *iter);
-+int generic_atomic_write_valid(struct kiocb *iocb, struct iov_iter *iter);
- 
- #endif /* _LINUX_FS_H */
 -- 
 2.43.0
 
