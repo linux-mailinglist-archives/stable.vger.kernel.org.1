@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-96817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067FA9E2181
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B929E24CF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA461285D0D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC33C1672DA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AA51F8905;
-	Tue,  3 Dec 2024 15:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE03A1F9418;
+	Tue,  3 Dec 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCzYf7YM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwW/chTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37931FAC54;
-	Tue,  3 Dec 2024 15:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB241F8EEE;
+	Tue,  3 Dec 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238680; cv=none; b=euCvjQPg9W7A9gpYQouhQWt9rNPg04cgaKWUQVjnh2tGh57iAStvIVvhFV6VawV9iXpkf3AAB2M61/pW+yux21on1xJS0ZM/dW/JJLEwAoYOIe57xNAT2CukHus6VtUjvf3QIhmehxCLlLP81Kbm5C092OV0BVUXhWxZ0FIhyO0=
+	t=1733240745; cv=none; b=VF8ZdDoO87TvBynhGdePFNcXMYUOPOfbAPPyPBP0Xe1LgaAof+S1LEt9fGq8Bq/ey3XhKy7Ur/7l3DpgspqLcyKZb4WcJpN/UBEKsfOCPUfT+X++EXeUAW9KIoYs29cYyzC6EVVRsGwlNiPqdbKdl4UzjUpFRWUZulxX4WR73+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238680; c=relaxed/simple;
-	bh=fugOaCetRIG6nuT/42tZQUGRQsx8P4TGcDf8VTL7dZA=;
+	s=arc-20240116; t=1733240745; c=relaxed/simple;
+	bh=K6fDUQTyKKNjK0Hqyl2VqjNvImJ0C0/BjkoL6CkPFOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahF+Q5KTdRTPxuAI/SQn+mKpYUcuxMeE+V/5044Vr1qMWroRXWVzRHMprPPtpbPc5ubvoLxMlOvpnd7jMBoClMvRbWkpbayvWMZSmV6ipH8ByXXVWXspOMU8EhxapFk7eFWdoryXqG1MAQwBXFqOeOWOhT4N/nYk++12OWbZh2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCzYf7YM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2383EC4CECF;
-	Tue,  3 Dec 2024 15:11:17 +0000 (UTC)
+	 MIME-Version; b=U3G7Ohnch7zRQeNBvJVB1FNsXPKCODq66NgZfH1pdZ02qIPVzbpkYHpUHI783inhQAL0Kk3UOSGE+1/gkGExqrxi5XDHVNUKh3kzp2JCYwL9AgXVLwN+fkTYJy+d325pS1SwS+ITpPCMA6vJbMuVfXPWc3T1zCgOSjVy67KFizA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwW/chTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CADC4CED8;
+	Tue,  3 Dec 2024 15:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238678;
-	bh=fugOaCetRIG6nuT/42tZQUGRQsx8P4TGcDf8VTL7dZA=;
+	s=korg; t=1733240745;
+	bh=K6fDUQTyKKNjK0Hqyl2VqjNvImJ0C0/BjkoL6CkPFOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCzYf7YMwe56UZdN6jV6o3GVhS1DHKBLiPjoHeOYzWcg7VvgVTas1RXsjNG+XrR6k
-	 j2VZWwQJyN07E4QCsIrBqF1VArBm3XESP75LbGPlnQTECvgK+EYQK0sypeupK6+AWo
-	 bMZbriqq1y+ofImsTZIsnl3twdKaf5iPQZgbib4E=
+	b=KwW/chTS5xX0t/In9BizdxQ7D7BT2IS1aJ2UV/NqACcf1tUNAMQhU1QQy9RJbnRbr
+	 exHcmGx3kBuB0DDEEySud71bY1k6GFnJqu31RNW0QPopZ3TUyQHsWTq4HXMJAQOx9s
+	 FybpLAH7jOT42XYwRn2j7IzkPNZ0Pdqoux9RHaDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Stefan Hansson <newbyte@postmarketos.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 360/817] Bluetooth: ISO: Use kref to track lifetime of iso_conn
+Subject: [PATCH 6.12 205/826] drm/panel: nt35510: Make new commands optional
 Date: Tue,  3 Dec 2024 15:38:52 +0100
-Message-ID: <20241203144009.885756309@linuxfoundation.org>
+Message-ID: <20241203144751.745607809@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,213 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit dc26097bdb864a0d5955b9a25e43376ffc1af99b ]
+[ Upstream commit 2418aa8516b26c5e332a1a8c216d4d620f965a56 ]
 
-This make use of kref to keep track of reference of iso_conn which
-allows better tracking of its lifetime with usage of things like
-kref_get_unless_zero in a similar way as used in l2cap_chan.
+The commit introducing the Frida display started to write the
+SETVCMOFF registers unconditionally, and some (not all!) Hydis
+display seem to be affected by ghosting after the commit.
 
-In addition to it remove call to iso_sock_set_timer on iso_sock_disconn
-since at that point it is useless to set a timer as the sk will be freed
-there is nothing to be done in iso_sock_timeout.
+Make SETVCMOFF optional and only send these commands on the
+Frida display for now.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Stefan Hansson <newbyte@postmarketos.org>
+Fixes: 219a1f49094f ("drm/panel: nt35510: support FRIDA FRD400B25025-A-CTK")
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Tested-by: Stefan Hansson <newbyte@postmarketos.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240908-fix-nt35510-v2-1-d4834b9cdb9b@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 88 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 71 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/panel/panel-novatek-nt35510.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 7a83e400ac77a..109bf58c982ae 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -35,6 +35,7 @@ struct iso_conn {
- 	struct sk_buff	*rx_skb;
- 	__u32		rx_len;
- 	__u16		tx_sn;
-+	struct kref	ref;
- };
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35510.c b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
+index 57686340de49f..549b86f2cc288 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35510.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
+@@ -38,6 +38,7 @@
  
- #define iso_conn_lock(c)	spin_lock(&(c)->lock)
-@@ -93,6 +94,49 @@ static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
- #define ISO_CONN_TIMEOUT	(HZ * 40)
- #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+ #define NT35510_CMD_CORRECT_GAMMA BIT(0)
+ #define NT35510_CMD_CONTROL_DISPLAY BIT(1)
++#define NT35510_CMD_SETVCMOFF BIT(2)
  
-+static void iso_conn_free(struct kref *ref)
-+{
-+	struct iso_conn *conn = container_of(ref, struct iso_conn, ref);
-+
-+	BT_DBG("conn %p", conn);
-+
-+	if (conn->sk)
-+		iso_pi(conn->sk)->conn = NULL;
-+
-+	if (conn->hcon) {
-+		conn->hcon->iso_data = NULL;
-+		hci_conn_drop(conn->hcon);
+ #define MCS_CMD_MAUCCTR		0xF0 /* Manufacturer command enable */
+ #define MCS_CMD_READ_ID1	0xDA
+@@ -721,11 +722,13 @@ static int nt35510_setup_power(struct nt35510 *nt)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
+-				NT35510_P1_VCMOFF_LEN,
+-				nt->conf->vcmoff);
+-	if (ret)
+-		return ret;
++	if (nt->conf->cmds & NT35510_CMD_SETVCMOFF) {
++		ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
++					NT35510_P1_VCMOFF_LEN,
++					nt->conf->vcmoff);
++		if (ret)
++			return ret;
 +	}
-+
-+	/* Ensure no more work items will run since hci_conn has been dropped */
-+	disable_delayed_work_sync(&conn->timeout_work);
-+
-+	kfree(conn);
-+}
-+
-+static void iso_conn_put(struct iso_conn *conn)
-+{
-+	if (!conn)
-+		return;
-+
-+	BT_DBG("conn %p refcnt %d", conn, kref_read(&conn->ref));
-+
-+	kref_put(&conn->ref, iso_conn_free);
-+}
-+
-+static struct iso_conn *iso_conn_hold_unless_zero(struct iso_conn *conn)
-+{
-+	if (!conn)
-+		return NULL;
-+
-+	BT_DBG("conn %p refcnt %u", conn, kref_read(&conn->ref));
-+
-+	if (!kref_get_unless_zero(&conn->ref))
-+		return NULL;
-+
-+	return conn;
-+}
-+
- static struct sock *iso_sock_hold(struct iso_conn *conn)
- {
- 	if (!conn || !bt_sock_linked(&iso_sk_list, conn->sk))
-@@ -109,9 +153,14 @@ static void iso_sock_timeout(struct work_struct *work)
- 					     timeout_work.work);
- 	struct sock *sk;
  
-+	conn = iso_conn_hold_unless_zero(conn);
-+	if (!conn)
-+		return;
-+
- 	iso_conn_lock(conn);
- 	sk = iso_sock_hold(conn);
- 	iso_conn_unlock(conn);
-+	iso_conn_put(conn);
- 
- 	if (!sk)
- 		return;
-@@ -149,9 +198,14 @@ static struct iso_conn *iso_conn_add(struct hci_conn *hcon)
- {
- 	struct iso_conn *conn = hcon->iso_data;
- 
-+	conn = iso_conn_hold_unless_zero(conn);
- 	if (conn) {
--		if (!conn->hcon)
-+		if (!conn->hcon) {
-+			iso_conn_lock(conn);
- 			conn->hcon = hcon;
-+			iso_conn_unlock(conn);
-+		}
-+		iso_conn_put(conn);
- 		return conn;
- 	}
- 
-@@ -159,6 +213,7 @@ static struct iso_conn *iso_conn_add(struct hci_conn *hcon)
- 	if (!conn)
- 		return NULL;
- 
-+	kref_init(&conn->ref);
- 	spin_lock_init(&conn->lock);
- 	INIT_DELAYED_WORK(&conn->timeout_work, iso_sock_timeout);
- 
-@@ -178,17 +233,15 @@ static void iso_chan_del(struct sock *sk, int err)
- 	struct sock *parent;
- 
- 	conn = iso_pi(sk)->conn;
-+	iso_pi(sk)->conn = NULL;
- 
- 	BT_DBG("sk %p, conn %p, err %d", sk, conn, err);
- 
- 	if (conn) {
- 		iso_conn_lock(conn);
- 		conn->sk = NULL;
--		iso_pi(sk)->conn = NULL;
- 		iso_conn_unlock(conn);
--
--		if (conn->hcon)
--			hci_conn_drop(conn->hcon);
-+		iso_conn_put(conn);
- 	}
- 
- 	sk->sk_state = BT_CLOSED;
-@@ -210,6 +263,7 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
- 	struct iso_conn *conn = hcon->iso_data;
- 	struct sock *sk;
- 
-+	conn = iso_conn_hold_unless_zero(conn);
- 	if (!conn)
- 		return;
- 
-@@ -219,20 +273,18 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
- 	iso_conn_lock(conn);
- 	sk = iso_sock_hold(conn);
- 	iso_conn_unlock(conn);
-+	iso_conn_put(conn);
- 
--	if (sk) {
--		lock_sock(sk);
--		iso_sock_clear_timer(sk);
--		iso_chan_del(sk, err);
--		release_sock(sk);
--		sock_put(sk);
-+	if (!sk) {
-+		iso_conn_put(conn);
-+		return;
- 	}
- 
--	/* Ensure no more work items will run before freeing conn. */
--	cancel_delayed_work_sync(&conn->timeout_work);
--
--	hcon->iso_data = NULL;
--	kfree(conn);
-+	lock_sock(sk);
-+	iso_sock_clear_timer(sk);
-+	iso_chan_del(sk, err);
-+	release_sock(sk);
-+	sock_put(sk);
- }
- 
- static int __iso_chan_add(struct iso_conn *conn, struct sock *sk,
-@@ -652,6 +704,8 @@ static void iso_sock_destruct(struct sock *sk)
- {
- 	BT_DBG("sk %p", sk);
- 
-+	iso_conn_put(iso_pi(sk)->conn);
-+
- 	skb_queue_purge(&sk->sk_receive_queue);
- 	skb_queue_purge(&sk->sk_write_queue);
- }
-@@ -711,6 +765,7 @@ static void iso_sock_disconn(struct sock *sk)
- 		 */
- 		if (bis_sk) {
- 			hcon->state = BT_OPEN;
-+			hcon->iso_data = NULL;
- 			iso_pi(sk)->conn->hcon = NULL;
- 			iso_sock_clear_timer(sk);
- 			iso_chan_del(sk, bt_to_errno(hcon->abort_reason));
-@@ -720,7 +775,6 @@ static void iso_sock_disconn(struct sock *sk)
- 	}
- 
- 	sk->sk_state = BT_DISCONN;
--	iso_sock_set_timer(sk, ISO_DISCONN_TIMEOUT);
- 	iso_conn_lock(iso_pi(sk)->conn);
- 	hci_conn_drop(iso_pi(sk)->conn->hcon);
- 	iso_pi(sk)->conn->hcon = NULL;
+ 	/* Typically 10 ms */
+ 	usleep_range(10000, 20000);
+@@ -1319,7 +1322,7 @@ static const struct nt35510_config nt35510_frida_frd400b25025 = {
+ 	},
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+ 			MIPI_DSI_MODE_LPM,
+-	.cmds = NT35510_CMD_CONTROL_DISPLAY,
++	.cmds = NT35510_CMD_CONTROL_DISPLAY | NT35510_CMD_SETVCMOFF,
+ 	/* 0x03: AVDD = 6.2V */
+ 	.avdd = { 0x03, 0x03, 0x03 },
+ 	/* 0x46: PCK = 2 x Hsync, BTP = 2.5 x VDDB */
 -- 
 2.43.0
 
