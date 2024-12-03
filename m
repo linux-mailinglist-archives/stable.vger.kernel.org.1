@@ -1,86 +1,132 @@
-Return-Path: <stable+bounces-98160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FFA9E2A88
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DE2C1664C2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:13:40 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA6B1FC0FD;
-	Tue,  3 Dec 2024 18:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sl3ms3bT"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF299E2A8A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:14:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B901F8901
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 18:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7EBE2816BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:14:04 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AC21FC7DB;
+	Tue,  3 Dec 2024 18:14:00 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916131FA840;
+	Tue,  3 Dec 2024 18:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733249622; cv=none; b=azwkQroB/aqeqsRxmIGnb0pTY6vvS/LAmOuCL3L3EZgbkR3QheqSXIkUyeudEyaSAVS3KW9YAr8CBFMY76gu6W0TkDWaLJW9cLe86PmXm9BulnWEQv4S1YkQH6Be58QiydzFwTl4UZ0sPIhmqNWuY4ROUAsjOjFcyRNHHfYQQYM=
+	t=1733249640; cv=none; b=IEhnqZOKG4cq66xRcSXBbDq5sKZMxaKD0D7LvRm336C0HQd8EI/I0yguD46ElEjEa3UKYy+eHvv0kY8MFIFtWka6MpyzZo3/Mgssh9hjiPN2XRQm/Hdjaj9RP7OTkLUnVxApcVHypf7smJx1ijjb51Afv83o1loYXRA7if98hCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733249622; c=relaxed/simple;
-	bh=/Az+hhvtBqhlIbI6qoyG3vBI2JK04wplhHsjMA/yTYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=coZXyoTz6mnwJi9GFSJK+XngI1Zu2A2fXAufRC90ajxFe2F54QqvN4xjqw3IlkWeWtQFf2wLuF92A5WPpHAephzum0s6SddTIuSdL/XPfm2EKTtSuc/d6DI1pcvRwR+Ss7sNJ6zKG4h96s6pz6I41ulrLy1aE2EPmSH9jRp4fAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sl3ms3bT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58310C4CECF;
-	Tue,  3 Dec 2024 18:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733249621;
-	bh=/Az+hhvtBqhlIbI6qoyG3vBI2JK04wplhHsjMA/yTYI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sl3ms3bTAJjv8H1M1sE9nx+lJ//z0BWHa3Z1vpdelH4vmeiNZ+JKYhe61y4Texwnn
-	 3qqURcNXSnIpvn1P7E3OOGutg/M/GeMvyhE2OEjozhiwHIsNoAaPgdgI5cz1zpn8tn
-	 9cgEjXvBV25/0AntqW0ldrR4cVjxeiM2uOt7g+PJh6CHWrXFK9VQ3DfL1Xu2CSmgxF
-	 83/Txxe2DjGINY/uz7nF5BNSmOQu/6u/hSqRSEKTv6nTaO1pGXPFGpgEVLN0telzeK
-	 /jjuY8QmifEzhl/CAYlANhbj0uYEIaKv5k5/t/XrjVeaHRNuo/j1amo4IXs2frdly3
-	 D3zFG4ez16rbg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 v3 3/3] net: fec: make PPS channel configurable
-Date: Tue,  3 Dec 2024 13:13:40 -0500
-Message-ID: <20241202131517-fc149c7c7424f7e6@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202155800.3564611-4-csokas.bence@prolan.hu>
-References: 
+	s=arc-20240116; t=1733249640; c=relaxed/simple;
+	bh=goNbn9LHti/OQqu0NtqUuzDIMzdSZPos2x6hTQxj6QY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VduThITVyL7SFGvb8Uj35cRf8IhiCyEYHp1h73NdMBCOTrDB7QP3uSfsKB78AbFySI6079wPN1s+TJgIPjuRA5AOOw7ZzWFDhDOYQUlcaDcUO2sz7Y7kG5HWibtucY0C9cokrDivGn2H0bwEmv9d7liV/dhyILYNM79yU04VHDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 1935C1C00A0; Tue,  3 Dec 2024 19:13:51 +0100 (CET)
+Date: Tue, 3 Dec 2024 19:13:50 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+Message-ID: <Z09KXnGlTJZBpA90@duo.ucw.cz>
+References: <20241203141923.524658091@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-[ Sasha's backport helper bot ]
-
-Hi,
-
-Found matching upstream commit: 566c2d83887f0570056833102adc5b88e681b0c7
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-Commit author: Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="9dKgCbh+6g0xCEEa"
+Content-Disposition: inline
+In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 
 
-Status in newer kernel trees:
-6.12.y | Not found
+--9dKgCbh+6g0xCEEa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Note: The patch differs from the upstream commit:
----
-Failed to apply patch cleanly, falling back to interdiff...
----
+Hi!
 
-Results of testing on various branches:
+> ------------------
+> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
+> is end-of-life.  It's been 6 years, everyone should have moved off of it
+> by now.
+> ------------------
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+Releasing 130 patches as end-of-life kernel is not good idea. There
+may be regression hiding between them...
+
+> This is the start of the stable review cycle for the 4.19.325 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Build fails:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/853242=
+3815
+
+  CC      drivers/pinctrl/uniphier/pinctrl-uniphier-pro4.o
+3895
+  CC      drivers/pci/of.o
+3896
+drivers/rtc/rtc-st-lpc.c: In function 'st_rtc_probe':
+3897
+drivers/rtc/rtc-st-lpc.c:233:11: error: 'IRQF_NO_AUTOEN' undeclared (first =
+use in this function); did you mean 'IRQ_NOAUTOEN'?
+3898
+           IRQF_NO_AUTOEN, pdev->name, rtc);
+3899
+           ^~~~~~~~~~~~~~
+3900
+           IRQ_NOAUTOEN
+3901
+drivers/rtc/rtc-st-lpc.c:233:11: note: each undeclared identifier is report=
+ed only once for each function it appears in
+3902
+  CC      drivers/pci/quirks.o
+3903
+make[2]: *** [scripts/Makefile.build:303: drivers/rtc/rtc-st-lpc.o] Error 1
+3904
+make[1]: *** [scripts/Makefile.build:544: drivers/rtc] Error 2
+3905
+make[1]: *** Waiting for unfinished jobs....
+3906
+  CC      drivers/pinctrl/uniphier/pinctrl-uniphier-sld8.o
+3907
+  CC      drivers/soc/renesas/r8a7743-sysc.o
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--9dKgCbh+6g0xCEEa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ09KXgAKCRAw5/Bqldv6
+8igyAKC2pyBC6fWNiQh0OKW85uIIN0WbqACgwLulzTAF14u09GS4SkD6suO2gvs=
+=6DTu
+-----END PGP SIGNATURE-----
+
+--9dKgCbh+6g0xCEEa--
 
