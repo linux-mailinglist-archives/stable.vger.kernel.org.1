@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118D59E27B5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:39:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CB39E2868
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D4EB65421
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5968FB3F0FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB71F9F6A;
-	Tue,  3 Dec 2024 15:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8001F7581;
+	Tue,  3 Dec 2024 15:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj0TaiT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyBdJKhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE151F893D;
-	Tue,  3 Dec 2024 15:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B2533FE;
+	Tue,  3 Dec 2024 15:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240281; cv=none; b=gPaOTmO5c2JiAb0na4fjFiRsoU6CcSPedkJYa80/uFJkZTfhqDNjmCOhjZrRqyY6aP30NhF98IHCxj6cZbITKCKNsHsmJGTCFbJbsUH5bWE9sy4xvynBgKv8eCJ//x9t4DjmqJxoQ8tO0ce8hvfBaUKyf53uR24O56o2NbU0YAk=
+	t=1733238281; cv=none; b=BVM6VsChLH5dJQcGsuv2kzz6IxjQahSLmkYHj4o5hOeYDctBmjxIyknMFxcDorpw0Lxnbdg1pmIUSteMjn9BpsBpwvBOTDhAwvG8IxavQxvTnMmm7YAsoyPBFeI8p7L1BqMpc5M/7r2gbNKjEGB0p9o+5wvIRDORsIy1yhAr3t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240281; c=relaxed/simple;
-	bh=by/h09U+gTUro1C3GMS0IFglHX3GNZsSsjWFL5qwIFc=;
+	s=arc-20240116; t=1733238281; c=relaxed/simple;
+	bh=kYa4Bf3THBCzxVIaOl+VB7yDYDxoVvTnvC6uJ7WexcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO65GpLtc7p/LJw0sDczMcgfUT3qw4X8BPQKe5Y2ddwNUW9cFdgOVZqgNpvgaoCzJRy0N1RSqO7CXGhzS7BCee3OOHJT8kOA33iXsbUcAPshKBPmkSMUTq2+Ci2BkI2zY7XO4ur49ilCsQk1tPUURUpLFUU4i9+D/LmF5oBa380=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj0TaiT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CA6C4CECF;
-	Tue,  3 Dec 2024 15:38:00 +0000 (UTC)
+	 MIME-Version; b=HHHL3FIxy58OUqG8/foqRaLsqXfZxK5FGKOQaM4SIOvMY2oMscpY2W4HJ/IpmQnJWQRJL+WfI6ikotwSQYH4aTK8oiIe04Mp+iMqhRi1eoRmCl7GcBvJcYTUGxV7viHqCB/6QCXhL54Vb43oznZblWU1oDp0XCvAD4vB2f6LrGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyBdJKhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EC6C4CECF;
+	Tue,  3 Dec 2024 15:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240281;
-	bh=by/h09U+gTUro1C3GMS0IFglHX3GNZsSsjWFL5qwIFc=;
+	s=korg; t=1733238281;
+	bh=kYa4Bf3THBCzxVIaOl+VB7yDYDxoVvTnvC6uJ7WexcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vj0TaiT6zA4wIaWWJzWcgs9Ar4CIPaPjBBcFvASuzlC/HB9uZZ2rMZEVWTntG9T8I
-	 nImDM/HgSVyBg61TiJi1YpMycXpXMkbVmDZQAejOm+BLOu165qs+cxkN7R77qloWwY
-	 gE2UzIV++X49hkENywo/6LIOHVSOT4pLukyTPnZU=
+	b=XyBdJKhOsD9kjCHFLEEhebtcISQveAf+jDoBEyoH7L/Io4Y80sErncvQOls8nNUja
+	 yZYP0QSX/Iqus/N+RF3GsmJNA94xhNpKZQXsf0B3vpbyhgK9keWEGlVpX0rGluknAq
+	 GatwvitoZ5xPNbVX82gxTFzFQ/uoU5W/7OCz7mg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/826] rcu/srcutiny: dont return before reenabling preemption
-Date: Tue,  3 Dec 2024 15:36:35 +0100
-Message-ID: <20241203144746.124928446@linuxfoundation.org>
+Subject: [PATCH 6.11 224/817] drm/omap: Fix locking in omap_gem_new_dmabuf()
+Date: Tue,  3 Dec 2024 15:36:36 +0100
+Message-ID: <20241203144004.492615382@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0ea3acbc804c2d5a165442cdf9c0526f4d324888 ]
+[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
 
-Code after the return statement is dead. Enable preemption before
-returning from srcu_drive_gp().
+omap_gem_new_dmabuf() creates the new gem object, and then takes and
+holds the omap_obj->lock for the rest of the function. This has two
+issues:
 
-This will be important when/if PREEMPT_AUTO (lazy resched) gets merged.
+- omap_gem_free_object(), which is called in the error paths, also takes
+  the same lock, leading to deadlock
+- Even if the above wouldn't happen, in the error cases
+  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
+  omap_obj has already been freed.
 
-Fixes: 65b4a59557f6 ("srcu: Make Tiny SRCU explicitly disable preemption")
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Furthermore, I don't think there's any reason to take the lock at all,
+as the object was just created and not yet shared with anyone else.
+
+To fix all this, drop taking the lock.
+
+Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/srcutiny.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 549c03336ee97..4dcbf8aa80ff7 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -122,8 +122,8 @@ void srcu_drive_gp(struct work_struct *wp)
- 	ssp = container_of(wp, struct srcu_struct, srcu_work);
- 	preempt_disable();  // Needed for PREEMPT_AUTO
- 	if (ssp->srcu_gp_running || ULONG_CMP_GE(ssp->srcu_idx, READ_ONCE(ssp->srcu_idx_max))) {
--		return; /* Already running or nothing to do. */
- 		preempt_enable();
-+		return; /* Already running or nothing to do. */
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+index fdae677558f3e..b9c67e4ca3605 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+@@ -1402,8 +1402,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+ 
+ 	omap_obj = to_omap_bo(obj);
+ 
+-	mutex_lock(&omap_obj->lock);
+-
+ 	omap_obj->sgt = sgt;
+ 
+ 	if (omap_gem_sgt_is_contiguous(sgt, size)) {
+@@ -1418,21 +1416,17 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+ 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
+ 		if (!pages) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
+ 
+ 		omap_obj->pages = pages;
+ 		ret = drm_prime_sg_to_page_array(sgt, pages, npages);
+ 		if (ret) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
  	}
  
- 	/* Remove recently arrived callbacks and wait for readers. */
+-done:
+-	mutex_unlock(&omap_obj->lock);
+ 	return obj;
+ }
+ 
 -- 
 2.43.0
 
