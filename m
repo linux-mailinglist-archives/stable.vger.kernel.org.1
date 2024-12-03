@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E4D9E283F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3F79E218F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E420CB2EB06
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D79283A53
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325711F9A9C;
-	Tue,  3 Dec 2024 15:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC121F7584;
+	Tue,  3 Dec 2024 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWaYPjwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ7COIZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BCE1F892F;
-	Tue,  3 Dec 2024 15:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472731E3DF9;
+	Tue,  3 Dec 2024 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240770; cv=none; b=JaOGUFwwAhG5XB7dH+z+25POMnyMMN8sRp+Z0i2Tmd4By+I4DrsaQbx0DYRRW598jhTjX5IzAv5diQuHtVmKalxVp+hFm2HyOwS5PautJWMUgNET+F1gRMo1oJgD0Oi/f6z9mXu+z1CCmTd/gCOVYYwTvU6MOQGn+6OadY+kJsc=
+	t=1733238748; cv=none; b=HYih4/9ut75c3lU00GtlqCbeRNOiahveCqTq4vnI1hcCDM8e1ThMtmL3grAJISd3h+GBQuQzt5N4w7NRNWQL0ruVTmLR16QD43HnEpe7tOHDDmawPEOwUQTuAGAluTBxTp5jW+YEUSbaTn1hHZpZZ6pSTkkl/GwnP7rOxyEp5Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240770; c=relaxed/simple;
-	bh=VTa7pHK/z8UsWSe0EiFZRNsSrOcZYPVRqHsayf6hKys=;
+	s=arc-20240116; t=1733238748; c=relaxed/simple;
+	bh=9dxK9nTNyyJ0JNnUHHWvxv0qJKZrlfWvZYg6/ukSorY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SCxZ8r4u6wsx/q46NGoG9nK3xUUUeTP4xRmhV+98Yv6qj05CetiGiu58YvnZ2yzZ25tMecFSqc66PfKU9UjQM8tGMNPWTehhCStbIpeW6pWCS2tQU0yXTcCCPzZGrlSLVykauHV85bj2aZ8PKummHXP0z9/e0lS9/eqsh/tc0ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWaYPjwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2714C4CED6;
-	Tue,  3 Dec 2024 15:46:08 +0000 (UTC)
+	 MIME-Version; b=DpY/88IPBScD5g4F+9U2vCwofrqKuqCZyD61tZn3Or0Hqqgbs8VavdwBI2mP4+cLZ/dF9fl4emMWDu1+P7fYV0shlXYlHvzMXRedoh7LHmO5rpVQaCTu+uaXsgJmRueMv1LmehRhKDtIiuAhvOkPL1FBOtIcPKBdnqCRrzL9Xs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ7COIZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17B8C4CED8;
+	Tue,  3 Dec 2024 15:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240769;
-	bh=VTa7pHK/z8UsWSe0EiFZRNsSrOcZYPVRqHsayf6hKys=;
+	s=korg; t=1733238748;
+	bh=9dxK9nTNyyJ0JNnUHHWvxv0qJKZrlfWvZYg6/ukSorY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWaYPjwlJBAuRIp4FRKoMTvzZUBQHwD+vGpvpUeVnf2RuhccUawjSO/ZYyCdYZ742
-	 ahgUf0NevsKqZQJdc2v6pPrH3ZSufnyVR3pdolXZoXLbEZJ03pOmlr2e64ig9OpAqy
-	 p37BkcjvYMK0UncrlYRZOhqjN1tWXqJUSTb4gSh4=
+	b=LJ7COIZp6wcxrCorXODhNp9vKolZlUUl6X8KDX0wnc+nveyxSjy8wNAnSBHeQ9zDq
+	 8CbtouvvekAjjgPPp8FyCbyeY34z8s7/Uhtx1rNEi3Jhseo3Kq089HaGakkTMlyZNZ
+	 vXuDcXKFHyXxjkH4iE7Ml+ORIzPUiafW9XGbyJSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/826] libbpf: Add missing per-arch include path
-Date: Tue,  3 Dec 2024 15:39:16 +0100
-Message-ID: <20241203144752.678556507@linuxfoundation.org>
+Subject: [PATCH 6.11 385/817] powerpc/vdso: Flag VDSO64 entry points as functions
+Date: Tue,  3 Dec 2024 15:39:17 +0100
+Message-ID: <20241203144010.875857217@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 710fbca820c721cdd60fa8c5bbe9deb4c0788aae ]
+[ Upstream commit 0161bd38c24312853ed5ae9a425a1c41c4ac674a ]
 
-libbpf does not include the per-arch tools include path, e.g.
-tools/arch/riscv/include. Some architectures depend those files to
-build properly.
+On powerpc64 as shown below by readelf, vDSO functions symbols have
+type NOTYPE.
 
-Include tools/arch/$(SUBARCH)/include in the libbpf build.
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
 
-Fixes: 6d74d178fe6e ("tools: Add riscv barrier implementation")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240927131355.350918-1-bjorn@kernel.org
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+...
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+
+To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
+symbols lookup for powerpc64") was applied to have selftests also
+look for NOTYPE symbols, but the correct fix should be to flag VDSO
+entry points as functions.
+
+The original commit that brought VDSO support into powerpc/64 has the
+following explanation:
+
+    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
+    can't be expected to link against them directly, the vDSO's are both seen
+    as if they were linked at 0 and the symbols just contain offsets to the
+    various functions.  This is done on purpose to avoid a relocation step
+    (ppc64 functions normally have descriptors with abs addresses in them).
+    When glibc uses those functions, it's expected to use it's own trampolines
+    that know how to reach them.
+
+The descriptors it's talking about are the OPD function descriptors
+used on ABI v1 (big endian). But it would be more correct for a text
+symbol to have type function, even if there's no function descriptor
+for it.
+
+glibc has a special case already for handling the VDSO symbols which
+creates a fake opd pointing at the kernel symbol. So changing the VDSO
+symbol type to function shouldn't affect that.
+
+For ABI v2, there is no function descriptors and VDSO functions can
+safely have function type.
+
+So lets flag VDSO entry points as functions and revert the
+selftest change.
+
+Link: https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
+Fixes: ba83b3239e65 ("selftests: vDSO: fix vDSO symbols lookup for powerpc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-By: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/b6ad2f1ee9887af3ca5ecade2a56f4acda517a85.1728512263.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/vdso.h           | 1 +
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/Makefile b/tools/lib/bpf/Makefile
-index 1b22f0f372880..857a5f7b413d6 100644
---- a/tools/lib/bpf/Makefile
-+++ b/tools/lib/bpf/Makefile
-@@ -61,7 +61,8 @@ ifndef VERBOSE
- endif
+diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+index 7650b6ce14c85..8d972bc98b55f 100644
+--- a/arch/powerpc/include/asm/vdso.h
++++ b/arch/powerpc/include/asm/vdso.h
+@@ -25,6 +25,7 @@ int vdso_getcpu_init(void);
+ #ifdef __VDSO64__
+ #define V_FUNCTION_BEGIN(name)		\
+ 	.globl name;			\
++	.type name,@function; 		\
+ 	name:				\
  
- INCLUDES = -I$(or $(OUTPUT),.) \
--	   -I$(srctree)/tools/include -I$(srctree)/tools/include/uapi
-+	   -I$(srctree)/tools/include -I$(srctree)/tools/include/uapi \
-+	   -I$(srctree)/tools/arch/$(SRCARCH)/include
+ #define V_FUNCTION_END(name)		\
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 7dd5668ea8a6e..28f35620c4991 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -222,8 +222,7 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
  
- export prefix libdir src obj
- 
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
+-		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
 -- 
 2.43.0
 
