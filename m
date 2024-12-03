@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C979E2671
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062C39E2395
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9149BB866E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0779287051
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4DF1F7547;
-	Tue,  3 Dec 2024 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A009D1FBC82;
+	Tue,  3 Dec 2024 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmIKgYux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6e3loYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96D1E3DF9;
-	Tue,  3 Dec 2024 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1A51FAC53;
+	Tue,  3 Dec 2024 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238224; cv=none; b=aCrDX4igaE32gcF502Yvo/cbcrDtyumhtU2494ElbFepunaqvbZFlLJc8Pf6A/vc+hbDYItjD5evHWnrgy1s8oubR6Wz89iSzPXOiB0zwI4HpTGnJK9sTZFcRz9KBdSyj4P8CjpypNve8mnxNJvsuYQD7MVEtnr1RYBpgItuMow=
+	t=1733240085; cv=none; b=q6WZvcQ2JoP8LB8xQ23C904slyTlAdQDR5/dTeXDBFVVqI18Yd3VwmSmRhMHKAo7ODHoKejIfxqyGU4/uyMjP/G8xEHwsQtqYeSt62BZQD+HgRMuBzE+MDhOa7rw5XtOw6WaKuFMTMtl/UeXytY+1hcMc+O9qH27xgwXZPHbsKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238224; c=relaxed/simple;
-	bh=A8yysjUcoKurANisjSM8+QP/yqxdbVTDT2HVvYw2D+c=;
+	s=arc-20240116; t=1733240085; c=relaxed/simple;
+	bh=UHT1Dqjpfpe6iXKH3DGfu4Kh9GCImnBl/Bf25RdFuq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukBMINNfOng2L+vxQZZ74EgS9/poHmK5Bd/2U9t/f182z11qf5IIK/eOL3UPRwEFjS0RAL74BdIWezYMEHGxsI2u7RuF+br+169/zojQOJX7m0QeCv+vJdfHNWG9SCvTYpw10iXbhLlu+84U+80xqjZe+iIG5/HLNO7LP4nuQaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmIKgYux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92E1C4CECF;
-	Tue,  3 Dec 2024 15:03:43 +0000 (UTC)
+	 MIME-Version; b=eh+BglC9GfabOpQSJO1aUIxZF8cPhTBbENmEWYdx4IIKTbbZxTAl4aYqB/r8BSknR6FEqOfhZ8pHaTRZKkyCaQuKtgqVN7l9iuPwOzga9SyFh8PEp9kFKRgUoUAizC25wTgzVnvHI2fa9TD0JbzSC2FxmtGO8799z54XrlimmN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6e3loYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6070C4CECF;
+	Tue,  3 Dec 2024 15:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238224;
-	bh=A8yysjUcoKurANisjSM8+QP/yqxdbVTDT2HVvYw2D+c=;
+	s=korg; t=1733240085;
+	bh=UHT1Dqjpfpe6iXKH3DGfu4Kh9GCImnBl/Bf25RdFuq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmIKgYux84rTvcwQr0/JVCYDiHEJEfipz2lNMhhl4XT4ROyt4o5+c2coF1nusRAiS
-	 KkUNhF8aC3LuL6IyUO9LeJjEMN7aIWx9ybnj6mlOK3NBEcOn7x4VNfyDgEZDJGDki2
-	 0BLJuDR7FFElmkddQPdSDhOWmUGecuDpI+Nx5sRU=
+	b=P6e3loYrR6s0VhRbW6AjMFMOEn8+D3JgPWwG7N2W1kIrwXPO0wHwKTfnLzvf8OIZC
+	 Fixz4o+n3idBwSnTgteuKuCkIjmvwOTaejBa0brlbFRecOf49ej3V9IWkzjZUe9jbz
+	 cQm5bH7SnLp1f0aFEPynq3gXdpNl6Lc3TYvtizfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 173/817] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+Subject: [PATCH 6.12 018/826] mips: asm: fix warning when disabling MIPS_FP_SUPPORT
 Date: Tue,  3 Dec 2024 15:35:45 +0100
-Message-ID: <20241203144002.483300508@linuxfoundation.org>
+Message-ID: <20241203144744.168314003@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
+[ Upstream commit da09935975c8f8c90d6f57be2422dee5557206cd ]
 
-Only cgroup v2 can be attached by bpf programs, so this patch introduces
-that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
-cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
-("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
-has been reverted.
+When MIPS_FP_SUPPORT is disabled, __sanitize_fcr31() is defined as
+nothing, which triggers a gcc warning:
 
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
-Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+    In file included from kernel/sched/core.c:79:
+    kernel/sched/core.c: In function 'context_switch':
+    ./arch/mips/include/asm/switch_to.h:114:39: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
+      114 |                 __sanitize_fcr31(next);                                 \
+          |                                       ^
+    kernel/sched/core.c:5316:9: note: in expansion of macro 'switch_to'
+     5316 |         switch_to(prev, next, prev);
+          |         ^~~~~~~~~
+
+Fix this by providing an empty body for __sanitize_fcr31() like one is
+defined for __mips_mt_fpaff_switch_to().
+
+Fixes: 36a498035bd2 ("MIPS: Avoid FCSR sanitization when CONFIG_MIPS_FP_SUPPORT=n")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/switch_to.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 2592cbbc95ae8..39402a9eb6b04 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2133,8 +2133,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
- 	if (ret)
- 		goto exit_stats;
+diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
+index a4374b4cb88fd..d6ccd53440213 100644
+--- a/arch/mips/include/asm/switch_to.h
++++ b/arch/mips/include/asm/switch_to.h
+@@ -97,7 +97,7 @@ do {									\
+ 	}								\
+ } while (0)
+ #else
+-# define __sanitize_fcr31(next)
++# define __sanitize_fcr31(next) do { (void) (next); } while (0)
+ #endif
  
--	ret = cgroup_bpf_inherit(root_cgrp);
--	WARN_ON_ONCE(ret);
-+	if (root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(root_cgrp);
-+		WARN_ON_ONCE(ret);
-+	}
- 
- 	trace_cgroup_setup_root(root);
- 
-@@ -5641,9 +5643,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
- 	if (ret)
- 		goto out_kernfs_remove;
- 
--	ret = cgroup_bpf_inherit(cgrp);
--	if (ret)
--		goto out_psi_free;
-+	if (cgrp->root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(cgrp);
-+		if (ret)
-+			goto out_psi_free;
-+	}
- 
- 	/*
- 	 * New cgroup inherits effective freeze counter, and
-@@ -5957,7 +5961,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
- 
- 	cgroup1_check_for_release(parent);
- 
--	cgroup_bpf_offline(cgrp);
-+	if (cgrp->root == &cgrp_dfl_root)
-+		cgroup_bpf_offline(cgrp);
- 
- 	/* put the base reference */
- 	percpu_ref_kill(&cgrp->self.refcnt);
+ /*
 -- 
 2.43.0
 
