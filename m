@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-97866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B339E2658
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337A09E2874
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:00:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25FD016C4A7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E5E5B3788C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390EA1F890A;
-	Tue,  3 Dec 2024 16:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A871F7583;
+	Tue,  3 Dec 2024 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ijujvw+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6CZGc7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89E923CE;
-	Tue,  3 Dec 2024 16:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E051F4276;
+	Tue,  3 Dec 2024 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242001; cv=none; b=oaUYQaNPf3VvrLcyDHqawFAm3BsESQClBmSicscZFsqiZ1+AQ+ox9mmnYNcC5K9Scl1Kj+236B+rTeONHN8JmjP35y5rHPva1PoilQl+znx4WtCS1EMjvNeD/pLDcvuAUnvL5LaevRxqg+yKrew7Ft7s0F7rqSvAUF9YVAuZtho=
+	t=1733239783; cv=none; b=bUzr5en+A7QBqG7YKczrAkdbGuiSzMOgziWZfiAfecLiyXMj0QATGXpf+fppd80Bq8a1nkUqzfl7MZOLG25wIXLQ4caWmBsVav2/UGI4v5wyaOcLJZ9Homaa5ODzRqNodOCT7kfYWautCSFMvVJMOKYVmlznNXZh1GKpWSSQQCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242001; c=relaxed/simple;
-	bh=U9+qp1AWwbSF9xWlJMHVZlanbitOVOzm8Y+oKdgLUnY=;
+	s=arc-20240116; t=1733239783; c=relaxed/simple;
+	bh=icJHNEuiwBDJsLxY1G5SENIaOMo9aM3oMqC7YoXQ4/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSuZQu63gWPE7XDKte/no2yEYx9lH8MniLv/NlWcI6RvL72k4Cbi7iA1y4wM8Ww27VDa/LmiC4pmVW1BxXUVfJ9n6zapSQafK2dQdpHp5K2/ECd+uZtb1vJNSfZFjaNoSJAAge5/ILuLELCWOU+mDSKQg5swoH3W1IJ3e85t2js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ijujvw+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5651DC4CECF;
-	Tue,  3 Dec 2024 16:06:40 +0000 (UTC)
+	 MIME-Version; b=avNG7rjMg59ccFJy/X/d/eneyloNXcXPwiZj83Ibd4ibijibzbUv3KPUTEpOfYgygbzIKjeanhvlR8W2nViAdmLqUBQAOL4fsHQjkvQzu6n+lSFySclGlxDMvcZSwhiqqkbsxxzo/cbhDXVkg63tME6vYyub3UsZGNcEiDAd3sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6CZGc7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8F7C4CECF;
+	Tue,  3 Dec 2024 15:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242000;
-	bh=U9+qp1AWwbSF9xWlJMHVZlanbitOVOzm8Y+oKdgLUnY=;
+	s=korg; t=1733239783;
+	bh=icJHNEuiwBDJsLxY1G5SENIaOMo9aM3oMqC7YoXQ4/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ijujvw+uVXxlFyBpisYI/V84qq/HyB8KYJkxtsSjw+k0x8AM28LFpeFiGuYu6uz7Q
-	 JOSe97LIdwE2CRpzZcEtKzG5ErBhXJ7giExChOgaiIzvQV4MuC5MNdbwGQKMn2RAhX
-	 moKDe0FmZO0GCP4wR+zRBMXtNatdKUeb3WYuxcxo=
+	b=M6CZGc7CaqFCUZwtY4aesoicah8YraKWFVsNhrRPUpdt52iT3iEl/ttid5MFqHruY
+	 thMEFj5frKRh+5g3iwlOpS1st0AOw1PWFwbNAvHB995eKFmXu8YN1VtKtp1xzxmOjO
+	 wJp/aSz7QGRZ6lQhjKGuUifWgugEhg1NuFWf32mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 577/826] bnxt_en: Reserve rings after PCIe AER recovery if NIC interface is down
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.11 732/817] media: wl128x: Fix atomicity violation in fmc_send_cmd()
 Date: Tue,  3 Dec 2024 15:45:04 +0100
-Message-ID: <20241203144806.259457992@linuxfoundation.org>
+Message-ID: <20241203144024.570480375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 5311598f7f3293683cdc761df71ae3469327332c ]
+commit ca59f9956d4519ab18ab2270be47c6b8c6ced091 upstream.
 
-After successful PCIe AER recovery, FW will reset all resource
-reservations.  If it is IF_UP, the driver will call bnxt_open() and
-all resources will be reserved again.  It it is IF_DOWN, we should
-call bnxt_reserve_rings() so that we can reserve resources including
-RoCE resources to allow RoCE to resume after AER.  Without this
-patch, RoCE fails to resume in this IF_DOWN scenario.
+Atomicity violation occurs when the fmc_send_cmd() function is executed
+simultaneously with the modification of the fmdev->resp_skb value.
+Consider a scenario where, after passing the validity check within the
+function, a non-null fmdev->resp_skb variable is assigned a null value.
+This results in an invalid fmdev->resp_skb variable passing the validity
+check. As seen in the later part of the function, skb = fmdev->resp_skb;
+when the invalid fmdev->resp_skb passes the check, a null pointer
+dereference error may occur at line 478, evt_hdr = (void *)skb->data;
 
-Later, if it becomes IF_UP, bnxt_open() will see that resources have
-been reserved and will not reserve again.
+To address this issue, it is recommended to include the validity check of
+fmdev->resp_skb within the locked section of the function. This
+modification ensures that the value of fmdev->resp_skb does not change
+during the validation process, thereby maintaining its validity.
 
-Fixes: fb1e6e562b37 ("bnxt_en: Fix AER recovery.")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
+
+Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/radio/wl128x/fmdrv_common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 99d025b69079a..20a8cb26bc0a6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -16232,8 +16232,12 @@ static void bnxt_io_resume(struct pci_dev *pdev)
- 	rtnl_lock();
- 
- 	err = bnxt_hwrm_func_qcaps(bp);
--	if (!err && netif_running(netdev))
--		err = bnxt_open(netdev);
-+	if (!err) {
-+		if (netif_running(netdev))
-+			err = bnxt_open(netdev);
-+		else
-+			err = bnxt_reserve_rings(bp, true);
-+	}
- 
- 	if (!err)
- 		netif_device_attach(netdev);
--- 
-2.43.0
-
+--- a/drivers/media/radio/wl128x/fmdrv_common.c
++++ b/drivers/media/radio/wl128x/fmdrv_common.c
+@@ -466,11 +466,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8
+ 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
+ 		return -ETIMEDOUT;
+ 	}
++	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	if (!fmdev->resp_skb) {
++		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+ 		fmerr("Response SKB is missing\n");
+ 		return -EFAULT;
+ 	}
+-	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	skb = fmdev->resp_skb;
+ 	fmdev->resp_skb = NULL;
+ 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
 
 
 
