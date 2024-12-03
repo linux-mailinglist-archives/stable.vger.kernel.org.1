@@ -1,238 +1,150 @@
-Return-Path: <stable+bounces-96489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8650C9E2022
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D069E2121
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B67C165178
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B6C0168F55
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EEF1F666B;
-	Tue,  3 Dec 2024 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480CA1F706C;
+	Tue,  3 Dec 2024 15:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FNb8jroe"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="qcgRW6FX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737331DE2A1
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 14:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237664; cv=fail; b=qtr2t3gKdYiEYp5wzhE8dq7Ocx0xRYogLJxv3sTFLCv+rfgJ0YuTsKyfYKgEm3vZdUzhyykNBcJ7lOYtKEP5RucmHQMsiEiuCHysBSKme9n2kD/4yy2vIlKahSrA8SCO3lN9be302NoNEmIWb17ajJvPLY3lSuo3Lok67lw3GaA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237664; c=relaxed/simple;
-	bh=J5mcW1sh3lx0ts+XbaP7qHNdjsHX5OslL++ZY7Wyv9c=;
-	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=tyOItntxylZBG2mcANQ6IOkpWU8kc2S7cNvUG0dAE8GQYbKeL6+Lcg4IOq/c7OLMCePbmfLouUBiFvaGiz6kqmlpjdVPQfIE9wnmphR4SYY8PXAySkIsK/6bLN6QHBvfWM0Z5qaoW9SrxC/Vz52vQ7khyCAPW3vMZVbNJdMY8Lo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FNb8jroe; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733237662; x=1764773662;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=J5mcW1sh3lx0ts+XbaP7qHNdjsHX5OslL++ZY7Wyv9c=;
-  b=FNb8jroeqT90lJDuhVLOESkZJe+uhU8bskq+pGRTg7B1Q2n97IHS6VQ9
-   WhpCnS6A++EzcMPRelIy7d/2lxlhWs8tQxl7lpendt63aoAabdVr/CBLZ
-   TZ3eWEYv+V1KY1thuLRqy1yu3nmTrtouHMWPqvidR1VFpwv+mDoeLAXYt
-   uggSZgAIea76hpI032dv8ACcoNsla4+zK0vJaKNjEQTtgZxEELbM+eAqj
-   VN8tdjzsrQtZsmIjcArwG66We3o6lfVEMdkQt2FpyyIqUeISVG7g/DL56
-   hYVCQRWtLAOhTCdeOejlXgzLNHOzKkeF8E7nwp9VciLzZrOqLpT3jL+76
-   g==;
-X-CSE-ConnectionGUID: /kHObaJcSGaQr+WlN/frhQ==
-X-CSE-MsgGUID: d3GqCWArTwafffGjp0hO1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="32812119"
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
-   d="scan'208";a="32812119"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 06:54:22 -0800
-X-CSE-ConnectionGUID: sCrArSV/T9ynsZjUAtbYoA==
-X-CSE-MsgGUID: PT3ZB9HJTXqARwAiyPRxpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
-   d="scan'208";a="93863628"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Dec 2024 06:54:21 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 3 Dec 2024 06:54:21 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 3 Dec 2024 06:54:21 -0800
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 3 Dec 2024 06:54:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IQcMCQbCbj1gn07fm5tjB76P/v6NcLs0N6vB8ShFQwhHncwS6qrLvd807tdairANIsndnlgCi/qaB0i69wvOt7fmOLJ3oOAEwq0DzUsbiDWBTfZgVXNqcgffqO8x9qHYSXHLi5q8EsIbUCncy9gWNR05Qn4kyDFNWOnu5UjlpsJM5nOp02PmpnuZXshWeD95hCrOIzOitVQSPhQzsamSTimlvis98SMFPz+1gI6dwmNmzSRRQs6OZPqlfH9qILrAcbWjYy9R391IODw1O4Iag5WUTKh5Oq7oAfsLct87cqbTajB03ZtSP1ilOIR5gq70g9Z8/rqk0+oFS3wp1mO2ZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dciBGQg0ZMRHUBcT3yeZm8tpA9QRwu7CRm2Fgs9kG+w=;
- b=CurQQ5E8JcZBlPTBT0tOfQSyc0elz5Uh9u8IrB7L+NeBJIezDrK9U7hmnT4N++KU2MJQEXfxGV2IAJcxD1o7SLS2vJX8WM1CpivYGRARg21Lh9trZGhgk6xjG9VKVFk8n+PJZBUuD0eAGU4PL5YPY/WPuXSDl2KTPTX5Q1a6NkNV/i2cQEq2T3CUOo87T2+vXL7XlWEaNDh6FuKpSj0Fy98Ylb0TkIP7oEmfpMBs7AUeW2tFoLZhsdsZEom+04xKDjbtnuBAcMv+YGP0W9c7e95VlZgAIog9Ds/NKz1LrnJLFKgmQFoBEFYSwFR0VdQisOLK+kDUWxaOQ07t9/0Afg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SN6PR11MB2640.namprd11.prod.outlook.com (2603:10b6:805:56::11)
- by CH3PR11MB7762.namprd11.prod.outlook.com (2603:10b6:610:151::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Tue, 3 Dec
- 2024 14:54:11 +0000
-Received: from SN6PR11MB2640.namprd11.prod.outlook.com
- ([fe80::4b8:af61:4cfe:d6fa]) by SN6PR11MB2640.namprd11.prod.outlook.com
- ([fe80::4b8:af61:4cfe:d6fa%5]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
- 14:54:11 +0000
-Date: Tue, 3 Dec 2024 14:54:06 +0000
-From: Eugene Kobyak <eugene.kobyak@intel.com>
-To: <intel-gfx@lists.freedesktop.org>
-CC: <John.C.Harrison@intel.com>, <andi.shyti@linux.intel.com>,
-	<jani.nikula@linux.intel.com>, <stable@vger.kernel.org>
-Subject: [PATCH v6] drm/i915: Fix NULL pointer dereference in capture_engine
-Message-ID: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: ZR2P278CA0064.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:52::18) To SN6PR11MB2640.namprd11.prod.outlook.com
- (2603:10b6:805:56::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433851F7547
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 15:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733238335; cv=none; b=qLlbUECZTYacZV+gxn1hdes/IBMLRn+Tgl33Xo2bVBCY/4tBr9Sq7/VMmYooJ7GksHUBdH9Q+6vj1bAwoADLVsOxb3aDFXlj2B/ZRW8+QaqNx5dqaYzHmZr6uaEC5GKN4pRnJOYuYlSqUYVv7B9M+LIMk/DfQXK3UMrqWZy43bM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733238335; c=relaxed/simple;
+	bh=+uMifMZiAcMA3nATNagPBAOmW0eThPHsSBWPDm8brnM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BTNvvw3XD1SQfM1JIKeW+rqWbHzl+CmZE2sbTm+ZIkHiGyh0hKGrSMEiFZEXjJsPwP0dLE+Q5fZWVBxI/VkwU52eaW01cWTNPA4mbNXJjTDbSPCkLloA3tpwmG74+vtECk3rxJ/l7mG2KiMEQGguhEVnv4pgtzHelGKQtUHiuTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=qcgRW6FX; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ffc81cee68so58016731fa.0
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 07:05:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733238331; x=1733843131; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RtbEhhKoiTh0qiQnRaAPey6dwf1k7ZRMkRrGbgxGB18=;
+        b=qcgRW6FXOmVZqr/7ItfiiT4o+GpW9CiMQGqeLHaYy5YYDiPs3QPRDA70zm1++WBCA6
+         3n9M9QdGjwcDsvL76n9/3+Atcz4d8pOltWtz5KD1tS37jJBAnnPAn/y7lPePup+TUgj8
+         zF8X7lIVE6tjEsyRbn5vLvq993MELPmScUvGpwcLtmjE96jrOnDF9heHTg26BBGxmVEu
+         buyF1DiadpMX7BnYI208GatUBSzHWTDR1Ser8GUrhDrm5sVeRxBTYpiKcJuAh+BmeUWB
+         yWl8dVGbpipppX/1YBo1Geluupu86ofHQiJI0z0sbDYPZidH9CUAc39HGh84BgClzFsP
+         8gUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733238331; x=1733843131;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RtbEhhKoiTh0qiQnRaAPey6dwf1k7ZRMkRrGbgxGB18=;
+        b=n/Y54VrQGqzHzAhuPv22sDmcxRt5CzPAhkRChxZ8wQnz2VeW8rx/aNGq1gVZyZ8G9H
+         Hjs7NziqaZ96mj2E7LGqzhVQ9cFDjZgrffAPsq+22ghCB1zEXMQQRrybCP3jkaYvJPAk
+         DJyduROVGJnFKMomxXyiH5ii7UnTqGcRsl942Tc7gdVeWy7mhWqzubfflUC4N93mPLvH
+         b6xNpw61jNyHviQJ9eHwF3YL97v2632mCo2d4TggrlKOsQzkx6Oe31jdK4dGMhxdTwvD
+         qrVmDtrYL5kVY1Rz1WIqyDENMTV4KU5cNKdF2V7DXR48C84XWne/z/mtGJEnKDbjpMZa
+         VYig==
+X-Forwarded-Encrypted: i=1; AJvYcCXYWy07Dojol4FTQMUZJ4bSsp44Sl0S8cho63Kul2yIJW5br1RhU7MVeAzaQyfatT05y7Si0yc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVr5t9TlTVTzLzXlhKvZ8C8dcjZ16z2A5R1fZYxGI67G2Aoycw
+	6hziEDG+OPW1UeOrt4pqV/1FaxEei36BQf1AkPm1nlkHlhqVU6c4Ro+LIjImRgAlGke694O/wG4
+	1tpSZeeoBs4bUdhbKp5+NVdTFNKYpjubhYFYGpw==
+X-Gm-Gg: ASbGnctZbzM8PLy7bHHosS7StoBtR9IBEKpt4jzAgpXHgf5AuyRgzzGPRAmfjA37kwn
+	O3+cA5CYLHbIoXLdCd+SSjVreXiA+v2I=
+X-Google-Smtp-Source: AGHT+IFXcMRum6Fgpn/fpkHjlbTye37au8KaG1skCplnVjgk7auCVG9uYkhWXukENlDICE2p3O83N7kw41MOt8qO7js=
+X-Received: by 2002:a05:6512:2804:b0:53e:1b6a:60f5 with SMTP id
+ 2adb3069b0e04-53e1b6a61d3mr623994e87.29.1733238329662; Tue, 03 Dec 2024
+ 07:05:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR11MB2640:EE_|CH3PR11MB7762:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7e2bfd7-6836-4afa-7bc0-08dd13aa58db
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?I1MFQg095vTLalKDbUkb11NyfydeMBEEW7FHYf8reoBeJY4wXFNaz11R/T/l?=
- =?us-ascii?Q?x7xG5ncZsd7TQazQl84E0HVDW9WdOTZP+X+pMtHdgTqs2Wjf6g6JP21dJupx?=
- =?us-ascii?Q?jWRdZAACrf4srODDvA0q0T0lVBwjdBPFzdWga2wD8X8gqbdRCvrTlaqIBG1r?=
- =?us-ascii?Q?n14jhyuhUy5mwQ+GSFoeeq87kSsiJqcYyJBpVNvhkUHbKZ6jGi80eXXPCAhx?=
- =?us-ascii?Q?kPyWjrOhwdgMOFwUsVuB8+ryBiT1mx4WXpNj6cUosm/XhqUzXzsZ3Qg71G/d?=
- =?us-ascii?Q?5HFCjMvxtbfnLzCOJxS2lsu1AdpFgREI4tqaSe4fTTu/xBpfX1kXxUdWTiq/?=
- =?us-ascii?Q?939VKf75rjMf6TcyB/716IFFdA/J+n82nqX1rDC/Usl+BE6ZXyLO/aYud/AX?=
- =?us-ascii?Q?gGMcv43F+lDquEnXqSOcVQgV7W0ZAIyNmBCnMxpjzzcFhXJsLBBQuQzZlfRC?=
- =?us-ascii?Q?De+QL1xEL9vLL29p3DGO2Ufp5CZc50vu87O4JBy3+GCkpZ03fTz7BrNh6fXC?=
- =?us-ascii?Q?1DUdzJ33ZqyA5ifKFiv/1EtZu6q3mD8xETpkvbnSHI5AUCPHmg8VARnhE0N2?=
- =?us-ascii?Q?ZJoA3Tf3/PkI2PSM3CLcfKcdUgfdsOCkYcv3kBZIdCNzJUshuec4SGyI4PLm?=
- =?us-ascii?Q?c+apoas0l0pgcFPdQq28ST0TzqABUUYEvX0F2GUdBfh512Yl/wRdnjq5Pqan?=
- =?us-ascii?Q?gKOXEQAxG+TG3LsReqfZCTzLH4hhfoTHnli3JSmECr24PmITj84+TARz/+1r?=
- =?us-ascii?Q?7NkPSdywZH0uIKOcaPZ+dOKI7lFv+i7K2dPJXkMosfTqQL3Zzi3KBSlkVaZC?=
- =?us-ascii?Q?PcHRHQvmKNew1Ecn+gGgwbJg8SQtA4LXz4C/0iCVXD+f7C5ZVodw9+dD2gTS?=
- =?us-ascii?Q?UW7QLurBfTSe8FxYc+w8cBxrg8+I4SdUjwfEHiMXQ/K5OTa7QLDvN11QuQtH?=
- =?us-ascii?Q?dO9xhYSJMwzAzdHO7oVUP+n4Q/rNfo48vqLfSLdQjBcdcp7BQ1RfE3V/o7Ps?=
- =?us-ascii?Q?z2s1D7znP0e82pFPMR8yM2n3SERnWpaM+aQOxcBm3EOsbMWEfd2DXY9W1rlp?=
- =?us-ascii?Q?MJykFf/uv7Lpv5XA42tVq9du5yoPhiR4gPI9bNGrsdUo8YF3MDzK5wKcKGZI?=
- =?us-ascii?Q?N2m79u6ZhmctFEh0qd8Sv+pQCtg8n29K82c5oytBX3CxJW1NL1sJLx6sWo0q?=
- =?us-ascii?Q?JniGukgaY05YTrmp8FlwQYT5m3+c7N3qWg19zMKfjvbqCJbTbwIPa0WfyAhZ?=
- =?us-ascii?Q?14It6Haop9auvaZdNKzOLNHDICKD6u9cz69ylnz1Z5SWcrJuzyLad6XGZW+k?=
- =?us-ascii?Q?HFg=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2640.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ytvDdjdxaJtrs/if3wV+ZKWGWVipnuIHklrs5oAzBRN46m198ZjW0hhLVeFK?=
- =?us-ascii?Q?UuJFYwsHx7KOH01hGFnfrK1irpqncWgGkcZKsR7QmH4yzGQ6B+bBFvmJxse3?=
- =?us-ascii?Q?ZjL1s1j0ADSjOyh6gECs2AlpJ9RniY1lCoReSjCpV8cAJlfJkk38sGH1ODNx?=
- =?us-ascii?Q?6MXVzevMIEl/AE9+/sB2W0gcwYwxPCk/S6k1c7luY01PmWmWoPaF72IXVsLa?=
- =?us-ascii?Q?8DqC6YusOEo1X8p0iKVVmw/ApzvhbbeVTzxJslZJqHEenvdyG32Ct0m4bk3o?=
- =?us-ascii?Q?EBrU3xapPGV3g9D7tkkdHXi98l6eAnI/cP7OSqK09gF8CTCdP0Bw1j1X4Du1?=
- =?us-ascii?Q?AMWgifUD4CIGFFQITaIAWTNrBeKDJKRxMVFTvysrP6hyd4UUc1LQ4JbMxIFw?=
- =?us-ascii?Q?Aqq7c3nm8FIJcLHLTSnrOaXaG6KeMrQK+zM6c1nmf6UFAewzqk2s8B4OYGAk?=
- =?us-ascii?Q?zUiy/BxkeJA1MT89toxo0RgK9bGXDtfW1JVYofdcz7TMJfAkGMXg/52aBpxS?=
- =?us-ascii?Q?dptikR/EuIakwRCVDyar2o/xN2faE3K6hMnwBVfFMJe+UYTbPv/tYwVUcx2w?=
- =?us-ascii?Q?50BoqjF/ntvf8pUz5477v8+vpvE/vCs6zBZcVPTj/KPNGH2pDjXFbf6gyQXe?=
- =?us-ascii?Q?Um61V6CF3a5EeMmAsg5RJB6PsiIv9qmvGdTk4tjepDsA4xbgWbqqVyBAhURz?=
- =?us-ascii?Q?PUoi+RNFBdpZVZVJ5Eh5bHESzpilEMYYjPDnjOyP3qYzwDOCbXJopchcm0Bl?=
- =?us-ascii?Q?DuwT/6ywBvjpgRX6vuS+OD8lA69zNApyUm7n2bZ14k3GyQiiWDNAgbjQN9/n?=
- =?us-ascii?Q?RJnkl8FlaeW2S36Z6Kk5MZ/PIs2ogG638swPo63+90+nN0APfaK5IaU4xQMl?=
- =?us-ascii?Q?VtPSCLzxjxbd6w+cMejn+aDzN466JKaZYdkqUSTxAV7QJHo9Dj7NC4PLhPIo?=
- =?us-ascii?Q?gmZ2YLgeIueaj5OPlrDFajbrfV87bTNPmM2dqQ77MD00mxaJVGJl32AQIKcD?=
- =?us-ascii?Q?wdd9ugz7lY6TAm0ZC2j8hO7Mn2dsT/EeJSDPJNmymgVDKBZAULVO4mjs2ZWH?=
- =?us-ascii?Q?9rRuRzO6iEPrEvja/zicbMpTr4yxNKKuE4L7L/RF2p0jgLi1F2u4xm8Ff/gw?=
- =?us-ascii?Q?tV1Q/v2Pa57IZE8vJNVf+ELIzJLed+i/AXTfihClR8OYlVxgdtksC0EHdwiK?=
- =?us-ascii?Q?PMhB7PqCIvv6Hv3MKC6UKPR4XNb0hrdels3LQHfkvHg1yKIfs6+T76Vdg1C1?=
- =?us-ascii?Q?CKQKu29iH7H8tR6kg2SM4YYRgDPxRqRQTFgEVi+H7lKMuENoHpZ+NFsdBfhx?=
- =?us-ascii?Q?cH0cBoELW7GpVIhVAp57W8MhGOzBe7AtJWe18xhTY67gl9wgNQfC66buPjiQ?=
- =?us-ascii?Q?VGwjCD35ldD49rkesk2lOQaTZC/yzUQ6DdE/KxDTyvuXLxtpcuRjIDVErTTS?=
- =?us-ascii?Q?+De/Y79T2U4M0mwFMgqZXJd2PPhNBLYx8dahwokrJK3KXr2Ntsy87GTE7Ty8?=
- =?us-ascii?Q?Il3R7fIItkpA2ImjcrFHGbcIF/9KnjBVx5Rcwqok5jjVY93g3NEkmUA2cJVF?=
- =?us-ascii?Q?HI4Nkcgqt4u82ET+UJtBD5WHT1gRhGDqonYBTMvrEIUNhDxHhV4C8V9izI3M?=
- =?us-ascii?Q?bg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7e2bfd7-6836-4afa-7bc0-08dd13aa58db
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2640.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:54:11.4745
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NtJKtcWv8ap0TzAIIqo2sbr442Kyp4tnLNbeAFvOqB3toNR3Fw/T/tdvjPffntR9W+pV4rrlcHCp3k9YtSDpPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7762
-X-OriginatorOrg: intel.com
+References: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org>
+ <20241203-crypto-qce-refactor-v1-2-c5901d2dd45c@linaro.org> <b3e5184d-19bc-45ed-92e3-a751842839b3@linaro.org>
+In-Reply-To: <b3e5184d-19bc-45ed-92e3-a751842839b3@linaro.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 3 Dec 2024 16:05:18 +0100
+Message-ID: <CAMRc=Mc+hKeAwyvm_aaWe_r07iXuBMy0hRQrXSQjpy0irKzvMw@mail.gmail.com>
+Subject: Re: [PATCH 2/9] crypto: qce - unregister previously registered algos
+ in error path
+To: neil.armstrong@linaro.org
+Cc: Thara Gopinath <thara.gopinath@gmail.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, Stanimir Varbanov <svarbanov@mm-sol.com>, linux-crypto@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When the intel_context structure contains NULL,
-it raises a NULL pointer dereference error in drm_info().
+On Tue, Dec 3, 2024 at 2:55=E2=80=AFPM <neil.armstrong@linaro.org> wrote:
+>
+> On 03/12/2024 10:19, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > If we encounter an error when registering alorithms with the crypto
+> > framework, we just bail out and don't unregister the ones we
+> > successfully registered in prior iterations of the loop.
+> >
+> > Add code that goes back over the algos and unregisters them before
+> > returning an error from qce_register_algs().
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
+> >   drivers/crypto/qce/core.c | 11 +++++++----
+> >   1 file changed, 7 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/crypto/qce/core.c b/drivers/crypto/qce/core.c
+> > index 58ea93220f015..848e5e802b92b 100644
+> > --- a/drivers/crypto/qce/core.c
+> > +++ b/drivers/crypto/qce/core.c
+> > @@ -51,16 +51,19 @@ static void qce_unregister_algs(struct qce_device *=
+qce)
+> >   static int qce_register_algs(struct qce_device *qce)
+> >   {
+> >       const struct qce_algo_ops *ops;
+> > -     int i, ret =3D -ENODEV;
+> > +     int i, j, ret =3D -ENODEV;
+> >
+> >       for (i =3D 0; i < ARRAY_SIZE(qce_ops); i++) {
+> >               ops =3D qce_ops[i];
+> >               ret =3D ops->register_algs(qce);
+> > -             if (ret)
+> > -                     break;
+> > +             if (ret) {
+> > +                     for (j =3D i - 1; j >=3D 0; j--)
+> > +                             ops->unregister_algs(qce);
+> > +                     return ret;
+> > +             }
+> >       }
+> >
+> > -     return ret;
+> > +     return 0;
+> >   }
+> >
+> >   static int qce_handle_request(struct crypto_async_request *async_req)
+> >
+>
+> Perhaps you can also use the devm trick here aswell ?
+>
 
-Fixes: e8a3319c31a1 ("drm/i915: Allow error capture without a request")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12309
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Eugene Kobyak <eugene.kobyak@intel.com>
----
-v2:
-  - return drm_info to separate condition
-v3:
-  - create separate condition which generate string if intel_context exist
-v4:
-  - rollback and add check intel_context in log condition
-v5:
-  - create separate string with guc_id if intel_context exist
-v6:
-  - print changed log if intel_context exist
+I wanted to keep this one brief for backporting but I also think that
+scheduling a separate action here for every algo would be a bit
+overkill. This is quite concise so I'd keep it this way.
 
- drivers/gpu/drm/i915/i915_gpu_error.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
-index 135ded17334e..d88cefb889c3 100644
---- a/drivers/gpu/drm/i915/i915_gpu_error.c
-+++ b/drivers/gpu/drm/i915/i915_gpu_error.c
-@@ -1643,9 +1643,21 @@ capture_engine(struct intel_engine_cs *engine,
- 		return NULL;
- 
- 	intel_engine_get_hung_entity(engine, &ce, &rq);
--	if (rq && !i915_request_started(rq))
--		drm_info(&engine->gt->i915->drm, "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
--			 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-+	if (rq && !i915_request_started(rq)) {
-+		/*
-+		* We want to know also what is the gcu_id of the context,
-+		* but if we don't have the context reference, then skip
-+		* printing it.
-+		*/
-+		if (ce)
-+			drm_info(&engine->gt->i915->drm,
-+				"Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
-+				engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-+		else
-+			drm_info(&engine->gt->i915->drm,
-+				"Got hung context on %s with active request %lld:%lld not yet started\n",
-+				engine->name, rq->fence.context, rq->fence.seqno);
-+	}
- 
- 	if (rq) {
- 		capture = intel_engine_coredump_add_request(ee, rq, ATOMIC_MAYFAIL);
--- 
-2.34.1
-
+Bart
 
