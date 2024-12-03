@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-97824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF869E25BD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3BD9E2316
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B802886DA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841311665B9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D638B1F76AD;
-	Tue,  3 Dec 2024 16:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193A01F7557;
+	Tue,  3 Dec 2024 15:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzOk07MG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcotZOZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A6523CE;
-	Tue,  3 Dec 2024 16:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD581E3DED;
+	Tue,  3 Dec 2024 15:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241853; cv=none; b=O9S2s2LmMGBJDFUEfbrFkCTXdHuZ7JFJrsPc6sPj/BKWkplYrVuut8zbhM/F+jR9aKi7LappSxGq0IHgbSYI66F9ItI0cAour4g2KhK0gcirVUtVad7Q7yMLfIGOgYi3s8mx7uhlE5ZQLMUW1CbluI0QL6pFwbBJY05qUrLp6UU=
+	t=1733239660; cv=none; b=McDZl1ocVobyjh2LtQw9dNU053AgK/BbAvcDrkh6kRcZaCR/3NPMmLISAoe6khHUrPogni7UF8BuH2MXd/t7Dq9u2w5fvO/JSmQNOIhwvs6cOTCsw2rcwxJeSlospe8n2/ysNlYHd1ChET1fEWrkxb3GeNidUfJxjnsi84RKLoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241853; c=relaxed/simple;
-	bh=2tp/lw4xh46xldh4SDGVX7n9csQe2Ow+fHKJNHo9gp4=;
+	s=arc-20240116; t=1733239660; c=relaxed/simple;
+	bh=A6N81CZHpKMmfYwEeMEadlyz2CRtNnTYKR6tYAYXU5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMIDD3wYW2J+Yp5ZKW5eW+Sdk/YIq4EWPToMmNiyEaZjuBfrDfAHJ9uzK60fm/Sr6AHJ7LP51Im8bi2VAI89vClpjjqtJ4VTLvuClARxDi40XgtSowrE81StcevB2cJRBL9dt12+QbY6TWm4ZH6J44u/86Ycfuyv9fkmcJeMqQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzOk07MG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0225CC4CECF;
-	Tue,  3 Dec 2024 16:04:12 +0000 (UTC)
+	 MIME-Version; b=Lt+hCNscJVcZxx5mUzGnwYZEX0mnNieDDdxMoeMrX9H1+cp0OnPpcp7PFKddKpOmsnSV/9pJnwyJhADoO7mR3uxqlft5NS4emEtTxDTdAS8Got5w9xPLCE0/nHwZWR+69syBcUvHOyVuU54uk1Ub73AG9wcbIgMnl3HMwyIHs7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcotZOZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD9C4CECF;
+	Tue,  3 Dec 2024 15:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241853;
-	bh=2tp/lw4xh46xldh4SDGVX7n9csQe2Ow+fHKJNHo9gp4=;
+	s=korg; t=1733239660;
+	bh=A6N81CZHpKMmfYwEeMEadlyz2CRtNnTYKR6tYAYXU5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzOk07MGEHCkwbvDRydxKue0NUaFHYQ4b+81V3LREYBYkIGUfF+3bmUZI3jox6I5n
-	 d81SgtedocF2v2eDMNA9j/D1tKtGPcHH/oI3rixN8us/Xb5xA26tBZ1+7JYmgSTWjX
-	 l0JN6UE/tENTohLQ0lHAjCUtcZHHy+aVImubD04M=
+	b=YcotZOZdOBoL3l/tz+W8aa5AnC0LuvnJrUefhtnYLN2dIfRSjzRnC3LlXsh02Rce5
+	 wtKOofkiFpVsiTYRKWXQaBGT6wlziEsrAefZpm6rEiy+83vVD6yedLKQbQD5z1erzO
+	 MutWWNTHEoUoLHTpbxinjgzSkBdEgZ9lXa4ws46g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 536/826] phy: airoha: Fix REG_PCIE_PMA_TX_RESET config in airoha_pcie_phy_init_csr_2l()
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.11 691/817] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
 Date: Tue,  3 Dec 2024 15:44:23 +0100
-Message-ID: <20241203144804.663751117@linuxfoundation.org>
+Message-ID: <20241203144022.946914543@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit f9c5d6369d3e8e36b7beb15e86b1ef0911ace85f ]
+commit 3791ea69a4858b81e0277f695ca40f5aae40f312 upstream.
 
-Fix typos configuring REG_PCIE_PMA_TX_RESET register in
-airoha_pcie_phy_init_csr_2l routine for lane0 and lane1
+The early_console_setup() function initializes the sci_ports[0].port with
+an object of type struct uart_port obtained from the object of type
+struct earlycon_device received as argument by the early_console_setup().
 
-Fixes: d7d2818b9383 ("phy: airoha: Add PCIe PHY driver for EN7581 SoC.")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20240918-airoha-en7581-phy-fixes-v1-2-8291729a87f8@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It may happen that later, when the rest of the serial ports are probed,
+the serial port that was used as earlycon (e.g., port A) to be mapped to a
+different position in sci_ports[] and the slot 0 to be used by a different
+serial port (e.g., port B), as follows:
+
+sci_ports[0] = port A
+sci_ports[X] = port B
+
+In this case, the new port mapped at index zero will have associated data
+that was used for earlycon.
+
+In case this happens, after Linux boot, any access to the serial port that
+maps on sci_ports[0] (port A) will block the serial port that was used as
+earlycon (port B).
+
+To fix this, add early_console_exit() that clean the sci_ports[0] at
+earlycon exit time.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-airoha-pcie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sh-sci.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/phy/phy-airoha-pcie.c b/drivers/phy/phy-airoha-pcie.c
-index 4624aa9dd7127..9a7ce65f87f05 100644
---- a/drivers/phy/phy-airoha-pcie.c
-+++ b/drivers/phy/phy-airoha-pcie.c
-@@ -471,9 +471,9 @@ static void airoha_pcie_phy_init_csr_2l(struct airoha_pcie_phy *pcie_phy)
- 				 PCIE_SW_XFI_RXPCS_RST | PCIE_SW_REF_RST |
- 				 PCIE_SW_RX_RST);
- 	airoha_phy_pma0_set_bits(pcie_phy, REG_PCIE_PMA_TX_RESET,
--				 PCIE_TX_TOP_RST | REG_PCIE_PMA_TX_RESET);
-+				 PCIE_TX_TOP_RST | PCIE_TX_CAL_RST);
- 	airoha_phy_pma1_set_bits(pcie_phy, REG_PCIE_PMA_TX_RESET,
--				 PCIE_TX_TOP_RST | REG_PCIE_PMA_TX_RESET);
-+				 PCIE_TX_TOP_RST | PCIE_TX_CAL_RST);
- }
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3535,6 +3535,32 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
  
- static void airoha_pcie_phy_init_rx(struct airoha_pcie_phy *pcie_phy)
--- 
-2.43.0
-
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++	struct uart_port *port = &sci_port->port;
++	unsigned long flags;
++	int locked = 1;
++
++	if (port->sysrq)
++		locked = 0;
++	else if (oops_in_progress)
++		locked = uart_port_trylock_irqsave(port, &flags);
++	else
++		uart_port_lock_irqsave(port, &flags);
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	memset(sci_ports, 0, sizeof(*sci_port));
++
++	if (locked)
++		uart_port_unlock_irqrestore(port, flags);
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3551,6 +3577,8 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
