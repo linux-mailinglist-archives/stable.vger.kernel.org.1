@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991C99E2705
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491379E273D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:23:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59EE5289718
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56E98164639
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0121F8921;
-	Tue,  3 Dec 2024 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED7C1F893B;
+	Tue,  3 Dec 2024 16:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okgcztzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qcvtq1O0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEBE1AB6C9;
-	Tue,  3 Dec 2024 16:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D030C1F76D1;
+	Tue,  3 Dec 2024 16:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242816; cv=none; b=TSEO8xYpphUuZC9Ymy0c3v3bBrMnYDoHiD57bC2jT/0zLabiAgdMX79h9gXTCN46j06LtpfHtvgmhn/+Nv9+BufiYU8WIxBSB+/CbXQOq2FnpWumWXbetxVgAyfxR/N5vhYENhsI4brPZec/lGvg8RZWxPoYqgID5YbjBNNohWE=
+	t=1733242870; cv=none; b=UTRL4uNf6+E3fimGn6UOPQWHZm5vkPbtZQY1GNcmdMNw/MCGOU/kEFjzDtL6qGPqSqo+5rHXu4lz/KmNwV6F91Rx6lrpVUd/uICU4VCOIeuBCIjBJ5RpPxCIg8DSAQX3bRe+X9ipOtj26bH6ggb2rJjO1+/Oo+IMu7QrE0JV+Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242816; c=relaxed/simple;
-	bh=TE3mBYh88cF7OWlo+275da6LJmuz0G/pYC/ByLmvSBE=;
+	s=arc-20240116; t=1733242870; c=relaxed/simple;
+	bh=TO6XrHbC8m2CtJmCNBqVKdTI71/QsK4SZNAanj3qVzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZbV699UmapcPkVHHhSIMnfK6gcdhfVKzhvHbxWmg1XXt0Ayu8wRjEP2O/48Wt2lPo+vEznhbi01Dn5JpU0lBsDfCokZe+rlbcOZCEfLt7o5pEcH1Aeo0+h5pYu42/dx7qfvRNRxzrdpTDIXyerIX0iTduFdwvZQpdVpA3jwqr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okgcztzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7B5C4CECF;
-	Tue,  3 Dec 2024 16:20:16 +0000 (UTC)
+	 MIME-Version; b=c4j8beTUWyrFmGF9Tp22K2cD/soKwOL8pTxzzthYm2Ien15td00WEQMY2cZiG9eJW4yZUBy4wrtOlUEhiQyo4CddABdnt+CACBz/ygFa5pvkRV/lmnZ7Vio6tW2Zh7Y0VsSt+T4I5v01EsG4edITDSpBOVfQcesAnE2zNc8twao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qcvtq1O0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45109C4CED6;
+	Tue,  3 Dec 2024 16:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242816;
-	bh=TE3mBYh88cF7OWlo+275da6LJmuz0G/pYC/ByLmvSBE=;
+	s=korg; t=1733242870;
+	bh=TO6XrHbC8m2CtJmCNBqVKdTI71/QsK4SZNAanj3qVzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okgcztzwh/TwbO2T0fzDgmODg1jLxlNn+c4BbEXSeaA01EKIu+q0/Vrsk069HV3CD
-	 lMGdyWb2mKCt0NdI9zKLQ5J1IRGOgVWr6bouBHZa/D+JZWsrcZ1qfOty7TTxeADVr+
-	 KPF3d7JrIwr5Glynwo5OOfGOmI7H3RGM9riItgkU=
+	b=Qcvtq1O0B/6YJkLmP43HZUfJ6bpmo16FVfvCei+4CoyvB6tuHWkdlglKCMH7Hh71w
+	 h5Lvy+WJ+1HcuBB9dM8E+sYtDM4ZtqJ5K1uPw9JygvDltSq1J08VGmbIkJ4dpbQY0U
+	 FNcYwx8rXv/k19QSsTkDMiqwL6g7JQ1PYyfeNVEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jian <liujian56@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 817/826] sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
-Date: Tue,  3 Dec 2024 15:49:04 +0100
-Message-ID: <20241203144815.622646274@linuxfoundation.org>
+Subject: [PATCH 6.12 818/826] nfs/blocklayout: Dont attempt unregister for invalid block device
+Date: Tue,  3 Dec 2024 15:49:05 +0100
+Message-ID: <20241203144815.660704758@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,163 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 3f23f96528e8fcf8619895c4c916c52653892ec1 ]
+[ Upstream commit 3a4ce14d9a6b868e0787e4582420b721c04ee41e ]
 
-BUG: KASAN: slab-use-after-free in tcp_write_timer_handler+0x156/0x3e0
-Read of size 1 at addr ffff888111f322cd by task swapper/0/0
+Since commit d869da91cccb ("nfs/blocklayout: Fix premature PR key
+unregistration") an unmount of a pNFS SCSI layout-enabled NFS may
+dereference a NULL block_device in:
 
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc4-dirty #7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x68/0xa0
- print_address_description.constprop.0+0x2c/0x3d0
- print_report+0xb4/0x270
- kasan_report+0xbd/0xf0
- tcp_write_timer_handler+0x156/0x3e0
- tcp_write_timer+0x66/0x170
- call_timer_fn+0xfb/0x1d0
- __run_timers+0x3f8/0x480
- run_timer_softirq+0x9b/0x100
- handle_softirqs+0x153/0x390
- __irq_exit_rcu+0x103/0x120
- irq_exit_rcu+0xe/0x20
- sysvec_apic_timer_interrupt+0x76/0x90
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
-Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90
- 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 f8 25 00 fb f4 <fa> c3 cc cc cc
- cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
-RSP: 0018:ffffffffa2007e28 EFLAGS: 00000242
-RAX: 00000000000f3b31 RBX: 1ffffffff4400fc7 RCX: ffffffffa09c3196
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff9f00590f
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed102360835d
-R10: ffff88811b041aeb R11: 0000000000000001 R12: 0000000000000000
-R13: ffffffffa202d7c0 R14: 0000000000000000 R15: 00000000000147d0
- default_idle_call+0x6b/0xa0
- cpuidle_idle_call+0x1af/0x1f0
- do_idle+0xbc/0x130
- cpu_startup_entry+0x33/0x40
- rest_init+0x11f/0x210
- start_kernel+0x39a/0x420
- x86_64_start_reservations+0x18/0x30
- x86_64_start_kernel+0x97/0xa0
- common_startup_64+0x13e/0x141
- </TASK>
+  bl_unregister_scsi+0x16/0xe0 [blocklayoutdriver]
+  bl_free_device+0x70/0x80 [blocklayoutdriver]
+  bl_free_deviceid_node+0x12/0x30 [blocklayoutdriver]
+  nfs4_put_deviceid_node+0x60/0xc0 [nfsv4]
+  nfs4_deviceid_purge_client+0x132/0x190 [nfsv4]
+  unset_pnfs_layoutdriver+0x59/0x60 [nfsv4]
+  nfs4_destroy_server+0x36/0x70 [nfsv4]
+  nfs_free_server+0x23/0xe0 [nfs]
+  deactivate_locked_super+0x30/0xb0
+  cleanup_mnt+0xba/0x150
+  task_work_run+0x59/0x90
+  syscall_exit_to_user_mode+0x217/0x220
+  do_syscall_64+0x8e/0x160
 
-Allocated by task 595:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_slab_alloc+0x87/0x90
- kmem_cache_alloc_noprof+0x12b/0x3f0
- copy_net_ns+0x94/0x380
- create_new_namespaces+0x24c/0x500
- unshare_nsproxy_namespaces+0x75/0xf0
- ksys_unshare+0x24e/0x4f0
- __x64_sys_unshare+0x1f/0x30
- do_syscall_64+0x70/0x180
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This happens because even though we were able to create the
+nfs4_deviceid_node, the lookup for the device was unable to attach the
+block device to the pnfs_block_dev.
 
-Freed by task 100:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x54/0x70
- kmem_cache_free+0x156/0x5d0
- cleanup_net+0x5d3/0x670
- process_one_work+0x776/0xa90
- worker_thread+0x2e2/0x560
- kthread+0x1a8/0x1f0
- ret_from_fork+0x34/0x60
- ret_from_fork_asm+0x1a/0x30
+If we never found a block device to register, we can avoid this case with
+the PNFS_BDEV_REGISTERED flag.  Move the deref behind the test for the
+flag.
 
-Reproduction script:
-
-mkdir -p /mnt/nfsshare
-mkdir -p /mnt/nfs/netns_1
-mkfs.ext4 /dev/sdb
-mount /dev/sdb /mnt/nfsshare
-systemctl restart nfs-server
-chmod 777 /mnt/nfsshare
-exportfs -i -o rw,no_root_squash *:/mnt/nfsshare
-
-ip netns add netns_1
-ip link add name veth_1_peer type veth peer veth_1
-ifconfig veth_1_peer 11.11.0.254 up
-ip link set veth_1 netns netns_1
-ip netns exec netns_1 ifconfig veth_1 11.11.0.1
-
-ip netns exec netns_1 /root/iptables -A OUTPUT -d 11.11.0.254 -p tcp \
-	--tcp-flags FIN FIN  -j DROP
-
-(note: In my environment, a DESTROY_CLIENTID operation is always sent
- immediately, breaking the nfs tcp connection.)
-ip netns exec netns_1 timeout -s 9 300 mount -t nfs -o proto=tcp,vers=4.1 \
-	11.11.0.254:/mnt/nfsshare /mnt/nfs/netns_1
-
-ip netns del netns_1
-
-The reason here is that the tcp socket in netns_1 (nfs side) has been
-shutdown and closed (done in xs_destroy), but the FIN message (with ack)
-is discarded, and the nfsd side keeps sending retransmission messages.
-As a result, when the tcp sock in netns_1 processes the received message,
-it sends the message (FIN message) in the sending queue, and the tcp timer
-is re-established. When the network namespace is deleted, the net structure
-accessed by tcp's timer handler function causes problems.
-
-To fix this problem, let's hold netns refcnt for the tcp kernel socket as
-done in other modules. This is an ugly hack which can easily be backported
-to earlier kernels. A proper fix which cleans up the interfaces will
-follow, but may not be so easy to backport.
-
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Fixes: d869da91cccb ("nfs/blocklayout: Fix premature PR key unregistration")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svcsock.c  | 4 ++++
- net/sunrpc/xprtsock.c | 7 +++++++
- 2 files changed, 11 insertions(+)
+ fs/nfs/blocklayout/dev.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 825ec53576912..59e2c46240f5c 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1551,6 +1551,10 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
- 	newlen = error;
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index 6252f44479457..cab8809f0e0f4 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -20,9 +20,6 @@ static void bl_unregister_scsi(struct pnfs_block_dev *dev)
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	int status;
  
- 	if (protocol == IPPROTO_TCP) {
-+		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
-+		sock->sk->sk_net_refcnt = 1;
-+		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
-+		sock_inuse_add(net, 1);
- 		if ((error = kernel_listen(sock, 64)) < 0)
- 			goto bummer;
- 	}
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 43fb96de8ebe5..b69e6290acfab 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1940,6 +1940,13 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
- 		goto out;
+-	if (!test_and_clear_bit(PNFS_BDEV_REGISTERED, &dev->flags))
+-		return;
+-
+ 	status = ops->pr_register(bdev, dev->pr_key, 0, false);
+ 	if (status)
+ 		trace_bl_pr_key_unreg_err(bdev, dev->pr_key, status);
+@@ -58,7 +55,8 @@ static void bl_unregister_dev(struct pnfs_block_dev *dev)
+ 		return;
  	}
  
-+	if (protocol == IPPROTO_TCP) {
-+		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
-+		sock->sk->sk_net_refcnt = 1;
-+		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
-+		sock_inuse_add(xprt->xprt_net, 1);
-+	}
-+
- 	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
- 	if (IS_ERR(filp))
- 		return ERR_CAST(filp);
+-	if (dev->type == PNFS_BLOCK_VOLUME_SCSI)
++	if (dev->type == PNFS_BLOCK_VOLUME_SCSI &&
++		test_and_clear_bit(PNFS_BDEV_REGISTERED, &dev->flags))
+ 		bl_unregister_scsi(dev);
+ }
+ 
 -- 
 2.43.0
 
