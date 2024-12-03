@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-97638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4A89E2621
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC339E26A6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B1C3B3B591
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CF83B61E1E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1A01AB6C9;
-	Tue,  3 Dec 2024 15:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433FD1EE001;
+	Tue,  3 Dec 2024 15:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVZS5JnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdUpXNDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07B1362;
-	Tue,  3 Dec 2024 15:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B631EF0AE;
+	Tue,  3 Dec 2024 15:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241205; cv=none; b=VOCqFPjvMXcrZoQGbNzvp0XRpqyHc0EYDd4vyx8tj2NOR2L0b87kIlGEvpjqxS6Yps7YYCAiqBaV8CS7htVfbfV4mKEwwb2mSOMCJBYwXGCicmqIExAgJogzFJS26GRXLxunCmO6q/fQsUu6KSrLiyzyZVdO8c6Qwf+R7NABXRM=
+	t=1733239234; cv=none; b=DoRCdFY/nMNcF27tf1HHxSA/fpDbg0oc/IShAkfXFruYHNWX5bysINYwnH+kOPuKWChrd6yzZIm7fyrYdpzfvFStbn/UDKaOQ6rS5h08Yw/v7z32toltCvcqR89QZUDmCuI6uEzctOspwQbDu1z/rsjl7nOd1m/C1JmPQVMgxMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241205; c=relaxed/simple;
-	bh=EBPPLs+3Tk2NieRrst7nTGMo9DOs3NCny5qgSNXTHIE=;
+	s=arc-20240116; t=1733239234; c=relaxed/simple;
+	bh=wcXGiJAyZ+eAtgPLmDBZcZpkRSoWxhdfuclFpl2TTvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdBMUtfDWXsHwFVZGDbD0rOoUw+iXatZ5Yu+HGd1LY977G9+Ti81h3FsJfER4ZBCJhUHorVAA6lFhhDJjndogOWiry8+/x0B+00u9+K05NrrJjUXgRFDIITEnxBaNiA20pLlfgEM08aCB0bUhh8j0IYu6/q/hNZhhXzTGawhXrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVZS5JnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1E6C4CECF;
-	Tue,  3 Dec 2024 15:53:24 +0000 (UTC)
+	 MIME-Version; b=LTQUf7+z0ki48weAxxxghrdrGNiYeYG/jGeqoDVNJoVBwajO178dZ3U53K6RdakUW7Ckta++9DSG9IVbzppcViRXUaOBJPGgWweZ/PbgGP7TdY2vLWf9SGonDHxchrtWJCRcVMC5E2+JhjAMhfVtMPWeAAKf1LIZncBh9rrs8NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdUpXNDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B293C4CECF;
+	Tue,  3 Dec 2024 15:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241205;
-	bh=EBPPLs+3Tk2NieRrst7nTGMo9DOs3NCny5qgSNXTHIE=;
+	s=korg; t=1733239233;
+	bh=wcXGiJAyZ+eAtgPLmDBZcZpkRSoWxhdfuclFpl2TTvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVZS5JnZZath3xitHIzzxAyi5nzRLDTK6OqzGeBAYGSlSi+hz+SdejOTNEf8BLORs
-	 aduhbs2YUvSaby7ftug3pO3SvudsLwotE28nBbw4YdkS2i74VBiyDVH3CLB5fCZXOw
-	 czSG4eqn2POWU03nhwiBvDKGlB+OaMHDqT39/mAo=
+	b=QdUpXNDCJ3rEdqx+BlVwk4tegRy7ciJj9Tufh6Ojfh143sM3rgBbmgOUwta91xSYz
+	 ihZiScwXAxFqBXxPz3wBCN9SjGrUO/IqnPA+M1jXjE9UJaQe1Jcb7qgxSqpEi0qHeR
+	 MvaRQ8aF57RiCAJA8U2EHpPdWp+e4QRPK41wIVVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
-	Jiayuan Chen <mrpre@163.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 356/826] bpf: fix recursive lock when verdict program return SK_PASS
-Date: Tue,  3 Dec 2024 15:41:23 +0100
-Message-ID: <20241203144757.648240628@linuxfoundation.org>
+Subject: [PATCH 6.11 512/817] f2fs: fix to avoid use GC_AT when setting gc_mode as GC_URGENT_LOW or GC_URGENT_MID
+Date: Tue,  3 Dec 2024 15:41:24 +0100
+Message-ID: <20241203144015.867056782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 8ca2a1eeadf09862190b2810697702d803ceef2d ]
+[ Upstream commit 296b8cb34e65fa93382cf919be5a056f719c9a26 ]
 
-When the stream_verdict program returns SK_PASS, it places the received skb
-into its own receive queue, but a recursive lock eventually occurs, leading
-to an operating system deadlock. This issue has been present since v6.9.
+If gc_mode is set to GC_URGENT_LOW or GC_URGENT_MID, cost benefit GC
+approach should be used, but if ATGC is enabled at the same time,
+Age-threshold approach will be selected, which can only do amount of
+GC and it is much less than the numbers of CB approach.
 
-'''
-sk_psock_strp_data_ready
-    write_lock_bh(&sk->sk_callback_lock)
-    strp_data_ready
-      strp_read_sock
-        read_sock -> tcp_read_sock
-          strp_recv
-            cb.rcv_msg -> sk_psock_strp_read
-              # now stream_verdict return SK_PASS without peer sock assign
-              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
-              sk_psock_verdict_apply
-                sk_psock_skb_ingress_self
-                  sk_psock_skb_ingress_enqueue
-                    sk_psock_data_ready
-                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
+some traces:
+  f2fs_gc-254:48-396     [007] ..... 2311600.684028: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1053, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.684527: f2fs_get_victim: dev = (254,48), type = No TYPE, policy = (Background GC, LFS-mode, Age-threshold), victim = 10, cost = 4294364975, ofs_unit = 1, pre_victim_secno = -1, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.714835: f2fs_gc_end: dev = (254,48), ret = 0, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.714843: f2fs_background_gc: dev = (254,48), wait_ms = 50, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.771785: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:
+  f2fs_gc-254:48-396     [007] ..... 2311600.772275: f2fs_gc_end: dev = (254,48), ret = -61, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
 
-'''
-
-This topic has been discussed before, but it has not been fixed.
-Previous discussion:
-https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
-
-Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
-Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0e5e81114de1 ("f2fs: add GC_URGENT_LOW mode in gc_urgent")
+Fixes: d98af5f45520 ("f2fs: introduce gc_urgent_mid mode")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++--
+ fs/f2fs/gc.c                            | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index b1dcbd3be89e1..e90fbab703b2d 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1117,9 +1117,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
- 		if (tls_sw_has_ctx_rx(sk)) {
- 			psock->saved_data_ready(sk);
- 		} else {
--			write_lock_bh(&sk->sk_callback_lock);
-+			read_lock_bh(&sk->sk_callback_lock);
- 			strp_data_ready(&psock->strp);
--			write_unlock_bh(&sk->sk_callback_lock);
-+			read_unlock_bh(&sk->sk_callback_lock);
- 		}
- 	}
- 	rcu_read_unlock();
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index d0c1acfcad405..ef2d8fcc6e993 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -311,10 +311,13 @@ Description:	Do background GC aggressively when set. Set to 0 by default.
+ 		GC approach and turns SSR mode on.
+ 		gc urgent low(2): lowers the bar of checking I/O idling in
+ 		order to process outstanding discard commands and GC a
+-		little bit aggressively. uses cost benefit GC approach.
++		little bit aggressively. always uses cost benefit GC approach,
++		and will override age-threshold GC approach if ATGC is enabled
++		at the same time.
+ 		gc urgent mid(3): does GC forcibly in a period of given
+ 		gc_urgent_sleep_time and executes a mid level of I/O idling check.
+-		uses cost benefit GC approach.
++		always uses cost benefit GC approach, and will override
++		age-threshold GC approach if ATGC is enabled at the same time.
+ 
+ What:		/sys/fs/f2fs/<disk>/gc_urgent_sleep_time
+ Date:		August 2017
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 938249e7819e4..2bc16e3106508 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -251,6 +251,8 @@ static int select_gc_type(struct f2fs_sb_info *sbi, int gc_type)
+ 
+ 	switch (sbi->gc_mode) {
+ 	case GC_IDLE_CB:
++	case GC_URGENT_LOW:
++	case GC_URGENT_MID:
+ 		gc_mode = GC_CB;
+ 		break;
+ 	case GC_IDLE_GREEDY:
 -- 
 2.43.0
 
