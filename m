@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3429E2569
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22279E2247
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3BC1681EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D892825F9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D941F7591;
-	Tue,  3 Dec 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ABF1F75A8;
+	Tue,  3 Dec 2024 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZb0cMqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmkHp4Vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5F91AB6C9;
-	Tue,  3 Dec 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06431F7540;
+	Tue,  3 Dec 2024 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241327; cv=none; b=p8dQ0ln+jEkPgAAeaWG+ov1aSyjAxzRQY6HLSsS4crEZ0lq5q2mOaTFJqWaDk18VxPX9Mb2kxt3AX2RFhNG5dYq8RkC8UGyUfIqlV6OKyVgRm2paGyUKFg0EYaCxLYvuvgWN7NWhj0uFyoEd2lpb1b3V2nfZMmULba8DpvitMTM=
+	t=1733239326; cv=none; b=Am2fkqYY365OSRJchMXkXMfvL+KyzTtAnT2A0zgxUfCDmCrbQ1ykUQBg4joEAkXmR1Vxii2Z+xNlcflVMvJgsvCxSyB/7sFE56Blj+9SRoMrW4JPlABQGjBP/mFyccPh+C82fA2VTWBRXHi8Zt3ai1wlkmm6gxbOUhCrPUHH0YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241327; c=relaxed/simple;
-	bh=rsS7cSzdlTyPpCW5Oz/ubJE1FyUz0YEJPwdH7qkbWFA=;
+	s=arc-20240116; t=1733239326; c=relaxed/simple;
+	bh=IxToqpmsgAP1wYCUOg9UlBkFjt0nYOVEezQ8inaxZHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jg3u9yeu6jONvenSl2Pb02I3xvmtMzTzFXIHvg41WeXgDjN3pTuV1C+2O+/xZvUrX7WXWe26ny19Zl1+bUBXRbP6Qzv7EjSJFCp5d1FY8CovTKe34heb+91R3V1MubR+hbS7pH8xPhmzB8GBjZngLxim12ALB9Bo6A2ltlnYj1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZb0cMqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAACC4CECF;
-	Tue,  3 Dec 2024 15:55:26 +0000 (UTC)
+	 MIME-Version; b=kBlQ0mXU0RzBdkHZIyBH+wNpu1zMp4ec9SEaTkIuovhr0+AVG7PQXe+zWdwmV1ULCMu9IXaeReYqrajAAJyP0nooiVL2w7b6NqpVAoYp8DxDpwO6ZnrapCzI+B9kjBaLVT9AKQmU0ZcskhGNmihISQ6jfks3xJ+/KXnFKK4tTec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmkHp4Vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3085C4CECF;
+	Tue,  3 Dec 2024 15:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241327;
-	bh=rsS7cSzdlTyPpCW5Oz/ubJE1FyUz0YEJPwdH7qkbWFA=;
+	s=korg; t=1733239326;
+	bh=IxToqpmsgAP1wYCUOg9UlBkFjt0nYOVEezQ8inaxZHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZb0cMqFL2dy/nTJG5kF9qIfSw6/BlIvsjn+0p3pb0YEznQ0kb7b70lM2ehsQRetV
-	 jNaq5JX047fpBrwh/EbxsKMVtAHymRij0sKSh6dUn4TPjuHlfkstHhEYj3zYIbblz8
-	 SwMLriZ9b9lQR8fMjpWBS0jKcwM7nNSMZynA2mTs=
+	b=hmkHp4VpQce10uXuz8QxvOZzPVXAuTJm1p6C/ePEqHCg7T9JEyK39TDYLAMaTQ7fl
+	 djVVVjk75RGLoS2c6natmYHjxTLyD0S4Xijvssw86adO4FNdVLEfu/cEZWyK8cbHdq
+	 fXk9oadve7f1O3VCoXtBEc9doBVWyQFG6VQhXfww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 389/826] iommu/amd/pgtbl_v2: Take protection domain lock before invalidating TLB
+Subject: [PATCH 6.11 544/817] NFSD: Fix nfsd4_shutdown_copy()
 Date: Tue,  3 Dec 2024 15:41:56 +0100
-Message-ID: <20241203144758.935867678@linuxfoundation.org>
+Message-ID: <20241203144017.138180695@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 016991606aa01c4d92e6941be636c0c897aa05c7 ]
+[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
 
-Commit c7fc12354be0 ("iommu/amd/pgtbl_v2: Invalidate updated page ranges
-only") missed to take domain lock before calling
-amd_iommu_domain_flush_pages(). Fix this by taking protection domain
-lock before calling TLB invalidation function.
+nfsd4_shutdown_copy() is just this:
 
-Fixes: c7fc12354be0 ("iommu/amd/pgtbl_v2: Invalidate updated page ranges only")
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241030063556.6104-2-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+	while ((copy = nfsd4_get_copy(clp)) != NULL)
+		nfsd4_stop_copy(copy);
+
+nfsd4_get_copy() bumps @copy's reference count, preventing
+nfsd4_stop_copy() from releasing @copy.
+
+A while loop like this usually works by removing the first element
+of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
+alters the async_copies list.
+
+Best I can tell, then, is that nfsd4_shutdown_copy() continues to
+loop until other threads manage to remove all the items from this
+list. The spinning loop blocks shutdown until these items are gone.
+
+Possibly the reason we haven't seen this issue in the field is
+because client_has_state() prevents __destroy_client() from calling
+nfsd4_shutdown_copy() if there are any items on this list. In a
+subsequent patch I plan to remove that restriction.
+
+Fixes: e0639dc5805a ("NFSD introduce async copy feature")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable_v2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4proc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
-index 25b9042fa4530..c616de2c5926e 100644
---- a/drivers/iommu/amd/io_pgtable_v2.c
-+++ b/drivers/iommu/amd/io_pgtable_v2.c
-@@ -268,8 +268,11 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
- out:
- 	if (updated) {
- 		struct protection_domain *pdom = io_pgtable_ops_to_domain(ops);
-+		unsigned long flags;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 8b78d493e301f..0d6505ac1a33e 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1291,7 +1291,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
+ 	nfs4_put_copy(copy);
+ }
  
-+		spin_lock_irqsave(&pdom->lock, flags);
- 		amd_iommu_domain_flush_pages(pdom, o_iova, size);
-+		spin_unlock_irqrestore(&pdom->lock, flags);
+-static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
++static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy = NULL;
+ 
+@@ -1300,6 +1300,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
+ 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
+ 					copies);
+ 		refcount_inc(&copy->refcount);
++		copy->cp_clp = NULL;
++		if (!list_empty(&copy->copies))
++			list_del_init(&copy->copies);
  	}
+ 	spin_unlock(&clp->async_lock);
+ 	return copy;
+@@ -1309,7 +1312,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy;
  
- 	if (mapped)
+-	while ((copy = nfsd4_get_copy(clp)) != NULL)
++	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
+ 		nfsd4_stop_copy(copy);
+ }
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
 -- 
 2.43.0
 
