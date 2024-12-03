@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3EE9E289D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7536D9E2389
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B33B814E5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4411CB6235E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926781F6686;
-	Tue,  3 Dec 2024 14:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910F61F6680;
+	Tue,  3 Dec 2024 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZmeEFrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ys3EokL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C80D17BB16;
-	Tue,  3 Dec 2024 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC171F4711;
+	Tue,  3 Dec 2024 14:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236731; cv=none; b=lYQpYRHzADAU1ELHpOTcmj8L/LwilVbTvobAnExf1lcyHMux50d1kFiI80CkgNM3awyymaVIEojooMGdUCLrkf8d7o62UoOh2dBHSxAhgP7SVuGQHOIbxmWkjbeuJ6qIltGS142VLNTq1YgQoODyJgv62SVPbJQ2bLj7wuOEOSA=
+	t=1733236619; cv=none; b=Ygho0oDbVhL9Y7+hk5VXQ/Aeg7/UCbHi7u73jWzRm/2mIdGApELMmCes8IcVSSX6dhq7lVWDM2teXG60gZd4Pm+qlBVI98uJ9+70PRoL91jj+7N4+WTvGNRRZSIeortfCthXfFi4KeGdMd1q6IqP51LyZva0UNySVjCjS0sjGLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236731; c=relaxed/simple;
-	bh=Y2VP4nktkZt2UMWRkhncT3ZPNv8Ryfs8SjwnMOaEoG8=;
+	s=arc-20240116; t=1733236619; c=relaxed/simple;
+	bh=lXaq1hXgCnZWSjE5KOCgRodLzX0d3IqEgGP+OkS06V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svi9VPR9ZLeFXsnrw6GEz3+gCbnnoxWR+xfToOA+z/eMUO7F1X8GsdR6i2H+HDyMw3sMtXR+vZtJ1FsAEx4DHa4zeg6E/MLgzfa/r3oUUAsIgHdG6Wu0jh7RkIAYpRSuAt+T6jb0E1vdLUjYRGx9Hm63qtLyufj0erXf6CAJrJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZmeEFrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC21C4CECF;
-	Tue,  3 Dec 2024 14:38:50 +0000 (UTC)
+	 MIME-Version; b=mWsZf8KqR/R50zFrppX+e6lHf2nW3EbJC+KUUfW/X8fz0BA3YbALbgOQRnijYXEMPpj6IxOQBiQxeuOgTmMzmcwYF87Nop823zaHUw7Nmd8ENjhaN/Sl8xre+yeADreO215VUYLG54AUq5UU39TwgQVg5dsnhiEsfVouwZ5wTzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ys3EokL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AEFC4CECF;
+	Tue,  3 Dec 2024 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236730;
-	bh=Y2VP4nktkZt2UMWRkhncT3ZPNv8Ryfs8SjwnMOaEoG8=;
+	s=korg; t=1733236618;
+	bh=lXaq1hXgCnZWSjE5KOCgRodLzX0d3IqEgGP+OkS06V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZmeEFrOVh3rLVxiQxG8ouAueGK1fx7VdEwa89GjJJQh5XlPqGGFqo3tnbGnGmlvY
-	 EVrMeGCIDL9lXpDagY118iOE6gjFVHoy/nNtrbSYopsNQwBnklkbg2GX86c2delLer
-	 +X3pzwKZLxeP84RTdIq8l9mlOdN9bUp7M8BqawqY=
+	b=Ys3EokL2R4u6ZbxDVn7tFwMCJpRkONLb80yNrn8HtPmP1HYUOKogfqUHmwyBYu6Sd
+	 tZEM7hWUr5tGVjBUy7O5BJysbp5ir5Jl3ePvfM0MhHh/P++DcTCH9SnqIC9Mr3sey6
+	 Ta2dzVD2ZAJw8/nF8oFoRB6i6QfxoyXRfi2o2xtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 070/138] fbdev/sh7760fb: Alloc DMA memory from hardware device
-Date: Tue,  3 Dec 2024 15:31:39 +0100
-Message-ID: <20241203141926.238443412@linuxfoundation.org>
+Subject: [PATCH 4.19 073/138] dt-bindings: clock: axi-clkgen: include AXI clk
+Date: Tue,  3 Dec 2024 15:31:42 +0100
+Message-ID: <20241203141926.358020363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,63 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 8404e56f4bc1d1a65bfc98450ba3dae5e653dda1 ]
+[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
 
-Pass the hardware device to the DMA helpers dma_alloc_coherent() and
-dma_free_coherent(). The fbdev device that is currently being used is
-a software device and does not provide DMA memory. Also update the
-related dev_*() output statements similarly.
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one and add clock-names to differentiate between parent clocks and
+the bus clock.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-28-tzimmermann@suse.de
-Stable-dep-of: f89d17ae2ac4 ("fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()")
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 96de91d766230..c8ba3aeb32778 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -362,7 +362,7 @@ static void sh7760fb_free_mem(struct fb_info *info)
- 	if (!info->screen_base)
- 		return;
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+index 0d06387184d68..bb2eec3021a09 100644
+--- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -25,9 +25,21 @@ properties:
+     description:
+       Specifies the reference clock(s) from which the output frequency is
+       derived. This must either reference one clock if only the first clock
+-      input is connected or two if both clock inputs are connected.
+-    minItems: 1
+-    maxItems: 2
++      input is connected or two if both clock inputs are connected. The last
++      clock is the AXI bus clock that needs to be enabled so we can access the
++      core registers.
++    minItems: 2
++    maxItems: 3
++
++  clock-names:
++    oneOf:
++      - items:
++          - const: clkin1
++          - const: s_axi_aclk
++      - items:
++          - const: clkin1
++          - const: clkin2
++          - const: s_axi_aclk
  
--	dma_free_coherent(info->dev, info->screen_size,
-+	dma_free_coherent(info->device, info->screen_size,
- 			  info->screen_base, par->fbdma);
+   '#clock-cells':
+     const: 0
+@@ -39,6 +51,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - '#clock-cells'
  
- 	par->fbdma = 0;
-@@ -411,14 +411,14 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 	if (vram < PAGE_SIZE)
- 		vram = PAGE_SIZE;
- 
--	fbmem = dma_alloc_coherent(info->dev, vram, &par->fbdma, GFP_KERNEL);
-+	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
- 
- 	if (!fbmem)
- 		return -ENOMEM;
- 
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
- 		sh7760fb_free_mem(info);
--		dev_err(info->dev, "kernel gave me memory at 0x%08lx, which is"
-+		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
- 	}
-@@ -489,7 +489,7 @@ static int sh7760fb_probe(struct platform_device *pdev)
- 
- 	ret = sh7760fb_alloc_mem(info);
- 	if (ret) {
--		dev_dbg(info->dev, "framebuffer memory allocation failed!\n");
-+		dev_dbg(info->device, "framebuffer memory allocation failed!\n");
- 		goto out_unmap;
- 	}
- 
+ additionalProperties: false
+@@ -49,5 +62,6 @@ examples:
+       compatible = "adi,axi-clkgen-2.00.a";
+       #clock-cells = <0>;
+       reg = <0xff000000 0x1000>;
+-      clocks = <&osc 1>;
++      clocks = <&osc 1>, <&clkc 15>;
++      clock-names = "clkin1", "s_axi_aclk";
+     };
 -- 
 2.43.0
 
