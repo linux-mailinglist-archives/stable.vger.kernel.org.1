@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-96953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01B99E224F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A376E9E24D9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AECD165332
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 641AB2880C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E441F707A;
-	Tue,  3 Dec 2024 15:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121F41DAC9F;
+	Tue,  3 Dec 2024 15:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LPMLqr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOySEAOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB05A1F7547;
-	Tue,  3 Dec 2024 15:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28501AB6C9;
+	Tue,  3 Dec 2024 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239083; cv=none; b=VjSdS+9iDbesDeyt5svoKtFvYFCeaNpgXkSseeO7ar8jMnyAAx++1A2+sGxbhuE0c2PdJaZRHdwvFQuy7BqhuRO9XIRzXid6kAgy3weY1NEs+6PV2Kr5YDtITPgknGV3G4Zxg8brTPiSfGpsVuqhc8MkIqu4E9BhW0NYHWAPeDo=
+	t=1733241215; cv=none; b=lTdPAey6k0+rSgHu6emuSCKLq26UlkdYQgK13TUejBSqDqWmUsWIDBVK0srAHE2MSdjDJdcsV3fO0VyD+kyan4DPppw7+AX/7T/7wl0WpspP0mlR6n0AVhW6lVDrDjv1SfG7NtKRUwz2R8ME976QjLS8NynCrysRimAPkNPPN6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239083; c=relaxed/simple;
-	bh=CWH8jan3El3IVHnEfFCx8Ar9X9qg5SSQMWGua8g58MQ=;
+	s=arc-20240116; t=1733241215; c=relaxed/simple;
+	bh=h4ga0Qogc3BpOYpnDkwrpU+/o1zsx89nsUHGJh/3w2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qh1glmlO1jUk9hak0y3ID0F+assaJkSXLpw26bgg7oHDKuOosoSpsvCkeMCrb0d2lqF+dNww7OkSFgOtSZ0wQSilPeLZhq2T1UTyWu/9DI0GpZWGmdhZFMpUd8kRQh+Qmm0FdlR2Ljroyi2H3N5akth1vw+b+z6sRWKPBsvybKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LPMLqr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA5CC4CECF;
-	Tue,  3 Dec 2024 15:18:02 +0000 (UTC)
+	 MIME-Version; b=HYpaCDL+l2u66Gsg2rJN2X4qiEmqGjYNLL4MWDqeUw96zD8J9YpEWpYBVRwFsobk0fiZIK36a+D5UrwqQLiirWjqeX/zaWb82lygHAg+r01fl1ASlwuDCg3v/sI75ZNyjuX+YaiaD+b4Etc57Xhl971QuRxWbJV4F0bfeflATJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOySEAOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017ECC4CED8;
+	Tue,  3 Dec 2024 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239082;
-	bh=CWH8jan3El3IVHnEfFCx8Ar9X9qg5SSQMWGua8g58MQ=;
+	s=korg; t=1733241215;
+	bh=h4ga0Qogc3BpOYpnDkwrpU+/o1zsx89nsUHGJh/3w2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LPMLqr898b85pRQiMrUpouNRlEYTiviv45B/Li+wCnfN7KxZijZcRM2LAczUcVPb
-	 38z1K5sFUUYioA4l8ROsTyCung0DcwFDA9LlC1nYY0Fj5pDQnNUcHk2Bqlyi7UcGjS
-	 ihgNevxUeAETZDcYRajma5cw7aeZBdwWDMk2Mu7Q=
+	b=FOySEAOQw7BkYughchUscdu8+HPjHrkZJBHfGJojBVPQ7oioAhuSPjSaM5vlmdWkX
+	 MQy4wW98H9aKF/Eyyqd2rk+FhoT8Ys1UmgxQFpWGhcw3/fAZP8flKgAlvQHtyQtuu4
+	 OJhp8s4hSxcuAR8omaftp7AO8UgeCQ8GNuH38Sag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Veronika Molnarova <vmolnaro@redhat.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 496/817] perf dso: Fix symtab_type for kmod compression
+Subject: [PATCH 6.12 341/826] Bluetooth: ISO: Use kref to track lifetime of iso_conn
 Date: Tue,  3 Dec 2024 15:41:08 +0100
-Message-ID: <20241203144015.235513302@linuxfoundation.org>
+Message-ID: <20241203144757.063342247@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Veronika Molnarova <vmolnaro@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 05a62936e6b14c005db3b0c9c7d8b93d825dd9ca ]
+[ Upstream commit dc26097bdb864a0d5955b9a25e43376ffc1af99b ]
 
-During the rework of the dso structure in patch ee756ef7491eafd an
-increment was forgotten for the symtab_type in case the data for
-the kernel module are compressed. This affects the probing of the
-kernel modules, which fails if the data are not already cached.
+This make use of kref to keep track of reference of iso_conn which
+allows better tracking of its lifetime with usage of things like
+kref_get_unless_zero in a similar way as used in l2cap_chan.
 
-Increment the value of the symtab_type to its compressed variant so the
-data could be recovered successfully.
+In addition to it remove call to iso_sock_set_timer on iso_sock_disconn
+since at that point it is useless to set a timer as the sk will be freed
+there is nothing to be done in iso_sock_timeout.
 
-Fixes: ee756ef7491eafd7 ("perf dso: Add reference count checking and accessor functions")
-Signed-off-by: Veronika Molnarova <vmolnaro@redhat.com>
-Acked-by: Michael Petlan <mpetlan@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Tested-by: Michael Petlan <mpetlan@redhat.com>
-Link: https://lore.kernel.org/r/20241010144836.16424-1-vmolnaro@redhat.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/iso.c | 88 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 71 insertions(+), 17 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 706be5e4a0761..b2e6e73d7a925 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -1342,7 +1342,7 @@ static int maps__set_module_path(struct maps *maps, const char *path, struct kmo
- 	 * we need to update the symtab_type if needed.
- 	 */
- 	if (m->comp && is_kmod_dso(dso)) {
--		dso__set_symtab_type(dso, dso__symtab_type(dso));
-+		dso__set_symtab_type(dso, dso__symtab_type(dso)+1);
- 		dso__set_comp(dso, m->comp);
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 7a83e400ac77a..109bf58c982ae 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -35,6 +35,7 @@ struct iso_conn {
+ 	struct sk_buff	*rx_skb;
+ 	__u32		rx_len;
+ 	__u16		tx_sn;
++	struct kref	ref;
+ };
+ 
+ #define iso_conn_lock(c)	spin_lock(&(c)->lock)
+@@ -93,6 +94,49 @@ static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
+ #define ISO_CONN_TIMEOUT	(HZ * 40)
+ #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+ 
++static void iso_conn_free(struct kref *ref)
++{
++	struct iso_conn *conn = container_of(ref, struct iso_conn, ref);
++
++	BT_DBG("conn %p", conn);
++
++	if (conn->sk)
++		iso_pi(conn->sk)->conn = NULL;
++
++	if (conn->hcon) {
++		conn->hcon->iso_data = NULL;
++		hci_conn_drop(conn->hcon);
++	}
++
++	/* Ensure no more work items will run since hci_conn has been dropped */
++	disable_delayed_work_sync(&conn->timeout_work);
++
++	kfree(conn);
++}
++
++static void iso_conn_put(struct iso_conn *conn)
++{
++	if (!conn)
++		return;
++
++	BT_DBG("conn %p refcnt %d", conn, kref_read(&conn->ref));
++
++	kref_put(&conn->ref, iso_conn_free);
++}
++
++static struct iso_conn *iso_conn_hold_unless_zero(struct iso_conn *conn)
++{
++	if (!conn)
++		return NULL;
++
++	BT_DBG("conn %p refcnt %u", conn, kref_read(&conn->ref));
++
++	if (!kref_get_unless_zero(&conn->ref))
++		return NULL;
++
++	return conn;
++}
++
+ static struct sock *iso_sock_hold(struct iso_conn *conn)
+ {
+ 	if (!conn || !bt_sock_linked(&iso_sk_list, conn->sk))
+@@ -109,9 +153,14 @@ static void iso_sock_timeout(struct work_struct *work)
+ 					     timeout_work.work);
+ 	struct sock *sk;
+ 
++	conn = iso_conn_hold_unless_zero(conn);
++	if (!conn)
++		return;
++
+ 	iso_conn_lock(conn);
+ 	sk = iso_sock_hold(conn);
+ 	iso_conn_unlock(conn);
++	iso_conn_put(conn);
+ 
+ 	if (!sk)
+ 		return;
+@@ -149,9 +198,14 @@ static struct iso_conn *iso_conn_add(struct hci_conn *hcon)
+ {
+ 	struct iso_conn *conn = hcon->iso_data;
+ 
++	conn = iso_conn_hold_unless_zero(conn);
+ 	if (conn) {
+-		if (!conn->hcon)
++		if (!conn->hcon) {
++			iso_conn_lock(conn);
+ 			conn->hcon = hcon;
++			iso_conn_unlock(conn);
++		}
++		iso_conn_put(conn);
+ 		return conn;
  	}
- 	map__put(map);
+ 
+@@ -159,6 +213,7 @@ static struct iso_conn *iso_conn_add(struct hci_conn *hcon)
+ 	if (!conn)
+ 		return NULL;
+ 
++	kref_init(&conn->ref);
+ 	spin_lock_init(&conn->lock);
+ 	INIT_DELAYED_WORK(&conn->timeout_work, iso_sock_timeout);
+ 
+@@ -178,17 +233,15 @@ static void iso_chan_del(struct sock *sk, int err)
+ 	struct sock *parent;
+ 
+ 	conn = iso_pi(sk)->conn;
++	iso_pi(sk)->conn = NULL;
+ 
+ 	BT_DBG("sk %p, conn %p, err %d", sk, conn, err);
+ 
+ 	if (conn) {
+ 		iso_conn_lock(conn);
+ 		conn->sk = NULL;
+-		iso_pi(sk)->conn = NULL;
+ 		iso_conn_unlock(conn);
+-
+-		if (conn->hcon)
+-			hci_conn_drop(conn->hcon);
++		iso_conn_put(conn);
+ 	}
+ 
+ 	sk->sk_state = BT_CLOSED;
+@@ -210,6 +263,7 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
+ 	struct iso_conn *conn = hcon->iso_data;
+ 	struct sock *sk;
+ 
++	conn = iso_conn_hold_unless_zero(conn);
+ 	if (!conn)
+ 		return;
+ 
+@@ -219,20 +273,18 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
+ 	iso_conn_lock(conn);
+ 	sk = iso_sock_hold(conn);
+ 	iso_conn_unlock(conn);
++	iso_conn_put(conn);
+ 
+-	if (sk) {
+-		lock_sock(sk);
+-		iso_sock_clear_timer(sk);
+-		iso_chan_del(sk, err);
+-		release_sock(sk);
+-		sock_put(sk);
++	if (!sk) {
++		iso_conn_put(conn);
++		return;
+ 	}
+ 
+-	/* Ensure no more work items will run before freeing conn. */
+-	cancel_delayed_work_sync(&conn->timeout_work);
+-
+-	hcon->iso_data = NULL;
+-	kfree(conn);
++	lock_sock(sk);
++	iso_sock_clear_timer(sk);
++	iso_chan_del(sk, err);
++	release_sock(sk);
++	sock_put(sk);
+ }
+ 
+ static int __iso_chan_add(struct iso_conn *conn, struct sock *sk,
+@@ -652,6 +704,8 @@ static void iso_sock_destruct(struct sock *sk)
+ {
+ 	BT_DBG("sk %p", sk);
+ 
++	iso_conn_put(iso_pi(sk)->conn);
++
+ 	skb_queue_purge(&sk->sk_receive_queue);
+ 	skb_queue_purge(&sk->sk_write_queue);
+ }
+@@ -711,6 +765,7 @@ static void iso_sock_disconn(struct sock *sk)
+ 		 */
+ 		if (bis_sk) {
+ 			hcon->state = BT_OPEN;
++			hcon->iso_data = NULL;
+ 			iso_pi(sk)->conn->hcon = NULL;
+ 			iso_sock_clear_timer(sk);
+ 			iso_chan_del(sk, bt_to_errno(hcon->abort_reason));
+@@ -720,7 +775,6 @@ static void iso_sock_disconn(struct sock *sk)
+ 	}
+ 
+ 	sk->sk_state = BT_DISCONN;
+-	iso_sock_set_timer(sk, ISO_DISCONN_TIMEOUT);
+ 	iso_conn_lock(iso_pi(sk)->conn);
+ 	hci_conn_drop(iso_pi(sk)->conn->hcon);
+ 	iso_pi(sk)->conn->hcon = NULL;
 -- 
 2.43.0
 
