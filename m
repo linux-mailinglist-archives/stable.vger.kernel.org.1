@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D346A9E18C0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC229E18C4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6F54166A58
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:04:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20E901668BC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916801E0B8A;
-	Tue,  3 Dec 2024 10:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576C41E0B6D;
+	Tue,  3 Dec 2024 10:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBAO7soG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRkw66Vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505E71E0B73
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF9E1E0B6C
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733220260; cv=none; b=jLXt/UK+/liltY8J700UWEypKZ9oWLqPEvAd4eAJVBImH+64yVw+7Zt2fTJxaUoVMcwDBeSLf5APaXCKNO2JbtkVF0EFP4WWUMlzUY/2bmNESBe/ZBrWzWJJW4U499EMrfpLVNU6K9rZM2ImMPOeLocHqzjr7X6AudpN/FQ0LJo=
+	t=1733220300; cv=none; b=Qo7wGjvnJbqUVKvjTCQnwsEgeDo1IN5oNT5vQX8xDZNAXRcBniOsAJKfzTCwfHz1p+k7V5uaUjixPjXS++nnA+BxlxcXVrifvxI4sezwCBJwuC/XDT6vIBgBP7pg6jdDa5K2jNFBw3B0kIcJEhy4AmZ5DGUwJ9R4PFQWuobONIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733220260; c=relaxed/simple;
-	bh=k78rUz/JHoqVe0gud8GASw+3c2FKOGYCZ99S/0OZ97E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cemJCyoi8ZSLykFfQb1jIRwxgvd4REKYUW4MnO0+hhj4As2/FqPEh8cQJ9FIahpGLZxbiUo+h8TEGgXLEav8LOmSlGxhDoSgTrLQjNCUvkhosVZPEopljONf3+xhweZBmWirnvmMzigOG2hBPzOhxZ14wRHydn1LWlmoqp7J3fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBAO7soG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA14C4CECF;
-	Tue,  3 Dec 2024 10:04:19 +0000 (UTC)
+	s=arc-20240116; t=1733220300; c=relaxed/simple;
+	bh=8RDu5Nuz4oFGqgCI0T+30OS9NIJ10FDY8WTt1R7kVRk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sRqZu832h9IdEBcLT7JAx9I4CR1cdxCsVLnBMG703Y/T9peQ26HkxOBONR/1km0A2lLUjJgkA4Wi0WNlx8o0Q97FidUxqGu+ENwTiSjUuNOVE1fT3kMB7ePWUIgV17COeA5CkvT0NhDEHx1V2dyT7kPjtO4AThjeuqKpEnmgGXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRkw66Vx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A16C4CECF;
+	Tue,  3 Dec 2024 10:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733220259;
-	bh=k78rUz/JHoqVe0gud8GASw+3c2FKOGYCZ99S/0OZ97E=;
+	s=korg; t=1733220299;
+	bh=8RDu5Nuz4oFGqgCI0T+30OS9NIJ10FDY8WTt1R7kVRk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZBAO7soGu38xODnEL/izJ9VFyymcU0bKD8Ctj3M+G+7Q9AUMt0VmDcCJA3AdBddh+
-	 KXOD791CG2wMYq7vJ0e+SZZsRhX6qgZIiHqt5Q6OcnBcf5G86dSnlIMO3N7fvQX1jd
-	 DrjCj8xwvNor3SBcaFT/wobUoS/p+0UHp0W+R5PI=
-Subject: FAILED: patch "[PATCH] dt-bindings: serial: rs485: Fix rs485-rts-delay property" failed to apply to 5.10-stable tree
-To: michal.simek@amd.com,gregkh@linuxfoundation.org,krzk@kernel.org
+	b=qRkw66VxshocQqIu52t6sO/AsSNdD18JkHobChRL31p/zW6cpuZWLn4HV3gV1D9rH
+	 PPciYViBaHqQrqjFLKHsnOfPf/HOKpWWOX1x4qr2B22AS8eOY9N4ImGaPY7btw/m4a
+	 3Bn0ylspB/mIMqvsucCnvvAXxXmkl2p5OMFgqvNQ=
+Subject: FAILED: patch "[PATCH] serial: amba-pl011: Fix RX stall when DMA is used" failed to apply to 6.6-stable tree
+To: kkartik@nvidia.com,gregkh@linuxfoundation.org,linus.walleij@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Dec 2024 11:04:08 +0100
-Message-ID: <2024120308-yo-yo-bagful-0961@gregkh>
+Date: Tue, 03 Dec 2024 11:04:55 +0100
+Message-ID: <2024120355-monitor-shaft-8108@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 12b3642b6c242061d3ba84e6e3050c3141ded14c
+git cherry-pick -x 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120308-yo-yo-bagful-0961@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120355-monitor-shaft-8108@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,51 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 12b3642b6c242061d3ba84e6e3050c3141ded14c Mon Sep 17 00:00:00 2001
-From: Michal Simek <michal.simek@amd.com>
-Date: Mon, 16 Sep 2024 11:53:06 +0200
-Subject: [PATCH] dt-bindings: serial: rs485: Fix rs485-rts-delay property
+From 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf Mon Sep 17 00:00:00 2001
+From: Kartik Rajput <kkartik@nvidia.com>
+Date: Wed, 13 Nov 2024 14:56:29 +0530
+Subject: [PATCH] serial: amba-pl011: Fix RX stall when DMA is used
 
-Code expects array only with 2 items which should be checked.
-But also item checking is not working as it should likely because of
-incorrect items description.
+Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
+also disables the RX DMA by clearing the RXDMAE bit of the DMACR
+register. However, to properly unthrottle RX when DMA is used, the
+function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
+the DMACR register, which it currently lacks. This causes RX to stall
+after the throttle API is called.
 
-Fixes: d50f974c4f7f ("dt-bindings: serial: Convert rs485 bindings to json-schema")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
+used.
+
+Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
 Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/820c639b9e22fe037730ed44d1b044cdb6d28b75.1726480384.git.michal.simek@amd.com
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/Documentation/devicetree/bindings/serial/rs485.yaml b/Documentation/devicetree/bindings/serial/rs485.yaml
-index 9418fd66a8e9..b93254ad2a28 100644
---- a/Documentation/devicetree/bindings/serial/rs485.yaml
-+++ b/Documentation/devicetree/bindings/serial/rs485.yaml
-@@ -18,16 +18,15 @@ properties:
-     description: prop-encoded-array <a b>
-     $ref: /schemas/types.yaml#/definitions/uint32-array
-     items:
--      items:
--        - description: Delay between rts signal and beginning of data sent in
--            milliseconds. It corresponds to the delay before sending data.
--          default: 0
--          maximum: 100
--        - description: Delay between end of data sent and rts signal in milliseconds.
--            It corresponds to the delay after sending data and actual release
--            of the line.
--          default: 0
--          maximum: 100
-+      - description: Delay between rts signal and beginning of data sent in
-+          milliseconds. It corresponds to the delay before sending data.
-+        default: 0
-+        maximum: 100
-+      - description: Delay between end of data sent and rts signal in milliseconds.
-+          It corresponds to the delay after sending data and actual release
-+          of the line.
-+        default: 0
-+        maximum: 100
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 56e587b94823..2facdbcd73eb 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
  
-   rs485-rts-active-high:
-     description: drive RTS high when sending (this is the default).
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
++	if (uap->using_rx_dma) {
++		uap->dmacr |= UART011_RXDMAE;
++		pl011_write(uap->dmacr, uap, REG_DMACR);
++	}
++
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
 
 
