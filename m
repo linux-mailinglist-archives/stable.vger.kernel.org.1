@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-97356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC0F9E2442
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118D59E27B5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:39:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4B5916C7F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D4EB65421
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C69B205E04;
-	Tue,  3 Dec 2024 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB71F9F6A;
+	Tue,  3 Dec 2024 15:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvhskVN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj0TaiT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598B01F76B0;
-	Tue,  3 Dec 2024 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE151F893D;
+	Tue,  3 Dec 2024 15:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240249; cv=none; b=V7c/wdsxUE+Mzy09G/+VeG/lAYOCG9860m7r8UG6TxRMBi5X+MVo6BE1eikEw8ydZuqQwbxIydYxsUsIFgkrth+AQYEOQEJjOEeLt8A/TpgfI4RG06VePi1ecK/sYBcqlFH4azbJpCvt25HkFbYb5dPqepg2y9F8YoVR4PE9ha8=
+	t=1733240281; cv=none; b=gPaOTmO5c2JiAb0na4fjFiRsoU6CcSPedkJYa80/uFJkZTfhqDNjmCOhjZrRqyY6aP30NhF98IHCxj6cZbITKCKNsHsmJGTCFbJbsUH5bWE9sy4xvynBgKv8eCJ//x9t4DjmqJxoQ8tO0ce8hvfBaUKyf53uR24O56o2NbU0YAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240249; c=relaxed/simple;
-	bh=+g4ga/lPFB1m6CKgG5pwrT6zYKdC/x5UGmDxHyZntVU=;
+	s=arc-20240116; t=1733240281; c=relaxed/simple;
+	bh=by/h09U+gTUro1C3GMS0IFglHX3GNZsSsjWFL5qwIFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrHe0AO+5GhxqbRKiAKE8FzKvHGbKZ6S2cvv1nXAEFjLvcuvoQQzTjgB7lt3NUrsIf/GY7HTy9mLQAcEgMUNzMroazESSloYMJpLQ2He4STCGA0R+HA92IIsOJRoHTH1k7JpW0Ieblo02dXNwJu9qmgOeL8vkkfxo8TT9HYBMgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvhskVN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A16C4CECF;
-	Tue,  3 Dec 2024 15:37:28 +0000 (UTC)
+	 MIME-Version; b=CO65GpLtc7p/LJw0sDczMcgfUT3qw4X8BPQKe5Y2ddwNUW9cFdgOVZqgNpvgaoCzJRy0N1RSqO7CXGhzS7BCee3OOHJT8kOA33iXsbUcAPshKBPmkSMUTq2+Ci2BkI2zY7XO4ur49ilCsQk1tPUURUpLFUU4i9+D/LmF5oBa380=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj0TaiT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CA6C4CECF;
+	Tue,  3 Dec 2024 15:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240249;
-	bh=+g4ga/lPFB1m6CKgG5pwrT6zYKdC/x5UGmDxHyZntVU=;
+	s=korg; t=1733240281;
+	bh=by/h09U+gTUro1C3GMS0IFglHX3GNZsSsjWFL5qwIFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvhskVN+KSlYkQlbXfc0lzn9RYYmi5V3q9X7+7bkOKTXS+p933h9gKVXjyeEuwxBE
-	 GXsFlL7PVsFG1tTC4TsTYE+BzIvalW9PreccBMeO88phCNE8JhVV09BDErjqe7Gy42
-	 91aUpAfwYXKaRa9S0JhIRknVyJ4I9uwaqPa8uTdM=
+	b=Vj0TaiT6zA4wIaWWJzWcgs9Ar4CIPaPjBBcFvASuzlC/HB9uZZ2rMZEVWTntG9T8I
+	 nImDM/HgSVyBg61TiJi1YpMycXpXMkbVmDZQAejOm+BLOu165qs+cxkN7R77qloWwY
+	 gE2UzIV++X49hkENywo/6LIOHVSOT4pLukyTPnZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
 	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/826] doc: rcu: update printed dynticks counter bits
-Date: Tue,  3 Dec 2024 15:36:34 +0100
-Message-ID: <20241203144746.086297997@linuxfoundation.org>
+Subject: [PATCH 6.12 068/826] rcu/srcutiny: dont return before reenabling preemption
+Date: Tue,  3 Dec 2024 15:36:35 +0100
+Message-ID: <20241203144746.124928446@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,36 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baruch Siach <baruch@tkos.co.il>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 4a09e358922381f9b258e863bcd9c910584203b9 ]
+[ Upstream commit 0ea3acbc804c2d5a165442cdf9c0526f4d324888 ]
 
-The stall warning prints 16 bits since commit 171476775d32
-("context_tracking: Convert state to atomic_t").
+Code after the return statement is dead. Enable preemption before
+returning from srcu_drive_gp().
 
-Fixes: 171476775d32 ("context_tracking: Convert state to atomic_t")
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
-Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+This will be important when/if PREEMPT_AUTO (lazy resched) gets merged.
+
+Fixes: 65b4a59557f6 ("srcu: Make Tiny SRCU explicitly disable preemption")
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/RCU/stallwarn.rst | 2 +-
+ kernel/rcu/srcutiny.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/RCU/stallwarn.rst b/Documentation/RCU/stallwarn.rst
-index ca7b7cd806a16..30080ff6f4062 100644
---- a/Documentation/RCU/stallwarn.rst
-+++ b/Documentation/RCU/stallwarn.rst
-@@ -249,7 +249,7 @@ ticks this GP)" indicates that this CPU has not taken any scheduling-clock
- interrupts during the current stalled grace period.
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index 549c03336ee97..4dcbf8aa80ff7 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -122,8 +122,8 @@ void srcu_drive_gp(struct work_struct *wp)
+ 	ssp = container_of(wp, struct srcu_struct, srcu_work);
+ 	preempt_disable();  // Needed for PREEMPT_AUTO
+ 	if (ssp->srcu_gp_running || ULONG_CMP_GE(ssp->srcu_idx, READ_ONCE(ssp->srcu_idx_max))) {
+-		return; /* Already running or nothing to do. */
+ 		preempt_enable();
++		return; /* Already running or nothing to do. */
+ 	}
  
- The "idle=" portion of the message prints the dyntick-idle state.
--The hex number before the first "/" is the low-order 12 bits of the
-+The hex number before the first "/" is the low-order 16 bits of the
- dynticks counter, which will have an even-numbered value if the CPU
- is in dyntick-idle mode and an odd-numbered value otherwise.  The hex
- number between the two "/"s is the value of the nesting, which will be
+ 	/* Remove recently arrived callbacks and wait for readers. */
 -- 
 2.43.0
 
