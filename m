@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1B89E25DC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63A49E282D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAD1282E7A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45153BC0985
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78CE1F76D1;
-	Tue,  3 Dec 2024 16:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9E01F75B6;
+	Tue,  3 Dec 2024 15:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ee1QGkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhMdtyGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FE1F76BF;
-	Tue,  3 Dec 2024 16:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D034B1F7063;
+	Tue,  3 Dec 2024 15:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241946; cv=none; b=UT9xyUWNljlQQoPDDWVP4pF2kH2/DgSIwqGU3CLGABEKb4et0xNSyfgsQvrSCH7fu8KmovZJXhgQUhvNa6NQtRfHvBKEl1SWp5afvhDEBBlHWSGzcuZJT98QrbYe/Zz2QdX6AI6uVDCaPU3zbcj8h21iYCkhL+jw8kVUhXIjsN8=
+	t=1733239832; cv=none; b=KbWu7wVC8Z1nQ9pscBsLmrPbq9NTtA781eYADlVkiGRl7fU17HRLyR2CiKvkXuG+EvJ2/BaXx/z3JpPA7iVSvhtKZB61gj9sSNd6wFcm7+RPNoGHBqaAVOVGypeCHAZ8i7O1p2JAi3eeMaZN7bfWe7gWRK4tb5llBo2+hTBMkKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241946; c=relaxed/simple;
-	bh=k26xzvTTsUz5QLRZok2KG4MZyzrYBz0EtthK0sgQJpI=;
+	s=arc-20240116; t=1733239832; c=relaxed/simple;
+	bh=U8fq+hrXXRHATPx9t/01kE4rdOys1u9TSx7MuUoPErc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Th4SIjzEZ8q1VFtBuov2kAR5FFFNdZmcwQxM8V95OVKWGuTtYdqiT32mdhNe/ZIuilUi895bqAgbLlkB/oyCPcwGxSWLcX9KDYQH7MsOOvgZeGHb9iqML7GkwCm1rX//hFCSyMFF4rRAxP9/vKEJZwY3+noZY3+bOFOHSNRwItU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ee1QGkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EEAC4CECF;
-	Tue,  3 Dec 2024 16:05:45 +0000 (UTC)
+	 MIME-Version; b=jo3ZhBxBtPo8aDSsGdO619JncxVSbFr6N4ZV+KnM0SluOfvE0IPHa9XUAouTOPftBzrVMuaV78PFbh/vzkNIrvkl5kcLhEjjfymOOi2Xj68hAOoRzPFZGEU5czN6Xht5iPewcjxeYqkJoaW10YTk4BjNE4B8Zw06pKjKMDbZ6fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhMdtyGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14F5C4CED6;
+	Tue,  3 Dec 2024 15:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241946;
-	bh=k26xzvTTsUz5QLRZok2KG4MZyzrYBz0EtthK0sgQJpI=;
+	s=korg; t=1733239832;
+	bh=U8fq+hrXXRHATPx9t/01kE4rdOys1u9TSx7MuUoPErc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ee1QGkPIab8EX3AyDj0PrjLllbFwp5dLlryqv6Ayg641Ws68aHuvY8Pyd+L/ebIU
-	 Ln+awB9NN8Sq0zuTfOtIinI1IEzpeua1+fR9hM2BNQSFmnYoO4oGo23fPqbJdpL7in
-	 EKNa/H5Fnz2HdCB6BoBTssk1DTkS/txCg5lbzycw=
+	b=LhMdtyGWGoOX67ePNoaDhtyiGPiD08mysPHxKOX3h6+Oyc+eKkzzTPIiseqVBe8hz
+	 gpVuYy6WErIkOzL951vS/nnS+8h3f/c2uDnHVhnJKdis0uikd2cwdqBG3HP68Oy91k
+	 DYyUwN+2/RfubC7ip2/PMtnxEXAv/qGeRq5UvFbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 563/826] rtase: Refactor the rtase_check_mac_version_valid() function
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.11 718/817] mtd: ubi: fix unreleased fwnode_handle in find_volume_fwnode()
 Date: Tue,  3 Dec 2024 15:44:50 +0100
-Message-ID: <20241203144805.706531417@linuxfoundation.org>
+Message-ID: <20241203144024.018614772@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit a1f8609ff1f658e410f78d800ca947d57e51996a ]
+commit 07593293ffabba14125c8998525adde5a832bfa3 upstream.
 
-Different hardware requires different configurations, but this distinction
-was not made previously. Additionally, the error message was not clear
-enough. Therefore, this patch will address the issues mentioned above.
+The 'fw_vols' fwnode_handle initialized via
+device_get_named_child_node() requires explicit calls to
+fwnode_handle_put() when the variable is no longer required.
 
-Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing calls to fwnode_handle_put() before the function
+returns.
+
+Cc: stable@vger.kernel.org
+Fixes: 51932f9fc487 ("mtd: ubi: populate ubi volume fwnode")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase.h    |  7 ++++-
- .../net/ethernet/realtek/rtase/rtase_main.c   | 28 +++++++++++--------
- 2 files changed, 22 insertions(+), 13 deletions(-)
+ drivers/mtd/ubi/vmt.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
-index 583c33930f886..4a4434869b10a 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase.h
-+++ b/drivers/net/ethernet/realtek/rtase/rtase.h
-@@ -9,7 +9,10 @@
- #ifndef RTASE_H
- #define RTASE_H
+--- a/drivers/mtd/ubi/vmt.c
++++ b/drivers/mtd/ubi/vmt.c
+@@ -143,8 +143,10 @@ static struct fwnode_handle *find_volume
+ 		    vol->vol_id != volid)
+ 			continue;
  
--#define RTASE_HW_VER_MASK 0x7C800000
-+#define RTASE_HW_VER_MASK     0x7C800000
-+#define RTASE_HW_VER_906X_7XA 0x00800000
-+#define RTASE_HW_VER_906X_7XC 0x04000000
-+#define RTASE_HW_VER_907XD_V1 0x04800000
- 
- #define RTASE_RX_DMA_BURST_256       4
- #define RTASE_TX_DMA_BURST_UNLIMITED 7
-@@ -327,6 +330,8 @@ struct rtase_private {
- 	u16 int_nums;
- 	u16 tx_int_mit;
- 	u16 rx_int_mit;
-+
-+	u32 hw_ver;
- };
- 
- #define RTASE_LSO_64K 64000
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index f8777b7663d35..c2999e24904d1 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1972,20 +1972,21 @@ static void rtase_init_software_variable(struct pci_dev *pdev,
- 	tp->dev->max_mtu = RTASE_MAX_JUMBO_SIZE;
- }
- 
--static bool rtase_check_mac_version_valid(struct rtase_private *tp)
-+static int rtase_check_mac_version_valid(struct rtase_private *tp)
- {
--	u32 hw_ver = rtase_r32(tp, RTASE_TX_CONFIG_0) & RTASE_HW_VER_MASK;
--	bool known_ver = false;
-+	int ret = -ENODEV;
- 
--	switch (hw_ver) {
--	case 0x00800000:
--	case 0x04000000:
--	case 0x04800000:
--		known_ver = true;
-+	tp->hw_ver = rtase_r32(tp, RTASE_TX_CONFIG_0) & RTASE_HW_VER_MASK;
-+
-+	switch (tp->hw_ver) {
-+	case RTASE_HW_VER_906X_7XA:
-+	case RTASE_HW_VER_906X_7XC:
-+	case RTASE_HW_VER_907XD_V1:
-+		ret = 0;
- 		break;
++		fwnode_handle_put(fw_vols);
+ 		return fw_vol;
  	}
++	fwnode_handle_put(fw_vols);
  
--	return known_ver;
-+	return ret;
+ 	return NULL;
  }
- 
- static int rtase_init_board(struct pci_dev *pdev, struct net_device **dev_out,
-@@ -2105,9 +2106,12 @@ static int rtase_init_one(struct pci_dev *pdev,
- 	tp->pdev = pdev;
- 
- 	/* identify chip attached to board */
--	if (!rtase_check_mac_version_valid(tp))
--		return dev_err_probe(&pdev->dev, -ENODEV,
--				     "unknown chip version, contact rtase maintainers (see MAINTAINERS file)\n");
-+	ret = rtase_check_mac_version_valid(tp);
-+	if (ret != 0) {
-+		dev_err(&pdev->dev,
-+			"unknown chip version: 0x%08x, contact rtase maintainers (see MAINTAINERS file)\n",
-+			tp->hw_ver);
-+	}
- 
- 	rtase_init_software_variable(pdev, tp);
- 	rtase_init_hardware(tp);
--- 
-2.43.0
-
 
 
 
