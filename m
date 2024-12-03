@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6249E2944
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C16D9E28E0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D555BE7439
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32872B3CB4C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B642C1F8913;
-	Tue,  3 Dec 2024 16:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0238B1F75B3;
+	Tue,  3 Dec 2024 15:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReL6udIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxtnatMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A01E81ADA;
-	Tue,  3 Dec 2024 16:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E661F9F6E;
+	Tue,  3 Dec 2024 15:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242238; cv=none; b=aTBCjFeKE6R23pRBd0jajxmS3uR0UC9jyLsyxLMztD1PSEXqouF10Pn8/e1RODQj4U3NSpX5OkHnHU5OEwiu4G8aiYsJCzlAn/7SJ19LbMUG9i8Q7HNh6y6yNFXoDTG+y1h3nq3OZxesxJYEGDmXKqKrrev3wc55hdDATfEf43A=
+	t=1733239911; cv=none; b=aj7Swk/d2xELRq99FmJYlf8RCMsD1Hma21H2rpG1uqikltG4Agr60AALbLXTTVGLxZ5yxsIfdxv7ftoAVigbHVvtw/7cwGa2l0MEGzGYSf+TzNtsOHtMYcEf9Iz9Fx4MWNefsOYAi2IxGujd+WsgJwvju1iyxftOEgHaWZkxDeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242238; c=relaxed/simple;
-	bh=M7fSw4ZoNMGK8A9ZnvOGroYglUNws0n+u8ADygtOBTY=;
+	s=arc-20240116; t=1733239911; c=relaxed/simple;
+	bh=qi9wRBWfSIoaUuYGrndsOzmjMnItCFcv9yCjFxd4Jy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e6Yu36sAw84SdqUD/IaQq2M1q4PozIstDsfzOFpzcUyCS0fqjvQ5tpzgUFJ3ZwsjTA0UVylS7Y4TaDJAMgcKY0dInBOyUUHt1ZsDgDdEr0OZvCt/tEG8fEa20Js3SgyWOhvyEfCFEA9MbE56DaZnfyafU6+g/uS9H1j8X8mgNTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReL6udIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F9C4CECF;
-	Tue,  3 Dec 2024 16:10:37 +0000 (UTC)
+	 MIME-Version; b=JPOGmCLACY+oPVB7kLNCOndMy5azsZgwAyCpwHgU7QYFN64oDPJEXwzELP3u1bJ6mZ69Jkqub4j5O2xG0qyjarEnYM9sv9PaDjyx+UNdU06jZMmj5jTX1J2Iq/UitFygrJsFObHrakq9mp6F9LshxHDb4qu2j2OF5a16V+Suonk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxtnatMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34CAC4CED6;
+	Tue,  3 Dec 2024 15:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242238;
-	bh=M7fSw4ZoNMGK8A9ZnvOGroYglUNws0n+u8ADygtOBTY=;
+	s=korg; t=1733239911;
+	bh=qi9wRBWfSIoaUuYGrndsOzmjMnItCFcv9yCjFxd4Jy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReL6udIXci7SPfg1u3MtYujQQO+ReFq4S3CypWk4ba8ZKH9ZhkBlbfPsHrdziU8jo
-	 o+b6UqSS0gh8d6mr1Kg2jU6c2qxVpAT0o0ycV8umh3hXuy9JT7vGLOIPeNk+h/zojF
-	 RahcgjvHM4V55MhoyX8vIHD+xWtgM3mjypx2diDg=
+	b=dxtnatMUq5OpK0HHMkPqxK8PPX6Jff0qEQk47b3giYyIBChjSFMFosi0GXp2Ypijn
+	 LuTcoYnSH/2ZhmVhwBxqLi6b41G2i3l2URTCKb0dgo+0sOQZn6YK+suR9oq/Z2CUz5
+	 CiqlkcogZ9yFtiAvOcLMrWo0Q4yCzfbH/pDkER2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 616/826] drm/xe/ufence: Wake up waiters after setting ufence->signalled
-Date: Tue,  3 Dec 2024 15:45:43 +0100
-Message-ID: <20241203144807.782846472@linuxfoundation.org>
+Subject: [PATCH 6.11 775/817] ubifs: Correct the total block count by deducting journal reservation
+Date: Tue,  3 Dec 2024 15:45:47 +0100
+Message-ID: <20241203144026.264134580@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 37a1cf288e4538eb39b38dbc745fe0da7ae53d94 ]
+[ Upstream commit 84a2bee9c49769310efa19601157ef50a1df1267 ]
 
-If a previous ufence is not signalled, vm_bind will return -EBUSY.
-Delaying the modification of ufence->signalled can cause issues if the
-UMD reuses the same ufence so update ufence->signalled before waking up
-waiters.
+Since commit e874dcde1cbf ("ubifs: Reserve one leb for each journal
+head while doing budget"), available space is calulated by deducting
+reservation for all journal heads. However, the total block count (
+which is only used by statfs) is not updated yet, which will cause
+the wrong displaying for used space(total - available).
+Fix it by deducting reservation for all journal heads from total
+block count.
 
-Cc: Matthew Brost <matthew.brost@intel.com>
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3233
-Fixes: 977e5b82e090 ("drm/xe: Expose user fence from xe_sync_entry")
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241114150537.4161573-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit 553a5d14fcd927194c409b10faced6a6dbc678d1)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: e874dcde1cbf ("ubifs: Reserve one leb for each journal head while doing budget")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ubifs/super.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index 2e72c06fd40d0..b0684e6d2047b 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -85,8 +85,12 @@ static void user_fence_worker(struct work_struct *w)
- 		mmput(ufence->mm);
- 	}
- 
--	wake_up_all(&ufence->xe->ufence_wq);
-+	/*
-+	 * Wake up waiters only after updating the ufence state, allowing the UMD
-+	 * to safely reuse the same ufence without encountering -EBUSY errors.
-+	 */
- 	WRITE_ONCE(ufence->signalled, 1);
-+	wake_up_all(&ufence->xe->ufence_wq);
- 	user_fence_put(ufence);
- }
- 
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 291583005dd12..245a10cc1eeb4 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -773,10 +773,10 @@ static void init_constants_master(struct ubifs_info *c)
+ 	 * necessary to report something for the 'statfs()' call.
+ 	 *
+ 	 * Subtract the LEB reserved for GC, the LEB which is reserved for
+-	 * deletions, minimum LEBs for the index, and assume only one journal
+-	 * head is available.
++	 * deletions, minimum LEBs for the index, the LEBs which are reserved
++	 * for each journal head.
+ 	 */
+-	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt + 1;
++	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt;
+ 	tmp64 *= (long long)c->leb_size - c->leb_overhead;
+ 	tmp64 = ubifs_reported_space(c, tmp64);
+ 	c->block_cnt = tmp64 >> UBIFS_BLOCK_SHIFT;
 -- 
 2.43.0
 
