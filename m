@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD8F9E2556
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632A99E22A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3C4A287B59
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E820C1686E8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FF21F8918;
-	Tue,  3 Dec 2024 15:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66471F7584;
+	Tue,  3 Dec 2024 15:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgstWbFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTuHnZCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F571F8ACD;
-	Tue,  3 Dec 2024 15:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854741F7540;
+	Tue,  3 Dec 2024 15:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241543; cv=none; b=TCRX2ddso/+uMorZqG/rhVrtkVZrFC2MiKSKnUnoDb5lXXb1lbJC6Yt/YYjncouPJ2MHEknz3ODsCmr2Eozt6pvkohkhU7FGPuF+djZeVsm+7eSUj7z0SQX2ow7qSS0A3GfRu4c1iAj8uuVvWPrE8XVVlvq8OkzYuTgI5fhFh6A=
+	t=1733239320; cv=none; b=fzdawo+u/PaKYp03SoYmCS7Ck6BKc6h58/CDIg3Z5o7UBJ4JHoztOP3U8ppolbxHmoKKNwKPfp1WnffLuk8tTYVKkOFnl55Ug2ZQItpAa7AY1Bwf9OXz2rP2PYHbM9MviefO17fFIOyTGBU+JeD3Ai9jTcs0nJjJt/9ewqAy930=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241543; c=relaxed/simple;
-	bh=A5Z+y5HZjofbeUhAz83I+lmWGqu7AuodNG/I+QZncZM=;
+	s=arc-20240116; t=1733239320; c=relaxed/simple;
+	bh=6lLNvQXy/S1kbqo4+Kw8u5I7J210w7MT6m9Z3Vq0EFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHq2FziwLa8gz5XHa9xQF0++HXO7t/UIOKT0pHskg09RUc9/ck30q/eNy1LsKKuxrBkgvo8sj41KrinCjUoWcbV/fegF7n6syAkfxgkIzWMCQRTMUDl/CigmMr8JdqlwwmoOolANwrov5lcY9kFLs2RVgS4e0kBjrESkK9/VFLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgstWbFE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D07C4CED6;
-	Tue,  3 Dec 2024 15:59:02 +0000 (UTC)
+	 MIME-Version; b=XWbLHKr2Y2KjFAdxPz1S09TyO7Dixo3+34+Ij+nFHfdt8QHhRmTkcEocpmFY8T9lDw9LaZ8q/kzO8qoufkA8XViWlQCUHfOPl9CbpW00l0NuKPlVZo3r3YOqDp0wfrIciwFOMQ0vegtMJC40z/XNS4Nt6peHOT9N2vwLAmKKITQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTuHnZCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC3AC4CED9;
+	Tue,  3 Dec 2024 15:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241542;
-	bh=A5Z+y5HZjofbeUhAz83I+lmWGqu7AuodNG/I+QZncZM=;
+	s=korg; t=1733239320;
+	bh=6lLNvQXy/S1kbqo4+Kw8u5I7J210w7MT6m9Z3Vq0EFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgstWbFEzmRe5DSZYL1nSiMQu8QS37X7SFHK6p7O/HPQWEs7rZlvM7be9CeTDjipO
-	 3MI3QHumARJxqRFtFUry2terC6yrZkZUG8scvOfEG3jrvlQ9YS6LLERkWCcP0glw3k
-	 cjN1i2aEKiJrzCZG7qnqsGWkXdszuFxX7T4iIp+E=
+	b=zTuHnZCJJWCQgIhNtFqhBE+dtF1mKiFXICrHIOLKq2NWKISCYfasDYCdFiwHBm08y
+	 6LjV2g3ocQ4zgIdocDmSxwRAoxU02Iug9fFXof7jUFTak/trPpOiHfrvfIjUk1CVkO
+	 Cjfz+FWTOrJ4vxALTCOxouz1yXowaSLmhIv/kWG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Liu <liubaolin@kylinos.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 417/826] scsi: target: Fix incorrect function name in pscsi_create_type_disk()
+Subject: [PATCH 6.11 572/817] exfat: fix file being changed by unaligned direct write
 Date: Tue,  3 Dec 2024 15:42:24 +0100
-Message-ID: <20241203144800.026236455@linuxfoundation.org>
+Message-ID: <20241203144018.241086788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Liu <liubaolin@kylinos.cn>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit da5aeca99dd0b6c7bf6679382756ea6bda195f72 ]
+[ Upstream commit 2e94e5bb94a3e641a25716a560bf474225fda83c ]
 
-In pr_err(), bdev_open_by_path() should be renamed to
-bdev_file_open_by_path()
+Unaligned direct writes are invalid and should return an error
+without making any changes, rather than extending ->valid_size
+and then returning an error. Therefore, alignment checking is
+required before extending ->valid_size.
 
-Fixes: 034f0cf8fdf9 ("target: port block device access to file")
-Signed-off-by: Baolin Liu <liubaolin@kylinos.cn>
-Link: https://lore.kernel.org/r/20241030021800.234980-1-liubaolin12138@163.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Co-developed-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_pscsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-index 440e07b1d5cdb..287ac5b0495f9 100644
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -369,7 +369,7 @@ static int pscsi_create_type_disk(struct se_device *dev, struct scsi_device *sd)
- 	bdev_file = bdev_file_open_by_path(dev->udev_path,
- 				BLK_OPEN_WRITE | BLK_OPEN_READ, pdv, NULL);
- 	if (IS_ERR(bdev_file)) {
--		pr_err("pSCSI: bdev_open_by_path() failed\n");
-+		pr_err("pSCSI: bdev_file_open_by_path() failed\n");
- 		scsi_device_put(sd);
- 		return PTR_ERR(bdev_file);
- 	}
+diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+index 64c31867bc761..525c3ad411ea3 100644
+--- a/fs/exfat/file.c
++++ b/fs/exfat/file.c
+@@ -578,6 +578,16 @@ static ssize_t exfat_file_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	if (ret < 0)
+ 		goto unlock;
+ 
++	if (iocb->ki_flags & IOCB_DIRECT) {
++		unsigned long align = pos | iov_iter_alignment(iter);
++
++		if (!IS_ALIGNED(align, i_blocksize(inode)) &&
++		    !IS_ALIGNED(align, bdev_logical_block_size(inode->i_sb->s_bdev))) {
++			ret = -EINVAL;
++			goto unlock;
++		}
++	}
++
+ 	if (pos > valid_size) {
+ 		ret = exfat_file_zeroed_range(file, valid_size, pos);
+ 		if (ret < 0 && ret != -ENOSPC) {
 -- 
 2.43.0
 
