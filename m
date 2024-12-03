@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-97715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894429E25B0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAC39E25C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20124167362
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BC79BA6465
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B006D1F76C0;
-	Tue,  3 Dec 2024 15:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1671F7554;
+	Tue,  3 Dec 2024 15:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsPaFowK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCIcCLy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECDB1F7063;
-	Tue,  3 Dec 2024 15:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F341F472A;
+	Tue,  3 Dec 2024 15:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241486; cv=none; b=X0eujFkN5Niw1lhmA0Vzhs1a04+tJzpdjtHcMEAPl1+o5mvT7aUb4kpQrqfvIcdtRjCjoRzw376KrPegdq14AwjdeKwdC5Ebgg9D/ixB+juAom/+qsDuCUuhKx9MZn3954O8v3xc+uIuwiUw3RU96nt44AFdAKZvfvOkecLO3j0=
+	t=1733239355; cv=none; b=Gp9tiD3UzNccTikzeNxoqD9IgQyLSvR1qSNDOm0T91cxxWfbHlfZbQxTTDkd+3cvOmRGR7IU76zTWXMyAiASZiQzgwntFKIZSskMYlcAp4JyFMd2Z6FvAsKCQZT2x+O7c03zw/V8xWdJ3QnczC9p/Lr6KTvAMeqfZlbVEh/lLRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241486; c=relaxed/simple;
-	bh=FxxsVl6o8grV9NUz4A1MTaKlAa8Rg2GOtCfmAIjJedY=;
+	s=arc-20240116; t=1733239355; c=relaxed/simple;
+	bh=suxx8mTWR7U9nEhsuHLdBsRC6RJQLGDS5dsK8GfSnRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkCsHIuXKd2udqxRnN15AF39jCA4uyLRhxi2LNZR8EvSfbwMQGAlLgPVl0/d+qo0OPY5fXXwXot5DGqAnY9c/G6JfyjOvNejtMBIRVFFcbDoswEK8hURfPlLrNhmHT6nr/1LHbwQA6MOVpUy80zWqkRt9E6QeTeA3QqU9973C+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsPaFowK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD7EC4CED8;
-	Tue,  3 Dec 2024 15:58:05 +0000 (UTC)
+	 MIME-Version; b=qhWgMioEmFTrPw+huHbtjX/+RH/RfTw77xhs4j71cQ0WZsz61PG+UJztxU17HRt5yZtIfO1w0Pv9aV809U0sZAqIKYQ5sKaON+t2VzB+BcVarnd7qwwoNNqKatJpd5XtqCzBKsoJ68XV9bTRRoV1PPF0gbPOKHxRm3hr7fFozgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCIcCLy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B86C4CECF;
+	Tue,  3 Dec 2024 15:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241486;
-	bh=FxxsVl6o8grV9NUz4A1MTaKlAa8Rg2GOtCfmAIjJedY=;
+	s=korg; t=1733239355;
+	bh=suxx8mTWR7U9nEhsuHLdBsRC6RJQLGDS5dsK8GfSnRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsPaFowKO8wOSuDVjgGNUT+yLF7b295t9V281N1cRSPRKEbP/ElY/Oke8ne6dOIdl
-	 62lMX/Mm4OikCRmcsOgeIrgKoR4gkIfI6R7b+IDvUabYtX9PssYOAKh69jv1+rBqv2
-	 qR9CUw5vuadkIL1GXs/0nTAvaYRfIpjZXNTW8ySo=
+	b=HCIcCLy2CorOCkWfBTjJyVXXqTjNVOfLRMDx1R605jouNS8K2gzlkED9Do7YDOYPa
+	 9zZQuzRz50XEbbHiIaegAaLabYLrs/eLic5nG+PN4aqLJuvgdIS3dqCsCrbZWAYUgq
+	 HzBEhh6zVzagWK5Gr+G1ialevP6j3I+t2YVuU6Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Quentin Perret <qperret@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/826] cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_cost()
+Subject: [PATCH 6.11 586/817] bnxt_en: Set backplane link modes correctly for ethtool
 Date: Tue,  3 Dec 2024 15:42:38 +0100
-Message-ID: <20241203144800.573865927@linuxfoundation.org>
+Message-ID: <20241203144018.796594446@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-[ Upstream commit be392aa80f1e5b0b65ccc2a540b9304fefcfe3d8 ]
+[ Upstream commit 5007991670941c132fb3bc0484c009cf4bcea30f ]
 
-cppc_get_cpu_cost() return 0 if the policy is NULL. Then in
-em_compute_costs(), the later zero check for cost is not valid
-as cost is uninitialized. As Quentin pointed out, kernel energy model
-core check the return value of get_cost() first, so if the callback
-failed it should tell the core. Return -EINVAL to fix it.
+Use the return value from bnxt_get_media() to determine the port and
+link modes.  bnxt_get_media() returns the proper BNXT_MEDIA_KR when
+the PHY is backplane.  This will correct the ethtool settings for
+backplane devices.
 
-Fixes: 1a1374bb8c59 ("cpufreq: CPPC: Fix possible null-ptr-deref for cppc_get_cpu_cost()")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/c4765377-7830-44c2-84fa-706b6e304e10@stanley.mountain/
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Quentin Perret <qperret@google.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 5d4e1bf60664 ("bnxt_en: extend media types to supported and autoneg modes")
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 975fb9fa23cac..2993b8a4c7f17 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -494,7 +494,7 @@ static int cppc_get_cpu_cost(struct device *cpu_dev, unsigned long KHz,
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index ac06f4a4cf97c..0f9441de2f2d7 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -2837,19 +2837,24 @@ static int bnxt_get_link_ksettings(struct net_device *dev,
+ 	}
  
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
- 	if (!policy)
--		return 0;
-+		return -EINVAL;
+ 	base->port = PORT_NONE;
+-	if (link_info->media_type == PORT_PHY_QCFG_RESP_MEDIA_TYPE_TP) {
++	if (media == BNXT_MEDIA_TP) {
+ 		base->port = PORT_TP;
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_TP_BIT,
+ 				 lk_ksettings->link_modes.supported);
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_TP_BIT,
+ 				 lk_ksettings->link_modes.advertising);
++	} else if (media == BNXT_MEDIA_KR) {
++		linkmode_set_bit(ETHTOOL_LINK_MODE_Backplane_BIT,
++				 lk_ksettings->link_modes.supported);
++		linkmode_set_bit(ETHTOOL_LINK_MODE_Backplane_BIT,
++				 lk_ksettings->link_modes.advertising);
+ 	} else {
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT,
+ 				 lk_ksettings->link_modes.supported);
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT,
+ 				 lk_ksettings->link_modes.advertising);
  
- 	cpu_data = policy->driver_data;
- 	perf_caps = &cpu_data->perf_caps;
+-		if (link_info->media_type == PORT_PHY_QCFG_RESP_MEDIA_TYPE_DAC)
++		if (media == BNXT_MEDIA_CR)
+ 			base->port = PORT_DA;
+ 		else
+ 			base->port = PORT_FIBRE;
 -- 
 2.43.0
 
