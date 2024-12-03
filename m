@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-97047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27839E22B6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCF39E27E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C652166A8D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40348BE402B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D80E1F8909;
-	Tue,  3 Dec 2024 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFBC1F890E;
+	Tue,  3 Dec 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3OMzDi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qih+l5bM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4FC1F8905;
-	Tue,  3 Dec 2024 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC611F890C;
+	Tue,  3 Dec 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239367; cv=none; b=gx2lHHcUM6iy/euQOhByUk3F9ajuU9UfuKJ/v/86SMDb4DIGNB/TfEckPOU6qpqCtnsqnaDltnd9uN/R4e5Rtc816Wh+aSudFkcIFvpj+0GNcogDSQX/TIwB1hxJz/vRiWmJBPvr9U5413P3qHYYHJ5kyXkLmtxEFOjQlRMY1X0=
+	t=1733241499; cv=none; b=rI5FMhbVxEBwSLERBZjS+sbP3KQo+WGWe84K7rSE7W/K7Hxbun7WHAZbkoxITnCjD8J7q6VqTEW2D2NSu+htl4JttUbbdpFht5pnxADEthfRv5UXzvfkcWF0rPDEDsQWzq50AP0BmDlyUCmwrzBxg17zOJjN9Pts6saZQJMfPvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239367; c=relaxed/simple;
-	bh=4GQ/UAB1Tt8KnrN2rRcRfONBtXo+x10OStYpEOVXP7Q=;
+	s=arc-20240116; t=1733241499; c=relaxed/simple;
+	bh=KgvBd1AT3B3uQEHa5iQXgelGfmBTnKX6D4/j3hPQaIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VeKEorSQF0K5ejBhueIIoOoKeoWsu+RTINbn1S2tKNrDC5oWRIdXkOz8zX0jS6TJIOF2+XypkGp7VR2AskUwWKrEGcLd1mDpz7d1AEjxznEnVDb/6J74PQqmL8Ii+5qy119Hb7I+jh0WYzj9/D8w4DwvHeaZE2RqbsyvGnr4C7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3OMzDi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6803C4CED8;
-	Tue,  3 Dec 2024 15:22:46 +0000 (UTC)
+	 MIME-Version; b=SKEIhF5yHb+6PvvnVlefH6VaaqbcKQtsbfQs2pO5xzwRCx/+JB2ZtOV2GnidvIXhCk/nMNgfjarwcRjdgUe86vlZBoMZzTUjubO24qSTgKpM9vqCZ4G22PO3jZ0aR1Jv2WMy09jPbh5J7JMXT+Pt5recAYi/+RpQY3BY/+DR/X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qih+l5bM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FB7C4AF09;
+	Tue,  3 Dec 2024 15:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239367;
-	bh=4GQ/UAB1Tt8KnrN2rRcRfONBtXo+x10OStYpEOVXP7Q=;
+	s=korg; t=1733241499;
+	bh=KgvBd1AT3B3uQEHa5iQXgelGfmBTnKX6D4/j3hPQaIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3OMzDi/80KiRLJfDyUsGnVp7tDmbwe0OrDLDy9EZyUv0f7f6ebU+r7DeXNoDGCMg
-	 8WfaOBLJuVD7Zfg56fqU7WV9cwXhondzfwBxG21rG6TrSKZ7H+S6dZpgn1jTYus4ql
-	 HvdNB9VwFJcM7QjXHsCDg8dWqVzsEQuWrrh5Qwf4=
+	b=qih+l5bMvIqoQs1sVMB1iYUSe27lWpiugTHnOx9ygrQo5SpRlxDZwFqOWelGss0VV
+	 srHGuJTO718gnMvX42d+/dH9auHmPLl8JaAL1QODZB5hfluw9Tz27ml2smItuZnTx0
+	 O/8iV+IXcbnRnPuiMvnJTuLsTL/6Kko56qiaJsJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+03d6270b6425df1605bf@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+a73e253cca4f0230a5a5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 590/817] Bluetooth: MGMT: Fix slab-use-after-free Read in set_powered_sync
+Subject: [PATCH 6.12 435/826] ocfs2: fix uninitialized value in ocfs2_file_read_iter()
 Date: Tue,  3 Dec 2024 15:42:42 +0100
-Message-ID: <20241203144018.954353480@linuxfoundation.org>
+Message-ID: <20241203144800.732329980@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +69,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 0b882940665ca2849386ee459d4331aa2f8c4e7d ]
+[ Upstream commit adc77b19f62d7e80f98400b2fca9d700d2afdd6f ]
 
-This fixes the following crash:
+Syzbot has reported the following KMSAN splat:
 
-==================================================================
-BUG: KASAN: slab-use-after-free in set_powered_sync+0x3a/0xc0 net/bluetooth/mgmt.c:1353
-Read of size 8 at addr ffff888029b4dd18 by task kworker/u9:0/54
+BUG: KMSAN: uninit-value in ocfs2_file_read_iter+0x9a4/0xf80
+ ocfs2_file_read_iter+0x9a4/0xf80
+ __io_read+0x8d4/0x20f0
+ io_read+0x3e/0xf0
+ io_issue_sqe+0x42b/0x22c0
+ io_wq_submit_work+0xaf9/0xdc0
+ io_worker_handle_work+0xd13/0x2110
+ io_wq_worker+0x447/0x1410
+ ret_from_fork+0x6f/0x90
+ ret_from_fork_asm+0x1a/0x30
 
-CPU: 1 UID: 0 PID: 54 Comm: kworker/u9:0 Not tainted 6.11.0-rc6-syzkaller-01155-gf723224742fc #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
-q kasan_report+0x143/0x180 mm/kasan/report.c:601
- set_powered_sync+0x3a/0xc0 net/bluetooth/mgmt.c:1353
- hci_cmd_sync_work+0x22b/0x400 net/bluetooth/hci_sync.c:328
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
- worker_thread+0x86d/0xd10 kernel/workqueue.c:3389
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Allocated by task 5247:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
- __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
- kasan_kmalloc include/linux/kasan.h:211 [inline]
- __kmalloc_cache_noprof+0x19c/0x2c0 mm/slub.c:4193
- kmalloc_noprof include/linux/slab.h:681 [inline]
- kzalloc_noprof include/linux/slab.h:807 [inline]
- mgmt_pending_new+0x65/0x250 net/bluetooth/mgmt_util.c:269
- mgmt_pending_add+0x36/0x120 net/bluetooth/mgmt_util.c:296
- set_powered+0x3cd/0x5e0 net/bluetooth/mgmt.c:1394
- hci_mgmt_cmd+0xc47/0x11d0 net/bluetooth/hci_sock.c:1712
- hci_sock_sendmsg+0x7b8/0x11c0 net/bluetooth/hci_sock.c:1832
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:745
- sock_write_iter+0x2dd/0x400 net/socket.c:1160
- new_sync_write fs/read_write.c:497 [inline]
- vfs_write+0xa72/0xc90 fs/read_write.c:590
- ksys_write+0x1a0/0x2c0 fs/read_write.c:643
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+Uninit was created at:
+ __alloc_pages_noprof+0x9a7/0xe00
+ alloc_pages_mpol_noprof+0x299/0x990
+ alloc_pages_noprof+0x1bf/0x1e0
+ allocate_slab+0x33a/0x1250
+ ___slab_alloc+0x12ef/0x35e0
+ kmem_cache_alloc_bulk_noprof+0x486/0x1330
+ __io_alloc_req_refill+0x84/0x560
+ io_submit_sqes+0x172f/0x2f30
+ __se_sys_io_uring_enter+0x406/0x41c0
+ __x64_sys_io_uring_enter+0x11f/0x1a0
+ x64_sys_call+0x2b54/0x3ba0
+ do_syscall_64+0xcd/0x1e0
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Freed by task 5246:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
- poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
- __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2256 [inline]
- slab_free mm/slub.c:4477 [inline]
- kfree+0x149/0x360 mm/slub.c:4598
- settings_rsp+0x2bc/0x390 net/bluetooth/mgmt.c:1443
- mgmt_pending_foreach+0xd1/0x130 net/bluetooth/mgmt_util.c:259
- __mgmt_power_off+0x112/0x420 net/bluetooth/mgmt.c:9455
- hci_dev_close_sync+0x665/0x11a0 net/bluetooth/hci_sync.c:5191
- hci_dev_do_close net/bluetooth/hci_core.c:483 [inline]
- hci_dev_close+0x112/0x210 net/bluetooth/hci_core.c:508
- sock_do_ioctl+0x158/0x460 net/socket.c:1222
- sock_ioctl+0x629/0x8e0 net/socket.c:1341
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83gv
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Since an instance of 'struct kiocb' may be passed from the block layer
+with 'private' field uninitialized, introduce 'ocfs2_iocb_init_rw_locked()'
+and use it from where 'ocfs2_dio_end_io()' might take care, i.e. in
+'ocfs2_file_read_iter()' and 'ocfs2_file_write_iter()'.
 
-Reported-by: syzbot+03d6270b6425df1605bf@syzkaller.appspotmail.com
-Tested-by: syzbot+03d6270b6425df1605bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=03d6270b6425df1605bf
-Fixes: 275f3f648702 ("Bluetooth: Fix not checking MGMT cmd pending queue")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lkml.kernel.org/r/20241029091736.1501946-1-dmantipov@yandex.ru
+Fixes: 7cdfc3a1c397 ("ocfs2: Remember rw lock level during direct io")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+a73e253cca4f0230a5a5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a73e253cca4f0230a5a5
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/ocfs2/aops.h | 2 ++
+ fs/ocfs2/file.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 4157d9f23f46e..3cd747ca65437 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1317,7 +1317,8 @@ static void mgmt_set_powered_complete(struct hci_dev *hdev, void *data, int err)
- 	struct mgmt_mode *cp;
+diff --git a/fs/ocfs2/aops.h b/fs/ocfs2/aops.h
+index 45db1781ea735..1d1b4b7edba02 100644
+--- a/fs/ocfs2/aops.h
++++ b/fs/ocfs2/aops.h
+@@ -70,6 +70,8 @@ enum ocfs2_iocb_lock_bits {
+ 	OCFS2_IOCB_NUM_LOCKS
+ };
  
- 	/* Make sure cmd still outstanding. */
--	if (cmd != pending_find(MGMT_OP_SET_POWERED, hdev))
-+	if (err == -ECANCELED ||
-+	    cmd != pending_find(MGMT_OP_SET_POWERED, hdev))
- 		return;
++#define ocfs2_iocb_init_rw_locked(iocb) \
++	(iocb->private = NULL)
+ #define ocfs2_iocb_clear_rw_locked(iocb) \
+ 	clear_bit(OCFS2_IOCB_RW_LOCK, (unsigned long *)&iocb->private)
+ #define ocfs2_iocb_rw_locked_level(iocb) \
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 06af21982c16a..cb09330a08611 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -2398,6 +2398,8 @@ static ssize_t ocfs2_file_write_iter(struct kiocb *iocb,
+ 	} else
+ 		inode_lock(inode);
  
- 	cp = cmd->param;
-@@ -1350,7 +1351,13 @@ static void mgmt_set_powered_complete(struct hci_dev *hdev, void *data, int err)
- static int set_powered_sync(struct hci_dev *hdev, void *data)
- {
- 	struct mgmt_pending_cmd *cmd = data;
--	struct mgmt_mode *cp = cmd->param;
-+	struct mgmt_mode *cp;
++	ocfs2_iocb_init_rw_locked(iocb);
 +
-+	/* Make sure cmd still outstanding. */
-+	if (cmd != pending_find(MGMT_OP_SET_POWERED, hdev))
-+		return -ECANCELED;
+ 	/*
+ 	 * Concurrent O_DIRECT writes are allowed with
+ 	 * mount_option "coherency=buffered".
+@@ -2544,6 +2546,8 @@ static ssize_t ocfs2_file_read_iter(struct kiocb *iocb,
+ 	if (!direct_io && nowait)
+ 		return -EOPNOTSUPP;
+ 
++	ocfs2_iocb_init_rw_locked(iocb);
 +
-+	cp = cmd->param;
- 
- 	BT_DBG("%s", hdev->name);
- 
+ 	/*
+ 	 * buffered reads protect themselves in ->read_folio().  O_DIRECT reads
+ 	 * need locks to protect pending reads from racing with truncate.
 -- 
 2.43.0
 
