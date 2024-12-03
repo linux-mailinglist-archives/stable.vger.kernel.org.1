@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-97699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F129C9E27E4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0269E2890
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D481B65CA8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0943BE3BD2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D181F75B4;
-	Tue,  3 Dec 2024 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77F1F7591;
+	Tue,  3 Dec 2024 15:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/riABZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voGPtClF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99C81DE8A5;
-	Tue,  3 Dec 2024 15:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2AF1AB6C9;
+	Tue,  3 Dec 2024 15:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241427; cv=none; b=nWiLOa3Vn73fKKdZ2A5QSz5u1W1wZZ3N8LCCw24alcLdUwC3dVGcVyjSnVNGfikwKAi2Gy35Dv7jqhNICcd5v/AxoJm8QbG/J0rkPIJvMyMFPTQa2qBZjJOCTmgPR3Gzy6KqEkOLCmey6lDQMzImFT180B3f2tb1PJlNOTNg7NQ=
+	t=1733241303; cv=none; b=Y/QpuktFqA34rAGJfqtQLvXFWiWWVZ+6cvpF1esaBXvVunzrDtI4f5Togr0tI1GL1mtGZmieG08l5khkM9BR5LuEYllle33dr8US5skFKFWBdx/seUG9ZF4Ksc1qEW8eXK1arx8zwftR33P7fZr1gXW07M6fPz+gZwKwPvMue6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241427; c=relaxed/simple;
-	bh=rXD/CcM9gUjpi6lH8egGPHhEQ3bvx+lFDdfBxgqsK10=;
+	s=arc-20240116; t=1733241303; c=relaxed/simple;
+	bh=/qc8Ye9K0eF6UK1GiAwa5Jd2W5/R6ew5DTx8mT66png=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWz/5Crpefv/GP7yWPrvuOzCJMd7GEcUcT2XUOK7GWiWAWmJhMqWAMjSX9fMNkXvzzSQVwD6RJqPmv37i3JvSKE1QBCAB1WA94Ur51N9bHKRmT9aNsQhQLxpMDR3670B615qMTe5p42fEFE+aT+b0n0N3pEGClRRhu67mZ0mZu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/riABZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49092C4CECF;
-	Tue,  3 Dec 2024 15:57:07 +0000 (UTC)
+	 MIME-Version; b=WPft7h8dm3/6HtFyW+OMA0RC0YthMpka46jVwrIKFLy9mLUyru4/t7IRdnc2pdDG2TwvDZjMvJnlv+HQwQbAmgkYfcsaY1cqh/m/n2QkajzzLg0TVKBs7+U54UM9JiMQ/o9A16pUZQARktKEeRywMAO/374Auwy7S7iNTEfmLdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voGPtClF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE8DC4CECF;
+	Tue,  3 Dec 2024 15:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241427;
-	bh=rXD/CcM9gUjpi6lH8egGPHhEQ3bvx+lFDdfBxgqsK10=;
+	s=korg; t=1733241303;
+	bh=/qc8Ye9K0eF6UK1GiAwa5Jd2W5/R6ew5DTx8mT66png=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/riABZxWZPJOx28UU9oGWRP/SVDAjG/2/fd2qNeusCNOP4zXMtgc08NrTTl7On+z
-	 8mQv8kFzaXdB11vuI2uJvqfGcjvZap2jtY7d1H9PAy4twLypGUlXsGrl3xjbUGP35w
-	 Ioww1TCAFLiTYpGftVLrrFVJARNIzR4OZu4Fwz28=
+	b=voGPtClFFxitZmtuKfkT14ZvYUBBFnLxMc6005X7IbvPQ7+2AvjCGDNyesnNhiVCz
+	 gzwl/Rn2lb5RyB4mSQ292CyO8Ry6Zrizh0BwXVquUYddEA2XIVawGnkMm6byDNRKor
+	 FharQu77K4JNPjhST8h85xVcPfcjZ12aRFN3jYdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Zhang Ning <zhangn1985@outlook.com>,
-	Hans de Goede <hdegoede@redhat.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/826] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for TMU device
-Date: Tue,  3 Dec 2024 15:41:40 +0100
-Message-ID: <20241203144758.314437922@linuxfoundation.org>
+Subject: [PATCH 6.12 374/826] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for PMIC devices
+Date: Tue,  3 Dec 2024 15:41:41 +0100
+Message-ID: <20241203144758.354536381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -70,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9b79d59e6b2b515eb9a22bc469ef7b8f0904fc73 ]
+[ Upstream commit 0350d783ab888cb1cb48ced36cc28b372723f1a4 ]
 
 While design wise the idea of converting the driver to use
 the hierarchy of the IRQ chips is correct, the implementation
@@ -81,132 +80,103 @@ IRQ number (also known as vIRQ).
 Rework the driver to respect IRQ domain when creating each MFD
 device separately, as the domain is not the same for all of them.
 
-Fixes: 957ae5098185 ("platform/x86: Add Whiskey Cove PMIC TMU support")
 Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Reported-by: Zhang Ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
 Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-3-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20241005193029.1929139-4-andriy.shevchenko@linux.intel.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c     | 31 ++++++++++++++------------
- drivers/platform/x86/intel/bxtwc_tmu.c | 22 +++++-------------
- 2 files changed, 23 insertions(+), 30 deletions(-)
+ drivers/mfd/intel_soc_pmic_bxtwc.c | 54 +++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index d72995a9e8207..628108dcf5454 100644
+index 628108dcf5454..fefbeb4164fde 100644
 --- a/drivers/mfd/intel_soc_pmic_bxtwc.c
 +++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -245,12 +245,6 @@ static struct mfd_cell bxt_wc_dev[] = {
- 		.num_resources = ARRAY_SIZE(bcu_resources),
- 		.resources = bcu_resources,
+@@ -230,21 +230,11 @@ static const struct resource tmu_resources[] = {
+ };
+ 
+ static struct mfd_cell bxt_wc_dev[] = {
+-	{
+-		.name = "bxt_wcove_gpadc",
+-		.num_resources = ARRAY_SIZE(adc_resources),
+-		.resources = adc_resources,
+-	},
+ 	{
+ 		.name = "bxt_wcove_thermal",
+ 		.num_resources = ARRAY_SIZE(thermal_resources),
+ 		.resources = thermal_resources,
  	},
 -	{
--		.name = "bxt_wcove_tmu",
--		.num_resources = ARRAY_SIZE(tmu_resources),
--		.resources = tmu_resources,
+-		.name = "bxt_wcove_bcu",
+-		.num_resources = ARRAY_SIZE(bcu_resources),
+-		.resources = bcu_resources,
 -	},
--
  	{
  		.name = "bxt_wcove_gpio",
  		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -261,6 +255,14 @@ static struct mfd_cell bxt_wc_dev[] = {
+@@ -263,6 +253,22 @@ static const struct mfd_cell bxt_wc_tmu_dev[] = {
  	},
  };
  
-+static const struct mfd_cell bxt_wc_tmu_dev[] = {
++static const struct mfd_cell bxt_wc_bcu_dev[] = {
 +	{
-+		.name = "bxt_wcove_tmu",
-+		.num_resources = ARRAY_SIZE(tmu_resources),
-+		.resources = tmu_resources,
++		.name = "bxt_wcove_bcu",
++		.num_resources = ARRAY_SIZE(bcu_resources),
++		.resources = bcu_resources,
++	},
++};
++
++static const struct mfd_cell bxt_wc_adc_dev[] = {
++	{
++		.name = "bxt_wcove_gpadc",
++		.num_resources = ARRAY_SIZE(adc_resources),
++		.resources = adc_resources,
 +	},
 +};
 +
  static struct mfd_cell bxt_wc_chgr_dev[] = {
  	{
  		.name = "bxt_wcove_usbc",
-@@ -489,6 +491,15 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
- 
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_tmu_dev, ARRAY_SIZE(bxt_wc_tmu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_TMU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_tmu,
-+					&pmic->irq_chip_data_tmu);
-+	if (ret)
-+		return ret;
-+
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_PWRBTN_LVL1_IRQ,
- 					 IRQF_ONESHOT,
-@@ -497,14 +508,6 @@ static int bxtwc_probe(struct platform_device *pdev)
+@@ -508,23 +514,23 @@ static int bxtwc_probe(struct platform_device *pdev)
  	if (ret)
  		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
  
+-	/* Add chained IRQ handler for BCU IRQs */
 -	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_TMU_LVL1_IRQ,
+-					 BXTWC_BCU_LVL1_IRQ,
 -					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_tmu,
--					 &pmic->irq_chip_data_tmu);
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
--
- 	/* Add chained IRQ handler for BCU IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_BCU_LVL1_IRQ,
-diff --git a/drivers/platform/x86/intel/bxtwc_tmu.c b/drivers/platform/x86/intel/bxtwc_tmu.c
-index d0e2a3c293b0b..9ac801b929b93 100644
---- a/drivers/platform/x86/intel/bxtwc_tmu.c
-+++ b/drivers/platform/x86/intel/bxtwc_tmu.c
-@@ -48,9 +48,8 @@ static irqreturn_t bxt_wcove_tmu_irq_handler(int irq, void *data)
- static int bxt_wcove_tmu_probe(struct platform_device *pdev)
- {
- 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
--	struct regmap_irq_chip_data *regmap_irq_chip;
- 	struct wcove_tmu *wctmu;
--	int ret, virq, irq;
-+	int ret;
+-					 &bxtwc_regmap_irq_chip_bcu,
+-					 &pmic->irq_chip_data_bcu);
++	ret = bxtwc_add_chained_devices(pmic, bxt_wc_bcu_dev, ARRAY_SIZE(bxt_wc_bcu_dev),
++					pmic->irq_chip_data,
++					BXTWC_BCU_LVL1_IRQ,
++					IRQF_ONESHOT,
++					&bxtwc_regmap_irq_chip_bcu,
++					&pmic->irq_chip_data_bcu);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
++		return ret;
  
- 	wctmu = devm_kzalloc(&pdev->dev, sizeof(*wctmu), GFP_KERNEL);
- 	if (!wctmu)
-@@ -59,27 +58,18 @@ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
- 	wctmu->dev = &pdev->dev;
- 	wctmu->regmap = pmic->regmap;
+-	/* Add chained IRQ handler for ADC IRQs */
+-	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+-					 BXTWC_ADC_LVL1_IRQ,
+-					 IRQF_ONESHOT,
+-					 &bxtwc_regmap_irq_chip_adc,
+-					 &pmic->irq_chip_data_adc);
++	ret = bxtwc_add_chained_devices(pmic, bxt_wc_adc_dev, ARRAY_SIZE(bxt_wc_adc_dev),
++					pmic->irq_chip_data,
++					BXTWC_ADC_LVL1_IRQ,
++					IRQF_ONESHOT,
++					&bxtwc_regmap_irq_chip_adc,
++					&pmic->irq_chip_data_adc);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
++		return ret;
  
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
-+	wctmu->irq = platform_get_irq(pdev, 0);
-+	if (wctmu->irq < 0)
-+		return wctmu->irq;
- 
--	regmap_irq_chip = pmic->irq_chip_data_tmu;
--	virq = regmap_irq_get_virq(regmap_irq_chip, irq);
--	if (virq < 0) {
--		dev_err(&pdev->dev,
--			"failed to get virtual interrupt=%d\n", irq);
--		return virq;
--	}
--
--	ret = devm_request_threaded_irq(&pdev->dev, virq,
-+	ret = devm_request_threaded_irq(&pdev->dev, wctmu->irq,
- 					NULL, bxt_wcove_tmu_irq_handler,
- 					IRQF_ONESHOT, "bxt_wcove_tmu", wctmu);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request irq failed: %d,virq: %d\n",
--							ret, virq);
-+			ret, wctmu->irq);
- 		return ret;
- 	}
--	wctmu->irq = virq;
- 
- 	/* Unmask TMU second level Wake & System alarm */
- 	regmap_update_bits(wctmu->regmap, BXTWC_MTMUIRQ_REG,
+ 	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
+ 					pmic->irq_chip_data,
 -- 
 2.43.0
 
