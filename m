@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-97792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D989E260F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3920F9E259F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593741621A9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2418287E8D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836E31F8905;
-	Tue,  3 Dec 2024 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5988F1F76B5;
+	Tue,  3 Dec 2024 16:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2PNsNbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH0g5m9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E31F76D7;
-	Tue,  3 Dec 2024 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156551E009A;
+	Tue,  3 Dec 2024 16:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241749; cv=none; b=K2KgULfFVJq2uMVdVwEEf+ihhgaVQLd7D12sdCUO0c33b82af9Vl3Pr/djAoxtOpBaePMqDU4fopfx9Y7/hhJJJV8UE1COdGNXFWKKs60bvZFRBkhJUMKhR1fhWiziHxYhqNdFD+zLJX3t3l5AhxVE1NOfCfCoFHYTY50NKAq/Y=
+	t=1733241756; cv=none; b=P9eWzQKno36BxccDULfN6yhwRfK7xI+ncPfolj92m2dz6OyttfrmTgpHb/cIH2xDLhAhX4WbO3gzZK1Yi1qdfQYt4IUcP3FVsUN7rZjAgyOF1cDyBNZZ1eveS6C3ii4DysGhJGvOyDn+mGdBIIqUjDKhOchrMjtRFQb5tSuZ67o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241749; c=relaxed/simple;
-	bh=Bn5ETz2qJM5/hRP1JhDOen+qLZJcDx5M+d4OQlhMZC8=;
+	s=arc-20240116; t=1733241756; c=relaxed/simple;
+	bh=pbW7YkKVmPdebeADKx2cKBYHGn5QP8tajEHxz2ZzlA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Swigto0+twTMuO5RQhHEnN01HaMgjlkif065M1tFA7kEr9nz3VuqIvDO9xpIoKfndny5uiL51831uPIicjntQbicyAYUz0LbXp6fIAlDzePLklUItpFN/VtSDTnKdUiKjlbjURHDH9sBxw3t5qlM33yUJuaAynvO0TKRAEBjey0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2PNsNbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F4CC4CECF;
-	Tue,  3 Dec 2024 16:02:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ERCpW+CXL8U/931oiEhePf8pz5WcnXD6GovYLSWGtDs3Ie+li+k/04O/FannCH3+fhKdclQDrkBlKFr2Z+SVTUzMkTqXw0CpGrrriBq8ELhyFzb4T7PQyaordZbH4ylXsMUc5NjH3wB3ZHh/2/taZQHydyISUk910viAF9hrZbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH0g5m9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D660C4CECF;
+	Tue,  3 Dec 2024 16:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241749;
-	bh=Bn5ETz2qJM5/hRP1JhDOen+qLZJcDx5M+d4OQlhMZC8=;
+	s=korg; t=1733241755;
+	bh=pbW7YkKVmPdebeADKx2cKBYHGn5QP8tajEHxz2ZzlA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2PNsNbbnLjkMUeAVQgXydihk8arGEMQHjcHNz543RG+iwzbReWVo/mYRs97AgsNb
-	 NQJGfDsD5RQlrfclt/N+f8ff0JnJdjUqrYpt2I1vhGGtqOmOZew+7Xqq5obaZ7AuOj
-	 Ll0EPUmaFCbEqIg+iC9U3C7TOcdpULbqzwVy0GVI=
+	b=mH0g5m9x6rEskhvjYrI8k7QTKdVpnBZ9hoizQvSE1TlJSV0fcTrx+EmuxSWnK9c2R
+	 mCPwwkiJIo52o6GUVd/gvkIevrOcG8cvuIw48vSvL28hgbjausEvWZ+tBU9+TvlNPg
+	 F5DEFbMhLPPhHliZ0we4gLDOIQbFt+f0ZjEnr4nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	linux-tegra@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 504/826] PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()
-Date: Tue,  3 Dec 2024 15:43:51 +0100
-Message-ID: <20241203144803.417379720@linuxfoundation.org>
+Subject: [PATCH 6.12 505/826] PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds
+Date: Tue,  3 Dec 2024 15:43:52 +0100
+Message-ID: <20241203144803.457823627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -71,76 +67,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 40e2125381dc11379112485e3eefdd25c6df5375 ]
+[ Upstream commit 22a9120479a40a56c13c5e473a0100fad2e017c0 ]
 
-Currently, the endpoint cleanup function dw_pcie_ep_cleanup() and EPF
-deinit notify function pci_epc_deinit_notify() are called during the
-execution of pex_ep_event_pex_rst_assert() i.e., when the host has asserted
-PERST#. But quickly after this step, refclk will also be disabled by the
-host.
+According to Section 2.2 of the PCI Express Card Electromechanical
+Specification (Revision 5.1), in order to ensure that the power and the
+reference clock are stable, PERST# has to be deasserted after a delay of
+100 milliseconds (TPVPERL).
 
-All of the tegra194 endpoint SoCs supported as of now depend on the refclk
-from the host for keeping the controller operational. Due to this
-limitation, any access to the hardware registers in the absence of refclk
-will result in a whole endpoint crash. Unfortunately, most of the
-controller cleanups require accessing the hardware registers (like eDMA
-cleanup performed in dw_pcie_ep_cleanup(), etc...). So these cleanup
-functions can cause the crash in the endpoint SoC once host asserts PERST#.
+Currently, it is being assumed that the power is already stable, which
+is not necessarily true.
 
-One way to address this issue is by generating the refclk in the endpoint
-itself and not depending on the host. But that is not always possible as
-some of the endpoint designs do require the endpoint to consume refclk from
-the host.
+Hence, change the delay to PCIE_T_PVPERL_MS to guarantee that power and
+reference clock are stable.
 
-Thus, fix this crash by moving the controller cleanups to the start of
-the pex_ep_event_pex_rst_deassert() function. This function is called
-whenever the host has deasserted PERST# and it is guaranteed that the
-refclk would be active at this point. So at the start of this function
-(after enabling resources) the controller cleanup can be performed. Once
-finished, rest of the code execution for PERST# deassert can continue as
-usual.
-
-Fixes: 473b2cf9c4d1 ("PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers")
-Fixes: 570d7715eed8 ("PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#")
-Link: https://lore.kernel.org/r/20240817-pci-qcom-ep-cleanup-v1-2-d6b958226559@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Fixes: f96b69713733 ("PCI: j721e: Use T_PERST_CLK_US macro")
+Link: https://lore.kernel.org/r/20241104074420.1862932-1-s-vadapalli@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Vidya Sagar <vidyas@nvidia.com>
-Cc: linux-tegra@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c | 26 ++++++++++------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index c1394f2ab63ff..ced3b7e7bdade 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1704,9 +1704,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	if (ret)
- 		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 284f2e0e4d261..e091c3e55b5c6 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -572,15 +572,14 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		pcie->refclk = clk;
  
--	pci_epc_deinit_notify(pcie->pci.ep.epc);
--	dw_pcie_ep_cleanup(&pcie->pci.ep);
--
- 	reset_control_assert(pcie->core_rst);
+ 		/*
+-		 * The "Power Sequencing and Reset Signal Timings" table of the
+-		 * PCI Express Card Electromechanical Specification, Revision
+-		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+-		 * should be deasserted after minimum of 100us once REFCLK is
+-		 * stable. The REFCLK to the connector in RC mode is selected
+-		 * while enabling the PHY. So deassert PERST# after 100 us.
++		 * Section 2.2 of the PCI Express Card Electromechanical
++		 * Specification (Revision 5.1) mandates that the deassertion
++		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
++		 * This shall ensure that the power and the reference clock
++		 * are stable.
+ 		 */
+ 		if (gpiod) {
+-			fsleep(PCIE_T_PERST_CLK_US);
++			msleep(PCIE_T_PVPERL_MS);
+ 			gpiod_set_value_cansleep(gpiod, 1);
+ 		}
  
- 	tegra_pcie_disable_phy(pcie);
-@@ -1785,6 +1782,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
- 		goto fail_phy;
- 	}
+@@ -671,15 +670,14 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+ 			return ret;
  
-+	/* Perform cleanup that requires refclk */
-+	pci_epc_deinit_notify(pcie->pci.ep.epc);
-+	dw_pcie_ep_cleanup(&pcie->pci.ep);
-+
- 	/* Clear any stale interrupt statuses */
- 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
- 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
+ 		/*
+-		 * The "Power Sequencing and Reset Signal Timings" table of the
+-		 * PCI Express Card Electromechanical Specification, Revision
+-		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+-		 * should be deasserted after minimum of 100us once REFCLK is
+-		 * stable. The REFCLK to the connector in RC mode is selected
+-		 * while enabling the PHY. So deassert PERST# after 100 us.
++		 * Section 2.2 of the PCI Express Card Electromechanical
++		 * Specification (Revision 5.1) mandates that the deassertion
++		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
++		 * This shall ensure that the power and the reference clock
++		 * are stable.
+ 		 */
+ 		if (pcie->reset_gpio) {
+-			fsleep(PCIE_T_PERST_CLK_US);
++			msleep(PCIE_T_PVPERL_MS);
+ 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+ 		}
+ 
 -- 
 2.43.0
 
