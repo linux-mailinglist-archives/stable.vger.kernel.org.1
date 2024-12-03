@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2319E20F2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9109E2108
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C86CFB63126
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79EB0B6331D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11A1F7553;
-	Tue,  3 Dec 2024 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3151F7591;
+	Tue,  3 Dec 2024 14:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSCPFj+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxBLHdCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5E91EF092;
-	Tue,  3 Dec 2024 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0936F1F7578;
+	Tue,  3 Dec 2024 14:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237720; cv=none; b=j7N3rt6u8QN1m48IPCZMbOtuBpC1ec4gjqziatI+bdeaL+/sO5fQt5O44GYATpFZm29lIQ1gUi2km3HsSZHrOiTSy0KCVppzOIg5LxgQmXKlJLRgYOyIqVpzddPWqKu6tahPnQJQlG9xTPGk//CJ2SO9+ic6U9kDdFIu9lToEb4=
+	t=1733237727; cv=none; b=YII1GYjplCnuHd5K2uhMQWqajO932mLW4hOgqx1VgsLHsKcTdixmyxEj8I5bPs56ur+b4kgndkIjI8N3zfEVwVeVdwcHHa7zqo+B4JH3RSGasXcC/dmSl4+NP+yqnbRg2gUVxuIsscOG9Db0ZGesQ9PvBasPVkQZtkzuAIleM4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237720; c=relaxed/simple;
-	bh=CKEnopVtZbzHs8uBbEBbcWQ7/IHxueiT1xvhk0Uggoo=;
+	s=arc-20240116; t=1733237727; c=relaxed/simple;
+	bh=9S47EnhrD4GH+7GhqQ654OtLGdfBzJhh+hQ8QH7onR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4dze/GMXaBhGCf9NydThZ6Qj1CpqbcOinnw6/cMS52Xyeb4klbuMLxqki0bJOJ6X1e3HoPWBssraurZJo9/LWzZkI3Hm6V0fxNFT77wQrYkcPfqKQnwwTYm5nIe03U/bbR6IEytGPeTuv2O2P8GUSAEmmfem9kGwIRYOkrm3GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSCPFj+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B9CC4CED8;
-	Tue,  3 Dec 2024 14:55:19 +0000 (UTC)
+	 MIME-Version; b=S3J4PvRY3oyYYEQvPrxcdnOGUy7lMouWGI9oSYWxn40N04QnRs4MCfHRwFf6xzgNoCmuqP1L979jzt3ofEbv5G8F0ZLi9vbqIDJfJb5cHwBHqObFafV1QbBYwadoejoM3Cu0HYJIlimF2gg0RABnnhNV5qAuLNI7YAUXKdNM3k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxBLHdCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78464C4CECF;
+	Tue,  3 Dec 2024 14:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237720;
-	bh=CKEnopVtZbzHs8uBbEBbcWQ7/IHxueiT1xvhk0Uggoo=;
+	s=korg; t=1733237726;
+	bh=9S47EnhrD4GH+7GhqQ654OtLGdfBzJhh+hQ8QH7onR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSCPFj+UfadXjozcf4nkYkrMs0EnVx9Xmw0pPOGhdObSHOsV42ynJw3H4paTr6wp+
-	 qKMzTv97aO43XGI1c/ndcK63mRbHjyBRYhwznm+YTSerEyI9Vevm+9fL9BiOJnk6ju
-	 jiALlaeYpSu9O7t+cnSOGfWEStFpdoJyh3oWgBOs=
+	b=FxBLHdCrpBygR9I3GdbsTnOrbkMLAE/3k8IQ7ypBmbqg/msN119qBqmUlCzgrrrv8
+	 J4sYhMqCJm+uJYwXrF9D0yuh9pY0KSH0afI4j3BSPpaZ8i79xCqDu++lEhayZ8+zWW
+	 gWIOIUc/+nWgEn0YdCLwGyKX8/iOGKU5kOT+Rpis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kristina Martsenko <kristina.martsenko@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 051/817] arm64: probes: Disable kprobes/uprobes on MOPS instructions
-Date: Tue,  3 Dec 2024 15:33:43 +0100
-Message-ID: <20241203143957.664480205@linuxfoundation.org>
+Subject: [PATCH 6.11 052/817] kselftest/arm64: hwcap: fix f8dp2 cpuinfo name
+Date: Tue,  3 Dec 2024 15:33:44 +0100
+Message-ID: <20241203143957.703233446@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,58 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kristina Martsenko <kristina.martsenko@arm.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit c56c599d9002d44f559be3852b371db46adac87c ]
+[ Upstream commit b0d80dbc378d52155c9ecf9579986edccceed3aa ]
 
-FEAT_MOPS instructions require that all three instructions (prologue,
-main and epilogue) appear consecutively in memory. Placing a
-kprobe/uprobe on one of them doesn't work as only a single instruction
-gets executed out-of-line or simulated. So don't allow placing a probe
-on a MOPS instruction.
+The F8DP2 DPISA extension has a separate cpuinfo field, named
+accordingly.
+Change the erroneously placed name of "f8dp4" to "f8dp2".
 
-Fixes: b7564127ffcb ("arm64: mops: detect and enable FEAT_MOPS")
-Signed-off-by: Kristina Martsenko <kristina.martsenko@arm.com>
-Link: https://lore.kernel.org/r/20240930161051.3777828-2-kristina.martsenko@arm.com
+Fixes: 44d10c27bd75 ("kselftest/arm64: Add 2023 DPISA hwcap test coverage")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240816153251.2833702-3-andre.przywara@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/insn.h          | 1 +
- arch/arm64/kernel/probes/decode-insn.c | 7 +++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/abi/hwcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/insn.h b/arch/arm64/include/asm/insn.h
-index 8c0a36f72d6fc..bc77869dbd43b 100644
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -353,6 +353,7 @@ __AARCH64_INSN_FUNCS(ldrsw_lit,	0xFF000000, 0x98000000)
- __AARCH64_INSN_FUNCS(exclusive,	0x3F800000, 0x08000000)
- __AARCH64_INSN_FUNCS(load_ex,	0x3F400000, 0x08400000)
- __AARCH64_INSN_FUNCS(store_ex,	0x3F400000, 0x08000000)
-+__AARCH64_INSN_FUNCS(mops,	0x3B200C00, 0x19000400)
- __AARCH64_INSN_FUNCS(stp,	0x7FC00000, 0x29000000)
- __AARCH64_INSN_FUNCS(ldp,	0x7FC00000, 0x29400000)
- __AARCH64_INSN_FUNCS(stp_post,	0x7FC00000, 0x28800000)
-diff --git a/arch/arm64/kernel/probes/decode-insn.c b/arch/arm64/kernel/probes/decode-insn.c
-index 3496d6169e59b..42b69936cee34 100644
---- a/arch/arm64/kernel/probes/decode-insn.c
-+++ b/arch/arm64/kernel/probes/decode-insn.c
-@@ -58,10 +58,13 @@ static bool __kprobes aarch64_insn_is_steppable(u32 insn)
- 	 * Instructions which load PC relative literals are not going to work
- 	 * when executed from an XOL slot. Instructions doing an exclusive
- 	 * load/store are not going to complete successfully when single-step
--	 * exception handling happens in the middle of the sequence.
-+	 * exception handling happens in the middle of the sequence. Memory
-+	 * copy/set instructions require that all three instructions be placed
-+	 * consecutively in memory.
- 	 */
- 	if (aarch64_insn_uses_literal(insn) ||
--	    aarch64_insn_is_exclusive(insn))
-+	    aarch64_insn_is_exclusive(insn) ||
-+	    aarch64_insn_is_mops(insn))
- 		return false;
- 
- 	return true;
+diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
+index d8909b2b535a0..41c245478e412 100644
+--- a/tools/testing/selftests/arm64/abi/hwcap.c
++++ b/tools/testing/selftests/arm64/abi/hwcap.c
+@@ -484,7 +484,7 @@ static const struct hwcap_data {
+ 		.name = "F8DP2",
+ 		.at_hwcap = AT_HWCAP2,
+ 		.hwcap_bit = HWCAP2_F8DP2,
+-		.cpuinfo = "f8dp4",
++		.cpuinfo = "f8dp2",
+ 		.sigill_fn = f8dp2_sigill,
+ 	},
+ 	{
 -- 
 2.43.0
 
