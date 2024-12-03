@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-97731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A399E25C8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4D29E2245
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08871699B7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D489428145B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105061F76CF;
-	Tue,  3 Dec 2024 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13FD1F754A;
+	Tue,  3 Dec 2024 15:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcPvz7XY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/Upwo/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA881F75AE;
-	Tue,  3 Dec 2024 15:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07DA1F7540;
+	Tue,  3 Dec 2024 15:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241539; cv=none; b=ra1hg5cjnnuB//SdqcftWizlLDICaLNytFRL/qTaV0GpMvj1YN8dLW+iPwwURezbxaZDAnZFLePKw5jJrYf5P/qKgj47ww0nW2Y4sC0MDEIjx3i4JPP/PUhXstXIb22epXtBGesX6LOVePqa44djitemasqzt9fdPj7mNJFvwko=
+	t=1733239317; cv=none; b=qu1nCLJaw2+ayY4VEV7+ajlA9BlzJ1voNTfh7EGShX160YxCD4msf6u0I/av1SaMn5p+Zxcz16MKjKEhqrkYdvFVK8KmiEvWrJOtgWepqEcfZYQIOf6fuJsXb9cuz8bAG8+GrxZsGiF+NG8I/ci0HdgNuCVXohb34K1Srn/BVbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241539; c=relaxed/simple;
-	bh=rpI0LVI16QsX3olCeHx3UN1WjG0XKoNNzc/8Fc7EMi8=;
+	s=arc-20240116; t=1733239317; c=relaxed/simple;
+	bh=8fYsBnv2xFzHRLibtieA4ZlfX0oSbCBCRh9CUzvMORs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkunrfD9UezWzhkOhuGcPQnvDz6AfV8WXfVcwf+G3Xc8pBv86XXzA0IF5A2W/iC24VJPAWADYCpbv6HQlsB/m1dLNqeIDGA8fWtXKOC0ectHSg1ieJ7akJ8PTo0GA7AO7e1tazihv3i8ARGTUgZao+adAYD6Mr3sqi+dulD8T4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcPvz7XY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F459C4CECF;
-	Tue,  3 Dec 2024 15:58:58 +0000 (UTC)
+	 MIME-Version; b=tNdfdA/ydx05etJDcSAyhhdRffRiYDRIGjDi2Gp4p4PJDkb7uIHzCJAcfs8dmb9NFo3Bkc8eHGR1ygdl2iu+6zyHa3PLR8CRSqFeskSlMNEHkbdHFQHK48UosqSKUXnQQsX/t2ksbW3gS5dUEgHo9ufnLBI4d78AIQfA3hWXPtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/Upwo/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284EAC4CECF;
+	Tue,  3 Dec 2024 15:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241539;
-	bh=rpI0LVI16QsX3olCeHx3UN1WjG0XKoNNzc/8Fc7EMi8=;
+	s=korg; t=1733239317;
+	bh=8fYsBnv2xFzHRLibtieA4ZlfX0oSbCBCRh9CUzvMORs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcPvz7XYTk3CoSH3z+XbSHS2VPv0idGn0tSz6pjRRMgVyhNFh6BzpCrLKpq31rWnw
-	 0PpEhQHeK9RWiLaL81hezz/bRXbqEyoEicAeVsBylsMX2sxOxrWO69XlqE0pA74Rjf
-	 QK+SCC3P1YBrrQKsGLekn4stGnEUP4i96bsvaU2o=
+	b=Y/Upwo/3oLlgPy4kJhyOUuK7AZCv9CcV3bAy4OKTPhMqkYqqdjkVy8SpsH6gu+NnZ
+	 t5FRCBXCE9Dgsi86a/NbSEued4Ap/s55+i2N0fXa9Tf6OS4AEaTyu6NBypOarVZkPI
+	 0hT9YAZ/QuMm6AY+NBCPd2EgfDdqWrjYyOTihCyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Koschel <jakobkoschel@gmail.com>,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
-	Cristiano Giuffrida <c.giuffrida@vu.nl>,
-	"Bos, H.J." <h.j.bos@vu.nl>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Baoquan He <bhe@redhat.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Yan Zhen <yanzhen@vivo.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 416/826] fs/proc/kcore.c: fix coccinelle reported ERROR instances
+Subject: [PATCH 6.11 571/817] netlink: fix false positive warning in extack during dumps
 Date: Tue,  3 Dec 2024 15:42:23 +0100
-Message-ID: <20241203144759.987956943@linuxfoundation.org>
+Message-ID: <20241203144018.202156079@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,81 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 82e33f249f1126cf3c5f39a31b850d485ac33bc3 ]
+[ Upstream commit 3bf39fa849ab8ed52abb6715922e6102d3df9f97 ]
 
-Coccinelle complains about the nested reuse of the pointer `iter' with
-different pointer type:
+Commit under fixes extended extack reporting to dumps.
+It works under normal conditions, because extack errors are
+usually reported during ->start() or the first ->dump(),
+it's quite rare that the dump starts okay but fails later.
+If the dump does fail later, however, the input skb will
+already have the initiating message pulled, so checking
+if bad attr falls within skb->data will fail.
 
-./fs/proc/kcore.c:515:26-30: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:534:23-27: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:550:40-44: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:568:27-31: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:581:28-32: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:599:27-31: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:607:38-42: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:614:26-30: ERROR: invalid reference to the index variable of the iterator on line 499
+Switch the check to using nlh, which is always valid.
 
-Replacing `struct kcore_list *iter' with `struct kcore_list *tmp' doesn't change the
-scope and the functionality is the same and coccinelle seems happy.
+syzbot found a way to hit that scenario by filling up
+the receive queue. In this case we initiate a dump
+but don't call ->dump() until there is read space for
+an skb.
 
-NOTE: There was an issue with using `struct kcore_list *pos' as the nested iterator.
-      The build did not work!
+WARNING: CPU: 1 PID: 5845 at net/netlink/af_netlink.c:2210 netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
+RIP: 0010:netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
+Call Trace:
+ <TASK>
+ netlink_dump_done+0x513/0x970 net/netlink/af_netlink.c:2250
+ netlink_dump+0x91f/0xe10 net/netlink/af_netlink.c:2351
+ netlink_recvmsg+0x6bb/0x11d0 net/netlink/af_netlink.c:1983
+ sock_recvmsg_nosec net/socket.c:1051 [inline]
+ sock_recvmsg+0x22f/0x280 net/socket.c:1073
+ __sys_recvfrom+0x246/0x3d0 net/socket.c:2267
+ __do_sys_recvfrom net/socket.c:2285 [inline]
+ __se_sys_recvfrom net/socket.c:2281 [inline]
+ __x64_sys_recvfrom+0xde/0x100 net/socket.c:2281
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7ff37dd17a79
 
-[akpm@linux-foundation.org: s/tmp/pos/]
-Link: https://lkml.kernel.org/r/20241029054651.86356-2-mtodorovac69@gmail.com
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Link: https://lkml.kernel.org/r/20220331223700.902556-1-jakobkoschel@gmail.com
-Fixes: 04d168c6d42d ("fs/proc/kcore.c: remove check of list iterator against head past the loop body")
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>
-Cc: Cristiano Giuffrida <c.giuffrida@vu.nl>
-Cc: "Bos, H.J." <h.j.bos@vu.nl>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yang Li <yang.lee@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Yan Zhen <yanzhen@vivo.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com
+Fixes: 8af4f60472fc ("netlink: support all extack types in dumps")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241119224432.1713040-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/kcore.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/netlink/af_netlink.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 51446c59388f1..7a85735d584f3 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -493,13 +493,13 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
- 		 * the previous entry, search for a matching entry.
- 		 */
- 		if (!m || start < m->addr || start >= m->addr + m->size) {
--			struct kcore_list *iter;
-+			struct kcore_list *pos;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index f84aad420d446..775d707ec708a 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2176,9 +2176,14 @@ netlink_ack_tlv_len(struct netlink_sock *nlk, int err,
+ 	return tlvlen;
+ }
  
- 			m = NULL;
--			list_for_each_entry(iter, &kclist_head, list) {
--				if (start >= iter->addr &&
--				    start < iter->addr + iter->size) {
--					m = iter;
-+			list_for_each_entry(pos, &kclist_head, list) {
-+				if (start >= pos->addr &&
-+				    start < pos->addr + pos->size) {
-+					m = pos;
- 					break;
- 				}
- 			}
++static bool nlmsg_check_in_payload(const struct nlmsghdr *nlh, const void *addr)
++{
++	return !WARN_ON(addr < nlmsg_data(nlh) ||
++			addr - (const void *) nlh >= nlh->nlmsg_len);
++}
++
+ static void
+-netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
+-		     const struct nlmsghdr *nlh, int err,
++netlink_ack_tlv_fill(struct sk_buff *skb, const struct nlmsghdr *nlh, int err,
+ 		     const struct netlink_ext_ack *extack)
+ {
+ 	if (extack->_msg)
+@@ -2190,9 +2195,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
+ 	if (!err)
+ 		return;
+ 
+-	if (extack->bad_attr &&
+-	    !WARN_ON((u8 *)extack->bad_attr < in_skb->data ||
+-		     (u8 *)extack->bad_attr >= in_skb->data + in_skb->len))
++	if (extack->bad_attr && nlmsg_check_in_payload(nlh, extack->bad_attr))
+ 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_OFFS,
+ 				    (u8 *)extack->bad_attr - (const u8 *)nlh));
+ 	if (extack->policy)
+@@ -2201,9 +2204,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
+ 	if (extack->miss_type)
+ 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_TYPE,
+ 				    extack->miss_type));
+-	if (extack->miss_nest &&
+-	    !WARN_ON((u8 *)extack->miss_nest < in_skb->data ||
+-		     (u8 *)extack->miss_nest > in_skb->data + in_skb->len))
++	if (extack->miss_nest && nlmsg_check_in_payload(nlh, extack->miss_nest))
+ 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_NEST,
+ 				    (u8 *)extack->miss_nest - (const u8 *)nlh));
+ }
+@@ -2232,7 +2233,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
+ 	if (extack_len) {
+ 		nlh->nlmsg_flags |= NLM_F_ACK_TLVS;
+ 		if (skb_tailroom(skb) >= extack_len) {
+-			netlink_ack_tlv_fill(cb->skb, skb, cb->nlh,
++			netlink_ack_tlv_fill(skb, cb->nlh,
+ 					     nlk->dump_done_errno, extack);
+ 			nlmsg_end(skb, nlh);
+ 		}
+@@ -2491,7 +2492,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
+ 	}
+ 
+ 	if (tlvlen)
+-		netlink_ack_tlv_fill(in_skb, skb, nlh, err, extack);
++		netlink_ack_tlv_fill(skb, nlh, err, extack);
+ 
+ 	nlmsg_end(skb, rep);
+ 
 -- 
 2.43.0
 
