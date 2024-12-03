@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE509E27A7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:37:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7AE9E261F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB583B316B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56DDDB2D9C7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2901F7569;
-	Tue,  3 Dec 2024 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427881F76CD;
+	Tue,  3 Dec 2024 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPL3w2/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx4HPzYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773231EE001;
-	Tue,  3 Dec 2024 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0098E1DE8A5;
+	Tue,  3 Dec 2024 15:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239425; cv=none; b=OsgQ3ai6fWrwE+dXnhULD6RcEO9yfsRCAeg0Ntx5jPS/PbfMQaz82msNdUF1rf4tl2hTyg8eC7sNKf/3dWBJZge/XNN+uJi7HJXYrBatkhfRMBE2E8FQrIOBRt0boD2FlkBXdYqslnpMdawRFL8pJTBmAU2WnZIAale1ZH5Cq40=
+	t=1733241452; cv=none; b=GiRmqQPyOBoD2VG7G4u92myEmaNOLz0xupcvitYxsuH7xm2d8GU+hGKgjiNbac437EV/VtbBywtArwFkEExkamuLH2g10EJHb7jtAnQ8UCt8OpulhKuBupV5Z0kJrtPNxK1IPc+wfJJa6zMwVIjv0DekEUsoc1bwOuMo9UPG1Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239425; c=relaxed/simple;
-	bh=ISyQWJAGR7B2WQvYzgu/Ch6zN4LnmFMfV+2Bes5v1Bg=;
+	s=arc-20240116; t=1733241452; c=relaxed/simple;
+	bh=Yc5UsaRiDe2yfcMt+LkOxaKAPTAvlyA0THhGpjR0xnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNHhK5ZN3Efxe85L96P/yjcue6ylDfhaFnEbWyR9zOORAcKWD8qoHhig3V9JrP7ukgokN2l7OvpNvOHhwbeYL5HbCe2pzdSHYLd23lGPKAVw9OotdkKpJvDmuUxm3H+r/VbooTJkuQ1RtWklXdGrg9pKEtthOkGaCOsAu8u57OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPL3w2/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3483C4CECF;
-	Tue,  3 Dec 2024 15:23:44 +0000 (UTC)
+	 MIME-Version; b=bjh3o8kWhghghTH7dl/Gha1ESr0hHI4mtoIvUpL92ffUYnnG2dz8S4MoizzbJ23I1xtY0DBmhFAfaLkGzfoF8pVfRndj2RVtNKjDhzchYitq5t5UJXxiKRqF0b+QYAFLjBJL/JTOAxnIjnqDWrZX97w75/ahcuWSArEHGRZahNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx4HPzYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786D3C4CECF;
+	Tue,  3 Dec 2024 15:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239425;
-	bh=ISyQWJAGR7B2WQvYzgu/Ch6zN4LnmFMfV+2Bes5v1Bg=;
+	s=korg; t=1733241451;
+	bh=Yc5UsaRiDe2yfcMt+LkOxaKAPTAvlyA0THhGpjR0xnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPL3w2/V9g1UB7qJEWUYo4dd3TJnOzp8SQesQvRxGJWGxr1hNREVbl7HtZVri1lcu
-	 K+l/LlVkFvvDFzARAN5SN8LhPoLJfnSwiNbpZAZcmnl0Prh6KERpvnbImroEWypImR
-	 qgb2l4um3OXvaetyQ03NFcRYMUD3OVBkKeawGJrg=
+	b=Zx4HPzYPz45XoCKoMd31ahIkyJGqoebWsL1ZvYP0tdV/rKCPxMYg3OU8iOdIt0gFU
+	 Ep8VMMqg9bP92LgSxB/QNAa9TFoWBZhfYdKKvn49Ii819t94orfec6ELvUS6dPFNWX
+	 P2pdBB5Gg0gEvjuY2skxa4mNWnJxDym7PNNTbgLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 578/817] octeontx2-af: RPM: Fix mismatch in lmac type
+Subject: [PATCH 6.12 423/826] x86/tdx: Introduce wrappers to read and write TD metadata
 Date: Tue,  3 Dec 2024 15:42:30 +0100
-Message-ID: <20241203144018.478354839@linuxfoundation.org>
+Message-ID: <20241203144800.262615853@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 7ebbbb23ea5b6d051509cb11399afac5042c9266 ]
+[ Upstream commit 5081e8fadb809253c911b349b01d87c5b4e3fec5 ]
 
-Due to a bug in the previous patch, there is a mismatch
-between the lmac type reported by the driver and the actual
-hardware configuration.
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-Fixes: 3ad3f8f93c81 ("octeontx2-af: cn10k: MAC internal loopback support")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
+
+Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
+metadata from the TDX module. There are currently no users for
+TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
+
+This is preparation for enumeration and enabling optional TD features.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://lore.kernel.org/all/20241104103803.195705-2-kirill.shutemov%40linux.intel.com
+Stable-dep-of: f65aa0ad79fc ("x86/tdx: Dynamically disable SEPT violations from causing #VEs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/coco/tdx/tdx.c           | 32 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-index 1b34cf9c97035..9e8c5e4389f8b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-@@ -467,7 +467,7 @@ u8 rpm_get_lmac_type(void *rpmd, int lmac_id)
- 	int err;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 327c45c5013fe..c74bb9e7d7a35 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -78,6 +78,32 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+ }
  
- 	req = FIELD_SET(CMDREG_ID, CGX_CMD_GET_LINK_STS, req);
--	err = cgx_fwi_cmd_generic(req, &resp, rpm, 0);
-+	err = cgx_fwi_cmd_generic(req, &resp, rpm, lmac_id);
- 	if (!err)
- 		return FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, resp);
- 	return err;
++/* Read TD-scoped metadata */
++static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++	};
++	u64 ret;
++
++	ret = __tdcall_ret(TDG_VM_RD, &args);
++	*value = args.r8;
++
++	return ret;
++}
++
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -929,10 +955,6 @@ static void tdx_kexec_finish(void)
+ 
+ void __init tdx_early_init(void)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
+ 
+@@ -951,7 +973,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
++	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+ 
+ 	/*
+ 	 * All bits above GPA width are reserved and kernel treats shared bit
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b021..7e12cfa28bec9 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -16,6 +16,7 @@
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
++#define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+ /* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
 -- 
 2.43.0
 
