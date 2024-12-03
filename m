@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-97867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884279E2659
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAD49E2324
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520B616C0F3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6632168730
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986C71F8909;
-	Tue,  3 Dec 2024 16:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EF91F759C;
+	Tue,  3 Dec 2024 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqXZvLDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5uAFQDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575E01F76DB;
-	Tue,  3 Dec 2024 16:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B220C1F7557;
+	Tue,  3 Dec 2024 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242004; cv=none; b=pA8O6ujMG6i050k6B3E5iZENtWsPoYNVvWQ91ezj0e+a9zytEX4dE4wgF/5rQ7K1+2vovPE12TL+o190ysyFlkjrBSpROAfQ7TmOwFewI56Gs4RrDZP+Nk3G1JLtGJDUflzooaAK7mRIcRfuQ27DNU8vTOm9QvldDSzs7jwPAsE=
+	t=1733239698; cv=none; b=WFihJ5UtmlQYNS+oq/HLCG8GOa+duAJ5CNxhpt0EKzyKaufcL/3UOlNPgo12KDTu8eMbTV1JkX+xpCfADp70b4oYihQyaPF9AWRXbDXiVyiRbecqCZ4UXQjOOzXAs1fWbMyair9TfKmuJUqEXS/nv3bjGN9gE31ldwdwz4LouzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242004; c=relaxed/simple;
-	bh=ffZOYcE8Xmu+LPX2AEBuLuNdqZcrHZ9k75QEzHc5oJg=;
+	s=arc-20240116; t=1733239698; c=relaxed/simple;
+	bh=HNqHPi+S1g4SSx8drqJZKkPdou+3vdmhNUSJsJfwSAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzD+CtuUBprJs2hjOHrL9CndQqIJRZ/ZAfuQVE5bY5qF08kSjG2cGxfyoM3D3KGY18XueH/at4roZHXkGCCq4kXqunYx6Rz+N6GW/RKGSCfEw6jBBAQ/IPvquXC0v1GXYvimIEDOE4NLBFueiqVeLQHCZEFUWOT+jRHCOhv86C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqXZvLDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E3FC4CECF;
-	Tue,  3 Dec 2024 16:06:43 +0000 (UTC)
+	 MIME-Version; b=TA3wf5fzrBvCAX2lslKBBw/S1mQJ1MXyp7qPXwQpUH/F5bi5inwYVxR1BhfoURzt38SP2Kox3wqag5Wwx2xeLeYMyZhejSRcnmGEoaJC4QVXxwPTyP9r9HKAE1y4Ck5HRpnPWQiabblVZ1scxeRjUdP4iBCvIVNYA8yPJmC7rc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5uAFQDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A6DC4CED9;
+	Tue,  3 Dec 2024 15:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242004;
-	bh=ffZOYcE8Xmu+LPX2AEBuLuNdqZcrHZ9k75QEzHc5oJg=;
+	s=korg; t=1733239698;
+	bh=HNqHPi+S1g4SSx8drqJZKkPdou+3vdmhNUSJsJfwSAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqXZvLDFvWz7Ob9Ub+1f+27WBidw4+Jq2aCCzJbYLN5OssBUK7jZGynN8JJ+kNLRg
-	 IpIsDwQ3Mv4UBxMB/xKfeDKyjmz74gRv5zDaA4ewjQNPGOpU8NKyYXeeQGP9q5PDGM
-	 vY4HezkuQIBipDn8rnO4uQkKP9KPTG5zJft3hf3M=
+	b=J5uAFQDVnKBpHudzUdmnGWIrCYdlEjhKQxgiwe9IRHjq0erOzToB+wwurdO5D8zlX
+	 06l2qL6QRVUHrEQwmW2FoUP+w+HQiN/M9jB81UTUC/8yiQ0qo3d7yEeTuOanM1E45f
+	 qhEET+M3GU9KvsP80IEv1p4DFSrodak8+Pt9XH4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 548/826] power: supply: core: Remove might_sleep() from power_supply_put()
+	Jesse Taube <jesse@rivosinc.com>,
+	Evan Green <evan@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.11 703/817] RISC-V: Scalar unaligned access emulated on hotplug CPUs
 Date: Tue,  3 Dec 2024 15:44:35 +0100
-Message-ID: <20241203144805.126961428@linuxfoundation.org>
+Message-ID: <20241203144023.421768131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jesse Taube <jesse@rivosinc.com>
 
-[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
+commit 9c528b5f7927b857b40f3c46afbc869827af3c94 upstream.
 
-The put_device() call in power_supply_put() may call
-power_supply_dev_release(). The latter function does not sleep so
-power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
-call from power_supply_put(). This patch suppresses false positive
-complaints about calling a sleeping function from atomic context if
-power_supply_put() is called from atomic context.
+The check_unaligned_access_emulated() function should have been called
+during CPU hotplug to ensure that if all CPUs had emulated unaligned
+accesses, the new CPU also does.
 
-Cc: Kyle Tso <kyletso@google.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds the call to check_unaligned_access_emulated() in
+the hotplug path.
+
+Fixes: 55e0bf49a0d0 ("RISC-V: Probe misaligned access speed in parallel")
+Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+Reviewed-by: Evan Green <evan@rivosinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241017-jesse_unaligned_vector-v10-2-5b33500160f8@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_core.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/riscv/kernel/unaligned_access_speed.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index 49534458a9f7d..73cc9c236e833 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -484,8 +484,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
-  */
- void power_supply_put(struct power_supply *psy)
- {
--	might_sleep();
--
- 	atomic_dec(&psy->use_cnt);
- 	put_device(&psy->dev);
- }
--- 
-2.43.0
-
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -191,6 +191,7 @@ static int riscv_online_cpu(unsigned int
+ 	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
+ 		goto exit;
+ 
++	check_unaligned_access_emulated(NULL);
+ 	buf = alloc_pages(GFP_KERNEL, MISALIGNED_BUFFER_ORDER);
+ 	if (!buf) {
+ 		pr_warn("Allocation failure, not measuring misaligned performance\n");
 
 
 
