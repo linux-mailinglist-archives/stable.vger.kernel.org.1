@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-97857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01829E2BF8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161649E2BB4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 159F5B2AF0E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF32B62DE5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964F71F76CA;
-	Tue,  3 Dec 2024 16:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2BC1F76AD;
+	Tue,  3 Dec 2024 16:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0tI5nGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d82809gd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D8F23CE;
-	Tue,  3 Dec 2024 16:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC62B1F759C;
+	Tue,  3 Dec 2024 16:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241970; cv=none; b=VbiE8Q/GKTbvqza4P15lq6DCfS0useM112lsZzxPPN++iEtuzq612MY8/f9N+N3I98yIbQxZbCmt749kMCrqfqGPB4zjuMfWuklK9XkMl+PtPjgA4hZukdTF0jh1Vj06q5gOnf0rkAPTbo75VGBfgXoy7gXWlcYKu3Cb9wrm5eY=
+	t=1733242088; cv=none; b=ZqyCIFrsDErsaElFKhVbmkrAal9MKyEwF0wA1haS0VrE9PNhh3GHapr+No2gfuDcA0gwDGLcRlZtv3lbgO3Hg+RqP7zEq77ib5ezIp4tV1HleGge/Y62f+YgikBAUVyTzP6bF+64z06yah2NzjcXhaSOPYaMYKEQNcdwqbxYHb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241970; c=relaxed/simple;
-	bh=yfae5t2PM2KFj7Y+tf25kEW0Gheg/a7pS3rvPp8O37U=;
+	s=arc-20240116; t=1733242088; c=relaxed/simple;
+	bh=dYy0xzenxuJukqlE95VyuvQZqHOk9NmHthFXBVhvfD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4N15FfdStYRYxDi/KqSOV9lRruAHPyxAzPhpciAOfCIitWgLoOo3kxSN5TmackJfS0hzRdxV8hQ4lRtXZL9KydVLLOpytFyparCGu9vIBCn4fovaEOfm32c+UPRCe2T3BeIDymh84CYk3v/HTM1oAGgb925FeRe/SnwWsQIINo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0tI5nGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77E9C4CECF;
-	Tue,  3 Dec 2024 16:06:09 +0000 (UTC)
+	 MIME-Version; b=a8iwiF9RJXIK6/lldRa1sBtkjmQatZPCo2JsT3/0r9N8OcrltIqG2mNyXqsiy1HNmcDvYJPTjxWCKkSQwdQnrxl1huR5w20o4EFMAqlD0cGUh+8jYmzvDsrTw+/0BASnQ8HL0jCPbq5oNGhZztwPfZtThPtuFCLqX1zB3RUUv30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d82809gd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732AC4CECF;
+	Tue,  3 Dec 2024 16:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241970;
-	bh=yfae5t2PM2KFj7Y+tf25kEW0Gheg/a7pS3rvPp8O37U=;
+	s=korg; t=1733242088;
+	bh=dYy0xzenxuJukqlE95VyuvQZqHOk9NmHthFXBVhvfD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0tI5nGGT7vr4AZf/GA5qvO4J7rXwE06bsy1tuyAWTo9BUQXgGBBxsotpiswlotvl
-	 dT1KyJaeEvaPQXQblkrl1jBe0IyTw8bwsH71doSCOJkOsiURAxcZ1SrziygGzf7Hcw
-	 Rxpg/5js26U144IWOci2ZTlVT6sSWWdyRqdMmiU0=
+	b=d82809gdFTrIhfJUrTxyg5V3m4T/nQiB7gT/xbUtl9sd6JOnBhCsd7M7vkAeuMj5U
+	 r9xrUxWybHRwMXi9o8SgKOBjOVtF2pPeZFfAfQXF0W4cGp/8OVBUnfOCD+TQWdcngL
+	 v/XNsmZ8lTSjWnQjarX7Y4lu4AF9wf8wvLhu8JLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Charles Han <hanchunchao@inspur.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 569/826] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
-Date: Tue,  3 Dec 2024 15:44:56 +0100
-Message-ID: <20241203144805.945850583@linuxfoundation.org>
+Subject: [PATCH 6.12 604/826] phy: realtek: usb: fix NULL deref in rtk_usb2phy_probe
+Date: Tue,  3 Dec 2024 15:45:31 +0100
+Message-ID: <20241203144807.316626641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,48 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
+[ Upstream commit 04e3e9188291a183b27306ddb833722c0d083d6a ]
 
-On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
-interrupt coalescing. It's known to be buggy on some platforms, and
-dwmac-socfpga appears to be one of them. Changing the interrupt
-coalescing from ethtool doesn't appear to have any effect here.
+In rtk_usb2phy_probe() devm_kzalloc() may return NULL
+but this returned value is not checked.
 
-Without disabling RIWT (Received Interrupt Watchdog Timer, I
-believe...), we observe latencies while receiving traffic that amount to
-around ~0.4ms. This was discovered with NTP but can be easily reproduced
-with a simple ping. Without this patch :
-
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
-
-With this patch :
-
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
-
-Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 134e6d25f6bd ("phy: realtek: usb: Add driver for the Realtek SoC USB 2.0 PHY")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241025065912.143692-1-hanchunchao@inspur.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ drivers/phy/realtek/phy-rtk-usb2.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index fdb4c773ec98a..e897b49aa9e05 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -486,6 +486,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
- 	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
+diff --git a/drivers/phy/realtek/phy-rtk-usb2.c b/drivers/phy/realtek/phy-rtk-usb2.c
+index e3ad7cea51099..e8ca2ec5998fe 100644
+--- a/drivers/phy/realtek/phy-rtk-usb2.c
++++ b/drivers/phy/realtek/phy-rtk-usb2.c
+@@ -1023,6 +1023,8 @@ static int rtk_usb2phy_probe(struct platform_device *pdev)
  
-+	plat_dat->riwt_off = 1;
-+
- 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
- 	if (ret)
- 		return ret;
+ 	rtk_phy->dev			= &pdev->dev;
+ 	rtk_phy->phy_cfg = devm_kzalloc(dev, sizeof(*phy_cfg), GFP_KERNEL);
++	if (!rtk_phy->phy_cfg)
++		return -ENOMEM;
+ 
+ 	memcpy(rtk_phy->phy_cfg, phy_cfg, sizeof(*phy_cfg));
+ 
 -- 
 2.43.0
 
