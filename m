@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-97046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E189E27DA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:43:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36E29E2538
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 101C2BA6700
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40497285C7D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02011F76CA;
-	Tue,  3 Dec 2024 15:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5155F1F76BE;
+	Tue,  3 Dec 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtMgupua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+b2n6jg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC0F1F76C3;
-	Tue,  3 Dec 2024 15:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094541F75BC;
+	Tue,  3 Dec 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239364; cv=none; b=sqqLddWUyh+B8VZY/94ZL/VseOzJ3+Az2TF1gu1D5WHODRBxF4pgwbKByW/CUcnD7nrVhDM2Tyvo29RxAvBeWztjuMsYcvedYk+r0u6BNm5gi6lf4xLtVdeUQdZ6tYJJwhBYBWtB4U70seRcUUx6K0smTfTS2AijhMgihQ9Proc=
+	t=1733241496; cv=none; b=fY6brbvJ0/Fc48+flBkyrAuQNc3r31RUZYX2UMmKLYSMHwByAMjn2pKmVqKBjqAKrC0ZDEmfo7utPvjoe6fDFM7dCtK4Q/SJG54Xp7YjnYBpiamdOXZoaR/qVPruxfZO5PbmMtnGR4svPeM7W3/UFWLv78AAPNp9aMfZNvcGaEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239364; c=relaxed/simple;
-	bh=oXz2z6kHde0i2dqXrYN+2XTX+i3Naqajqlhe67oALLQ=;
+	s=arc-20240116; t=1733241496; c=relaxed/simple;
+	bh=hicsg4V3LFC53vfvk2nANKOiDSjrH0jBBjgWnuydvjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Prp9Lo2qjkZScNdzMzwQkE6wm5J1v6uCnotAL89xYEJSBSj8GfWJ9sLg/istwNcPB8dq/oUuUolqpVJRjosqWnv/fCGGythZMy7C/YCGKPUSsUMDLrM8oIl4iu9ITbVIUyPXHJmk+ZG6HWtdFCOtLqIuHNWk5ospR05yZfbUg8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtMgupua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9891C4CED6;
-	Tue,  3 Dec 2024 15:22:43 +0000 (UTC)
+	 MIME-Version; b=nBzlM8NtxPuXnwNOayNMBKrghR/M0idWQ1yqnsTUuBRoGoWhY2iv+XOu21AzTa1JSDn6laupKrjh98yCL8z7UvIlSLS9tYF0gWak4nXhJ69N2Xq7ghiIsAvUfcisPWUt7jSDmW0NNhWw26mkXA8WbShSg2W/uq9s6hW0BGpx+3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+b2n6jg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D1BC4CECF;
+	Tue,  3 Dec 2024 15:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239364;
-	bh=oXz2z6kHde0i2dqXrYN+2XTX+i3Naqajqlhe67oALLQ=;
+	s=korg; t=1733241495;
+	bh=hicsg4V3LFC53vfvk2nANKOiDSjrH0jBBjgWnuydvjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtMgupuaEGMQP7entkcRuL7Pi/iAhFfhj5kj6N5d6CnsVI6VKnI/tg5FNJuUBZXly
-	 +OMVw8TDgNfTI67dLxx9Ir9GXKh/jWEyjQ1F2gXaW7YM8ZTNvumnuXbZDix8r70y+G
-	 iRjVeVBOcAkZoFBIsF9musitfqkDHyE6VL9wFMoI=
+	b=V+b2n6jgY2RFT0N+2FjRLN1lPXyjganFA2mgHKDzY+dEWeZWDm9V44PDf64FWgh98
+	 gZ/Vjzg7PV12pDz0hvzGE9ldbyPwso3y7CmP+mKelfH/g6/317Ylst3mkrnJsuI5S2
+	 bWNEkjtD9Kr8b7Yq5+2sYJBclCxq91khGODR1QIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Gow <davidgow@google.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 589/817] bnxt_en: Unregister PTP during PCI shutdown and suspend
+Subject: [PATCH 6.12 434/826] kunit: skb: use "gfp" variable instead of hardcoding GFP_KERNEL
 Date: Tue,  3 Dec 2024 15:42:41 +0100
-Message-ID: <20241203144018.915926727@linuxfoundation.org>
+Message-ID: <20241203144800.692979615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3661c05c54e8db7064aa96a0774654740974dffc ]
+[ Upstream commit fd0a5afb5455b4561bfc6dfb0c4b2d8226f9ccfe ]
 
-If we go through the PCI shutdown or suspend path, we shutdown the
-NIC but PTP remains registered.  If the kernel continues to run for
-a little bit, the periodic PTP .do_aux_work() function may be called
-and it will read the PHC from the BAR register.  Since the device
-has already been disabled, it will cause a PCIe completion timeout.
-Fix it by calling bnxt_ptp_clear() in the PCI shutdown/suspend
-handlers.  bnxt_ptp_clear() will unregister from PTP and
-.do_aux_work() will be canceled.
+The intent here was clearly to use the gfp variable flags instead of
+hardcoding GFP_KERNEL.  All the callers pass GFP_KERNEL as the gfp
+flags so this doesn't affect runtime.
 
-In bnxt_resume(), we need to re-initialize PTP.
-
-Fixes: a521c8a01d26 ("bnxt_en: Move bnxt_ptp_init() from bnxt_open() back to bnxt_init_one()")
-Cc: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b3231d353a51 ("kunit: add a convenience allocation wrapper for SKBs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/kunit/skbuff.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index f999c10cefac6..68e6e202d4ecd 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -15933,6 +15933,7 @@ static void bnxt_shutdown(struct pci_dev *pdev)
- 	if (netif_running(dev))
- 		dev_close(dev);
+diff --git a/include/kunit/skbuff.h b/include/kunit/skbuff.h
+index 44d12370939a9..345e1e8f03123 100644
+--- a/include/kunit/skbuff.h
++++ b/include/kunit/skbuff.h
+@@ -29,7 +29,7 @@ static void kunit_action_kfree_skb(void *p)
+ static inline struct sk_buff *kunit_zalloc_skb(struct kunit *test, int len,
+ 					       gfp_t gfp)
+ {
+-	struct sk_buff *res = alloc_skb(len, GFP_KERNEL);
++	struct sk_buff *res = alloc_skb(len, gfp);
  
-+	bnxt_ptp_clear(bp);
- 	bnxt_clear_int_mode(bp);
- 	pci_disable_device(pdev);
- 
-@@ -15960,6 +15961,7 @@ static int bnxt_suspend(struct device *device)
- 		rc = bnxt_close(dev);
- 	}
- 	bnxt_hwrm_func_drv_unrgtr(bp);
-+	bnxt_ptp_clear(bp);
- 	pci_disable_device(bp->pdev);
- 	bnxt_free_ctx_mem(bp);
- 	rtnl_unlock();
-@@ -16001,6 +16003,10 @@ static int bnxt_resume(struct device *device)
- 		goto resume_exit;
- 	}
- 
-+	if (bnxt_ptp_init(bp)) {
-+		kfree(bp->ptp_cfg);
-+		bp->ptp_cfg = NULL;
-+	}
- 	bnxt_get_wol_settings(bp);
- 	if (netif_running(dev)) {
- 		rc = bnxt_open(dev);
+ 	if (!res || skb_pad(res, len))
+ 		return NULL;
 -- 
 2.43.0
 
