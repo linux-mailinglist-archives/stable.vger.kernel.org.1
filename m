@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943AA9E2614
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29169E22DA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170D0164069
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE0816AC7E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E93153800;
-	Tue,  3 Dec 2024 16:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159201F473A;
+	Tue,  3 Dec 2024 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK+rFRBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfZ0ALkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943C623CE;
-	Tue,  3 Dec 2024 16:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DED1F130F;
+	Tue,  3 Dec 2024 15:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241771; cv=none; b=C9z0e/5Y7S9S5KQlNq4VMsYBGzjPYzTBMKU/p6cekzscFo1nc5MxeVuFCNdt4qcIIv097ph4RSIU9GcAeDQbJWcSBr7fBD2BaA8b3jASnJw/8NuF1a1D4+FsGFywX8utZyuv9m5fhNM2w6zl6dBMfyLEMAagnKeTCldFvGYIfsw=
+	t=1733239500; cv=none; b=I70/Br/CNJMdmF1x/gSzGeZ4i/WP20YHU41TgR+xFziMng7pJBZ6VeCTYgDw3bHkLYQw8NpJONC4bFjBGRHg+DknU0e9ygmTMK3D6WI8CcTV059ltFElyvYYM373mHjrBQMRiLY/hUjJ1eYQSvf7sas/glaWfiFEu5/WvJFx5nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241771; c=relaxed/simple;
-	bh=AF9dNoKTLin9GyoJwpgqA5axTi0sSrac6XiNmxocf3M=;
+	s=arc-20240116; t=1733239500; c=relaxed/simple;
+	bh=6EnsEyT/6nEEJVYa6Iy3hd3FLcylkmK8iwc3sIUqTTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zx9vhP/qwVSz3sR5E6tikz4jTlwMrrtxNqC13MI6/XoxQxpulPG7nGgXXoa3o6y3yfJEqLukBhQX29OtXyNwh2lvcv/AdeXh4TCFLh5HmNc89vIcNfLhog8B5PUBEjoEW0XvFts0QeMkEqSHmcu7W9B4114mXKuOafI3Dm2KGb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK+rFRBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152ABC4CECF;
-	Tue,  3 Dec 2024 16:02:50 +0000 (UTC)
+	 MIME-Version; b=WQTrMU8DHon27M/OJx6BwF3190XC5AQidJW5VY79S0dykbKxsaZ+0UI1h/3C/LWpklNOkeZnADldwVKowDIO2gl7C7UIJNOWuSGn7Jml6zk7Tv3+TuozHNYAv6N0vxS5IJGgrXhYsleHqGzfTe3Qvv3Hv+pe54CoPrEwr3JBeFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfZ0ALkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AE9C4CECF;
+	Tue,  3 Dec 2024 15:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241771;
-	bh=AF9dNoKTLin9GyoJwpgqA5axTi0sSrac6XiNmxocf3M=;
+	s=korg; t=1733239500;
+	bh=6EnsEyT/6nEEJVYa6Iy3hd3FLcylkmK8iwc3sIUqTTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HK+rFRBDxGWntZoms1g8/IgInujdx86Z3mO51dvkQBnAJ1HWZZhtAcjJUxGuhzFWL
-	 NiHtRAR9wwGpz68afIzyDxW9QX1Oi62nRHkzUnupHEIN2C/eM+TA0j3fqRcvfcM+q+
-	 fcqbmN4iclHKEHnGgDBriuVwjJ2/dtV4UhTQPGTU=
+	b=EfZ0ALkraKstqd0pAjs/xGPkIumv+hI68Kp+ygU/sH8PRLdIS2FX47D9wBRFW2ZoR
+	 gQeVrA5n3FydwtorNjiEBIBJ+8cnd0o9tDZWGpE/Qy3JMuEW9Uxy3FQDg9n5dbmcJs
+	 ZVXdMMdXnFGMapxNiJHnZH67x+7FfA0zVYMfiuAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 480/826] f2fs: compress: fix inconsistent update of i_blocks in release_compress_blocks and reserve_compress_blocks
+	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 635/817] soc: qcom: socinfo: fix revision check in qcom_socinfo_probe()
 Date: Tue,  3 Dec 2024 15:43:27 +0100
-Message-ID: <20241203144802.486178939@linuxfoundation.org>
+Message-ID: <20241203144020.728091568@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
 
-[ Upstream commit 26413ce18e85de3dda2cd3d72c3c3e8ab8f4f996 ]
+commit 128fdbf36cddc2a901c4889ba1c89fa9f2643f2c upstream.
 
-After release a file and subsequently reserve it, the FSCK flag is set
-when the file is deleted, as shown in the following backtrace:
+In success case, the revision holds a non-null pointer. The current
+logic incorrectly returns an error for a non-null pointer, whereas
+it should return an error for a null pointer.
 
-F2FS-fs (dm-48): Inconsistent i_blocks, ino:401231, iblocks:1448, sectors:1472
-fs_rec_info_write_type+0x58/0x274
-f2fs_rec_info_write+0x1c/0x2c
-set_sbi_flag+0x74/0x98
-dec_valid_block_count+0x150/0x190
-f2fs_truncate_data_blocks_range+0x2d4/0x3cc
-f2fs_do_truncate_blocks+0x2fc/0x5f0
-f2fs_truncate_blocks+0x68/0x100
-f2fs_truncate+0x80/0x128
-f2fs_evict_inode+0x1a4/0x794
-evict+0xd4/0x280
-iput+0x238/0x284
-do_unlinkat+0x1ac/0x298
-__arm64_sys_unlinkat+0x48/0x68
-invoke_syscall+0x58/0x11c
+The socinfo driver for IPQ9574 and IPQ5332 is currently broken,
+resulting in the following error message
+qcom-socinfo qcom-socinfo: probe with driver qcom-socinfo failed with
+error -12
 
-For clusters of the following type, i_blocks are decremented by 1 and
-i_compr_blocks are incremented by 7 in release_compress_blocks, while
-updates to i_blocks and i_compr_blocks are skipped in reserve_compress_blocks.
+Add a null check for the revision to ensure it returns an error only in
+failure case (null pointer).
 
-raw node:
-D D D D D D D D
-after compress:
-C D D D D D D D
-after reserve:
-C D D D D D D D
-
-Let's update i_blocks and i_compr_blocks properly in reserve_compress_blocks.
-
-Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e694d2b5c58b ("soc: qcom: Add check devm_kasprintf() returned value")
+Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241016144852.2888679-1-quic_mmanikan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 2 +-
+ drivers/soc/qcom/socinfo.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 321d8ffbab6e4..adc7d64a6f47d 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3792,7 +3792,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 		to_reserved = cluster_size - compr_blocks - reserved;
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -782,7 +782,7 @@ static int qcom_socinfo_probe(struct pla
+ 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
+ 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
+ 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
+-	if (!qs->attr.soc_id || qs->attr.revision)
++	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
  
- 		/* for the case all blocks in cluster were reserved */
--		if (to_reserved == 1) {
-+		if (reserved && to_reserved == 1) {
- 			dn->ofs_in_node += cluster_size;
- 			goto next;
- 		}
--- 
-2.43.0
-
+ 	if (offsetof(struct socinfo, serial_num) <= item_size) {
 
 
 
