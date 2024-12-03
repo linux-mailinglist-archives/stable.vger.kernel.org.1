@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE95F9E2185
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4869E2452
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7395D285DB0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C74287A6F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8121FA270;
-	Tue,  3 Dec 2024 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5982B1F76BB;
+	Tue,  3 Dec 2024 15:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WRj7AdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq07kJ2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B64D1FAC54;
-	Tue,  3 Dec 2024 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166DF5336E;
+	Tue,  3 Dec 2024 15:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238696; cv=none; b=p7Gcz0gOvPTZNpCAjzycTLIylUNjc8sTskEQjCWd4TD4bqWIQ/0KNw9mU4oWS/8BokzXWhwSKUOA0SIJVswGGtRBGOxbrJgfXRNpbu9pJ2jmUlODFUOT69whistB/uX7CiHIz+dZAgM/9ngTTllzfvCPPx6PKSJKUJdLW/mjkjU=
+	t=1733240821; cv=none; b=DuKH3DVgaHfZKQrd/3ZizrMCrUIIFkRLzldy58/HzlRaL2jKF7tnqLQzwFD27gqbbOlwTQkegDaoZw2xsRR/b6nT6DRfSDbwlNgo030Pf8kz+39asxY1CJYtbs7/gfgTHVVAdmSgpxZatPHyi6zGbXbxei9rbEXaefsQ/G+Pbq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238696; c=relaxed/simple;
-	bh=4BSy2d52J3uWQMywQXZ/yiovqqC2R4H++xq6MGI9zwA=;
+	s=arc-20240116; t=1733240821; c=relaxed/simple;
+	bh=LeX/DYeejuyuw92bcO8Aom5/WpIqOlkIl67kL9zF1Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehdC5nxfmgevzNd2W7tu7TlNQyWFaY15TcA2BUxhPZmV5VBUR1g6Z/OkeGj0TnzW7GJVOwHUf4aX1AKeQhYHFUTg/2cTX4kguFAN4caHE79EXW0xiYzdzSwwqK++mPdjqrUfrgsIkPQ9LdR3oUUT5Tw1P/sJMnQPap0QrwZqxV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WRj7AdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C03C4CECF;
-	Tue,  3 Dec 2024 15:11:35 +0000 (UTC)
+	 MIME-Version; b=p+Q00wbIB/ZOdrFJOTUe1ew8uZlOGhBsxl8WKcX1NgYCJI6DcZMnZ4Fv8a6SddPvWqyZ+YPvaw3oEgaFDwiB6thpFbKhxMcrqjiadwo6ZXkV9YyXuZ7ZCuVoUO8zTh1I7W9cwS2nekiEu7Y1Ckq16BxxB+pJAAFB2QFgJtbaVvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq07kJ2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DC5C4CECF;
+	Tue,  3 Dec 2024 15:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238696;
-	bh=4BSy2d52J3uWQMywQXZ/yiovqqC2R4H++xq6MGI9zwA=;
+	s=korg; t=1733240821;
+	bh=LeX/DYeejuyuw92bcO8Aom5/WpIqOlkIl67kL9zF1Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WRj7AdHvQedvtvKwOvdcMcraOaUfx85q3NCzOr8lZvGbASLEjB9/4t2IPC5WC9YW
-	 jCSaJcuNTzIzsRD4UgyyIlVEKqp/oUTB5OqCpsNWBrA3a7bL8MVWSOz95aZWfTu+o9
-	 WHtfuy5Vtje6udln+WNNs+VtNLIOZxLWRsNibJQ4=
+	b=lq07kJ2DogQVPwl6TYAnCa0vA1auLNQtN763oizxGHBa+1Tstu6+yhTtYY21QNxA3
+	 YjPb+nHX00KQdJor/cnxmJ71tVkuEK2zrB6rQNLLHrQ1KjtpouqD2UOSdT3eT0HkiF
+	 rkTRknh1h3Dx6jZw5EBVv7bu45wTju1zYadKeXAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Igor Prusov <ivprusov@salutedevices.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 366/817] erofs: handle NONHEAD !delta[1] lclusters gracefully
-Date: Tue,  3 Dec 2024 15:38:58 +0100
-Message-ID: <20241203144010.129568894@linuxfoundation.org>
+Subject: [PATCH 6.12 212/826] dt-bindings: vendor-prefixes: Add NeoFidelity, Inc
+Date: Tue,  3 Dec 2024 15:38:59 +0100
+Message-ID: <20241203144752.015107725@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Igor Prusov <ivprusov@salutedevices.com>
 
-[ Upstream commit 0bc8061ffc733a0a246b8689b2d32a3e9204f43c ]
+[ Upstream commit 5d9e6d6fc1b98c8c22d110ee931b3b233d43cd13 ]
 
-syzbot reported a WARNING in iomap_iter_done:
- iomap_fiemap+0x73b/0x9b0 fs/iomap/fiemap.c:80
- ioctl_fiemap fs/ioctl.c:220 [inline]
+Add vendor prefix for NeoFidelity, Inc
 
-Generally, NONHEAD lclusters won't have delta[1]==0, except for crafted
-images and filesystems created by pre-1.0 mkfs versions.
-
-Previously, it would immediately bail out if delta[1]==0, which led to
-inadequate decompressed lengths (thus FIEMAP is impacted).  Treat it as
-delta[1]=1 to work around these legacy mkfs versions.
-
-`lclusterbits > 14` is illegal for compact indexes, error out too.
-
-Reported-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67373c0c.050a0220.2a2fcc.0079.GAE@google.com
-Tested-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Fixes: d95ae5e25326 ("erofs: add support for the full decompressed length")
-Fixes: 001b8ccd0650 ("erofs: fix compact 4B support for 16k block size")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241115173651.3339514-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Igor Prusov <ivprusov@salutedevices.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240925-ntp-amps-8918-8835-v3-1-e2459a8191a6@salutedevices.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index 403af6e31d5b2..8d28cfc6a4b83 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -223,7 +223,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
- 	unsigned int amortizedshift;
- 	erofs_off_t pos;
- 
--	if (lcn >= totalidx)
-+	if (lcn >= totalidx || vi->z_logical_clusterbits > 14)
- 		return -EINVAL;
- 
- 	m->lcn = lcn;
-@@ -398,7 +398,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 	u64 lcn = m->lcn, headlcn = map->m_la >> lclusterbits;
- 	int err;
- 
--	do {
-+	while (1) {
- 		/* handle the last EOF pcluster (no next HEAD lcluster) */
- 		if ((lcn << lclusterbits) >= inode->i_size) {
- 			map->m_llen = inode->i_size - map->m_la;
-@@ -410,14 +410,16 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 			return err;
- 
- 		if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
--			DBG_BUGON(!m->delta[1] &&
--				  m->clusterofs != 1 << lclusterbits);
-+			/* work around invalid d1 generated by pre-1.0 mkfs */
-+			if (unlikely(!m->delta[1])) {
-+				m->delta[1] = 1;
-+				DBG_BUGON(1);
-+			}
- 		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD1 ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
--			/* go on until the next HEAD lcluster */
- 			if (lcn != headlcn)
--				break;
-+				break;	/* ends at the next HEAD lcluster */
- 			m->delta[1] = 1;
- 		} else {
- 			erofs_err(inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
-@@ -426,8 +428,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 			return -EOPNOTSUPP;
- 		}
- 		lcn += m->delta[1];
--	} while (m->delta[1]);
--
-+	}
- 	map->m_llen = (lcn << lclusterbits) + m->clusterofs - map->m_la;
- 	return 0;
- }
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index b320a39de7fe4..fbfce9b4ae6b8 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1013,6 +1013,8 @@ patternProperties:
+     description: Shanghai Neardi Technology Co., Ltd.
+   "^nec,.*":
+     description: NEC LCD Technologies, Ltd.
++  "^neofidelity,.*":
++    description: Neofidelity Inc.
+   "^neonode,.*":
+     description: Neonode Inc.
+   "^netgear,.*":
 -- 
 2.43.0
 
