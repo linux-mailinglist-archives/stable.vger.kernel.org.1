@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB0F9E2218
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7043C9E24FB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5E81614C8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4093916BF8E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883A1F76DB;
-	Tue,  3 Dec 2024 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A571F754A;
+	Tue,  3 Dec 2024 15:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRiNJbXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKIcmHxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99081DA3D;
-	Tue,  3 Dec 2024 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9D22C80;
+	Tue,  3 Dec 2024 15:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238908; cv=none; b=nTJzfNgBMpDgY/UXu4AD+5rBiuZjQzG5lUYLjNLXe40PXYIliOB8+GWmKYogMUYitrOVwr6MFZzfv6Kng6jNdPMS3uENnZZdI2KwpL6b0gvKydQFP8n90Tn4p6VDNzqLxaQ/y8FYbE29u6n9RhXGeS9l7ahCDYwczYt6mSOim1U=
+	t=1733240945; cv=none; b=dlXeCfBDAtvXvwvGW64a0EEianYARxoT1H3C8ZC6OfvTx9O8iG0/NHTDhfGnAML8ONoiW0jSKhD4I8CWOBWQ2AQnn3gdYNtX0OM75SU4yuY1G08K0g+DKB4ufEBmF1ar/D2BOEizpJ8qL6ouv7hpJrK5ctK3FbVPZmiY9zRh2Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238908; c=relaxed/simple;
-	bh=LuOCEpcK4w5DMVZq0yg1fAsF0wKL8my4uoqPSpAXWPk=;
+	s=arc-20240116; t=1733240945; c=relaxed/simple;
+	bh=JAyEX4CSu2YbPJtkpNGYFrlhEHq5XGVtr6K/5eZdoS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a98/iAx2K2mNKL0liFzJZgP66SzxZlK4Jqo//IMBYWWjZsou6EXQi+qXN/aCLBI0vwi2xvXp1VPq7G4NAl8nWksVeOdNFsj1o4NuhXTlomY+oHjqZyDHXjy0HCJ5z1zbgJzSK7zBpPl0J9ahG7FftF0hlZOYTsGGhFolY593OKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRiNJbXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CB0C4CECF;
-	Tue,  3 Dec 2024 15:15:08 +0000 (UTC)
+	 MIME-Version; b=jgnRm3OCwsixl1bQuu508/kF8XzfVui1UQ2DPjUVjKQD8akVd2y0giGi8R3G2UNrEShqzigxlSVFvT/mNxd45mbtYxAWU7Te0x6akktTsEsvLm0Q7rhuA/7rte2UA9U9jdboa4Jquzj8Ko3261exvNH7vljFdzrC/8JWxTiJnTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKIcmHxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC167C4CECF;
+	Tue,  3 Dec 2024 15:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238908;
-	bh=LuOCEpcK4w5DMVZq0yg1fAsF0wKL8my4uoqPSpAXWPk=;
+	s=korg; t=1733240945;
+	bh=JAyEX4CSu2YbPJtkpNGYFrlhEHq5XGVtr6K/5eZdoS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRiNJbXksjMKIVmaYpEjpmn8I19OF934x9Rg1wB8BQpmcovDuaBHnBKWA3O/A9uJK
-	 GPHBXRY0CDKPPFid51nduZANPnaTrG8gu5tRoTz+N7Y8SpiUwEmi60HqwuWk2Xi4LZ
-	 FdsyKwN8EIVFc4io0Prk648SzzS02e6qud7inQZs=
+	b=RKIcmHxobjKX83CSzhsefzhFXfL2Y5UFdtnmJI3P3MmZGdTnMhCWBIjs9QYlxrW3N
+	 N0EZc24BSEgKRiXuHWkQ9L8qLqApfGsVURIxXp+JVzeUNx54uIBqkpeGsJEBdzHWu8
+	 MaIjk0hUrIhzKl+/8nmgFeiGYPtDSeYU2nhZwwpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Liu <liubaolin@kylinos.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 437/817] scsi: target: Fix incorrect function name in pscsi_create_type_disk()
+Subject: [PATCH 6.12 282/826] drm/etnaviv: hold GPU lock across perfmon sampling
 Date: Tue,  3 Dec 2024 15:40:09 +0100
-Message-ID: <20241203144012.939135554@linuxfoundation.org>
+Message-ID: <20241203144754.771646477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Liu <liubaolin@kylinos.cn>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit da5aeca99dd0b6c7bf6679382756ea6bda195f72 ]
+[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
 
-In pr_err(), bdev_open_by_path() should be renamed to
-bdev_file_open_by_path()
+The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
+to select the pipe for the perf counter reads). To avoid clashing with
+other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
+the perfmon sampling needs to hold the GPU lock.
 
-Fixes: 034f0cf8fdf9 ("target: port block device access to file")
-Signed-off-by: Baolin Liu <liubaolin@kylinos.cn>
-Link: https://lore.kernel.org/r/20241030021800.234980-1-liubaolin12138@163.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_pscsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-index f98ebb18666bf..da7017113f92a 100644
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -369,7 +369,7 @@ static int pscsi_create_type_disk(struct se_device *dev, struct scsi_device *sd)
- 	bdev_file = bdev_file_open_by_path(dev->udev_path,
- 				BLK_OPEN_WRITE | BLK_OPEN_READ, pdv, NULL);
- 	if (IS_ERR(bdev_file)) {
--		pr_err("pSCSI: bdev_open_by_path() failed\n");
-+		pr_err("pSCSI: bdev_file_open_by_path() failed\n");
- 		scsi_device_put(sd);
- 		return PTR_ERR(bdev_file);
- 	}
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index 5e753dd42f721..df0bc828a2348 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -1322,6 +1322,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ {
+ 	u32 val;
+ 
++	mutex_lock(&gpu->lock);
++
+ 	/* disable clock gating */
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+@@ -1333,6 +1335,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
+ 
+ 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
++
++	mutex_unlock(&gpu->lock);
+ }
+ 
+ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+@@ -1342,13 +1346,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	unsigned int i;
+ 	u32 val;
+ 
+-	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+-
+-	for (i = 0; i < submit->nr_pmrs; i++) {
+-		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++	mutex_lock(&gpu->lock);
+ 
+-		*pmr->bo_vma = pmr->sequence;
+-	}
++	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+ 
+ 	/* disable debug register */
+ 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
+@@ -1359,6 +1359,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+ 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
++
++	mutex_unlock(&gpu->lock);
++
++	for (i = 0; i < submit->nr_pmrs; i++) {
++		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++
++		*pmr->bo_vma = pmr->sequence;
++	}
+ }
+ 
+ 
 -- 
 2.43.0
 
