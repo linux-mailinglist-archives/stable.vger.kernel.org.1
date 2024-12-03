@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-97311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73609E241E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75979E2420
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1531689C0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EBA166051
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659FE1FCCF9;
-	Tue,  3 Dec 2024 15:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C331F1F8AD4;
+	Tue,  3 Dec 2024 15:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGIxEm5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCndIPRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466D1F8AD4;
-	Tue,  3 Dec 2024 15:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E031FCD14;
+	Tue,  3 Dec 2024 15:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240120; cv=none; b=GgwkzAz90CbxDe7YSDkHjKxdq/dtulV99hULtQtlUYsBno4f7lO7z2TL+b5iKubHqDMvha2Yen17kQRj6YulxVE2pxcVkbKW+ay904pXYZ0Lco2OL1NiTa59WmQJuKKUbUddUJ+wCzn8JKaNUYEpgqpFrxJrWlsdAQjotn+/Pkw=
+	t=1733240125; cv=none; b=i57lRjik+lkvufOn5nOj70bjAv+Nh2wcYzlNyK/0cvGYWvZ3suMnT0/ccuUhWjaN8vubJKhbUpO976f/9/qdKBH/asOJ0ia6k/ml8BAxzMSgROVezbtf+IYkY986KEdlPp02q0IG2Xslzhi2/nFXU7pgMklmLU9yjJEeJjfxGmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240120; c=relaxed/simple;
-	bh=EkIgvEgTErh71jIE+KlzADZtyifs6sK8jcUffv51CUM=;
+	s=arc-20240116; t=1733240125; c=relaxed/simple;
+	bh=ZSN1C93SMNWsxlq7XC2g7Po5C29xFDZzjW8562YBfeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uyj0+W8De/4UgjiLRzsbgvMBj92EgAgOK7dyckPduZswpHb9/2148jlJCsjMP3Ho4sTLmG4HolfJIhwJgmgKcDTT7wbztgOhQPSxiEUH+RKq7niAToUY+Y73f513DVLRRnkw+L8i0ajOm6fdwv+h+unJ/BZAon203MhkTtK/x5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGIxEm5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3569DC4CECF;
-	Tue,  3 Dec 2024 15:35:19 +0000 (UTC)
+	 MIME-Version; b=tBg3TcMoUt2DZppu8pv8kr1dwWt9s0VmTojW51uthLZMdgjoAYrdw67kud3F7joC1xmG5e1ez4/8wjQ2gl/tQv/Xun9IibIhR2fgEmQR7MugzNDtLy6mtJjDR4yz/pz8m/lozabFAkdeGrCEqCepdXdG4FSkhUp9gjmOhN8OOpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCndIPRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025FAC4AF09;
+	Tue,  3 Dec 2024 15:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240119;
-	bh=EkIgvEgTErh71jIE+KlzADZtyifs6sK8jcUffv51CUM=;
+	s=korg; t=1733240125;
+	bh=ZSN1C93SMNWsxlq7XC2g7Po5C29xFDZzjW8562YBfeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGIxEm5QiyMalA+Z7O98iqhWJZvg1cBH8AWudmmN9ASGLPi17vx6Si8V4iaxeSOxc
-	 lXGYUR6FrwKq8NUQJB91APFljuvfxtx/F9JSr7jToG6MXPmQ2CAiyqJu1D1+t1bcPv
-	 SM8jcDi08k0AEm/x6M2zmq+x6L155B0MKvr2TA78=
+	b=yCndIPRBjlN7DX5fQmChraKD6w9F8lWVPiOXnV5EPTO6PRDGdCME2f1QS5ca/oGyz
+	 DmMV2sc4Vk2Sq7HzlA4mQoeaVfdGMWuvVB/G82FhJOwqjWlo9NsvX5MnNxNXJnh+aT
+	 wS+lOxHep4qTB9SYutbJp2CDsySSmorVm/XafCA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Howells <dhowells@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/826] cachefiles: Fix incorrect length return value in cachefiles_ondemand_fd_write_iter()
-Date: Tue,  3 Dec 2024 15:35:56 +0100
-Message-ID: <20241203144744.597908090@linuxfoundation.org>
+Subject: [PATCH 6.12 030/826] cachefiles: Fix missing pos updates in cachefiles_ondemand_fd_write_iter()
+Date: Tue,  3 Dec 2024 15:35:57 +0100
+Message-ID: <20241203144744.635825994@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -69,60 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 10c35abd35aa62c9aac56898ae0c63b4d7d115e5 ]
+[ Upstream commit 56f4856b425a30e1d8b3e41e6cde8bfba90ba5f8 ]
 
-cachefiles_ondemand_fd_write_iter() function first aligns "pos" and "len"
-to block boundaries. When calling __cachefiles_write(), the aligned "pos"
-is passed in, but "len" is the original unaligned value(iter->count).
-Additionally, the returned length of the write operation is the modified
-"len" aligned by block size, which is unreasonable.
+In the erofs on-demand loading scenario, read and write operations are
+usually delivered through "off" and "len" contained in read req in user
+mode. Naturally, pwrite is used to specify a specific offset to complete
+write operations.
 
-The alignment of "pos" and "len" is intended only to check whether the
-cache has enough space. But the modified len should not be used as the
-return value of cachefiles_ondemand_fd_write_iter() because the length we
-passed to __cachefiles_write() is the previous "len". Doing so would result
-in a mismatch in the data written on-demand. For example, if the length of
-the user state passed in is not aligned to the block size (the preread
-scene/DIO writes only need 512 alignment/Fault injection), the length of
-the write will differ from the actual length of the return.
+However, if the write(not pwrite) syscall is called multiple times in the
+read-ahead scenario, we need to manually update ki_pos after each write
+operation to update file->f_pos.
 
-To solve this issue, since the __cachefiles_prepare_write() modifies the
-size of "len", we pass "aligned_len" to __cachefiles_prepare_write() to
-calculate the free blocks and use the original "len" as the return value of
-cachefiles_ondemand_fd_write_iter().
+This step is currently missing from the cachefiles_ondemand_fd_write_iter
+function, added to address this issue.
 
 Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
 Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-2-wozizhi@huawei.com
-Reviewed-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-3-wozizhi@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cachefiles/ondemand.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 470c966583850..bdd321017f1c4 100644
+index bdd321017f1c4..38ca6dce8ef29 100644
 --- a/fs/cachefiles/ondemand.c
 +++ b/fs/cachefiles/ondemand.c
-@@ -61,7 +61,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
- 	struct file *file = object->file;
--	size_t len = iter->count;
-+	size_t len = iter->count, aligned_len = len;
- 	loff_t pos = kiocb->ki_pos;
- 	const struct cred *saved_cred;
- 	int ret;
-@@ -70,7 +70,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 		return -ENOBUFS;
+@@ -77,8 +77,10 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
  
- 	cachefiles_begin_secure(cache, &saved_cred);
--	ret = __cachefiles_prepare_write(object, file, &pos, &len, len, true);
-+	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
- 	cachefiles_end_secure(cache, saved_cred);
- 	if (ret < 0)
- 		return ret;
+ 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
+ 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
+-	if (!ret)
++	if (!ret) {
+ 		ret = len;
++		kiocb->ki_pos += ret;
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
