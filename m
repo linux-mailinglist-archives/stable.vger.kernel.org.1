@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615EE9E2494
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:50:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D2A9E2496
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:50:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B3ABC8132
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8047516E6E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1995D1FDE01;
-	Tue,  3 Dec 2024 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8B71FDE0E;
+	Tue,  3 Dec 2024 15:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/au0ilu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FY/HzzzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3021F755B;
-	Tue,  3 Dec 2024 15:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C311F759C;
+	Tue,  3 Dec 2024 15:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240519; cv=none; b=Apxllx8/wQOFW+NQjyWyCKRlMJd1XnEn4JP58jTWzFgd+Zg0C+8L2GUQnKLlH33+XxTKG6Yak8G068IVChUE7sRZ7Kp4nJtLdggqgq3XIyDOqkiUlnz9L7KeGY4gJnNbivIUIoJh1AdaSotT3DFkaHGyUaUEVLqKSpCDw0PZd58=
+	t=1733240526; cv=none; b=M9tQSPkq99dJdTb6E8oIuBtYLnbow7lcPHd730Xv7Hxg+DaUJ29Kl+TyB+U+DPs16G6enuhqaZ1U4TXfuFuoUgjZJnL2YoSmilnlBi3+EAZdbuDRwMmTP1j+s1YKlztOr7Np6D8g2EXHfP3WhCHGlifE6yjeTPMXmBVBSPzc74o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240519; c=relaxed/simple;
-	bh=TrKmHSUFsrm5sboxzemy/z1Ljgzy3QLctKoPBX8hk6U=;
+	s=arc-20240116; t=1733240526; c=relaxed/simple;
+	bh=9GcOpSBledmV/KdMnBQjFnw/X+uO4oX3hZx+T9mFNJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOcszP0e3rGvIkXEq9O9Qr0vVuJaHazBqnYy6P+EEmd+puKnZIqy83sXPXqp1WfYgvWOKwnWTFwTJ06zSOM6Km3CYp1/lbXUfg5cStAH6MBESGK3+QfcvdZrfA/YC2kiqnwbqqKF0i0VyDCFQjg/svJH1YQqGHbCdEj17ErVaLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/au0ilu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A21CC4CECF;
-	Tue,  3 Dec 2024 15:41:59 +0000 (UTC)
+	 MIME-Version; b=NHfFIyXg92QgRv+BDuuA+cM+fyzovWxtjx/SUceZbffCg8leaG0sHIH8S2betT9PP9KNsSVseV6/V5fCPQ92xnxVb2QI08Dplz4g6QfDQ3LO6hMDzYjfqUkRWIlsu4HVxakJN0VnWKbmA7f4SfJyTHjK2hDj8CCgScyAxc9w4fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FY/HzzzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E77C4CECF;
+	Tue,  3 Dec 2024 15:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240519;
-	bh=TrKmHSUFsrm5sboxzemy/z1Ljgzy3QLctKoPBX8hk6U=;
+	s=korg; t=1733240526;
+	bh=9GcOpSBledmV/KdMnBQjFnw/X+uO4oX3hZx+T9mFNJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/au0iluHbnIBbdQAN/4fp/fBmg8qSAemWl803MoJ3RlB3Nz+JKSPwLsUj4IHzmxi
-	 I/4vKtZG3ownPZJx0Cy3slPw4HlTd5WllwZ+TrwJkhFVIYYtAurFSfnkrcnI14B0q1
-	 9DZX57Ifs75USYYnQjec2Ct1NGBLJ/vIhqOHaX5c=
+	b=FY/HzzzI8yxgqTPYt+pb6fFStuhxBav7eejHLK8qChg77FvbO1hoYjdaILaAmNNEc
+	 CHNu80mk1QfoCZ+TRcfTmAHvSkHS4cizgOqzi+4XdEYcXDTNCLYOgucHu9TRFJo+RZ
+	 29R0LoOuuQcU36isOVA5rT3ZOaZtloihpKQ5qtbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/826] arm64: dts: renesas: hihope: Drop #sound-dai-cells
-Date: Tue,  3 Dec 2024 15:38:06 +0100
-Message-ID: <20241203144749.944134081@linuxfoundation.org>
+Subject: [PATCH 6.12 161/826] arm64: dts: mediatek: mt6358: fix dtbs_check error
+Date: Tue,  3 Dec 2024 15:38:08 +0100
+Message-ID: <20241203144750.020269339@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,59 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-[ Upstream commit 9cc926e3fab42dd292219796cfc94e41f4ab749d ]
+[ Upstream commit 76ab2ae0ab9ebb2d70e6ee8a9f59911621192c37 ]
 
-"#sound-dai-cells" is required if the board is using "simple-card".
-However, the HiHope board uses "audio-graph", thus remove the unneeded
-`#sound-dai-cells`.
+Fix DTBS check errors for 'mt6358codec' and 'mt6358regulator':
 
-Commit 9e72606cd2db ("arm64: dts: renesas: #sound-dai-cells is used when
-simple-card") updated the comment regarding usage of "#sound-dai-cells"
-in the SoC DTSI but missed to remove "#sound-dai-cells" from board DTS
-files.
+Error message is:
+pmic: 'mt6358codec' and 'mt6358regulator' does not match any of the
+regexes: 'pinctrl-[0-9]+'.
+Rename these two device node to generic 'audio-codec' and 'regulators'.
 
-Fixes: 9e72606cd2db ("arm64: dts: renesas: #sound-dai-cells is used when simple-card")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/20241010135332.710648-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 9f8872221674 ("arm64: dts: mt6358: add PMIC MT6358 related nodes")
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Link: https://lore.kernel.org/r/20241029064647.13370-1-macpaul.lin@mediatek.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/hihope-rev2.dtsi | 3 ---
- arch/arm64/boot/dts/renesas/hihope-rev4.dtsi | 3 ---
- 2 files changed, 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6358.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi b/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
-index 8e2db1d6ca81e..25c55b32aafe5 100644
---- a/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
-+++ b/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
-@@ -69,9 +69,6 @@ &rcar_sound {
+diff --git a/arch/arm64/boot/dts/mediatek/mt6358.dtsi b/arch/arm64/boot/dts/mediatek/mt6358.dtsi
+index 641d452fbc083..e23672a2eea4a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6358.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6358.dtsi
+@@ -15,12 +15,12 @@ pmic_adc: adc {
+ 			#io-channel-cells = <1>;
+ 		};
  
- 	status = "okay";
+-		mt6358codec: mt6358codec {
++		mt6358codec: audio-codec {
+ 			compatible = "mediatek,mt6358-sound";
+ 			mediatek,dmic-mode = <0>; /* two-wires */
+ 		};
  
--	/* Single DAI */
--	#sound-dai-cells = <0>;
--
- 	rsnd_port: port {
- 		rsnd_endpoint: endpoint {
- 			remote-endpoint = <&dw_hdmi0_snd_in>;
-diff --git a/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi b/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
-index 66f3affe04697..deb69c2727756 100644
---- a/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
-+++ b/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
-@@ -84,9 +84,6 @@ &rcar_sound {
- 	pinctrl-names = "default";
- 	status = "okay";
+-		mt6358regulator: mt6358regulator {
++		mt6358regulator: regulators {
+ 			compatible = "mediatek,mt6358-regulator";
  
--	/* Single DAI */
--	#sound-dai-cells = <0>;
--
- 	/* audio_clkout0/1/2/3 */
- 	#clock-cells = <1>;
- 	clock-frequency = <12288000 11289600>;
+ 			mt6358_vdram1_reg: buck_vdram1 {
 -- 
 2.43.0
 
