@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88209E1FAC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BF29E1FC4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8962844DD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5748B284FCE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A09B1F666A;
-	Tue,  3 Dec 2024 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61931F6691;
+	Tue,  3 Dec 2024 14:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfbdtujF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAPe3zB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7FC1F6663;
-	Tue,  3 Dec 2024 14:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638181F6688;
+	Tue,  3 Dec 2024 14:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236840; cv=none; b=M4jUo2ep5TVr8i4ZMH/JVp1yRN+BtNA8Oq+h6LD+54J3lH3TFgCimLk30xevcLt/ZJtTj2L0J2KGQLAVnSQAlIHGlg30Ra4I1EBJwZYp2+kc4XYj2U8Qq+kYbGkA3CIic/DTnUZyGZ7kqbi8SylmuWUrss8RSlKg+8r3dk315DE=
+	t=1733236890; cv=none; b=CIHra76GSEQewHBiuG3luGlBP7o9/8XTuV84k835agGxQ3ZXx0zt4YK3BpmnOWEkWXp3Jz214qZd+BCXS56K7utQMT5l3eYbHqysTWkLZNnsKwzkPNhKcsf8DY/hMGZ9r7ZQgbr15aa0SJZXVu5ZMB0j18hJfky+SpizfhXNGDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236840; c=relaxed/simple;
-	bh=BWtMpcy3WKaiYRSii7IG+fST9rc00NiJWAk2wgic+oY=;
+	s=arc-20240116; t=1733236890; c=relaxed/simple;
+	bh=qBQhaaH0R6Qzk5b4WHdxWJiv1GmtkNhe0eSrABCKKAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Td8DQucWwFXU4LCM+k4xfvHlGpub3P4q6TvG87QJcRYJYv4Xgrk3iD4uAol9Gf71rh1b4mpvUIKeonOVNxc9aKAv/CUUSjcBGfbvDsuuhiCXOwoyFAQXeVewN6Bwzc+jnU2JSXTJDjym6/90PfBzxOGks0R8XW5uR5XiVpLNmN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfbdtujF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A04C4CECF;
-	Tue,  3 Dec 2024 14:40:39 +0000 (UTC)
+	 MIME-Version; b=tKMshCAUmkO3H/I6aV4THDcOO4X233rvY6QQw4X9Wf2FNwFGfIWD5oGdYVaE2iIP1gCL7PGPQM/i+Rd9dbptR49uZa0BmPU7nM7fGzXh+2y6rgsLzcJQmd0DjRhJvbvKB3ASPGDDqlFzb3NFotAQXy7LTyFlIsDXYCn62+eCJKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAPe3zB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C947BC4CECF;
+	Tue,  3 Dec 2024 14:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236839;
-	bh=BWtMpcy3WKaiYRSii7IG+fST9rc00NiJWAk2wgic+oY=;
+	s=korg; t=1733236890;
+	bh=qBQhaaH0R6Qzk5b4WHdxWJiv1GmtkNhe0eSrABCKKAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfbdtujFUDUMCqEL1SGqY9ClWR+vRNcrKg2KRNbmlqXQq5G/7hH6iVhDn4mcHoP20
-	 4DJxVbQI8urWaAQjwNKJBMSF+wdQWSbKsefq6zxMsRmpFFLip65ODmuubBFFrkpl+h
-	 +fFxs/DNoX6/aq29YWZlXjZ/bEeSIWi9kfBXuk1o=
+	b=eAPe3zB1/wWG6MzzBV4KRIlevwRfGiEvVwqZ5HRNH/pzd+nMDoN6FDfkO8zectPiv
+	 a95JxHEZ/pNMUH5kMuCFonDsRu9fchE4KAHLvMLU6JGtybVyaobfe28zpL69whLekF
+	 vrkWfGZ6HjV73vPfNSmrkSpA+2RLKLO1IaAX18hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongliang Gao <leonylgao@tencent.com>,
-	Jingqun Li <jingqunli@tencent.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 130/138] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
-Date: Tue,  3 Dec 2024 15:32:39 +0100
-Message-ID: <20241203141928.540130736@linuxfoundation.org>
+Subject: [PATCH 4.19 131/138] ubifs: Correct the total block count by deducting journal reservation
+Date: Tue,  3 Dec 2024 15:32:40 +0100
+Message-ID: <20241203141928.578818394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -67,51 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yongliang Gao <leonylgao@tencent.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
+[ Upstream commit 84a2bee9c49769310efa19601157ef50a1df1267 ]
 
-If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
-uninitialized data, or an illegal date/time read from the RTC hardware.
+Since commit e874dcde1cbf ("ubifs: Reserve one leb for each journal
+head while doing budget"), available space is calulated by deducting
+reservation for all journal heads. However, the total block count (
+which is only used by statfs) is not updated yet, which will cause
+the wrong displaying for used space(total - available).
+Fix it by deducting reservation for all journal heads from total
+block count.
 
-When calling rtc_tm_to_ktime later, the result may be a very large value
-(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
-they will continually expire, may causing kernel softlockup.
-
-Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
-Acked-by: Jingqun Li <jingqunli@tencent.com>
-Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: e874dcde1cbf ("ubifs: Reserve one leb for each journal head while doing budget")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ubifs/super.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index ce051f91829f9..1ab619fb978a4 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -914,13 +914,18 @@ void rtc_timer_do_work(struct work_struct *work)
- 	struct timerqueue_node *next;
- 	ktime_t now;
- 	struct rtc_time tm;
-+	int err;
- 
- 	struct rtc_device *rtc =
- 		container_of(work, struct rtc_device, irqwork);
- 
- 	mutex_lock(&rtc->ops_lock);
- again:
--	__rtc_read_time(rtc, &tm);
-+	err = __rtc_read_time(rtc, &tm);
-+	if (err) {
-+		mutex_unlock(&rtc->ops_lock);
-+		return;
-+	}
- 	now = rtc_tm_to_ktime(tm);
- 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
- 		if (next->expires > now)
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index f5b663d70826c..1d548f86a41d3 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -755,10 +755,10 @@ static void init_constants_master(struct ubifs_info *c)
+ 	 * necessary to report something for the 'statfs()' call.
+ 	 *
+ 	 * Subtract the LEB reserved for GC, the LEB which is reserved for
+-	 * deletions, minimum LEBs for the index, and assume only one journal
+-	 * head is available.
++	 * deletions, minimum LEBs for the index, the LEBs which are reserved
++	 * for each journal head.
+ 	 */
+-	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt + 1;
++	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt;
+ 	tmp64 *= (long long)c->leb_size - c->leb_overhead;
+ 	tmp64 = ubifs_reported_space(c, tmp64);
+ 	c->block_cnt = tmp64 >> UBIFS_BLOCK_SHIFT;
 -- 
 2.43.0
 
