@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FED9E2669
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6699E263D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09E13289056
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20AFF287E8D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE68C1F76BF;
-	Tue,  3 Dec 2024 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D11F76BF;
+	Tue,  3 Dec 2024 16:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPRh2RJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF/zOxki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6656B81ADA;
-	Tue,  3 Dec 2024 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5204E1F76AD;
+	Tue,  3 Dec 2024 16:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242385; cv=none; b=oj1RcmN34bR3zS7IsvlrMI3/SeuGlV+9XNmd68Mlmwm12As5cAQXAGiD26KJIILwitp6PkwH1UxwYFuLPbHYneoTq7DiDJxA/exNLnnugpBSugtsnEoSQ8ox7A6uMLBtyDmnSfv4GfJiUpEXj2nPPDN38n6umB8HOcGjsQQ5UMc=
+	t=1733242265; cv=none; b=BvRXYJ76tPJiHN2jKVlRZdnWhe6Li1Nfaxm6K5rEFuNHez27yXpKxF2OBnB3Nm7icHqAGcT4AuND92ZTc2SYB7mIuJfMYX2t9NC5Hu0+kjgEanUyM0Vp1MTRzWZYSyygNcBEI5CkOj7uoyBNhbghX/05HerjbC3LURxfbemmxTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242385; c=relaxed/simple;
-	bh=z+i1Lhfma7exl5Hw5WDUyvghWTmnmQWbCdL/8yUWb/s=;
+	s=arc-20240116; t=1733242265; c=relaxed/simple;
+	bh=R0MAHwOaYNnGV1q9W4oHRq5TPT9/SGTShumxk3K9pD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTAS/tsBTgFHgVBPG5ZTSV0OrP3lio937vn/DDNV6INQKNeOeidEYh/UrKmvEBKJ3w7HSi/X4Zrc1kEItNHbuT8/I9CuiOcHrJifjkTEWMdkYxwZ0K5nDOI9AUl5SnKsO2deBQjuft1FUSPwznZ9QeEprya0j4V75369fC/u3jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPRh2RJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73661C4CECF;
-	Tue,  3 Dec 2024 16:13:04 +0000 (UTC)
+	 MIME-Version; b=u/v47oO3dtvbMHUy3vu0tpZToNc1Ky0Rgox4nWnRISO4eSLKUTR4t7+hyd2nJ4/6FibT4UGxIL0MpHgi94N/DT5atOqRWX7HzfPOKc9/xYqJPU/HqnH4zRPMoPDTo2smzTgY3jOYb3fJ79DYTn1mPz4hoKmgtMXA0HgDbc7fHMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF/zOxki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA74BC4CECF;
+	Tue,  3 Dec 2024 16:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242384;
-	bh=z+i1Lhfma7exl5Hw5WDUyvghWTmnmQWbCdL/8yUWb/s=;
+	s=korg; t=1733242265;
+	bh=R0MAHwOaYNnGV1q9W4oHRq5TPT9/SGTShumxk3K9pD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPRh2RJs+eJJeXgjCLwPvG62NtsxLeRLMWu/FnOaufXHfSa0THYo3lglSgydANE7W
-	 qAhYOz4URbm/4NtW7wi7zNLEGFJj78ByT3TpYD2qmryx8eevuZoA/UZOd23TrxOz+Z
-	 F82dqNb7k3+uobqs2sI+TXCfCd2rZ5tj+2XvzcSE=
+	b=TF/zOxkiKkCqK8EuGe2J6gDmUO/u6+LRmQkFRKgequUAH5K06Ox/IlMh7bB9eu8VY
+	 ujU5ChNa7jQ5oCntNM+q1J52SllfG0QzmVbkhpmXd0tTUgkQ/0Hhy3sfGphkMTzxti
+	 +JFOlUPS1fTKzrfA6iBw2DvsxC5SQ8T4TyG30bPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyong Sun <sunhaiyong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 655/826] LoongArch: Explicitly specify code model in Makefile
-Date: Tue,  3 Dec 2024 15:46:22 +0100
-Message-ID: <20241203144809.305758035@linuxfoundation.org>
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.12 656/826] clk: clk-loongson2: Fix memory corruption bug in struct loongson2_clk_provider
+Date: Tue,  3 Dec 2024 15:46:23 +0100
+Message-ID: <20241203144809.344093107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,43 +65,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit e67e0eb6a98b261caf45048f9eb95fd7609289c0 upstream.
+commit 6e4bf018bb040955da53dae9f8628ef8fcec2dbe upstream.
 
-LoongArch's toolchain may change the default code model from normal to
-medium. This is unnecessary for kernel, and generates some relocations
-which cannot be handled by the module loader. So explicitly specify the
-code model to normal in Makefile (for Rust 'normal' is 'small').
+Some heap space is allocated for the flexible structure `struct
+clk_hw_onecell_data` and its flexible-array member `hws` through
+the composite structure `struct loongson2_clk_provider` in function
+`loongson2_clk_probe()`, as shown below:
 
+289         struct loongson2_clk_provider *clp;
+	...
+296         for (p = data; p->name; p++)
+297                 clks_num++;
+298
+299         clp = devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num),
+300                            GFP_KERNEL);
+
+Then some data is written into the flexible array:
+
+350                 clp->clk_data.hws[p->id] = hw;
+
+This corrupts `clk_lock`, which is the spinlock variable immediately
+following the `clk_data` member in `struct loongson2_clk_provider`:
+
+struct loongson2_clk_provider {
+	void __iomem *base;
+	struct device *dev;
+	struct clk_hw_onecell_data clk_data;
+	spinlock_t clk_lock;	/* protect access to DIV registers */
+};
+
+The problem is that the flexible structure is currently placed in the
+middle of `struct loongson2_clk_provider` instead of at the end.
+
+Fix this by moving `struct clk_hw_onecell_data clk_data;` to the end of
+`struct loongson2_clk_provider`. Also, add a code comment to help
+prevent this from happening again in case new members are added to the
+structure in the future.
+
+This change also fixes the following -Wflex-array-member-not-at-end
+warning:
+
+drivers/clk/clk-loongson2.c:32:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Fixes: 9796ec0bd04b ("clk: clk-loongson2: Refactor driver for adding new platforms")
 Cc: stable@vger.kernel.org
-Tested-by: Haiyong Sun <sunhaiyong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZzZ-cd_EFXs6qFaH@kspp
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/clk-loongson2.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -59,7 +59,7 @@ endif
+--- a/drivers/clk/clk-loongson2.c
++++ b/drivers/clk/clk-loongson2.c
+@@ -29,8 +29,10 @@ enum loongson2_clk_type {
+ struct loongson2_clk_provider {
+ 	void __iomem *base;
+ 	struct device *dev;
+-	struct clk_hw_onecell_data clk_data;
+ 	spinlock_t clk_lock;	/* protect access to DIV registers */
++
++	/* Must be last --ends in a flexible-array member. */
++	struct clk_hw_onecell_data clk_data;
+ };
  
- ifdef CONFIG_64BIT
- ld-emul			= $(64bit-emul)
--cflags-y		+= -mabi=lp64s
-+cflags-y		+= -mabi=lp64s -mcmodel=normal
- endif
- 
- cflags-y			+= -pipe $(CC_FLAGS_NO_FPU)
-@@ -104,7 +104,7 @@ ifdef CONFIG_OBJTOOL
- KBUILD_CFLAGS			+= -fno-jump-tables
- endif
- 
--KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat
-+KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat -Ccode-model=small
- KBUILD_RUSTFLAGS_KERNEL		+= -Zdirect-access-external-data=yes
- KBUILD_RUSTFLAGS_MODULE		+= -Zdirect-access-external-data=no
- 
+ struct loongson2_clk_data {
 
 
 
