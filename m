@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-96870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015DD9E27E1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:43:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605439E24E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2715CBA362E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C5A16F571
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1161F893A;
-	Tue,  3 Dec 2024 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6A51F8910;
+	Tue,  3 Dec 2024 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/ot4Zao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Q12Bgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096441F75B3;
-	Tue,  3 Dec 2024 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7C31DF981;
+	Tue,  3 Dec 2024 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238837; cv=none; b=WJOHqBBN38vfN31GrCNyHEhus8FrwGV4awmsXvRKtqLmpGhVm95APPoPsiTMUeOqP+VCshi/yBNZJDrSwfGYaeX61WqAEwImj7UQEoXqnnq9udUR3k21s5FiYbnB6br/72cx2jmZVZNDK2/DzNHH9h8hQGnu+yQ/I6w7njkXius=
+	t=1733240841; cv=none; b=V0l7GkL2i04sF5cX/U9fp0ww0dWf5LAojuMpjK8BOvyAb00S+uShJoHCqKQbKUe38ZAv7oCvKgmrGgXpI9epNKPofAbtmShxTxseLcQvwBeyFk+/1RvE7aP8ub699ORUw3UPzue0/Lg8siRVYarXQobYZm//abz5+keP+gZZAhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238837; c=relaxed/simple;
-	bh=263pwEM8s73w7/afPP/zY5st0A8pfAm6qC3VteUJdos=;
+	s=arc-20240116; t=1733240841; c=relaxed/simple;
+	bh=xl+Gg2xJoe5gpvE0yMLtV2Gy3UUpSCezwgbA24qeKLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5iILvmbxAs7qw/d6lqWrh7euX0knQB6YYfwsP4FbCRED5AkTKGxr98L980Cf4FMW8qTWC0DDGMJosc8deTdoayJnYBvDqRoJ4YU4DGOjSUe7dvizZg0bIQidpICLb5mk56z/fO82iG4ybTdeBWuyCtgY2Azp0bmLUCObODQyQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/ot4Zao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FBEC4CECF;
-	Tue,  3 Dec 2024 15:13:56 +0000 (UTC)
+	 MIME-Version; b=j4/7qNcVSJETm0r8CQLxbtZZ2PXxtHz8yMogF3nHu/is1FXG8eKCgZMAEYhCv/BnQMudYNBd17IS4kt+jzXPKEVSSGY7h4YLBHqzW48pAy4rYbRB7yeTbf2BGCRqEfuXtkVrnRdtBqPgCIvqjGr6Y3qlvbvR187F4xYpXRU+U3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Q12Bgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993AFC4CECF;
+	Tue,  3 Dec 2024 15:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238836;
-	bh=263pwEM8s73w7/afPP/zY5st0A8pfAm6qC3VteUJdos=;
+	s=korg; t=1733240841;
+	bh=xl+Gg2xJoe5gpvE0yMLtV2Gy3UUpSCezwgbA24qeKLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/ot4ZaoEfr8FroRcaAzNmO7IYoTocYax/oR2i6bOgIsIKI9BUPYJsx+4euSPUClt
-	 YNY7QqbJk2L4Ln3MmVqIcMMAIeIjvziYmcXQ7EE3mZ+gGBrT7W84fTptoT7W2zPJA2
-	 b5pwgRleu4sTrZ587WYqzpl+6iSV48PiMciSdjvs=
+	b=P/Q12Bgf9TLPD2EIlqmYBZT+KSTJfGeyHeQgVh/20G++1xQ1ZrbxJ1ya1QHSwZWAW
+	 geKfrLtTDM5uYYsXt+Y3oQsivE3uIAju3nfFbxDI5vz7Koa/WXK+GZ34n4SgAQ9IDG
+	 n1yqzFu2W87PguT0GrZI8dueszU9DMvIDkRV4ZNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 406/817] cpufreq: CPPC: Fix possible null-ptr-deref for cppc_get_cpu_cost()
+Subject: [PATCH 6.12 251/826] wifi: mwifiex: add missing locking for cfg80211 calls
 Date: Tue,  3 Dec 2024 15:39:38 +0100
-Message-ID: <20241203144011.722493001@linuxfoundation.org>
+Message-ID: <20241203144753.558250028@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 1a1374bb8c5926674973d849feed500bc61ad535 ]
+[ Upstream commit 0d7c2194f17c764df0354af13551cc6f92ef5a44 ]
 
-cpufreq_cpu_get_raw() may return NULL if the cpu is not in
-policy->cpus cpu mask and it will cause null pointer dereference,
-so check NULL for cppc_get_cpu_cost().
+cfg80211_rx_assoc_resp() and cfg80211_rx_mlme_mgmt() need to be called
+with the wiphy locked, so lock it before calling these functions.
 
-Fixes: 740fcdc2c20e ("cpufreq: CPPC: Register EM based on efficiency class information")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240918-mwifiex-cleanup-1-v2-1-2d0597187d3c@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c | 2 ++
+ drivers/net/wireless/marvell/mwifiex/util.c   | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 32045075c596f..00556b4d83f83 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -493,6 +493,9 @@ static int cppc_get_cpu_cost(struct device *cpu_dev, unsigned long KHz,
- 	int step;
+diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+index 1cff001bdc514..b30ed321c6251 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
++++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+@@ -938,8 +938,10 @@ void mwifiex_process_assoc_resp(struct mwifiex_adapter *adapter)
+ 		assoc_resp.links[0].bss = priv->req_bss;
+ 		assoc_resp.buf = priv->assoc_rsp_buf;
+ 		assoc_resp.len = priv->assoc_rsp_size;
++		wiphy_lock(priv->wdev.wiphy);
+ 		cfg80211_rx_assoc_resp(priv->netdev,
+ 				       &assoc_resp);
++		wiphy_unlock(priv->wdev.wiphy);
+ 		priv->assoc_rsp_size = 0;
+ 	}
+ }
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index 42c04bf858da3..1f1f6280a0f25 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -494,7 +494,9 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 			}
+ 		}
  
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
-+	if (!policy)
-+		return 0;
-+
- 	cpu_data = policy->driver_data;
- 	perf_caps = &cpu_data->perf_caps;
- 	max_cap = arch_scale_cpu_capacity(cpu_dev->id);
++		wiphy_lock(priv->wdev.wiphy);
+ 		cfg80211_rx_mlme_mgmt(priv->netdev, skb->data, pkt_len);
++		wiphy_unlock(priv->wdev.wiphy);
+ 	}
+ 
+ 	if (priv->adapter->host_mlme_enabled &&
 -- 
 2.43.0
 
