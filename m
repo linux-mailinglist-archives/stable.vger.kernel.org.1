@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-97617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A179E2533
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9516B9E2861
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:58:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56971160196
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38C55BA4615
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0071F429E;
-	Tue,  3 Dec 2024 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1FF1F7071;
+	Tue,  3 Dec 2024 15:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlySUQcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW7BtaBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C95F1DF981;
-	Tue,  3 Dec 2024 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BD7646;
+	Tue,  3 Dec 2024 15:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241132; cv=none; b=fxw69R9vjHwydLCFfRs/bvxvLWxrnhfrRZ2tx+jTpIn9dKaLvotueaXwU6+qXVtz90IX884698DM10KyZyhSq4dMUIUqDvcYUwRBr75UAdPbW7UGzEmV9VgR+2cl6/lj8fuO6z+mhXZALUGApL5tEAVQTbp2x+KeF6KVrga43Fk=
+	t=1733239059; cv=none; b=tyeIotYI1y1/7BZL1tTxd2NlRa/0EySFXIkf+sHdyeZXxv3ZJ+xYvhYz4lnorNlOSCPg7ZX+pc1QnPDmoSjlB+Pv2eCfT0m2rja9am4/ubMaPM85g14rwfKDrGMDSjIXzBX4pSuIpy4U4CF4F/3r1Jrq/hQrJ0DtJSkRLnJ59c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241132; c=relaxed/simple;
-	bh=44JaPgWZH90+e95JAoZeQSJVDpT4dyO11gh9o99OQaI=;
+	s=arc-20240116; t=1733239059; c=relaxed/simple;
+	bh=BAAFnRfbaTBibMUvmSW4Tl6WdgYAfOcJqYU0E/lI3VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tj+OB05SapQ4lS96sgllAgJKG83mWkvcA1eskz1+dDwiAgQNDcVGvWcdhwIFep/5do0oZommgtYjG8swIQsxhem9Fqs39L7yAVkT2Eu0v5sc6ZzOczRBoh+Qk6UMq1927T7E8WU3sXMeamR4qJWHk4KsprO+Pwfm66/yG3sAQiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlySUQcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2248C4CECF;
-	Tue,  3 Dec 2024 15:52:11 +0000 (UTC)
+	 MIME-Version; b=A8offBtKgUl1BHdS6Nq+wowONwA8bl+ETwb1W1HaFncEOBFVblNMmYLZHzBPC3FmNdLxqBw+QqkEoaVjFdb9ozCb28Ql/0MDJyQspn4xoRd19qKBOt3Sw6HwDl6FL5zPCtqy0vv7szxi2FM5S8uQaXPq09PoBE4FHIm3RKN9BWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW7BtaBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F47C4CECF;
+	Tue,  3 Dec 2024 15:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241132;
-	bh=44JaPgWZH90+e95JAoZeQSJVDpT4dyO11gh9o99OQaI=;
+	s=korg; t=1733239059;
+	bh=BAAFnRfbaTBibMUvmSW4Tl6WdgYAfOcJqYU0E/lI3VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OlySUQcCJG1t0a9tXtAWWd5+Uu1dqw1yTkGDirUU8FQ86hdij6VJ3LMDKLj9WrXIL
-	 YnkucIwzhpBIkx2TS61NcmgtrvYe6u7gFOduJ1mtERWgRRNHYvsks+DO4WYfcWv3OD
-	 OfxBeBzoRaksWDj3qKjW+/J5cQsWLPZAsPJPR+Nw=
+	b=uW7BtaBiyL2C2Tn3u1a1XYxJP08MM3X0Chs3BA/SaJpTyJCzNvv1W4le+ZE5qt4Mc
+	 2YL18Y/2kkfWAZjFbmNuwKrv7SNrTYHuroaH9XA200SZlato72A/6FRZv4CdMuwvMJ
+	 /95PmrNp1e+L55I/NlpS5XCQWc8xJOxG4zL1HYTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Levi Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	nd@arm.com,
+	howardchu95@gmail.com,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/826] ALSA: 6fire: Release resources at card release
+Subject: [PATCH 6.11 489/817] perf stat: Close cork_fd when create_perf_stat_counter() failed
 Date: Tue,  3 Dec 2024 15:41:01 +0100
-Message-ID: <20241203144756.788431839@linuxfoundation.org>
+Message-ID: <20241203144014.959875238@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +66,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Levi Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit a0810c3d6dd2d29a9b92604d682eacd2902ce947 ]
+[ Upstream commit e880a70f8046df0dd9089fa60dcb866a2cc69194 ]
 
-The current 6fire code tries to release the resources right after the
-call of usb6fire_chip_abort().  But at this moment, the card object
-might be still in use (as we're calling snd_card_free_when_closed()).
+When create_perf_stat_counter() failed, it doesn't close workload.cork_fd
+open in evlist__prepare_workload(). This could make too many open file
+error while __run_perf_stat() repeats.
 
-For avoid potential UAFs, move the release of resources to the card's
-private_free instead of the manual call of usb6fire_chip_destroy() at
-the USB disconnect callback.
+Introduce evlist__cancel_workload to close workload.cork_fd and
+wait workload.child_pid until exit to clear child process
+when create_perf_stat_counter() is failed.
 
-Fixes: c6d43ba816d1 ("ALSA: usb/6fire - Driver for TerraTec DMX 6Fire USB")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-6-tiwai@suse.de
+Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Cc: nd@arm.com
+Cc: howardchu95@gmail.com
+Link: https://lore.kernel.org/r/20240925132022.2650180-2-yeoreum.yun@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: 7f6ccb70e465 ("perf stat: Fix affinity memory leaks on error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/6fire/chip.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/perf/builtin-stat.c | 50 +++++++++++++++++++++++++++------------
+ tools/perf/util/evlist.c  | 19 +++++++++++++--
+ tools/perf/util/evlist.h  |  1 +
+ 3 files changed, 53 insertions(+), 17 deletions(-)
 
-diff --git a/sound/usb/6fire/chip.c b/sound/usb/6fire/chip.c
-index 33e962178c936..d562a30b087f0 100644
---- a/sound/usb/6fire/chip.c
-+++ b/sound/usb/6fire/chip.c
-@@ -61,8 +61,10 @@ static void usb6fire_chip_abort(struct sfire_chip *chip)
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 661832756a248..d0cbd1477dfcc 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -712,15 +712,19 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
  	}
- }
  
--static void usb6fire_chip_destroy(struct sfire_chip *chip)
-+static void usb6fire_card_free(struct snd_card *card)
- {
-+	struct sfire_chip *chip = card->private_data;
-+
- 	if (chip) {
- 		if (chip->pcm)
- 			usb6fire_pcm_destroy(chip);
-@@ -72,8 +74,6 @@ static void usb6fire_chip_destroy(struct sfire_chip *chip)
- 			usb6fire_comm_destroy(chip);
- 		if (chip->control)
- 			usb6fire_control_destroy(chip);
--		if (chip->card)
--			snd_card_free(chip->card);
+ 	if (!cpu_map__is_dummy(evsel_list->core.user_requested_cpus)) {
+-		if (affinity__setup(&saved_affinity) < 0)
+-			return -1;
++		if (affinity__setup(&saved_affinity) < 0) {
++			err = -1;
++			goto err_out;
++		}
+ 		affinity = &saved_affinity;
  	}
- }
  
-@@ -136,6 +136,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
- 	chip->regidx = regidx;
- 	chip->intf_count = 1;
- 	chip->card = card;
-+	card->private_free = usb6fire_card_free;
+ 	evlist__for_each_entry(evsel_list, counter) {
+ 		counter->reset_group = false;
+-		if (bpf_counter__load(counter, &target))
+-			return -1;
++		if (bpf_counter__load(counter, &target)) {
++			err = -1;
++			goto err_out;
++		}
+ 		if (!(evsel__is_bperf(counter)))
+ 			all_counters_use_bpf = false;
+ 	}
+@@ -763,7 +767,8 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
  
- 	ret = usb6fire_comm_init(chip);
- 	if (ret < 0)
-@@ -162,7 +163,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
- 	return 0;
+ 			switch (stat_handle_error(counter)) {
+ 			case COUNTER_FATAL:
+-				return -1;
++				err = -1;
++				goto err_out;
+ 			case COUNTER_RETRY:
+ 				goto try_again;
+ 			case COUNTER_SKIP:
+@@ -804,7 +809,8 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
  
- destroy_chip:
--	usb6fire_chip_destroy(chip);
-+	snd_card_free(card);
- 	return ret;
- }
+ 				switch (stat_handle_error(counter)) {
+ 				case COUNTER_FATAL:
+-					return -1;
++					err = -1;
++					goto err_out;
+ 				case COUNTER_RETRY:
+ 					goto try_again_reset;
+ 				case COUNTER_SKIP:
+@@ -829,8 +835,10 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 			stat_config.unit_width = l;
  
-@@ -181,7 +182,6 @@ static void usb6fire_chip_disconnect(struct usb_interface *intf)
+ 		if (evsel__should_store_id(counter) &&
+-		    evsel__store_ids(counter, evsel_list))
+-			return -1;
++		    evsel__store_ids(counter, evsel_list)) {
++			err = -1;
++			goto err_out;
++		}
+ 	}
  
- 			chip->shutdown = true;
- 			usb6fire_chip_abort(chip);
--			usb6fire_chip_destroy(chip);
+ 	if (evlist__apply_filters(evsel_list, &counter)) {
+@@ -851,20 +859,23 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
  		}
+ 
+ 		if (err < 0)
+-			return err;
++			goto err_out;
+ 
+ 		err = perf_event__synthesize_stat_events(&stat_config, NULL, evsel_list,
+ 							 process_synthesized_event, is_pipe);
+ 		if (err < 0)
+-			return err;
++			goto err_out;
++
  	}
+ 
+ 	if (target.initial_delay) {
+ 		pr_info(EVLIST_DISABLED_MSG);
+ 	} else {
+ 		err = enable_counters();
+-		if (err)
+-			return -1;
++		if (err) {
++			err = -1;
++			goto err_out;
++		}
+ 	}
+ 
+ 	/* Exec the command, if any */
+@@ -874,8 +885,10 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 	if (target.initial_delay > 0) {
+ 		usleep(target.initial_delay * USEC_PER_MSEC);
+ 		err = enable_counters();
+-		if (err)
+-			return -1;
++		if (err) {
++			err = -1;
++			goto err_out;
++		}
+ 
+ 		pr_info(EVLIST_ENABLED_MSG);
+ 	}
+@@ -895,7 +908,8 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 		if (workload_exec_errno) {
+ 			const char *emsg = str_error_r(workload_exec_errno, msg, sizeof(msg));
+ 			pr_err("Workload failed: %s\n", emsg);
+-			return -1;
++			err = -1;
++			goto err_out;
+ 		}
+ 
+ 		if (WIFSIGNALED(status))
+@@ -942,6 +956,12 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 		evlist__close(evsel_list);
+ 
+ 	return WEXITSTATUS(status);
++
++err_out:
++	if (forks)
++		evlist__cancel_workload(evsel_list);
++
++	return err;
  }
+ 
+ static int run_perf_stat(int argc, const char **argv, int run_idx)
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 3a719edafc7ad..6c4227e9832fa 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -46,6 +46,7 @@
+ #include <sys/mman.h>
+ #include <sys/prctl.h>
+ #include <sys/timerfd.h>
++#include <sys/wait.h>
+ 
+ #include <linux/bitops.h>
+ #include <linux/hash.h>
+@@ -1413,6 +1414,8 @@ int evlist__prepare_workload(struct evlist *evlist, struct target *target, const
+ 	int child_ready_pipe[2], go_pipe[2];
+ 	char bf;
+ 
++	evlist->workload.cork_fd = -1;
++
+ 	if (pipe(child_ready_pipe) < 0) {
+ 		perror("failed to create 'ready' pipe");
+ 		return -1;
+@@ -1465,7 +1468,7 @@ int evlist__prepare_workload(struct evlist *evlist, struct target *target, const
+ 		 * For cancelling the workload without actually running it,
+ 		 * the parent will just close workload.cork_fd, without writing
+ 		 * anything, i.e. read will return zero and we just exit()
+-		 * here.
++		 * here (See evlist__cancel_workload()).
+ 		 */
+ 		if (ret != 1) {
+ 			if (ret == -1)
+@@ -1529,7 +1532,7 @@ int evlist__prepare_workload(struct evlist *evlist, struct target *target, const
+ 
+ int evlist__start_workload(struct evlist *evlist)
+ {
+-	if (evlist->workload.cork_fd > 0) {
++	if (evlist->workload.cork_fd >= 0) {
+ 		char bf = 0;
+ 		int ret;
+ 		/*
+@@ -1540,12 +1543,24 @@ int evlist__start_workload(struct evlist *evlist)
+ 			perror("unable to write to pipe");
+ 
+ 		close(evlist->workload.cork_fd);
++		evlist->workload.cork_fd = -1;
+ 		return ret;
+ 	}
+ 
+ 	return 0;
+ }
+ 
++void evlist__cancel_workload(struct evlist *evlist)
++{
++	int status;
++
++	if (evlist->workload.cork_fd >= 0) {
++		close(evlist->workload.cork_fd);
++		evlist->workload.cork_fd = -1;
++		waitpid(evlist->workload.pid, &status, WNOHANG);
++	}
++}
++
+ int evlist__parse_sample(struct evlist *evlist, union perf_event *event, struct perf_sample *sample)
+ {
+ 	struct evsel *evsel = evlist__event2evsel(evlist, event);
+diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
+index cb91dc9117a27..12f929ffdf920 100644
+--- a/tools/perf/util/evlist.h
++++ b/tools/perf/util/evlist.h
+@@ -184,6 +184,7 @@ int evlist__prepare_workload(struct evlist *evlist, struct target *target,
+ 			     const char *argv[], bool pipe_output,
+ 			     void (*exec_error)(int signo, siginfo_t *info, void *ucontext));
+ int evlist__start_workload(struct evlist *evlist);
++void evlist__cancel_workload(struct evlist *evlist);
+ 
+ struct option;
+ 
 -- 
 2.43.0
 
