@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2209E2004
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1326C9E2015
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8231652F2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD85A288414
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0D21F7557;
-	Tue,  3 Dec 2024 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A641F7544;
+	Tue,  3 Dec 2024 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bI3XtVn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYSaTBx3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902A01F7088;
-	Tue,  3 Dec 2024 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3085B1F6698;
+	Tue,  3 Dec 2024 14:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237569; cv=none; b=QZthUQGnuY/rEMA/L/US+enf/pSw5/nv8Z1ranTW3yDpUClpbEyiaRqK/8G4tJAD/XN8dff7s0dViLpDtG4Wcs3CN1hfOa8Fd2dWckNsDxgJ17XPuf3Upc+yUFnVxp947QVwnKiLGXd+yQXTCPvS5l7xM+Ez5th+d74iVGias9I=
+	t=1733237610; cv=none; b=GMB4zIP78B88KvMNkyaRN4ZzJNMO8laWweY+mRIBwQzZwCXk6yzx4Ai8phlDr4q3vXTEhfRSh9ELQzNEsH81sRcMTscOrApIfqLE1/zgmA96wmDnGY0Fw9vm5Xe73uh3eKq771I9WF85eAhHkbnG2l/9XFCqrhUTscOVJADQmdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237569; c=relaxed/simple;
-	bh=gWX9X8+WUPBQedlXZQTJVtfcekZAzqxlljI8YP/kbj0=;
+	s=arc-20240116; t=1733237610; c=relaxed/simple;
+	bh=JiSnIzOal+Pav3ceDYVQ3Be8uuZur/6vHYNrfelAjlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyIjcbEx6SzJtYY2WO9mCinJuh5gNrEET9kZ5NI2T0+O3yJO7cKu7YHCwDhGJdYKBKTwvqOvK3dw1xdmPoq3haWQABcmJC2m7vHy/dcvGBd959DQIAXuaaB6Ca48hQ46ObVuh/jnL54z52KFhP3jAfYKfRjwwuB74ZTktJbtKC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bI3XtVn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F9BC4CEDF;
-	Tue,  3 Dec 2024 14:52:48 +0000 (UTC)
+	 MIME-Version; b=POonbXO+WdSGo0PSkoYh418L9q5T8kwds4WgiwCVxgx0mbBkzHWDY3VfzfyriTd/dyl9Z9BVriCW4or3Jd0OE5b/5BHxVCrnZTffrfFzRtE5j2yTUrWrwICOWumumt6vQaT0LUwbvRBfNt3NEJeC+xXanitCxtRsXNOk/IYeKsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYSaTBx3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9380CC4CECF;
+	Tue,  3 Dec 2024 14:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237569;
-	bh=gWX9X8+WUPBQedlXZQTJVtfcekZAzqxlljI8YP/kbj0=;
+	s=korg; t=1733237610;
+	bh=JiSnIzOal+Pav3ceDYVQ3Be8uuZur/6vHYNrfelAjlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bI3XtVn/C3h4TcMKrLUCx4uwmJwI/CteMeosVUNLN3z+uzEZipJ2GFl0Xi/Nj1Cj9
-	 SMrOFg/H8vfpEX+L7du4vwW+213Xf/4y6w8pqBCr1zDJ4GqilXPuGBr+pKgDo+i1R6
-	 8ZARU91mI5DeyizDvloXdDOmuEOtFDzRQyS8uFOo=
+	b=xYSaTBx3nH7JbL259S0Uu65bn0wYr+wiJT8LUNIzRA5e/mjtWGuboTvGaCR7dic4m
+	 Ls/n/1BriAdWTPwtOQ6eAKB08hYVm2zVSvb+iI+mYFmuucxKmkxAssZ4zUTCVsVto8
+	 UUHS09rg3QyK3/ACVcTH2YkoKe5YA7MdWgGjA+vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Greear <greearb@candelatech.com>,
+	Remi Pommarel <repk@triplefau.lt>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 001/817] wifi: mac80211: Fix setting txpower with emulate_chanctx
-Date: Tue,  3 Dec 2024 15:32:53 +0100
-Message-ID: <20241203143955.675517037@linuxfoundation.org>
+Subject: [PATCH 6.11 002/817] wifi: cfg80211: Add wiphy_delayed_work_pending()
+Date: Tue,  3 Dec 2024 15:32:54 +0100
+Message-ID: <20241203143955.714324907@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,44 +66,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ben Greear <greearb@candelatech.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 8dd0498983eef524a8d104eb8abb32ec4c595bec ]
+[ Upstream commit 68d0021fe7231eec0fb84cd110cf62a6e782b72d ]
 
-Propagate hw conf into the driver when txpower changes
-and driver is emulating channel contexts.
+Add wiphy_delayed_work_pending() to check if any delayed work timer is
+pending, that can be used to be sure that wiphy_delayed_work_queue()
+won't postpone an already pending delayed work.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20240924011325.1509103-1-greearb@candelatech.com
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/20240924192805.13859-2-repk@triplefau.lt
+[fix return value kernel-doc]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/cfg80211.h | 44 ++++++++++++++++++++++++++++++++++++++++++
+ net/wireless/core.c    |  7 +++++++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index f2b5c18417ef7..6e35425fbff12 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3046,6 +3046,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 	enum nl80211_tx_power_setting txp_type = type;
- 	bool update_txp_type = false;
- 	bool has_monitor = false;
-+	int old_power = local->user_power_level;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 192d72c8b4654..702653448d2fc 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6129,6 +6129,50 @@ void wiphy_delayed_work_cancel(struct wiphy *wiphy,
+ void wiphy_delayed_work_flush(struct wiphy *wiphy,
+ 			      struct wiphy_delayed_work *dwork);
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-@@ -3128,6 +3129,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 		}
- 	}
- 
-+	if (local->emulate_chanctx &&
-+	    (old_power != local->user_power_level))
-+		ieee80211_hw_conf_chan(local);
++/**
++ * wiphy_delayed_work_pending - Find out whether a wiphy delayable
++ * work item is currently pending.
++ *
++ * @wiphy: the wiphy, for debug purposes
++ * @dwork: the delayed work in question
++ *
++ * Return: true if timer is pending, false otherwise
++ *
++ * How wiphy_delayed_work_queue() works is by setting a timer which
++ * when it expires calls wiphy_work_queue() to queue the wiphy work.
++ * Because wiphy_delayed_work_queue() uses mod_timer(), if it is
++ * called twice and the second call happens before the first call
++ * deadline, the work will rescheduled for the second deadline and
++ * won't run before that.
++ *
++ * wiphy_delayed_work_pending() can be used to detect if calling
++ * wiphy_work_delayed_work_queue() would start a new work schedule
++ * or delayed a previous one. As seen below it cannot be used to
++ * detect precisely if the work has finished to execute nor if it
++ * is currently executing.
++ *
++ *      CPU0                                CPU1
++ * wiphy_delayed_work_queue(wk)
++ *  mod_timer(wk->timer)
++ *                                     wiphy_delayed_work_pending(wk) -> true
++ *
++ * [...]
++ * expire_timers(wk->timer)
++ *  detach_timer(wk->timer)
++ *                                     wiphy_delayed_work_pending(wk) -> false
++ *  wk->timer->function()                          |
++ *   wiphy_work_queue(wk)                          | delayed work pending
++ *    list_add_tail()                              | returns false but
++ *    queue_work(cfg80211_wiphy_work)              | wk->func() has not
++ *                                                 | been run yet
++ * [...]                                           |
++ *  cfg80211_wiphy_work()                          |
++ *   wk->func()                                    V
++ *
++ */
++bool wiphy_delayed_work_pending(struct wiphy *wiphy,
++				struct wiphy_delayed_work *dwork);
 +
- 	return 0;
+ /**
+  * enum ieee80211_ap_reg_power - regulatory power for an Access Point
+  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index c9ebf9449fcc3..b2b512923ecee 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1705,6 +1705,13 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
  }
+ EXPORT_SYMBOL_GPL(wiphy_delayed_work_flush);
  
++bool wiphy_delayed_work_pending(struct wiphy *wiphy,
++				struct wiphy_delayed_work *dwork)
++{
++	return timer_pending(&dwork->timer);
++}
++EXPORT_SYMBOL_GPL(wiphy_delayed_work_pending);
++
+ static int __init cfg80211_init(void)
+ {
+ 	int err;
 -- 
 2.43.0
 
