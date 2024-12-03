@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-97117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435E19E2332
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D989E260F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EA11B2CA83
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593741621A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5C91F7071;
-	Tue,  3 Dec 2024 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836E31F8905;
+	Tue,  3 Dec 2024 16:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5jqUU9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2PNsNbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B2A1F7572;
-	Tue,  3 Dec 2024 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E31F76D7;
+	Tue,  3 Dec 2024 16:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239568; cv=none; b=kmqfKO49FkRdaAU6YggU7yZWGCURX6NcgotFN99hlRPG+1dRonl0nx9nk5S/zq6Kw2dkrvMNcOXCAtwaUe8AhHZ81s/nOQ+GGEyjnVHbgzTOpodYXZhw1dPK2WtO1y9XvsCAVeRmI7FV5DBNxF9FQECcMUcwMv93YKsWi/s8M8A=
+	t=1733241749; cv=none; b=K2KgULfFVJq2uMVdVwEEf+ihhgaVQLd7D12sdCUO0c33b82af9Vl3Pr/djAoxtOpBaePMqDU4fopfx9Y7/hhJJJV8UE1COdGNXFWKKs60bvZFRBkhJUMKhR1fhWiziHxYhqNdFD+zLJX3t3l5AhxVE1NOfCfCoFHYTY50NKAq/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239568; c=relaxed/simple;
-	bh=+ESj6aPuYh9rv41ZrO9OuFIKeOERoCV4VBSB7+VoO2c=;
+	s=arc-20240116; t=1733241749; c=relaxed/simple;
+	bh=Bn5ETz2qJM5/hRP1JhDOen+qLZJcDx5M+d4OQlhMZC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNOMTPyUL4lH2S6Q7yP2XJbDLBYdQrEWg+RQv4P14l0Ut/AvcBvt+7E8wFFvQ06cvAlaZyo8yNLRKy5vZsQQnJ/oVglqr6DhtiZHVkmNLrf3KW7Li0CcOY4qtKNMoGyLW+pDxKGSbrKYsSVlnEgdqGfo2iKMGhsWMDCk32bv7iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5jqUU9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE66DC4CECF;
-	Tue,  3 Dec 2024 15:26:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Swigto0+twTMuO5RQhHEnN01HaMgjlkif065M1tFA7kEr9nz3VuqIvDO9xpIoKfndny5uiL51831uPIicjntQbicyAYUz0LbXp6fIAlDzePLklUItpFN/VtSDTnKdUiKjlbjURHDH9sBxw3t5qlM33yUJuaAynvO0TKRAEBjey0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2PNsNbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F4CC4CECF;
+	Tue,  3 Dec 2024 16:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239568;
-	bh=+ESj6aPuYh9rv41ZrO9OuFIKeOERoCV4VBSB7+VoO2c=;
+	s=korg; t=1733241749;
+	bh=Bn5ETz2qJM5/hRP1JhDOen+qLZJcDx5M+d4OQlhMZC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5jqUU9e/JPa3gx72uPG3xadQVTDs1q5DKlCvls8bbAnlL1ZyxgsbKn/WUZYzqzOt
-	 Nkcmib5eZjQ8zY6pHD+CtcJEMHFzK4/paWFFaPLGoWhQJxnWS/8ks1xXYVqU91nwG1
-	 SnxipasPyOjSR4I8WXW+4CA3iERRESr2AJH+5KMY=
+	b=w2PNsNbbnLjkMUeAVQgXydihk8arGEMQHjcHNz543RG+iwzbReWVo/mYRs97AgsNb
+	 NQJGfDsD5RQlrfclt/N+f8ff0JnJdjUqrYpt2I1vhGGtqOmOZew+7Xqq5obaZ7AuOj
+	 Ll0EPUmaFCbEqIg+iC9U3C7TOcdpULbqzwVy0GVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.11 659/817] clk: clk-loongson2: Fix potential buffer overflow in flexible-array member access
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	linux-tegra@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 504/826] PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()
 Date: Tue,  3 Dec 2024 15:43:51 +0100
-Message-ID: <20241203144021.681481811@linuxfoundation.org>
+Message-ID: <20241203144803.417379720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 02fb4f0084331ef72c28d0c70fcb15d1bea369ec upstream.
+[ Upstream commit 40e2125381dc11379112485e3eefdd25c6df5375 ]
 
-Flexible-array member `hws` in `struct clk_hw_onecell_data` is annotated
-with the `counted_by()` attribute. This means that when memory is
-allocated for this array, the _counter_, which in this case is member
-`num` in the flexible structure, should be set to the maximum number of
-elements the flexible array can contain, or fewer.
+Currently, the endpoint cleanup function dw_pcie_ep_cleanup() and EPF
+deinit notify function pci_epc_deinit_notify() are called during the
+execution of pex_ep_event_pex_rst_assert() i.e., when the host has asserted
+PERST#. But quickly after this step, refclk will also be disabled by the
+host.
 
-In this case, the total number of elements for the flexible array is
-determined by variable `clks_num` when allocating heap space via
-`devm_kzalloc()`, as shown below:
+All of the tegra194 endpoint SoCs supported as of now depend on the refclk
+from the host for keeping the controller operational. Due to this
+limitation, any access to the hardware registers in the absence of refclk
+will result in a whole endpoint crash. Unfortunately, most of the
+controller cleanups require accessing the hardware registers (like eDMA
+cleanup performed in dw_pcie_ep_cleanup(), etc...). So these cleanup
+functions can cause the crash in the endpoint SoC once host asserts PERST#.
 
-289         struct loongson2_clk_provider *clp;
-	...
-296         for (p = data; p->name; p++)
-297                 clks_num++;
-298
-299         clp = devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num),
-300                            GFP_KERNEL);
+One way to address this issue is by generating the refclk in the endpoint
+itself and not depending on the host. But that is not always possible as
+some of the endpoint designs do require the endpoint to consume refclk from
+the host.
 
-So, `clp->clk_data.num` should be set to `clks_num` or less, and not
-exceed `clks_num`, as is currently the case. Otherwise, if data is
-written into `clp->clk_data.hws[clks_num]`, the instrumentation
-provided by the compiler won't detect the overflow, leading to a
-memory corruption bug at runtime.
+Thus, fix this crash by moving the controller cleanups to the start of
+the pex_ep_event_pex_rst_deassert() function. This function is called
+whenever the host has deasserted PERST# and it is guaranteed that the
+refclk would be active at this point. So at the start of this function
+(after enabling resources) the controller cleanup can be performed. Once
+finished, rest of the code execution for PERST# deassert can continue as
+usual.
 
-Fix this issue by setting `clp->clk_data.num` to `clks_num`.
-
-Fixes: 9796ec0bd04b ("clk: clk-loongson2: Refactor driver for adding new platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZzaN5MpmMr0hwHw9@kspp
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 473b2cf9c4d1 ("PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers")
+Fixes: 570d7715eed8 ("PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#")
+Link: https://lore.kernel.org/r/20240817-pci-qcom-ep-cleanup-v1-2-d6b958226559@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Vidya Sagar <vidyas@nvidia.com>
+Cc: linux-tegra@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-loongson2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk-loongson2.c b/drivers/clk/clk-loongson2.c
-index e99ba79feec6..7082b4309c6f 100644
---- a/drivers/clk/clk-loongson2.c
-+++ b/drivers/clk/clk-loongson2.c
-@@ -306,7 +306,7 @@ static int loongson2_clk_probe(struct platform_device *pdev)
- 		return PTR_ERR(clp->base);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index c1394f2ab63ff..ced3b7e7bdade 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1704,9 +1704,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (ret)
+ 		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
  
- 	spin_lock_init(&clp->clk_lock);
--	clp->clk_data.num = clks_num + 1;
-+	clp->clk_data.num = clks_num;
- 	clp->dev = dev;
+-	pci_epc_deinit_notify(pcie->pci.ep.epc);
+-	dw_pcie_ep_cleanup(&pcie->pci.ep);
+-
+ 	reset_control_assert(pcie->core_rst);
  
- 	for (i = 0; i < clks_num; i++) {
+ 	tegra_pcie_disable_phy(pcie);
+@@ -1785,6 +1782,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 		goto fail_phy;
+ 	}
+ 
++	/* Perform cleanup that requires refclk */
++	pci_epc_deinit_notify(pcie->pci.ep.epc);
++	dw_pcie_ep_cleanup(&pcie->pci.ep);
++
+ 	/* Clear any stale interrupt statuses */
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
 -- 
-2.47.1
+2.43.0
 
 
 
