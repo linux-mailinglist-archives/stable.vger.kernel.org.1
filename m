@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8D39E2620
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72B09E232E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66887165F51
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98D10169788
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44371F8916;
-	Tue,  3 Dec 2024 16:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B481F76AE;
+	Tue,  3 Dec 2024 15:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1ddxZ65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv7Nyqpa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A8F1F890E;
-	Tue,  3 Dec 2024 16:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ECA1F4276;
+	Tue,  3 Dec 2024 15:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241813; cv=none; b=ibmG5nofc2Eq4b8hq78sust/JUGn/MZSLOWSsl9O4LloKcxwv5P4h8POsx4VhhouRdoFG4A5H/A66DtYdhdPafKa3+YM46cPHG7ltOogHJbDRouGfFsUNMpvasCRhRskZIgo6ZmOD1L2Wd+18AIz07FIVgemwF8Tw/77b+AR6u4=
+	t=1733239724; cv=none; b=U2py3YGwDboWWyV6952jjGbx0dwEznQOo9WNcMnSjyQceVNDFH2TlVqGR2w+/BYJilJ4PM8UKwsgEWBlo4yYcasbV0BNY+ztwYuvyPqbHor8OPDC88QVapWOfTq8+FApsJsd80DnZ2SttMa00fjReUzvslvuNcLqc680GTE/CtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241813; c=relaxed/simple;
-	bh=coMXvWLp4Bgs3dvTmM+D02UfGOj/4pFCZDMgQ4D8idA=;
+	s=arc-20240116; t=1733239724; c=relaxed/simple;
+	bh=ropwjtgAS8R8IWN0hijVHMBt/RKkk0bIkSUFhJ0RGoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS2BAbT0A/RmtKNRFIEIy2jZhnn70dFBiYf6PFDnEGY9ido/5YXPTv5P73lcyjVDamd90CfrHVrcMG6rRja5ohhUtMqK2V5Fc0vQi6UcR6KzRUljYLLWgTxI9OF6oWC7SnaMFBqHo1An7Wt14OsHmtCv8Ktsr/wlQ3xgrnk/80Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1ddxZ65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC52CC4CED6;
-	Tue,  3 Dec 2024 16:03:32 +0000 (UTC)
+	 MIME-Version; b=ptDQGU7GwNT4kpoMq11nNVztRKoqgF5UCLBtCrh2hKDtLDODSCtHKfozvVeVrtzw/cor2cXmSe1BMoi1ZOkiEd8N/nuwTGOFit9w3fwrdmj+s9PADKDM0gnGc6jYgc28WyEpsUuXwmAekf7azzfSvQDJ2zKSTrrqJK2hA0z65vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv7Nyqpa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4734FC4CECF;
+	Tue,  3 Dec 2024 15:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241813;
-	bh=coMXvWLp4Bgs3dvTmM+D02UfGOj/4pFCZDMgQ4D8idA=;
+	s=korg; t=1733239724;
+	bh=ropwjtgAS8R8IWN0hijVHMBt/RKkk0bIkSUFhJ0RGoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1ddxZ65YYw5Ad5Th2/ncYzSbA9cUYx9q3R1YnFggh9UppLtc3lZZGKEMcdhdJiCb
-	 V3TuGRYdPUU9H6JZuxTpF74vud8uxDhag+3pMtN2T2enZLQ4FSK6g4WMD8MgvRhEBA
-	 xUH8sj4sFs/I1133twxjdEcj6JbhwZLDndMyaRys=
+	b=zv7NyqpaQDVQLeQu8Y/y/f84hLiudy4rdu4JYbxoGS27TTKCz9jQnMcHAQ+K4u8pn
+	 RaxWKnqYL/cKLABt1tXp5J5fbkG4uXa4+ijHcgp3yaYtbAX5Z1R51tTPDCD+dUmtPi
+	 POUHJ9FPGcOaEleK7vrOfQ10QBMToOAzWgylWJAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 525/826] NFSD: Prevent NULL dereference in nfsd4_process_cb_update()
-Date: Tue,  3 Dec 2024 15:44:12 +0100
-Message-ID: <20241203144804.237068960@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.11 681/817] ARM: dts: omap36xx: declare 1GHz OPP as turbo again
+Date: Tue,  3 Dec 2024 15:44:13 +0100
+Message-ID: <20241203144022.549490406@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 1e02c641c3a43c88cecc08402000418e15578d38 ]
+commit 96a64e9730c2c76cfa5c510583a0fbf40d62886b upstream.
 
-@ses is initialized to NULL. If __nfsd4_find_backchannel() finds no
-available backchannel session, setup_callback_client() will try to
-dereference @ses and segfault.
+Operating stable without reduced chip life at 1Ghz needs several
+technologies working: The technologies involve
+- SmartReflex
+- DVFS
 
-Fixes: dcbeaa68dbbd ("nfsd4: allow backchannel recovery")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As this cannot directly specified in the OPP table as dependecies in the
+devicetree yet, use the turbo flag again to mark this OPP as something
+special to have some kind of opt-in.
+
+So revert commit
+5f1bf7ae8481 ("ARM: dts: omap36xx: Remove turbo mode for 1GHz variants")
+
+Practical reasoning:
+At least the GTA04A5 (DM3730) has become unstable with that OPP enabled.
+Furthermore nothing enforces the availability of said technologies,
+even in the kernel configuration, so allow users to rather opt-in.
+
+Cc: Stable@vger.kernel.org
+Fixes: 5f1bf7ae8481 ("ARM: dts: omap36xx: Remove turbo mode for 1GHz variants")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Link: https://lore.kernel.org/r/20241018214727.275162-1-andreas@kemnade.info
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/ti/omap/omap36xx.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index b5b3ab9d719a7..72764f73cf19a 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1461,6 +1461,8 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
-+	if (!c)
-+		return;
+--- a/arch/arm/boot/dts/ti/omap/omap36xx.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap36xx.dtsi
+@@ -72,6 +72,7 @@
+ 					 <1375000 1375000 1375000>;
+ 			/* only on am/dm37x with speed-binned bit set */
+ 			opp-supported-hw = <0xffffffff 2>;
++			turbo-mode;
+ 		};
+ 	};
  
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
--- 
-2.43.0
-
 
 
 
