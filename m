@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C72D9E2463
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B4B9E2871
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 882EAB306DF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 907BBB83ACB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75B71F756B;
-	Tue,  3 Dec 2024 14:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917CD1F7550;
+	Tue,  3 Dec 2024 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hqy8R+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJtF+iqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CF81D9341;
-	Tue,  3 Dec 2024 14:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460411F76B1;
+	Tue,  3 Dec 2024 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237835; cv=none; b=mEuluxTUthw9fL2NM6hcyT0Z3PyakRTE6VfSIVQioKPe7tz5avh+1yYtoDpG49ImlwUETRePjuwl7E3dOw2d47Ifjl8SNP3CrqeZZ0Ggd9k6cugsjQ0zZIeXYdNA660zecKCykH0zHvEA++1dClD+8ZbQ2mbH/Rq5WqSsDPxvJg=
+	t=1733237861; cv=none; b=M96sCQ0PjkdKg7W+Azpqb7zhZtdfOuFu+dMDtTa61hogcK6owFfsdemKSCluVmlL8C8M8p3sx6jHLffdeUdkAMP+X0ai2srGALLhPq1W20WjXkI00W7mL0Ax1PkDUm4E1e4Va+UMMGMoxpEoLDddGUy432JRtPDQjVdFOLlEfWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237835; c=relaxed/simple;
-	bh=9lItkkIlQBqTSdakFh0E8sapzoBh66Q6el1lFSYF+mg=;
+	s=arc-20240116; t=1733237861; c=relaxed/simple;
+	bh=QWR9z0dsQhz/+TybN7in/G2YbwQ3sZpvLa38XNlY4gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI1eJairg9b2FPG6XPvmYda/j9kx/tXLD+ok8AHpzOZpTWLek96X4O3+zFQK+Y1arSmWW5f97+vrvdiVWS/4Y6px9uvCzmleILQ8C9n2SPZqC3GGCFeaRUDHbkGADuLv/xH3J0TJ7W+23LEYOzcRrTdZCKjhs/sBQggiJfzAQXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hqy8R+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16559C4CECF;
-	Tue,  3 Dec 2024 14:57:14 +0000 (UTC)
+	 MIME-Version; b=ZObcVZw/dFq+WxaVzuwHHhLJ3W8IX+jBxJ8F0iRs67BAHLxQ1o/eWDlVpOGULQ3t4YEq02cty+9SzxZUMJerb8G8oRjyq1GEq4/92BWvJ/3qfxrkh9HZENovXHho54tILRnhr4WbJOV7yf/YnVQOQ0Kvq4uO1SbutK7WhbiQylk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJtF+iqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A847BC4CECF;
+	Tue,  3 Dec 2024 14:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237835;
-	bh=9lItkkIlQBqTSdakFh0E8sapzoBh66Q6el1lFSYF+mg=;
+	s=korg; t=1733237861;
+	bh=QWR9z0dsQhz/+TybN7in/G2YbwQ3sZpvLa38XNlY4gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Hqy8R+qpPbsmvkB9RFbZmHjD/7mCJvYosBg7z2sHY1rsN7CTgPOTiN1UsAXqKdWI
-	 2HSxzZfuL/gApPD3miRcn6Q5RtvT6qS7f8qKefNaBxZIFk+ixo6Kx4BkqPWN35IN97
-	 nlZll0+V2nCiMyAr987TOYdRfuFTvf1jThfq+EbI=
+	b=sJtF+iqwo7cu5vzhNIzZ/wig++AHpr/bSt0bMynTTEP4klL6eZc7LvJl9OJ+1qSEh
+	 h8rWSySk98WBGe2ROcwInaSggDUay4U60QcFP65WZJAm4w+FhiTJFCJ1VHjR1XeOri
+	 hnI1OsNiZGwggZuAjVYWPjKvO9EAcURHMdg1Gecg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Theodore Tso <tytso@mit.edu>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 084/817] ext4: remove array of buffer_heads from mext_page_mkuptodate()
-Date: Tue,  3 Dec 2024 15:34:16 +0100
-Message-ID: <20241203143958.978059527@linuxfoundation.org>
+Subject: [PATCH 6.11 089/817] crypto: caam - Fix the pointer passed to caam_qi_shutdown()
+Date: Tue,  3 Dec 2024 15:34:21 +0100
+Message-ID: <20241203143959.174989918@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,77 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a40759fb16ae839f8c769174fde017564ea564ff ]
+[ Upstream commit ad980b04f51f7fb503530bd1cb328ba5e75a250e ]
 
-Iterate the folio's list of buffer_heads twice instead of keeping
-an array of pointers.  This solves a too-large-array-for-stack problem
-on architectures with a ridiculoously large PAGE_SIZE and prepares
-ext4 to support larger folios.
+The type of the last parameter given to devm_add_action_or_reset() is
+"struct caam_drv_private *", but in caam_qi_shutdown(), it is casted to
+"struct device *".
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://patch.msgid.link/20240718223005.568869-3-willy@infradead.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 2f3d93e210b9 ("ext4: fix race in buffer_head read fault injection")
+Pass the correct parameter to devm_add_action_or_reset() so that the
+resources are released as expected.
+
+Fixes: f414de2e2fff ("crypto: caam - use devres to de-initialize QI")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/move_extent.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/crypto/caam/qi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index 7a80c32fd7326..42b52b6491a03 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -165,15 +165,14 @@ mext_folio_double_lock(struct inode *inode1, struct inode *inode2,
- 	return 0;
- }
+diff --git a/drivers/crypto/caam/qi.c b/drivers/crypto/caam/qi.c
+index ba8fb5d8a7b26..dcb9069a254c7 100644
+--- a/drivers/crypto/caam/qi.c
++++ b/drivers/crypto/caam/qi.c
+@@ -793,7 +793,7 @@ int caam_qi_init(struct platform_device *caam_pdev)
  
--/* Force page buffers uptodate w/o dropping page's lock */
--static int
--mext_page_mkuptodate(struct folio *folio, unsigned from, unsigned to)
-+/* Force folio buffers uptodate w/o dropping folio's lock */
-+static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
- {
- 	struct inode *inode = folio->mapping->host;
- 	sector_t block;
--	struct buffer_head *bh, *head, *arr[MAX_BUF_PER_PAGE];
-+	struct buffer_head *bh, *head;
- 	unsigned int blocksize, block_start, block_end;
--	int i, nr = 0;
-+	int nr = 0;
- 	bool partial = false;
+ 	caam_debugfs_qi_init(ctrlpriv);
  
- 	BUG_ON(!folio_test_locked(folio));
-@@ -214,20 +213,23 @@ mext_page_mkuptodate(struct folio *folio, unsigned from, unsigned to)
- 			continue;
- 		}
- 		ext4_read_bh_nowait(bh, 0, NULL);
--		BUG_ON(nr >= MAX_BUF_PER_PAGE);
--		arr[nr++] = bh;
-+		nr++;
- 	}
- 	/* No io required */
- 	if (!nr)
- 		goto out;
+-	err = devm_add_action_or_reset(qidev, caam_qi_shutdown, ctrlpriv);
++	err = devm_add_action_or_reset(qidev, caam_qi_shutdown, qidev);
+ 	if (err)
+ 		goto fail2;
  
--	for (i = 0; i < nr; i++) {
--		bh = arr[i];
-+	bh = head;
-+	do {
-+		if (bh_offset(bh) + blocksize <= from)
-+			continue;
-+		if (bh_offset(bh) > to)
-+			break;
- 		wait_on_buffer(bh);
- 		if (buffer_uptodate(bh))
- 			continue;
- 		return -EIO;
--	}
-+	} while ((bh = bh->b_this_page) != head);
- out:
- 	if (!partial)
- 		folio_mark_uptodate(folio);
 -- 
 2.43.0
 
