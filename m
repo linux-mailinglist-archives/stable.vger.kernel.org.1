@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-96609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839959E20C6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD1A9E20A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97FD7167A70
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F476285B49
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D101F7587;
-	Tue,  3 Dec 2024 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FDB1F7547;
+	Tue,  3 Dec 2024 15:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+q0dAEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ze1xfPCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DDB1F7545;
-	Tue,  3 Dec 2024 15:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4241E1EF0BC;
+	Tue,  3 Dec 2024 15:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238080; cv=none; b=PBWBStC+4BNXoVa8s4eJJ0UmiQ5VPpfA6UsBzPPKnwAWww1dYnsBnfurCXnUu3TKrRayx5ZFL10Qy2beefDXPtl5kqPGiYv1Mnv24qzS3BKUsLncGbgJUfY1KZVA13l7nxvph+LHMdYH6mf7bS+8Dxv1WvmnmXXPLfeQ2yt89iE=
+	t=1733238123; cv=none; b=M9ExJ5tNSS6gTUbAYSeMubrIOnPggrf8eGsKEREYekVaIYCbsNWeYE61nvIYFPDFljDM+T1aQgQt0r/m07LJ4gH6pNgqhLJ8JlAwzDlN1giQR3/0sfbzYJ555mCIoQXnbpV6a2ku5FM5fWWsrug+tvM7MMxoom8QWcBzbz1NByc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238080; c=relaxed/simple;
-	bh=++pCbG8m4tS5GqcRO9aGxGGE1KvFeJJWHREcIe0edEI=;
+	s=arc-20240116; t=1733238123; c=relaxed/simple;
+	bh=rpDjAqYJ61Q1LcLLTOQbWADz+R1VwPlYASR1/y+9V4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkSTtedkksxp3apTj8fWSLF51SYeQFb7TIQ4vULq+YL4pFYMkGfdpok2/j0VW+AvLBB219on8fHQOL/qponGZUgIUaXc/974t+o16XBABfrPFPOeR1UWb39VBX4IWcENy48Vd4irlUNakZydoluumdBTlfa5w1645N7Tx3joO1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+q0dAEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32159C4CECF;
-	Tue,  3 Dec 2024 15:01:16 +0000 (UTC)
+	 MIME-Version; b=KqndsJlEZxJOnYN+lGDwlX1Xx43ozm4xct3e9uzzTPpIOxOglWHwUWiffZsCyUkFB76ySE76nbRNjvwZrmRZAxiRz8UBJKCtEgz962bdAAltVFQFoL4QpLCByMWbOO05T9ABcltWQmQKTtOnU7zK4vffdjBD4too70MOe7oIClM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ze1xfPCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B495EC4CECF;
+	Tue,  3 Dec 2024 15:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238076;
-	bh=++pCbG8m4tS5GqcRO9aGxGGE1KvFeJJWHREcIe0edEI=;
+	s=korg; t=1733238123;
+	bh=rpDjAqYJ61Q1LcLLTOQbWADz+R1VwPlYASR1/y+9V4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+q0dAEiG0PcL6FjgUSRpyj0RGrt3yzct+r7m2zO/8vkyF4VWr0iSx+/adoSCxDQe
-	 hmeDb8KSwQL/o1RuPUEKSnVoK9VtBAxxbfOJbByLuJlXpZX4Ewak7cm2jdqqkqSR9I
-	 FBxID0Wb4PJ4NFY0wuKCF3aKl+S87U8NwwTzEI0Q=
+	b=ze1xfPCR/72pO2Hbm/WnFhUiM+UdDsVXhxfKeDYX2JrWvutXLEtmPLu1Y1gsWEKcI
+	 NWiS6PIx3PfnTW2whfMymQ8Vv/D3eFzj2wXNovgaujJxkcuKpEMf1D/w07pr42wTZT
+	 gRKTr4ykjladlA1Uc/RYXRkKbeTJ3vOlGuwb/j2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Marco Elver <elver@google.com>,
+	Ross Burton <ross.burton@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 136/817] kcsan, seqlock: Support seqcount_latch_t
-Date: Tue,  3 Dec 2024 15:35:08 +0100
-Message-ID: <20241203144001.031851335@linuxfoundation.org>
+Subject: [PATCH 6.11 138/817] clocksource/drivers:sp804: Make user selectable
+Date: Tue,  3 Dec 2024 15:35:10 +0100
+Message-ID: <20241203144001.110410838@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,208 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 5c1806c41ce0a0110db5dd4c483cf2dc28b3ddf0 ]
+[ Upstream commit 0309f714a0908e947af1c902cf6a330cb593e75e ]
 
-While fuzzing an arm64 kernel, Alexander Potapenko reported:
+The sp804 is currently only user selectable if COMPILE_TEST, this was
+done by commit dfc82faad725 ("clocksource/drivers/sp804: Add
+COMPILE_TEST to CONFIG_ARM_TIMER_SP804") in order to avoid it being
+spuriously offered on platforms that won't have the hardware since it's
+generally only seen on Arm based platforms.  This config is overly
+restrictive, while platforms that rely on the SP804 do select it in
+their Kconfig there are others such as the Arm fast models which have a
+SP804 available but currently unused by Linux.  Relax the dependency to
+allow it to be user selectable on arm and arm64 to avoid surprises and
+in case someone comes up with a use for extra timer hardware.
 
-| BUG: KCSAN: data-race in ktime_get_mono_fast_ns / timekeeping_update
-|
-| write to 0xffffffc082e74248 of 56 bytes by interrupt on cpu 0:
-|  update_fast_timekeeper kernel/time/timekeeping.c:430 [inline]
-|  timekeeping_update+0x1d8/0x2d8 kernel/time/timekeeping.c:768
-|  timekeeping_advance+0x9e8/0xb78 kernel/time/timekeeping.c:2344
-|  update_wall_time+0x18/0x38 kernel/time/timekeeping.c:2360
-|  [...]
-|
-| read to 0xffffffc082e74258 of 8 bytes by task 5260 on cpu 1:
-|  __ktime_get_fast_ns kernel/time/timekeeping.c:372 [inline]
-|  ktime_get_mono_fast_ns+0x88/0x174 kernel/time/timekeeping.c:489
-|  init_srcu_struct_fields+0x40c/0x530 kernel/rcu/srcutree.c:263
-|  init_srcu_struct+0x14/0x20 kernel/rcu/srcutree.c:311
-|  [...]
-|
-| value changed: 0x000002f875d33266 -> 0x000002f877416866
-|
-| Reported by Kernel Concurrency Sanitizer on:
-| CPU: 1 UID: 0 PID: 5260 Comm: syz.2.7483 Not tainted 6.12.0-rc3-dirty #78
-
-This is a false positive data race between a seqcount latch writer and a reader
-accessing stale data. Since its introduction, KCSAN has never understood the
-seqcount_latch interface (due to being unannotated).
-
-Unlike the regular seqlock interface, the seqcount_latch interface for latch
-writers never has had a well-defined critical section, making it difficult to
-teach tooling where the critical section starts and ends.
-
-Introduce an instrumentable (non-raw) seqcount_latch interface, with
-which we can clearly denote writer critical sections. This both helps
-readability and tooling like KCSAN to understand when the writer is done
-updating all latch copies.
-
-Fixes: 88ecd153be95 ("seqlock, kcsan: Add annotations for KCSAN")
-Reported-by: Alexander Potapenko <glider@google.com>
-Co-developed-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241104161910.780003-4-elver@google.com
+Fixes: dfc82faad725 ("clocksource/drivers/sp804: Add COMPILE_TEST to CONFIG_ARM_TIMER_SP804")
+Reported-by: Ross Burton <ross.burton@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241001-arm64-vexpress-sp804-v3-1-0a2d3f7883e4@kernel.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/locking/seqlock.rst |  2 +-
- include/linux/seqlock.h           | 86 +++++++++++++++++++++++++------
- 2 files changed, 72 insertions(+), 16 deletions(-)
+ drivers/clocksource/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/locking/seqlock.rst b/Documentation/locking/seqlock.rst
-index bfda1a5fecadc..ec6411d02ac8f 100644
---- a/Documentation/locking/seqlock.rst
-+++ b/Documentation/locking/seqlock.rst
-@@ -153,7 +153,7 @@ Use seqcount_latch_t when the write side sections cannot be protected
- from interruption by readers. This is typically the case when the read
- side can be invoked from NMI handlers.
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 95dd4660b5b65..d546903dba4f3 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -400,7 +400,8 @@ config ARM_GT_INITIAL_PRESCALER_VAL
+ 	  This affects CPU_FREQ max delta from the initial frequency.
  
--Check `raw_write_seqcount_latch()` for more information.
-+Check `write_seqcount_latch()` for more information.
- 
- 
- .. _seqlock_t:
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index d90d8ee29d811..c81164846f4a4 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -636,6 +636,23 @@ static __always_inline unsigned raw_read_seqcount_latch(const seqcount_latch_t *
- 	return READ_ONCE(s->seqcount.sequence);
- }
- 
-+/**
-+ * read_seqcount_latch() - pick even/odd latch data copy
-+ * @s: Pointer to seqcount_latch_t
-+ *
-+ * See write_seqcount_latch() for details and a full reader/writer usage
-+ * example.
-+ *
-+ * Return: sequence counter raw value. Use the lowest bit as an index for
-+ * picking which data copy to read. The full counter must then be checked
-+ * with read_seqcount_latch_retry().
-+ */
-+static __always_inline unsigned read_seqcount_latch(const seqcount_latch_t *s)
-+{
-+	kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX);
-+	return raw_read_seqcount_latch(s);
-+}
-+
- /**
-  * raw_read_seqcount_latch_retry() - end a seqcount_latch_t read section
-  * @s:		Pointer to seqcount_latch_t
-@@ -650,9 +667,34 @@ raw_read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
- 	return unlikely(READ_ONCE(s->seqcount.sequence) != start);
- }
- 
-+/**
-+ * read_seqcount_latch_retry() - end a seqcount_latch_t read section
-+ * @s:		Pointer to seqcount_latch_t
-+ * @start:	count, from read_seqcount_latch()
-+ *
-+ * Return: true if a read section retry is required, else false
-+ */
-+static __always_inline int
-+read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
-+{
-+	kcsan_atomic_next(0);
-+	return raw_read_seqcount_latch_retry(s, start);
-+}
-+
- /**
-  * raw_write_seqcount_latch() - redirect latch readers to even/odd copy
-  * @s: Pointer to seqcount_latch_t
-+ */
-+static __always_inline void raw_write_seqcount_latch(seqcount_latch_t *s)
-+{
-+	smp_wmb();	/* prior stores before incrementing "sequence" */
-+	s->seqcount.sequence++;
-+	smp_wmb();      /* increment "sequence" before following stores */
-+}
-+
-+/**
-+ * write_seqcount_latch_begin() - redirect latch readers to odd copy
-+ * @s: Pointer to seqcount_latch_t
-  *
-  * The latch technique is a multiversion concurrency control method that allows
-  * queries during non-atomic modifications. If you can guarantee queries never
-@@ -680,17 +722,11 @@ raw_read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
-  *
-  *	void latch_modify(struct latch_struct *latch, ...)
-  *	{
-- *		smp_wmb();	// Ensure that the last data[1] update is visible
-- *		latch->seq.sequence++;
-- *		smp_wmb();	// Ensure that the seqcount update is visible
-- *
-+ *		write_seqcount_latch_begin(&latch->seq);
-  *		modify(latch->data[0], ...);
-- *
-- *		smp_wmb();	// Ensure that the data[0] update is visible
-- *		latch->seq.sequence++;
-- *		smp_wmb();	// Ensure that the seqcount update is visible
-- *
-+ *		write_seqcount_latch(&latch->seq);
-  *		modify(latch->data[1], ...);
-+ *		write_seqcount_latch_end(&latch->seq);
-  *	}
-  *
-  * The query will have a form like::
-@@ -701,13 +737,13 @@ raw_read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
-  *		unsigned seq, idx;
-  *
-  *		do {
-- *			seq = raw_read_seqcount_latch(&latch->seq);
-+ *			seq = read_seqcount_latch(&latch->seq);
-  *
-  *			idx = seq & 0x01;
-  *			entry = data_query(latch->data[idx], ...);
-  *
-  *		// This includes needed smp_rmb()
-- *		} while (raw_read_seqcount_latch_retry(&latch->seq, seq));
-+ *		} while (read_seqcount_latch_retry(&latch->seq, seq));
-  *
-  *		return entry;
-  *	}
-@@ -731,11 +767,31 @@ raw_read_seqcount_latch_retry(const seqcount_latch_t *s, unsigned start)
-  *	When data is a dynamic data structure; one should use regular RCU
-  *	patterns to manage the lifetimes of the objects within.
-  */
--static inline void raw_write_seqcount_latch(seqcount_latch_t *s)
-+static __always_inline void write_seqcount_latch_begin(seqcount_latch_t *s)
- {
--	smp_wmb();	/* prior stores before incrementing "sequence" */
--	s->seqcount.sequence++;
--	smp_wmb();      /* increment "sequence" before following stores */
-+	kcsan_nestable_atomic_begin();
-+	raw_write_seqcount_latch(s);
-+}
-+
-+/**
-+ * write_seqcount_latch() - redirect latch readers to even copy
-+ * @s: Pointer to seqcount_latch_t
-+ */
-+static __always_inline void write_seqcount_latch(seqcount_latch_t *s)
-+{
-+	raw_write_seqcount_latch(s);
-+}
-+
-+/**
-+ * write_seqcount_latch_end() - end a seqcount_latch_t write section
-+ * @s:		Pointer to seqcount_latch_t
-+ *
-+ * Marks the end of a seqcount_latch_t writer section, after all copies of the
-+ * latch-protected data have been updated.
-+ */
-+static __always_inline void write_seqcount_latch_end(seqcount_latch_t *s)
-+{
-+	kcsan_nestable_atomic_end();
- }
- 
- #define __SEQLOCK_UNLOCKED(lockname)					\
+ config ARM_TIMER_SP804
+-	bool "Support for Dual Timer SP804 module" if COMPILE_TEST
++	bool "Support for Dual Timer SP804 module"
++	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on GENERIC_SCHED_CLOCK && HAVE_CLK
+ 	select CLKSRC_MMIO
+ 	select TIMER_OF if OF
 -- 
 2.43.0
 
