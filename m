@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB42E9E1A00
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:53:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305D19E1AE7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724472841E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:53:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62FF0B2C695
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE271E2842;
-	Tue,  3 Dec 2024 10:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E921E0B6C;
+	Tue,  3 Dec 2024 10:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4av4u4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvPrTiMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1E41DE3BD
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C171DDC2D
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733223209; cv=none; b=cNQp2/BQZlbeqR12i/J1lhi/CoidK4RfmSn0B78PpMV+26Zm6oesoN4ZnfuBPi9W6Z8gDWoEpM+BmJAADDYXCvvLJINxzG57GoAkzHDaZVdYuE04qRI/zA646UXlxqqVxfdCLDtbHjOSJQ2JSZ1EGMOWeWC/btgFmkoksGPJZCs=
+	t=1733220307; cv=none; b=jgYiuujAA72BPlx/cNAbz3IwNkVzFUYSXCZ5MfeLcCyyzCGuWZ+69wy1tGqr9qny3Y1r8HCbKJd0WKcsFsHmBhO08ez34nmPFVTd2p4zu4hM/AXfwOlipW7T5ocQAAYaDqVohaYXL/XMIhf4n/nAIBjLXUYLDmhB0SSTy5cKrJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733223209; c=relaxed/simple;
-	bh=iyl8FAWDnfY6mSkYbcGa9DSq700LaT9zuTyJNWes+Ho=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YskqJD5GMYLY8Eb0v+nDjJMn4e/wn+4ruqXf/GlKiH91sqDJ0om0CdeUniAocU0SO7npyAA+G6bA7ZhEA71UvVjmN+rwdVCRW2t6cTuC4hv9lTnajqewpz02IscSPPtBY1Z4rhS6bx9NpmtJRgHbz7PjEFXokSdO89gQaosjBeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4av4u4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465D3C4CECF;
-	Tue,  3 Dec 2024 10:53:28 +0000 (UTC)
+	s=arc-20240116; t=1733220307; c=relaxed/simple;
+	bh=ERm/KOzZ0QofivaaoDdvvigFykiR1AkE5xep61df6Ho=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=daNwoFwzDnj2evUUzmicDGZYAyw/NvavFybL70sVcFZG4SKxwVfRjxpwkX+fYtvmEckj3gBUkyszwUHUJaurRASyQJPP2ZFdp2zsCLwYxWQDErEoaTqIy2H6SHsymeR4fQmwzFossPfc/RwyPiVX3uVhIpvT7tuR5SGM/y1VyOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvPrTiMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF029C4CECF;
+	Tue,  3 Dec 2024 10:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733223208;
-	bh=iyl8FAWDnfY6mSkYbcGa9DSq700LaT9zuTyJNWes+Ho=;
+	s=korg; t=1733220307;
+	bh=ERm/KOzZ0QofivaaoDdvvigFykiR1AkE5xep61df6Ho=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e4av4u4g6rI3S6HfNMi/oOtyUwOBd7/dCC9r22THjvl385GPr3hJg39FLCdzVGoQx
-	 e6PaBAhyeUap+Af7WXNEPt1bpKlNFIiXEeZTf/opSgjVEl7uNENy+bmkRg6DQGCK4z
-	 3Hn3E0UplXWIRazA5jsTaJw65fmDS21QCwNqXxI4=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Fix looping of queued SG entries" failed to apply to 5.4-stable tree
-To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
+	b=ZvPrTiMUF/BDrNEJnNLLEoUPSdr/gwG6/yjPyuLwwjDAKY7WeNH8i5nX7MAPDuEWr
+	 axuzPXUAxYemSVkpQLrSSKg4AdrypoHfwqxus6tFbijXY6pUNZCw6l4up3rq37aUYC
+	 RsF1VO2zVmXjwKePxFVtZQ7XXUMLnUmaJuYH8gXE=
+Subject: FAILED: patch "[PATCH] serial: amba-pl011: Fix RX stall when DMA is used" failed to apply to 6.1-stable tree
+To: kkartik@nvidia.com,gregkh@linuxfoundation.org,linus.walleij@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Dec 2024 11:53:25 +0100
-Message-ID: <2024120325-flaky-phantom-f755@gregkh>
+Date: Tue, 03 Dec 2024 11:04:56 +0100
+Message-ID: <2024120356-maturing-junkman-2988@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x b7fc65f5141c24785dc8c19249ca4efcf71b3524
+git cherry-pick -x 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120325-flaky-phantom-f755@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120356-maturing-junkman-2988@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,49 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b7fc65f5141c24785dc8c19249ca4efcf71b3524 Mon Sep 17 00:00:00 2001
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Date: Thu, 14 Nov 2024 01:02:18 +0000
-Subject: [PATCH] usb: dwc3: gadget: Fix looping of queued SG entries
+From 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf Mon Sep 17 00:00:00 2001
+From: Kartik Rajput <kkartik@nvidia.com>
+Date: Wed, 13 Nov 2024 14:56:29 +0530
+Subject: [PATCH] serial: amba-pl011: Fix RX stall when DMA is used
 
-The dwc3_request->num_queued_sgs is decremented on completion. If a
-partially completed request is handled, then the
-dwc3_request->num_queued_sgs no longer reflects the total number of
-num_queued_sgs (it would be cleared).
+Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
+also disables the RX DMA by clearing the RXDMAE bit of the DMACR
+register. However, to properly unthrottle RX when DMA is used, the
+function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
+the DMACR register, which it currently lacks. This causes RX to stall
+after the throttle API is called.
 
-Correctly check the number of request SG entries remained to be prepare
-and queued. Failure to do this may cause null pointer dereference when
-accessing non-existent SG entry.
+Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
+used.
 
+Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
 Cc: stable@vger.kernel.org
-Fixes: c96e6725db9d ("usb: dwc3: gadget: Correct the logic for queuing sgs")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/d07a7c4aa0fcf746cdca0515150dbe5c52000af7.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 38c3769a6c48..3a5a0d8be33c 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1470,8 +1470,8 @@ static int dwc3_prepare_trbs_sg(struct dwc3_ep *dep,
- 	struct scatterlist *s;
- 	int		i;
- 	unsigned int length = req->request.length;
--	unsigned int remaining = req->request.num_mapped_sgs
--		- req->num_queued_sgs;
-+	unsigned int remaining = req->num_pending_sgs;
-+	unsigned int num_queued_sgs = req->request.num_mapped_sgs - remaining;
- 	unsigned int num_trbs = req->num_trbs;
- 	bool needs_extra_trb = dwc3_needs_extra_trb(dep, req);
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 56e587b94823..2facdbcd73eb 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
  
-@@ -1479,7 +1479,7 @@ static int dwc3_prepare_trbs_sg(struct dwc3_ep *dep,
- 	 * If we resume preparing the request, then get the remaining length of
- 	 * the request and resume where we left off.
- 	 */
--	for_each_sg(req->request.sg, s, req->num_queued_sgs, i)
-+	for_each_sg(req->request.sg, s, num_queued_sgs, i)
- 		length -= sg_dma_len(s);
+ 	pl011_write(uap->im, uap, REG_IMSC);
  
- 	for_each_sg(sg, s, remaining, i) {
++	if (uap->using_rx_dma) {
++		uap->dmacr |= UART011_RXDMAE;
++		pl011_write(uap->dmacr, uap, REG_DMACR);
++	}
++
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
 
 
