@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EE89E22E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DAD9E263E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8AB286C1D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7B916F496
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294391F7071;
-	Tue,  3 Dec 2024 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4751F891C;
+	Tue,  3 Dec 2024 16:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNeOOlVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZhVjX2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4E92500DA;
-	Tue,  3 Dec 2024 15:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987F523CE;
+	Tue,  3 Dec 2024 16:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239820; cv=none; b=Gxh1Cz65UXEG0+tibB4+onTaNZCLKdaK03biVFuZL0IXSuTX/JeBYmgR5R8hw+vbeFelf9VSirhzYySLyp37sG1J+41KuwKcdzAcJDgTLA8OzyBfuTM10FRo0xq8FeDgCn9Ajmp3J2LNwQK709nKpfeEPuiSC4zZL9bAWlFrHUQ=
+	t=1733241936; cv=none; b=nw/7/VT49FafWUAiDZbq9MGUhG0RRs08q6Ta4/Pf5w3lDkPFvbrSv91AlBRFuy9FS79YgH8n8h3A97Wvv7jqg1O6dy771qP9Uk85ojkLMhJA/eP5naMbD8tc1M8HsR0w0mAXzZTOkMevc9Mvnpnu31U9hWfDYKwV+FisLk7+71w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239820; c=relaxed/simple;
-	bh=mPQsCmOizjFlJl+eHnwZQzv0cU6q3EV1OZcAFFepMXU=;
+	s=arc-20240116; t=1733241936; c=relaxed/simple;
+	bh=lygA2U4sZ93Ov89aWxS3ZShrHpSsefEBKdsFeRbmxA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtZZPPP1JdKPWpyQ+XhGnjv9oSuP0hxR6IFZY0QSnF6wUap/n9h49aGKr2hGMrXIp6me/M9megbLYd/S6KrvSxSHleEA6afk2vMUfcj1LElGrq0Z9/q60jYX9XaGMgxKzRNVOqv79AEM/S5FYgdvn4EEDeBB3bFDo6brv66gVtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNeOOlVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FB3C4CECF;
-	Tue,  3 Dec 2024 15:30:20 +0000 (UTC)
+	 MIME-Version; b=BAYaoa/LORHgIa0jEj8Z7fRuMuFpSjdWP2l8qPPOitwAd3uvHfbM3I6tSew9MheSXeOLpH+kZXEJUxY8FfobILwqXNzKyrGu9gnCk+oHZiEvpojWp1qLJaJ7i5QD80LrbbkPDD0/5gFzcrABZW8uipAh9oVDYMFvSpTmo/C9Z1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZhVjX2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B1DC4CECF;
+	Tue,  3 Dec 2024 16:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239820;
-	bh=mPQsCmOizjFlJl+eHnwZQzv0cU6q3EV1OZcAFFepMXU=;
+	s=korg; t=1733241936;
+	bh=lygA2U4sZ93Ov89aWxS3ZShrHpSsefEBKdsFeRbmxA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNeOOlVVRnqZQeV+YY0eqKY1aEvYPtxSGtMcWKg1vCCZqAzRyVZ5/VFs7/N79EvAF
-	 WtvVWa/KYUa84bmf8Re7TLN7jHaOGdv5lT1bdHPUa2JELJlZQk6fZXQ77/IXiPQs0w
-	 NZIhTkH893/fWXyzUBpRvCjvsA1QZsOmlOVkjhn4=
+	b=dZhVjX2/zM9cFO/Df/8k46eODKg5DYRhIqz3IalU9JsbMy+rkp+4lOAbSGr0ZfdZ1
+	 8tFsSojD6DJWy/uliae16PtKVDJ3XhVlacWwLEQFU/8IedRGF4U/wRry+xtCFFvvfy
+	 fYZrNZfQiCm4HYwRmqWlWwH4o0OxbYrkzmh1DIF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filip Brozovic <fbrozovic@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.11 714/817] serial: 8250_fintek: Add support for F81216E
-Date: Tue,  3 Dec 2024 15:44:46 +0100
-Message-ID: <20241203144023.862679656@linuxfoundation.org>
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 560/826] exfat: fix file being changed by unaligned direct write
+Date: Tue,  3 Dec 2024 15:44:47 +0100
+Message-ID: <20241203144805.589341817@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filip Brozovic <fbrozovic@gmail.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-commit 166105c9030a30ba08574a9998afc7b60bc72dd7 upstream.
+[ Upstream commit 2e94e5bb94a3e641a25716a560bf474225fda83c ]
 
-The F81216E is a LPC/eSPI to 4 UART Super I/O and is mostly compatible with
-the F81216H, but does not support RS-485 auto-direction delays on any port.
+Unaligned direct writes are invalid and should return an error
+without making any changes, rather than extending ->valid_size
+and then returning an error. Therefore, alignment checking is
+required before extending ->valid_size.
 
-Signed-off-by: Filip Brozovic <fbrozovic@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241110111703.15494-1-fbrozovic@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Co-developed-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_fintek.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/exfat/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_fintek.c
-+++ b/drivers/tty/serial/8250/8250_fintek.c
-@@ -21,6 +21,7 @@
- #define CHIP_ID_F81866 0x1010
- #define CHIP_ID_F81966 0x0215
- #define CHIP_ID_F81216AD 0x1602
-+#define CHIP_ID_F81216E 0x1617
- #define CHIP_ID_F81216H 0x0501
- #define CHIP_ID_F81216 0x0802
- #define VENDOR_ID1 0x23
-@@ -158,6 +159,7 @@ static int fintek_8250_check_id(struct f
- 	case CHIP_ID_F81866:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		break;
-@@ -181,6 +183,7 @@ static int fintek_8250_get_ldn_range(str
- 		return 0;
+diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+index a25d7eb789f4c..fb38769c3e39d 100644
+--- a/fs/exfat/file.c
++++ b/fs/exfat/file.c
+@@ -584,6 +584,16 @@ static ssize_t exfat_file_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	if (ret < 0)
+ 		goto unlock;
  
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		*min = F81216_LDN_LOW;
-@@ -250,6 +253,7 @@ static void fintek_8250_set_irq_mode(str
- 		break;
- 
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		sio_write_mask_reg(pdata, FINTEK_IRQ_MODE, IRQ_SHARE,
-@@ -263,7 +267,8 @@ static void fintek_8250_set_irq_mode(str
- static void fintek_8250_set_max_fifo(struct fintek_8250 *pdata)
- {
- 	switch (pdata->pid) {
--	case CHIP_ID_F81216H: /* 128Bytes FIFO */
-+	case CHIP_ID_F81216E: /* 128Bytes FIFO */
-+	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81866:
- 		sio_write_mask_reg(pdata, FIFO_CTRL,
-@@ -297,6 +302,7 @@ static void fintek_8250_set_termios(stru
- 		goto exit;
- 
- 	switch (pdata->pid) {
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 		reg = RS485;
- 		break;
-@@ -346,6 +352,7 @@ static void fintek_8250_set_termios_hand
- 	struct fintek_8250 *pdata = uart->port.private_data;
- 
- 	switch (pdata->pid) {
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81866:
-@@ -438,6 +445,11 @@ static void fintek_8250_set_rs485_handle
- 			uart->port.rs485_supported = fintek_8250_rs485_supported;
- 		break;
- 
-+	case CHIP_ID_F81216E: /* F81216E does not support RS485 delays */
-+		uart->port.rs485_config = fintek_8250_rs485_config;
-+		uart->port.rs485_supported = fintek_8250_rs485_supported;
-+		break;
++	if (iocb->ki_flags & IOCB_DIRECT) {
++		unsigned long align = pos | iov_iter_alignment(iter);
 +
- 	default: /* No RS485 Auto direction functional */
- 		break;
- 	}
++		if (!IS_ALIGNED(align, i_blocksize(inode)) &&
++		    !IS_ALIGNED(align, bdev_logical_block_size(inode->i_sb->s_bdev))) {
++			ret = -EINVAL;
++			goto unlock;
++		}
++	}
++
+ 	if (pos > valid_size) {
+ 		ret = exfat_extend_valid_size(file, pos);
+ 		if (ret < 0 && ret != -ENOSPC) {
+-- 
+2.43.0
+
 
 
 
