@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-97881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59649E2AB1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6466F9E2901
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DBA7B2EB0D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD03CBC20E9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7911E766E;
-	Tue,  3 Dec 2024 16:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D052B1F76D0;
+	Tue,  3 Dec 2024 15:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWc20bQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQq1Rpfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA65C23CE;
-	Tue,  3 Dec 2024 16:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB891F75B9;
+	Tue,  3 Dec 2024 15:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242052; cv=none; b=UYv3FeM9LFKC7RnK9Nwr1hK2ornv83L875u+VZp+n1gJtAKdt2p96OewhPaOK0NILWHt7e0z9m1djH0k1lHqSytj/0472TgmueexJz3mGlCDLkYBVBQLbnEH2mOjjlLy0NkambtVL/JbmIFELRIgC/9JmpSx0wIwD+lB/I+Ghxo=
+	t=1733239934; cv=none; b=ahyfgQcQf2BbxXDJo3v1M1xrRsiFodHH0DQCq6PsUSBbVOCDvT7sGNHei/9VaoXwZRoyd4rH3QBocGNewJNZShiWcT+u8N6DNRq2Wd1ODsg3pvqD3i26pfHbWQcERrppWJ7JHI5YDIX35zokuDXuXNzv6VR9EdKkiRzqrRbZiAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242052; c=relaxed/simple;
-	bh=dFsAMJc2IxI/vYBa6tH/X0ctEcQHtsq5S8RmNp+FbFw=;
+	s=arc-20240116; t=1733239934; c=relaxed/simple;
+	bh=NB8IRKcQTbBpU48qMXZhqbwuHU5oGjmBfsc4ht/ufd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pViIJe7UuPqfhxIMy3xyfae1MmKfxG4//MV2FZnUBSoG9pKcWcIkFA70ezzvAtqoaK1c/4WL6uNCdOMoE5h9BsVShxA94s7O3rKIJ9nb0dXaY4EZSE7LOVcz+zY7WMBfbkobiBkSQTI0LwZQriFQ38E7XSWpzRPYDosfnH3C2Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWc20bQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A32C4CECF;
-	Tue,  3 Dec 2024 16:07:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UiR0/V5QwsmwLHGJkIYmusOrAzN+/GMD3Wq1hvy2xi3H0tv7O1KNYxrAK1fP0dQS+Pc1NARjUIGGh1mDdPSeMgsEJ1ou8YtXlBKACqVwcjYx6v5YmfhtuLzkXGO1MAJU89FvTIbtoYjcXyRhVGBrntXgqaRmy7We0lBB+WyZt34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQq1Rpfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCA6C4CECF;
+	Tue,  3 Dec 2024 15:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242052;
-	bh=dFsAMJc2IxI/vYBa6tH/X0ctEcQHtsq5S8RmNp+FbFw=;
+	s=korg; t=1733239934;
+	bh=NB8IRKcQTbBpU48qMXZhqbwuHU5oGjmBfsc4ht/ufd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWc20bQVuIJjepyXDkRRx38FNW3L0ljixA9AYbG7sMBiHfrbYJNuz+1j3D3DNlQhd
-	 7PSjZa2fvg9Cge81YAmUcyZ/EUVglgO93hTP9gWMwg03+00LQohB8kCNor6+i2MpfA
-	 bSAZJn6k3YVuKhDAyMECpYuHrrP1X8VCuCVd9Pdc=
+	b=mQq1RpfkrSVb3JEQnPMNd/Pq2hLpPOfDnvw2xy3R78EZoWWBvXnLNWqvaN9pTHgqx
+	 2/1SkFrWZfot4S0/Ew/R+fAGP5kN7S8qxKuUx+pnAZUduzSNZI0j9DMAU6sQI3acpi
+	 /3FFnBPqMWrCAFpq7+cJLSFzIOaWV4H/aFPQZsfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com,
-	syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 594/826] USB: chaoskey: Fix possible deadlock chaoskey_list_lock
-Date: Tue,  3 Dec 2024 15:45:21 +0100
-Message-ID: <20241203144806.929099761@linuxfoundation.org>
+	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
+Subject: [PATCH 6.11 753/817] usb: musb: Fix hardware lockup on first Rx endpoint request
+Date: Tue,  3 Dec 2024 15:45:25 +0100
+Message-ID: <20241203144025.388250149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +58,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
 
-[ Upstream commit d73dc7b182be4238b75278bfae16afb4c5564a58 ]
+commit 3fc137386c4620305bbc2a216868c53f9245670a upstream.
 
-[Syzbot reported two possible deadlocks]
-The first possible deadlock is:
-WARNING: possible recursive locking detected
-6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
---------------------------------------------
-syz-executor363/2651 is trying to acquire lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x15d/0x2c0 drivers/usb/misc/chaoskey.c:322
+There is a possibility that a request's callback could be invoked from
+usb_ep_queue() (call trace below, supplemented with missing calls):
 
-but task is already holding lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x7f/0x2c0 drivers/usb/misc/chaoskey.c:299
+req->complete from usb_gadget_giveback_request
+	(drivers/usb/gadget/udc/core.c:999)
+usb_gadget_giveback_request from musb_g_giveback
+	(drivers/usb/musb/musb_gadget.c:147)
+musb_g_giveback from rxstate
+	(drivers/usb/musb/musb_gadget.c:784)
+rxstate from musb_ep_restart
+	(drivers/usb/musb/musb_gadget.c:1169)
+musb_ep_restart from musb_ep_restart_resume_work
+	(drivers/usb/musb/musb_gadget.c:1176)
+musb_ep_restart_resume_work from musb_queue_resume_work
+	(drivers/usb/musb/musb_core.c:2279)
+musb_queue_resume_work from musb_gadget_queue
+	(drivers/usb/musb/musb_gadget.c:1241)
+musb_gadget_queue from usb_ep_queue
+	(drivers/usb/gadget/udc/core.c:300)
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+According to the docstring of usb_ep_queue(), this should not happen:
 
-       CPU0
-       ----
-  lock(chaoskey_list_lock);
-  lock(chaoskey_list_lock);
+"Note that @req's ->complete() callback must never be called from within
+usb_ep_queue() as that can create deadlock situations."
 
- *** DEADLOCK ***
+In fact, a hardware lockup might occur in the following sequence:
 
-The second possible deadlock is:
-WARNING: possible circular locking dependency detected
-6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
-------------------------------------------------------
-kworker/0:2/804 is trying to acquire lock:
-ffffffff899dadb0 (minor_rwsem){++++}-{3:3}, at: usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
+1. The gadget is initialized using musb_gadget_enable().
+2. Meanwhile, a packet arrives, and the RXPKTRDY flag is set, raising an
+   interrupt.
+3. If IRQs are enabled, the interrupt is handled, but musb_g_rx() finds an
+   empty queue (next_request() returns NULL). The interrupt flag has
+   already been cleared by the glue layer handler, but the RXPKTRDY flag
+   remains set.
+4. The first request is enqueued using usb_ep_queue(), leading to the call
+   of req->complete(), as shown in the call trace above.
+5. If the callback enables IRQs and another packet is waiting, step (3)
+   repeats. The request queue is empty because usb_g_giveback() removes the
+   request before invoking the callback.
+6. The endpoint remains locked up, as the interrupt triggered by hardware
+   setting the RXPKTRDY flag has been handled, but the flag itself remains
+   set.
 
-but task is already holding lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_disconnect+0xa8/0x2a0 drivers/usb/misc/chaoskey.c:235
+For this scenario to occur, it is only necessary for IRQs to be enabled at
+some point during the complete callback. This happens with the USB Ethernet
+gadget, whose rx_complete() callback calls netif_rx(). If called in the
+task context, netif_rx() disables the bottom halves (BHs). When the BHs are
+re-enabled, IRQs are also enabled to allow soft IRQs to be processed. The
+gadget itself is initialized at module load (or at boot if built-in), but
+the first request is enqueued when the network interface is brought up,
+triggering rx_complete() in the task context via ioctl(). If a packet
+arrives while the interface is down, it can prevent the interface from
+receiving any further packets from the USB host.
 
-which lock already depends on the new lock.
+The situation is quite complicated with many parties involved. This
+particular issue can be resolved in several possible ways:
 
-the existing dependency chain (in reverse order) is:
+1. Ensure that callbacks never enable IRQs. This would be difficult to
+   enforce, as discovering how netif_rx() interacts with interrupts was
+   already quite challenging and u_ether is not the only function driver.
+   Similar "bugs" could be hidden in other drivers as well.
+2. Disable MUSB interrupts in musb_g_giveback() before calling the callback
+   and re-enable them afterwars (by calling musb_{dis,en}able_interrupts(),
+   for example). This would ensure that MUSB interrupts are not handled
+   during the callback, even if IRQs are enabled. In fact, it would allow
+   IRQs to be enabled when releasing the lock. However, this feels like an
+   inelegant hack.
+3. Modify the interrupt handler to clear the RXPKTRDY flag if the request
+   queue is empty. While this approach also feels like a hack, it wastes
+   CPU time by attempting to handle incoming packets when the software is
+   not ready to process them.
+4. Flush the Rx FIFO instead of calling rxstate() in musb_ep_restart().
+   This ensures that the hardware can receive packets when there is at
+   least one request in the queue. Once IRQs are enabled, the interrupt
+   handler will be able to correctly process the next incoming packet
+   (eventually calling rxstate()). This approach may cause one or two
+   packets to be dropped (two if double buffering is enabled), but this
+   seems to be a minor issue, as packet loss can occur when the software is
+   not yet ready to process them. Additionally, this solution makes the
+   gadget driver compliant with the rule mentioned in the docstring of
+   usb_ep_queue().
 
--> #1 (chaoskey_list_lock){+.+.}-{3:3}:
-       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
-       __mutex_lock+0x175/0x9c0 kernel/locking/mutex.c:752
-       chaoskey_open+0xdd/0x220 drivers/usb/misc/chaoskey.c:274
-       usb_open+0x186/0x220 drivers/usb/core/file.c:47
-       chrdev_open+0x237/0x6a0 fs/char_dev.c:414
-       do_dentry_open+0x6cb/0x1390 fs/open.c:958
-       vfs_open+0x82/0x3f0 fs/open.c:1088
-       do_open fs/namei.c:3774 [inline]
-       path_openat+0x1e6a/0x2d60 fs/namei.c:3933
-       do_filp_open+0x1dc/0x430 fs/namei.c:3960
-       do_sys_openat2+0x17a/0x1e0 fs/open.c:1415
-       do_sys_open fs/open.c:1430 [inline]
-       __do_sys_openat fs/open.c:1446 [inline]
-       __se_sys_openat fs/open.c:1441 [inline]
-       __x64_sys_openat+0x175/0x210 fs/open.c:1441
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+There may be additional solutions, but from these four, the last one has
+been chosen as it seems to be the most appropriate, as it addresses the
+"bad" behavior of the driver.
 
--> #0 (minor_rwsem){++++}-{3:3}:
-       check_prev_add kernel/locking/lockdep.c:3161 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3280 [inline]
-       validate_chain kernel/locking/lockdep.c:3904 [inline]
-       __lock_acquire+0x250b/0x3ce0 kernel/locking/lockdep.c:5202
-       lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5825
-       down_write+0x93/0x200 kernel/locking/rwsem.c:1577
-       usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
-       chaoskey_disconnect+0xb7/0x2a0 drivers/usb/misc/chaoskey.c:236
-       usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
-       device_remove drivers/base/dd.c:569 [inline]
-       device_remove+0x122/0x170 drivers/base/dd.c:561
-       __device_release_driver drivers/base/dd.c:1273 [inline]
-       device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1296
-       bus_remove_device+0x22f/0x420 drivers/base/bus.c:576
-       device_del+0x396/0x9f0 drivers/base/core.c:3864
-       usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
-       usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2304
-       hub_port_connect drivers/usb/core/hub.c:5361 [inline]
-       hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
-       port_event drivers/usb/core/hub.c:5821 [inline]
-       hub_event+0x1bed/0x4f40 drivers/usb/core/hub.c:5903
-       process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
-       process_scheduled_works kernel/workqueue.c:3310 [inline]
-       worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
-       kthread+0x2c1/0x3a0 kernel/kthread.c:389
-       ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(chaoskey_list_lock);
-                               lock(minor_rwsem);
-                               lock(chaoskey_list_lock);
-  lock(minor_rwsem);
-
- *** DEADLOCK ***
-[Analysis]
-The first is AA lock, it because wrong logic, it need a unlock.
-The second is AB lock, it needs to rearrange the order of lock usage.
-
-Fixes: 422dc0a4d12d ("USB: chaoskey: fail open after removal")
-Reported-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
-Reported-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=685e14d04fe35692d3bc
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Tested-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
-Reported-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
-Tested-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
-Tested-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/tencent_84EB865C89862EC22EE94CB3A7C706C59206@qq.com
-Cc: Oliver Neukum <oneukum@suse.com>
+Fixes: baebdf48c360 ("net: dev: Makes sure netif_rx() can be invoked in any context.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+Link: https://lore.kernel.org/r/4ee1ead4525f78fb5909a8cbf99513ad0082ad21.camel@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/musb/musb_gadget.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index e8b63df5f9759..225863321dc47 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -232,10 +232,10 @@ static void chaoskey_disconnect(struct usb_interface *interface)
- 	if (dev->hwrng_registered)
- 		hwrng_unregister(&dev->hwrng);
- 
--	mutex_lock(&chaoskey_list_lock);
- 	usb_deregister_dev(interface, &chaoskey_class);
- 
- 	usb_set_intfdata(interface, NULL);
-+	mutex_lock(&chaoskey_list_lock);
- 	mutex_lock(&dev->lock);
- 
- 	dev->present = false;
-@@ -319,7 +319,7 @@ static int chaoskey_release(struct inode *inode, struct file *file)
- bail:
- 	mutex_unlock(&dev->lock);
- destruction:
--	mutex_lock(&chaoskey_list_lock);
-+	mutex_unlock(&chaoskey_list_lock);
- 	usb_dbg(interface, "release success");
- 	return rv;
+--- a/drivers/usb/musb/musb_gadget.c
++++ b/drivers/usb/musb/musb_gadget.c
+@@ -1161,12 +1161,19 @@ void musb_free_request(struct usb_ep *ep
+  */
+ void musb_ep_restart(struct musb *musb, struct musb_request *req)
+ {
++	u16 csr;
++	void __iomem *epio = req->ep->hw_ep->regs;
++
+ 	trace_musb_req_start(req);
+ 	musb_ep_select(musb->mregs, req->epnum);
+-	if (req->tx)
++	if (req->tx) {
+ 		txstate(musb, req);
+-	else
+-		rxstate(musb, req);
++	} else {
++		csr = musb_readw(epio, MUSB_RXCSR);
++		csr |= MUSB_RXCSR_FLUSHFIFO | MUSB_RXCSR_P_WZC_BITS;
++		musb_writew(epio, MUSB_RXCSR, csr);
++		musb_writew(epio, MUSB_RXCSR, csr);
++	}
  }
--- 
-2.43.0
-
+ 
+ static int musb_ep_restart_resume_work(struct musb *musb, void *data)
 
 
 
