@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9E79E238E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 567A09E2718
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4982B8016D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C18AB375FE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480C71F4707;
-	Tue,  3 Dec 2024 15:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8DF1F76AE;
+	Tue,  3 Dec 2024 15:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eot1/g0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcKo03xv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C61DA3D;
-	Tue,  3 Dec 2024 15:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043D51AB6C9;
+	Tue,  3 Dec 2024 15:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239077; cv=none; b=GeEwec7DkEx2EYTZ9k0fG78gNiEssDNva68RPcEZb4OWKotlMx/d0SMhhGHgx7hvkmNdN3V5f+jhvP0+qH1idGwqUhOxT5+NxpXvMHAliQF1EbwEIm2vvmD7kkGFZcaadY/bxnKATIZq9FEAYI+dzc3niaFjHc6njXsX2JTJAsM=
+	t=1733241300; cv=none; b=dJFGSXxq968kKdAScl7EAOavVazpQ9evBglTe/Qe8I/dLldypnwtLvjz9ZIlL/MA+eY0Xl77p8Vrzy8sBMqskcE3vCrbI6AGcYXaQBb6TdFRJuJUcEKpJcdSpOm0od0fYy43KRVuA9hdtInflXcL5gR2dixbZXMpATDHgzYAZjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239077; c=relaxed/simple;
-	bh=IsrTh9vX1eb1GNYZok50NonL6/OihAWu092pH2AqMxQ=;
+	s=arc-20240116; t=1733241300; c=relaxed/simple;
+	bh=NAcn6fD6f6LuLLqy3a9zTjbuKv5PvP6UqyvR8PJPDyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4NVLi2rO9p3HAWJOqWxaFUMkgNG7UqZ/pRgMZPTSmN1OH4sMHmJsS98F2pwa2FbFB1okr+DLqOIrLyNS90WeUAzO+X0LtCfxlktkfmlG/3LFxAlvifZ9lhoF0wPzQnBvyuVPGKEIvqydHWx5pO7qBe7tsTjP4a6LLNah2vJChk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eot1/g0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE48C4CECF;
-	Tue,  3 Dec 2024 15:17:56 +0000 (UTC)
+	 MIME-Version; b=HRqKvY47aKVZpdakLPz45W3JFcTDlRnrBqh0uwN79luKn24SymQntIRvsxC24yDW5iwL3KLQuRrOZXV0lNsZTpKPHaV+ASMJZeemKz5ONOfaa5EeLDrU5szDvXYKtD/f3DcUuqn8IkRVTa8daIWxLZ6d8KlSQchAIjOZb/d12gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcKo03xv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E66C4CED8;
+	Tue,  3 Dec 2024 15:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239076;
-	bh=IsrTh9vX1eb1GNYZok50NonL6/OihAWu092pH2AqMxQ=;
+	s=korg; t=1733241299;
+	bh=NAcn6fD6f6LuLLqy3a9zTjbuKv5PvP6UqyvR8PJPDyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eot1/g0K8+LtFa/FBdmPJ8fJDDBmsLhG6vRHaAFrD43/z0cGGyjNoLbtGzUXkO+bY
-	 m9nOHf7chwdEZM9DRGE11EPpIV7+2nTYIDCxUVAWsmwODKb6LuFLXSqJUfeWxUIgE/
-	 AOo2hPCTtcRdr2cgmdhP7/zXthpAdxzpsf4FMjfk=
+	b=dcKo03xvIfh2rFJeWjUpcAt6STQY7bE2NLiza03q2oizlF1ipq9BvRg7bjkCvnkK/
+	 WU5MM111AXWg7r3c4lyoYakPTXRerzANFgycGEHW2dCHtHR5zj7PtEYZ7hz9TpmNFM
+	 c0ErNAJ5c/Y3MkyHHhwjLlb1hj4CUVpX+z583UiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chris Lu <chris.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 494/817] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
+Subject: [PATCH 6.12 339/826] Bluetooth: btmtk: adjust the position to init iso data anchor
 Date: Tue,  3 Dec 2024 15:41:06 +0100
-Message-ID: <20241203144015.156689750@linuxfoundation.org>
+Message-ID: <20241203144756.986263365@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
+[ Upstream commit 61c5a3def90ac729a538e5ca5ff7f461cff72776 ]
 
-There's issue as follows when concurrently installing the f2fs.ko
-module and mounting the f2fs file system:
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
-Call Trace:
- <TASK>
- f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
- __get_meta_page+0x1d4/0x920 [f2fs]
- get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
- validate_checkpoint+0xac/0x290 [f2fs]
- f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
- f2fs_fill_super+0x1007/0x39b0 [f2fs]
- mount_bdev+0x183/0x250
- legacy_get_tree+0xf4/0x1e0
- vfs_get_tree+0x88/0x340
- do_new_mount+0x283/0x5e0
- path_mount+0x2b2/0x15b0
- __x64_sys_mount+0x1fe/0x270
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+MediaTek iso data anchor init should be moved to where MediaTek
+claims iso data interface.
+If there is an unexpected BT usb disconnect during setup flow,
+it will cause a NULL pointer crash issue when releasing iso
+anchor since the anchor wasn't been init yet. Adjust the position
+to do iso data anchor init.
 
-Above issue happens as the biset of the f2fs file system is not
-initialized before register "f2fs_fs_type".
-To address above issue just register "f2fs_fs_type" at the last in
-init_f2fs_fs(). Ensure that all f2fs file system resources are
-initialized.
+[   17.137991] pc : usb_kill_anchored_urbs+0x60/0x168
+[   17.137998] lr : usb_kill_anchored_urbs+0x44/0x168
+[   17.137999] sp : ffffffc0890cb5f0
+[   17.138000] x29: ffffffc0890cb5f0 x28: ffffff80bb6c2e80
+[   17.144081] gpio gpiochip0: registered chardev handle for 1 lines
+[   17.148421]  x27: 0000000000000000
+[   17.148422] x26: ffffffd301ff4298 x25: 0000000000000003 x24: 00000000000000f0
+[   17.148424] x23: 0000000000000000 x22: 00000000ffffffff x21: 0000000000000001
+[   17.148425] x20: ffffffffffffffd8 x19: ffffff80c0f25560 x18: 0000000000000000
+[   17.148427] x17: ffffffd33864e408 x16: ffffffd33808f7c8 x15: 0000000000200000
+[   17.232789] x14: e0cd73cf80ffffff x13: 50f2137c0a0338c9 x12: 0000000000000001
+[   17.239912] x11: 0000000080150011 x10: 0000000000000002 x9 : 0000000000000001
+[   17.247035] x8 : 0000000000000000 x7 : 0000000000008080 x6 : 8080000000000000
+[   17.254158] x5 : ffffffd33808ebc0 x4 : fffffffe033dcf20 x3 : 0000000080150011
+[   17.261281] x2 : ffffff8087a91400 x1 : 0000000000000000 x0 : ffffff80c0f25588
+[   17.268404] Call trace:
+[   17.270841]  usb_kill_anchored_urbs+0x60/0x168
+[   17.275274]  btusb_mtk_release_iso_intf+0x2c/0xd8 [btusb (HASH:5afe 6)]
+[   17.284226]  btusb_mtk_disconnect+0x14/0x28 [btusb (HASH:5afe 6)]
+[   17.292652]  btusb_disconnect+0x70/0x140 [btusb (HASH:5afe 6)]
+[   17.300818]  usb_unbind_interface+0xc4/0x240
+[   17.305079]  device_release_driver_internal+0x18c/0x258
+[   17.310296]  device_release_driver+0x1c/0x30
+[   17.314557]  bus_remove_device+0x140/0x160
+[   17.318643]  device_del+0x1c0/0x330
+[   17.322121]  usb_disable_device+0x80/0x180
+[   17.326207]  usb_disconnect+0xec/0x300
+[   17.329948]  hub_quiesce+0x80/0xd0
+[   17.333339]  hub_disconnect+0x44/0x190
+[   17.337078]  usb_unbind_interface+0xc4/0x240
+[   17.341337]  device_release_driver_internal+0x18c/0x258
+[   17.346551]  device_release_driver+0x1c/0x30
+[   17.350810]  usb_driver_release_interface+0x70/0x88
+[   17.355677]  proc_ioctl+0x13c/0x228
+[   17.359157]  proc_ioctl_default+0x50/0x80
+[   17.363155]  usbdev_ioctl+0x830/0xd08
+[   17.366808]  __arm64_sys_ioctl+0x94/0xd0
+[   17.370723]  invoke_syscall+0x6c/0xf8
+[   17.374377]  el0_svc_common+0x84/0xe0
+[   17.378030]  do_el0_svc+0x20/0x30
+[   17.381334]  el0_svc+0x34/0x60
+[   17.384382]  el0t_64_sync_handler+0x88/0xf0
+[   17.388554]  el0t_64_sync+0x180/0x188
+[   17.392208] Code: f9400677 f100a2f4 54fffea0 d503201f (b8350288)
+[   17.398289] ---[ end trace 0000000000000000 ]---
 
-Fixes: f543805fcd60 ("f2fs: introduce private bioset")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/bluetooth/btmtk.c | 1 -
+ drivers/bluetooth/btusb.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 0f6e2b3f6a4c5..615ca1f0ef59b 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4972,9 +4972,6 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_init_shrinker();
- 	if (err)
- 		goto free_sysfs;
--	err = register_filesystem(&f2fs_fs_type);
--	if (err)
--		goto free_shrinker;
- 	f2fs_create_root_stats();
- 	err = f2fs_init_post_read_processing();
- 	if (err)
-@@ -4997,7 +4994,12 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_create_casefold_cache();
- 	if (err)
- 		goto free_compress_cache;
-+	err = register_filesystem(&f2fs_fs_type);
-+	if (err)
-+		goto free_casefold_cache;
- 	return 0;
-+free_casefold_cache:
-+	f2fs_destroy_casefold_cache();
- free_compress_cache:
- 	f2fs_destroy_compress_cache();
- free_compress_mempool:
-@@ -5012,8 +5014,6 @@ static int __init init_f2fs_fs(void)
- 	f2fs_destroy_post_read_processing();
- free_root_stats:
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
--free_shrinker:
- 	f2fs_exit_shrinker();
- free_sysfs:
- 	f2fs_exit_sysfs();
-@@ -5037,6 +5037,7 @@ static int __init init_f2fs_fs(void)
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 9bbf205021634..480e4adba9faa 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -1215,7 +1215,6 @@ static int btmtk_usb_isointf_init(struct hci_dev *hdev)
+ 	struct sk_buff *skb;
+ 	int err;
  
- static void __exit exit_f2fs_fs(void)
- {
-+	unregister_filesystem(&f2fs_fs_type);
- 	f2fs_destroy_casefold_cache();
- 	f2fs_destroy_compress_cache();
- 	f2fs_destroy_compress_mempool();
-@@ -5045,7 +5046,6 @@ static void __exit exit_f2fs_fs(void)
- 	f2fs_destroy_iostat_processing();
- 	f2fs_destroy_post_read_processing();
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
- 	f2fs_exit_shrinker();
- 	f2fs_exit_sysfs();
- 	f2fs_destroy_garbage_collection_cache();
+-	init_usb_anchor(&btmtk_data->isopkt_anchor);
+ 	spin_lock_init(&btmtk_data->isorxlock);
+ 
+ 	__set_mtk_intr_interface(hdev);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index e9534fbc92e32..4ccaddb46ddd8 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2616,6 +2616,7 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
+ 	}
+ 
+ 	set_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags);
++	init_usb_anchor(&btmtk_data->isopkt_anchor);
+ }
+ 
+ static void btusb_mtk_release_iso_intf(struct btusb_data *data)
 -- 
 2.43.0
 
