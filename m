@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3F49E28F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:18:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4449E2951
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D5FB2702A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2AA6B6352C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989C31F75A2;
-	Tue,  3 Dec 2024 14:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0121F7589;
+	Tue,  3 Dec 2024 14:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDE7JM6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbrGmrxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5685C1F7587;
-	Tue,  3 Dec 2024 14:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789701F7583;
+	Tue,  3 Dec 2024 14:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237713; cv=none; b=vE6EqQTNDIFhuQGEQ6lCUIAq2lpkPovRAdS0oXuSZWKrfh1Hhp0X92cYc/n2lHp3HIQPRfF4wSflwBosbmEWY5ydjZNZkaqbp6xA79ne75gaVMYm0T83JI0WlLHuQEX+iiLiXcqMvnB35HNjAOMzfxmoEuih04vMw0ADn9R2RIw=
+	t=1733237730; cv=none; b=Dg/dTHlBOzqCnShn2FxdRnatIPZXrNDkFSTKzQQBEXTTYETZTChtRNEno5AReKQCfgb/d7waZMm9cHYQ0tdM/l+gGPyK/YL5ul6kMxtILldOvJeXfrBvvjsDyPaskj2fEGykPPRcd124dQg+T/C0RB3nT5wX5oOYAfzMb/NpvV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237713; c=relaxed/simple;
-	bh=b5yswftItLNH0NlyqxKjxWLDdEIG8vYwITiDAydC80s=;
+	s=arc-20240116; t=1733237730; c=relaxed/simple;
+	bh=LKp3cg09zWPnh8+AmVyVLHEXzeaPAyM5PMoZlM4Jjoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/mEOglIrKt/1k2xAcx+oCfwUm0znmyzuY/jH91OLJcrHScSRj6+a/SHX4ZDKDS6N2rcOmHWN4xHzkHyMJokrzi2/N4yCOIaqmtbTYw2ibS5wZk/o0IB+Efv1khm+2fLjB/aiz5mzcguURJ8zCIB69c9XMSPcKCrmOhqC9OpnYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDE7JM6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C103C4CECF;
-	Tue,  3 Dec 2024 14:55:12 +0000 (UTC)
+	 MIME-Version; b=vEKOkuSEqdyERrCm2nB22K9CD1r87HAJYqmBdzGejueGt+/d6gD59/rn85hWxTQ79FOYL/Bg+5SCrxZp2+6L/i+DVNuphQRU/oKzVnqaRwF5AfPNQb/Nyktkt1qT6+c8zcv4agYMVSvQH3hYR92aqJ4pue76rf7wZ4FQ8BpSFnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbrGmrxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E103CC4CED6;
+	Tue,  3 Dec 2024 14:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237712;
-	bh=b5yswftItLNH0NlyqxKjxWLDdEIG8vYwITiDAydC80s=;
+	s=korg; t=1733237730;
+	bh=LKp3cg09zWPnh8+AmVyVLHEXzeaPAyM5PMoZlM4Jjoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDE7JM6rtlrW7neN8aeWrfcatikEk8jVtD5I3AG2tcdOnldZvP8WSXs+hHqVAteqO
-	 t0l3JHK/KwRrECM3RF1gXI8HUG9oXs+QpcWUrriTFUshnTJ/IIt18YVqVN+OGvWgpE
-	 D8cUqeavGLukgbGGk4hUb1orBhUnr0rTHLg2fjZI=
+	b=hbrGmrxNxxJewjkRh0LZnRsrx58TkI9zaDurfhJsvScDbMt7ox95VVCYC0mKE/bNh
+	 4B5SkmJPjw2EqJ3OZwEbqW1xXPFdczk4ZInDwS7PSyJAYlWXvwjtOTgUjRMozp7f38
+	 R6Te56U/dEn2JHiP8jaX6eRFO37Fj3VHL46uTczA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 049/817] s390/facilities: Fix warning about shadow of global variable
-Date: Tue,  3 Dec 2024 15:33:41 +0100
-Message-ID: <20241203143957.584547311@linuxfoundation.org>
+Subject: [PATCH 6.11 053/817] kselftest/arm64: mte: fix printf type warnings about __u64
+Date: Tue,  3 Dec 2024 15:33:45 +0100
+Message-ID: <20241203143957.742787400@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,84 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 61997c1e947dbf8bc625ef86ceee00fdf2a5dba1 ]
+[ Upstream commit 7e893dc81de3e342156389ea0b83ec7d07f25281 ]
 
-Compiling the kernel with clang W=2 produces a warning that the
-parameter declarations in some routines would shadow the definition of
-the global variable stfle_fac_list. Address this warning by renaming the
-parameters to fac_list.
+When printing the signal context's PC, we use a "%lx" format specifier,
+which matches the common userland (glibc's) definition of uint64_t as an
+"unsigned long". However the structure in question is defined in a
+kernel uapi header, which uses a self defined __u64 type, and the arm64
+kernel headers define this using "int-ll64.h", so it becomes an
+"unsigned long long". This mismatch leads to the usual compiler warning.
 
-Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+The common fix would be to use "PRIx64", but because this is defined by
+the userland's toolchain libc headers, it wouldn't match as well. Since
+we know the exact type of __u64, just use "%llx" here instead, to silence
+this warning.
+
+This also fixes a more severe typo: "$lx" is not a valid format
+specifier.
+
+Fixes: 191e678bdc9b ("kselftest/arm64: Log unexpected asynchronous MTE faults")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240816153251.2833702-7-andre.przywara@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/facility.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tools/testing/selftests/arm64/mte/mte_common_util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-index 65ebf86506cde..48791a02cab1e 100644
---- a/arch/s390/include/asm/facility.h
-+++ b/arch/s390/include/asm/facility.h
-@@ -67,7 +67,7 @@ static inline int test_facility(unsigned long nr)
- 	return __test_facility(nr, &stfle_fac_list);
- }
- 
--static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
-+static inline unsigned long __stfle_asm(u64 *fac_list, int size)
- {
- 	unsigned long reg0 = size - 1;
- 
-@@ -75,7 +75,7 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
- 		"	lgr	0,%[reg0]\n"
- 		"	.insn	s,0xb2b00000,%[list]\n" /* stfle */
- 		"	lgr	%[reg0],0\n"
--		: [reg0] "+&d" (reg0), [list] "+Q" (*stfle_fac_list)
-+		: [reg0] "+&d" (reg0), [list] "+Q" (*fac_list)
- 		:
- 		: "memory", "cc", "0");
- 	return reg0;
-@@ -83,10 +83,10 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
- 
- /**
-  * stfle - Store facility list extended
-- * @stfle_fac_list: array where facility list can be stored
-+ * @fac_list: array where facility list can be stored
-  * @size: size of passed in array in double words
-  */
--static inline void __stfle(u64 *stfle_fac_list, int size)
-+static inline void __stfle(u64 *fac_list, int size)
- {
- 	unsigned long nr;
- 	u32 stfl_fac_list;
-@@ -95,20 +95,20 @@ static inline void __stfle(u64 *stfle_fac_list, int size)
- 		"	stfl	0(0)\n"
- 		: "=m" (get_lowcore()->stfl_fac_list));
- 	stfl_fac_list = get_lowcore()->stfl_fac_list;
--	memcpy(stfle_fac_list, &stfl_fac_list, 4);
-+	memcpy(fac_list, &stfl_fac_list, 4);
- 	nr = 4; /* bytes stored by stfl */
- 	if (stfl_fac_list & 0x01000000) {
- 		/* More facility bits available with stfle */
--		nr = __stfle_asm(stfle_fac_list, size);
-+		nr = __stfle_asm(fac_list, size);
- 		nr = min_t(unsigned long, (nr + 1) * 8, size * 8);
- 	}
--	memset((char *) stfle_fac_list + nr, 0, size * 8 - nr);
-+	memset((char *)fac_list + nr, 0, size * 8 - nr);
- }
- 
--static inline void stfle(u64 *stfle_fac_list, int size)
-+static inline void stfle(u64 *fac_list, int size)
- {
- 	preempt_disable();
--	__stfle(stfle_fac_list, size);
-+	__stfle(fac_list, size);
- 	preempt_enable();
- }
- 
+diff --git a/tools/testing/selftests/arm64/mte/mte_common_util.c b/tools/testing/selftests/arm64/mte/mte_common_util.c
+index 00ffd34c66d30..1120f5aa76550 100644
+--- a/tools/testing/selftests/arm64/mte/mte_common_util.c
++++ b/tools/testing/selftests/arm64/mte/mte_common_util.c
+@@ -38,7 +38,7 @@ void mte_default_handler(int signum, siginfo_t *si, void *uc)
+ 			if (cur_mte_cxt.trig_si_code == si->si_code)
+ 				cur_mte_cxt.fault_valid = true;
+ 			else
+-				ksft_print_msg("Got unexpected SEGV_MTEAERR at pc=$lx, fault addr=%lx\n",
++				ksft_print_msg("Got unexpected SEGV_MTEAERR at pc=%llx, fault addr=%lx\n",
+ 					       ((ucontext_t *)uc)->uc_mcontext.pc,
+ 					       addr);
+ 			return;
+@@ -64,7 +64,7 @@ void mte_default_handler(int signum, siginfo_t *si, void *uc)
+ 			exit(1);
+ 		}
+ 	} else if (signum == SIGBUS) {
+-		ksft_print_msg("INFO: SIGBUS signal at pc=%lx, fault addr=%lx, si_code=%lx\n",
++		ksft_print_msg("INFO: SIGBUS signal at pc=%llx, fault addr=%lx, si_code=%x\n",
+ 				((ucontext_t *)uc)->uc_mcontext.pc, addr, si->si_code);
+ 		if ((cur_mte_cxt.trig_range >= 0 &&
+ 		     addr >= MT_CLEAR_TAG(cur_mte_cxt.trig_addr) &&
 -- 
 2.43.0
 
