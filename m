@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-96981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E949E2203
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5DE9E24E8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65872829CD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37EF28811A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695C91EE001;
-	Tue,  3 Dec 2024 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709FA1F7561;
+	Tue,  3 Dec 2024 15:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrhC/MhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gV9n9Bjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FBE1DA3D;
-	Tue,  3 Dec 2024 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6C91AB6C9;
+	Tue,  3 Dec 2024 15:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239174; cv=none; b=pLKK+dWPyxAL23hsrlmIZ6ig/ishMxCo0NA4zDNPV9wv0JuSACYBPfkSvs9p/PX8ECVvtjd0lZIbgZTRnAKHV2P/jaVorBPAp8zYgVIn6cDVRlH+1ez5OLUim7+GnKEzqZipJAkpxxeGoPQfmqTzqNdlSAfZFC9zTYqip+9VRQw=
+	t=1733241264; cv=none; b=DPxz7IVrXdF+gR7My2iDK12v4N1djaVegrTne2H7j3K2L1XSlsEw6bRvw1GnJLOZUvOXGBjJ8pkEYMwyfJ3V8RE/Cm/fyPxOJFDpjJCTlXPFVxwo6TQ5w5a0gfyyCEmu/oR1sb5K7nxRp2IDV7OrcsuYfJCSXnbsEWgRsfwS+Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239174; c=relaxed/simple;
-	bh=scPZ8OHMzNUUtmNvnxMPO23mr9FIBJf3KvHEAoNosVk=;
+	s=arc-20240116; t=1733241264; c=relaxed/simple;
+	bh=Sii21n9pKipmWVgWPcFR+mvypjtOVBOuPKXVGclHcz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3iKkI1c7JGMslwhZgGeO7X2kRYZ05qrEMrAD/JkX7LD8yCRugH6/GqCulrV7abXdTi0e46yGh6ZZyxDrZ6r154Q9HtkE61ya9VwS7wjpfcQxCy60q/nr0gBcBA0xcNdYkexxk64Hh76bsLo3ZpGKPJNtUvNylY4YnQ04SFQ0es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrhC/MhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E20C4CECF;
-	Tue,  3 Dec 2024 15:19:33 +0000 (UTC)
+	 MIME-Version; b=P2mk5N0F9BbxSEDpKCHl78XQamUi2RvdB5vTiJB1KO+KeG9YcGS/pV3onb00aq1AntKm/ZdVWpvQcBpx/5NlE90S0WuAi5N/4U8KtX8n+Kz98F7okcwCjJX71ySUh+IpcCVARWynNzdE3VCErwkcV4dIfbixOcTPY9rf9G97bj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gV9n9Bjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E39FC4CECF;
+	Tue,  3 Dec 2024 15:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239174;
-	bh=scPZ8OHMzNUUtmNvnxMPO23mr9FIBJf3KvHEAoNosVk=;
+	s=korg; t=1733241264;
+	bh=Sii21n9pKipmWVgWPcFR+mvypjtOVBOuPKXVGclHcz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrhC/MhRQdvd1PKD2R1bnaGu8HxJXuP7bKsYj+AVNYSZ+j0IWdg9uIlNfRIBz1hkY
-	 Hl5UWB0/vsUOfsF0WtHV8sIyJpDzfem7U4KU5pmmcX9sLfP3LDRBktVySqW3lX5F7/
-	 RHdi7pIfyGSNn8yEpVUygzPxdpBGrMfZFB5uB+zA=
+	b=gV9n9BjtSpZ53TtbgA98SKL5VdX+fRDg+FxsS9xKdRu6zunRYHIoQtLOh608JYcv9
+	 EL6LTqGn0WgIV/cVwVRjDJn+nTkJ9kW2fctxm8y5RexqOT7xdVprFlWAH2qS9FvTmn
+	 uoUoBzASIfIwbopaksgUG5TcjOwsMPABsz9jhAq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 525/817] perf trace: avoid garbage when not printing a trace events arguments
+Subject: [PATCH 6.12 370/826] mfd: tps65010: Use IRQF_NO_AUTOEN flag in request_irq() to fix race
 Date: Tue,  3 Dec 2024 15:41:37 +0100
-Message-ID: <20241203144016.389603888@linuxfoundation.org>
+Message-ID: <20241203144758.197053622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5fb8e56542a3cf469fdf25d77f50e21cbff3ae7e ]
+[ Upstream commit 2174f9a8c9db50f74df769edd5a4ab822c73b6d2 ]
 
-trace__fprintf_tp_fields may not print any tracepoint arguments. E.g., if the
-argument values are all zero. Previously, this would result in a totally
-uninitialized buffer being passed to fprintf, which could lead to garbage on the
-console. Fix the problem by passing the number of initialized bytes fprintf.
+As the comment said, disable_irq() after request_irq() still has a
+time gap in which interrupts can come. request_irq() with IRQF_NO_AUTOEN
+flag will disable IRQ auto-enable when request IRQ.
 
-Fixes: f11b2803bb88 ("perf trace: Allow choosing how to augment the tracepoint arguments")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20241103204816.7834-1-benjamin@engflow.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 72cd799544f2 ("[PATCH] I2C: add i2c driver for TPS6501x")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240912031530.2211654-1-ruanjinjie@huawei.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/tps65010.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 19db23f78b199..5298118ffb15f 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2802,7 +2802,7 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
- 		printed += syscall_arg_fmt__scnprintf_val(arg, bf + printed, size - printed, &syscall_arg, val);
- 	}
- 
--	return printed + fprintf(trace->output, "%s", bf);
-+	return printed + fprintf(trace->output, "%.*s", (int)printed, bf);
- }
- 
- static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+diff --git a/drivers/mfd/tps65010.c b/drivers/mfd/tps65010.c
+index 2b9105295f301..710364435b6b9 100644
+--- a/drivers/mfd/tps65010.c
++++ b/drivers/mfd/tps65010.c
+@@ -544,17 +544,13 @@ static int tps65010_probe(struct i2c_client *client)
+ 	 */
+ 	if (client->irq > 0) {
+ 		status = request_irq(client->irq, tps65010_irq,
+-				     IRQF_TRIGGER_FALLING, DRIVER_NAME, tps);
++				     IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN,
++				     DRIVER_NAME, tps);
+ 		if (status < 0) {
+ 			dev_dbg(&client->dev, "can't get IRQ %d, err %d\n",
+ 					client->irq, status);
+ 			return status;
+ 		}
+-		/* annoying race here, ideally we'd have an option
+-		 * to claim the irq now and enable it later.
+-		 * FIXME genirq IRQF_NOAUTOEN now solves that ...
+-		 */
+-		disable_irq(client->irq);
+ 		set_bit(FLAG_IRQ_ENABLE, &tps->flags);
+ 	} else
+ 		dev_warn(&client->dev, "IRQ not configured!\n");
 -- 
 2.43.0
 
