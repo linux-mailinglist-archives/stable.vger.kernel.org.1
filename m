@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-96432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D829E1FA0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A783E9E210A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C1E284967
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:40:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70906B81AFC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275D81F667B;
-	Tue,  3 Dec 2024 14:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939761F4734;
+	Tue,  3 Dec 2024 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIa/CEhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRHLXF5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD4D1F473A;
-	Tue,  3 Dec 2024 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510D31E4A9;
+	Tue,  3 Dec 2024 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236790; cv=none; b=SvGFrIL+kaPce85iHypv2utKUstxOk6USsWCWB3nktSCvY+iZKdNeWhBo9CUQT/03edub0iUkK62adY/Zluw1guXULsr+/DEnFZ4gBFakfwas3q4+jBWOFDYbSFxkTK5zYzNlanQ0xzgOvP8iISN8oDfgVj57462jpdewXmPbJU=
+	t=1733236797; cv=none; b=ixq5Ze0ipwHJ1u87NdLLGaZ5+Ou7HmFvamfvxOQvv0GkPz/izfcY4h7TQvYyVsoQGvGR4opF7DfjbxE+BC7xb3Cq/VXZYODec0GizazJ1dJm3gUKOLqj7CQjYWPdPABu69WhyHjoCmvqWc8FtT7wX72XEf+gmXpTj4UKxna3Mz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236790; c=relaxed/simple;
-	bh=4fqWX+HfE9YKPOxOquVNESwP+um597/PkW7QhOObdto=;
+	s=arc-20240116; t=1733236797; c=relaxed/simple;
+	bh=1ZmMWaGprIUjg9A3g3NIUIgDssLWoUsoQshT7jcQrmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeduGzcOMvdZ+n1hSHmkgl39dmLaJ9G1/7phYXRLLO6qkBcaO0mzgTBR0jtQZ66RWVwPpVc3sOGuk6iGWUs+AFidCFRMUr98w0sujzygXy2tb29XvaFRzLz+McUlJDxcsYqI1VjJ/ehHCpvVjETFw2sUU5rFbHhpHBL/9YwqTEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIa/CEhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A77C4CED6;
-	Tue,  3 Dec 2024 14:39:49 +0000 (UTC)
+	 MIME-Version; b=D78/getg0QyqDwu+h1X69soPeOU5xLHpv+9nVP64TDzP6xrXzVDDH7x9wMedI5W53vvuC/iAe5J4VwYTC0R9JZ7FwAG5jmLC63w83IyEpKMz3bSivRy9L8zbnyDZLmgLq2niNVYg4okUrTajOuYlPYPPL+CFkx0R4H8zW6HcABw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRHLXF5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39BEC4CECF;
+	Tue,  3 Dec 2024 14:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236790;
-	bh=4fqWX+HfE9YKPOxOquVNESwP+um597/PkW7QhOObdto=;
+	s=korg; t=1733236797;
+	bh=1ZmMWaGprIUjg9A3g3NIUIgDssLWoUsoQshT7jcQrmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIa/CEhqf7Oj5uquRUSqPrJ6CWUFo5FwgzkuX2UP9KbB+uwcMU/lAc8Uqf0K2AoeY
-	 wI6Ipery2I2lB4cf29eb71Gkapk82NuPBzSJIZbu6oO3PYWnYVQJYgVQplhfSeqo79
-	 jKvCr5roG33IbxCzl3BVKeG5Xvkzv8Xg+XrrUUP4=
+	b=QRHLXF5RxobCm1MdxEvTZ4ymqLjLKjRMyju3N9vh6aufHa66itc1JC7+L0HBcIIFL
+	 vbtX7407RHpVXJNQhVflTcL8o/tiGmeqEwu3YtIkjWDCrxIR4cWXSoHOdcrBGIrmwy
+	 a4i+DRxejqPEdiR34sVduseG84xvCmT7HFyR2sqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH 4.19 118/138] sh: cpuinfo: Fix a warning for CONFIG_CPUMASK_OFFSTACK
-Date: Tue,  3 Dec 2024 15:32:27 +0100
-Message-ID: <20241203141928.079648993@linuxfoundation.org>
+	Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 120/138] block: fix ordering between checking BLK_MQ_S_STOPPED request adding
+Date: Tue,  3 Dec 2024 15:32:29 +0100
+Message-ID: <20241203141928.156490131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -65,65 +67,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Muchun Song <songmuchun@bytedance.com>
 
-commit 3c891f7c6a4e90bb1199497552f24b26e46383bc upstream.
+commit 96a9fe64bfd486ebeeacf1e6011801ffe89dae18 upstream.
 
-When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS are selected,
-cpu_max_bits_warn() generates a runtime warning similar as below when
-showing /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
-instead of NR_CPUS to iterate CPUs.
+Supposing first scenario with a virtio_blk driver.
 
-[    3.052463] ------------[ cut here ]------------
-[    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
-[    3.070072] Modules linked in: efivarfs autofs4
-[    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
-[    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
-[    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
-[    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
-[    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
-[    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
-[    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
-[    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
-[    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
-[    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
-[    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
-[    3.195868]         ...
-[    3.199917] Call Trace:
-[    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
-[    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
-[    3.217625] [<900000000023d268>] __warn+0xd0/0x100
-[    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
-[    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
-[    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
-[    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
-[    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
-[    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
-[    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
-[    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
-[    3.281824] ---[ end trace 8b484262b4b8c24c ]---
+CPU0                        CPU1
 
+blk_mq_try_issue_directly()
+  __blk_mq_issue_directly()
+    q->mq_ops->queue_rq()
+      virtio_queue_rq()
+        blk_mq_stop_hw_queue()
+                            virtblk_done()
+  blk_mq_request_bypass_insert()  1) store
+                              blk_mq_start_stopped_hw_queue()
+                                clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+  blk_mq_run_hw_queue()
+    if (!blk_mq_hctx_has_pending())
+      return
+    blk_mq_sched_dispatch_requests()
+      if (blk_mq_hctx_stopped())  2) load
+        return
+      __blk_mq_sched_dispatch_requests()
+
+Supposing another scenario.
+
+CPU0                        CPU1
+
+blk_mq_requeue_work()
+  blk_mq_insert_request() 1) store
+                            virtblk_done()
+                              blk_mq_start_stopped_hw_queue()
+  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+    if (blk_mq_hctx_stopped())  2) load
+      continue
+    blk_mq_run_hw_queue()
+
+Both scenarios are similar, the full memory barrier should be inserted
+between 1) and 2), as well as between 3) and 4) to make sure that either
+CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
+Otherwise, either CPU will not rerun the hardware queue causing
+starvation of the request.
+
+The easy way to fix it is to add the essential full memory barrier into
+helper of blk_mq_hctx_stopped(). In order to not affect the fast path
+(hardware queue is not stopped most of the time), we only insert the
+barrier into the slow path. Actually, only slow path needs to care about
+missing of dispatching the request to the low-level device driver.
+
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241014092934.53630-4-songmuchun@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/cpu/proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c |    6 ++++++
+ block/blk-mq.h |   13 +++++++++++++
+ 2 files changed, 19 insertions(+)
 
---- a/arch/sh/kernel/cpu/proc.c
-+++ b/arch/sh/kernel/cpu/proc.c
-@@ -133,7 +133,7 @@ static int show_cpuinfo(struct seq_file
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -1544,6 +1544,12 @@ void blk_mq_start_stopped_hw_queue(struc
+ 		return;
  
- static void *c_start(struct seq_file *m, loff_t *pos)
- {
--	return *pos < NR_CPUS ? cpu_data + *pos : NULL;
-+	return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
+ 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
++	/*
++	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
++	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
++	 * list in the subsequent routine.
++	 */
++	smp_mb__after_atomic();
+ 	blk_mq_run_hw_queue(hctx, async);
  }
- static void *c_next(struct seq_file *m, void *v, loff_t *pos)
+ EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -142,6 +142,19 @@ static inline struct blk_mq_tags *blk_mq
+ 
+ static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
  {
++	/* Fast path: hardware queue is not stopped most of the time. */
++	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
++		return false;
++
++	/*
++	 * This barrier is used to order adding of dispatch list before and
++	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
++	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
++	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
++	 * empty to avoid missing dispatching requests.
++	 */
++	smp_mb();
++
+ 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
+ }
+ 
 
 
 
