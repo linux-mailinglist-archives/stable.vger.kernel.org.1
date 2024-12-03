@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-97061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597D79E22C6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1C19E2262
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EAAA16CFB2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B02F0284FF8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEBD1F76C7;
-	Tue,  3 Dec 2024 15:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E4F1F7071;
+	Tue,  3 Dec 2024 15:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e16o4aO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7/Arx5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C04B1F75A0;
-	Tue,  3 Dec 2024 15:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D712B1F130F;
+	Tue,  3 Dec 2024 15:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239408; cv=none; b=nxtuVrFpf5wFMQ42mcdCAVyVkLEronGOYZbmsbgwBUNo3DACNxYnT+20DAc2tuMgTlij69B1qJlAqfw5ASU9opACbNIUHSi5NJEeVfrC4E5ptWNFzmhZeohahxYNIyUn5h2UICJYgWVb642GGkfOl3Xu1CRe4Ord9HIJzzMNjOo=
+	t=1733239413; cv=none; b=dhIXj4n5cl5PhuO8RyAYK+SXsrF+p6uIQDhaC8N4AKI7v2LKWBTddZqbMPza5KhGxkQCOL9hbtn670E0ib6DWtKyT9A4iHHQ4exKELehwn8Hs+6hUeYVj97Rf+0faqvpD0v2MT0TtJe+CL7fOj6Lzi7GXfXB2mwzP3Mksk98PPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239408; c=relaxed/simple;
-	bh=cCOVEcsv38PTW7/rIZ6CRUi4xsPRRITfMyZBSSlaeLg=;
+	s=arc-20240116; t=1733239413; c=relaxed/simple;
+	bh=OlhFBglXlkqKjZMZ41wzelmgHcYN3iSHPyaFzB25K2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQnBE/jtG2a+p5Ep90IsJlfsrui5iRAPx6jWg2wb3BeDIc4mUw6lMWkWnaQF8QKHcPLfM7fxsPQsz+IcLyRjRctEIFzZiwOH0cmG4Lmf2Bfp+dIQtf0ZtCoh1JgaJdthLlgfbCVqrxF1/zr7y548naWe/t4J0sqn9TOayxKcqcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e16o4aO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97162C4CECF;
-	Tue,  3 Dec 2024 15:23:27 +0000 (UTC)
+	 MIME-Version; b=H5Dts7kZ7loD8n3vQBzaHA7bbciKyqVXono2FmrBgKBebeVqTtFw5hbKgo4wfPQhr2AeslLFP/mZnbE7akWTQ9MsX5UMus1ZP9p+QfxrcPlqzDjkp9awQorUbLDorbjUnhDxrpWDH8W080FKm+T8b/JO02z4/X98akpOx4CHpKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7/Arx5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC96C4CECF;
+	Tue,  3 Dec 2024 15:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239408;
-	bh=cCOVEcsv38PTW7/rIZ6CRUi4xsPRRITfMyZBSSlaeLg=;
+	s=korg; t=1733239413;
+	bh=OlhFBglXlkqKjZMZ41wzelmgHcYN3iSHPyaFzB25K2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e16o4aO9YghvaCdgOL6z1qA98/2bLSdv5QKRZHtXI+N/FwnnMpOc94nPkSqvQwUhm
-	 5oLppdkTd239q3YgPmcSV0RnEazqgftzi9MRKax66hE6EhgaxZAMvZVk4K5AT1WHs+
-	 pSl8r7rqi4slQvRJ/BNitFt3HPuw5zX3Dd5K/M/w=
+	b=f7/Arx5xkxiMTt7Es6M6HWGB5y5Yt7r0MdEPj9doR5Za8l+PUV58tveCv+2+zBpYC
+	 GLq4sxyTg9zFjHRlOZTBpB+jtO5VxrFsdafg2GcGimnC4E2k1wHfmTNJS1VBVuagzN
+	 i7YApVwh4l1oJqrklAKuMYRkA9G/1muUdwKCDcwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Keita Morisaki <keyz@google.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 603/817] devres: Fix page faults when tracing devres from unloaded modules
-Date: Tue,  3 Dec 2024 15:42:55 +0100
-Message-ID: <20241203144019.465326147@linuxfoundation.org>
+Subject: [PATCH 6.11 604/817] usb: gadget: uvc: wake pump everytime we update the free list
+Date: Tue,  3 Dec 2024 15:42:56 +0100
+Message-ID: <20241203144019.503324643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,71 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keita Morisaki <keyz@google.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 765399553714e934a219d698953d435f4f99caa7 ]
+[ Upstream commit adc292d54de9db2e6b8ecb7f81f278bbbaf713e9 ]
 
-The devres ftrace event logs the name of the devres node, which is often a
-function name (e.g., "devm_work_drop") stringified by macros like
-devm_add_action. Currently, ftrace stores this name as a string literal
-address, which can become invalid when the module containing the string is
-unloaded. This results in page faults when ftrace tries to access the name.
+Since the req_free list will updated if enqueuing one request was not
+possible it will be added back to the free list. With every available
+free request in the queue it is a valid case for the pump worker to use
+it and continue the pending bufferdata into requests for the req_ready
+list.
 
-This behavior is problematic because the devres ftrace event is designed to
-trace resource management throughout a device driver's lifecycle, including
-during module unload. The event should be available even after the module
-is unloaded to properly diagnose resource issues.
-
-Fix the issue by copying the devres node name into the ftrace ring buffer
-using __assign_str(), instead of storing just the address. This ensures
-that ftrace can always access the name, even if the module is unloaded.
-
-This change increases the memory usage for each of the ftrace entry by
-12-16 bytes assuming the average devres node name is 20 bytes long,
-depending on the size of const char *.
-
-Note that this change does not affect anything unless all of following
-conditions are met.
-- CONFIG_DEBUG_DEVRES is enabled
-- ftrace tracing is enabled
-- The devres event is enabled in ftrace tracing
-
-Fixes: 09705dcb63d2 ("devres: Enable trace events")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Keita Morisaki <keyz@google.com>
-Link: https://lore.kernel.org/r/20240928125005.714781-1-keyz@google.com
+Fixes: 6acba0345b68 ("usb:gadget:uvc Do not use worker thread to pump isoc usb requests")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20240403-uvc_request_length_by_interval-v7-1-e224bb1035f0@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/uvc_video.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/base/trace.h b/drivers/base/trace.h
-index e52b6eae060dd..3b83b13a57ff1 100644
---- a/drivers/base/trace.h
-+++ b/drivers/base/trace.h
-@@ -24,18 +24,18 @@ DECLARE_EVENT_CLASS(devres,
- 		__field(struct device *, dev)
- 		__field(const char *, op)
- 		__field(void *, node)
--		__field(const char *, name)
-+		__string(name, name)
- 		__field(size_t, size)
- 	),
- 	TP_fast_assign(
- 		__assign_str(devname);
- 		__entry->op = op;
- 		__entry->node = node;
--		__entry->name = name;
-+		__assign_str(name);
- 		__entry->size = size;
- 	),
- 	TP_printk("%s %3s %p %s (%zu bytes)", __get_str(devname),
--		  __entry->op, __entry->node, __entry->name, __entry->size)
-+		  __entry->op, __entry->node, __get_str(name), __entry->size)
- );
+diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
+index a9edd60fbbf77..48fd8d3c50b0c 100644
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -480,6 +480,10 @@ uvc_video_complete(struct usb_ep *ep, struct usb_request *req)
+ 		 * up later.
+ 		 */
+ 		list_add_tail(&to_queue->list, &video->req_free);
++		/*
++		 * There is a new free request - wake up the pump.
++		 */
++		queue_work(video->async_wq, &video->pump);
+ 	}
  
- DEFINE_EVENT(devres, devres_log,
+ 	spin_unlock_irqrestore(&video->req_lock, flags);
 -- 
 2.43.0
 
