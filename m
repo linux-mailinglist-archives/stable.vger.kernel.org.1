@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FCD9E218D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 778EF9E2473
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E3B165E5A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73E216B29B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BC71F8930;
-	Tue,  3 Dec 2024 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF611F890E;
+	Tue,  3 Dec 2024 15:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzXPKLLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usGSNC2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9911F7578;
-	Tue,  3 Dec 2024 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C91F7591;
+	Tue,  3 Dec 2024 15:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238522; cv=none; b=Wcww95mhRjMWDZWYqGspHzBynD3u7dTK986KEqvITp9Rp93F9ddQhUkMOtMEWOUUxhaHbjjRxEfjvbWnLvBmriOdFISKUZnAGaHBZYx9s2UtoDxaxEBik01az363aBBltvqsl1PJTodE4wZXOp9ydOUiFQGtEzz4yvnxd42lUAQ=
+	t=1733240379; cv=none; b=axCX/TTcEL9iexJpuOfRi3eLQRwcHXx6QnRgiNzrLcYi3a/1wvBJMiANyHAMAn2UH4bm47m3+wPG9sKHgPTgAyHUc5WIYv6m9BM69UlyIk4C7LYqrY2YZfPlOytnxtpYg6wBBm94Tr39Z4I+xOMKMUTCQnuxAi1jBZh8tnsoTKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238522; c=relaxed/simple;
-	bh=25mF9M6aHnK5qqCLJ8gti3PSg9JnF3o6IsXynmfiD/s=;
+	s=arc-20240116; t=1733240379; c=relaxed/simple;
+	bh=ZQQBLUoanNzRBplCJfuc2aHvMqYKT8n4O1MiNrpoMl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkCH1dr00lnCXnb3MO/JSStPtA/PZKthFn3NDND6rC+0iTGIjc5eyo95ZWaHRw/6NHDYtsGEE5PjGuxXkltxzGoQcvctPzGNniRaP99n/7TzQJV03/J8VriMtcuLHDb9D10amOT58PzfYW3B8Ufn27hEmiqG/qjWHO/gGDID5nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzXPKLLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C377CC4CECF;
-	Tue,  3 Dec 2024 15:08:39 +0000 (UTC)
+	 MIME-Version; b=OQEqSmgA36cdRkf/48FXX18cMiPU9Qt7L0IxJl6i6LJ/9rN6tFR0yU9vhGpcGsGYS7L4IrjEy5TDaf0Q9hbKGWSvnQJ7Ts65xbx+ewVqOqgCRm8TaXuiAJIML8IzrJKSdW4xmEirJlpq0+Fb6YBVA9VVDDLMgBY6t40bZhpRg08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usGSNC2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F40C4CECF;
+	Tue,  3 Dec 2024 15:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238520;
-	bh=25mF9M6aHnK5qqCLJ8gti3PSg9JnF3o6IsXynmfiD/s=;
+	s=korg; t=1733240378;
+	bh=ZQQBLUoanNzRBplCJfuc2aHvMqYKT8n4O1MiNrpoMl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzXPKLLwanbylGHQt/WlZKU20kby28358mMbe3U1XIrePl+VmCRiUH0EP9a57jqIs
-	 UbeIzJPNz8ulFMzsgQHUdWYi/f5VfekNJ77azOiU7njjJbVMh4cOeoKRnCuoeRpjwt
-	 CdU6EYlV8LB42iq+1typiqiUfGtO297Ra1H4DuYg=
+	b=usGSNC2uM/0jt4VbU++zLPjLMUN/gvUMSvrEtyB98XRqkBVB0/nuaQwRIg/1uIVuJ
+	 l6DP1NNG//p7f7enzqbJBtC23UsK4PNC3Y4JxBCX1rzJq/e0nmsM2PvGeonMZVT6ZJ
+	 rbjjIN2+QVsb5ldtQERuR3u1FUBqHwgbNdPIK1Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 274/817] libbpf: never interpret subprogs in .text as entry programs
+Subject: [PATCH 6.12 119/826] arm64: dts: qcom: x1e80100-vivobook-s15: Drop orientation-switch from USB SS[0-1] QMP PHYs
 Date: Tue,  3 Dec 2024 15:37:26 +0100
-Message-ID: <20241203144006.499687083@linuxfoundation.org>
+Message-ID: <20241203144748.387710600@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit db089c9158c1d535a36dfc010e5db37fccea2561 ]
+[ Upstream commit 27344eb70c8fd60fe7c570e2e12f169ff89d2c47 ]
 
-Libbpf pre-1.0 had a legacy logic of allowing singular non-annotated
-(i.e., not having explicit SEC() annotation) function to be treated as
-sole entry BPF program (unless there were other explicit entry
-programs).
+The orientation-switch is already set in the x1e80100 SoC dtsi,
+so drop from Vivobook S15 dts.
 
-This behavior was dropped during libbpf 1.0 transition period (unless
-LIBBPF_STRICT_SEC_NAME flag was unset in libbpf_mode). When 1.0 was
-released and all the legacy behavior was removed, the bug slipped
-through leaving this legacy behavior around.
-
-Fix this for good, as it actually causes very confusing behavior if BPF
-object file only has subprograms, but no entry programs.
-
-Fixes: bd054102a8c7 ("libbpf: enforce strict libbpf 1.0 behaviors")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241010211731.4121837-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: d0e2f8f62dff ("arm64: dts: qcom: Add device tree for ASUS Vivobook S 15")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20241014-x1e80100-dts-drop-orientation-switch-v1-2-26afa6d4afd9@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 98a6cc304bb21..12d99b9ddb7c1 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4389,7 +4389,7 @@ static int bpf_object__collect_externs(struct bpf_object *obj)
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
+index fb4a48a1e2a8a..2926a1aba7687 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
+@@ -594,8 +594,6 @@ &usb_1_ss0_qmpphy {
+ 	vdda-phy-supply = <&vreg_l3e_1p2>;
+ 	vdda-pll-supply = <&vreg_l1j_0p8>;
  
- static bool prog_is_subprog(const struct bpf_object *obj, const struct bpf_program *prog)
- {
--	return prog->sec_idx == obj->efile.text_shndx && obj->nr_programs > 1;
-+	return prog->sec_idx == obj->efile.text_shndx;
- }
+-	orientation-switch;
+-
+ 	status = "okay";
+ };
  
- struct bpf_program *
+@@ -628,8 +626,6 @@ &usb_1_ss1_qmpphy {
+ 	vdda-phy-supply = <&vreg_l3e_1p2>;
+ 	vdda-pll-supply = <&vreg_l2d_0p9>;
+ 
+-	orientation-switch;
+-
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
