@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C6A9E261B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A37E9E22E5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEB7B288DCC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40CB4286D1E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7981F76BF;
-	Tue,  3 Dec 2024 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF851F7071;
+	Tue,  3 Dec 2024 15:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtF6v6ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LniK3hVN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF5A1E766E;
-	Tue,  3 Dec 2024 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359F61E3DED;
+	Tue,  3 Dec 2024 15:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242131; cv=none; b=aVUAuinzt5pQAdKfzAxzWYA6RstronFR+NTNXAG3zMC/rU4K+GVll7pQT7EiNvhcc0kdfT6Bc+ImETKH8g8pWvuwbYLo0OMn3tln9XsNtkaZ6/WXOOeIRmAdTM52yHhUXkjVxNDIG1jy/8Kb9uD432740I17BUJDl8goQ3mPpgc=
+	t=1733239812; cv=none; b=PeqWFg7XIu2UJsG/KAVUzjxU1ie9ccZqn+JbklnxEI2xHhWchETbj36o1AdaNLxK4PahLoYXVgdaTU08alLeFFhjVs0xzNhduvuR2P589QGV8uEG8lZQ4jK7y6m4xYeo4GQdJcJzFF3g+Vh7QxWdMROlu6ftTuqC7XTON3+VvoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242131; c=relaxed/simple;
-	bh=20nuF8jU/7bCd9J53M10qazRYE9Px72QEkp0o2b8590=;
+	s=arc-20240116; t=1733239812; c=relaxed/simple;
+	bh=ND44qf7IMPjdjNGMZBFV16bzYxKDuNo5jHqyt1TboqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZnS2aYx0XvV29kl4IBPHdNUmOpxZ/OKye4Ltc8ZDlxLrMzP4BD6bY0DMWFfQqdHPVOhrFoD6DfciMeIm2JQNhOzwyJ/1YYBaQgjcUD33oG/aujBLqZDi3WPJlQfJhoxBI+w7nwGJ+gWT7FAqfHBGTxFsiaeS+qyKtnReVLReEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtF6v6ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBC4C4CECF;
-	Tue,  3 Dec 2024 16:08:50 +0000 (UTC)
+	 MIME-Version; b=WEoSg8gqqioBFp+o/0snQOXruhR8g4Ck1CYWsYDJO926KndJ/pHsC067RDLVfaWphaf6qF/ZtJ4N4oYVY4DgaVZc1e+6wA+LqjSUfya70VCipQiStc8mfhSxvjtC1erilkzV3gvqvCaTYTgTn4KCAXG9gAmXGXQUgNBqZaiB+f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LniK3hVN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BB9C4CECF;
+	Tue,  3 Dec 2024 15:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242131;
-	bh=20nuF8jU/7bCd9J53M10qazRYE9Px72QEkp0o2b8590=;
+	s=korg; t=1733239812;
+	bh=ND44qf7IMPjdjNGMZBFV16bzYxKDuNo5jHqyt1TboqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtF6v6ye8Cttxx9Z9DVoRf99tcCCVLp+xbqpJblQQ+CalJt/LdqxAibTjvgJqZ0fC
-	 cX9edkqO2GcPYMshnP3mfSTaf4CkDlY7sK2MHbHSmXmDM3MdTSmkvZ8QM5Ljs/OoNP
-	 I3aeslvhxFH5qPUWC5/z3GlgE3LWygXawMbNa13A=
+	b=LniK3hVNSlEB7lTprkl9Vr7uXHsyyuUERCUOZ7LICyRZH1o6LZIsZWzYZgFSB5N9C
+	 iFO3vs/lDEHC3YVUFqIprQCU2uEOAcHcva0qxjr3P+lJLB4f2gVuCQt2eBYVkf20wM
+	 ML6+N9rt+78AEIO5+Ln2f0yW15TimA/NPTaMAFcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 586/826] rxrpc: Improve setsockopt() handling of malformed user input
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 741/817] ALSA: hda/realtek: Update ALC225 depop procedure
 Date: Tue,  3 Dec 2024 15:45:13 +0100
-Message-ID: <20241203144806.608188733@linuxfoundation.org>
+Message-ID: <20241203144024.921089278@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 02020056647017e70509bb58c3096448117099e1 ]
+commit 1fd50509fe14a9adc9329e0454b986157a4c155a upstream.
 
-copy_from_sockptr() does not return negative value on error; instead, it
-reports the number of bytes that failed to copy. Since it's deprecated,
-switch to copy_safe_from_sockptr().
+Old procedure has a chance to meet Headphone no output.
 
-Note: Keeping the `optlen != sizeof(unsigned int)` check as
-copy_safe_from_sockptr() by itself would also accept
-optlen > sizeof(unsigned int). Which would allow a more lenient handling
-of inputs.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da911b1f5e98 ("ALSA: hda/realtek - update ALC225 depop optimize")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/5a27b016ba9d42b4a4e6dadce50a3ba4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/af_rxrpc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |   95 +++++++++++++++++++-----------------------
+ 1 file changed, 43 insertions(+), 52 deletions(-)
 
-diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
-index f4844683e1203..9d8bd0b37e41d 100644
---- a/net/rxrpc/af_rxrpc.c
-+++ b/net/rxrpc/af_rxrpc.c
-@@ -707,9 +707,10 @@ static int rxrpc_setsockopt(struct socket *sock, int level, int optname,
- 			ret = -EISCONN;
- 			if (rx->sk.sk_state != RXRPC_UNBOUND)
- 				goto error;
--			ret = copy_from_sockptr(&min_sec_level, optval,
--				       sizeof(unsigned int));
--			if (ret < 0)
-+			ret = copy_safe_from_sockptr(&min_sec_level,
-+						     sizeof(min_sec_level),
-+						     optval, optlen);
-+			if (ret)
- 				goto error;
- 			ret = -EINVAL;
- 			if (min_sec_level > RXRPC_SECURITY_MAX)
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3757,33 +3757,28 @@ static void alc225_init(struct hda_codec
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
+ 
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
+ 		msleep(2);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++		msleep(75);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++	}
+ }
+ 
+ static void alc225_shutup(struct hda_codec *codec)
+@@ -3795,36 +3790,35 @@ static void alc225_shutup(struct hda_cod
+ 	if (!hp_pin)
+ 		hp_pin = 0x21;
+ 
+-	alc_disable_headset_jack_key(codec);
+-	/* 3k pull low control for Headset jack. */
+-	alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+-
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
+ 
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
++		alc_disable_headset_jack_key(codec);
++		/* 3k pull low control for Headset jack. */
++		alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+ 		msleep(2);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
++		alc_enable_headset_jack_key(codec);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
+ 	if (spec->ultra_low_power) {
+@@ -3835,9 +3829,6 @@ static void alc225_shutup(struct hda_cod
+ 		alc_update_coef_idx(codec, 0x4a, 3<<4, 2<<4);
+ 		msleep(30);
+ 	}
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_enable_headset_jack_key(codec);
+ }
+ 
+ static void alc_default_init(struct hda_codec *codec)
 
 
 
