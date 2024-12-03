@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4C99E2A77
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7C19E2A43
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:04:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC442B83456
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACEAAB66D0B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B321F669E;
-	Tue,  3 Dec 2024 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387B91F706B;
+	Tue,  3 Dec 2024 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQm3PTDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GibygePt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67C31F429B;
-	Tue,  3 Dec 2024 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97BB33FE;
+	Tue,  3 Dec 2024 15:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238349; cv=none; b=NseEl28zHx72PgxjnjJ2ppJLMHwSkpjuXQ0TRDH92nIkWfYKxyiw55YnpYfH6XS9L6iwgRVAymdkToLaGnbdbzNwu+8cs1wAAhGMVykk9bh8a5Cdi6tnLxg5pN4olGBC5g/1BHE9vnhbhMuy2RGIrp4GPXNn8+z6O/vLXeO2dOY=
+	t=1733238370; cv=none; b=VIcDprzV4jhoGBqAmlX//IjmbGanCWou+xE2+zqFKn+e10WxIb4I7kIW5gj/YWXHlz4sVp+vePeBUKKd0B6kBzMnCFYtM52y5iaEE4/o+rwmjxVuM/tDWda6nyIEiMZajdbnVNqbu+MAxdfi+wNH6ME9gwq1y7aSW4GE5X9E6RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238349; c=relaxed/simple;
-	bh=/o3fBt+8vBlnRuW0hw+iGJBOU/AvAb2ESiF7Iw0EfG4=;
+	s=arc-20240116; t=1733238370; c=relaxed/simple;
+	bh=86tUrF5NbiKsN5q/zT0Q5yMNZAHRHrp5/kD5f+IgFHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETq7CJO+/dP1hVpmAdq6apvumKm3oI50j/mHeiSqXV2SDMW8WaNl1cXAofPLppFCGONGNe1DJu799RDjnEBri1KfNn5QkEwRCv1foSxz/SibbFWc3f+pb1xzwR8q3yCLCmMFOMa1jDbrY88rCPlnkyLSnPDSA6Au9LpX7kUYYdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQm3PTDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353F0C4CECF;
-	Tue,  3 Dec 2024 15:05:49 +0000 (UTC)
+	 MIME-Version; b=Qm8hVlxIgrhwitpY9PmAbLJwRvbL/uFHQ7tm/0dqtn25WHZY8rpDxqIMBKEqcw1kfN8MmCINtowaU1Q6+0GHF8cN1gbYouARGikgoPz/FYKx5BKqtfNMnnOWtyUiwQEmlvEoFTEC5NqzzOBZOLe16JgcwNCaeqbQ0ysXpjqQGZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GibygePt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A7BC4CECF;
+	Tue,  3 Dec 2024 15:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238349;
-	bh=/o3fBt+8vBlnRuW0hw+iGJBOU/AvAb2ESiF7Iw0EfG4=;
+	s=korg; t=1733238369;
+	bh=86tUrF5NbiKsN5q/zT0Q5yMNZAHRHrp5/kD5f+IgFHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQm3PTDPQVNnH8tfaLLIYXY5XdHzY2jRdibZgMTmQHhia37OUGqM0oTNkE++0jHfZ
-	 CstGKEEye18Y9xnst6XWx0nChSfeDN0QKHxwuGVDVuSi/zfjyAx4RpB+XBv5PRtH7b
-	 Tzn1j5Bvkge4IWvsJxAI/2EVnbKauAV5ee5lczN4=
+	b=GibygePtgIIrNLLc9ZFblizOp6vVSVh2oDYUg5HQsmShR27UBih53b2XCmIf1m8jH
+	 ibRtXTuopVCiUBHSSPhdZkUbd7F5Xuo7rPcd5Y+L2oDXt7hPyaz1irfUBPEDMmg+Jc
+	 fmLflE7h3DKXd5+NPmApIK88txxjokYd2KDO5q7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 249/817] ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
-Date: Tue,  3 Dec 2024 15:37:01 +0100
-Message-ID: <20241203144005.490219759@linuxfoundation.org>
+Subject: [PATCH 6.11 255/817] wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
+Date: Tue,  3 Dec 2024 15:37:07 +0100
+Message-ID: <20241203144005.724396321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,61 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit cfd1054c65eefec30972416a83eb62920bc1ff8d ]
+[ Upstream commit d7063ed6758c62e00a2f56467ded85a021fac67a ]
 
-The DT bindings deprecated the "hp-det-gpio" and "mic-det-gpio"
-properties in favor of "hp-det-gpios" and "mic-det-gpios", but the
-driver was never updated to support the latter.
+In STA+AP concurrent mode, performing a scan operation on one vif
+temporarily stops beacons on the other. When the scan is completed,
+beacons are enabled again with BSS_CHANGED_BEACON_ENABLED.
 
-Even before, there existed users of "hp-det-gpios" and "mic-det-gpios".
-While this may have been handled fine by the ASoC core, this was missed
-by the Freescale-specific part.
+We can observe that no beacons are being sent when just
+rtl8xxxu_start_tx_beacon() is being called.
 
-Fixes: 4189b54220e5af15 ("ASoC: dt-bindings: fsl-asoc-card: convert to YAML")
-Fixes: 40ba2eda0a7b727f ("arm64: dts: imx8mm-nitrogen-r2: add audio")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://patch.msgid.link/dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Thus, also perform update_beacon_work in order to restore beaconing.
+
+Fixes: cde8848cad0b ("wifi: rtl8xxxu: Add beacon functions")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240930084955.455241-1-martin.kaistra@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index f6c3aeff0d8ea..a0c2ce84c32b1 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -1033,14 +1033,15 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 043fa364e7014..a7e74ece2b4d1 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -5058,10 +5058,12 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
  	}
  
- 	/*
--	 * Properties "hp-det-gpio" and "mic-det-gpio" are optional, and
-+	 * Properties "hp-det-gpios" and "mic-det-gpios" are optional, and
- 	 * simple_util_init_jack() uses these properties for creating
- 	 * Headphone Jack and Microphone Jack.
- 	 *
- 	 * The notifier is initialized in snd_soc_card_jack_new(), then
- 	 * snd_soc_jack_notifier_register can be called.
- 	 */
--	if (of_property_read_bool(np, "hp-det-gpio")) {
-+	if (of_property_read_bool(np, "hp-det-gpios") ||
-+	    of_property_read_bool(np, "hp-det-gpio") /* deprecated */) {
- 		ret = simple_util_init_jack(&priv->card, &priv->hp_jack,
- 					    1, NULL, "Headphone Jack");
- 		if (ret)
-@@ -1049,7 +1050,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		snd_soc_jack_notifier_register(&priv->hp_jack.jack, &hp_jack_nb);
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
+-		if (bss_conf->enable_beacon)
++		if (bss_conf->enable_beacon) {
+ 			rtl8xxxu_start_tx_beacon(priv);
+-		else
++			schedule_delayed_work(&priv->update_beacon_work, 0);
++		} else {
+ 			rtl8xxxu_stop_tx_beacon(priv);
++		}
  	}
  
--	if (of_property_read_bool(np, "mic-det-gpio")) {
-+	if (of_property_read_bool(np, "mic-det-gpios") ||
-+	    of_property_read_bool(np, "mic-det-gpio") /* deprecated */) {
- 		ret = simple_util_init_jack(&priv->card, &priv->mic_jack,
- 					    0, NULL, "Mic Jack");
- 		if (ret)
+ 	if (changed & BSS_CHANGED_BEACON)
 -- 
 2.43.0
 
