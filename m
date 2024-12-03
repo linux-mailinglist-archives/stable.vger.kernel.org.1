@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B49B9E28FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:21:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139799E28FD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:21:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0771BE4DEF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C65AEB3D785
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D031E3DCF;
-	Tue,  3 Dec 2024 16:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1381F76D7;
+	Tue,  3 Dec 2024 16:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvdZYP30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByLeMWg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C412B23CE;
-	Tue,  3 Dec 2024 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D71B1F76B5;
+	Tue,  3 Dec 2024 16:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241646; cv=none; b=aLDP+H2owrx+bzxAmrfF+Yya6/AEkCuAPBjiDYn9R3wWWPOyXDd9p/483Lh/GIHNH1eyLe+bOn43+u/Ds4lufvDRR02Ru1m3Bs25oXH+x8AW+/318D3OWPjReolffcg5rGn6yxC0pNMoMacWrg/zXvHhubU27ZSrlmEIojznj0Y=
+	t=1733241657; cv=none; b=aPmjoX86zULSi3bS10ykYOv/7kA6ey5JpJI9llgjr9MtadqWnVgXfpoXKwI+0egauTTLDa5yiXq6hOCRw3qBGY5M5f+erSenhTWXOfREYL6tg3u+q6KXv7S4vAsSeJMyWjcNXY9+kmy5apGRDKKmdhYQ0w1BPU8LlcenGxUhi/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241646; c=relaxed/simple;
-	bh=AKCiCPIiUjyxVEGge9QE52s2sA+/mm9zWJ49cMpS7Nk=;
+	s=arc-20240116; t=1733241657; c=relaxed/simple;
+	bh=GbCHdTtVrQaoUkxYC4A7yNyPwxhOw1vK10yb4cO74C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ChI7Mc5ZlcxDuv+4G243Mm++JO0kCkbUheHWK7iCSm47Mj/2jRZCLuh0QXTdd6woleKUgmmWl7dm/q4jImSk9WQ+9RsF2QEyt5THMSjCuHcY+eICgRERbT8RvGwnvLQrCojcT2SUj+RyWyDEd8LkrP26Vb0V298iT8QUWp4vMA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvdZYP30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F68C4CECF;
-	Tue,  3 Dec 2024 16:00:45 +0000 (UTC)
+	 MIME-Version; b=NH0f3RGcJHRY7thmk42xYVamwtRwomE6mJ/hJL27gthqpU8e3aErQmrsRN1U0V8UCXofMTAhh+MCC8Ya1th/+DVkWIGHa56QrrJZue458Ft3YcQeowiKYWeqivB8f4H+Z26m7mkHXaA/Mf26wZ0kKXcAMxAB62OQK9xcR27isuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByLeMWg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF03C4CECF;
+	Tue,  3 Dec 2024 16:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241646;
-	bh=AKCiCPIiUjyxVEGge9QE52s2sA+/mm9zWJ49cMpS7Nk=;
+	s=korg; t=1733241656;
+	bh=GbCHdTtVrQaoUkxYC4A7yNyPwxhOw1vK10yb4cO74C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvdZYP308vVWy4zieRTVXtZ0DRVa3rf1UxW/crdK92jGIVy2k9Osv7qTqJK3268zJ
-	 NplHW7PWK+/YHyvyJzNIONvTdajo/l8fdMydfczqbd10DYwJxJljl3QFtEm6rV7QJ4
-	 myjcksAxbKhIPNeWaGIPdUqY0V+nXmz8K2iwjPv4=
+	b=ByLeMWg6YiBYqeqDXIqPAlnPGWRosrHCnwvvtjSTCcWesLHIA/eNUi5XaVr1dPX5i
+	 7sDD3CPL486sxc2WOWXwxCEP9xaYQpqNRVmiClO/ccNVf01KS5NPvjVNNmTpofdK13
+	 DLBRKn7Dfcmf2z7PtCH4iggpOKo/weEvfj12RNcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 447/826] clk: clk-apple-nco: Add NULL check in applnco_probe
-Date: Tue,  3 Dec 2024 15:42:54 +0100
-Message-ID: <20241203144801.196823752@linuxfoundation.org>
+Subject: [PATCH 6.12 450/826] clk: en7523: remove REG_PCIE*_{MEM,MEM_MASK} configuration
+Date: Tue,  3 Dec 2024 15:42:57 +0100
+Message-ID: <20241203144801.312758362@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -61,44 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 969c765e2b508cca9099d246c010a1e48dcfd089 ]
+[ Upstream commit c31d1cdd7bff1d2c13d435bb9d0c76bfaa332097 ]
 
-Add NULL check in applnco_probe, to handle kernel NULL pointer
-dereference error.
+REG_PCIE*_MEM and REG_PCIE*_MEM_MASK regs (PBUS_CSR memory region) are not
+part of the scu block on the EN7581 SoC and they are used to select the
+PCIE ports on the PBUS, so remove this configuration from the clock driver
+and set these registers in the PCIE host driver instead.
+This patch does not introduce any backward incompatibility since the dts
+for EN7581 SoC is not upstream yet.
 
-Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241114072820.3071-1-hanchunchao@inspur.com
-Reviewed-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20241112-clk-en7581-syscon-v2-2-8ada5e394ae4@kernel.org
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: f98eded9e9ab ("clk: en7523: fix estimation of fixed rate for EN7581")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-apple-nco.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/clk-en7523.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/drivers/clk/clk-apple-nco.c b/drivers/clk/clk-apple-nco.c
-index 39472a51530a3..457a48d489412 100644
---- a/drivers/clk/clk-apple-nco.c
-+++ b/drivers/clk/clk-apple-nco.c
-@@ -297,6 +297,9 @@ static int applnco_probe(struct platform_device *pdev)
- 		memset(&init, 0, sizeof(init));
- 		init.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 						"%s-%d", np->name, i);
-+		if (!init.name)
-+			return -ENOMEM;
-+
- 		init.ops = &applnco_ops;
- 		init.parent_data = &pdata;
- 		init.num_parents = 1;
+diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
+index 22fbea61c3dcc..ec6716844fdcf 100644
+--- a/drivers/clk/clk-en7523.c
++++ b/drivers/clk/clk-en7523.c
+@@ -31,12 +31,6 @@
+ #define   REG_RESET_CONTROL_PCIE1	BIT(27)
+ #define   REG_RESET_CONTROL_PCIE2	BIT(26)
+ /* EN7581 */
+-#define REG_PCIE0_MEM			0x00
+-#define REG_PCIE0_MEM_MASK		0x04
+-#define REG_PCIE1_MEM			0x08
+-#define REG_PCIE1_MEM_MASK		0x0c
+-#define REG_PCIE2_MEM			0x10
+-#define REG_PCIE2_MEM_MASK		0x14
+ #define REG_NP_SCU_PCIC			0x88
+ #define REG_NP_SCU_SSTR			0x9c
+ #define REG_PCIE_XSI0_SEL_MASK		GENMASK(14, 13)
+@@ -415,26 +409,14 @@ static void en7581_pci_disable(struct clk_hw *hw)
+ static int en7581_clk_hw_init(struct platform_device *pdev,
+ 			      void __iomem *np_base)
+ {
+-	void __iomem *pb_base;
+ 	u32 val;
+ 
+-	pb_base = devm_platform_ioremap_resource(pdev, 3);
+-	if (IS_ERR(pb_base))
+-		return PTR_ERR(pb_base);
+-
+ 	val = readl(np_base + REG_NP_SCU_SSTR);
+ 	val &= ~(REG_PCIE_XSI0_SEL_MASK | REG_PCIE_XSI1_SEL_MASK);
+ 	writel(val, np_base + REG_NP_SCU_SSTR);
+ 	val = readl(np_base + REG_NP_SCU_PCIC);
+ 	writel(val | 3, np_base + REG_NP_SCU_PCIC);
+ 
+-	writel(0x20000000, pb_base + REG_PCIE0_MEM);
+-	writel(0xfc000000, pb_base + REG_PCIE0_MEM_MASK);
+-	writel(0x24000000, pb_base + REG_PCIE1_MEM);
+-	writel(0xfc000000, pb_base + REG_PCIE1_MEM_MASK);
+-	writel(0x28000000, pb_base + REG_PCIE2_MEM);
+-	writel(0xfc000000, pb_base + REG_PCIE2_MEM_MASK);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
