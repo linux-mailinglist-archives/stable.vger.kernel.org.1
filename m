@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3C09E2A89
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F159E2AAB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 690FCB2B4FD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE7DFBC6A3E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B345B1F75A0;
-	Tue,  3 Dec 2024 15:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14E204F87;
+	Tue,  3 Dec 2024 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXyg3VV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcagixMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5981F7065;
-	Tue,  3 Dec 2024 15:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F7B1F7558;
+	Tue,  3 Dec 2024 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238166; cv=none; b=hRxbY7Cv0lUT+NAQgGvTNxyUeGEgnflbdl6t0DrrSajhSCfAWo6V+HHvsLfwsp4vEgmp5N4fTlfcm2HmYwty4WEcjF+wqIIipeTbiiasakkpnDxxbc5aNE5+00cT5T1qEsjrJ81Hewy8xhsppNU8+A/VtwNu4x9ds8mzLbfZhQw=
+	t=1733240215; cv=none; b=OTM54/rnU6RfMTWm4IptJ3G7GriuccCpxDQgqS6mlt9ZBECPyn1F8iERDQNNA1fYpybGPn69gGRwJ4KhUh2gtNLmGFc2m+y/JKWRYp+kmn+Me+w9qSMg5SVaeOQyY3j70zO45iCQ1aR5ANDOiv/ib8vr7mjPQcUN+sCeRGXwvWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238166; c=relaxed/simple;
-	bh=Vwt0M0d/d7s3VKB9Ebb+cJPZDguY/PEpXFZbpzY0cQQ=;
+	s=arc-20240116; t=1733240215; c=relaxed/simple;
+	bh=h4n9EDO8V3RGnsfmGzgIoOaOp205xC3v3OttUMtYrr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CU/lp0hWizO3rSeJy+A7+Hq5LS9RVUgGRicqN/8/XPgyizQwqTfR2uelseITRCtft7UXr9TtJXw1dJr9DglrrDQAmEZtFO+mfZiazOde/qww7FZL/6AzId4TtIj4svsVOUF6uqDp04MzbguAn8w+M3jkRMi1lUZ9vKFEY8rtfL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXyg3VV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE44C4CECF;
-	Tue,  3 Dec 2024 15:02:45 +0000 (UTC)
+	 MIME-Version; b=S5arzfG36gIf1zudvNZ034IPWIJ65O4E/G1HWpkVeSVr+9n8PlopiOQQyYcjV6ljZ3TaaPkuKRD0YuKmfTBCT8kuXRkB+68KCpa49ijObg1psHQMR7TN4Mm0RBWbG2YqcUwY/awSNCY5aPb1OH872W1UqxlEoHp3pYAI5a0Jlc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcagixMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F0C4CECF;
+	Tue,  3 Dec 2024 15:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238166;
-	bh=Vwt0M0d/d7s3VKB9Ebb+cJPZDguY/PEpXFZbpzY0cQQ=;
+	s=korg; t=1733240214;
+	bh=h4n9EDO8V3RGnsfmGzgIoOaOp205xC3v3OttUMtYrr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXyg3VV4xxdnQrJBVHu/t/pNv7c0RrU67Hj9vcHjmJWulPN5q2Dti6YKz6yz4dMtR
-	 O/m3HPqiLn99oec8Q1ms8WarvEVcPbGW6hRvt1CjnF4DIcCpljBgwyyZ8BgH/FsX2o
-	 UkJGEq2YAKnvePBXLX+9e7jQN6FIWSpdL+XNybic=
+	b=xcagixMCbYr0Supl4t4F0Lk0zVNzqSjqAp/+6nKnF0DmrgfVDwiBSvgNOt6usYohG
+	 yXHQe71n6+oQBsa4M+JUoqv19JOk+IJuDcxitPrNupF4pzc19/hAwxE73ZOosVd9PL
+	 q+W/dajbt6Q2V+EYZ+j0vi26q9KzVenaHwyxzeyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anurag Dutta <a-dutta@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 185/817] arm64: dts: ti: k3-j721e: Fix clock IDs for MCSPI instances
-Date: Tue,  3 Dec 2024 15:35:57 +0100
-Message-ID: <20241203144002.953098981@linuxfoundation.org>
+Subject: [PATCH 6.12 035/826] s390/syscalls: Avoid creation of arch/arch/ directory
+Date: Tue,  3 Dec 2024 15:36:02 +0100
+Message-ID: <20241203144744.833275275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anurag Dutta <a-dutta@ti.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit ab09a68f3be04b2f9d1fc7cfc0e2225025cb9421 ]
+[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
 
-The clock IDs for multiple MCSPI instances across wakeup domain
-in J721e are incorrect when compared with documentation [1]. Fix
-the clock ids to their appropriate values.
+Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
 
-[1]https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j721e/clocks.html
+  $ find arch/arch
+  arch/arch
+  arch/arch/s390
+  arch/arch/s390/include
+  arch/arch/s390/include/generated
+  arch/arch/s390/include/generated/asm
+  arch/arch/s390/include/generated/uapi
+  arch/arch/s390/include/generated/uapi/asm
 
-Fixes: 76aa309f9fa7 ("arm64: dts: ti: k3-j721e: Add MCSPI nodes")
+The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
+where the relative path is incorrect.
 
-Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-Link: https://lore.kernel.org/r/20241023104532.3438851-3-a-dutta@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Strictly speaking, 'targets' was not necessary in the first place
+because this Makefile uses 'filechk' instead of 'if_changed'.
+
+However, this commit keeps it, as it will be useful when converting
+'filechk' to 'if_changed' later.
+
+Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-mcu-wakeup.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/s390/kernel/syscalls/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-mcu-wakeup.dtsi
-index 6b6ef6a306142..e71696a8bb833 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-mcu-wakeup.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-mcu-wakeup.dtsi
-@@ -654,7 +654,7 @@ mcu_spi0: spi@40300000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 274 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 274 0>;
-+		clocks = <&k3_clks 274 1>;
- 		status = "disabled";
- 	};
+diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
+index 1bb78b9468e8a..e85c14f9058b9 100644
+--- a/arch/s390/kernel/syscalls/Makefile
++++ b/arch/s390/kernel/syscalls/Makefile
+@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
+ uapi-hdrs-y := $(uapi)/unistd_32.h
+ uapi-hdrs-y += $(uapi)/unistd_64.h
  
-@@ -665,7 +665,7 @@ mcu_spi1: spi@40310000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 275 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 275 0>;
-+		clocks = <&k3_clks 275 1>;
- 		status = "disabled";
- 	};
+-targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
++targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
  
-@@ -676,7 +676,7 @@ mcu_spi2: spi@40320000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 276 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 276 0>;
-+		clocks = <&k3_clks 276 1>;
- 		status = "disabled";
- 	};
+ PHONY += kapi uapi
  
 -- 
 2.43.0
