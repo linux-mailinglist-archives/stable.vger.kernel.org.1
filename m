@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-98098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F069E272D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:22:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110289E26FB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E54E16AB6B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAC042896E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3481F892E;
-	Tue,  3 Dec 2024 16:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D92A1EE00B;
+	Tue,  3 Dec 2024 16:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUuRKbn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nB1S1Bu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6C91EE00B;
-	Tue,  3 Dec 2024 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4BC1F7591;
+	Tue,  3 Dec 2024 16:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242782; cv=none; b=OfqJ/HpYJFSRWOTbXh2KGaftWhtg53MDAvQCt19eY7GZkjpIBu708y9/Wjec2LEQ/p2AArSq57ZRBJ5nEzERiPFMeW6KRT4xEOu0DbtlzJ/n150A0cpuLMGvZVbcqrPfDPxQuSVAGKpiMuinkK5p6IautSGC1tu3DG5SGTvV9oU=
+	t=1733242793; cv=none; b=Bgml7mTzn0VDBcyu2HK/4nDb013dGCDkspvltS5hb5lF7Pf/0/Pb93DEdhf9q8tpnnyBQpyshJhaFtc7fm1wWQnemoWSMmbLTrfWhlYAlMaNUr4VMaZyOqdkh2p0kQew+evvITTR8cFu0QGbeVtnTvqCjIrFH9r9/F2xyjp4fOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242782; c=relaxed/simple;
-	bh=chmiZrJBrLqynvQFzzyivrHdCQ5uuI+xUpEwA4o0Fnc=;
+	s=arc-20240116; t=1733242793; c=relaxed/simple;
+	bh=cy/TQ7XphCjLk9QebfJq6LQ0AQ84AXFQxFVoSjO8/vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrZ1O0SsQquLn19dJ0OM+12pqEMgJETtv4NuEHGrnRhEstnFXoOTg/cecPLF6V9pgjcknYJmQVrVT1WhhG+Fcab00NbYZfOG/zO83ApUcZmodRIugNURZ7kb+/pd4xVCvfVlniPSM849GdsdgpPHCSE5whO85OwJNo0r7yMUyWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUuRKbn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42959C4CECF;
-	Tue,  3 Dec 2024 16:19:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qZ0CqrOv62jfqTemC69vSrRzxpK6hY+irNEfOHFF26nOJntWiFQYout3toUoCkg63v4BNZRR+DFM2/UEv0Klv14raUkjpA4XEo5bwexYADJIz8nOljP38vhWexLQdH7LKgMoDyzjOcStEFw8BjeljDV2mNpnjzCtumIP/H9D++g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nB1S1Bu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7ECC4CECF;
+	Tue,  3 Dec 2024 16:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242782;
-	bh=chmiZrJBrLqynvQFzzyivrHdCQ5uuI+xUpEwA4o0Fnc=;
+	s=korg; t=1733242793;
+	bh=cy/TQ7XphCjLk9QebfJq6LQ0AQ84AXFQxFVoSjO8/vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUuRKbn55WMEFxVfFj9qtFNKRSeMdXxH2RYUzP/oMghDmuqlbzmphww7hiFnCZ6B0
-	 eRsSF9txWrUgQqARRkNaNk/SfUkBxm4KT82+c1zTHcHMSPZ5If4F0E9fibJRtGq1nA
-	 aG5Hygsj9NSmpLEnjcD74Abd+3ivnWXiYRHf+FpE=
+	b=nB1S1Bu6yZjWt98gy7gO8Aru6CsHS8aSCV0WfYM8vBIZKI0l/XV/fkyOYjwJO1gg0
+	 FeGL+GsG0LdIMQcYUUfR3X6KNJGXEv8BltzMm3XV+di99nI8jq8DE+dk5HorNGQkfU
+	 SxojOI2JS1y47rC5IW25aKnrm3gdBlnsBfNcQVWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 808/826] kbuild: deb-pkg: Dont fail if modules.order is missing
-Date: Tue,  3 Dec 2024 15:48:55 +0100
-Message-ID: <20241203144815.274778805@linuxfoundation.org>
+Subject: [PATCH 6.12 811/826] modpost: remove incorrect code in do_eisa_entry()
+Date: Tue,  3 Dec 2024 15:48:58 +0100
+Message-ID: <20241203144815.390870564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -60,62 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit bcbbf493f2fa6fa1f0832f6b5b4c80a65de242d6 ]
+[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
 
-Kernels built without CONFIG_MODULES might still want to create -dbg deb
-packages but install_linux_image_dbg() assumes modules.order always
-exists. This obviously isn't true if no modules were built, so we should
-skip reading modules.order in that case.
+This function contains multiple bugs after the following commits:
 
-Fixes: 16c36f8864e3 ("kbuild: deb-pkg: use build ID instead of debug link for dbg package")
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+ - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+ - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+
+Commit ac551828993e inserted the following code to do_eisa_entry():
+
+    else
+            strcat(alias, "*");
+
+This is incorrect because 'alias' is uninitialized. If it is not
+NULL-terminated, strcat() could cause a buffer overrun.
+
+Even if 'alias' happens to be zero-filled, it would output:
+
+    MODULE_ALIAS("*");
+
+This would match anything. As a result, the module could be loaded by
+any unrelated uevent from an unrelated subsystem.
+
+Commit ac551828993e introduced another bug.            
+
+Prior to that commit, the conditional check was:
+
+    if (eisa->sig[0])
+
+This checked if the first character of eisa_device_id::sig was not '\0'.
+
+However, commit ac551828993e changed it as follows:
+
+    if (sig[0])
+
+sig[0] is NOT the first character of the eisa_device_id::sig. The
+type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
+'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
+address, which never becomes NULL.
+
+The correct conversion would have been:
+
+    if ((*sig)[0])
+
+However, this if-conditional was meaningless because the earlier change
+in commit ac551828993e was incorrect.
+
+This commit removes the entire incorrect code, which should never have
+been executed.
+
+Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/builddeb | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ scripts/mod/file2alias.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index 441b0bb66e0d0..fb686fd3266f0 100755
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -96,16 +96,18 @@ install_linux_image_dbg () {
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index c4cc11aa558f5..634e40748287c 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -809,10 +809,7 @@ static int do_eisa_entry(const char *filename, void *symval,
+ 		char *alias)
+ {
+ 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
+-	if (sig[0])
+-		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+-	else
+-		strcat(alias, "*");
++	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+ 	return 1;
+ }
  
- 	# Parse modules.order directly because 'make modules_install' may sign,
- 	# compress modules, and then run unneeded depmod.
--	while read -r mod; do
--		mod="${mod%.o}.ko"
--		dbg="${pdir}/usr/lib/debug/lib/modules/${KERNELRELEASE}/kernel/${mod}"
--		buildid=$("${READELF}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
--		link="${pdir}/usr/lib/debug/.build-id/${buildid}.debug"
--
--		mkdir -p "${dbg%/*}" "${link%/*}"
--		"${OBJCOPY}" --only-keep-debug "${mod}" "${dbg}"
--		ln -sf --relative "${dbg}" "${link}"
--	done < modules.order
-+	if is_enabled CONFIG_MODULES; then
-+		while read -r mod; do
-+			mod="${mod%.o}.ko"
-+			dbg="${pdir}/usr/lib/debug/lib/modules/${KERNELRELEASE}/kernel/${mod}"
-+			buildid=$("${READELF}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
-+			link="${pdir}/usr/lib/debug/.build-id/${buildid}.debug"
-+
-+			mkdir -p "${dbg%/*}" "${link%/*}"
-+			"${OBJCOPY}" --only-keep-debug "${mod}" "${dbg}"
-+			ln -sf --relative "${dbg}" "${link}"
-+		done < modules.order
-+	fi
- 
- 	# Build debug package
- 	# Different tools want the image in different locations
 -- 
 2.43.0
 
