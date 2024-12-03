@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-97322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE719E23B0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7119E2438
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D19285A17
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C74D166AF4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E49E1FE444;
-	Tue,  3 Dec 2024 15:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A04A2036EB;
+	Tue,  3 Dec 2024 15:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABm9Pqnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8sKCF0s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0681FCF41;
-	Tue,  3 Dec 2024 15:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AF1202F86;
+	Tue,  3 Dec 2024 15:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240151; cv=none; b=Hb+nFfQTHCrFcvKvwin0z1UDjNsiQVeRw13hMtzzOg9vijNqhLljBZSy/5R3tYkIKc6bco2X8EYxvF/M28Rf9UDD/T3sVUzSgl/DSvtDC8b1qO+uZBBesmqtn1huW4Lc/A39Yd9+lKJAVZ76zW/ea1+c+q5KQEQOBIaOXrg2/sA=
+	t=1733240183; cv=none; b=axeBp892ipKK2KW3BaGFOxFEAh5UGmHvb1d3uC+WtB1N3gqxEX9XIn20tl6h4+jE642NT4VRROwBNdsacYPoAgwl+aGFbl5ZnlE98hQT7NVfEpngVx2RRpClbh5ejrZsEEhrE6qNN/Sz16uwiNCwgWclOnE+7jjSvR9wVgFmp6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240151; c=relaxed/simple;
-	bh=e+UwYOZIK4HcUXo5zsI1wD/35ca+H0sgJ/OH7B85+zY=;
+	s=arc-20240116; t=1733240183; c=relaxed/simple;
+	bh=IiO68JX2kcHsNY3/V0NmNn/JWiJXAePFgtPPiddhEMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUafvzK1NROHFX5r8twq7FKqM+Ye2Q02D3LoDLIK50U+xT3UAuc4bJJbGjP4Q+/r7wdv/wiVkNjvDbbZMvuYjisz93cPQthzU0wQvGQt7FKcoE9cXlE1rc/kQZ7isUYc5habutYFnOxSo/cB+QfD5B7CGRJLJd3ZEDGYf+LW8zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABm9Pqnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EFBC4CECF;
-	Tue,  3 Dec 2024 15:35:51 +0000 (UTC)
+	 MIME-Version; b=jEpoVNIGGbIiOI2ni/1nsgAVisc5CXXe5/o2xVU2ClpngN+DNYKer/rLTgPwSiH4aa03yGzZuTPuuYt46YZebxiFijpFiOh1fV6GElw1u1Qphx6N1d0xihs5Y8LMyTS50uaCH2LagZ4ODFXeCvrcuWmBBr48ohHOTB1h9B8unUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8sKCF0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B62C4CECF;
+	Tue,  3 Dec 2024 15:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240151;
-	bh=e+UwYOZIK4HcUXo5zsI1wD/35ca+H0sgJ/OH7B85+zY=;
+	s=korg; t=1733240183;
+	bh=IiO68JX2kcHsNY3/V0NmNn/JWiJXAePFgtPPiddhEMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABm9Pqnu5eS5MOGIUvD2yESZ5BuPJDvdzWChThStb+fbQp5z0Dzs+n6yA/1fhupE/
-	 xqXy14yMU69qvkblGKyTqVHyW/tE0odPsI3dIOarNDp0Spv/enezgAQmDzp7SKRn7w
-	 QSw46X6JutgpXp1m2JBPWBNM12xhY+wmw0jnF6hk=
+	b=W8sKCF0sRZ/7OqQlb63/ynjWvHWfjeDUSTSr5eNHL2gtPl3rZ3sl2d4knbc50ybow
+	 q5CstYPUKOGlxWZB1wc65LKQfv4HYHb2e43uy4ADcucENR46rX+34IWq7OChEA/mLk
+	 Q6FjFB1jvJM3iQu92ssfbYjlB96bGjAoZ1It4zAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
 	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/826] block: take chunk_sectors into account in bio_split_write_zeroes
-Date: Tue,  3 Dec 2024 15:36:00 +0100
-Message-ID: <20241203144744.751359547@linuxfoundation.org>
+Subject: [PATCH 6.12 034/826] block: fix bio_split_rw_at to take zone_write_granularity into account
+Date: Tue,  3 Dec 2024 15:36:01 +0100
+Message-ID: <20241203144744.794560885@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -69,86 +70,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 60dc5ea6bcfd078b71419640d49afa649acf9450 ]
+[ Upstream commit 7ecd2cd4fae3e8410c0a6620f3a83dcdbb254f02 ]
 
-For zoned devices, write zeroes must be split at the zone boundary
-which is represented as chunk_sectors.  For other uses like the
-internally RAIDed NVMe devices it is probably at least useful.
+Otherwise it can create unaligned writes on zoned devices.
 
-Enhance get_max_io_size to know about write zeroes and use it in
-bio_split_write_zeroes.  Also add a comment about the seemingly
-nonsensical zero max_write_zeroes limit.
-
-Fixes: 885fa13f6559 ("block: implement splitting of REQ_OP_WRITE_ZEROES bios")
+Fixes: a805a4fa4fa3 ("block: introduce zone_write_granularity limit")
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20241104062647.91160-2-hch@lst.de
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241104062647.91160-3-hch@lst.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-merge.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ block/blk-merge.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/block/blk-merge.c b/block/blk-merge.c
-index ad763ec313b6a..75d2461b69e40 100644
+index 75d2461b69e40..5baa950f34fe2 100644
 --- a/block/blk-merge.c
 +++ b/block/blk-merge.c
-@@ -166,17 +166,6 @@ struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
- 	return bio_submit_split(bio, split_sectors);
+@@ -287,6 +287,14 @@ static bool bvec_split_segs(const struct queue_limits *lim,
+ 	return len > 0 || bv->bv_len > max_len;
  }
  
--struct bio *bio_split_write_zeroes(struct bio *bio,
--		const struct queue_limits *lim, unsigned *nsegs)
--{
--	*nsegs = 0;
--	if (!lim->max_write_zeroes_sectors)
--		return bio;
--	if (bio_sectors(bio) <= lim->max_write_zeroes_sectors)
--		return bio;
--	return bio_submit_split(bio, lim->max_write_zeroes_sectors);
--}
--
- static inline unsigned int blk_boundary_sectors(const struct queue_limits *lim,
- 						bool is_atomic)
- {
-@@ -211,7 +200,9 @@ static inline unsigned get_max_io_size(struct bio *bio,
- 	 * We ignore lim->max_sectors for atomic writes because it may less
- 	 * than the actual bio size, which we cannot tolerate.
- 	 */
--	if (is_atomic)
-+	if (bio_op(bio) == REQ_OP_WRITE_ZEROES)
-+		max_sectors = lim->max_write_zeroes_sectors;
-+	else if (is_atomic)
- 		max_sectors = lim->atomic_write_max_sectors;
- 	else
- 		max_sectors = lim->max_sectors;
-@@ -398,6 +389,26 @@ struct bio *bio_split_zone_append(struct bio *bio,
- 	return bio_submit_split(bio, split_sectors);
- }
- 
-+struct bio *bio_split_write_zeroes(struct bio *bio,
-+		const struct queue_limits *lim, unsigned *nsegs)
++static unsigned int bio_split_alignment(struct bio *bio,
++		const struct queue_limits *lim)
 +{
-+	unsigned int max_sectors = get_max_io_size(bio, lim);
-+
-+	*nsegs = 0;
-+
-+	/*
-+	 * An unset limit should normally not happen, as bio submission is keyed
-+	 * off having a non-zero limit.  But SCSI can clear the limit in the
-+	 * I/O completion handler, and we can race and see this.  Splitting to a
-+	 * zero limit obviously doesn't make sense, so band-aid it here.
-+	 */
-+	if (!max_sectors)
-+		return bio;
-+	if (bio_sectors(bio) <= max_sectors)
-+		return bio;
-+	return bio_submit_split(bio, max_sectors);
++	if (op_is_write(bio_op(bio)) && lim->zone_write_granularity)
++		return lim->zone_write_granularity;
++	return lim->logical_block_size;
 +}
 +
  /**
-  * bio_split_to_limits - split a bio to fit the queue limits
-  * @bio:     bio to be split
+  * bio_split_rw_at - check if and where to split a read/write bio
+  * @bio:  [in] bio to be split
+@@ -349,7 +357,7 @@ int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
+ 	 * split size so that each bio is properly block size aligned, even if
+ 	 * we do not use the full hardware limits.
+ 	 */
+-	bytes = ALIGN_DOWN(bytes, lim->logical_block_size);
++	bytes = ALIGN_DOWN(bytes, bio_split_alignment(bio, lim));
+ 
+ 	/*
+ 	 * Bio splitting may cause subtle trouble such as hang when doing sync
 -- 
 2.43.0
 
