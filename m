@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-96757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3109E2188
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BFB9E2483
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3812B165C93
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F70616C359
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0FF1FECCD;
-	Tue,  3 Dec 2024 15:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65781FAC34;
+	Tue,  3 Dec 2024 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcOLjPlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4vxdjAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF861F8921;
-	Tue,  3 Dec 2024 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626611F8AFF;
+	Tue,  3 Dec 2024 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238509; cv=none; b=BtwI+awWm9iPEawjYbqcKfP39J1cA0CeVeR1yaLmAECCtnirl3x3oH1KaHR7diJKT4ylivx465RKBFGaFo28VGOfpgCNP8Tyz4ksxjAEk/2R9QnrOLHWNGfcAaSGKbZKiisHAnoLaRjImOeyWdIHiUcBbGVyJdxdW47vXnfehA0=
+	t=1733240468; cv=none; b=IJtEjYYw5JwFbS8Rs0ys6LlAcIARQuiJ0BIYbNbYuWmOH8ARsRH0zBJ2Yogjlq2wBcyhIIDJzBWN5okQXFalbtoC+Kmrc7GqcPaNFVUJQD5Akv7xpDgCIZHz/UG2izNsNDA+GyyiUQFGma8G9ZcX/thk6j6I32vuyyNwB+QIYfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238509; c=relaxed/simple;
-	bh=1uBpDuZVefjjlfbZF5C15CFTJ2Wy9pK90xYBIRpjUkM=;
+	s=arc-20240116; t=1733240468; c=relaxed/simple;
+	bh=aFOE/IIsPJw/q9N4tfj69AFc7geE3//zVdaqLAIFi2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO1ZwTnntza76CtP3pEfFZfmJ/BMG2L4LaexsBvFy+vrrRGCv2PjKAY1nFcC2XT5DmGd5FYs9P7X/WOVf6vEbq9biHEM8sl/3zFl4DJRx2rjA4G6WX6wQyPzujl/DzO2PUsKe2ZbAlDuUe5npUQE/ZUAFd+0RyCL4SAFyY/T2w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcOLjPlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD0FC4CECF;
-	Tue,  3 Dec 2024 15:08:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hISKIoHTZTS+e1uiXuUsRK0RwYAxMcFxf81hDXB/oGyrv8Muu3sof4WG0YERAK+gOZunxEHPcvaZprQWIEnYfHbCoZJnM1lJx1+6CCbgN9U/CpskhAUuYm38M/9ByPppNRaGCLNrsMoyIy4DSTmf94hmKEZ4P4k9RMXsSgUIEPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4vxdjAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9975C4CED6;
+	Tue,  3 Dec 2024 15:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238505;
-	bh=1uBpDuZVefjjlfbZF5C15CFTJ2Wy9pK90xYBIRpjUkM=;
+	s=korg; t=1733240468;
+	bh=aFOE/IIsPJw/q9N4tfj69AFc7geE3//zVdaqLAIFi2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcOLjPlKs4iaXGX+mtqEWI4UNlCOyxYvhW9whmTxPySMbNIyAXinH3LrV+NwpkxYM
-	 Z2jJc2AGEp9OuncmEzB2JqHfWz6+0cnoYziIoWKCNzWiGytKzNn68O+BiTE1dEzaTu
-	 0DyuI20aVSP9CalC2yCTAVLXWqg/gdUjx4lTUaog=
+	b=F4vxdjAXpOK5FfJIzbXm6JV2Fu94vkueWMRAAn6G8JiYSM/Y2b6bWOz1/q3gdzyoQ
+	 2Ga5tyc6gWQAzZNe3D3hhqnUyx+AXUucW2h5KRjr7gHOpsaTZHW/t2RNzqLQMMCoQp
+	 uHe8ulw6yj8AbGBrm4FQS+uo0Ym9s0ZXbbhSt/vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Jun Li <jun.li@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 299/817] drm/etnaviv: Request pages from DMA32 zone on addressing_limited
-Date: Tue,  3 Dec 2024 15:37:51 +0100
-Message-ID: <20241203144007.489535883@linuxfoundation.org>
+Subject: [PATCH 6.12 145/826] pwm: imx27: Workaround of the pwm output bug when decrease the duty cycle
+Date: Tue,  3 Dec 2024 15:37:52 +0100
+Message-ID: <20241203144749.402640127@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,190 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 13c96ac9a3f0f1c7ba1ff0656ea508e7fa065e7e ]
+[ Upstream commit a25351e4c7740eb22561a3ee4ef17611c6f410b0 ]
 
-Remove __GFP_HIGHMEM when requesting a page from DMA32 zone,
-and since all vivante GPUs in the system will share the same
-DMA constraints, move the check of whether to get a page from
-DMA32 to etnaviv_bind().
+Implement workaround for ERR051198
+(https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
 
-Fixes: b72af445cd38 ("drm/etnaviv: request pages from DMA32 zone when needed")
-Suggested-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+PWM output may not function correctly if the FIFO is empty when a new SAR
+value is programmed.
+
+Description:
+  When the PWM FIFO is empty, a new value programmed to the PWM Sample
+  register (PWM_PWMSAR) will be directly applied even if the current timer
+  period has not expired. If the new SAMPLE value programmed in the
+  PWM_PWMSAR register is less than the previous value, and the PWM counter
+  register (PWM_PWMCNR) that contains the current COUNT value is greater
+  than the new programmed SAMPLE value, the current period will not flip
+  the level. This may result in an output pulse with a duty cycle of 100%.
+
+Workaround:
+  Program the current SAMPLE value in the PWM_PWMSAR register before
+  updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
+  register. This will ensure that the new SAMPLE value is modified during
+  a non-empty FIFO, and can be successfully updated after the period
+  expires.
+
+Write the old SAR value before updating the new duty cycle to SAR. This
+avoids writing the new value into an empty FIFO.
+
+This only resolves the issue when the PWM period is longer than 2us
+(or <500kHz) because write register is not quick enough when PWM period is
+very short.
+
+Reproduce steps:
+  cd /sys/class/pwm/pwmchip1/pwm0
+  echo 2000000000 > period     # It is easy to observe by using long period
+  echo 1000000000 > duty_cycle
+  echo 1 > enable
+  echo       8000 > duty_cycle # One full high pulse will be seen by scope
+
+Fixes: 166091b1894d ("[ARM] MXC: add pwm driver for i.MX SoCs")
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241008194123.1943141-1-Frank.Li@nxp.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_drv.c | 10 ++++++++++
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c |  8 --------
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/pwm/pwm-imx27.c | 98 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 96 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-index 6500f3999c5fa..19ec67a5a918e 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-@@ -538,6 +538,16 @@ static int etnaviv_bind(struct device *dev)
- 	priv->num_gpus = 0;
- 	priv->shm_gfp_mask = GFP_HIGHUSER | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
+diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+index 9e2bbf5b4a8ce..0375987194318 100644
+--- a/drivers/pwm/pwm-imx27.c
++++ b/drivers/pwm/pwm-imx27.c
+@@ -26,6 +26,7 @@
+ #define MX3_PWMSR			0x04    /* PWM Status Register */
+ #define MX3_PWMSAR			0x0C    /* PWM Sample Register */
+ #define MX3_PWMPR			0x10    /* PWM Period Register */
++#define MX3_PWMCNR			0x14    /* PWM Counter Register */
  
-+	/*
-+	 * If the GPU is part of a system with DMA addressing limitations,
-+	 * request pages for our SHM backend buffers from the DMA32 zone to
-+	 * hopefully avoid performance killing SWIOTLB bounce buffering.
-+	 */
-+	if (dma_addressing_limited(dev)) {
-+		priv->shm_gfp_mask |= GFP_DMA32;
-+		priv->shm_gfp_mask &= ~__GFP_HIGHMEM;
-+	}
+ #define MX3_PWMCR_FWM			GENMASK(27, 26)
+ #define MX3_PWMCR_STOPEN		BIT(25)
+@@ -219,10 +220,12 @@ static void pwm_imx27_wait_fifo_slot(struct pwm_chip *chip,
+ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			   const struct pwm_state *state)
+ {
+-	unsigned long period_cycles, duty_cycles, prescale;
++	unsigned long period_cycles, duty_cycles, prescale, period_us, tmp;
+ 	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+ 	unsigned long long c;
+ 	unsigned long long clkrate;
++	unsigned long flags;
++	int val;
+ 	int ret;
+ 	u32 cr;
+ 
+@@ -263,7 +266,98 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 		pwm_imx27_sw_reset(chip);
+ 	}
+ 
+-	writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
++	val = readl(imx->mmio_base + MX3_PWMPR);
++	val = val >= MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
++	cr = readl(imx->mmio_base + MX3_PWMCR);
++	tmp = NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
++	tmp = DIV_ROUND_UP_ULL(tmp, clkrate);
++	period_us = DIV_ROUND_UP_ULL(tmp, 1000);
 +
- 	priv->cmdbuf_suballoc = etnaviv_cmdbuf_suballoc_new(drm->dev);
- 	if (IS_ERR(priv->cmdbuf_suballoc)) {
- 		dev_err(drm->dev, "Failed to create cmdbuf suballocator\n");
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 7c7f97793ddd0..5e753dd42f721 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -839,14 +839,6 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
- 	if (ret)
- 		goto fail;
++	/*
++	 * ERR051198:
++	 * PWM: PWM output may not function correctly if the FIFO is empty when
++	 * a new SAR value is programmed
++	 *
++	 * Description:
++	 * When the PWM FIFO is empty, a new value programmed to the PWM Sample
++	 * register (PWM_PWMSAR) will be directly applied even if the current
++	 * timer period has not expired.
++	 *
++	 * If the new SAMPLE value programmed in the PWM_PWMSAR register is
++	 * less than the previous value, and the PWM counter register
++	 * (PWM_PWMCNR) that contains the current COUNT value is greater than
++	 * the new programmed SAMPLE value, the current period will not flip
++	 * the level. This may result in an output pulse with a duty cycle of
++	 * 100%.
++	 *
++	 * Consider a change from
++	 *     ________
++	 *    /        \______/
++	 *    ^      *        ^
++	 * to
++	 *     ____
++	 *    /    \__________/
++	 *    ^               ^
++	 * At the time marked by *, the new write value will be directly applied
++	 * to SAR even the current period is not over if FIFO is empty.
++	 *
++	 *     ________        ____________________
++	 *    /        \______/                    \__________/
++	 *    ^               ^      *        ^               ^
++	 *    |<-- old SAR -->|               |<-- new SAR -->|
++	 *
++	 * That is the output is active for a whole period.
++	 *
++	 * Workaround:
++	 * Check new SAR less than old SAR and current counter is in errata
++	 * windows, write extra old SAR into FIFO and new SAR will effect at
++	 * next period.
++	 *
++	 * Sometime period is quite long, such as over 1 second. If add old SAR
++	 * into FIFO unconditional, new SAR have to wait for next period. It
++	 * may be too long.
++	 *
++	 * Turn off the interrupt to ensure that not IRQ and schedule happen
++	 * during above operations. If any irq and schedule happen, counter
++	 * in PWM will be out of data and take wrong action.
++	 *
++	 * Add a safety margin 1.5us because it needs some time to complete
++	 * IO write.
++	 *
++	 * Use writel_relaxed() to minimize the interval between two writes to
++	 * the SAR register to increase the fastest PWM frequency supported.
++	 *
++	 * When the PWM period is longer than 2us(or <500kHz), this workaround
++	 * can solve this problem. No software workaround is available if PWM
++	 * period is shorter than IO write. Just try best to fill old data
++	 * into FIFO.
++	 */
++	c = clkrate * 1500;
++	do_div(c, NSEC_PER_SEC);
++
++	local_irq_save(flags);
++	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
++
++	if (duty_cycles < imx->duty_cycle && (cr & MX3_PWMCR_EN)) {
++		if (period_us < 2) { /* 2us = 500 kHz */
++			/* Best effort attempt to fix up >500 kHz case */
++			udelay(3 * period_us);
++			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
++			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
++		} else if (val < MX3_PWMSR_FIFOAV_2WORDS) {
++			val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
++			/*
++			 * If counter is close to period, controller may roll over when
++			 * next IO write.
++			 */
++			if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
++			    val + c >= period_cycles)
++				writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
++		}
++	}
++	writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
++	local_irq_restore(flags);
++
+ 	writel(period_cycles, imx->mmio_base + MX3_PWMPR);
  
--	/*
--	 * If the GPU is part of a system with DMA addressing limitations,
--	 * request pages for our SHM backend buffers from the DMA32 zone to
--	 * hopefully avoid performance killing SWIOTLB bounce buffering.
--	 */
--	if (dma_addressing_limited(gpu->dev))
--		priv->shm_gfp_mask |= GFP_DMA32;
--
- 	/* Create buffer: */
- 	ret = etnaviv_cmdbuf_init(priv->cmdbuf_suballoc, &gpu->buffer,
- 				  PAGE_SIZE);
+ 	/*
 -- 
 2.43.0
 
