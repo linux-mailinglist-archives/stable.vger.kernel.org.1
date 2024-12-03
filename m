@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-96616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26D99E20A3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C6B9E20D3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98146285F26
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 388FF16624B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572CE1F7578;
-	Tue,  3 Dec 2024 15:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8DA1E3DF9;
+	Tue,  3 Dec 2024 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAJKUA9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q38W1crb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E421F7558;
-	Tue,  3 Dec 2024 15:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC511F6696;
+	Tue,  3 Dec 2024 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238097; cv=none; b=pprLz4K3ThR8yHEWnankALVSLevva73AQe1NkeRr7feazsZAd2l4UXwzRTAiRiQD8O0pbNYY+wU+awcaYTxlO15VR1xYuy2U1bnP0dI6fNtIJSewNVyHPIzgbtit9imZqrFW3YEnR44xNQ5gzuMAOOEHREKDT3HoF1TX3VQx9e4=
+	t=1733238102; cv=none; b=Z3euAiU2sqGanAZtc3uEXgoNPiweEduNJ0kgp5zgroypCP3kn3ZkO8d3ohg2+Iq+4fbAb6aRSsYgiYRxLrh00Dc6fjnhhDxLhJjqwLqNOTXq5nMkowFbEAcI1LN8v4ESq/M/aEbg7hHi6K18eC4uo9xNe+KewahnRTgBkVHD7Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238097; c=relaxed/simple;
-	bh=84TVRqHmz8c1iU/2K6eXe5BAMERXmtF3oYeWcrcUCN8=;
+	s=arc-20240116; t=1733238102; c=relaxed/simple;
+	bh=FsxTOLEvPA2P9EHudlFITy2NzAgdQXVCKWT7bRZeJ68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEYlNxv5w3Sq4BYRJLx38gFBa/jAYNp6oBG4d6bm0l8FTlbktrj8JKHGSxyd2Vc+H8Lzoj5US1+SBqyU8Qv5opmpB2wXIHijJYUie1EcEPDAt6aCMfMLRL6hujiwxiA+aeYdo/KVWrlIEBkzOQaq8oeBIClxsJHJFskuDrdePXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAJKUA9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B5AC4CECF;
-	Tue,  3 Dec 2024 15:01:36 +0000 (UTC)
+	 MIME-Version; b=bA4Ch/FpzhEwANk5yCD+S4p7Fggsf9pALcuNB8v951QJup7PnbrDzK5OJSAQT1K3ROfOCEjHAf+MlUna4Ad0sOjjPFZSB99dubG+TR2pyBDAEtnOx+MXkkGx20Az2GhMItmkYOzZOtRtbcgSJ9x7SBR24ZRYtPs3tNNvHpkhqLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q38W1crb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65640C4CECF;
+	Tue,  3 Dec 2024 15:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238096;
-	bh=84TVRqHmz8c1iU/2K6eXe5BAMERXmtF3oYeWcrcUCN8=;
+	s=korg; t=1733238102;
+	bh=FsxTOLEvPA2P9EHudlFITy2NzAgdQXVCKWT7bRZeJ68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAJKUA9WZptgTefUMkvRa1QDUEv8+pzf6x+eF3xin3MyiMpL+kEXn4eqVXl7yhNrP
-	 bM2WK0KPpPpONEOBOLoyTLWn005v6qVCScu3+oCiR3R8V6iATlg0H1FojZZgN7YhWV
-	 QyKTjx2GeTAOoUAej6xjOfThgsvyiydz93Vow9s4=
+	b=Q38W1crbx/Xr+c2qY9UscoICwiaZQp2W2sgLETETaiQZDaRGRD3wmc8WpHh4UO+54
+	 a3TfD5NiWwUsXlqziXVq3aNwCpwKbMyK40CiNi/NWKIcL5BlA+AFIt27eqDlcSjTAU
+	 1C0e8kDhrmHTMDXPI36VjIpc0UQPB0NT4VVUHah0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 160/817] efi/libstub: fix efi_parse_options() ignoring the default command line
-Date: Tue,  3 Dec 2024 15:35:32 +0100
-Message-ID: <20241203144001.972030521@linuxfoundation.org>
+Subject: [PATCH 6.11 162/817] media: i2c: vgxy61: Fix an error handling path in vgxy61_detect()
+Date: Tue,  3 Dec 2024 15:35:34 +0100
+Message-ID: <20241203144002.051300129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,38 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit aacfa0ef247b0130b7a98bb52378f8cd727a66ca ]
+[ Upstream commit 0d5c92cde4d38825eeadf5b4e1534350f80a9924 ]
 
-efi_convert_cmdline() always returns a size of at least 1 because it
-counts the NUL terminator, so the "cmdline_size == 0" condition is never
-satisfied.
+If cci_read() fails, 'st' is set to 0 in cci_read(), so we return success,
+instead of the expected error code.
 
-Change it to check if the string starts with a NUL character to get the
-intended behavior: to use CONFIG_CMDLINE when load_options_size == 0.
+Fix it and return the expected error.
 
-Fixes: 60f38de7a8d4 ("efi/libstub: Unify command line param parsing")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 9a6d7f2ba2b9 ("media: i2c: st-vgxy61: Convert to CCI register access helpers")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub.c | 2 +-
+ drivers/media/i2c/vgxy61.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 958a680e0660d..2a1b43f9e0fa2 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -129,7 +129,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+diff --git a/drivers/media/i2c/vgxy61.c b/drivers/media/i2c/vgxy61.c
+index 30378e9620166..8034e21051bec 100644
+--- a/drivers/media/i2c/vgxy61.c
++++ b/drivers/media/i2c/vgxy61.c
+@@ -1617,7 +1617,7 @@ static int vgxy61_detect(struct vgxy61_dev *sensor)
  
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
--	    cmdline_size == 0) {
-+	    cmdline[0] == 0) {
- 		status = efi_parse_options(CONFIG_CMDLINE);
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to parse options\n");
+ 	ret = cci_read(sensor->regmap, VGXY61_REG_NVM, &st, NULL);
+ 	if (ret < 0)
+-		return st;
++		return ret;
+ 	if (st != VGXY61_NVM_OK)
+ 		dev_warn(&client->dev, "Bad nvm state got %u\n", (u8)st);
+ 
 -- 
 2.43.0
 
