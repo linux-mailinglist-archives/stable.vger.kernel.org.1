@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC0E9E2B63
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 057C49E2B21
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:41:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5557B3F4D3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C1CFB438F1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E301F76DB;
-	Tue,  3 Dec 2024 16:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96811F7540;
+	Tue,  3 Dec 2024 15:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snK9ve29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTCStuLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AE81F76CA;
-	Tue,  3 Dec 2024 16:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95937646;
+	Tue,  3 Dec 2024 15:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241939; cv=none; b=nBrZeLMLMUpeOPtGNz50q+tD+YKXlu8MgtIMCwbKvUBKPHL26JtyUktfW8pt48tdr/7yoSG1sbpRV0vYmWsh/YQEBHgK6E2g7tS1UV2/Iglrw+oiNK05KrNpFCVunDcvqIG+yhel35sfHrxD7qEU65y12cktztrwiLd36edogws=
+	t=1733239829; cv=none; b=myd7xEsowMb0pZcem4iMu8kJxncjjDBNO/1Q4llKnhCw7epOKbLg5VkMYLAp36NXwpXRxOJiPuexNrY7m+m8HbMe902wGBeEp2dbOIVPPSuB0u2dOI+quf1VTlyP2LtjHGOLYZlYWOTSyfxJAkE0sEZPB9yqQXokRpjNXKoRvmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241939; c=relaxed/simple;
-	bh=GXQyigtIEO/UC06iLbKlALXsDNvBYrcqzz+OrRQKMW8=;
+	s=arc-20240116; t=1733239829; c=relaxed/simple;
+	bh=MefO2n8vGbMcmqP4RndGM+aKfnVh5LGfsiJbGiGcAGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goQJKp/8+HFPZrg9P7LwuG5TS6YdxFhQpaMH8E8GXAD5KB+c+lA1lbOikfsB+SvtGmzxu5eO3VXkDcVhLGIkfltBM+TAs5sOQ6WPXiszW+YE3LABzzs7rZQYLeLbErEbjgSkrW5GndE3BcP/PgETWUdm3+dxhXTW8gYp3y4dA7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snK9ve29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202E3C4CECF;
-	Tue,  3 Dec 2024 16:05:38 +0000 (UTC)
+	 MIME-Version; b=S4TWxtam9lit8FIdYxtu755mBXBeSVpEaWhVqQf3ElIYH637XSpS+B+0JcvyLz/SQreOZyDyAP/meQfmZn1M4qWOzno9yHuW0qDUHAysJRgujuSuFiEawiDmQkZjlF+m0ZfDB1hGJum4HYy83xO0NP1cKFhCLDEfeg39/AIlSVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTCStuLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFA2C4CED8;
+	Tue,  3 Dec 2024 15:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241939;
-	bh=GXQyigtIEO/UC06iLbKlALXsDNvBYrcqzz+OrRQKMW8=;
+	s=korg; t=1733239829;
+	bh=MefO2n8vGbMcmqP4RndGM+aKfnVh5LGfsiJbGiGcAGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snK9ve29zrddIpyZyvwSbW9lYZZqFplw/NncnbfZjM37Ba93YZUEOoj1YRFLsqQQP
-	 eK18onnu3ujyrf9yQieXMAJQXMhYnxwcdGq0BWmYKTqSqGgHH8M5rtQAduARYrr237
-	 cE09Ko5kfk/YrnVx/wyeiQ54qkuI3MkGW5rWJV2k=
+	b=nTCStuLYA7zJm8H01Rayt0QUqRtDlIEvDH8XKqschZtFmSpB6yC8Brj7VIIafr4SG
+	 /aBoRxaFseDaH13aCowSy7fB82hOCdBSPLJfEVhWTca9W6zGqWmqZkSWrMVQv3plgV
+	 HMipIkmhE0C/Ezm8lvQMNmA9QbUZF6FbODr0koJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com,
-	James Chapman <jchapman@katalix.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 561/826] net/l2tp: fix warning in l2tp_exit_net found by syzbot
-Date: Tue,  3 Dec 2024 15:44:48 +0100
-Message-ID: <20241203144805.628587912@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.11 717/817] serial: amba-pl011: fix build regression
+Date: Tue,  3 Dec 2024 15:44:49 +0100
+Message-ID: <20241203144023.980010671@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Chapman <jchapman@katalix.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5d066766c5f1252f98ff859265bcd1a5b52ac46c ]
+commit b5a23a60e8ab5711f4952912424347bf3864ce8d upstream.
 
-In l2tp's net exit handler, we check that an IDR is empty before
-destroying it:
+When CONFIG_DMA_ENGINE is disabled, the driver now fails to build:
 
-	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
-	idr_destroy(&pn->l2tp_tunnel_idr);
+drivers/tty/serial/amba-pl011.c: In function 'pl011_unthrottle_rx':
+drivers/tty/serial/amba-pl011.c:1822:16: error: 'struct uart_amba_port' has no member named 'using_rx_dma'
+ 1822 |         if (uap->using_rx_dma) {
+      |                ^~
+drivers/tty/serial/amba-pl011.c:1823:20: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1823 |                 uap->dmacr |= UART011_RXDMAE;
+      |                    ^~
+drivers/tty/serial/amba-pl011.c:1824:32: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1824 |                 pl011_write(uap->dmacr, uap, REG_DMACR);
+      |                                ^~
 
-By forcing memory allocation failures in idr_alloc_32, syzbot is able
-to provoke a condition where idr_is_empty returns false despite there
-being no items in the IDR. This turns out to be because the radix tree
-of the IDR contains only internal radix-tree nodes and it is this that
-causes idr_is_empty to return false. The internal nodes are cleaned by
-idr_destroy.
+Add the missing #ifdef check around these field accesses, matching
+what other parts of this driver do.
 
-Use idr_for_each to check that the IDR is empty instead of
-idr_is_empty to avoid the problem.
-
-Reported-by: syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332fe1e67018625f63c9
-Fixes: 73d33bd063c4 ("l2tp: avoid using drain_workqueue in l2tp_pre_exit_net")
-Signed-off-by: James Chapman <jchapman@katalix.com>
-Link: https://patch.msgid.link/20241118140411.1582555-1-jchapman@katalix.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
+Cc: stable <stable@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411140617.nkjeHhsK-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20241115110021.744332-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ drivers/tty/serial/amba-pl011.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 3eec23ac5ab10..369a2f2e459cd 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1870,15 +1870,31 @@ static __net_exit void l2tp_pre_exit_net(struct net *net)
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1819,10 +1819,12 @@ static void pl011_unthrottle_rx(struct u
+ 
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
++#ifdef CONFIG_DMA_ENGINE
+ 	if (uap->using_rx_dma) {
+ 		uap->dmacr |= UART011_RXDMAE;
+ 		pl011_write(uap->dmacr, uap, REG_DMACR);
  	}
++#endif
+ 
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
  }
- 
-+static int l2tp_idr_item_unexpected(int id, void *p, void *data)
-+{
-+	const char *idr_name = data;
-+
-+	pr_err("l2tp: %s IDR not empty at net %d exit\n", idr_name, id);
-+	WARN_ON_ONCE(1);
-+	return 1;
-+}
-+
- static __net_exit void l2tp_exit_net(struct net *net)
- {
- 	struct l2tp_net *pn = l2tp_pernet(net);
- 
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v2_session_idr));
-+	/* Our per-net IDRs should be empty. Check that is so, to
-+	 * help catch cleanup races or refcnt leaks.
-+	 */
-+	idr_for_each(&pn->l2tp_v2_session_idr, l2tp_idr_item_unexpected,
-+		     "v2_session");
-+	idr_for_each(&pn->l2tp_v3_session_idr, l2tp_idr_item_unexpected,
-+		     "v3_session");
-+	idr_for_each(&pn->l2tp_tunnel_idr, l2tp_idr_item_unexpected,
-+		     "tunnel");
-+
- 	idr_destroy(&pn->l2tp_v2_session_idr);
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v3_session_idr));
- 	idr_destroy(&pn->l2tp_v3_session_idr);
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
- 	idr_destroy(&pn->l2tp_tunnel_idr);
- }
- 
--- 
-2.43.0
-
 
 
 
