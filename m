@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-96498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073E49E2035
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A968E9E2038
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DB3B287A5A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6827B289FB8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5951F754C;
-	Tue,  3 Dec 2024 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7201F757E;
+	Tue,  3 Dec 2024 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7ZSslfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoZ1SOWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0221DE2A1;
-	Tue,  3 Dec 2024 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3DB1F756E;
+	Tue,  3 Dec 2024 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237694; cv=none; b=j6tK+VB1UVQNF8fmbPIB094vzJ1YLsk9U9DV6k0/KXxfCm1sOqqZMkqxgWfPoRoxNvvCoJ1EAPIAJfXtamJXMabtzSkHV8gLsAZmwbZmspwwPDIy31VChmw5mp2yklOymOSRwsyf3j3X7ka/balwDp8h3c9RO3PDPzMC8eAEGX4=
+	t=1733237707; cv=none; b=OC0omF2Z6RCvgG95Py8wocn3igmkUQBdjiV4YhWZFOjLIpYDAlJhalqPM2SvGHZyobxV1Qn2hHcVe3DiGWfFSgN16JgLQ00nSWcf81MTe4eUFuvS0/Ta6TzlV1ufON6HOlQGmUozJtZtkdFVQUbhQKiZNTCcwL6Rt7uEM2o8VA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237694; c=relaxed/simple;
-	bh=UYczaWkkxgewnXL3ry3rTgf6Vrjy73duTuWISZGKaWg=;
+	s=arc-20240116; t=1733237707; c=relaxed/simple;
+	bh=/EisSg5VA81U7NOQYivRZeETjA7lvw2HZU5sOk4T/t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1maQB47Hk+SEreQ72hA5w61RO9+ppQeYIV29t1OGZaJGBVG0PwJKxISe6Z5WSzm5g0RLZe56Jrp27ZNdRInpwupZB/Jk254iHgIfPk74dciTYvNs2WNj0/ySv7b7zwANqbbuWzxrHhqv6jrdmGPUdYXsrmhP/JjlqRJnLv+1Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7ZSslfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDB1C4CED9;
-	Tue,  3 Dec 2024 14:54:53 +0000 (UTC)
+	 MIME-Version; b=DdBPm1BnG6z4S0tpwOikB8sRw8Su78IZGqIBpXoDBUDgZFXnRwyaH7lFh2ODcmN42RO4IpafjwrqbXheLyvID9TzMz/lqhtoeYt0z9i8N2/DobjbnCVsAIUm+KfNkAoG5lC/90rWepN2e1ygegq4dNx6rxGHzfD/e2ygkKaN9bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoZ1SOWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709CBC4CECF;
+	Tue,  3 Dec 2024 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237694;
-	bh=UYczaWkkxgewnXL3ry3rTgf6Vrjy73duTuWISZGKaWg=;
+	s=korg; t=1733237706;
+	bh=/EisSg5VA81U7NOQYivRZeETjA7lvw2HZU5sOk4T/t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7ZSslfZE48QUaXieg1IeHvkLmend3vExVBzyU0pWn0Didombj96T3klhLZjQXdaQ
-	 lrXZIPoMLEi3vOUdpWjEleIIAiSfH07Bhg3DnZUY4lvitOxpsKGD0yLXan+DLAZwvA
-	 D2oOgcmQnVCwwm8PR2S6KtGq5O4HC/Ty4OILCqlo=
+	b=PoZ1SOWxbcoe00rZC3C4SVbY5aA/jRS9tvLHUXFf/pTutsCZHURoZ4Kg0/3unUbso
+	 Zg5yqE+codj+TJyPVn8Yr890iHjdunT+930SEneMEw7vSlO4dmwM0vb/sZa8IDiw9j
+	 GIlrJ2XWn50E/uCd5W+2NR2VRh11chCDqzT5aM4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 044/817] ARM: 9434/1: cfi: Fix compilation corner case
-Date: Tue,  3 Dec 2024 15:33:36 +0100
-Message-ID: <20241203143957.379828243@linuxfoundation.org>
+Subject: [PATCH 6.11 047/817] drm/amd/display: Skip Invalid Streams from DSC Policy
+Date: Tue,  3 Dec 2024 15:33:39 +0100
+Message-ID: <20241203143957.499724170@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,59 +69,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit 4aea16b7cfb76bd3361858ceee6893ef5c9b5570 ]
+[ Upstream commit 9afeda04964281e9f708b92c2a9c4f8a1387b46e ]
 
-When enabling expert mode CONFIG_EXPERT and using that power
-user mode to disable the branch prediction hardening
-!CONFIG_HARDEN_BRANCH_PREDICTOR, the assembly linker
-in CLANG notices that some assembly in proc-v7.S does
-not have corresponding C call sites, i.e. the prototypes
-in proc-v7-bugs.c are enclosed in ifdef
-CONFIG_HARDEN_BRANCH_PREDICTOR so this assembly:
+Streams with invalid new connector state should be elimiated from
+dsc policy.
 
-SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
-SYM_TYPED_FUNC_START(cpu_v7_hvc_switch_mm)
-
-Results in:
-
-ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_smc_switch_mm
->>> referenced by proc-v7.S:94 (.../arch/arm/mm/proc-v7.S:94)
->>> arch/arm/mm/proc-v7.o:(.text+0x108) in archive vmlinux.a
-
-ld.lld: error: undefined symbol: __kcfi_typeid_cpu_v7_hvc_switch_mm
->>> referenced by proc-v7.S:105 (.../arch/arm/mm/proc-v7.S:105)
->>> arch/arm/mm/proc-v7.o:(.text+0x124) in archive vmlinux.a
-
-Fix this by adding an additional requirement that
-CONFIG_HARDEN_BRANCH_PREDICTOR has to be enabled to compile
-these assembly calls.
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202411041456.ZsoEiD7T-lkp@intel.com/
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/proc-v7.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mm/proc-v7.S b/arch/arm/mm/proc-v7.S
-index 5fb9a6aecb001..2cd9333426794 100644
---- a/arch/arm/mm/proc-v7.S
-+++ b/arch/arm/mm/proc-v7.S
-@@ -94,7 +94,7 @@ SYM_TYPED_FUNC_START(cpu_v7_dcache_clean_area)
- 	ret	lr
- SYM_FUNC_END(cpu_v7_dcache_clean_area)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 905c11af01716..0fa922f60ac0a 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1120,6 +1120,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 	int i, k, ret;
+ 	bool debugfs_overwrite = false;
+ 	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
++	struct drm_connector_state *new_conn_state;
  
--#ifdef CONFIG_ARM_PSCI
-+#if defined(CONFIG_ARM_PSCI) && defined(CONFIG_HARDEN_BRANCH_PREDICTOR)
- 	.arch_extension sec
- SYM_TYPED_FUNC_START(cpu_v7_smc_switch_mm)
- 	stmfd	sp!, {r0 - r3}
+ 	memset(params, 0, sizeof(params));
+ 
+@@ -1127,7 +1128,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		return PTR_ERR(mst_state);
+ 
+ 	/* Set up params */
+-	DRM_DEBUG_DRIVER("%s: MST_DSC Set up params for %d streams\n", __func__, dc_state->stream_count);
++	DRM_DEBUG_DRIVER("%s: MST_DSC Try to set up params from %d streams\n", __func__, dc_state->stream_count);
+ 	for (i = 0; i < dc_state->stream_count; i++) {
+ 		struct dc_dsc_policy dsc_policy = {0};
+ 
+@@ -1143,6 +1144,14 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		if (!aconnector->mst_output_port)
+ 			continue;
+ 
++		new_conn_state = drm_atomic_get_new_connector_state(state, &aconnector->base);
++
++		if (!new_conn_state) {
++			DRM_DEBUG_DRIVER("%s:%d MST_DSC Skip the stream 0x%p with invalid new_conn_state\n",
++					__func__, __LINE__, stream);
++			continue;
++		}
++
+ 		stream->timing.flags.DSC = 0;
+ 
+ 		params[count].timing = &stream->timing;
+@@ -1175,6 +1184,8 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		count++;
+ 	}
+ 
++	DRM_DEBUG_DRIVER("%s: MST_DSC Params set up for %d streams\n", __func__, count);
++
+ 	if (count == 0) {
+ 		ASSERT(0);
+ 		return 0;
 -- 
 2.43.0
 
