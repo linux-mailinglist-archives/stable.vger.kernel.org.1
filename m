@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-97884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E9C9E2666
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1153F9E237E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B77F81692D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50EA8168E9B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E461F76AD;
-	Tue,  3 Dec 2024 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B591F76C9;
+	Tue,  3 Dec 2024 15:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kHcuypJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGaDQR8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DBB23CE;
-	Tue,  3 Dec 2024 16:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030701F754A;
+	Tue,  3 Dec 2024 15:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242063; cv=none; b=adGcxjHO8UtnQIZncGF558BiK5EqN19SQPSITeyGxSY5HxfgW/dP9gpyuAfkUJNeDjl4W7VPav6KlkgoWEkv62C1CBPVoOnhhYznYkziHXHi21eIPPWK3+ycJssvuhLrXizSqaYEmKmH1UerNAbI5f+B9Aq76poDgoVfOWRZFco=
+	t=1733239932; cv=none; b=gJAtpo+I4QqgcOvswWmZ0gJTO4x33ok132yhnAQZYYzBMSjhUWvSnKu5zgz0KWtN8knzVkyqqcKlSNO+dj/F8TBxrEoO8EKjROetEJVbe8/SB3Juc3jZCY7Hgn+Aay4ftxxcIee+acwwCN1qnN3bQ3++LJan4TIolcou/OHbTQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242063; c=relaxed/simple;
-	bh=xra+EnQm6SIP/1pLiNTJA7dd4CMzX7ilbsUxZXPTawI=;
+	s=arc-20240116; t=1733239932; c=relaxed/simple;
+	bh=LtxPBs0DiyTl0eA05M0Rqe0BCYtlB6C9NzxMYf0Qv58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aay/UY9RnWO5lNVNBvHnM6sY0ticEZRlwGqTyRbMFK/gOulaxrrCEPFfIhiHGsF8DeAl0sGJwcWy3YykiSF+ViNBB9b9PLwSlF4cqJ6gKa1EdEjqyTjZp07WyJZfbi2xm+WptzLwWpsANG3fhjcq4ohq52+AvU8W4AGp4ic656o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kHcuypJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D8DC4CECF;
-	Tue,  3 Dec 2024 16:07:42 +0000 (UTC)
+	 MIME-Version; b=Fdk06mcNqi24CiZs4lwAaz8Pd7C594yVN7XjQUTJNDPw/e1cjjtpzcMKtbyv0DnrDlwH7wE//SX8wouhPDpsBtadcBu8w38aZeeNHtBNasPQqRhrCZaKQZhzcb4MaGNwoyAzrvu8z97Sc7Joyq/m2i/QyjUguTh7TvGqm4LTVWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGaDQR8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC5DC4CECF;
+	Tue,  3 Dec 2024 15:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242062;
-	bh=xra+EnQm6SIP/1pLiNTJA7dd4CMzX7ilbsUxZXPTawI=;
+	s=korg; t=1733239931;
+	bh=LtxPBs0DiyTl0eA05M0Rqe0BCYtlB6C9NzxMYf0Qv58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1kHcuypJ6f1Cnqj9koHz+nNSlHrCofEuaSh7gd6GjJDlfho2KTlkiLdAVApye3nnS
-	 hVhDz0nIJo45uc9E/Fq2bTFMK4oVaw7ZqBgMyhGgqmkWuLLgUOH2Yw9rykCy+Ff6bx
-	 5R8of/0TkeyKscm9CQwkZL2UUVN8zurvd1qPAqaI=
+	b=zGaDQR8PTljUcSBDz3v8s3mg+0cK7NNqiuVkz65CY0A3AmYYVoaSKrQiM+edyrAFi
+	 +erRCTgzK1Cvm8Gmqp0X+kDW/yb9Bfxxf5siAFveO2w++lPDX1u/nIqhvuSwb55AHC
+	 A4zqUImqD9CU6cuS8HE2/vMj/JpHwGKcYap7aMEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 597/826] usb: gadget: uvc: wake pump everytime we update the free list
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.11 752/817] usb: dwc3: ep0: Dont clear ep0 DWC3_EP_TRANSFER_STARTED
 Date: Tue,  3 Dec 2024 15:45:24 +0100
-Message-ID: <20241203144807.045141249@linuxfoundation.org>
+Message-ID: <20241203144025.350477031@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit adc292d54de9db2e6b8ecb7f81f278bbbaf713e9 ]
+commit 5d2fb074dea289c41f5aaf2c3f68286bee370634 upstream.
 
-Since the req_free list will updated if enqueuing one request was not
-possible it will be added back to the free list. With every available
-free request in the queue it is a valid case for the pump worker to use
-it and continue the pending bufferdata into requests for the req_ready
-list.
+The driver cannot issue the End Transfer command to the SETUP transfer.
+Don't clear DWC3_EP_TRANSFER_STARTED flag to make sure that the driver
+won't send Start Transfer command again, which can cause no-resource
+error. For example this can occur if the host issues a reset to the
+device.
 
-Fixes: 6acba0345b68 ("usb:gadget:uvc Do not use worker thread to pump isoc usb requests")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20240403-uvc_request_length_by_interval-v7-1-e224bb1035f0@pengutronix.de
+Cc: stable@vger.kernel.org
+Fixes: 76cb323f80ac ("usb: dwc3: ep0: clear all EP0 flags")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/d3d618185fd614bb7426352a9fc1199641d3b5f5.1731545781.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/dwc3/ep0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index 57a851151225d..002bf724d8025 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -480,6 +480,10 @@ uvc_video_complete(struct usb_ep *ep, struct usb_request *req)
- 		 * up later.
- 		 */
- 		list_add_tail(&to_queue->list, &video->req_free);
-+		/*
-+		 * There is a new free request - wake up the pump.
-+		 */
-+		queue_work(video->async_wq, &video->pump);
- 	}
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -232,7 +232,7 @@ void dwc3_ep0_stall_and_restart(struct d
+ 	/* stall is always issued on EP0 */
+ 	dep = dwc->eps[0];
+ 	__dwc3_gadget_ep_set_halt(dep, 1, false);
+-	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
++	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED | DWC3_EP_TRANSFER_STARTED;
+ 	dep->flags |= DWC3_EP_ENABLED;
+ 	dwc->delayed_status = false;
  
- 	spin_unlock_irqrestore(&video->req_lock, flags);
--- 
-2.43.0
-
 
 
 
