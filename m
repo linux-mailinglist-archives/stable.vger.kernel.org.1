@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BE39E2374
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FED9E2667
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB25286DEA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF26D28907D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F791F8937;
-	Tue,  3 Dec 2024 15:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195A11F8916;
+	Tue,  3 Dec 2024 16:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxBGCEsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+HrCKUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7034C1F8904;
-	Tue,  3 Dec 2024 15:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3BA1F890B;
+	Tue,  3 Dec 2024 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240002; cv=none; b=P7R+UKI5JJ1fVQT8FTn+q7caAVF8ktrsCcnlFdcsgG0ifAGqWAXxSIcrCDISNWtFdWls0pD+hopz+Vbp8nXMJncf5INPLUxLub/FP+RaDu/aWmVrDtxGsRRaQf+TpnNK75lfuG+OMIyGtxJJaKjF0yIWq6UNMIV6dxaq7UrMEKs=
+	t=1733242374; cv=none; b=ULmk7mkHj+Plk0dtic2b4aw773gaAoxK0lDh0NoQAo4lwkb7fhX0JRhm7gk/ITRFYpZZZKe4cFT5nQijfU9e8SswsE+TRtT9lFMxfOBuSGBkdP+8iXJqTttGZ/1gJzdNG2RaCAlzhyYGUXuqe65Fq04YK6YGWb2sNsSHH5X8Bvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240002; c=relaxed/simple;
-	bh=lMa/mHHPLD4mpmQheRfyj61gmyCSsLMA+hjIuTctc5c=;
+	s=arc-20240116; t=1733242374; c=relaxed/simple;
+	bh=WoncP2PjtgBYuEyXP7OL/rG9qKKHuO5b2KbtyccP7oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKhcRvYccksHIoTaqEhqcY1+Fnx61I0/VK2/grqLIgSNM9wr10C93+1pXdBWMBLjL6fGVYxvWqU8Pu4HnhXCGdW8HU/9oxZTWbkUvoAz19cO4Vz1AmUuqMTOOciPSD8axrB5bTeiL37qfyv2I2fWgRa2mTbay2cNAHnThZutpVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxBGCEsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38FAC4CED6;
-	Tue,  3 Dec 2024 15:33:20 +0000 (UTC)
+	 MIME-Version; b=UslW2TxLX69+8pYXfPc83S80g/Ca5YmdXum+tyDiCnluNgf1mS12H7KNtdltiownnVwOjfYsa7DoJKLf4iI0TqhcYNz6lhOSwOSyGasOdKalZF85ZAkAewSMJDnuPRmPr2ihtuByg641koBB5t5/jlzZhGT2IrCj/rtuhhwKgZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+HrCKUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C4BC4CECF;
+	Tue,  3 Dec 2024 16:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240001;
-	bh=lMa/mHHPLD4mpmQheRfyj61gmyCSsLMA+hjIuTctc5c=;
+	s=korg; t=1733242374;
+	bh=WoncP2PjtgBYuEyXP7OL/rG9qKKHuO5b2KbtyccP7oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxBGCEshGfoIyrdGIm+O5NMmPqiHDKnArw9oY1Ba20nzBdfalOtyuh73fLpTIl/wA
-	 hsKxRma9tbpNI1lfpkfRSzKHvLMJzhREOxiAslTynHBtIko0VoxUR2BTVEPPpDNwAv
-	 rEzfoDkCHgGpxyq2BQyM2+Nl7+dqProkPiLZ3dYI=
+	b=g+HrCKUTtO1Sd35a0XmDanE5L7x8jNoZMgeuiVDmDrxnd/iabtEPY5SbbEVvjNHng
+	 wG+xCQPLGTH67mV6KZdCIB3viJOewBSTJC4yq/VL8ad3NOJx4oUcsWLbypVwp7kw/V
+	 /k4RVYtDUx2HsORRQFslGZPqXjYrwkAbnolCwLDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 807/817] SUNRPC: timeout and cancel TLS handshake with -ETIMEDOUT
+	Shusen Li <lishusen2@huawei.com>,
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 652/826] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
 Date: Tue,  3 Dec 2024 15:46:19 +0100
-Message-ID: <20241203144027.953387755@linuxfoundation.org>
+Message-ID: <20241203144809.187208274@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-[ Upstream commit d7bdd849ef1b681da03ac05ca0957b2cbe2d24b6 ]
+commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
 
-We've noticed a situation where an unstable TCP connection can cause the
-TLS handshake to timeout waiting for userspace to complete it.  When this
-happens, we don't want to return from xs_tls_handshake_sync() with zero, as
-this will cause the upper xprt to be set CONNECTED, and subsequent attempts
-to transmit will be returned with -EPIPE.  The sunrpc machine does not
-recover from this situation and will spin attempting to transmit.
+vgic_its_save_device_tables will traverse its->device_list to
+save DTE for each device. vgic_its_restore_device_tables will
+traverse each entry of device table and check if it is valid.
+Restore if valid.
 
-The return value of tls_handshake_cancel() can be used to detect a race
-with completion:
+But when MAPD unmaps a device, it does not invalidate the
+corresponding DTE. In the scenario of continuous saves
+and restores, there may be a situation where a device's DTE
+is not saved but is restored. This is unreasonable and may
+cause restore to fail. This patch clears the corresponding
+DTE when MAPD unmaps a device.
 
- * tls_handshake_cancel - cancel a pending handshake
- * Return values:
- *   %true - Uncompleted handshake request was canceled
- *   %false - Handshake request already completed or not found
-
-If true, we do not want the upper xprt to be connected, so return
--ETIMEDOUT.  If false, its possible the handshake request was lost and
-that may be the reason for our timeout.  Again we do not want the upper
-xprt to be connected, so return -ETIMEDOUT.
-
-Ensure that we alway return an error from xs_tls_handshake_sync() if we
-call tls_handshake_cancel().
-
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
+Co-developed-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtsock.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 539cdda2093e5..43fb96de8ebe5 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2615,11 +2615,10 @@ static int xs_tls_handshake_sync(struct rpc_xprt *lower_xprt, struct xprtsec_par
- 	rc = wait_for_completion_interruptible_timeout(&lower_transport->handshake_done,
- 						       XS_TLS_HANDSHAKE_TO);
- 	if (rc <= 0) {
--		if (!tls_handshake_cancel(sk)) {
--			if (rc == 0)
--				rc = -ETIMEDOUT;
--			goto out_put_xprt;
--		}
-+		tls_handshake_cancel(sk);
-+		if (rc == 0)
-+			rc = -ETIMEDOUT;
-+		goto out_put_xprt;
- 	}
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1143,9 +1143,11 @@ static int vgic_its_cmd_handle_mapd(stru
+ 	bool valid = its_cmd_get_validbit(its_cmd);
+ 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+ 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
++	int dte_esz = vgic_its_get_abi(its)->dte_esz;
+ 	struct its_device *device;
++	gpa_t gpa;
  
- 	rc = lower_transport->xprt_err;
--- 
-2.43.0
-
+-	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
++	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
+ 		return E_ITS_MAPD_DEVICE_OOR;
+ 
+ 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+@@ -1166,7 +1168,7 @@ static int vgic_its_cmd_handle_mapd(stru
+ 	 * is an error, so we are done in any case.
+ 	 */
+ 	if (!valid)
+-		return 0;
++		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
+ 
+ 	device = vgic_its_alloc_device(its, device_id, itt_addr,
+ 				       num_eventid_bits);
 
 
 
