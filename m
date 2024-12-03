@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-97085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C49E22D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEAD9E22EA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F7D16A85E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1964716C1DA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF77C1F7071;
-	Tue,  3 Dec 2024 15:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181EE1F76C3;
+	Tue,  3 Dec 2024 15:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qkt37su+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnF3aQX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0D1F130F;
-	Tue,  3 Dec 2024 15:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90A11F76BB;
+	Tue,  3 Dec 2024 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239477; cv=none; b=ltxO1PscL6u1RVmXZm1RKeuXbOaEGiWVF6nRu27vbcKEHVh6Ig1rFHBiQsQ3fAzF4M7dxRyCHX3J2xKfoagPy2hK4auIr4zlE9y05FiJ61zyHhU/h3EGXHKqJEoDc+KTeNxhpCtOshFqo1Ai/a6IkUfTmR8733vKmX9ivrGEo7k=
+	t=1733239524; cv=none; b=Upe47fbdFuI5kbYSSNHl2iEtWFPa3nTC4YfQ7e0+3KOja4COEhVdHujJfdiOjjIwRrB+aPfReIJW/fSo5d7lOmyZtme51jUEwsfWKuARRPszvG+KOqjQQEDPZ9OrP2Rl1O6NpUtpXq3JWSTQKBZwoAVOYl/cla3RwVDrSaqv+co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239477; c=relaxed/simple;
-	bh=ZOu2HwgyzZuecw1wcnhTdI9J61BKsMc4m3s/7eumG10=;
+	s=arc-20240116; t=1733239524; c=relaxed/simple;
+	bh=qh0M576BUHbnsivdoPgXZF5it63wYmDbmOuurBxOoMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAtpNxcduNCXo1EiKq1REVsr9iRb/HkZdkTRiYnrSD2bZBpUf2A3WDVk3rhoAJHb2KXdfp2Kbtc8k3J427dVA73mfevDIzuopDBG9eKJDr6f6F8bVU0Fkoqhx6upZQ+zejcqiPy9jWftLKPASydrz69rx+HQ1fydpK9/RbCIBWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qkt37su+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8B1C4CECF;
-	Tue,  3 Dec 2024 15:24:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QE88oVCwY9iXHGDcYY7sWI71Q6W1y4E/PUySQ0eWnk9rCLHE9PmnWOoJ6k5nKqN0XBJys0FX51B1Si84kf/OQ/tZJENspjaYIQURy1lRhpJ6UtlNfGu3X8v78dLPgzF4yFdV7r1HmpCh16GKEjpgHOEGw92wRPDx0wHQdpDKt2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnF3aQX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507E2C4CED6;
+	Tue,  3 Dec 2024 15:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239477;
-	bh=ZOu2HwgyzZuecw1wcnhTdI9J61BKsMc4m3s/7eumG10=;
+	s=korg; t=1733239524;
+	bh=qh0M576BUHbnsivdoPgXZF5it63wYmDbmOuurBxOoMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qkt37su+jaQsBtV5TKCGEv76SU3GlmwoxqPFvt3IRReulGv9/3uAOG9ZhskN3d9TW
-	 3hpYyLWY+ev58EojjH9ifbGUUVNIUMc1viVKCvu/oAs69GEisJWckQNXCxfi05nJcf
-	 gpoSJazrDenmuV+lqKdw7O6be9u+D+8LVnwJ9cgg=
+	b=xnF3aQX3NVctEDSh/cc8hrv22s9SozEwyiv9RrKjrP1OgQGGp1OOUJwOH0lcwL6a3
+	 8v36pIVPmEvVQDruvJN17B4s4xNTMTHD1walc3x2teIlv4+AZj9badJBtD7/29kOgI
+	 Bj3N4rWe3ya13nCHDBd0AYfi3r6jy2nXmdhHY7ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Carl Vanderlip <quic_carlv@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Mayank Rana <quic_mrana@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Russ Weight <russ.weight@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 610/817] bus: mhi: host: Switch trace_mhi_gen_tre fields to native endian
-Date: Tue,  3 Dec 2024 15:43:02 +0100
-Message-ID: <20241203144019.743391464@linuxfoundation.org>
+Subject: [PATCH 6.11 612/817] firmware_loader: Fix possible resource leak in fw_log_firmware_info()
+Date: Tue,  3 Dec 2024 15:43:04 +0100
+Message-ID: <20241203144019.822730613@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -63,101 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carl Vanderlip <quic_carlv@quicinc.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 23388a1b305e8aac714fafd5fdc72a580586bd0c ]
+[ Upstream commit 369a9c046c2fdfe037f05b43b84c386bdbccc103 ]
 
-Each of the __field() macros were triggering sparse warnings similar to:
-trace.h:87:1: sparse: sparse: cast to restricted __le64
-trace.h:87:1: sparse: sparse: restricted __le64 degrades to integer
-trace.h:87:1: sparse: sparse: restricted __le64 degrades to integer
+The alg instance should be released under the exception path, otherwise
+there may be resource leak here.
 
-Change each little endian type to its similarly sized native integer.
-Convert inputs into native endian.
+To mitigate this, free the alg instance with crypto_free_shash when kmalloc
+fails.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402071859.8qMhgJEQ-lkp@intel.com/
-Fixes: ceeb64f41fe6 ("bus: mhi: host: Add tracing support")
-Signed-off-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Mayank Rana <quic_mrana@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241004170321.4047492-1-quic_carlv@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 02fe26f25325 ("firmware_loader: Add debug message with checksum for FW file")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Russ Weight <russ.weight@linux.dev>
+Link: https://lore.kernel.org/r/20241016110335.3677924-1-cuigaosheng1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/trace.h | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/base/firmware_loader/main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/mhi/host/trace.h b/drivers/bus/mhi/host/trace.h
-index 95613c8ebe069..3e0c41777429e 100644
---- a/drivers/bus/mhi/host/trace.h
-+++ b/drivers/bus/mhi/host/trace.h
-@@ -9,6 +9,7 @@
- #if !defined(_TRACE_EVENT_MHI_HOST_H) || defined(TRACE_HEADER_MULTI_READ)
- #define _TRACE_EVENT_MHI_HOST_H
+diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+index 324a9a3c087aa..c6664a7879697 100644
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -829,19 +829,18 @@ static void fw_log_firmware_info(const struct firmware *fw, const char *name, st
+ 	shash->tfm = alg;
  
-+#include <linux/byteorder/generic.h>
- #include <linux/tracepoint.h>
- #include <linux/trace_seq.h>
- #include "../common.h"
-@@ -97,18 +98,18 @@ TRACE_EVENT(mhi_gen_tre,
- 		__string(name, mhi_cntrl->mhi_dev->name)
- 		__field(int, ch_num)
- 		__field(void *, wp)
--		__field(__le64, tre_ptr)
--		__field(__le32, dword0)
--		__field(__le32, dword1)
-+		__field(uint64_t, tre_ptr)
-+		__field(uint32_t, dword0)
-+		__field(uint32_t, dword1)
- 	),
+ 	if (crypto_shash_digest(shash, fw->data, fw->size, sha256buf) < 0)
+-		goto out_shash;
++		goto out_free;
  
- 	TP_fast_assign(
- 		__assign_str(name);
- 		__entry->ch_num = mhi_chan->chan;
- 		__entry->wp = mhi_tre;
--		__entry->tre_ptr = mhi_tre->ptr;
--		__entry->dword0 = mhi_tre->dword[0];
--		__entry->dword1 = mhi_tre->dword[1];
-+		__entry->tre_ptr = le64_to_cpu(mhi_tre->ptr);
-+		__entry->dword0 = le32_to_cpu(mhi_tre->dword[0]);
-+		__entry->dword1 = le32_to_cpu(mhi_tre->dword[1]);
- 	),
+ 	for (int i = 0; i < SHA256_DIGEST_SIZE; i++)
+ 		sprintf(&outbuf[i * 2], "%02x", sha256buf[i]);
+ 	outbuf[SHA256_BLOCK_SIZE] = 0;
+ 	dev_dbg(device, "Loaded FW: %s, sha256: %s\n", name, outbuf);
  
- 	TP_printk("%s: Chan: %d TRE: 0x%p TRE buf: 0x%llx DWORD0: 0x%08x DWORD1: 0x%08x\n",
-@@ -176,19 +177,19 @@ DECLARE_EVENT_CLASS(mhi_process_event_ring,
- 
- 	TP_STRUCT__entry(
- 		__string(name, mhi_cntrl->mhi_dev->name)
--		__field(__le32, dword0)
--		__field(__le32, dword1)
-+		__field(uint32_t, dword0)
-+		__field(uint32_t, dword1)
- 		__field(int, state)
--		__field(__le64, ptr)
-+		__field(uint64_t, ptr)
- 		__field(void *, rp)
- 	),
- 
- 	TP_fast_assign(
- 		__assign_str(name);
- 		__entry->rp = rp;
--		__entry->ptr = rp->ptr;
--		__entry->dword0 = rp->dword[0];
--		__entry->dword1 = rp->dword[1];
-+		__entry->ptr = le64_to_cpu(rp->ptr);
-+		__entry->dword0 = le32_to_cpu(rp->dword[0]);
-+		__entry->dword1 = le32_to_cpu(rp->dword[1]);
- 		__entry->state = MHI_TRE_GET_EV_STATE(rp);
- 	),
- 
+-out_shash:
+-	crypto_free_shash(alg);
+ out_free:
+ 	kfree(shash);
+ 	kfree(outbuf);
+ 	kfree(sha256buf);
++	crypto_free_shash(alg);
+ }
+ #else
+ static void fw_log_firmware_info(const struct firmware *fw, const char *name,
 -- 
 2.43.0
 
