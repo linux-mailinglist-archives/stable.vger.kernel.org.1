@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-97733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47DB9E2A4A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3FA9E2ACF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48AA7BE4864
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0766B32F12
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00D21F76C6;
-	Tue,  3 Dec 2024 15:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0745A1F76BE;
+	Tue,  3 Dec 2024 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVVkbpT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ublVlR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECA11F76AD;
-	Tue,  3 Dec 2024 15:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66751F8928;
+	Tue,  3 Dec 2024 15:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241551; cv=none; b=s4p0rSkvRHwqRJYAym1Qy0LIjym+XD3nhLPC6DdLUIPSKUqvT9SDrXBm8nIoq4xg5pvXZ65wYBmTpBCo7ZGQC+veIDKXZ/1IOTLA8K9jJSjTCWjKHJLmOzWslWhKMkcb5yxg0jataHkbx8qGRpSrxilRhY6iHzuHe64Y33y8qBE=
+	t=1733241525; cv=none; b=hI/5ej9D4IGTDJv+IytdspjiLDKNLbNw06fSxilrGnglAmb+Ll5jLnOfUJaBZCpICNsUHxuFOAh80EaJAuv5nPtHfK40tz8XkSygv6xgqSQTBmHC93vjfe+4CL98e5vMXPKt0s2V9sZBeyWUGgGtB3MHemcT9lRosAuNlhqL3PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241551; c=relaxed/simple;
-	bh=2pcbLMwS/ywUH6BG88CNXMOpnr1V3FhQ07B3Cz5QXH8=;
+	s=arc-20240116; t=1733241525; c=relaxed/simple;
+	bh=anm7Q1qTF7s27tXR9zP6HVZ7dXoXg5uNQXzlsZ42xec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fR+euMeU8XrW859SEoEczaMMkSpsZ4Q/68j4QyhpKYFHkU/7jdqDYQmXUxcX7Ok2SF+pr/TRYvPArAnUwT5iMudXZaRu3J7oAjXuj4EOlxPRUez8XIOssvgqtcBDeCclyf8l1juMPgtD47II4c/sr+jL5Rlm8kCnH6MvfC2/iy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVVkbpT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1059C4CECF;
-	Tue,  3 Dec 2024 15:59:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bV3hNrJT5ffT5SCjf2EzFaSSIlzjKHqWzL29jWk6b/ZrG9Y/6/ubwzf4XxVAzy8qEep0bZR+PkOzxCGFNiiwhm5okX4PlsIVciRDsoavG9zRDMsCeOGnD6Tuqk2vgwkoiQ4uHwxI6W7zfFHePh3z7ZALx6SDbBD8VXKGSxyq6oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ublVlR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91C0C4CED6;
+	Tue,  3 Dec 2024 15:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241551;
-	bh=2pcbLMwS/ywUH6BG88CNXMOpnr1V3FhQ07B3Cz5QXH8=;
+	s=korg; t=1733241525;
+	bh=anm7Q1qTF7s27tXR9zP6HVZ7dXoXg5uNQXzlsZ42xec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVVkbpT/h+tKuRoAtDz95pZ6ftnFci5X0Ix+Zwo50wSbZdRrwxmzHNtjkTCJe630/
-	 ZDpROLheTxtoVzhCk+1HikkaFYDVeL1Ro9x3JdBpVPNMq2dtWJQeDdF+rnq41rya6w
-	 kFk+MI0P0j2gFPgkvpM3lDKGjtNdpXsqSZa+zopE=
+	b=2ublVlR6VPkIMGgqzUkRfr9KhbzsNel/EjixUJ2/+yGnK/2HJ7b6lTqcET+RuBCk9
+	 /+AnMrUwgWC3EZ+vOemNdpFqMifhtlZqC/Vd8EqJTwY64l9O5QIy0Dep6pptZDPOsu
+	 qVcfGhGhpTN7obufFDp7nvvOWrJ4NxZblp/dLciM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Joe Perches <joe@perches.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Philippe Schenker <philippe.schenker@toradex.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/826] clk: imx: clk-scu: fix clk enable state save and restore
-Date: Tue,  3 Dec 2024 15:42:15 +0100
-Message-ID: <20241203144759.677598733@linuxfoundation.org>
+Subject: [PATCH 6.12 412/826] checkpatch: always parse orig_commit in fixes tag
+Date: Tue,  3 Dec 2024 15:42:19 +0100
+Message-ID: <20241203144759.832203632@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -62,49 +68,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Aisheng <aisheng.dong@nxp.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-[ Upstream commit e81361f6cf9bf4a1848b0813bc4becb2250870b8 ]
+[ Upstream commit 2f07b652384969f5d0b317e1daa5f2eb967bc73d ]
 
-The scu clk_ops only inplements prepare() and unprepare() callback.
-Saving the clock state during suspend by checking clk_hw_is_enabled()
-is not safe as it's possible that some device drivers may only
-disable the clocks without unprepare. Then the state retention will not
-work for such clocks.
+Do not require the presence of `$balanced_parens` to get the commit SHA;
+this allows a `Fixes: deadbeef` tag to get a correct suggestion rather
+than a suggestion containing a reference to HEAD.
 
-Fixing it by checking clk_hw_is_prepared() which is more reasonable
-and safe.
+Given this patch:
 
-Fixes: d0409631f466 ("clk: imx: scu: add suspend/resume support")
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Tested-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-4-89152574d1d7@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+: From: Tamir Duberstein <tamird@gmail.com>
+: Subject: Test patch
+: Date: Fri, 25 Oct 2024 19:30:51 -0400
+:
+: This is a test patch.
+:
+: Fixes: bd17e036b495
+: Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+: --- /dev/null
+: +++ b/new-file
+: @@ -0,0 +1 @@
+: +Test.
+
+Before:
+
+WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: c10a7d25e68f ("Test patch")'
+
+After:
+
+WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")'
+
+The prior behavior incorrectly suggested the patch's own SHA and title
+line rather than the referenced commit's.  This fixes that.
+
+Ironically this:
+
+Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Cc: Andy Whitcroft <apw@canonical.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Joe Perches <joe@perches.com>
+Cc: Louis Peens <louis.peens@corigine.com>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Cc: Philippe Schenker <philippe.schenker@toradex.com>
+Cc: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-scu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/checkpatch.pl | 37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index b1dd0c08e091b..b27186aaf2a15 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -596,7 +596,7 @@ static int __maybe_unused imx_clk_scu_suspend(struct device *dev)
- 		clk->rate = clk_scu_recalc_rate(&clk->hw, 0);
- 	else
- 		clk->rate = clk_hw_get_rate(&clk->hw);
--	clk->is_enabled = clk_hw_is_enabled(&clk->hw);
-+	clk->is_enabled = clk_hw_is_prepared(&clk->hw);
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 4427572b24771..b03d526e4c454 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3209,36 +3209,31 @@ sub process {
  
- 	if (clk->parent)
- 		dev_dbg(dev, "save parent %s idx %u\n", clk_hw_get_name(clk->parent),
+ # Check Fixes: styles is correct
+ 		if (!$in_header_lines &&
+-		    $line =~ /^\s*fixes:?\s*(?:commit\s*)?[0-9a-f]{5,}\b/i) {
+-			my $orig_commit = "";
+-			my $id = "0123456789ab";
+-			my $title = "commit title";
+-			my $tag_case = 1;
+-			my $tag_space = 1;
+-			my $id_length = 1;
+-			my $id_case = 1;
++		    $line =~ /^\s*(fixes:?)\s*(?:commit\s*)?([0-9a-f]{5,40})(?:\s*($balanced_parens))?/i) {
++			my $tag = $1;
++			my $orig_commit = $2;
++			my $title;
+ 			my $title_has_quotes = 0;
+ 			$fixes_tag = 1;
+-
+-			if ($line =~ /(\s*fixes:?)\s+([0-9a-f]{5,})\s+($balanced_parens)/i) {
+-				my $tag = $1;
+-				$orig_commit = $2;
+-				$title = $3;
+-
+-				$tag_case = 0 if $tag eq "Fixes:";
+-				$tag_space = 0 if ($line =~ /^fixes:? [0-9a-f]{5,} ($balanced_parens)/i);
+-
+-				$id_length = 0 if ($orig_commit =~ /^[0-9a-f]{12}$/i);
+-				$id_case = 0 if ($orig_commit !~ /[A-F]/);
+-
++			if (defined $3) {
+ 				# Always strip leading/trailing parens then double quotes if existing
+-				$title = substr($title, 1, -1);
++				$title = substr($3, 1, -1);
+ 				if ($title =~ /^".*"$/) {
+ 					$title = substr($title, 1, -1);
+ 					$title_has_quotes = 1;
+ 				}
++			} else {
++				$title = "commit title"
+ 			}
+ 
++
++			my $tag_case = not ($tag eq "Fixes:");
++			my $tag_space = not ($line =~ /^fixes:? [0-9a-f]{5,40} ($balanced_parens)/i);
++
++			my $id_length = not ($orig_commit =~ /^[0-9a-f]{12}$/i);
++			my $id_case = not ($orig_commit !~ /[A-F]/);
++
++			my $id = "0123456789ab";
+ 			my ($cid, $ctitle) = git_commit_info($orig_commit, $id,
+ 							     $title);
+ 
 -- 
 2.43.0
 
