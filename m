@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-97871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066BB9E265F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D80D9E22CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9512616C3D8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42BC02868C8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8BD1F8926;
-	Tue,  3 Dec 2024 16:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880DC1F8902;
+	Tue,  3 Dec 2024 15:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcA6T/yZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKApj8pM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9FF1F891C;
-	Tue,  3 Dec 2024 16:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B47D1F76D9;
+	Tue,  3 Dec 2024 15:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242018; cv=none; b=isd4ncDkAe7CY4PK8uapla2Wc7g8VU2VpqdkaDB1n9uVd5uI3zMDUJk1ei9isuE62O2ps9T0gQoDtiqOaU75sFckE9Sqd/bgBU2NGe6CYVlCmzvZjhfsDGmljjSZZEuZyVxweDIhQ4iVOjxFLe0A7lTbGlw9fYDOKIA/QLjGfiU=
+	t=1733239713; cv=none; b=Yg9+gHJRvn+r/YYajWZKaZ04rvd0c5CpRSM45bmFLjM2rzFi/rjkZDJFRcxa4smbyfujKdo55M8GbSflJ96iRZRPqbV+LkKwdwfpvSl3jt0m2zf1I+jBiVFbt/9GVfSFsBbA5NlDE3VQ/KmbDPvhtSysqzpeDqkA3fsYhWU/M24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242018; c=relaxed/simple;
-	bh=DBLD4k5hJAS/cQzOaAbGNIQwdMwtDdA39/ufYjDiEvg=;
+	s=arc-20240116; t=1733239713; c=relaxed/simple;
+	bh=ovkFelU5ByJE1dtBwQtlm7wo7bS8nYVihmFpPmNipPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bd9rRq6eUjiduQrEskGqIUQ7qRRGd0DeNJZ40QV9GCamUwrnRImnHtCw1Opnsp9EtE7fwXsEcFnRY9urrBH5eEYHpuFgE5hLt+HtHufJyxJTl9RHS2f76vjYvLHv4b/Wgj/M85zKXvevTJB7g4/Je3UBVx+ugPAq0m6P+0MCEI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcA6T/yZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A168BC4CECF;
-	Tue,  3 Dec 2024 16:06:57 +0000 (UTC)
+	 MIME-Version; b=pT7MIaHEmQCF7II7dLY6X46/k28jGKXqkaTMBFVTL1W+crxT88h97HTvnEh1Zssx1Xr/EBzwYU/U8wenpkXCgANNwxrtMnPhgVMj+upJ8rMS1HtjKK1M2CgBvleEZmZGYL3IbZNacLx6+fxQngFZknxL9wnJ3zySVpItExkN/WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKApj8pM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8930C4CED8;
+	Tue,  3 Dec 2024 15:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242018;
-	bh=DBLD4k5hJAS/cQzOaAbGNIQwdMwtDdA39/ufYjDiEvg=;
+	s=korg; t=1733239713;
+	bh=ovkFelU5ByJE1dtBwQtlm7wo7bS8nYVihmFpPmNipPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcA6T/yZ7TD0nSxcEuuLTE62E+7KtEpT4T05Lesv74LxB2zEppfbiGFqvwccKKxj5
-	 CHi3kr1zzIuY3z5S9jQ86EQqUNfd61cTnPI4s6VFlfoq8yOBJsVfrmshiH3qV+OcrS
-	 ElokMQtqmEElKT7tAOMpCDKEV1O/W5+6jDxP2s18=
+	b=EKApj8pMZ3t3miNn1jOVFk0tqM0aXDA6tvzrrew38Cew8DnFxAgKWsxmARjOEBcvJ
+	 jL74Shd08yaNvJkvFka1jntw3FtAMo9Wy/mUl1QKFanNC57Y7KWLUE8TUejLgDzwEc
+	 OaOFg0ZwIfbLhR8bwDGrVT9hfw2JWXOmqpqpikOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 552/826] fs/ntfs3: Equivalent transition from page to folio
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.11 707/817] platform/chrome: cros_ec_typec: fix missing fwnode reference decrement
 Date: Tue,  3 Dec 2024 15:44:39 +0100
-Message-ID: <20241203144805.282250224@linuxfoundation.org>
+Message-ID: <20241203144023.579711753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 045fff619312fb013540c80cff18aab3c33048ab ]
+commit 9c41f371457bd9a24874e3c7934d9745e87fbc58 upstream.
 
-If using the proposed function folio_zero_range(), should one switch
-from 'start + end' to 'start + length,' or use folio_zero_segment()
+The device_for_each_child_node() macro requires explicit calls to
+fwnode_handle_put() upon early exits (return, break, goto) to decrement
+the fwnode's refcount, and avoid levaing a node reference behind.
 
-Fixes: 1da86618bdce ("fs: Convert aops->write_begin to take a folio")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing fwnode_handle_put() after the common label for all error
+paths.
+
+Cc: stable@vger.kernel.org
+Fixes: fdc6b21e2444 ("platform/chrome: Add Type C connector class driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241013-cross_ec_typec_fwnode_handle_put-v2-1-9182b2cd7767@gmail.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/chrome/cros_ec_typec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index e370eaf9bfe2e..f704ceef95394 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -222,7 +222,7 @@ static int ntfs_extend_initialized_size(struct file *file,
- 		if (err)
- 			goto out;
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -409,6 +409,7 @@ static int cros_typec_init_ports(struct
+ 	return 0;
  
--		folio_zero_range(folio, zerofrom, folio_size(folio));
-+		folio_zero_range(folio, zerofrom, folio_size(folio) - zerofrom);
- 
- 		err = ntfs_write_end(file, mapping, pos, len, len, folio, NULL);
- 		if (err < 0)
--- 
-2.43.0
-
+ unregister_ports:
++	fwnode_handle_put(fwnode);
+ 	cros_unregister_ports(typec);
+ 	return ret;
+ }
 
 
 
