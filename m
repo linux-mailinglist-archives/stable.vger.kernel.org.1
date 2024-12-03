@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709F79E2379
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F149E2668
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36BDA286ECD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50E55289046
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543901F76BF;
-	Tue,  3 Dec 2024 15:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9791F890B;
+	Tue,  3 Dec 2024 16:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzXClzLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQYFPIUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E42E1F756A;
-	Tue,  3 Dec 2024 15:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E721F76BF;
+	Tue,  3 Dec 2024 16:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240010; cv=none; b=IRqeQKfYNOlJuv4ed64iIPlmbMbnSNp1pHpJSPADYCh4KK+hmomNvrI6tItkyJAMIhUOb1eiACvD9BPBLYS4Of4BLDeHqAHWB1Q/IX554cafBXM7AHwqCP56zwkUfdot0dNFLmq/nOuAAMFA0G9YTOpdlhKKLfuF0JVkY3+epsY=
+	t=1733242381; cv=none; b=RkwcVEIAN6jgotMl+JiAfg3GJZYaL7JRkOx0n8gwldHiMz3TX77NdCmRPInhrfpXrNWfC1qYOP4lS8R0PEr9rW9IR/+dFQ5ItY8dQIbW9+EhXhBixvUUE/sVi/SDgcf9DeDRyQL3qShMJORtN4jLgcEhS/7Neqh3696vAuyxMe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240010; c=relaxed/simple;
-	bh=0fwlhmVTpvtyJEtYUgFtHxhI4IMWcrvYEtEdkEKJdBY=;
+	s=arc-20240116; t=1733242381; c=relaxed/simple;
+	bh=vVCquukYal775Kga0bwgh6ERbWNMH++hDb44nLa6mrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfHN0HacbzFcEsI5QxBkLGIkLIcFc4lD0a9Ima+jAuIoR9jRMEbs7mQkG40pLpiA+Y0QU5EYboJKXTK/L5GH0La5aw1xQwiE0HJZFxzFqUktg1CdGn2vXa5cOfWizxI40hHjU96LnxTZEAcYst4slSNRC9JRplJvuOOIhnyIqpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzXClzLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC41C4CED6;
-	Tue,  3 Dec 2024 15:33:29 +0000 (UTC)
+	 MIME-Version; b=ccz+7er1fSd6mdTQ2kXAKp2F0wFaQKQdVPqL8YOzvIie2BoIKky8tQQnF5gv5u9XOpiPMvpYiDsM7yPP8WJ/kIeNu13S8cLRqtr6fclbsK7XJ6uQ4FgeRLIQyc7b0DvDXiK+oSS1ul9jBbck2J9b0K/dtsRTzycLFNYtTNEzhnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQYFPIUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30147C4CECF;
+	Tue,  3 Dec 2024 16:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240009;
-	bh=0fwlhmVTpvtyJEtYUgFtHxhI4IMWcrvYEtEdkEKJdBY=;
+	s=korg; t=1733242381;
+	bh=vVCquukYal775Kga0bwgh6ERbWNMH++hDb44nLa6mrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzXClzLKPsepPx1l8F5uNj/bBScB8yTm3isUL374No1wjKIz+BoX6A5i2zYvCt4ML
-	 AiWxlIXwcoBArqHDz//ngxBQDO2RSuOWVtv/pw71qFdeEGe5bbm+DFqTW5JssMZfN0
-	 y6bbKw2z4H9NUL2kNcW3wwvNX/SeO3Awxs0eRtcw=
+	b=pQYFPIURjgFSulgxzh0w8LPaPm/Yv+vHNoOHSznVmfdyJ3RwGjH9VQhRO7Y05TCI8
+	 GqTkNOvtUxMtyb3QE1Ppta/PpabDZ7vjmNDDhmttoL8oE7/d4FjQvEAeHXxg/bSSxm
+	 a4eGhTog4jPpMaUVMEw7b+V7JXIkRYtI+ei37O4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 809/817] nfs/blocklayout: Dont attempt unregister for invalid block device
+	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 654/826] PCI: Fix use-after-free of slot->bus on hot remove
 Date: Tue,  3 Dec 2024 15:46:21 +0100
-Message-ID: <20241203144028.030684217@linuxfoundation.org>
+Message-ID: <20241203144809.266529939@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 3a4ce14d9a6b868e0787e4582420b721c04ee41e ]
+commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
 
-Since commit d869da91cccb ("nfs/blocklayout: Fix premature PR key
-unregistration") an unmount of a pNFS SCSI layout-enabled NFS may
-dereference a NULL block_device in:
+Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
 
-  bl_unregister_scsi+0x16/0xe0 [blocklayoutdriver]
-  bl_free_device+0x70/0x80 [blocklayoutdriver]
-  bl_free_deviceid_node+0x12/0x30 [blocklayoutdriver]
-  nfs4_put_deviceid_node+0x60/0xc0 [nfsv4]
-  nfs4_deviceid_purge_client+0x132/0x190 [nfsv4]
-  unset_pnfs_layoutdriver+0x59/0x60 [nfsv4]
-  nfs4_destroy_server+0x36/0x70 [nfsv4]
-  nfs_free_server+0x23/0xe0 [nfs]
-  deactivate_locked_super+0x30/0xb0
-  cleanup_mnt+0xba/0x150
-  task_work_run+0x59/0x90
-  syscall_exit_to_user_mode+0x217/0x220
-  do_syscall_64+0x8e/0x160
+Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
+commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
+firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
+thunderbolt driver.
 
-This happens because even though we were able to create the
-nfs4_deviceid_node, the lookup for the device was unable to attach the
-block device to the pnfs_block_dev.
+The reset clears the Presence Detect State and Data Link Layer Link Active
+bits at the USB4 Host Router's Root Port and thus causes hot removal of the
+dock.
 
-If we never found a block device to register, we can avoid this case with
-the PNFS_BDEV_REGISTERED flag.  Move the deref behind the test for the
-flag.
+The crash occurs when pciehp is unbound from one of the dock's Downstream
+Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
+pci_slot contains a pointer to the pci_bus below the Downstream Port, but
+a reference on that pci_bus is never acquired.  The pci_bus is destroyed
+before the pci_slot, so a use-after-free ensues when pci_slot_release()
+accesses slot->bus.
 
-Fixes: d869da91cccb ("nfs/blocklayout: Fix premature PR key unregistration")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In principle this should not happen because pci_stop_bus_device() unbinds
+pciehp (and therefore destroys the pci_slot) before the pci_bus is
+destroyed by pci_remove_bus_device().
+
+However the stacktrace provided by Dennis shows that pciehp is unbound from
+pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
+the significance of this, one needs to know that the PCI core uses a two
+step process to remove a portion of the hierarchy:  It first unbinds all
+drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
+removes the devices in pci_remove_bus_device().  There is no precaution to
+prevent driver binding in-between pci_stop_bus_device() and
+pci_remove_bus_device().
+
+In Dennis' case, it seems removal of the hierarchy by pciehp races with
+driver binding by pci_bus_add_devices().  pciehp is bound to the
+Downstream Port after pci_stop_bus_device() has run, so it is unbound by
+pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
+pci_bus has already been destroyed at that point, accesses to it result in
+a use-after-free.
+
+One might conclude that driver binding needs to be prevented after
+pci_stop_bus_device() has run.  However it seems risky that pci_slot points
+to pci_bus without holding a reference.  Solely relying on correct ordering
+of driver unbind versus pci_bus destruction is certainly not defensive
+programming.
+
+If pci_slot has a need to access data in pci_bus, it ought to acquire a
+reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
+crash is not reproducible with this change.
+
+Abridged stacktrace:
+
+  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
+  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
+  pci_bus 0000:20: dev 00, created physical slot 12
+  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
+  ...
+  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
+  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
+  RIP: 0010:dev_driver_string+0x12/0x40
+  pci_destroy_slot
+  pciehp_remove
+  pcie_port_remove_service
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  device_unregister
+  remove_iter
+  device_for_each_child
+  pcie_portdrv_remove
+  pci_device_remove
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  pci_remove_bus_device (recursive invocation)
+  pci_remove_bus_device
+  pciehp_unconfigure_device
+  pciehp_disable_slot
+  pciehp_handle_presence_or_link_change
+  pciehp_ist
+
+Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
+Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
+Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/dev.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pci/slot.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
-index 6252f44479457..cab8809f0e0f4 100644
---- a/fs/nfs/blocklayout/dev.c
-+++ b/fs/nfs/blocklayout/dev.c
-@@ -20,9 +20,6 @@ static void bl_unregister_scsi(struct pnfs_block_dev *dev)
- 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
- 	int status;
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
+ 	up_read(&pci_bus_sem);
  
--	if (!test_and_clear_bit(PNFS_BDEV_REGISTERED, &dev->flags))
--		return;
--
- 	status = ops->pr_register(bdev, dev->pr_key, 0, false);
- 	if (status)
- 		trace_bl_pr_key_unreg_err(bdev, dev->pr_key, status);
-@@ -58,7 +55,8 @@ static void bl_unregister_dev(struct pnfs_block_dev *dev)
- 		return;
+ 	list_del(&slot->list);
++	pci_bus_put(slot->bus);
+ 
+ 	kfree(slot);
+ }
+@@ -261,7 +262,7 @@ placeholder:
+ 		goto err;
  	}
  
--	if (dev->type == PNFS_BLOCK_VOLUME_SCSI)
-+	if (dev->type == PNFS_BLOCK_VOLUME_SCSI &&
-+		test_and_clear_bit(PNFS_BDEV_REGISTERED, &dev->flags))
- 		bl_unregister_scsi(dev);
- }
+-	slot->bus = parent;
++	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
  
--- 
-2.43.0
-
+ 	slot->kobj.kset = pci_slots_kset;
+@@ -269,6 +270,7 @@ placeholder:
+ 	slot_name = make_slot_name(name);
+ 	if (!slot_name) {
+ 		err = -ENOMEM;
++		pci_bus_put(slot->bus);
+ 		kfree(slot);
+ 		goto err;
+ 	}
 
 
 
