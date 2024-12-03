@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-97366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0958C9E2744
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:23:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F709E278E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C9B1B2872A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7406BC718D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF561F9F5C;
-	Tue,  3 Dec 2024 15:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ED31F8935;
+	Tue,  3 Dec 2024 15:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/KQpJn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORrffSSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8C51F9ECD;
-	Tue,  3 Dec 2024 15:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F73B1F892B;
+	Tue,  3 Dec 2024 15:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240278; cv=none; b=VBkZhjbw5e3UOIxTOO3IwsMRVcnfsdc2tha79HGlQAbCvhmvVYbIvKWrNKe50LfAXrbL0rjsQSEdEpUwP+6wUuye64eLOmI3uzUA85KMaYSkMkOVSi4jArSitU2+LadijU447XGheOwiXS1HSILa89J28M0QX+CvQMI9rsiPTTg=
+	t=1733240284; cv=none; b=JC94YM97iwFeBv0uCIH+XWjjC0Lfwy6LvfW3gxHV07iuROHFg40RLys2ywGFWisVM2GHCf9HREXcLp/zDLdrrjMRt3QFrBQrW4Tu6JgANu6ub41y52E0HeTye3C/luCVWa58+KD5yhIm22WGJyDvKeRDAX+ziIp1ypD4blHSsN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240278; c=relaxed/simple;
-	bh=bFFQQVWm0Z8Fa9qoR5gIV92IP0YsehTLOnT1QBUMnL8=;
+	s=arc-20240116; t=1733240284; c=relaxed/simple;
+	bh=dHGVSgarK0bcnz2zaFyGsWgjZspUSY+5lu+GR78+BVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr6jJ93INTRYd/9xHVCNaCr4ehBiRq4UszvscrPe2oWD87R3g/SQhkyWVP5S6fGV1zztTuTqBFT+xn6nH2VKrE74LfDKygo/1DuNPv01jeTE6TItfgalPVkquEh73tOU3o0QGAsK3Wqi41nCqyZFepZ5XVhXF48ijmaSlZL/2Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/KQpJn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5966C4CECF;
-	Tue,  3 Dec 2024 15:37:57 +0000 (UTC)
+	 MIME-Version; b=oa+aJjPAPIJT7u8KAID6Zk5Q5UpodccB74BdSOkWUufXNl3bRY0hn1dPp+jtfi9uSD7usE3zTsT7O9HrCjlP8x1wcuuF+PMTLM/UvxSaHJZit/DK2K7rYSNovY2Vvbi5/GE4yaMaSsj9wL8bPtH7zUayJ7EVcB53GAcydBSiZu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORrffSSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB009C4CED8;
+	Tue,  3 Dec 2024 15:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240278;
-	bh=bFFQQVWm0Z8Fa9qoR5gIV92IP0YsehTLOnT1QBUMnL8=;
+	s=korg; t=1733240284;
+	bh=dHGVSgarK0bcnz2zaFyGsWgjZspUSY+5lu+GR78+BVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/KQpJn8ZY7XnKEczGAazqsjmQcFumZGdd6umsvwJfb2F40G+UnF8jqjLiOLngHtn
-	 PL0DozVVC8Oq2D8n595nxBIw85xxnCGLjUm09GuHBFwle3p4+C25BfvBlFnvy+eWxk
-	 NoPqW2wwtwdp96n8tHLPOS43ZA2H37TPsWhVjns0=
+	b=ORrffSSqN5GdNbtx70wutf0BEyQRLtXj4UnaX16kZaYOW1CxvE+t4im0zr3J4GEiB
+	 DewJlcDlX/TCpQ5V8mPN1OlHDHTYOHJcjFJVzYj+/sfI1BC60BGMiRxQ2m7763pegk
+	 r/MNNVb2oGGwToPg/pVWnq9ZvZYjfveBD78DRUXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/826] cleanup: Remove address space of returned pointer
-Date: Tue,  3 Dec 2024 15:36:52 +0100
-Message-ID: <20241203144747.044310841@linuxfoundation.org>
+Subject: [PATCH 6.12 086/826] time: Partially revert cleanup on msecs_to_jiffies() documentation
+Date: Tue,  3 Dec 2024 15:36:53 +0100
+Message-ID: <20241203144747.083665596@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,58 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit f730fd535fc51573f982fad629f2fc6b4a0cde2f ]
+[ Upstream commit b05aefc1f5886c8aece650c9c1639c87b976191a ]
 
-Guard functions in local_lock.h are defined using DEFINE_GUARD() and
-DEFINE_LOCK_GUARD_1() macros having lock type defined as pointer in
-the percpu address space. The functions, defined by these macros
-return value in generic address space, causing:
+The documentation's intention is to compare msecs_to_jiffies() (first
+sentence) with __msecs_to_jiffies() (second sentence), which is what the
+original documentation did. One of the cleanups in commit f3cb80804b82
+("time: Fix various kernel-doc problems") may have thought the paragraph
+was talking about the latter since that is what it is being documented.
 
-cleanup.h:157:18: error: return from pointer to non-enclosed address space
+Thus revert that part of the change.
 
-and
-
-cleanup.h:214:18: error: return from pointer to non-enclosed address space
-
-when strict percpu checks are enabled.
-
-Add explicit casts to remove address space of the returned pointer.
-
-Found by GCC's named address space checks.
-
-Fixes: e4ab322fbaaa ("cleanup: Add conditional guard support")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240819074124.143565-1-ubizjak@gmail.com
+Fixes: f3cb80804b82 ("time: Fix various kernel-doc problems")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241025110141.157205-1-ojeda@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cleanup.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 038b2d523bf88..518bd1fd86fbe 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -290,7 +290,7 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
- #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
- 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
--	{ return *_T; }
-+	{ return (void *)(__force unsigned long)*_T; }
- 
- #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
- 	EXTEND_CLASS(_name, _ext, \
-@@ -347,7 +347,7 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
- 									\
- static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
- {									\
--	return _T->lock;						\
-+	return (void *)(__force unsigned long)_T->lock;			\
- }
- 
- 
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 642647f5046be..e1879ca321033 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -558,7 +558,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+  *   handling any 32-bit overflows.
+  *   for the details see __msecs_to_jiffies()
+  *
+- * __msecs_to_jiffies() checks for the passed in value being a constant
++ * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
+  * code, __msecs_to_jiffies() is called if the value passed does not
+  * allow constant folding and the actual conversion must be done at
 -- 
 2.43.0
 
