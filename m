@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822969E2064
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677449E2076
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F6A166ABF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CAEC28A4F4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABC41F7564;
-	Tue,  3 Dec 2024 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4536F1F4283;
+	Tue,  3 Dec 2024 14:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuWNDSK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5KM3EYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472CB1EF0BA;
-	Tue,  3 Dec 2024 14:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC441F757D;
+	Tue,  3 Dec 2024 14:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237803; cv=none; b=K4881Ye7qw2hIU9q+hX7qdgcvWjkZhpvzJ0rONzfdIAuNKgsEGyDAmh0IRm5w45srqZbbE4Y1yK2/xTr55aEUOL+VMfEov07jY7wlneQ81bmDF5AFqb5IMkuwoTjy4bMkpfsm2ZcGZmsuSOF9LUPhFi0lJC5Sa8EA0N+JMt+hJo=
+	t=1733237885; cv=none; b=FPBj9mJrvR3reBsnU+RzTAQcWcppOvoxcOPFqjFxwJyiAt6JBZyTSKd6GuFC4JUWuMZtpoaPSZskLHfXL5Td+xQEoIlB8vkdA2zhGefafg45zWTb+hUuo6dU5Nqwri6SIG3g04mF5ciUyJ7HJenrXi5FCjw7ztfoHLqKTIjqdtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237803; c=relaxed/simple;
-	bh=tXK/dPE5Qo8porZLaiQD8Fz3YRP3xB4M+fsfHBt7XgQ=;
+	s=arc-20240116; t=1733237885; c=relaxed/simple;
+	bh=ImtleR/QvrhR31ttJNSe0K1Zwgq5aetmeU0PuMg9dC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tU482QI475rCzEmiWOuoEbkUIOZd10LmaiCRLRkS1MVuec0fboyy5WSTgBeUgVas+DdnO9egMtRUF0RRgS2AGkHmlDEkify4cIZJTN/JerFtzJgckWwl2smnUO1ZimcpJKd2+CsdYhqBp6EdZC+HY02UAwA/VBpl6eo8RXRaPLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuWNDSK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D78DC4CECF;
-	Tue,  3 Dec 2024 14:56:42 +0000 (UTC)
+	 MIME-Version; b=QIDzil2qXUnXbZK3IIG+dHUIB++3joBlU7AXgi4ddr44EQ6a2xk2XMfcin9E1m1juZi+IzoqnX9+tkiWcLPKg+jmf2TdLgAtO51zYCqAnu/v4Ld4O0FH4spuY490vM4MnpoeBZPfutuaGC29d3smbomTfcwfOPvNtbbxrsphQmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5KM3EYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFF1C4CED6;
+	Tue,  3 Dec 2024 14:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237802;
-	bh=tXK/dPE5Qo8porZLaiQD8Fz3YRP3xB4M+fsfHBt7XgQ=;
+	s=korg; t=1733237884;
+	bh=ImtleR/QvrhR31ttJNSe0K1Zwgq5aetmeU0PuMg9dC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KuWNDSK0J9ls84zz/TRUiJPQkO5oJ1CwcBhnhBTt2W08Ni2aOhWbJy875m1ZqjRMA
-	 nzCLqxegsHXUVJFV2dxZvo/0xKbilw3Cky7cQ6bstVLUvM7ojW06uQf8ozeSohg7xo
-	 1e6CQKJ8eXCxR8hcg+iEB62IjRPPX/r8iTZQeoRk=
+	b=z5KM3EYkkFN+gFFVpRHaGwbRd1s+DufGTtu1OwitIONlSBx3LRwGplIcxpB1ZJP+E
+	 9NyKvvuQtGqk7gJGHwqJJfOL4EmhmolHOLEeZvFsoz28kKfv92rI8VIO1ieuInAx67
+	 9JQP6rqzafdO5rnC3I6Q0VuI/d3/etmQE8PGzr04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 067/817] nvme-pci: fix freeing of the HMB descriptor table
-Date: Tue,  3 Dec 2024 15:33:59 +0100
-Message-ID: <20241203143958.304590637@linuxfoundation.org>
+Subject: [PATCH 6.11 069/817] m68k: mvme147: Reinstate early console
+Date: Tue,  3 Dec 2024 15:34:01 +0100
+Message-ID: <20241203143958.382264477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,92 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 3c2fb1ca8086eb139b2a551358137525ae8e0d7a ]
+[ Upstream commit 077b33b9e2833ff25050d986178a2c4c4036cbac ]
 
-The HMB descriptor table is sized to the maximum number of descriptors
-that could be used for a given device, but __nvme_alloc_host_mem could
-break out of the loop earlier on memory allocation failure and end up
-using less descriptors than planned for, which leads to an incorrect
-size passed to dma_free_coherent.
+Commit a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused
+functions"), removed the console functionality for the mvme147 instead
+of wiring it up to an early console.  Put the console write function
+back and wire it up like mvme16x does so it's possible to see Linux boot
+on this fine hardware once more.
 
-In practice this was not showing up because the number of descriptors
-tends to be low and the dma coherent allocator always allocates and
-frees at least a page.
-
-Fixes: 87ad72a59a38 ("nvme-pci: implement host memory buffer support")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused functions")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Co-developed-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/a82e8f0068a8722996a0ccfe666abb5e0a5c120d.1730850684.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/m68k/kernel/early_printk.c |  5 ++++-
+ arch/m68k/mvme147/config.c      | 30 ++++++++++++++++++++++++++++++
+ arch/m68k/mvme147/mvme147.h     |  6 ++++++
+ 3 files changed, 40 insertions(+), 1 deletion(-)
+ create mode 100644 arch/m68k/mvme147/mvme147.h
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 4b9fda0b1d9a3..34daf6d8db07b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -153,6 +153,7 @@ struct nvme_dev {
- 	/* host memory buffer support: */
- 	u64 host_mem_size;
- 	u32 nr_host_mem_descs;
-+	u32 host_mem_descs_size;
- 	dma_addr_t host_mem_descs_dma;
- 	struct nvme_host_mem_buf_desc *host_mem_descs;
- 	void **host_mem_desc_bufs;
-@@ -1966,10 +1967,10 @@ static void nvme_free_host_mem(struct nvme_dev *dev)
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index 3cc944df04f65..f11ef9f1f56fc 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -13,6 +13,7 @@
+ #include <asm/setup.h>
  
- 	kfree(dev->host_mem_desc_bufs);
- 	dev->host_mem_desc_bufs = NULL;
--	dma_free_coherent(dev->dev,
--			dev->nr_host_mem_descs * sizeof(*dev->host_mem_descs),
-+	dma_free_coherent(dev->dev, dev->host_mem_descs_size,
- 			dev->host_mem_descs, dev->host_mem_descs_dma);
- 	dev->host_mem_descs = NULL;
-+	dev->host_mem_descs_size = 0;
- 	dev->nr_host_mem_descs = 0;
- }
  
-@@ -1977,7 +1978,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 		u32 chunk_size)
++#include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
+ 
+ asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+@@ -22,7 +23,9 @@ static void __ref debug_cons_write(struct console *c,
  {
- 	struct nvme_host_mem_buf_desc *descs;
--	u32 max_entries, len;
-+	u32 max_entries, len, descs_size;
- 	dma_addr_t descs_dma;
- 	int i = 0;
- 	void **bufs;
-@@ -1990,8 +1991,9 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 	if (dev->ctrl.hmmaxd && dev->ctrl.hmmaxd < max_entries)
- 		max_entries = dev->ctrl.hmmaxd;
+ #if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+       defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME16x)
++	if (MACH_IS_MVME147)
++		mvme147_scc_write(c, s, n);
++	else if (MACH_IS_MVME16x)
+ 		mvme16x_cons_write(c, s, n);
+ 	else
+ 		debug_cons_nputs(s, n);
+diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
+index 8b5dc07f0811f..cc2fb0a83cf0b 100644
+--- a/arch/m68k/mvme147/config.c
++++ b/arch/m68k/mvme147/config.c
+@@ -32,6 +32,7 @@
+ #include <asm/mvme147hw.h>
+ #include <asm/config.h>
  
--	descs = dma_alloc_coherent(dev->dev, max_entries * sizeof(*descs),
--				   &descs_dma, GFP_KERNEL);
-+	descs_size = max_entries * sizeof(*descs);
-+	descs = dma_alloc_coherent(dev->dev, descs_size, &descs_dma,
-+			GFP_KERNEL);
- 	if (!descs)
- 		goto out;
++#include "mvme147.h"
  
-@@ -2020,6 +2022,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 	dev->host_mem_size = size;
- 	dev->host_mem_descs = descs;
- 	dev->host_mem_descs_dma = descs_dma;
-+	dev->host_mem_descs_size = descs_size;
- 	dev->host_mem_desc_bufs = bufs;
+ static void mvme147_get_model(char *model);
+ extern void mvme147_sched_init(void);
+@@ -185,3 +186,32 @@ int mvme147_hwclk(int op, struct rtc_time *t)
+ 	}
  	return 0;
- 
-@@ -2034,8 +2037,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 
- 	kfree(bufs);
- out_free_descs:
--	dma_free_coherent(dev->dev, max_entries * sizeof(*descs), descs,
--			descs_dma);
-+	dma_free_coherent(dev->dev, descs_size, descs, descs_dma);
- out:
- 	dev->host_mem_descs = NULL;
- 	return -ENOMEM;
+ }
++
++static void scc_delay(void)
++{
++	__asm__ __volatile__ ("nop; nop;");
++}
++
++static void scc_write(char ch)
++{
++	do {
++		scc_delay();
++	} while (!(in_8(M147_SCC_A_ADDR) & BIT(2)));
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, 8);
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, ch);
++}
++
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	while (count--)	{
++		if (*str == '\n')
++			scc_write('\r');
++		scc_write(*str++);
++	}
++	local_irq_restore(flags);
++}
+diff --git a/arch/m68k/mvme147/mvme147.h b/arch/m68k/mvme147/mvme147.h
+new file mode 100644
+index 0000000000000..140bc98b0102a
+--- /dev/null
++++ b/arch/m68k/mvme147/mvme147.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++struct console;
++
++/* config.c */
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count);
 -- 
 2.43.0
 
