@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE1B9E2441
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACA59E2698
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85060BC1A76
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231DF1698B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4491F759C;
-	Tue,  3 Dec 2024 15:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA151F8925;
+	Tue,  3 Dec 2024 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aow66meW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FtG5/kH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AAB646;
-	Tue,  3 Dec 2024 15:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F61F76D7;
+	Tue,  3 Dec 2024 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239894; cv=none; b=mSoQevD3RX6i5OZfaA62PtVrQ0XVkPoXJtNO6uIJ/okHAN5NzuEeg+/TkuCKeNjA/lc/C1rTs4+s4E4xLvERHA0kVChqEBEF8sz6P5zUverMD7TIBK+HlOqwd+TFSRKLcFz3czbzWWW1pE53mJWd9T34gIOITMdVLqQ+3AQrVNQ=
+	t=1733242221; cv=none; b=iizIjOa+v8Btbh0nYFfUBdNh+wOq+xRZTtuCwOKd7whj8D+6bWcAIBPTUOg60d29wBwD8npFkoa8ePcmtBtC6ohXO4Xmw9lLTWglU/TbOMATeQHja+g3PUk7q03aqSJ7+DIcySzX4FONjdF2chhOYocmRVF4OQtKiK7gEzdLHQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239894; c=relaxed/simple;
-	bh=Yo3Xtw7LVsGFVRtOifnOSWNdU80iv7AX1buPN8tuD8E=;
+	s=arc-20240116; t=1733242221; c=relaxed/simple;
+	bh=92Sh+qUsR8EvdT80wUVF5lsWU1mIhbu2WvzHXzg8bBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQkDnpCzmgA+jMpBAEPrhx/KB6Tc0TUkQMxN+/xDPsW4+O0H0Fd+zTV1HAmbEfMEOiz8hxstUTPFgeSHLSOlzXiZOQoZzPseyBk6xyqvM5Rx5MLQTX6ZzDekZuYOqHVG4JwTh6v+LGnRxEDyLBK7YyqFW94S4iMzvNqbXRUrfmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aow66meW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A20C4CECF;
-	Tue,  3 Dec 2024 15:31:33 +0000 (UTC)
+	 MIME-Version; b=L3L7QUJgEcgSGXFiPjgVIi722tWGFjiRf7KLtXNS3J0+OAJcA+VLc+7g9hC61u0NDrjr11pDHZonGiSNhK3xTpax7a3+BWkV4IPL2mnIbsvkYBZgroF2zxy7j2jTlnNpZuC6RT/KS6a7bj3ZZemffXncfqM5KUIObM343q1MRJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FtG5/kH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8266EC4CECF;
+	Tue,  3 Dec 2024 16:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239894;
-	bh=Yo3Xtw7LVsGFVRtOifnOSWNdU80iv7AX1buPN8tuD8E=;
+	s=korg; t=1733242221;
+	bh=92Sh+qUsR8EvdT80wUVF5lsWU1mIhbu2WvzHXzg8bBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aow66meWtMeQfc3Qn3Ce7dgE+7/rYnajTSawaCfM6NperHV8WpzTQsUtr2mA4k4CH
-	 Fri8D9IC9WHk8pnAt8flsgCc8DwVQU5uobl0vAbJTBwK28gv0+JMwG1R1p2lJ+TYPz
-	 gkVG+VArC6OVnyob08CAqvQI5MAQ2SdU3jfE3rvQ=
+	b=2FtG5/kHXmfKtmBEkUG2X1kysW2oSCEXvii2NLyXQX+wzqbZQPLkt69o77bw3dZ6a
+	 pPNcd7zU4fyuCCdWr6n5YcofXR5ql1JuIgPKDhuLQ0HId+5oBHWXG+Ti5BR9v95qjM
+	 taV0icqWInN+vmeyRZwET7fQG8qSzZsucY5zMvQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 770/817] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
+Subject: [PATCH 6.12 615/826] ASoC: imx-audmix: Add NULL check in imx_audmix_probe
 Date: Tue,  3 Dec 2024 15:45:42 +0100
-Message-ID: <20241203144026.070778183@linuxfoundation.org>
+Message-ID: <20241203144807.743601816@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
+[ Upstream commit e038f43edaf0083f6aa7c9415d86cf28dfd152f9 ]
 
-Yang Erkun reports that when two threads are opening files at the same
-time, and are forced to abort before a reply is seen, then the call to
-nfs_release_seqid() in nfs4_opendata_free() can result in a
-use-after-free of the pointer to the defunct rpc task of the other
-thread.
-The fix is to ensure that if the RPC call is aborted before the call to
-nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
-in nfs4_open_release() before the rpc_task is freed.
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in imx_audmix_probe() is not checked.
+Add NULL check in imx_audmix_probe(), to handle kernel NULL
+pointer dereference error.
 
-Reported-by: Yang Erkun <yangerkun@huawei.com>
-Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 05d996e11348 ("ASoC: imx-audmix: Split capture device for audmix")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://patch.msgid.link/20241118084553.4195-1-hanchunchao@inspur.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 9d40319e063de..405f17e6e0b45 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -2603,12 +2603,14 @@ static void nfs4_open_release(void *calldata)
- 	struct nfs4_opendata *data = calldata;
- 	struct nfs4_state *state = NULL;
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index 6fbcf33fd0dea..8e7b75cf64db4 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -275,6 +275,9 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 		/* Add AUDMIX Backend */
+ 		be_name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 					 "audmix-%d", i);
++		if (!be_name)
++			return -ENOMEM;
++
+ 		priv->dai[num_dai + i].cpus	= &dlc[1];
+ 		priv->dai[num_dai + i].codecs	= &snd_soc_dummy_dlc;
  
-+	/* In case of error, no cleanup! */
-+	if (data->rpc_status != 0 || !data->rpc_done) {
-+		nfs_release_seqid(data->o_arg.seqid);
-+		goto out_free;
-+	}
- 	/* If this request hasn't been cancelled, do nothing */
- 	if (!data->cancelled)
- 		goto out_free;
--	/* In case of error, no cleanup! */
--	if (data->rpc_status != 0 || !data->rpc_done)
--		goto out_free;
- 	/* In case we need an open_confirm, no cleanup! */
- 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
- 		goto out_free;
 -- 
 2.43.0
 
