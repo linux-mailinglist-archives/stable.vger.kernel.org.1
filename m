@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55819E25DD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA729E22BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AD38288999
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7FB2866F1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C9D1F8905;
-	Tue,  3 Dec 2024 16:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0771F75AE;
+	Tue,  3 Dec 2024 15:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHb4k7/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHG8Rqop"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89B11F76B5;
-	Tue,  3 Dec 2024 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C71F7587;
+	Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241949; cv=none; b=E0zuXzztQvXxoXH+IR+4ztxB1sNva6/ObZicv3CvRAHIwQeUEB4THoljm44JoqjsygpnXAsIhTgXOw/BuPsLPKPmH6cJJGx9Ln4TwwJH9iGtCL/kUjWxxkFsd1epMVksFFR1jmsUqip5QA5K1ZKI3V83/WxyaWxlTtBrKJ08yFw=
+	t=1733239696; cv=none; b=YXKdaQpuntA32zZsfvSgLZ1EThQay6TEe8tIzPWh8i+IRlGPJx4JBkCEZs7X3gsJuA3PulA6tZxdqvM7Wl07//6idHrarIhN6vv/Q9vG4uKC3KXNYLxpJhngPFZj75wQoEEP4DVENKi8aCHHv66A3oqRXFdUZO0kC6KbYWRkGEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241949; c=relaxed/simple;
-	bh=vfXTd2RT0WnqIL0FOq6OrbPC3y0j3M4VlKfoLaSegUE=;
+	s=arc-20240116; t=1733239696; c=relaxed/simple;
+	bh=XJ7kNfq1SUZEqWZKVWuYXnLZgyIr6/WYG3Rc7lmG748=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECpgYj8iJsVCQZBWb3SamkSFiG7f86Kw08vGM/0vCpo8sZmT7a8gqPkh9dS0/dcsKrUN+vAeuIKS4rFqepOQNbPc6l9pT94ox68MRkPmCT3XJi3muHRbIrW2HsFp1tJZ9hbUP+tSAiTU5Sa6M4cP+Gg2F0c8/psTwuUO/NYFkKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHb4k7/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B377C4CECF;
-	Tue,  3 Dec 2024 16:05:49 +0000 (UTC)
+	 MIME-Version; b=ZGZUY6mzJAMvBcgrRUjCO8+7/t8Cc1yQ1pxfqxA/9OHGgRDDauMD/xnlFC+z/w9B7eQXcUv3/MD9dXFA0Rzx4GMnUNFdBUEN0KSUmo9Dtslg4dBdv/TP/D0muqX10TsGpRC+WIaiMPqpwYSKDyQWBgVuUed93mXRTLPFsShnuWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHG8Rqop; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B17DC4CED6;
+	Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241949;
-	bh=vfXTd2RT0WnqIL0FOq6OrbPC3y0j3M4VlKfoLaSegUE=;
+	s=korg; t=1733239695;
+	bh=XJ7kNfq1SUZEqWZKVWuYXnLZgyIr6/WYG3Rc7lmG748=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHb4k7/dBMBkDt2JMQtylDAHvHV6M2Dr5QejS7rd+n3UqrzobNF6Ryzvw9ecTj4eB
-	 iSqUd23A28oofkj5Fn+e4e3yno7VbcD7THnYKuEBZ+63Ikbsi7U8BPPuCjiMyYEaI/
-	 1LX/e4KFrjfQ/fdlRPcA4GB/lD7+kHrVyObhpSGc=
+	b=FHG8RqopNO7Squ+aWDrpBYpDBCMSRol50iL22jLzXUxVJ3r1wB/vKu5TTpfoS4ZcX
+	 tqXcAgJFO4q5l/ul6BXsudolBgFjowWrW/WiXhsrNrLQhPATAQnNTZGePQI5A5CJU5
+	 S1u6xHWrONCMqXr3s3PIGlhQT6BnLlEchEcvvfhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 546/826] LoongArch: Fix build failure with GCC 15 (-std=gnu23)
-Date: Tue,  3 Dec 2024 15:44:33 +0100
-Message-ID: <20241203144805.049764788@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.11 702/817] parisc/ftrace: Fix function graph tracing disablement
+Date: Tue,  3 Dec 2024 15:44:34 +0100
+Message-ID: <20241203144023.381331513@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 947d5d036c788156f09e83e7f16322ffe8124384 ]
+commit a5f05a138a8cac035bf9da9b6ed0e532bc7942c8 upstream.
 
-Whenever I try to build the kernel with upcoming GCC 15 which defaults
-to -std=gnu23 I get a build failure:
+Due to an apparent copy-paste bug, the parisc implementation of
+ftrace_disable_ftrace_graph_caller() doesn't actually do anything.
+It enables the (already-enabled) static key rather than disabling it.
 
-  CC      arch/loongarch/vdso/vgetcpu.o
-In file included from ./include/uapi/linux/posix_types.h:5,
-                 from ./include/uapi/linux/types.h:14,
-                 from ./include/linux/types.h:6,
-                 from ./include/linux/kasan-checks.h:5,
-                 from ./include/asm-generic/rwonce.h:26,
-                 from ./arch/loongarch/include/generated/asm/rwonce.h:1,
-                 from ./include/linux/compiler.h:317,
-                 from ./include/asm-generic/bug.h:5,
-                 from ./arch/loongarch/include/asm/bug.h:60,
-                 from ./include/linux/bug.h:5,
-                 from ./include/linux/mmdebug.h:5,
-                 from ./include/linux/mm.h:6,
-                 from ./arch/loongarch/include/asm/vdso.h:10,
-                 from arch/loongarch/vdso/vgetcpu.c:6:
-./include/linux/stddef.h:11:9: error: expected identifier before 'false'
-   11 |         false   = 0,
-      |         ^~~~~
-./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-   35 | typedef _Bool                   bool;
-      |                                 ^~~~
-./include/linux/types.h:35:1: warning: useless type name in empty declaration
-   35 | typedef _Bool                   bool;
-      | ^~~~~~~
+The result is that after function graph tracing has been "disabled", any
+subsequent (non-graph) function tracing will inadvertently also enable
+the slow fgraph return address hijacking.
 
-The kernel builds explicitly with -std=gnu11 in top Makefile, but
-arch/loongarch/vdso does not use KBUILD_CFLAGS from the rest of the
-kernel, just add -std=gnu11 flag to arch/loongarch/vdso/Makefile.
-
-By the way, commit e8c07082a810 ("Kbuild: move to -std=gnu11") did a
-similar change for arch/arm64/kernel/vdso32/Makefile.
-
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 98f2926171ae ("parisc/ftrace: use static key to enable/disable function graph tracer")
+Cc: stable@vger.kernel.org # 5.16+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/vdso/Makefile | 2 +-
+ arch/parisc/kernel/ftrace.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 40c1175823d61..fdde1bcd4e266 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -19,7 +19,7 @@ ccflags-vdso := \
- cflags-vdso := $(ccflags-vdso) \
- 	-isystem $(shell $(CC) -print-file-name=include) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
--	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
-+	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
- 	$(call cc-option, -fno-asynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
--- 
-2.43.0
-
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -87,7 +87,7 @@ int ftrace_enable_ftrace_graph_caller(vo
+ 
+ int ftrace_disable_ftrace_graph_caller(void)
+ {
+-	static_key_enable(&ftrace_graph_enable.key);
++	static_key_disable(&ftrace_graph_enable.key);
+ 	return 0;
+ }
+ #endif
 
 
 
