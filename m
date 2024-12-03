@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-98005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB55A9E2693
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B51C9E270E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB8F2891F7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2903169226
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2B61F76DD;
-	Tue,  3 Dec 2024 16:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582741F893D;
+	Tue,  3 Dec 2024 16:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5IuEy5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvEfqCHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE20B1E3DCF;
-	Tue,  3 Dec 2024 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8AD1EE00B;
+	Tue,  3 Dec 2024 16:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242476; cv=none; b=rFZlmPA6JRflx/+0wa466biU1tNJnHTbW9UoktX5aWfcDE6IlMRez9tHnDpugEM/Ojzx5NljVdLF6K3PQWhQfzfJZLALUar+gGFlzv+ITBG0wxp70Gt3oxbpNbcof6i7ALKtPlohaypXE9ZRbk0A9cB4xioI0Q313fwewtb86v4=
+	t=1733242614; cv=none; b=eGHNpr1MmKvjSFW4nYBAAKjfZINb09+9jqQYSlgUxK1Ac3cXhqYjy/Cladnnx9shWXeMrEl4yrGFCR/6dq34Z+1RGVSZVRYVMlB7rrWLTcomxJwapspMsPSTS1eKsHcRBFD5ZAJhwFotI285+hWU16dJN+uo2UTInzW0+Lvw50k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242476; c=relaxed/simple;
-	bh=B+H6IHQ12EU9QjHr1ZWfVT5C563SY02Plp1AYLCY3/M=;
+	s=arc-20240116; t=1733242614; c=relaxed/simple;
+	bh=+0+6r2MHINbDQULt5wKOXblsY2cj8glUBQ0Fgyco8G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7xN+ZtOKRh7lyY7EwAXDZFNl4vR8ADkqRgUjtmdqegdJF45lnD9ZRuSBmBB6jetTzh+BvXiAKmzE3x4F8miu/n82YfL+DKoqcME/MmACFXvruMFX2t/CcgRzXgh3P26idmuaMInJrKTtU5VjfBBWGO1qyXhqoZv/qTyPUt4dC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5IuEy5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C0AC4CED6;
-	Tue,  3 Dec 2024 16:14:35 +0000 (UTC)
+	 MIME-Version; b=n3pXIkQXKLGQdfNUpQLxyqAjiEYcYnDRSZffabBOeymiXGsRB1Wg5BXYqSDbXfOQOzMblLgTsXBPpUqosdNFhzkwXCrqlHqRMEHgZPNOx4Ge3otT24c/0SGIIIMUkCak7y2/5MJ0k7B7W6+ahbOsL1pckLd9eAVcNxnACwkYx/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvEfqCHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6795EC4CECF;
+	Tue,  3 Dec 2024 16:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242475;
-	bh=B+H6IHQ12EU9QjHr1ZWfVT5C563SY02Plp1AYLCY3/M=;
+	s=korg; t=1733242613;
+	bh=+0+6r2MHINbDQULt5wKOXblsY2cj8glUBQ0Fgyco8G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5IuEy5x5DAU6w9mDpLQz9rUxks38uws3f5vKKXwANgEvprqoZyZOW/5L7RX+YmI3
-	 eMqgO811JgKxVXsOxI0xikzLzm67Xol6YaHAZxyOb11iqY++e8eWXfcDPDCM698ZRJ
-	 tg0D3I4cyCe57cQbwTLZcTB0IxAGLBJKO/+zQmzY=
+	b=QvEfqCHqgmdY++Q5zw33TSSWACdWm2u5NxddPBg7w4ssBq1t/TqEJqnXjXshY9zls
+	 2+B/PWWSWngLKRo1W7pKwp84UoOeRSumRSRLueXZQrAFx8su7fyzH7qs9mSE+AMMN+
+	 QH7Bdj+jlyUHYOTZmVhCQgaOwfNgK6A0e5PBPwyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.12 714/826] serial: amba-pl011: Fix RX stall when DMA is used
-Date: Tue,  3 Dec 2024 15:47:21 +0100
-Message-ID: <20241203144811.614048299@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.12 715/826] serial: amba-pl011: fix build regression
+Date: Tue,  3 Dec 2024 15:47:22 +0100
+Message-ID: <20241203144811.654184578@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,45 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf upstream.
+commit b5a23a60e8ab5711f4952912424347bf3864ce8d upstream.
 
-Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
-also disables the RX DMA by clearing the RXDMAE bit of the DMACR
-register. However, to properly unthrottle RX when DMA is used, the
-function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
-the DMACR register, which it currently lacks. This causes RX to stall
-after the throttle API is called.
+When CONFIG_DMA_ENGINE is disabled, the driver now fails to build:
 
-Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
-used.
+drivers/tty/serial/amba-pl011.c: In function 'pl011_unthrottle_rx':
+drivers/tty/serial/amba-pl011.c:1822:16: error: 'struct uart_amba_port' has no member named 'using_rx_dma'
+ 1822 |         if (uap->using_rx_dma) {
+      |                ^~
+drivers/tty/serial/amba-pl011.c:1823:20: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1823 |                 uap->dmacr |= UART011_RXDMAE;
+      |                    ^~
+drivers/tty/serial/amba-pl011.c:1824:32: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1824 |                 pl011_write(uap->dmacr, uap, REG_DMACR);
+      |                                ^~
 
-Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
+Add the missing #ifdef check around these field accesses, matching
+what other parts of this driver do.
+
+Fixes: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
+Cc: stable <stable@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411140617.nkjeHhsK-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20241115110021.744332-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/amba-pl011.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/serial/amba-pl011.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/drivers/tty/serial/amba-pl011.c
 +++ b/drivers/tty/serial/amba-pl011.c
-@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct u
+@@ -1819,10 +1819,12 @@ static void pl011_unthrottle_rx(struct u
  
  	pl011_write(uap->im, uap, REG_IMSC);
  
-+	if (uap->using_rx_dma) {
-+		uap->dmacr |= UART011_RXDMAE;
-+		pl011_write(uap->dmacr, uap, REG_DMACR);
-+	}
-+
++#ifdef CONFIG_DMA_ENGINE
+ 	if (uap->using_rx_dma) {
+ 		uap->dmacr |= UART011_RXDMAE;
+ 		pl011_write(uap->dmacr, uap, REG_DMACR);
+ 	}
++#endif
+ 
  	uart_port_unlock_irqrestore(&uap->port, flags);
  }
- 
 
 
 
