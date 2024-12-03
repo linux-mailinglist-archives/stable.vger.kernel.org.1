@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77C69E28DC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:14:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112259E2AE3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF17ABE0775
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C898FB3853F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A2E1F8916;
-	Tue,  3 Dec 2024 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120A51F75B1;
+	Tue,  3 Dec 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOBkgyJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAFMK0hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312A61F8909;
-	Tue,  3 Dec 2024 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39421F8903;
+	Tue,  3 Dec 2024 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240689; cv=none; b=oitqXpdkMtSImkbksyQgN/9QtPTK9mi+jRDZPmhSd/Et7bNJ5s+AVJdLS9+X71N5K+ITiLXozUN32H/B+c1JvdNfT7I3E+WQJMX/GJCLIhMp5EbdJGzbUXJc1BYslZhQ7h8ZuEq3z7hFzcNhOzMqHd2Sr1OxRXAueunm4fyIbvI=
+	t=1733238594; cv=none; b=HIlkFoXpZ4q0XxpY43DfQjZagnr4fWNiSgo2TrxfQUcpU+5lzE72GAnZEV4v5CwyrxR4YoeseGQ61uowrv/ZfHIpE0zevxR3kxrp2WYWj7rQ9gvy+C4U2pVKhwt0P3lnOS74hf5jP5lwNw6YZBm9u3e1HkRSJRfFuZdEdXwZTbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240689; c=relaxed/simple;
-	bh=duF8xSfCMS2XJqKyZskmgUqeR8Fb1nrK/lvkDmPdx18=;
+	s=arc-20240116; t=1733238594; c=relaxed/simple;
+	bh=5NRdpnC+AkZanP54/CyF8cTITZSoPR1gilSHS82DCDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuCWVPoBbZTtv8bhPXfwCCz9oamVvPj556rV4ZTqdIbFZbHQubO1eYcj1/2ArC5ibEsWn9eq4yOlrlf0usEdQXJ9Z+WmtYdV+XBNeCwdP4G4XPIOPN+C+wumyC/hrQqKHDGIZ160o3aIM7w9Tzp6Pk9Ts8RuYwnXEOLhIgWK1ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOBkgyJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B39C4CECF;
-	Tue,  3 Dec 2024 15:44:48 +0000 (UTC)
+	 MIME-Version; b=QeOWKAcPoztNtBMaSjNGQZCEYKoeNufEYAn4DK1flzlIdQaG4dojR7J2DH0hi3rXAnwds8LhClBK1IQDotBOnDK/kby78YzCi8qRqufVQ2COrldw1n6dOgc/rvSsesMXnl7KaWUl7/FILj/OR2pWK1Ne3Dli6sBk9RQyMesngGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAFMK0hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4843DC4CECF;
+	Tue,  3 Dec 2024 15:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240689;
-	bh=duF8xSfCMS2XJqKyZskmgUqeR8Fb1nrK/lvkDmPdx18=;
+	s=korg; t=1733238594;
+	bh=5NRdpnC+AkZanP54/CyF8cTITZSoPR1gilSHS82DCDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOBkgyJQnK/bdaM/6BfctGDbVH7Xi3bYdiqTclP3PsWw6pbRaGvp0QBujN2VQumOz
-	 WL4ifpy+Q9dYxyR5BA/3UH+PAV3PRlRqkdGY02Jkxbc499XluYQrwm2m2gWZWCzDnS
-	 Ix6/fEErkpwe7CoAFfNhaZpZQV8O+vdWfkWq9Ru0=
+	b=mAFMK0hHawcMJRR0bfTktONxQ29jR8gQ7uQoN/TkXgi9A5ggnwuD5yIuAKYSkIWUg
+	 J0HCKLpxwby3eIjy/0HsCtvztL0HzIqd1RN+NBl3wy/Fzo3wyIfkuoPbycSBwZ1Jpe
+	 RHT+HdX1JrD3SwNeXGerUcUNd63D7c0TRFkT9HEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 176/826] sched_ext: scx_bpf_dispatch_from_dsq_set_*() are allowed from unlocked context
+Subject: [PATCH 6.11 331/817] bpf, sockmap: Several fixes to bpf_msg_push_data
 Date: Tue,  3 Dec 2024 15:38:23 +0100
-Message-ID: <20241203144750.603940719@linuxfoundation.org>
+Message-ID: <20241203144008.739654415@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 72b85bf6a7f6f6c38c39a1e5b04bc1da1bf5016e ]
+[ Upstream commit 15ab0548e3107665c34579ae523b2b6e7c22082a ]
 
-4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-added four kfuncs for dispatching while iterating. They are allowed from the
-dispatch and unlocked contexts but two of the kfuncs were only added in the
-dispatch section. Add missing declarations in the unlocked section.
+Several fixes to bpf_msg_push_data,
+1. test_sockmap has tests where bpf_msg_push_data is invoked to push some
+data at the end of a message, but -EINVAL is returned. In this case, in
+bpf_msg_push_data, after the first loop, i will be set to msg->sg.end, add
+the logic to handle it.
+2. In the code block of "if (start - offset)", it's possible that "i"
+points to the last of sk_msg_elem. In this case, "sk_msg_iter_next(msg,
+end)" might still be called twice, another invoking is in "if (!copy)"
+code block, but actually only one is needed. Add the logic to handle it,
+and reconstruct the code to make the logic more clear.
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-7-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/filter.c | 53 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index ecb88c5285447..16613631543f1 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6473,6 +6473,8 @@ __bpf_kfunc_end_defs();
+diff --git a/net/core/filter.c b/net/core/filter.c
+index fe5ac8da5022f..b7597f8d4159c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2794,7 +2794,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 	} while (i != msg->sg.end);
  
- BTF_KFUNCS_START(scx_kfunc_ids_unlocked)
- BTF_ID_FLAGS(func, scx_bpf_create_dsq, KF_SLEEPABLE)
-+BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_slice)
-+BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq_set_vtime)
- BTF_ID_FLAGS(func, scx_bpf_dispatch_from_dsq, KF_RCU)
- BTF_ID_FLAGS(func, scx_bpf_dispatch_vtime_from_dsq, KF_RCU)
- BTF_KFUNCS_END(scx_kfunc_ids_unlocked)
+-	if (start >= offset + l)
++	if (start > offset + l)
+ 		return -EINVAL;
+ 
+ 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
+@@ -2819,6 +2819,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 
+ 		raw = page_address(page);
+ 
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		front = start - offset;
+ 		back = psge->length - front;
+@@ -2835,7 +2837,13 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		}
+ 
+ 		put_page(sg_page(psge));
+-	} else if (start - offset) {
++		new = i;
++		goto place_new;
++	}
++
++	if (start - offset) {
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
+ 
+@@ -2846,39 +2854,44 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 		sg_unmark_end(psge);
+ 		sg_unmark_end(&rsge);
+-		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	/* Slot(s) to place newly allocated data */
++	sk_msg_iter_next(msg, end);
+ 	new = i;
++	sk_msg_iter_var_next(i);
++
++	if (i == msg->sg.end) {
++		if (!rsge.length)
++			goto place_new;
++		sk_msg_iter_next(msg, end);
++		goto place_new;
++	}
+ 
+ 	/* Shift one or two slots as needed */
+-	if (!copy) {
+-		sge = sk_msg_elem_cpy(msg, i);
++	sge = sk_msg_elem_cpy(msg, new);
++	sg_unmark_end(&sge);
+ 
++	nsge = sk_msg_elem_cpy(msg, i);
++	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+-		sg_unmark_end(&sge);
++		nnsge = sk_msg_elem_cpy(msg, i);
+ 		sk_msg_iter_next(msg, end);
++	}
+ 
+-		nsge = sk_msg_elem_cpy(msg, i);
++	while (i != msg->sg.end) {
++		msg->sg.data[i] = sge;
++		sge = nsge;
++		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+-			sk_msg_iter_var_next(i);
++			nsge = nnsge;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
+-		}
+-
+-		while (i != msg->sg.end) {
+-			msg->sg.data[i] = sge;
+-			sge = nsge;
+-			sk_msg_iter_var_next(i);
+-			if (rsge.length) {
+-				nsge = nnsge;
+-				nnsge = sk_msg_elem_cpy(msg, i);
+-			} else {
+-				nsge = sk_msg_elem_cpy(msg, i);
+-			}
++		} else {
++			nsge = sk_msg_elem_cpy(msg, i);
+ 		}
+ 	}
+ 
++place_new:
+ 	/* Place newly allocated data buffer */
+ 	sk_mem_charge(msg->sk, len);
+ 	msg->sg.size += len;
 -- 
 2.43.0
 
