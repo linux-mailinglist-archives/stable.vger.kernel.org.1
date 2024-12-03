@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153B89E24EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C509A9E21B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1581E16A871
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCAE2282937
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A331F76C7;
-	Tue,  3 Dec 2024 15:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C1D1F7547;
+	Tue,  3 Dec 2024 15:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si6EKDPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llV7qFmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AE72C80;
-	Tue,  3 Dec 2024 15:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506BA1F7070;
+	Tue,  3 Dec 2024 15:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240859; cv=none; b=EW1xUSDRZxfzlv4zo49XYtPYZ3hzXudss58VNiWV9P7rVKJUwBKjOVE6pp2zcMi17nBpyWMFN9FLqXbi93qwoEeoEzJp1jXUKrxCcpDCDjZAFzwJjBsDvcEIkrukQDYecm3AF+yqRcnIuLL37LktHTBdEi8nl8txF62prTIvdgE=
+	t=1733238923; cv=none; b=UOc6V21B5WzES2G4UlZ6+O50yKtM90+fiZDxUkfYPYoAloYDj+DD/4/x0ScgWTZojjBdmv3tQLgvQx1YXRp0ujZFgKKPod95g6LfAvfnlBcuwRIjt0gol83K1bZONsQuX/GRabh4tmiqZ0d6BxzMxsNO2hptsRXOZQoIapXjX9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240859; c=relaxed/simple;
-	bh=7r4kXU2LyeQpwOKTx2pIz9YxC6/dAgJQdv0ZR7ug26c=;
+	s=arc-20240116; t=1733238923; c=relaxed/simple;
+	bh=dCGyrrf8QD5GWV2/xiZQ7VCNUVMcEY63Lwzn5TgZky8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEZ/ebkGefmSu4s9di7kKfhSxQJ6A2Ibs7G4tsn5lO9Xt4LTxtKiuSBKKaH+2nSVbR0F9vETijmBa+jXy+A/sLoXk4GEZR6itxJ22gy3qk+7UqSdEXdrtqi4gp60K1tAB7tGBq4+do4GUNSRJ3mTR6PEiMGVAhH8YdIEbq9FbDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si6EKDPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BAFC4CECF;
-	Tue,  3 Dec 2024 15:47:39 +0000 (UTC)
+	 MIME-Version; b=ItUnIzhnaWAtfYxjE8MriAwWWO8m0CaHuz1+rnixxWzQ958K/+7JKwFIjLFALPvH6SojuXunLn4JtvzmDhg14hheAxPfexa1Je8kTpT1m+OtXQ/I7cVDNpMULc1dxiVuaAlDeGpijgMZ0Glxsb5RTDxTrdaNBKaV+WffGu9OBUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llV7qFmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD066C4CECF;
+	Tue,  3 Dec 2024 15:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240859;
-	bh=7r4kXU2LyeQpwOKTx2pIz9YxC6/dAgJQdv0ZR7ug26c=;
+	s=korg; t=1733238923;
+	bh=dCGyrrf8QD5GWV2/xiZQ7VCNUVMcEY63Lwzn5TgZky8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=si6EKDPAI+h20E2wHJEVMG5FJ5VCmXLX090pYK3+VaABUJyTYxqKL/yFejIqi2OmN
-	 G5/JHEnLM6IzZhs99Wqk+QinT3zyliv2+L2udh5Dwu3LmyPcODwd2U1BOLmrjki9fK
-	 pa8c346Weob5655pNr28TF8hEQJs5OmhdvHZ8moc=
+	b=llV7qFmS3GXcbf5o6wTnUtWdVNp/G+p8tjRyVQADM0sG2NAlSOTaY5JI0gNL7bpn6
+	 vJvjrVdmE8AQotKAZNvJrWQtvb5d0IbrHY5flBcx0GMCNM3pov8RIevBPHrHj3KP2J
+	 l/eFf/2Nigb4obu2YEmqUWmqKPNgImgqcaf8ZpP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 257/826] drm/msm/dpu: drop LM_3 / LM_4 on SDM845
+Subject: [PATCH 6.11 412/817] iommu/amd/pgtbl_v2: Take protection domain lock before invalidating TLB
 Date: Tue,  3 Dec 2024 15:39:44 +0100
-Message-ID: <20241203144753.791367559@linuxfoundation.org>
+Message-ID: <20241203144011.962042776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit d39271061d67c6fcbe8f361c532b493069232cf8 ]
+[ Upstream commit 016991606aa01c4d92e6941be636c0c897aa05c7 ]
 
-On the SDM845 platform ther are no LM_3 and LM_4 blocks. Drop them from
-the SDM845 catalog.
+Commit c7fc12354be0 ("iommu/amd/pgtbl_v2: Invalidate updated page ranges
+only") missed to take domain lock before calling
+amd_iommu_domain_flush_pages(). Fix this by taking protection domain
+lock before calling TLB invalidation function.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/612586/
-Link: https://lore.kernel.org/r/20240905-dpu-fix-sdm845-catalog-v1-2-3363d03998bd@linaro.org
+Fixes: c7fc12354be0 ("iommu/amd/pgtbl_v2: Invalidate updated page ranges only")
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241030063556.6104-2-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h   | 12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/iommu/amd/io_pgtable_v2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
-index 59eeea3dd2e9f..72bd4f7e9e504 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
-@@ -155,18 +155,6 @@ static const struct dpu_lm_cfg sdm845_lm[] = {
- 		.lm_pair = LM_5,
- 		.pingpong = PINGPONG_2,
- 		.dspp = DSPP_2,
--	}, {
--		.name = "lm_3", .id = LM_3,
--		.base = 0x0, .len = 0x320,
--		.features = MIXER_SDM845_MASK,
--		.sblk = &sdm845_lm_sblk,
--		.pingpong = PINGPONG_NONE,
--	}, {
--		.name = "lm_4", .id = LM_4,
--		.base = 0x0, .len = 0x320,
--		.features = MIXER_SDM845_MASK,
--		.sblk = &sdm845_lm_sblk,
--		.pingpong = PINGPONG_NONE,
- 	}, {
- 		.name = "lm_5", .id = LM_5,
- 		.base = 0x49000, .len = 0x320,
+diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
+index afa5844495ca8..2c5db78065113 100644
+--- a/drivers/iommu/amd/io_pgtable_v2.c
++++ b/drivers/iommu/amd/io_pgtable_v2.c
+@@ -268,8 +268,11 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
+ out:
+ 	if (updated) {
+ 		struct protection_domain *pdom = io_pgtable_ops_to_domain(ops);
++		unsigned long flags;
+ 
++		spin_lock_irqsave(&pdom->lock, flags);
+ 		amd_iommu_domain_flush_pages(pdom, o_iova, size);
++		spin_unlock_irqrestore(&pdom->lock, flags);
+ 	}
+ 
+ 	if (mapped)
 -- 
 2.43.0
 
