@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-96724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE15F9E2107
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A4A9E2110
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CFA2851B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1028028551C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C401F669E;
-	Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAD91F7569;
+	Tue,  3 Dec 2024 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/Hpksy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNThT+Fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D071F6691;
-	Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A681F706C;
+	Tue,  3 Dec 2024 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238410; cv=none; b=AyTkf2i/Bld95Tu8yngWNiCkpqf5ZQbX/xRrnzRwN3Ued+LSxx24PsQ1Mc3TzWdSK3C8KATmMO86u7NmY3k8nSfsn6gqBQN8Y3BuZUuuS7kZJTAWOmRIVKr8VbF2e5vxU7YEhbsp1n7hqr4vnrpBEl9wdkmQCP4L6C6KpEDIkuQ=
+	t=1733238439; cv=none; b=h+YIyHKJxOAGFqvJRDyKEhM7Cx9u0uA83uObC4f9q79c2e6EhxGzGMtcbCPpLM5Nb3cdebUEH5JdEt+Q84cPCyeWvnHXTpUVrPSXDTEmyEuYu75n4Zd2YgqYB8sHDbp91XHMpsTlfFv3rk7BE3EI3YMFfU7Xnv4uvuz2kuq822s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238410; c=relaxed/simple;
-	bh=sBoytRqrIwhY0oLFAfFu+SHL83DYdCvxYYy30r2k5Hg=;
+	s=arc-20240116; t=1733238439; c=relaxed/simple;
+	bh=a6fWI4HPBZYzAT4fPcfZWz09WYM7XHHCwC35LDZKHf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx+ZX6RrUZkksmPVOWcpo0eSbb9iC++9UGlapqvpLo74KUst1DtPLRcmZrkUO6BJo1TTSvbrQlvbcr8gHj9fD6euskUxKsRm7Ctd/Os/Mqx3rGzvl5dvNcV1plaNI6YMsr/vYfRz7S2+K+HgzFLy9FxqEQNfO5caX059QUocnq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/Hpksy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93662C4CECF;
-	Tue,  3 Dec 2024 15:06:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IS6zmv/isvFCmg6jzqTGMHYmqxpL5ZYdUD201r1sAJ5znCOfcBiz++iK45V4kqny3ZSbL5lM6MFPnsvrE518wsgsE6JszUWlctefi7ONCIFGLv4bBplgdl3U4xwp2kRaz1U6LTv8T35SNfr11rNhnA2FTwVWuxggcc9+Cb3s8q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNThT+Fc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DFEC4CECF;
+	Tue,  3 Dec 2024 15:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238410;
-	bh=sBoytRqrIwhY0oLFAfFu+SHL83DYdCvxYYy30r2k5Hg=;
+	s=korg; t=1733238439;
+	bh=a6fWI4HPBZYzAT4fPcfZWz09WYM7XHHCwC35LDZKHf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/Hpksy43RqPPq9MsV0X0g8HBy6aZkhngnOgHhADj1Dt+uBcGaBrxcX6ewKjbuuGH
-	 LNPzUunh/jl5FYGcqD3WzFSyJESMVa+fhYWnitdCk1wHDD/eYAzb/qcZt+LSE9b3f3
-	 33ET/rIZSMPKUdGv+aDTiFzEa6CT3W1A6+DSYMpo=
+	b=GNThT+Fc4i/ninnUl/NhlM7ZC8KkqZ0HZD3leQewHrI6zMdgJOiZmV5w16hhwBXC1
+	 Otu6i+7NaP6B7002/fAQpuGvlZcjqbePedfGTPsOxjb9F82e5f0jDq4Ziok2aP2CDl
+	 qv9a22MoeRm7sk6Va4OMGW3ICvXihZ3GKFTE+lJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dom Cobley <popcornmix@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 266/817] drm/vc4: hdmi: Increase audio MAI fifo dreq threshold
-Date: Tue,  3 Dec 2024 15:37:18 +0100
-Message-ID: <20241203144006.173732389@linuxfoundation.org>
+Subject: [PATCH 6.11 270/817] drm/vc4: Correct generation check in vc4_hvs_lut_load
+Date: Tue,  3 Dec 2024 15:37:22 +0100
+Message-ID: <20241203144006.335856132@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -61,68 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dom Cobley <popcornmix@gmail.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 59f8b2b7fb8e460881d21c7d5b32604993973879 ]
+[ Upstream commit 42aa18d1c3e7762bcebd89a5857ed7774e669d92 ]
 
-Now we wait for write responses and have a burst
-size of 4, we can set the fifo threshold much higher.
+Commit 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
+incorrectly swapped a check of hvs->vc4->is_vc5 to
+hvs->vc4->gen == VC4_GEN_4 in vc4_hvs_lut_load, hence breaking
+loading the gamma look up table on Pi0-3.
 
-Set it to 28 (of the 32 entry size) to keep fifo
-fuller and reduce chance of underflow.
+Correct that conditional.
 
-Signed-off-by: Dom Cobley <popcornmix@gmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-8-dave.stevenson@raspberrypi.com
+Fixes: 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/dri-devel/37051126-3921-4afe-a936-5f828bff5752@samsung.com/
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-3-9d0396ca9f42@raspberrypi.com
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Stable-dep-of: cf1c87d978d4 ("drm/vc4: Match drm_dev_enter and exit calls in vc4_hvs_lut_load")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 9b2b07104a7ac..2b8e1642f9cf4 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2051,6 +2051,7 @@ static int vc4_hdmi_audio_prepare(struct device *dev, void *data,
- 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
- 	struct drm_device *drm = vc4_hdmi->connector.dev;
- 	struct drm_connector *connector = &vc4_hdmi->connector;
-+	struct vc4_dev *vc4 = to_vc4_dev(drm);
- 	unsigned int sample_rate = params->sample_rate;
- 	unsigned int channels = params->channels;
- 	unsigned long flags;
-@@ -2108,11 +2109,18 @@ static int vc4_hdmi_audio_prepare(struct device *dev, void *data,
- 					     VC4_HDMI_AUDIO_PACKET_CEA_MASK);
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index 50bfc514943a1..df71bc68cdd00 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -224,7 +224,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
  
- 	/* Set the MAI threshold */
--	HDMI_WRITE(HDMI_MAI_THR,
--		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_PANICHIGH) |
--		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_PANICLOW) |
--		   VC4_SET_FIELD(0x06, VC4_HD_MAI_THR_DREQHIGH) |
--		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_DREQLOW));
-+	if (vc4->is_vc5)
-+		HDMI_WRITE(HDMI_MAI_THR,
-+			   VC4_SET_FIELD(0x10, VC4_HD_MAI_THR_PANICHIGH) |
-+			   VC4_SET_FIELD(0x10, VC4_HD_MAI_THR_PANICLOW) |
-+			   VC4_SET_FIELD(0x1c, VC4_HD_MAI_THR_DREQHIGH) |
-+			   VC4_SET_FIELD(0x1c, VC4_HD_MAI_THR_DREQLOW));
-+	else
-+		HDMI_WRITE(HDMI_MAI_THR,
-+			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_PANICHIGH) |
-+			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_PANICLOW) |
-+			   VC4_SET_FIELD(0x6, VC4_HD_MAI_THR_DREQHIGH) |
-+			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_DREQLOW));
+-	if (hvs->vc4->gen == VC4_GEN_4)
++	if (hvs->vc4->gen != VC4_GEN_4)
+ 		goto exit;
  
- 	HDMI_WRITE(HDMI_MAI_CONFIG,
- 		   VC4_HDMI_MAI_CONFIG_BIT_REVERSE |
+ 	/* The LUT memory is laid out with each HVS channel in order,
 -- 
 2.43.0
 
