@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6439E2606
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C591B9E22F6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2093516E5CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D33D216AE4A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DA21F76AA;
-	Tue,  3 Dec 2024 16:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4779A1F76AA;
+	Tue,  3 Dec 2024 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emgbrYiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUhHXn7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FD51F75B9;
-	Tue,  3 Dec 2024 16:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F2A1F707A;
+	Tue,  3 Dec 2024 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241719; cv=none; b=uYug0wgNQJUMkLl/QVTUWoISfqwelPEcDBauPlAWEBC4ClVnwRKKntCfFsko2bKnF7rLyLRhzRg6805/lfOLlkRn+Y8ueXXAzv0wgnUVhUyVO/Zm3V4qEXcmik1CdlOASNgEVpNDkijiX4wDxL1IPQeYleRW87u6lQ2eHMfJX80=
+	t=1733239551; cv=none; b=XoRiBNrdQ9dv2hrdVpk4WMEvtPEtuHlf6wwujnJSSfmZ8IpcZtdUJg2NFjaTL0+6cUO+gmF2IP9BqNHe9d6L+TGLQeu8nO+5x2ayYNdd9HME2iDEk7IVBfCiLaYlxdS0rmKZWzixQpqo5Qhk0MEpT+JfvyuQlRDcro1aQU57j4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241719; c=relaxed/simple;
-	bh=6jfyDwk7LwRd9mZtFsuBhevq4+y3l1SXkSJFbUzCaB4=;
+	s=arc-20240116; t=1733239551; c=relaxed/simple;
+	bh=hOR14dDyaRi+kntwiMPv8x7e7uQww0TWIxob1N8TxC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORjhigUaw+bXWi69299ArBDQyh7voi5xaysKqTz7XYPzP/fjklHjUkKrWTGMb6MpHlpktg6Ij19tm9CBX1FSJzskOI2kaKlPClWljnkKoyEpLde1SzmnGp1KLd9Y2dYP1iU6t0n483KsN6oFb3n8t7sXVszPpfW82EgXHdlUiZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emgbrYiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A33C4CECF;
-	Tue,  3 Dec 2024 16:01:58 +0000 (UTC)
+	 MIME-Version; b=kPjsH3oEo2EyVIAGJbkNhpGFytFW83yrpA9v1xzrvevmyvwBDuJ9/XaVST3h7tusg0F0IMUjTRMIzI1rdzHLcNEhct1AnB5uvnvawe+9fv13qyECEQ8Io16uX/s8D3t3YUhErqz6nbfrycLNUmk0xMAi1N9TrSsscp1/7vbe8kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUhHXn7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8011DC4CECF;
+	Tue,  3 Dec 2024 15:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241719;
-	bh=6jfyDwk7LwRd9mZtFsuBhevq4+y3l1SXkSJFbUzCaB4=;
+	s=korg; t=1733239550;
+	bh=hOR14dDyaRi+kntwiMPv8x7e7uQww0TWIxob1N8TxC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emgbrYiEArDol3EGJe0vpjdbGglrZAj1OEOs2IhRDQSbAqU48Pt/KDtzGdFoV0CJW
-	 88IeUgYj/AhcK34ZAHHUMnSo02aB88SS4QhQJ9TfCK5Z0sdi+47LmebU1Qhz+4UEPa
-	 1ussvBskBFXyDaKL+QuVWaX7MkEyawv3ldkwksGE=
+	b=PUhHXn7+TYnm43A04pOGtTH20I4OXKgVocEhJS925AcLip7fzfmMtqoQRgaIr5Chb
+	 OBAbS3jqGTXfvDoN0x5Qy5DtbsrF1e0GTyRhLJz7EpZqDt4+d58SUZ/djSI09W6T0h
+	 D2krhJ94t7Ho1PViyY/hCNmkpHNnsL80o8Op664Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LongPing Wei <weilongping@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 497/826] f2fs: fix the wrong f2fs_bug_on condition in f2fs_do_replace_block
-Date: Tue,  3 Dec 2024 15:43:44 +0100
-Message-ID: <20241203144803.142205903@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.11 653/817] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
+Date: Tue,  3 Dec 2024 15:43:45 +0100
+Message-ID: <20241203144021.446992621@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LongPing Wei <weilongping@oppo.com>
+From: Jing Zhang <jingzhangos@google.com>
 
-[ Upstream commit c3af1f13476ec23fd99c98d060a89be28c1e8871 ]
+commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
 
-This f2fs_bug_on was introduced by commit 2c1905042c8c ("f2fs: check
-segment type in __f2fs_replace_block") when there were only 6 curseg types.
-After commit d0b9e42ab615 ("f2fs: introduce inmem curseg") was introduced,
-the condition should be changed to checking curseg->seg_type.
+In all the vgic_its_save_*() functinos, they do not check whether
+the data length is 8 bytes before calling vgic_write_guest_lock.
+This patch adds the check. To prevent the kernel from being blown up
+when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
+are replaced together.
 
-Fixes: d0b9e42ab615 ("f2fs: introduce inmem curseg")
-Signed-off-by: LongPing Wei <weilongping@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with the new entry read/write helpers]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-4-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-its.c |   20 ++++++++------------
+ arch/arm64/kvm/vgic/vgic.h     |   23 +++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 1766254279d24..7b54b1851d346 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3977,8 +3977,8 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 		}
- 	}
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -2090,7 +2090,6 @@ static int scan_its_table(struct vgic_it
+ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
+ 			      struct its_ite *ite, gpa_t gpa, int ite_esz)
+ {
+-	struct kvm *kvm = its->dev->kvm;
+ 	u32 next_offset;
+ 	u64 val;
  
--	f2fs_bug_on(sbi, !IS_DATASEG(type));
- 	curseg = CURSEG_I(sbi, type);
-+	f2fs_bug_on(sbi, !IS_DATASEG(curseg->seg_type));
+@@ -2099,7 +2098,8 @@ static int vgic_its_save_ite(struct vgic
+ 	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
+ 		ite->collection->collection_id;
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(kvm, gpa, &val, ite_esz);
++
++	return vgic_its_write_entry_lock(its, gpa, val, ite_esz);
+ }
  
- 	mutex_lock(&curseg->curseg_mutex);
- 	down_write(&sit_i->sentry_lock);
--- 
-2.43.0
-
+ /**
+@@ -2243,7 +2243,6 @@ static int vgic_its_restore_itt(struct v
+ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
+ 			     gpa_t ptr, int dte_esz)
+ {
+-	struct kvm *kvm = its->dev->kvm;
+ 	u64 val, itt_addr_field;
+ 	u32 next_offset;
+ 
+@@ -2254,7 +2253,8 @@ static int vgic_its_save_dte(struct vgic
+ 	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
+ 		(dev->num_eventid_bits - 1));
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(kvm, ptr, &val, dte_esz);
++
++	return vgic_its_write_entry_lock(its, ptr, val, dte_esz);
+ }
+ 
+ /**
+@@ -2441,7 +2441,8 @@ static int vgic_its_save_cte(struct vgic
+ 	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
+ 	       collection->collection_id);
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(its->dev->kvm, gpa, &val, esz);
++
++	return vgic_its_write_entry_lock(its, gpa, val, esz);
+ }
+ 
+ /*
+@@ -2457,8 +2458,7 @@ static int vgic_its_restore_cte(struct v
+ 	u64 val;
+ 	int ret;
+ 
+-	BUG_ON(esz > sizeof(val));
+-	ret = kvm_read_guest_lock(kvm, gpa, &val, esz);
++	ret = vgic_its_read_entry_lock(its, gpa, &val, esz);
+ 	if (ret)
+ 		return ret;
+ 	val = le64_to_cpu(val);
+@@ -2496,7 +2496,6 @@ static int vgic_its_save_collection_tabl
+ 	u64 baser = its->baser_coll_table;
+ 	gpa_t gpa = GITS_BASER_ADDR_48_to_52(baser);
+ 	struct its_collection *collection;
+-	u64 val;
+ 	size_t max_size, filled = 0;
+ 	int ret, cte_esz = abi->cte_esz;
+ 
+@@ -2520,10 +2519,7 @@ static int vgic_its_save_collection_tabl
+ 	 * table is not fully filled, add a last dummy element
+ 	 * with valid bit unset
+ 	 */
+-	val = 0;
+-	BUG_ON(cte_esz > sizeof(val));
+-	ret = vgic_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
+-	return ret;
++	return vgic_its_write_entry_lock(its, gpa, 0, cte_esz);
+ }
+ 
+ /*
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -146,6 +146,29 @@ static inline int vgic_write_guest_lock(
+ 	return ret;
+ }
+ 
++static inline int vgic_its_read_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					   u64 *eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(*eval), kvm))
++		return -EINVAL;
++
++	return kvm_read_guest_lock(kvm, eaddr, eval, esize);
++
++}
++
++static inline int vgic_its_write_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					    u64 eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(eval), kvm))
++		return -EINVAL;
++
++	return vgic_write_guest_lock(kvm, eaddr, &eval, esize);
++}
++
+ /*
+  * This struct provides an intermediate representation of the fields contained
+  * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
 
 
 
