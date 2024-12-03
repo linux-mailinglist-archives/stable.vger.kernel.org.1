@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4019E21F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E4D9E283F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31450166FC8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E420CB2EB06
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B951F7583;
-	Tue,  3 Dec 2024 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325711F9A9C;
+	Tue,  3 Dec 2024 15:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcWs1oSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWaYPjwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6050E1E3DF9;
-	Tue,  3 Dec 2024 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BCE1F892F;
+	Tue,  3 Dec 2024 15:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238745; cv=none; b=FJ06AblqkomiVl1Zeo/hhvSEww9WKXYiHSZvACiw0f4hYaQdX/+h4cpFxN+BBMei/x47TT59z6DYiarHUD2gD1bJPIkvqSaZEnjKHzMrEHGZh2Gh+FdCL6tSUf8KO1bkNTDWx3BMYppxapA28IpeUI4PJLJlbF0qvV2RpLYsAYI=
+	t=1733240770; cv=none; b=JaOGUFwwAhG5XB7dH+z+25POMnyMMN8sRp+Z0i2Tmd4By+I4DrsaQbx0DYRRW598jhTjX5IzAv5diQuHtVmKalxVp+hFm2HyOwS5PautJWMUgNET+F1gRMo1oJgD0Oi/f6z9mXu+z1CCmTd/gCOVYYwTvU6MOQGn+6OadY+kJsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238745; c=relaxed/simple;
-	bh=Tj8V+zo5ua6aaSa2iu9tmWveEQqJ88nybFF9Ztr7cuQ=;
+	s=arc-20240116; t=1733240770; c=relaxed/simple;
+	bh=VTa7pHK/z8UsWSe0EiFZRNsSrOcZYPVRqHsayf6hKys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyNn5SZoM/AtzaHclAFwUMu6qRp1xitWrBQauigNLL4Sr1m5bgk38SF7UWbiaINFuVLQ9CAV8ARSSXIB+RBlBKHipPOEajq8C5qhbz70uAA04gUlKn8yPeDAeqFzy/XNr4XTtGqhECNoPxblblaW4DptLAPeWnM2a9FkvRTWR+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcWs1oSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8A7C4CECF;
-	Tue,  3 Dec 2024 15:12:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SCxZ8r4u6wsx/q46NGoG9nK3xUUUeTP4xRmhV+98Yv6qj05CetiGiu58YvnZ2yzZ25tMecFSqc66PfKU9UjQM8tGMNPWTehhCStbIpeW6pWCS2tQU0yXTcCCPzZGrlSLVykauHV85bj2aZ8PKummHXP0z9/e0lS9/eqsh/tc0ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWaYPjwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2714C4CED6;
+	Tue,  3 Dec 2024 15:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238745;
-	bh=Tj8V+zo5ua6aaSa2iu9tmWveEQqJ88nybFF9Ztr7cuQ=;
+	s=korg; t=1733240769;
+	bh=VTa7pHK/z8UsWSe0EiFZRNsSrOcZYPVRqHsayf6hKys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcWs1oSuT6a/R1AQP3MR8na6vQqrzBNqeTy7ZtVDWadfZxyTVDAhWhjErmtUzeCIq
-	 xq6LxmJyVCkGr1dH4b67bunsogsRhJqvtxoBaoYXKjOiJ8uaD5+NGIbm5t0O7pzDeM
-	 VpmBiyJEbLY547tI3hgo24v4A9nPEn5EliMiEMao=
+	b=qWaYPjwlJBAuRIp4FRKoMTvzZUBQHwD+vGpvpUeVnf2RuhccUawjSO/ZYyCdYZ742
+	 ahgUf0NevsKqZQJdc2v6pPrH3ZSufnyVR3pdolXZoXLbEZJ03pOmlr2e64ig9OpAqy
+	 p37BkcjvYMK0UncrlYRZOhqjN1tWXqJUSTb4gSh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 384/817] scsi: hisi_sas: Enable all PHYs that are not disabled by user during controller reset
+Subject: [PATCH 6.12 229/826] libbpf: Add missing per-arch include path
 Date: Tue,  3 Dec 2024 15:39:16 +0100
-Message-ID: <20241203144010.835121730@linuxfoundation.org>
+Message-ID: <20241203144752.678556507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 08a07dc71d7fc6f58c35c4fc0bcede2811c5aa4c ]
+[ Upstream commit 710fbca820c721cdd60fa8c5bbe9deb4c0788aae ]
 
-For the controller reset operation(such as FLR or clear nexus ha in SCSI
-EH), we will disable all PHYs and then enable PHY based on the
-hisi_hba->phy_state obtained in hisi_sas_controller_reset_prepare(). If
-the device is removed before controller reset or the PHY is not attached
-to any device in directly attached scenario, the corresponding bit of
-phy_state is not set. After controller reset done, the PHY is disabled.
-The device cannot be identified even if user reconnect the disk.
+libbpf does not include the per-arch tools include path, e.g.
+tools/arch/riscv/include. Some architectures depend those files to
+build properly.
 
-Therefore, for PHYs that are not disabled by user, hisi_sas_phy_enable()
-needs to be executed even if the corresponding bit of phy_state is not
-set.
+Include tools/arch/$(SUBARCH)/include in the libbpf build.
 
-Fixes: 89954f024c3a ("scsi: hisi_sas: Ensure all enabled PHYs up during controller reset")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-5-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 6d74d178fe6e ("tools: Add riscv barrier implementation")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240927131355.350918-1-bjorn@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/lib/bpf/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index ec1a3e7ee94d3..4a51db160ac8e 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1545,10 +1545,16 @@ void hisi_sas_controller_reset_done(struct hisi_hba *hisi_hba)
- 	/* Init and wait for PHYs to come up and all libsas event finished. */
- 	for (phy_no = 0; phy_no < hisi_hba->n_phy; phy_no++) {
- 		struct hisi_sas_phy *phy = &hisi_hba->phy[phy_no];
-+		struct asd_sas_phy *sas_phy = &phy->sas_phy;
+diff --git a/tools/lib/bpf/Makefile b/tools/lib/bpf/Makefile
+index 1b22f0f372880..857a5f7b413d6 100644
+--- a/tools/lib/bpf/Makefile
++++ b/tools/lib/bpf/Makefile
+@@ -61,7 +61,8 @@ ifndef VERBOSE
+ endif
  
--		if (!(hisi_hba->phy_state & BIT(phy_no)))
-+		if (!sas_phy->phy->enabled)
- 			continue;
+ INCLUDES = -I$(or $(OUTPUT),.) \
+-	   -I$(srctree)/tools/include -I$(srctree)/tools/include/uapi
++	   -I$(srctree)/tools/include -I$(srctree)/tools/include/uapi \
++	   -I$(srctree)/tools/arch/$(SRCARCH)/include
  
-+		if (!(hisi_hba->phy_state & BIT(phy_no))) {
-+			hisi_sas_phy_enable(hisi_hba, phy_no, 1);
-+			continue;
-+		}
-+
- 		async_schedule_domain(hisi_sas_async_init_wait_phyup,
- 				      phy, &async);
- 	}
+ export prefix libdir src obj
+ 
 -- 
 2.43.0
 
