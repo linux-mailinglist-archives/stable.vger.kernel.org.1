@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B5F9E2A25
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:59:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECDD9E2968
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51282B2B419
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C522B335D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB901F6696;
-	Tue,  3 Dec 2024 15:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF831F75A5;
+	Tue,  3 Dec 2024 15:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQVyGgg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uo+hP7sa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED69C646;
-	Tue,  3 Dec 2024 15:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4931F7558;
+	Tue,  3 Dec 2024 15:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239071; cv=none; b=sQobwJ6fAYTWk9oZJIR53TvdtgwY6ySRS8pBr+KNUYkn/IWsE+F7bpf88hNKMqgljLllGoorV8ZllWidSWlZjJWdB4jOqKvfBKfcJm2ImoohMQryquXH574VW6Ce7yUdueVzfsd6qnl44Btvz7rEBSUzcc9QcY2Xr2R8sny0ofE=
+	t=1733241095; cv=none; b=FGtgmTUh0nYF3uszHhwG0dLBXkuDUR3FDXJ3/lT3DUa1xBrG/JEnuyIqbMA3XEAHnm3y/ZiC0QrXf6Y9JOx889Himi28/X4oVPkGV9FSEMp/2pfSqdxXU1VWRMSrWnNRblfqTkomKBMuWmA6QdDvl/woQDXyPiHsPPB1WfMkRlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239071; c=relaxed/simple;
-	bh=HoMXvchHR1pbqU5zX5ZsCV7luce+eteP4x+oRfCPiW8=;
+	s=arc-20240116; t=1733241095; c=relaxed/simple;
+	bh=qlveK9bVWodoCR74QF8txbmvd9st1Z2T8ciWZbpQEGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vi5q60xO2EjlYQq3qKmmVVSS0SJfb74iPzwHFauDaFyCXa+lFQkRso9Vk7OkbTd07hy+40Ij4pVPfJDTMPoucO9GY3BpE8zhQxOaqaqSR3AjbLIl1XfeujgTY8VJBuyM/3XRqgWB3Ykqvg0/U3exJuUYhptB7xTguUD84a9ThX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQVyGgg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769B8C4CECF;
-	Tue,  3 Dec 2024 15:17:50 +0000 (UTC)
+	 MIME-Version; b=BiNzN5E1lVijYn3fJ7YqDukVNDf4SuVikbsQxbtuPTB1NO8TMc0Z7BmPQnCOrFFl8vQsqrf8KlqqSeoqe4VZq+06eOO7uk6ryOUg/itNBOpQQTunB1bnivUcUEvgaF6x7Fl9SSOMUlJyEif8lZ6H+RIRuzVPAchmvEv3Sua4TRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uo+hP7sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811D3C4CECF;
+	Tue,  3 Dec 2024 15:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239070;
-	bh=HoMXvchHR1pbqU5zX5ZsCV7luce+eteP4x+oRfCPiW8=;
+	s=korg; t=1733241095;
+	bh=qlveK9bVWodoCR74QF8txbmvd9st1Z2T8ciWZbpQEGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQVyGgg+Ac+XLuMoOmbM9eDuBJk4w0Ti8y8uEZdwCw8PNzEa1G5TYvAiU5BTFo9Mm
-	 /jNrESbbfOJ1eyLZvo7Tp0Vm2wVdjDiNbX7iaRyxsIPe+qq3DwynpXuRXRV9x4KOHq
-	 iX9rAeOcz8Rns6l3r5Chli9mO4W2O4cFFAqFxWLw=
+	b=uo+hP7sa/OLzctUAHYyZP22rzKdyWPCljXUS/lriLd1s2n+IQ12yYBdP8GDcoKpR9
+	 q6ta/C595lumz19s+7BgYR+0NNSs4wgAyjb1aCML4zzaeqQeWzu9uLRteJS6DyzJU9
+	 nTEIgCWICCXrsXvXlr92JlXI/tYJAuyrxCVFIDuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 475/817] pinctrl: k210: Undef K210_PC_DEFAULT
-Date: Tue,  3 Dec 2024 15:40:47 +0100
-Message-ID: <20241203144014.411932387@linuxfoundation.org>
+Subject: [PATCH 6.12 324/826] bpf: Force uprobe bpf program to always return 0
+Date: Tue,  3 Dec 2024 15:40:51 +0100
+Message-ID: <20241203144756.400524830@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
+[ Upstream commit f505005bc7426f4309880da94cfbfc37efa225bd ]
 
-When the temporary macro K210_PC_DEFAULT is not needed anymore,
-use its name in the #undef statement instead of
-the incorrect "DEFAULT" name.
+As suggested by Andrii make uprobe multi bpf programs to always return 0,
+so they can't force uprobe removal.
 
-Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Keeping the int return type for uprobe_prog_run, because it will be used
+in following session changes.
+
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241108134544.480660-3-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-k210.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
-index a898e40451fe4..9c1aa3246df7d 100644
---- a/drivers/pinctrl/pinctrl-k210.c
-+++ b/drivers/pinctrl/pinctrl-k210.c
-@@ -183,7 +183,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
- 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
- };
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 630b763e52402..792dc35414a3c 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3205,7 +3205,6 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	struct bpf_prog *prog = link->link.prog;
+ 	bool sleepable = prog->sleepable;
+ 	struct bpf_run_ctx *old_run_ctx;
+-	int err = 0;
  
--#undef DEFAULT
-+#undef K210_PC_DEFAULT
+ 	if (link->task && !same_thread_group(current, link->task))
+ 		return 0;
+@@ -3218,7 +3217,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	migrate_disable();
  
- /*
-  * Pin functions configuration information.
+ 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+-	err = bpf_prog_run(link->link.prog, regs);
++	bpf_prog_run(link->link.prog, regs);
+ 	bpf_reset_run_ctx(old_run_ctx);
+ 
+ 	migrate_enable();
+@@ -3227,7 +3226,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 		rcu_read_unlock_trace();
+ 	else
+ 		rcu_read_unlock();
+-	return err;
++	return 0;
+ }
+ 
+ static bool
 -- 
 2.43.0
 
