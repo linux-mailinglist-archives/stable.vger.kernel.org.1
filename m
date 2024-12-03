@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171599E24B4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 404939E21D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FDDC16EA1B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144EA169A9C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0281F76BA;
-	Tue,  3 Dec 2024 15:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563371FA166;
+	Tue,  3 Dec 2024 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8dfEcZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCFfzM3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EE75C8F7;
-	Tue,  3 Dec 2024 15:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149A11F76DE;
+	Tue,  3 Dec 2024 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240633; cv=none; b=G8wuWp18ZXlZZ+KDIcRZxpBcyGt4ypxqkvLZVkKI+TcSfoQQaigi1ikR2ruz646alXpgP31BEyIb2qBQv4ZRX29fE7vfxa8awwNYRewYGe/stc9JO9H8rRyfEb5MS2K+2JRX3OMDCGscKwrRrFxyt81RbHOG9eiB2qTRT64DDNc=
+	t=1733238638; cv=none; b=SwpMQ4+/hpB9nuCj3XskgZrZv97/lHcunYKk4VZ5k3SoDDKLywKA/PBrpwA8RlavjcAN3HLw8l2g1gmvY9CAm59LWEPwex6As8xQE3oxk7oLYVRUnqwD44nfyoGCpKI+AbjRrcbGwKksnJH69QsYOTLlTgQB5Z3zMe5SDr173/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240633; c=relaxed/simple;
-	bh=QObZRz0Sdqu4XZRC819SMsuPKCblmHGgwFxFq9djUkU=;
+	s=arc-20240116; t=1733238638; c=relaxed/simple;
+	bh=OoeXgeiEM17jwBe0/UhC31719VuO/mYleO5W5PIwapM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O2oM62efhu0OUsWECqY+52lbTWjlUfG7ljWuEYcoUdueyicUV+tMgADWbkKUUG1jWclYAgQFEAmK5Xw08qJbrQISD/Q8Cqz0ViT9cXzynoaWXd6oMQ1xaQSHBl5YPZg+1sy+JJa3BpAwvrP8HJlunnKxg+kyOkNqk2ywcIL6UrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8dfEcZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77304C4CECF;
-	Tue,  3 Dec 2024 15:43:52 +0000 (UTC)
+	 MIME-Version; b=B8ojF5kXRlz+1HDyMyz+lOX5szOL/SkHoIA7h2yRKyaqHBuF2lSKYbCm8cmiGxDVpkZKTi/35EFIIAmyTh2lRjTzRuKEC9RW5MuP97L0OAW2pQapcvCjTV5zRbl/kyBfXTMUBq15BzmXfix43cxvyIa4fUIWxiXCt1Io9KxxDk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCFfzM3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4A0C4CECF;
+	Tue,  3 Dec 2024 15:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240632;
-	bh=QObZRz0Sdqu4XZRC819SMsuPKCblmHGgwFxFq9djUkU=;
+	s=korg; t=1733238637;
+	bh=OoeXgeiEM17jwBe0/UhC31719VuO/mYleO5W5PIwapM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8dfEcZmacIkG/ZXS9XLIMGE6FT+mnSeL2XR+UHdD5FmJGaFhncCXMgI9FpcBDRwk
-	 rpwQBkqqclq5HqkuOIH6NbdnePEYvoSSdzBH/QwNwXsjtU/8I93TZ5bsBSzfu/BLzG
-	 vf4l2IJ3NtqMUF2N0vxCBbt+iL4q0H15/xJ5I9UE=
+	b=kCFfzM3PCXDiXNBQmcQEuq+lqXa4IKB0pMEsA7PNhctlv4GJxtEZiBfFeCQeI+gE1
+	 DlE9qVeNxr6ZdN90ZVEurpj6MpkU5K5pWJZ7qEVCBPaF33wfX5VIZsZD65i0lnbsJX
+	 ECb/jBADaDagQPip2m2h/WEMteEbFJ2qlV5FCQQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alf Marius <post@alfmarius.net>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/826] drm/v3d: Appease lockdep while updating GPU stats
+Subject: [PATCH 6.11 347/817] Revert "wifi: iwlegacy: do not skip frames with bad FCS"
 Date: Tue,  3 Dec 2024 15:38:39 +0100
-Message-ID: <20241203144751.235874302@linuxfoundation.org>
+Message-ID: <20241203144009.372043219@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,164 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Kalle Valo <kvalo@kernel.org>
 
-[ Upstream commit 06c3c406850e5495bb56ccf624d0c9477e1ba901 ]
+[ Upstream commit 11597043d74809daf5d14256b96d6781749b3f82 ]
 
-Lockdep thinks our seqcount_t usage is unsafe because the update path can
-be both from irq and worker context:
+This reverts commit 02b682d54598f61cbb7dbb14d98ec1801112b878.
 
- [ ] ================================
- [ ] WARNING: inconsistent lock state
- [ ] 6.10.3-v8-16k-numa #159 Tainted: G        WC
- [ ] --------------------------------
- [ ] inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
- [ ] swapper/0/0 [HC1[1]:SC0[0]:HE0:SE1] takes:
- [ ] ffff80003d7c08d0 (&v3d_priv->stats[i].lock){?.+.}-{0:0}, at: v3d_irq+0xc8/0x660 [v3d]
- [ ] {HARDIRQ-ON-W} state was registered at:
- [ ]   lock_acquire+0x1f8/0x328
- [ ]   v3d_job_start_stats.isra.0+0xd8/0x218 [v3d]
- [ ]   v3d_bin_job_run+0x23c/0x388 [v3d]
- [ ]   drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
- [ ]   process_one_work+0x62c/0xb48
- [ ]   worker_thread+0x468/0x5b0
- [ ]   kthread+0x1c4/0x1e0
- [ ]   ret_from_fork+0x10/0x20
- [ ] irq event stamp: 337094
- [ ] hardirqs last  enabled at (337093): [<ffffc0008144ce7c>] default_idle_call+0x11c/0x140
- [ ] hardirqs last disabled at (337094): [<ffffc0008144a354>] el1_interrupt+0x24/0x58
- [ ] softirqs last  enabled at (337082): [<ffffc00080061d90>] handle_softirqs+0x4e0/0x538
- [ ] softirqs last disabled at (337073): [<ffffc00080010364>] __do_softirq+0x1c/0x28
- [ ]
-                other info that might help us debug this:
- [ ]  Possible unsafe locking scenario:
+Alf reports that this commit causes the connection to eventually die on
+iwl4965. The reason is that rx_status.flag is zeroed after
+RX_FLAG_FAILED_FCS_CRC is set and mac80211 doesn't know the received frame is
+corrupted.
 
- [ ]        CPU0
- [ ]        ----
- [ ]   lock(&v3d_priv->stats[i].lock);
- [ ]   <Interrupt>
- [ ]     lock(&v3d_priv->stats[i].lock);
- [ ]
-                *** DEADLOCK ***
-
- [ ] no locks held by swapper/0/0.
- [ ]
-               stack backtrace:
- [ ] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        WC         6.10.3-v8-16k-numa #159
- [ ] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
- [ ] Call trace:
- [ ]  dump_backtrace+0x170/0x1b8
- [ ]  show_stack+0x20/0x38
- [ ]  dump_stack_lvl+0xb4/0xd0
- [ ]  dump_stack+0x18/0x28
- [ ]  print_usage_bug+0x3cc/0x3f0
- [ ]  mark_lock+0x4d0/0x968
- [ ]  __lock_acquire+0x784/0x18c8
- [ ]  lock_acquire+0x1f8/0x328
- [ ]  v3d_job_update_stats+0xec/0x2e0 [v3d]
- [ ]  v3d_irq+0xc8/0x660 [v3d]
- [ ]  __handle_irq_event_percpu+0x1f8/0x488
- [ ]  handle_irq_event+0x88/0x128
- [ ]  handle_fasteoi_irq+0x298/0x408
- [ ]  generic_handle_domain_irq+0x50/0x78
-
-But it is a false positive because all the queue-stats pairs have their
-own lock and jobs are also one at a time.
-
-Nevertheless we can appease lockdep by disabling local interrupts to make
-it see lock usage is consistent.
-
-Cc: Maíra Canal <mcanal@igalia.com>
-Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240813102505.80512-2-tursulin@igalia.com
+Fixes: 02b682d54598 ("wifi: iwlegacy: do not skip frames with bad FCS")
+Reported-by: Alf Marius <post@alfmarius.net>
+Closes: https://lore.kernel.org/r/60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com/
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241112142419.1023743-1-kvalo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 46 +++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlegacy/3945.c     | 2 +-
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 08d2a27395828..4f935f1d50a94 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -135,8 +135,31 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
--
--	preempt_disable();
-+	unsigned long flags;
-+
-+	/*
-+	 * We only need to disable local interrupts to appease lockdep who
-+	 * otherwise would think v3d_job_start_stats vs v3d_stats_update has an
-+	 * unsafe in-irq vs no-irq-off usage problem. This is a false positive
-+	 * because all the locks are per queue and stats type, and all jobs are
-+	 * completely one at a time serialised. More specifically:
-+	 *
-+	 * 1. Locks for GPU queues are updated from interrupt handlers under a
-+	 *    spin lock and started here with preemption disabled.
-+	 *
-+	 * 2. Locks for CPU queues are updated from the worker with preemption
-+	 *    disabled and equally started here with preemption disabled.
-+	 *
-+	 * Therefore both are consistent.
-+	 *
-+	 * 3. Because next job can only be queued after the previous one has
-+	 *    been signaled, and locks are per queue, there is also no scope for
-+	 *    the start part to race with the update part.
-+	 */
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_save(flags);
-+	else
-+		preempt_disable();
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945.c b/drivers/net/wireless/intel/iwlegacy/3945.c
+index 1fab7849f56d1..a773939b8c2aa 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945.c
++++ b/drivers/net/wireless/intel/iwlegacy/3945.c
+@@ -566,7 +566,7 @@ il3945_hdl_rx(struct il_priv *il, struct il_rx_buf *rxb)
+ 	if (!(rx_end->status & RX_RES_STATUS_NO_CRC32_ERROR) ||
+ 	    !(rx_end->status & RX_RES_STATUS_NO_RXE_OVERFLOW)) {
+ 		D_RX("Bad CRC or FIFO: 0x%08X.\n", rx_end->status);
+-		rx_status.flag |= RX_FLAG_FAILED_FCS_CRC;
++		return;
+ 	}
  
- 	write_seqcount_begin(&local_stats->lock);
- 	local_stats->start_ns = now;
-@@ -146,7 +169,10 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	global_stats->start_ns = now;
- 	write_seqcount_end(&global_stats->lock);
+ 	/* Convert 3945's rssi indicator to dBm */
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 1600c344edbb2..11c15e0bc779a 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -664,7 +664,7 @@ il4965_hdl_rx(struct il_priv *il, struct il_rx_buf *rxb)
+ 	if (!(rx_pkt_status & RX_RES_STATUS_NO_CRC32_ERROR) ||
+ 	    !(rx_pkt_status & RX_RES_STATUS_NO_RXE_OVERFLOW)) {
+ 		D_RX("Bad CRC or FIFO: 0x%08X.\n", le32_to_cpu(rx_pkt_status));
+-		rx_status.flag |= RX_FLAG_FAILED_FCS_CRC;
++		return;
+ 	}
  
--	preempt_enable();
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_restore(flags);
-+	else
-+		preempt_enable();
- }
- 
- static void
-@@ -167,11 +193,21 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
-+	unsigned long flags;
-+
-+	/* See comment in v3d_job_start_stats() */
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_save(flags);
-+	else
-+		preempt_disable();
- 
--	preempt_disable();
- 	v3d_stats_update(local_stats, now);
- 	v3d_stats_update(global_stats, now);
--	preempt_enable();
-+
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_restore(flags);
-+	else
-+		preempt_enable();
- }
- 
- static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+ 	/* This will be used in several places later */
 -- 
 2.43.0
 
