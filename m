@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-98057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF669E286C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:59:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACB69E26D2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AC55B395B3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DBD92893F2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B181F8921;
-	Tue,  3 Dec 2024 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3521F8921;
+	Tue,  3 Dec 2024 16:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ow42VEfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGA2ziuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C233B1F7567;
-	Tue,  3 Dec 2024 16:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCC114A088;
+	Tue,  3 Dec 2024 16:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242650; cv=none; b=fGpyk4PKzTWQ+ThCoUvwOlPSCY6oxJWbQf0qEc/JHHZDqAfaLq4/uWfNd/AubJ5BKkUEGjusTK+eYuhv5g5c1U7Adn3eRnms/le9aJOng3nGtDqC0710Outcrxg0Taf2gSwYH1RC3aTpRUeZ4F+T762OixfzgUNes1HU0doMMTg=
+	t=1733242657; cv=none; b=kV0CBeMd8T/Um92ik0QWXLDcLSIL8jGKQYK/eLUU98OUoF3FuqqNVqTpQGXWBja1+gwDSl3kAAHTlVYCnOkKRx5aJFraSn350h5bObpN6/VRMzLYnEhsb1uTzpNUa4i2qMhFRjKmXlgh4JB6OT9ZbfgJ6LmmtoM3gxOWzZb2c4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242650; c=relaxed/simple;
-	bh=cAGurfIRCWAQfJ9HijU0u9PwuRQLsgKdp1XBbXtxqrE=;
+	s=arc-20240116; t=1733242657; c=relaxed/simple;
+	bh=DFEO+4fRpTYGh38B+ohgQwgNkr44D4npmP60DglHhgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=emfeHNAIDiw6Ajx7GmDdNzxyzJrujjhIyMGVRnTyQPr7E1T0xRiOdVtuGS4c8XXhUS6Vs79BBc6rdu8SCaEWoxUBRzBYXxxGsqjCSk/UcIUwxsO0/tQehXtzIxCZsEWZkNnRheMG7dYPkeltqyHTRmEZqIWTzJrJ5JLgWhziBDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ow42VEfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB6FC4CECF;
-	Tue,  3 Dec 2024 16:17:29 +0000 (UTC)
+	 MIME-Version; b=nHNGRUrnN1PvPubu9bg80edpQsnOGf88okBLfPqoegFMvvgwtI6hDMGl41bmM8g0e55o4LqiRQS5Uf56ehUxOHS5fHdKz/77EZIKefIKBmzGkGTlI2uDUrsjuSWORCY/OFpkhmmfiXsZlp2z/TmckvoJ2jsVXJ0JhoSJ7FZeoak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGA2ziuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8507BC4CECF;
+	Tue,  3 Dec 2024 16:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242650;
-	bh=cAGurfIRCWAQfJ9HijU0u9PwuRQLsgKdp1XBbXtxqrE=;
+	s=korg; t=1733242656;
+	bh=DFEO+4fRpTYGh38B+ohgQwgNkr44D4npmP60DglHhgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ow42VEfYt0nnXKf1mx67v2RG+AR2T/WG14A1UF2YHayrXssDRekah41w+N5nUR7AB
-	 bm3MJxCcbEqoGS410b7wO/9bbgzUe4w6/rWdlfGKSR1ehOYJQEOO/YJCFE1DV03ilH
-	 mPmQPgOQEhlXxYmaKufR8cf4dHGfcOQHsDkF4zv8=
+	b=QGA2ziuCnFGUwqg851bRoGkcTkjRB4jb4cU6Cob4YR4A+Fx2WEl8+SsEaLfGZSeNh
+	 jD0Lr57T1XGshXS+KgqeAdNhzvjH0+EvNsthQb3FBNrapjctNFDKiBjBhp4KEA2Nd2
+	 FvW3/BGWc4OsQ8+rFgND9E4TD7+wlxDlNveA5A48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 768/826] ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-Date: Tue,  3 Dec 2024 15:48:15 +0100
-Message-ID: <20241203144813.725214919@linuxfoundation.org>
+	Yuan Can <yuancan@huawei.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 769/826] Input: cs40l50 - fix wrong usage of INIT_WORK()
+Date: Tue,  3 Dec 2024 15:48:16 +0100
+Message-ID: <20241203144813.763094574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,63 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Wupeng <mawupeng1@huawei.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit bc8f5921cd69188627c08041276238de222ab466 upstream.
+commit 5c822c0ce5cc83ed4cd8394f3dc46dae8d9a681d upstream.
 
-Percpu memory allocation may failed during create_ipc_ns however this
-fail is not handled properly since ipc sysctls and mq sysctls is not
-released properly. Fix this by release these two resource when failure.
+In cs40l50_add(), the work_data is a local variable and the work_data.work
+should initialize with INIT_WORK_ONSTACK() instead of INIT_WORK().
+Small error in cs40l50_erase() also fixed in this commit.
 
-Here is the kmemleak stack when percpu failed:
-
-unreferenced object 0xffff88819de2a600 (size 512):
-  comm "shmem_2nstest", pid 120711, jiffies 4300542254
-  hex dump (first 32 bytes):
-    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
-    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
-  backtrace (crc be7cba35):
-    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
-    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
-    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
-    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
-    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
-    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
-    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
-    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
-    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
-    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
-    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
-Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c38fe1bb5d21 ("Input: cs40l50 - Add support for the CS40L50 haptic driver")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: James Ogletree <jogletre@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20241106013549.78142-1-yuancan@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/namespace.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/input/misc/cs40l50-vibra.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -83,13 +83,15 @@ static struct ipc_namespace *create_ipc_
+--- a/drivers/input/misc/cs40l50-vibra.c
++++ b/drivers/input/misc/cs40l50-vibra.c
+@@ -334,11 +334,12 @@ static int cs40l50_add(struct input_dev
+ 	work_data.custom_len = effect->u.periodic.custom_len;
+ 	work_data.vib = vib;
+ 	work_data.effect = effect;
+-	INIT_WORK(&work_data.work, cs40l50_add_worker);
++	INIT_WORK_ONSTACK(&work_data.work, cs40l50_add_worker);
  
- 	err = msg_init_ns(ns);
- 	if (err)
--		goto fail_put;
-+		goto fail_ipc;
+ 	/* Push to the workqueue to serialize with playbacks */
+ 	queue_work(vib->vib_wq, &work_data.work);
+ 	flush_work(&work_data.work);
++	destroy_work_on_stack(&work_data.work);
  
- 	sem_init_ns(ns);
- 	shm_init_ns(ns);
+ 	kfree(work_data.custom_data);
  
- 	return ns;
+@@ -467,11 +468,12 @@ static int cs40l50_erase(struct input_de
+ 	work_data.vib = vib;
+ 	work_data.effect = &dev->ff->effects[effect_id];
  
-+fail_ipc:
-+	retire_ipc_sysctls(ns);
- fail_mq:
- 	retire_mq_sysctls(ns);
+-	INIT_WORK(&work_data.work, cs40l50_erase_worker);
++	INIT_WORK_ONSTACK(&work_data.work, cs40l50_erase_worker);
  
+ 	/* Push to workqueue to serialize with playbacks */
+ 	queue_work(vib->vib_wq, &work_data.work);
+ 	flush_work(&work_data.work);
++	destroy_work_on_stack(&work_data.work);
+ 
+ 	return work_data.error;
+ }
 
 
 
