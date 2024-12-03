@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622D09E2252
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAE59E24F7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBF8169C6E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63206288272
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951AD1F669E;
-	Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C6F1F76AD;
+	Tue,  3 Dec 2024 15:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upb70AuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFVqo7hh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520141EF0AE;
-	Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4071F7558;
+	Tue,  3 Dec 2024 15:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239100; cv=none; b=kgx6Gx+Peb5RrugYtUk5uL/V5TKZHK2CbG6+KHfyDlitpbQ74OIFiN5ws+iYB45xp1Hy08Ut+5V04RHaPFvZrXY5Ey6l1NGnCQ9OSb3vf9enoVcdUUShBC7BPPxEuEZs4l/a+Mqcs24Buc09+mabwH5uHkUsFGHz1sBUCulAqYs=
+	t=1733241296; cv=none; b=m1KAHOyKBzBjo9eF3yaa6J+/uu+XtGSfelAIDJw202d0tFQVR5VxVNE/7F/zCTiR3pI1PVj+jKCJpOjXQMzW6y/spmG6WFzShrWkbYrT5cukWHGgEyv/mfqFKJMKYFB3anIaKZjyEwPpevQK3EwOdOhJn8CGMMtuOavG+VNr5Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239100; c=relaxed/simple;
-	bh=TKSiAtq8QDrx1mS0nB2rwy+QNDJYgfEFJ4ahD8NYhTU=;
+	s=arc-20240116; t=1733241296; c=relaxed/simple;
+	bh=dMTEtH/DULoRtGHxpfACQ7u5CYicdhMBiQcC+7gYVtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BkD+hZrK/SuOYl/FiM21ll5aYpfTTr7i88Ldonn8fIHDK9p1l6oQEH0lkZ8k6YquxeeJPhieKUXnMpvaFHSCtgs9ZjBujY5kUxPJA3bdFdyJJuSmVaz5ho5+1xqjV2T+gJO1r6quKTvg9c1Fqzz+IApgFo1g+ofj77nEXter8ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upb70AuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87B9C4CECF;
-	Tue,  3 Dec 2024 15:18:19 +0000 (UTC)
+	 MIME-Version; b=LOHZXJ91U3YK/GEzORv+LuX9tqFVczHEF+p9WH762Hzgj5RG8UGoof8yblxa0DVg3FU6lvm28SvgGDAP7l28c/c2EdSvWjOSvl5j/OqpT8PxMNcmYqjNss6n8tDDniBRX+x+BytAFNesolrKsATS9FMGsstYLDX36hZY7s0Plsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFVqo7hh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF668C4CEE1;
+	Tue,  3 Dec 2024 15:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239100;
-	bh=TKSiAtq8QDrx1mS0nB2rwy+QNDJYgfEFJ4ahD8NYhTU=;
+	s=korg; t=1733241296;
+	bh=dMTEtH/DULoRtGHxpfACQ7u5CYicdhMBiQcC+7gYVtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Upb70AuWYHKU4CnXY4aD7EjFM60/3ntY0I1O6xbDd+f73iE+p7bIZ7dxGxtOKhaEf
-	 bsIHxYnKD4mpm1p2byqwDL42IgiW2XOdcZioRfmmaMeTeDopllmaKslsow1omhvzJS
-	 A2khJq6r0UNJkFmc0B0f/VvzD+PGzSC7cDOWk3zo=
+	b=zFVqo7hhFcneos3UjndcOtRjFTYeL0Kzf6fOOsivGxeBQh1eX3Bq1XdqNZtv0S5Ok
+	 roQ8iWlX7OBO+IH0vhEbDezfNEtuTKZvqd2dyujyCDOcyfteq7TFPHAWCNAwJLE1Xa
+	 s3McfWb9k2k7kqc71xM4woS0eLzxXvfV6NjRIvsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Hongzhen Luo <hongzhen@linux.alibaba.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 502/817] PCI: cpqphp: Fix PCIBIOS_* return value confusion
-Date: Tue,  3 Dec 2024 15:41:14 +0100
-Message-ID: <20241203144015.469179577@linuxfoundation.org>
+Subject: [PATCH 6.12 348/826] erofs: fix blksize < PAGE_SIZE for file-backed mounts
+Date: Tue,  3 Dec 2024 15:41:15 +0100
+Message-ID: <20241203144757.339554107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Hongzhen Luo <hongzhen@linux.alibaba.com>
 
-[ Upstream commit e2226dbc4a4919d9c8bd9293299b532090bdf020 ]
+[ Upstream commit bae0854160939a64a092516ff1b2f221402b843b ]
 
-Code in and related to PCI_RefinedAccessConfig() has three types of return
-type confusion:
+Adjust sb->s_blocksize{,_bits} directly for file-backed
+mounts when the fs block size is smaller than PAGE_SIZE.
 
- - PCI_RefinedAccessConfig() tests pci_bus_read_config_dword() return value
-   against -1.
+Previously, EROFS used sb_set_blocksize(), which caused
+a panic if bdev-backed mounts is not used.
 
- - PCI_RefinedAccessConfig() returns both -1 and PCIBIOS_* return codes.
-
- - Callers of PCI_RefinedAccessConfig() only test for -1.
-
-Make PCI_RefinedAccessConfig() return PCIBIOS_* codes consistently and
-adapt callers accordingly.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/r/20241022091140.3504-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Signed-off-by: Hongzhen Luo <hongzhen@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241015103836.3757438-1-hongzhen@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ fs/erofs/super.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index 718bc6cf12cb3..974c7db3265b5 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -135,11 +135,13 @@ int cpqhp_unconfigure_device(struct pci_func *func)
- static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 offset, u32 *value)
- {
- 	u32 vendID = 0;
-+	int ret;
- 
--	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
--		return -1;
-+	ret = pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID);
-+	if (ret != PCIBIOS_SUCCESSFUL)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
- 	if (PCI_POSSIBLE_ERROR(vendID))
--		return -1;
-+		return PCIBIOS_DEVICE_NOT_FOUND;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
- 
-@@ -202,13 +204,15 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
- {
- 	u16 tdevice;
- 	u32 work;
-+	int ret;
- 	u8 tbus;
- 
- 	ctrl->pci_bus->number = bus_num;
- 
- 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
- 		/* Scan for access first */
--		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
-+		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
-+		if (ret)
- 			continue;
- 		dbg("Looking for nonbridge bus_num %d dev_num %d\n", bus_num, tdevice);
- 		/* Yep we got one. Not a bridge ? */
-@@ -220,7 +224,8 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
- 	}
- 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
- 		/* Scan for access first */
--		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
-+		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
-+		if (ret)
- 			continue;
- 		dbg("Looking for bridge bus_num %d dev_num %d\n", bus_num, tdevice);
- 		/* Yep we got one. bridge ? */
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index bed3dbe5b7cb8..2dd7d819572f4 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -631,7 +631,11 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
+ 			errorfc(fc, "unsupported blksize for fscache mode");
+ 			return -EINVAL;
+ 		}
+-		if (!sb_set_blocksize(sb, 1 << sbi->blkszbits)) {
++
++		if (erofs_is_fileio_mode(sbi)) {
++			sb->s_blocksize = 1 << sbi->blkszbits;
++			sb->s_blocksize_bits = sbi->blkszbits;
++		} else if (!sb_set_blocksize(sb, 1 << sbi->blkszbits)) {
+ 			errorfc(fc, "failed to set erofs blksize");
+ 			return -EINVAL;
+ 		}
 -- 
 2.43.0
 
