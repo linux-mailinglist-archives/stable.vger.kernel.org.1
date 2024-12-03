@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544EC9E28CC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:11:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CA29E29AF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BD10BE652F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C594FBE65A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E9E1F76D9;
-	Tue,  3 Dec 2024 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E23D1F76DA;
+	Tue,  3 Dec 2024 16:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTGX4/g6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYh+2gD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C7A1F76AA;
-	Tue,  3 Dec 2024 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04141F76D1;
+	Tue,  3 Dec 2024 16:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241953; cv=none; b=objeI7h8nm5X88hujrdnXTFy//EFm1aEb0GPNTK0eQ6XuUmPelg6c4u0UtnbT8HyE5rywVQIY44PxMSPam3bXEg8zWMkmT04+erTvf+Onwdkai3fSoemz98AWidesx03SevpJpXZPbjWNNy+a0/ai3UHMdyvMtiX5T8rX/pbvbY=
+	t=1733241964; cv=none; b=EKdjrSIAQ+fuDreN4HFyUEnJdEnai4QJr1eQiOEKo8pTVl6Jc9L8HbYH3/P3u8jNRrUAbLK+Z61FVTIylSbbnvCg0v4L2boZtO0VXmumuc6luUbzxhlTqZkg1HyJhix+uwxdyLxZtv5pIx5S6VQHYVMdwKRkPFcQ2GyX9PTe9LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241953; c=relaxed/simple;
-	bh=YMEgwi6zwhLp+aZ1IbVsNNp04ZFtYflZadBFqIwwjhw=;
+	s=arc-20240116; t=1733241964; c=relaxed/simple;
+	bh=GLp/g5LjPv0HIgs9UTKyDHFN314i1fMP161mGltO6fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOJotUNdBkm7HhimGp5E8dokV3yQpXHM4PDTfhJKJSJkjxZZxe1zzfUu6byq+fSORQqHop06DBkc14CqxhoEAAXIRcYpOVOvdnQXfmPPrMJIi8KW9tBHIvEPsGnTmqQmD2PAsGUEx/t0FircsTWKm/2nowfT8Mf5d4HCwLWL90E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTGX4/g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812EAC4CECF;
-	Tue,  3 Dec 2024 16:05:52 +0000 (UTC)
+	 MIME-Version; b=rGMt125+KDip5AyTsc34LCsByli9ZAG2JCMuut60oIzmjVf0gRF7yBrO3XgYlFf0zcyYp0/0Sd4FGx2apJgDpeKD62ITubF20+ePgpr+BgplFsO2dsSZLpGzBvGExdL2MnAbCM8xZvoCgkQt+y1ndoLLz0uak7O/QsM3/90u9lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYh+2gD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1173C4CECF;
+	Tue,  3 Dec 2024 16:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241953;
-	bh=YMEgwi6zwhLp+aZ1IbVsNNp04ZFtYflZadBFqIwwjhw=;
+	s=korg; t=1733241963;
+	bh=GLp/g5LjPv0HIgs9UTKyDHFN314i1fMP161mGltO6fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTGX4/g6g2i59Qg0ezpCHXdIsA6Db79lxgJbVqpNJnI0omgQUzAwjpWMz3mGPdJGG
-	 i7l3oNoLCQo+HgEbTOngUJFQgJH27Sq4dHTXIYpybn5K09iAiJ5fnnrWc4d7gAGlPP
-	 F/veiIA4NnNqB9kaLLonxuGKamjVnpNfuICIOVBc=
+	b=UYh+2gD0T3mu1/I/owc1CpEop2LNDZ6JgBc7HsWXBVQK8Bd9kOHoU82UybYnhXG1q
+	 wNUNk70e+eWZqPWFQZasfhSw7FDcXIJ31iH1ajUjMss0+ykcTsGYyQvuGf3VfiJIo5
+	 prJeV1yxmHyAiNe4Ug5sDFaje5Ji/QyxGTOOqAo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 564/826] rtase: Correct the speed for RTL907XD-V1
-Date: Tue,  3 Dec 2024 15:44:51 +0100
-Message-ID: <20241203144805.745192886@linuxfoundation.org>
+Subject: [PATCH 6.12 567/826] net: mdio-ipq4019: add missing error check
+Date: Tue,  3 Dec 2024 15:44:54 +0100
+Message-ID: <20241203144805.864286844@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,49 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit c1fc14c4df801fe2d9ec3160b52fa63569ce164c ]
+[ Upstream commit 9cc8d0ecdd2aad42e377e971e3bb114339df609e ]
 
-Previously, the reported speed was uniformly set to SPEED_5000, but the
-RTL907XD-V1 actually operates at a speed of SPEED_10000. Therefore, this
-patch makes the necessary correction.
+If an optional resource is found but fails to remap, return on failure.
+Avoids any potential problems when using the iomapped resource as the
+assumption is that it's available.
 
-Fixes: dd7f17c40fd1 ("rtase: Implement ethtool function")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Fixes: 23a890d493e3 ("net: mdio: Add the reset function for IPQ MDIO driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241121193152.8966-1-rosenp@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/mdio/mdio-ipq4019.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index c2999e24904d1..7b433b290a973 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1714,10 +1714,21 @@ static int rtase_get_settings(struct net_device *dev,
- 			      struct ethtool_link_ksettings *cmd)
- {
- 	u32 supported = SUPPORTED_MII | SUPPORTED_Pause | SUPPORTED_Asym_Pause;
-+	const struct rtase_private *tp = netdev_priv(dev);
- 
- 	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
- 						supported);
--	cmd->base.speed = SPEED_5000;
-+
-+	switch (tp->hw_ver) {
-+	case RTASE_HW_VER_906X_7XA:
-+	case RTASE_HW_VER_906X_7XC:
-+		cmd->base.speed = SPEED_5000;
-+		break;
-+	case RTASE_HW_VER_907XD_V1:
-+		cmd->base.speed = SPEED_10000;
-+		break;
+diff --git a/drivers/net/mdio/mdio-ipq4019.c b/drivers/net/mdio/mdio-ipq4019.c
+index 9d8f43b28aac5..ea1f64596a85c 100644
+--- a/drivers/net/mdio/mdio-ipq4019.c
++++ b/drivers/net/mdio/mdio-ipq4019.c
+@@ -352,8 +352,11 @@ static int ipq4019_mdio_probe(struct platform_device *pdev)
+ 	/* The platform resource is provided on the chipset IPQ5018 */
+ 	/* This resource is optional */
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+-	if (res)
++	if (res) {
+ 		priv->eth_ldo_rdy = devm_ioremap_resource(&pdev->dev, res);
++		if (IS_ERR(priv->eth_ldo_rdy))
++			return PTR_ERR(priv->eth_ldo_rdy);
 +	}
-+
- 	cmd->base.duplex = DUPLEX_FULL;
- 	cmd->base.port = PORT_MII;
- 	cmd->base.autoneg = AUTONEG_DISABLE;
+ 
+ 	bus->name = "ipq4019_mdio";
+ 	bus->read = ipq4019_mdio_read_c22;
 -- 
 2.43.0
 
