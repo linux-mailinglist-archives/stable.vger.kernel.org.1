@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79969E29C1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A359E2A0E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9F0FB6447E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 670E6B3DA8C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B781F75A1;
-	Tue,  3 Dec 2024 14:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9691F76CA;
+	Tue,  3 Dec 2024 14:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2kxx2cL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDRi6T1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AC11F759F;
-	Tue,  3 Dec 2024 14:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC5B1F76C3;
+	Tue,  3 Dec 2024 14:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237776; cv=none; b=ZlesQjdWsX8c458bTbDoChjvb3DUV4aOWD4cjJmGWFEfdwZV//JkSFa0Zx7Qmv74hvifero2yu1sPOaVCdJlZ8Ap+M56izUcg6gHK9QF5NNbbWIO9ar8b09jcoq+nr94oLIVhU19H33EMJR2yJitHVk6uUV00dtQS3yESiSSvzg=
+	t=1733237864; cv=none; b=DZXNLy0RII4r5VR1Fwr/cG3+qBZH727DYfBhUIqkX2xHTt4QZpU4GXf8S57XDzsIVi1tVsis91lF9jTtb2XCAyqhwppH0G6YQpYYjLZyosHWv/xr7GI/RJMezG55WS0jBx8IDNxOc5EwxZSwIhULhA3MU4rDwjeNPM/IaErRx/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237776; c=relaxed/simple;
-	bh=qhawEOb2Rh6c98pHFzsINEN4z3KjTiCkHMWjGOBHbAk=;
+	s=arc-20240116; t=1733237864; c=relaxed/simple;
+	bh=u76+sv2lgQkEVMtNd4oGpLExGOOMSQiJjgFX3S0eE5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfREe/SB8BZayRLl+1KsCiZNT44E514pFvsavMfsjfSuqRb9+3TIrvUK0n2RECsc1uYg//1Jr4tJqY/RJdlQWrEp4Cp7FIo94Pi24emlrtP6skYl1Dtnn6mzgEiuWZw71CZwSDUcisJ3qxv8uXC2L4HwyYIiImPy95KCfE0VY9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2kxx2cL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EFBC4CECF;
-	Tue,  3 Dec 2024 14:56:15 +0000 (UTC)
+	 MIME-Version; b=j/9GV91PRtfMFurRvrEkyFzur2pfbGRKCGBotUybpBM950zBj2nCX/JMpe+1J78J4ZHEElgC5jgtCmsXq13XbFQHF+oiAL7DpPGtnvkf3+uuekBshyfIxpBYDskHUImabjtdawN2OXiBYXJITsflyH3NxR5H16js6YYE/7yrHrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDRi6T1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9C9C4CECF;
+	Tue,  3 Dec 2024 14:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237776;
-	bh=qhawEOb2Rh6c98pHFzsINEN4z3KjTiCkHMWjGOBHbAk=;
+	s=korg; t=1733237864;
+	bh=u76+sv2lgQkEVMtNd4oGpLExGOOMSQiJjgFX3S0eE5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2kxx2cLEWSfXw8VD5KFYvtbA991ByrygSDHFLGwQoS26s0ZH2tJb4wcaqvUuGpli
-	 JSXs0giTr/EanyJbydD6zrKNOg+MY07Bgro4iOVVyHDO2E84U2W77nX5+dS34pdH7F
-	 ZME6662nRlrhM64lFU6sb+btae5dQPPng1y6E1+4=
+	b=TDRi6T1gSbPL+5WyywRkW1HqDj5TOfltDK2d3dnukE5nMiSu9yyur3o+HTqQ6S+w+
+	 nG5iZd5VaHUrxcSU1vbJx+ciIv2qrCQh+//eVkGBg8Zu8KaeVnNW1/KClDAzguWphI
+	 6qhOhwaW82TLQ5KHt8t30aZTV0aVvVl3TRds7Sd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 065/817] arm64: Expose ID_AA64ISAR1_EL1.XS to sanitised feature consumers
-Date: Tue,  3 Dec 2024 15:33:57 +0100
-Message-ID: <20241203143958.226287151@linuxfoundation.org>
+Subject: [PATCH 6.11 090/817] crypto: qat - remove check after debugfs_create_dir()
+Date: Tue,  3 Dec 2024 15:34:22 +0100
+Message-ID: <20241203143959.214797262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,38 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Cabiddu, Giovanni <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 2287a4c1e11822d05a70d22f28b26bd810dd204e ]
+[ Upstream commit 23717055a79981daf7fafa09a4b0d7566f8384aa ]
 
-Despite KVM now being able to deal with XS-tagged TLBIs, we still don't
-expose these feature bits to KVM.
+The debugfs functions are guaranteed to return a valid error code
+instead of NULL upon failure. Consequently, the driver can directly
+propagate any error returned without additional checks.
 
-Plumb in the feature in ID_AA64ISAR1_EL1.
+Remove the unnecessary `if` statement after debugfs_create_dir(). If
+this function fails, the error code is stored in accel_dev->debugfs_dir
+and utilized in subsequent debugfs calls.
 
-Fixes: 0feec7769a63 ("KVM: arm64: nv: Add handling of NXS-flavoured TLBI operations")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20241031083519.364313-1-maz@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Additionally, since accel_dev->debugfs_dir is assured to be non-NULL,
+remove the superfluous NULL pointer checks within the adf_dbgfs_add()
+and adf_dbgfs_rm().
+
+Fixes: 9260db6640a6 ("crypto: qat - move dbgfs init to separate file")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/intel/qat/qat_common/adf_dbgfs.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 646ecd3069fdd..4901daace5a3e 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -228,6 +228,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar0[] = {
- };
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_dbgfs.c b/drivers/crypto/intel/qat/qat_common/adf_dbgfs.c
+index c42f5c25aabdf..4c11ad1ebcf0f 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_dbgfs.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_dbgfs.c
+@@ -22,18 +22,13 @@
+ void adf_dbgfs_init(struct adf_accel_dev *accel_dev)
+ {
+ 	char name[ADF_DEVICE_NAME_LENGTH];
+-	void *ret;
  
- static const struct arm64_ftr_bits ftr_id_aa64isar1[] = {
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR1_EL1_XS_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR1_EL1_I8MM_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR1_EL1_DGH_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR1_EL1_BF16_SHIFT, 4, 0),
+ 	/* Create dev top level debugfs entry */
+ 	snprintf(name, sizeof(name), "%s%s_%s", ADF_DEVICE_NAME_PREFIX,
+ 		 accel_dev->hw_device->dev_class->name,
+ 		 pci_name(accel_dev->accel_pci_dev.pci_dev));
+ 
+-	ret = debugfs_create_dir(name, NULL);
+-	if (IS_ERR_OR_NULL(ret))
+-		return;
+-
+-	accel_dev->debugfs_dir = ret;
++	accel_dev->debugfs_dir = debugfs_create_dir(name, NULL);
+ 
+ 	adf_cfg_dev_dbgfs_add(accel_dev);
+ }
+@@ -59,9 +54,6 @@ EXPORT_SYMBOL_GPL(adf_dbgfs_exit);
+  */
+ void adf_dbgfs_add(struct adf_accel_dev *accel_dev)
+ {
+-	if (!accel_dev->debugfs_dir)
+-		return;
+-
+ 	if (!accel_dev->is_vf) {
+ 		adf_fw_counters_dbgfs_add(accel_dev);
+ 		adf_heartbeat_dbgfs_add(accel_dev);
+@@ -77,9 +69,6 @@ void adf_dbgfs_add(struct adf_accel_dev *accel_dev)
+  */
+ void adf_dbgfs_rm(struct adf_accel_dev *accel_dev)
+ {
+-	if (!accel_dev->debugfs_dir)
+-		return;
+-
+ 	if (!accel_dev->is_vf) {
+ 		adf_tl_dbgfs_rm(accel_dev);
+ 		adf_cnv_dbgfs_rm(accel_dev);
 -- 
 2.43.0
 
