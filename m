@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813139E2C03
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECCB9E2C05
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0BD1BE7461
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3422B448DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5841F76BF;
-	Tue,  3 Dec 2024 16:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856341F76AD;
+	Tue,  3 Dec 2024 16:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdsXxwvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxJ68xa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3F081ADA;
-	Tue,  3 Dec 2024 16:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A061F7594;
+	Tue,  3 Dec 2024 16:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242241; cv=none; b=NTnOqJhxMLFOlqC4T/OjBdjCqLrOaYApMXxWEFgY0U15eijbhtmzdAGzobufDAYFNccHuPck0SF6tpvga2n2haPRMEfxGXKBnuglWRnTDmIs3SiKg/ij/3MQEvy5DL4XWAEcJLgTZrzKmzCx1vjpgV9yFXSs8NAxQAUK/sfLTdM=
+	t=1733242170; cv=none; b=g/gAyqPQtuxSftlmUaZeoxl4D/XcW0TilQImM0xs64C6h7GEjD7Em0HCtGPPOq8kKN0wCz30ZuCfuQLrs4JDkhKM3tpBTyzFToYQNpcGd++tTiuH3Fj1n1UwMH6ABbYpa3hKK+SYq8LJsOvuWxLsalxGP1znHGgGUwRLvtgVMu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242241; c=relaxed/simple;
-	bh=3YqjeaJYLo4yG4zBgvDjUifmJzVybl1rg5iHsy5GL+k=;
+	s=arc-20240116; t=1733242170; c=relaxed/simple;
+	bh=umbg/WYitkCWXtcv3QZnQiPAnM+PiqIva8r5JhrENyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9OyDkIKvluROGKPWRalx4Kv7gGALHqSMmh+6iR6QkHS0Yy5szU+3fSBGKK/EonoWqimO8w7UvWdiRdxLHPdsQn1QtBrw9I/ZA3KmAXTCd+EYCDiBTmd8peCRpWhwbpO5chvSsSBIK6eGUOhACkuwo3hkhT9Pi7ZVGbr5Pr75yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdsXxwvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBFDC4CECF;
-	Tue,  3 Dec 2024 16:10:40 +0000 (UTC)
+	 MIME-Version; b=WWQ5uvhvIrG4YQX7Ya5P+gutAJbdGTNsYc4a8xIt1NNhaBuhUoHilM/JY7He/WvPJzRWRmInsiLsL08fdL0X1eENc80iQUQZYOjCO3iM6z6zUwkdjtjSRaIohK0k9HiBOrJH8pE9TLQe1r/hjl3FX8tlc75iwdORVde9TvybD14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxJ68xa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE33C4CECF;
+	Tue,  3 Dec 2024 16:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242241;
-	bh=3YqjeaJYLo4yG4zBgvDjUifmJzVybl1rg5iHsy5GL+k=;
+	s=korg; t=1733242169;
+	bh=umbg/WYitkCWXtcv3QZnQiPAnM+PiqIva8r5JhrENyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdsXxwvPrRAs89JqjRXnez6FDo47BMGGeqzeqUl40B06Ts3qHVKfUYZ5G0Cir1y5p
-	 ai/Ql+d9bPy75nK6QhhGQ6tMe3+grZ1KnQ1tTGs1X/NpH75siVEKuZonmtSTKyUq18
-	 q9PwFuaf6CjQ2DtqLu2BmPNPoWDFZJK+DAT7a3Ag=
+	b=TxJ68xa5BFys13Jb7cxtG/QIz/9gLAtklH6Q5S6vNdgprGu8K5gxfyccP4oskyJaZ
+	 xjkHOTHq8znuIg8qQOfbS3bC7ZeCgWkkNJIX7u/C/xPMFD+opxVea1iCBaX/IJ/s3r
+	 V+mA3MsjJXgMt99xFj7fbGfwz5OIsQUf+hv6DNQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chao liu <liuzgyid@outlook.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 617/826] apparmor: fix Do simple duplicate message elimination
-Date: Tue,  3 Dec 2024 15:45:44 +0100
-Message-ID: <20241203144807.822510245@linuxfoundation.org>
+	Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.12 628/826] usb: typec: ucsi: glink: fix off-by-one in connector_status
+Date: Tue,  3 Dec 2024 15:45:55 +0100
+Message-ID: <20241203144808.250181705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,36 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: chao liu <liuzgyid@outlook.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
+commit 4a22918810980897393fa1776ea3877e4baf8cca upstream.
 
-Multiple profiles shared 'ent->caps', so some logs missed.
+UCSI connector's indices start from 1 up to 3, PMIC_GLINK_MAX_PORTS.
+Correct the condition in the pmic_glink_ucsi_connector_status()
+callback, fixing Type-C orientation reporting for the third USB-C
+connector.
 
-Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
-Signed-off-by: chao liu <liuzgyid@outlook.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 76716fd5bf09 ("usb: typec: ucsi: glink: move GPIO reading into connector_status callback")
+Cc: stable@vger.kernel.org
+Reported-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241109-ucsi-glue-fixes-v2-1-8b21ff4f9fbe@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/capability.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_glink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
-index 9934df16c8431..bf7df60868308 100644
---- a/security/apparmor/capability.c
-+++ b/security/apparmor/capability.c
-@@ -96,6 +96,8 @@ static int audit_caps(struct apparmor_audit_data *ad, struct aa_profile *profile
- 		return error;
- 	} else {
- 		aa_put_profile(ent->profile);
-+		if (profile != ent->profile)
-+			cap_clear(ent->caps);
- 		ent->profile = aa_get_profile(profile);
- 		cap_raise(ent->caps, cap);
- 	}
--- 
-2.43.0
-
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -185,7 +185,7 @@ static void pmic_glink_ucsi_connector_st
+ 	struct pmic_glink_ucsi *ucsi = ucsi_get_drvdata(con->ucsi);
+ 	int orientation;
+ 
+-	if (con->num >= PMIC_GLINK_MAX_PORTS ||
++	if (con->num > PMIC_GLINK_MAX_PORTS ||
+ 	    !ucsi->port_orientation[con->num - 1])
+ 		return;
+ 
 
 
 
