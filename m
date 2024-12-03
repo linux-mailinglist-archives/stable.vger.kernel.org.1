@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-96856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2C59E21FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A499E2477
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A83D168678
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0064287BCD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1814F1F76CD;
-	Tue,  3 Dec 2024 15:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85461F8907;
+	Tue,  3 Dec 2024 15:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yslKHV3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxcYPJLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D91F76CA;
-	Tue,  3 Dec 2024 15:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32771DAC9F;
+	Tue,  3 Dec 2024 15:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238797; cv=none; b=aXdVkkrunyPWM+bwo9WagnP5IRZHQc2q75duUPRwMoL1m+V7lo0qtF3vIwNv3GlGAoRtTrHN66Zmbl6DaIP5m89e+y7n+fWbiql/EOBeD/KFR7f4lizKgT+WVbmKPudRRtGs2TxrHq6L3zPt2cnngytVn/2QuKiwEpZ5B7/os/A=
+	t=1733240925; cv=none; b=CwqrBPEfEx1MnY4kM9+RJffq3N2Too90fg66sl5x2AxqgqCUWi47L0QfsleSGcadEZSFhi+uipfJZhzZXr1ZXi7/U8jhJFSyEo1ck4Gpd1KY8/OD8zBr8av2YDmQgIiU10Kbl+zDyQEMYSyICXl0o2hI1EYPfm5d56zf1BXOg4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238797; c=relaxed/simple;
-	bh=lfya4jBpYsirXcLIjQahnOMHrglR72DGp2U2q4D0qtc=;
+	s=arc-20240116; t=1733240925; c=relaxed/simple;
+	bh=qYleLKZ1uO9MIAsVC+ulF2/X3L/DronYZMe2Yf0FYro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doPhY3mBkXPJhDjwx7LibSuBlSJfV87y7fB4nggvAAhNahIxtrQq7UAmXezTgHUf3sFpBeGmyZeBifBpsSOseZ92rSetL5oJLOAiLBec8ohYfstF/Mqts8Id4m7oomE3beTuPu05VcpmM7OPyKE+MXyZ6ilqDmmg7AzZlmWR07o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yslKHV3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FADFC4CECF;
-	Tue,  3 Dec 2024 15:13:15 +0000 (UTC)
+	 MIME-Version; b=opp34vKYpi2RJD8Y8Y9y6w6soGEleYDf8OrThyeAEsYVzwqny8hCfMHjpi6MDXRqmFkHXuGkeKz9uPcJHFfziv8LkdQ8m07ZIUgsTXr1OPDZYrmH/70I3/mfLJU8JuHysabmkaRul3nkMFBsVjFmZJJNvxwellG7vRVwyR00X1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxcYPJLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD947C4CED6;
+	Tue,  3 Dec 2024 15:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238796;
-	bh=lfya4jBpYsirXcLIjQahnOMHrglR72DGp2U2q4D0qtc=;
+	s=korg; t=1733240925;
+	bh=qYleLKZ1uO9MIAsVC+ulF2/X3L/DronYZMe2Yf0FYro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yslKHV3pJJjVp9QODo4vBwbpH8V+1Tou+62M0XRfUFPhsGJyHyAHb+neDbWhdptk5
-	 L5FeXnntRfMxNrisH6N1moauu/VlVa2n0J2BL1rmhnePEPBIluw+ZepEGGmEty9skE
-	 34h9e3+mIyRQ6mRByWoPYnWve3t+6dkRKJ5jV3bU=
+	b=jxcYPJLSBF61kZgI4uwSpkwuxw7hk8pM8U67ia2N9NCcwbJmvGAzbC2naw/n44sIb
+	 chILQnrFXZwWnlhKV00ep7s9PO0e5K8NDT79Xq7Xk8Fu3+wuzq6obj49MihAgtMM5k
+	 z521ft/agGuJ4IpKDVQApGcLoXRTlc/G085GC89w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 399/817] mtd: hyperbus: rpc-if: Add missing MODULE_DEVICE_TABLE
-Date: Tue,  3 Dec 2024 15:39:31 +0100
-Message-ID: <20241203144011.449705158@linuxfoundation.org>
+Subject: [PATCH 6.12 245/826] libbpf: never interpret subprogs in .text as entry programs
+Date: Tue,  3 Dec 2024 15:39:32 +0100
+Message-ID: <20241203144753.323238381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 7d189579a287d5c568db623c5fc2344cce98a887 ]
+[ Upstream commit db089c9158c1d535a36dfc010e5db37fccea2561 ]
 
-The rpc-if-hyperflash driver can be compiled as a module, but lacks
-MODULE_DEVICE_TABLE() and will therefore not be loaded automatically.
-Fix this.
+Libbpf pre-1.0 had a legacy logic of allowing singular non-annotated
+(i.e., not having explicit SEC() annotation) function to be treated as
+sole entry BPF program (unless there were other explicit entry
+programs).
 
-Fixes: 5de15b610f78 ("mtd: hyperbus: add Renesas RPC-IF driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240731080846.257139-1-biju.das.jz@bp.renesas.com
+This behavior was dropped during libbpf 1.0 transition period (unless
+LIBBPF_STRICT_SEC_NAME flag was unset in libbpf_mode). When 1.0 was
+released and all the legacy behavior was removed, the bug slipped
+through leaving this legacy behavior around.
+
+Fix this for good, as it actually causes very confusing behavior if BPF
+object file only has subprograms, but no entry programs.
+
+Fixes: bd054102a8c7 ("libbpf: enforce strict libbpf 1.0 behaviors")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241010211731.4121837-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/rpc-if.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/hyperbus/rpc-if.c b/drivers/mtd/hyperbus/rpc-if.c
-index b22aa57119f23..e7a28f3316c3f 100644
---- a/drivers/mtd/hyperbus/rpc-if.c
-+++ b/drivers/mtd/hyperbus/rpc-if.c
-@@ -163,9 +163,16 @@ static void rpcif_hb_remove(struct platform_device *pdev)
- 	pm_runtime_disable(hyperbus->rpc.dev);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index dde03484cc42c..1a54ea3a9208d 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -4389,7 +4389,7 @@ static int bpf_object__collect_externs(struct bpf_object *obj)
+ 
+ static bool prog_is_subprog(const struct bpf_object *obj, const struct bpf_program *prog)
+ {
+-	return prog->sec_idx == obj->efile.text_shndx && obj->nr_programs > 1;
++	return prog->sec_idx == obj->efile.text_shndx;
  }
  
-+static const struct platform_device_id rpc_if_hyperflash_id_table[] = {
-+	{ .name = "rpc-if-hyperflash" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(platform, rpc_if_hyperflash_id_table);
-+
- static struct platform_driver rpcif_platform_driver = {
- 	.probe	= rpcif_hb_probe,
- 	.remove_new = rpcif_hb_remove,
-+	.id_table = rpc_if_hyperflash_id_table,
- 	.driver	= {
- 		.name	= "rpc-if-hyperflash",
- 	},
+ struct bpf_program *
 -- 
 2.43.0
 
