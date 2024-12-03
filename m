@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-96731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608679E210B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3889E2123
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2477E2853E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01937167AD1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C9B1F7557;
-	Tue,  3 Dec 2024 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A971F75A4;
+	Tue,  3 Dec 2024 15:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwGG7RoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mncpTQrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFFA1F6691;
-	Tue,  3 Dec 2024 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550771F758E;
+	Tue,  3 Dec 2024 15:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238430; cv=none; b=m4pvYKhNosSU4WJ6Zc4/qHnFnC6NdXpasfa6a9ktcWNX2XDrS8l6XjZD6vPp96C8FnUBgEvqmUY1DGRf4j59ZvdXcatA3v1M1lyOJBxwvj9ZC4KqoKKcT4pJPbwSJsHhvT10NwUZ2gN2hq47ocL98QwM0gvb+6w/7ouS7p6u9RI=
+	t=1733238338; cv=none; b=TwTz6owWLm97LQLQHciGGlUAAkBdUHFLUEdG4eKn2EPlTwbvX/+Jk5OVKkpX6Rj/YCj/nWIlc/OhPK3Q8BSVoUAmG51MbNbpwgVD1ESVJL3MUlxMvWi4vL2EHtFk0FvjXvEgZ6R7yoFNNIeAT/MqSQGrsBObiHU7uCvlQnDmq8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238430; c=relaxed/simple;
-	bh=ATyqUbOur1ZUenG4zU+KM+giRMla3ztoJ8DRZRXcsJ0=;
+	s=arc-20240116; t=1733238338; c=relaxed/simple;
+	bh=MawcqNYRIKyA+1HNwHfNwlo44S0uNOC4VDPBRa03WZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fz1Eh+Y65DDGfAWa3+cBKliI+xGuozbWi5HkuZF47nr7WR6dx/DjydB29XkURHuEw6rJiXBHiZ8JPnD2Plr12Z/DuWuuN5nPTIhMxGqEltXGviG9wjFiur/5W+abcE6zG+24a8xVwOgUatvLvHECdwWlF7ptV1iCbxx7tPEDgI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwGG7RoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62DEC4CECF;
-	Tue,  3 Dec 2024 15:07:09 +0000 (UTC)
+	 MIME-Version; b=noBEc/eogdJd8LN0ZI9shB6NGwAyC7PBZOngbDazBL+EDxONU1mk032vQoNrPVkC0w1LlOeiYRtXss6YT18vvrs83NZKkg5CQbAUYgZjaYIZFcGAufp+7D+pzoCy9JynW4a3jJYcqCSfcf5DgkuMQdeb2BxHCZRrMq4VnogDJeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mncpTQrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DFBC4CED6;
+	Tue,  3 Dec 2024 15:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238430;
-	bh=ATyqUbOur1ZUenG4zU+KM+giRMla3ztoJ8DRZRXcsJ0=;
+	s=korg; t=1733238338;
+	bh=MawcqNYRIKyA+1HNwHfNwlo44S0uNOC4VDPBRa03WZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwGG7RoXuFjNnanHSipy6DzAss8zcLcl5iMqAZqQFeCOnqMFlkfdGtsjNNGHVvymG
-	 1SeCAyMurYKJPbCe6YKnhY1PmU9Q4vaerDSxnIgpI63K3BwRVlK/qx2yHAD4uySRKG
-	 GLUVFF6rOp+8zvJyEqh83UYnrY+ONRHtEXsFD13E=
+	b=mncpTQrz0XDmPhV84Lt8SD1F/Ux6+K0Uegxw+Tj1YO81zldsO/kk2TWNEBOquZRW1
+	 9MrxNkelWv6d3j/4yOalVX3oMV4gvy3OyfNnOgkuv9BaIMxJIp/q6ublzmLcXVweQ/
+	 5yP620YP/muKy9hnCqbz33Etu4d6J6BKEPfShDA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 243/817] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss1
-Date: Tue,  3 Dec 2024 15:36:55 +0100
-Message-ID: <20241203144005.252428842@linuxfoundation.org>
+Subject: [PATCH 6.11 245/817] wifi: ath12k: Skip Rx TID cleanup for self peer
+Date: Tue,  3 Dec 2024 15:36:57 +0100
+Message-ID: <20241203144005.332417286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,49 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 
-[ Upstream commit d50886b27850447d90c0cd40c725238097909d1e ]
+[ Upstream commit 1a0c640ce1cdcde3eb131a0c1e70ca1ed7cf27cb ]
 
-In supported_vht_mcs_rate_nss1, the rate for MCS9 & VHT20 is defined as
-{780,  867}, this does not align with firmware's definition and therefore
-fails the verification in ath10k_mac_get_rate_flags_vht():
+During peer create, dp setup for the peer is done where Rx TID is
+updated for all the TIDs. Peer object for self peer will not go through
+dp setup.
 
-	invalid vht params rate 960 100kbps nss 1 mcs 9
+When core halts, dp cleanup is done for all the peers. While cleanup,
+rx_tid::ab is accessed which causes below stack trace for self peer.
 
-Change it to {865,  960} to align with firmware, so this issue could be
-fixed.
+WARNING: CPU: 6 PID: 12297 at drivers/net/wireless/ath/ath12k/dp_rx.c:851
+Call Trace:
+__warn+0x7b/0x1a0
+ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
+report_bug+0x10b/0x200
+handle_bug+0x3f/0x70
+exc_invalid_op+0x13/0x60
+asm_exc_invalid_op+0x16/0x20
+ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
+ath12k_dp_rx_frags_cleanup+0xca/0xe0 [ath12k]
+ath12k_dp_rx_peer_tid_cleanup+0x39/0xa0 [ath12k]
+ath12k_mac_peer_cleanup_all+0x61/0x100 [ath12k]
+ath12k_core_halt+0x3b/0x100 [ath12k]
+ath12k_core_reset+0x494/0x4c0 [ath12k]
 
-Since ath10k_hw_params::supports_peer_stats_info is enabled only for
-QCA6174, this change does not affect other chips.
+sta object in peer will be updated when remote peer is created. Hence
+use peer::sta to detect the self peer and skip the cleanup.
 
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240711020344.98040-2-quic_bqiang@quicinc.com
+Link: https://patch.msgid.link/20240905042851.2282306-1-quic_rgnanase@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index a5da32e87106c..3c34f3d8e5554 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9121,7 +9121,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss1[
- 	{6,  {2633, 2925}, {1215, 1350}, {585,  650} },
- 	{7,  {2925, 3250}, {1350, 1500}, {650,  722} },
- 	{8,  {3510, 3900}, {1620, 1800}, {780,  867} },
--	{9,  {3900, 4333}, {1800, 2000}, {780,  867} }
-+	{9,  {3900, 4333}, {1800, 2000}, {865,  960} }
- };
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index a3248d9775329..3608ede55b1eb 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -917,7 +917,10 @@ void ath12k_mac_peer_cleanup_all(struct ath12k *ar)
  
- /*MCS parameters with Nss = 2 */
+ 	spin_lock_bh(&ab->base_lock);
+ 	list_for_each_entry_safe(peer, tmp, &ab->peers, list) {
+-		ath12k_dp_rx_peer_tid_cleanup(ar, peer);
++		/* Skip Rx TID cleanup for self peer */
++		if (peer->sta)
++			ath12k_dp_rx_peer_tid_cleanup(ar, peer);
++
+ 		list_del(&peer->list);
+ 		kfree(peer);
+ 	}
 -- 
 2.43.0
 
