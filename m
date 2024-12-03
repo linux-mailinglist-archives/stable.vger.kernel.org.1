@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-96996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D209E23FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FFE9E25D7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27CCEB3E79A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6953B4398F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8DF1F75A6;
-	Tue,  3 Dec 2024 15:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449DE1F75BC;
+	Tue,  3 Dec 2024 15:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xx5UBhgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APBm9CwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD9C1F757E;
-	Tue,  3 Dec 2024 15:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E11AB6C9;
+	Tue,  3 Dec 2024 15:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239217; cv=none; b=W5VY0FEFyUesnDC8Yd/EPhEHnO4Tj8Y5Ky1kOS/Exvn8CEAWqz4aIuZCEuiGEJVqfWWN7+6GV7QB4SBGXioLqXpfdUPvCXxPqCWZ82+P9Sx613XjVopotTwqRwtH/9vZtx7FYFjIAC2tSMRPkh4jce/tTF5te16gi4dueexhkrY=
+	t=1733241307; cv=none; b=I3LmH4WydX7w3qNOQbgZ6AEnjQJk81vklkmCQrcwLRzxXFmF9sV+rPT4/Uxptf8m3pNOmHHVabMV6O7aKuMnjCMOYv1gsBgMXNSmCg4vKftDKCbeWlVlPlmzEquNzjEQIkCF5qptFblgfeoNIKeABjgD4SfN2abc1FlNr72pa7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239217; c=relaxed/simple;
-	bh=ueeSfx+oqPOB9zDTYjcGDhtjm3Z3W+HisNoiTBorL+I=;
+	s=arc-20240116; t=1733241307; c=relaxed/simple;
+	bh=lFGxBcTqaUPVHvqACtJw2HY7i2yNVNyCrGRl3Gy8E6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQP7V+1c7DP4hJG1wQQqghNVdgRIYCeK97qK+tIyeLExeC4CL+0zMeJ4ieSxYwqx5M+tRcsQihTicBFXBvKHtGMxeCJClbVThR7IlBP0wtc5+pzinCV8E0xLKSG303lviWOTK15KLmmyny3LF1gD3N2vCzETNkxhF8hPZa/XKds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xx5UBhgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA8AC4CECF;
-	Tue,  3 Dec 2024 15:20:16 +0000 (UTC)
+	 MIME-Version; b=bnsCgtqwDQ96BAXV2yrA1S5Nrbrz8nO/KcI3wdlJKgSanquT8lJdEF2Kua2I62dvihaWdDNrOUgAtKEcUBC+0hzVNV7KuRnzAxM1xflUQVsJbkk5kjRRGMzaA5Svi4PtL+bQdQHPZY5XuuxG7z6IPVo5a8r3hZlYdSNqkaTVdfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APBm9CwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E69AC4CECF;
+	Tue,  3 Dec 2024 15:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239217;
-	bh=ueeSfx+oqPOB9zDTYjcGDhtjm3Z3W+HisNoiTBorL+I=;
+	s=korg; t=1733241306;
+	bh=lFGxBcTqaUPVHvqACtJw2HY7i2yNVNyCrGRl3Gy8E6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xx5UBhgDFzIBFb1U99NcZ8W7dFrmUjimmCT6zwPcAAa019jkbWQEGMNGtNYXGx4aM
-	 2VHGoM5dTrmjj05lEsatqBKW3+hjbL9VlXm5ljdvIfNdylE2RBMGzud7sFdOssRQRf
-	 7GVrQkrLDBDLT4c3dPSM6o3YYnNhwABoMEzCZATU=
+	b=APBm9CwRQv/XtHuMW8y9Ysr+wAZmIAMovLxEhZgAMiResqa+TPos3iWIQnnd9Wr0P
+	 SqAwCfgormwRQAUACBhbPkPLusIqPmiO1K/Uc1PFO4fRsdaYQkgI5lK7pA+cW2SiAA
+	 moLkZ6tSl1i28N+ZXg8aLXsN4slUvhhhOTaASp/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 538/817] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
+Subject: [PATCH 6.12 383/826] iommu/tegra241-cmdqv: Staticize cmdqv_debugfs_dir
 Date: Tue,  3 Dec 2024 15:41:50 +0100
-Message-ID: <20241203144016.903523296@linuxfoundation.org>
+Message-ID: <20241203144758.706043384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
+[ Upstream commit 89edbe88db2857880b08ce363a2695eec657f51b ]
 
-Any write access to the IMEM region when the Q6 is setting up XPU
-protection on it will result in a XPU violation. Fix this by ensuring
-IMEM writes related to the MBA post-mortem logs happen before the Q6
-is brought out of reset.
+Fix a sparse warning.
 
-Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 918eb5c856f6 ("iommu/arm-smmu-v3: Add in-kernel support for NVIDIA Tegra241 (Grace) CMDQV")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410172003.bRQEReTc-lkp@intel.com/
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241021230847.811218-1-nicolinc@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 2a42215ce8e07..32c3531b20c70 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1162,6 +1162,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 		goto disable_active_clks;
- 	}
+diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+index fcd13d301fff6..a243c543598ce 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
++++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+@@ -800,7 +800,7 @@ static int tegra241_cmdqv_init_structures(struct arm_smmu_device *smmu)
+ 	return 0;
+ }
  
-+	if (qproc->has_mba_logs)
-+		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
-+
- 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
- 	if (qproc->dp_size) {
- 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
-@@ -1172,9 +1175,6 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 	if (ret)
- 		goto reclaim_mba;
+-struct dentry *cmdqv_debugfs_dir;
++static struct dentry *cmdqv_debugfs_dir;
  
--	if (qproc->has_mba_logs)
--		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
--
- 	ret = q6v5_rmb_mba_wait(qproc, 0, 5000);
- 	if (ret == -ETIMEDOUT) {
- 		dev_err(qproc->dev, "MBA boot timed out\n");
+ static struct arm_smmu_device *
+ __tegra241_cmdqv_probe(struct arm_smmu_device *smmu, struct resource *res,
 -- 
 2.43.0
 
