@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-96807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807369E217B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2128E9E24D6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4618E2813FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 286EFBE05AA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83E11FA82B;
-	Tue,  3 Dec 2024 15:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEB41F76BF;
+	Tue,  3 Dec 2024 15:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPaNgc8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DceiHogo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EED1F8903;
-	Tue,  3 Dec 2024 15:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778C31DFD91;
+	Tue,  3 Dec 2024 15:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238649; cv=none; b=Rf7B8L8HnVb+Xo3JYp1pGqWX6dHnKrTjfAjqkE+Ctyt6baEdeU7xopgWxR5SBnxu95gcUEt/EJNr3Nn6zIg106m/Qh3PnSDogO6tolb8aHjwM7dN6bvKrVxyx98TbxfwFcozWQT7XsLU54JaJUvhPLO6/U9NMXrfkLnNLKAfw/E=
+	t=1733240646; cv=none; b=leN7POaRaQtAE51dJlUl2WUNKMHBlFa30Y7G+gvMgFzAX+6Xhtpy5wyInuD7LO+0BbkCaVFFtsPNoxcMX/A4G/z8RwLIKyuBfbz7hj5OIJ6Ix57kM04E9QJxboNCyiL0FIaEJ5H1Pxbe6b7DJS/9x19XjAWK68359HpwhVI+SYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238649; c=relaxed/simple;
-	bh=Dr1QCDz8npQl0Lj0wAa0gxHhWOUcADxr1qGZYkMQv+w=;
+	s=arc-20240116; t=1733240646; c=relaxed/simple;
+	bh=fPI4dkWEbjTBCUlSaizK9o470SxDlBObxtm4YLHPSoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGug0G8CZZC91gdMECZL9ScgSxMWqSFuBX4duUMKC2gNPq9uV9zhDmJcnndi5Tgi0FIuJMLR4q7rrScVNK0RFFXn5TKpiY4W25DkCuRc6j4+RXp+0UMB03OdToAnv4x9yWeY6ORb3DYWrxrz1G7C1FalCEvn1jsPpmuPyW3toDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPaNgc8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAB9C4CECF;
-	Tue,  3 Dec 2024 15:10:48 +0000 (UTC)
+	 MIME-Version; b=ayUhhyzmHFS87I8j1Q1X8Xeoo6oAZ5bmBWM3tWXyVzQ/h7mUD9um9h0njrtaXI5HMfHZzG/74EtKm81WS9ksuKnd6vP5aYgiheP1+Oyp0YjuDvdbuEkuZV4tE5guQ4r3Un6DpJL50nVyCTpk+sxI7WAOmUR4lyij79+1wFJsr0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DceiHogo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC047C4CECF;
+	Tue,  3 Dec 2024 15:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238649;
-	bh=Dr1QCDz8npQl0Lj0wAa0gxHhWOUcADxr1qGZYkMQv+w=;
+	s=korg; t=1733240646;
+	bh=fPI4dkWEbjTBCUlSaizK9o470SxDlBObxtm4YLHPSoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPaNgc8yzZwDoLYrOzrwfIWZhQqzqHVmb7cvFzk8il6EYxtSsls1/HXvIlWfEsv8g
-	 sHwmWRg+Ordf4ccGSyDhcDosxcbdI9aBAO3YqGjurgXYmG4PReAGENjQ+eqB4vXZBc
-	 jQlsmFNFojpS/e0LJZt1OQNn1wFMahX8HZTLsMc8=
+	b=DceiHogo9Nm5bMEaycNIRhefkI7rbz+UdNXWm2mF47ZIIWPaKCZbXfwR58RgxMz7Y
+	 av0YtuL1pJdBl3bEDe+eV9rVwJMF8Xwmzt3vUkqaXFpS+unZObLZfuZMDJrr9j9afm
+	 jAY3GwTNJa4B2KidV+62YXl3IEcvSqlhAM3QIehM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Huan Yang <link@vivo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 351/817] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
+Subject: [PATCH 6.12 196/826] udmabuf: fix vmap_udmabuf error page set
 Date: Tue,  3 Dec 2024 15:38:43 +0100
-Message-ID: <20241203144009.529295976@linuxfoundation.org>
+Message-ID: <20241203144751.393760028@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Huan Yang <link@vivo.com>
 
-[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
+[ Upstream commit 18d7de823b7150344d242c3677e65d68c5271b04 ]
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+Currently vmap_udmabuf set page's array by each folio.
+But, ubuf->folios is only contain's the folio's head page.
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+That mean we repeatedly mapped the folio head page to the vmalloc area.
 
-The loop of us122l->mmap_count check is dropped as well.  The check is
-useless for the asynchronous operation with *_when_closed().
+Due to udmabuf can use hugetlb, if HVO enabled, tail page may not exist,
+so, we can't use page array to map, instead, use pfn array.
 
-Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
+By this, we removed page usage in udmabuf totally.
+
+Fixes: 5e72b2b41a21 ("udmabuf: convert udmabuf driver to use folios")
+Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Huan Yang <link@vivo.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240918025238.2957823-4-link@vivo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/usx2y/us122l.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/dma-buf/Kconfig   |  1 +
+ drivers/dma-buf/udmabuf.c | 22 +++++++++++++++-------
+ 2 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-index 709ccad972e2f..612047ca5fe7a 100644
---- a/sound/usb/usx2y/us122l.c
-+++ b/sound/usb/usx2y/us122l.c
-@@ -617,10 +617,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
- 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
- 	usb_put_dev(us122l->dev);
+diff --git a/drivers/dma-buf/Kconfig b/drivers/dma-buf/Kconfig
+index b46eb8a552d7b..fee04fdb08220 100644
+--- a/drivers/dma-buf/Kconfig
++++ b/drivers/dma-buf/Kconfig
+@@ -36,6 +36,7 @@ config UDMABUF
+ 	depends on DMA_SHARED_BUFFER
+ 	depends on MEMFD_CREATE || COMPILE_TEST
+ 	depends on MMU
++	select VMAP_PFN
+ 	help
+ 	  A driver to let userspace turn memfd regions into dma-bufs.
+ 	  Qemu can use this to create host dmabufs for guest framebuffers.
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index bc94c194e172d..a3638ccc15f57 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -74,21 +74,29 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
+ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
+ {
+ 	struct udmabuf *ubuf = buf->priv;
+-	struct page **pages;
++	unsigned long *pfns;
+ 	void *vaddr;
+ 	pgoff_t pg;
  
--	while (atomic_read(&us122l->mmap_count))
--		msleep(500);
--
--	snd_card_free(card);
-+	snd_card_free_when_closed(card);
- }
+ 	dma_resv_assert_held(buf->resv);
  
- static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
+-	pages = kvmalloc_array(ubuf->pagecount, sizeof(*pages), GFP_KERNEL);
+-	if (!pages)
++	/**
++	 * HVO may free tail pages, so just use pfn to map each folio
++	 * into vmalloc area.
++	 */
++	pfns = kvmalloc_array(ubuf->pagecount, sizeof(*pfns), GFP_KERNEL);
++	if (!pfns)
+ 		return -ENOMEM;
+ 
+-	for (pg = 0; pg < ubuf->pagecount; pg++)
+-		pages[pg] = &ubuf->folios[pg]->page;
++	for (pg = 0; pg < ubuf->pagecount; pg++) {
++		unsigned long pfn = folio_pfn(ubuf->folios[pg]);
+ 
+-	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
+-	kvfree(pages);
++		pfn += ubuf->offsets[pg] >> PAGE_SHIFT;
++		pfns[pg] = pfn;
++	}
++
++	vaddr = vmap_pfn(pfns, ubuf->pagecount, PAGE_KERNEL);
++	kvfree(pfns);
+ 	if (!vaddr)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
