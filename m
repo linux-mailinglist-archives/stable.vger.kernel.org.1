@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-96909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5440C9E21B9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4629E24A4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17488284917
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E226E288024
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC8A1F75B4;
-	Tue,  3 Dec 2024 15:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760351F76DB;
+	Tue,  3 Dec 2024 15:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+I95sR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeSShNPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DDA1F75B5;
-	Tue,  3 Dec 2024 15:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321D41F76B5;
+	Tue,  3 Dec 2024 15:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238949; cv=none; b=HNwTN7x5YEoBlYHGwGBcpFhTpdAs+6p+r6xFWrRQJLjPNzvbysc7Q6hCtZ/afHKaQgiX/BDqCq0ZQIU+zkgimZTVbkoJmSf4YeOiVJZgDTPqco1oAT41I9gBntKFfvqFqOmYOSGxHluuKKQQ5F2qtirohzJzyb2Va7v4OdgHb4U=
+	t=1733241005; cv=none; b=sVq5/rjFDlJ1g7s2ED6lUF0A+I/tQGQNF5kjJbvfpW2ywmTA0PXmOhECvA47SZAsKZTOCV8WbzyxUnACN+V+2yYKfLW+zi8KpzTYa0VbTmg9NAFNp6SP8KrWmlI5z98xm+TE7AXfmmhtW2OPwac15mXg63IUVwnuXK52Tdd+f3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238949; c=relaxed/simple;
-	bh=gU2p6GsyFM2oYkB4cc/uHx2ukcVZV26/GZ8H/yx0hvA=;
+	s=arc-20240116; t=1733241005; c=relaxed/simple;
+	bh=QEVXCjKLhWuFyOw2VDjVCy09Bf0rVMejwW5HBUcbF7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNJQsmWQpcK/GxGABvGgnBFJpJQSfwmTdzoMZyL2QcQD3rQs4YG3r8Sr6NXIEicSTX79NHEiFm/YougsmrEFtQKo4GlYgTSjiZQf+CChGfbyi3O+49xcK90mPAt2Yz0abepbOaoXNwUfBkI+X/+Jq3umkW2EbqrpyM39gLc6dNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+I95sR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD0DC4CED6;
-	Tue,  3 Dec 2024 15:15:48 +0000 (UTC)
+	 MIME-Version; b=RsO1bbeDi9sbgCgPTp5Ko1BGPtwQ4UmbXxxpqFL47OLcVv6BuabcRB5gWI9DHbVOgLHxmOcq47AV9w02xvO0WESL4wrwARGZ1BrvWRTindFwR+zn9zpYaR58egBl9N9oF3gzdyLhxvCd+vN/D8Ct9ps244u5DDs3DRIrl2uJObY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeSShNPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC10C4CECF;
+	Tue,  3 Dec 2024 15:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238949;
-	bh=gU2p6GsyFM2oYkB4cc/uHx2ukcVZV26/GZ8H/yx0hvA=;
+	s=korg; t=1733241004;
+	bh=QEVXCjKLhWuFyOw2VDjVCy09Bf0rVMejwW5HBUcbF7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+I95sR3DWzV5H3foF8C/0v7oz7314EgiPd5nMb0IEk7MFLMT7xbRaw5lsfQj8ALx
-	 820uo3VxYkkw65PSgxHgUDJI701TEDLsUEgRKHHAb0rxevqs9/QctCfj4iX8bguOCw
-	 dIi4fTowGJM5CF7n5SRVZJJSMejgW/HMxH8sE6/Q=
+	b=HeSShNPfWYOQ7lYyLNzXLdY61QR/zuVGk+Jro3I77XNC1DpBYMdCB5Nmvw8a3jvjo
+	 1B3Ef9BgOxQ7/3s7qFafRvzXZXEBxvKIKkCbuU/mloe/G07iHYtbNjAgj0djWOMiDv
+	 KEc3wKT3/LxDtbFPAnPvvKBAn8CkgbjRgTje0lvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Shi <alexs@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Hu Haowen <2023002089@link.tyut.edu.cn>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marco Elver <elver@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 453/817] kasan: move checks to do_strncpy_from_user
+Subject: [PATCH 6.12 298/826] netfilter: nf_tables: avoid false-positive lockdep splat on rule deletion
 Date: Tue,  3 Dec 2024 15:40:25 +0100
-Message-ID: <20241203144013.559273893@linuxfoundation.org>
+Message-ID: <20241203144755.391455364@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,87 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit ae193dd79398970ee760e0c8129ac42ef8f5c6ff ]
+[ Upstream commit 9adbb4198bf6cf3634032871118a7052aeaa573f ]
 
-Patch series "kasan: migrate the last module test to kunit", v4.
+On rule delete we get:
+ WARNING: suspicious RCU usage
+ net/netfilter/nf_tables_api.c:3420 RCU-list traversed in non-reader section!!
+ 1 lock held by iptables/134:
+   #0: ffff888008c4fcc8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid (include/linux/jiffies.h:101) nf_tables
 
-copy_user_test() is the last KUnit-incompatible test with
-CONFIG_KASAN_MODULE_TEST requirement, which we are going to migrate to
-KUnit framework and delete the former test and Kconfig as well.
+Code is fine, no other CPU can change the list because we're holding
+transaction mutex.
 
-In this patch series:
+Pass the needed lockdep annotation to the iterator and fix
+two comments for functions that are no longer restricted to rcu-only
+context.
 
-	- [1/3] move kasan_check_write() and check_object_size() to
-		do_strncpy_from_user() to cover with KASAN checks with
-		multiple conditions	in strncpy_from_user().
+This is enough to resolve rule delete, but there are several other
+missing annotations, added in followup-patches.
 
-	- [2/3] migrated copy_user_test() to KUnit, where we can also test
-		strncpy_from_user() due to [1/4].
-
-		KUnits have been tested on:
-		- x86_64 with CONFIG_KASAN_GENERIC. Passed
-		- arm64 with CONFIG_KASAN_SW_TAGS. 1 fail. See [1]
-		- arm64 with CONFIG_KASAN_HW_TAGS. 1 fail. See [1]
-		[1] https://lore.kernel.org/linux-mm/CACzwLxj21h7nCcS2-KA_q7ybe+5pxH0uCDwu64q_9pPsydneWQ@mail.gmail.com/
-
-	- [3/3] delete CONFIG_KASAN_MODULE_TEST and documentation occurrences.
-
-This patch (of 3):
-
-Since in the commit 2865baf54077("x86: support user address masking
-instead of non-speculative conditional") do_strncpy_from_user() is called
-from multiple places, we should sanitize the kernel *dst memory and size
-which were done in strncpy_from_user() previously.
-
-Link: https://lkml.kernel.org/r/20241016131802.3115788-1-snovitoll@gmail.com
-Link: https://lkml.kernel.org/r/20241016131802.3115788-2-snovitoll@gmail.com
-Fixes: 2865baf54077 ("x86: support user address masking instead of non-speculative conditional")
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Hu Haowen <2023002089@link.tyut.edu.cn>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marco Elver <elver@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 28875945ba98 ("rcu: Add support for consolidated-RCU reader checking")
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://lore.kernel.org/netfilter-devel/da27f17f-3145-47af-ad0f-7fd2a823623e@kernel.org/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/strncpy_from_user.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
-index 989a12a678721..6dc234913dd58 100644
---- a/lib/strncpy_from_user.c
-+++ b/lib/strncpy_from_user.c
-@@ -120,6 +120,9 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 	if (unlikely(count <= 0))
- 		return 0;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 588a2757986c1..deb4a91808598 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3412,13 +3412,15 @@ void nft_expr_destroy(const struct nft_ctx *ctx, struct nft_expr *expr)
+  * Rules
+  */
  
-+	kasan_check_write(dst, count);
-+	check_object_size(dst, count, false);
-+
- 	if (can_do_masked_user_access()) {
- 		long retval;
+-static struct nft_rule *__nft_rule_lookup(const struct nft_chain *chain,
++static struct nft_rule *__nft_rule_lookup(const struct net *net,
++					  const struct nft_chain *chain,
+ 					  u64 handle)
+ {
+ 	struct nft_rule *rule;
  
-@@ -142,8 +145,6 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 		if (max > count)
- 			max = count;
+ 	// FIXME: this sucks
+-	list_for_each_entry_rcu(rule, &chain->rules, list) {
++	list_for_each_entry_rcu(rule, &chain->rules, list,
++				lockdep_commit_lock_is_held(net)) {
+ 		if (handle == rule->handle)
+ 			return rule;
+ 	}
+@@ -3426,13 +3428,14 @@ static struct nft_rule *__nft_rule_lookup(const struct nft_chain *chain,
+ 	return ERR_PTR(-ENOENT);
+ }
  
--		kasan_check_write(dst, count);
--		check_object_size(dst, count, false);
- 		if (user_read_access_begin(src, max)) {
- 			retval = do_strncpy_from_user(dst, src, count, max);
- 			user_read_access_end();
+-static struct nft_rule *nft_rule_lookup(const struct nft_chain *chain,
++static struct nft_rule *nft_rule_lookup(const struct net *net,
++					const struct nft_chain *chain,
+ 					const struct nlattr *nla)
+ {
+ 	if (nla == NULL)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	return __nft_rule_lookup(chain, be64_to_cpu(nla_get_be64(nla)));
++	return __nft_rule_lookup(net, chain, be64_to_cpu(nla_get_be64(nla)));
+ }
+ 
+ static const struct nla_policy nft_rule_policy[NFTA_RULE_MAX + 1] = {
+@@ -3733,7 +3736,7 @@ static int nf_tables_dump_rules_done(struct netlink_callback *cb)
+ 	return 0;
+ }
+ 
+-/* called with rcu_read_lock held */
++/* Caller must hold rcu read lock or transaction mutex */
+ static struct sk_buff *
+ nf_tables_getrule_single(u32 portid, const struct nfnl_info *info,
+ 			 const struct nlattr * const nla[], bool reset)
+@@ -3760,7 +3763,7 @@ nf_tables_getrule_single(u32 portid, const struct nfnl_info *info,
+ 		return ERR_CAST(chain);
+ 	}
+ 
+-	rule = nft_rule_lookup(chain, nla[NFTA_RULE_HANDLE]);
++	rule = nft_rule_lookup(net, chain, nla[NFTA_RULE_HANDLE]);
+ 	if (IS_ERR(rule)) {
+ 		NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_HANDLE]);
+ 		return ERR_CAST(rule);
+@@ -4058,7 +4061,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	if (nla[NFTA_RULE_HANDLE]) {
+ 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
+-		rule = __nft_rule_lookup(chain, handle);
++		rule = __nft_rule_lookup(net, chain, handle);
+ 		if (IS_ERR(rule)) {
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_HANDLE]);
+ 			return PTR_ERR(rule);
+@@ -4080,7 +4083,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 		if (nla[NFTA_RULE_POSITION]) {
+ 			pos_handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_POSITION]));
+-			old_rule = __nft_rule_lookup(chain, pos_handle);
++			old_rule = __nft_rule_lookup(net, chain, pos_handle);
+ 			if (IS_ERR(old_rule)) {
+ 				NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_POSITION]);
+ 				return PTR_ERR(old_rule);
+@@ -4297,7 +4300,7 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	if (chain) {
+ 		if (nla[NFTA_RULE_HANDLE]) {
+-			rule = nft_rule_lookup(chain, nla[NFTA_RULE_HANDLE]);
++			rule = nft_rule_lookup(info->net, chain, nla[NFTA_RULE_HANDLE]);
+ 			if (IS_ERR(rule)) {
+ 				if (PTR_ERR(rule) == -ENOENT &&
+ 				    NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_DESTROYRULE)
+@@ -8104,7 +8107,7 @@ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
+ 	return 0;
+ }
+ 
+-/* called with rcu_read_lock held */
++/* Caller must hold rcu read lock or transaction mutex */
+ static struct sk_buff *
+ nf_tables_getobj_single(u32 portid, const struct nfnl_info *info,
+ 			const struct nlattr * const nla[], bool reset)
 -- 
 2.43.0
 
