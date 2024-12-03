@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-96552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677449E2076
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8A9E2087
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CAEC28A4F4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A1C616853E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4536F1F4283;
-	Tue,  3 Dec 2024 14:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7C51F7569;
+	Tue,  3 Dec 2024 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5KM3EYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj6nVPdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC441F757D;
-	Tue,  3 Dec 2024 14:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6101F7550;
+	Tue,  3 Dec 2024 14:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237885; cv=none; b=FPBj9mJrvR3reBsnU+RzTAQcWcppOvoxcOPFqjFxwJyiAt6JBZyTSKd6GuFC4JUWuMZtpoaPSZskLHfXL5Td+xQEoIlB8vkdA2zhGefafg45zWTb+hUuo6dU5Nqwri6SIG3g04mF5ciUyJ7HJenrXi5FCjw7ztfoHLqKTIjqdtI=
+	t=1733237901; cv=none; b=fBNX2qXbuLY/QG8Ix4aWHsEfjds3scIw5Zt5r+aMVyMMSDGFYCRMQdVD5wfm1/VfKXHNkzngnb/q2DUyGn3hm7g2PlqnmG2pUXCicY+yawaYLvoQjGYU9MQeqhZ8eEDhpSuDoot9rf8oTc4TVxlmNEiCAHz16X0xqYKPUOpqExo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237885; c=relaxed/simple;
-	bh=ImtleR/QvrhR31ttJNSe0K1Zwgq5aetmeU0PuMg9dC0=;
+	s=arc-20240116; t=1733237901; c=relaxed/simple;
+	bh=VEJ/n+iOM0IVS9OVUO18QOccQmCffkCMUBWNtIefUV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIDzil2qXUnXbZK3IIG+dHUIB++3joBlU7AXgi4ddr44EQ6a2xk2XMfcin9E1m1juZi+IzoqnX9+tkiWcLPKg+jmf2TdLgAtO51zYCqAnu/v4Ld4O0FH4spuY490vM4MnpoeBZPfutuaGC29d3smbomTfcwfOPvNtbbxrsphQmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5KM3EYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFF1C4CED6;
-	Tue,  3 Dec 2024 14:58:04 +0000 (UTC)
+	 MIME-Version; b=WCUyeilFEOBw3Oye22b5PuzBI0Ee+3beTIOVQEsthBMv+o6Zl9JXIBfb4V0eqnxkFTfQNd+PZTJtw135WPjcxu4Iamksd9fFwnRybaRk2WN80qo2BUo3xizrPqADccZjuk0oImuoCmZ1W42nE363JaUvZVMq2zSdSru2cqXfJ6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj6nVPdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B52C4CECF;
+	Tue,  3 Dec 2024 14:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237884;
-	bh=ImtleR/QvrhR31ttJNSe0K1Zwgq5aetmeU0PuMg9dC0=;
+	s=korg; t=1733237900;
+	bh=VEJ/n+iOM0IVS9OVUO18QOccQmCffkCMUBWNtIefUV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5KM3EYkkFN+gFFVpRHaGwbRd1s+DufGTtu1OwitIONlSBx3LRwGplIcxpB1ZJP+E
-	 9NyKvvuQtGqk7gJGHwqJJfOL4EmhmolHOLEeZvFsoz28kKfv92rI8VIO1ieuInAx67
-	 9JQP6rqzafdO5rnC3I6Q0VuI/d3/etmQE8PGzr04=
+	b=sj6nVPdw7jLg/Ts18P/8IIfp4fd/qf1JiYB+gnE+tKuMkHSQy0cTKR7Q+z14+Q+EP
+	 DXPzzdiPe7mShiZz2iPadW1PSCixKlilg4tC8dVvtzVP5ZW23hrQqXqTbLmMAJXJDJ
+	 Cbi8qwTIbsCEydvaY6A1bvPStCqQD2jPQP+HFKJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 069/817] m68k: mvme147: Reinstate early console
-Date: Tue,  3 Dec 2024 15:34:01 +0100
-Message-ID: <20241203143958.382264477@linuxfoundation.org>
+Subject: [PATCH 6.11 070/817] arm64: fix .data.rel.ro size assertion when CONFIG_LTO_CLANG
+Date: Tue,  3 Dec 2024 15:34:02 +0100
+Message-ID: <20241203143958.421146807@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,111 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 077b33b9e2833ff25050d986178a2c4c4036cbac ]
+[ Upstream commit 340fd66c856651d8c1d29f392dd26ad674d2db0e ]
 
-Commit a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused
-functions"), removed the console functionality for the mvme147 instead
-of wiring it up to an early console.  Put the console write function
-back and wire it up like mvme16x does so it's possible to see Linux boot
-on this fine hardware once more.
+Commit be2881824ae9 ("arm64/build: Assert for unwanted sections")
+introduced an assertion to ensure that the .data.rel.ro section does
+not exist.
 
-Fixes: a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused functions")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Co-developed-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/a82e8f0068a8722996a0ccfe666abb5e0a5c120d.1730850684.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+However, this check does not work when CONFIG_LTO_CLANG is enabled,
+because .data.rel.ro matches the .data.[0-9a-zA-Z_]* pattern in the
+DATA_MAIN macro.
+
+Move the ASSERT() above the RW_DATA() line.
+
+Fixes: be2881824ae9 ("arm64/build: Assert for unwanted sections")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241106161843.189927-1-masahiroy@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/early_printk.c |  5 ++++-
- arch/m68k/mvme147/config.c      | 30 ++++++++++++++++++++++++++++++
- arch/m68k/mvme147/mvme147.h     |  6 ++++++
- 3 files changed, 40 insertions(+), 1 deletion(-)
- create mode 100644 arch/m68k/mvme147/mvme147.h
+ arch/arm64/kernel/vmlinux.lds.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index 3cc944df04f65..f11ef9f1f56fc 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -13,6 +13,7 @@
- #include <asm/setup.h>
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index 55a8e310ea12c..d294c1ea8391b 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -288,6 +288,9 @@ SECTIONS
+ 	__initdata_end = .;
+ 	__init_end = .;
  
- 
-+#include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
- 
- asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
-@@ -22,7 +23,9 @@ static void __ref debug_cons_write(struct console *c,
- {
- #if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
-       defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME16x)
-+	if (MACH_IS_MVME147)
-+		mvme147_scc_write(c, s, n);
-+	else if (MACH_IS_MVME16x)
- 		mvme16x_cons_write(c, s, n);
- 	else
- 		debug_cons_nputs(s, n);
-diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
-index 8b5dc07f0811f..cc2fb0a83cf0b 100644
---- a/arch/m68k/mvme147/config.c
-+++ b/arch/m68k/mvme147/config.c
-@@ -32,6 +32,7 @@
- #include <asm/mvme147hw.h>
- #include <asm/config.h>
- 
-+#include "mvme147.h"
- 
- static void mvme147_get_model(char *model);
- extern void mvme147_sched_init(void);
-@@ -185,3 +186,32 @@ int mvme147_hwclk(int op, struct rtc_time *t)
++	.data.rel.ro : { *(.data.rel.ro) }
++	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
++
+ 	_data = .;
+ 	_sdata = .;
+ 	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
+@@ -344,9 +347,6 @@ SECTIONS
+ 		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
  	}
- 	return 0;
+ 	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
+-
+-	.data.rel.ro : { *(.data.rel.ro) }
+-	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
  }
-+
-+static void scc_delay(void)
-+{
-+	__asm__ __volatile__ ("nop; nop;");
-+}
-+
-+static void scc_write(char ch)
-+{
-+	do {
-+		scc_delay();
-+	} while (!(in_8(M147_SCC_A_ADDR) & BIT(2)));
-+	scc_delay();
-+	out_8(M147_SCC_A_ADDR, 8);
-+	scc_delay();
-+	out_8(M147_SCC_A_ADDR, ch);
-+}
-+
-+void mvme147_scc_write(struct console *co, const char *str, unsigned int count)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	while (count--)	{
-+		if (*str == '\n')
-+			scc_write('\r');
-+		scc_write(*str++);
-+	}
-+	local_irq_restore(flags);
-+}
-diff --git a/arch/m68k/mvme147/mvme147.h b/arch/m68k/mvme147/mvme147.h
-new file mode 100644
-index 0000000000000..140bc98b0102a
---- /dev/null
-+++ b/arch/m68k/mvme147/mvme147.h
-@@ -0,0 +1,6 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+struct console;
-+
-+/* config.c */
-+void mvme147_scc_write(struct console *co, const char *str, unsigned int count);
+ 
+ #include "image-vars.h"
 -- 
 2.43.0
 
