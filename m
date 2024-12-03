@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C429E2AC9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:27:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC129E2B7B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A41B3C9A5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E54BB43623
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33181F8EE8;
-	Tue,  3 Dec 2024 15:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3241FBC9F;
+	Tue,  3 Dec 2024 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buEFcblU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKM3JaCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FAA1F75B3;
-	Tue,  3 Dec 2024 15:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25AA1F76BC;
+	Tue,  3 Dec 2024 15:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238600; cv=none; b=TU2zPrYEZXksOeq1j2zfk5D9rnruWWZW7HzjWs9ToYRLKSWEyRu10y3Gd6cRRNNHX4ARGHrlY4SMfFARpObmCK95GuqdVOvIkEZ1xskcxnjAefx0FqDkNi3MdCfES1LzWy9ul0THi/NmEO+GewUXqaugNKabLTogIgO8EiO7mcE=
+	t=1733240491; cv=none; b=JerlaCKr++edu5Vct6k0TdMxUhfDf+AVhMDF2iBLTKWX2eZWW/quzA1U5AErS8KmdsiTI+C/KPQYj9BjhZ2dZ6jP1p8xmjX4OiicfNL8wcQhw0l/SyEMi5iIcRYH2Z/oPzBWAz0qCC2wy3+G4LHclzQYsgp+Pj7YeIYXcD1KV0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238600; c=relaxed/simple;
-	bh=sUsAXgJOTB+fA1Z/l1FR5+/mFCU9eny7/O4PhJu0fM4=;
+	s=arc-20240116; t=1733240491; c=relaxed/simple;
+	bh=y5wgMpQabJH7NeVhEyay4yoTWhQVSbvlcAPtUVZuNHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NnvIAyEo6x9xliscGbrFgB+gUge7QV0MjbUHN9iIJ26vrgQiYMQBzFbEHKI/xBh4V/UGm/ZTv+w+t0HuflZU7XfetYuvOhqUU/jkNZeqE5RBO/m17nLqpxhJa295zCwHxy8O9Ei2jitaz0QH9ux99rPfvYMZjEFN2ELmdnetyFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buEFcblU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D10C4CECF;
-	Tue,  3 Dec 2024 15:09:59 +0000 (UTC)
+	 MIME-Version; b=OvTWaauKjt3oBIgcSjRbNXr68x5p5Uxbl9ZE8xZvGM7YWQ8mMZn1Ds8H355rRUSz6X1XW8HV9cac7Kgk95iPPW1x2a+CbWLHqdcAjxvAiOBYNX4AN7iB4U3veOdJ11sNZzxQlucoTzms4vcrNFGYYe82kMfZnh0Bx26IlPV9M+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKM3JaCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440FFC4CED6;
+	Tue,  3 Dec 2024 15:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238600;
-	bh=sUsAXgJOTB+fA1Z/l1FR5+/mFCU9eny7/O4PhJu0fM4=;
+	s=korg; t=1733240491;
+	bh=y5wgMpQabJH7NeVhEyay4yoTWhQVSbvlcAPtUVZuNHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buEFcblUqdKCX+Sljhc0WrrIG/E2mGbgLBiG2X31ZjGt0B3tct0FkKbZcXQLFBN39
-	 dTpzbrlab2Qc8q0FOWRTXjQYRI0Wc2V1LTDqna+oO5o3IplI8QnuPBmf0DEab5vG1o
-	 gFuF+GEYfDXxcbsvb93e+Vkg8z0jlRIrNyTU+8Dg=
+	b=uKM3JaCPjEeDZsurd1fuUk7zVbuhbCtDggFPBluphT67ETkjr2bYNk8FMt5y//+YI
+	 VyWw/hJDUOtK7r10dmvEEv/2K0IDGdS5Zmj2vis9wnhN3f0OSlJ8o6A9Vk/YDwiHmT
+	 N4JggLv/1adzC2WbIG+0BhUkpr9dGhII9XvSNsl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 306/817] wifi: wfx: Fix error handling in wfx_core_init()
-Date: Tue,  3 Dec 2024 15:37:58 +0100
-Message-ID: <20241203144007.760339781@linuxfoundation.org>
+Subject: [PATCH 6.12 152/826] arm64: dts: qcom: x1e80100: Update C4/C5 residency/exit numbers
+Date: Tue,  3 Dec 2024 15:37:59 +0100
+Message-ID: <20241203144749.673578152@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 3b88a9876779b55478a4dde867e73f7a100ffa23 ]
+[ Upstream commit 2e65616ef07fa4c72c3898b22e5bede7d468cf32 ]
 
-The wfx_core_init() returns without checking the retval from
-sdio_register_driver().
-If the sdio_register_driver() failed, the module failed to install,
-leaving the wfx_spi_driver not unregistered.
+Update the numbers based on the information found in the DSDT.
 
-Fixes: a7a91ca5a23d ("staging: wfx: add infrastructure for new driver")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241022090453.84679-1-yuancan@huawei.com
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240716-topic-h_bits-v1-2-f6c5d3ff982c@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/silabs/wfx/main.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/silabs/wfx/main.c b/drivers/net/wireless/silabs/wfx/main.c
-index e7198520bdffc..64441c8bc4606 100644
---- a/drivers/net/wireless/silabs/wfx/main.c
-+++ b/drivers/net/wireless/silabs/wfx/main.c
-@@ -480,10 +480,23 @@ static int __init wfx_core_init(void)
- {
- 	int ret = 0;
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index a073336ca0bed..914f9cb3aca21 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -279,8 +279,8 @@ CLUSTER_C4: cpu-sleep-0 {
+ 				idle-state-name = "ret";
+ 				arm,psci-suspend-param = <0x00000004>;
+ 				entry-latency-us = <180>;
+-				exit-latency-us = <320>;
+-				min-residency-us = <1000>;
++				exit-latency-us = <500>;
++				min-residency-us = <600>;
+ 			};
+ 		};
  
--	if (IS_ENABLED(CONFIG_SPI))
-+	if (IS_ENABLED(CONFIG_SPI)) {
- 		ret = spi_register_driver(&wfx_spi_driver);
--	if (IS_ENABLED(CONFIG_MMC) && !ret)
-+		if (ret)
-+			goto out;
-+	}
-+	if (IS_ENABLED(CONFIG_MMC)) {
- 		ret = sdio_register_driver(&wfx_sdio_driver);
-+		if (ret)
-+			goto unregister_spi;
-+	}
-+
-+	return 0;
-+
-+unregister_spi:
-+	if (IS_ENABLED(CONFIG_SPI))
-+		spi_unregister_driver(&wfx_spi_driver);
-+out:
- 	return ret;
- }
- module_init(wfx_core_init);
+@@ -299,7 +299,7 @@ CLUSTER_CL5: cluster-sleep-1 {
+ 				idle-state-name = "ret-pll-off";
+ 				arm,psci-suspend-param = <0x01000054>;
+ 				entry-latency-us = <2200>;
+-				exit-latency-us = <2500>;
++				exit-latency-us = <4000>;
+ 				min-residency-us = <7000>;
+ 			};
+ 		};
 -- 
 2.43.0
 
