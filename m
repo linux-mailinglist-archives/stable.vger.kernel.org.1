@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE599E2258
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1919E254F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 345C7166C25
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 715D51687E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CDC1EF0AE;
-	Tue,  3 Dec 2024 15:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6DB1F7561;
+	Tue,  3 Dec 2024 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAAn05Ei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2G8/XBL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22C32D7BF;
-	Tue,  3 Dec 2024 15:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F861F7060;
+	Tue,  3 Dec 2024 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239137; cv=none; b=AU3Vg9fWvVjUocVfJLFZ10CFV37raGC0P766Xa5zkwLIp4gmGGxMcsc7t8XfJO5S2WTc0oTgmcQNkpoJEQy/H30Ivkv8wZQbsFM55M2kddxEaQ3D5ORs8r1pno6V21+aXQ5DzOX+6xy15U27nxjdc+6a92V2LHX4nsKDV0SOg0E=
+	t=1733241230; cv=none; b=NpZQWdcc2RAvLrMH1t1WN8u5rRHAU2wNxKx04g/9ppE45JoU4l8yTi7SwQcVot8tOHrYivzhvou/XqAYI9lFerjDZcUrqgQewB0gOu76Cbam3Tg0HQm0TYoXGqdsXjxlXRmpFpl2Cp/sVIYUWLUy/XwYHSBRzbo4oJpREn4RqPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239137; c=relaxed/simple;
-	bh=TPLC7YUa7g19iE9zFvz6LbG8juoE58rpMGIK//dOXZo=;
+	s=arc-20240116; t=1733241230; c=relaxed/simple;
+	bh=OXUa7JNHyp82ljoYbTixvQHcuo02f0nTZX12BYXhFRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2ViERHUndjo6SXEErSWov6TP4DlQD+JtbW30e8isTZ/wrz402noMptHd1A1+VPaYZR8uzkenlilvg6wCAqus6zqLm4wQYPOI3AJgKhuKT39RJ9ygdIyAzDR6jmpbQCwA3dUdTK4UZH+Pg0rXXyH/zdFlBb+KTo85xBUfHK1wy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAAn05Ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38500C4CECF;
-	Tue,  3 Dec 2024 15:18:57 +0000 (UTC)
+	 MIME-Version; b=CkJP980doGQe94Htb1s/bwAYSKabQny6vu6uEL/YCyWjlp/zmZnsN46YtL5C2jylFmj6MO8ixZXom8FWaNYA6YClswgXDpKdlHbxKV3FwUvvLH2L7ldBsz6AZfu5LnDe4KUfrw5k+kKtZuuhDiKMDjsVPeg5pGsxWlRarWOoXMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2G8/XBL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDCDC4CED6;
+	Tue,  3 Dec 2024 15:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239137;
-	bh=TPLC7YUa7g19iE9zFvz6LbG8juoE58rpMGIK//dOXZo=;
+	s=korg; t=1733241230;
+	bh=OXUa7JNHyp82ljoYbTixvQHcuo02f0nTZX12BYXhFRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAAn05Ei/KCcGIl05PKpZqTwvqTyDQ0ecrpUeEsmQ4ibPt5SNDYE5ZFq41zgImCW6
-	 w/VjaFT50Ja13iMCXBh2DcDq6T3RuDVtCXLS28EQZML9kUQtLpdVDLClSY+T3YbnXx
-	 hR7WZr5ZIq+orhh4vRm51/hNg0sm8674bllKo0Ko=
+	b=2G8/XBL5nWHHiyOOF/ANsHec8ey8DPseFo4M31a8NmQHuQdPxC9GqyJa1iL4GnXbO
+	 tL8zg+EWc8+s6YE7+TDE6V0y5kviAQ9DtdyaldCI8MYR7o4OCPWb6Ig9VTDWJUEn5p
+	 G41kZ7wuUV0nhVe6NBk1n3S8u/PRDnNFFK3jl68w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richard <thomas.richard@bootlin.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 516/817] PCI: cadence: Set cdns_pcie_host_init() global
+Subject: [PATCH 6.12 361/826] pinctrl: renesas: rzg2l: Fix missing return in rzg2l_pinctrl_register()
 Date: Tue,  3 Dec 2024 15:41:28 +0100
-Message-ID: <20241203144016.037324488@linuxfoundation.org>
+Message-ID: <20241203144757.843253176@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richard <thomas.richard@bootlin.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 063c938928dc80c2bfd66f34df48344db22e009b ]
+[ Upstream commit 1737715a4c2c08f207c94cc1f3af3c5945318d29 ]
 
-During the resume sequence of the host, cdns_pcie_host_init() needs to be
-called, so set it global.
+Fix the missing return statement in the error path of
+rzg2l_pinctrl_register().
 
-The dev function parameter is removed, as it isn't used.
-
-Link: https://lore.kernel.org/linux-pci/20240102-j7200-pcie-s2r-v7-2-a2f9156da6c3@bootlin.com
-Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Stable-dep-of: 22a9120479a4 ("PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds")
+Fixes: f73f63b24491fa43 ("pinctrl: renesas: rzg2l: Use dev_err_probe()")
+Reported-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Closes: https://lore.kernel.org/all/OS0PR01MB638837327E5487B71D88A70392712@OS0PR01MB6388.jpnprd01.prod.outlook.com/
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20241003082550.33341-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 5 ++---
- drivers/pci/controller/cadence/pcie-cadence.h      | 6 ++++++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 93d9922730af5..8af95e9da7cec 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -485,8 +485,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
- 	return cdns_pcie_host_map_dma_ranges(rc);
- }
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index 5a403915fed2c..3a81837b5e623 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -2710,7 +2710,7 @@ static int rzg2l_pinctrl_register(struct rzg2l_pinctrl *pctrl)
  
--static int cdns_pcie_host_init(struct device *dev,
--			       struct cdns_pcie_rc *rc)
-+int cdns_pcie_host_init(struct cdns_pcie_rc *rc)
- {
- 	int err;
- 
-@@ -564,7 +563,7 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
- 	for (bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
- 		rc->avail_ib_bar[bar] = true;
- 
--	ret = cdns_pcie_host_init(dev, rc);
-+	ret = cdns_pcie_host_init(rc);
+ 	ret = pinctrl_enable(pctrl->pctl);
  	if (ret)
- 		return ret;
+-		dev_err_probe(pctrl->dev, ret, "pinctrl enable failed\n");
++		return dev_err_probe(pctrl->dev, ret, "pinctrl enable failed\n");
  
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 1d37d5f9f811c..bb215aeebf20a 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -522,6 +522,7 @@ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
- 
- #ifdef CONFIG_PCIE_CADENCE_HOST
- int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc);
-+int cdns_pcie_host_init(struct cdns_pcie_rc *rc);
- int cdns_pcie_host_setup(struct cdns_pcie_rc *rc);
- void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
- 			       int where);
-@@ -531,6 +532,11 @@ static inline int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
- 	return 0;
- }
- 
-+static inline int cdns_pcie_host_init(struct cdns_pcie_rc *rc)
-+{
-+	return 0;
-+}
-+
- static inline int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
- {
- 	return 0;
+ 	ret = rzg2l_gpio_register(pctrl);
+ 	if (ret)
 -- 
 2.43.0
 
