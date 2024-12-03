@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAA19E2924
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314199E2908
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A529BB34B67
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:53:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2954EB616E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9521F6679;
-	Tue,  3 Dec 2024 14:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65481F76BF;
+	Tue,  3 Dec 2024 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4I9q0Cc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnHLfDXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5990B2AF05;
-	Tue,  3 Dec 2024 14:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787291F7591;
+	Tue,  3 Dec 2024 14:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237637; cv=none; b=XIWHEZh3/Kwd+iSNx7h/o4nqjUFGpzpfZvLY3b0tEiB39VObkQRMbXMdZgvoFhmYYA6V0JEemWg7Xom6dAz0Lz2WDCLojNzgb8/YmMU+9htTz15zOVvzMzgxM/eM3W72/LOU48XMqraHvF8yDuyBsA+NPJyXD+apwzeBGeL5Emo=
+	t=1733237687; cv=none; b=jyNTyl5dcva7rOwteapwFicy3QnF2VkWgsx5lEpx94yHlmbUr1NFqF10mVd7O+hQjddVPQ1ZMkFpuQBKgPvfqteEktboCS64wrH2c81GtS3xXgRV1rvI11ayoXWdaDw74RWx3Zkwdu81AUGhlLK/0vx/yN6dAAlp5y0Qgmh6Ll0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237637; c=relaxed/simple;
-	bh=sfQFc+DrHXobU9NNhJTJ5zBe+RbDUZj/IjNP+1xqcPg=;
+	s=arc-20240116; t=1733237687; c=relaxed/simple;
+	bh=UbmeL7w82q9B+bkd5AE67C37efUhQCPS0vcjPNlVQBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+alXNPRnZIa344BsiBUvmpAaQ9DDp/jYy/QcZVUxiBpA+/Sc4NnH/tgyX5LoHj7mIuB9xhk6e1V7aqqxfxJWAQQrcppnIVjImvpAXFgItzw+MPFFpcuDla82+Nt+rDGRYRWqbQZdQUFFxHmror+avY+Qq/PEiSW29DXdlU5V58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4I9q0Cc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D7EC4CECF;
-	Tue,  3 Dec 2024 14:53:56 +0000 (UTC)
+	 MIME-Version; b=DjIaT7rAah8ucUfdAA4K7XnYpbwyQRLhDvaFuvw+FU5mt7+h5WFWjbgeUp1SVbEes+iNGL2U5r/2mIAMe8sCJ4zSf+/YLL9wN5poePd99HtQzTYA6Wq2AHTv4Q2PBo42EpR9aZNxZFR7qs5kzc/fYilS/IWgi/NmqKbSk+mV0Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnHLfDXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6B5C4CED8;
+	Tue,  3 Dec 2024 14:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237636;
-	bh=sfQFc+DrHXobU9NNhJTJ5zBe+RbDUZj/IjNP+1xqcPg=;
+	s=korg; t=1733237687;
+	bh=UbmeL7w82q9B+bkd5AE67C37efUhQCPS0vcjPNlVQBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4I9q0Cc7tz16sGbrmgvElY5tCWdylvubI8Dorn+NmprSsdyh5GR/lpRS4JEJYpEb
-	 zvh6v4xWoWygYELSPbvJ8fI7c7vmrYeupYaBeccw50Toz9Bo+uRDS/8L6hnUYw9DRC
-	 H8z9MqKrYuzb+47q7YaHELfQf6y1TiJG4KrgmJHs=
+	b=hnHLfDXHMmKQJE7h7Kj/2ykDcT+9hS5ha6H86rxcUpFp34ilKu+pnaxFIJ0fngZ4J
+	 FEs1Bp4g7GBGGwwag/afDzH59QjdsSEizjDgfHxRFN9xoNh8Syf+K4FCgYv5wR4vEh
+	 H6jBnBbV4rwsfDW5BgTNnBl2LHZKzuy2lNQN0M0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Renato Caldas <renato@calgera.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Eryk Zagorski <erykzagorski@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 027/817] platform/x86: ideapad-laptop: add missing Ideapad Pro 5 fn keys
-Date: Tue,  3 Dec 2024 15:33:19 +0100
-Message-ID: <20241203143956.709457063@linuxfoundation.org>
+Subject: [PATCH 6.11 042/817] ALSA: usb-audio: Fix Yamaha P-125 Quirk Entry
+Date: Tue,  3 Dec 2024 15:33:34 +0100
+Message-ID: <20241203143957.301917525@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,40 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Renato Caldas <renato@calgera.com>
+From: Eryk Zagorski <erykzagorski@gmail.com>
 
-[ Upstream commit 36e66be874a7ea9d28fb9757629899a8449b8748 ]
+[ Upstream commit 6f891ca15b017707840c9e7f5afd9fc6cfd7d8b1 ]
 
-The scancodes for the Mic Mute and Airplane keys on the Ideapad Pro 5
-(14AHP9 at least, probably the other variants too) are different and
-were not being picked up by the driver. This adds them to the keymap.
+This patch switches the P-125 quirk entry to use a composite quirk as the
+P-125 supplies both MIDI and Audio like many of the other Yamaha
+keyboards
 
-Apart from what is already supported, the remaining fn keys are
-unfortunately producing windows-specific key-combos.
-
-Signed-off-by: Renato Caldas <renato@calgera.com>
-Link: https://lore.kernel.org/r/20241102183116.30142-1-renato@calgera.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Eryk Zagorski <erykzagorski@gmail.com>
+Link: https://patch.msgid.link/20241111164520.9079-2-erykzagorski@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/quirks-table.h | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index b58df617d4fda..2fde38f506508 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1159,6 +1159,9 @@ static const struct key_entry ideapad_keymap[] = {
- 	{ KE_KEY,	0x27 | IDEAPAD_WMI_KEY, { KEY_HELP } },
- 	/* Refresh Rate Toggle */
- 	{ KE_KEY,	0x0a | IDEAPAD_WMI_KEY, { KEY_REFRESH_RATE_TOGGLE } },
-+	/* Specific to some newer models */
-+	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
-+	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
- 
- 	{ KE_END },
- };
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index 24c981c9b2405..199d0603cf8e5 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -324,7 +324,6 @@ YAMAHA_DEVICE(0x105a, NULL),
+ YAMAHA_DEVICE(0x105b, NULL),
+ YAMAHA_DEVICE(0x105c, NULL),
+ YAMAHA_DEVICE(0x105d, NULL),
+-YAMAHA_DEVICE(0x1718, "P-125"),
+ {
+ 	USB_DEVICE(0x0499, 0x1503),
+ 	QUIRK_DRIVER_INFO {
+@@ -391,6 +390,19 @@ YAMAHA_DEVICE(0x1718, "P-125"),
+ 		}
+ 	}
+ },
++{
++	USB_DEVICE(0x0499, 0x1718),
++	QUIRK_DRIVER_INFO {
++		/* .vendor_name = "Yamaha", */
++		/* .product_name = "P-125", */
++		QUIRK_DATA_COMPOSITE {
++			{ QUIRK_DATA_STANDARD_AUDIO(1) },
++			{ QUIRK_DATA_STANDARD_AUDIO(2) },
++			{ QUIRK_DATA_MIDI_YAMAHA(3) },
++			QUIRK_COMPOSITE_END
++		}
++	}
++},
+ YAMAHA_DEVICE(0x2000, "DGP-7"),
+ YAMAHA_DEVICE(0x2001, "DGP-5"),
+ YAMAHA_DEVICE(0x2002, NULL),
 -- 
 2.43.0
 
