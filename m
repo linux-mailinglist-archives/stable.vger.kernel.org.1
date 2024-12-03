@@ -1,256 +1,193 @@
-Return-Path: <stable+bounces-96188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660049E1390
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 07:51:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7F49E1393
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 07:53:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B485161B5D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 06:51:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40C73B2329D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 06:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB291188926;
-	Tue,  3 Dec 2024 06:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A56B1862BD;
+	Tue,  3 Dec 2024 06:53:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392C7189913;
-	Tue,  3 Dec 2024 06:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733208690; cv=none; b=uwfNCJEjCW0WfqkRDXmZmMPW8vdHjxT2XKhl/vyTx4l2eudnSCidR7RDbiEzbX9S4od6gn9HXScuSnB229w/qEQU2s+uvFgIO1CLog5W4/+qT+bBpWg71oKUJ7y9eyu7jijU+9q6rQcUpL1vlm86iE8nV1vyBC60tUwuMzmLFmA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733208690; c=relaxed/simple;
-	bh=kx3A+Xq1zGWJHYHWXaF8k+LvrXiSGuyO4HHlfQaGxmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gU0ZmsTD0Hp4OB007CTRTYB/t4AlchFNng+h9N9839qCPWJsi91l7KWO5bGhHtLC24kKehH7a2RzpHek9GEnfnbcxbbOiyG/Xr0xfTt4c2ZqMq5TEYvnzw+pnUcllktZRUPAEBzaNo9mQDZfU/PfNSe4CsRYVXehIUNng78aRtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.38])
-	by gateway (Coremail) with SMTP id _____8CxMK9pqk5nRHtPAA--.64760S3;
-	Tue, 03 Dec 2024 14:51:21 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.38])
-	by front1 (Coremail) with SMTP id qMiowMAxL+FZqk5ni3pzAA--.13983S3;
-	Tue, 03 Dec 2024 14:51:19 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] LoongArch: KVM: Protect kvm_io_bus_{read,write}() with SRCU
-Date: Tue,  3 Dec 2024 14:50:58 +0800
-Message-ID: <20241203065058.4164631-2-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241203065058.4164631-1-chenhuacai@loongson.cn>
-References: <20241203065058.4164631-1-chenhuacai@loongson.cn>
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C374126C13
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 06:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733208781; cv=fail; b=QQkMNhCvhzRL+DRTmloMFClJSezo1G3m1NhZB8SOrkya/LOfLTfLqzE6fwWknjJ6ZwE4tIijtOy9Bmkw7Rcv7TxL53JUs1nKHEZJ3Rar+Y/OXX7ILFXjv52A97STHQzUP3NT6qi1k+o/OVKj6EfXCLUPLf5Birx5la91gFzOAsU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733208781; c=relaxed/simple;
+	bh=3abRmas5iT5Xkg0t84v1zX7NBeRUxP0Ew/elUIGnTu4=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kbhKSgY4G9sFnEFfvG1u2Iwm/VlwuqxN/w5QTWDpdUwwa+OOcR391SE5GQzme/bmL0F29aMm3ooDIFnei+TKQzaFBQ/CBhgbvhEh4GzCURC5aWM2BYCwAQRJ+ks5wI1EM3dE2FF7YXEFY1wFqkEFl4zmnm7UyB/RW+TAQopdpJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B36O24i029680
+	for <stable@vger.kernel.org>; Mon, 2 Dec 2024 22:52:52 -0800
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2177.outbound.protection.outlook.com [104.47.58.177])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43833q2jjq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 02 Dec 2024 22:52:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qMRmAU86jrsLKR23icODsOLN58pOqcwXF0RAA58C7ZndddjYYxZC9bplvdutlFl/jMgN4pbw8KAXMfE0Mdl5rWYZXu2685UF0llTEnfFXSiruAPKhuotI6HOkfY/yV1ORNKWlsnnZbRC+ZZAdbl4sW/6ywwMPLIjgSLqwSU/watlv0uef6IyaOh09INfkA4+XPuceACP9pn59Lfh/PcS5i2ZRFZ0yTEM+nshD+LAcrZgwVqfUFxZG+IaC1qjsRTCQoIRRuDMLP+LNma+IggjHVXE/5R+mfUkVxV/8t/kCOmcmxw2a8dUeYHHeenFPYkiX8PBVIaz2KOb711dK9vgGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/eLU3IX/V0bTZg4YTR/pxMr1fsJKzoHmez5+1GfapBQ=;
+ b=UaCNxnucbcnfjnyDPVlQU6AYZ1kHiPvbXNY/IoCMaEz+7B5hFyt8co7YtaBqHyFoHzBnoL5KYAacs+2rOBL1t6IR6almOjYbR7qzly1czgXBAfrLzcLL5u7nSr26lTTGdbxdFPIwt1fdeoePLhkIYuI3pQEE8vn3JSiaYMTIatS8WfGR2TiAEpFyrPWMfQ18G6pqShbY5RIFp5Qj7bwMvgXEm3E/u0jLtKBvRn968GPoHnhUHbNsGJoue1JxA6lpfK3K98dBkJheQQd+p8bzZRw66Q0a2/4D2wD7TQZ24CIZOWbgw1eVpmM9EBmRHN+WMIr3ZPbtnO5wAYqSagnr9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
+ by SJ2PR11MB7425.namprd11.prod.outlook.com (2603:10b6:a03:4c0::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.16; Tue, 3 Dec
+ 2024 06:52:47 +0000
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0%5]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
+ 06:52:46 +0000
+From: bin.lan.cn@eng.windriver.com
+To: stable@vger.kernel.org
+Subject: [PATCH 6.6] crypto: starfive - Do not free stack buffer
+Date: Tue,  3 Dec 2024 14:52:13 +0800
+Message-Id: <20241203065213.67046-1-bin.lan.cn@eng.windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:196::8) To CH3PR11MB8701.namprd11.prod.outlook.com
+ (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxL+FZqk5ni3pzAA--.13983S3
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar1rCFWkCr4rKw4UCw4rJFc_yoWxZw1Upr
-	yrZ393ur4rJr97AwnrAr1Dur1jq3yvkF18JrykJr4fGr1jvrn8JF40yrW7ZFy5K34rCa17
-	ZF1xJr1Ykr1UAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
-	6r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7IU8EeHDUUUUU==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SJ2PR11MB7425:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0886b583-3099-4836-72ba-08dd136717fa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WYpmiUk2ks/E6IvHIa1LHf1FFLIYRF/Ns1bZDbV4RJNr60ykfp4j61yA7r+d?=
+ =?us-ascii?Q?YESH/ANIBiyVwG5g1gA1kychdLweX2VSnz7SBJWU57EGr7DT2P7QarZJFfzj?=
+ =?us-ascii?Q?emLqvCDs/awND5s56WP6E4HAl26MblNWkDjWKGZuJWv0CpaeCTmdL64X7YLK?=
+ =?us-ascii?Q?IU1SnURzTdmG2N3rBvfXCZy6d96biqKHwYsMAgJLwbKnQ4mg5AQ5asym8qYU?=
+ =?us-ascii?Q?kvliH6KkFdIaJw+vmoyx/qcXw6lqmkYAKMFQfItx/I6HeogZCmsXDBfjSLn4?=
+ =?us-ascii?Q?EXL4f0eTreR5kiMsn2HshgJWDkPQY6OKmqBiCAfjPmAOXWZKPSrR3jVwjQ5g?=
+ =?us-ascii?Q?D64PFBxhV8bbakQESELlyvFsa+DuRpqdNw+cfqhjyuwGjnXHxBeTrHpkrTTm?=
+ =?us-ascii?Q?RhPolE8mbvRaQ3zfsr/3WA5sTIP5BdJVOgeTQB3Vqi1cj7rPy3yigaYpwyHj?=
+ =?us-ascii?Q?XmFvSaBDgTWaAXYqtKXeNUmdynsoBaqymt7xc3//JKmwJsYR20eNXcL4ozl1?=
+ =?us-ascii?Q?NJIz2trs5Ma8fJXJOBAmwJ420e2hfBYrACPx2p5QCVj8e6DCmuPQzBe/AshJ?=
+ =?us-ascii?Q?2DWpaC1Qrm+eYULzXzMcjd+60ZgLAbiShjWuh7jmIdxOY918N6bAf3ZaJJGH?=
+ =?us-ascii?Q?oLHGzcm96sEp6Si3UQwYMo1z2K3NxBmmnWjPojXy/C3CmvhieL0vMoQc8N/Q?=
+ =?us-ascii?Q?AWHRCA6Wj4Wj6pAxWKMJGItXcfGQrBySyrxVqPN8HHGkojJEJGGj/egmeRCy?=
+ =?us-ascii?Q?sRG331Otthf++jqm87NAc5MYytex9/wRSPC0uJ95oKqqc06iDh5SHPd3jElh?=
+ =?us-ascii?Q?k1RGqqZKXzLbyPeShbRwUEJG/YGWzQkkUc0dQhY8ckB99YSDxAxRyjoU/z9E?=
+ =?us-ascii?Q?PIHtHwTRal7A46Yqy22jqGEKjTVjuwvqpqZwDX3piyoC+ftzLxHeoAKDKkZc?=
+ =?us-ascii?Q?vlQxD9eXufhRzQsofxXb4aoTokymq60Ue4WCdphJtvHW7Hl3jGqba0mzCbq8?=
+ =?us-ascii?Q?rJPFddK3219iPyITDgT3Ndfvzoj90vE8Z5gGAqyTBzm0mwT+CCgJq6J1Ol0J?=
+ =?us-ascii?Q?d1ZxfU6u/bPV7K2S/PSBfYdwv2wc6YbAQPERLKcjywKG4WW3au1uJGqxQe/1?=
+ =?us-ascii?Q?36rK9Ade9gZKhu5jWXuad6x357riPcT7yyPoRsNX8swBTwHmqHFlZgmFeebu?=
+ =?us-ascii?Q?Uw+Vvd1ypKqGcS/6auNO8q1tG/tCdAxTOZx+bvtOqdeAh/NRR1oKjWpuQkUl?=
+ =?us-ascii?Q?H4JifoM4qD42gefvGMWrI9Dn8nWss0h/r71hAwF8tls2oPhl9UVEWFuNfOJ+?=
+ =?us-ascii?Q?T40qHJIOkrxe26x55r8LzEu3dIHAcgkxsgjtLZRXLVQHcmSad4XdksqwTFH/?=
+ =?us-ascii?Q?wkW+6TMN3zNJXJjeiqC3LzPQ5Z9MP9g+1PBe4sUf5UH3ETnb4w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DIv1HHQTal7x7+j/Dl9VePxWDCIYJy4ZgWxvIpFoU20aZK/yNGoSMQbHwacP?=
+ =?us-ascii?Q?LimF9swLaRJZisuLK4bqxNIUKugoVKAhpOpsr2iYXIKPGqz87fkLKdwHxDQN?=
+ =?us-ascii?Q?2DpDShecNtrcmcFznnKwzGQRLCjBJU0qo4s+Xh0LtnWPvmkTn5aBX45XlimL?=
+ =?us-ascii?Q?Q9LYAk5vrTfjpLZQ7X8iQTqXMSOfyRG05VDh+6zwXuQlsIjV4En/Oc6Dml5y?=
+ =?us-ascii?Q?2UQUbfp7fsUhMeoDNjdAoopKN8j/VWd6nIYaNK3xfph2l++MRI5dZM1bVvht?=
+ =?us-ascii?Q?qH/Mb9pcsV/Kv6lrO8Xni5RDqE0O6UrGS2U7AnuYD5WX3DaWUk7xuHgp1nl8?=
+ =?us-ascii?Q?wJ6l3vQ4LHIQHMmIOV87jIGoiADaYD9vHbtMoBJrmjMdNqIf1vsXd+YxMW0c?=
+ =?us-ascii?Q?hPdRWIxfuwSrr5pVk2xkVlWRLtkQj3KLPQKc7HzX3y4LECVFTO5XO3WHpsrI?=
+ =?us-ascii?Q?OB2+umd9Xq8cT2G00Tk1Fu324izkPq+eIlXmDDfLuN5npYVcGOgMTfdiRCEe?=
+ =?us-ascii?Q?+0IC4s10jtJOwzfTJzcgOim0za89C/noJrxHJIqjAOqMMIyEV/h9cjyLQNpM?=
+ =?us-ascii?Q?/AOQ8ZfrqsFck+6KvHxHowZTyKpfp5jFZ8zOJeMUpWTo0P3YcAi8D6h0KwzV?=
+ =?us-ascii?Q?XbWTGHHki1L3DcHPufT6l9SQWg78YXFi6NQ8BRxqoz3up9I6iAjQHhzpBT/W?=
+ =?us-ascii?Q?ODuQNOzxvgoQap2BkjCMKRdc81Ki16TzfkXI/I2K1nE/5urqiJOlzosOCgHk?=
+ =?us-ascii?Q?bl5R0ydh7XXc+cDU+rz4Woiim1PRqjhHebRpbc9JiZnWdM7ClJgtK5TTLyyq?=
+ =?us-ascii?Q?Se+FN+4kSxd9vFiyZ7CyfMYJ+Zq9SLDO2BgtTKntNMmda9SRmGMU5QZzdx4v?=
+ =?us-ascii?Q?+Tkh+5/KRwW1YeMeY4xpP2WFf+qb/9GfQC/3xttoNefNNwYvzjYc1MrPN1ar?=
+ =?us-ascii?Q?iLWYYA5nBVW64+X8wFEC6jN7Ukp7va2bTWEYKASf9FpK9g3nxJ3eymmmjwU/?=
+ =?us-ascii?Q?YEjSjujtO+YnLB11f7CNuH4pw+czTDIEVbpZRa3lPiAgkTp5FTHMprw+pfer?=
+ =?us-ascii?Q?qlwjMcoQ4GJ9eM9kM+aVxeqAogiTbyCSqtCb7xaorQXOmthThjrG1xKphW/m?=
+ =?us-ascii?Q?NG4TttB1unJKBVsJvwxWDMIlRY3DJ1pPPa2EMi202D5qjYr+SjtsLqN1Eni7?=
+ =?us-ascii?Q?dG8f32ZPJ8Da9fLmgwH9SAzCEAhKIbDouhC3beuuSKdoaBCHecuKCvMTh0Ga?=
+ =?us-ascii?Q?8XRk8krpqMoFF/MRA0KSwldLDmflXl8n0zszHBhhGJy/XxIlBD88o94qJo7j?=
+ =?us-ascii?Q?LduVUiJ4k0VsyJKn4VyvNpboXkPQJHKNacU+d0vo33+an0vjyk04G/1XVWWO?=
+ =?us-ascii?Q?IfwJWzn6Wka6CHyyCoOrFJxAYm/JGvFLxZ6JL8Il4fDzoklSvHfarE+kdpz0?=
+ =?us-ascii?Q?voLO6mwfbzjf3fUXehEtYV3Ky+uOINrL+jelcB7/45vogLd7h8hZ3iVB9ibm?=
+ =?us-ascii?Q?rKgZ5jbV5fq+sJKknxr7tm4K5X9IXLZwmoUQTJCadl6NSX3akq2y/OOFB8SU?=
+ =?us-ascii?Q?f9exQHA9rZHULbIbxLTzIUnb58BcEgepFYp4PMjvKXW5yTLKkc+ZjOcCrH7+?=
+ =?us-ascii?Q?lg=3D=3D?=
+X-OriginatorOrg: eng.windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0886b583-3099-4836-72ba-08dd136717fa
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 06:52:46.5028
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: taDMSf3K/4040zFz7YZ5AWSQKbHzsqYrEYzuUdQqcVXfb7veinYaDAKZRcIXXejImduK9OJ95CzTAh/Vl9BIaj4mXK7rCdfUSA4lM2Gys0k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7425
+X-Proofpoint-ORIG-GUID: NIgLE3qVReKUtZUEXEV-hdacGdabZNul
+X-Authority-Analysis: v=2.4 cv=bqq2BFai c=1 sm=1 tr=0 ts=674eaac4 cx=c_pps a=v3ez6FdVe4RSF1xj2bRqRw==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=RZcAm9yDv7YA:10 a=_Eqp4RXO4fwA:10 a=Bq6zwJu1AAAA:8
+ a=VwQbUJbxAAAA:8 a=FNyBlpCuAAAA:8 a=t7CeM3EgAAAA:8 a=cgP0u2KHGnHXADnyA_cA:9 a=KQ6X2bKhxX7Fj2iT9C4S:22 a=RlW-AWeGUCXs_Nkyno-6:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+X-Proofpoint-GUID: NIgLE3qVReKUtZUEXEV-hdacGdabZNul
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-02_14,2024-12-03_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 phishscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 suspectscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2411120000
+ definitions=main-2412030056
 
-When we enable lockdep we get such a warning:
+From: Jia Jie Ho <jiajie.ho@starfivetech.com>
 
- =============================
- WARNING: suspicious RCU usage
- 6.12.0-rc7+ #1891 Tainted: G        W
- -----------------------------
- arch/loongarch/kvm/../../../virt/kvm/kvm_main.c:5945 suspicious rcu_dereference_check() usage!
- other info that might help us debug this:
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by qemu-system-loo/948:
-  #0: 90000001184a00a8 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0xf4/0xe20 [kvm]
- stack backtrace:
- CPU: 2 UID: 0 PID: 948 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc7+ #1891
- Tainted: [W]=WARN
- Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
- Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 900000012c578000
-         900000012c57b940 0000000000000000 900000012c57b948 9000000007e53788
-         900000000815bcc8 900000000815bcc0 900000012c57b7b0 0000000000000001
-         0000000000000001 4b031894b9d6b725 0000000005dec000 9000000100427b00
-         00000000000003d2 0000000000000001 000000000000002d 0000000000000003
-         0000000000000030 00000000000003b4 0000000005dec000 0000000000000000
-         900000000806d000 9000000007e53788 00000000000000b4 0000000000000004
-         0000000000000004 0000000000000000 0000000000000000 9000000107baf600
-         9000000008916000 9000000007e53788 9000000005924778 000000001fe001e5
-         00000000000000b0 0000000000000007 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<9000000005924778>] show_stack+0x38/0x180
- [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
- [<90000000059eb754>] lockdep_rcu_suspicious+0x194/0x240
- [<ffff80000221f47c>] kvm_io_bus_read+0x19c/0x1e0 [kvm]
- [<ffff800002225118>] kvm_emu_mmio_read+0xd8/0x440 [kvm]
- [<ffff8000022254bc>] kvm_handle_read_fault+0x3c/0xe0 [kvm]
- [<ffff80000222b3c8>] kvm_handle_exit+0x228/0x480 [kvm]
+[ Upstream commit d7f01649f4eaf1878472d3d3f480ae1e50d98f6c ]
 
-Fix it by protecting kvm_io_bus_{read,write}() with SRCU.
+RSA text data uses variable length buffer allocated in software stack.
+Calling kfree on it causes undefined behaviour in subsequent operations.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: <stable@vger.kernel.org> #6.7+
+Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 ---
- arch/loongarch/kvm/exit.c     | 31 +++++++++++++++++++++----------
- arch/loongarch/kvm/intc/ipi.c |  6 +++++-
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ drivers/crypto/starfive/jh7110-rsa.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
-index 69f3e3782cc9..a7893bd01e73 100644
---- a/arch/loongarch/kvm/exit.c
-+++ b/arch/loongarch/kvm/exit.c
-@@ -156,7 +156,7 @@ static int kvm_handle_csr(struct kvm_vcpu *vcpu, larch_inst inst)
+diff --git a/drivers/crypto/starfive/jh7110-rsa.c b/drivers/crypto/starfive/jh7110-rsa.c
+index 1db9a3d02848..3116828d60a0 100644
+--- a/drivers/crypto/starfive/jh7110-rsa.c
++++ b/drivers/crypto/starfive/jh7110-rsa.c
+@@ -303,7 +303,6 @@ static int starfive_rsa_enc_core(struct starfive_cryp_ctx *ctx, int enc)
  
- int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
- {
--	int ret;
-+	int idx, ret;
- 	unsigned long *val;
- 	u32 addr, rd, rj, opcode;
- 
-@@ -167,7 +167,6 @@ int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	rj = inst.reg2_format.rj;
- 	opcode = inst.reg2_format.opcode;
- 	addr = vcpu->arch.gprs[rj];
--	ret = EMULATE_DO_IOCSR;
- 	run->iocsr_io.phys_addr = addr;
- 	run->iocsr_io.is_write = 0;
- 	val = &vcpu->arch.gprs[rd];
-@@ -207,20 +206,28 @@ int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
- 	}
- 
- 	if (run->iocsr_io.is_write) {
--		if (!kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val))
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
-+		ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-+		if (ret == 0)
- 			ret = EMULATE_DONE;
--		else
-+		else {
-+			ret = EMULATE_DO_IOCSR;
- 			/* Save data and let user space to write it */
- 			memcpy(run->iocsr_io.data, val, run->iocsr_io.len);
--
-+		}
- 		trace_kvm_iocsr(KVM_TRACE_IOCSR_WRITE, run->iocsr_io.len, addr, val);
- 	} else {
--		if (!kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val))
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
-+		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-+		if (ret == 0)
- 			ret = EMULATE_DONE;
--		else
-+		else {
-+			ret = EMULATE_DO_IOCSR;
- 			/* Save register id for iocsr read completion */
- 			vcpu->arch.io_gpr = rd;
--
-+		}
- 		trace_kvm_iocsr(KVM_TRACE_IOCSR_READ, run->iocsr_io.len, addr, NULL);
- 	}
- 
-@@ -359,7 +366,7 @@ static int kvm_handle_gspr(struct kvm_vcpu *vcpu)
- 
- int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_inst inst)
- {
--	int ret;
-+	int idx, ret;
- 	unsigned int op8, opcode, rd;
- 	struct kvm_run *run = vcpu->run;
- 
-@@ -464,8 +471,10 @@ int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_inst inst)
- 		 * it need not return to user space to handle the mmio
- 		 * exception.
- 		 */
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		ret = kvm_io_bus_read(vcpu, KVM_MMIO_BUS, vcpu->arch.badv,
- 				      run->mmio.len, &vcpu->arch.gprs[rd]);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		if (!ret) {
- 			update_pc(&vcpu->arch);
- 			vcpu->mmio_needed = 0;
-@@ -531,7 +540,7 @@ int kvm_complete_mmio_read(struct kvm_vcpu *vcpu, struct kvm_run *run)
- 
- int kvm_emu_mmio_write(struct kvm_vcpu *vcpu, larch_inst inst)
- {
--	int ret;
-+	int idx, ret;
- 	unsigned int rd, op8, opcode;
- 	unsigned long curr_pc, rd_val = 0;
- 	struct kvm_run *run = vcpu->run;
-@@ -631,7 +640,9 @@ int kvm_emu_mmio_write(struct kvm_vcpu *vcpu, larch_inst inst)
- 		 * it need not return to user space to handle the mmio
- 		 * exception.
- 		 */
-+		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		ret = kvm_io_bus_write(vcpu, KVM_MMIO_BUS, vcpu->arch.badv, run->mmio.len, data);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		if (!ret)
- 			return EMULATE_DONE;
- 
-diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-index a233a323e295..4b7ff20ed438 100644
---- a/arch/loongarch/kvm/intc/ipi.c
-+++ b/arch/loongarch/kvm/intc/ipi.c
-@@ -98,7 +98,7 @@ static void write_mailbox(struct kvm_vcpu *vcpu, int offset, uint64_t data, int
- 
- static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
- {
--	int i, ret;
-+	int i, idx, ret;
- 	uint32_t val = 0, mask = 0;
- 
- 	/*
-@@ -107,7 +107,9 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
- 	 */
- 	if ((data >> 27) & 0xf) {
- 		/* Read the old val */
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-+		srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 		if (unlikely(ret)) {
- 			kvm_err("%s: : read date from addr %llx failed\n", __func__, addr);
- 			return ret;
-@@ -121,7 +123,9 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
- 		val &= mask;
- 	}
- 	val |= ((uint32_t)(data >> 32) & ~mask);
-+	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-+	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 	if (unlikely(ret))
- 		kvm_err("%s: : write date to addr %llx failed\n", __func__, addr);
+ err_rsa_crypt:
+ 	writel(STARFIVE_RSA_RESET, cryp->base + STARFIVE_PKA_CACR_OFFSET);
+-	kfree(rctx->rsa_data);
+ 	return ret;
+ }
  
 -- 
-2.43.5
+2.34.1
 
 
