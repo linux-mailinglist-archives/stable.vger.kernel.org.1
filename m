@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D648A9E2611
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D79F79E2301
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5433B16EE81
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D963C16532F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F6314A088;
-	Tue,  3 Dec 2024 16:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BD11F7540;
+	Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwibIg+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnX9wUhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8041323CE;
-	Tue,  3 Dec 2024 16:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8932B1F473A;
+	Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241762; cv=none; b=cXV07TTcslg7L5In05iroaYn0bmyd+OHOJnRVa7U7CQLSSvZeEQkPNEZVQKnBbrbU4VvC0+kFOn2a4AIXbLw82R7Eai2toglbPkjlaU2UUCo24lUEcfeRWNGyDwtx3tpSt/uF9pv6PMDrWn1cCeyoYQfg78VQTI/lwwFrGpj7bc=
+	t=1733239582; cv=none; b=aCQZHLO7NVesG8LhCZyT/zKbPsKnWz9qjX19uaY2+FxQxtwqtmHJs5CHtB5QbeL9i5nBG4HF7JBrXtkjcA0DvrJgcrsoweE7zkg95PsztruyxLciSNI222wu5DpQ0xlMG3HYDz2TPjRMIut2ZWtmFyzuDj7JuPIAJZcqGxP/tfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241762; c=relaxed/simple;
-	bh=Ww/xl3QLSn60Ic4rJ1dX8UI+k+JW2lqIy77FnVign3c=;
+	s=arc-20240116; t=1733239582; c=relaxed/simple;
+	bh=8e2TIKsFXvFdzopn1khVssc14IWpLOZqcOsOgeTJdGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlG28qP0NAIvqTjg763h48T/WqD8pLKC4Zxdcekr5FK7A4r3aSXiL9qjfEEVO1LqgUMqb5iTeNKbol7ISDhlhDXyclcA2c4EqzwICoT2iIh9Aj1guFsJB/ZOHyoyx4zz5ge0Q+BfW9qr+A6kosgCRIrQI4nWKz2xDyyiNMjxwy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwibIg+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70901C4CECF;
-	Tue,  3 Dec 2024 16:02:41 +0000 (UTC)
+	 MIME-Version; b=TJhZ8Lf5VohWjdjVnO712FiFgrSorR/7RYGqPP2Rhsc+8X63WsVRKu6jrhmeT71jxwsZm8sqI1vhMpHi41saAe+jBzdh/Qoi1M8sWAJSLxxou4uicCkvDqPV6WPq1AIwCHgEfuBf2StYfVD22nykuB0O6raYnEuG3or9qQF1j1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnX9wUhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11747C4CECF;
+	Tue,  3 Dec 2024 15:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241761;
-	bh=Ww/xl3QLSn60Ic4rJ1dX8UI+k+JW2lqIy77FnVign3c=;
+	s=korg; t=1733239582;
+	bh=8e2TIKsFXvFdzopn1khVssc14IWpLOZqcOsOgeTJdGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwibIg+gwvkjGJsigVyZiH0wCROK1yxjHYewCUuVWY/+bLW1NrvsS5IvDo1oDP8HS
-	 gKOkXmuD4v96e9Xu62UDkEjmvuMfke/8zm7KEyvgGpqefEsx4SAlXpvWm2rfmrb/hF
-	 Pdzq5nyLATJLrPhGpzZs90DxOxtVJMTQnpQq+ErM=
+	b=wnX9wUhlpLlFGwtxQmSRQtx/kaBjQXuyGqZeJH/GA4BGvlgg55wFR4cX1mQk3KUlW
+	 5SFsTI3ln1NUAIeRM4ikU4RI3WRgzazn2Q8hME4T3K4lYdXvmmz2rfJ+UXKPbF+d0R
+	 ciyhDRhXYprTGJyDDZvyjsD9KKOFln9g2dJgFXuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 507/826] f2fs: fix race in concurrent f2fs_stop_gc_thread
-Date: Tue,  3 Dec 2024 15:43:54 +0100
-Message-ID: <20241203144803.533570957@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.11 663/817] apparmor: test: Fix memory leak for aa_unpack_strdup()
+Date: Tue,  3 Dec 2024 15:43:55 +0100
+Message-ID: <20241203144021.838287690@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 7b0033dbc48340a1c1c3f12448ba17d6587ca092 ]
+commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
 
-In my test case, concurrent calls to f2fs shutdown report the following
-stack trace:
+The string allocated by kmemdup() in aa_unpack_strdup() is not
+freed and cause following memory leaks, free them to fix it.
 
- Oops: general protection fault, probably for non-canonical address 0xc6cfff63bb5513fc: 0000 [#1] PREEMPT SMP PTI
- CPU: 0 UID: 0 PID: 678 Comm: f2fs_rep_shutdo Not tainted 6.12.0-rc5-next-20241029-g6fb2fa9805c5-dirty #85
- Call Trace:
-  <TASK>
-  ? show_regs+0x8b/0xa0
-  ? __die_body+0x26/0xa0
-  ? die_addr+0x54/0x90
-  ? exc_general_protection+0x24b/0x5c0
-  ? asm_exc_general_protection+0x26/0x30
-  ? kthread_stop+0x46/0x390
-  f2fs_stop_gc_thread+0x6c/0x110
-  f2fs_do_shutdown+0x309/0x3a0
-  f2fs_ioc_shutdown+0x150/0x1c0
-  __f2fs_ioctl+0xffd/0x2ac0
-  f2fs_ioctl+0x76/0xe0
-  vfs_ioctl+0x23/0x60
-  __x64_sys_ioctl+0xce/0xf0
-  x64_sys_call+0x2b1b/0x4540
-  do_syscall_64+0xa7/0x240
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+	unreferenced object 0xffffff80c6af8a50 (size 8):
+	  comm "kunit_try_catch", pid 225, jiffies 4294894407
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80c2a29090 (size 8):
+	  comm "kunit_try_catch", pid 227, jiffies 4294894409
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
 
-The root cause is a race condition in f2fs_stop_gc_thread() called from
-different f2fs shutdown paths:
-
-  [CPU0]                       [CPU1]
-  ----------------------       -----------------------
-  f2fs_stop_gc_thread          f2fs_stop_gc_thread
-                                 gc_th = sbi->gc_thread
-    gc_th = sbi->gc_thread
-    kfree(gc_th)
-    sbi->gc_thread = NULL
-                                 < gc_th != NULL >
-                                 kthread_stop(gc_th->f2fs_gc_task) //UAF
-
-The commit c7f114d864ac ("f2fs: fix to avoid use-after-free in
-f2fs_stop_gc_thread()") attempted to fix this issue by using a read
-semaphore to prevent races between shutdown and remount threads, but
-it fails to prevent all race conditions.
-
-Fix it by converting to write lock of s_umount in f2fs_do_shutdown().
-
-Fixes: 7950e9ac638e ("f2fs: stop gc/discard thread after fs shutdown")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ security/apparmor/policy_unpack_test.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index adc7d64a6f47d..b96403ab7a925 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2343,9 +2343,12 @@ int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
- 	if (readonly)
- 		goto out;
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -281,6 +281,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
+ }
  
--	/* grab sb->s_umount to avoid racing w/ remount() */
-+	/*
-+	 * grab sb->s_umount to avoid racing w/ remount() and other shutdown
-+	 * paths.
-+	 */
- 	if (need_lock)
--		down_read(&sbi->sb->s_umount);
-+		down_write(&sbi->sb->s_umount);
+ static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
+@@ -296,6 +298,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
+ }
  
- 	f2fs_stop_gc_thread(sbi);
- 	f2fs_stop_discard_thread(sbi);
-@@ -2354,7 +2357,7 @@ int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
- 	clear_opt(sbi, DISCARD);
+ static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
+@@ -313,6 +317,8 @@ static void policy_unpack_test_unpack_st
+ 	KUNIT_EXPECT_EQ(test, size, 0);
+ 	KUNIT_EXPECT_NULL(test, string);
+ 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
++
++	kfree(string);
+ }
  
- 	if (need_lock)
--		up_read(&sbi->sb->s_umount);
-+		up_write(&sbi->sb->s_umount);
- 
- 	f2fs_update_time(sbi, REQ_TIME);
- out:
--- 
-2.43.0
-
+ static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
 
 
 
