@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8019E20BC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3934B9E20ED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52EC7286605
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740591660BA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E27A1F6698;
-	Tue,  3 Dec 2024 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E64E1E3DF9;
+	Tue,  3 Dec 2024 15:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="banQid8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXyE4uaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541FB1DA4E;
-	Tue,  3 Dec 2024 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC133FE;
+	Tue,  3 Dec 2024 15:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238187; cv=none; b=k10uvXU1qOCXx7y6Jk0jBtLQa0tAP0Av263YPJLMQbjXHYEbgcWj3oXzm8jF1I78718FyuXMSeXC2WmSRGXggWIBNTCjrfy9HVOLMyu5nVjEPgMnBrN7GgS3Jr/fZxxH4NBRKW/+kqe2NcgqtFc0HLqoMIKqPc0pa2bvhn4IDQQ=
+	t=1733238193; cv=none; b=jIYCyXG944GWlfWKrCop5IUUa5zE/fngsCqD6LdoMoZmfCURPwUKg8FmKcXR3AiHl6NGIiaYH6N4FSwaxTPQ/mwc4BSjSvKAEBU4uqN2qmpan0z37aKP9UFWpGZKWbhggDhb2H/5Cvk5u3m2hBr1f5SCI1cqu/zfLM/c5ODKM90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238187; c=relaxed/simple;
-	bh=n6xo+MItrTH0yV/3xEIQZJLeAoNSRijSH33blhMD+RU=;
+	s=arc-20240116; t=1733238193; c=relaxed/simple;
+	bh=JxkOrvxR2NvS5MuEj7yc/tPBRvRrimVz3G42/o06g4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjUF7J+gM4tdQzr4VougG8busw7uXpqmqQb7LvlIi7C5qIoPcj/XXa0VDz1E0zv+z0Ljjwv3XgxoB/8Dm0dXTam+cPWXzZae30/71NKXGxdPHv2RR9zD4RBFb6g1YG1DOTwqBWThUuwXX1pfJnoZz9CoY25ufQbokkNUIck2T0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=banQid8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B935C4CED6;
-	Tue,  3 Dec 2024 15:03:06 +0000 (UTC)
+	 MIME-Version; b=Nia8C/jarR//7SgAwPMV2dF6TvNfJM4YWMBQ+hMkGm5UZ25Zu97gSBzCn7P6OXIEp9LZjy2hW01e4rd5dALZe485pdqraWxsYnqHQlMf6Re078mWaJ7VuhqAJXH1vMY9iluHlcQ3ITyO5jGxouGiINjXgpt523lCbzSaio39fXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXyE4uaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF4AC4CECF;
+	Tue,  3 Dec 2024 15:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238186;
-	bh=n6xo+MItrTH0yV/3xEIQZJLeAoNSRijSH33blhMD+RU=;
+	s=korg; t=1733238192;
+	bh=JxkOrvxR2NvS5MuEj7yc/tPBRvRrimVz3G42/o06g4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=banQid8txFfslcFeO/DWWs7f+BGyOdmgfdL1vVRbSZFk8eG2O9afoDoAGAYFfIbVj
-	 eQcndhdqjpj8V6qjKfjvKM2DN27IDS/pWHpV2Bs+FKDCzUT8VzClcDyyKiIdpMaEey
-	 keVsk+Q30AiTuqMDlPZUxBlfUAlImuok+FCrsai4=
+	b=WXyE4uaNCy78t6boRGMSfZOMQ8yfrXsx7zNyANTx+6cC4jvMOPhNlpXNvq2Mn8zwc
+	 USW2Awu90jkHDTrwxLovOd/tIeUtqxaigTANty8wdnXVHR3nMZ4TTGGWyL8NVswuDj
+	 JmJIvDk60CcEyv+X/L2q3mHSm2KOb+VBCjDcYg+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 191/817] pmdomain: ti-sci: Add missing of_node_put() for args.np
-Date: Tue,  3 Dec 2024 15:36:03 +0100
-Message-ID: <20241203144003.192762786@linuxfoundation.org>
+Subject: [PATCH 6.11 193/817] =?UTF-8?q?spi:=20zynqmp-gqspi:=20Undo=20runtime=20PM=20changes=20?= =?UTF-8?q?at=20driver=20exit=20time=E2=80=8B?=
+Date: Tue,  3 Dec 2024 15:36:05 +0100
+Message-ID: <20241203144003.272698232@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,46 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit afc2331ef81657493c074592c409dac7c3cb8ccc ]
+[ Upstream commit 2219576883e709737f3100aa9ded84976be49bd7 ]
 
-of_parse_phandle_with_args() needs to call of_node_put() to decrement
-the refcount of args.np. So, Add the missing of_node_put() in the loop.
+It's important to undo pm_runtime_use_autosuspend() with
+pm_runtime_dont_use_autosuspend() at driver exit time.
 
-Fixes: efa5c01cd7ee ("soc: ti: ti_sci_pm_domains: switch to use multiple genpds instead of one")
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Message-ID: <20241024030442.119506-2-zhangzekun11@huawei.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+So, call pm_runtime_dont_use_autosuspend() at driver exit time
+to fix it.
+
+Fixes: 9e3a000362ae ("spi: zynqmp: Add pm runtime support")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240920091135.2741574-1-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/ti/ti_sci_pm_domains.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-zynqmp-gqspi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pmdomain/ti/ti_sci_pm_domains.c b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-index 1510d5ddae3de..0df3eb7ff09a3 100644
---- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
-+++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-@@ -161,6 +161,7 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- 				break;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 558c466135a51..d3e369e0fe5cf 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1359,6 +1359,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
  
- 			if (args.args_count >= 1 && args.np == dev->of_node) {
-+				of_node_put(args.np);
- 				if (args.args[0] > max_id) {
- 					max_id = args.args[0];
- 				} else {
-@@ -192,7 +193,10 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- 				pm_genpd_init(&pd->pd, NULL, true);
+ clk_dis_all:
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+@@ -1389,6 +1390,7 @@ static void zynqmp_qspi_remove(struct platform_device *pdev)
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
  
- 				list_add(&pd->node, &pd_provider->pd_list);
-+			} else {
-+				of_node_put(args.np);
- 			}
-+
- 			index++;
- 		}
- 	}
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
 -- 
 2.43.0
 
