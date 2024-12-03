@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BCC9E2367
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84149E266B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A4A286B1D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD63328900D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5E0209F4C;
-	Tue,  3 Dec 2024 15:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD581F76DD;
+	Tue,  3 Dec 2024 16:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUmfTSNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COhm7DMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19064209F41;
-	Tue,  3 Dec 2024 15:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B78B1E3DF9;
+	Tue,  3 Dec 2024 16:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239984; cv=none; b=PAyLYJGklO/MReoZ9TTww0NGChNWUdr8K9ktfRwklnf8uRYkYL+BIDRdQzaNb1Qs1RpNlLBvkPj3vfD3BkbuXcGnTNVAr/9Z+I0lv6sg8eYNk0nT16SfEMkG/LqONsCDQAyRs8cMB8U5gkozwwYfGZgkRuYt9D4Emo4SE+J+QAw=
+	t=1733242388; cv=none; b=mF5gK88XHo9V8mnt1XzuRG82xwUmEKwxJSoxFVMLVs2nJfc/W87rzlr6PshZ0sb/fg68RA2EWkkCTZzQieUuGqlssl9qgP3JKjOw9Kzaqbose+Fbl7Lf+RC0JLgfmQBkM6dCMD7Ek1zgLcDAaqXiZSkkpkPjCr1mS+ghovzlsgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239984; c=relaxed/simple;
-	bh=jQNX0rYmLz63nfn/fQdHDjGrcprmf6ZR7Ftn/0dgfZQ=;
+	s=arc-20240116; t=1733242388; c=relaxed/simple;
+	bh=I2sMxvyNcAXMbdf7hBlKOz07IPnbmgUr+HW2ihqYiyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mk79SPzeSxVwRb7TjzYatDackkNzP1WJKiuyLyYSgZYu0xx0K7gFfBoj9qnwmiKRXM4nYl4RQyGPwnYO8ux576cEs+Q0eOuOmefkMtmcu+77xyf2nZJozU7ve595QensAkuioyzXlYRyVt8dusp3216N/bL2uY20/WmKVGMeIyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUmfTSNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9A1C4CECF;
-	Tue,  3 Dec 2024 15:33:03 +0000 (UTC)
+	 MIME-Version; b=NSpSIh4+SBP8r83xnbTznGZdA5jh5qI8dGMA+Pu1ryCDjsnwAmIuhRDhy1SlY6PyjWmYqRdwJ7Rha0Tz58NofY/uQuQfS1yTfocfmt/DQVdywBjHEzFXWBhmtzpWltFpK6+0QEnmTJrCb/ww4lSOt71hLk7uEAiqRkPWcN1s66M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COhm7DMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D8EC4CECF;
+	Tue,  3 Dec 2024 16:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239983;
-	bh=jQNX0rYmLz63nfn/fQdHDjGrcprmf6ZR7Ftn/0dgfZQ=;
+	s=korg; t=1733242388;
+	bh=I2sMxvyNcAXMbdf7hBlKOz07IPnbmgUr+HW2ihqYiyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUmfTSNqlqI/Qoz7gV2X4OMqMmRYraML1aEoTz+2j2KtfET6Ui7E3SJf2mivKb8dd
-	 S/YPK6F2J3EEXCueg6aEYd1yH+EVRsRZdG4S1kMUZXhQWKws6xAkyOcY6tT6shGA9W
-	 +45PLiezGJ5C8aRx7tmFXi2zda2KvHGKC8038Q+g=
+	b=COhm7DMViW196oeUblgA6L0gbP/n11XbI8wbCKFKFAy3/q3MVL338hxxvx94Mso6n
+	 GIeT2QxBLfBCwgyLIZlqqtp2t5NxTbb0F0XTW9WISBSbEhKcGYt5BjKIZ9nXwe4Q+f
+	 ee+G9OgzdsSL2yyY7eAYLS8pa0wdubvtl+fO+vQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 801/817] block: Dont allow an atomic write be truncated in blkdev_write_iter()
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 646/826] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
 Date: Tue,  3 Dec 2024 15:46:13 +0100
-Message-ID: <20241203144027.493331684@linuxfoundation.org>
+Message-ID: <20241203144808.948318374@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Raghavendra Rao Ananta <rananta@google.com>
 
-[ Upstream commit 2cbd51f1f8739fd2fdf4bae1386bcf75ce0176ba ]
+commit 54bbee190d42166209185d89070c58a343bf514b upstream.
 
-A write which goes past the end of the bdev in blkdev_write_iter() will
-be truncated. Truncating cannot tolerated for an atomic write, so error
-that condition.
+DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
+to true if any counter's global enable (PMCR_EL0.E), overflow flag
+(PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+Of note, this does not require a counter to be enabled
+(i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
 
-Fixes: caf336f81b3a ("block: Add fops atomic write support")
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241127092318.632790-1-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Align kvm_pmu_overflow_status() with the reality of the architecture
+and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+bug was discovered while running an SBSA PMU test [*], which only sets
+PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
+
+Cc: stable@vger.kernel.org
+Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+[ oliver: massaged changelog ]
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/fops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/pmu-emul.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index 56db751bba49b..16bb5ae702379 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -676,6 +676,7 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	struct file *file = iocb->ki_filp;
- 	struct inode *bd_inode = bdev_file_inode(file);
- 	struct block_device *bdev = I_BDEV(bd_inode);
-+	bool atomic = iocb->ki_flags & IOCB_ATOMIC;
- 	loff_t size = bdev_nr_bytes(bdev);
- 	size_t shorted = 0;
- 	ssize_t ret;
-@@ -695,7 +696,7 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	if ((iocb->ki_flags & (IOCB_NOWAIT | IOCB_DIRECT)) == IOCB_NOWAIT)
- 		return -EOPNOTSUPP;
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -342,7 +342,6 @@ static u64 kvm_pmu_overflow_status(struc
  
--	if (iocb->ki_flags & IOCB_ATOMIC) {
-+	if (atomic) {
- 		ret = generic_atomic_write_valid(iocb, from);
- 		if (ret)
- 			return ret;
-@@ -703,6 +704,8 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 
- 	size -= iocb->ki_pos;
- 	if (iov_iter_count(from) > size) {
-+		if (atomic)
-+			return -EINVAL;
- 		shorted = iov_iter_count(from) - size;
- 		iov_iter_truncate(from, size);
+ 	if ((kvm_vcpu_read_pmcr(vcpu) & ARMV8_PMU_PMCR_E)) {
+ 		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+-		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
+ 		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
  	}
--- 
-2.43.0
-
+ 
 
 
 
