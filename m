@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95EF9E205E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505B79E206E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A07428A2F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 486D1166236
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D533D1F7551;
-	Tue,  3 Dec 2024 14:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB071F7088;
+	Tue,  3 Dec 2024 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4f97xWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a03wDeXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9323E1D9341;
-	Tue,  3 Dec 2024 14:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C021F4283;
+	Tue,  3 Dec 2024 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237839; cv=none; b=tsxTgBSP4sUrWwN/sGE4hchCVwCdwDGRQ/Iz2B3ElYS1u0a1E6WaCD1ewt+tvPP8UrK8clBDG1K5Tlw0aEc/Z0PG4XaT+UYPvoFLav4a0l3PaxP2mYdydGZNqc1JXJxLt88XxiYjkStJ8DSEwGGlgMM1l9BIYaANiX/IKpsvvu0=
+	t=1733237846; cv=none; b=cIr//UWno+3JZYfGrzv2RKF6F9ZFCVz3V6HMZ8KOJUrjyAOJmtiUZDUjzoTjsDnMyQxHlQUTRlHM6ZVIm0HI8vrWrgKPMp0/8I7uVVnwF8jXsk86xqFj67cEawNJwyWfBCdXiKaiC+mlQdP6Q9+ghkgX2FZvnxgXPoV2EUFCoAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237839; c=relaxed/simple;
-	bh=wDdjKVwOSZ/2f73YHz0e7pwjlRFaNoblvUG0Jl+6ZR4=;
+	s=arc-20240116; t=1733237846; c=relaxed/simple;
+	bh=BRxEMmRd55Y+uibLcJ97NUaZb4c5NDQgCnPAhN908X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDheJH5a6M1+37Fp3lQaMHfGp2kgZVdfaeO/DKTsLDwMAQNsg64UnDBQuabY49aucMTYhzxSrkVXb6xhh8N270YFNTWAJUv7m+MkBdH+2/zL0EAOxN5tmgg6lqJ948ekoaMgXfv8oCm6PirUJ6DAh3OFxtQ9lAqM7CqGH2WbILQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4f97xWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72278C4CECF;
-	Tue,  3 Dec 2024 14:57:18 +0000 (UTC)
+	 MIME-Version; b=A/NRlTbnD0TM94l12fTe5gcFHb4j/VkdIgmcPNg/1f5Sq4UYo8zgyPc4rybFfPqhUmCFjwbtEInzhFM2LZdBVwi5+ogjZ+8oGWxXlyDizLga3vOpHNg8tzbiqUGf4MdXdbgbaNQUUAsiAIYLtWVp13jPpIg486qGIj4Tpebthf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a03wDeXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84334C4CECF;
+	Tue,  3 Dec 2024 14:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237839;
-	bh=wDdjKVwOSZ/2f73YHz0e7pwjlRFaNoblvUG0Jl+6ZR4=;
+	s=korg; t=1733237845;
+	bh=BRxEMmRd55Y+uibLcJ97NUaZb4c5NDQgCnPAhN908X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4f97xWn3g1fCB72Gu7oCEerUVBit3jX1WsGhMvlpEJp9tUoB38be5sHXSTw5eoW+
-	 h88hnCcI6cxg6+oFpFk6lHlgcZOiUtyP/0XSTyuRCeRKEygU9+8KZjs3XhJaQA/dzW
-	 Lbp+rI3HKLBqfXwvgtV125TbJm3dqqv/wmhD9HSw=
+	b=a03wDeXPwUxGdpa0McUA5p/9M1Lv/+iSOQX/VbV/W+QsEXBaSCCYkaAf3o3bdqgW5
+	 JEK/i0uzsZxCBRQ41PZ4Qv3sGuw3S6xb02kbABND2P3uFw8xOP2CbTqK5YWTKHqXxo
+	 Tlrb7mUMgVYrENzR72lBVHRsEqAHbDGMWvWbYHJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 085/817] ext4: fix race in buffer_head read fault injection
-Date: Tue,  3 Dec 2024 15:34:17 +0100
-Message-ID: <20241203143959.017207225@linuxfoundation.org>
+Subject: [PATCH 6.11 086/817] nvme-pci: reverse request order in nvme_queue_rqs
+Date: Tue,  3 Dec 2024 15:34:18 +0100
+Message-ID: <20241203143959.056753040@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,291 +66,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2f3d93e210b9c2866c8b3662adae427d5bf511ec ]
+[ Upstream commit beadf0088501d9dcf2454b05d90d5d31ea3ba55f ]
 
-When I enabled ext4 debug for fault injection testing, I encountered the
-following warning:
+blk_mq_flush_plug_list submits requests in the reverse order that they
+were submitted, which leads to a rather suboptimal I/O pattern especially
+in rotational devices.  Fix this by rewriting nvme_queue_rqs so that it
+always pops the requests from the passed in request list, and then adds
+them to the head of a local submit list.  This actually simplifies the
+code a bit as it removes the complicated list splicing, at the cost of
+extra updates of the rq_next pointer.  As that should be cache hot
+anyway it should be an easy price to pay.
 
-  EXT4-fs error (device sda): ext4_read_inode_bitmap:201: comm fsstress:
-         Cannot read inode bitmap - block_group = 8, inode_bitmap = 1051
-  WARNING: CPU: 0 PID: 511 at fs/buffer.c:1181 mark_buffer_dirty+0x1b3/0x1d0
-
-The root cause of the issue lies in the improper implementation of ext4's
-buffer_head read fault injection. The actual completion of buffer_head
-read and the buffer_head fault injection are not atomic, which can lead
-to the uptodate flag being cleared on normally used buffer_heads in race
-conditions.
-
-[CPU0]           [CPU1]         [CPU2]
-ext4_read_inode_bitmap
-  ext4_read_bh()
-  <bh read complete>
-                 ext4_read_inode_bitmap
-                   if (buffer_uptodate(bh))
-                     return bh
-                               jbd2_journal_commit_transaction
-                                 __jbd2_journal_refile_buffer
-                                   __jbd2_journal_unfile_buffer
-                                     __jbd2_journal_temp_unlink_buffer
-  ext4_simulate_fail_bh()
-    clear_buffer_uptodate
-                                      mark_buffer_dirty
-                                        <report warning>
-                                        WARN_ON_ONCE(!buffer_uptodate(bh))
-
-The best approach would be to perform fault injection in the IO completion
-callback function, rather than after IO completion. However, the IO
-completion callback function cannot get the fault injection code in sb.
-
-Fix it by passing the result of fault injection into the bh read function,
-we simulate faults within the bh read function itself. This requires adding
-an extra parameter to the bh read functions that need fault injection.
-
-Fixes: 46f870d690fe ("ext4: simulate various I/O and checksum errors when reading metadata")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Link: https://patch.msgid.link/20240906091746.510163-1-leo.lilong@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: d62cbcf62f2f ("nvme: add support for mq_ops->queue_rqs()")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241113152050.157179-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c      |  4 ++--
- fs/ext4/ext4.h        | 12 ++----------
- fs/ext4/extents.c     |  2 +-
- fs/ext4/ialloc.c      |  5 +++--
- fs/ext4/indirect.c    |  2 +-
- fs/ext4/inode.c       |  4 ++--
- fs/ext4/mmp.c         |  2 +-
- fs/ext4/move_extent.c |  2 +-
- fs/ext4/resize.c      |  2 +-
- fs/ext4/super.c       | 23 +++++++++++++++--------
- 10 files changed, 29 insertions(+), 29 deletions(-)
+ drivers/nvme/host/pci.c | 39 +++++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index 591fb3f710be7..8042ad8738089 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -550,7 +550,8 @@ ext4_read_block_bitmap_nowait(struct super_block *sb, ext4_group_t block_group,
- 	trace_ext4_read_block_bitmap_load(sb, block_group, ignore_locked);
- 	ext4_read_bh_nowait(bh, REQ_META | REQ_PRIO |
- 			    (ignore_locked ? REQ_RAHEAD : 0),
--			    ext4_end_bitmap_read);
-+			    ext4_end_bitmap_read,
-+			    ext4_simulate_fail(sb, EXT4_SIM_BBITMAP_EIO));
- 	return bh;
- verify:
- 	err = ext4_validate_block_bitmap(sb, desc, block_group, bh);
-@@ -577,7 +578,6 @@ int ext4_wait_block_bitmap(struct super_block *sb, ext4_group_t block_group,
- 	if (!desc)
- 		return -EFSCORRUPTED;
- 	wait_on_buffer(bh);
--	ext4_simulate_fail_bh(sb, bh, EXT4_SIM_BBITMAP_EIO);
- 	if (!buffer_uptodate(bh)) {
- 		ext4_error_err(sb, EIO, "Cannot read block bitmap - "
- 			       "block_group = %u, block_bitmap = %llu",
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 8bd302392d759..b02d6e444cfb6 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1865,14 +1865,6 @@ static inline bool ext4_simulate_fail(struct super_block *sb,
- 	return false;
- }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 34daf6d8db07b..55af3dfbc2607 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -905,9 +905,10 @@ static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
  
--static inline void ext4_simulate_fail_bh(struct super_block *sb,
--					 struct buffer_head *bh,
--					 unsigned long code)
--{
--	if (!IS_ERR(bh) && ext4_simulate_fail(sb, code))
--		clear_buffer_uptodate(bh);
--}
--
- /*
-  * Error number codes for s_{first,last}_error_errno
-  *
-@@ -3098,9 +3090,9 @@ extern struct buffer_head *ext4_sb_bread(struct super_block *sb,
- extern struct buffer_head *ext4_sb_bread_unmovable(struct super_block *sb,
- 						   sector_t block);
- extern void ext4_read_bh_nowait(struct buffer_head *bh, blk_opf_t op_flags,
--				bh_end_io_t *end_io);
-+				bh_end_io_t *end_io, bool simu_fail);
- extern int ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags,
--			bh_end_io_t *end_io);
-+			bh_end_io_t *end_io, bool simu_fail);
- extern int ext4_read_bh_lock(struct buffer_head *bh, blk_opf_t op_flags, bool wait);
- extern void ext4_sb_breadahead_unmovable(struct super_block *sb, sector_t block);
- extern int ext4_seq_options_show(struct seq_file *seq, void *offset);
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index c64f7c1b1d908..123a69e62e59b 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -564,7 +564,7 @@ __read_extent_tree_block(const char *function, unsigned int line,
- 
- 	if (!bh_uptodate_or_lock(bh)) {
- 		trace_ext4_ext_load_extent(inode, pblk, _RET_IP_);
--		err = ext4_read_bh(bh, 0, NULL);
-+		err = ext4_read_bh(bh, 0, NULL, false);
- 		if (err < 0)
- 			goto errout;
- 	}
-diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-index 81641be38c0e8..072084da50d33 100644
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -194,8 +194,9 @@ ext4_read_inode_bitmap(struct super_block *sb, ext4_group_t block_group)
- 	 * submit the buffer_head for reading
- 	 */
- 	trace_ext4_load_inode_bitmap(sb, block_group);
--	ext4_read_bh(bh, REQ_META | REQ_PRIO, ext4_end_bitmap_read);
--	ext4_simulate_fail_bh(sb, bh, EXT4_SIM_IBITMAP_EIO);
-+	ext4_read_bh(bh, REQ_META | REQ_PRIO,
-+		     ext4_end_bitmap_read,
-+		     ext4_simulate_fail(sb, EXT4_SIM_IBITMAP_EIO));
- 	if (!buffer_uptodate(bh)) {
- 		put_bh(bh);
- 		ext4_error_err(sb, EIO, "Cannot read inode bitmap - "
-diff --git a/fs/ext4/indirect.c b/fs/ext4/indirect.c
-index d8ca7f64f9523..8480bddde789b 100644
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -170,7 +170,7 @@ static Indirect *ext4_get_branch(struct inode *inode, int depth,
- 		}
- 
- 		if (!bh_uptodate_or_lock(bh)) {
--			if (ext4_read_bh(bh, 0, NULL) < 0) {
-+			if (ext4_read_bh(bh, 0, NULL, false) < 0) {
- 				put_bh(bh);
- 				goto failure;
- 			}
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index a0fa5192db8ed..235e22790ec62 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4530,10 +4530,10 @@ static int __ext4_get_inode_loc(struct super_block *sb, unsigned long ino,
- 	 * Read the block from disk.
- 	 */
- 	trace_ext4_load_inode(sb, ino);
--	ext4_read_bh_nowait(bh, REQ_META | REQ_PRIO, NULL);
-+	ext4_read_bh_nowait(bh, REQ_META | REQ_PRIO, NULL,
-+			    ext4_simulate_fail(sb, EXT4_SIM_INODE_EIO));
- 	blk_finish_plug(&plug);
- 	wait_on_buffer(bh);
--	ext4_simulate_fail_bh(sb, bh, EXT4_SIM_INODE_EIO);
- 	if (!buffer_uptodate(bh)) {
- 		if (ret_block)
- 			*ret_block = block;
-diff --git a/fs/ext4/mmp.c b/fs/ext4/mmp.c
-index bd946d0c71b70..d64c04ed061ae 100644
---- a/fs/ext4/mmp.c
-+++ b/fs/ext4/mmp.c
-@@ -94,7 +94,7 @@ static int read_mmp_block(struct super_block *sb, struct buffer_head **bh,
- 	}
- 
- 	lock_buffer(*bh);
--	ret = ext4_read_bh(*bh, REQ_META | REQ_PRIO, NULL);
-+	ret = ext4_read_bh(*bh, REQ_META | REQ_PRIO, NULL, false);
- 	if (ret)
- 		goto warn_exit;
- 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index 42b52b6491a03..fd3487df360a5 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -212,7 +212,7 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
- 			unlock_buffer(bh);
- 			continue;
- 		}
--		ext4_read_bh_nowait(bh, 0, NULL);
-+		ext4_read_bh_nowait(bh, 0, NULL, false);
- 		nr++;
- 	}
- 	/* No io required */
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index f12ccaabf13d8..e9da8bba0f9d7 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1300,7 +1300,7 @@ static struct buffer_head *ext4_get_bitmap(struct super_block *sb, __u64 block)
- 	if (unlikely(!bh))
- 		return NULL;
- 	if (!bh_uptodate_or_lock(bh)) {
--		if (ext4_read_bh(bh, 0, NULL) < 0) {
-+		if (ext4_read_bh(bh, 0, NULL, false) < 0) {
- 			brelse(bh);
- 			return NULL;
- 		}
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 42b1acac88e78..350b083012851 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -161,8 +161,14 @@ MODULE_ALIAS("ext3");
- 
- 
- static inline void __ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags,
--				  bh_end_io_t *end_io)
-+				  bh_end_io_t *end_io, bool simu_fail)
+ static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct request **rqlist)
  {
-+	if (simu_fail) {
-+		clear_buffer_uptodate(bh);
-+		unlock_buffer(bh);
-+		return;
-+	}
++	struct request *req;
 +
- 	/*
- 	 * buffer's verified bit is no longer valid after reading from
- 	 * disk again due to write out error, clear it to make sure we
-@@ -176,7 +182,7 @@ static inline void __ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags,
- }
+ 	spin_lock(&nvmeq->sq_lock);
+-	while (!rq_list_empty(*rqlist)) {
+-		struct request *req = rq_list_pop(rqlist);
++	while ((req = rq_list_pop(rqlist))) {
+ 		struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
  
- void ext4_read_bh_nowait(struct buffer_head *bh, blk_opf_t op_flags,
--			 bh_end_io_t *end_io)
-+			 bh_end_io_t *end_io, bool simu_fail)
+ 		nvme_sq_copy_cmd(nvmeq, &iod->cmd);
+@@ -932,31 +933,25 @@ static bool nvme_prep_rq_batch(struct nvme_queue *nvmeq, struct request *req)
+ 
+ static void nvme_queue_rqs(struct request **rqlist)
  {
- 	BUG_ON(!buffer_locked(bh));
+-	struct request *req, *next, *prev = NULL;
++	struct request *submit_list = NULL;
+ 	struct request *requeue_list = NULL;
++	struct request **requeue_lastp = &requeue_list;
++	struct nvme_queue *nvmeq = NULL;
++	struct request *req;
  
-@@ -184,10 +190,11 @@ void ext4_read_bh_nowait(struct buffer_head *bh, blk_opf_t op_flags,
- 		unlock_buffer(bh);
- 		return;
+-	rq_list_for_each_safe(rqlist, req, next) {
+-		struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
+-
+-		if (!nvme_prep_rq_batch(nvmeq, req)) {
+-			/* detach 'req' and add to remainder list */
+-			rq_list_move(rqlist, &requeue_list, req, prev);
+-
+-			req = prev;
+-			if (!req)
+-				continue;
+-		}
++	while ((req = rq_list_pop(rqlist))) {
++		if (nvmeq && nvmeq != req->mq_hctx->driver_data)
++			nvme_submit_cmds(nvmeq, &submit_list);
++		nvmeq = req->mq_hctx->driver_data;
+ 
+-		if (!next || req->mq_hctx != next->mq_hctx) {
+-			/* detach rest of list, and submit */
+-			req->rq_next = NULL;
+-			nvme_submit_cmds(nvmeq, rqlist);
+-			*rqlist = next;
+-			prev = NULL;
+-		} else
+-			prev = req;
++		if (nvme_prep_rq_batch(nvmeq, req))
++			rq_list_add(&submit_list, req); /* reverse order */
++		else
++			rq_list_add_tail(&requeue_lastp, req);
  	}
--	__ext4_read_bh(bh, op_flags, end_io);
-+	__ext4_read_bh(bh, op_flags, end_io, simu_fail);
+ 
++	if (nvmeq)
++		nvme_submit_cmds(nvmeq, &submit_list);
+ 	*rqlist = requeue_list;
  }
  
--int ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags, bh_end_io_t *end_io)
-+int ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags,
-+		 bh_end_io_t *end_io, bool simu_fail)
- {
- 	BUG_ON(!buffer_locked(bh));
- 
-@@ -196,7 +203,7 @@ int ext4_read_bh(struct buffer_head *bh, blk_opf_t op_flags, bh_end_io_t *end_io
- 		return 0;
- 	}
- 
--	__ext4_read_bh(bh, op_flags, end_io);
-+	__ext4_read_bh(bh, op_flags, end_io, simu_fail);
- 
- 	wait_on_buffer(bh);
- 	if (buffer_uptodate(bh))
-@@ -208,10 +215,10 @@ int ext4_read_bh_lock(struct buffer_head *bh, blk_opf_t op_flags, bool wait)
- {
- 	lock_buffer(bh);
- 	if (!wait) {
--		ext4_read_bh_nowait(bh, op_flags, NULL);
-+		ext4_read_bh_nowait(bh, op_flags, NULL, false);
- 		return 0;
- 	}
--	return ext4_read_bh(bh, op_flags, NULL);
-+	return ext4_read_bh(bh, op_flags, NULL, false);
- }
- 
- /*
-@@ -266,7 +273,7 @@ void ext4_sb_breadahead_unmovable(struct super_block *sb, sector_t block)
- 
- 	if (likely(bh)) {
- 		if (trylock_buffer(bh))
--			ext4_read_bh_nowait(bh, REQ_RAHEAD, NULL);
-+			ext4_read_bh_nowait(bh, REQ_RAHEAD, NULL, false);
- 		brelse(bh);
- 	}
- }
 -- 
 2.43.0
 
