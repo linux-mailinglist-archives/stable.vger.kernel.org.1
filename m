@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE029E2480
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD759E222F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F3C287D22
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8628B1651F8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDCF1F76B0;
-	Tue,  3 Dec 2024 15:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF3A1F890F;
+	Tue,  3 Dec 2024 15:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHyfQvAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adN7ZSAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1292C80;
-	Tue,  3 Dec 2024 15:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9ACC1F890D;
+	Tue,  3 Dec 2024 15:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240959; cv=none; b=Z6NKsSbjuqgU2yZHAhA/2xImJpr5mq3ta01x02x/6EJ1RHCQAR5CD56Hr00vfL9FJR3t6uan0dvBDotrw+ig8DOXoTvBBYr/OUEiMy5EWOFwbAgdEhksCHSL3hrjy9GaupzYRqBZrKFJaq93eSFZ0ywSzo4j5T0w2Ph+jHuF9kI=
+	t=1733238966; cv=none; b=JHn6A0vD9VoOHyqWrdO26ppkAREChNoAMn0+YHyZL8vdBRcg9YDcVOOViXeWbhWay9/lR1VIhPt3j9niiocsI60UTSE/WWke0ixv2DeZGkH7hguk6icLURoX0nGUF/GjJUck7C+cVpSdrPUj8eW3mDO9+NtuHHVeQNGfF6UodCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240959; c=relaxed/simple;
-	bh=h+A1vpS25tvamGn0SWbrCJoIJEiPTCdKBNOpi+313Kw=;
+	s=arc-20240116; t=1733238966; c=relaxed/simple;
+	bh=8QTb2hh2bWvzDrhDa2pk8M2bmZ5qCp/s1qdf9XkK4qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7qbqrRSMdrnVrMv1mfhFYQoLFz1aRzwcwwy5QjlJ6KKYtzjiQbKNtr5daXf8elBZZSxq5dxf+tvvUSWRYo9czv7U3fmJaIAODx2l6xK40nVoDd1vL++Wz1CA/HrhDWdr8AM0rShSjjkXKDJX4Nv+z4n9WNZNdCCSIvtLRJHZdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHyfQvAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829D6C4CECF;
-	Tue,  3 Dec 2024 15:49:18 +0000 (UTC)
+	 MIME-Version; b=Tw8ZbZLPFETa2ayeUo04pDqucsQNxVgza332Wbm5jMFDiUlcnlDFfn8lJk6ZkLDHsPPUfvsTyDEFHmTSqcrpp33tJxe9cv95wBk8gjPS7BT8bhaegUQH8Q46p5+Lu0hqdoLa6dz31vUlZ4rmLsEVdsImd4jbVVVUq75sN3cQyMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adN7ZSAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AE2C4CECF;
+	Tue,  3 Dec 2024 15:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240959;
-	bh=h+A1vpS25tvamGn0SWbrCJoIJEiPTCdKBNOpi+313Kw=;
+	s=korg; t=1733238966;
+	bh=8QTb2hh2bWvzDrhDa2pk8M2bmZ5qCp/s1qdf9XkK4qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHyfQvARU9x+AxeSyJeLNfM0d9h5OW5jRbAzgKs71g2yiMAOECD9c8CgKBHshmfR2
-	 MtISeAUjaVVyMq2y9VV3JMRKQX1L837BVjtGnbNjTKGXr0DAmr5LYJLee/KpbUDziq
-	 sm6KfCSPeR6tG5nXBSJ/frzPHjQMILf1FYD5ZGis=
+	b=adN7ZSAHOELjKepsKSY1RYoJ6sbtKooLjpT8oWJn9Hb/1W7e7ZS+1JSf3tvkTozYg
+	 o90u7o1cVr0j66ti+rKDXyM3FHMFOqkDvsX/Jg+U7gbpdvEu4aJzEP7Zeor1Kn2QrA
+	 TG8v/kw7vRXhHlHDmA3n6oPCe89tP4k25nRUBhG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 286/826] drm: zynqmp_kms: Unplug DRM device before removal
+Subject: [PATCH 6.11 441/817] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
 Date: Tue,  3 Dec 2024 15:40:13 +0100
-Message-ID: <20241203144754.928312781@linuxfoundation.org>
+Message-ID: <20241203144013.094142297@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 2e07c88914fc5289c21820b1aa94f058feb38197 ]
+[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
 
-Prevent userspace accesses to the DRM device from causing
-use-after-frees by unplugging the device before we remove it. This
-causes any further userspace accesses to result in an error without
-further calls into this driver's internals.
+Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
-Closes: https://lore.kernel.org/dri-devel/4d8f4c9b-2efb-4774-9a37-2f257f79b2c9@linux.dev/
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240809193600.3360015-2-sean.anderson@linux.dev
+Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qedi/qedi_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-index bd1368df78703..4556af2faa0f1 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-@@ -536,7 +536,7 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
- {
- 	struct drm_device *drm = &dpsub->drm->dev;
- 
--	drm_dev_unregister(drm);
-+	drm_dev_unplug(drm);
- 	drm_atomic_helper_shutdown(drm);
- 	drm_encoder_cleanup(&dpsub->drm->encoder);
- 	drm_kms_helper_poll_fini(drm);
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index cd0180b1f5b9d..ede8d1f6ae236 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -369,6 +369,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
+ 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
+ 				       sb_id, QED_SB_TYPE_STORAGE);
+ 	if (ret) {
++		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDI_ERR(&qedi->dbg_ctx,
+ 			 "Status block initialization failed for id = %d.\n",
+ 			  sb_id);
 -- 
 2.43.0
 
