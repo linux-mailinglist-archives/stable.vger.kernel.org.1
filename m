@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3DD9E2193
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C5A9E226C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D3F1678FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5F7ABA1BE4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9947B1F7578;
-	Tue,  3 Dec 2024 15:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0A31F893C;
+	Tue,  3 Dec 2024 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+g1x70R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oB4YpFhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567FE1E3DF9;
-	Tue,  3 Dec 2024 15:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677A71F890E;
+	Tue,  3 Dec 2024 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238537; cv=none; b=CblF14+NJnfuFMPQXCb9hKUSag8/MQjRbmeJyqbuwfbnuPjL1XwbKk+8QkepN46tIqP1lU9V7T6248xhe4biPrWtCd1/Y5AwgKf6uB9d/N0F/n55hfVWaF7dL2cZ4kNoNffm4QCO6wDiU7O+qvCC8nZvQHcOLtKd6/i0OME4Wd4=
+	t=1733238569; cv=none; b=enl7brvnPExfGuzFUG3Hoid2HFdwAShn7YKF0sLLyjawBH6o71Su9ysKZDJJCvXWSTiiODUCW94b4hyxkknGJ0qZfg/IUZVOMRSNiPU9wS69Bq6FaN5azP5drAwfOJw/4K0x/lXHTYdcwYyq5IXc4+n5vDI452YPLZniEjPD2D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238537; c=relaxed/simple;
-	bh=od1wB/T3OwXLZAdyLGXccPPtSQEi/TBgR5YsgUfZQ8M=;
+	s=arc-20240116; t=1733238569; c=relaxed/simple;
+	bh=KXjZDVQbrfpbfmv6A/gvS4E7wN0qwI3/cEh6Fd2aA7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDeUynRPSs9Wa69aneRczJrHMv6263sXMjy6/Dh0Eg6cZJViMiCHBMsfVxCMKxxiLLacr1M/tl8teVOQbPLDEC7qq3gAQb0wqqoCWfd9tGVqycgyxqZbu20FsnibDyiSoAH4M21siLq9wFOZP3KADEhdZveybgHSE5ATCBokr+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+g1x70R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4379C4CECF;
-	Tue,  3 Dec 2024 15:08:56 +0000 (UTC)
+	 MIME-Version; b=tWuSd6/6T5JpKF6KUZ3hhOlXX6xrj/fZxiNt3CJF4zDcSXYFVO4m4INqke3idUzXtTXxZRM3aw3qL1qEXAGJc2VV4WvDic0wolkd5zrotdsbdlDDNCyJlWpA0eLxlM2MYF8aeI8WyUtIB+p6VhQ7H6zB0qRvXIm/CXoPjWrdkNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oB4YpFhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685C7C4CEDD;
+	Tue,  3 Dec 2024 15:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238537;
-	bh=od1wB/T3OwXLZAdyLGXccPPtSQEi/TBgR5YsgUfZQ8M=;
+	s=korg; t=1733238568;
+	bh=KXjZDVQbrfpbfmv6A/gvS4E7wN0qwI3/cEh6Fd2aA7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+g1x70RFROlqo+VneTQ4h8+cO0ggHFHdkQLQBV1L4H4i0y61m860dECZycubF/A5
-	 LQdcd2gG3+ItwHygM9ZJ2FcbqhYiZEBR3zT+yk1apEoWK/0i3n6AfiUxOUWgNnN8cd
-	 wQ4FLVSSgz2Ic7u9w1lUdJdysrZ0sgStbZ8zOSHA=
+	b=oB4YpFhi7HDyY+zmUGCeeh930MYNyAPf8jhihpMSx4jQQ0bDI11iUBPX5I09aqFTH
+	 aIf37pgdoKTVazvnuAfRsqT90SOm2tBbE0hI5u5pu9WbuHCzZSBLtVavyX3EwlhSt1
+	 ZUgNH+T9wQMtXz290fjGF4n6+wBrHK0O0Jp9zqLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 304/817] drm: zynqmp_kms: Unplug DRM device before removal
-Date: Tue,  3 Dec 2024 15:37:56 +0100
-Message-ID: <20241203144007.682507233@linuxfoundation.org>
+Subject: [PATCH 6.11 305/817] drm: xlnx: zynqmp_disp: layer may be null while releasing
+Date: Tue,  3 Dec 2024 15:37:57 +0100
+Message-ID: <20241203144007.722083317@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,38 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 
-[ Upstream commit 2e07c88914fc5289c21820b1aa94f058feb38197 ]
+[ Upstream commit 223842c7702b52846b1c5aef8aca7474ec1fd29b ]
 
-Prevent userspace accesses to the DRM device from causing
-use-after-frees by unplugging the device before we remove it. This
-causes any further userspace accesses to result in an error without
-further calls into this driver's internals.
+layer->info can be null if we have an error on the first layer in
+zynqmp_disp_create_layers
 
-Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
-Closes: https://lore.kernel.org/dri-devel/4d8f4c9b-2efb-4774-9a37-2f257f79b2c9@linux.dev/
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Fixes: 1836fd5ed98d ("drm: xlnx: zynqmp_dpsub: Minimize usage of global flag")
+Signed-off-by: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240809193600.3360015-2-sean.anderson@linux.dev
+Link: https://patchwork.freedesktop.org/patch/msgid/20241028133941.54264-1-lists@steffen.cc
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xlnx/zynqmp_disp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-index bd1368df78703..4556af2faa0f1 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-@@ -536,7 +536,7 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_disp.c b/drivers/gpu/drm/xlnx/zynqmp_disp.c
+index 9368acf56eaf7..e4e0e299e8a7d 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_disp.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_disp.c
+@@ -1200,6 +1200,9 @@ static void zynqmp_disp_layer_release_dma(struct zynqmp_disp *disp,
  {
- 	struct drm_device *drm = &dpsub->drm->dev;
+ 	unsigned int i;
  
--	drm_dev_unregister(drm);
-+	drm_dev_unplug(drm);
- 	drm_atomic_helper_shutdown(drm);
- 	drm_encoder_cleanup(&dpsub->drm->encoder);
- 	drm_kms_helper_poll_fini(drm);
++	if (!layer->info)
++		return;
++
+ 	for (i = 0; i < layer->info->num_channels; i++) {
+ 		struct zynqmp_disp_layer_dma *dma = &layer->dmas[i];
+ 
 -- 
 2.43.0
 
