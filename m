@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-97591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2AB9E251E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB27E9E21B1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF3416285A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF02282F09
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2321F429E;
-	Tue,  3 Dec 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFB51F8AF8;
+	Tue,  3 Dec 2024 15:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAuc4Tpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBpyNPeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373161DAC9F;
-	Tue,  3 Dec 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2951F75BB;
+	Tue,  3 Dec 2024 15:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241044; cv=none; b=k4LpKSfwbIbY1yoP/RLCUOAYizKBQvsMx/xGTUA33YErtmpMB9b+3aC9CffugNoizUYDUh9dt+pJoNpQbzjhwPQ+phm1ULuuGuTYTPonDkMmrH2uBQI9Uxw6d9+CCRkwKHF2LUJe3pvj+N2aZBqTCJOmy3ocal1qjolR+x4f/28=
+	t=1733238891; cv=none; b=GRoEtPAyG9OIMfPME0WRDe0pa/RsYTbo1QP4Cv5EPeS/NANE5tmH/6mYZCIRNXuBn1vdbJRlqVbfdFXHXvDt8SQRGroi9lQHoTSnQDvx5Gp0WwxxwGZ9s6+8QOl8Ve0cWPwVfGo1W9AzRuFzn2NscHdFa+klygcEHE2Ua71VIyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241044; c=relaxed/simple;
-	bh=NbwWNzNTsw6AIDW+HTlwY79fCKsCsBAzKpbkKM6ZjmY=;
+	s=arc-20240116; t=1733238891; c=relaxed/simple;
+	bh=1h9wZxQ7pKHRn8iCOtTGHQeI29XP3eQLpz9hzIuZNQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3y7uzrl/sVqt8lNE8fJDkH+P5M+8hY7b5dBcNTJWVsQ4TaHBxnAqebDDu6wf3Yx2ZI60h1CUHU8IJAnpAjNbsX7qXusDMtKSiFGhw8VDq63Sio+ZDkVfYolg9U8xT4g4dZw8BODvNp3ZStIEq8XAtwyi82HwuYEr/uUGcn5sdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAuc4Tpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C117C4CED8;
-	Tue,  3 Dec 2024 15:50:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EVWj3TVguspSSinaeh9/sIw9TOUSvNytHElrvJJJkNB4rdudDm9mYBUyQgfq/L+jaeXsptFeKIgrr244k1kdmuqIy+HtDSmPRd+4nkZOzAcOn7c6rsBJaSohB/klPP5nQE+0Z6VtDjLLc/9MCNLCiZyNKElraWDFrg+FQ9zUurA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBpyNPeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EDBC4CECF;
+	Tue,  3 Dec 2024 15:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241044;
-	bh=NbwWNzNTsw6AIDW+HTlwY79fCKsCsBAzKpbkKM6ZjmY=;
+	s=korg; t=1733238891;
+	bh=1h9wZxQ7pKHRn8iCOtTGHQeI29XP3eQLpz9hzIuZNQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAuc4TpwFpqwbT1NZqBoJwj8U9gthScBb5LhRNBBGl6dN7CtbLQII4Ye11xnSa5YU
-	 cSADaBt4NREvbp/0Dd0Vod/lCyNGuryBiMa16E/PEc859ooN3zCENIOvmwW4f9eM7a
-	 PIat4BjAB+GEAqypr75BJbietZJtjCZ9ryCQ5ePM=
+	b=yBpyNPeq+NdDfKbWWgwaz1NhwUfEQo7qJenwwzwRVnRzK4Df8WdFAwyXcnbVoWm4R
+	 TyXprZqxb3vU/k5vAIoarV8N/NJT+xBbOhS+87nJyJwyVjq0RILwhexHHpTWb/BVLm
+	 +40d10iYMkG85uFG6Npg0lsxuDcbQXjlPWmruyuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Joe Perches <joe@perches.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Philippe Schenker <philippe.schenker@toradex.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/826] bpf, arm64: Remove garbage frame for struct_ops trampoline
+Subject: [PATCH 6.11 432/817] checkpatch: always parse orig_commit in fixes tag
 Date: Tue,  3 Dec 2024 15:40:04 +0100
-Message-ID: <20241203144754.580535762@linuxfoundation.org>
+Message-ID: <20241203144012.745370511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +68,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-[ Upstream commit 87cb58aebdf7005661a07e9fd5a900f924d48c75 ]
+[ Upstream commit 2f07b652384969f5d0b317e1daa5f2eb967bc73d ]
 
-The callsite layout for arm64 fentry is:
+Do not require the presence of `$balanced_parens` to get the commit SHA;
+this allows a `Fixes: deadbeef` tag to get a correct suggestion rather
+than a suggestion containing a reference to HEAD.
 
-mov x9, lr
-nop
+Given this patch:
 
-When a bpf prog is attached, the nop instruction is patched to a call
-to bpf trampoline:
+: From: Tamir Duberstein <tamird@gmail.com>
+: Subject: Test patch
+: Date: Fri, 25 Oct 2024 19:30:51 -0400
+:
+: This is a test patch.
+:
+: Fixes: bd17e036b495
+: Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+: --- /dev/null
+: +++ b/new-file
+: @@ -0,0 +1 @@
+: +Test.
 
-mov x9, lr
-bl <bpf trampoline>
+Before:
 
-So two return addresses are passed to bpf trampoline: the return address
-for the traced function/prog, stored in x9, and the return address for
-the bpf trampoline itself, stored in lr. To obtain a full and accurate
-call stack, the bpf trampoline constructs two fake function frames using
-x9 and lr.
+WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: c10a7d25e68f ("Test patch")'
 
-However, struct_ops progs are invoked directly as function callbacks,
-meaning that x9 is not set as it is in the fentry callsite. In this case,
-the frame constructed using x9 is garbage. The following stack trace for
-struct_ops, captured by perf sampling, illustrates this issue, where
-tcp_ack+0x404 is a garbage frame:
+After:
 
-ffffffc0801a04b4 bpf_prog_50992e55a0f655a9_bpf_cubic_cong_avoid+0x98 (bpf_prog_50992e55a0f655a9_bpf_cubic_cong_avoid)
-ffffffc0801a228c [unknown] ([kernel.kallsyms]) // bpf trampoline
-ffffffd08d362590 tcp_ack+0x798 ([kernel.kallsyms]) // caller for bpf trampoline
-ffffffd08d3621fc tcp_ack+0x404 ([kernel.kallsyms]) // garbage frame
-ffffffd08d36452c tcp_rcv_established+0x4ac ([kernel.kallsyms])
-ffffffd08d375c58 tcp_v4_do_rcv+0x1f0 ([kernel.kallsyms])
-ffffffd08d378630 tcp_v4_rcv+0xeb8 ([kernel.kallsyms])
+WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")'
 
-To fix it, construct only one frame using lr for struct_ops.
+The prior behavior incorrectly suggested the patch's own SHA and title
+line rather than the referenced commit's.  This fixes that.
 
-The above stack trace also indicates that there is no kernel symbol for
-struct_ops bpf trampoline. This will be addressed in a follow-up patch.
+Ironically this:
 
-Fixes: efc9909fdce0 ("bpf, arm64: Add bpf trampoline for arm64")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Acked-by: Puranjay Mohan <puranjay@kernel.org>
-Tested-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20241025085220.533949-1-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Cc: Andy Whitcroft <apw@canonical.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Joe Perches <joe@perches.com>
+Cc: Louis Peens <louis.peens@corigine.com>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Cc: Philippe Schenker <philippe.schenker@toradex.com>
+Cc: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 47 +++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ scripts/checkpatch.pl | 37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 5db82bfc9dc11..27ef366363e4e 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -2094,6 +2094,12 @@ static void restore_args(struct jit_ctx *ctx, int args_off, int nregs)
- 	}
- }
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 4427572b24771..b03d526e4c454 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3209,36 +3209,31 @@ sub process {
  
-+static bool is_struct_ops_tramp(const struct bpf_tramp_links *fentry_links)
-+{
-+	return fentry_links->nr_links == 1 &&
-+		fentry_links->links[0]->link.type == BPF_LINK_TYPE_STRUCT_OPS;
-+}
-+
- /* Based on the x86's implementation of arch_prepare_bpf_trampoline().
-  *
-  * bpf prog and function entry before bpf trampoline hooked:
-@@ -2123,6 +2129,7 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
- 	struct bpf_tramp_links *fmod_ret = &tlinks[BPF_TRAMP_MODIFY_RETURN];
- 	bool save_ret;
- 	__le32 **branches = NULL;
-+	bool is_struct_ops = is_struct_ops_tramp(fentry);
- 
- 	/* trampoline stack layout:
- 	 *                  [ parent ip         ]
-@@ -2191,11 +2198,14 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
- 	 */
- 	emit_bti(A64_BTI_JC, ctx);
- 
--	/* frame for parent function */
--	emit(A64_PUSH(A64_FP, A64_R(9), A64_SP), ctx);
--	emit(A64_MOV(1, A64_FP, A64_SP), ctx);
-+	/* x9 is not set for struct_ops */
-+	if (!is_struct_ops) {
-+		/* frame for parent function */
-+		emit(A64_PUSH(A64_FP, A64_R(9), A64_SP), ctx);
-+		emit(A64_MOV(1, A64_FP, A64_SP), ctx);
-+	}
- 
--	/* frame for patched function */
-+	/* frame for patched function for tracing, or caller for struct_ops */
- 	emit(A64_PUSH(A64_FP, A64_LR, A64_SP), ctx);
- 	emit(A64_MOV(1, A64_FP, A64_SP), ctx);
- 
-@@ -2289,19 +2299,24 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
- 	/* reset SP  */
- 	emit(A64_MOV(1, A64_SP, A64_FP), ctx);
- 
--	/* pop frames  */
--	emit(A64_POP(A64_FP, A64_LR, A64_SP), ctx);
--	emit(A64_POP(A64_FP, A64_R(9), A64_SP), ctx);
+ # Check Fixes: styles is correct
+ 		if (!$in_header_lines &&
+-		    $line =~ /^\s*fixes:?\s*(?:commit\s*)?[0-9a-f]{5,}\b/i) {
+-			my $orig_commit = "";
+-			my $id = "0123456789ab";
+-			my $title = "commit title";
+-			my $tag_case = 1;
+-			my $tag_space = 1;
+-			my $id_length = 1;
+-			my $id_case = 1;
++		    $line =~ /^\s*(fixes:?)\s*(?:commit\s*)?([0-9a-f]{5,40})(?:\s*($balanced_parens))?/i) {
++			my $tag = $1;
++			my $orig_commit = $2;
++			my $title;
+ 			my $title_has_quotes = 0;
+ 			$fixes_tag = 1;
 -
--	if (flags & BPF_TRAMP_F_SKIP_FRAME) {
--		/* skip patched function, return to parent */
--		emit(A64_MOV(1, A64_LR, A64_R(9)), ctx);
--		emit(A64_RET(A64_R(9)), ctx);
-+	if (is_struct_ops) {
-+		emit(A64_POP(A64_FP, A64_LR, A64_SP), ctx);
-+		emit(A64_RET(A64_LR), ctx);
- 	} else {
--		/* return to patched function */
--		emit(A64_MOV(1, A64_R(10), A64_LR), ctx);
--		emit(A64_MOV(1, A64_LR, A64_R(9)), ctx);
--		emit(A64_RET(A64_R(10)), ctx);
-+		/* pop frames */
-+		emit(A64_POP(A64_FP, A64_LR, A64_SP), ctx);
-+		emit(A64_POP(A64_FP, A64_R(9), A64_SP), ctx);
-+
-+		if (flags & BPF_TRAMP_F_SKIP_FRAME) {
-+			/* skip patched function, return to parent */
-+			emit(A64_MOV(1, A64_LR, A64_R(9)), ctx);
-+			emit(A64_RET(A64_R(9)), ctx);
-+		} else {
-+			/* return to patched function */
-+			emit(A64_MOV(1, A64_R(10), A64_LR), ctx);
-+			emit(A64_MOV(1, A64_LR, A64_R(9)), ctx);
-+			emit(A64_RET(A64_R(10)), ctx);
-+		}
- 	}
+-			if ($line =~ /(\s*fixes:?)\s+([0-9a-f]{5,})\s+($balanced_parens)/i) {
+-				my $tag = $1;
+-				$orig_commit = $2;
+-				$title = $3;
+-
+-				$tag_case = 0 if $tag eq "Fixes:";
+-				$tag_space = 0 if ($line =~ /^fixes:? [0-9a-f]{5,} ($balanced_parens)/i);
+-
+-				$id_length = 0 if ($orig_commit =~ /^[0-9a-f]{12}$/i);
+-				$id_case = 0 if ($orig_commit !~ /[A-F]/);
+-
++			if (defined $3) {
+ 				# Always strip leading/trailing parens then double quotes if existing
+-				$title = substr($title, 1, -1);
++				$title = substr($3, 1, -1);
+ 				if ($title =~ /^".*"$/) {
+ 					$title = substr($title, 1, -1);
+ 					$title_has_quotes = 1;
+ 				}
++			} else {
++				$title = "commit title"
+ 			}
  
- 	kfree(branches);
++
++			my $tag_case = not ($tag eq "Fixes:");
++			my $tag_space = not ($line =~ /^fixes:? [0-9a-f]{5,40} ($balanced_parens)/i);
++
++			my $id_length = not ($orig_commit =~ /^[0-9a-f]{12}$/i);
++			my $id_case = not ($orig_commit !~ /[A-F]/);
++
++			my $id = "0123456789ab";
+ 			my ($cid, $ctitle) = git_commit_info($orig_commit, $id,
+ 							     $title);
+ 
 -- 
 2.43.0
 
