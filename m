@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-96390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E599E1F91
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE319E1F87
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594021685B9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:38:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33E96281B37
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED961F708A;
-	Tue,  3 Dec 2024 14:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4761F7079;
+	Tue,  3 Dec 2024 14:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAcRWi/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knP2I2nX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFDA1F1313;
-	Tue,  3 Dec 2024 14:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB261E4A9;
+	Tue,  3 Dec 2024 14:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236637; cv=none; b=OlZDLCU+REvJAGLx7C9ekTxf4n433zZ726oDjNbl6mPa/m80w5ud8w2/k2XTDGPgpCJDGsMFiaHj6+FsZsiCYj7zQJ29Y/3ybyRY8AT1XTE5AATKQu4vvLgJAOFAXwR1l9HRlcA+eaqjl9uJA++vTs85B6F3DdE6eZv73C2jYGU=
+	t=1733236649; cv=none; b=VqRa7SWb9X00T90IByLnbMVsBLOvyDgwU6qFFcPVtGRSSW/Md1JLbVXoWxbNbVTZt+nBcB+xeu/qNTtwMUYv/4YlsAcaXFPbdFC7iFKz2wKEdFGTg6SIs0ubpGhBV1StbRciAZFn/geADlYLN2dOEZG4eNJVKTgEMgCECGX6GBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236637; c=relaxed/simple;
-	bh=8VSZolyzL/T82uHBp4cu+XVFxONUZC3JZqlsS1edJto=;
+	s=arc-20240116; t=1733236649; c=relaxed/simple;
+	bh=KqCjLbbr7uGZHzJYP5r1vC+s4HUILcFZeOIULk/tynU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VE2OYfhrAnBkZJNMZVeZncdryEVpiHSqxazgaNogAX2lUBQuaFk+8rFX1QSk/G/3WjM7RFIAGR9FFFkXbbV+SgfgMkidNdbGZKmtDFP0yx+06HdeWIXLTRq6/mu4rd8RHDPchEKpKPlBb9LSm2sHO4SER+PsD05Z/1HyxaSYSjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAcRWi/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B11DC4CECF;
-	Tue,  3 Dec 2024 14:37:17 +0000 (UTC)
+	 MIME-Version; b=BVUPjF3ZmXsy3xkQX2g2T/Ou9DixYmyaXQvlMhYxLQetquG1To+k9ZAEJ2wOjP5HwRZdhtRb0Ebei1I/hsy+a8/obXbt41YhkLcH+ooe3bxbTlYGEltIETKpfdfVc0CAdRY4mU2KOJNDxC/KvxtJ8Sz6nC9NxGF1ygJhbUTThOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knP2I2nX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB18C4CECF;
+	Tue,  3 Dec 2024 14:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236637;
-	bh=8VSZolyzL/T82uHBp4cu+XVFxONUZC3JZqlsS1edJto=;
+	s=korg; t=1733236647;
+	bh=KqCjLbbr7uGZHzJYP5r1vC+s4HUILcFZeOIULk/tynU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAcRWi/NGBDYFOZYDmytu3BveZyuTIj3xAUnynORmb5EmXbw3N5IEc2fYpFaD74V6
-	 OouP8rdLBJWlxZLrSkewwwQ0eEUmmmn+ZGCZjF4V/kuhgmbv4oPUDnbSk0CA8AVQDZ
-	 BV4m0en6ii89vI3G3XUaUenRjS1qQqlw8+MiiyiE=
+	b=knP2I2nXnjanaV6CkzWrgXEH8shXg4Ll9SeEpsV0hD13oBeZ5OT9LmIdSfah1odge
+	 t4sybPo1l/vR/+nEq4kF0gOLnq22z6ZRGyKHL2zYmJCkfAxUuFXayRznWbHWkf+2Q9
+	 Jc4roChy8WjyhXN8sSX6RczEsA6ix+lwvN6ZVwWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Naidu <naveennaidu479@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org,
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Greg Ungerer <gerg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 077/138] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
-Date: Tue,  3 Dec 2024 15:31:46 +0100
-Message-ID: <20241203141926.510751136@linuxfoundation.org>
+Subject: [PATCH 4.19 080/138] m68k: coldfire/device.c: only build FEC when HW macros are defined
+Date: Tue,  3 Dec 2024 15:31:49 +0100
+Message-ID: <20241203141926.626846308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,52 +70,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: weiyufeng <weiyufeng@kylinos.cn>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
+[ Upstream commit 63a24cf8cc330e5a68ebd2e20ae200096974c475 ]
 
-When config pci_ops.read() can detect failed PCI transactions, the data
-returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
+When CONFIG_FEC is set (due to COMPILE_TEST) along with
+CONFIG_M54xx, coldfire/device.c has compile errors due to
+missing MCFEC_* and MCF_IRQ_FEC_* symbols.
 
-Obviously a successful PCI config read may *also* return that data if a
-config register happens to contain ~0, so it doesn't definitively indicate
-an error unless we know the register cannot contain ~0.
+Make the whole FEC blocks dependent on having the HW macros
+defined, rather than on CONFIG_FEC itself.
 
-Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
-from hardware.  This unifies PCI error response checking and makes error
-checks consistent and easier to find.
+This fix is very similar to commit e6e1e7b19fa1 ("m68k: coldfire/device.c: only build for MCF_EDMA when h/w macros are defined")
 
-Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Fixes: b7ce7f0d0efc ("m68knommu: merge common ColdFire FEC platform setup code")
+To: Greg Ungerer <gerg@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/m68k/coldfire/device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index 1b2b3f3b648bc..a20875da4ec70 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
+diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
+index 908d58347790d..b900931669adc 100644
+--- a/arch/m68k/coldfire/device.c
++++ b/arch/m68k/coldfire/device.c
+@@ -89,7 +89,7 @@ static struct platform_device mcf_uart = {
+ 	.dev.platform_data	= mcf_uart_platform_data,
+ };
  
- 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
- 		return -1;
--	if (vendID == 0xffffffff)
-+	if (PCI_POSSIBLE_ERROR(vendID))
- 		return -1;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
-@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
- 			*dev_num = tdevice;
- 			ctrl->pci_bus->number = tbus;
- 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
--			if (!nobridge || (work == 0xffffffff))
-+			if (!nobridge || PCI_POSSIBLE_ERROR(work))
- 				return 0;
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
  
- 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
+ #ifdef CONFIG_M5441x
+ #define FEC_NAME	"enet-fec"
+@@ -141,6 +141,7 @@ static struct platform_device mcf_fec0 = {
+ 		.platform_data		= FEC_PDATA,
+ 	}
+ };
++#endif /* MCFFEC_BASE0 */
+ 
+ #ifdef MCFFEC_BASE1
+ static struct resource mcf_fec1_resources[] = {
+@@ -178,7 +179,6 @@ static struct platform_device mcf_fec1 = {
+ 	}
+ };
+ #endif /* MCFFEC_BASE1 */
+-#endif /* CONFIG_FEC */
+ 
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ /*
+@@ -478,12 +478,12 @@ static struct platform_device mcf_i2c5 = {
+ 
+ static struct platform_device *mcf_devices[] __initdata = {
+ 	&mcf_uart,
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
+ 	&mcf_fec0,
++#endif
+ #ifdef MCFFEC_BASE1
+ 	&mcf_fec1,
+ #endif
+-#endif
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ 	&mcf_qspi,
+ #endif
 -- 
 2.43.0
 
